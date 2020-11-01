@@ -86,7 +86,7 @@ Const EQUIPPED_CHARACTER = "+" ' Caracter de item equipado
 Const SELECTION_BOX_W = 34 ' Ancho de la cajita de selección (se centra automáticamente)
 Const SELECTION_BOX_H = 34 ' Alto de la cajita de selección (se centra automáticamente)
 
-Private Const MAININVENTORY_MIDSPACE As Integer = 9 'Separador de inventario básico y extra slots en el inventario principal del usuario
+Private Const MAININVENTORY_MIDSPACE As Integer = 0 '9 'Separador de inventario básico y extra slots en el inventario principal del usuario
 
 ' Valores calculados
 Const HALF_ITEM_SIZE = ITEM_SIZE \ 2
@@ -397,7 +397,7 @@ Public Sub DrawInventory()
          If isInventory Then
             If (i > MAX_NORMAL_INVENTORY_SLOTS) Then
                 y = y + MAININVENTORY_MIDSPACE
-                If (i - MAX_NORMAL_INVENTORY_SLOTS) <= (UserInvUnlocked * (InventoryWindow.ScaleWidth / (ITEM_OFFSET_X + InvOffsetX))) Then
+                If (i - MAX_NORMAL_INVENTORY_SLOTS) <= (UserInvUnlocked * (InvWidth / (ITEM_OFFSET_X))) Then
                     'Slot Desbloqueado
                     Call engine.Draw_GrhColor(GRH_INVENTORYSLOT_EXTRA, x, y, COLOR_WHITE)
                 Else
@@ -411,11 +411,13 @@ Public Sub DrawInventory()
          End If
         
 
-        If UserInventory(i).GrhIndex Then
-
             If InvSelectedItem = i Then
                 Engine_Draw_Box x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, D3DColorARGB(100, 100, 100, 100)
             End If
+            
+        If UserInventory(i).GrhIndex Then
+
+
 
             If UserInventory(i).PuedeUsar > 0 Then
                 color(0) = D3DColorXRGB(255, 100, 100)
