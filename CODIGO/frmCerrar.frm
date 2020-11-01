@@ -1,6 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmCerrar 
-   BackColor       =   &H00000000&
+   Appearance      =   0  'Flat
+   BackColor       =   &H80000005&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
    ClientHeight    =   2805
@@ -13,7 +14,7 @@ Begin VB.Form frmCerrar
    ScaleHeight     =   2805
    ScaleWidth      =   3240
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
+   StartUpPosition =   1  'CenterOwner
    Begin VB.Image Opcion 
       Height          =   420
       Index           =   2
@@ -92,7 +93,7 @@ Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
  Private RealizoCambios As String
 
 Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, _
-  ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+  ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 Private Const HWND_TOPMOST = -1
 Private Const HWND_NOTOPMOST = -2
 Private Const SWP_NOMOVE = &H2
@@ -142,7 +143,7 @@ Call FormParser.Parse_Form(Me)
 Call Aplicar_Transparencia(Me.hwnd, 220)
 Me.Picture = LoadInterface("desconectar.bmp")
 End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 Opcion(0).Tag = "0"
 Opcion(0).Picture = Nothing
 Opcion(1).Tag = "0"
@@ -161,7 +162,7 @@ Private Sub Opcion_Click(Index As Integer)
             Unload Me
     End Select
 End Sub
-Private Sub Opcion_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Opcion_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 'Ladder 30/10/2020
     Select Case Index
         Case 0 ' Menu principal
@@ -175,7 +176,7 @@ Private Sub Opcion_MouseDown(Index As Integer, Button As Integer, Shift As Integ
                 Opcion(Index).Tag = "1"
     End Select
 End Sub
-Private Sub Opcion_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Opcion_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 'Ladder 30/10/2020
     Select Case Index
         Case 0 ' Menu principal

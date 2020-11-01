@@ -3,18 +3,25 @@ Begin VB.Form frmComerciar
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Comerciando con el NPC"
-   ClientHeight    =   7110
+   ClientHeight    =   7140
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   8130
+   ClientWidth     =   8160
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   474
+   Picture         =   "frmComerciar.frx":0000
+   ScaleHeight     =   476
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   542
+   ScaleWidth      =   544
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.Timer tmrNumber 
+      Enabled         =   0   'False
+      Interval        =   30
+      Left            =   0
+      Top             =   0
+   End
    Begin VB.PictureBox interface 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
@@ -32,15 +39,16 @@ Begin VB.Form frmComerciar
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000008&
-      Height          =   4650
-      Left            =   240
+      Height          =   3660
+      Left            =   630
       MousePointer    =   99  'Custom
-      ScaleHeight     =   310
+      Picture         =   "frmComerciar.frx":BC69A
+      ScaleHeight     =   244
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   507
+      ScaleWidth      =   459
       TabIndex        =   1
-      Top             =   1680
-      Width           =   7605
+      Top             =   1605
+      Width           =   6885
    End
    Begin VB.TextBox cantidad 
       Alignment       =   2  'Center
@@ -48,37 +56,118 @@ Begin VB.Form frmComerciar
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
+         Name            =   "Tahoma"
+         Size            =   9
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   210
-      Left            =   3615
+      Left            =   3675
       TabIndex        =   0
       Text            =   "1"
-      Top             =   6645
-      Width           =   825
+      Top             =   6555
+      Width           =   810
    End
-   Begin VB.Image Image1 
-      Height          =   495
+   Begin VB.Image salir 
+      Height          =   375
+      Left            =   7680
+      Top             =   0
+      Width           =   495
+   End
+   Begin VB.Image cmdMasMenos 
+      Height          =   315
       Index           =   1
-      Left            =   5250
-      Tag             =   "0"
-      Top             =   6495
-      Width           =   1815
+      Left            =   4650
+      Tag             =   "1"
+      Top             =   6510
+      Width           =   315
+   End
+   Begin VB.Image cmdMasMenos 
+      Height          =   315
+      Index           =   0
+      Left            =   3195
+      Tag             =   "1"
+      Top             =   6525
+      Width           =   315
+   End
+   Begin VB.Label lbldesc 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "descripción"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   6
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C0C0C0&
+      Height          =   495
+      Left            =   2520
+      TabIndex        =   4
+      Top             =   5820
+      Width           =   3135
+   End
+   Begin VB.Label lblnombre 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "(Vacio)"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   2520
+      TabIndex        =   3
+      Top             =   5610
+      Width           =   3135
+   End
+   Begin VB.Label lblcosto 
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   6360
+      TabIndex        =   2
+      Top             =   5550
+      Width           =   1215
    End
    Begin VB.Image Image1 
-      Height          =   495
-      Index           =   0
-      Left            =   960
+      Height          =   420
+      Index           =   1
+      Left            =   5505
       Tag             =   "0"
-      Top             =   6510
-      Width           =   2235
+      Top             =   6465
+      Width           =   1830
+   End
+   Begin VB.Image Image1 
+      Height          =   420
+      Index           =   0
+      Left            =   825
+      Tag             =   "0"
+      Top             =   6465
+      Width           =   1830
    End
 End
 Attribute VB_Name = "frmComerciar"
@@ -100,6 +189,10 @@ Public LastIndex1 As Integer
 
 Public LasActionBuy As Boolean
 
+Private m_Number As Integer
+Private m_Increment As Integer
+Private m_Interval As Integer
+
 ' Declaro los inventarios acá para poder manejar los eventos de drop
 Public WithEvents InvComUsu As clsGrapchicalInventory ' Inventario del usuario visible en el comercio
 Attribute InvComUsu.VB_VarHelpID = -1
@@ -120,6 +213,49 @@ If (KeyAscii <> 8) Then
         KeyAscii = 0
     End If
 End If
+End Sub
+
+Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+
+Call Sound.Sound_Play(SND_CLICK)
+
+Select Case Index
+    Case 0
+        cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
+        cmdMasMenos(Index).Tag = "1"
+        cantidad.Text = str((Val(cantidad.Text) - 1))
+        m_Increment = -1
+    Case 1
+        cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
+        cmdMasMenos(Index).Tag = "1"
+        m_Increment = 1
+End Select
+
+tmrNumber.Interval = 30
+tmrNumber.Enabled = True
+
+End Sub
+
+Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+
+Select Case Index
+    Case 0
+        If cmdMasMenos(Index).Tag = "0" Then
+            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-over.bmp")
+            cmdMasMenos(Index).Tag = "1"
+        End If
+    Case 1
+        If cmdMasMenos(Index).Tag = "0" Then
+            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-over.bmp")
+            cmdMasMenos(Index).Tag = "1"
+        End If
+End Select
+
+End Sub
+
+Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Call Form_MouseMove(Button, Shift, x, y)
+tmrNumber.Enabled = False
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
@@ -155,6 +291,7 @@ Private Sub Image1_Click(Index As Integer)
 End Sub
 Private Sub Form_Load()
 Call FormParser.Parse_Form(Me)
+cantidad.BackColor = RGB(18, 19, 13)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -167,6 +304,16 @@ If Image1(1).Tag = "1" Then
     Image1(1).Picture = Nothing
     Image1(1).Tag = "0"
 End If
+
+If cmdMasMenos(0).Tag = "1" Then
+    cmdMasMenos(0).Picture = Nothing
+    cmdMasMenos(0).Tag = "0"
+End If
+
+If cmdMasMenos(1).Tag = "1" Then
+    cmdMasMenos(1).Picture = Nothing
+    cmdMasMenos(1).Tag = "0"
+End If
 End Sub
 Private Sub addRemove_Click(Index As Integer)
 Call Sound.Sound_Play(SND_CLICK)
@@ -178,13 +325,19 @@ Select Case Index
     End Select
 End Sub
 Private Sub cantidad_Change()
-    If Val(cantidad.Text) < 1 Then
-        cantidad.Text = 1
-    End If
-    If Val(cantidad.Text) > MAX_INVENTORY_OBJS Then
-        cantidad.Text = MAX_INVENTORY_OBJS
-        cantidad.SelStart = Len(cantidad.Text)
-    End If
+
+    
+If Val(cantidad.Text) < 0 Then
+    cantidad.Text = 1
+    m_Number = 1
+ElseIf Val(cantidad.Text) > MAX_INVENTORY_OBJS Then
+    cantidad.Text = 1
+    m_Number = 1
+Else
+    m_Number = Val(cantidad.Text)
+End If
+
+cantidad.SelStart = Len(cantidad.Text)
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -193,23 +346,23 @@ End Sub
 
 Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 If Index = 0 Then
-        Image1(0).Picture = LoadInterface("comprarwidepress.bmp")
+        Image1(0).Picture = LoadInterface("boton-comprar-ES-off.bmp")
         Image1(0).Tag = "0"
 Else
-        Image1(1).Picture = LoadInterface("venderwidepress.bmp")
+        Image1(1).Picture = LoadInterface("boton-vender-ES-off.bmp")
         Image1(1).Tag = "0"
 End If
 End Sub
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 If Index = 0 Then
     If Image1(0).Tag = "0" Then
-        Image1(0).Picture = LoadInterface("comprarwidehover.bmp")
+        Image1(0).Picture = LoadInterface("boton-comprar-ES-over.bmp")
         Image1(0).Tag = "1"
     End If
 Else
     
     If Image1(1).Tag = "0" Then
-        Image1(1).Picture = LoadInterface("venderwidehover.bmp")
+        Image1(1).Picture = LoadInterface("boton-vender-over.bmp")
         Image1(1).Tag = "1"
     End If
 End If
@@ -341,4 +494,26 @@ Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         End If
     End If
 
+End Sub
+Private Sub salir_Click()
+Unload Me
+End Sub
+
+Private Sub tmrNumber_Timer()
+Const MIN_NUMBER = 1
+Const MAX_NUMBER = 10000
+
+    m_Number = m_Number + m_Increment
+    If m_Number < MIN_NUMBER Then
+        m_Number = MIN_NUMBER
+    ElseIf m_Number > MAX_NUMBER Then
+        m_Number = MAX_NUMBER
+    End If
+
+    cantidad.Text = format$(m_Number)
+    
+    If m_Interval > 1 Then
+        m_Interval = m_Interval - 1
+        tmrNumber.Interval = m_Interval
+    End If
 End Sub
