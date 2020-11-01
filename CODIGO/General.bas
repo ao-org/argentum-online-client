@@ -1230,10 +1230,10 @@ On Error Resume Next
        ' End
    ' End If
 
-    If FileExist(App.Path & "\..\LauncherRevolucionAo.ex_", vbNormal) Then
+    If FileExist(App.Path & "\..\Launcher.ex_", vbNormal) Then
         Call Sleep(2)
-        Delete_File App.Path & "\..\LauncherRevolucionAo.exe"
-        Name App.Path & "\..\LauncherRevolucionAo.ex_" As App.Path & "\..\LauncherRevolucionAo.exe"
+        Delete_File App.Path & "\..\Launcher.exe"
+        Name App.Path & "\..\Launcher.ex_" As App.Path & "\..\Launcher.exe"
     End If
 
     If FileExist(App.Path & "\..\Recursos\OUTPUT\raoinit.ini", vbArchive) Then

@@ -372,7 +372,7 @@ Private Const WS_EX_LAYERED = &H80000
 
 
 Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, _
-  ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+  ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 Private Const HWND_TOPMOST = -1
 Private Const HWND_NOTOPMOST = -2
 Private Const SWP_NOMOVE = &H2
@@ -430,7 +430,7 @@ Private Sub Alpha_Change()
 AlphaMacro = Alpha.value
 End Sub
 
-Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
         If OcultarMacrosAlCastear = 1 Then
             OcultarMacrosAlCastear = 0
         Else
@@ -438,14 +438,14 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
         End If
         
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("config_stick.bmp")
+        check1.Picture = LoadInterface("config_stick.bmp")
     End If
         
 End Sub
 
-Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 If PermitirMoverse = 1 Then
     PermitirMoverse = 0
 Else
@@ -459,7 +459,7 @@ End If
     End If
 End Sub
 
-Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 If MoverVentana = 1 Then
     MoverVentana = 0
 Else
@@ -474,7 +474,7 @@ End If
 End Sub
 
 
-Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 If CursoresGraficos = 1 Then
     Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini", "OPCIONES", "CursoresGraficos", 0)
     MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Ao20 - Advertencia" 'hay que poner 20 aniversario
@@ -494,7 +494,7 @@ End If
 End Sub
 
 
-Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
         If InvertirSonido = 1 Then
             InvertirSonido = 0
             
@@ -515,7 +515,7 @@ Private Sub chkInvertir2_Click()
 
 End Sub
 
-Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
 Call Sound.Sound_Play(SND_CLICK)
 
@@ -591,13 +591,13 @@ Private Sub cmdayuda_Click()
 Call FrmGmAyuda.Show
 End Sub
 
-Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If cmdayuda.Tag = "0" Then
         cmdayuda.Picture = LoadInterface("config_ayuda.bmp")
         cmdayuda.Tag = "1"
     End If
 End Sub
-Private Sub discord_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub discord_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If discord.Tag = "0" Then
         discord.Picture = LoadInterface("config_discord.bmp")
         discord.Tag = "1"
@@ -610,7 +610,7 @@ instagram.Tag = "0"
 facebook = Nothing
 facebook.Tag = "0"
 End Sub
-Private Sub cmdweb_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdweb_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If cmdweb.Tag = "0" Then
         cmdweb.Picture = LoadInterface("config_web.bmp")
         cmdweb.Tag = "1"
@@ -623,7 +623,7 @@ instagram.Tag = "0"
 facebook = Nothing
 facebook.Tag = "0"
 End Sub
-Private Sub instagram_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub instagram_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If instagram.Tag = "0" Then
         instagram.Picture = LoadInterface("config_instagram.bmp")
         instagram.Tag = "1"
@@ -636,7 +636,7 @@ cmdweb.Tag = "0"
 facebook = Nothing
 facebook.Tag = "0"
 End Sub
-Private Sub facebook_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub facebook_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If facebook.Tag = "0" Then
         facebook.Picture = LoadInterface("config_facebook.bmp")
         facebook.Tag = "1"
@@ -649,36 +649,36 @@ cmdweb.Tag = "0"
 instagram = Nothing
 instagram.Tag = "0"
 End Sub
-Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Command1.Tag = "0" Then
         Command1.Picture = LoadInterface("config_teclas.bmp")
         Command1.Tag = "1"
     End If
-        cmdCerrar = Nothing
-cmdCerrar.Tag = "0"
+        cmdcerrar = Nothing
+cmdcerrar.Tag = "0"
     
 End Sub
-Private Sub cmdcerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If cmdCerrar.Tag = "0" Then
-        cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdCerrar.Tag = "1"
+Private Sub cmdcerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If cmdcerrar.Tag = "0" Then
+        cmdcerrar.Picture = LoadInterface("config_cerrar.bmp")
+        cmdcerrar.Tag = "1"
     End If
     cmdChangePassword = Nothing
 cmdChangePassword.Tag = "0"
 Command1 = Nothing
 Command1.Tag = "0"
 End Sub
-Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If cmdChangePassword.Tag = "0" Then
         cmdChangePassword.Picture = LoadInterface("config_contraseñ.bmp")
         cmdChangePassword.Tag = "1"
     End If
-    cmdCerrar = Nothing
-cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+cmdcerrar.Tag = "0"
 End Sub
 
 Private Sub cmdWeb_Click()
-ShellExecute Me.hwnd, "open", "http://www.Ao20.com/", "", "", 0
+ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
 End Sub
 
 Private Sub Command5_Click()
@@ -686,11 +686,11 @@ MsgBox ("Proximamente")
 End Sub
 
 Private Sub discord_Click()
-ShellExecute Me.hwnd, "open", "https://discord.com/invite/u2sSpWp", "", "", 0
+ShellExecute Me.hwnd, "open", "https://discord.gg/e3juVbF", "", "", 0
 End Sub
 
 Private Sub facebook_Click()
-ShellExecute Me.hwnd, "open", "https://www.facebook.com/revolucionao/", "", "", 0
+ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
 End Sub
 
 Private Sub Form_Load()
@@ -705,14 +705,14 @@ Private Sub moverForm()
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 End Sub
 
-Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 '    If Check3 Then
     '    SwapMouseButton 1
    ' Else
      '   SwapMouseButton 0
  '   End If
 End Sub
-Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
         If FPSFLAG = 1 Then
             FPSFLAG = 0
         Else
@@ -726,7 +726,7 @@ Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
         Check6.Picture = LoadInterface("config_stick.bmp")
     End If
 End Sub
-Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
         If CopiarDialogoAConsola = 1 Then
             CopiarDialogoAConsola = 0
         Else
@@ -754,7 +754,7 @@ End Sub
 
 
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 moverForm
 cmdayuda = Nothing
 cmdayuda.Tag = "0"
@@ -768,8 +768,8 @@ facebook = Nothing
 facebook.Tag = "0"
 Command1 = Nothing
 Command1.Tag = "0"
-cmdCerrar = Nothing
-cmdCerrar.Tag = "0"
+cmdcerrar = Nothing
+cmdcerrar.Tag = "0"
 cmdChangePassword = Nothing
 cmdChangePassword.Tag = "0"
 End Sub
@@ -859,9 +859,9 @@ Public Sub Init()
     
     
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("config_stick.bmp")
+        check1.Picture = LoadInterface("config_stick.bmp")
     End If
 
     
@@ -891,7 +891,7 @@ End Sub
 
 
 Private Sub instagram_Click()
-ShellExecute Me.hwnd, "open", "https://www.instagram.com/revolucionao/", "", "", 0
+ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
 End Sub
 
 

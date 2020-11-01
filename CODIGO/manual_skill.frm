@@ -138,4 +138,3 @@ Combo1.AddItem (SkillsNames(i))
 Next i
 Combo1.ListIndex = 0
 End Sub
-
