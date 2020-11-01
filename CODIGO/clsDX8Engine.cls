@@ -9074,7 +9074,7 @@ Public Sub Initialize()
 
     Call frmmain.Inventario.Initialize(frmmain.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True)
     Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True) 'Nuev
-    Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, , , 1, 0, 3, 3)  'Nuevo
+    Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3) 'Nuevo
    
     Call frmBancoObj.InvBankUsu.Initialize(frmBancoObj.interface, MAX_INVENTORY_SLOTS, 222, , 275, 12, 5, 5, True)
     Call frmBancoObj.InvBoveda.Initialize(frmBancoObj.interface, MAX_BANCOINVENTORY_SLOTS, 222, , 16, 10, 5, 5)
