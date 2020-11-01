@@ -298,7 +298,7 @@ Image2.Tag = "0"
 End Sub
 
 Private Sub Image3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-ShellExecute Me.hwnd, "open", "https://revolucionao.com/creditos/", "", "", 0
+ShellExecute Me.hwnd, "open", "https://www.argentum20.com/creditos/", "", "", 0
 End Sub
 
 Private Sub lstArmas_Click()

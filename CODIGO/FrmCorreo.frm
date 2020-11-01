@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FrmCorreo 
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   Caption         =   "Correo de RevoluciónAo"
+   Caption         =   "Correo de Argentum20"
    ClientHeight    =   5850
    ClientLeft      =   0
    ClientTop       =   -75

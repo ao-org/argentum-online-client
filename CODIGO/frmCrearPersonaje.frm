@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmCrearPersonaje 
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   Caption         =   "RevolucionAo 1.0"
+   Caption         =   "Argentum20"
    ClientHeight    =   11565
    ClientLeft      =   0
    ClientTop       =   0
@@ -16,9 +16,9 @@ Begin VB.Form frmCrearPersonaje
    StartUpPosition =   2  'CenterScreen
    Begin VB.ComboBox cabeza 
       Height          =   315
-      ItemData        =   "frmCrearPersonaje.frx":57E2
+      ItemData        =   "frmCrearPersonaje.frx":24E4B
       Left            =   840
-      List            =   "frmCrearPersonaje.frx":57E4
+      List            =   "frmCrearPersonaje.frx":24E4D
       TabIndex        =   24
       Text            =   "Combo1"
       Top             =   720
@@ -38,9 +38,9 @@ Begin VB.Form frmCrearPersonaje
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   300
-      ItemData        =   "frmCrearPersonaje.frx":57E6
+      ItemData        =   "frmCrearPersonaje.frx":24E4F
       Left            =   13680
-      List            =   "frmCrearPersonaje.frx":57E8
+      List            =   "frmCrearPersonaje.frx":24E51
       Style           =   2  'Dropdown List
       TabIndex        =   1
       Top             =   4440
@@ -60,9 +60,9 @@ Begin VB.Form frmCrearPersonaje
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   300
-      ItemData        =   "frmCrearPersonaje.frx":57EA
+      ItemData        =   "frmCrearPersonaje.frx":24E53
       Left            =   13680
-      List            =   "frmCrearPersonaje.frx":57F4
+      List            =   "frmCrearPersonaje.frx":24E5D
       Style           =   2  'Dropdown List
       TabIndex        =   2
       Top             =   5040
@@ -82,9 +82,9 @@ Begin VB.Form frmCrearPersonaje
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   300
-      ItemData        =   "frmCrearPersonaje.frx":5807
+      ItemData        =   "frmCrearPersonaje.frx":24E70
       Left            =   13680
-      List            =   "frmCrearPersonaje.frx":5809
+      List            =   "frmCrearPersonaje.frx":24E72
       Style           =   2  'Dropdown List
       TabIndex        =   0
       Top             =   3840
@@ -996,16 +996,16 @@ Call Sound.Sound_Play(SND_CLICK)
                 StopCreandoCuenta = True
                     
                 
-                    If frmMain.Socket1.Connected Then
+                    If frmmain.Socket1.Connected Then
                         EstadoLogin = E_MODO.CrearNuevoPj
                         Call Login
-                        frmMain.Second.Enabled = True
+                        frmmain.Second.Enabled = True
                         Exit Sub
                     Else
                         EstadoLogin = E_MODO.CrearNuevoPj
-                        frmMain.Socket1.HostName = IPdelServidor
-                        frmMain.Socket1.RemotePort = PuertoDelServidor
-                        frmMain.Socket1.Connect
+                        frmmain.Socket1.HostName = IPdelServidor
+                        frmmain.Socket1.RemotePort = PuertoDelServidor
+                        frmmain.Socket1.Connect
                     End If
             End If
 End If

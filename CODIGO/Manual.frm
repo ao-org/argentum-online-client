@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form Manual 
    BorderStyle     =   4  'Fixed ToolWindow
-   Caption         =   "Manual de RevolucionAO"
+   Caption         =   "Manual de Argentum"
    ClientHeight    =   6780
    ClientLeft      =   45
    ClientTop       =   390
