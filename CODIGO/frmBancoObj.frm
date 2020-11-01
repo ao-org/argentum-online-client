@@ -10,11 +10,40 @@ Begin VB.Form frmBancoObj
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   Picture         =   "frmBancoObj.frx":0000
    ScaleHeight     =   481
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   544
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Timer tmrNumber 
+      Enabled         =   0   'False
+      Interval        =   30
+      Left            =   0
+      Top             =   0
+   End
+   Begin VB.TextBox cantidad 
+      Alignment       =   2  'Center
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   210
+      Left            =   3690
+      TabIndex        =   4
+      Text            =   "1"
+      Top             =   6555
+      Width           =   810
+   End
    Begin VB.PictureBox interface 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
@@ -32,53 +61,113 @@ Begin VB.Form frmBancoObj
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000008&
-      Height          =   4650
-      Left            =   240
+      Height          =   3660
+      Left            =   630
       MousePointer    =   99  'Custom
-      ScaleHeight     =   310
+      Picture         =   "frmBancoObj.frx":BFAA2
+      ScaleHeight     =   244
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   507
-      TabIndex        =   1
-      Top             =   1650
-      Width           =   7605
+      ScaleWidth      =   459
+      TabIndex        =   0
+      Top             =   1605
+      Width           =   6885
    End
-   Begin VB.TextBox cantidad 
-      Alignment       =   2  'Center
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
+   Begin VB.Image salir 
+      Height          =   375
+      Left            =   7680
+      Top             =   0
+      Width           =   495
+   End
+   Begin VB.Image cmdMasMenos 
+      Height          =   315
+      Index           =   0
+      Left            =   3195
+      Tag             =   "0"
+      Top             =   6525
+      Width           =   315
+   End
+   Begin VB.Image cmdMasMenos 
+      Height          =   315
+      Index           =   1
+      Left            =   4650
+      Tag             =   "0"
+      Top             =   6510
+      Width           =   315
+   End
+   Begin VB.Label lblcosto 
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   210
-      Left            =   3630
-      TabIndex        =   0
-      Text            =   "1"
-      Top             =   6645
-      Width           =   855
+      Height          =   255
+      Left            =   6360
+      TabIndex        =   3
+      Top             =   5520
+      Width           =   1215
+   End
+   Begin VB.Label lblnombre 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "(Vacio)"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   2520
+      TabIndex        =   2
+      Top             =   5700
+      Width           =   3135
+   End
+   Begin VB.Label lbldesc 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "descripción"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   6
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C0C0C0&
+      Height          =   495
+      Left            =   2520
+      TabIndex        =   1
+      Top             =   5910
+      Width           =   3135
    End
    Begin VB.Image Image1 
-      Height          =   510
+      Height          =   420
       Index           =   1
-      Left            =   5025
+      Left            =   5505
       Tag             =   "0"
-      Top             =   6495
-      Width           =   2220
+      Top             =   6465
+      Width           =   1830
    End
    Begin VB.Image Image1 
-      Height          =   525
+      Height          =   420
       Index           =   0
-      Left            =   1125
+      Left            =   825
       Tag             =   "0"
-      Top             =   6495
-      Width           =   1725
+      Top             =   6465
+      Width           =   1830
    End
 End
 Attribute VB_Name = "frmBancoObj"
@@ -98,6 +187,10 @@ Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
 Public LastIndex1 As Integer
 Public LasActionBuy As Boolean
 
+Private m_Number As Integer
+Private m_Increment As Integer
+Private m_Interval As Integer
+
 ' Declaro los inventarios acá para manejar el evento drop
 Public WithEvents InvBankUsu As clsGrapchicalInventory ' Inventario del usuario visible en la bóveda
 Attribute InvBankUsu.VB_VarHelpID = -1
@@ -111,11 +204,57 @@ Private Sub moverForm()
 End Sub
 
 Private Sub cantidad_KeyPress(KeyAscii As Integer)
+If (KeyAscii = 27) Then
+    Unload Me
+End If
 If (KeyAscii <> 8) Then
     If (KeyAscii <> 6) And (KeyAscii < 48 Or KeyAscii > 57) Then
         KeyAscii = 0
     End If
 End If
+End Sub
+
+Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+
+Call Sound.Sound_Play(SND_CLICK)
+
+Select Case Index
+    Case 0
+        cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
+        cmdMasMenos(Index).Tag = "1"
+        cantidad.Text = str((Val(cantidad.Text) - 1))
+        m_Increment = -1
+    Case 1
+        cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
+        cmdMasMenos(Index).Tag = "1"
+        m_Increment = 1
+End Select
+
+tmrNumber.Interval = 30
+tmrNumber.Enabled = True
+
+End Sub
+
+Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+
+Select Case Index
+    Case 0
+        If cmdMasMenos(Index).Tag = "0" Then
+            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-over.bmp")
+            cmdMasMenos(Index).Tag = "1"
+        End If
+    Case 1
+        If cmdMasMenos(Index).Tag = "0" Then
+            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-over.bmp")
+            cmdMasMenos(Index).Tag = "1"
+        End If
+End Select
+
+End Sub
+
+Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Call Form_MouseMove(Button, Shift, x, y)
+tmrNumber.Enabled = False
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
@@ -126,6 +265,7 @@ End Sub
 
 Private Sub Form_Load()
 Call FormParser.Parse_Form(Me)
+cantidad.BackColor = RGB(18, 19, 13)
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
@@ -152,7 +292,6 @@ End Sub
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     moverForm
 
-
 If Image1(0).Tag = "1" Then
    Image1(0).Picture = Nothing
    Image1(0).Tag = "0"
@@ -160,6 +299,14 @@ End If
 If Image1(1).Tag = "1" Then
     Image1(1).Picture = Nothing
     Image1(1).Tag = "0"
+End If
+If cmdMasMenos(0).Tag = "1" Then
+    cmdMasMenos(0).Picture = Nothing
+    cmdMasMenos(0).Tag = "0"
+End If
+If cmdMasMenos(1).Tag = "1" Then
+    cmdMasMenos(1).Picture = Nothing
+    cmdMasMenos(1).Tag = "0"
 End If
 End Sub
 Private Sub cantidad_Change()
@@ -180,26 +327,26 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-If Index = 0 Then
-        'Image1(0).Picture = LoadInterface("retirarwidepress.bmp")
+    If Index = 0 Then
+        Image1(0).Picture = LoadInterface("boton-retirar-ES-off.bmp")
         Image1(0).Tag = "0"
-Else
-       ' Image1(1).Picture = LoadInterface("depowidepress.bmp")
+    Else
+        Image1(1).Picture = LoadInterface("boton-depositar-ES-off.bmp")
         Image1(1).Tag = "0"
-End If
+    End If
 End Sub
 
 
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 If Index = 0 Then
     If Image1(0).Tag = "0" Then
-        Image1(0).Picture = LoadInterface("retirarwidehover.bmp")
+        Image1(0).Picture = LoadInterface("boton-retirar-ES-over.bmp")
         Image1(0).Tag = "1"
     End If
 Else
     
     If Image1(1).Tag = "0" Then
-        Image1(1).Picture = LoadInterface("depowidehover.bmp")
+        Image1(1).Picture = LoadInterface("boton-depositar-ES-default.bmp")
         Image1(1).Tag = "1"
     End If
 End If
@@ -317,8 +464,31 @@ Private Sub InvBankUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer,
         ' Si lo soltó dentro de la bóveda
         If Drop > 0 Then
             ' Depositamos el item
-            Call WriteBankDeposit(Drag, max(Val(cantidad.Text), InvBankUsu.Amount(InvBankUsu.SelectedItem)), Drop)
+            Call WriteBankDeposit(Drag, min(Val(cantidad.Text), InvBankUsu.Amount(InvBankUsu.SelectedItem)), Drop)
         End If
     End If
 
+End Sub
+
+Private Sub salir_Click()
+Unload Me
+End Sub
+
+Private Sub tmrNumber_Timer()
+Const MIN_NUMBER = 1
+Const MAX_NUMBER = 10000
+
+    m_Number = m_Number + m_Increment
+    If m_Number < MIN_NUMBER Then
+        m_Number = MIN_NUMBER
+    ElseIf m_Number > MAX_NUMBER Then
+        m_Number = MAX_NUMBER
+    End If
+
+    cantidad.Text = format$(m_Number)
+    
+    If m_Interval > 1 Then
+        m_Interval = m_Interval - 1
+        tmrNumber.Interval = m_Interval
+    End If
 End Sub
