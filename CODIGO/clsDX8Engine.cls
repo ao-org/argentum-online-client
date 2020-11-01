@@ -3898,7 +3898,7 @@ Public Sub DrawInterfaceComerciar()
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
         frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
-        frmComerciar.lblCosto = PonerPuntos(CLng(CurrentInventory.Valor(CurrentInventory.SelectedItem)))
+        frmComerciar.lblcosto = PonerPuntos(CLng(CurrentInventory.Valor(CurrentInventory.SelectedItem)))
         
         Set CurrentInventory = Nothing
     End If
@@ -3946,9 +3946,6 @@ Public Sub DrawInterfaceBoveda()
     
     ' Si hay alguno seleccionado
     If Not CurrentInventory Is Nothing Then
-        ' Dibujo el item seleccionado
-        Call engine.Draw_GrhColor(CurrentInventory.GrhIndex(CurrentInventory.SelectedItem), 282, 251, COLOR_WHITE)
-    
         ' Muestro info del item
         Dim str As String
         str = " (No usa: "
@@ -3969,21 +3966,14 @@ Public Sub DrawInterfaceBoveda()
             Case 0
                 str = " (Usable)"
         End Select
-                   
-        Dim color(3) As Long
-        color(0) = RGB(255, 140, 26)
-        color(1) = color(0)
-        color(2) = color(0)
-        color(3) = color(0)
-        engine.Engine_Text_Render_LetraChica CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str, 312, 240, color, 4, False
+
+        
+        frmBancoObj.lblnombre.Caption = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
+        frmBancoObj.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
         
         
         
-        color(0) = RGB(239, 228, 176)
-        color(1) = color(0)
-        color(2) = color(0)
-        color(3) = color(0)
-        engine.Engine_Text_Render_LetraChica CurrentInventory.GetInfo(CurrentInventory.SelectedItem), 362, 255, color, 4, True
+        
         
         Set CurrentInventory = Nothing
     End If
@@ -9076,8 +9066,8 @@ Public Sub Initialize()
     Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True) 'Nuev
     Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3) 'Nuevo
    
-    Call frmBancoObj.InvBankUsu.Initialize(frmBancoObj.interface, MAX_INVENTORY_SLOTS, 222, , 275, 12, 5, 5, True)
-    Call frmBancoObj.InvBoveda.Initialize(frmBancoObj.interface, MAX_BANCOINVENTORY_SLOTS, 222, , 16, 10, 5, 5)
+    Call frmBancoObj.InvBankUsu.Initialize(frmBancoObj.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
+    Call frmBancoObj.InvBoveda.Initialize(frmBancoObj.interface, MAX_BANCOINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3)
  
 End Sub
 
