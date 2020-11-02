@@ -3,13 +3,13 @@ Begin VB.Form Frmcarga
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   4545
+   ClientHeight    =   6405
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   9240
+   ClientWidth     =   14010
    LinkTopic       =   "Form1"
-   ScaleHeight     =   4545
-   ScaleWidth      =   9240
+   ScaleHeight     =   6405
+   ScaleWidth      =   14010
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
 End
