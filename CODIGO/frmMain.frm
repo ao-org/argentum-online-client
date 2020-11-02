@@ -28,7 +28,7 @@ Begin VB.Form frmmain
    MinButton       =   0   'False
    Moveable        =   0   'False
    NegotiateMenus  =   0   'False
-   Picture         =   "frmMain.frx":24E4B
+   Picture         =   "frmMain.frx":57E2
    ScaleHeight     =   815.007
    ScaleMode       =   0  'User
    ScaleWidth      =   1356.391
@@ -74,7 +74,7 @@ Begin VB.Form frmmain
       ForeColor       =   &H80000008&
       Height          =   4875
       Left            =   11520
-      Picture         =   "frmMain.frx":4FA4B
+      Picture         =   "frmMain.frx":303E2
       ScaleHeight     =   4875
       ScaleWidth      =   3705
       TabIndex        =   34
@@ -163,7 +163,7 @@ Begin VB.Form frmmain
          Height          =   285
          Index           =   0
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":8AB15
+         MouseIcon       =   "frmMain.frx":6B4AC
          MousePointer    =   99  'Custom
          Tag             =   "0"
          Top             =   4550
@@ -174,9 +174,9 @@ Begin VB.Form frmmain
          Height          =   285
          Index           =   1
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":8AC67
+         MouseIcon       =   "frmMain.frx":6B5FE
          MousePointer    =   99  'Custom
-         Picture         =   "frmMain.frx":8ADB9
+         Picture         =   "frmMain.frx":6B750
          Tag             =   "0"
          Top             =   4260
          Visible         =   0   'False
@@ -501,12 +501,13 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmMain.frx":8B437
+      TextRTF         =   $"frmMain.frx":6BDCE
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Verdana"
          Size            =   6.75
@@ -853,14 +854,14 @@ Begin VB.Form frmmain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":8B4B3
+      Picture         =   "frmMain.frx":6BE4A
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":8BA37
+      Picture         =   "frmMain.frx":6C3CE
       Top             =   2008
       Width           =   555
    End
@@ -988,7 +989,7 @@ Begin VB.Form frmmain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   13560
-      Picture         =   "frmMain.frx":8BFBB
+      Picture         =   "frmMain.frx":6C952
       Top             =   10920
       Visible         =   0   'False
       Width           =   525
@@ -996,7 +997,7 @@ Begin VB.Form frmmain
    Begin VB.Image PicResu 
       Height          =   510
       Left            =   12120
-      Picture         =   "frmMain.frx":8CC3B
+      Picture         =   "frmMain.frx":6D5D2
       ToolTipText     =   "Seguro de grupo"
       Top             =   10920
       Width           =   510
@@ -1004,7 +1005,7 @@ Begin VB.Form frmmain
    Begin VB.Image PicResuOn 
       Height          =   510
       Left            =   12120
-      Picture         =   "frmMain.frx":8DA4D
+      Picture         =   "frmMain.frx":6E3E4
       ToolTipText     =   "Seguro de grupo"
       Top             =   10920
       Visible         =   0   'False
@@ -1074,7 +1075,7 @@ Begin VB.Form frmmain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11573
-      Picture         =   "frmMain.frx":8E85F
+      Picture         =   "frmMain.frx":6F1F6
       Top             =   1545
       Width           =   3045
    End
@@ -1101,7 +1102,7 @@ Begin VB.Form frmmain
    Begin VB.Image Hpshp 
       Height          =   135
       Left            =   11910
-      Picture         =   "frmMain.frx":916F8
+      Picture         =   "frmMain.frx":7208F
       Top             =   8489
       Width           =   1335
    End
@@ -1129,7 +1130,7 @@ Begin VB.Form frmmain
    Begin VB.Image STAShp 
       Height          =   135
       Left            =   11910
-      Picture         =   "frmMain.frx":920A6
+      Picture         =   "frmMain.frx":72A3D
       Top             =   9077
       Width           =   1335
    End
@@ -1156,7 +1157,7 @@ Begin VB.Form frmmain
    Begin VB.Image COMIDAsp 
       Height          =   135
       Left            =   13800
-      Picture         =   "frmMain.frx":92A54
+      Picture         =   "frmMain.frx":733EB
       Top             =   8473
       Width           =   1335
    End
@@ -1183,7 +1184,7 @@ Begin VB.Form frmmain
    Begin VB.Image AGUAsp 
       Height          =   135
       Left            =   13800
-      Picture         =   "frmMain.frx":93402
+      Picture         =   "frmMain.frx":73D99
       Top             =   8775
       Width           =   1335
    End
@@ -1211,7 +1212,7 @@ Begin VB.Form frmmain
    Begin VB.Image MANShp 
       Height          =   135
       Left            =   11910
-      Picture         =   "frmMain.frx":93DB0
+      Picture         =   "frmMain.frx":74747
       Top             =   8780
       Width           =   1335
    End
@@ -1219,7 +1220,7 @@ Begin VB.Form frmmain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   11505
-      Picture         =   "frmMain.frx":9475E
+      Picture         =   "frmMain.frx":750F5
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510
@@ -1227,7 +1228,7 @@ Begin VB.Form frmmain
    Begin VB.Image Image6 
       Height          =   510
       Left            =   11505
-      Picture         =   "frmMain.frx":95570
+      Picture         =   "frmMain.frx":75F07
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510
@@ -1236,7 +1237,7 @@ Begin VB.Form frmmain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12720
-      Picture         =   "frmMain.frx":96382
+      Picture         =   "frmMain.frx":76D19
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510
@@ -1245,7 +1246,7 @@ Begin VB.Form frmmain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12720
-      Picture         =   "frmMain.frx":97194
+      Picture         =   "frmMain.frx":77B2B
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510

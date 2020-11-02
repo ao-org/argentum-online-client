@@ -3,14 +3,13 @@ Begin VB.Form Frmcarga
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   480
+   ClientHeight    =   4545
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   4110
+   ClientWidth     =   9240
    LinkTopic       =   "Form1"
-   Picture         =   "Frmcarga.frx":0000
-   ScaleHeight     =   480
-   ScaleWidth      =   4110
+   ScaleHeight     =   4545
+   ScaleWidth      =   9240
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
 End
@@ -20,5 +19,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub Form_Load()
-MakeFormTransparent Me, vbBlack
+    Me.Picture = LoadInterface("logocargando.bmp")
+    MakeFormTransparent Me, vbBlack
 End Sub
