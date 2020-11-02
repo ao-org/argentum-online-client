@@ -682,7 +682,7 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPAura = ""
  End Select
  
- RazaRecomendada = "Raza sugerida: " & RazaRecomendada
+ RazaRecomendada = RazaRecomendada
 
 End Sub
 

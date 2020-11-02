@@ -590,11 +590,11 @@ Next i
 End Sub
 Sub General_Set_Connect()
 
-    UserMap = 1
     AlphaNiebla = 75
     EntradaY = 10
     EntradaX = 10
     If UserMap <> 1 Then
+        UserMap = 1
         Call SwitchMapIAO(UserMap)
     End If
 
@@ -647,9 +647,9 @@ frmConnect.relampago.Enabled = True
  ClickEnAsistente = 0
  If CuentaRecordada.nombre <> "" Then
  
- Call TextoAlAsistente("¡Bienvenido de nuevo " & CuentaRecordada.nombre & "! ¡Disfruta tu viaje por Ao20!") ' hay que poner 20 aniversario
+ Call TextoAlAsistente("¡Bienvenido de nuevo " & CuentaRecordada.nombre & "! ¡Disfruta tu viaje por Argentum20!") ' hay que poner 20 aniversario
  Else
- Call TextoAlAsistente("¡Bienvenido a Ao20! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.") ' hay que poner 20 aniversario
+ Call TextoAlAsistente("¡Bienvenido a Argentum20! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.") ' hay que poner 20 aniversario
  End If
 End Sub
 

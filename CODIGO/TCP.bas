@@ -49,6 +49,8 @@ Sub Login()
             ' Sound.Fading = 350
             'FrmCuenta.Visible = False
             frmConnect.txtNombre.Visible = True
+            frmConnect.txtNombre.SetFocus
+
             Call Sound.Sound_Play(SND_DICE)
         End If
     End If

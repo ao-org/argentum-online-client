@@ -971,7 +971,7 @@ Dim ind As Integer
 ind = Val(ReadField(2, List1.List(List1.ListIndex), Asc("@")))
 txtMsg = List2.List(List1.ListIndex)
 End Sub
-Private Sub List1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Button = vbRightButton Then
     PopUpMenu mnuUsuario
 End If
@@ -1055,7 +1055,7 @@ Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & tmp)
 End Sub
 Private Sub mnuManual_Click()
 Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.Ao20.com.ar.")
+Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
 End Sub
 Private Sub mnuAccion_Click(Index As Integer)
     Nick = cboListaUsus.Text
