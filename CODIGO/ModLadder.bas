@@ -395,8 +395,8 @@ End Type
 
  
 Public Type POINTAPI
-    X As Long
-    Y As Long
+    x As Long
+    y As Long
 End Type
  
 Private Type SAFEARRAYBOUND
@@ -430,7 +430,7 @@ Const RGN_OR = 2
 Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 Private Declare Function CreateRectRgn Lib "gdi32" (ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Long
 Private Declare Function CombineRgn Lib "gdi32" (ByVal hDestRgn As Long, ByVal hSrcRgn1 As Long, ByVal hSrcRgn2 As Long, ByVal nCombineMode As Long) As Long
-Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long) As Long
+Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 Private Declare Function SetWindowRgn Lib "user32" (ByVal hwnd As Long, ByVal hRgn As Long, ByVal bRedraw As Long) As Long
 Private Declare Function CreatePolygonRgn Lib "gdi32" (lpPoint As POINTAPI, ByVal nCount As Long, ByVal nPolyFillMode As Long) As Long
 Private Declare Function CreateEllipticRgn Lib "gdi32" (ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Long
@@ -454,8 +454,8 @@ Public Render_Main_Rect As RECT
       Declare Function SetWindowPos Lib "user32" _
             (ByVal hwnd As Long, _
             ByVal hWndInsertAfter As Long, _
-            ByVal X As Long, _
-            ByVal Y As Long, _
+            ByVal x As Long, _
+            ByVal y As Long, _
             ByVal cx As Long, _
             ByVal cy As Long, _
             ByVal wFlags As Long) As Long
@@ -624,7 +624,8 @@ If intro = 1 Then
 engine.Engine_Meteo_Particle_Set (207)
 End If
 
-engine.Engine_Select_Particle_Set (203)
+Call engine.Engine_Select_Particle_Set(203)
+ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
 Sound.Music_Load 1, Sound.VolumenActualMusicMax
 Sound.Music_Play
@@ -635,6 +636,7 @@ CurMp3 = 1
 
 
 QueRender = 1
+frmConnect.relampago.Enabled = True
 'Sound.Sound_Play 650, False, 0, 0
 
     'frmConnect.Timer1.Enabled = True
@@ -688,9 +690,9 @@ Public Sub CreateSurfacefromPoints(ParamArray XY())
     ReDim XY2(nSize + 2)
     nIndex = 0
     For nTemp = 0 To nSize
-        XY2(nTemp).X = XY(nIndex)
+        XY2(nTemp).x = XY(nIndex)
         nIndex = nIndex + 1
-        XY2(nTemp).Y = XY(nIndex)
+        XY2(nTemp).y = XY(nIndex)
         nIndex = nIndex + 1
     Next nTemp
     lRegionTemp = CreatePolygonRgn(XY2(0), (UBound(XY2) + 1), 2)
@@ -1513,7 +1515,7 @@ General_Char_Particle_Create = engine.Char_Particle_Group_Create(char_index, Str
 End Function
 
 
-Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal X As Integer, ByVal Y As Integer, Optional ByVal particle_life As Long = 0) As Long
+Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As Integer, ByVal y As Integer, Optional ByVal particle_life As Long = 0) As Long
 If ParticulaInd = 0 Then Exit Function
 Dim rgb_list(0 To 3) As Long
 rgb_list(0) = RGB(StreamData(ParticulaInd).colortint(0).r, StreamData(ParticulaInd).colortint(0).g, StreamData(ParticulaInd).colortint(0).b)
@@ -1521,7 +1523,7 @@ rgb_list(1) = RGB(StreamData(ParticulaInd).colortint(1).r, StreamData(ParticulaI
 rgb_list(2) = RGB(StreamData(ParticulaInd).colortint(2).r, StreamData(ParticulaInd).colortint(2).g, StreamData(ParticulaInd).colortint(2).b)
 rgb_list(3) = RGB(StreamData(ParticulaInd).colortint(3).r, StreamData(ParticulaInd).colortint(3).g, StreamData(ParticulaInd).colortint(3).b)
 
-General_Particle_Create = engine.Particle_Group_Create(X, Y, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
+General_Particle_Create = engine.Particle_Group_Create(x, y, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
     StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).angle, _
     StreamData(ParticulaInd).vecx1, StreamData(ParticulaInd).vecx2, StreamData(ParticulaInd).vecy1, StreamData(ParticulaInd).vecy2, _
     StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
@@ -2225,22 +2227,22 @@ Public Sub CrearFantasma(ByVal charindex As Integer)
 
 If charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex = 0 Then Exit Sub
 
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Body.framecounter = 1
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Head.framecounter = 1
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Arma.framecounter = 1
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Casco.framecounter = 1
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Escudo.framecounter = 1
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Body.GrhIndex = charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Head.GrhIndex = charlist(charindex).Head.Head(charlist(charindex).Heading).GrhIndex
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Arma.GrhIndex = charlist(charindex).Arma.WeaponWalk(charlist(charindex).Heading).GrhIndex
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Casco.GrhIndex = charlist(charindex).Casco.Head(charlist(charindex).Heading).GrhIndex
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Escudo.GrhIndex = charlist(charindex).Escudo.ShieldWalk(charlist(charindex).Heading).GrhIndex
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Body_Aura = charlist(charindex).Body_Aura
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.AlphaB = 255
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Activo = True
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.OffX = charlist(charindex).Body.HeadOffset.X
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Offy = charlist(charindex).Body.HeadOffset.Y
-MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).CharFantasma.Heading = charlist(charindex).Heading
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Body.framecounter = 1
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Head.framecounter = 1
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Arma.framecounter = 1
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Casco.framecounter = 1
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Escudo.framecounter = 1
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Body.GrhIndex = charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Head.GrhIndex = charlist(charindex).Head.Head(charlist(charindex).Heading).GrhIndex
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Arma.GrhIndex = charlist(charindex).Arma.WeaponWalk(charlist(charindex).Heading).GrhIndex
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Casco.GrhIndex = charlist(charindex).Casco.Head(charlist(charindex).Heading).GrhIndex
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Escudo.GrhIndex = charlist(charindex).Escudo.ShieldWalk(charlist(charindex).Heading).GrhIndex
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Body_Aura = charlist(charindex).Body_Aura
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.AlphaB = 255
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Activo = True
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.OffX = charlist(charindex).Body.HeadOffset.x
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Offy = charlist(charindex).Body.HeadOffset.y
+MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Heading = charlist(charindex).Heading
 End Sub
 
 Public Sub CompletarAccionBarra(ByVal BarAccion As Byte)
@@ -2522,18 +2524,18 @@ Dim Encontre As Boolean
     
 
     
-    Dim X As Long
-    Dim Y As Long
+    Dim x As Long
+    Dim y As Long
     
-    X = (idmap - 1) Mod 14
-    Y = Int((idmap - 1) / 14)
+    x = (idmap - 1) Mod 14
+    y = Int((idmap - 1) / 14)
 
 
-frmMapaGrande.lblAllies.Top = Y * 32
-frmMapaGrande.lblAllies.Left = X * 32
+frmMapaGrande.lblAllies.Top = y * 32
+frmMapaGrande.lblAllies.Left = x * 32
 
-frmMapaGrande.Shape1.Top = Y * 32 + (UserPos.Y / 4.5)
-frmMapaGrande.Shape1.Left = X * 32 + (UserPos.X / 4.5)
+frmMapaGrande.Shape1.Top = y * 32 + (UserPos.y / 4.5)
+frmMapaGrande.Shape1.Left = x * 32 + (UserPos.x / 4.5)
 
 
 End Sub
