@@ -1218,7 +1218,7 @@ On Error Resume Next
     Frmcarga.Show
     InitCommonControls
     
-    Call LeerLineaComandos
+    'Call LeerLineaComandos
 
    ' If FindPreviousInstance Then
     '  Call MsgBox("Revolucion Online ya esta corriendo! No es posible correr otra instancia del juego. Haga click en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
