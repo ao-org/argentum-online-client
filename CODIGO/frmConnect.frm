@@ -142,52 +142,50 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub relampago_Timer()
-Dim trueno As Byte
-
-Dim truenocolor As Byte
-Dim duraciontrueno As Byte
-
-
-
-trueno = RandomNumber(1, 255)
-
-If trueno > 100 Then
-Dim color As Long, duracion As Long
-duraciontrueno = RandomNumber(80, 200)
-
-truenocolor = RandomNumber(1, 4)
-Dim TruenoWav As Integer
-TruenoWav = RandomNumber(400, 403)
-
-Sound.Sound_Play CStr(TruenoWav), False, 0, 0
-Select Case truenocolor
-
-    Case 1
-        color = &H8080
-    Case 2
-        color = &HF8F8F8
-    Case 3
-        color = &HEFEECB
-    Case 4
-        color = &HE2B3F7
+    Dim trueno As Byte
     
-End Select
+    Dim truenocolor As Byte
+    Dim duraciontrueno As Byte
+    
+    trueno = RandomNumber(1, 255)
+    
+    If trueno > 100 Then
+        Dim color As Long, duracion As Long
+        duraciontrueno = RandomNumber(80, 200)
+
+        truenocolor = RandomNumber(1, 4)
+        Dim TruenoWav As Integer
+        TruenoWav = RandomNumber(400, 403)
+
+        Sound.Sound_Play CStr(TruenoWav), False, 0, 0
+
+        Select Case truenocolor
+            Case 1
+                color = &H8080
+            Case 2
+                color = &HF8F8F8
+            Case 3
+                color = &HEFEECB
+            Case 4
+                color = &HE2B3F7
+        End Select
+
         Dim r, g, b As Byte
         b = (color And 16711680) / 65536
         g = (color And 65280) / 256
         r = color And 255
         color = D3DColorARGB(255, r, g, b)
-
-       engine.Map_Base_Light_Set (color)
-       RelampagoFin.Interval = duraciontrueno
-       RelampagoFin.Enabled = True
+        
+        engine.Map_Base_Light_Set (color)
+        RelampagoFin.Interval = duraciontrueno
+        RelampagoFin.Enabled = True
     End If
 
 End Sub
 
 Private Sub RelampagoFin_Timer()
-Call engine.Map_Base_Light_Set(Map_light_base)
-RelampagoFin.Enabled = False
+    Call engine.Map_Base_Light_Set(Map_light_base)
+    RelampagoFin.Enabled = False
 End Sub
 
 
@@ -317,7 +315,7 @@ Select Case QueRender
             End If
             
             
-            If x >= 710 And x < 710 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
+            If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
                 Call Sound.Sound_Play(SND_CLICK)
                 Dim k As Object
                 If StopCreandoCuenta = True Then Exit Sub
