@@ -133,7 +133,7 @@ Private Function ModifyColour(ByVal TimeNowRendered As Integer, ByVal RenderType
             ModifyColour = ARGB(204, 193, 115, TimeX2)
            ' ModifyColour = ARGB(0, 0, 0, TimeX2)
         Case RVType.eExp
-            ModifyColour = ARGB(42, 169, 222, TimeX2)
+            ModifyColour = ARGB(0, 169, 0, TimeX2)
         Case RVType.eTrabajo
             ModifyColour = ARGB(255, 255, 255, TimeX2)
 
