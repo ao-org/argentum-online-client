@@ -36,7 +36,7 @@ Public Const GRH_SLOT_INVENTARIO_ROJO As Long = 26096
 'Slots de Inventario Principal
 Public Const GRH_INVENTORYSLOT As Long = 47742
 Public Const GRH_INVENTORYSLOT_EXTRA As Long = 47743
-Public Const GRH_INVENTORYSLOT_LOCKED As Long = 4 '47744
+Public Const GRH_INVENTORYSLOT_LOCKED As Long = 1122
 Public Const GRH_INVENTORYSLOT_SELECTED As Long = 32873
 
 
