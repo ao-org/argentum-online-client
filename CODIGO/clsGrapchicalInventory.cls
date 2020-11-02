@@ -47,6 +47,9 @@ Dim InvOffsetY As Integer
 Dim InvSelectedItem As Long             'Currently selected item
 Dim TempItem As Long
 
+
+Private MAININVENTORY_MIDSPACE As Byte
+
 ' Slot item arrastrado (0 si no está arrastrando)
 Dim Dragging As Integer
 ' Posición del item arrastrado
@@ -86,7 +89,7 @@ Const EQUIPPED_CHARACTER = "+" ' Caracter de item equipado
 Const SELECTION_BOX_W = 34 ' Ancho de la cajita de selección (se centra automáticamente)
 Const SELECTION_BOX_H = 34 ' Alto de la cajita de selección (se centra automáticamente)
 
-Private Const MAININVENTORY_MIDSPACE As Integer = 0 '9 'Separador de inventario básico y extra slots en el inventario principal del usuario
+'Private Const MAININVENTORY_MIDSPACE As Integer = 0 '9 'Separador de inventario básico y extra slots en el inventario principal del usuario
 
 ' Valores calculados
 Const HALF_ITEM_SIZE = ITEM_SIZE \ 2
@@ -119,11 +122,13 @@ End Sub
 #If ConMenuesConextuales = 1 Then   'Argument list varies!!!
     Public Sub Initialize(ByRef DirectDraw As DirectDraw7, ByRef InvPic As PictureBox, ByRef PopUpMenu As Menu, _
                         Optional ByVal Width As Integer = 0, Optional ByVal Height As Integer = 0, Optional ByVal OffsetX As Integer = 0, Optional ByVal OffsetY As Integer = 0, _
-                        Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False)
+                        Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0)
+
+                        End Sub
 #Else   'Argument list varies!!!
     Public Sub Initialize(ByRef InvPic As PictureBox, ByVal MaxSlots As Integer, _
                         Optional ByVal Width As Integer = 0, Optional ByVal Height As Integer = 0, Optional ByVal OffsetX As Integer = 0, Optional ByVal OffsetY As Integer = 0, _
-                        Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False)
+                        Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0)
 #End If
     '***************************************************
     'Sets the reference to the picture box on which to render the inventory
@@ -148,6 +153,9 @@ End Sub
     
     HALF_BORDER_X = SpaceX \ 2
     HALF_BORDER_Y = SpaceY \ 2
+    
+    
+    MAININVENTORY_MIDSPACE = MIDSPACE
     
     ReDim UserInventory(1 To MaxSlots) As Inventory
 
