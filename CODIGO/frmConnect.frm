@@ -110,6 +110,7 @@ Private Char As Byte
 
 Private Sub Form_Activate()
     engine.Engine_Select_Particle_Set (203)
+    ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -127,6 +128,7 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
 
     QueRender = 1
+    relampago.Enabled = True
     
     LogeoAlgunaVez = False
     EngineRun = False
@@ -142,15 +144,7 @@ Private Sub Form_Load()
     Me.Height = 768 * Screen.TwipsPerPixelY
 
 End Sub
-Private Sub cuenta_Click(Index As Integer)
-If Index = 11 Then
-    If MsgBox("¿Esta seguro que desea borrar todas las cuentas guardadas?", vbYesNo + vbQuestion, "Borrar macros") = vbYes Then
-        Call ResetearCuentas
-    End If
-    Exit Sub
-End If
 
-End Sub
 Private Sub relampago_Timer()
 Dim trueno As Byte
 
@@ -326,9 +320,6 @@ Select Case QueRender
                 'Call SwitchMapIAO(UserMap)
                 frmConnect.txtNombre.Visible = False
                 QueRender = 2
-
-                engine.Particle_Group_Remove_All
-                ParticleLluviaDorada = General_Particle_Create(208, 1, 1)
                 
                 Dim i As Long
                 If CantidadDePersonajesEnCuenta > 0 Then

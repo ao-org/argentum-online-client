@@ -7743,7 +7743,7 @@ On Error GoTo ErrorHandler:
 
     engine.RenderPjsCuenta
     
-    Call Particle_Group_Render(ParticleLluviaDorada, 0, 0)
+    Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
 
     D3DDevice.EndScene
     D3DDevice.Present Render_Connect_Rect, ByVal 0, frmConnect.render.hwnd, ByVal 0

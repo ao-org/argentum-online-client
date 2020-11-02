@@ -1582,7 +1582,10 @@ Private Sub HandleDisconnect()
     
     frmConnect.Visible = True
     QueRender = 2
-    engine.Engine_Select_Particle_Set (203)
+
+    Call engine.Particle_Group_Remove_All
+    Call engine.Engine_Select_Particle_Set(203)
+    ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
     frmmain.hlst.Visible = False
     frmmain.Timerping.Enabled = False
@@ -2463,7 +2466,7 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-    frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+    frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
     frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
 End Sub
 
@@ -3505,7 +3508,12 @@ On Error GoTo errhandler
     Call Sound.Sound_Stop(SND_LLUVIAIN)
       '  Sound.NextMusic = 2
       '  Sound.Fading = 350
-            
+      
+    Call engine.Particle_Group_Remove_All
+    Call engine.Engine_Select_Particle_Set(203)
+    ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
+    
+    frmConnect.relampago.Enabled = False
             
     If FrmLogear.Visible Then
     Unload FrmLogear
@@ -4262,7 +4270,7 @@ On Error GoTo errhandler
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guilds() As String
     guilds = Split(buffer.ReadASCIIString(), SEPARATOR)
@@ -4282,7 +4290,7 @@ On Error GoTo errhandler
     
     For i = 0 To UBound(guilds())
         'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
         'End If
     Next i
     
@@ -4296,7 +4304,7 @@ On Error GoTo errhandler
     frmGuildAdm.Picture = LoadInterface("clanes.bmp")
     
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     frmGuildAdm.Show vbModeless, frmmain
@@ -4501,9 +4509,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.EXPBAR.Width = 204
+        frmmain.ExpBar.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel Maximo!"
     End If
@@ -6291,10 +6299,10 @@ On Error GoTo errhandler
         
         
         'Empty the list
-        Call frmGuildNews.guildslist.Clear
+        Call frmGuildNews.GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
           
     
@@ -6328,7 +6336,7 @@ On Error GoTo errhandler
      .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
      .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
            ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -6646,10 +6654,10 @@ On Error GoTo errhandler
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         
@@ -6691,7 +6699,7 @@ On Error GoTo errhandler
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
