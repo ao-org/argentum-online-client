@@ -16,9 +16,9 @@ Begin VB.Form frmCrearPersonaje
    StartUpPosition =   2  'CenterScreen
    Begin VB.ComboBox cabeza 
       Height          =   315
-      ItemData        =   "frmCrearPersonaje.frx":24E4B
+      ItemData        =   "frmCrearPersonaje.frx":000C
       Left            =   840
-      List            =   "frmCrearPersonaje.frx":24E4D
+      List            =   "frmCrearPersonaje.frx":000E
       TabIndex        =   24
       Text            =   "Combo1"
       Top             =   720
@@ -38,9 +38,9 @@ Begin VB.Form frmCrearPersonaje
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   300
-      ItemData        =   "frmCrearPersonaje.frx":24E4F
+      ItemData        =   "frmCrearPersonaje.frx":0010
       Left            =   13680
-      List            =   "frmCrearPersonaje.frx":24E51
+      List            =   "frmCrearPersonaje.frx":0012
       Style           =   2  'Dropdown List
       TabIndex        =   1
       Top             =   4440
@@ -60,9 +60,9 @@ Begin VB.Form frmCrearPersonaje
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   300
-      ItemData        =   "frmCrearPersonaje.frx":24E53
+      ItemData        =   "frmCrearPersonaje.frx":0014
       Left            =   13680
-      List            =   "frmCrearPersonaje.frx":24E5D
+      List            =   "frmCrearPersonaje.frx":001E
       Style           =   2  'Dropdown List
       TabIndex        =   2
       Top             =   5040
@@ -82,9 +82,9 @@ Begin VB.Form frmCrearPersonaje
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   300
-      ItemData        =   "frmCrearPersonaje.frx":24E70
+      ItemData        =   "frmCrearPersonaje.frx":0031
       Left            =   13680
-      List            =   "frmCrearPersonaje.frx":24E72
+      List            =   "frmCrearPersonaje.frx":0033
       Style           =   2  'Dropdown List
       TabIndex        =   0
       Top             =   3840
