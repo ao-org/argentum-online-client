@@ -1251,9 +1251,9 @@ On Error Resume Next
     
     Call CargarOpciones
         
-    'If MsgBox("¿Desea jugar en pantalla completa?", vbYesNo, "¡Atención!") = vbYes Then
+    If MsgBox("¿Desea jugar en pantalla completa?", vbYesNo, "¡Atención!") = vbYes Then
     
-    If PantallaCompleta Then
+    'If PantallaCompleta Then
        Call Resolution.SetResolution
        PantallaCompleta = 1
     End If
