@@ -3363,6 +3363,10 @@ If LogeoAlgunaVez Then
     EntradaX = 1
     
     Call SwitchMapIAO(UserMap)
+    
+    Call engine.Engine_Select_Particle_Set(203)
+    ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
+    
     frmConnect.txtNombre.Visible = False
     QueRender = 2
 
@@ -3386,9 +3390,9 @@ Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Respo
    ' Call ComprobarEstado
     
     If frmConnect.Visible Then
-        Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en www.ao20.com y asegurarse de estar conectado a internet.")
+        Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en www.argentum20.com y asegurarse de estar conectado a internet.")
     Else
-        Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en www.ao20.com, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
+        Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en www.argentum20.com, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
     
         Dim mForm As Form
         For Each mForm In Forms

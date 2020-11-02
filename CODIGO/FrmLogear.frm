@@ -86,6 +86,7 @@ Begin VB.Form FrmLogear
       Style           =   2  'Dropdown List
       TabIndex        =   2
       Top             =   2520
+      Visible         =   0   'False
       Width           =   1380
    End
    Begin VB.Label refuerzolbl 
@@ -252,6 +253,10 @@ Private Sub Form_Load()
     Call Aplicar_Transparencia(Me.hwnd, 220)
     If lstServers.ListCount > 0 Then lstServers.ListIndex = 0
     Rem Call SetWindowPos(FrmLogear.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE)
+    
+#If DEBUGGING = 1 Then
+    lstServers.Visible = True
+#End If
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -401,8 +406,22 @@ Private Sub lstServers_Click()
     PuertoDelServidor = ServersLst(lstServers.ListIndex + 1).puerto
 End Sub
 
+Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
+    If KeyCode = 27 Then
+        prgRun = False
+        End
+    
+    ElseIf KeyCode = vbKeyReturn Then
+       Call Image3_Click
+    End If
+End Sub
+
 Private Sub PasswordTxt_KeyDown(KeyCode As Integer, Shift As Integer)
-    If KeyCode = vbKeyReturn Then
+    If KeyCode = 27 Then
+        prgRun = False
+        End
+
+    ElseIf KeyCode = vbKeyReturn Then
        Call Image3_Click
     End If
 End Sub

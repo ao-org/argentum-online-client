@@ -7381,7 +7381,7 @@ TempGrh.GrhIndex = 1169
     cc(2) = cc(0)
     cc(3) = cc(0)
 
-    Draw_Grh TempGrh, 496, 735, 1, 1, cc(), False
+    Draw_Grh TempGrh, 0, 0, 0, 0, cc(), False
     
 'Marco
 
@@ -7692,7 +7692,7 @@ TempGrh.GrhIndex = 1169
     cc(2) = cc(0)
     cc(3) = cc(0)
 
-    Draw_Grh TempGrh, 496, 735, 1, 1, cc(), False
+    Draw_Grh TempGrh, 0, 0, 0, 0, cc(), False
 
     
     D3DDevice.EndScene
@@ -7900,10 +7900,10 @@ Public Sub RenderUICrearPJ()
     
      'Engine_Text_Render RazaRecomendada, 489 - Engine_Text_Width(RazaRecomendada, False, 1) / 2, 278, DefaultColor, 1, False
     
-     Engine_Text_Render RazaRecomendada, 525, 530, DefaultColor, 4, False
-     
-     
-     
+    If Len(RazaRecomendada) > 0 Then
+        Engine_Text_Render "Raza sugerida:", 570, 290, DefaultColor, 4, False
+        Engine_Text_Render RazaRecomendada, 570, 300, DefaultColor, 4, False
+    End If
 
     
    '     DefaultColor(0) = D3DColorXRGB(255, 50, 50)
@@ -8042,14 +8042,14 @@ Public Sub RenderUICrearPJ()
     Engine_Text_Render ">", 423, 428, DefaultColor, 3, True
     Engine_Text_Render "<", 293, 428, DefaultColor, 3, True
     
-    If CPEquipado Then
-        Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
-        Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
-        Engine_Text_Render_LetraChica "x", 348, 512, DefaultColor, 6, False
-    Else
-        Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
-        Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
-    End If
+    'If CPEquipado Then
+    '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
+    '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
+    '    Engine_Text_Render_LetraChica "x", 348, 512, DefaultColor, 6, False
+    'Else
+    '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
+    '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
+    'End If
     
     
     
@@ -8094,28 +8094,27 @@ Public Sub RenderUICrearPJ()
     End If
     
     
-        DefaultColor(0) = D3DColorXRGB(255, 255, 255)
-    DefaultColor(1) = DefaultColor(0)
-    DefaultColor(2) = DefaultColor(0)
-    DefaultColor(3) = DefaultColor(0)
+    'DefaultColor(0) = D3DColorXRGB(255, 255, 255)
+    'DefaultColor(1) = DefaultColor(0)
+    'DefaultColor(2) = DefaultColor(0)
+    'DefaultColor(3) = DefaultColor(0)
 
-    
-    
     'Boton Atras
-    Engine_Draw_Box 147, 628, 100, 40, D3DColorARGB(80, 0, 0, 0)
-    Engine_Text_Render "< Volver", 170, 640, DefaultColor, 1, True
+    'Engine_Draw_Box 147, 628, 100, 40, D3DColorARGB(80, 0, 0, 0)
+    'Engine_Text_Render "< Volver", 170, 640, DefaultColor, 1, True
     
     'Boton Crear
-    If StopCreandoCuenta Then
-        Engine_Draw_Box 730, 630, 100, 40, D3DColorARGB(120, 100, 180, 100)
-        Engine_Text_Render "Creando...", 750, 640, DefaultColor, 1, True
-    Else
-        Engine_Draw_Box 730, 630, 100, 40, D3DColorARGB(80, 0, 0, 0)
-        Engine_Text_Render "Crear PJ >", 750, 640, DefaultColor, 1, True
-    End If
+    'If StopCreandoCuenta Then
+    '    Engine_Draw_Box 730, 630, 100, 40, D3DColorARGB(120, 100, 180, 100)
+    '    Engine_Text_Render "Creando...", 750, 640, DefaultColor, 1, True
+    'Else
+    '    Engine_Draw_Box 730, 630, 100, 40, D3DColorARGB(80, 0, 0, 0)
+    '    Engine_Text_Render "Crear PJ >", 750, 640, DefaultColor, 1, True
+    'End If
 
        
-    Engine_Text_Render "DADO", 670, 390, DefaultColor()
+    'Engine_Text_Render "DADO", 670, 390, DefaultColor()
+    Draw_GrhIndex 1123, 665, 385
 
 End Sub
 

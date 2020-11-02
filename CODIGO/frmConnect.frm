@@ -109,7 +109,7 @@ Option Explicit
 Private Char As Byte
 
 Private Sub Form_Activate()
-    engine.Engine_Select_Particle_Set (203)
+    Call engine.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 End Sub
 
@@ -117,10 +117,6 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = 27 Then
         prgRun = False
         End
-    End If
-
-    If KeyCode = 116 Then
-    FrmLogear.lstServers.Visible = True
     End If
 End Sub
 
@@ -239,11 +235,6 @@ Select Case QueRender
                     frmCrearPersonaje.Cabeza.ListIndex = 0
                 End If
             End If
-            
-            
-            If x > 348 And x < 408 And y > 511 And y < 523 Then 'Boton Equipar
-                CPEquipado = Not CPEquipado
-            End If
                         
             If x > 290 And x < 326 And y > 453 And y < 486 Then 'Boton Equipar
                 If CPHeading + 1 >= 5 Then
@@ -310,7 +301,7 @@ Select Case QueRender
                 End If
             End If
         
-            If x > 148 And x < 246 And y > 630 And y < 670 Then 'Boton > Volver
+            If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
                 Call Sound.Sound_Play(SND_CLICK)
                 'UserMap = 323
                 AlphaNiebla = 25
@@ -321,15 +312,12 @@ Select Case QueRender
                 frmConnect.txtNombre.Visible = False
                 QueRender = 2
                 
-                Dim i As Long
-                If CantidadDePersonajesEnCuenta > 0 Then
-                    PJSeleccionado = 1
-                    engine.Engine_spell_Particle_Set (203)
-                End If
+                Call engine.Engine_Select_Particle_Set(203)
+                ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
             End If
             
             
-            If x > 731 And x < 829 And y > 630 And y < 670 Then 'Boton > Crear
+            If x >= 710 And x < 710 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
                 Call Sound.Sound_Play(SND_CLICK)
                 Dim k As Object
                 If StopCreandoCuenta = True Then Exit Sub
@@ -362,7 +350,7 @@ Select Case QueRender
                 End If
             End If
             
-            If x > 670 And x < 710 And y > 390 And y < 410 Then ' DADO (ajustar y poner GRH)
+            If x >= 665 And x < 665 + 18 And y >= 385 And y < 385 + 18 Then
                 Call Sound.Sound_Play(SND_DICE) ' Este sonido hay que ponerlo en el evento "click" o hacer q suene menos xq rompe oidos sino
                 
                 If frmmain.Socket1.Connected Then
@@ -488,6 +476,7 @@ Case 2
                     CantidadDePersonajesEnCuenta = 0
                     CuentaDonador = 0
                 
+                    Dim i As Integer
                     For i = 1 To 8
                         Pjs(i).Body = 0
                         Pjs(i).Head = 0
