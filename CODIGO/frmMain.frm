@@ -501,7 +501,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2985,7 +2984,7 @@ Private Sub Form_Load()
 On Error Resume Next
 Call FormParser.Parse_Form(frmmain)
 MenuNivel = 1
-Me.Caption = "AO20" 'hay que poner 20 aniversario
+Me.Caption = "Argentum20" 'hay que poner 20 aniversario
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)

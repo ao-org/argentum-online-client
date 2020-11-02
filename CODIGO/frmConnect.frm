@@ -3,6 +3,7 @@ Begin VB.Form frmConnect
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
+   Caption         =   "Argentum20"
    ClientHeight    =   11520
    ClientLeft      =   15
    ClientTop       =   105
@@ -133,7 +134,7 @@ Private Sub Form_Load()
     Timer2.Enabled = True
     Timer1.Enabled = True
     ' Seteamos el caption hay que poner 20 aniversario
-    Me.Caption = "Ao20"
+    Me.Caption = "Argentum20"
     
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(Me)
@@ -218,14 +219,14 @@ Private Sub render_DblClick()
         End Select
 End Sub
 
-Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
 
 
 Select Case QueRender
 
         Case 3
-            If X > 331 And X < 347 And Y > 412 And Y < 424 Then 'Boton izquierda cabezas
+            If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
                 If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
                 If frmCrearPersonaje.Cabeza.ListIndex > 0 Then
                     frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex - 1
@@ -235,7 +236,7 @@ Select Case QueRender
                 End If
             End If
     
-            If X > 401 And X < 415 And Y > 412 And Y < 424 Then 'Boton Derecha cabezas
+            If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
             If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
                 If (frmCrearPersonaje.Cabeza.ListIndex + 1) <> frmCrearPersonaje.Cabeza.ListCount Then
                     frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex + 1
@@ -246,11 +247,11 @@ Select Case QueRender
             End If
             
             
-            If X > 348 And X < 408 And Y > 511 And Y < 523 Then 'Boton Equipar
+            If x > 348 And x < 408 And y > 511 And y < 523 Then 'Boton Equipar
                 CPEquipado = Not CPEquipado
             End If
                         
-            If X > 290 And X < 326 And Y > 453 And Y < 486 Then 'Boton Equipar
+            If x > 290 And x < 326 And y > 453 And y < 486 Then 'Boton Equipar
                 If CPHeading + 1 >= 5 Then
                     CPHeading = 1
                 Else
@@ -258,7 +259,7 @@ Select Case QueRender
                 End If
             End If
 
-            If X > 421 And X < 452 And Y > 453 And Y < 486 Then 'Boton Equipar
+            If x > 421 And x < 452 And y > 453 And y < 486 Then 'Boton Equipar
                 If CPHeading - 1 <= 0 Then
                     CPHeading = 4
                 Else
@@ -266,7 +267,7 @@ Select Case QueRender
                 End If
             End If
                 
-            If X > 548 And X < 560 And Y > 258 And Y < 271 Then 'Boton Derecha cabezas
+            If x > 548 And x < 560 And y > 258 And y < 271 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.lstProfesion.ListIndex < frmCrearPersonaje.lstProfesion.ListCount - 1 Then
                     frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex + 1
                 Else
@@ -275,7 +276,7 @@ Select Case QueRender
             End If
             
             
-            If X > 435 And X < 446 And Y > 260 And Y < 271 Then 'Boton Derecha cabezas
+            If x > 435 And x < 446 And y > 260 And y < 271 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.lstProfesion.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListCount - 1
                 Else
@@ -283,7 +284,7 @@ Select Case QueRender
                 End If
             End If
                 
-            If X > 548 And X < 560 And Y > 304 And Y < 323 Then 'Boton Derecha cabezas
+            If x > 548 And x < 560 And y > 304 And y < 323 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.lstRaza.ListIndex < frmCrearPersonaje.lstRaza.ListCount - 1 Then
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListIndex + 1
                 Else
@@ -291,7 +292,7 @@ Select Case QueRender
                 End If
             End If
             
-            If X > 435 And X < 446 And Y > 304 And Y < 323 Then 'Boton Derecha cabezas
+            If x > 435 And x < 446 And y > 304 And y < 323 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.lstRaza.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListCount - 1
                 Else
@@ -299,7 +300,7 @@ Select Case QueRender
                 End If
             End If
             
-            If X > 548 And X < 560 And Y > 351 And Y < 367 Then 'Boton Derecha cabezas
+            If x > 548 And x < 560 And y > 351 And y < 367 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.lstGenero.ListIndex < frmCrearPersonaje.lstGenero.ListCount - 1 Then
                     frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListIndex + 1
                 Else
@@ -307,7 +308,7 @@ Select Case QueRender
                 End If
             End If
             
-            If X > 435 And X < 446 And Y > 351 And Y < 367 Then 'Boton Derecha cabezas
+            If x > 435 And x < 446 And y > 351 And y < 367 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.lstGenero.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListCount - 1
                 Else
@@ -315,16 +316,20 @@ Select Case QueRender
                 End If
             End If
         
-            If X > 148 And X < 246 And Y > 630 And Y < 670 Then 'Boton > Volver
+            If x > 148 And x < 246 And y > 630 And y < 670 Then 'Boton > Volver
                 Call Sound.Sound_Play(SND_CLICK)
-                UserMap = 323
+                'UserMap = 323
                 AlphaNiebla = 25
                 EntradaY = 1
                 EntradaX = 1
                 
-                Call SwitchMapIAO(UserMap)
+                'Call SwitchMapIAO(UserMap)
                 frmConnect.txtNombre.Visible = False
                 QueRender = 2
+
+                engine.Particle_Group_Remove_All
+                ParticleLluviaDorada = General_Particle_Create(208, 1, 1)
+                
                 Dim i As Long
                 If CantidadDePersonajesEnCuenta > 0 Then
                     PJSeleccionado = 1
@@ -333,7 +338,7 @@ Select Case QueRender
             End If
             
             
-            If X > 731 And X < 829 And Y > 630 And Y < 670 Then 'Boton > Crear
+            If x > 731 And x < 829 And y > 630 And y < 670 Then 'Boton > Crear
                 Call Sound.Sound_Play(SND_CLICK)
                 Dim k As Object
                 If StopCreandoCuenta = True Then Exit Sub
@@ -366,7 +371,7 @@ Select Case QueRender
                 End If
             End If
             
-            If X > 670 And X < 710 And Y > 390 And Y < 410 Then ' DADO (ajustar y poner GRH)
+            If x > 670 And x < 710 And y > 390 And y < 410 Then ' DADO (ajustar y poner GRH)
                 Call Sound.Sound_Play(SND_DICE) ' Este sonido hay que ponerlo en el evento "click" o hacer q suene menos xq rompe oidos sino
                 
                 If frmmain.Socket1.Connected Then
@@ -382,23 +387,23 @@ Select Case QueRender
             Exit Sub
 Case 2
             OpcionSeleccionada = 0
-            If (X > 256 And X < 414) And (Y > 710 And Y < 747) Then 'Boton crear pj
+            If (x > 256 And x < 414) And (y > 710 And y < 747) Then 'Boton crear pj
                OpcionSeleccionada = 1
             End If
             
-            If (X > 14 And X < 112) And (Y > 675 And Y < 708) Then ' Boton Borrar pj
+            If (x > 14 And x < 112) And (y > 675 And y < 708) Then ' Boton Borrar pj
                OpcionSeleccionada = 2
             End If
             
-            If (X > 19 And X < 48) And (Y > 21 And Y < 45) Then ' Boton deslogear
+            If (x > 19 And x < 48) And (y > 21 And y < 45) Then ' Boton deslogear
                OpcionSeleccionada = 3
             End If
             
-            If (X > 604 And X < 759) And (Y > 711 And Y < 745) Then ' Boton logear
+            If (x > 604 And x < 759) And (y > 711 And y < 745) Then ' Boton logear
                OpcionSeleccionada = 4
             End If
             
-            If (X > 971 And X < 1001) And (Y > 21 And Y < 45) Then ' Boton Cerrar
+            If (x > 971 And x < 1001) And (y > 21 And y < 45) Then ' Boton Cerrar
                OpcionSeleccionada = 5
             End If
             
@@ -409,11 +414,11 @@ Case 2
                 'Ladder: Cambie valores de posicion porque se ajusto interface (Los valores de los comentarios son los reales)
                 
                 ' Division entera
-                DivX = Int((X - 207) / 131) ' 217 = primer pj x, 131 = offset x entre cada pj
-                DivY = Int((Y - 246) / 158) ' 233 = primer pj y, 158 = offset y entre cada pj
+                DivX = Int((x - 207) / 131) ' 217 = primer pj x, 131 = offset x entre cada pj
+                DivY = Int((y - 246) / 158) ' 233 = primer pj y, 158 = offset y entre cada pj
                 ' Resto
-                ModX = (X - 207) Mod 131 ' 217 = primer pj x, 131 = offset x entre cada pj
-                ModY = (Y - 246) Mod 158 ' 233 = primer pj y, 158 = offset y entre cada pj
+                ModX = (x - 207) Mod 131 ' 217 = primer pj x, 131 = offset x entre cada pj
+                ModY = (y - 246) Mod 158 ' 233 = primer pj y, 158 = offset y entre cada pj
                 
                 ' La division no puede ser negativa (cliqueo muy a la izquierda)
                 ' ni ser mayor o igual a 5 (max. pjs por linea)
@@ -529,7 +534,7 @@ Case 1
 
 #If DEBUGGING = 1 Then
     ' Crear cuenta a manopla
-    If X >= 40 And X < 195 And Y >= 330 And Y < 365 Then
+    If x >= 40 And x < 195 And y >= 330 And y < 365 Then
         FrmLogear.Visible = False
     
         If frmmain.Socket1.Connected Then
@@ -544,7 +549,7 @@ Case 1
     End If
 #End If
 
-If (X > 479 And X < 501) And (Y > 341 And Y < 470) Then
+If (x > 479 And x < 501) And (y > 341 And y < 470) Then
  
 ClickEnAsistente = ClickEnAsistente + 1
 
