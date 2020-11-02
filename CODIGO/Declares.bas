@@ -197,6 +197,8 @@ Public UltimaTextura As Long
 
 Public QueRender As Byte
 
+Public ParticleLluviaDorada As Long
+
 'Compresion
 Public Windows_Temp_Dir As String
 

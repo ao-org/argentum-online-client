@@ -390,7 +390,7 @@ End Function
 
 
 
-Public Sub Text_Render(ByVal font As D3DXFont, ByVal Text As String, ByVal Top As Long, ByVal Left As Long, _
+Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long, ByVal Left As Long, _
                                 ByVal Width As Long, ByVal Height As Long, ByVal color As Long, ByVal format As Long, Optional ByVal shadow As Boolean = False)
 '*****************************************************
 '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
@@ -413,13 +413,12 @@ Public Sub Text_Render(ByVal font As D3DXFont, ByVal Text As String, ByVal Top A
     
     D3DX.DrawText font, color, Text, TextRect, format
 End Sub
-Public Sub Text_Render_ext(ByVal Text As String, ByVal Top As Long, ByVal Left As Long, _
-                                ByVal Width As Long, ByVal Height As Long, ByVal color As Long, Optional ByVal shadow As Boolean = False, Optional ByVal center As Boolean = False)
+Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long, _
+                                ByVal Width As Long, ByVal Height As Long, ByVal color As Long, Optional ByVal shadow As Boolean = False, Optional ByVal center As Boolean = False, Optional ByVal font As Long = 0)
     If center = True Then
-    
-        Call Text_Render(font_list(1), Text, Top, Left, Width, Height + 2, color, DT_VCENTER Or DT_CENTER, shadow)
+        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, color, DT_VCENTER & DT_CENTER, shadow)
     Else
-        Call Text_Render(font_list(1), Text, Top, Left, Width, Height, color, DT_TOP Or DT_LEFT, shadow)
+        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, color, DT_TOP Or DT_LEFT, shadow)
     End If
 End Sub
 
@@ -589,6 +588,7 @@ On Error GoTo errhandler:
     
     Font_Create "Tahoma", 8, True, 0
     Font_Create "Verdana", 8, False, 0
+    Font_Create "Verdana", 11, True, False
     
 bRunning = True
 Exit Sub
@@ -748,6 +748,7 @@ On Error GoTo errhandler:
     
     Font_Create "Tahoma", 8, True, 0
     Font_Create "Verdana", 8, False, 0
+    Font_Create "Verdana", 11, True, False
     
     ' Colores comunes
     COLOR_WHITE(0) = D3DColorXRGB(255, 255, 255)
@@ -7730,160 +7731,19 @@ End Sub
 Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
 On Error GoTo ErrorHandler:
 
-
-D3DDevice.BeginScene
+    D3DDevice.BeginScene
 
     D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, 1#, 1#, 0
 
- Dim y                   As Integer     'Keeps track of where on map we are
-    Dim x                   As Integer     'Keeps track of where on map we are
-    Dim screenminY          As Integer  'Start Y pos on current screen
-    Dim screenmaxY          As Integer  'End Y pos on current screen
-    Dim screenminX          As Integer  'Start X pos on current screen
-    Dim screenmaxX          As Integer  'End X pos on current screen
-    Dim minY                As Integer  'Start Y pos on current map
-    Dim MaxY                As Integer  'End Y pos on current map
-    Dim minX                As Integer  'Start X pos on current map
-    Dim MaxX                As Integer  'End X pos on current map
-    Dim ScreenX             As Integer  'Keeps track of where to place tile on screen
-    Dim ScreenY             As Integer  'Keeps track of where to place tile on screen
-    Dim minXOffset          As Integer
-    Dim minYOffset          As Integer
-    Dim PixelOffsetXTemp    As Integer 'For centering grhs
-    Dim PixelOffsetYTemp    As Integer 'For centering grhs
-    Dim CurrentGrhIndex     As Integer
-    Dim OffX                As Integer
-    Dim Offy                As Integer
 
+    lFrameLimiter = GetTickCount
+    FramesPerSecCounter = FramesPerSecCounter + 1
+    timerElapsedTime = GetElapsedTime()
+    timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
 
-     'Figure out Ends and Starts of screen
-    screenminY = tiley - HalfWindowTileHeight
-    screenmaxY = tiley + HalfWindowTileHeight
-    screenminX = tilex - HalfWindowTileWidth
-    screenmaxX = tilex + HalfWindowTileWidth
+    engine.RenderPjsCuenta
     
-    minY = screenminY - TileBufferSize
-    MaxY = screenmaxY + TileBufferSize
-    minX = screenminX - TileBufferSize
-    MaxX = screenmaxX + TileBufferSize
-    
-    'Make sure mins and maxs are allways in map bounds
-    If minY < XMinMapSize Then
-        minYOffset = YMinMapSize - minY
-        minY = YMinMapSize
-    End If
-    
-    If MaxY > YMaxMapSize Then MaxY = YMaxMapSize
-    
-    If minX < XMinMapSize Then
-        minXOffset = XMinMapSize - minX
-        minX = XMinMapSize
-    End If
-    
-    If MaxX > XMaxMapSize Then MaxX = XMaxMapSize
-    
-    'If we can, we render around the view area to make it smoother
-    If screenminY > YMinMapSize Then
-        screenminY = screenminY - 1
-    Else
-        screenminY = 1
-        ScreenY = 1
-    End If
-    
-    If screenmaxY < YMaxMapSize Then screenmaxY = screenmaxY + 1
-    
-    If screenminX > XMinMapSize Then
-        screenminX = screenminX - 1
-    Else
-        screenminX = 1
-        ScreenX = 1
-    End If
-    
-    If screenmaxX < XMaxMapSize Then screenmaxX = screenmaxX + 1
-    
-    If screenminY < 1 Then screenminY = 1
-    If screenminX < 1 Then screenminX = 1
-    If screenmaxY > 100 Then screenmaxY = 100
-    If screenmaxX > 100 Then screenmaxX = 100
-   screenmaxY = screenmaxY + 8
-    screenmaxX = screenmaxY + 8
-    
-    
-            Dim cc(3) As Long
-Dim TempGrh As grh
-
-
-
-'nubes negras
-    TempGrh.framecounter = 1
-TempGrh.GrhIndex = 1170
-    cc(0) = D3DColorARGB(255, 255, 255, 255)
-    cc(1) = cc(0)
-    cc(2) = cc(0)
-    cc(3) = cc(0)
-    Draw_Grh TempGrh, 494, 735, 1, 1, cc(), False
-    
-    
-    
-    
-    ScreenY = minYOffset - TileBufferSize
-    For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
-        For x = minX To MaxX
-            With MapData(x, y)
-                '***********************************************
-          If .particle_group > 0 Then
-            Call Particle_Group_Render(.particle_group, ScreenX * 32 + PixelOffsetX + 15, ScreenY * 32 + PixelOffsetY + 15)
-          End If
-          
-            End With
-            ScreenX = ScreenX + 1
-        Next x
-        ScreenY = ScreenY + 1
-    Next y
-
-    
-    
-
-'nubes negras
-    
-
-    
- 
-'Draw blocked tiles and grid
- 
-
-        
-                  ' Engine_Weather_UpdateFog
-
-
-
-TempGrh.framecounter = 1
-TempGrh.GrhIndex = 32016
-
-    cc(0) = D3DColorARGB(255, 255, 255, 255)
-    cc(1) = cc(0)
-    cc(2) = cc(0)
-    cc(3) = cc(0)
-
-'    Draw_Grh TempGrh, 495, 70, 1, 1, cc(), False
-
-
-lFrameLimiter = GetTickCount
-FramesPerSecCounter = FramesPerSecCounter + 1
-timerElapsedTime = GetElapsedTime()
-timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
-
-
-
-engine.RenderPjsCuenta
-engine.RenderUI
-
-
-
-
-
-
+    Call Particle_Group_Render(ParticleLluviaDorada, 0, 0)
 
     D3DDevice.EndScene
     D3DDevice.Present Render_Connect_Rect, ByVal 0, frmConnect.render.hwnd, ByVal 0
@@ -7896,23 +7756,14 @@ ErrorHandler:
         pausa = False
     End If
 End Sub
-Public Sub RenderUI()
 
-
-End Sub
 Public Sub RenderUICrearPJ()
 
 
-
-
-
-
-
-
-Dim TempGrh As grh
-
-
-Dim DefaultColor(3)  As Long
+    Dim TempGrh As grh
+    
+    
+    Dim DefaultColor(3)  As Long
 
     
     TempGrh.framecounter = 1
@@ -8270,41 +8121,34 @@ End Sub
 
 Public Sub RenderPjsCuenta()
 
-' Renderiza el menu para seleccionar las clases
-    
-Dim i               As Long
-Dim x               As Integer
-Dim y              As Integer
-Dim notY           As Integer
-Dim DefaultColor(3)  As Long
-Dim color As Long
+    ' Renderiza el menu para seleccionar las clases
+        
+    Dim i               As Long
+    Dim x               As Integer
+    Dim y              As Integer
+    Dim notY           As Integer
+    Dim DefaultColor(3)  As Long
+    Dim color As Long
 
+    Dim Texto As String
+    Texto = CuentaEmail
 
+    'Render fondo
+    Draw_GrhIndex 1170, 0, 0
 
+    'Reenderizamos nombre de la cuenta
+    'Engine_Text_Render Texto, 500 - Engine_Text_Width(Texto, False, 4) / 2, 162, DefaultColor, 1, False
+    Text_Render_ext Texto, 163, 348, 324, 39, D3DColorXRGB(200, 200, 200), True, True, 3
 
-    DefaultColor(0) = D3DColorXRGB(200, 200, 200)
-    DefaultColor(1) = DefaultColor(0)
-    DefaultColor(2) = DefaultColor(0)
-    DefaultColor(3) = DefaultColor(0)
-    
-    
-Dim Texto As String
-Texto = CuentaEmail
-
-'Reenderizamos nombre de la cuenta
-Engine_Text_RenderGrande Texto, 500 - Engine_Text_Width(Texto, False, 4) / 2, 162, DefaultColor, 5, False
-
-
- Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-
+    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
 
     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
 
-            Dim sumax As Long
-            sumax = 84
+    Dim sumax As Long
+    sumax = 84
             
     For i = 1 To 10
             
@@ -8340,25 +8184,18 @@ Engine_Text_RenderGrande Texto, 500 - Engine_Text_Width(Texto, False, 4) / 2, 16
                 Call Particle_Group_Render(Select_part, x + 32, y + 5)
             End If
 
-
-                If (Pjs(i).Body <> 0) Then
+            If (Pjs(i).Body <> 0) Then
                   
             'Else
                 'Engine_Draw_Box X - 40, Y - 40, 145, 150, D3DColorARGB(20, 28, 18, 9)
                 Draw_Grh BodyData(Pjs(i).Body).Walk(3), x + 15, y + 10, 1, 1, DefaultColor()
             End If
-    
-
-
-        
-             
 
             If (Pjs(i).Head <> 0) Then
                 'If Not nohead Then
                Draw_Grh HeadData(Pjs(i).Head).Head(3), x + 15, y - notY + BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, DefaultColor()
               ' End If
             End If
-            
             
             If (Pjs(i).Casco <> 0) Then
                 'If Not nohead Then
@@ -8371,7 +8208,6 @@ Engine_Text_RenderGrande Texto, 500 - Engine_Text_Width(Texto, False, 4) / 2, 16
                Draw_Grh ShieldAnimData(Pjs(i).Escudo).ShieldWalk(3), x + 14, y - notY + 10, 1, 0, DefaultColor()
               ' End If
             End If
-            
                         
             If (Pjs(i).Arma <> 0) Then
                 'If Not nohead Then
@@ -8421,22 +8257,22 @@ Engine_Text_RenderGrande Texto, 500 - Engine_Text_Width(Texto, False, 4) / 2, 16
             Offy = 0
             
             
-                Engine_Text_Render Pjs(i).nombre, 505 - Engine_Text_Width(Pjs(i).nombre, True) / 2, 565 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True
+                Engine_Text_Render Pjs(i).nombre, 511 - Engine_Text_Width(Pjs(i).nombre, True) / 2, 565 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True
                 
                 If Pjs(i).ClanName <> "<>" Then
-                    Engine_Text_Render Pjs(i).ClanName, 505 - Engine_Text_Width(Pjs(i).ClanName, True) / 2, 565 + 15 - Engine_Text_Height(Pjs(i).ClanName, True), temp_array(), 1, True
+                    Engine_Text_Render Pjs(i).ClanName, 511 - Engine_Text_Width(Pjs(i).ClanName, True) / 2, 565 + 15 - Engine_Text_Height(Pjs(i).ClanName, True), temp_array(), 1, True
                      Offy = 15
                 Else
                 
                 Offy = 0
                 End If
 
-                Engine_Text_Render "Clase: " & ListaClases(Pjs(i).Clase), 505 - Engine_Text_Width("Clase:" & ListaClases(Pjs(i).Clase), True) / 2, Offy + 585 - Engine_Text_Height("Clase:" & ListaClases(Pjs(i).Clase), True), DefaultColor, 1, True
+                Engine_Text_Render "Clase: " & ListaClases(Pjs(i).Clase), 511 - Engine_Text_Width("Clase:" & ListaClases(Pjs(i).Clase), True) / 2, Offy + 585 - Engine_Text_Height("Clase:" & ListaClases(Pjs(i).Clase), True), DefaultColor, 1, True
                 
                 
                 
-                Engine_Text_Render "Nivel: " & Pjs(i).nivel, 505 - Engine_Text_Width("Nivel:" & Pjs(i).nivel, True) / 2, Offy + 600 - Engine_Text_Height("Nivel:" & Pjs(i).nivel, True), DefaultColor, 1, True
-                Engine_Text_Render CStr(Pjs(i).NameMapa), 505 - Engine_Text_Width(CStr(Pjs(i).NameMapa), True) / 2, Offy + 615 - Engine_Text_Height(CStr(Pjs(i).NameMapa), True), DefaultColor, 1, True
+                Engine_Text_Render "Nivel: " & Pjs(i).nivel, 511 - Engine_Text_Width("Nivel:" & Pjs(i).nivel, True) / 2, Offy + 600 - Engine_Text_Height("Nivel:" & Pjs(i).nivel, True), DefaultColor, 1, True
+                Engine_Text_Render CStr(Pjs(i).NameMapa), 5111 - Engine_Text_Width(CStr(Pjs(i).NameMapa), True) / 2, Offy + 615 - Engine_Text_Height(CStr(Pjs(i).NameMapa), True), DefaultColor, 1, True
            End If
            
             
