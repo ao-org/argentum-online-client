@@ -12078,10 +12078,10 @@ On Error GoTo errhandler
     For i = 1 To CantidadDePersonajesEnCuenta
         Select Case Pjs(i).Criminal
             Case 0 'Criminal
-                Pjs(i).LetraColor = RGB(127, 127, 127)
+                Pjs(i).LetraColor = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                 Pjs(i).priv = 0
             Case 1 'Ciudadano
-                Pjs(i).LetraColor = RGB(0, 128, 190)
+                Pjs(i).LetraColor = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                 Pjs(i).priv = 0
             Case 2 'Caos
                 Pjs(i).LetraColor = RGB(179, 0, 4)
