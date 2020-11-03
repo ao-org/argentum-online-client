@@ -5,7 +5,7 @@ Begin VB.Form frmCustomKeys
    ClientHeight    =   6150
    ClientLeft      =   45
    ClientTop       =   315
-   ClientWidth     =   6075
+   ClientWidth     =   8085
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -20,9 +20,31 @@ Begin VB.Form frmCustomKeys
    MinButton       =   0   'False
    ScaleHeight     =   410
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   405
+   ScaleWidth      =   539
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   21
+      Left            =   4125
+      Locked          =   -1  'True
+      TabIndex        =   58
+      Top             =   840
+      Width           =   1770
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   20
+      Left            =   4125
+      Locked          =   -1  'True
+      TabIndex        =   57
+      Top             =   240
+      Width           =   1770
+   End
    Begin VB.TextBox txConfig 
       Height          =   315
       Index           =   19
@@ -35,65 +57,65 @@ Begin VB.Form frmCustomKeys
    Begin VB.OptionButton Option2 
       Caption         =   "Moderna"
       Height          =   255
-      Left            =   4110
+      Left            =   6150
       TabIndex        =   53
-      Top             =   2640
+      Top             =   2880
       Width           =   1215
    End
    Begin VB.OptionButton Option1 
       Caption         =   "Clásica"
       Height          =   255
-      Left            =   4110
+      Left            =   6150
       TabIndex        =   52
-      Top             =   2280
+      Top             =   2520
       Width           =   1215
    End
    Begin VB.ComboBox AccionList3 
       Height          =   315
       ItemData        =   "frmCustomKeys.frx":0000
-      Left            =   4110
+      Left            =   6150
       List            =   "frmCustomKeys.frx":001C
       Style           =   2  'Dropdown List
       TabIndex        =   49
-      Top             =   1560
+      Top             =   1800
       Width           =   1815
    End
    Begin VB.ComboBox AccionList1 
       Height          =   315
       ItemData        =   "frmCustomKeys.frx":00B1
-      Left            =   4110
+      Left            =   6150
       List            =   "frmCustomKeys.frx":00CD
       Style           =   2  'Dropdown List
       TabIndex        =   46
-      Top             =   360
+      Top             =   600
       Width           =   1815
    End
    Begin VB.ComboBox AccionList2 
       Height          =   315
       ItemData        =   "frmCustomKeys.frx":0162
-      Left            =   4110
+      Left            =   6150
       List            =   "frmCustomKeys.frx":017E
       Style           =   2  'Dropdown List
       TabIndex        =   45
-      Top             =   960
+      Top             =   1200
       Width           =   1815
    End
    Begin VB.CommandButton cmdAccion 
       Caption         =   "Salir"
       Height          =   495
       Index           =   2
-      Left            =   4080
+      Left            =   6120
       TabIndex        =   44
-      Top             =   3840
+      Top             =   4080
       Width           =   1695
    End
    Begin VB.CommandButton cmdAccion 
       Caption         =   "Guardar"
       Height          =   495
       Index           =   0
-      Left            =   4080
+      Left            =   6120
       TabIndex        =   43
-      Top             =   3240
+      Top             =   3480
       Width           =   1695
    End
    Begin VB.TextBox txConfig 
@@ -402,6 +424,30 @@ Begin VB.Form frmCustomKeys
    Begin VB.Label lbNames 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
+      Caption         =   "Meditar"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   20
+      Left            =   4125
+      TabIndex        =   60
+      Top             =   0
+      Width           =   540
+   End
+   Begin VB.Label lbNames 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Salir del juego"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   19
+      Left            =   4125
+      TabIndex        =   59
+      Top             =   600
+      Width           =   1005
+   End
+   Begin VB.Label lbNames 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
       Caption         =   "(Clan) Marca de Clan"
       ForeColor       =   &H00000000&
       Height          =   195
@@ -439,9 +485,9 @@ Begin VB.Form frmCustomKeys
       ForeColor       =   &H00000000&
       Height          =   195
       Index           =   32
-      Left            =   4110
+      Left            =   6150
       TabIndex        =   51
-      Top             =   1920
+      Top             =   2160
       Width           =   1785
    End
    Begin VB.Label lbNames 
@@ -459,9 +505,9 @@ Begin VB.Form frmCustomKeys
       EndProperty
       Height          =   195
       Index           =   31
-      Left            =   4110
+      Left            =   6150
       TabIndex        =   50
-      Top             =   1320
+      Top             =   1560
       Width           =   1140
    End
    Begin VB.Label lbNames 
@@ -479,9 +525,9 @@ Begin VB.Form frmCustomKeys
       EndProperty
       Height          =   195
       Index           =   33
-      Left            =   4110
+      Left            =   6150
       TabIndex        =   48
-      Top             =   120
+      Top             =   360
       Width           =   1140
    End
    Begin VB.Label lbNames 
@@ -499,9 +545,9 @@ Begin VB.Form frmCustomKeys
       EndProperty
       Height          =   195
       Index           =   34
-      Left            =   4110
+      Left            =   6150
       TabIndex        =   47
-      Top             =   720
+      Top             =   960
       Width           =   1140
    End
    Begin VB.Label lbNames 

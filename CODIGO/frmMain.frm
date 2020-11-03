@@ -501,7 +501,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2109,7 +2108,17 @@ Private Sub MenuOpciones_Click()
 End Sub
 
 Private Sub manabar_Click()
-Call ParseUserCommand("/MEDITAR")
+    If UserMinMAN = UserMaxMAN Then Exit Sub
+            
+    If UserEstado = 1 Then
+
+        With FontTypes(FontTypeNames.FONTTYPE_INFO)
+            Call ShowConsoleMsg(JsonLanguage.item("MENSAJE_USER_MUERTO").item("TEXTO").item(1), .red, .green, .blue, .bold, .italic)
+        End With
+        Exit Sub
+    End If
+    
+    Call WriteMeditate
 End Sub
 
 Private Sub mapMundo_Click()

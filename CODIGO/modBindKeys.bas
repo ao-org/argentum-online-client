@@ -72,17 +72,36 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
 
     
     If KeyCode = BindKeys(1).KeyCode Then
+        If UserEstado = 1 Then
+            With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            End With
+            Exit Function
+        End If
         If UserDescansar Or UserMeditar Then Exit Function
-            If Not IntervaloPermiteComboMagiaGolpe(False) Then Exit Function
-            If Not IntervaloPermiteAtacar Then Exit Function
-            Call WriteAttack
+        If Not IntervaloPermiteComboMagiaGolpe(False) Then Exit Function
+        If Not IntervaloPermiteAtacar Then Exit Function
+        Call WriteAttack
+
     ElseIf KeyCode = BindKeys(2).KeyCode Then
+        If UserEstado = 1 Then
+            With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            End With
+            Exit Function
+        End If
         If Not Comerciando Then
             Call AgarrarItem
         Else
             Call AddtoRichTextBox(frmmain.RecTxt, "No podes agarrar objetos mientras comercias", 255, 0, 32, False, False, False)
         End If
     ElseIf KeyCode = BindKeys(3).KeyCode Then
+        If UserEstado = 1 Then
+            With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            End With
+            Exit Function
+        End If
         If Not Comerciando Then
             Call TirarItem
         Else
@@ -97,6 +116,12 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     ElseIf KeyCode = BindKeys(8).KeyCode Then
         Call WriteParyToggle
     ElseIf KeyCode = BindKeys(9).KeyCode Then
+        If UserEstado = 1 Then
+            With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            End With
+            Exit Function
+        End If
         Call WriteWork(eSkill.Robar)
         
     ElseIf KeyCode = BindKeys(18).KeyCode Then
@@ -106,6 +131,12 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         If IntervaloPermiteLLamadaClan Then Call WriteMarcaDeClan
     
     ElseIf KeyCode = BindKeys(5).KeyCode Then
+        If UserEstado = 1 Then
+            With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            End With
+            Exit Function
+        End If
         If IntervaloPermiteUsar Then Call EquiparItem
     
     ElseIf KeyCode = BindKeys(4).KeyCode Then
@@ -113,13 +144,18 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Call UsarItem
     
     ElseIf KeyCode = BindKeys(10).KeyCode Then
-                If MainTimer.Check(TimersIndex.SendRPU) Then
-                        Call WriteRequestPositionUpdate
-                        Beep
-                End If
+        If MainTimer.Check(TimersIndex.SendRPU) Then
+                Call WriteRequestPositionUpdate
+                Beep
         End If
     
-    If KeyCode = BindKeys(11).KeyCode Then
+    ElseIf KeyCode = BindKeys(11).KeyCode Then
+        If UserEstado = 1 Then
+            With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            End With
+            Exit Function
+        End If
         Call WriteWork(eSkill.Ocultarse)
         
     ElseIf KeyCode = BindKeys(13).KeyCode Then
@@ -150,6 +186,22 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Dim Arch As String
         Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
         Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
+        
+    ElseIf KeyCode = BindKeys(21).KeyCode Then
+        If UserMinMAN = UserMaxMAN Then Exit Function
+            
+        If UserEstado = 1 Then
+            With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            End With
+            Exit Function
+        End If
+        
+        Call WriteMeditate
+        
+    ElseIf KeyCode = BindKeys(22).KeyCode Then
+        Call WriteQuit
+
     Else
         Accionar = False
         Exit Function
