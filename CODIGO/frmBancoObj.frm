@@ -266,7 +266,6 @@ End Sub
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     cantidad.BackColor = RGB(18, 19, 13)
-    lblCosto.Caption = UserGLD
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
