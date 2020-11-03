@@ -397,7 +397,7 @@ Public Const INT_CAST_SPELL As Integer = 1200
 Public Const INT_CAST_ATTACK As Integer = 1200
 Public Const INT_WORK As Integer = 700
 Public Const INT_USEITEMU As Integer = 450
-Public Const INT_USEITEMDCK As Integer = 220
+Public Const INT_USEITEMDCK As Integer = 125
 Public Const INT_SENTRPU As Integer = 2000
 
 Public MacroBltIndex As Integer

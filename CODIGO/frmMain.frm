@@ -501,6 +501,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3131,9 +3132,7 @@ Private Sub picInv_DblClick()
     ' Hacemos acción del doble clic correspondiente
     Dim ObjType As Byte
     ObjType = ObjData(Inventario.OBJIndex(Inventario.SelectedItem)).ObjType
-    
-    If Not IntervaloPermiteUsar Then Exit Sub
-    
+
     Select Case ObjType
         Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.OtHerramientas, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
             Call EquiparItem
