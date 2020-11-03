@@ -16,14 +16,12 @@ INIT/messages.txt
 Argentum.exe
 RevolucionAO.exe
 
-
 # System Files.
 Thumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 *.lnk
 *.stackdump
-
 
 .DS_Store
 .Trashes
