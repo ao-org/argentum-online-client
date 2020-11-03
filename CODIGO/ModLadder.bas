@@ -608,7 +608,7 @@ Sub General_Set_Connect()
             intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -1912,7 +1912,7 @@ End If
 
 
 
-AddtoRichTextBox frmmain.RecTxt, "Has dejado de trabajar.", 2, 51, 223, 1, 1
+AddtoRichTextBox frmmain.RecTxt, "Has dejado de trabajar.", 223, 51, 2, 1, 0
 
 End Sub
 Public Sub CargarIndicesOBJBinary()
