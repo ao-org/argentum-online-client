@@ -608,7 +608,7 @@ Sub General_Set_Connect()
             intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -1920,7 +1920,7 @@ Dim Obj As Integer
 Dim Npc As Integer
 Dim Hechizo As Integer
 Dim i As Integer
-
+Dim SearchVar As String
 
 
 #If Compresion = 1 Then
@@ -1985,10 +1985,18 @@ Dim i As Integer
     ReDim Locale_SMG(0 To NumLocaleMsg) As String
     
     For i = 1 To NumLocaleMsg
+        Get #N, , Locale_SMG(i)
+    Next i
     
-    Get #N, , Locale_SMG(i)
 
-
+    'Modificadores de Raza
+    For i = 1 To NUMRAZAS
+        With ModRaza(i)
+            Get #N, , .Fuerza
+            Get #N, , .Agilidad
+            Get #N, , .Inteligencia
+            Get #N, , .Constitucion
+        End With
     Next i
     
 #If Compresion = 1 Then
