@@ -23,60 +23,60 @@ Sub DameOpciones()
 
 Dim i As Integer
 If frmCrearPersonaje.lstGenero.ListIndex < 0 Or frmCrearPersonaje.lstRaza.ListIndex < 0 Then
-frmCrearPersonaje.Cabeza.Enabled = False
+frmCrearPersonaje.cabeza.Enabled = False
 ElseIf frmCrearPersonaje.lstGenero.ListIndex <> -1 And frmCrearPersonaje.lstRaza.ListIndex <> -1 Then
-frmCrearPersonaje.Cabeza.Enabled = True
+frmCrearPersonaje.cabeza.Enabled = True
 End If
 
-frmCrearPersonaje.Cabeza.Clear
+frmCrearPersonaje.cabeza.Clear
 
 Select Case frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex)
     Case "Hombre"
 Select Case frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex)
     Case "Humano"
-        Call DibujarCPJ(1)
-        MiCabeza = 1
+        MiCabeza = RandomNumber(1, 41)
+        Call DibujarCPJ(MiCabeza)
         For i = 1 To 41
-            frmCrearPersonaje.Cabeza.AddItem i
+            frmCrearPersonaje.cabeza.AddItem i
         Next i
 
     Case "Elfo"
-        Call DibujarCPJ(101)
-        MiCabeza = 101
+        MiCabeza = RandomNumber(101, 132)
+        Call DibujarCPJ(MiCabeza)
         For i = 101 To 132
-        frmCrearPersonaje.Cabeza.AddItem i
+        frmCrearPersonaje.cabeza.AddItem i
         Next i
     
     Case "Elfo Drow"
-        Call DibujarCPJ(200)
-        MiCabeza = 200
+        MiCabeza = RandomNumber(200, 229)
+        Call DibujarCPJ(MiCabeza)
         For i = 200 To 229
-        frmCrearPersonaje.Cabeza.AddItem i
+        frmCrearPersonaje.cabeza.AddItem i
         Next i
     
     Case "Enano"
-        Call DibujarCPJ(300)
-        MiCabeza = 300
+        MiCabeza = RandomNumber(300, 329)
+        Call DibujarCPJ(MiCabeza)
         For i = 300 To 329
-        frmCrearPersonaje.Cabeza.AddItem i
+        frmCrearPersonaje.cabeza.AddItem i
         Next i
     
     Case "Gnomo"
-        Call DibujarCPJ(400)
-        MiCabeza = 400
+        MiCabeza = RandomNumber(400, 429)
+        Call DibujarCPJ(MiCabeza)
         For i = 400 To 429
-        frmCrearPersonaje.Cabeza.AddItem i
+        frmCrearPersonaje.cabeza.AddItem i
         Next i
     Case "Orco"
-        Call DibujarCPJ(500)
-        MiCabeza = 500
+        MiCabeza = RandomNumber(500, 529)
+        Call DibujarCPJ(MiCabeza)
         For i = 500 To 529
-        frmCrearPersonaje.Cabeza.AddItem i
+        frmCrearPersonaje.cabeza.AddItem i
         Next i
     
     Case Else
-        Call DibujarCPJ(1)
         MiCabeza = 1
+        Call DibujarCPJ(MiCabeza)
         UserHead = 1
     
     End Select
@@ -84,47 +84,48 @@ Select Case frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex)
     Case "Mujer"
         Select Case frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex)
             Case "Humano"
-                Call DibujarCPJ(50)
-                MiCabeza = 50
+                MiCabeza = RandomNumber(50, 80)
+                Call DibujarCPJ(MiCabeza)
                 For i = 50 To 80
-                frmCrearPersonaje.Cabeza.AddItem i
+                frmCrearPersonaje.cabeza.AddItem i
                 Next i
             Case "Elfo"
-                Call DibujarCPJ(150)
-                MiCabeza = 150
+                MiCabeza = RandomNumber(150, 179)
+                Call DibujarCPJ(MiCabeza)
                 For i = 150 To 179
-                frmCrearPersonaje.Cabeza.AddItem i
+                frmCrearPersonaje.cabeza.AddItem i
                 Next i
             Case "Elfo Drow"
-                Call DibujarCPJ(250)
-                MiCabeza = 250
+                MiCabeza = RandomNumber(250, 279)
+                Call DibujarCPJ(MiCabeza)
                 For i = 250 To 279
-                frmCrearPersonaje.Cabeza.AddItem i
+                frmCrearPersonaje.cabeza.AddItem i
                 Next i
                 
             Case "Enano"
-                Call DibujarCPJ(350)
-                MiCabeza = 350
+                MiCabeza = RandomNumber(350, 379)
+                Call DibujarCPJ(MiCabeza)
                 For i = 350 To 379
-                frmCrearPersonaje.Cabeza.AddItem i
+                frmCrearPersonaje.cabeza.AddItem i
                                 Next i
             Case "Gnomo"
-                Call DibujarCPJ(450)
-                MiCabeza = 450
+                MiCabeza = RandomNumber(450, 479)
+                Call DibujarCPJ(MiCabeza)
                 For i = 450 To 479
-                frmCrearPersonaje.Cabeza.AddItem i
+                frmCrearPersonaje.cabeza.AddItem i
 
                 Next i
             Case "Orco"
-                Call DibujarCPJ(550)
-                MiCabeza = 550
+                MiCabeza = RandomNumber(550, 579)
+                Call DibujarCPJ(MiCabeza)
                 For i = 550 To 579
-                frmCrearPersonaje.Cabeza.AddItem i
+                frmCrearPersonaje.cabeza.AddItem i
                 Next i
+                
             Case Else
                 MiCabeza = 50
                 Call DibujarCPJ(50)
-                frmCrearPersonaje.Cabeza.AddItem "50"
+                frmCrearPersonaje.cabeza.AddItem "50"
                 
             End Select
     End Select

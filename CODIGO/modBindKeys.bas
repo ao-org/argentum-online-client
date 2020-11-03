@@ -109,8 +109,8 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         If IntervaloPermiteUsar Then Call EquiparItem
     
     ElseIf KeyCode = BindKeys(4).KeyCode Then
-        
-         If IntervaloPermiteUsar Then Call UsarItem
+        If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
+        Call UsarItem
     
     ElseIf KeyCode = BindKeys(10).KeyCode Then
                 If MainTimer.Check(TimersIndex.SendRPU) Then
