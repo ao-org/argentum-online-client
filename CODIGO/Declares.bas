@@ -474,9 +474,6 @@ Type tSasteria
     Index As Integer
 End Type
 
-
-
-
 Public ArmasHerrero(0 To 100) As tHerreria
 Public DefensasHerrero(0 To 100) As tHerreria
 Public ArmadurasHerrero(0 To 100) As tHerreria
@@ -846,8 +843,14 @@ Public Const NUMRAZAS As Byte = 5
 
 Public Const NUMCIUDADES As Byte = 6
 
+Type tModRaza
+    Fuerza As Integer
+    Agilidad As Integer
+    Inteligencia As Integer
+    Constitucion As Integer
+End Type
 
-
+Public ModRaza(1 To NUMRAZAS) As tModRaza
 
 Public ListaCiudades(1 To NUMCIUDADES) As String
 

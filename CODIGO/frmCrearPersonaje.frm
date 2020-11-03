@@ -687,40 +687,19 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
 End Sub
 
 Private Sub lstRaza_Click()
-Call DameOpciones
-AnimHead = 3
-Select Case (lstRaza.List(lstRaza.ListIndex))
-    Case Is = "Humano"
-        frmCrearPersonaje.modfuerza.Caption = "+ 1"
-        frmCrearPersonaje.modConstitucion.Caption = "+ 2"
-       frmCrearPersonaje.modAgilidad.Caption = "+ 1"
-       frmCrearPersonaje.modInteligencia.Caption = "+ 1"
-    Case Is = "Elfo"
-        modfuerza.Caption = ""
-        modConstitucion.Caption = ""
-        modAgilidad.Caption = "+ 2"
-        modInteligencia.Caption = "+ 3"
-    Case Is = "Elfo Drow"
-        modfuerza.Caption = "+ 2"
-        modConstitucion.Caption = "+ 1"
-        modAgilidad.Caption = ""
-        modInteligencia.Caption = "+ 2"
-    Case Is = "Enano"
-        modfuerza.Caption = "+ 3"
-        modConstitucion.Caption = "+ 4"
-        modAgilidad.Caption = "- 1"
-        modInteligencia.Caption = "- 6"
-    Case Is = "Gnomo"
-        modfuerza.Caption = "- 5"
-        modAgilidad.Caption = "+ 3"
-        modInteligencia.Caption = "+ 4"
-        modConstitucion.Caption = "- 1"
-    Case Is = "Orco"
-        modfuerza.Caption = "+ 5"
-        modAgilidad.Caption = "- 1"
-        modInteligencia.Caption = "- 6"
-        modConstitucion.Caption = "+ 3"
-End Select
+    If lstRaza.ListIndex < 0 Then Exit Sub
+    
+    Dim i As Integer
+    i = lstRaza.ListIndex + 1
+
+    Call DameOpciones
+
+    AnimHead = 3
+
+    modfuerza.Caption = IIf(Sgn(ModRaza(i).Fuerza) < 0, "-", "+") & " " & Abs(ModRaza(i).Fuerza)
+    modAgilidad.Caption = IIf(Sgn(ModRaza(i).Agilidad) < 0, "-", "+") & " " & Abs(ModRaza(i).Agilidad)
+    modInteligencia.Caption = IIf(Sgn(ModRaza(i).Inteligencia) < 0, "-", "+") & " " & Abs(ModRaza(i).Inteligencia)
+    modConstitucion.Caption = IIf(Sgn(ModRaza(i).Constitucion) < 0, "-", "+") & " " & Abs(ModRaza(i).Constitucion)
 End Sub
 
 
