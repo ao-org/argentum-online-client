@@ -2113,7 +2113,7 @@ Private Sub manabar_Click()
     If UserEstado = 1 Then
 
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg(JsonLanguage.item("MENSAJE_USER_MUERTO").item("TEXTO").item(1), .red, .green, .blue, .bold, .italic)
+            Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
         End With
         Exit Sub
     End If
