@@ -1542,7 +1542,7 @@ Private Sub HandleMacroTrabajoToggle()
     If activar = False Then
         Call ResetearUserMacro
     Else
-    AddtoRichTextBox frmmain.RecTxt, "Has comenzado a trabajar...", 2, 51, 223, 1, 1
+    AddtoRichTextBox frmmain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0
     frmmain.MacroLadder.Enabled = True
     UserMacro.Activado = True
     UserMacro.cantidad = 999
@@ -2466,7 +2466,7 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-    frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+    frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
 End Sub
 
@@ -4270,7 +4270,7 @@ On Error GoTo errhandler
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guilds() As String
     guilds = Split(buffer.ReadASCIIString(), SEPARATOR)
@@ -4290,7 +4290,7 @@ On Error GoTo errhandler
     
     For i = 0 To UBound(guilds())
         'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
         'End If
     Next i
     
@@ -4304,7 +4304,7 @@ On Error GoTo errhandler
     frmGuildAdm.Picture = LoadInterface("clanes.bmp")
     
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     frmGuildAdm.Show vbModeless, frmmain
@@ -4509,9 +4509,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel Maximo!"
     End If
@@ -6299,10 +6299,10 @@ On Error GoTo errhandler
         
         
         'Empty the list
-        Call frmGuildNews.GuildsList.Clear
+        Call frmGuildNews.guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
           
     
@@ -6336,7 +6336,7 @@ On Error GoTo errhandler
      .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
      .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
            ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -6654,10 +6654,10 @@ On Error GoTo errhandler
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         
@@ -6699,7 +6699,7 @@ On Error GoTo errhandler
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
