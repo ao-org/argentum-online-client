@@ -27,7 +27,7 @@ End Type
 
 
 Private Type tWorldPos
-    map As Integer
+    Map As Integer
     x As Integer
     y As Integer
 End Type
@@ -628,7 +628,7 @@ Sub SetConnected()
     frmmain.Image2(1).Tag = "0"
      OpcionMenu = 0
      frmmain.Image2(1).Picture = Nothing
-     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
+     frmmain.Panel.Picture = LoadInterface("centroinventario.bmp")
 '            Image2(0).Visible = False
     ' Image2(1).Visible = True
 
@@ -852,7 +852,7 @@ End Sub
 
 
 'TODO : Si bien nunca estuvo allí, el mapa es algo independiente o a lo sumo dependiente del engine, no va acá!!!
-Sub SwitchMapIAO(ByVal map As Integer)
+Sub SwitchMapIAO(ByVal Map As Integer)
 
 
 '**************************************************************
@@ -888,15 +888,15 @@ demora = timeGetTime
     
     
 #If Compresion = 1 Then
-    If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
+    If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & Map & ".csm", Windows_Temp_Dir, False) Then
         Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
         MsgBox Err.Description
         End
     End If
 
-    MapRoute = Windows_Temp_Dir & "mapa" & map & ".csm"
+    MapRoute = Windows_Temp_Dir & "mapa" & Map & ".csm"
 #Else
-    MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
+    MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & Map & ".csm"
 #End If
 
     engine.Light_Remove_All
@@ -1118,7 +1118,7 @@ Map_light_baseBackup = Map_light_base
 
     
     
-    CurMap = map
+    CurMap = Map
     
     
     
@@ -1146,15 +1146,15 @@ Map_light_baseBackup = Map_light_base
     End If
     
     If AmbientalActivated = 1 Then
-        Call AmbientarAudio(map)
+        Call AmbientarAudio(Map)
     End If
     
     
 
-    Call NameMapa(map)
+    Call NameMapa(Map)
 
 #If Compresion = 1 Then
-    Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
+    Delete_File Windows_Temp_Dir & "mapa" & Map & ".csm"
 #End If
         
 End Sub
@@ -1230,10 +1230,10 @@ On Error Resume Next
        ' End
    ' End If
 
-    If FileExist(App.Path & "\..\Launcher.ex_", vbNormal) Then
+    If FileExist(App.Path & "\..\LauncherAO20.ex_", vbNormal) Then
         Call Sleep(2)
-        Delete_File App.Path & "\..\Launcher.exe"
-        Name App.Path & "\..\Launcher.ex_" As App.Path & "\..\Launcher.exe"
+        Delete_File App.Path & "\..\LauncherAO20.exe"
+        Name App.Path & "\..\LauncherAO20.ex_" As App.Path & "\..\LauncherAO20.exe"
     End If
 
     If FileExist(App.Path & "\..\Recursos\OUTPUT\raoinit.ini", vbArchive) Then
@@ -1251,9 +1251,9 @@ On Error Resume Next
     
     Call CargarOpciones
         
-    If MsgBox("¿Desea jugar en pantalla completa?", vbYesNo, "¡Atención!") = vbYes Then
+    'If MsgBox("¿Desea jugar en pantalla completa?", vbYesNo, "¡Atención!") = vbYes Then
     
-    'If PantallaCompleta Then
+    If PantallaCompleta Then
        Call Resolution.SetResolution
        PantallaCompleta = 1
     End If
@@ -1737,13 +1737,13 @@ Public Function General_Get_Elapsed_Time() As Single
     QueryPerformanceCounter end_time
 End Function
 
-Sub CargarDatosMapa(ByVal map As Integer)
+Sub CargarDatosMapa(ByVal Map As Integer)
 
 
 
 
-If NameMaps(map).desc <> "" Then
-    frmMapaGrande.Label1.Caption = NameMaps(map).desc
+If NameMaps(Map).desc <> "" Then
+    frmMapaGrande.Label1.Caption = NameMaps(Map).desc
 Else
     frmMapaGrande.Label1.Caption = "Sin información relevante."
 End If
@@ -1776,15 +1776,15 @@ Dim y As Long
 
     
 #If Compresion = 1 Then
-    If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
+    If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & Map & ".csm", Windows_Temp_Dir, False) Then
         Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
         MsgBox Err.Description
         End
     End If
 
-    MapRoute = Windows_Temp_Dir & "mapa" & map & ".csm"
+    MapRoute = Windows_Temp_Dir & "mapa" & Map & ".csm"
 #Else
-    MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
+    MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & Map & ".csm"
 #End If
     
     
@@ -1986,7 +1986,7 @@ End With
 
     
     #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
+        Delete_File Windows_Temp_Dir & "mapa" & Map & ".csm"
     #End If
     
 
