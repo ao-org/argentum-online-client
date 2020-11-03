@@ -327,7 +327,7 @@ Public Function CargarMiniMap()
         GoTo ErrorHandler
     End If
     
-    Open Windows_Temp_Dir & "minimap.ind" For Binary Access Read As #handle
+    Open Windows_Temp_Dir & "minimap.dat" For Binary Access Read As #handle
 #Else
     Open App.Path & "\..\Recursos\init\minimap.dat" For Binary Access Read As #handle
 #End If
