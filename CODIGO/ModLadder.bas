@@ -607,7 +607,7 @@ Sub General_Set_Connect()
             
             intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
-    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmmain.Panel.Picture = LoadInterface("centroinventario.bmp")
     frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
@@ -2178,6 +2178,18 @@ Public Sub CargarIndicesOBJ()
     For i = 1 To NumLocaleMsg
         DoEvents
         Locale_SMG(i) = Leer.GetValue("msg", "Msg" & i)
+    Next i
+    
+    'Modificadores de Raza
+    For i = 1 To NUMRAZAS
+        With ModRaza(i)
+            SearchVar = Replace(ListaRazas(i), " ", vbNullString)
+            
+            .Fuerza = Val(Leer.GetValue("MODRAZA", SearchVar + "Fuerza"))
+            .Agilidad = Val(Leer.GetValue("MODRAZA", SearchVar + "Agilidad"))
+            .Inteligencia = Val(Leer.GetValue("MODRAZA", SearchVar + "Inteligencia"))
+            .Constitucion = Val(Leer.GetValue("MODRAZA", SearchVar + "Constitucion"))
+        End With
     Next i
     
 #If Compresion = 1 Then
