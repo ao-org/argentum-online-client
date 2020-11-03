@@ -607,8 +607,8 @@ Sub General_Set_Connect()
             
             intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
-    frmmain.Panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -2179,6 +2179,8 @@ Public Sub CargarIndicesOBJ()
         DoEvents
         Locale_SMG(i) = Leer.GetValue("msg", "Msg" & i)
     Next i
+    
+    Dim SearchVar As String
     
     'Modificadores de Raza
     For i = 1 To NUMRAZAS
