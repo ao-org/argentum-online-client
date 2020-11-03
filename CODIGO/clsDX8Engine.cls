@@ -8078,11 +8078,11 @@ Public Sub RenderUICrearPJ()
             
             Draw_Grh HeadData(CPHead).Head(CPHeading), 685 + 15 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, DefaultColor()
             
-            If CPEquipado Then
-            Draw_Grh CascoAnimData(CPGorro).Head(CPHeading), 700 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, DefaultColor()
-            Draw_Grh WeaponAnimData(CPArma).WeaponWalk(CPHeading), 685 + 15 + OffX, 365 - Offy + enanooff, 1, 0, DefaultColor()
+            'If CPEquipado Then
+            'Draw_Grh CascoAnimData(CPGorro).Head(CPHeading), 700 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, DefaultColor()
+            'Draw_Grh WeaponAnimData(CPArma).WeaponWalk(CPHeading), 685 + 15 + OffX, 365 - Offy + enanooff, 1, 0, DefaultColor()
             'Call Renderizar_Aura(CPAura, 686 + 15 + offx, 360 - offy, 0, 0)
-            End If
+            'End If
             
             DefaultColor(0) = D3DColorXRGB(0, 128, 190)
             DefaultColor(1) = DefaultColor(0)

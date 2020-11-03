@@ -285,7 +285,7 @@ Private Sub Image1_Click(Index As Integer)
             
             LasActionBuy = False
             
-            Call WriteCommerceSell(InvComUsu.SelectedItem, max(Val(cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
+            Call WriteCommerceSell(InvComUsu.SelectedItem, min(Val(cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
     End Select
     
 End Sub

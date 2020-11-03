@@ -264,8 +264,9 @@ End If
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-cantidad.BackColor = RGB(18, 19, 13)
+    Call FormParser.Parse_Form(Me)
+    cantidad.BackColor = RGB(18, 19, 13)
+    lblCosto.Caption = UserGLD
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
@@ -281,11 +282,11 @@ Select Case Index
         'Call WriteBankExtractItem(InvBoveda.SelectedItem, cantidad.Text, 1)
         
         If InvBoveda.SelectedItem <= 0 Then Exit Sub
-        Call WriteBankExtractItem(InvBoveda.SelectedItem, max(Val(cantidad.Text), InvBoveda.Amount(InvBoveda.SelectedItem)), 0)
+        Call WriteBankExtractItem(InvBoveda.SelectedItem, min(Val(cantidad.Text), InvBoveda.Amount(InvBoveda.SelectedItem)), 0)
    Case 1
         LasActionBuy = False
         If InvBankUsu.SelectedItem <= 0 Then Exit Sub
-        Call WriteBankDeposit(InvBankUsu.SelectedItem, max(Val(cantidad.Text), InvBankUsu.Amount(InvBankUsu.SelectedItem)), 0)
+        Call WriteBankDeposit(InvBankUsu.SelectedItem, min(Val(cantidad.Text), InvBankUsu.Amount(InvBankUsu.SelectedItem)), 0)
 End Select
 End Sub
 
