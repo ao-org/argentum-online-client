@@ -1179,13 +1179,6 @@ Begin VB.Form frmMain
       Top             =   8456
       Width           =   1335
    End
-   Begin VB.Image COMIDAsp 
-      Height          =   135
-      Left            =   13800
-      Picture         =   "frmMain.frx":733EB
-      Top             =   8473
-      Width           =   1335
-   End
    Begin VB.Label hambar 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
@@ -1209,8 +1202,8 @@ Begin VB.Form frmMain
    Begin VB.Image AGUAsp 
       Height          =   135
       Left            =   13800
-      Picture         =   "frmMain.frx":73D99
-      Top             =   8775
+      Picture         =   "frmMain.frx":733EB
+      Top             =   8473
       Width           =   1335
    End
    Begin VB.Label manabar 
@@ -1237,7 +1230,7 @@ Begin VB.Form frmMain
    Begin VB.Image MANShp 
       Height          =   135
       Left            =   11910
-      Picture         =   "frmMain.frx":74747
+      Picture         =   "frmMain.frx":73D99
       Top             =   8780
       Width           =   1335
    End
@@ -1245,7 +1238,7 @@ Begin VB.Form frmMain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   11505
-      Picture         =   "frmMain.frx":750F5
+      Picture         =   "frmMain.frx":74747
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510
@@ -1253,7 +1246,7 @@ Begin VB.Form frmMain
    Begin VB.Image Image6 
       Height          =   510
       Left            =   11505
-      Picture         =   "frmMain.frx":75F07
+      Picture         =   "frmMain.frx":75559
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510
@@ -1262,7 +1255,7 @@ Begin VB.Form frmMain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12720
-      Picture         =   "frmMain.frx":76D19
+      Picture         =   "frmMain.frx":7636B
       ToolTipText     =   "Seguro de clan"
       Top             =   10920
       Width           =   510
@@ -1271,10 +1264,17 @@ Begin VB.Form frmMain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12720
-      Picture         =   "frmMain.frx":77B2B
+      Picture         =   "frmMain.frx":7717D
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510
+   End
+   Begin VB.Image COMIDAsp 
+      Height          =   135
+      Left            =   13800
+      Picture         =   "frmMain.frx":77F8F
+      Top             =   8775
+      Width           =   1335
    End
    Begin VB.Menu mnuObj 
       Caption         =   "Objeto"

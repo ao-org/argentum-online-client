@@ -277,7 +277,7 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Sub beneficios_MouseMove(Button As Integer, Shift As Integer, X As Single, y As Single)
+Private Sub beneficios_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 porciento.Visible = True
 expcount.Visible = False
 End Sub
@@ -285,7 +285,7 @@ End Sub
 Private Sub Command1_Click()
 On Error Resume Next
 Unload Me
-frmMain.SetFocus
+frmmain.SetFocus
 End Sub
 
 
@@ -293,12 +293,12 @@ Private Sub Command4_Click()
 Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
 End Sub
 
-Private Sub Frame5_DragDrop(source As Control, X As Single, y As Single)
+Private Sub Frame5_DragDrop(source As Control, x As Single, y As Single)
 porciento.Visible = True
 expcount.Visible = False
 End Sub
 
-Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, X As Single, y As Single)
+Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 porciento.Visible = False
 expcount.Visible = True
 End Sub

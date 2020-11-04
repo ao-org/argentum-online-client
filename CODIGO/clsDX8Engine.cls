@@ -593,7 +593,7 @@ On Error GoTo errhandler:
 bRunning = True
 Exit Sub
 errhandler:
-MsgBox ("Se ha producido un error desconocido al inicializar el engine. En juego se cerrara." & " Error Number Returned: " & Err.number)
+MsgBox ("Se ha producido un error desconocido al inicializar el engine. En juego se cerrara." & " Error: " & Err.number & " - " & Err.Description)
 Debug.Print "Error Number Returned: " & Err.number
 End
 

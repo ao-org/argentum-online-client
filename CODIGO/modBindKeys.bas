@@ -165,20 +165,20 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
      ElseIf KeyCode = BindKeys(12).KeyCode Then
      'If ShowMacros = 0 Then
       '  ShowMacros = 1
-       ' frmmain.picmacroOn.Visible = True
-        'frmmain.picmacroOff.Visible = False
+       ' frmMain.picmacroOn.Visible = True
+        'frmMain.picmacroOff.Visible = False
     'Else
-     '   frmmain.picmacroOn.Visible = False
-      '  frmmain.picmacroOff.Visible = True
+     '   frmMain.picmacroOn.Visible = False
+      '  frmMain.picmacroOff.Visible = True
        ' ShowMacros = 0
     'End If
     ElseIf KeyCode = BindKeys(19).KeyCode Then
         'FPSFLAG = Not FPSFLAG
         
        ' If FPSFLAG Then
-           ' frmmain.Timerping.Enabled = True
+           ' frmMain.Timerping.Enabled = True
        ' Else
-          '  frmmain.Timerping.Enabled = False
+          '  frmMain.Timerping.Enabled = False
         'End If
         
         

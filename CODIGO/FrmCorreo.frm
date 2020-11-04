@@ -392,6 +392,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
 Private ItemRecibido(1 To 10) As Obj
 Private Sub adjItem_Click()
 lstInv.Enabled = Not lstInv.Enabled
@@ -417,8 +419,8 @@ Dim i As Byte
     Call lstInv.Clear
     'Fill the inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
-        If Inventario.OBJIndex(i) <> 0 Then
-            lstInv.AddItem Inventario.ItemName(i) & " - " & Inventario.Amount(i)
+        If frmmain.Inventario.OBJIndex(i) <> 0 Then
+            lstInv.AddItem frmmain.Inventario.ItemName(i) & " - " & frmmain.Inventario.Amount(i)
         Else
             lstInv.AddItem "Vacio"
         End If
@@ -485,7 +487,7 @@ End If
 
 
 If adjItem Then
-    If Not IsNumeric(txCantidad.Text) Or txCantidad.Text < 1 Or txCantidad.Text > 9999 Or txCantidad.Text > Inventario.Amount(lstInv.ListIndex + 1) Then
+    If Not IsNumeric(txCantidad.Text) Or txCantidad.Text < 1 Or txCantidad.Text > 9999 Or txCantidad.Text > frmmain.Inventario.Amount(lstInv.ListIndex + 1) Then
         MsgBox ("¡Cantidad invalida!")
         Exit Sub
     End If
@@ -535,6 +537,7 @@ If ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0 Then Exit Sub
 ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0
 ListaAenviar.Clear
 
+Dim i As Long
 For i = 1 To 10
 
 If ItemLista(i).OBJIndex = 0 Then
@@ -553,7 +556,7 @@ Next i
 
 For i = 1 To 10
     If ItemLista(i).OBJIndex > 0 Then
-        ListaAenviar.AddItem Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
+        ListaAenviar.AddItem frmmain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
         ItemCount = i
     Else
         ListaAenviar.AddItem "Nada"
@@ -591,10 +594,10 @@ Dim Encontre As Boolean
 Dim Existia As Boolean
 Dim NoTieneCantidad As Boolean
 
-If Inventario.Amount(lstInv.ListIndex + 1) = 0 Then Exit Sub
+If frmmain.Inventario.Amount(lstInv.ListIndex + 1) = 0 Then Exit Sub
 
-If Inventario.Amount(lstInv.ListIndex + 1) < txCantidad.Text Then
-    txCantidad.Text = Inventario.Amount(lstInv.ListIndex + 1)
+If frmmain.Inventario.Amount(lstInv.ListIndex + 1) < txCantidad.Text Then
+    txCantidad.Text = frmmain.Inventario.Amount(lstInv.ListIndex + 1)
 End If
 
 
@@ -607,8 +610,8 @@ For i = 1 To 10
         ItemLista(i).OBJIndex = CByte(lstInv.ListIndex + 1)
         ItemLista(i).Amount = ItemLista(i).Amount + CInt(txCantidad.Text)
         
-        If ItemLista(i).Amount > Inventario.Amount(ItemLista(i).OBJIndex) Then
-            ItemLista(i).Amount = Inventario.Amount(ItemLista(i).OBJIndex)
+        If ItemLista(i).Amount > frmmain.Inventario.Amount(ItemLista(i).OBJIndex) Then
+            ItemLista(i).Amount = frmmain.Inventario.Amount(ItemLista(i).OBJIndex)
         End If
         
         Existia = True
@@ -634,7 +637,7 @@ End If
 
 For i = 1 To 10
     If ItemLista(i).OBJIndex > 0 Then
-        ListaAenviar.AddItem Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
+        ListaAenviar.AddItem frmmain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
         ItemCount = i
     Else
         ListaAenviar.AddItem "Nada"
@@ -647,11 +650,6 @@ ListaAenviar.Refresh
 
 If Not Encontre Then MsgBox ("Solo podes enviar hasta 10 items.")
 
-End Sub
-
-Private Sub Command4_Click()
-Frame2.Visible = True
-Frame1.Visible = False
 End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -816,7 +814,7 @@ If ListaAenviar.ListIndex + 1 > 10 Then Exit Sub
 If ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0 Then
 picInvT.BackColor = vbBlack
 Else
-Call Grh_Render_To_Hdc(picInvT, Inventario.GrhIndex(ItemLista(ListaAenviar.ListIndex + 1).OBJIndex), 0, 0)
+Call Grh_Render_To_Hdc(picInvT, frmmain.Inventario.GrhIndex(ItemLista(ListaAenviar.ListIndex + 1).OBJIndex), 0, 0)
 End If
 End Sub
 
@@ -883,11 +881,11 @@ End Sub
 
 Private Sub lstInv_Click()
 
-If Inventario.GrhIndex(lstInv.ListIndex + 1) = 0 Then
+If frmmain.Inventario.GrhIndex(lstInv.ListIndex + 1) = 0 Then
 picInvT.BackColor = vbBlack
 Else
 
-Call Grh_Render_To_Hdc(picInvT, Inventario.GrhIndex(lstInv.ListIndex + 1), 0, 0)
+Call Grh_Render_To_Hdc(picInvT, frmmain.Inventario.GrhIndex(lstInv.ListIndex + 1), 0, 0)
 End If
 End Sub
 
@@ -933,7 +931,7 @@ If CorreoMsj(lstMsg.ListIndex + 1).ItemCount > 0 Then
     
     
     
-    
+    Dim i As Long
     For i = 1 To CorreoMsj(lstMsg.ListIndex + 1).ItemCount
     
         rdata = Right$(CorreoMsj(lstMsg.ListIndex + 1).ItemArray, Len(CorreoMsj(lstMsg.ListIndex + 1).ItemArray))

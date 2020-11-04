@@ -27,7 +27,7 @@ End Type
 
 
 Private Type tWorldPos
-    map As Integer
+    Map As Integer
     x As Integer
     y As Integer
 End Type
@@ -852,7 +852,7 @@ End Sub
 
 
 'TODO : Si bien nunca estuvo allÌ, el mapa es algo independiente o a lo sumo dependiente del engine, no va ac·!!!
-Sub SwitchMapIAO(ByVal map As Integer)
+Sub SwitchMapIAO(ByVal Map As Integer)
 
 
 '**************************************************************
@@ -888,15 +888,15 @@ demora = timeGetTime
     
     
 #If Compresion = 1 Then
-    If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
+    If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & Map & ".csm", Windows_Temp_Dir, False) Then
         Err.Description = "°No se puede cargar el archivo de mapas! El juego se cerrara."
         MsgBox Err.Description
         End
     End If
 
-    MapRoute = Windows_Temp_Dir & "mapa" & map & ".csm"
+    MapRoute = Windows_Temp_Dir & "mapa" & Map & ".csm"
 #Else
-    MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
+    MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & Map & ".csm"
 #End If
 
     engine.Light_Remove_All
@@ -1111,14 +1111,14 @@ Map_light_baseBackup = Map_light_base
     LightA.LightRenderAll
     engine.Light_Render_All
     
-    'frmmain.MiniMap.Picture = LoadInterface("mapa" & map & ".bmp")
+    'frmMain.MiniMap.Picture = LoadInterface("mapa" & map & ".bmp")
     Call DibujarMiniMapa
     
     
 
     
     
-    CurMap = map
+    CurMap = Map
     
     
     
@@ -1146,15 +1146,15 @@ Map_light_baseBackup = Map_light_base
     End If
     
     If AmbientalActivated = 1 Then
-        Call AmbientarAudio(map)
+        Call AmbientarAudio(Map)
     End If
     
     
 
-    Call NameMapa(map)
+    Call NameMapa(Map)
 
 #If Compresion = 1 Then
-    Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
+    Delete_File Windows_Temp_Dir & "mapa" & Map & ".csm"
 #End If
         
 End Sub
@@ -1737,13 +1737,13 @@ Public Function General_Get_Elapsed_Time() As Single
     QueryPerformanceCounter end_time
 End Function
 
-Sub CargarDatosMapa(ByVal map As Integer)
+Sub CargarDatosMapa(ByVal Map As Integer)
 
 
 
 
-If NameMaps(map).desc <> "" Then
-    frmMapaGrande.Label1.Caption = NameMaps(map).desc
+If NameMaps(Map).desc <> "" Then
+    frmMapaGrande.Label1.Caption = NameMaps(Map).desc
 Else
     frmMapaGrande.Label1.Caption = "Sin informaciÛn relevante."
 End If
@@ -1776,15 +1776,15 @@ Dim y As Long
 
     
 #If Compresion = 1 Then
-    If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
+    If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & Map & ".csm", Windows_Temp_Dir, False) Then
         Err.Description = "°No se puede cargar el archivo de mapas! El juego se cerrara."
         MsgBox Err.Description
         End
     End If
 
-    MapRoute = Windows_Temp_Dir & "mapa" & map & ".csm"
+    MapRoute = Windows_Temp_Dir & "mapa" & Map & ".csm"
 #Else
-    MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
+    MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & Map & ".csm"
 #End If
     
     
@@ -1986,7 +1986,7 @@ End With
 
     
     #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
+        Delete_File Windows_Temp_Dir & "mapa" & Map & ".csm"
     #End If
     
 
@@ -2018,12 +2018,12 @@ Public Function LoadInterface(FileName As String) As IPicture
 
 End Function
 
-Public Function Tilde(ByRef data As String) As String
+Public Function Tilde(ByRef Data As String) As String
 
     Dim temp As String
 
     'Pato
-    temp = UCase$(data)
+    temp = UCase$(Data)
  
     If InStr(1, temp, "√Å") Then temp = Replace$(temp, "√Å", "A")
    

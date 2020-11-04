@@ -515,7 +515,7 @@ On Error GoTo Err:
     Dim i As Long
     Dim hdcc As Long
     
-    hdcc = GetDC(frmMain.hwnd)
+    hdcc = GetDC(frmmain.hwnd)
     
     frmScreenshots.picture1.AutoRedraw = True
     frmScreenshots.picture1.Width = 15400
@@ -523,7 +523,7 @@ On Error GoTo Err:
     
     Call BitBlt(frmScreenshots.picture1.hdc, 0, 0, 1024, 768, hdcc, 0, 0, SRCCOPY)
     
-    Call ReleaseDC(frmMain.hwnd, hdcc)
+    Call ReleaseDC(frmmain.hwnd, hdcc)
     
     hdcc = INVALID_HANDLE
     
@@ -538,13 +538,13 @@ On Error GoTo Err:
     
     SaveJPG c, file
     
-    AddtoRichTextBox frmMain.RecTxt, "Captura guardada en " & App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg.", 100, 200, 0, False, True, False
+    AddtoRichTextBox frmmain.RecTxt, "Captura guardada en " & App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg.", 100, 200, 0, False, True, False
 Exit Sub
 
 Err:
-    AddtoRichTextBox frmMain.RecTxt, Err.number & "-" & Err.Description, 200, 200, 200, False, False, False
+    AddtoRichTextBox frmmain.RecTxt, Err.number & "-" & Err.Description, 200, 200, 200, False, False, False
 
     If hdcc <> INVALID_HANDLE Then _
-        Call ReleaseDC(frmMain.hwnd, hdcc)
+        Call ReleaseDC(frmmain.hwnd, hdcc)
 End Sub
 
