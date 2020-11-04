@@ -2824,7 +2824,8 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
             .Body.Walk(.Heading).Started = 0
             .Body.Walk(.Heading).framecounter = 1
             
- 
+            .Arma.WeaponWalk(.Heading).Started = 0
+            .Arma.WeaponWalk(.Heading).framecounter = 1
             
             .Escudo.ShieldWalk(.Heading).Started = 0
             .Escudo.ShieldWalk(.Heading).framecounter = 1
