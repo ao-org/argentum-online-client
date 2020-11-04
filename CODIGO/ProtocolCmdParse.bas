@@ -269,7 +269,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/GM"
-                 FrmGmAyuda.Show vbModeless, frmMain
+                 FrmGmAyuda.Show vbModeless, frmmain
                  
             Case "/OFERTAINICIAL"
                 If notNullArguments Then
@@ -338,7 +338,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/CONTRASEÑA"
-                Call frmNewPassword.Show(vbModal, frmMain)
+                Call frmNewPassword.Show(vbModal, frmmain)
             
             Case "/APOSTAR"
                 If UserEstado = 1 Then 'Muerto
@@ -548,6 +548,18 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Else
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /ira NICKNAME.")
+                End If
+                
+            Case "/GO"
+                If notNullArguments Then
+                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
+                        Call WriteWarpChar("YO", ArgumentosAll(0), 50, 50)
+                    Else
+                        Call WriteGoToChar(ArgumentosRaw)
+                    End If
+                Else
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /go NICKNAME o /go MAPA.")
                 End If
         
             Case "/INVISIBLE"
@@ -854,7 +866,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 For i = 1 To NumNpcs
                     Call frmSpawnList.lstCriaturas.AddItem(NpcData(i).name)
                 Next i
-                frmSpawnList.Show , frmMain
+                frmSpawnList.Show , frmmain
                 End If
                 
             Case "/CO"
@@ -882,7 +894,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Call FrmObjetos.List1.AddItem(i & "-" & ObjData(i).name)
                     End If
                 Next i
-                FrmObjetos.Show , frmMain
+                FrmObjetos.Show , frmmain
             
                 End If
                 
@@ -1585,7 +1597,7 @@ Public Sub ShowConsoleMsg(ByVal Message As String, Optional ByVal red As Integer
 'Last Modification: 01/03/07
 '
 '***************************************************
-    Call AddtoRichTextBox(frmMain.RecTxt, Message, red, green, blue, bold, italic)
+    Call AddtoRichTextBox(frmmain.RecTxt, Message, red, green, blue, bold, italic)
 End Sub
 
 ''
