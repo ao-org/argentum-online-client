@@ -384,6 +384,8 @@ End Sub
 Private Sub interface_DblClick()
 
     If InvComNpc.ClickedInside Then
+        
+        If InvComNpc.SelectedItem <= 0 Then Exit Sub
     
         LasActionBuy = True
 
@@ -394,6 +396,8 @@ Private Sub interface_DblClick()
         End If
         
     ElseIf InvComUsu.ClickedInside Then
+    
+        If InvComUsu.SelectedItem <= 0 Then Exit Sub
     
         ' Hacemos acción del doble clic correspondiente
         Dim ObjType As Byte

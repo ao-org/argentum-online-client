@@ -4273,27 +4273,32 @@ On Error GoTo errhandler
     'Clear guild's list
     frmGuildAdm.GuildsList.Clear
     
-    Dim guilds() As String
-    guilds = Split(buffer.ReadASCIIString(), SEPARATOR)
+    Dim guildsStr As String
+    guildsStr = buffer.ReadASCIIString()
     
-    
-    ReDim ClanesList(0 To UBound(guilds())) As Tclan
-    ListaClanes = True
-    
-    
-    Dim i As Long
-    For i = 0 To UBound(guilds())
-        ClanesList(i).nombre = ReadField(1, guilds(i), Asc("-"))
-        ClanesList(i).Alineacion = Val(ReadField(2, guilds(i), Asc("-")))
-        ClanesList(i).indice = i
-    Next i
-    
-    
-    For i = 0 To UBound(guilds())
-        'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
-        'End If
-    Next i
+    If Len(guildsStr) > 0 Then
+        Dim guilds() As String
+        guilds = Split(guildsStr, SEPARATOR)
+        
+        
+        ReDim ClanesList(0 To UBound(guilds())) As Tclan
+        ListaClanes = True
+        
+        
+        Dim i As Long
+        For i = 0 To UBound(guilds())
+            ClanesList(i).nombre = ReadField(1, guilds(i), Asc("-"))
+            ClanesList(i).Alineacion = Val(ReadField(2, guilds(i), Asc("-")))
+            ClanesList(i).indice = i
+        Next i
+        
+        
+        For i = 0 To UBound(guilds())
+            'If ClanesList(i).Alineacion = 0 Then
+                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            'End If
+        Next i
+    End If
     
     'Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).Nombre)
     

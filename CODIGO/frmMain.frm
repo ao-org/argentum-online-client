@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
+Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form frmmain 
    Appearance      =   0  'Flat
@@ -80,6 +80,27 @@ Begin VB.Form frmmain
       TabIndex        =   34
       Top             =   2400
       Width           =   3705
+      Begin VB.ListBox hlst 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000000&
+         BeginProperty Font 
+            Name            =   "Verdana"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   3270
+         Left            =   250
+         TabIndex        =   35
+         TabStop         =   0   'False
+         Top             =   680
+         Visible         =   0   'False
+         Width           =   3195
+      End
       Begin VB.PictureBox picInv 
          Appearance      =   0  'Flat
          BackColor       =   &H00000000&
@@ -103,26 +124,12 @@ Begin VB.Form frmmain
          Top             =   740
          Width           =   3150
       End
-      Begin VB.ListBox hlst 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000000&
-         BeginProperty Font 
-            Name            =   "Verdana"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   3270
-         Left            =   250
-         TabIndex        =   35
-         TabStop         =   0   'False
-         Top             =   680
-         Visible         =   0   'False
-         Width           =   3195
+      Begin VB.Image imgSpellInfo 
+         Height          =   345
+         Left            =   2490
+         Tag             =   "1"
+         Top             =   4230
+         Width           =   375
       End
       Begin VB.Image imgInvLock 
          Height          =   210
@@ -219,14 +226,6 @@ Begin VB.Form frmmain
          Tag             =   "1"
          Top             =   0
          Width           =   3405
-      End
-      Begin VB.Image info 
-         Height          =   480
-         Left            =   2820
-         Tag             =   "0"
-         Top             =   3810
-         Visible         =   0   'False
-         Width           =   1200
       End
    End
    Begin VB.TextBox SendTxt 
@@ -517,6 +516,28 @@ Begin VB.Form frmmain
          Strikethrough   =   0   'False
       EndProperty
    End
+   Begin VB.Image Temp2 
+      Height          =   495
+      Left            =   13990
+      Tag             =   "0"
+      ToolTipText     =   "Deshabilitado por el momento"
+      Top             =   10122
+      Width           =   540
+   End
+   Begin VB.Image Temp1 
+      Height          =   495
+      Left            =   13376
+      Tag             =   "0"
+      ToolTipText     =   "Deshabilitado por el momento"
+      Top             =   10122
+      Width           =   540
+   End
+   Begin VB.Image imgBugReport 
+      Height          =   495
+      Left            =   14220
+      Top             =   10872
+      Width           =   1020
+   End
    Begin VB.Label ObjLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
@@ -590,6 +611,7 @@ Begin VB.Form frmmain
       Height          =   495
       Left            =   12165
       Tag             =   "0"
+      ToolTipText     =   "Grupo"
       Top             =   10122
       Width           =   540
    End
@@ -597,6 +619,7 @@ Begin VB.Form frmmain
       Height          =   495
       Left            =   12765
       Tag             =   "0"
+      ToolTipText     =   "Clanes"
       Top             =   10122
       Width           =   540
    End
@@ -604,6 +627,7 @@ Begin VB.Form frmmain
       Height          =   495
       Left            =   14610
       Tag             =   "0"
+      ToolTipText     =   "Quests"
       Top             =   10122
       Width           =   540
    End
@@ -847,6 +871,7 @@ Begin VB.Form frmmain
       Height          =   495
       Left            =   11550
       Tag             =   "0"
+      ToolTipText     =   "Mapa del mundo"
       Top             =   10122
       Width           =   540
    End
@@ -1237,7 +1262,7 @@ Begin VB.Form frmmain
       Height          =   510
       Left            =   12720
       Picture         =   "frmMain.frx":76D19
-      ToolTipText     =   "Seguro de ataque"
+      ToolTipText     =   "Seguro de clan"
       Top             =   10920
       Width           =   510
    End
@@ -1355,8 +1380,8 @@ Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, 
 End Sub
 
 Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
- If frmGuildLeader.Visible Then Unload frmGuildLeader
-                Call WriteRequestGuildLeaderInfo
+    If frmGuildLeader.Visible Then Unload frmGuildLeader
+    Call WriteRequestGuildLeaderInfo
 End Sub
 
 Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -1649,27 +1674,13 @@ End If
 Call WriteMacroPos
 End Sub
 
-Private Sub hlst_DblClick()
-    If hlst.ListIndex <> -1 Then
-        Call WriteSpellInfo(hlst.ListIndex + 1)
-    End If
-End Sub
-
-
-
-
 Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
        If cmdlanzar.Tag = "1" Then
             cmdlanzar.Picture = Nothing
             cmdlanzar.Tag = "0"
         End If
-        
-        If info.Tag = "1" Then
-            info.Picture = Nothing
-            info.Tag = "0"
-        End If
-        
+
         If cmdMoverHechi(1).Tag = "1" Then
             cmdMoverHechi(1).Picture = Nothing
             cmdMoverHechi(1).Tag = "0"
@@ -1758,10 +1769,6 @@ ElseIf HoraFantasia + 1 = "1440" Then
 End If
 
 End Sub
-
-
-
-
 
 Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 If Index = 0 Then
@@ -1872,6 +1879,10 @@ Call WriteSafeToggle
 End Sub
 
 
+Private Sub imgBugReport_Click()
+    FrmGmAyuda.Show vbModeless, frmmain
+End Sub
+
 Private Sub imgHechizos_Click()
 If hlst.Visible Then Exit Sub
 panel.Picture = LoadInterface("centrohechizo.bmp")
@@ -1880,7 +1891,7 @@ hlst.Visible = True
 
 cmdlanzar.Visible = True
 
-info.Visible = True
+imgSpellInfo.Visible = True
 
 cmdMoverHechi(0).Visible = True
 cmdMoverHechi(1).Visible = True
@@ -1910,7 +1921,7 @@ panel.Picture = LoadInterface("centroinventario.bmp")
 picInv.Visible = True
 hlst.Visible = False
 cmdlanzar.Visible = False
-info.Visible = False
+imgSpellInfo.Visible = False
 
 cmdMoverHechi(0).Visible = False
 cmdMoverHechi(1).Visible = False
@@ -2005,18 +2016,6 @@ Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, x As Singl
 Call WriteTraerRanking
 End Sub
 
-Private Sub info_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If info.Tag = "0" Then
-         info.Picture = LoadInterface("infoiluminado.bmp")
-         info.Tag = "1"
-    End If
-End Sub
-
-Private Sub info_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-If hlst.ListIndex <> -1 Then
-        Call WriteSpellInfo(hlst.ListIndex + 1)
-    End If
-End Sub
 Private Sub Label6_Click()
     Inventario.SelectGold
     If UserGLD > 0 Then
@@ -2249,12 +2248,7 @@ Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y 
          imgHechizos.Picture = Nothing
          imgHechizos.Tag = "0"
      End If
-    
-    If info.Tag = "1" Then
-        info.Picture = Nothing
-        info.Tag = "0"
-    End If
-    
+
     If cmdMoverHechi(1).Tag = "1" Then
         cmdMoverHechi(1).Picture = Nothing
         cmdMoverHechi(1).Tag = "0"
@@ -3613,3 +3607,8 @@ Private Sub moverForm()
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 End Sub
 
+Private Sub imgSpellInfo_Click()
+    If hlst.ListIndex <> -1 Then
+        Call WriteSpellInfo(hlst.ListIndex + 1)
+    End If
+End Sub
