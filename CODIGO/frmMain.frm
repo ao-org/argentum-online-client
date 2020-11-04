@@ -942,10 +942,10 @@ Begin VB.Form frmmain
    End
    Begin VB.Image Image3 
       Height          =   210
-      Left            =   240
+      Left            =   284
       Tag             =   "0"
       ToolTipText     =   "Modo de chat"
-      Top             =   1920
+      Top             =   1894
       Width           =   255
    End
    Begin VB.Image Image4 
