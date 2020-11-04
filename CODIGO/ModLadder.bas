@@ -1172,7 +1172,7 @@ TActual = GetTickCount() And &H7FFFFFFF
 
 If TActual - Intervalos.Conectar >= CONST_INTERVALO_Conectar Then
     
-   ' Call AddtoRichTextBox(frmmain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
+   ' Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
     Intervalos.Conectar = TActual
     IntervaloPermiteConectar = True
 Else

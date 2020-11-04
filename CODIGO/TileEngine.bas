@@ -59,7 +59,7 @@ End Type
 
 'Posicion en el Mundo
 Public Type WorldPos
-    map As Integer
+    Map As Integer
     x As Integer
     y As Integer
 End Type

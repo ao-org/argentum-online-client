@@ -20,7 +20,7 @@ Public Sub NameMapa(ByVal Map As Long)
     'Dim DarNombreMapa As String
 
     'DarNombreMapa = DarNameMapa(Map)
-    frmMain.NameMapa.Caption = MapDat.map_name
+    frmmain.NameMapa.Caption = MapDat.map_name
     
     engine.Letter_Set 0, MapDat.map_name
     
@@ -32,7 +32,7 @@ Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Op
     
     Dim bUrl As Boolean
     
-    With frmMain.RecTxt
+    With frmmain.RecTxt
         
         '.SelFontName = "Tahoma"
        ' .SelFontSize = 8
@@ -43,7 +43,7 @@ Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Op
            ' EnableUrlDetect
             
             If (Len(.Text)) > 20000 Then .Text = vbNullString
-            .SelStart = Len(frmMain.RecTxt.Text)
+            .SelStart = Len(frmmain.RecTxt.Text)
             .SelLength = 0
             
             
@@ -66,7 +66,7 @@ Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Op
                         
             'If bUrl Then EnableUrlDetect
             
-            .SelStart = Len(frmMain.RecTxt.Text)
+            .SelStart = Len(frmmain.RecTxt.Text)
             .SelLength = 0
 
             .SelBold = FontTypes(FontTypeIndex).bold

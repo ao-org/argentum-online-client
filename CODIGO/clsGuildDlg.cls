@@ -80,11 +80,11 @@ End Sub
 
 Public Sub Draw()
 Dim i As Byte
-Dim Y As Long
+Dim y As Long
 If Not p_Activo Then Exit Sub
     For i = 1 To p_CANTIDADDIALOGOS
         If Trim$(p_Dialogos(i).Texto) <> vbNullString Then
-            If left$(p_Dialogos(i).Texto, 1) = Chr(3) Then
+            If Left$(p_Dialogos(i).Texto, 1) = Chr(3) Then
                 Call engine.Text_Render_ext(mid(p_Dialogos(i).Texto, 2), i * 10, 5, 400, 12, &HFF00FF00)
             Else
                 Call engine.Text_Render_ext(p_Dialogos(i).Texto, i * 10, 5, 400, 12, &HFFFFFF00)
@@ -121,12 +121,12 @@ Public Sub PushBackText(ByVal s As String)
     str = s
     
     ' If it's too long to fit, split it
-    Do While frmMain.textwidth(str) > 500
+    Do While frmmain.textwidth(str) > 500
         tmp = InStrRev(str, " ")
         
         If tmp = 0 Then Exit Do
         
-        str = left$(str, tmp - 1)
+        str = Left$(str, tmp - 1)
     Loop
     
     'Show message and continue with the rest

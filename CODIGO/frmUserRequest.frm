@@ -95,7 +95,7 @@ End Sub
 Public Sub recievePeticion(ByVal p As String)
 
 Text1 = Replace$(p, "º", vbCrLf)
-Me.Show vbModeless, frmMain
+Me.Show vbModeless, frmmain
 
 End Sub
 
