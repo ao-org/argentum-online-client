@@ -543,23 +543,27 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/IRA"
-                If notNullArguments Then
-                    Call WriteGoToChar(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /ira NICKNAME.")
+                If EsGM Then
+                    If notNullArguments Then
+                        Call WriteGoToChar(ArgumentosRaw)
+                    Else
+                        'Avisar que falta el parametro
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /ira NICKNAME.")
+                    End If
                 End If
                 
             Case "/GO"
-                If notNullArguments Then
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
-                        Call WriteWarpChar("YO", ArgumentosAll(0), 50, 50)
+                If EsGM Then
+                    If notNullArguments Then
+                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
+                            Call WriteWarpChar("YO", ArgumentosAll(0), 50, 50)
+                        Else
+                            Call WriteGoToChar(ArgumentosRaw)
+                        End If
                     Else
-                        Call WriteGoToChar(ArgumentosRaw)
+                        'Avisar que falta el parametro
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /go NICKNAME o /go MAPA.")
                     End If
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /go NICKNAME o /go MAPA.")
                 End If
         
             Case "/INVISIBLE"
@@ -851,51 +855,38 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteNPCFollow
                 
             Case "/SUM"
+                If EsGM Then
                 'If notNullArguments Then
                     Call WriteSummonChar(ArgumentosRaw)
                 'Else
                     'Avisar que falta el parametro
                     'Call ShowConsoleMsg("Faltan parámetros. Utilice /sum NICKNAME.")
                ' End If
+                End If
                 
             Case "/CC"
                 'Call WriteSpawnListRequest
                 If EsGM Then
-                Dim i As Integer
-    
-                For i = 1 To NumNpcs
-                    Call frmSpawnList.lstCriaturas.AddItem(NpcData(i).name)
-                Next i
-                frmSpawnList.Show , frmmain
+                    Dim i As Integer
+        
+                    For i = 1 To NumNpcs
+                        Call frmSpawnList.lstCriaturas.AddItem(NpcData(i).name)
+                    Next i
+                    frmSpawnList.Show , frmmain
                 End If
                 
             Case "/CO"
                 'Call WriteSpawnListRequest
                 If EsGM Then
-                For i = 1 To NumOBJs
-                    If ObjData(i).name <> "" Then
-                    
-                    Dim subelemento As ListItem
-                Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).name)
-                
-                subelemento.SubItems(1) = i
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-
-                    'Call FrmObjetos.List1.AddItem(i & "-" & ObjData(i).name)
-                    End If
-                Next i
-                FrmObjetos.Show , frmmain
-            
+                    For i = 1 To NumOBJs
+                        If ObjData(i).name <> "" Then
+                            Dim subelemento As ListItem
+                            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).name)
+                            
+                            subelemento.SubItems(1) = i
+                        End If
+                    Next i
+                    FrmObjetos.Show , frmmain
                 End If
                 
             Case "/RESETINV"
@@ -1171,16 +1162,27 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/CI"
-                If notNullArguments And CantidadArgumentos >= 2 Then
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
-                        Call WriteCreateItem(ArgumentosAll(0), ArgumentosAll(1))
+                If EsGM Then
+                    If notNullArguments Then
+                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
+                            If CantidadArgumentos = 1 Then
+                                Call WriteCreateItem(ArgumentosAll(0), 1)
+    
+                            ElseIf CantidadArgumentos >= 2 Then
+                                If ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
+                                    Call WriteCreateItem(ArgumentosAll(0), ArgumentosAll(1))
+                                Else
+                                    Call ShowConsoleMsg("Valor incorrecto. Utilice /CI OBJETO [CANTIDAD=1].")
+                                End If
+                            End If
+                        Else
+                            'No es numerico
+                            Call ShowConsoleMsg("Valor incorrecto. Utilice /CI OBJETO [CANTIDAD=1].")
+                        End If
                     Else
-                        'No es numerico
-                        Call ShowConsoleMsg("Valor incorrecto. Utilice /CI OBJETO CANTIDAD.")
+                        'Avisar que falta el parametro
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /CI OBJETO [CANTIDAD=1].")
                     End If
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /CI OBJETO CANTIDAD.")
                 End If
                 
             Case "/DEST"

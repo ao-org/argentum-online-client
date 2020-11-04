@@ -796,7 +796,7 @@ If Not Not Not pausa And frmmain.Visible _
     Not frmAlqui.Visible And Not frmCarp.Visible And _
     Not frmHerrero.Visible And Not FrmGrupo.Visible And Not FrmShop.Visible And _
     Not FrmSastre.Visible And Not FrmCorreo.Visible And _
-    Not FrmGmAyuda.Visible And Not frmPanelGm.Visible And Not frmSpawnList.Visible Then
+    Not FrmGmAyuda.Visible And Not frmPanelGm.Visible And Not frmSpawnList.Visible And Not FrmObjetos.Visible Then
     
  
  
@@ -2016,4 +2016,25 @@ Public Function LoadInterface(FileName As String) As IPicture
     Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & FileName)
 #End If
 
+End Function
+
+Public Function Tilde(ByRef data As String) As String
+
+    Dim temp As String
+
+    'Pato
+    temp = UCase$(data)
+ 
+    If InStr(1, temp, "Á") Then temp = Replace$(temp, "Á", "A")
+   
+    If InStr(1, temp, "e") Then temp = Replace$(temp, "e", "E")
+   
+    If InStr(1, temp, "Í") Then temp = Replace$(temp, "Í", "I")
+   
+    If InStr(1, temp, "Ó") Then temp = Replace$(temp, "Ó", "O")
+   
+    If InStr(1, temp, "U") Then temp = Replace$(temp, "U", "U")
+   
+    Tilde = temp
+        
 End Function

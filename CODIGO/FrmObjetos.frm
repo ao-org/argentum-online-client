@@ -261,7 +261,7 @@ Private Sub Buscar_ListView(ListView As ListView, _
       '  LFI.flags = LVFI_WRAP
     'Else
        ' 'Cadena parcial
-        LFI.flags = LVFI_PARTIAL Or LVFI_WRAP
+        LFI.flags = LVFI_PARTIAL Or LVFI_WRAP Or LVFI_WRAP
     'End If
       
     If Cadena = "" Then
@@ -293,12 +293,20 @@ End Sub
   
     
 Private Sub Command3_Click()
-    Call Buscar_ListView(ListView1, Text1)
-End Sub
-
-Private Sub Form_Load()
-Dim i As Integer
-
+    'WyroX: Cambio la lógica del buscar
+    'Call Buscar_ListView(ListView1, Text1)
+    
+    FrmObjetos.ListView1.ListItems.Clear
+    
+    Dim i As Long
+    For i = 1 To NumOBJs
+        If InStr(1, Tilde(UCase$(ObjData(i).name)), Tilde(UCase$(Text1)), vbTextCompare) Then
+            Dim subelemento As ListItem
+            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).name)
+            
+            subelemento.SubItems(1) = i
+        End If
+    Next i
 End Sub
   
 Private Sub Command1_Click()
@@ -312,10 +320,8 @@ Private Sub Command2_Click()
 Unload Me
 End Sub
 
-Private Sub ListView1_Click()
-If ListView1.SelectedItem.SubItems(1) <> "" Then
- 
+Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
+    If ListView1.SelectedItem.SubItems(1) <> "" Then
         Call Grh_Render_To_Hdc(picture1, ObjData(ListView1.SelectedItem.SubItems(1)).GrhIndex, 0, 0, False)
-
     End If
 End Sub
