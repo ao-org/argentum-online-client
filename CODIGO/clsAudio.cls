@@ -387,6 +387,7 @@ Public Function Music_Load(ByVal file_str As String, Optional ByVal Volume As Lo
 'Last Modify Date: 2/08/2006
 '**************************************************************
     
+    Music = CONST_MIDI
     On Error GoTo Error_Handl
     
     Dim ret As Long
@@ -394,22 +395,61 @@ Public Function Music_Load(ByVal file_str As String, Optional ByVal Volume As Lo
     If (LenB(file_str) <= 0) Or (Musica = CONST_DESHABILITADA) Then Exit Function
  
 #If Compresion = 1 Then
-    If Extract_File(mp3, App.Path & "\..\Recursos\OUTPUT\", file_str & ".mp3", Windows_Temp_Dir, False) Then
-        If Not Music_Empty() = True Then GoTo Error_Handl
-        Set IMC = New FilgraphManager
-        IMC.RenderFile Windows_Temp_Dir & file_str & ".mp3"
-        Kill Windows_Temp_Dir & file_str & ".mp3"
-        lastMid = False
-    End If
+        If Music = CONST_MP3 Then
+            If Extract_File(mp3, App.Path & "\..\Recursos\OUTPUT\", file_str & ".mp3", Windows_Temp_Dir, False) Then
+                If Not Music_Empty() = True Then GoTo Error_Handl
+                Set IMC = New FilgraphManager
+                IMC.RenderFile Windows_Temp_Dir & file_str & ".mp3"
+                Kill Windows_Temp_Dir & file_str & ".mp3"
+                lastMid = False
+            ElseIf Extract_File(Midi, MidiPath, file_str & ".mid", Windows_Temp_Dir, False) Then
+                If Not Music_Empty() = True Then GoTo Error_Handl
+                Set dmSeg = dmLoader.LoadSegment(Windows_Temp_Dir & file_str & ".mid")
+                dmSeg.SetStandardMidiFile
+                dmSeg.Download dmPath
+                lastMid = True
+            Else
+                GoTo Error_Handl
+            End If
+        ElseIf Music = CONST_MIDI Then
+            If Extract_File(Midi, App.Path & "\..\Recursos\OUTPUT\", file_str & ".mid", Windows_Temp_Dir, False) Then
+                If Not Music_Empty() = True Then GoTo Error_Handl
+                Set dmSeg = dmLoader.LoadSegment(Windows_Temp_Dir & file_str & ".mid")
+                dmSeg.SetStandardMidiFile
+                dmSeg.Download dmPath
+                lastMid = True
+            End If
+        Else
+            GoTo Error_Handl
+        End If
+        
 #Else
     Dim PathToFile As String
-    PathToFile = App.Path & "/../Recursos/MP3/" & file_str & ".mp3"
-    If FileExist(PathToFile, vbArchive) Then
-        If Not Music_Empty() = True Then GoTo Error_Handl
-        Set IMC = New FilgraphManager
-        IMC.RenderFile PathToFile
-        lastMid = False
-    End If
+    
+    
+    If Music = CONST_MP3 Then
+        PathToFile = App.Path & "/../Recursos/MP3/" & file_str & ".mp3"
+        If FileExist(PathToFile, vbArchive) Then
+            If Not Music_Empty() = True Then GoTo Error_Handl
+            Set IMC = New FilgraphManager
+            IMC.RenderFile PathToFile
+            lastMid = False
+        End If
+    ElseIf Music = CONST_MIDI Then
+        PathToFile = App.Path & "/../Recursos/midi/" & file_str & ".mid"
+        If FileExist(PathToFile, vbArchive) Then
+            If Not Music_Empty() = True Then GoTo Error_Handl
+                Set dmSeg = dmLoader.LoadSegment(PathToFile)
+                dmSeg.SetStandardMidiFile
+                dmSeg.Download dmPath
+                lastMid = True
+        End If
+    
+    
+    Else
+            GoTo Error_Handl
+        End If
+        
 #End If
     
     If Volume < -4000 Then Volume = -4000

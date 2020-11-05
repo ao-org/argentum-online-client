@@ -727,7 +727,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
             Dim y As Long
             
     x = (idmap - 1) Mod 16
-    y = Int((idmap - 1) / 22)
+    y = Int((idmap - 1) / 16)
 
 
 frmMapaGrande.lblAllies.Top = y * 27
@@ -1121,18 +1121,23 @@ Map_light_baseBackup = Map_light_base
     CurMap = map
     
     
-    
-    
     If Musica Then
-        If MapDat.music_numberHi > 0 Then
-            If Sound.MusicActual <> MapDat.music_numberHi Then
-            Sound.NextMusic = MapDat.music_numberHi
-             Sound.Fading = 100
-             End If
+        If MapDat.music_numberLow > 0 Then
+        
+       Sound.NextMusic = MapDat.music_numberLow
+        Sound.Fading = 100
+        
+        End If
+        
+       ' If MapDat.music_numberHi > 0 Then
+           ' If Sound.MusicActual <> MapDat.music_numberHi Then
+           ' Sound.NextMusic = MapDat.music_numberHi
+           '  Sound.Fading = 100
+            ' End If
            ' Call ReproducirMp3(MapDat.music_numberHi)
             'Sound.Music_Load MapDat.music_numberHi, 0, 0
             'Sound.Music_Play
-        End If
+       ' End If
    End If
    
    

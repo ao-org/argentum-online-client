@@ -360,6 +360,7 @@ End Property
 Public Function GetSlot(ByVal x As Integer, ByVal y As Integer) As Byte
     ' Restamos el offset del inventario
     ' (más la mitad del borde, para hacer que los clics en los bordes sean como en el slot)
+        
     x = x - InvOffsetX + HALF_BORDER_X
     y = y - InvOffsetY + HALF_BORDER_Y
     
@@ -367,7 +368,7 @@ Public Function GetSlot(ByVal x As Integer, ByVal y As Integer) As Byte
     ' Nos aseguramos que no cliqueó en el borde de un slot
     'If x Mod ITEM_OFFSET_X >= ITEM_SIZE Then Exit Function
     'If y Mod ITEM_OFFSET_Y >= ITEM_SIZE Then Exit Function
-
+    
     ' Dividimos para obtener la coordenada (x, y) del slot
     x = x \ ITEM_OFFSET_X
     y = y \ ITEM_OFFSET_Y
@@ -550,19 +551,19 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
 
 End Sub
 
-Public Function GetInfo(ByVal item As Integer) As String
+Public Function GetInfo(ByVal Item As Integer) As String
 
-    Select Case ObjData(item).ObjType
+    Select Case ObjData(Item).ObjType
         Case eObjType.otWeapon
-            GetInfo = "Golpe: " & ObjData(item).MinHit & "/" & ObjData(item).MaxHit
+            GetInfo = "Golpe: " & ObjData(Item).MinHit & "/" & ObjData(Item).MaxHit
         Case eObjType.otArmadura
-            GetInfo = "Defensa: " & ObjData(item).MinDef & "/" & ObjData(item).MaxDef
+            GetInfo = "Defensa: " & ObjData(Item).MinDef & "/" & ObjData(Item).MaxDef
         Case eObjType.otESCUDO
-            GetInfo = "Defensa: " & ObjData(item).MinDef & "/" & ObjData(item).MaxDef
+            GetInfo = "Defensa: " & ObjData(Item).MinDef & "/" & ObjData(Item).MaxDef
         Case eObjType.otCASCO
-            GetInfo = "Defensa: " & ObjData(item).MinDef & "/" & ObjData(item).MaxDef
+            GetInfo = "Defensa: " & ObjData(Item).MinDef & "/" & ObjData(Item).MaxDef
         Case Else
-            GetInfo = ObjData(item).Texto
+            GetInfo = ObjData(Item).Texto
     End Select
 
 End Function
