@@ -139,14 +139,15 @@ Begin VB.Form frmMapaGrande
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
-      Height          =   8640
-      Left            =   375
-      ScaleHeight     =   576
+      Height          =   8910
+      Left            =   480
+      Picture         =   "frmMapaGrande.frx":0000
+      ScaleHeight     =   594
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   448
+      ScaleWidth      =   432
       TabIndex        =   0
-      Top             =   1560
-      Width           =   6720
+      Top             =   1440
+      Width           =   6480
       Begin VB.Shape Shape2 
          BackColor       =   &H00FF0000&
          BorderColor     =   &H00C00000&
@@ -175,20 +176,20 @@ Begin VB.Form frmMapaGrande
          BackStyle       =   1  'Opaque
          BorderColor     =   &H000000FF&
          BorderWidth     =   2
-         Height          =   120
+         Height          =   90
          Left            =   3120
          Shape           =   1  'Square
          Top             =   3720
-         Width           =   120
+         Width           =   90
       End
       Begin VB.Shape lblAllies 
          BorderColor     =   &H000000C0&
          FillColor       =   &H0000FFFF&
-         Height          =   480
+         Height          =   405
          Left            =   1920
          Top             =   2880
          Visible         =   0   'False
-         Width           =   480
+         Width           =   405
       End
       Begin VB.Label lblPos 
          AutoSize        =   -1  'True
@@ -446,21 +447,17 @@ Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
 
 
 
- Private RealizoCambios As String
- Const HWND_TOPMOST = -1
+Private RealizoCambios As String
+Const HWND_TOPMOST = -1
 Const HWND_NOTOPMOST = -2
 Const SWP_NOSIZE = &H1
 Const SWP_NOMOVE = &H2
 Const SWP_NOACTIVATE = &H10
 Const SWP_SHOWWINDOW = &H40
 Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
-
-
-Private Const TILE_SIZE = 32
-Private Const MAPAS_ANCHO = 14
-Private Const MAPAS_ALTO = 18
-
-
+Private Const TILE_SIZE = 27
+Private Const MAPAS_ANCHO = 16
+Private Const MAPAS_ALTO = 22
 Private Sub Form_Activate()
 ' SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
 End Sub
@@ -471,9 +468,9 @@ Private Sub moverForm()
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
-If KeyCode = 27 Then
-            Unload Me
-End If
+    If KeyCode = 27 Then
+        Unload Me
+    End If
 End Sub
 
 Private Sub Form_Load()
@@ -577,19 +574,16 @@ Private Sub Image3_Click()
 If Dungeon Then Exit Sub
 
 If Referencias Then
-picMap.Picture = LoadInterface("mapa.bmp")
-Shape3.BackColor = RGB(0, 83, 114)
-Image3.Picture = Nothing
-Referencias = False
-
+    picMap.Picture = LoadInterface("mapa.bmp")
+    Shape3.BackColor = RGB(0, 83, 114)
+    Image3.Picture = Nothing
+    Referencias = False
 Else
-Referencias = True
-picMap.Picture = LoadInterface("mapa_referencias.bmp")
-Image3.Picture = LoadInterface("mapa_boton2.bmp")
-Shape3.BackColor = RGB(0, 83, 114)
+    Referencias = True
+    picMap.Picture = LoadInterface("mapa_referencias.bmp")
+    Image3.Picture = LoadInterface("mapa_boton2.bmp")
+    Shape3.BackColor = RGB(0, 83, 114)
 End If
-
-
 
 End Sub
 
@@ -686,7 +680,7 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     PosY = PosY * TILE_SIZE
 
     If Dungeon Then
-        If DungeonData(mapa) = 0 Then Exit Sub
+        If DungeonData(mapa) <> 0 Then Exit Sub
         Call CargarDatosMapa(DungeonData(mapa))
         lblMapInfo(0) = MapDat.map_name & "(" & DungeonData(mapa) & ")"
         

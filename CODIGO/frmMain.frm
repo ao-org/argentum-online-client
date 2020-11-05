@@ -212,12 +212,12 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   4410
-      Left            =   15720
+      Left            =   16680
       ScaleHeight     =   294
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   261
       TabIndex        =   32
-      Top             =   7080
+      Top             =   7200
       Width           =   3915
       Begin VB.Image Image2 
          Height          =   495
@@ -500,7 +500,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
