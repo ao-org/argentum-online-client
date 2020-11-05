@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
-Begin VB.Form frmMain 
+Begin VB.Form frmmain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
    BackColor       =   &H00000000&
@@ -1885,7 +1885,7 @@ End Sub
 
 Private Sub imgHechizos_Click()
 If hlst.Visible Then Exit Sub
-panel.Picture = LoadInterface("centrohechizo.bmp")
+Panel.Picture = LoadInterface("centrohechizo.bmp")
 picInv.Visible = False
 hlst.Visible = True
 
@@ -1916,7 +1916,7 @@ End Sub
 Private Sub imgInventario_Click()
 If picInv.Visible Then Exit Sub
 
-panel.Picture = LoadInterface("centroinventario.bmp")
+Panel.Picture = LoadInterface("centroinventario.bmp")
 'Call Audio.PlayWave(SND_CLICK)
 picInv.Visible = True
 hlst.Visible = False
