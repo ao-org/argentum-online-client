@@ -42,7 +42,7 @@ Public DrogaCounter As Integer
 
 
 'Sistema de mapas
-Public PosREAL As Byte
+Public PosREAL As Integer
 Public Dungeon As Boolean
 Public idmap As Integer
 
@@ -186,8 +186,8 @@ Public PosMap() As Integer
 Public ObjData() As ObjDatas
 Public NpcData() As NpcDatas
 Public Locale_SMG() As String
-Public WordMapa(1 To 252) As String
-Public DungeonData(1 To 252) As String
+Public WordMapa(1 To 349) As String
+Public DungeonData(1 To 349) As String
 Public HechizoData() As HechizoDatas
 Public NameMaps(1 To 400) As NameMapas
 
@@ -608,7 +608,7 @@ Sub General_Set_Connect()
             intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -2218,11 +2218,11 @@ Dim i As Integer
     Call Leer.Initialize(MapFile)
 
     
-    For i = 1 To 252
+    For i = 1 To 349
        WordMapa(i) = Val(Leer.GetValue("WORLDMAP", i))
     Next i
 
-    For i = 1 To 252
+    For i = 1 To 349
        DungeonData(i) = Val(Leer.GetValue("DUNGEON", i))
     Next i
 
@@ -2494,7 +2494,7 @@ End If
 Dim i As Integer
 Dim Encontre As Boolean
 
-    For i = 1 To 252
+    For i = 1 To 349
         If WordMapa(i) = UserMap Then
             idmap = i
             Encontre = True
@@ -2514,7 +2514,7 @@ Dim Encontre As Boolean
     
     If Encontre = False Then
     
-        For i = 1 To 252
+        For i = 1 To 349
         If DungeonData(i) = UserMap Then
             idmap = i
             Encontre = True
@@ -2541,23 +2541,19 @@ Dim Encontre As Boolean
     
  Call CargarDatosMapa(UserMap)
  
- 
 
-    
-
-    
     Dim x As Long
     Dim y As Long
     
-    x = (idmap - 1) Mod 14
-    y = Int((idmap - 1) / 14)
+    x = (idmap - 1) Mod 16
+    y = Int((idmap - 1) / 22)
 
 
-frmMapaGrande.lblAllies.Top = y * 32
-frmMapaGrande.lblAllies.Left = x * 32
+frmMapaGrande.lblAllies.Top = y * 27
+frmMapaGrande.lblAllies.Left = x * 27
 
-frmMapaGrande.Shape1.Top = y * 32 + (UserPos.y / 4.5)
-frmMapaGrande.Shape1.Left = x * 32 + (UserPos.x / 4.5)
+frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
+frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
 
 
 End Sub
@@ -2692,7 +2688,7 @@ Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal mapa As Integer) As Integer
 Dim i As Integer
 Dim Encontre As Boolean
 
-    For i = 1 To 252
+    For i = 1 To 349
         If WordMapa(i) = mapa Then
             ObtenerIdMapaDeLlamadaDeClan = i
             frmMapaGrande.llamadadeclan.Tag = 0
@@ -2708,7 +2704,7 @@ Dim Encontre As Boolean
     
     If Encontre = False Then
     
-        For i = 1 To 252
+        For i = 1 To 349
         If DungeonData(i) = mapa Then
             frmMapaGrande.llamadadeclan.Tag = 1
             ObtenerIdMapaDeLlamadaDeClan = i
