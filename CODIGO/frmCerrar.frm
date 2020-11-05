@@ -4,14 +4,14 @@ Begin VB.Form frmCerrar
    BackColor       =   &H80000005&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   2805
+   ClientHeight    =   2790
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   3240
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2805
+   ScaleHeight     =   2790
    ScaleWidth      =   3240
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
