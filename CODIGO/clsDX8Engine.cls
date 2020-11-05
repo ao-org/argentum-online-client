@@ -6585,27 +6585,6 @@ temp_array(1) = temp_array(0)
 temp_array(2) = temp_array(0)
 temp_array(3) = temp_array(0)
 
-    Dim i As Long
-
-    Dim removedDialogs As Long
-    For i = 0 To dialogCount - 1
-        'Decrease index to prevent jumping over a dialog
-        'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
-        With dialogs(i - removedDialogs)
-            If (GetTickCount() - .startTime) >= .lifeTime Then
-                Call Char_Dialog_Remove(.charindex, charindex)
-                             
-                If charlist(charindex).AlphaText = 0 Then
-                removedDialogs = removedDialogs + 1
-                End If
-            Else
-            
-            End If
-        End With
-    Next i
-
-
-
 
 Dim Sombra(3) As Long 'Sombra
 Sombra(0) = D3DColorARGB(charindex, r / 6, g / 6, b / 6)

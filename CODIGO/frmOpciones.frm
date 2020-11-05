@@ -438,9 +438,9 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         End If
         
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("config_stick.bmp")
+        check1.Picture = LoadInterface("config_stick.bmp")
     End If
         
 End Sub
@@ -623,6 +623,7 @@ instagram.Tag = "0"
 facebook = Nothing
 facebook.Tag = "0"
 End Sub
+
 Private Sub instagram_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If instagram.Tag = "0" Then
         instagram.Picture = LoadInterface("config_instagram.bmp")
@@ -654,14 +655,14 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
         Command1.Picture = LoadInterface("config_teclas.bmp")
         Command1.Tag = "1"
     End If
-        cmdCerrar = Nothing
-cmdCerrar.Tag = "0"
+        cmdcerrar = Nothing
+cmdcerrar.Tag = "0"
     
 End Sub
 Private Sub cmdcerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If cmdCerrar.Tag = "0" Then
-        cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdCerrar.Tag = "1"
+    If cmdcerrar.Tag = "0" Then
+        cmdcerrar.Picture = LoadInterface("config_cerrar.bmp")
+        cmdcerrar.Tag = "1"
     End If
     cmdChangePassword = Nothing
 cmdChangePassword.Tag = "0"
@@ -673,8 +674,8 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
         cmdChangePassword.Picture = LoadInterface("config_contraseñ.bmp")
         cmdChangePassword.Tag = "1"
     End If
-    cmdCerrar = Nothing
-cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+cmdcerrar.Tag = "0"
 End Sub
 
 Private Sub cmdWeb_Click()
@@ -768,20 +769,21 @@ facebook = Nothing
 facebook.Tag = "0"
 Command1 = Nothing
 Command1.Tag = "0"
-cmdCerrar = Nothing
-cmdCerrar.Tag = "0"
+cmdcerrar = Nothing
+cmdcerrar.Tag = "0"
 cmdChangePassword = Nothing
 cmdChangePassword.Tag = "0"
 End Sub
 Private Sub cmdcerrar_Click()
-Call GuardarOpciones
-Me.Visible = False
+    Call GuardarOpciones
+    Me.Visible = False
+    frmmain.SetFocus
 End Sub
 Private Sub cmdChangePassword_Click()
-    Call frmNewPassword.Show(vbModal, Me)
+    Call frmNewPassword.Show(vbModeless, Me)
 End Sub
 Private Sub Command1_Click()
-    Call frmCustomKeys.Show(vbModal, Me)
+    Call frmCustomKeys.Show(vbModeless, Me)
 End Sub
 Public Sub Init()
 
@@ -859,9 +861,9 @@ Public Sub Init()
     
     
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("config_stick.bmp")
+        check1.Picture = LoadInterface("config_stick.bmp")
     End If
 
     

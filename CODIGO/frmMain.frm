@@ -84,20 +84,20 @@ Begin VB.Form frmmain
          Appearance      =   0  'Flat
          BackColor       =   &H00000000&
          BeginProperty Font 
-            Name            =   "Verdana"
-            Size            =   6.75
+            Name            =   "Arial"
+            Size            =   8.25
             Charset         =   0
-            Weight          =   400
+            Weight          =   700
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   3270
-         Left            =   250
+         Height          =   3390
+         Left            =   255
          TabIndex        =   35
          TabStop         =   0   'False
-         Top             =   680
+         Top             =   630
          Visible         =   0   'False
          Width           =   3195
       End
@@ -500,6 +500,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -507,8 +508,8 @@ Begin VB.Form frmmain
       Appearance      =   0
       TextRTF         =   $"frmMain.frx":6BDCE
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Verdana"
-         Size            =   6.75
+         Name            =   "Arial"
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -878,14 +879,14 @@ Begin VB.Form frmmain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":6BE4A
+      Picture         =   "frmMain.frx":6BE45
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":6C3CE
+      Picture         =   "frmMain.frx":6C3C9
       Top             =   2008
       Width           =   555
    End
@@ -1013,7 +1014,7 @@ Begin VB.Form frmmain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   13560
-      Picture         =   "frmMain.frx":6C952
+      Picture         =   "frmMain.frx":6C94D
       Top             =   10920
       Visible         =   0   'False
       Width           =   525
@@ -1021,7 +1022,7 @@ Begin VB.Form frmmain
    Begin VB.Image PicResu 
       Height          =   510
       Left            =   12120
-      Picture         =   "frmMain.frx":6D5D2
+      Picture         =   "frmMain.frx":6D5CD
       ToolTipText     =   "Seguro de grupo"
       Top             =   10920
       Width           =   510
@@ -1029,7 +1030,7 @@ Begin VB.Form frmmain
    Begin VB.Image PicResuOn 
       Height          =   510
       Left            =   12120
-      Picture         =   "frmMain.frx":6E3E4
+      Picture         =   "frmMain.frx":6E3DF
       ToolTipText     =   "Seguro de grupo"
       Top             =   10920
       Visible         =   0   'False
@@ -1099,7 +1100,7 @@ Begin VB.Form frmmain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11573
-      Picture         =   "frmMain.frx":6F1F6
+      Picture         =   "frmMain.frx":6F1F1
       Top             =   1545
       Width           =   3045
    End
@@ -1126,7 +1127,7 @@ Begin VB.Form frmmain
    Begin VB.Image Hpshp 
       Height          =   135
       Left            =   11910
-      Picture         =   "frmMain.frx":7208F
+      Picture         =   "frmMain.frx":7208A
       Top             =   8489
       Width           =   1335
    End
@@ -1154,7 +1155,7 @@ Begin VB.Form frmmain
    Begin VB.Image STAShp 
       Height          =   135
       Left            =   11910
-      Picture         =   "frmMain.frx":72A3D
+      Picture         =   "frmMain.frx":72A38
       Top             =   9077
       Width           =   1335
    End
@@ -1201,7 +1202,7 @@ Begin VB.Form frmmain
    Begin VB.Image AGUAsp 
       Height          =   135
       Left            =   13800
-      Picture         =   "frmMain.frx":733EB
+      Picture         =   "frmMain.frx":733E6
       Top             =   8473
       Width           =   1335
    End
@@ -1229,7 +1230,7 @@ Begin VB.Form frmmain
    Begin VB.Image MANShp 
       Height          =   135
       Left            =   11910
-      Picture         =   "frmMain.frx":73D99
+      Picture         =   "frmMain.frx":73D94
       Top             =   8780
       Width           =   1335
    End
@@ -1237,7 +1238,7 @@ Begin VB.Form frmmain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   11505
-      Picture         =   "frmMain.frx":74747
+      Picture         =   "frmMain.frx":74742
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510
@@ -1245,7 +1246,7 @@ Begin VB.Form frmmain
    Begin VB.Image Image6 
       Height          =   510
       Left            =   11505
-      Picture         =   "frmMain.frx":75559
+      Picture         =   "frmMain.frx":75554
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510
@@ -1254,7 +1255,7 @@ Begin VB.Form frmmain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12720
-      Picture         =   "frmMain.frx":7636B
+      Picture         =   "frmMain.frx":76366
       ToolTipText     =   "Seguro de clan"
       Top             =   10920
       Width           =   510
@@ -1263,7 +1264,7 @@ Begin VB.Form frmmain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12720
-      Picture         =   "frmMain.frx":7717D
+      Picture         =   "frmMain.frx":77178
       ToolTipText     =   "Seguro de ataque"
       Top             =   10920
       Width           =   510
@@ -1271,7 +1272,7 @@ Begin VB.Form frmmain
    Begin VB.Image COMIDAsp 
       Height          =   135
       Left            =   13800
-      Picture         =   "frmMain.frx":77F8F
+      Picture         =   "frmMain.frx":77F8A
       Top             =   8775
       Width           =   1335
    End
@@ -1885,7 +1886,7 @@ End Sub
 
 Private Sub imgHechizos_Click()
 If hlst.Visible Then Exit Sub
-Panel.Picture = LoadInterface("centrohechizo.bmp")
+panel.Picture = LoadInterface("centrohechizo.bmp")
 picInv.Visible = False
 hlst.Visible = True
 
@@ -1916,7 +1917,7 @@ End Sub
 Private Sub imgInventario_Click()
 If picInv.Visible Then Exit Sub
 
-Panel.Picture = LoadInterface("centroinventario.bmp")
+panel.Picture = LoadInterface("centroinventario.bmp")
 'Call Audio.PlayWave(SND_CLICK)
 picInv.Visible = True
 hlst.Visible = False
@@ -2035,7 +2036,7 @@ End Sub
 
 Private Sub MacroLadder_Timer()
 
-If IntervaloPermiteTrabajar Then
+If MainTimer.Check(TimersIndex.Work) Then
     If UserMacro.cantidad > 0 And UserMacro.Activado And UserMinSTA > 0 Then
     
         Select Case UserMacro.TIPO
@@ -2161,7 +2162,7 @@ End If
 End Sub
 
 Private Sub mnuEquipar_Click()
-    If IntervaloPermiteUsar Then Call EquiparItem
+    If MainTimer.Check(TimersIndex.UseItemWithU) Then Call EquiparItem
 End Sub
 
 Private Sub mnuNPCComerciar_Click()
@@ -2178,7 +2179,7 @@ Private Sub mnuTirar_Click()
 End Sub
 
 Private Sub mnuUsar_Click()
-    If IntervaloPermiteUsar Then Call UsarItem
+    If MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Call UsarItem
 End Sub
 
 Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2606,7 +2607,7 @@ Private Sub renderer_DblClick()
 Call Form_DblClick
 End Sub
 Private Sub renderer_Click()
-Call Form_Click
+    Call Form_Click
 End Sub
 Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
 On Error Resume Next
@@ -2801,174 +2802,116 @@ Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single
     End If
 End Sub
 
-
-Public Sub Form_ClickMouse()
-
-End Sub
 Public Sub Form_Click()
 
+    If MouseBoton = vbLeftButton And ACCION1 = 0 Or MouseBoton = vbRightButton And ACCION2 = 0 Or MouseBoton = 4 And ACCION3 = 0 Then
+        If Not Comerciando Then
+            If Not InGameArea() Then Exit Sub
 
-If MouseBoton = vbLeftButton And ACCION1 = 0 Or MouseBoton = vbRightButton And ACCION2 = 0 Or MouseBoton = 4 And ACCION3 = 0 Then
-    If Not Comerciando Then
+            If MouseShift = 0 Then
                 If UsingSkill = 0 Then
                     Call WriteLeftClick(tX, tY)
                 Else
                     If macrotrabajo.Enabled Then DesactivarMacroTrabajo
-                End If
-                
-                
-                
-                If UsingSkill = Magia Then
-                        If IntervaloPermiteComboGolpeMagia(False) Then
-                        
-                        'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe trato", 255, 0, 0, True, False, False)
-                        If Not UsaLanzar Then
-                           
-                            If IntervaloPermiteLanzarSpellMacro Then
-                                If OcultarMacro Then
-                                    OcultarMacro = False
+                    
+                    Dim SendSkill As Boolean
+                    
+                    If UsingSkill = Magia Then
+                        If MainTimer.Check(TimersIndex.Attack, False) Then
+                            If MainTimer.Check(TimersIndex.CastAttack, False) Then
+                                If MainTimer.Check(TimersIndex.CastSpell) Then
+                                    SendSkill = True
                                 End If
-
-                                Call WriteWorkLeftClick(tX, tY, UsingSkill)
-                                Call FormParser.Parse_Form(frmmain)
-                                If CursoresGraficos = 0 Then
-                                    frmmain.MousePointer = vbDefault
-                                End If
-                                
-                                UsaLanzar = False
-                                UsingSkill = 0
-                                    Exit Sub
                             End If
-                        Else
-                            If OcultarMacro Then
-                                OcultarMacro = False
-                            End If
-                            
-                            If IntervaloPermiteLanzarSpell Then
-                                Call WriteWorkLeftClick(tX, tY, UsingSkill)
-                            End If
-                            Call FormParser.Parse_Form(frmmain)
-                            
-                            If CursoresGraficos = 0 Then
-                                frmmain.MousePointer = vbDefault
-                            End If
-                            
-                            UsaLanzar = False
-                            UsingSkill = 0
-                            Exit Sub
-                        End If
-                        
                         End If
                     End If
-
                     
                     'Splitted because VB isn't lazy!
                     If UsingSkill = Proyectiles Then
-                        If IntervaloPermiteComboGolpeMagia(False) Then
-                            If IntervaloPermiteLanzarSpell Then
-                                 If OcultarMacro Then
-                                     OcultarMacro = False
-                                 End If
-                                 Call FormParser.Parse_Form(frmmain)
-                                 Call WriteWorkLeftClick(tX, tY, UsingSkill)
-                                 UsingSkill = 0
-                                 If CursoresGraficos = 0 Then
-                                 frmmain.MousePointer = vbDefault
-                                 End If
-                                 Exit Sub
-                             End If
+                        If MainTimer.Check(TimersIndex.Attack, False) Then
+                            If MainTimer.Check(TimersIndex.CastAttack, False) Then
+                                If MainTimer.Check(TimersIndex.Arrows) Then
+                                    SendSkill = True
+                                End If
+                            End If
                         End If
                     End If
-                   
-
-                 
+                
                     'Splitted because VB isn't lazy!
                     If (UsingSkill = Robar Or UsingSkill = Grupo Or UsingSkill = MarcaDeClan Or UsingSkill = MarcaDeGM) Then
-                        If IntervaloPermiteTrabajar Then
-                            Call FormParser.Parse_Form(frmmain)
-                            Call WriteWorkLeftClick(tX, tY, UsingSkill)
+                        If MainTimer.Check(TimersIndex.Work) Then
                             If UsingSkill = MarcaDeGM Then
-                        Dim Pos As Integer
-                        If MapData(tX, tY).charindex <> 0 Then
+                                Dim Pos As Integer
+                                If MapData(tX, tY).charindex <> 0 Then
                                 Pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
-                                    
+                                
                                 If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
-                            frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
+                                    frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
+                                End If
+                            Else
+                                SendSkill = True
                             End If
-                        End If
-                            UsingSkill = 0
-                            If CursoresGraficos = 0 Then
-                                frmmain.MousePointer = vbDefault
-                            End If
-                            
-                            
-                            Exit Sub
                         End If
                     End If
                     
                     If (UsingSkill = Recoleccion Or UsingSkill = FundirMetal Or UsingSkill = Manualidades) Then
-                        If IntervaloPermiteTrabajar Then
-                            Call FormParser.Parse_Form(frmmain)
-                            Call WriteWorkLeftClick(tX, tY, UsingSkill)
-                            If CursoresGraficos = 0 Then
-                            frmmain.MousePointer = vbDefault
-                            End If
-                            'UsingSkill = 0
-                            Exit Sub
+                        If MainTimer.Check(TimersIndex.Work) Then
+                            SendSkill = True
                         End If
                     End If
+                   
+                    If SendSkill Then
+                        Call WriteWorkLeftClick(tX, tY, UsingSkill)
+                    End If
+                   
+                    If OcultarMacro Then
+                        OcultarMacro = False
+                    End If
                     
-                
-            If MouseShift = 1 Then
-                    Call WriteWarpChar("YO", UserMap, tX, tY)
-            End If
-    End If
-    If cartel Then cartel = False
-    Exit Sub
-    
-End If
-
-
-If MouseBoton = vbLeftButton And ACCION1 = 1 Or MouseBoton = vbRightButton And ACCION2 = 1 Or MouseBoton = 4 And ACCION3 = 1 Then
-   ' Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
-    Call WriteDoubleClick(tX, tY)
-    Exit Sub
-End If
-
-If MouseBoton = vbLeftButton And ACCION1 = 2 Or MouseBoton = vbRightButton And ACCION2 = 2 Or MouseBoton = 4 And ACCION3 = 2 Then
-    If UserDescansar Or UserMeditar Then Exit Sub
-    If Not IntervaloPermiteComboMagiaGolpe(False) Then Exit Sub
-    If Not IntervaloPermiteAtacar Then Exit Sub
-    Call WriteAttack
-    Exit Sub
-End If
-
-If MouseBoton = vbLeftButton And ACCION1 = 3 Or MouseBoton = vbRightButton And ACCION2 = 3 Or MouseBoton = 4 And ACCION3 = 3 Then
-    If IntervaloPermiteUsar Then Call UsarItem
-    Exit Sub
-End If
-
-
-
-'Accion Auto usar
-
-If MouseBoton = vbLeftButton And ACCION1 = 7 Or MouseBoton = vbRightButton And ACCION2 = 7 Or MouseBoton = 4 And ACCION3 = 7 Then
-    If MapData(tX, tY).charindex <> 0 Then
-        If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
-            If charlist(MapData(tX, tY).charindex).EsNpc = False Then
-                SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
-                If SendTxt.Visible = False Then
-                Call WriteEscribiendo
+                    
+                    Call FormParser.Parse_Form(frmmain)
+                    If CursoresGraficos = 0 Then
+                        frmmain.MousePointer = vbDefault
+                    End If
+                    
+                    UsaLanzar = False
+                    UsingSkill = 0
                 End If
-                SendTxt.Visible = True
-                SendTxt.SetFocus
-                SendTxt.SelStart = Len(SendTxt.Text)
+            Else
+                Call WriteWarpChar("YO", UserMap, tX, tY)
+            End If
+            
+            If cartel Then cartel = False
+            
+        End If
+    
+    ElseIf MouseBoton = vbLeftButton And ACCION1 = 1 Or MouseBoton = vbRightButton And ACCION2 = 1 Or MouseBoton = 4 And ACCION3 = 1 Then
+        Call WriteDoubleClick(tX, tY)
+    
+    ElseIf MouseBoton = vbLeftButton And ACCION1 = 2 Or MouseBoton = vbRightButton And ACCION2 = 2 Or MouseBoton = 4 And ACCION3 = 2 Then
+        If UserDescansar Or UserMeditar Then Exit Sub
+        If Not MainTimer.Check(TimersIndex.CastAttack, False) Then Exit Sub
+        If Not MainTimer.Check(TimersIndex.Attack) Then Exit Sub
+        Call WriteAttack
+    
+    ElseIf MouseBoton = vbLeftButton And ACCION1 = 3 Or MouseBoton = vbRightButton And ACCION2 = 3 Or MouseBoton = 4 And ACCION3 = 3 Then
+        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call UsarItem
+    
+    ElseIf MouseBoton = vbLeftButton And ACCION1 = 7 Or MouseBoton = vbRightButton And ACCION2 = 7 Or MouseBoton = 4 And ACCION3 = 7 Then
+        If MapData(tX, tY).charindex <> 0 Then
+            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
+                If charlist(MapData(tX, tY).charindex).EsNpc = False Then
+                    SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
+                    If SendTxt.Visible = False Then
+                        Call WriteEscribiendo
+                    End If
+                    SendTxt.Visible = True
+                    SendTxt.SetFocus
+                    SendTxt.SelStart = Len(SendTxt.Text)
+                End If
             End If
         End If
     End If
-End If
-
-
 
 End Sub
 Private Sub Form_DblClick()
@@ -3137,16 +3080,23 @@ Private Sub picInv_DblClick()
     ObjType = ObjData(Inventario.OBJIndex(Inventario.SelectedItem)).ObjType
 
     Select Case ObjType
-        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.OtHerramientas, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
+        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
             Call EquiparItem
             
         Case eObjType.otWeapon
             If ObjData(Inventario.OBJIndex(Inventario.SelectedItem)).proyectil = 1 And Inventario.Equipped(Inventario.SelectedItem) Then
                 Call UsarItem
-            ElseIf Not Inventario.Equipped(Inventario.SelectedItem) Then
+            Else
                 Call EquiparItem
             End If
-             
+            
+        Case eObjType.OtHerramientas
+            If Inventario.Equipped(Inventario.SelectedItem) Then
+                Call UsarItem
+            Else
+                Call EquiparItem
+            End If
+                
         Case Else
             Call UsarItem
     End Select

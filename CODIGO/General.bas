@@ -2038,3 +2038,19 @@ Public Function Tilde(ByRef Data As String) As String
     Tilde = temp
         
 End Function
+
+' Copiado de https://www.vbforums.com/showthread.php?231468-VB-Detect-if-you-are-running-in-the-IDE
+Function RunningInVB() As Boolean
+'Returns whether we are running in vb(true), or compiled (false)
+ 
+    Static counter As Variant
+    If IsEmpty(counter) Then
+        counter = 1
+        Debug.Assert RunningInVB() Or True
+        counter = counter - 1
+    ElseIf counter = 1 Then
+        counter = 0
+    End If
+    RunningInVB = counter
+ 
+End Function

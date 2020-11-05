@@ -79,8 +79,8 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Exit Function
         End If
         If UserDescansar Or UserMeditar Then Exit Function
-        If Not IntervaloPermiteComboMagiaGolpe(False) Then Exit Function
-        If Not IntervaloPermiteAtacar Then Exit Function
+        If Not MainTimer.Check(TimersIndex.CastAttack, False) Then Exit Function
+        If Not MainTimer.Check(TimersIndex.Attack) Then Exit Function
         Call WriteAttack
 
     ElseIf KeyCode = BindKeys(2).KeyCode Then
@@ -137,7 +137,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             End With
             Exit Function
         End If
-        If IntervaloPermiteUsar Then Call EquiparItem
+        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call EquiparItem
     
     ElseIf KeyCode = BindKeys(4).KeyCode Then
         If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
@@ -145,8 +145,8 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     
     ElseIf KeyCode = BindKeys(10).KeyCode Then
         If MainTimer.Check(TimersIndex.SendRPU) Then
-                Call WriteRequestPositionUpdate
-                Beep
+            Call WriteRequestPositionUpdate
+            Beep
         End If
     
     ElseIf KeyCode = BindKeys(11).KeyCode Then

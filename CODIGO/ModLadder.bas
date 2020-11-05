@@ -321,19 +321,9 @@ Private hBuffersTimer As Long
 Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
 Private Const MAX_LENGTH = 512
 
-
-
-
-'Despreciar siempre un poco esto, hacer el intervalo más corto
-Private Const CONST_INTERVALO_CASTEOMACRO As Long = 1200
-Private Const CONST_INTERVALO_CASTEO As Long = 950
-Private Const CONST_INTERVALO_ATAQUE As Long = 1200
-Private Const CONST_INTERVALO_USAR As Long = 300
-Private Const CONST_INTERVALO_USARDESPUESDEATACAR As Long = 350
 Private Const CONST_INTERVALO_ANIM As Long = 150
 Private Const CONST_INTERVALO_TIRAR As Long = 1200
 Private Const CONST_INTERVALO_Conectar As Long = 100
-Private Const CONST_INTERVALO_TRABAJAR As Long = 1200
 Private Const CONST_INTERVALO_LLAMADACLAN As Long = 5000
 
 Private Const CONST_INTERVALO_COMBO As Long = 450
@@ -608,7 +598,7 @@ Sub General_Set_Connect()
             intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -985,312 +975,155 @@ End Sub
 '   - First Relase
 '*****************************************************************
 
-
-
-
-Public Function IntervaloPermiteTrabajar() As Boolean
-
-Dim TActual As Long
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.Trabajo >= CONST_INTERVALO_TRABAJAR Then
- '   Call AddtoRichTextBox(frmMain.RecTxt, "Trabajar OK.", 255, 0, 0, True, False, False)
-    Intervalos.Trabajo = TActual
-    IntervaloPermiteTrabajar = True
-Else
-    IntervaloPermiteTrabajar = False
-End If
-
-End Function
-Public Function IntervaloPermiteAtacar(Optional ByVal Actualizar As Boolean = True) As Boolean
-Dim TActual As Long
-
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.Ataque >= CONST_INTERVALO_ATAQUE Then
-    If Actualizar Then
-        Intervalos.Ataque = TActual
-        IntervaloPermiteComboGolpeMagia (True)
-        IntervaloPermiteUsarDespuestDeAtacar (True)
-    End If
-    IntervaloPermiteAtacar = True
-Else
-    IntervaloPermiteAtacar = False
-End If
-End Function
-
-Public Function IntervaloPermiteComboGolpeMagia(Optional ByVal Actualizar As Boolean = True) As Boolean
-Dim TActual As Long
-
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.ComboGolpeMagia >= CONST_INTERVALO_COMBO Then
-    If Actualizar Then
-        Intervalos.ComboGolpeMagia = TActual
-    End If
-    IntervaloPermiteComboGolpeMagia = True
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia OK.", 255, 0, 0, True, False, False)
-Else
-    IntervaloPermiteComboGolpeMagia = False
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia NO.", 255, 0, 0, True, False, False)
-End If
-End Function
 Public Function IntervaloPermiteClick(Optional ByVal Actualizar As Boolean = True) As Boolean
-Dim TActual As Long
-
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.Click >= CONST_INTERVALO_CLICK Then
-    If Actualizar Then
-        Intervalos.Click = TActual
-    End If
-    IntervaloPermiteClick = True
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia OK.", 255, 0, 0, True, False, False)
-Else
-    IntervaloPermiteClick = False
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia NO.", 255, 0, 0, True, False, False)
-End If
-End Function
-Public Function IntervaloPermiteHeading(Optional ByVal Actualizar As Boolean = True) As Boolean
-Dim TActual As Long
-
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.Heading >= CONST_INTERVALO_HEADING Then
-    If Actualizar Then
-        Intervalos.Heading = TActual
-    End If
-    IntervaloPermiteHeading = True
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia OK.", 255, 0, 0, True, False, False)
-Else
-    IntervaloPermiteHeading = False
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia NO.", 255, 0, 0, True, False, False)
-End If
-End Function
-Public Function IntervaloPermiteComboMagiaGolpe(Optional ByVal Actualizar As Boolean = True) As Boolean
-Dim TActual As Long
-
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.ComboMagiaGolpe >= CONST_INTERVALO_COMBO Then
-    If Actualizar Then
-        Intervalos.ComboMagiaGolpe = TActual
-    End If
-    IntervaloPermiteComboMagiaGolpe = True
-   ' Call AddtoRichTextBox(frmMain.RecTxt, "Magia - Golpe OK.", 255, 0, 0, True, False, False)
-    
-Else
-    IntervaloPermiteComboMagiaGolpe = False
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Magia - Golpe NO.", 255, 0, 0, True, False, False)
-End If
-End Function
-
-Public Function IntervaloPermiteUsar() As Boolean
-
-
-If IntervaloPermiteUsarDespuestDeAtacar(False) Then
     Dim TActual As Long
     
     TActual = GetTickCount() And &H7FFFFFFF
     
-    If TActual - Intervalos.Uso >= CONST_INTERVALO_USAR Then
-        
-      '  Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
-        Intervalos.Uso = TActual
-        IntervaloPermiteUsar = True
+    If TActual - Intervalos.Click >= CONST_INTERVALO_CLICK Then
+        If Actualizar Then
+            Intervalos.Click = TActual
+        End If
+        IntervaloPermiteClick = True
+        'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia OK.", 255, 0, 0, True, False, False)
     Else
-        IntervaloPermiteUsar = False
+        IntervaloPermiteClick = False
+        'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia NO.", 255, 0, 0, True, False, False)
     End If
-Else
-IntervaloPermiteUsar = False
-End If
-
 End Function
-
-Public Function IntervaloPermiteUsarDespuestDeAtacar(Optional ByVal Actualizar As Boolean = True) As Boolean
-Dim TActual As Long
-
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.UsarDespuesDeAtacar >= CONST_INTERVALO_USARDESPUESDEATACAR Then
-    If Actualizar Then
-        Intervalos.UsarDespuesDeAtacar = TActual
-    End If
-    IntervaloPermiteUsarDespuestDeAtacar = True
-   ' Call AddtoRichTextBox(frmMain.RecTxt, "Magia - Golpe OK.", 255, 0, 0, True, False, False)
+Public Function IntervaloPermiteHeading(Optional ByVal Actualizar As Boolean = True) As Boolean
+    Dim TActual As Long
     
-Else
-    IntervaloPermiteUsarDespuestDeAtacar = False
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Magia - Golpe NO.", 255, 0, 0, True, False, False)
-End If
+    
+    TActual = GetTickCount() And &H7FFFFFFF
+    
+    If TActual - Intervalos.Heading >= CONST_INTERVALO_HEADING Then
+        If Actualizar Then
+            Intervalos.Heading = TActual
+        End If
+        IntervaloPermiteHeading = True
+        'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia OK.", 255, 0, 0, True, False, False)
+    Else
+        IntervaloPermiteHeading = False
+        'Call AddtoRichTextBox(frmMain.RecTxt, "Golpe - Magia NO.", 255, 0, 0, True, False, False)
+    End If
 End Function
+
 Public Function IntervaloPermiteLLamadaClan() As Boolean
 
-Dim TActual As Long
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.LLamadaClan >= CONST_INTERVALO_LLAMADACLAN Then
+    Dim TActual As Long
     
-  '  Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
-    Intervalos.LLamadaClan = TActual
-    IntervaloPermiteLLamadaClan = True
-Else
-    IntervaloPermiteLLamadaClan = False
-   ' Call AddtoRichTextBox(frmMain.RecTxt, "Debes aguardar unos instantes para volver a llamar a tu clan.", 255, 0, 0, True, False, False)
-End If
+    TActual = GetTickCount() And &H7FFFFFFF
+    
+    If TActual - Intervalos.LLamadaClan >= CONST_INTERVALO_LLAMADACLAN Then
+        
+      '  Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
+        Intervalos.LLamadaClan = TActual
+        IntervaloPermiteLLamadaClan = True
+    Else
+        IntervaloPermiteLLamadaClan = False
+       ' Call AddtoRichTextBox(frmMain.RecTxt, "Debes aguardar unos instantes para volver a llamar a tu clan.", 255, 0, 0, True, False, False)
+    End If
 
 End Function
 Public Function IntervaloPermiteAnim() As Boolean
 
-Dim TActual As Long
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.Anim >= CONST_INTERVALO_ANIM Then
+    Dim TActual As Long
     
-  '  Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
-    Intervalos.Anim = TActual
-    IntervaloPermiteAnim = True
-Else
-    IntervaloPermiteAnim = False
-End If
+    TActual = GetTickCount() And &H7FFFFFFF
+    
+    If TActual - Intervalos.Anim >= CONST_INTERVALO_ANIM Then
+        
+      '  Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
+        Intervalos.Anim = TActual
+        IntervaloPermiteAnim = True
+    Else
+        IntervaloPermiteAnim = False
+    End If
 
 End Function
 Public Function IntervaloPermiteConectar() As Boolean
 
-Dim TActual As Long
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.Conectar >= CONST_INTERVALO_Conectar Then
+    Dim TActual As Long
     
-   ' Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
-    Intervalos.Conectar = TActual
-    IntervaloPermiteConectar = True
-Else
-    IntervaloPermiteConectar = False
-End If
+    TActual = GetTickCount() And &H7FFFFFFF
+    
+    If TActual - Intervalos.Conectar >= CONST_INTERVALO_Conectar Then
+        
+       ' Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
+        Intervalos.Conectar = TActual
+        IntervaloPermiteConectar = True
+    Else
+        IntervaloPermiteConectar = False
+    End If
 
 End Function
 
 Public Function IntervaloPermiteTirar() As Boolean
 
-Dim TActual As Long
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.tirar >= CONST_INTERVALO_TIRAR Then
+    Dim TActual As Long
     
-   ' Call AddtoRichTextBox(frmMain.RecTxt, "Tirar OK.", 255, 0, 0, True, False, False)
-    Intervalos.tirar = TActual
-    IntervaloPermiteTirar = True
-Else
-    IntervaloPermiteTirar = False
-End If
-
-End Function
-
-
-
-Public Function IntervaloPermiteLanzarSpell() As Boolean
-
-Dim TActual As Long
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.Hechizo >= CONST_INTERVALO_CASTEO Then
- '   Call AddtoRichTextBox(frmMain.RecTxt, "Lanzar OK.", 255, 0, 0, True, False, False)
-    Intervalos.Hechizo = TActual
-    IntervaloPermiteLanzarSpell = True
-    IntervaloPermiteComboMagiaGolpe (True)
-    IntervaloPermiteUsarDespuestDeAtacar (True)
-Else
-    IntervaloPermiteLanzarSpell = False
-   ' If UsaLanzar Then
-        'Call AddtoRichTextBox(frmMain.RecTxt, "Debes aguardar para lanzar el hechizo.", 255, 0, 0, True, False, False)
-    'End If
-End If
-
-End Function
-Public Function IntervaloPermiteLanzarSpellMacro() As Boolean
-
-Dim TActual As Long
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - Intervalos.HechizoMacro >= CONST_INTERVALO_CASTEOMACRO Then
- '   Call AddtoRichTextBox(frmMain.RecTxt, "Lanzar OK.", 255, 0, 0, True, False, False)
-    Intervalos.HechizoMacro = TActual
-    IntervaloPermiteLanzarSpellMacro = True
-    IntervaloPermiteComboMagiaGolpe (True)
-    IntervaloPermiteUsarDespuestDeAtacar (True)
-Else
-    IntervaloPermiteLanzarSpellMacro = False
-    If UsaLanzar Then
-        'Call AddtoRichTextBox(frmMain.RecTxt, "Debes aguardar para lanzar el hechizo.", 255, 0, 0, True, False, False)
+    TActual = GetTickCount() And &H7FFFFFFF
+    
+    If TActual - Intervalos.tirar >= CONST_INTERVALO_TIRAR Then
+        
+       ' Call AddtoRichTextBox(frmMain.RecTxt, "Tirar OK.", 255, 0, 0, True, False, False)
+        Intervalos.tirar = TActual
+        IntervaloPermiteTirar = True
+    Else
+        IntervaloPermiteTirar = False
     End If
-End If
 
 End Function
-
-
 
 Sub CargarOpciones()
 On Error Resume Next
 
-        Dim Arch As String
+    Dim Arch As String
+
+    Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
+    'Musica
+    Musica = GetVar(Arch, "OPCIONES", "Musica")
+    VolMusic = Val(GetVar(Arch, "OPCIONES", "VolMusic"))
     
-        Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
-        'Musica
-        Musica = GetVar(Arch, "OPCIONES", "Musica")
-        VolMusic = Val(GetVar(Arch, "OPCIONES", "VolMusic"))
-        
-        fX = GetVar(Arch, "OPCIONES", "Fx")
-        VolFX = Val(GetVar(Arch, "OPCIONES", "VolFX"))
-        VolAmbient = Val(GetVar(Arch, "OPCIONES", "VolAmbient"))
-        AmbientalActivated = GetVar(Arch, "OPCIONES", "AmbientalActivated")
-        InvertirSonido = GetVar(Arch, "OPCIONES", "InvertirSonido")
-        CopiarDialogoAConsola = GetVar(Arch, "OPCIONES", "CopiarDialogoAConsola")
-        PermitirMoverse = GetVar(Arch, "OPCIONES", "PermitirMoverse")
-        MoverVentana = GetVar(Arch, "OPCIONES", "MoverVentana")
-        FPSFLAG = GetVar(Arch, "OPCIONES", "FPSFLAG")
-        AlphaMacro = GetVar(Arch, "OPCIONES", "AlphaMacro")
-        FxNavega = GetVar(Arch, "OPCIONES", "FxNavega")
-        
-        OcultarMacrosAlCastear = GetVar(Arch, "OPCIONES", "OcultarMacrosAlCastear")
-        MostrarIconosMeteorologicos = GetVar(Arch, "OPCIONES", "MostrarIconosMeteorologicos")
-        PantallaCompleta = GetVar(Arch, "OPCIONES", "PantallaCompleta")
-        Sonido = GetVar(Arch, "OPCIONES", "Sonido")
+    fX = GetVar(Arch, "OPCIONES", "Fx")
+    VolFX = Val(GetVar(Arch, "OPCIONES", "VolFX"))
+    VolAmbient = Val(GetVar(Arch, "OPCIONES", "VolAmbient"))
+    AmbientalActivated = GetVar(Arch, "OPCIONES", "AmbientalActivated")
+    InvertirSonido = GetVar(Arch, "OPCIONES", "InvertirSonido")
+    CopiarDialogoAConsola = GetVar(Arch, "OPCIONES", "CopiarDialogoAConsola")
+    PermitirMoverse = GetVar(Arch, "OPCIONES", "PermitirMoverse")
+    MoverVentana = GetVar(Arch, "OPCIONES", "MoverVentana")
+    FPSFLAG = GetVar(Arch, "OPCIONES", "FPSFLAG")
+    AlphaMacro = GetVar(Arch, "OPCIONES", "AlphaMacro")
+    FxNavega = GetVar(Arch, "OPCIONES", "FxNavega")
+    
+    OcultarMacrosAlCastear = GetVar(Arch, "OPCIONES", "OcultarMacrosAlCastear")
+    MostrarIconosMeteorologicos = GetVar(Arch, "OPCIONES", "MostrarIconosMeteorologicos")
+    PantallaCompleta = GetVar(Arch, "OPCIONES", "PantallaCompleta")
+    Sonido = GetVar(Arch, "OPCIONES", "Sonido")
 
-        VolMusicFadding = VolMusic
+    VolMusicFadding = VolMusic
 
-        MacAdress = GetMacAddress
-        HDserial = GetDriveSerialNumber
+    MacAdress = GetMacAddress
+    HDserial = GetDriveSerialNumber
+    
+    CursoresGraficos = IIf(RunningInVB, 0, GetVar(Arch, "OPCIONES", "CursoresGraficos"))
+    
+    UtilizarPreCarga = GetVar(Arch, "OPCIONES", "UtilizarPreCarga")
+    
+    
+    
+    SensibilidadMouse = GetVar(Arch, "OPCIONES", "SensibilidadMouse")
+    If SensibilidadMouse = 0 Then
+    SensibilidadMouse = 10
+    End If
+    
+    SensibilidadMouseOriginal = General_Get_Mouse_Speed
+    Call General_Set_Mouse_Speed(SensibilidadMouse)
         
-        CursoresGraficos = GetVar(Arch, "OPCIONES", "CursoresGraficos")
-        
-        UtilizarPreCarga = GetVar(Arch, "OPCIONES", "UtilizarPreCarga")
-        
-        
-        
-        SensibilidadMouse = GetVar(Arch, "OPCIONES", "SensibilidadMouse")
-        If SensibilidadMouse = 0 Then
-        SensibilidadMouse = 10
-        End If
-        
-        SensibilidadMouseOriginal = General_Get_Mouse_Speed
-        Call General_Set_Mouse_Speed(SensibilidadMouse)
-        
-Load frmConnect
-Load FrmLogear
+    Load frmConnect
+    Load FrmLogear
 
         
 End Sub

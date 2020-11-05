@@ -403,16 +403,23 @@ Private Sub interface_DblClick()
         Dim ObjType As Byte
         ObjType = ObjData(InvComUsu.OBJIndex(InvComUsu.SelectedItem)).ObjType
         
-        If Not IntervaloPermiteUsar Then Exit Sub
+        If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
         
         Select Case ObjType
-            Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.OtHerramientas, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
+            Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
                 Call EquiparItem
                 
             Case eObjType.otWeapon
                 If ObjData(InvComUsu.OBJIndex(InvComUsu.SelectedItem)).proyectil = 1 And InvComUsu.Equipped(InvComUsu.SelectedItem) Then
                     Call UsarItem
-                ElseIf Not InvComUsu.Equipped(InvComUsu.SelectedItem) Then
+                Else
+                    Call EquiparItem
+                End If
+                
+            Case eObjType.OtHerramientas
+                If InvComUsu.Equipped(InvComUsu.SelectedItem) Then
+                    Call UsarItem
+                Else
                     Call EquiparItem
                 End If
                  
