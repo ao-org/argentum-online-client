@@ -500,7 +500,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2806,7 +2805,8 @@ Public Sub Form_Click()
 
     If MouseBoton = vbLeftButton And ACCION1 = 0 Or MouseBoton = vbRightButton And ACCION2 = 0 Or MouseBoton = 4 And ACCION3 = 0 Then
         If Not Comerciando Then
-            If Not InGameArea() Then Exit Sub
+            ' Fix: game area esta mal
+            'If Not InGameArea() Then Exit Sub
 
             If MouseShift = 0 Then
                 If UsingSkill = 0 Then
