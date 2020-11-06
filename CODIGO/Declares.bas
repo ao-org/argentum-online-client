@@ -538,7 +538,7 @@ Public Enum eClass
     Druid       'Druida
     paladin     'Paladín
     Hunter      'Cazador
-    buscavidas  'Trabajador
+    Trabajador  'Trabajador
 End Enum
 
 Public Enum eCiudad
