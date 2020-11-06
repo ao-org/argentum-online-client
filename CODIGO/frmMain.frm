@@ -500,7 +500,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2033,33 +2032,31 @@ Private Sub lblPorcLvl_Click()
     Call WriteScrollInfo
 End Sub
 
-
 Private Sub MacroLadder_Timer()
 
-If MainTimer.Check(TimersIndex.Work) Then
-    If UserMacro.cantidad > 0 And UserMacro.Activado And UserMinSTA > 0 Then
-    
-        Select Case UserMacro.TIPO
-            Case 1 'Alquimia
+    If MainTimer.Check(TimersIndex.Work) Then
+        If UserMacro.cantidad > 0 And UserMacro.Activado And UserMinSTA > 0 Then
+        
+            Select Case UserMacro.TIPO
+                Case 1 'Alquimia
                     Call WriteCraftAlquimista(UserMacro.Index)
-            Case 2 'Carpinteria
+                Case 2 'Carpinteria
                     Call WriteCraftCarpenter(UserMacro.Index)
-            Case 3 'Sasteria
+                Case 3 'Sasteria
                     Call WriteCraftSastre(UserMacro.Index)
-            Case 4 'Herreria
+                Case 4 'Herreria
                     Call WriteCraftBlacksmith(UserMacro.Index)
-            Case 6
+                Case 6
                     Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
-        End Select
-    Else
-       Call ResetearUserMacro
+            End Select
+
+        Else
+            Call ResetearUserMacro
+        End If
+    
+        UserMacro.cantidad = UserMacro.cantidad - 1
+        
     End If
-    
-    
-    
-    UserMacro.cantidad = UserMacro.cantidad - 1
-    
-End If
 End Sub
 
 Private Sub macrotrabajo_Timer()
@@ -2858,7 +2855,12 @@ Public Sub Form_Click()
                     
                     If (UsingSkill = Recoleccion Or UsingSkill = FundirMetal Or UsingSkill = Manualidades) Then
                         If MainTimer.Check(TimersIndex.Work) Then
-                            SendSkill = True
+                            Call WriteWorkLeftClick(tX, tY, UsingSkill)
+                            Call FormParser.Parse_Form(frmmain)
+                            If CursoresGraficos = 0 Then
+                                frmmain.MousePointer = vbDefault
+                            End If
+                            Exit Sub
                         End If
                     End If
                    

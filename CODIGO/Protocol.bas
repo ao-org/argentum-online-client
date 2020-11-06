@@ -1546,15 +1546,16 @@ Private Sub HandleMacroTrabajoToggle()
     If activar = False Then
         Call ResetearUserMacro
     Else
-    AddtoRichTextBox frmmain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0
-    frmmain.MacroLadder.Enabled = True
-    UserMacro.Activado = True
-    UserMacro.cantidad = 999
-    UserMacro.TIPO = 6
-    
-    TargetXMacro = tX
-    TargetYMacro = tY
-    
+        AddtoRichTextBox frmmain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0
+        frmmain.MacroLadder.Interval = IntervaloTrabajo
+        frmmain.MacroLadder.Enabled = True
+        UserMacro.Intervalo = IntervaloTrabajo
+        UserMacro.Activado = True
+        UserMacro.cantidad = 999
+        UserMacro.TIPO = 6
+        
+        TargetXMacro = tX
+        TargetYMacro = tY
     End If
 End Sub
 ''
