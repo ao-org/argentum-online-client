@@ -205,68 +205,68 @@ Private Sub moverForm()
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 End Sub
 Private Sub cantidad_KeyPress(KeyAscii As Integer)
-If (KeyAscii = 27) Then
-    Unload Me
-End If
-If (KeyAscii <> 8) Then
-    If (KeyAscii <> 6) And (KeyAscii < 48 Or KeyAscii > 57) Then
-        KeyAscii = 0
+    If (KeyAscii = 27) Then
+        Unload Me
     End If
-End If
+    If (KeyAscii <> 8) Then
+        If (KeyAscii <> 6) And (KeyAscii < 48 Or KeyAscii > 57) Then
+            KeyAscii = 0
+        End If
+    End If
 End Sub
 
 Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
-Call Sound.Sound_Play(SND_CLICK)
-
-Select Case Index
-    Case 0
-        cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
-        cmdMasMenos(Index).Tag = "1"
-        cantidad.Text = str((Val(cantidad.Text) - 1))
-        m_Increment = -1
-    Case 1
-        cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
-        cmdMasMenos(Index).Tag = "1"
-        m_Increment = 1
-End Select
-
-tmrNumber.Interval = 30
-tmrNumber.Enabled = True
+    Call Sound.Sound_Play(SND_CLICK)
+    
+    Select Case Index
+        Case 0
+            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
+            cmdMasMenos(Index).Tag = "1"
+            Cantidad.Text = str((Val(Cantidad.Text) - 1))
+            m_Increment = -1
+        Case 1
+            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
+            cmdMasMenos(Index).Tag = "1"
+            m_Increment = 1
+    End Select
+    
+    tmrNumber.Interval = 30
+    tmrNumber.Enabled = True
 
 End Sub
 
 Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
-Select Case Index
-    Case 0
-        If cmdMasMenos(Index).Tag = "0" Then
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-over.bmp")
-            cmdMasMenos(Index).Tag = "1"
-        End If
-    Case 1
-        If cmdMasMenos(Index).Tag = "0" Then
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-over.bmp")
-            cmdMasMenos(Index).Tag = "1"
-        End If
-End Select
+    Select Case Index
+        Case 0
+            If cmdMasMenos(Index).Tag = "0" Then
+                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-over.bmp")
+                cmdMasMenos(Index).Tag = "1"
+            End If
+        Case 1
+            If cmdMasMenos(Index).Tag = "0" Then
+                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-over.bmp")
+                cmdMasMenos(Index).Tag = "1"
+            End If
+    End Select
 
 End Sub
 
 Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-Call Form_MouseMove(Button, Shift, x, y)
-tmrNumber.Enabled = False
+    Call Form_MouseMove(Button, Shift, x, y)
+    tmrNumber.Enabled = False
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-If (KeyAscii = 27) Then
-    Unload Me
-End If
+    If (KeyAscii = 27) Then
+        Unload Me
+    End If
 End Sub
 Private Sub Image1_Click(Index As Integer)
     Call Sound.Sound_Play(SND_CLICK)
     
-    If Not IsNumeric(cantidad.Text) Or cantidad.Text = 0 Then Exit Sub
+    If Not IsNumeric(Cantidad.Text) Or Cantidad.Text = 0 Then Exit Sub
 
     Select Case Index
         Case 0
@@ -274,8 +274,8 @@ Private Sub Image1_Click(Index As Integer)
  
             LasActionBuy = True
 
-            If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
-                Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
+            If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(Cantidad) Then
+                Call WriteCommerceBuy(InvComNpc.SelectedItem, Cantidad.Text)
             Else
                 AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
             End If
@@ -285,59 +285,61 @@ Private Sub Image1_Click(Index As Integer)
             
             LasActionBuy = False
             
-            Call WriteCommerceSell(InvComUsu.SelectedItem, min(Val(cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
+            Call WriteCommerceSell(InvComUsu.SelectedItem, min(Val(Cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
     End Select
     
 End Sub
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-cantidad.BackColor = RGB(18, 19, 13)
+    Call FormParser.Parse_Form(Me)
+    Cantidad.BackColor = RGB(18, 19, 13)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-moverForm
-If Image1(0).Tag = "1" Then
-   Image1(0).Picture = Nothing
-   Image1(0).Tag = "0"
-End If
-If Image1(1).Tag = "1" Then
-    Image1(1).Picture = Nothing
-    Image1(1).Tag = "0"
-End If
-
-If cmdMasMenos(0).Tag = "1" Then
-    cmdMasMenos(0).Picture = Nothing
-    cmdMasMenos(0).Tag = "0"
-End If
-
-If cmdMasMenos(1).Tag = "1" Then
-    cmdMasMenos(1).Picture = Nothing
-    cmdMasMenos(1).Tag = "0"
-End If
+    moverForm
+    If Image1(0).Tag = "1" Then
+       Image1(0).Picture = Nothing
+       Image1(0).Tag = "0"
+    End If
+    If Image1(1).Tag = "1" Then
+        Image1(1).Picture = Nothing
+        Image1(1).Tag = "0"
+    End If
+    
+    If cmdMasMenos(0).Tag = "1" Then
+        cmdMasMenos(0).Picture = Nothing
+        cmdMasMenos(0).Tag = "0"
+    End If
+    
+    If cmdMasMenos(1).Tag = "1" Then
+        cmdMasMenos(1).Picture = Nothing
+        cmdMasMenos(1).Tag = "0"
+    End If
 End Sub
+
 Private Sub addRemove_Click(Index As Integer)
-Call Sound.Sound_Play(SND_CLICK)
-Select Case Index
-    Case 0
-        cantidad = cantidad - 1
-    Case 1
-        cantidad = cantidad + 1
+    Call Sound.Sound_Play(SND_CLICK)
+    Select Case Index
+        Case 0
+            Cantidad = Cantidad - 1
+        Case 1
+            Cantidad = Cantidad + 1
     End Select
 End Sub
+
 Private Sub cantidad_Change()
-
+    If Val(Cantidad.Text) < 0 Then
+        Cantidad.Text = 1
+        m_Number = 1
+    ElseIf Val(Cantidad.Text) > MAX_INVENTORY_OBJS Then
+        Cantidad.Text = 1
+        m_Number = 1
+    Else
+        m_Number = Val(Cantidad.Text)
+    End If
     
-If Val(cantidad.Text) < 0 Then
-    cantidad.Text = 1
-    m_Number = 1
-ElseIf Val(cantidad.Text) > MAX_INVENTORY_OBJS Then
-    cantidad.Text = 1
-    m_Number = 1
-Else
-    m_Number = Val(cantidad.Text)
-End If
-
-cantidad.SelStart = Len(cantidad.Text)
+    Cantidad.SelStart = Len(Cantidad.Text)
+    
+    InvComUsu.ReDraw
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -345,27 +347,27 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-If Index = 0 Then
+    If Index = 0 Then
         Image1(0).Picture = LoadInterface("boton-comprar-ES-off.bmp")
         Image1(0).Tag = "0"
-Else
+    Else
         Image1(1).Picture = LoadInterface("boton-vender-ES-off.bmp")
         Image1(1).Tag = "0"
-End If
+    End If
 End Sub
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-If Index = 0 Then
-    If Image1(0).Tag = "0" Then
-        Image1(0).Picture = LoadInterface("boton-comprar-ES-over.bmp")
-        Image1(0).Tag = "1"
+    If Index = 0 Then
+        If Image1(0).Tag = "0" Then
+            Image1(0).Picture = LoadInterface("boton-comprar-ES-over.bmp")
+            Image1(0).Tag = "1"
+        End If
+    Else
+        
+        If Image1(1).Tag = "0" Then
+            Image1(1).Picture = LoadInterface("boton-vender-over.bmp")
+            Image1(1).Tag = "1"
+        End If
     End If
-Else
-    
-    If Image1(1).Tag = "0" Then
-        Image1(1).Picture = LoadInterface("boton-vender-over.bmp")
-        Image1(1).Tag = "1"
-    End If
-End If
 End Sub
 
 Private Sub interface_Click()
@@ -389,8 +391,8 @@ Private Sub interface_DblClick()
     
         LasActionBuy = True
 
-        If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
-            Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
+        If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(Cantidad) Then
+            Call WriteCommerceBuy(InvComNpc.SelectedItem, Cantidad.Text)
         Else
             AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
         End If
@@ -485,7 +487,7 @@ Private Sub InvComUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         If InvComNpc.GetSlot(x, y) > 0 Then
             ' Vendemos el item
             LasActionBuy = False
-            Call WriteCommerceSell(Drag, max(Val(cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
+            Call WriteCommerceSell(Drag, max(Val(Cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
         End If
     End If
 
@@ -498,21 +500,22 @@ Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         ' Compramos el item
         LasActionBuy = True
         ' Si tiene suficiente oro
-        If UserGLD >= InvComNpc.Valor(Drag) * Val(cantidad.Text) Then
-            Call WriteCommerceBuy(Drag, Val(cantidad.Text))
+        If UserGLD >= InvComNpc.Valor(Drag) * Val(Cantidad.Text) Then
+            Call WriteCommerceBuy(Drag, Val(Cantidad.Text))
         Else
             AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
         End If
     End If
 
 End Sub
+
 Private Sub salir_Click()
-Unload Me
+    Unload Me
 End Sub
 
 Private Sub tmrNumber_Timer()
-Const MIN_NUMBER = 1
-Const MAX_NUMBER = 10000
+    Const MIN_NUMBER = 1
+    Const MAX_NUMBER = 10000
 
     m_Number = m_Number + m_Increment
     If m_Number < MIN_NUMBER Then
@@ -521,7 +524,7 @@ Const MAX_NUMBER = 10000
         m_Number = MAX_NUMBER
     End If
 
-    cantidad.Text = format$(m_Number)
+    Cantidad.Text = format$(m_Number)
     
     If m_Interval > 1 Then
         m_Interval = m_Interval - 1
