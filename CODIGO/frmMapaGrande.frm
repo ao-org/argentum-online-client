@@ -14,6 +14,7 @@ Begin VB.Form frmMapaGrande
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   Picture         =   "frmMapaGrande.frx":0000
    ScaleHeight     =   719
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   690
@@ -25,14 +26,14 @@ Begin VB.Form frmMapaGrande
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
-      Height          =   1575
-      Left            =   7560
-      ScaleHeight     =   105
+      Height          =   1455
+      Left            =   7320
+      ScaleHeight     =   97
       ScaleMode       =   0  'User
-      ScaleWidth      =   157
+      ScaleWidth      =   173
       TabIndex        =   10
-      Top             =   8520
-      Width           =   2355
+      Top             =   8820
+      Width           =   2595
    End
    Begin VB.PictureBox Picture1 
       Appearance      =   0  'Flat
@@ -40,22 +41,22 @@ Begin VB.Form frmMapaGrande
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   465
-      Left            =   7560
+      Left            =   7470
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   9
-      Top             =   7200
+      Top             =   7530
       Width           =   480
    End
    Begin MSComctlLib.ListView ListView1 
-      Height          =   1125
-      Left            =   7560
+      Height          =   960
+      Left            =   7320
       TabIndex        =   3
-      Top             =   3525
-      Width           =   2355
-      _ExtentX        =   4154
-      _ExtentY        =   1984
+      Top             =   3900
+      Width           =   2595
+      _ExtentX        =   4577
+      _ExtentY        =   1693
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
@@ -95,13 +96,13 @@ Begin VB.Form frmMapaGrande
       EndProperty
    End
    Begin MSComctlLib.ListView listdrop 
-      Height          =   660
-      Left            =   8280
+      Height          =   780
+      Left            =   8040
       TabIndex        =   8
-      Top             =   7020
-      Width           =   1575
-      _ExtentX        =   2778
-      _ExtentY        =   1164
+      Top             =   7380
+      Width           =   1935
+      _ExtentX        =   3413
+      _ExtentY        =   1376
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
@@ -141,12 +142,12 @@ Begin VB.Form frmMapaGrande
       ForeColor       =   &H80000008&
       Height          =   8910
       Left            =   480
-      Picture         =   "frmMapaGrande.frx":0000
+      Picture         =   "frmMapaGrande.frx":1DBA0
       ScaleHeight     =   594
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   432
       TabIndex        =   0
-      Top             =   1440
+      Top             =   1410
       Width           =   6480
       Begin VB.Shape Shape2 
          BackColor       =   &H00FF0000&
@@ -257,14 +258,6 @@ Begin VB.Form frmMapaGrande
       Top             =   8325
       Width           =   2775
    End
-   Begin VB.Shape Shape3 
-      BackColor       =   &H00000000&
-      BackStyle       =   1  'Opaque
-      Height          =   9255
-      Left            =   360
-      Top             =   1320
-      Width           =   6750
-   End
    Begin VB.Label Label7 
       BackStyle       =   0  'Transparent
       Height          =   255
@@ -297,30 +290,30 @@ Begin VB.Form frmMapaGrande
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C0C0C0&
-      Height          =   165
-      Left            =   7470
+      Height          =   525
+      Left            =   7350
       TabIndex        =   11
-      Top             =   1680
-      Width           =   2550
+      Top             =   1770
+      Width           =   2670
       WordWrap        =   -1  'True
    End
    Begin VB.Image Image3 
-      Height          =   315
-      Left            =   8790
-      Top             =   2460
-      Width           =   300
+      Height          =   255
+      Left            =   8580
+      Top             =   2385
+      Width           =   255
    End
    Begin VB.Image Image2 
-      Height          =   315
+      Height          =   255
       Left            =   7350
-      Top             =   2460
-      Width           =   300
+      Top             =   2385
+      Width           =   255
    End
    Begin VB.Image Image1 
-      Height          =   585
-      Left            =   7620
-      Top             =   10155
-      Width           =   2445
+      Height          =   345
+      Left            =   9960
+      Top             =   0
+      Width           =   525
    End
    Begin VB.Label Label3 
       BackColor       =   &H00000000&
@@ -417,10 +410,10 @@ Begin VB.Form frmMapaGrande
       ForeColor       =   &H00C0C0C0&
       Height          =   315
       Index           =   0
-      Left            =   7560
+      Left            =   7320
       TabIndex        =   2
-      Top             =   1200
-      Width           =   2475
+      Top             =   1320
+      Width           =   2715
    End
 End
 Attribute VB_Name = "frmMapaGrande"
@@ -474,7 +467,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+'Call FormParser.Parse_Form(Me)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -536,7 +529,7 @@ Private Sub Image2_Click()
 
 If Dungeon Then
     picMap.Picture = LoadInterface("mapa.bmp")
-    Shape3.BackColor = RGB(0, 83, 114)
+
     Dungeon = False
     
     Image2.Picture = Nothing
@@ -546,9 +539,8 @@ If Dungeon Then
 Else
 Image3.Picture = Nothing
 picMap.Picture = LoadInterface("mapadungeon.bmp")
-Image2.Picture = LoadInterface("mapa_boton1.bmp")
+Image2.Picture = LoadInterface("check-amarillo.bmp")
 
-Shape3.BackColor = RGB(0, 0, 0)
 Dungeon = True
 Referencias = False
 End If
@@ -575,14 +567,12 @@ If Dungeon Then Exit Sub
 
 If Referencias Then
     picMap.Picture = LoadInterface("mapa.bmp")
-    Shape3.BackColor = RGB(0, 83, 114)
     Image3.Picture = Nothing
     Referencias = False
 Else
     Referencias = True
     picMap.Picture = LoadInterface("mapa_referencias.bmp")
-    Image3.Picture = LoadInterface("mapa_boton2.bmp")
-    Shape3.BackColor = RGB(0, 83, 114)
+    Image3.Picture = LoadInterface("check-amarillo.bmp")
 End If
 
 End Sub

@@ -1928,7 +1928,7 @@ Private Sub HandleShowFrmMapa()
 
     
 
-    frmMapaGrande.Picture = LoadInterface("interfacemapamundo.bmp")
+    frmMapaGrande.Picture = LoadInterface("VentanaMapa.bmp")
     HayFormularioAbierto = True
     frmMapaGrande.Show , frmmain
     
