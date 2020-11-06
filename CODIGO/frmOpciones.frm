@@ -438,9 +438,9 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         End If
         
     If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
+        Check1.Picture = Nothing
     Else
-        check1.Picture = LoadInterface("config_stick.bmp")
+        Check1.Picture = LoadInterface("config_stick.bmp")
     End If
         
 End Sub
@@ -655,14 +655,14 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
         Command1.Picture = LoadInterface("config_teclas.bmp")
         Command1.Tag = "1"
     End If
-        cmdcerrar = Nothing
-cmdcerrar.Tag = "0"
+        cmdCerrar = Nothing
+cmdCerrar.Tag = "0"
     
 End Sub
 Private Sub cmdcerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If cmdcerrar.Tag = "0" Then
-        cmdcerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdcerrar.Tag = "1"
+    If cmdCerrar.Tag = "0" Then
+        cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
+        cmdCerrar.Tag = "1"
     End If
     cmdChangePassword = Nothing
 cmdChangePassword.Tag = "0"
@@ -674,8 +674,8 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
         cmdChangePassword.Picture = LoadInterface("config_contraseñ.bmp")
         cmdChangePassword.Tag = "1"
     End If
-    cmdcerrar = Nothing
-cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+cmdCerrar.Tag = "0"
 End Sub
 
 Private Sub cmdWeb_Click()
@@ -769,8 +769,8 @@ facebook = Nothing
 facebook.Tag = "0"
 Command1 = Nothing
 Command1.Tag = "0"
-cmdcerrar = Nothing
-cmdcerrar.Tag = "0"
+cmdCerrar = Nothing
+cmdCerrar.Tag = "0"
 cmdChangePassword = Nothing
 cmdChangePassword.Tag = "0"
 End Sub
@@ -861,9 +861,9 @@ Public Sub Init()
     
     
     If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
+        Check1.Picture = Nothing
     Else
-        check1.Picture = LoadInterface("config_stick.bmp")
+        Check1.Picture = LoadInterface("config_stick.bmp")
     End If
 
     
@@ -898,9 +898,12 @@ End Sub
 
 
 Private Sub scrMidi_Change()
-Sound.Music_Volume_Set scrMidi.value
-Sound.VolumenActualMusicMax = scrMidi.value
-VolMusic = Sound.VolumenActualMusicMax
+If Musica <> CONST_DESHABILITADA Then
+    Sound.Music_Volume_Set scrMidi.value
+    Sound.VolumenActualMusicMax = scrMidi.value
+    VolMusic = Sound.VolumenActualMusicMax
+End If
+
 End Sub
 
 Private Sub scrSens_Change()

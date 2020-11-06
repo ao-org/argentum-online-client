@@ -402,7 +402,7 @@ Public Function Music_Load(ByVal file_str As String, Optional ByVal Volume As Lo
                 IMC.RenderFile Windows_Temp_Dir & file_str & ".mp3"
                 Kill Windows_Temp_Dir & file_str & ".mp3"
                 lastMid = False
-            ElseIf Extract_File(Midi, MidiPath, file_str & ".mid", Windows_Temp_Dir, False) Then
+            ElseIf Extract_File(midi, MidiPath, file_str & ".mid", Windows_Temp_Dir, False) Then
                 If Not Music_Empty() = True Then GoTo Error_Handl
                 Set dmSeg = dmLoader.LoadSegment(Windows_Temp_Dir & file_str & ".mid")
                 dmSeg.SetStandardMidiFile
@@ -412,7 +412,7 @@ Public Function Music_Load(ByVal file_str As String, Optional ByVal Volume As Lo
                 GoTo Error_Handl
             End If
         ElseIf Music = CONST_MIDI Then
-            If Extract_File(Midi, App.Path & "\..\Recursos\OUTPUT\", file_str & ".mid", Windows_Temp_Dir, False) Then
+            If Extract_File(midi, App.Path & "\..\Recursos\OUTPUT\", file_str & ".mid", Windows_Temp_Dir, False) Then
                 If Not Music_Empty() = True Then GoTo Error_Handl
                 Set dmSeg = dmLoader.LoadSegment(Windows_Temp_Dir & file_str & ".mid")
                 dmSeg.SetStandardMidiFile
@@ -554,12 +554,20 @@ Public Function Music_Volume_Set(ByVal sound_volume As Long) As Boolean
 
     On Error GoTo Error_Handl
     
-    If IBA Is Nothing Then Exit Function
+    
+    
+    If (Musica = CONST_DESHABILITADA) Then Exit Function
+    
     
     If sound_volume > 0 Then sound_volume = 0
     If sound_volume < -4000 Then sound_volume = -4000
     
-    IBA.Volume = sound_volume
+    If lastMid = False Then
+        If IBA Is Nothing Then Exit Function
+        IBA.Volume = sound_volume
+    Else
+        dmPerf.SetMasterVolume (sound_volume)
+    End If
 
     Music_Volume_Set = True
     Exit Function
