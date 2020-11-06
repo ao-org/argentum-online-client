@@ -3866,10 +3866,15 @@ Public Sub DrawInterfaceComerciar()
     ' Me fijo qué inventario está seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     
+    Dim Cantidad As Integer
     If frmComerciar.InvComNpc.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComNpc
+        ' Al comprar, calculamos el valor según la cantidad exacta que ingresó
+        Cantidad = Val(frmComerciar.Cantidad.Text)
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
+        ' Al vender, calculamos el valor según el min(cantidad_ingresada, cantidad_items)
+        Cantidad = min(Val(frmComerciar.Cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
     End If
     
     ' Si hay alguno seleccionado
@@ -3900,7 +3905,7 @@ Public Sub DrawInterfaceComerciar()
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
         frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
-        frmComerciar.lblCosto = PonerPuntos(CLng(CurrentInventory.Valor(CurrentInventory.SelectedItem)))
+        frmComerciar.lblCosto = PonerPuntos(CLng(CurrentInventory.Valor(CurrentInventory.SelectedItem) * Cantidad))
         
         Set CurrentInventory = Nothing
     End If
@@ -4604,10 +4609,10 @@ On Error Resume Next
     
 
   
-      Dim cantidad As Long
-       cantidad = particle_group_list(particle_group_index).particle_count
+      Dim Cantidad As Long
+       Cantidad = particle_group_list(particle_group_index).particle_count
  
-            For loopc = 1 To cantidad
+            For loopc = 1 To Cantidad
             
                         Particle_Render particle_group_list(particle_group_index).particle_stream(loopc), _
                             screen_x, screen_y, _
