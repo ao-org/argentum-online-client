@@ -1408,8 +1408,7 @@ Private Sub HandleLogged()
     UserDescansar = False
     Nombres = True
     Pregunta = False
-    
-    frmmain.panelInf.Picture = LoadInterface("primerapest.bmp")
+
     frmmain.stabar.Visible = True
     frmmain.HpBar.Visible = True
     If UserMaxMAN <> 0 Then
@@ -4204,19 +4203,19 @@ Private Sub HandlePosLLamadaDeClan()
     'Remove packet ID
     Call incomingData.ReadByte
         
-    Dim Map As Integer
+    Dim map As Integer
     Dim srcX As Byte
     Dim srcY As Byte
     
-    Map = incomingData.ReadInteger()
+    map = incomingData.ReadInteger()
     srcX = incomingData.ReadByte()
     srcY = incomingData.ReadByte()
     
 
 Dim idmap As Integer
 
-LLamadaDeclanMapa = Map
-idmap = ObtenerIdMapaDeLlamadaDeClan(Map)
+LLamadaDeclanMapa = map
+idmap = ObtenerIdMapaDeLlamadaDeClan(map)
 
 
     Dim x As Long
@@ -4325,7 +4324,7 @@ On Error GoTo errhandler
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guildsStr As String
     guildsStr = buffer.ReadASCIIString()
@@ -4349,7 +4348,7 @@ On Error GoTo errhandler
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
     End If
@@ -4364,7 +4363,7 @@ On Error GoTo errhandler
     frmGuildAdm.Picture = LoadInterface("clanes.bmp")
     
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     frmGuildAdm.Show vbModeless, frmmain
@@ -6359,10 +6358,10 @@ On Error GoTo errhandler
         
         
         'Empty the list
-        Call frmGuildNews.guildslist.Clear
+        Call frmGuildNews.GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
           
     
@@ -6714,10 +6713,10 @@ On Error GoTo errhandler
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         
@@ -9561,7 +9560,7 @@ End Sub
 ' @param    map The map in which to check for the existing creatures.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCreaturesInMap(ByVal Map As Integer)
+Public Sub WriteCreaturesInMap(ByVal map As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -9570,7 +9569,7 @@ Public Sub WriteCreaturesInMap(ByVal Map As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.CreaturesInMap)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
     End With
 End Sub
 
@@ -9597,7 +9596,7 @@ End Sub
 ' @param    y The y position in the map to which to waro the character.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteWarpChar(ByVal UserName As String, ByVal Map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -9608,7 +9607,7 @@ Public Sub WriteWarpChar(ByVal UserName As String, ByVal Map As Integer, ByVal x
         
         Call .WriteASCIIString(UserName)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
         
         Call .WriteByte(x)
         Call .WriteByte(y)
@@ -10430,7 +10429,7 @@ End Sub
 ' @param    y The position in the y axis to which the teleport will lead.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteTeleportCreate(ByVal Map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -10439,7 +10438,7 @@ Public Sub WriteTeleportCreate(ByVal Map As Integer, ByVal x As Byte, ByVal y As
     With outgoingData
         Call .WriteByte(ClientPacketID.TeleportCreate)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
         
         Call .WriteByte(x)
         Call .WriteByte(y)
@@ -10500,7 +10499,7 @@ End Sub
 ' @param    map The map in which to play the given midi.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal Map As Integer)
+Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal map As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -10511,7 +10510,7 @@ Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal Map As Integer)
         
         Call .WriteByte(midiID)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
     End With
 End Sub
 
@@ -10524,7 +10523,7 @@ End Sub
 ' @param    y       The position in the y axis in which to play the given wave.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal Map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -10535,7 +10534,7 @@ Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal Map As Integer, ByVal
         
         Call .WriteByte(waveID)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
         
         Call .WriteByte(x)
         Call .WriteByte(y)
@@ -13553,7 +13552,7 @@ Private Sub HandleUbicacion()
 Dim miembro As Byte
 Dim x As Byte
 Dim y As Byte
-Dim Map As Integer
+Dim map As Integer
 
 
     
@@ -13566,13 +13565,13 @@ Dim Map As Integer
     y = incomingData.ReadByte()
     
     
-    Map = incomingData.ReadInteger()
+    map = incomingData.ReadInteger()
 
     
         If x = 0 Then
             frmmain.personaje(miembro).Visible = False
         Else
-            If UserMap = Map Then
+            If UserMap = map Then
                 frmmain.personaje(miembro).Visible = True
                 frmmain.personaje(miembro).Left = x - 4
                 frmmain.personaje(miembro).Top = y - 2
@@ -13813,7 +13812,7 @@ Public Sub WriteCodigo(ByVal Codigo As String)
 End Sub
 
 
-Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal Map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal name As String, ByVal reglas As String)
+Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal name As String, ByVal reglas As String)
 '***************************************************
 'Author: Pablo Mercavides
 'Last Modification: 16/05/2020
@@ -13835,7 +13834,7 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byt
     Call outgoingData.WriteByte(cazador)
     
     Call outgoingData.WriteByte(Trabajador)
-    Call outgoingData.WriteInteger(Map)
+    Call outgoingData.WriteInteger(map)
     Call outgoingData.WriteByte(x)
     Call outgoingData.WriteByte(y)
     Call outgoingData.WriteASCIIString(name)
