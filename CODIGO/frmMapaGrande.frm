@@ -14,7 +14,6 @@ Begin VB.Form frmMapaGrande
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmMapaGrande.frx":0000
    ScaleHeight     =   719
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   690
@@ -142,7 +141,7 @@ Begin VB.Form frmMapaGrande
       ForeColor       =   &H80000008&
       Height          =   8910
       Left            =   480
-      Picture         =   "frmMapaGrande.frx":1DBA0
+      Picture         =   "frmMapaGrande.frx":0000
       ScaleHeight     =   594
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   432
@@ -509,7 +508,7 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Image1 = LoadInterface("cerrarhover.bmp")
+'Image1 = LoadInterface("cerrarhover.bmp")
 End Sub
 
 
@@ -588,18 +587,18 @@ End Sub
 Private Sub listdrop_Click()
 On Error Resume Next
 'Picture1.Refresh
-picture1.BackColor = vbBlack
-picture1.Refresh
+Picture1.BackColor = vbBlack
+Picture1.Refresh
 'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
 If listdrop.SelectedItem.SubItems(1) = "" Then Exit Sub
-Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+Call Grh_Render_To_Hdc(Picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
 End Sub
 
 
 Private Sub ListView1_Click()
 On Error Resume Next
 Label8.Caption = ""
-picture1.Refresh
+Picture1.Refresh
 
 
 
