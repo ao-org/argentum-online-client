@@ -500,6 +500,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2087,7 +2088,7 @@ End Sub
 Public Sub ActivarMacroTrabajo()
     TargetXMacro = tX
     TargetYMacro = tY
-    macrotrabajo.Interval = INT_MACRO_TRABAJO
+    macrotrabajo.Interval = IntervaloTrabajo
     macrotrabajo.Enabled = True
     Call AddtoRichTextBox(frmmain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
 End Sub
@@ -2817,21 +2818,22 @@ Public Sub Form_Click()
                     Dim SendSkill As Boolean
                     
                     If UsingSkill = Magia Then
-                        If MainTimer.Check(TimersIndex.Attack, False) Then
-                            If MainTimer.Check(TimersIndex.CastAttack, False) Then
-                                If MainTimer.Check(TimersIndex.CastSpell) Then
-                                    SendSkill = True
-                                End If
+                        If MainTimer.Check(TimersIndex.AttackSpell, False) Then
+                            If MainTimer.Check(TimersIndex.CastSpell) Then
+                                SendSkill = True
+                                Call MainTimer.Restart(TimersIndex.CastAttack)
                             End If
                         End If
                     End If
                     
                     'Splitted because VB isn't lazy!
                     If UsingSkill = Proyectiles Then
-                        If MainTimer.Check(TimersIndex.Attack, False) Then
+                        If MainTimer.Check(TimersIndex.AttackSpell, False) Then
                             If MainTimer.Check(TimersIndex.CastAttack, False) Then
                                 If MainTimer.Check(TimersIndex.Arrows) Then
                                     SendSkill = True
+                                    Call MainTimer.Restart(TimersIndex.Attack) ' Prevengo flecha-golpe
+                                    Call MainTimer.Restart(TimersIndex.CastSpell) ' flecha-hechizo
                                 End If
                             End If
                         End If
@@ -2890,9 +2892,13 @@ Public Sub Form_Click()
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 2 Or MouseBoton = vbRightButton And ACCION2 = 2 Or MouseBoton = 4 And ACCION3 = 2 Then
         If UserDescansar Or UserMeditar Then Exit Sub
-        If Not MainTimer.Check(TimersIndex.CastAttack, False) Then Exit Sub
-        If Not MainTimer.Check(TimersIndex.Attack) Then Exit Sub
-        Call WriteAttack
+        If MainTimer.Check(TimersIndex.CastAttack, False) Then
+            If MainTimer.Check(TimersIndex.Attack) Then
+                Call MainTimer.Restart(TimersIndex.AttackSpell)
+                Call WriteAttack
+            End If
+        End If
+
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 3 Or MouseBoton = vbRightButton And ACCION2 = 3 Or MouseBoton = 4 And ACCION3 = 3 Then
         If MainTimer.Check(TimersIndex.UseItemWithU) Then Call UsarItem

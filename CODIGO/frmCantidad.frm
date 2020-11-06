@@ -136,6 +136,9 @@ End If
 
 End Sub
 Private Sub tirar_click()
+    
+    If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
+
 Call Sound.Sound_Play(SND_CLICK)
     If LenB(frmCantidad.Text1.Text) > 0 Then
         If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
@@ -173,7 +176,9 @@ End Sub
 
 
 Private Sub tirartodo_click()
-Call Sound.Sound_Play(SND_CLICK)
+    If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
+
+    Call Sound.Sound_Play(SND_CLICK)
     If frmmain.Inventario.SelectedItem = 0 Then Exit Sub
     
 

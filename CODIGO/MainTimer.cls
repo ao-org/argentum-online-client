@@ -47,7 +47,7 @@ Option Explicit
 ' How many timers we are going to use-
 '
 ' @see See MainTimer.CreateAll
-    Private Const CANTIDADTIMERS As Byte = 8
+    Private Const CANTIDADTIMERS As Byte = 11
 
 ''
 ' A Timer data structure.
@@ -86,6 +86,9 @@ Public Enum TimersIndex
     CastSpell = 6
     Arrows = 7
     CastAttack = 8
+    AttackSpell = 9
+    Walk = 10
+    Drop = 11
 End Enum
 
 
@@ -197,12 +200,6 @@ Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boole
         Check = True 'We have Ticked!
         If Restart Then
             Timer(TimerIndex).StartTick = GetTickCount 'Restart Timer (Nicer than calling Restart() )
-            If (TimerIndex = TimersIndex.Attack) Or (TimerIndex = TimersIndex.CastSpell) Then
-                Timer(TimersIndex.CastAttack).StartTick = GetTickCount 'Set Cast-Attack interval
-            ElseIf TimerIndex = TimersIndex.CastAttack Then
-                Timer(TimersIndex.Attack).StartTick = GetTickCount 'Restart Attack interval
-                Timer(TimersIndex.CastSpell).StartTick = GetTickCount 'Restart Magic interval
-            End If
         End If
     End If
 End Function
