@@ -291,79 +291,82 @@ End Sub
 Private Sub Command6_Click()
 On Error Resume Next
 
-If Index = 1 Then
+    If Index = 1 Then
 
         If cantidad > 1 Then
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = ArmasHerrero(lstArmas.ListIndex + 1).Index
             AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            UserMacro.Intervalo = IntervaloTrabajo
             UserMacro.Activado = True
+            frmmain.MacroLadder.Interval = IntervaloTrabajo
             frmmain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(ArmasHerrero(lstArmas.ListIndex + 1).Index)
             If frmmain.macrotrabajo.Enabled Then _
                 MacroBltIndex = ArmasHerrero(lstArmas.ListIndex + 1).Index
         End If
-    Unload Me
-ElseIf Index = 2 Then
-
-    If cantidad > 1 Then
-        UserMacro.cantidad = cantidad
-        UserMacro.TIPO = 4
-        UserMacro.Index = ArmadurasHerrero(lstArmas.ListIndex).Index
-        AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-        UserMacro.Activado = True
-        frmmain.MacroLadder.Enabled = True
-    Else
-        Call WriteCraftBlacksmith(ArmadurasHerrero(lstArmas.ListIndex).Index)
-        If frmmain.macrotrabajo.Enabled Then _
-            MacroBltIndex = ArmadurasHerrero(lstArmas.ListIndex).Index
+        Unload Me
+    ElseIf Index = 2 Then
+    
+        If cantidad > 1 Then
+            UserMacro.cantidad = cantidad
+            UserMacro.TIPO = 4
+            UserMacro.Index = ArmadurasHerrero(lstArmas.ListIndex).Index
+            AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            UserMacro.Intervalo = IntervaloTrabajo
+            UserMacro.Activado = True
+            frmmain.MacroLadder.Interval = IntervaloTrabajo
+            frmmain.MacroLadder.Enabled = True
+        Else
+            Call WriteCraftBlacksmith(ArmadurasHerrero(lstArmas.ListIndex).Index)
+            If frmmain.macrotrabajo.Enabled Then _
+                MacroBltIndex = ArmadurasHerrero(lstArmas.ListIndex).Index
+            
+        End If
         
-    End If
+        Unload Me
+    ElseIf Index = 3 Then
     
-    Unload Me
-ElseIf Index = 3 Then
-
-    If cantidad > 1 Then
-        UserMacro.cantidad = cantidad
-        UserMacro.TIPO = 4
-        UserMacro.Index = CascosHerrero(lstArmas.ListIndex).Index
-        AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-        UserMacro.Activado = True
-        frmmain.MacroLadder.Enabled = True
-    Else
-        Call WriteCraftBlacksmith(CascosHerrero(lstArmas.ListIndex).Index)
-        If frmmain.macrotrabajo.Enabled Then _
-            MacroBltIndex = CascosHerrero(lstArmas.ListIndex).Index
+        If cantidad > 1 Then
+            UserMacro.cantidad = cantidad
+            UserMacro.TIPO = 4
+            UserMacro.Index = CascosHerrero(lstArmas.ListIndex).Index
+            AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            UserMacro.Intervalo = IntervaloTrabajo
+            UserMacro.Activado = True
+            frmmain.MacroLadder.Interval = IntervaloTrabajo
+            frmmain.MacroLadder.Enabled = True
+        Else
+            Call WriteCraftBlacksmith(CascosHerrero(lstArmas.ListIndex).Index)
+            If frmmain.macrotrabajo.Enabled Then _
+                MacroBltIndex = CascosHerrero(lstArmas.ListIndex).Index
+            
+        End If
         
-    End If
+        Unload Me
+    ElseIf Index = 4 Then
     
-    Unload Me
-ElseIf Index = 4 Then
-
-    If cantidad > 1 Then
-        UserMacro.cantidad = cantidad
-        UserMacro.TIPO = 4
-        UserMacro.Index = EscudosHerrero(lstArmas.ListIndex).Index
-        AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-        UserMacro.Activado = True
-        frmmain.MacroLadder.Enabled = True
-    Else
-        Call WriteCraftBlacksmith(EscudosHerrero(lstArmas.ListIndex).Index)
-        If frmmain.macrotrabajo.Enabled Then _
-            MacroBltIndex = EscudosHerrero(lstArmas.ListIndex).Index
+        If cantidad > 1 Then
+            UserMacro.cantidad = cantidad
+            UserMacro.TIPO = 4
+            UserMacro.Index = EscudosHerrero(lstArmas.ListIndex).Index
+            AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            UserMacro.Intervalo = IntervaloTrabajo
+            UserMacro.Activado = True
+            frmmain.MacroLadder.Interval = IntervaloTrabajo
+            frmmain.MacroLadder.Enabled = True
+        Else
+            Call WriteCraftBlacksmith(EscudosHerrero(lstArmas.ListIndex).Index)
+            If frmmain.macrotrabajo.Enabled Then _
+                MacroBltIndex = EscudosHerrero(lstArmas.ListIndex).Index
+            
+        End If
         
+        Unload Me
     End If
-    
-    Unload Me
-End If
 
-    
-    
-    
-    
-    
 End Sub
 Private Sub Command6_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
                 'Command6.Picture = LoadInterface("trabajar_construirpress.bmp")

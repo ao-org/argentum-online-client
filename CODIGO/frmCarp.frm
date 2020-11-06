@@ -171,6 +171,7 @@ If cantidad > 1 Then
     UserMacro.Index = ObjCarpintero(lstArmas.ListIndex + 1)
     AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
     UserMacro.Activado = True
+    frmmain.MacroLadder.Interval = IntervaloTrabajo
     frmmain.MacroLadder.Enabled = True
 Else
     Call WriteCraftCarpenter(ObjCarpintero(lstArmas.ListIndex + 1))

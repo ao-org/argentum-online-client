@@ -192,11 +192,13 @@ Private Sub Command3_Click()
     On Error Resume Next
     If indice = 1 Then
         If cantidad > 1 Then
+            UserMacro.Intervalo = IntervaloTrabajo
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 3
             UserMacro.Index = SastreRopas(lstArmas.ListIndex + 1).Index
             AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
             UserMacro.Activado = True
+            frmmain.MacroLadder.Interval = IntervaloTrabajo
             frmmain.MacroLadder.Enabled = True
         Else
             Call WriteCraftSastre(SastreRopas(lstArmas.ListIndex + 1).Index)
@@ -210,7 +212,9 @@ Private Sub Command3_Click()
             UserMacro.TIPO = 3
             UserMacro.Index = SastreGorros(lstArmas.ListIndex + 1).Index
             AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            UserMacro.Intervalo = IntervaloTrabajo
             UserMacro.Activado = True
+            frmmain.MacroLadder.Interval = IntervaloTrabajo
             frmmain.MacroLadder.Enabled = True
         Else
             Call WriteCraftSastre(SastreGorros(lstArmas.ListIndex + 1).Index)
