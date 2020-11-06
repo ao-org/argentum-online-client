@@ -608,7 +608,7 @@ Private Sub lstProfesion_Click()
 'Dim i As Byte
 Select Case (lstProfesion.List(lstProfesion.ListIndex))
     Case Is = "Mago"
-            RazaRecomendada = "Gnomo/Elfo/Humano/Drow"
+            RazaRecomendada = "Gnomo / Elfo / Humano / Elfo Drow"
             CPBody = 640
             CPBodyE = 641
             CPArma = 79
@@ -617,7 +617,7 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPAura = "35532:&HDD7C40:0:248"
             'CPHead=
     Case Is = "Paladin"
-            RazaRecomendada = "Humano/ElfoDrow/Elfo"
+            RazaRecomendada = "Humano / Elfo Drow / Elfo"
             CPBody = 524
             CPBodyE = 525
             CPArma = 41
@@ -625,7 +625,7 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPEscudo = 72
             CPAura = "35448:&HFFF306:0:248"
     Case Is = "Cazador"
-            RazaRecomendada = "Orco/Enano"
+            RazaRecomendada = "Enano / Humano"
             CPBody = 526
             CPBodyE = 527
             CPArma = 126
@@ -633,7 +633,7 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPEscudo = 51
             CPAura = "20200:&H904D17:0:248"
     Case Is = "Guerrero"
-            RazaRecomendada = "Orco/Enano"
+            RazaRecomendada = "Enano / Humano"
             CPBody = 528
             CPBodyE = 529
             CPArma = 81
@@ -641,7 +641,7 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPEscudo = 73
             CPAura = "35498:&H8700CE:0:248"
     Case Is = "Bardo"
-            RazaRecomendada = "Elfo/Humano/Orco"
+            RazaRecomendada = "Elfo / Humano"
             CPBody = 636
             CPBodyE = 637
             CPArma = 76
@@ -649,7 +649,7 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPEscudo = 48
             CPAura = "35445:&H800080:0:248"
     Case Is = "Clerigo"
-            RazaRecomendada = "Humano/Elfo Drow/Elfo"
+            RazaRecomendada = "Humano / Elfo Drow / Elfo"
             CPBody = 520
             CPBodyE = 521
             CPArma = 72
@@ -657,7 +657,7 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPEscudo = 60
             CPAura = "35443:&H83CEDD:0:248"
     Case Is = "Asesino"
-            RazaRecomendada = "Humano/ElfoDrow"
+            RazaRecomendada = "Humano / ElfoDrow"
             CPBody = 518
             CPBodyE = 519
             CPArma = 40
@@ -665,15 +665,15 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPEscudo = 58
             CPAura = "35432:&HFB0813:0:248"
     Case Is = "Druida"
-            RazaRecomendada = "Humano/Elfo"
+            RazaRecomendada = "Humano / Elfo"
             CPBody = 632
             CPBodyE = 633
             CPArma = 100
             CPGorro = 70
             CPEscudo = 40
             CPAura = "35466:&HF622D:0:248"
-    Case Is = "Buscavidas"
-            RazaRecomendada = "Enano/Orco/Humano"
+    Case Is = "Trabajador"
+            RazaRecomendada = "Enano / Humano"
             CPBody = 602
             CPBodyE = 603
             CPArma = 143
@@ -709,22 +709,22 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
 
 If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
-If Cabeza.ListCount = 0 Then Exit Sub
-    If Cabeza.ListIndex > 0 Then
-        Cabeza.ListIndex = Cabeza.ListIndex - 1
+If cabeza.ListCount = 0 Then Exit Sub
+    If cabeza.ListIndex > 0 Then
+        cabeza.ListIndex = cabeza.ListIndex - 1
     End If
-    If Cabeza.ListIndex = 0 Then
-    Cabeza.ListIndex = Cabeza.ListCount - 1
+    If cabeza.ListIndex = 0 Then
+    cabeza.ListIndex = cabeza.ListCount - 1
     End If
 End If
 
 If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
-If Cabeza.ListCount = 0 Then Exit Sub
-    If (Cabeza.ListIndex + 1) <> Cabeza.ListCount Then
-    Cabeza.ListIndex = Cabeza.ListIndex + 1
+If cabeza.ListCount = 0 Then Exit Sub
+    If (cabeza.ListIndex + 1) <> cabeza.ListCount Then
+    cabeza.ListIndex = cabeza.ListIndex + 1
     End If
-    If (Cabeza.ListIndex + 1) = Cabeza.ListCount Then
-    Cabeza.ListIndex = 0
+    If (cabeza.ListIndex + 1) = cabeza.ListCount Then
+    cabeza.ListIndex = 0
     End If
 End If
 
@@ -991,7 +991,7 @@ End If
 End Sub
 
 Private Sub Cabeza_Click()
-MiCabeza = Val(Cabeza.List(Cabeza.ListIndex))
+MiCabeza = Val(cabeza.List(cabeza.ListIndex))
 Call DibujarCPJ(MiCabeza, 3)
 
 CPHead = MiCabeza

@@ -1479,22 +1479,18 @@ Private Sub InicializarNombres()
 'Inicializa los nombres de razas, ciudades, clases, skills, atributos, etc.
 '**************************************************************
 
-    
     ListaRazas(eRaza.Humano) = "Humano"
     ListaRazas(eRaza.Elfo) = "Elfo"
     ListaRazas(eRaza.ElfoOscuro) = "Elfo Drow"
     ListaRazas(eRaza.Gnomo) = "Gnomo"
     ListaRazas(eRaza.Enano) = "Enano"
-    
-    
+        
     ListaCiudades(eCiudad.cUllathorpe) = "Ullathorpe"
     ListaCiudades(eCiudad.cNix) = "Nix"
     ListaCiudades(eCiudad.cBanderbill) = "Banderbill"
     ListaCiudades(eCiudad.cLindos) = "Lindos"
     ListaCiudades(eCiudad.cArghal) = "Arghal"
     ListaCiudades(eCiudad.cHillidan) = "Hillidan"
-    
-
 
     ListaClases(eClass.Mage) = "Mago"
     ListaClases(eClass.Cleric) = "Clerigo"
@@ -1504,7 +1500,7 @@ Private Sub InicializarNombres()
     ListaClases(eClass.Druid) = "Druida"
     ListaClases(eClass.paladin) = "Paladin"
     ListaClases(eClass.Hunter) = "Cazador"
-    ListaClases(eClass.buscavidas) = "Buscavidas"
+    ListaClases(eClass.Trabajador) = "Trabajador"
 
     SkillsNames(eSkill.Magia) = "Magia"
     SkillsNames(eSkill.Robar) = "Robar"
@@ -1524,12 +1520,9 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Resistencia) = "Resistencia Mágica"
     SkillsNames(eSkill.Recoleccion) = "Recoleccion"
     SkillsNames(eSkill.Manualidades) = "Manualidades"
-    
-    
-    
-    
+
     SkillsDesc(eSkill.Magia) = "Los hechizos requieren un cierto número de puntos mágicos para ser usados. Sube lanzando cualquier hechizo."
-    SkillsDesc(eSkill.Robar) = "Aumenta las posibilidades de conseguir objetos u oro mientras robas. Se sube robando. Solo el buscavidas puede robar objetos, las otras clases solo pueden robar oro."
+    SkillsDesc(eSkill.Robar) = "Aumenta las posibilidades de conseguir objetos u oro mientras robas. Se sube robando. Solo el ladrón puede robar objetos, las otras clases solo pueden robar oro."
     SkillsDesc(eSkill.Tacticas) = "Aumenta la posibilidad de esquivar ataques. Cuantos más puntos tengas, mejor será tu evasión. Sube mientras peleas cuerpo a cuerpo."
     SkillsDesc(eSkill.Armas) = "Aumenta las posibilidades de golpear al enemigo con un arma.Subes peleando cuerpo a cuerpo usando cualquier arma."
     SkillsDesc(eSkill.Meditar) = "Aumenta la cantidad de mana que recuperamos al meditar. Se sube meditando. Al aumentar los puntos de esta habilidad, aumenta la mana que se recupera."
@@ -1546,10 +1539,7 @@ Private Sub InicializarNombres()
     SkillsDesc(eSkill.Resistencia) = "Sirve para que los hechizos no te peguen tan fuerte, mientras más puntos tengas, menos es el daño mágico que recibes. Se sube cuando un NPC o una persona te ataca con hechizos."
     SkillsDesc(eSkill.Recoleccion) = "Sirve para recolectar mayor cantidad de recursos y más rápido. Se sube recolectando."
     SkillsDesc(eSkill.Manualidades) = "Sirve para fábricar cualquier tipo de objetos, se sube fabricando."
-    
-    
 
-    
     AtributosNames(eAtributos.Fuerza) = "Fuerza"
     AtributosNames(eAtributos.Agilidad) = "Agilidad"
     AtributosNames(eAtributos.Inteligencia) = "Inteligencia"
