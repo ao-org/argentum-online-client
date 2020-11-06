@@ -604,7 +604,7 @@ Sub General_Set_Connect()
             intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -2329,7 +2329,6 @@ Dim Encontre As Boolean
             Encontre = True
             If frmMapaGrande.Visible = False Then
             frmMapaGrande.picMap.Picture = LoadInterface("mapa.bmp")
-            frmMapaGrande.Shape3.BackColor = RGB(0, 83, 114)
             End If
             frmMapaGrande.Image2.Picture = Nothing
             Dungeon = False
@@ -2348,9 +2347,8 @@ Dim Encontre As Boolean
             idmap = i
             Encontre = True
             If frmMapaGrande.Visible = False Then
-            frmMapaGrande.Image2.Picture = LoadInterface("mapa_boton1.bmp")
+            frmMapaGrande.Image2.Picture = LoadInterface("check-amarillo.bmp")
             frmMapaGrande.picMap.Picture = LoadInterface("mapadungeon.bmp")
-            frmMapaGrande.Shape3.BackColor = RGB(0, 0, 0)
             End If
             PosREAL = 0
             Dungeon = True
@@ -2362,7 +2360,6 @@ Dim Encontre As Boolean
     If Encontre = False Then
         If frmMapaGrande.Visible = False Then
             frmMapaGrande.picMap.Picture = LoadInterface("mapa.bmp")
-            frmMapaGrande.Shape3.BackColor = RGB(0, 83, 114)
             frmMapaGrande.Image2.Picture = Nothing
         End If
     End If
@@ -2373,10 +2370,7 @@ Dim Encontre As Boolean
 
     Dim x As Long
     Dim y As Long
-    
-    
-    
-    
+
     x = (idmap - 1) Mod 16
     y = Int((idmap - 1) / 16)
 
