@@ -156,6 +156,7 @@ Private Sub Opcion_Click(Index As Integer)
     Select Case Index
         Case 0 ' Menu principal
             Call WriteQuit
+            Unload Me
         Case 1  'Cerrar juego
             Call CloseClient
         Case 2 'Cancelar
