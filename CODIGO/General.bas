@@ -805,6 +805,7 @@ If Not Not Not pausa And frmmain.Visible _
  
 If UserMoving = 0 Then
     If Not UserEstupido Then
+            If Not MainTimer.Check(TimersIndex.Walk) Then Exit Sub
 
             Call AddMovementToKeysMovementPressedQueue
             
@@ -1320,7 +1321,6 @@ On Error Resume Next
     textcolorAsistente(2) = textcolorAsistente(0)
     textcolorAsistente(3) = textcolorAsistente(0)
 
-
     engine.Initialize
  
     Call CargarAnimArmas
@@ -1333,32 +1333,6 @@ On Error Resume Next
     
     
     frmmain.Socket1.Startup
-    
-    
-    'Set the intervals of timers
-    Call MainTimer.SetInterval(TimersIndex.Attack, INT_ATTACK)
-    Call MainTimer.SetInterval(TimersIndex.Work, INT_WORK)
-    Call MainTimer.SetInterval(TimersIndex.UseItemWithU, INT_USEITEMU)
-    Call MainTimer.SetInterval(TimersIndex.UseItemWithDblClick, INT_USEITEMDCK)
-    Call MainTimer.SetInterval(TimersIndex.SendRPU, INT_SENTRPU)
-    Call MainTimer.SetInterval(TimersIndex.CastSpell, INT_CAST_SPELL)
-    Call MainTimer.SetInterval(TimersIndex.Arrows, INT_ARROWS)
-    Call MainTimer.SetInterval(TimersIndex.CastAttack, INT_CAST_ATTACK)
-    
-    frmmain.macrotrabajo.Interval = INT_MACRO_TRABAJO
-    frmmain.macrotrabajo.Enabled = False
-
-
-    
-   'Init timers
-    Call MainTimer.Start(TimersIndex.Attack)
-    Call MainTimer.Start(TimersIndex.Work)
-    Call MainTimer.Start(TimersIndex.UseItemWithU)
-    Call MainTimer.Start(TimersIndex.UseItemWithDblClick)
-    Call MainTimer.Start(TimersIndex.SendRPU)
-    Call MainTimer.Start(TimersIndex.CastSpell)
-    Call MainTimer.Start(TimersIndex.Arrows)
-    Call MainTimer.Start(TimersIndex.CastAttack)
     
     'Set the dialog's font
     Dialogos.font = frmmain.font

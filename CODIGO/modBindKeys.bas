@@ -79,9 +79,12 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Exit Function
         End If
         If UserDescansar Or UserMeditar Then Exit Function
-        If Not MainTimer.Check(TimersIndex.CastAttack, False) Then Exit Function
-        If Not MainTimer.Check(TimersIndex.Attack) Then Exit Function
-        Call WriteAttack
+        If MainTimer.Check(TimersIndex.CastAttack, False) Then
+            If MainTimer.Check(TimersIndex.Attack) Then
+                Call MainTimer.Restart(TimersIndex.AttackSpell)
+                Call WriteAttack
+            End If
+        End If
 
     ElseIf KeyCode = BindKeys(2).KeyCode Then
         If UserEstado = 1 Then

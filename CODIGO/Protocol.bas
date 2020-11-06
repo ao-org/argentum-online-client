@@ -219,6 +219,7 @@ Private Enum ServerPacketID
     QuestListSend
     UpdateNPCSimbolo
     ClanSeguro
+    Intervals
 End Enum
 
 Private Enum ClientPacketID
@@ -966,6 +967,9 @@ Rem  Call LogError("Llego paquete" & paquete)
             
         Case ServerPacketID.ClanSeguro
             Call HandleClanSeguro
+            
+        Case ServerPacketID.Intervals
+            Call HandleIntervals
         
         Case ServerPacketID.PartySafeOn
             Call HandlePartySafeOn
@@ -2273,6 +2277,55 @@ Private Sub HandleClanSeguro()
     End If
 End Sub
 
+Private Sub HandleIntervals()
+    If incomingData.length < 37 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+
+    'Remove packet ID
+    Call incomingData.ReadByte
+    
+    IntervaloArco = incomingData.ReadLong()
+    IntervaloCaminar = incomingData.ReadLong()
+    IntervaloGolpe = incomingData.ReadLong()
+    IntervaloGolpeMagia = incomingData.ReadLong()
+    IntervaloMagia = incomingData.ReadLong()
+    IntervaloMagiaGolpe = incomingData.ReadLong()
+    IntervaloTrabajo = incomingData.ReadLong()
+    IntervaloUsar = incomingData.ReadLong()
+    IntervaloTirar = incomingData.ReadLong()
+    
+    
+    'Set the intervals of timers
+    Call MainTimer.SetInterval(TimersIndex.Attack, IntervaloGolpe)
+    Call MainTimer.SetInterval(TimersIndex.Work, IntervaloTrabajo)
+    Call MainTimer.SetInterval(TimersIndex.UseItemWithU, INT_USEITEMU)
+    Call MainTimer.SetInterval(TimersIndex.UseItemWithDblClick, IntervaloUsar)
+    Call MainTimer.SetInterval(TimersIndex.SendRPU, INT_SENTRPU)
+    Call MainTimer.SetInterval(TimersIndex.CastSpell, IntervaloMagia)
+    Call MainTimer.SetInterval(TimersIndex.Arrows, IntervaloArco)
+    Call MainTimer.SetInterval(TimersIndex.CastAttack, IntervaloMagiaGolpe)
+    Call MainTimer.SetInterval(TimersIndex.AttackSpell, IntervaloGolpeMagia)
+    Call MainTimer.SetInterval(TimersIndex.Drop, IntervaloTirar)
+    Call MainTimer.SetInterval(TimersIndex.Walk, IntervaloCaminar)
+    
+    frmmain.macrotrabajo.Interval = IntervaloTrabajo
+    frmmain.macrotrabajo.Enabled = False
+
+   'Init timers
+    Call MainTimer.Start(TimersIndex.Attack)
+    Call MainTimer.Start(TimersIndex.Work)
+    Call MainTimer.Start(TimersIndex.UseItemWithU)
+    Call MainTimer.Start(TimersIndex.UseItemWithDblClick)
+    Call MainTimer.Start(TimersIndex.SendRPU)
+    Call MainTimer.Start(TimersIndex.CastSpell)
+    Call MainTimer.Start(TimersIndex.Arrows)
+    Call MainTimer.Start(TimersIndex.CastAttack)
+    Call MainTimer.Start(TimersIndex.AttackSpell)
+    Call MainTimer.Start(TimersIndex.Drop)
+    Call MainTimer.Start(TimersIndex.Walk)
+End Sub
 
 ' Handles the ResuscitationSafeOn message.
 Private Sub HandlePartySafeOn()
@@ -4150,19 +4203,19 @@ Private Sub HandlePosLLamadaDeClan()
     'Remove packet ID
     Call incomingData.ReadByte
         
-    Dim Map As Integer
+    Dim map As Integer
     Dim srcX As Byte
     Dim srcY As Byte
     
-    Map = incomingData.ReadInteger()
+    map = incomingData.ReadInteger()
     srcX = incomingData.ReadByte()
     srcY = incomingData.ReadByte()
     
 
 Dim idmap As Integer
 
-LLamadaDeclanMapa = Map
-idmap = ObtenerIdMapaDeLlamadaDeClan(Map)
+LLamadaDeclanMapa = map
+idmap = ObtenerIdMapaDeLlamadaDeClan(map)
 
 
     Dim x As Long
@@ -4271,7 +4324,7 @@ On Error GoTo errhandler
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guildsStr As String
     guildsStr = buffer.ReadASCIIString()
@@ -4295,7 +4348,7 @@ On Error GoTo errhandler
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
     End If
@@ -4310,7 +4363,7 @@ On Error GoTo errhandler
     frmGuildAdm.Picture = LoadInterface("clanes.bmp")
     
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     frmGuildAdm.Show vbModeless, frmmain
@@ -6305,10 +6358,10 @@ On Error GoTo errhandler
         
         
         'Empty the list
-        Call frmGuildNews.guildslist.Clear
+        Call frmGuildNews.GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
           
     
@@ -6320,13 +6373,13 @@ On Error GoTo errhandler
     Dim cantidad As String
         cantidad = CStr(UBound(guildList()) + 1)
         
-    Call frmGuildNews.Miembros.Clear
+    Call frmGuildNews.miembros.Clear
         
         For i = 0 To UBound(guildList())
             If i = 0 Then
-                Call frmGuildNews.Miembros.AddItem(guildList(i) & "(Lider)")
+                Call frmGuildNews.miembros.AddItem(guildList(i) & "(Lider)")
             Else
-                Call frmGuildNews.Miembros.AddItem(guildList(i))
+                Call frmGuildNews.miembros.AddItem(guildList(i))
             End If
             'Debug.Print guildList(i)
         Next i
@@ -6660,10 +6713,10 @@ On Error GoTo errhandler
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         
@@ -6672,7 +6725,7 @@ On Error GoTo errhandler
         
         'Get list of guild's members
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
-        .Miembros.Caption = "El clan cuenta con " & CStr(UBound(List()) + 1) & " miembros."
+        .miembros.Caption = "El clan cuenta con " & CStr(UBound(List()) + 1) & " miembros."
         
         'Empty the list
         Call .members.Clear
@@ -6778,7 +6831,7 @@ On Error GoTo errhandler
         .fundador.Caption = "Fundador:" & buffer.ReadASCIIString()
         .creacion.Caption = "Fecha de creacion:" & buffer.ReadASCIIString()
         .lider.Caption = "Líder:" & buffer.ReadASCIIString()
-        .Miembros.Caption = "Miembros:" & buffer.ReadInteger()
+        .miembros.Caption = "Miembros:" & buffer.ReadInteger()
 
 
         
@@ -7844,7 +7897,7 @@ End Sub
 ' @param    item Index of the item to craft in the list sent by the server.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCraftBlacksmith(ByVal item As Integer)
+Public Sub WriteCraftBlacksmith(ByVal Item As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -7853,7 +7906,7 @@ Public Sub WriteCraftBlacksmith(ByVal item As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.CraftBlacksmith)
         
-        Call .WriteInteger(item)
+        Call .WriteInteger(Item)
     End With
 End Sub
 
@@ -7863,7 +7916,7 @@ End Sub
 ' @param    item Index of the item to craft in the list sent by the server.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCraftCarpenter(ByVal item As Integer)
+Public Sub WriteCraftCarpenter(ByVal Item As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -7872,10 +7925,10 @@ Public Sub WriteCraftCarpenter(ByVal item As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.CraftCarpenter)
         
-        Call .WriteInteger(item)
+        Call .WriteInteger(Item)
     End With
 End Sub
-Public Sub WriteCraftAlquimista(ByVal item As Integer)
+Public Sub WriteCraftAlquimista(ByVal Item As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -7884,10 +7937,10 @@ Public Sub WriteCraftAlquimista(ByVal item As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.newPacketID)
         Call .WriteByte(NewPacksID.CraftAlquimista)
-        Call .WriteInteger(item)
+        Call .WriteInteger(Item)
     End With
 End Sub
-Public Sub WriteCraftSastre(ByVal item As Integer)
+Public Sub WriteCraftSastre(ByVal Item As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -7896,7 +7949,7 @@ Public Sub WriteCraftSastre(ByVal item As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.newPacketID)
         Call .WriteByte(NewPacksID.CraftSastre)
-        Call .WriteInteger(item)
+        Call .WriteInteger(Item)
     End With
 End Sub
 
@@ -9274,7 +9327,7 @@ Public Sub WriteCasamiento(ByVal UserName As String)
         Call .WriteASCIIString(UserName)
     End With
 End Sub
-Public Sub WriteDropItem(ByVal item As Byte, ByVal x As Byte, ByVal y As Byte, ByVal DropItem As Integer)
+Public Sub WriteDropItem(ByVal Item As Byte, ByVal x As Byte, ByVal y As Byte, ByVal DropItem As Integer)
 '***************************************************
 'Ladder
 '***************************************************
@@ -9282,7 +9335,7 @@ Public Sub WriteDropItem(ByVal item As Byte, ByVal x As Byte, ByVal y As Byte, B
     With outgoingData
         Call .WriteByte(ClientPacketID.newPacketID)
         Call .WriteByte(NewPacksID.DropItem)
-        Call .WriteByte(item)
+        Call .WriteByte(Item)
         Call .WriteByte(x)
         Call .WriteByte(y)
         Call .WriteInteger(DropItem)
@@ -9507,7 +9560,7 @@ End Sub
 ' @param    map The map in which to check for the existing creatures.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCreaturesInMap(ByVal Map As Integer)
+Public Sub WriteCreaturesInMap(ByVal map As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -9516,7 +9569,7 @@ Public Sub WriteCreaturesInMap(ByVal Map As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.CreaturesInMap)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
     End With
 End Sub
 
@@ -9543,7 +9596,7 @@ End Sub
 ' @param    y The y position in the map to which to waro the character.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteWarpChar(ByVal UserName As String, ByVal Map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -9554,7 +9607,7 @@ Public Sub WriteWarpChar(ByVal UserName As String, ByVal Map As Integer, ByVal x
         
         Call .WriteASCIIString(UserName)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
         
         Call .WriteByte(x)
         Call .WriteByte(y)
@@ -10376,7 +10429,7 @@ End Sub
 ' @param    y The position in the y axis to which the teleport will lead.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteTeleportCreate(ByVal Map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -10385,7 +10438,7 @@ Public Sub WriteTeleportCreate(ByVal Map As Integer, ByVal x As Byte, ByVal y As
     With outgoingData
         Call .WriteByte(ClientPacketID.TeleportCreate)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
         
         Call .WriteByte(x)
         Call .WriteByte(y)
@@ -10446,7 +10499,7 @@ End Sub
 ' @param    map The map in which to play the given midi.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal Map As Integer)
+Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal map As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -10457,7 +10510,7 @@ Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal Map As Integer)
         
         Call .WriteByte(midiID)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
     End With
 End Sub
 
@@ -10470,7 +10523,7 @@ End Sub
 ' @param    y       The position in the y axis in which to play the given wave.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal Map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -10481,7 +10534,7 @@ Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal Map As Integer, ByVal
         
         Call .WriteByte(waveID)
         
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
         
         Call .WriteByte(x)
         Call .WriteByte(y)
@@ -13499,7 +13552,7 @@ Private Sub HandleUbicacion()
 Dim miembro As Byte
 Dim x As Byte
 Dim y As Byte
-Dim Map As Integer
+Dim map As Integer
 
 
     
@@ -13512,13 +13565,13 @@ Dim Map As Integer
     y = incomingData.ReadByte()
     
     
-    Map = incomingData.ReadInteger()
+    map = incomingData.ReadInteger()
 
     
         If x = 0 Then
             frmmain.personaje(miembro).Visible = False
         Else
-            If UserMap = Map Then
+            If UserMap = map Then
                 frmmain.personaje(miembro).Visible = True
                 frmmain.personaje(miembro).Left = x - 4
                 frmmain.personaje(miembro).Top = y - 2
@@ -13759,7 +13812,7 @@ Public Sub WriteCodigo(ByVal Codigo As String)
 End Sub
 
 
-Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal buscavidas As Byte, ByVal Map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal name As String, ByVal reglas As String)
+Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal buscavidas As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal name As String, ByVal reglas As String)
 '***************************************************
 'Author: Pablo Mercavides
 'Last Modification: 16/05/2020
@@ -13781,7 +13834,7 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byt
     Call outgoingData.WriteByte(cazador)
     
     Call outgoingData.WriteByte(buscavidas)
-    Call outgoingData.WriteInteger(Map)
+    Call outgoingData.WriteInteger(map)
     Call outgoingData.WriteByte(x)
     Call outgoingData.WriteByte(y)
     Call outgoingData.WriteASCIIString(name)

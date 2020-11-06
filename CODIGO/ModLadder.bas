@@ -1065,23 +1065,6 @@ Public Function IntervaloPermiteConectar() As Boolean
 
 End Function
 
-Public Function IntervaloPermiteTirar() As Boolean
-
-    Dim TActual As Long
-    
-    TActual = GetTickCount() And &H7FFFFFFF
-    
-    If TActual - Intervalos.tirar >= CONST_INTERVALO_TIRAR Then
-        
-       ' Call AddtoRichTextBox(frmMain.RecTxt, "Tirar OK.", 255, 0, 0, True, False, False)
-        Intervalos.tirar = TActual
-        IntervaloPermiteTirar = True
-    Else
-        IntervaloPermiteTirar = False
-    End If
-
-End Function
-
 Sub CargarOpciones()
 On Error Resume Next
 
