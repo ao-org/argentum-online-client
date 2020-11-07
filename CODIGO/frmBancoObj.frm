@@ -376,6 +376,7 @@ Private Sub interface_DblClick()
     Dim ObjType As Byte
     ObjType = ObjData(InvBankUsu.OBJIndex(InvBankUsu.SelectedItem)).ObjType
     
+    If UserMeditar Then Exit Sub
     If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
     
     Select Case ObjType

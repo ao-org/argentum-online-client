@@ -500,7 +500,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2842,11 +2841,11 @@ Public Sub Form_Click()
                         If MainTimer.Check(TimersIndex.Work) Then
                             If UsingSkill = MarcaDeGM Then
                                 Dim Pos As Integer
-                                If MapData(tX, tY).CharIndex <> 0 Then
-                                Pos = InStr(charlist(MapData(tX, tY).CharIndex).nombre, "<")
+                                If MapData(tX, tY).charindex <> 0 Then
+                                Pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
                                 
-                                If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).CharIndex).nombre) + 2
-                                    frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).CharIndex).nombre, Pos - 2)
+                                If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
+                                    frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
                                 End If
                             Else
                                 SendSkill = True
@@ -2907,10 +2906,10 @@ Public Sub Form_Click()
         If MainTimer.Check(TimersIndex.UseItemWithU) Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 7 Or MouseBoton = vbRightButton And ACCION2 = 7 Or MouseBoton = 4 And ACCION3 = 7 Then
-        If MapData(tX, tY).CharIndex <> 0 Then
-            If charlist(MapData(tX, tY).CharIndex).nombre <> charlist(MapData(UserPos.x, UserPos.y).CharIndex).nombre Then
-                If charlist(MapData(tX, tY).CharIndex).EsNpc = False Then
-                    SendTxt.Text = "\" & charlist(MapData(tX, tY).CharIndex).nombre & " "
+        If MapData(tX, tY).charindex <> 0 Then
+            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
+                If charlist(MapData(tX, tY).charindex).EsNpc = False Then
+                    SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
                     If SendTxt.Visible = False Then
                         Call WriteEscribiendo
                     End If
@@ -3078,6 +3077,7 @@ End Sub
 Private Sub picInv_DblClick()
     If frmCarp.Visible Or frmHerrero.Visible Or frmComerciar.Visible Or frmBancoObj.Visible Then Exit Sub
     
+    If UserMeditar Then Exit Sub
     If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
     
     If macrotrabajo.Enabled Then DesactivarMacroTrabajo
