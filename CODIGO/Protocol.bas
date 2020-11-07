@@ -2409,7 +2409,7 @@ Private Sub HandleUpdateMana()
     UserMinMAN = incomingData.ReadInteger()
     
     If UserMaxMAN > 0 Then
-        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 89
+        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 217
         frmmain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
     Else
         frmmain.MANShp.Width = 0
@@ -2437,7 +2437,7 @@ Private Sub HandleUpdateHP()
     
     'Get data and update form
     UserMinHp = incomingData.ReadInteger()
-    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 80
+    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 217
     frmmain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
     
     'Velocidad de la musica
@@ -2519,7 +2519,7 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-    frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+    frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
     frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
 End Sub
 
@@ -4584,17 +4584,17 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.EXPBAR.Width = 204
+        frmmain.ExpBar.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel Maximo!"
     End If
     
-    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 89
+    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 217
     frmmain.HpBar.Caption = "" & UserMinHp & " / " & UserMaxHp & ""
     If UserMaxMAN > 0 Then
-        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 89
+        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 217
         frmmain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
         'frmMain.manabar.Visible = True
     Else
@@ -5694,10 +5694,10 @@ Private Sub HandleUpdateHungerAndThirst()
     UserMinAGU = incomingData.ReadByte()
     UserMaxHAM = incomingData.ReadByte()
     UserMinHAM = incomingData.ReadByte()
-    frmmain.AGUAsp.Width = UserMinAGU / UserMaxAGU * 89
-    frmmain.COMIDAsp.Width = UserMinHAM / UserMaxHAM * 89
-    frmmain.AGUbar.Caption = UserMinAGU & " / " & UserMaxAGU
-    frmmain.hambar.Caption = UserMinHAM & " / " & UserMaxHAM
+    frmmain.AGUAsp.Width = UserMinAGU / UserMaxAGU * 32
+    frmmain.COMIDAsp.Width = UserMinHAM / UserMaxHAM * 32
+    frmmain.AGUbar.Caption = UserMinAGU '& " / " & UserMaxAGU
+    frmmain.hambar.Caption = UserMinHAM ' & " / " & UserMaxHAM
 End Sub
 Private Sub HandleHora()
 '***************************************************
@@ -6411,7 +6411,7 @@ On Error GoTo errhandler
      .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
      .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
            ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -6774,7 +6774,7 @@ On Error GoTo errhandler
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
