@@ -604,7 +604,7 @@ Sub General_Set_Connect()
             intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -643,7 +643,7 @@ frmConnect.relampago.Enabled = True
  ClickEnAsistente = 0
  If CuentaRecordada.nombre <> "" Then
  
- Call TextoAlAsistente("¡Bienvenido de nuevo " & CuentaRecordada.nombre & "! ¡Disfruta tu viaje por Argentum20!") ' hay que poner 20 aniversario
+ Call TextoAlAsistente("¡Bienvenido de nuevo! ¡Disfruta tu viaje por Argentum20!") ' hay que poner 20 aniversario
  Else
  Call TextoAlAsistente("¡Bienvenido a Argentum20! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.") ' hay que poner 20 aniversario
  End If
