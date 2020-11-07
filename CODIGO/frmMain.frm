@@ -500,6 +500,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2819,7 +2820,15 @@ Public Sub Form_Click()
                             If MainTimer.Check(TimersIndex.CastSpell) Then
                                 SendSkill = True
                                 Call MainTimer.Restart(TimersIndex.CastAttack)
+                            Else
+                                With FontTypes(FontTypeNames.FONTTYPE_TALK)
+                                    Call ShowConsoleMsg("¡No puedes lanzar hechizos tan rápido!", .red, .green, .blue, .bold, .italic)
+                                End With
                             End If
+                        Else
+                            With FontTypes(FontTypeNames.FONTTYPE_TALK)
+                                Call ShowConsoleMsg("¡No puedes lanzar tan rápido después de un golpe!", .red, .green, .blue, .bold, .italic)
+                            End With
                         End If
                     End If
                     
