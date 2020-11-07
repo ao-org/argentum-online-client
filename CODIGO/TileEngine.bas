@@ -59,7 +59,7 @@ End Type
 
 'Posicion en el Mundo
 Public Type WorldPos
-    Map As Integer
+    map As Integer
     x As Integer
     y As Integer
 End Type
@@ -142,7 +142,7 @@ Public Type Char
     Casco As HeadData
     Arma As WeaponAnimData
     Escudo As ShieldAnimData
-    UsandoArma As Boolean
+    MovArmaEscudo As Boolean
     
     fX As grh
     FxIndex As Integer
@@ -160,16 +160,13 @@ Public Type Char
     Donador As Byte
     appear As Byte
     simbolo As Byte
-    
-        
-    
+
     Head_Aura As String
     Body_Aura As String
     Arma_Aura As String
     Escudo_Aura As String
     Otra_Aura As String
-    
-    
+
     AuraAngle As Single
     
     FxCount As Integer
@@ -178,19 +175,13 @@ Public Type Char
     particle_count As Integer
     CreandoCant As Integer
     particle_group() As Integer
-    
 
-    
-    
     TimerM As Byte
     TimerAct As Boolean
     
     TimerI As Single
     TimerIAct As Boolean
-    
-    
-    
-    
+
     status As Byte
     
     nombre As String
@@ -273,7 +264,7 @@ Public Type MapBlock
     FxList() As grh
     
     Graphic(1 To 4) As grh
-    charindex As Integer
+    CharIndex As Integer
     ObjGrh As grh
     GrhBlend As Single
     light_value(3) As Long
@@ -483,9 +474,9 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
 
 End Sub
 
-Sub ResetCharInfo(ByVal charindex As Integer)
+Sub ResetCharInfo(ByVal CharIndex As Integer)
 
-    With charlist(charindex)
+    With charlist(CharIndex)
     
         .active = 0
         .AlphaPJ = 0
@@ -512,7 +503,7 @@ Sub ResetCharInfo(ByVal charindex As Integer)
        ' .Pos.X = 0
         '.Pos.Y = 0
         
-        .UsandoArma = False
+        .MovArmaEscudo = False
         .TimerAct = False
         .TimerM = 128
         .TimerI = 128
@@ -534,13 +525,13 @@ Sub ResetCharInfo(ByVal charindex As Integer)
     End With
     
 End Sub
-Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+Sub MakeChar(ByVal CharIndex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
 On Error Resume Next
     'Apuntamos al ultimo Char
    ' Debug.Print charindex
-    If charindex > LastChar Then LastChar = charindex
+    If CharIndex > LastChar Then LastChar = CharIndex
     
-    With charlist(charindex)
+    With charlist(CharIndex)
         'If the char wasn't allready active (we are rewritting it) don't increase char count
         If .active = 0 Then _
             NumChars = NumChars + 1
@@ -588,7 +579,7 @@ On Error Resume Next
         
         If ParticulaFx <> 0 Then
         .Particula = ParticulaFx
-            Call General_Char_Particle_Create(ParticulaFx, charindex, -1)
+            Call General_Char_Particle_Create(ParticulaFx, CharIndex, -1)
         End If
         
 
@@ -597,32 +588,32 @@ On Error Resume Next
     End With
     
     'Plot on map
-    MapData(x, y).charindex = charindex
+    MapData(x, y).CharIndex = CharIndex
 End Sub
-Sub EraseChar(ByVal charindex As Integer)
+Sub EraseChar(ByVal CharIndex As Integer)
 '*****************************************************************
 'Erases a character from CharList and map
 '*****************************************************************
     
-    If charindex = 0 Then Exit Sub
-    If charlist(charindex).active = 0 Then Exit Sub
+    If CharIndex = 0 Then Exit Sub
+    If charlist(CharIndex).active = 0 Then Exit Sub
 
-    charlist(charindex).active = 0
+    charlist(CharIndex).active = 0
     
     'Update lastchar
-    If charindex = LastChar Then
+    If CharIndex = LastChar Then
         Do Until charlist(LastChar).active = 1
             LastChar = LastChar - 1
             If LastChar = 0 Then Exit Do
         Loop
     End If
     
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = 0
     
     'Remove char's dialog
-    Call Dialogos.RemoveDialog(charindex)
+    Call Dialogos.RemoveDialog(CharIndex)
     
-    Call ResetCharInfo(charindex)
+    Call ResetCharInfo(CharIndex)
     
     'Update NumChars
     NumChars = NumChars - 1
@@ -678,13 +669,13 @@ Public Sub DoFogataFx()
     End If
 End Sub
 
-Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
-    With charlist(charindex).Pos
+Private Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
+    With charlist(CharIndex).Pos
         EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
     End With
 End Function
 
-Sub DoPasosFx(ByVal charindex As Integer)
+Sub DoPasosFx(ByVal CharIndex As Integer)
 Static TerrenoDePaso As TipoPaso
 Static FileNum As Integer
 
@@ -692,8 +683,8 @@ Static FileNum As Integer
 
 
     If Not UserNavegando Then
-        With charlist(charindex)
-           If Not .MUERTO And EstaPCarea(charindex) And (.priv = 0 Or .priv > 5) Then
+        With charlist(CharIndex)
+           If Not .MUERTO And EstaPCarea(CharIndex) And (.priv = 0 Or .priv > 5) Then
            If .Speeding > 1.3 Then
                    
                     Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
@@ -739,7 +730,7 @@ Else
 End If
 
 End Function
-Sub MoveCharbyPos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
+Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As Integer)
 On Error Resume Next
     Dim x As Integer
     Dim y As Integer
@@ -747,11 +738,11 @@ On Error Resume Next
     Dim addy As Integer
     Dim nHeading As E_Heading
     
-    With charlist(charindex)
+    With charlist(CharIndex)
         x = .Pos.x
         y = .Pos.y
         
-        MapData(x, y).charindex = 0
+        MapData(x, y).CharIndex = 0
         
         addx = nX - x
         addy = nY - y
@@ -772,7 +763,7 @@ On Error Resume Next
             nHeading = E_Heading.south
         End If
         
-        MapData(nX, nY).charindex = charindex
+        MapData(nX, nY).CharIndex = CharIndex
         
         
         .Pos.x = nX
@@ -790,10 +781,10 @@ On Error Resume Next
 
     End With
     
-    If Not EstaPCarea(charindex) Then Call Dialogos.RemoveDialog(charindex)
+    If Not EstaPCarea(CharIndex) Then Call Dialogos.RemoveDialog(CharIndex)
     
     If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
-        Call EraseChar(charindex)
+        Call EraseChar(CharIndex)
     End If
 End Sub
 
@@ -919,8 +910,8 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer) As Boolean
     End If
     
     '¿Hay un personaje?
-    If MapData(x, y).charindex > 0 Then
-    If charlist(MapData(x, y).charindex).MUERTO Then
+    If MapData(x, y).CharIndex > 0 Then
+    If charlist(MapData(x, y).CharIndex).MUERTO Then
     Else
         Exit Function
     End If
@@ -1194,7 +1185,7 @@ Private Function GetElapsedTime() As Single
     'Get next end time
     Call QueryPerformanceCounter(end_time)
 End Function
-Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
+Public Sub SetCharacterFx(ByVal CharIndex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
 
 If fX = 0 Then Exit Sub
 '***************************************************
@@ -1203,9 +1194,9 @@ If fX = 0 Then Exit Sub
 'Sets an FX to the character.
 '***************************************************
 Dim indice As Byte
-    With charlist(charindex)
+    With charlist(CharIndex)
     
-    indice = engine.Char_FX_Group_Next_Open(charindex)
+    indice = engine.Char_FX_Group_Next_Open(CharIndex)
     .FxList(indice).FxIndex = fX
     Call InitGrh(.FxList(indice), FxData(fX).Animacion)
     .FxList(indice).Loops = Loops
