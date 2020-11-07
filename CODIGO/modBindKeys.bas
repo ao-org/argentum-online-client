@@ -140,7 +140,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             End With
             Exit Function
         End If
-        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call WriteEquipItem(Inventario.SelectedItem)
+        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call WriteEquipItem(frmmain.Inventario.SelectedItem)
     
     ElseIf KeyCode = BindKeys(4).KeyCode Then
         If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
