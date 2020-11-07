@@ -102,6 +102,7 @@ Dim ITEM_OFFSET_Y As Integer
 Dim ITEMS_PER_ROW As Integer
 Dim HALF_BORDER_X As Integer
 Dim HALF_BORDER_Y As Integer
+Dim HEIGHT_MAIN_INVENTORY As Integer
 
 Private Sub Class_Initialize()
 '***************************************************
@@ -135,7 +136,6 @@ End Sub
     '***************************************************
     Set InventoryWindow = InvPic
     
-    
     isInventory = thisInventory
     
     If Width = 0 Then Width = InvPic.ScaleWidth
@@ -154,9 +154,14 @@ End Sub
     HALF_BORDER_X = SpaceX \ 2
     HALF_BORDER_Y = SpaceY \ 2
     
-    
     MAININVENTORY_MIDSPACE = MIDSPACE
     
+    If isInventory Then
+        Dim aux As Single
+        aux = MAX_NORMAL_INVENTORY_SLOTS / ITEMS_PER_ROW
+        HEIGHT_MAIN_INVENTORY = IIf(aux <> Int(aux), Int(aux) + 1, aux) * ITEM_OFFSET_Y
+    End If
+
     ReDim UserInventory(1 To MaxSlots) As Inventory
 
 #If ConMenuesConextuales = 1 Then
@@ -363,6 +368,17 @@ Public Function GetSlot(ByVal x As Integer, ByVal y As Integer) As Byte
         
     x = x - InvOffsetX + HALF_BORDER_X
     y = y - InvOffsetY + HALF_BORDER_Y
+    
+    ' Separación entre inventario principal y slots de mochilas
+    If isInventory Then
+        ' Si está por debajo del inventari normal
+        If y >= HEIGHT_MAIN_INVENTORY Then
+            ' Si está en el espacio entre medio, salimos
+            If y < HEIGHT_MAIN_INVENTORY + MAININVENTORY_MIDSPACE Then Exit Function
+            ' Restamos el offset para los items de abajo
+            y = y - MAININVENTORY_MIDSPACE
+        End If
+    End If
     
     ' ** Cambiado: queda mejor si también se pueden cliquear los bordes
     ' Nos aseguramos que no cliqueó en el borde de un slot
