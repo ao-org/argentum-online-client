@@ -26,14 +26,14 @@ Begin VB.Form frmMapaGrande
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
-      Height          =   1215
-      Left            =   7320
-      ScaleHeight     =   81
+      Height          =   1335
+      Left            =   7350
+      ScaleHeight     =   89
       ScaleMode       =   0  'User
-      ScaleWidth      =   173
+      ScaleWidth      =   177
       TabIndex        =   10
-      Top             =   9000
-      Width           =   2595
+      Top             =   9030
+      Width           =   2655
    End
    Begin VB.PictureBox Picture1 
       Appearance      =   0  'Flat
@@ -65,12 +65,12 @@ Begin VB.Form frmMapaGrande
       FlatScrollBar   =   -1  'True
       TextBackground  =   -1  'True
       _Version        =   393217
-      ForeColor       =   12632256
+      ForeColor       =   16777215
       BackColor       =   0
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   9
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -110,12 +110,12 @@ Begin VB.Form frmMapaGrande
       HideColumnHeaders=   -1  'True
       TextBackground  =   -1  'True
       _Version        =   393217
-      ForeColor       =   12632256
+      ForeColor       =   16777215
       BackColor       =   0
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   9
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -226,18 +226,18 @@ Begin VB.Form frmMapaGrande
       Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
+      ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7560
+      Left            =   7440
       TabIndex        =   15
-      Top             =   6420
+      Top             =   6480
       Width           =   2250
    End
    Begin VB.Label Label8 
@@ -246,14 +246,14 @@ Begin VB.Form frmMapaGrande
       Caption         =   "asdasdsa"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
+      ForeColor       =   &H00FFFFFF&
       Height          =   255
       Left            =   7320
       TabIndex        =   14
@@ -284,15 +284,15 @@ Begin VB.Form frmMapaGrande
       Caption         =   "La informacion del mapa esta aquí."
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
-      Height          =   525
+      ForeColor       =   &H00FFFFFF&
+      Height          =   435
       Left            =   7350
       TabIndex        =   11
       Top             =   1770
@@ -323,18 +323,18 @@ Begin VB.Form frmMapaGrande
       Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
+      ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7560
+      Left            =   7440
       TabIndex        =   7
-      Top             =   5805
+      Top             =   5685
       Width           =   2250
    End
    Begin VB.Label Label4 
@@ -343,18 +343,18 @@ Begin VB.Form frmMapaGrande
       Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
+      ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7560
+      Left            =   7440
       TabIndex        =   6
-      Top             =   6015
+      Top             =   5955
       UseMnemonic     =   0   'False
       Width           =   2250
    End
@@ -364,16 +364,16 @@ Begin VB.Form frmMapaGrande
       Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
+      ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7560
+      Left            =   7440
       TabIndex        =   5
       Top             =   6210
       Width           =   2250
@@ -384,18 +384,18 @@ Begin VB.Form frmMapaGrande
       Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
-      Height          =   165
-      Left            =   7560
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   7440
       TabIndex        =   4
-      Top             =   5595
+      Top             =   5430
       Width           =   2250
    End
    Begin VB.Label lblMapInfo 
@@ -404,7 +404,7 @@ Begin VB.Form frmMapaGrande
       BackStyle       =   0  'Transparent
       Caption         =   "Mapa Desconocido"
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Tahoma"
          Size            =   6.75
          Charset         =   0
          Weight          =   700
@@ -412,7 +412,7 @@ Begin VB.Form frmMapaGrande
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
+      ForeColor       =   &H000040C0&
       Height          =   315
       Index           =   0
       Left            =   7320
@@ -472,6 +472,9 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub Form_Load()
+ListView1.BackColor = RGB(7, 7, 7)
+listdrop.BackColor = RGB(7, 7, 7)
+lblMapInfo(0).ForeColor = RGB(235, 164, 14)
 'Call FormParser.Parse_Form(Me)
 End Sub
 
