@@ -14,6 +14,7 @@ Begin VB.Form frmMapaGrande
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   Picture         =   "frmMapaGrande.frx":0000
    ScaleHeight     =   719
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   690
@@ -25,13 +26,13 @@ Begin VB.Form frmMapaGrande
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
-      Height          =   1455
+      Height          =   1215
       Left            =   7320
-      ScaleHeight     =   97
+      ScaleHeight     =   81
       ScaleMode       =   0  'User
       ScaleWidth      =   173
       TabIndex        =   10
-      Top             =   8820
+      Top             =   9000
       Width           =   2595
    End
    Begin VB.PictureBox Picture1 
@@ -79,7 +80,7 @@ Begin VB.Form frmMapaGrande
       NumItems        =   3
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Criatura"
-         Object.Width           =   3310
+         Object.Width           =   3575
       EndProperty
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
@@ -124,7 +125,7 @@ Begin VB.Form frmMapaGrande
       NumItems        =   2
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "item"
-         Object.Width           =   2648
+         Object.Width           =   3177
       EndProperty
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   1
@@ -141,7 +142,7 @@ Begin VB.Form frmMapaGrande
       ForeColor       =   &H80000008&
       Height          =   8910
       Left            =   480
-      Picture         =   "frmMapaGrande.frx":0000
+      Picture         =   "frmMapaGrande.frx":16BBAA
       ScaleHeight     =   594
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   432
@@ -222,6 +223,7 @@ Begin VB.Form frmMapaGrande
    Begin VB.Label Label9 
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
+      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6.75
@@ -233,14 +235,15 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00C0C0C0&
       Height          =   255
-      Left            =   7650
+      Left            =   7560
       TabIndex        =   15
-      Top             =   6180
+      Top             =   6420
       Width           =   2250
    End
    Begin VB.Label Label8 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
+      Caption         =   "asdasdsa"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6.75
@@ -252,10 +255,10 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00C0C0C0&
       Height          =   255
-      Left            =   7395
+      Left            =   7320
       TabIndex        =   14
-      Top             =   8325
-      Width           =   2775
+      Top             =   8805
+      Width           =   2655
    End
    Begin VB.Label Label7 
       BackStyle       =   0  'Transparent
@@ -317,6 +320,7 @@ Begin VB.Form frmMapaGrande
    Begin VB.Label Label3 
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
+      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6.75
@@ -328,14 +332,15 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00C0C0C0&
       Height          =   255
-      Left            =   7650
+      Left            =   7560
       TabIndex        =   7
-      Top             =   5565
+      Top             =   5805
       Width           =   2250
    End
    Begin VB.Label Label4 
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
+      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6.75
@@ -347,15 +352,16 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00C0C0C0&
       Height          =   255
-      Left            =   7650
+      Left            =   7560
       TabIndex        =   6
-      Top             =   5775
+      Top             =   6015
       UseMnemonic     =   0   'False
       Width           =   2250
    End
    Begin VB.Label Label5 
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
+      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6.75
@@ -367,15 +373,15 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00C0C0C0&
       Height          =   255
-      Left            =   7650
+      Left            =   7560
       TabIndex        =   5
-      Top             =   5970
+      Top             =   6210
       Width           =   2250
    End
    Begin VB.Label Label2 
-      AutoSize        =   -1  'True
       BackColor       =   &H0000FFFF&
       BackStyle       =   0  'Transparent
+      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6.75
@@ -387,10 +393,10 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00C0C0C0&
       Height          =   165
-      Left            =   7650
+      Left            =   7560
       TabIndex        =   4
-      Top             =   5355
-      Width           =   45
+      Top             =   5595
+      Width           =   2250
    End
    Begin VB.Label lblMapInfo 
       Alignment       =   2  'Center
@@ -587,18 +593,18 @@ End Sub
 Private Sub listdrop_Click()
 On Error Resume Next
 'Picture1.Refresh
-Picture1.BackColor = vbBlack
-Picture1.Refresh
+picture1.BackColor = vbBlack
+picture1.Refresh
 'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
 If listdrop.SelectedItem.SubItems(1) = "" Then Exit Sub
-Call Grh_Render_To_Hdc(Picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
 End Sub
 
 
 Private Sub ListView1_Click()
 On Error Resume Next
 Label8.Caption = ""
-Picture1.Refresh
+picture1.Refresh
 
 
 

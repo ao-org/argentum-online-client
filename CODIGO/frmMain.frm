@@ -500,7 +500,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2123,7 +2122,7 @@ Private Sub mapMundo_Click()
 ExpMult = 1
     OroMult = 1
     Call CalcularPosicionMAPA
-    frmMapaGrande.Picture = LoadInterface("VentanaMapa.bmp")
+    frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
     HayFormularioAbierto = True
     frmMapaGrande.Show , frmmain
 End Sub
@@ -2144,7 +2143,7 @@ Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, 
   ExpMult = 1
     OroMult = 1
     Call CalcularPosicionMAPA
-    frmMapaGrande.Picture = LoadInterface("VentanaMapa.bmp")
+    frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
     HayFormularioAbierto = True
     frmMapaGrande.Show , frmmain
   
