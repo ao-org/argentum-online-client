@@ -696,6 +696,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
                 Call ResetearUserMacro
             End If
             Moviendose = True
+            Call MainTimer.Restart(TimersIndex.Walk)
             Call WriteWalk(Direccion) 'We only walk if we are not meditating or resting
             engine.Char_Move_by_Head UserCharIndex, Direccion
             MoveScreen Direccion
@@ -802,7 +803,7 @@ If Not Not Not pausa And frmmain.Visible And Not frmComerciarUsu.Visible And _
  
 If UserMoving = 0 Then
     If Not UserEstupido Then
-            If Not MainTimer.Check(TimersIndex.Walk) Then Exit Sub
+            If Not MainTimer.Check(TimersIndex.Walk, False) Then Exit Sub
 
             Call AddMovementToKeysMovementPressedQueue
             
