@@ -140,11 +140,11 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             End With
             Exit Function
         End If
-        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call EquiparItem
+        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call WriteEquipItem(Inventario.SelectedItem)
     
     ElseIf KeyCode = BindKeys(4).KeyCode Then
         If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
-        Call UsarItem
+        Call WriteUseItem(frmmain.Inventario.SelectedItem)
     
     ElseIf KeyCode = BindKeys(10).KeyCode Then
         If MainTimer.Check(TimersIndex.SendRPU) Then
@@ -238,35 +238,11 @@ Public Sub TirarItem()
         End If
     End If
 End Sub
+
 Public Sub AgarrarItem()
     Call WritePickUp
 End Sub
 
-Public Sub UsarItem()
-
-    'If Not frmComerciar.Visible Then
-        If (frmmain.Inventario.SelectedItem > 0) And (frmmain.Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Then _
-            Call WriteUseItem(frmmain.Inventario.SelectedItem)
-   ' Else
-   ' If (InvComUsu.SelectedItem > 0) And (InvComUsu.SelectedItem < MAX_INVENTORY_SLOTS + 1) Then _
-      '      Call WriteUseItem(InvComUsu.SelectedItem)
-    'End If
-        
-End Sub
-
-Public Sub EquiparItem()
-    'If Not frmComerciar.Visible Then
-        If (frmmain.Inventario.SelectedItem > 0) And (frmmain.Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Then _
-            Call WriteEquipItem(frmmain.Inventario.SelectedItem)
-  ' Else
-    'If (InvComUsu.SelectedItem > 0) And (InvComUsu.SelectedItem < MAX_INVENTORY_SLOTS + 1) Then _
-    '        Call WriteEquipItem(InvComUsu.SelectedItem)
-    'End If
-    
-End Sub
-Public Sub Bind_Accion(ByVal FNUM As Integer)
-
-End Sub
 Public Function BuscarObjEnInv(OBJIndex) As Byte
 'Devuelve el slot del inventario donde se encuentra el obj
 'Creaado por Ladder 25/09/2014

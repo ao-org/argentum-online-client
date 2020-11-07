@@ -380,24 +380,24 @@ Private Sub interface_DblClick()
     
     Select Case ObjType
         Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
-            Call EquiparItem
+            Call WriteEquipItem(InvBankUsu.SelectedItem)
             
         Case eObjType.otWeapon
             If ObjData(InvBankUsu.OBJIndex(InvBankUsu.SelectedItem)).proyectil = 1 And InvBankUsu.Equipped(InvBankUsu.SelectedItem) Then
-                Call UsarItem
+                Call WriteUseItem(InvBankUsu.SelectedItem)
             Else
-                Call EquiparItem
+                Call WriteEquipItem(InvBankUsu.SelectedItem)
             End If
             
         Case eObjType.OtHerramientas
             If InvBankUsu.Equipped(InvBankUsu.SelectedItem) Then
-                Call UsarItem
+                Call WriteUseItem(InvBankUsu.SelectedItem)
             Else
-                Call EquiparItem
+                Call WriteEquipItem(InvBankUsu.SelectedItem)
             End If
              
         Case Else
-            Call UsarItem
+            Call WriteUseItem(InvBankUsu.SelectedItem)
     End Select
 
 End Sub

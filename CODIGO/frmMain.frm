@@ -500,7 +500,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2080,7 +2079,7 @@ Private Sub macrotrabajo_Timer()
     End If
     
     'If Inventario.OBJType(Inventario.SelectedItem) = eObjType.otWeapon Then
-     If Not (frmCarp.Visible = True) Then Call UsarItem
+     If Not (frmCarp.Visible = True) Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
 End Sub
 
 Public Sub ActivarMacroTrabajo()
@@ -2160,7 +2159,7 @@ End If
 End Sub
 
 Private Sub mnuEquipar_Click()
-    If MainTimer.Check(TimersIndex.UseItemWithU) Then Call EquiparItem
+    If MainTimer.Check(TimersIndex.UseItemWithU) Then Call WriteEquipItem(Inventario.SelectedItem)
 End Sub
 
 Private Sub mnuNPCComerciar_Click()
@@ -2177,7 +2176,7 @@ Private Sub mnuTirar_Click()
 End Sub
 
 Private Sub mnuUsar_Click()
-    If MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Call UsarItem
+    If MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
 End Sub
 
 Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2904,7 +2903,7 @@ Public Sub Form_Click()
 
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 3 Or MouseBoton = vbRightButton And ACCION2 = 3 Or MouseBoton = 4 And ACCION3 = 3 Then
-        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call UsarItem
+        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 7 Or MouseBoton = vbRightButton And ACCION2 = 7 Or MouseBoton = 4 And ACCION3 = 7 Then
         If MapData(tX, tY).charindex <> 0 Then
@@ -3090,24 +3089,24 @@ Private Sub picInv_DblClick()
 
     Select Case ObjType
         Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
-            Call EquiparItem
+            Call WriteEquipItem(Inventario.SelectedItem)
             
         Case eObjType.otWeapon
             If ObjData(Inventario.OBJIndex(Inventario.SelectedItem)).proyectil = 1 And Inventario.Equipped(Inventario.SelectedItem) Then
-                Call UsarItem
+                Call WriteUseItem(Inventario.SelectedItem)
             Else
-                Call EquiparItem
+                Call WriteEquipItem(Inventario.SelectedItem)
             End If
             
         Case eObjType.OtHerramientas
             If Inventario.Equipped(Inventario.SelectedItem) Then
-                Call UsarItem
+                Call WriteUseItem(Inventario.SelectedItem)
             Else
-                Call EquiparItem
+                Call WriteEquipItem(Inventario.SelectedItem)
             End If
                 
         Case Else
-            Call UsarItem
+            Call WriteEquipItem(Inventario.SelectedItem)
     End Select
 
 End Sub
