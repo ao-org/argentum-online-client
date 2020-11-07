@@ -3866,15 +3866,15 @@ Public Sub DrawInterfaceComerciar()
     ' Me fijo qué inventario está seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     
-    Dim Cantidad As Integer
+    Dim cantidad As Integer
     If frmComerciar.InvComNpc.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComNpc
         ' Al comprar, calculamos el valor según la cantidad exacta que ingresó
-        Cantidad = Val(frmComerciar.Cantidad.Text)
+        cantidad = Val(frmComerciar.cantidad.Text)
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
         ' Al vender, calculamos el valor según el min(cantidad_ingresada, cantidad_items)
-        Cantidad = min(Val(frmComerciar.Cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
+        cantidad = min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
     End If
     
     ' Si hay alguno seleccionado
@@ -3905,7 +3905,7 @@ Public Sub DrawInterfaceComerciar()
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
         frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
-        frmComerciar.lblCosto = PonerPuntos(CLng(CurrentInventory.Valor(CurrentInventory.SelectedItem) * Cantidad))
+        frmComerciar.lblCosto = PonerPuntos(CLng(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
         
         Set CurrentInventory = Nothing
     End If
@@ -4609,10 +4609,10 @@ On Error Resume Next
     
 
   
-      Dim Cantidad As Long
-       Cantidad = particle_group_list(particle_group_index).particle_count
+      Dim cantidad As Long
+       cantidad = particle_group_list(particle_group_index).particle_count
  
-            For loopc = 1 To Cantidad
+            For loopc = 1 To cantidad
             
                         Particle_Render particle_group_list(particle_group_index).particle_stream(loopc), _
                             screen_x, screen_y, _
@@ -8119,11 +8119,9 @@ Public Sub RenderPjsCuenta()
 
     'Render fondo
     Draw_GrhIndex 1170, 0, 0
-
-    'Reenderizamos nombre de la cuenta
-    'Engine_Text_Render Texto, 500 - Engine_Text_Width(Texto, False, 4) / 2, 162, DefaultColor, 1, False
-    Text_Render_ext Texto, 163, 348, 324, 39, D3DColorXRGB(200, 200, 200), True, True, 3
-
+    
+    
+    
     Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
 
     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
