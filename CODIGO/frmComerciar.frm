@@ -223,7 +223,7 @@ Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As 
         Case 0
             cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
             cmdMasMenos(Index).Tag = "1"
-            Cantidad.Text = str((Val(Cantidad.Text) - 1))
+            cantidad.Text = str((Val(cantidad.Text) - 1))
             m_Increment = -1
         Case 1
             cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
@@ -266,7 +266,7 @@ End Sub
 Private Sub Image1_Click(Index As Integer)
     Call Sound.Sound_Play(SND_CLICK)
     
-    If Not IsNumeric(Cantidad.Text) Or Cantidad.Text = 0 Then Exit Sub
+    If Not IsNumeric(cantidad.Text) Or cantidad.Text = 0 Then Exit Sub
 
     Select Case Index
         Case 0
@@ -274,8 +274,8 @@ Private Sub Image1_Click(Index As Integer)
  
             LasActionBuy = True
 
-            If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(Cantidad) Then
-                Call WriteCommerceBuy(InvComNpc.SelectedItem, Cantidad.Text)
+            If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
+                Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
             Else
                 AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
             End If
@@ -285,13 +285,13 @@ Private Sub Image1_Click(Index As Integer)
             
             LasActionBuy = False
             
-            Call WriteCommerceSell(InvComUsu.SelectedItem, min(Val(Cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
+            Call WriteCommerceSell(InvComUsu.SelectedItem, min(Val(cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
     End Select
     
 End Sub
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
-    Cantidad.BackColor = RGB(18, 19, 13)
+    cantidad.BackColor = RGB(18, 19, 13)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -320,24 +320,24 @@ Private Sub addRemove_Click(Index As Integer)
     Call Sound.Sound_Play(SND_CLICK)
     Select Case Index
         Case 0
-            Cantidad = Cantidad - 1
+            cantidad = cantidad - 1
         Case 1
-            Cantidad = Cantidad + 1
+            cantidad = cantidad + 1
     End Select
 End Sub
 
 Private Sub cantidad_Change()
-    If Val(Cantidad.Text) < 0 Then
-        Cantidad.Text = 1
+    If Val(cantidad.Text) < 0 Then
+        cantidad.Text = 1
         m_Number = 1
-    ElseIf Val(Cantidad.Text) > MAX_INVENTORY_OBJS Then
-        Cantidad.Text = 1
+    ElseIf Val(cantidad.Text) > MAX_INVENTORY_OBJS Then
+        cantidad.Text = 1
         m_Number = 1
     Else
-        m_Number = Val(Cantidad.Text)
+        m_Number = Val(cantidad.Text)
     End If
     
-    Cantidad.SelStart = Len(Cantidad.Text)
+    cantidad.SelStart = Len(cantidad.Text)
     
     InvComUsu.ReDraw
 End Sub
@@ -391,8 +391,8 @@ Private Sub interface_DblClick()
     
         LasActionBuy = True
 
-        If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(Cantidad) Then
-            Call WriteCommerceBuy(InvComNpc.SelectedItem, Cantidad.Text)
+        If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
+            Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
         Else
             AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
         End If
@@ -409,24 +409,24 @@ Private Sub interface_DblClick()
         
         Select Case ObjType
             Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
-                Call EquiparItem
+                Call WriteEquipItem(InvComUsu.SelectedItem)
                 
             Case eObjType.otWeapon
                 If ObjData(InvComUsu.OBJIndex(InvComUsu.SelectedItem)).proyectil = 1 And InvComUsu.Equipped(InvComUsu.SelectedItem) Then
-                    Call UsarItem
+                    Call WriteUseItem(InvComUsu.SelectedItem)
                 Else
-                    Call EquiparItem
+                    Call WriteEquipItem(InvComUsu.SelectedItem)
                 End If
                 
             Case eObjType.OtHerramientas
                 If InvComUsu.Equipped(InvComUsu.SelectedItem) Then
-                    Call UsarItem
+                    Call WriteUseItem(InvComUsu.SelectedItem)
                 Else
-                    Call EquiparItem
+                    Call WriteEquipItem(InvComUsu.SelectedItem)
                 End If
                  
             Case Else
-                Call UsarItem
+                Call WriteUseItem(InvComUsu.SelectedItem)
         End Select
     End If
 
@@ -487,7 +487,7 @@ Private Sub InvComUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         If InvComNpc.GetSlot(x, y) > 0 Then
             ' Vendemos el item
             LasActionBuy = False
-            Call WriteCommerceSell(Drag, max(Val(Cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
+            Call WriteCommerceSell(Drag, max(Val(cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
         End If
     End If
 
@@ -500,8 +500,8 @@ Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         ' Compramos el item
         LasActionBuy = True
         ' Si tiene suficiente oro
-        If UserGLD >= InvComNpc.Valor(Drag) * Val(Cantidad.Text) Then
-            Call WriteCommerceBuy(Drag, Val(Cantidad.Text))
+        If UserGLD >= InvComNpc.Valor(Drag) * Val(cantidad.Text) Then
+            Call WriteCommerceBuy(Drag, Val(cantidad.Text))
         Else
             AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
         End If
@@ -524,7 +524,7 @@ Private Sub tmrNumber_Timer()
         m_Number = MAX_NUMBER
     End If
 
-    Cantidad.Text = format$(m_Number)
+    cantidad.Text = format$(m_Number)
     
     If m_Interval > 1 Then
         m_Interval = m_Interval - 1
