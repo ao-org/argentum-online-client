@@ -78,7 +78,7 @@ Private Type dialog
     y           As Integer
     startTime   As Long
     lifeTime    As Long
-    CharIndex   As Integer
+    charindex   As Integer
     color       As Long
     renderable  As Boolean
     Sube As Byte
@@ -895,7 +895,7 @@ Private Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, B
 'exits:
 
 End Sub
-Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal CharIndex As Integer)
+Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal charindex As Integer)
     On Error Resume Next
     Dim cantidaddeframes As Long
     Dim CurrentGrhIndex As Long
@@ -961,8 +961,8 @@ Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
             rgb_list(1) = colorz(0)
             rgb_list(2) = colorz(0)
             rgb_list(3) = colorz(0)
-        If grh.Alpha = 0 And CharIndex > 0 Then
-            charlist(CharIndex).fX.Started = 0
+        If grh.Alpha = 0 And charindex > 0 Then
+            charlist(charindex).fX.Started = 0
             Exit Sub
         End If
     End If
@@ -1267,13 +1267,13 @@ End If
         With dialogs(slot)
             .startTime = GetTickCount()
             .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(char_dialog))
-            .CharIndex = char_index
+            .charindex = char_index
         End With
     Else
             With dialogs(slot)
             .startTime = GetTickCount()
             .lifeTime = (MS_PER_CHAR * Len(char_dialog))
-            .CharIndex = char_index
+            .charindex = char_index
         End With
     End If
     
@@ -1281,7 +1281,7 @@ End If
 End Sub
 
 
-Private Function BinarySearch(ByVal CharIndex As Integer) As Integer
+Private Function BinarySearch(ByVal charindex As Integer) As Integer
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 07/28/07
@@ -1298,9 +1298,9 @@ Private Function BinarySearch(ByVal CharIndex As Integer) As Integer
     Do While min <= max
         mid = (min + max) \ 2
         
-        If dialogs(mid).CharIndex < CharIndex Then
+        If dialogs(mid).charindex < charindex Then
             min = mid + 1
-        ElseIf dialogs(mid).CharIndex > CharIndex Then
+        ElseIf dialogs(mid).charindex > charindex Then
             max = mid - 1
         Else
             'We found it
@@ -1538,16 +1538,16 @@ End If
                 'Char layer ************************************
                 'clones
             
-                If MapData(x, y).CharIndex = UserCharIndex Then
+                If MapData(x, y).charindex = UserCharIndex Then
                     If x <> UserPos.x Then
-                        MapData(x, y).CharIndex = 0
+                        MapData(x, y).charindex = 0
                     End If
                     
                 End If
                 
-                If .CharIndex <> 0 Then
-                    If charlist(.CharIndex).AlphaPJ = 255 And charlist(.CharIndex).active = 1 Then
-                        Call Char_RenderCiego(.CharIndex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
+                If .charindex <> 0 Then
+                    If charlist(.charindex).AlphaPJ = 255 And charlist(.charindex).active = 1 Then
+                        Call Char_RenderCiego(.charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
                     End If
                 End If
                 
@@ -1953,16 +1953,16 @@ End If
                 
                 'Char layer ************************************
                 'evitamos reenderizar un clon del usuario
-                If MapData(x, y).CharIndex = UserCharIndex Then
+                If MapData(x, y).charindex = UserCharIndex Then
                     If x <> UserPos.x Then
-                        MapData(x, y).CharIndex = 0
+                        MapData(x, y).charindex = 0
                     End If
                     
                 End If
                 
-                If .CharIndex <> 0 Then
-                    If charlist(.CharIndex).active = 1 Then
-                        Call Char_Render(.CharIndex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
+                If .charindex <> 0 Then
+                    If charlist(.charindex).active = 1 Then
+                        Call Char_Render(.charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
                     End If
                 End If
           
@@ -2119,9 +2119,9 @@ ScreenY = minYOffset - TileBufferSize
             PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
             With MapData(x, y)
                 
-                If MapData(x, y).CharIndex <> 0 Then
-                    If charlist(MapData(x, y).CharIndex).active = 1 Then
-                        Call Char_TextRender(MapData(x, y).CharIndex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
+                If MapData(x, y).charindex <> 0 Then
+                    If charlist(MapData(x, y).charindex).active = 1 Then
+                        Call Char_TextRender(MapData(x, y).charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
                     End If
                 End If
                 modRenderValue.Draw x, y, PixelOffsetXTemp + 16, PixelOffsetYTemp, timerTicksPerFrame
@@ -2641,7 +2641,7 @@ Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
                 MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
     End If
 End Sub
-Private Sub Char_TextRender(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
     Dim moved As Boolean
     Dim Pos As Integer
@@ -2659,7 +2659,7 @@ Private Sub Char_TextRender(ByVal CharIndex As Long, ByVal PixelOffsetX As Integ
     
     
 
-    With charlist(CharIndex)
+    With charlist(charindex)
 
 
         PixelOffsetX = PixelOffsetX + .MoveOffsetX
@@ -2669,42 +2669,42 @@ Private Sub Char_TextRender(ByVal CharIndex As Long, ByVal PixelOffsetX As Integ
             'screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
 
 '*** Start Dialogs ***
-        If charlist(MapData(x, y).CharIndex).dialog <> "" Then
+        If charlist(MapData(x, y).charindex).dialog <> "" Then
             'Figure out screen position
             Dim temp_array(3) As Long
             Dim PixelY As Integer
             PixelY = PixelOffsetY
-            temp_array(0) = charlist(MapData(x, y).CharIndex).dialog_color
+            temp_array(0) = charlist(MapData(x, y).charindex).dialog_color
             temp_array(1) = temp_array(0)
             temp_array(2) = temp_array(0)
             temp_array(3) = temp_array(0)
-            If charlist(MapData(x, y).CharIndex).dialog_scroll Then
-                charlist(MapData(x, y).CharIndex).dialog_offset_counter_y = charlist(MapData(x, y).CharIndex).dialog_offset_counter_y + (scroll_dialog_pixels_per_frame * timerTicksPerFrame * Sgn(-1))
-                If Sgn(charlist(MapData(x, y).CharIndex).dialog_offset_counter_y) = -1 Then
-                    charlist(MapData(x, y).CharIndex).dialog_offset_counter_y = 0
-                    charlist(MapData(x, y).CharIndex).dialog_scroll = False
+            If charlist(MapData(x, y).charindex).dialog_scroll Then
+                charlist(MapData(x, y).charindex).dialog_offset_counter_y = charlist(MapData(x, y).charindex).dialog_offset_counter_y + (scroll_dialog_pixels_per_frame * timerTicksPerFrame * Sgn(-1))
+                If Sgn(charlist(MapData(x, y).charindex).dialog_offset_counter_y) = -1 Then
+                    charlist(MapData(x, y).charindex).dialog_offset_counter_y = 0
+                    charlist(MapData(x, y).charindex).dialog_scroll = False
                 End If
-                Engine_Text_Render charlist(MapData(x, y).CharIndex).dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(charlist(MapData(x, y).CharIndex).dialog, True) / 2), PixelY + charlist(MapData(x, y).CharIndex).Body.HeadOffset.y - Engine_Text_Height(charlist(MapData(x, y).CharIndex).dialog, True) + charlist(MapData(x, y).CharIndex).dialog_offset_counter_y, temp_array, 1, True, MapData(x, y).CharIndex
+                Engine_Text_Render charlist(MapData(x, y).charindex).dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(charlist(MapData(x, y).charindex).dialog, True) / 2), PixelY + charlist(MapData(x, y).charindex).Body.HeadOffset.y - Engine_Text_Height(charlist(MapData(x, y).charindex).dialog, True) + charlist(MapData(x, y).charindex).dialog_offset_counter_y, temp_array, 1, True, MapData(x, y).charindex
             Else
-                Engine_Text_Render charlist(MapData(x, y).CharIndex).dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(charlist(MapData(x, y).CharIndex).dialog, True) / 2), PixelY + charlist(MapData(x, y).CharIndex).Body.HeadOffset.y - Engine_Text_Height(charlist(MapData(x, y).CharIndex).dialog, True), temp_array, 1, True, MapData(x, y).CharIndex
+                Engine_Text_Render charlist(MapData(x, y).charindex).dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(charlist(MapData(x, y).charindex).dialog, True) / 2), PixelY + charlist(MapData(x, y).charindex).Body.HeadOffset.y - Engine_Text_Height(charlist(MapData(x, y).charindex).dialog, True), temp_array, 1, True, MapData(x, y).charindex
             End If
         End If
         
-        If charlist(MapData(x, y).CharIndex).dialogEfec <> "" Then
+        If charlist(MapData(x, y).charindex).dialogEfec <> "" Then
 
-            charlist(MapData(x, y).CharIndex).SubeEfecto = charlist(MapData(x, y).CharIndex).SubeEfecto - timerTicksPerFrame
-            charlist(MapData(x, y).CharIndex).dialog_Efect_color.a = charlist(MapData(x, y).CharIndex).dialog_Efect_color.a - (timerTicksPerFrame * 8.2)
+            charlist(MapData(x, y).charindex).SubeEfecto = charlist(MapData(x, y).charindex).SubeEfecto - timerTicksPerFrame
+            charlist(MapData(x, y).charindex).dialog_Efect_color.a = charlist(MapData(x, y).charindex).dialog_Efect_color.a - (timerTicksPerFrame * 8.2)
 
-            If charlist(MapData(x, y).CharIndex).dialog_Efect_color.a < 0 Then
-                 charlist(MapData(x, y).CharIndex).SubeEfecto = 0
-                 charlist(MapData(x, y).CharIndex).dialogEfec = ""
+            If charlist(MapData(x, y).charindex).dialog_Efect_color.a < 0 Then
+                 charlist(MapData(x, y).charindex).SubeEfecto = 0
+                 charlist(MapData(x, y).charindex).dialogEfec = ""
             Else
                 temp_array(0) = D3DColorARGB(.dialog_Efect_color.a, .dialog_Efect_color.r, .dialog_Efect_color.g, .dialog_Efect_color.b)
                 temp_array(1) = temp_array(0)
                 temp_array(2) = temp_array(0)
                 temp_array(3) = temp_array(0)
         
-                Engine_Text_Render_Efect MapData(x, y).CharIndex, .dialogEfec, PixelOffsetX + 14 - Engine_Text_Width(.dialogEfec, True) / 2, PixelOffsetY - 100 + .Body.HeadOffset.y - Engine_Text_Height(.dialogEfec, True) + .SubeEfecto, temp_array, 1, True, max(CDbl(charlist(MapData(x, y).CharIndex).dialog_Efect_color.a), 0)
+                Engine_Text_Render_Efect MapData(x, y).charindex, .dialogEfec, PixelOffsetX + 14 - Engine_Text_Width(.dialogEfec, True) / 2, PixelOffsetY - 100 + .Body.HeadOffset.y - Engine_Text_Height(.dialogEfec, True) + .SubeEfecto, temp_array, 1, True, max(CDbl(charlist(MapData(x, y).charindex).dialog_Efect_color.a), 0)
             End If
         End If
                 
@@ -2747,7 +2747,7 @@ Private Sub Char_TextRender(ByVal CharIndex As Long, ByVal PixelOffsetX As Integ
           '*** End Dialogs ***
           End With
 End Sub
-Private Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 12/03/04
@@ -2766,7 +2766,7 @@ Private Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, 
     
 
     
-    With charlist(CharIndex)
+    With charlist(charindex)
     If .Heading = 0 Then Exit Sub
     
        If .Moving Then
@@ -2886,10 +2886,10 @@ If .Body.Walk(.Heading).GrhIndex Then
                                 If .EsEnano Then OffArma = 7
                                 
                                 
-                                If .Body_Aura <> "" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, CharIndex)
-                                If .Arma_Aura <> "" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, CharIndex)
-                                If .Otra_Aura <> "" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, CharIndex)
-                                If .Escudo_Aura <> "" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, CharIndex)
+                                If .Body_Aura <> "" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                                If .Arma_Aura <> "" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                                If .Otra_Aura <> "" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                                If .Escudo_Aura <> "" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
                                 
                                 Select Case .Heading
                                      Case EAST
@@ -3031,7 +3031,7 @@ If .Body.Walk(.Heading).GrhIndex Then
                             
                                             
                            If .group_index > 0 Then
-                                If charlist(CharIndex).group_index = charlist(UserCharIndex).group_index Then
+                                If charlist(charindex).group_index = charlist(UserCharIndex).group_index Then
                                    color(0) = D3DColorXRGB(255, 255, 255)
                                    color(1) = D3DColorXRGB(255, 255, 255)
                                    color(2) = D3DColorXRGB(255, 255, 255)
@@ -3042,7 +3042,7 @@ If .Body.Walk(.Heading).GrhIndex Then
                                    colorCorazon(3) = D3DColorXRGB(0, 255, 255)
                                 End If
                           End If
-                            If FullScreen And CharIndex = UserCharIndex And UserEstado = 0 Then
+                            If FullScreen And charindex = UserCharIndex And UserEstado = 0 Then
                                     OffsetYname = 16
                                     OffsetYClan = 14
                                     line = Left$(.nombre, Pos - 2)
@@ -3053,7 +3053,7 @@ If .Body.Walk(.Heading).GrhIndex Then
                             End If
                             
                             If .clan_index > 0 Then
-                                If .clan_index = charlist(UserCharIndex).clan_index And CharIndex <> UserCharIndex And .MUERTO = 0 Then
+                                If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .MUERTO = 0 Then
                                     If .clan_nivel = 5 Then
                                         OffsetYname = 8
                                         OffsetYClan = 6
@@ -3099,7 +3099,7 @@ If .Body.Walk(.Heading).GrhIndex Then
                         mostrarlo = True
                     End If
                     If .group_index > 0 Then
-                        If charlist(CharIndex).group_index = charlist(UserCharIndex).group_index Then
+                        If charlist(charindex).group_index = charlist(UserCharIndex).group_index Then
                             mostrarlo = True
                         End If
                     End If
@@ -3112,7 +3112,7 @@ If .Body.Walk(.Heading).GrhIndex Then
                     End If
                         
                     
-                        If CharIndex = UserCharIndex Or mostrarlo = True Then
+                        If charindex = UserCharIndex Or mostrarlo = True Then
                             colorz(0) = D3DColorARGB(100, 255, 255, 255)
                             colorz(1) = D3DColorARGB(100, 255, 255, 255)
                             colorz(2) = D3DColorARGB(100, 255, 255, 255)
@@ -3143,7 +3143,7 @@ If .Body.Walk(.Heading).GrhIndex Then
                                 colorCorazon(3) = colorCorazon(0)
                                 
                                 
-                                If FullScreen And CharIndex = UserCharIndex And UserEstado = 0 Then
+                                If FullScreen And charindex = UserCharIndex And UserEstado = 0 Then
                                     OffsetYname = 16
                                     OffsetYClan = 14
                                     line = Left$(.nombre, Pos - 2)
@@ -3225,12 +3225,12 @@ If .Body.Walk(.Heading).GrhIndex Then
                                 .BarTime = .BarTime + (4 * timerTicksPerFrame * Sgn(1))
                                  
                                 If .BarTime >= .MaxBarTime Then
-                                    If CharIndex = UserCharIndex Then
+                                    If charindex = UserCharIndex Then
                                         Call CompletarAccionBarra(.BarAccion)
                                     End If
-                                    charlist(CharIndex).BarTime = 0
-                                    charlist(CharIndex).BarAccion = 99
-                                    charlist(CharIndex).MaxBarTime = 0
+                                    charlist(charindex).BarTime = 0
+                                    charlist(charindex).BarAccion = 99
+                                    charlist(charindex).MaxBarTime = 0
                                 End If
                             End If
                             
@@ -3254,9 +3254,9 @@ If .Body.Walk(.Heading).GrhIndex Then
                                     colorz(2) = D3DColorARGB(220, 255, 255, 255)
                                     colorz(3) = D3DColorARGB(220, 255, 255, 255)
                                     If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
-                                           Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, colorz, False, , , , CharIndex)
+                                           Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, colorz, False, , , , charindex)
                                     Else
-                                            Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, colorz, True, , , , CharIndex)
+                                            Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, colorz, True, , , , charindex)
                                     End If
                                End If
                                 If .FxList(i).Started = 0 Then
@@ -3270,7 +3270,7 @@ If .Body.Walk(.Heading).GrhIndex Then
 End If
     End With
 End Sub
-Private Sub Char_RenderCiego(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 12/03/04
@@ -3282,7 +3282,7 @@ Private Sub Char_RenderCiego(ByVal CharIndex As Long, ByVal PixelOffsetX As Inte
     Dim color(0 To 3) As Long
     Dim i As Long
     
-    With charlist(CharIndex)
+    With charlist(charindex)
     If .Heading = 0 Then Exit Sub
     
        If .Moving Then
@@ -3437,7 +3437,7 @@ If .Body.Walk(.Heading).GrhIndex Then
                     
                ' End If
         Else
-                    If CharIndex = UserCharIndex Or charlist(UserCharIndex).priv > 0 And .priv >= 0 Then
+                    If charindex = UserCharIndex Or charlist(UserCharIndex).priv > 0 And .priv >= 0 Then
                             colorz(0) = ColorCiego(0)
                             colorz(1) = ColorCiego(0)
                             colorz(2) = ColorCiego(0)
@@ -3482,7 +3482,7 @@ If .Body.Walk(.Heading).GrhIndex Then
                                  .BarTime = .BarTime + (4 * timerTicksPerFrame * Sgn(1))
                                  
                                '  Engine_Text_Render "time: " & .BarTime, 50, 50, color, 1, True
-                            If .BarTime >= .MaxBarTime And CharIndex = UserCharIndex Then
+                            If .BarTime >= .MaxBarTime And charindex = UserCharIndex Then
                                 Call CompletarAccionBarra(.BarAccion)
                                 
                             End If
@@ -3519,9 +3519,9 @@ If .Body.Walk(.Heading).GrhIndex Then
                     colorz(2) = D3DColorARGB(220, 255, 255, 255)
                     colorz(3) = D3DColorARGB(220, 255, 255, 255)
                 If FxData(.FxIndex).IsPNG = 1 Then
-                       Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 20, 1, 1, colorz, False, , , , CharIndex)
+                       Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 20, 1, 1, colorz, False, , , , charindex)
                 Else
-                        Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 20, 1, 1, colorz, True, , , , CharIndex)
+                        Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 20, 1, 1, colorz, True, , , , charindex)
                 End If
                     
                     If .fX.Started = 0 Then _
@@ -3609,15 +3609,15 @@ EngineRun = False
 Call CloseClient
 End Sub
 
-Public Sub SetCharacterFx(ByVal CharIndex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
+Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 12/03/04
 'Sets an FX to the character.
 '***************************************************
     Dim indice As Byte
-    With charlist(CharIndex)
-        indice = engine.Char_FX_Group_Next_Open(CharIndex)
+    With charlist(charindex)
+        indice = engine.Char_FX_Group_Next_Open(charindex)
         .FxList(indice).FxIndex = fX
         Call InitGrh(.FxList(indice), FxData(fX).Animacion)
         .FxList(indice).Loops = Loops
@@ -3645,7 +3645,7 @@ Dim indice As Byte
     End With
 End Sub
 
-Public Sub Char_Move_by_Head(ByVal CharIndex As Integer, ByVal nHeading As E_Heading)
+Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Heading)
 '*****************************************************************
 'Starts the movement of a character in nHeading direction
 '*****************************************************************
@@ -3662,7 +3662,7 @@ On Error Resume Next
     Dim nX As Integer
     Dim nY As Integer
     
-    With charlist(CharIndex)
+    With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
         
@@ -3685,10 +3685,10 @@ On Error Resume Next
         nY = y + addy
     
         
-        MapData(nX, nY).CharIndex = CharIndex
+        MapData(nX, nY).charindex = charindex
         .Pos.x = nX
         .Pos.y = nY
-        MapData(x, y).CharIndex = 0
+        MapData(x, y).charindex = 0
     
         
         .MoveOffsetX = -1 * (32 * addx)
@@ -3708,16 +3708,16 @@ On Error Resume Next
         .scrollDirectionY = addy
     End With
     
-    If UserEstado <> 1 Then Call DoPasosFx(CharIndex)
+    If UserEstado <> 1 Then Call DoPasosFx(charindex)
     
     'areas viejos
     If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
-        Call EraseChar(CharIndex)
+        Call EraseChar(charindex)
     End If
     
 End Sub
 
-Public Sub Char_Move_by_Pos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As Integer)
+Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
 On Error Resume Next
     Dim x As Integer
     Dim y As Integer
@@ -3725,11 +3725,11 @@ On Error Resume Next
     Dim addy As Integer
     Dim nHeading As E_Heading
     
-    With charlist(CharIndex)
+    With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
         
-        MapData(x, y).CharIndex = 0
+        MapData(x, y).charindex = 0
         
         addx = nX - x
         addy = nY - y
@@ -3750,7 +3750,7 @@ On Error Resume Next
             nHeading = E_Heading.south
         End If
         
-        MapData(nX, nY).CharIndex = CharIndex
+        MapData(nX, nY).charindex = charindex
         
         
         .Pos.x = nX
@@ -3773,17 +3773,17 @@ On Error Resume Next
 
     End With
     
-    If Not EstaPCarea(CharIndex) Then
+    If Not EstaPCarea(charindex) Then
     'Call Dialogos.RemoveDialog(CharIndex)
     'Call Hits.RemoveHit(CharIndex)
     End If
     If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
-        Call EraseChar(CharIndex)
+        Call EraseChar(charindex)
     End If
 End Sub
 
-Private Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
-    With charlist(CharIndex).Pos
+Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
+    With charlist(charindex).Pos
         EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
     End With
 End Function
@@ -3997,31 +3997,31 @@ On Error Resume Next
     Static rgb_list(3) As Long
     re.Left = 0
     re.Top = 0
-    re.bottom = 105
-    re.Right = 173
+    re.bottom = 89
+    re.Right = 177
     
     
-    frmMapaGrande.PlayerView.Height = 105
-    frmMapaGrande.PlayerView.Width = 173
-    frmMapaGrande.PlayerView.ScaleHeight = 105
-    frmMapaGrande.PlayerView.ScaleWidth = 173
+    frmMapaGrande.PlayerView.Height = 89
+    frmMapaGrande.PlayerView.Width = 177
+    frmMapaGrande.PlayerView.ScaleHeight = 89
+    frmMapaGrande.PlayerView.ScaleWidth = 177
     
     
     D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET, 0, 0, 0
-     D3DDevice.BeginScene
+    D3DDevice.BeginScene
         
         
-            Dim color(0 To 3) As Long
+    Dim color(0 To 3) As Long
 
 
-                    color(0) = D3DColorARGB(255, 255, 255, 255)
-                    color(1) = color(0)
-                    color(2) = color(0)
-                    color(3) = color(0)
+    color(0) = D3DColorARGB(255, 255, 255, 255)
+    color(1) = color(0)
+    color(2) = color(0)
+    color(3) = color(0)
+
         
         
-        
-        Dim i As Byte
+    Dim i As Byte
     Dim x As Integer
     Dim y As Integer
     
@@ -4034,7 +4034,7 @@ On Error Resume Next
     
     Dim tmp As String
     Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-   ' Engine_Draw_Box x, y, 204, 204, D3DColorARGB(230, 28, 18, 9) 'Fondo del inventario
+    Engine_Draw_Box x, y, 177, 89, D3DColorARGB(255, 7, 7, 7) 'Fondo del inventario
    
 
               
@@ -6046,7 +6046,7 @@ Engine_Text_Height = f * 14
 End If
 
 End Function
-Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional CharIndex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
 On Error Resume Next
 Dim a, b, c, d, e, f As Integer
 Dim graf As grh
@@ -6054,10 +6054,10 @@ Dim graf As grh
 Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
 temp_array(0) = text_color(0)
 
-If CharIndex = 0 Then
+If charindex = 0 Then
 a = 255
 Else
-a = charlist(CharIndex).AlphaText
+a = charlist(charindex).AlphaText
 End If
 
 If Alpha <> 255 Then
@@ -6084,9 +6084,9 @@ temp_array(3) = temp_array(0)
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
             If (GetTickCount() - .startTime) >= .lifeTime Then
-                Call Char_Dialog_Remove(.CharIndex, CharIndex)
+                Call Char_Dialog_Remove(.charindex, charindex)
                              
-                If charlist(CharIndex).AlphaText = 0 Then
+                If charlist(charindex).AlphaText = 0 Then
                 removedDialogs = removedDialogs + 1
                 End If
             Else
@@ -6174,7 +6174,7 @@ Else
 End If
 
 End Sub
-Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional CharIndex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
 On Error Resume Next
 Dim a, b, c, d, e, f As Integer
 Dim graf As grh
@@ -6182,10 +6182,10 @@ Dim graf As grh
 Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
 temp_array(0) = text_color(0)
 
-If CharIndex = 0 Then
+If charindex = 0 Then
 a = 255
 Else
-a = charlist(CharIndex).AlphaText
+a = charlist(charindex).AlphaText
 End If
 
 If Alpha <> 255 Then
@@ -6212,7 +6212,7 @@ temp_array(3) = temp_array(0)
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
             If (GetTickCount() - .startTime) >= .lifeTime Then
-                Call Char_Dialog_Remove(.CharIndex, CharIndex)
+                Call Char_Dialog_Remove(.charindex, charindex)
                              
                 If a <= 0 Then
                 removedDialogs = removedDialogs + 1
@@ -6307,7 +6307,7 @@ Else
 End If
 
 End Sub
-Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional CharIndex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
 On Error Resume Next
 Dim a, b, c, d, e, f As Integer
 Dim graf As grh
@@ -6315,10 +6315,10 @@ Dim graf As grh
 Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
 temp_array(0) = text_color(0)
 
-If CharIndex = 0 Then
+If charindex = 0 Then
 a = 255
 Else
-a = charlist(CharIndex).AlphaText
+a = charlist(charindex).AlphaText
 End If
 
 If Alpha <> 255 Then
@@ -6348,7 +6348,7 @@ temp_array(3) = temp_array(0)
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
             If (GetTickCount() - .startTime) >= .lifeTime Then
-                Call Char_Dialog_Remove(.CharIndex, CharIndex)
+                Call Char_Dialog_Remove(.charindex, charindex)
                              
                 If a <= 0 Then
                     removedDialogs = removedDialogs + 1
@@ -6438,7 +6438,7 @@ Else
 End If
 
 End Sub
-Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional CharIndex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
 On Error Resume Next
 Dim a, b, c, d, e, f As Integer
 Dim graf As grh
@@ -6446,10 +6446,10 @@ Dim graf As grh
 Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
 temp_array(0) = text_color(0)
 
-If CharIndex = 0 Then
+If charindex = 0 Then
 a = 255
 Else
-a = charlist(CharIndex).AlphaText
+a = charlist(charindex).AlphaText
 End If
 
 If Alpha <> 255 Then
@@ -6476,7 +6476,7 @@ temp_array(3) = temp_array(0)
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
             If (GetTickCount() - .startTime) >= .lifeTime Then
-                Call Char_Dialog_Remove(.CharIndex, CharIndex)
+                Call Char_Dialog_Remove(.charindex, charindex)
                              
                 If a <= 0 Then
                     removedDialogs = removedDialogs + 1
@@ -6566,7 +6566,7 @@ Else
 End If
 
 End Sub
-Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRef text_color As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional CharIndex As Long = 0)
+Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRef text_color As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Long = 0)
 On Error Resume Next
 Dim a, b, c, d, e, f As Integer
 Dim graf As grh
@@ -6592,7 +6592,7 @@ temp_array(3) = temp_array(0)
 
 
 Dim Sombra(3) As Long 'Sombra
-Sombra(0) = D3DColorARGB(CharIndex, r / 6, g / 6, b / 6)
+Sombra(0) = D3DColorARGB(charindex, r / 6, g / 6, b / 6)
 Sombra(1) = Sombra(0)
 Sombra(2) = Sombra(0)
 Sombra(3) = Sombra(0)
@@ -6669,7 +6669,7 @@ Else
 End If
 
 End Sub
-Sub Engine_Text_Render_Efect(CharIndex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional ByVal Alpha As Byte = 255)
+Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional ByVal Alpha As Byte = 255)
 
 Dim a, b, c, d, e, f As Integer
 Dim graf As grh
@@ -6735,7 +6735,7 @@ Sombra(3) = Sombra(0)
 
 
 End Sub
-Sub Engine_Text_Render_Exp(CharIndex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False)
+Sub Engine_Text_Render_Exp(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False)
 
 Dim a, b, c, d, e, f As Integer
 Dim graf As grh
@@ -7233,9 +7233,9 @@ ScreenY = minYOffset - TileBufferSize
             With MapData(x, y)
 
                 
-                   If MapData(x, y).CharIndex <> 0 Then
-                   If charlist(MapData(x, y).CharIndex).active = 1 Then
-                Call Char_TextRender(MapData(x, y).CharIndex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
+                   If MapData(x, y).charindex <> 0 Then
+                   If charlist(MapData(x, y).charindex).active = 1 Then
+                Call Char_TextRender(MapData(x, y).charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
                 End If
                 End If
 
@@ -8282,14 +8282,14 @@ Call engine.Map_Base_Light_Set(color)
 
 End Sub
 
-Public Sub SetBarFx(ByVal CharIndex As Integer, ByVal BarTime As Integer)
+Public Sub SetBarFx(ByVal charindex As Integer, ByVal BarTime As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 12/03/04
 'Sets an FX to the character.
 '***************************************************
 
-    With charlist(CharIndex)
+    With charlist(charindex)
         .BarTime = BarTime
     End With
 End Sub
