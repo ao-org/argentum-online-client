@@ -66,11 +66,10 @@ Private Enum ServerPacketID
     UserCommerceEnd         ' FINCOMUSUOK
     ShowBlacksmithForm      ' SFH
     ShowCarpenterForm       ' SFC
-    NPCSwing                ' N1
     NPCKillUser             ' 6
     BlockedWithShieldUser   ' 7
     BlockedWithShieldOther  ' 8
-    UserSwing               ' U1
+    CharSwing               ' U1
     SafeModeOn              ' SEGON
     SafeModeOff             ' SEGOFF 20
     PartySafeOn
@@ -207,6 +206,7 @@ Private Enum ServerPacketID
     ExpOverHEad
     OroOverHEad
     ArmaMov
+    EscudoMov
     ActShop
     ViajarForm
     oxigeno
@@ -939,10 +939,7 @@ Rem  Call LogError("Llego paquete" & paquete)
         
         Case ServerPacketID.ShowCarpenterForm       ' SFC
             Call HandleShowCarpenterForm
-        
-        Case ServerPacketID.NPCSwing                ' N1
-            Call HandleNPCSwing
-        
+
         Case ServerPacketID.NPCKillUser             ' 6
             Call HandleNPCKillUser
         
@@ -952,8 +949,8 @@ Rem  Call LogError("Llego paquete" & paquete)
         Case ServerPacketID.BlockedWithShieldOther  ' 8
             Call HandleBlockedWithShieldOther
         
-        Case ServerPacketID.UserSwing               ' U1
-            Call HandleUserSwing
+        Case ServerPacketID.CharSwing               ' U1
+            Call HandleCharSwing
         
         Case ServerPacketID.SafeModeOn              ' SEGON
             Call HandleSafeModeOn
@@ -963,7 +960,6 @@ Rem  Call LogError("Llego paquete" & paquete)
             
         Case ServerPacketID.PartySafeOff
             Call HandlePartySafeOff
-            
             
         Case ServerPacketID.ClanSeguro
             Call HandleClanSeguro
@@ -1075,7 +1071,6 @@ Rem  Call LogError("Llego paquete" & paquete)
         
         Case ServerPacketID.PlayWave                ' TW
             Call HandlePlayWave
-            
             
         Case ServerPacketID.QuestDetails
             Call HandleQuestDetails
@@ -1367,9 +1362,13 @@ Rem  Call LogError("Llego paquete" & paquete)
             
         Case ServerPacketID.DonadorObj      ' OBR
             Call HandleDonadorObjects
+
         Case ServerPacketID.ArmaMov                ' TW
             Call HandleArmaMov
             
+        Case ServerPacketID.EscudoMov
+            Call HandleEscudoMov
+
         Case ServerPacketID.ActShop
             Call HandleActShop
         Case ServerPacketID.ViajarForm
@@ -2119,25 +2118,6 @@ Private Sub HandleShowSastreForm()
 End Sub
 
 ''
-' Handles the NPCSwing message.
-
-Private Sub HandleNPCSwing()
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
-'***************************************************
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    'Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_CRIATURA_FALLA_GOLPE, 255, 0, 0, True, False, False)
-    charlist(UserCharIndex).dialogEfec = "Falla"
-    charlist(UserCharIndex).SubeEfecto = 180
-    charlist(UserCharIndex).dialog_Efect_color.r = 255
-    charlist(UserCharIndex).dialog_Efect_color.a = 255
-End Sub
-
-''
 ' Handles the NPCKillUser message.
 
 Private Sub HandleNPCKillUser()
@@ -2185,22 +2165,41 @@ End Sub
 ''
 ' Handles the UserSwing message.
 
-Private Sub HandleUserSwing()
+Private Sub HandleCharSwing()
 '***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
-'***************************************************
+    If incomingData.length < 4 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+
     'Remove packet ID
     Call incomingData.ReadByte
     
+    Dim CharIndex As Integer
+    CharIndex = incomingData.ReadInteger
+    
+    Dim ShowFX As Boolean
+    ShowFX = incomingData.ReadBoolean
+    
+    Dim ShowText As Boolean
+    ShowText = incomingData.ReadBoolean
+    
     'Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_FALLADO_GOLPE, 255, 0, 0, True, False, False)
-    charlist(UserCharIndex).dialogEfec = "Fallas"
-    charlist(UserCharIndex).SubeEfecto = 180
-    charlist(UserCharIndex).dialog_Efect_color.r = 255
-    charlist(UserCharIndex).dialog_Efect_color.g = 0
-    charlist(UserCharIndex).dialog_Efect_color.b = 0
-    charlist(UserCharIndex).dialog_Efect_color.a = 255
+    
+    With charlist(CharIndex)
+        If ShowText Then
+            .dialogEfec = IIf(CharIndex = UserCharIndex, "Fallas", "Falló")
+            .SubeEfecto = 100
+            .dialog_Efect_color.r = 255
+            .dialog_Efect_color.g = 0
+            .dialog_Efect_color.b = 0
+            .dialog_Efect_color.a = 255
+        End If
+        
+        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y)) ' Swing
+        
+        If ShowFX Then Call SetCharacterFx(CharIndex, 90, 0)
+    End With
     
 End Sub
 ''
@@ -2520,7 +2519,7 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-    frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+    frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
 End Sub
 
@@ -2676,8 +2675,8 @@ Private Sub HandlePosUpdate()
     Call incomingData.ReadByte
     
     'Remove char from old position
-    If MapData(UserPos.x, UserPos.y).charindex = UserCharIndex Then
-        MapData(UserPos.x, UserPos.y).charindex = 0
+    If MapData(UserPos.x, UserPos.y).CharIndex = UserCharIndex Then
+        MapData(UserPos.x, UserPos.y).CharIndex = 0
     End If
     
     'Set new pos
@@ -2686,7 +2685,7 @@ Private Sub HandlePosUpdate()
     
 
     'Set char
-    MapData(UserPos.x, UserPos.y).charindex = UserCharIndex
+    MapData(UserPos.x, UserPos.y).CharIndex = UserCharIndex
     charlist(UserCharIndex).Pos = UserPos
         
     'Are we under a roof?
@@ -2899,14 +2898,14 @@ On Error GoTo errhandler
     Call buffer.ReadByte
     
     Dim chat As String
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim r As Byte
     Dim g As Byte
     Dim b As Byte
     Dim colortexto As Long
     Dim QueEs As String
     chat = buffer.ReadASCIIString()
-    charindex = buffer.ReadInteger()
+    CharIndex = buffer.ReadInteger()
     
     r = buffer.ReadByte()
     g = buffer.ReadByte()
@@ -2952,19 +2951,19 @@ On Error GoTo errhandler
 
             
     'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
-    If charlist(charindex).active Then
+    If charlist(CharIndex).active Then
 
-            engine.Char_Dialog_Set charindex, chat, colortexto, duracion, 30
+            engine.Char_Dialog_Set CharIndex, chat, colortexto, duracion, 30
 
     End If
     
-     If charlist(charindex).EsNpc = False Then
+     If charlist(CharIndex).EsNpc = False Then
      
          
         If CopiarDialogoAConsola = 1 And Not copiar Then
     
             'Call CopiarDialogoToConsola(charlist(charindex).nombre, chat, r & g & b)
-            Call WriteChatOverHeadInConsole(charindex, chat, r, g, b)
+            Call WriteChatOverHeadInConsole(CharIndex, chat, r, g, b)
         End If
     End If
     
@@ -3002,19 +3001,19 @@ On Error GoTo errhandler
     Call buffer.ReadByte
     
     Dim chat As String
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim color As Long
     
     chat = buffer.ReadASCIIString()
-    charindex = buffer.ReadInteger()
+    CharIndex = buffer.ReadInteger()
     
     color = buffer.ReadLong()
 
     
    ' Debug.Print color
 
-    charlist(charindex).dialogEfec = chat
-    charlist(charindex).SubeEfecto = 180
+    charlist(CharIndex).dialogEfec = chat
+    charlist(CharIndex).SubeEfecto = 100
     
     
     
@@ -3026,10 +3025,10 @@ On Error GoTo errhandler
       r = color And 255
     
     
-    charlist(charindex).dialog_Efect_color.r = b
-    charlist(charindex).dialog_Efect_color.g = g
-    charlist(charindex).dialog_Efect_color.b = r
-    charlist(charindex).dialog_Efect_color.a = 255
+    charlist(CharIndex).dialog_Efect_color.r = b
+    charlist(CharIndex).dialog_Efect_color.g = g
+    charlist(CharIndex).dialog_Efect_color.b = r
+    charlist(CharIndex).dialog_Efect_color.a = 255
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -3065,18 +3064,18 @@ On Error GoTo errhandler
     Call buffer.ReadByte
     
     Dim chat As String
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     chat = buffer.ReadASCIIString()
-    charindex = buffer.ReadInteger()
+    CharIndex = buffer.ReadInteger()
 
-    If charlist(charindex).active Then
+    If charlist(CharIndex).active Then
     
 
-    charlist(charindex).dialogExp = "+" & chat
-    charlist(charindex).SubeExp = 255
-    charlist(charindex).dialog_Exp_color.r = 42
-    charlist(charindex).dialog_Exp_color.g = 169
-    charlist(charindex).dialog_Exp_color.b = 222
+    charlist(CharIndex).dialogExp = "+" & chat
+    charlist(CharIndex).SubeExp = 255
+    charlist(CharIndex).dialog_Exp_color.r = 42
+    charlist(CharIndex).dialog_Exp_color.g = 169
+    charlist(CharIndex).dialog_Exp_color.b = 222
             
     End If
     
@@ -3114,19 +3113,19 @@ On Error GoTo errhandler
     Call buffer.ReadByte
     
     Dim chat As String
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     chat = buffer.ReadASCIIString()
-    charindex = buffer.ReadInteger()
+    CharIndex = buffer.ReadInteger()
 
 
-    If charlist(charindex).active Then
+    If charlist(CharIndex).active Then
     
 
-    charlist(charindex).dialogOro = "+" & chat
-    charlist(charindex).SubeOro = 255
-    charlist(charindex).dialog_Oro_color.r = 204
-    charlist(charindex).dialog_Oro_color.g = 193
-    charlist(charindex).dialog_Oro_color.b = 115
+    charlist(CharIndex).dialogOro = "+" & chat
+    charlist(CharIndex).SubeOro = 255
+    charlist(CharIndex).dialog_Oro_color.r = 204
+    charlist(CharIndex).dialog_Oro_color.g = 193
+    charlist(CharIndex).dialog_Oro_color.b = 115
             
     End If
     
@@ -3683,7 +3682,7 @@ On Error GoTo errhandler
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim Body As Integer
     Dim Head As Integer
     Dim Heading As E_Heading
@@ -3700,7 +3699,7 @@ On Error GoTo errhandler
 
     
     
-    charindex = buffer.ReadInteger()
+    CharIndex = buffer.ReadInteger()
     Body = buffer.ReadInteger()
     Head = buffer.ReadInteger()
     Heading = buffer.ReadByte()
@@ -3711,8 +3710,8 @@ On Error GoTo errhandler
     helmet = buffer.ReadInteger()
     
     
-    With charlist(charindex)
-        Call SetCharacterFx(charindex, buffer.ReadInteger(), buffer.ReadInteger())
+    With charlist(CharIndex)
+        Call SetCharacterFx(CharIndex, buffer.ReadInteger(), buffer.ReadInteger())
         
         .nombre = buffer.ReadASCIIString()
         .status = buffer.ReadByte()
@@ -3738,9 +3737,9 @@ On Error GoTo errhandler
         .simbolo = buffer.ReadByte()
         
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
-            If MapData(.Pos.x, .Pos.y).charindex = charindex Then
+            If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then
                 'Erase the old character from map
-                MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+                MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = 0
             End If
         End If
 
@@ -3769,7 +3768,7 @@ On Error GoTo errhandler
         
     End With
     
-   Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
+   Call MakeChar(CharIndex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
 
     Call RefreshAllChars
     
@@ -3805,18 +3804,18 @@ Private Sub HandleCharacterRemove()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim Desvanecido As Boolean
     
-    charindex = incomingData.ReadInteger()
+    CharIndex = incomingData.ReadInteger()
     Desvanecido = incomingData.ReadBoolean()
     
     
-    If Desvanecido And charlist(charindex).EsNpc = True Then
-       Call CrearFantasma(charindex)
+    If Desvanecido And charlist(CharIndex).EsNpc = True Then
+       Call CrearFantasma(CharIndex)
     End If
 
-    Call EraseChar(charindex)
+    Call EraseChar(CharIndex)
     Call RefreshAllChars
 End Sub
 
@@ -3837,24 +3836,24 @@ Private Sub HandleCharacterMove()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim x As Byte
     Dim y As Byte
     
-    charindex = incomingData.ReadInteger()
+    CharIndex = incomingData.ReadInteger()
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
     
-    With charlist(charindex)
+    With charlist(CharIndex)
 
         
         ' Play steps sounds if the user is not an admin of any kind
         If .priv <> 1 And .priv <> 2 And .priv <> 3 And .priv <> 5 And .priv <> 25 Then
-            Call DoPasosFx(charindex)
+            Call DoPasosFx(CharIndex)
         End If
     End With
     
-    Call engine.Char_Move_by_Pos(charindex, x, y)
+    Call engine.Char_Move_by_Pos(CharIndex, x, y)
     
     Call RefreshAllChars
 
@@ -3877,13 +3876,13 @@ Private Sub HandleCharacterChange()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim tempint As Integer
     Dim headIndex As Integer
     
-    charindex = incomingData.ReadInteger()
+    CharIndex = incomingData.ReadInteger()
     
-    With charlist(charindex)
+    With charlist(CharIndex)
         tempint = incomingData.ReadInteger()
         If tempint < LBound(BodyData()) Or tempint > UBound(BodyData()) Then
             .Body = BodyData(0)
@@ -3926,7 +3925,7 @@ Private Sub HandleCharacterChange()
         .EsEnano = False
         End If
         
-        Call SetCharacterFx(charindex, incomingData.ReadInteger(), incomingData.ReadInteger())
+        Call SetCharacterFx(CharIndex, incomingData.ReadInteger(), incomingData.ReadInteger())
     End With
     
     Call RefreshAllChars
@@ -4265,42 +4264,59 @@ Private Sub HandleCharUpdateHP()
     'Remove packet ID
     Call incomingData.ReadByte
         
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim minhp As Integer
     Dim maxhp As Integer
     
-    charindex = incomingData.ReadInteger()
+    CharIndex = incomingData.ReadInteger()
     minhp = incomingData.ReadInteger()
     maxhp = incomingData.ReadInteger()
     
 
-    charlist(charindex).UserMinHp = minhp
-    charlist(charindex).UserMaxHp = maxhp
+    charlist(CharIndex).UserMinHp = minhp
+    charlist(CharIndex).UserMaxHp = maxhp
     
    ' Call Audio.PlayWave(CStr(wave) & ".wav", srcX, srcY)
 End Sub
+
 Private Sub HandleArmaMov()
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 08/14/07
-'Last Modified by: Rapsodius
-'Added support for 3D Sounds.
 '***************************************************
     If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
-    
+
     'Remove packet ID
     Call incomingData.ReadByte
-        
-    Dim charindex As Integer
-    
-    charindex = incomingData.ReadInteger()
-    
-    charlist(charindex).Arma.WeaponWalk(charlist(charindex).Heading).Started = 1
+
+    Dim CharIndex As Integer
+
+    CharIndex = incomingData.ReadInteger()
+
+    charlist(CharIndex).MovArmaEscudo = True
+    charlist(CharIndex).Arma.WeaponWalk(charlist(CharIndex).Heading).Started = 1
 
 End Sub
+
+Private Sub HandleEscudoMov()
+'***************************************************
+    If incomingData.length < 3 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+
+    'Remove packet ID
+    Call incomingData.ReadByte
+
+    Dim CharIndex As Integer
+
+    CharIndex = incomingData.ReadInteger()
+
+    charlist(CharIndex).MovArmaEscudo = True
+    charlist(CharIndex).Escudo.ShieldWalk(charlist(CharIndex).Heading).Started = 1
+
+End Sub
+
 ''
 ' Handles the GuildList message.
 
@@ -4324,7 +4340,7 @@ On Error GoTo errhandler
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String
     guildsStr = buffer.ReadASCIIString()
@@ -4348,7 +4364,7 @@ On Error GoTo errhandler
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
     End If
@@ -4363,7 +4379,7 @@ On Error GoTo errhandler
     frmGuildAdm.Picture = LoadInterface("clanes.bmp")
     
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     frmGuildAdm.Show vbModeless, frmmain
@@ -4519,22 +4535,22 @@ Private Sub HandleCreateFX()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim fX As Integer
     Dim Loops As Integer
     
-    charindex = incomingData.ReadInteger()
+    CharIndex = incomingData.ReadInteger()
     fX = incomingData.ReadInteger()
     Loops = incomingData.ReadInteger()
     
     
     If fX = 0 Then
-    charlist(charindex).fX.AnimacionContador = 29
+    charlist(CharIndex).fX.AnimacionContador = 29
     Exit Sub
     End If
     
     
-    Call SetCharacterFx(charindex, fX, Loops)
+    Call SetCharacterFx(CharIndex, fX, Loops)
 End Sub
 
 ''
@@ -4568,9 +4584,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel Maximo!"
     End If
@@ -6136,17 +6152,17 @@ Private Sub HandleSetInvisible()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     
-    charindex = incomingData.ReadInteger()
-    charlist(charindex).invisible = incomingData.ReadBoolean()
-    charlist(charindex).TimerI = 0
+    CharIndex = incomingData.ReadInteger()
+    charlist(CharIndex).invisible = incomingData.ReadBoolean()
+    charlist(CharIndex).TimerI = 0
     
 #If SeguridadAlkon Then
-    If charlist(charindex).invisible Then
-        Call MI(CualMI).SetInvisible(charindex)
+    If charlist(CharIndex).invisible Then
+        Call MI(CualMI).SetInvisible(CharIndex)
     Else
-        Call MI(CualMI).ResetInvisible(charindex)
+        Call MI(CualMI).ResetInvisible(CharIndex)
     End If
 #End If
 
@@ -6165,10 +6181,10 @@ Private Sub HandleSetEscribiendo()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     
-    charindex = incomingData.ReadInteger()
-    charlist(charindex).Escribiendo = incomingData.ReadBoolean()
+    CharIndex = incomingData.ReadInteger()
+    charlist(CharIndex).Escribiendo = incomingData.ReadBoolean()
     
 
 End Sub
@@ -6358,10 +6374,10 @@ On Error GoTo errhandler
         
         
         'Empty the list
-        Call frmGuildNews.GuildsList.Clear
+        Call frmGuildNews.guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
           
     
@@ -6395,7 +6411,7 @@ On Error GoTo errhandler
      .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
      .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
            ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -6713,10 +6729,10 @@ On Error GoTo errhandler
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         
@@ -6758,7 +6774,7 @@ On Error GoTo errhandler
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -7295,22 +7311,22 @@ On Error GoTo errhandler
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim status As Byte
     Dim userTag As String
     Dim group_index As Integer
     
-    charindex = buffer.ReadInteger()
+    CharIndex = buffer.ReadInteger()
     status = buffer.ReadByte()
     userTag = buffer.ReadASCIIString()
     
     group_index = buffer.ReadInteger()
     
     'Update char status adn tag!
-    charlist(charindex).status = status
-    charlist(charindex).nombre = userTag
+    charlist(CharIndex).status = status
+    charlist(CharIndex).nombre = userTag
     
-    charlist(charindex).group_index = group_index
+    charlist(CharIndex).group_index = group_index
     
     
     'If we got here then packet is complete, copy data back to original queue
@@ -12268,7 +12284,7 @@ Private Sub HandleParticleFXToFloor()
             MapData(x, y).particle_group = 0
             General_Particle_Create ParticulaIndex, x, y, time
         Else
-            Call General_Char_Particle_Create(ParticulaIndex, MapData(x, y).charindex, time)
+            Call General_Char_Particle_Create(ParticulaIndex, MapData(x, y).CharIndex, time)
         End If
     End If
 End Sub
@@ -12353,26 +12369,26 @@ Private Sub HandleParticleFX()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim ParticulaIndex As Integer
     Dim time As Long
     Dim Remove As Boolean
      
-    charindex = incomingData.ReadInteger()
+    CharIndex = incomingData.ReadInteger()
     ParticulaIndex = incomingData.ReadInteger()
     time = incomingData.ReadLong()
     Remove = incomingData.ReadBoolean()
     
     If Remove Then
-    engine.Char_Particle_Group_Remove charindex, ParticulaIndex
-    charlist(charindex).Particula = 0
+    engine.Char_Particle_Group_Remove CharIndex, ParticulaIndex
+    charlist(CharIndex).Particula = 0
      Else
-     charlist(charindex).Particula = ParticulaIndex
-     charlist(charindex).ParticulaTime = time
+     charlist(CharIndex).Particula = ParticulaIndex
+     charlist(CharIndex).ParticulaTime = time
      
 
      
-    Call General_Char_Particle_Create(ParticulaIndex, charindex, time)
+    Call General_Char_Particle_Create(ParticulaIndex, CharIndex, time)
 
     End If
     
@@ -12490,12 +12506,12 @@ Private Sub HandleAuraToChar()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim ParticulaIndex As String
     Dim Remove As Boolean
     Dim TIPO As Byte
      
-    charindex = incomingData.ReadInteger()
+    CharIndex = incomingData.ReadInteger()
     ParticulaIndex = incomingData.ReadASCIIString()
 
     Remove = incomingData.ReadBoolean()
@@ -12504,15 +12520,15 @@ Private Sub HandleAuraToChar()
 
     
     If TIPO = 1 Then
-        charlist(charindex).Arma_Aura = ParticulaIndex
+        charlist(CharIndex).Arma_Aura = ParticulaIndex
     ElseIf TIPO = 2 Then
-        charlist(charindex).Body_Aura = ParticulaIndex
+        charlist(CharIndex).Body_Aura = ParticulaIndex
     ElseIf TIPO = 3 Then
-        charlist(charindex).Escudo_Aura = ParticulaIndex
+        charlist(CharIndex).Escudo_Aura = ParticulaIndex
     ElseIf TIPO = 4 Then
-        charlist(charindex).Head_Aura = ParticulaIndex
+        charlist(CharIndex).Head_Aura = ParticulaIndex
     ElseIf TIPO = 5 Then
-        charlist(charindex).Otra_Aura = ParticulaIndex
+        charlist(CharIndex).Otra_Aura = ParticulaIndex
       
     End If
 
@@ -12531,19 +12547,19 @@ Private Sub HandleSpeedToChar()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim Speeding As Single
     
     
 
      
-    charindex = incomingData.ReadInteger()
+    CharIndex = incomingData.ReadInteger()
     Speeding = incomingData.ReadSingle()
     
 
 
    
-        charlist(charindex).Speeding = Speeding
+        charlist(CharIndex).Speeding = Speeding
       
 
 End Sub
@@ -12800,17 +12816,17 @@ Private Sub HandleBarFx()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim BarTime As Integer
     Dim BarAccion As Byte
     
-    charindex = incomingData.ReadInteger()
+    CharIndex = incomingData.ReadInteger()
     BarTime = incomingData.ReadInteger()
     BarAccion = incomingData.ReadByte()
     
-    charlist(charindex).BarTime = 0
-    charlist(charindex).BarAccion = BarAccion
-    charlist(charindex).MaxBarTime = BarTime
+    charlist(CharIndex).BarTime = 0
+    charlist(CharIndex).BarAccion = BarAccion
+    charlist(CharIndex).MaxBarTime = BarTime
 End Sub
 
 Public Sub WriteCompletarAccion(ByVal Accion As Byte)

@@ -48,6 +48,8 @@ End Sub
 Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY As Integer, ByVal TicksPerFrame As Single)
  
     ' @ Dibuja un valor
+    
+    Dim Text As String, Width As Integer
      
     With MapData(x, y).RenderValue
          
@@ -62,17 +64,23 @@ Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY
                 End If
                 
                 .ColorRGB = ModifyColour(.TimeRendered, .RenderType)
-                    ColorToDX8 (.ColorRGB)
+                Call ColorToDX8(.ColorRGB)
+                
+                Select Case .RenderType
+                    Case eGold: Text = "+" & PonerPuntos(CLng(.RenderVal)) & " ORO"
+                    Case eExp: Text = "+" & PonerPuntos(CLng(.RenderVal)) & " EXP"
+                    Case eTrabajo: Text = "+" & PonerPuntos(CLng(.RenderVal))
+                    Case Else: Text = "-" & PonerPuntos(CLng(.RenderVal))
+                End Select
+                
+                Width = engine.Engine_Text_Width(Text)
+                
                 'Dibujo ; D
-                If .RenderType <> eGold And .RenderType <> eTrabajo And .RenderType <> eExp Then
-                    engine.Engine_Text_Render2 "-" & .RenderVal, (PixelX - 20), (PixelY - 20) + .Downloading, .ColorRGB, , , .TimeRendered ' .RenderFont,
-                Else ' el oro es  "+"
-                    engine.Engine_Text_Render2 "+" & .RenderVal, (PixelX - 20), (PixelY - 20) + .Downloading, .ColorRGB, , , .TimeRendered  ' .RenderFont,
-                End If
+                engine.Engine_Text_Render2 Text, (PixelX - Width \ 2), (PixelY - 48) + .Downloading, .ColorRGB, , , .TimeRendered ' .RenderFont,
                
                 'Si llego al tiempo lo limpio
                 If .TimeRendered <= 0 Then
-                   Call Clear(x, y)
+                    Call Clear(x, y)
                 End If
                 
          End If
@@ -133,7 +141,7 @@ Private Function ModifyColour(ByVal TimeNowRendered As Integer, ByVal RenderType
             ModifyColour = ARGB(204, 193, 115, TimeX2)
            ' ModifyColour = ARGB(0, 0, 0, TimeX2)
         Case RVType.eExp
-            ModifyColour = ARGB(0, 169, 0, TimeX2)
+            ModifyColour = ARGB(0, 169, 255, TimeX2)
         Case RVType.eTrabajo
             ModifyColour = ARGB(255, 255, 255, TimeX2)
 
