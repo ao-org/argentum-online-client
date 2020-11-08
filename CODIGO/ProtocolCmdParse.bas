@@ -565,6 +565,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /go NICKNAME o /go MAPA.")
                     End If
                 End If
+                
+            Case "/DESBUGGEAR"
+                If EsGM Then
+                    Call WriteDesbuggear(ArgumentosRaw)
+                End If
         
             Case "/INVISIBLE"
                 Call WriteInvisible
