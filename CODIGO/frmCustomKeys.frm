@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form frmCustomKeys 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Configuración de controles"
-   ClientHeight    =   6150
+   ClientHeight    =   6105
    ClientLeft      =   45
    ClientTop       =   315
-   ClientWidth     =   8085
+   ClientWidth     =   6075
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -18,9 +18,9 @@ Begin VB.Form frmCustomKeys
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   410
+   ScaleHeight     =   407
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   539
+   ScaleWidth      =   405
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox txConfig 
@@ -57,65 +57,65 @@ Begin VB.Form frmCustomKeys
    Begin VB.OptionButton Option2 
       Caption         =   "Moderna"
       Height          =   255
-      Left            =   6150
+      Left            =   4110
       TabIndex        =   53
-      Top             =   2880
+      Top             =   3840
       Width           =   1215
    End
    Begin VB.OptionButton Option1 
       Caption         =   "Clásica"
       Height          =   255
-      Left            =   6150
+      Left            =   4110
       TabIndex        =   52
-      Top             =   2520
+      Top             =   3480
       Width           =   1215
    End
    Begin VB.ComboBox AccionList3 
       Height          =   315
       ItemData        =   "frmCustomKeys.frx":0000
-      Left            =   6150
-      List            =   "frmCustomKeys.frx":001C
+      Left            =   4110
+      List            =   "frmCustomKeys.frx":0013
       Style           =   2  'Dropdown List
       TabIndex        =   49
-      Top             =   1800
+      Top             =   2760
       Width           =   1815
    End
    Begin VB.ComboBox AccionList1 
       Height          =   315
-      ItemData        =   "frmCustomKeys.frx":00B1
-      Left            =   6150
-      List            =   "frmCustomKeys.frx":00CD
+      ItemData        =   "frmCustomKeys.frx":007B
+      Left            =   4110
+      List            =   "frmCustomKeys.frx":008E
       Style           =   2  'Dropdown List
       TabIndex        =   46
-      Top             =   600
+      Top             =   1560
       Width           =   1815
    End
    Begin VB.ComboBox AccionList2 
       Height          =   315
-      ItemData        =   "frmCustomKeys.frx":0162
-      Left            =   6150
-      List            =   "frmCustomKeys.frx":017E
+      ItemData        =   "frmCustomKeys.frx":00F6
+      Left            =   4110
+      List            =   "frmCustomKeys.frx":0109
       Style           =   2  'Dropdown List
       TabIndex        =   45
-      Top             =   1200
+      Top             =   2160
       Width           =   1815
    End
    Begin VB.CommandButton cmdAccion 
       Caption         =   "Salir"
       Height          =   495
       Index           =   2
-      Left            =   6120
+      Left            =   4080
       TabIndex        =   44
-      Top             =   4080
+      Top             =   5040
       Width           =   1695
    End
    Begin VB.CommandButton cmdAccion 
       Caption         =   "Guardar"
       Height          =   495
       Index           =   0
-      Left            =   6120
+      Left            =   4080
       TabIndex        =   43
-      Top             =   3480
+      Top             =   4440
       Width           =   1695
    End
    Begin VB.TextBox txConfig 
@@ -485,9 +485,9 @@ Begin VB.Form frmCustomKeys
       ForeColor       =   &H00000000&
       Height          =   195
       Index           =   32
-      Left            =   6150
+      Left            =   4110
       TabIndex        =   51
-      Top             =   2160
+      Top             =   3120
       Width           =   1785
    End
    Begin VB.Label lbNames 
@@ -505,9 +505,9 @@ Begin VB.Form frmCustomKeys
       EndProperty
       Height          =   195
       Index           =   31
-      Left            =   6150
+      Left            =   4110
       TabIndex        =   50
-      Top             =   1560
+      Top             =   2520
       Width           =   1140
    End
    Begin VB.Label lbNames 
@@ -525,9 +525,9 @@ Begin VB.Form frmCustomKeys
       EndProperty
       Height          =   195
       Index           =   33
-      Left            =   6150
+      Left            =   4110
       TabIndex        =   48
-      Top             =   360
+      Top             =   1320
       Width           =   1140
    End
    Begin VB.Label lbNames 
@@ -545,9 +545,9 @@ Begin VB.Form frmCustomKeys
       EndProperty
       Height          =   195
       Index           =   34
-      Left            =   6150
+      Left            =   4110
       TabIndex        =   47
-      Top             =   960
+      Top             =   1920
       Width           =   1140
    End
    Begin VB.Label lbNames 
@@ -787,6 +787,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private TempVars(0 To 32) As Integer
+
 Private Sub cmdAccion_Click(Index As Integer)
 
 Dim i As Integer
