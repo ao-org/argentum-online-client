@@ -74,8 +74,8 @@ Private Const MS_ADD_EXTRA As Integer = 5000
 '                           (used to skip dialogs from people outside render area).
 Private Type dialog
     textLine()  As String
-    X           As Integer
-    Y           As Integer
+    x           As Integer
+    y           As Integer
     startTime   As Long
     lifeTime    As Long
     charindex   As Integer
@@ -197,7 +197,7 @@ Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal 
         .charindex = charindex
         .color = color
         .renderable = False
-        .startTime = GetTickCount()
+        .startTime = (GetTickCount() And &H7FFFFFFF)
         .textLine = FormatChat(chat)
         .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(chat))
         .Alpha = 255
@@ -221,7 +221,7 @@ Private Function FormatChat(ByRef chat As String) As String()
 '**************************************************************
     Dim word As String
     Dim curPos As Long
-    Dim Length As Long
+    Dim length As Long
     Dim acumLength As Long
     Dim lineLength As Long
     Dim wordLength As Long
@@ -231,13 +231,13 @@ Private Function FormatChat(ByRef chat As String) As String()
     'Initialize variables
     curLine = 0
     curPos = 1
-    Length = Len(chat)
+    length = Len(chat)
     acumLength = 0
     lineLength = -1
     ReDim chatLines(FieldCount(chat, 32)) As String
     
     'Start formating
-    Do While acumLength < Length
+    Do While acumLength < length
         word = ReadField(curPos, chat, 32)
         
         wordLength = Len(word)
@@ -271,8 +271,8 @@ Private Function FormatChat(ByRef chat As String) As String()
     Loop
     
     ' If it's only one line, center text
-    If curLine = 0 And Length < MAX_LENGTH Then
-        chatLines(curLine) = String((MAX_LENGTH - Length) \ 2 + 1, " ") & chatLines(curLine)
+    If curLine = 0 And length < MAX_LENGTH Then
+        chatLines(curLine) = String((MAX_LENGTH - length) \ 2 + 1, " ") & chatLines(curLine)
     End If
     
     'Resize array to fit
@@ -288,7 +288,7 @@ End Function
 ' @param    y           The Y coord where to start rendering.
 ' @param    charIndex   The character whose dialog's position is being updated.
 
-Public Sub UpdateDialogPos(ByVal X As Integer, ByVal Y As Integer, ByVal charindex As Integer)
+Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal charindex As Integer)
  '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 07/28/07
@@ -303,8 +303,8 @@ Public Sub UpdateDialogPos(ByVal X As Integer, ByVal Y As Integer, ByVal charind
         
             
             If .Alpha <> 0 Then .Alpha = .Alpha - 1
-            .X = X - (MAX_LENGTH \ 2) * 3
-            .Y = Y - (UBound(.textLine()) * 3)
+            .x = x - (MAX_LENGTH \ 2) * 3
+            .y = y - (UBound(.textLine()) * 3)
             .renderable = True
         End With
     End If
@@ -328,7 +328,7 @@ Public Sub render()
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-            If (GetTickCount() - .startTime) >= .lifeTime Then
+            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
                 Call RemoveDialog(.charindex)
                 
                 removedDialogs = removedDialogs + 1
@@ -339,7 +339,7 @@ Public Sub render()
                 For j = 0 To UBound(.textLine())
                 
                 
-                    Call engine.Text_Render_ext(.textLine(j), .Y + offset, .X, 400, 15, .color, True, DT_TOP Or DT_CENTER)
+                    Call engine.Text_Render_ext(.textLine(j), .y + offset, .x, 400, 15, .color, True, DT_TOP Or DT_CENTER)
                     offset = offset + usedFont.size + 5
                 Next j
                 

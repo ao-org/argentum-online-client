@@ -791,7 +791,7 @@ Private Function CreateTLVertex(x As Single, y As Single, Z As Single, rhw As Si
 End Function
 
 Public Sub Engine_ActFPS()
-    If GetTickCount - lFrameTimer > 1000 Then
+    If (GetTickCount() And &H7FFFFFFF) - lFrameTimer > 1000 Then
         fps = FramesPerSecCounter
         FramesPerSecCounter = 0
         lFrameTimer = GetTickCount
@@ -1213,9 +1213,9 @@ D3DDevice.EndScene
 D3DDevice.Present Render_Main_Rect, ByVal 0, 0, ByVal 0
 
 
-lFrameLimiter = GetTickCount
+lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
 FramesPerSecCounter = FramesPerSecCounter + 1
-timerElapsedTime = GetElapsedTime()
+timerElapsedTime = (GetTickCount() And &H7FFFFFFF)
 timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
 
 Exit Sub
@@ -1265,13 +1265,13 @@ End If
     
     If char_dialog_life = 250 Then
         With dialogs(slot)
-            .startTime = GetTickCount()
+            .startTime = (GetTickCount() And &H7FFFFFFF)
             .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(char_dialog))
             .charindex = char_index
         End With
     Else
             With dialogs(slot)
-            .startTime = GetTickCount()
+            .startTime = (GetTickCount() And &H7FFFFFFF)
             .lifeTime = (MS_PER_CHAR * Len(char_dialog))
             .charindex = char_index
         End With
@@ -3905,7 +3905,7 @@ Public Sub DrawInterfaceComerciar()
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
         frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
-        frmComerciar.lblCosto = PonerPuntos(CLng(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
+        frmComerciar.lblcosto = PonerPuntos(CLng(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
         
         Set CurrentInventory = Nothing
     End If
@@ -5398,7 +5398,7 @@ Private Function Engine_ElapsedTime() As Long
 'Gets the time that past since the last call
 '**************************************************************
 Dim Start_Time As Long
-    Start_Time = GetTickCount
+    Start_Time = (GetTickCount() And &H7FFFFFFF)
     Engine_ElapsedTime = Start_Time - EndTime
     If Engine_ElapsedTime > 1000 Then Engine_ElapsedTime = 1000
     EndTime = Start_Time
@@ -6083,7 +6083,7 @@ temp_array(3) = temp_array(0)
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-            If (GetTickCount() - .startTime) >= .lifeTime Then
+            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
                              
                 If charlist(charindex).AlphaText = 0 Then
@@ -6211,7 +6211,7 @@ temp_array(3) = temp_array(0)
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-            If (GetTickCount() - .startTime) >= .lifeTime Then
+            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
                              
                 If a <= 0 Then
@@ -6347,7 +6347,7 @@ temp_array(3) = temp_array(0)
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-            If (GetTickCount() - .startTime) >= .lifeTime Then
+            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
                              
                 If a <= 0 Then
@@ -6475,7 +6475,7 @@ temp_array(3) = temp_array(0)
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-            If (GetTickCount() - .startTime) >= .lifeTime Then
+            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
                              
                 If a <= 0 Then
@@ -7392,7 +7392,7 @@ TempGrh.GrhIndex = 1169
     D3DDevice.EndScene
     D3DDevice.Present Render_Connect_Rect, ByVal 0, frmConnect.render.hwnd, ByVal 0
     
-    lFrameLimiter = GetTickCount
+    lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
 'FramesPerSecCounter = FramesPerSecCounter + 1
 timerElapsedTime = GetElapsedTime()
 timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
@@ -7684,7 +7684,7 @@ TempGrh.GrhIndex = 1169
        ' D3DDevice.Present Render_CrearPj_Rect, ByVal 0, frmCrearPersonaje.render.hwnd, ByVal 0
         D3DDevice.Present Render_Connect_Rect, ByVal 0, frmConnect.render.hwnd, ByVal 0
 
-lFrameLimiter = GetTickCount
+lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
 FramesPerSecCounter = FramesPerSecCounter + 1
 timerElapsedTime = GetElapsedTime()
 timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
@@ -7721,9 +7721,9 @@ On Error GoTo ErrorHandler:
     D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, 1#, 1#, 0
 
 
-    lFrameLimiter = GetTickCount
+    lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
-    timerElapsedTime = GetElapsedTime()
+    timerElapsedTime = (GetTickCount() And &H7FFFFFFF)
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
 
     engine.RenderPjsCuenta
@@ -9044,11 +9044,11 @@ With Effect(effect_Index)
  
      Dim target_Angle   As Single
      
-     .Now_Moved = GetTickCount()
+     .Now_Moved = (GetTickCount() And &H7FFFFFFF)
      
      'Controla el intervalo de vuelo
      If (.Last_Move + 10) < .Now_Moved Then
-        .Last_Move = GetTickCount()
+        .Last_Move = (GetTickCount() And &H7FFFFFFF)
         
         'Si tiene char de destino.
         If (.DestinoChar <> 0) Then

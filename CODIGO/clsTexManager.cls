@@ -73,7 +73,7 @@ End If
     With TexList(FileName Mod HASH_TABLE_SIZE)
         For i = 1 To .surfaceCount
             If .SurfaceEntry(i).FileName = FileName Then
-                .SurfaceEntry(i).UltimoAcceso = GetTickCount
+                .SurfaceEntry(i).UltimoAcceso = (GetTickCount() And &H7FFFFFFF)
                 textwidth = .SurfaceEntry(i).texture_width
                 textheight = .SurfaceEntry(i).texture_height
                 Set GetTexture = .SurfaceEntry(i).texture
@@ -124,7 +124,7 @@ On Error GoTo errhandler
             .FileName = Archivo
             
             'Ultimo acceso
-            .UltimoAcceso = GetTickCount
+            .UltimoAcceso = (GetTickCount() And &H7FFFFFFF)
             
             
           '  Dim demora As Long
@@ -199,7 +199,7 @@ Private Function RemoveLRU() As Boolean
     Dim j As Long
     Dim surface_desc As D3DSURFACE_DESC
     
-    LRUtime = GetTickCount
+    LRUtime = (GetTickCount() And &H7FFFFFFF)
     
     'Check out through the whole list for the least recently used
     For i = 0 To HASH_TABLE_SIZE - 1
