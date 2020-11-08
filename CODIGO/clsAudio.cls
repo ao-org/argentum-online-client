@@ -247,7 +247,7 @@ End Property
 
 Public Property Let Fading(ByVal vNewValue As Long)
 mFadingMusicMod = vNewValue
-TimeElapsed = GetTickCount
+TimeElapsed = (GetTickCount() And &H7FFFFFFF)
 End Property
 
 Public Property Get Fading() As Long
@@ -758,7 +758,7 @@ Static play_fire As Boolean
 
     If mFadingMusicMod <> 0 And Musica <> CONST_DESHABILITADA Then
  
-        TiempoActual = GetTickCount
+        TiempoActual = (GetTickCount() And &H7FFFFFFF)
         
         '¿Fade up or fade down? Primero fade down, después fade up
         If TimeElapsed + 60 < TiempoActual Then
