@@ -1224,10 +1224,12 @@ On Error Resume Next
     
     'Call LeerLineaComandos
 
-   ' If FindPreviousInstance Then
-    '  Call MsgBox("Revolucion Online ya esta corriendo! No es posible correr otra instancia del juego. Haga click en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
-     ' End
-   ' End If
+    If Not RunningInVB Then
+        If FindPreviousInstance Then
+          Call MsgBox("Revolucion Online ya esta corriendo! No es posible correr otra instancia del juego. Haga click en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
+          End
+        End If
+    End If
 
     'If Not Launcher Then
       '  Call MsgBox("¡El Juego debe ser abierto desde el Launcher! El Cliente ahora se cerrara.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")

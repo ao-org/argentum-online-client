@@ -604,7 +604,7 @@ Sub General_Set_Connect()
             intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -2070,7 +2070,15 @@ FrmLogear.lstServers.Clear
         FrmLogear.lstServers.AddItem ServersLst(i).desc
     Next i
     
-FrmLogear.lstServers.ListIndex = Int(ServerIndex)
+FrmLogear.lstServers.ListIndex = Val(ServerIndex)
+
+
+
+If FrmLogear.lstServers.ListIndex = 0 Then
+    FrmLogear.lstServers.ListIndex = 1
+End If
+
+
 End Sub
 
 Public Sub CrearFantasma(ByVal charindex As Integer)
