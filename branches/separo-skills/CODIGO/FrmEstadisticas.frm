@@ -3,33 +3,65 @@ Begin VB.Form frmEstadisticas
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   0  'None
    Caption         =   "Estadisticas"
-   ClientHeight    =   7110
+   ClientHeight    =   8280
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   8115
+   ClientWidth     =   10365
    Icon            =   "FrmEstadisticas.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "FrmEstadisticas.frx":000C
-   ScaleHeight     =   474
+   ScaleHeight     =   552
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   541
+   ScaleWidth      =   691
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Label lblcredito 
+      Caption         =   "Label2"
+      Height          =   255
+      Left            =   1200
+      TabIndex        =   72
+      Top             =   10560
+      Width           =   975
+   End
+   Begin VB.Label lbldiasrestantes 
+      Caption         =   "Label2"
+      Height          =   255
+      Left            =   1200
+      TabIndex        =   71
+      Top             =   10320
+      Width           =   975
+   End
+   Begin VB.Label lbldonador 
+      Caption         =   "Label2"
+      Height          =   255
+      Left            =   1200
+      TabIndex        =   70
+      Top             =   10080
+      Width           =   975
+   End
+   Begin VB.Image estado 
+      Height          =   390
+      Left            =   4080
+      Top             =   9360
+      Visible         =   0   'False
+      Width           =   1425
+   End
    Begin VB.Image command1 
+      BorderStyle     =   1  'Fixed Single
       Height          =   180
       Index           =   45
-      Left            =   6540
-      Top             =   6735
+      Left            =   1440
+      Top             =   9000
       Width           =   210
    End
    Begin VB.Image command1 
+      BorderStyle     =   1  'Fixed Single
       Height          =   180
       Index           =   44
-      Left            =   7035
-      Top             =   6735
+      Left            =   2160
+      Top             =   9000
       Width           =   210
    End
    Begin VB.Label text1 
@@ -49,13 +81,12 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   23
-      Left            =   6720
-      TabIndex        =   74
-      Top             =   6720
+      Left            =   1800
+      TabIndex        =   69
+      Top             =   9000
       Width           =   285
    End
    Begin VB.Label skills 
-      BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -68,23 +99,25 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   23
-      Left            =   5040
-      TabIndex        =   73
-      Top             =   6750
+      Left            =   6600
+      TabIndex        =   68
+      Top             =   12720
       Width           =   1470
    End
    Begin VB.Image command1 
+      BorderStyle     =   1  'Fixed Single
       Height          =   180
       Index           =   43
-      Left            =   6540
-      Top             =   6585
+      Left            =   1440
+      Top             =   8760
       Width           =   210
    End
    Begin VB.Image command1 
+      BorderStyle     =   1  'Fixed Single
       Height          =   180
       Index           =   42
-      Left            =   7035
-      Top             =   6585
+      Left            =   2160
+      Top             =   8760
       Width           =   210
    End
    Begin VB.Label text1 
@@ -104,13 +137,12 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   22
-      Left            =   6720
-      TabIndex        =   72
-      Top             =   6570
+      Left            =   1800
+      TabIndex        =   67
+      Top             =   8760
       Width           =   285
    End
    Begin VB.Label skills 
-      BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -123,38 +155,38 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   22
-      Left            =   5040
-      TabIndex        =   71
-      Top             =   6600
-      Width           =   1470
+      Left            =   1080
+      TabIndex        =   66
+      Top             =   9600
+      Width           =   1620
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   41
-      Left            =   6540
-      Top             =   6435
-      Width           =   210
+      Left            =   8715
+      Top             =   3360
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   40
-      Left            =   6540
-      Top             =   6255
-      Width           =   210
+      Left            =   8715
+      Top             =   3765
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   39
-      Left            =   7035
-      Top             =   6435
-      Width           =   210
+      Left            =   9615
+      Top             =   3360
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   38
-      Left            =   7035
-      Top             =   6255
-      Width           =   210
+      Left            =   9615
+      Top             =   3765
+      Width           =   330
    End
    Begin VB.Label text1 
       Alignment       =   2  'Center
@@ -173,9 +205,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   21
-      Left            =   6720
-      TabIndex        =   70
-      Top             =   6420
+      Left            =   9195
+      TabIndex        =   65
+      Top             =   3420
       Width           =   285
    End
    Begin VB.Label text1 
@@ -195,9 +227,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   20
-      Left            =   6720
-      TabIndex        =   69
-      Top             =   6240
+      Left            =   9195
+      TabIndex        =   64
+      Top             =   3810
       Width           =   285
    End
    Begin VB.Label skills 
@@ -215,7 +247,7 @@ Begin VB.Form frmEstadisticas
       Height          =   150
       Index           =   20
       Left            =   5160
-      TabIndex        =   68
+      TabIndex        =   63
       Top             =   6270
       Width           =   1350
    End
@@ -233,24 +265,24 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   21
-      Left            =   5040
-      TabIndex        =   67
-      Top             =   6450
-      Width           =   1470
+      Left            =   6930
+      TabIndex        =   62
+      Top             =   3465
+      Width           =   1620
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   37
-      Left            =   6540
-      Top             =   6135
-      Width           =   210
+      Left            =   8715
+      Top             =   3000
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   36
-      Left            =   7035
-      Top             =   6135
-      Width           =   210
+      Left            =   9615
+      Top             =   3000
+      Width           =   330
    End
    Begin VB.Label text1 
       Alignment       =   2  'Center
@@ -269,9 +301,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   19
-      Left            =   6720
-      TabIndex        =   66
-      Top             =   6120
+      Left            =   9195
+      TabIndex        =   61
+      Top             =   3060
       Width           =   285
    End
    Begin VB.Label skills 
@@ -288,10 +320,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   19
-      Left            =   5040
-      TabIndex        =   65
-      Top             =   6150
-      Width           =   1470
+      Left            =   6930
+      TabIndex        =   60
+      Top             =   3075
+      Width           =   1620
    End
    Begin VB.Label lblpuntosbattle 
       BackStyle       =   0  'Transparent
@@ -307,71 +339,13 @@ Begin VB.Form frmEstadisticas
       EndProperty
       ForeColor       =   &H000040C0&
       Height          =   195
-      Left            =   2400
-      TabIndex        =   64
-      Top             =   4560
+      Left            =   6480
+      TabIndex        =   59
+      Top             =   8880
       Width           =   975
-   End
-   Begin VB.Label lblcredito 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H000040C0&
-      Height          =   255
-      Left            =   6600
-      TabIndex        =   63
-      Top             =   2025
-      Width           =   855
-   End
-   Begin VB.Label lbldiasrestantes 
-      BackStyle       =   0  'Transparent
-      Caption         =   "0"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H000040C0&
-      Height          =   255
-      Left            =   5940
-      TabIndex        =   62
-      Top             =   1800
-      Width           =   1335
-   End
-   Begin VB.Label lbldonador 
-      BackStyle       =   0  'Transparent
-      Caption         =   "Activo"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H000040C0&
-      Height          =   255
-      Left            =   5520
-      TabIndex        =   61
-      Top             =   1575
-      Width           =   855
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "X"
       BeginProperty Font 
          Name            =   "Terminal"
          Size            =   12
@@ -382,11 +356,11 @@ Begin VB.Form frmEstadisticas
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FF8080&
-      Height          =   255
-      Left            =   9360
-      TabIndex        =   60
-      Top             =   240
-      Width           =   255
+      Height          =   375
+      Left            =   9960
+      TabIndex        =   58
+      Top             =   0
+      Width           =   375
    End
    Begin VB.Label Label6 
       BackStyle       =   0  'Transparent
@@ -403,11 +377,11 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   195
       Index           =   9
-      Left            =   1320
-      TabIndex        =   59
-      Top             =   4350
+      Left            =   1920
+      TabIndex        =   57
+      Top             =   3120
       UseMnemonic     =   0   'False
-      Width           =   2340
+      Width           =   1380
    End
    Begin VB.Label Fami 
       Alignment       =   2  'Center
@@ -427,7 +401,7 @@ Begin VB.Form frmEstadisticas
       Height          =   120
       Index           =   1
       Left            =   5160
-      TabIndex        =   58
+      TabIndex        =   56
       Top             =   8580
       Visible         =   0   'False
       Width           =   480
@@ -449,7 +423,7 @@ Begin VB.Form frmEstadisticas
       Height          =   195
       Index           =   0
       Left            =   3750
-      TabIndex        =   57
+      TabIndex        =   55
       Top             =   8580
       Visible         =   0   'False
       Width           =   945
@@ -471,7 +445,7 @@ Begin VB.Form frmEstadisticas
       Height          =   165
       Index           =   4
       Left            =   3480
-      TabIndex        =   56
+      TabIndex        =   54
       Top             =   10080
       Visible         =   0   'False
       Width           =   840
@@ -493,51 +467,12 @@ Begin VB.Form frmEstadisticas
       Height          =   345
       Index           =   5
       Left            =   3960
-      TabIndex        =   55
-      Top             =   10560
+      TabIndex        =   53
+      Top             =   10440
       Visible         =   0   'False
       Width           =   900
    End
    Begin VB.Label skills 
-      BackStyle       =   0  'Transparent
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   6.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   150
-      Index           =   18
-      Left            =   5040
-      TabIndex        =   52
-      Top             =   6000
-      Width           =   1470
-   End
-   Begin VB.Label skills 
-      BackStyle       =   0  'Transparent
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   6.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   150
-      Index           =   17
-      Left            =   5160
-      TabIndex        =   51
-      Top             =   5820
-      Width           =   1350
-   End
-   Begin VB.Label skills 
-      BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -550,13 +485,12 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   16
-      Left            =   4680
+      Left            =   6480
       TabIndex        =   50
-      Top             =   5640
+      Top             =   12360
       Width           =   1830
    End
    Begin VB.Label skills 
-      BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -569,10 +503,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   15
-      Left            =   5280
+      Left            =   1080
       TabIndex        =   49
-      Top             =   5460
-      Width           =   1230
+      Top             =   9360
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -588,10 +522,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   14
-      Left            =   5280
+      Left            =   6930
       TabIndex        =   48
-      Top             =   5280
-      Width           =   1230
+      Top             =   6840
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -607,10 +541,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   13
-      Left            =   4920
+      Left            =   3675
       TabIndex        =   47
-      Top             =   5100
-      Width           =   1590
+      Top             =   4200
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -626,10 +560,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   12
-      Left            =   4800
+      Left            =   3675
       TabIndex        =   46
-      Top             =   4920
-      Width           =   1710
+      Top             =   5340
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -645,10 +579,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   11
-      Left            =   5400
+      Left            =   6930
       TabIndex        =   45
-      Top             =   4740
-      Width           =   1110
+      Top             =   6090
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -664,10 +598,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   10
-      Left            =   4440
+      Left            =   3675
       TabIndex        =   44
-      Top             =   4560
-      Width           =   2070
+      Top             =   4950
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -683,10 +617,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   9
-      Left            =   5520
+      Left            =   6930
       TabIndex        =   43
-      Top             =   4380
-      Width           =   990
+      Top             =   5700
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -702,10 +636,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   8
-      Left            =   5040
+      Left            =   6930
       TabIndex        =   42
-      Top             =   4200
-      Width           =   1470
+      Top             =   4965
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -721,10 +655,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   7
-      Left            =   5400
+      Left            =   6930
       TabIndex        =   41
-      Top             =   4020
-      Width           =   1110
+      Top             =   4560
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -740,10 +674,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   6
-      Left            =   5520
+      Left            =   3675
       TabIndex        =   40
-      Top             =   3840
-      Width           =   990
+      Top             =   5715
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -759,10 +693,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   5
-      Left            =   5640
+      Left            =   3675
       TabIndex        =   39
-      Top             =   3660
-      Width           =   870
+      Top             =   2700
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -778,10 +712,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   4
-      Left            =   4560
+      Left            =   3675
       TabIndex        =   38
-      Top             =   3480
-      Width           =   1950
+      Top             =   4560
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -797,10 +731,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   3
-      Left            =   4440
+      Left            =   3675
       TabIndex        =   37
-      Top             =   3300
-      Width           =   2070
+      Top             =   3840
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -816,10 +750,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   2
-      Left            =   5880
+      Left            =   3675
       TabIndex        =   36
-      Top             =   3120
-      Width           =   630
+      Top             =   6450
+      Width           =   1590
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -835,10 +769,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H00FFFFFF&
       Height          =   150
       Index           =   1
-      Left            =   5880
+      Left            =   3675
       TabIndex        =   35
-      Top             =   2925
-      Width           =   630
+      Top             =   2340
+      Width           =   1620
    End
    Begin VB.Label skills 
       BackStyle       =   0  'Transparent
@@ -850,11 +784,11 @@ Begin VB.Form frmEstadisticas
       Width           =   615
    End
    Begin VB.Image Image1 
-      Height          =   465
-      Left            =   3225
+      Height          =   435
+      Left            =   4200
       Tag             =   "1"
-      Top             =   6495
-      Width           =   1785
+      Top             =   7485
+      Width           =   1980
    End
    Begin VB.Label Label6 
       BackStyle       =   0  'Transparent
@@ -871,9 +805,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   195
       Index           =   7
-      Left            =   2190
+      Left            =   6120
       TabIndex        =   33
-      Top             =   5505
+      Top             =   8520
       Width           =   705
    End
    Begin VB.Label Label6 
@@ -891,9 +825,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   195
       Index           =   5
-      Left            =   2310
+      Left            =   1920
       TabIndex        =   32
-      Top             =   5940
+      Top             =   3390
       Width           =   705
    End
    Begin VB.Label Label6 
@@ -911,9 +845,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   195
       Index           =   0
-      Left            =   2760
+      Left            =   1680
       TabIndex        =   31
-      Top             =   4140
+      Top             =   6660
       UseMnemonic     =   0   'False
       Width           =   555
    End
@@ -976,9 +910,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   195
       Index           =   6
-      Left            =   1380
+      Left            =   1920
       TabIndex        =   28
-      Top             =   1920
+      Top             =   2880
       Width           =   1380
    End
    Begin VB.Label Label6 
@@ -996,9 +930,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   195
       Index           =   8
-      Left            =   1095
+      Left            =   1920
       TabIndex        =   27
-      Top             =   1710
+      Top             =   2640
       Width           =   900
    End
    Begin VB.Label puntos 
@@ -1016,9 +950,9 @@ Begin VB.Form frmEstadisticas
       EndProperty
       ForeColor       =   &H000040C0&
       Height          =   210
-      Left            =   1980
+      Left            =   7320
       TabIndex        =   26
-      Top             =   5730
+      Top             =   8520
       Width           =   90
    End
    Begin VB.Label text1 
@@ -1038,9 +972,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   1
-      Left            =   6720
+      Left            =   5940
       TabIndex        =   25
-      Top             =   2910
+      Top             =   2265
       Width           =   270
    End
    Begin VB.Label text1 
@@ -1060,9 +994,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   2
-      Left            =   6720
+      Left            =   5940
       TabIndex        =   24
-      Top             =   3090
+      Top             =   6795
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1082,9 +1016,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   3
-      Left            =   6720
+      Left            =   5940
       TabIndex        =   23
-      Top             =   3270
+      Top             =   3765
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1104,9 +1038,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   4
-      Left            =   6720
+      Left            =   5940
       TabIndex        =   22
-      Top             =   3465
+      Top             =   4545
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1126,9 +1060,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   5
-      Left            =   6720
+      Left            =   5940
       TabIndex        =   21
-      Top             =   3645
+      Top             =   2640
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1148,9 +1082,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   6
-      Left            =   6720
+      Left            =   5940
       TabIndex        =   20
-      Top             =   3810
+      Top             =   5670
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1170,74 +1104,8 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   7
-      Left            =   6720
+      Left            =   9195
       TabIndex        =   19
-      Top             =   3990
-      Width           =   285
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "100"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H000040C0&
-      Height          =   210
-      Index           =   8
-      Left            =   6720
-      TabIndex        =   18
-      Top             =   4170
-      Width           =   285
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "100"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H000040C0&
-      Height          =   210
-      Index           =   9
-      Left            =   6720
-      TabIndex        =   17
-      Top             =   4350
-      Width           =   285
-   End
-   Begin VB.Label text1 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "100"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H000040C0&
-      Height          =   210
-      Index           =   10
-      Left            =   6720
-      TabIndex        =   16
       Top             =   4530
       Width           =   285
    End
@@ -1257,10 +1125,76 @@ Begin VB.Form frmEstadisticas
       EndProperty
       ForeColor       =   &H000040C0&
       Height          =   210
+      Index           =   8
+      Left            =   9195
+      TabIndex        =   18
+      Top             =   4920
+      Width           =   285
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "100"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000040C0&
+      Height          =   210
+      Index           =   9
+      Left            =   9195
+      TabIndex        =   17
+      Top             =   5670
+      Width           =   285
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "100"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000040C0&
+      Height          =   210
+      Index           =   10
+      Left            =   5940
+      TabIndex        =   16
+      Top             =   4905
+      Width           =   285
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "100"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000040C0&
+      Height          =   210
       Index           =   11
-      Left            =   6720
+      Left            =   9195
       TabIndex        =   15
-      Top             =   4710
+      Top             =   6000
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1280,9 +1214,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   12
-      Left            =   6720
+      Left            =   5940
       TabIndex        =   14
-      Top             =   4890
+      Top             =   5280
       Width           =   270
    End
    Begin VB.Label text1 
@@ -1302,9 +1236,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   13
-      Left            =   6720
+      Left            =   5940
       TabIndex        =   13
-      Top             =   5070
+      Top             =   4155
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1324,9 +1258,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   14
-      Left            =   6720
+      Left            =   9195
       TabIndex        =   12
-      Top             =   5250
+      Top             =   6795
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1346,9 +1280,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   15
-      Left            =   6720
+      Left            =   1800
       TabIndex        =   11
-      Top             =   5430
+      Top             =   8520
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1368,9 +1302,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   16
-      Left            =   6720
+      Left            =   5940
       TabIndex        =   10
-      Top             =   5610
+      Top             =   3030
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1390,9 +1324,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   17
-      Left            =   6720
+      Left            =   9195
       TabIndex        =   9
-      Top             =   5790
+      Top             =   2265
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1412,9 +1346,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   18
-      Left            =   6720
+      Left            =   9195
       TabIndex        =   8
-      Top             =   5970
+      Top             =   2655
       Width           =   285
    End
    Begin VB.Label text1 
@@ -1441,263 +1375,258 @@ Begin VB.Form frmEstadisticas
       Width           =   90
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   0
-      Left            =   7035
-      Top             =   2925
-      Width           =   210
+      Left            =   6360
+      Top             =   2235
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   2
-      Left            =   7035
-      Top             =   3105
-      Width           =   210
+      Left            =   6360
+      Top             =   6735
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   4
-      Left            =   7035
-      Top             =   3285
-      Width           =   210
+      Left            =   6360
+      Top             =   3735
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   6
-      Left            =   7035
-      Top             =   3465
-      Width           =   210
+      Left            =   6360
+      Top             =   4500
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   8
-      Left            =   7035
-      Top             =   3645
-      Width           =   210
+      Left            =   6360
+      Top             =   2595
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   10
-      Left            =   7035
-      Top             =   3825
-      Width           =   210
+      Left            =   6360
+      Top             =   5610
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   12
-      Left            =   7035
-      Top             =   4005
-      Width           =   210
+      Left            =   9615
+      Top             =   4470
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   14
-      Left            =   7035
-      Top             =   4185
-      Width           =   210
+      Left            =   9600
+      Top             =   4860
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   16
-      Left            =   7035
-      Top             =   4365
-      Width           =   210
+      Left            =   9615
+      Top             =   5595
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   18
-      Left            =   7035
-      Top             =   4545
-      Width           =   210
+      Left            =   6360
+      Top             =   4860
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   20
-      Left            =   7035
-      Top             =   4725
-      Width           =   210
+      Left            =   9615
+      Top             =   6000
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   22
-      Left            =   7035
-      Top             =   4905
-      Width           =   210
+      Left            =   6360
+      Top             =   5235
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   24
-      Left            =   7035
-      Top             =   5085
-      Width           =   210
+      Left            =   6360
+      Top             =   4095
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   26
-      Left            =   7035
-      Top             =   5265
-      Width           =   210
+      Left            =   9600
+      Top             =   6765
+      Width           =   330
    End
    Begin VB.Image command1 
+      BorderStyle     =   1  'Fixed Single
       Height          =   180
       Index           =   28
-      Left            =   7035
-      Top             =   5445
+      Left            =   2160
+      Top             =   8520
       Width           =   210
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   30
-      Left            =   7035
-      Top             =   5625
-      Width           =   210
+      Left            =   6360
+      Top             =   3000
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   32
-      Left            =   7035
-      Top             =   5805
-      Width           =   210
+      Left            =   9615
+      Top             =   2220
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   34
-      Left            =   7035
-      Top             =   5985
-      Width           =   210
+      Left            =   9615
+      Top             =   2610
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   3
-      Left            =   6540
-      Top             =   3105
-      Width           =   210
+      Left            =   5460
+      Top             =   6720
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   5
-      Left            =   6540
-      Top             =   3285
-      Width           =   210
+      Left            =   5460
+      Top             =   3720
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   7
-      Left            =   6540
-      Top             =   3465
-      Width           =   210
+      Left            =   5460
+      Top             =   4500
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   9
-      Left            =   6540
-      Top             =   3645
-      Width           =   210
+      Left            =   5460
+      Top             =   2595
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   11
-      Left            =   6540
-      Top             =   3825
-      Width           =   210
+      Left            =   5460
+      Top             =   5610
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   13
-      Left            =   6540
-      Top             =   4005
-      Width           =   210
+      Left            =   8715
+      Top             =   4485
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   15
-      Left            =   6540
-      Top             =   4185
-      Width           =   210
+      Left            =   8715
+      Top             =   4860
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   17
-      Left            =   6540
-      Top             =   4365
-      Width           =   210
+      Left            =   8715
+      Top             =   5595
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   19
-      Left            =   6540
-      Top             =   4545
-      Width           =   210
+      Left            =   5460
+      Top             =   4860
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   21
-      Left            =   6540
-      Top             =   4725
-      Width           =   210
+      Left            =   8715
+      Top             =   6000
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   23
-      Left            =   6540
-      Top             =   4905
-      Width           =   210
+      Left            =   5460
+      Top             =   5235
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   25
-      Left            =   6540
-      Top             =   5085
-      Width           =   210
+      Left            =   5460
+      Top             =   4095
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   27
-      Left            =   6540
-      Top             =   5265
-      Width           =   210
+      Left            =   8715
+      Top             =   6765
+      Width           =   330
    End
    Begin VB.Image command1 
+      BorderStyle     =   1  'Fixed Single
       Height          =   180
       Index           =   29
-      Left            =   6540
-      Top             =   5445
+      Left            =   1440
+      Top             =   8520
       Width           =   210
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   31
-      Left            =   6540
-      Top             =   5625
-      Width           =   210
+      Left            =   5460
+      Top             =   3000
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   33
-      Left            =   6540
-      Top             =   5805
-      Width           =   210
+      Left            =   8715
+      Top             =   2220
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   35
-      Left            =   6540
-      Top             =   5985
-      Width           =   210
+      Left            =   8715
+      Top             =   2610
+      Width           =   330
    End
    Begin VB.Image command1 
-      Height          =   180
+      Height          =   300
       Index           =   1
-      Left            =   6540
-      Top             =   2925
-      Width           =   210
-   End
-   Begin VB.Image estado 
-      Height          =   390
-      Left            =   7440
-      Top             =   9840
-      Visible         =   0   'False
-      Width           =   1425
+      Left            =   5460
+      Top             =   2220
+      Width           =   330
    End
    Begin VB.Label Label6 
       BackStyle       =   0  'Transparent
@@ -1714,9 +1643,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   195
       Index           =   1
-      Left            =   2910
+      Left            =   1680
       TabIndex        =   6
-      Top             =   3930
+      Top             =   6390
       UseMnemonic     =   0   'False
       Width           =   555
    End
@@ -1735,10 +1664,10 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   195
       Index           =   4
-      Left            =   1155
+      Left            =   1920
       TabIndex        =   5
-      Top             =   1515
-      Width           =   2220
+      Top             =   2400
+      Width           =   1500
    End
    Begin VB.Label Atri 
       AutoSize        =   -1  'True
@@ -1756,9 +1685,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   4
-      Left            =   1935
+      Left            =   1680
       TabIndex        =   4
-      Top             =   3240
+      Top             =   5025
       Width           =   180
    End
    Begin VB.Label Atri 
@@ -1777,9 +1706,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   3
-      Left            =   1875
+      Left            =   1680
       TabIndex        =   3
-      Top             =   3030
+      Top             =   4740
       Width           =   180
    End
    Begin VB.Label Atri 
@@ -1798,9 +1727,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   2
-      Left            =   1515
+      Left            =   1680
       TabIndex        =   2
-      Top             =   2805
+      Top             =   4470
       Width           =   180
    End
    Begin VB.Label Atri 
@@ -1819,9 +1748,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   210
       Index           =   1
-      Left            =   1290
+      Left            =   1680
       TabIndex        =   1
-      Top             =   2625
+      Top             =   4230
       Width           =   180
    End
    Begin VB.Label Label6 
@@ -1839,9 +1768,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000040C0&
       Height          =   195
       Index           =   3
-      Left            =   2475
+      Left            =   1680
       TabIndex        =   0
-      Top             =   5295
+      Top             =   6900
       WhatsThisHelpID =   8000
       Width           =   705
    End
@@ -1862,7 +1791,7 @@ Begin VB.Form frmEstadisticas
       Height          =   165
       Index           =   2
       Left            =   4080
-      TabIndex        =   54
+      TabIndex        =   52
       Top             =   8850
       Visible         =   0   'False
       Width           =   840
@@ -1884,7 +1813,7 @@ Begin VB.Form frmEstadisticas
       Height          =   135
       Index           =   3
       Left            =   5160
-      TabIndex        =   53
+      TabIndex        =   51
       Top             =   10155
       Visible         =   0   'False
       Width           =   480
@@ -1935,13 +1864,8 @@ Public Sub Iniciar_Labels()
     Next
 
     For i = 1 To NUMSKILLS
+        If UserSkills(i) > 100 Then UserSkills(i) = 100
 
-        If UserSkills(i) > 100 Then
-            UserSkills(i) = 100
-
-        End If
-
-        ' Skills(I).Caption = SkillsNames(I) & ":"
         text1(i).Caption = UserSkills(i)
     Next
 
