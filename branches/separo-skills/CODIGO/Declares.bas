@@ -1027,7 +1027,7 @@ Public SendingType                              As Byte
 
 Public sndPrivateTo                             As String
 
-Public Const NUMSKILLS                          As Byte = 18
+Public Const NUMSKILLS                          As Byte = 23
 
 Public Const NUMATRIBUTOS                       As Byte = 4
 

@@ -1657,6 +1657,8 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Mineria) = "Mineria"
     SkillsNames(eSkill.Herreria) = "Herreria"
     SkillsNames(eSkill.Carpinteria) = "Carpinteria"
+    SkillsNames(eSkill.Alquimia) = "Alquimia"
+    SkillsNames(eSkill.Sastreria) = "Sastreria"
     
     AtributosNames(eAtributos.Fuerza) = "Fuerza"
     AtributosNames(eAtributos.Agilidad) = "Agilidad"
