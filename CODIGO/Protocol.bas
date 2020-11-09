@@ -4021,7 +4021,7 @@ Private Sub HandleCharacterCreate()
         
         buffer.ReadInteger 'Ignore loops
         
-        If .FxIndex Then
+        If .FxIndex > 0 Then
             Call InitGrh(.fX, FxData(.FxIndex).Animacion)
         End If
         
@@ -4269,7 +4269,7 @@ Private Sub HandleCharacterChange()
         
         incomingData.ReadInteger 'Ignore loops
         
-        If .FxIndex Then
+        If .FxIndex > 0 Then
             Call InitGrh(.fX, FxData(.FxIndex).Animacion)
         End If
 
