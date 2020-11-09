@@ -12,11 +12,287 @@ Begin VB.Form frmEstadisticas
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   Picture         =   "FrmEstadisticas.frx":000C
    ScaleHeight     =   474
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   541
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   45
+      Left            =   6540
+      Top             =   6735
+      Width           =   210
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   44
+      Left            =   7035
+      Top             =   6735
+      Width           =   210
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "100"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000040C0&
+      Height          =   210
+      Index           =   23
+      Left            =   6720
+      TabIndex        =   74
+      Top             =   6720
+      Width           =   285
+   End
+   Begin VB.Label skills 
+      BackStyle       =   0  'Transparent
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   150
+      Index           =   23
+      Left            =   5040
+      TabIndex        =   73
+      Top             =   6750
+      Width           =   1470
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   43
+      Left            =   6540
+      Top             =   6585
+      Width           =   210
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   42
+      Left            =   7035
+      Top             =   6585
+      Width           =   210
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "100"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000040C0&
+      Height          =   210
+      Index           =   22
+      Left            =   6720
+      TabIndex        =   72
+      Top             =   6570
+      Width           =   285
+   End
+   Begin VB.Label skills 
+      BackStyle       =   0  'Transparent
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   150
+      Index           =   22
+      Left            =   5040
+      TabIndex        =   71
+      Top             =   6600
+      Width           =   1470
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   41
+      Left            =   6540
+      Top             =   6435
+      Width           =   210
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   40
+      Left            =   6540
+      Top             =   6255
+      Width           =   210
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   39
+      Left            =   7035
+      Top             =   6435
+      Width           =   210
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   38
+      Left            =   7035
+      Top             =   6255
+      Width           =   210
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "100"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000040C0&
+      Height          =   210
+      Index           =   21
+      Left            =   6720
+      TabIndex        =   70
+      Top             =   6420
+      Width           =   285
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "100"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000040C0&
+      Height          =   210
+      Index           =   20
+      Left            =   6720
+      TabIndex        =   69
+      Top             =   6240
+      Width           =   285
+   End
+   Begin VB.Label skills 
+      BackStyle       =   0  'Transparent
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   150
+      Index           =   20
+      Left            =   5160
+      TabIndex        =   68
+      Top             =   6270
+      Width           =   1350
+   End
+   Begin VB.Label skills 
+      BackStyle       =   0  'Transparent
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   150
+      Index           =   21
+      Left            =   5040
+      TabIndex        =   67
+      Top             =   6450
+      Width           =   1470
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   37
+      Left            =   6540
+      Top             =   6135
+      Width           =   210
+   End
+   Begin VB.Image command1 
+      Height          =   180
+      Index           =   36
+      Left            =   7035
+      Top             =   6135
+      Width           =   210
+   End
+   Begin VB.Label text1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "100"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000040C0&
+      Height          =   210
+      Index           =   19
+      Left            =   6720
+      TabIndex        =   66
+      Top             =   6120
+      Width           =   285
+   End
+   Begin VB.Label skills 
+      BackStyle       =   0  'Transparent
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   150
+      Index           =   19
+      Left            =   5040
+      TabIndex        =   65
+      Top             =   6150
+      Width           =   1470
+   End
    Begin VB.Label lblpuntosbattle 
       BackStyle       =   0  'Transparent
       Caption         =   "0"
@@ -1666,7 +1942,7 @@ Public Sub Iniciar_Labels()
         End If
 
         ' Skills(I).Caption = SkillsNames(I) & ":"
-        Text1(i).Caption = UserSkills(i)
+        text1(i).Caption = UserSkills(i)
     Next
 
     Select Case UserEstadisticas.Alineacion
@@ -1738,8 +2014,8 @@ Private Sub Command1_Click(Index As Integer)
             indice = Index \ 2 + 1
 
             If indice > NUMSKILLS Then indice = NUMSKILLS
-            If Val(Text1(indice).Caption) < MAXSKILLPOINTS Then
-                Text1(indice).Caption = Val(Text1(indice).Caption) + 1
+            If Val(text1(indice).Caption) < MAXSKILLPOINTS Then
+                text1(indice).Caption = Val(text1(indice).Caption) + 1
                 flags(indice) = flags(indice) + 1
                 Alocados = Alocados - 1
                 RealizoCambios = RealizoCambios + 1
@@ -1754,8 +2030,8 @@ Private Sub Command1_Click(Index As Integer)
         
             indice = Index \ 2 + 1
 
-            If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
-                Text1(indice).Caption = Val(Text1(indice).Caption) - 1
+            If Val(text1(indice).Caption) > 0 And flags(indice) > 0 Then
+                text1(indice).Caption = Val(text1(indice).Caption) - 1
                 flags(indice) = flags(indice) - 1
                 Alocados = Alocados + 1
                 RealizoCambios = RealizoCambios - 1
@@ -1770,16 +2046,16 @@ Private Sub Command1_Click(Index As Integer)
 
     Dim ladder As Byte
 
-    ladder = Val(Text1(indice).Caption)
+    ladder = Val(text1(indice).Caption)
 
     If UserSkills(indice) < ladder Then
-        Text1(indice).ForeColor = vbRed
+        text1(indice).ForeColor = vbRed
         PonerloEnRojo(indice) = True
 
     End If
 
     If UserSkills(indice) = ladder Then
-        Text1(indice).ForeColor = &H40C0&
+        text1(indice).ForeColor = &H40C0&
         RealizoCambios = RealizoCambios - 1
         PonerloEnRojo(indice) = False
 
@@ -1822,13 +2098,13 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            Text1(a).ForeColor = &H40C0&
+            text1(a).ForeColor = &H40C0&
 
             'Skills(a).ForeColor = vbWhite
         End If
 
         If PonerloEnRojo(a) = True Then
-            Text1(a).ForeColor = vbRed
+            text1(a).ForeColor = vbRed
 
         End If
 
@@ -1851,9 +2127,9 @@ Private Sub Image1_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(Text1(i).Caption)
+                UserSkills(i) = Val(text1(i).Caption)
         
             Next i
     
@@ -1888,16 +2164,16 @@ End Sub
 Private Sub Label1_Click()
 
     If RealizoCambios >= 1 Then
-        If MsgBox("Realizo cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
+        If MsgBox("Realizó cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
 
             Dim skillChanges(NUMSKILLS) As Byte
 
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(Text1(i).Caption)
+                UserSkills(i) = Val(text1(i).Caption)
             Next i
     
             Call WriteModifySkills(skillChanges())
@@ -1929,14 +2205,14 @@ Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integ
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            Text1(a).ForeColor = &H40C0&
+            text1(a).ForeColor = &H40C0&
 
         End If
 
         'Skills(a).ForeColor = vbWhite
     Next a
 
-    Text1(Index).ForeColor = vbBlue
+    text1(Index).ForeColor = vbBlue
 
     'Skills(index).ForeColor = vbBlue
 End Sub

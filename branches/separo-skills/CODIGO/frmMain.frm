@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form frmmain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -500,6 +500,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3200,7 +3201,7 @@ Public Sub Form_Click()
 
                     End If
                     
-                    If (UsingSkill = eSkill.Herreria Or UsingSkill = FundirMetal) Then
+                    If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or UsingSkill = FundirMetal) Then
                         
                         If MainTimer.Check(TimersIndex.Work) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
