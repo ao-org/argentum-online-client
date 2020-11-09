@@ -3555,6 +3555,17 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                 End If
 
             End If
+            
+            ' Meditación
+            If .FxIndex <> 0 And .fX.Started <> 0 Then
+                colorz(0) = D3DColorARGB(180, 255, 255, 255)
+                colorz(1) = D3DColorARGB(180, 255, 255, 255)
+                colorz(2) = D3DColorARGB(180, 255, 255, 255)
+                colorz(3) = D3DColorARGB(180, 255, 255, 255)
+
+                Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 4, 1, 1, colorz, False, , , , charindex)
+           
+            End If
 
         End If
 

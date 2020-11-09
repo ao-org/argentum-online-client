@@ -246,7 +246,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         
     ElseIf KeyCode = BindKeys(21).KeyCode Then
 
-        If UserMinMAN = UserMaxMAN Then Exit Function
+        'If UserMinMAN = UserMaxMAN Then Exit Function
             
         If UserEstado = 1 Then
 
