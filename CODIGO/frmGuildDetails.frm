@@ -192,32 +192,44 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-
 Private Sub Command1_Click(Index As Integer)
+
     Select Case Index
+
         Case 0
             Unload Me
         
         Case 1
-            Dim fdesc As String
-            Dim Codex() As String
-            Dim k As Byte
-            Dim Cont As Byte
+
+            Dim fdesc      As String
+
+            Dim Codex()    As String
+
+            Dim k          As Byte
+
+            Dim Cont       As Byte
+
             Dim Alineacion As Byte
             
             If txtClanName.Text = "" Then
                 MensajeAdvertencia "¡Ingrese un nombre!"
                 Exit Sub
+
             End If
+
             If Len(txtClanName.Text) <= 30 Then
                 If Not AsciiValidos(txtClanName) Then
                     MensajeAdvertencia "Nombre invalido."
                     Exit Sub
+
                 End If
+
             Else
                 MensajeAdvertencia "Nombre demasiado extenso."
                 Exit Sub
+
             End If
+
             ClanName = txtClanName
     
             fdesc = Replace(txtDesc, vbCrLf, "º", , , vbBinaryCompare)
@@ -226,48 +238,52 @@ Private Sub Command1_Click(Index As Integer)
             '        MsgBox "La descripcion contiene caracteres invalidos"
             '        Exit Sub
             '    End If
-
-            
             
             If Combo1.Text = "" Then
                 MensajeAdvertencia "Debes definir el alineamiento del clan."
                 Exit Sub
+
             End If
-                        
     
             If CreandoClan Then
                 If Combo1.Text = "" Then
                     MensajeAdvertencia "Debes definir el alineamiento del clan."
                     Exit Sub
+
                 End If
+
                 If UCase$(Combo1.Text) = "CIUDADANA" Then
                     Alineacion = eClanType.ct_Legal
                 ElseIf UCase$(Combo1.Text) = "CRIMINAL" Then
                     Alineacion = eClanType.ct_Evil
+
                 End If
         
                 Call WriteCreateNewGuild(fdesc, ClanName, Alineacion)
             Else
                 Call WriteClanCodexUpdate(fdesc)
+
             End If
 
             CreandoClan = False
             Unload Me
             
     End Select
+
 End Sub
 
 Private Sub Form_Deactivate()
 
-'If Not frmGuildLeader.Visible Then
-'    Me.SetFocus
-'Else
-'    'Unload Me
-'End If
-'
+    'If Not frmGuildLeader.Visible Then
+    '    Me.SetFocus
+    'Else
+    '    'Unload Me
+    'End If
+    '
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
 

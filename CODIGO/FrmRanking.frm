@@ -247,37 +247,53 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Dim puntos As Boolean
+
 Private Sub Command1_Click()
-Unload Me
+    Unload Me
+
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-If (KeyAscii = 27) Then
-    Unload Me
-End If
-End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Dim i As Byte
 
-If puntos Then
-    For i = 1 To 10
+    If (KeyAscii = 27) Then
+        Unload Me
 
-    If LRanking(i).Nombre = "-0" Then
-         Puesto(i) = "Vacante"
-    Else
-        Puesto(i) = LRanking(i).Nombre
     End If
-    Next i
-    puntos = False
-End If
+
+End Sub
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
+    Dim i As Byte
+
+    If puntos Then
+
+        For i = 1 To 10
+
+            If LRanking(i).nombre = "-0" Then
+                Puesto(i) = "Vacante"
+            Else
+                Puesto(i) = LRanking(i).nombre
+
+            End If
+
+        Next i
+
+        puntos = False
+
+    End If
+
 End Sub
 
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-Unload Me
+    Unload Me
+
 End Sub
 
 Private Sub Puesto_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-Puesto(Index) = LRanking(Index).puntos & " puntos"
-puntos = True
+    Puesto(Index) = LRanking(Index).puntos & " puntos"
+    puntos = True
+
 End Sub

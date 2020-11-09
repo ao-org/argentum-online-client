@@ -354,9 +354,11 @@ Option Explicit
 Private Sub cmdElecciones_Click()
     Call WriteGuildOpenElections
     Unload Me
+
 End Sub
 
 Private Sub Command1_Click()
+
     If solicitudes.ListIndex = -1 Then Exit Sub
     
     frmCharInfo.frmType = CharInfoFrmType.frmMembershipRequests
@@ -366,6 +368,7 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Command2_Click()
+
     If members.ListIndex = -1 Then Exit Sub
     
     frmCharInfo.frmType = CharInfoFrmType.frmMembers
@@ -375,11 +378,13 @@ Private Sub Command2_Click()
 End Sub
 
 Private Sub Command3_Click()
+
     Dim k As String
 
     k = Replace(txtguildnews, vbCrLf, "º")
     
     Call WriteGuildUpdateNews(k)
+
 End Sub
 
 Private Sub Command4_Click()
@@ -390,57 +395,70 @@ Private Sub Command4_Click()
 End Sub
 
 Private Sub Command5_Click()
-Dim fdesc As String
-fdesc = InputBox("Ingrese la descripción:", "Modificar descripción")
 
-fdesc = Replace(fdesc, vbCrLf, "º", , , vbBinaryCompare)
+    Dim fdesc As String
+
+    fdesc = InputBox("Ingrese la descripción:", "Modificar descripción")
+
+    fdesc = Replace(fdesc, vbCrLf, "º", , , vbBinaryCompare)
     
-If Not AsciiValidos(fdesc) Then
-    MsgBox "La descripcion contiene caracteres invalidos"
-    Exit Sub
-Else
-    Call WriteClanCodexUpdate(fdesc)
-End If
+    If Not AsciiValidos(fdesc) Then
+        MsgBox "La descripcion contiene caracteres invalidos"
+        Exit Sub
+    Else
+        Call WriteClanCodexUpdate(fdesc)
+
+    End If
 
 End Sub
 
 Private Sub Command6_Click()
-'Call frmGuildURL.Show(vbModeless, frmGuildLeader)
-'Unload Me
+
+    'Call frmGuildURL.Show(vbModeless, frmGuildLeader)
+    'Unload Me
 End Sub
 
 Private Sub Command7_Click()
     Call WriteGuildPeacePropList
+
 End Sub
+
 Private Sub Command9_Click()
     Call WriteGuildAlliancePropList
+
 End Sub
 
 Private Sub expne_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-porciento.Visible = True
-expcount.Visible = False
+    porciento.Visible = True
+    expcount.Visible = False
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-porciento.Visible = True
-expcount.Visible = False
+    porciento.Visible = True
+    expcount.Visible = False
+
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-'frmMain.SetFocus
+
+    'frmMain.SetFocus
 End Sub
 
 Private Sub Frame4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-porciento.Visible = True
-expcount.Visible = False
+    porciento.Visible = True
+    expcount.Visible = False
+
 End Sub
 
 Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-porciento.Visible = False
-expcount.Visible = True
+    porciento.Visible = False
+    expcount.Visible = True
+
 End Sub
 

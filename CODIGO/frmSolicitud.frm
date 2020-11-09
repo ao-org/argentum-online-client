@@ -33,15 +33,6 @@ Begin VB.Form frmGuildSol
       Width           =   4095
    End
    Begin VB.TextBox Text1 
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   1215
       Left            =   120
       MaxLength       =   400
@@ -115,7 +106,9 @@ Private Sub Command1_Click()
     Call WriteGuildRequestMembership(CName, Replace(Replace(Text1.Text, ",", ";"), vbCrLf, "º"))
 
     Unload Me
+
 End Sub
+
 Public Sub RecieveSolicitud(ByVal GuildName As String)
 
     CName = GuildName
@@ -123,6 +116,7 @@ Public Sub RecieveSolicitud(ByVal GuildName As String)
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
 

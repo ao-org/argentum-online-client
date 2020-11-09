@@ -242,94 +242,110 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-
 Private Sub Form_Load()
-'Me.Picture = LoadInterface("mision.bmp")
-
+    'Me.Picture = LoadInterface("mision.bmp")
 
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Image1.Picture = Nothing
-Image1.Tag = 0
-Image2.Picture = Nothing
-Image2.Tag = 0
+    Image1.Picture = Nothing
+    Image1.Tag = 0
+    Image2.Picture = Nothing
+    Image2.Tag = 0
+
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image1.Tag = "0" Then
-         Image1.Picture = LoadInterface("quest_volver.bmp")
-         Image1.Tag = "1"
+        Image1.Picture = LoadInterface("quest_volver.bmp")
+        Image1.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-Unload Me
+    Unload Me
+
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image2.Tag = "0" Then
-         Image2.Picture = LoadInterface("quest_acepto.bmp")
-         Image2.Tag = "1"
+        Image2.Picture = LoadInterface("quest_acepto.bmp")
+        Image2.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-Call WriteQuestAccept
-Unload Me
+    Call WriteQuestAccept
+    Unload Me
+
 End Sub
 
 Public Sub ListView1_Click()
-If ListView1.SelectedItem.SubItems(2) <> "" Then
-    If ListView1.SelectedItem.SubItems(3) = 0 Then
-      Call DibujarBody(ListView1.SelectedItem.SubItems(2), 3)
-      
-      npclbl.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
-    
-    Else
-        Dim x As Long
-        Dim y As Long
-        
-        x = PlayerView.ScaleWidth / 2 - GrhData(ListView1.SelectedItem.SubItems(2)).pixelWidth / 2
-        y = PlayerView.ScaleHeight / 2 - GrhData(ListView1.SelectedItem.SubItems(2)).pixelHeight / 2
-        Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False)
-        
-        npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
-        
-    
-    End If
-End If
 
+    If ListView1.SelectedItem.SubItems(2) <> "" Then
+        If ListView1.SelectedItem.SubItems(3) = 0 Then
+            Call DibujarBody(ListView1.SelectedItem.SubItems(2), 3)
+      
+            npclbl.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+    
+        Else
+
+            Dim x As Long
+
+            Dim y As Long
+        
+            x = PlayerView.ScaleWidth / 2 - GrhData(ListView1.SelectedItem.SubItems(2)).pixelWidth / 2
+            y = PlayerView.ScaleHeight / 2 - GrhData(ListView1.SelectedItem.SubItems(2)).pixelHeight / 2
+            Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False)
+        
+            npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+    
+        End If
+
+    End If
 
 End Sub
 
-
 Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
-On Error Resume Next
-Dim grh As grh
-grh = BodyData(NpcData(MyBody).Body).Walk(3)
-Dim x As Long
-Dim y As Long
 
-Dim grhH As grh
+    On Error Resume Next
 
-grhH = HeadData(NpcData(MyBody).Head).Head(3)
+    Dim grh As grh
 
-x = PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
-y = PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
-Call Grh_Render_To_Hdc(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False)
-If NpcData(MyBody).Head <> 0 Then
-    x = PlayerView.ScaleWidth / 2 - GrhData(grhH.GrhIndex).pixelWidth / 2
-    y = PlayerView.ScaleHeight / 2 - GrhData(grhH.GrhIndex).pixelHeight + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y / 2
-    Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
-End If
+    grh = BodyData(NpcData(MyBody).Body).Walk(3)
+
+    Dim x    As Long
+
+    Dim y    As Long
+
+    Dim grhH As grh
+
+    grhH = HeadData(NpcData(MyBody).Head).Head(3)
+
+    x = PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
+    y = PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
+    Call Grh_Render_To_Hdc(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False)
+
+    If NpcData(MyBody).Head <> 0 Then
+        x = PlayerView.ScaleWidth / 2 - GrhData(grhH.GrhIndex).pixelWidth / 2
+        y = PlayerView.ScaleHeight / 2 - GrhData(grhH.GrhIndex).pixelHeight + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y / 2
+        Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
+
+    End If
+
 End Sub
 
 Public Sub ListView2_Click()
-If ListView2.SelectedItem.SubItems(2) <> "" Then
+
+    If ListView2.SelectedItem.SubItems(2) <> "" Then
  
         Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False)
-        
     
     End If
     

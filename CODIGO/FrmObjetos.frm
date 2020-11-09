@@ -214,58 +214,61 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
   
-  
 'UDT necesarias para usar con SendMessage
 Private Type POINTAPI
+
     x As Long
     y As Long
+
 End Type
+
 Private Type LVFINDINFO
+
     flags As Long
     psz As String
     lParam As Long
     pt As POINTAPI
     vkDirection As Long
+
 End Type
+
 'Función Api SendMessage
-Private Declare Function SendMessage _
-    Lib "user32" _
-    Alias "SendMessageA" ( _
-        ByVal hwnd As Long, _
-        ByVal wMsg As Long, _
-        ByVal wParam As Long, _
-        lParam As Any) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
   
 'Constantes para SendMessage
 Private Const LVM_FIRST = &H1000
+
 Private Const LVM_FINDITEM = (LVM_FIRST + 13)
+
 Private Const LVFI_PARAM = &H1
+
 Private Const LVFI_STRING = &H2
+
 Private Const LVFI_PARTIAL = &H8
+
 Private Const LVFI_WRAP = &H20
+
 Private Const LVFI_NEARESTXY = &H40
   
 'Variable de retorno y para la estructura
 Dim lRet As Long, LFI As LVFINDINFO
   
-  
-  
 'Procedimiento que busca: Se le envía el control ListView y el texto a buscar
-Private Sub Buscar_ListView(ListView As ListView, _
-                            Cadena As String)
+Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
   
     'Esto define si la cadena debe estar completa o si encuentra una parte _
-    seleccionará el primer Item del ListView que mas se le paresca
+     seleccionará el primer Item del ListView que mas se le paresca
     'If Option1 Then
-        'cadena completa
-      '  LFI.flags = LVFI_WRAP
+    'cadena completa
+    '  LFI.flags = LVFI_WRAP
     'Else
-       ' 'Cadena parcial
-        LFI.flags = LVFI_PARTIAL Or LVFI_WRAP Or LVFI_WRAP
+    ' 'Cadena parcial
+    LFI.flags = LVFI_PARTIAL Or LVFI_WRAP Or LVFI_WRAP
     'End If
       
     If Cadena = "" Then
-       Exit Sub
+        Exit Sub
+
     End If
   
     'Se le asigna a esta variable la cadena que luego se le envía a SendMessage
@@ -280,17 +283,16 @@ Private Sub Buscar_ListView(ListView As ListView, _
         'Propiedad opcional
         ListView.HideSelection = False
         'Si el item se encuentra fuera del área visible desplazamos la lista _
-        para poder visualizarlo con el método EnsureVisible
+         para poder visualizarlo con el método EnsureVisible
         ListView.SelectedItem.EnsureVisible
         ListView.SetFocus
     Else
         'No se encontró
         MsgBox (" Elemento no encontrado "), vbInformation
+
     End If
   
-  
 End Sub
-  
     
 Private Sub Command3_Click()
     'WyroX: Cambio la lógica del buscar
@@ -299,29 +301,43 @@ Private Sub Command3_Click()
     FrmObjetos.ListView1.ListItems.Clear
     
     Dim i As Long
+
     For i = 1 To NumOBJs
+
         If InStr(1, Tilde(UCase$(ObjData(i).name)), Tilde(UCase$(Text1)), vbTextCompare) Then
+
             Dim subelemento As ListItem
+
             Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).name)
             
             subelemento.SubItems(1) = i
+
         End If
+
     Next i
+
 End Sub
   
 Private Sub Command1_Click()
-If ListView1.SelectedItem.SubItems(1) <> "" Then
 
-Call WriteCreateItem(ListView1.SelectedItem.SubItems(1), Text2.Text)
-End If
+    If ListView1.SelectedItem.SubItems(1) <> "" Then
+
+        Call WriteCreateItem(ListView1.SelectedItem.SubItems(1), Text2.Text)
+
+    End If
+
 End Sub
 
 Private Sub Command2_Click()
-Unload Me
+    Unload Me
+
 End Sub
 
 Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
+
     If ListView1.SelectedItem.SubItems(1) <> "" Then
         Call Grh_Render_To_Hdc(picture1, ObjData(ListView1.SelectedItem.SubItems(1)).GrhIndex, 0, 0, False)
+
     End If
+
 End Sub

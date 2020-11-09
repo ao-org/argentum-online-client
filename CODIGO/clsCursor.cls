@@ -14,6 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
  
 Public Enum CursorType
+
     E_NORMAL = 0
     E_ATTACK
     E_ARROW
@@ -22,6 +23,7 @@ Public Enum CursorType
     E_SHOOT
     E_SHIP
     E_agArrar
+
 End Enum
  
 Private Const NUM_CURSORS = 7
@@ -30,38 +32,54 @@ Private hndlList(0 To NUM_CURSORS) As IPictureDisp
  
 Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E_NORMAL)
 
-     If CursoresGraficos = 0 Then Exit Sub
+    If CursoresGraficos = 0 Then Exit Sub
+
     On Error Resume Next
      
-    Dim aControl As Control
+    Dim aControl  As Control
+
     Dim lngHandle As Long
  
     Select Case cType
+
         Case E_NORMAL
             lngHandle = vbDefault
+
         Case E_ATTACK
             lngHandle = vbCrosshair
+
         Case E_ARROW
             lngHandle = vbCrosshair
+
         Case E_CAST
             lngHandle = vbCrosshair
+
         Case E_WAIT
             lngHandle = vbHourglass
+
         Case E_SHOOT
             lngHandle = vbCrosshair
+
         Case E_SHIP
             lngHandle = vbCrosshair
+
         Case E_agArrar
             lngHandle = vbCrosshair
+
     End Select
  
     For Each aControl In aFrm.Controls
+
         Select Case TypeName(aControl)
+
             Case "Timer", "Socket", "Shape", "Menu"
+
             Case Else
                 aControl.MouseIcon = hndlList(cType)
                 aControl.MousePointer = vbCustom
+
         End Select
+
     Next
  
     aFrm.MouseIcon = hndlList(cType)
@@ -71,39 +89,48 @@ End Sub
  
 Public Function GetDefaultCursor(ByRef aFrm As Form) As CursorType
  
-Dim lngHandle As Long
+    Dim lngHandle As Long
  
-Select Case aFrm.MouseIcon.handle
-    Case hndlList(E_NORMAL).handle
-        GetDefaultCursor = E_NORMAL
-    Case hndlList(E_ATTACK).handle
-        GetDefaultCursor = E_ATTACK
-    Case hndlList(E_ARROW).handle
-        GetDefaultCursor = E_ARROW
-    Case hndlList(E_CAST).handle
-        GetDefaultCursor = E_CAST
-    Case hndlList(E_WAIT).handle
-        GetDefaultCursor = E_WAIT
-    Case hndlList(E_SHOOT).handle
-        GetDefaultCursor = E_SHOOT
-    Case hndlList(E_SHIP).handle
-        GetDefaultCursor = E_SHIP
-    Case hndlList(E_agArrar).handle
-        GetDefaultCursor = E_agArrar
-End Select
+    Select Case aFrm.MouseIcon.handle
+
+        Case hndlList(E_NORMAL).handle
+            GetDefaultCursor = E_NORMAL
+
+        Case hndlList(E_ATTACK).handle
+            GetDefaultCursor = E_ATTACK
+
+        Case hndlList(E_ARROW).handle
+            GetDefaultCursor = E_ARROW
+
+        Case hndlList(E_CAST).handle
+            GetDefaultCursor = E_CAST
+
+        Case hndlList(E_WAIT).handle
+            GetDefaultCursor = E_WAIT
+
+        Case hndlList(E_SHOOT).handle
+            GetDefaultCursor = E_SHOOT
+
+        Case hndlList(E_SHIP).handle
+            GetDefaultCursor = E_SHIP
+
+        Case hndlList(E_agArrar).handle
+            GetDefaultCursor = E_agArrar
+
+    End Select
  
 End Function
  
 Public Sub Init()
  
-Set hndlList(E_NORMAL) = LoadResPicture("104", vbResCursor)
-Set hndlList(E_ATTACK) = LoadResPicture("102", vbResCursor)
-Set hndlList(E_ARROW) = LoadResPicture("101", vbResCursor)
-Set hndlList(E_CAST) = LoadResPicture("103", vbResCursor)
-Set hndlList(E_WAIT) = LoadResPicture("107", vbResCursor)
-Set hndlList(E_SHOOT) = LoadResPicture("106", vbResCursor)
-Set hndlList(E_SHIP) = LoadResPicture("105", vbResCursor)
-Set hndlList(E_agArrar) = LoadResPicture("108", vbResCursor)
+    Set hndlList(E_NORMAL) = LoadResPicture("104", vbResCursor)
+    Set hndlList(E_ATTACK) = LoadResPicture("102", vbResCursor)
+    Set hndlList(E_ARROW) = LoadResPicture("101", vbResCursor)
+    Set hndlList(E_CAST) = LoadResPicture("103", vbResCursor)
+    Set hndlList(E_WAIT) = LoadResPicture("107", vbResCursor)
+    Set hndlList(E_SHOOT) = LoadResPicture("106", vbResCursor)
+    Set hndlList(E_SHIP) = LoadResPicture("105", vbResCursor)
+    Set hndlList(E_agArrar) = LoadResPicture("108", vbResCursor)
  
 End Sub
  

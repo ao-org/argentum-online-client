@@ -790,249 +790,269 @@ Private TempVars(0 To 32) As Integer
 
 Private Sub cmdAccion_Click(Index As Integer)
 
-Dim i As Integer
-Dim bCambio As Boolean
-Dim Resultado As VbMsgBoxResult
+    Dim i         As Integer
 
-Select Case Index
+    Dim bCambio   As Boolean
+
+    Dim Resultado As VbMsgBoxResult
+
+    Select Case Index
     
-    Case 0
-        Call GuardaConfigEnVariables
-        Call SaveRAOInit
-    Case 1
-        Call LoadDefaultBinds
-        Call CargaConfigEnForm
-        Call SaveRAOInit
-    Case 2
+        Case 0
+            Call GuardaConfigEnVariables
+            Call SaveRAOInit
+
+        Case 1
+            Call LoadDefaultBinds
+            Call CargaConfigEnForm
+            Call SaveRAOInit
+
+        Case 2
     
-        For i = 1 To NUMBINDS
-            If TempVars(i - 1) <> BindKeys(i).KeyCode Then
-                bCambio = True
-                Exit For
+            For i = 1 To NUMBINDS
+
+                If TempVars(i - 1) <> BindKeys(i).KeyCode Then
+                    bCambio = True
+                    Exit For
+
+                End If
+
+            Next
+
+            If bCambio Then
+                Resultado = MsgBox("Realizo cambios en la configuración ¿desea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
+
+                If Resultado = vbYes Then Call GuardaConfigEnVariables
+
             End If
-        Next
-
-        If bCambio Then
-            Resultado = MsgBox("Realizo cambios en la configuración ¿desea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
-            If Resultado = vbYes Then Call GuardaConfigEnVariables
-        End If
         
-        If Resultado <> vbCancel Then Unload Me
+            If Resultado <> vbCancel Then Unload Me
 
-End Select
+    End Select
+
 End Sub
+
 Private Sub GuardaConfigEnVariables()
 
-Dim i As Integer
+    Dim i As Integer
 
+    For i = 1 To NUMBINDS
+        BindKeys(i).name = txConfig(i - 1).Text
+        BindKeys(i).KeyCode = TempVars(i - 1)
+    Next
 
-
-For i = 1 To NUMBINDS
-    BindKeys(i).name = txConfig(i - 1).Text
-    BindKeys(i).KeyCode = TempVars(i - 1)
-Next
-
-
-ACCION1 = AccionList1.ListIndex
-ACCION2 = AccionList2.ListIndex
-ACCION3 = AccionList3.ListIndex
+    ACCION1 = AccionList1.ListIndex
+    ACCION2 = AccionList2.ListIndex
+    ACCION3 = AccionList3.ListIndex
 
 End Sub
 
 Private Sub CargaConfigEnForm()
 
-Dim i As Integer
+    Dim i As Integer
 
-For i = 1 To NUMBINDS
-    txConfig(i - 1).Text = BindKeys(i).name
-    TempVars(i - 1) = BindKeys(i).KeyCode
-Next
+    For i = 1 To NUMBINDS
+        txConfig(i - 1).Text = BindKeys(i).name
+        TempVars(i - 1) = BindKeys(i).KeyCode
+    Next
 
-
-AccionList1.ListIndex = ACCION1
-AccionList2.ListIndex = ACCION2
-AccionList3.ListIndex = ACCION3
+    AccionList1.ListIndex = ACCION1
+    AccionList2.ListIndex = ACCION2
+    AccionList3.ListIndex = ACCION3
 
 End Sub
 
 Private Sub Form_Load()
-Call CargaConfigEnForm
-Call FormParser.Parse_Form(Me)
+    Call CargaConfigEnForm
+    Call FormParser.Parse_Form(Me)
 
 End Sub
 
-
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
 
-Dim i As Integer
-Dim bCambio As Boolean
-Dim Resultado As VbMsgBoxResult
+    Dim i         As Integer
 
-For i = 1 To NUMBINDS
-    If TempVars(i - 1) <> BindKeys(i).KeyCode Then
-        bCambio = True
-        Exit For
+    Dim bCambio   As Boolean
+
+    Dim Resultado As VbMsgBoxResult
+
+    For i = 1 To NUMBINDS
+
+        If TempVars(i - 1) <> BindKeys(i).KeyCode Then
+            bCambio = True
+            Exit For
+
+        End If
+
+    Next
+
+    If bCambio Then
+        Resultado = MsgBox("Realizo cambios en la configuración ¿desea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
+
+        If Resultado = vbYes Then Call GuardaConfigEnVariables
+
     End If
-Next
 
-If bCambio Then
-    Resultado = MsgBox("Realizo cambios en la configuración ¿desea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
-    If Resultado = vbYes Then Call GuardaConfigEnVariables
-End If
-
-If Resultado = vbCancel Then Cancel = 1
+    If Resultado = vbCancel Then Cancel = 1
 
 End Sub
 
 Private Sub Option1_Click()
-        Call LoadDefaultBinds
-        Call CargaConfigEnForm
-        Call SaveRAOInit
+    Call LoadDefaultBinds
+    Call CargaConfigEnForm
+    Call SaveRAOInit
+
 End Sub
 
 Private Sub Option2_Click()
-        Call LoadDefaultBinds2
-        Call CargaConfigEnForm
-        Call SaveRAOInit
+    Call LoadDefaultBinds2
+    Call CargaConfigEnForm
+    Call SaveRAOInit
+
 End Sub
 
 Private Sub txConfig_KeyUp(Index As Integer, KeyCode As Integer, Shift As Integer)
 
-Dim name As String
-name = txConfig(Index).Text
+    Dim name As String
 
+    name = txConfig(Index).Text
 
-
-If KeyCode > 0 Then
+    If KeyCode > 0 Then
     
-    If AlreadyBinded(KeyCode) Then
-        Beep
-        txConfig(Index).ForeColor = vbRed
-        Exit Sub
+        If AlreadyBinded(KeyCode) Then
+            Beep
+            txConfig(Index).ForeColor = vbRed
+            Exit Sub
+
+        End If
+    
+        If KeyCode = vbKeyShift Then
+            name = "Shift"
+        ElseIf KeyCode = vbKeyLeft Then
+            name = "Flecha Izquierda"
+        ElseIf KeyCode = vbKeyRight Then
+            name = "Flecha Derecha"
+        ElseIf KeyCode = vbKeyDown Then
+            name = "Flecha Abajo"
+        ElseIf KeyCode = vbKeyUp Then
+            name = "Flecha Arriba"
+        ElseIf KeyCode = vbKeyControl Then
+            name = "Control"
+        ElseIf KeyCode = vbKeyPageDown Then
+            name = "Page Down"
+        ElseIf KeyCode = vbKeyPageUp Then
+            name = "Page Up"
+        ElseIf KeyCode = vbKeySeparator Then 'Enter teclado numerico
+            name = "Intro"
+        ElseIf KeyCode = vbKeySpace Then
+            name = "Barra Espaciadora"
+        ElseIf KeyCode = vbKeyDelete Then
+            name = "Delete"
+        ElseIf KeyCode = vbKeyEnd Then
+            name = "Fin"
+        ElseIf KeyCode = vbKeyHome Then
+            name = "Inicio"
+        ElseIf KeyCode = vbKeyInsert Then
+            name = "Insert"
+        ElseIf KeyCode = 109 Then
+            name = "-"
+        ElseIf KeyCode = 112 Then
+            name = "F1"
+        ElseIf KeyCode = 113 Then
+            name = "F2"
+        ElseIf KeyCode = 114 Then
+            name = "F3"
+        ElseIf KeyCode = 115 Then
+            name = "F4"
+        ElseIf KeyCode = 116 Then
+            name = "F5"
+        ElseIf KeyCode = 117 Then
+            name = "F6"
+        ElseIf KeyCode = 118 Then
+            name = "F7"
+        ElseIf KeyCode = 119 Then
+            name = "F8"
+        ElseIf KeyCode = 120 Then
+            name = "F9"
+        ElseIf KeyCode = 121 Then
+            name = "F10"
+        ElseIf KeyCode = 122 Then
+            name = "F11"
+        ElseIf KeyCode = 123 Then
+            name = "F12"
+        ElseIf KeyCode = 44 Then
+            name = "Impr. Pant"
+        ElseIf KeyCode = 106 Then
+            name = "*"
+        ElseIf KeyCode = vbKeyNumpad0 Then
+            name = "Numerico 0"
+        ElseIf KeyCode = vbKeyNumpad1 Then
+            name = "Numerico 1"
+        ElseIf KeyCode = vbKeyNumpad2 Then
+            name = "Numerico 2"
+        ElseIf KeyCode = vbKeyNumpad3 Then
+            name = "Numerico 3"
+        ElseIf KeyCode = vbKeyNumpad4 Then
+            name = "Numerico 4"
+        ElseIf KeyCode = vbKeyNumpad5 Then
+            name = "Numerico 5"
+        ElseIf KeyCode = vbKeyNumpad6 Then
+            name = "Numerico 6"
+        ElseIf KeyCode = vbKeyNumpad7 Then
+            name = "Numerico 7"
+        ElseIf KeyCode = vbKeyNumpad8 Then
+            name = "Numerico 8"
+        ElseIf KeyCode = vbKeyNumpad9 Then
+            name = "Numerico 9"
+        ElseIf KeyCode = vbKeyAdd Then
+            name = "Numerico +"
+        ElseIf KeyCode = 110 Then
+            name = "Numerico ."
+        ElseIf KeyCode = 226 Then
+            name = "<"
+        ElseIf KeyCode = 189 Then
+            name = "-"
+        ElseIf KeyCode = 188 Then
+            name = ","
+        ElseIf KeyCode = 190 Then
+            name = "."
+        Else
+    
+            name = Chr(KeyCode)
+
+        End If
+    
+        Call Change_TempKey(Index, KeyCode, name)
+
     End If
-    
-    If KeyCode = vbKeyShift Then
-        name = "Shift"
-    ElseIf KeyCode = vbKeyLeft Then
-        name = "Flecha Izquierda"
-    ElseIf KeyCode = vbKeyRight Then
-        name = "Flecha Derecha"
-    ElseIf KeyCode = vbKeyDown Then
-        name = "Flecha Abajo"
-    ElseIf KeyCode = vbKeyUp Then
-        name = "Flecha Arriba"
-    ElseIf KeyCode = vbKeyControl Then
-        name = "Control"
-    ElseIf KeyCode = vbKeyPageDown Then
-        name = "Page Down"
-    ElseIf KeyCode = vbKeyPageUp Then
-        name = "Page Up"
-    ElseIf KeyCode = vbKeySeparator Then 'Enter teclado numerico
-        name = "Intro"
-    ElseIf KeyCode = vbKeySpace Then
-        name = "Barra Espaciadora"
-    ElseIf KeyCode = vbKeyDelete Then
-        name = "Delete"
-    ElseIf KeyCode = vbKeyEnd Then
-        name = "Fin"
-    ElseIf KeyCode = vbKeyHome Then
-        name = "Inicio"
-    ElseIf KeyCode = vbKeyInsert Then
-        name = "Insert"
-    ElseIf KeyCode = 109 Then
-        name = "-"
-    ElseIf KeyCode = 112 Then
-        name = "F1"
-    ElseIf KeyCode = 113 Then
-        name = "F2"
-    ElseIf KeyCode = 114 Then
-        name = "F3"
-    ElseIf KeyCode = 115 Then
-        name = "F4"
-    ElseIf KeyCode = 116 Then
-        name = "F5"
-    ElseIf KeyCode = 117 Then
-        name = "F6"
-    ElseIf KeyCode = 118 Then
-        name = "F7"
-    ElseIf KeyCode = 119 Then
-        name = "F8"
-    ElseIf KeyCode = 120 Then
-        name = "F9"
-    ElseIf KeyCode = 121 Then
-        name = "F10"
-    ElseIf KeyCode = 122 Then
-        name = "F11"
-    ElseIf KeyCode = 123 Then
-        name = "F12"
-    ElseIf KeyCode = 44 Then
-        name = "Impr. Pant"
-    ElseIf KeyCode = 106 Then
-        name = "*"
-    ElseIf KeyCode = vbKeyNumpad0 Then
-        name = "Numerico 0"
-    ElseIf KeyCode = vbKeyNumpad1 Then
-        name = "Numerico 1"
-    ElseIf KeyCode = vbKeyNumpad2 Then
-        name = "Numerico 2"
-    ElseIf KeyCode = vbKeyNumpad3 Then
-        name = "Numerico 3"
-    ElseIf KeyCode = vbKeyNumpad4 Then
-        name = "Numerico 4"
-    ElseIf KeyCode = vbKeyNumpad5 Then
-        name = "Numerico 5"
-    ElseIf KeyCode = vbKeyNumpad6 Then
-        name = "Numerico 6"
-    ElseIf KeyCode = vbKeyNumpad7 Then
-        name = "Numerico 7"
-    ElseIf KeyCode = vbKeyNumpad8 Then
-        name = "Numerico 8"
-    ElseIf KeyCode = vbKeyNumpad9 Then
-        name = "Numerico 9"
-    ElseIf KeyCode = vbKeyAdd Then
-        name = "Numerico +"
-    ElseIf KeyCode = 110 Then
-        name = "Numerico ."
-    ElseIf KeyCode = 226 Then
-        name = "<"
-    ElseIf KeyCode = 189 Then
-        name = "-"
-    ElseIf KeyCode = 188 Then
-        name = ","
-    ElseIf KeyCode = 190 Then
-        name = "."
-    Else
-    
-        name = Chr(KeyCode)
-    End If
-    
-    Call Change_TempKey(Index, KeyCode, name)
-
-End If
 
 End Sub
 
 Sub Change_TempKey(Index As Integer, KeyCode As Integer, name As String)
-TempVars(Index) = KeyCode
-txConfig(Index).Text = name
+    TempVars(Index) = KeyCode
+    txConfig(Index).Text = name
+
 End Sub
 
 Function AlreadyBinded(KeyCode As Integer) As Boolean
 
-Dim i As Integer
+    Dim i As Integer
 
-'If (KeyCode >= vbKeyF1 And KeyCode <= vbKeyF12) Or (KeyCode = 44) Or (KeyCode = 106) Then
-'If (KeyCode = 44) Or (KeyCode = 106) Then
- '   AlreadyBinded = True
- '   Exit Function
-'End If
+    'If (KeyCode >= vbKeyF1 And KeyCode <= vbKeyF12) Or (KeyCode = 44) Or (KeyCode = 106) Then
+    'If (KeyCode = 44) Or (KeyCode = 106) Then
+    '   AlreadyBinded = True
+    '   Exit Function
+    'End If
 
-For i = 1 To NUMBINDS
-    If (TempVars(i - 1) = KeyCode) Then
-        AlreadyBinded = True
-        Exit Function
-    End If
-Next i
+    For i = 1 To NUMBINDS
+
+        If (TempVars(i - 1) = KeyCode) Then
+            AlreadyBinded = True
+            Exit Function
+
+        End If
+
+    Next i
 
 End Function
 

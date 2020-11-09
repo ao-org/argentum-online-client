@@ -152,149 +152,161 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Option Explicit
+
 Dim ValidacionNumber As Long
-Private Declare Function SetLayeredWindowAttributes Lib "user32" _
-                (ByVal hwnd As Long, _
-                 ByVal crKey As Long, _
-                 ByVal bAlpha As Byte, _
-                 ByVal dwFlags As Long) As Long
-  
+
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
   
 'Recupera el estilo de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" _
-                (ByVal hwnd As Long, _
-                 ByVal nIndex As Long) As Long
-  
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
   
 'Declaración del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
   
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" _
-               (ByVal hwnd As Long, _
-                ByVal nIndex As Long, _
-                ByVal dwNewLong As Long) As Long
-  
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
   
 Private Const GWL_EXSTYLE = (-20)
+
 Private Const LWA_ALPHA = &H2
+
 Private Const WS_EX_LAYERED = &H80000
+
 'Función para saber si formulario ya es transparente. _
  Se le pasa el Hwnd del formulario en cuestión
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
-On Error Resume Next
+
+    On Error Resume Next
   
-Dim msg As Long
+    Dim msg As Long
   
     msg = GetWindowLong(hwnd, GWL_EXSTYLE)
          
-       If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
-          Is_Transparent = True
-       Else
-          Is_Transparent = False
-       End If
+    If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
+        Is_Transparent = True
+    Else
+        Is_Transparent = False
+
+    End If
   
     If Err Then
-       Is_Transparent = False
+        Is_Transparent = False
+
     End If
   
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, _
-                                      Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
   
-Dim msg As Long
+    Dim msg As Long
   
-On Error Resume Next
+    On Error Resume Next
   
-If Valor < 0 Or Valor > 255 Then
-   Aplicar_Transparencia = 1
-Else
-   msg = GetWindowLong(hwnd, GWL_EXSTYLE)
-   msg = msg Or WS_EX_LAYERED
+    If Valor < 0 Or Valor > 255 Then
+        Aplicar_Transparencia = 1
+    Else
+        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+        msg = msg Or WS_EX_LAYERED
      
-   SetWindowLong hwnd, GWL_EXSTYLE, msg
+        SetWindowLong hwnd, GWL_EXSTYLE, msg
      
-   'Establece la transparencia
-   SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
+        'Establece la transparencia
+        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
   
-   Aplicar_Transparencia = 0
+        Aplicar_Transparencia = 0
   
-End If
+    End If
   
-  
-If Err Then
-   Aplicar_Transparencia = 2
-End If
+    If Err Then
+        Aplicar_Transparencia = 2
+
+    End If
   
 End Function
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-Call Aplicar_Transparencia(Me.hwnd, 240)
-Me.Picture = LoadInterface("crearcuenta.bmp")
-ValidacionNumber = RandomNumber(10000, 90000)
+    Call FormParser.Parse_Form(Me)
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Me.Picture = LoadInterface("crearcuenta.bmp")
+    ValidacionNumber = RandomNumber(10000, 90000)
 
-valcar = ValidacionNumber
+    valcar = ValidacionNumber
+
 End Sub
 
 Private Function CheckearDatos() As Boolean
-Dim loopc As Long
+
+    Dim loopc     As Long
+
     Dim CharAscii As Integer
     
     If Len(Email.Text) = 0 Or Not CheckMailString(Email.Text) Then
         MsgBox ("Dirección de email invalida")
         Exit Function
+
     End If
     
     If Len(Constraseña.Text) = 0 Then
         MsgBox ("Ingrese un password.")
         Exit Function
+
     End If
     
     For loopc = 1 To Len(Constraseña.Text)
         CharAscii = Asc(mid$(Constraseña.Text, loopc, 1))
+
         If Not LegalCharacter(CharAscii) Then
             MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
             Exit Function
+
         End If
+
     Next loopc
     
     CheckearDatos = True
-    End Function
 
-
-
+End Function
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Image2.Tag = "1" Then
-   Image2.Picture = Nothing
-   Image2.Tag = "0"
-End If
-If Image1.Tag = "1" Then
-    Image1.Picture = Nothing
-    Image1.Tag = "0"
-End If
+
+    If Image2.Tag = "1" Then
+        Image2.Picture = Nothing
+        Image2.Tag = "0"
+
+    End If
+
+    If Image1.Tag = "1" Then
+        Image1.Picture = Nothing
+        Image1.Tag = "0"
+
+    End If
+
 End Sub
 
 Private Sub Image1_Click()
-Call Sound.Sound_Play(SND_CLICK)
+    Call Sound.Sound_Play(SND_CLICK)
 
     Unload Me
     frmMasOpciones.Show , frmConnect
     frmMasOpciones.Top = frmMasOpciones.Top + 3000
+
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-            'Image1.Picture = LoadInterface("volverpress.bmp")
-            Image1.Tag = "1"
+    'Image1.Picture = LoadInterface("volverpress.bmp")
+    Image1.Tag = "1"
+
 End Sub
+
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("crearcuenta_volver.bmp")
         Image1.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Image2_Click()
@@ -303,47 +315,63 @@ Private Sub Image2_Click()
     If texVer = "" Then
         Call MensajeAdvertencia("El campo de texto de verificacion esta vacio.")
         Exit Sub
+
     End If
     
     If ValidacionNumber <> texVer Then
         Call MensajeAdvertencia("El codigo de verificación es invalido, por favor reintente.")
         Exit Sub
+
     End If
+
     If CheckearDatos Then
-            CuentaPassword = Constraseña
-            CuentaEmail = Email
+        CuentaPassword = Constraseña
+        CuentaEmail = Email
     
-            EstadoLogin = E_MODO.CreandoCuenta
-            If frmmain.Socket1.Connected Then
-                frmmain.Socket1.Disconnect
-                frmmain.Socket1.Cleanup
-                DoEvents
-            End If
-            frmmain.Socket1.HostName = IPdelServidor
-            frmmain.Socket1.RemotePort = PuertoDelServidor
-            frmmain.Socket1.Connect
-            'Unload Me
+        EstadoLogin = E_MODO.CreandoCuenta
+
+        If frmmain.Socket1.Connected Then
+            frmmain.Socket1.Disconnect
+            frmmain.Socket1.Cleanup
+            DoEvents
+
+        End If
+
+        frmmain.Socket1.HostName = IPdelServidor
+        frmmain.Socket1.RemotePort = PuertoDelServidor
+        frmmain.Socket1.Connect
+
+        'Unload Me
     End If
+
 End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-        If Image1.Tag = "0" Then
-           ' Image2.Picture = LoadInterface("crearcuentapress.bmp")
-            Image2.Tag = "1"
-        End If
+
+    If Image1.Tag = "0" Then
+        ' Image2.Picture = LoadInterface("crearcuentapress.bmp")
+        Image2.Tag = "1"
+
+    End If
+
 End Sub
+
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("crearcuentahover.bmp")
         Image2.Tag = "1"
+
     End If
+
 End Sub
 
-
 Private Sub Label1_Click()
-texVer.SetFocus
+    texVer.SetFocus
+
 End Sub
 
 Private Sub valcar_Click()
-texVer.SetFocus
+    texVer.SetFocus
+
 End Sub

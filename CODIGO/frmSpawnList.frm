@@ -128,13 +128,16 @@ Option Explicit
 
 Private Sub Command1_Click()
     Call WriteSpawnCreature(lstCriaturas.ListIndex + 1)
+
 End Sub
 
 Private Sub Command2_Click()
     Unload Me
+
 End Sub
 
 Private Sub Form_Deactivate()
+
     'Me.SetFocus
 End Sub
 

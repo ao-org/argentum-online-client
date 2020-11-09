@@ -2,14 +2,18 @@ Attribute VB_Name = "ModAreas"
 Option Explicit
 
 'LAS GUARDAMOS PARA PROCESAR LOS MPs y sabes si borrar personajes
-Public MinLimiteX As Integer
-Public MaxLimiteX As Integer
-Public MinLimiteY As Integer
-Public MaxLimiteY As Integer
+Public MinLimiteX      As Integer
+
+Public MaxLimiteX      As Integer
+
+Public MinLimiteY      As Integer
+
+Public MaxLimiteY      As Integer
+
 Private Const AREA_DIM As Byte = 12
 
-
 Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
+
     Dim loopX As Long, loopY As Long
     
     MinLimiteX = (x \ AREA_DIM - 1) * AREA_DIM
@@ -27,7 +31,9 @@ Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
                 If MapData(loopX, loopY).charindex > 0 Then
                     If MapData(loopX, loopY).charindex <> UserCharIndex Then
                         Call EraseChar(MapData(loopX, loopY).charindex)
+
                     End If
+
                 End If
                 
                 'Erase OBJs
@@ -39,4 +45,5 @@ Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
     Next loopX
     
     Call RefreshAllChars
+
 End Sub

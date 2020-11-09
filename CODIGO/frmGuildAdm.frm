@@ -112,83 +112,113 @@ Private Sub Combo1_Click()
     
     If Not ListaClanes Then Exit Sub
 
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim i As Long
+
     For i = 0 To UBound(ClanesList)
+
         If Combo1.ListIndex < 2 Then
             If ClanesList(i).Alineacion = Combo1.ListIndex Then
-                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+
             End If
+
         Else
             
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+
         End If
+
     Next i
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-Combo1.ListIndex = 2
+    Call FormParser.Parse_Form(Me)
+    Combo1.ListIndex = 2
+
 End Sub
 
-
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Image1.Picture = Nothing
-Image1.Tag = "0"
+    Image1.Picture = Nothing
+    Image1.Tag = "0"
 
-Image2.Picture = Nothing
-Image2.Tag = "0"
+    Image2.Picture = Nothing
+    Image2.Tag = "0"
 
-Image3.Picture = Nothing
-Image3.Tag = "0"
+    Image3.Picture = Nothing
+    Image3.Tag = "0"
+
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-Dim b As Integer
-For b = 0 To GuildsList.ListCount - 1
-    GuildsList.ListIndex = b
-    If LCase$(GuildsList) = LCase$(qhi9t0) Then
-        Exit Sub
-    End If
-Next
-MsgBox "Clan no encontrado"
+
+    Dim b As Integer
+
+    For b = 0 To guildslist.ListCount - 1
+        guildslist.ListIndex = b
+
+        If LCase$(guildslist) = LCase$(qhi9t0) Then
+            Exit Sub
+
+        End If
+
+    Next
+    MsgBox "Clan no encontrado"
+
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("clan_buscarclan.bmp")
         Image1.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Image2_Click()
+
     If UserEstado = 1 Then 'Muerto
+
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
             Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+
         End With
+
         Exit Sub
+
     End If
                    
     Call WriteQuieroFundarClan
+
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("clan_fundarapretado.bmp")
         Image2.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Image3_Click()
     frmGuildBrief.EsLeader = False
-    Call WriteGuildRequestDetails(GuildsList.List(GuildsList.ListIndex))
+    Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
+
 End Sub
 
 Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image3.Tag = "0" Then
         Image3.Picture = LoadInterface("clan_detallesclanapretado.bmp")
         Image3.Tag = "1"
+
     End If
+
 End Sub
 

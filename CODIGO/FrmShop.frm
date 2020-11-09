@@ -194,120 +194,151 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
-Const MOUSE_MOVE As Long = &HF012&
+
+Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
-        (ByVal hwnd As Long, ByVal wMsg As Long, _
-        ByVal wParam As Long, lParam As Long) As Long
+
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+
 Private Sub moverForm()
+
     Dim res As Long
+
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+
 End Sub
+
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
+
     If KeyCode = 27 Then
         Unload Me
+
     End If
+
 End Sub
+
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
+
 End Sub
+
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-moverForm
+    moverForm
 
-Image1.Picture = Nothing
-Image1.Tag = "0"
-Image2.Picture = Nothing
-Image2.Tag = "0"
+    Image1.Picture = Nothing
+    Image1.Tag = "0"
+    Image2.Picture = Nothing
+    Image2.Tag = "0"
 
-Image3.Picture = Nothing
-Image3.Tag = "0"
+    Image3.Picture = Nothing
+    Image3.Tag = "0"
+
 End Sub
 
 Private Sub Image1_Click()
-If lstArmas.ListIndex >= 0 Then
-    Call WriteComprarItem(lstArmas.ListIndex + 1)
-Else
-    With FontTypes(FontTypeNames.FONTTYPE_INFOIAO)
-        Call ShowConsoleMsg("No seleccionaste ningun item.", .red, .green, .blue, .bold, .italic)
-    End With
-End If
+
+    If lstArmas.ListIndex >= 0 Then
+        Call WriteComprarItem(lstArmas.ListIndex + 1)
+    Else
+
+        With FontTypes(FontTypeNames.FONTTYPE_INFOIAO)
+            Call ShowConsoleMsg("No seleccionaste ningun item.", .red, .green, .blue, .bold, .italic)
+
+        End With
+
+    End If
+
 End Sub
+
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-'Image1.Picture = LoadInterface("comprarpress.bmp")
-'Image1.Tag = "0"
+
+    'Image1.Picture = LoadInterface("comprarpress.bmp")
+    'Image1.Tag = "0"
 End Sub
+
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-'Image2.Picture = LoadInterface("cargarcodepress.bmp")
-'Image2.Tag = "0"
+
+    'Image2.Picture = LoadInterface("cargarcodepress.bmp")
+    'Image2.Tag = "0"
 End Sub
 
 Private Sub Image2_Click()
-Dim Codigo As String
-Codigo = InputBox("Por favor, inserte el codigo que desea canjear.", "Canje de codigos")
-If Codigo <> "" Then
-Call WriteCodigo(Codigo)
-End If
+
+    Dim Codigo As String
+
+    Codigo = InputBox("Por favor, inserte el codigo que desea canjear.", "Canje de codigos")
+
+    If Codigo <> "" Then
+        Call WriteCodigo(Codigo)
+
+    End If
+
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Image2.Tag = "0" Then
+
+    If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("cargarcodehover.bmp")
         Image2.Tag = "1"
+
     End If
     
+    Image1.Picture = Nothing
+    Image1.Tag = "0"
     
-Image1.Picture = Nothing
-Image1.Tag = "0"
-    
-Image3.Picture = Nothing
-Image3.Tag = "0"
+    Image3.Picture = Nothing
+    Image3.Tag = "0"
 
 End Sub
+
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Image1.Tag = "0" Then
-    Image1.Picture = LoadInterface("comprarhover.bmp")
-    Image1.Tag = "1"
-End If
+
+    If Image1.Tag = "0" Then
+        Image1.Picture = LoadInterface("comprarhover.bmp")
+        Image1.Tag = "1"
+
+    End If
     
-Image2.Picture = Nothing
-Image2.Tag = "0"
+    Image2.Picture = Nothing
+    Image2.Tag = "0"
     
-Image3.Picture = Nothing
-Image3.Tag = "0"
+    Image3.Picture = Nothing
+    Image3.Tag = "0"
     
 End Sub
 
 Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
+    If Image3.Tag = "0" Then
+        Image3.Picture = LoadInterface("donar.bmp")
+        Image3.Tag = "1"
 
+    End If
 
-If Image3.Tag = "0" Then
-    Image3.Picture = LoadInterface("donar.bmp")
-    Image3.Tag = "1"
-End If
+    Image1.Picture = Nothing
+    Image1.Tag = "0"
 
-Image1.Picture = Nothing
-Image1.Tag = "0"
+    Image2.Picture = Nothing
+    Image2.Tag = "0"
 
-Image2.Picture = Nothing
-Image2.Tag = "0"
 End Sub
 
 Private Sub Image3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-ShellExecute Me.hwnd, "open", "https://www.argentum20.com/creditos/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/creditos/", "", "", 0
+
 End Sub
 
 Private Sub lstArmas_Click()
-Label1.Caption = ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).name
-Label2.Caption = ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).Texto
-Label4.Caption = ObjDonador(lstArmas.ListIndex + 1).precio
+    Label1.Caption = ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).name
+    Label2.Caption = ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).Texto
+    Label4.Caption = ObjDonador(lstArmas.ListIndex + 1).precio
 
-Call Grh_Render_To_Hdc(picture1, ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-picture1.Visible = True
-    
+    Call Grh_Render_To_Hdc(picture1, ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
+    picture1.Visible = True
 
 End Sub

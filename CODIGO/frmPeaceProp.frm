@@ -161,48 +161,64 @@ Option Explicit
 Private tipoprop As TIPO_PROPUESTA
 
 Public Enum TIPO_PROPUESTA
+
     ALIANZA = 1
     PAZ = 2
+
 End Enum
 
 Public Property Let ProposalType(ByVal nValue As TIPO_PROPUESTA)
     tipoprop = nValue
+
 End Property
 
 Private Sub Command1_Click()
     Unload Me
+
 End Sub
 
 Private Sub Command2_Click()
-'Me.Visible = False
-If tipoprop = PAZ Then
-    Call WriteGuildPeaceDetails(lista.List(lista.ListIndex))
-Else
-    Call WriteGuildAllianceDetails(lista.List(lista.ListIndex))
-End If
+
+    'Me.Visible = False
+    If tipoprop = PAZ Then
+        Call WriteGuildPeaceDetails(lista.List(lista.ListIndex))
+    Else
+        Call WriteGuildAllianceDetails(lista.List(lista.ListIndex))
+
+    End If
+
 End Sub
 
 Private Sub Command3_Click()
+
     'Me.Visible = False
     If tipoprop = PAZ Then
         Call WriteGuildAcceptPeace(lista.List(lista.ListIndex))
     Else
         Call WriteGuildAcceptAlliance(lista.List(lista.ListIndex))
+
     End If
+
     Me.Hide
     Unload Me
+
 End Sub
 
 Private Sub Command4_Click()
+
     If tipoprop = PAZ Then
         Call WriteGuildRejectPeace(lista.List(lista.ListIndex))
     Else
         Call WriteGuildRejectAlliance(lista.List(lista.ListIndex))
+
     End If
+
     Me.Hide
     Unload Me
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub

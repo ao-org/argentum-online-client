@@ -427,193 +427,233 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Public bmoving As Boolean
-Public dX As Integer
-Public dy As Integer
 
+Public bmoving      As Boolean
 
-Public Referencias As Boolean
+Public dX           As Integer
+
+Public dy           As Integer
+
+Public Referencias  As Boolean
 
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
-Const MOUSE_MOVE As Long = &HF012&
+
+Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
-        (ByVal hwnd As Long, ByVal wMsg As Long, _
-        ByVal wParam As Long, lParam As Long) As Long
 
-
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private RealizoCambios As String
+
 Const HWND_TOPMOST = -1
+
 Const HWND_NOTOPMOST = -2
+
 Const SWP_NOSIZE = &H1
+
 Const SWP_NOMOVE = &H2
+
 Const SWP_NOACTIVATE = &H10
+
 Const SWP_SHOWWINDOW = &H40
+
 Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+
 Private Const TILE_SIZE = 27
+
 Private Const MAPAS_ANCHO = 16
+
 Private Const MAPAS_ALTO = 22
+
 Private Sub Form_Activate()
-' SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
+
+    ' SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
 End Sub
+
 Private Sub moverForm()
+
     Dim res As Long
+
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+
     If KeyCode = 27 Then
         Unload Me
+
     End If
+
 End Sub
 
 Private Sub Form_Load()
-ListView1.BackColor = RGB(7, 7, 7)
-listdrop.BackColor = RGB(7, 7, 7)
-lblMapInfo(0).ForeColor = RGB(235, 164, 14)
-'Call FormParser.Parse_Form(Me)
+    ListView1.BackColor = RGB(7, 7, 7)
+    listdrop.BackColor = RGB(7, 7, 7)
+    lblMapInfo(0).ForeColor = RGB(235, 164, 14)
+
+    'Call FormParser.Parse_Form(Me)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-moverForm
-Image1 = Nothing
+    moverForm
+    Image1 = Nothing
+
 End Sub
+
 Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
-Dim grh As grh
-grh = BodyData(MyBody).Walk(3)
-Dim x As Long
-Dim y As Long
 
-x = PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
-y = PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
-Call Grh_Render_To_Hdc(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False)
+    Dim grh As grh
+
+    grh = BodyData(MyBody).Walk(3)
+
+    Dim x As Long
+
+    Dim y As Long
+
+    x = PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
+    y = PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
+    Call Grh_Render_To_Hdc(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False)
 
 End Sub
+
 Sub DibujarHead(ByVal MyHead As Integer, ByVal yoff As Integer, Optional ByVal Heading As Byte = 3)
-Dim grh As grh
-grh = HeadData(MyHead).Head(3)
-Dim x As Long
 
-Dim y As Long
+    Dim grh As grh
 
+    grh = HeadData(MyHead).Head(3)
 
+    Dim x As Long
 
-x = PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
-y = PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight + yoff / 2
-Call Grh_Render_To_Hdc(PlayerView, grh.GrhIndex, x - 1, y, False)
+    Dim y As Long
 
-
-
+    x = PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
+    y = PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight + yoff / 2
+    Call Grh_Render_To_Hdc(PlayerView, grh.GrhIndex, x - 1, y, False)
 
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-'Image1 = LoadInterface("cerrardown.bmp")
+    'Image1 = LoadInterface("cerrardown.bmp")
 
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-'Image1 = LoadInterface("cerrarhover.bmp")
-End Sub
 
+    'Image1 = LoadInterface("cerrarhover.bmp")
+End Sub
 
 Private Sub ListView1_beforeEdit(ByVal Columna As Integer, Cancel As Boolean)
 
-If Columna > 5 Then
-       Cancel = True
+    If Columna > 5 Then
+        Cancel = True
+
     End If
+
 End Sub
 
-
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-Me.Visible = False
+    Me.Visible = False
+
 End Sub
 
 Private Sub Image2_Click()
 
-If Dungeon Then
-    picMap.Picture = LoadInterface("mapa.bmp")
+    If Dungeon Then
+        picMap.Picture = LoadInterface("mapa.bmp")
 
-    Dungeon = False
+        Dungeon = False
     
-    Image2.Picture = Nothing
-    Image3.Picture = Nothing
+        Image2.Picture = Nothing
+        Image3.Picture = Nothing
 
+    Else
+        Image3.Picture = Nothing
+        picMap.Picture = LoadInterface("mapadungeon.bmp")
+        Image2.Picture = LoadInterface("check-amarillo.bmp")
 
-Else
-Image3.Picture = Nothing
-picMap.Picture = LoadInterface("mapadungeon.bmp")
-Image2.Picture = LoadInterface("check-amarillo.bmp")
+        Dungeon = True
+        Referencias = False
 
-Dungeon = True
-Referencias = False
-End If
+    End If
 
-If PosREAL = 0 And Dungeon Then
-Shape1.Visible = True
-End If
+    If PosREAL = 0 And Dungeon Then
+        Shape1.Visible = True
 
-If PosREAL = 0 And Not Dungeon Then
-Shape1.Visible = False
-End If
+    End If
 
-If PosREAL = 1 And Dungeon Then
-Shape1.Visible = False
-End If
+    If PosREAL = 0 And Not Dungeon Then
+        Shape1.Visible = False
 
-If PosREAL = 1 And Not Dungeon Then
-Shape1.Visible = True
-End If
+    End If
+
+    If PosREAL = 1 And Dungeon Then
+        Shape1.Visible = False
+
+    End If
+
+    If PosREAL = 1 And Not Dungeon Then
+        Shape1.Visible = True
+
+    End If
+
 End Sub
 
 Private Sub Image3_Click()
-If Dungeon Then Exit Sub
 
-If Referencias Then
-    picMap.Picture = LoadInterface("mapa.bmp")
-    Image3.Picture = Nothing
-    Referencias = False
-Else
-    Referencias = True
-    picMap.Picture = LoadInterface("mapa_referencias.bmp")
-    Image3.Picture = LoadInterface("check-amarillo.bmp")
-End If
+    If Dungeon Then Exit Sub
+
+    If Referencias Then
+        picMap.Picture = LoadInterface("mapa.bmp")
+        Image3.Picture = Nothing
+        Referencias = False
+    Else
+        Referencias = True
+        picMap.Picture = LoadInterface("mapa_referencias.bmp")
+        Image3.Picture = LoadInterface("check-amarillo.bmp")
+
+    End If
 
 End Sub
 
 Private Sub Label6_Click()
-Call Image2_Click
+    Call Image2_Click
+
 End Sub
 
 Private Sub Label7_Click()
-Call Image3_Click
+    Call Image3_Click
+
 End Sub
 
 Private Sub listdrop_Click()
-On Error Resume Next
-'Picture1.Refresh
-picture1.BackColor = vbBlack
-picture1.Refresh
-'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
-If listdrop.SelectedItem.SubItems(1) = "" Then Exit Sub
-Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+
+    On Error Resume Next
+
+    'Picture1.Refresh
+    picture1.BackColor = vbBlack
+    picture1.Refresh
+
+    'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
+    If listdrop.SelectedItem.SubItems(1) = "" Then Exit Sub
+    Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+
 End Sub
 
-
 Private Sub ListView1_Click()
-On Error Resume Next
-Label8.Caption = ""
-picture1.Refresh
 
+    On Error Resume Next
 
-
+    Label8.Caption = ""
+    picture1.Refresh
 
     Label8.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).name
+
     Dim i As Byte
+
     Label2.Caption = "Vida: " & NpcData(ListView1.SelectedItem.SubItems(2)).Hp & " puntos"
     Label3.Caption = "Experiencia: " & NpcData(ListView1.SelectedItem.SubItems(2)).exp & " puntos"
     Label4.Caption = "Oro: " & NpcData(ListView1.SelectedItem.SubItems(2)).oro & " monedas"
@@ -623,46 +663,53 @@ picture1.Refresh
     
     ListView1.ToolTipText = NpcData(ListView1.SelectedItem.SubItems(2)).name
     
-    
     If ListView1.SelectedItem.SubItems(2) <> "" Then
     
-    If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza <> "" Then
-'    Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(1)).grhindex,' 0, 0, False)
-        If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza = 0 Then Exit Sub
-        For i = 1 To NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza
-          '  listdrop.ListItems.Add(1).Text = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).name
-            'listdrop.ListItems.Add(1).SubItems(2) = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).grhindex
+        If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza <> "" Then
+
+            '    Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(1)).grhindex,' 0, 0, False)
+            If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza = 0 Then Exit Sub
+
+            For i = 1 To NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza
+                '  listdrop.ListItems.Add(1).Text = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).name
+                'listdrop.ListItems.Add(1).SubItems(2) = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).grhindex
             
-           ' Dim subelemento As ListItem
+                ' Dim subelemento As ListItem
 
-Dim subelemento As ListItem
-Set subelemento = frmMapaGrande.listdrop.ListItems.Add(, , ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).name)
+                Dim subelemento As ListItem
 
-subelemento.SubItems(1) = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).GrhIndex
+                Set subelemento = frmMapaGrande.listdrop.ListItems.Add(, , ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).name)
 
-        Next i
-        Call listdrop_Click
+                subelemento.SubItems(1) = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).GrhIndex
+
+            Next i
+
+            Call listdrop_Click
+
+        End If
+
     End If
-    End If
-    
-    
-    
         
 End Sub
 
 Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     On Error Resume Next
+
     lblAllies.Visible = True
+
     Dim PosX As Integer
+
     Dim PosY As Integer
+
     Dim mapa As Integer
     
     'lblAllies.top = Y * 18 / 32
     'lblAllies.left = X * 14 / 32
     
-    If x >= llamadadeclan.Left And x <= llamadadeclan.Left + llamadadeclan.Width And _
-        y >= llamadadeclan.Top And y <= llamadadeclan.Top + llamadadeclan.Height Then
+    If x >= llamadadeclan.Left And x <= llamadadeclan.Left + llamadadeclan.Width And y >= llamadadeclan.Top And y <= llamadadeclan.Top + llamadadeclan.Height Then
         AddtoRichTextBox frmmain.RecTxt, "Ubicación de tu compañero de clan que solicita ayuda: (" & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
+
     End If
 
     ' Para obtener las coordenadas (x, y) del "slot" divido la posición del cursor
@@ -683,23 +730,29 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
         lblMapInfo(0) = MapDat.map_name & "(" & DungeonData(mapa) & ")"
         
         If Button = vbRightButton Then
-          Call ParseUserCommand("/TELEP YO " & DungeonData(mapa) & " " & 50 & " " & 50)
+            Call ParseUserCommand("/TELEP YO " & DungeonData(mapa) & " " & 50 & " " & 50)
+
         End If
+
     Else
+
         If WordMapa(mapa) = 0 Then Exit Sub
         Call CargarDatosMapa(WordMapa(mapa))
         lblMapInfo(0) = MapDat.map_name & "(" & WordMapa(mapa) & ")"
         
         If Button = vbRightButton Then
-          Call ParseUserCommand("/TELEP YO " & WordMapa(mapa) & " " & 50 & " " & 50)
+            Call ParseUserCommand("/TELEP YO " & WordMapa(mapa) & " " & 50 & " " & 50)
+
         End If
+
     End If
-        Label2.Caption = ""
-        Label3.Caption = ""
-        Label4.Caption = ""
-        Label5.Caption = ""
-        Label9.Caption = ""
-        listdrop.ListItems.Clear
+
+    Label2.Caption = ""
+    Label3.Caption = ""
+    Label4.Caption = ""
+    Label5.Caption = ""
+    Label9.Caption = ""
+    listdrop.ListItems.Clear
     
     ListView1.SetFocus
     'listdrop.SetFocus
@@ -708,8 +761,10 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 
     lblAllies.Top = PosY
     lblAllies.Left = PosX
+
 End Sub
 
 Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-moverForm
+    moverForm
+
 End Sub

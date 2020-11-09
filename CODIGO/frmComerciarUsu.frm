@@ -197,213 +197,257 @@ Attribute VB_Exposed = False
 '**************************************************************************
 
 Option Explicit
-Dim item As Boolean
+
+Dim Item            As Boolean
 
 Const WM_SYSCOMMAND As Long = &H112&
-Const MOUSE_MOVE As Long = &HF012&
+
+Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
-        (ByVal hwnd As Long, ByVal wMsg As Long, _
-        ByVal wParam As Long, lParam As Long) As Long
-Public LastIndex1 As Integer
+
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+
+Public LastIndex1   As Integer
+
 Public LasActionBuy As Boolean
+
 Private Sub moverForm()
+
     Dim res As Long
+
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+
 End Sub
+
 Private Sub cmdAceptar_Click()
     Call WriteUserCommerceOk
+
 End Sub
+
 Private Sub cmdAceptar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-               ' cmdAceptar.Picture = LoadInterface("comercioseguro_aceptarpress.bmp")
-                'cmdAceptar.Tag = "1"
+
+    ' cmdAceptar.Picture = LoadInterface("comercioseguro_aceptarpress.bmp")
+    'cmdAceptar.Tag = "1"
 End Sub
+
 Private Sub cmdAceptar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdAceptar.Tag = "0" Then
         cmdAceptar.Picture = LoadInterface("comercioseguro_aceptarhover.bmp")
         cmdAceptar.Tag = "1"
+
     End If
     
-cmdRechazar.Picture = Nothing
-cmdRechazar.Tag = "0"
+    cmdRechazar.Picture = Nothing
+    cmdRechazar.Tag = "0"
 
+    cmdOfrecer.Picture = Nothing
+    cmdOfrecer.Tag = "0"
 
-cmdOfrecer.Picture = Nothing
-cmdOfrecer.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
 End Sub
-
 
 Private Sub cmdOfrecer_Click()
 
-If item = True Then
-    If List1.ListIndex < 0 Then Exit Sub
-    If List1.ItemData(List1.ListIndex) <= 0 Then Exit Sub
+    If Item = True Then
+        If List1.ListIndex < 0 Then Exit Sub
+        If List1.ItemData(List1.ListIndex) <= 0 Then Exit Sub
     
-'    If Val(txtCant.Text) > List1.ItemData(List1.ListIndex) Or _
-'        Val(txtCant.Text) <= 0 Then Exit Sub
-ElseIf item = False Then
-'    If Val(txtCant.Text) > UserGLD Then
-'        Exit Sub
-'    End If
-End If
+        '    If Val(txtCant.Text) > List1.ItemData(List1.ListIndex) Or _
+        '        Val(txtCant.Text) <= 0 Then Exit Sub
+    ElseIf Item = False Then
 
-If item = True Then
-    Call WriteUserCommerceOffer(List1.ListIndex + 1, Val(txtCant.Text))
-ElseIf item = False Then
-    Call WriteUserCommerceOffer(FLAGORO, Val(txtCant.Text))
-Else
-    Exit Sub
-End If
+        '    If Val(txtCant.Text) > UserGLD Then
+        '        Exit Sub
+        '    End If
+    End If
 
-lblEstadoResp.Visible = True
+    If Item = True Then
+        Call WriteUserCommerceOffer(List1.ListIndex + 1, Val(txtCant.Text))
+    ElseIf Item = False Then
+        Call WriteUserCommerceOffer(FLAGORO, Val(txtCant.Text))
+    Else
+        Exit Sub
+
+    End If
+
+    lblEstadoResp.Visible = True
+
 End Sub
+
 Private Sub cmdOfrecer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                'cmdOfrecer.Picture = LoadInterface("comercioseguro_ofrecerpress.bmp")
-                'cmdOfrecer.Tag = "1"
+
+    'cmdOfrecer.Picture = LoadInterface("comercioseguro_ofrecerpress.bmp")
+    'cmdOfrecer.Tag = "1"
 End Sub
+
 Private Sub cmdOfrecer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdOfrecer.Tag = "0" Then
         cmdOfrecer.Picture = LoadInterface("comercioseguro_ofrecerhover.bmp")
         cmdOfrecer.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub cmdRechazar_Click()
     Call WriteUserCommerceReject
+
 End Sub
+
 Private Sub cmdRechazar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-              '  cmdRechazar.Picture = LoadInterface("comercioseguro_rechazarpress.bmp")
-               ' cmdRechazar.Tag = "1"
+
+    '  cmdRechazar.Picture = LoadInterface("comercioseguro_rechazarpress.bmp")
+    ' cmdRechazar.Tag = "1"
 End Sub
+
 Private Sub cmdRechazar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdRechazar.Tag = "0" Then
         cmdRechazar.Picture = LoadInterface("comercioseguro_rechazarhover.bmp")
         cmdRechazar.Tag = "1"
+
     End If
+
     cmdAceptar.Picture = Nothing
-cmdAceptar.Tag = "0"
+    cmdAceptar.Tag = "0"
 
-cmdOfrecer.Picture = Nothing
-cmdOfrecer.Tag = "0"
+    cmdOfrecer.Picture = Nothing
+    cmdOfrecer.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
-    
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
     
 End Sub
+
 Private Sub Command2_Click()
     Call WriteUserCommerceEnd
+
 End Sub
+
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-              '  Command2.Picture = LoadInterface("comercioseguro_cancelarpress.bmp")
-              '  Command2.Tag = "1"
+
+    '  Command2.Picture = LoadInterface("comercioseguro_cancelarpress.bmp")
+    '  Command2.Tag = "1"
 End Sub
+
 Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command2.Tag = "0" Then
         Command2.Picture = LoadInterface("comercioseguro_cancelarhover.bmp")
         Command2.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Form_Deactivate()
-'Me.SetFocus
-'Picture1.SetFocus
+    'Me.SetFocus
+    'Picture1.SetFocus
 
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-'Carga las imagenes...?
-lblEstadoResp.Visible = False
-item = True
+    Call FormParser.Parse_Form(Me)
+    'Carga las imagenes...?
+    lblEstadoResp.Visible = False
+    Item = True
 
 End Sub
 
 Private Sub Form_LostFocus()
-Me.SetFocus
-picture1.SetFocus
+    Me.SetFocus
+    picture1.SetFocus
 
 End Sub
 
-
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-cmdAceptar.Picture = Nothing
-cmdAceptar.Tag = "0"
+    cmdAceptar.Picture = Nothing
+    cmdAceptar.Tag = "0"
 
-cmdRechazar.Picture = Nothing
-cmdRechazar.Tag = "0"
+    cmdRechazar.Picture = Nothing
+    cmdRechazar.Tag = "0"
 
+    cmdOfrecer.Picture = Nothing
+    cmdOfrecer.Tag = "0"
 
-cmdOfrecer.Picture = Nothing
-cmdOfrecer.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
+    moverForm
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
-  moverForm
 End Sub
 
 Private Sub Image1_Click()
-Image1.Picture = LoadInterface("comercioseguro_opbjeto.bmp")
-Image2.Picture = Nothing
-List1.Enabled = True
-item = True
+    Image1.Picture = LoadInterface("comercioseguro_opbjeto.bmp")
+    Image2.Picture = Nothing
+    List1.Enabled = True
+    Item = True
+
 End Sub
 
 Private Sub Image2_Click()
-Image2.Picture = LoadInterface("comercioseguro_oro.bmp")
-Image1.Picture = Nothing
-List1.Enabled = False
-item = False
+    Image2.Picture = LoadInterface("comercioseguro_oro.bmp")
+    Image1.Picture = Nothing
+    List1.Enabled = False
+    Item = False
+
 End Sub
 
 Private Sub List1_Click()
     DibujaGrh frmmain.Inventario.GrhIndex(List1.ListIndex + 1)
+
 End Sub
 
 Public Sub DibujaGrh(grh As Long)
-Call Grh_Render_To_Hdc(picture1, (grh), 0, 0)
+    Call Grh_Render_To_Hdc(picture1, (grh), 0, 0)
 
 End Sub
 
 Private Sub List2_Click()
-If List2.ListIndex >= 0 Then
-    DibujaGrh OtroInventario(List2.ListIndex + 1).GrhIndex
-    Label3.Caption = "Cantidad: " & List2.ItemData(List2.ListIndex)
-    cmdAceptar.Enabled = True
-    cmdRechazar.Enabled = True
-Else
-    cmdAceptar.Enabled = False
-    cmdRechazar.Enabled = False
-End If
+
+    If List2.ListIndex >= 0 Then
+        DibujaGrh OtroInventario(List2.ListIndex + 1).GrhIndex
+        Label3.Caption = "Cantidad: " & List2.ItemData(List2.ListIndex)
+        cmdAceptar.Enabled = True
+        cmdRechazar.Enabled = True
+    Else
+        cmdAceptar.Enabled = False
+        cmdRechazar.Enabled = False
+
+    End If
 
 End Sub
 
 Private Sub txtCant_Change()
+
     If Val(txtCant.Text) < 1 Then txtCant.Text = "1"
     
     If Val(txtCant.Text) > 2147483647 Then txtCant.Text = "2147483647"
+
 End Sub
 
 Private Sub txtCant_KeyDown(KeyCode As Integer, Shift As Integer)
-If Not ((KeyCode >= 48 And KeyCode <= 57) Or KeyCode = vbKeyBack Or _
-        KeyCode = vbKeyDelete Or (KeyCode >= 37 And KeyCode <= 40)) Then
-    'txtCant = KeyCode
-    KeyCode = 0
-End If
+
+    If Not ((KeyCode >= 48 And KeyCode <= 57) Or KeyCode = vbKeyBack Or KeyCode = vbKeyDelete Or (KeyCode >= 37 And KeyCode <= 40)) Then
+        'txtCant = KeyCode
+        KeyCode = 0
+
+    End If
 
 End Sub
 
 Private Sub txtCant_KeyPress(KeyAscii As Integer)
-If Not ((KeyAscii >= 48 And KeyAscii <= 57) Or KeyAscii = vbKeyBack Or _
-        KeyAscii = vbKeyDelete Or (KeyAscii >= 37 And KeyAscii <= 40)) Then
-    'txtCant = KeyCode
-    KeyAscii = 0
-End If
+
+    If Not ((KeyAscii >= 48 And KeyAscii <= 57) Or KeyAscii = vbKeyBack Or KeyAscii = vbKeyDelete Or (KeyAscii >= 37 And KeyAscii <= 40)) Then
+        'txtCant = KeyCode
+        KeyAscii = 0
+
+    End If
 
 End Sub
 

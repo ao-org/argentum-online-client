@@ -337,7 +337,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Command1_Click()
-Call WriteCreaerTorneo(nivelmin, nivelmax, cupos, costo, Check1.value, Check2.value, Check3.value, Check4.value, Check5.value, Check6.value, Check7.value, Check8.value, Check9.value, map, x, y, nombre, reglas)
+    Call WriteCreaerTorneo(nivelmin, nivelmax, cupos, costo, Check1.value, Check2.value, Check3.value, Check4.value, Check5.value, Check6.value, Check7.value, Check8.value, Check9.value, map, x, y, nombre, reglas)
+
 End Sub
 

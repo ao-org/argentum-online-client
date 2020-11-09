@@ -175,6 +175,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 'Argentum Online 0.11.6
 '
 'Copyright (C) 2002 Márquez Pablo Ignacio
@@ -207,89 +208,108 @@ Attribute VB_Exposed = False
 'Código Postal 1900
 'Pablo Ignacio Márquez
 Dim Index As Byte
+
 Option Explicit
 
 Private Sub Command1_Click()
-Index = 1
+    Index = 1
 
+    Dim i As Byte
 
-Dim i As Byte
-lstArmas.Clear
-
+    lstArmas.Clear
 
     For i = 1 To UBound(ArmasHerrero())
+
         If ArmasHerrero(i).Index = 0 Then Exit For
         Call frmHerrero.lstArmas.AddItem(ObjData(ArmasHerrero(i).Index).name)
     Next i
     
-Command1.Picture = LoadInterface("herreria_armashover.bmp")
-Command3.Picture = Nothing
-Command2.Picture = Nothing
-Command4.Picture = Nothing
+    Command1.Picture = LoadInterface("herreria_armashover.bmp")
+    Command3.Picture = Nothing
+    Command2.Picture = Nothing
+    Command4.Picture = Nothing
+
 End Sub
+
 Private Sub Command1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-               ' Command1.Picture = LoadInterface("herreria_armaspress.bmp")
-               ' Command1.Tag = "1"
+
+    ' Command1.Picture = LoadInterface("herreria_armaspress.bmp")
+    ' Command1.Tag = "1"
 End Sub
+
 Private Sub Command2_Click()
-Index = 2
+    Index = 2
 
-Dim i As Byte
-lstArmas.Clear
+    Dim i As Byte
 
+    lstArmas.Clear
 
     For i = 0 To UBound(ArmadurasHerrero())
+
         If ArmadurasHerrero(i).Index = 0 Then Exit For
         If ObjData(ArmadurasHerrero(i).Index).ObjType = 3 Then
-        Call frmHerrero.lstArmas.AddItem(ObjData(ArmadurasHerrero(i).Index).name)
+            Call frmHerrero.lstArmas.AddItem(ObjData(ArmadurasHerrero(i).Index).name)
+
         End If
+
     Next i
-Command2.Picture = LoadInterface("herreria_armadurashover.bmp")
-Command1.Picture = Nothing
-Command3.Picture = Nothing
-Command4.Picture = Nothing
+
+    Command2.Picture = LoadInterface("herreria_armadurashover.bmp")
+    Command1.Picture = Nothing
+    Command3.Picture = Nothing
+    Command4.Picture = Nothing
+
 End Sub
 
 Private Sub Command3_Click()
-Index = 3
+    Index = 3
 
+    lstArmas.Clear
 
-lstArmas.Clear
-Dim i As Byte
-For i = 0 To UBound(CascosHerrero())
+    Dim i As Byte
+
+    For i = 0 To UBound(CascosHerrero())
+
         If CascosHerrero(i).Index = 0 Then Exit For
         Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).name)
-Next i
-Command3.Picture = LoadInterface("herreria_cascoshover.bmp")
+    Next i
 
-Command1.Picture = Nothing
-Command2.Picture = Nothing
-Command4.Picture = Nothing
+    Command3.Picture = LoadInterface("herreria_cascoshover.bmp")
 
+    Command1.Picture = Nothing
+    Command2.Picture = Nothing
+    Command4.Picture = Nothing
 
 End Sub
 
 Private Sub Command4_Click()
-Index = 4
+    Index = 4
 
-lstArmas.Clear
-Dim i As Byte
-For i = 0 To UBound(EscudosHerrero())
+    lstArmas.Clear
+
+    Dim i As Byte
+
+    For i = 0 To UBound(EscudosHerrero())
+
         If EscudosHerrero(i).Index = 0 Then Exit For
         Call frmHerrero.lstArmas.AddItem(ObjData(EscudosHerrero(i).Index).name)
-Next i
-Command4.Picture = LoadInterface("herreria_escudoshover.bmp")
-Command1.Picture = Nothing
-Command2.Picture = Nothing
-Command3.Picture = Nothing
+    Next i
+
+    Command4.Picture = LoadInterface("herreria_escudoshover.bmp")
+    Command1.Picture = Nothing
+    Command2.Picture = Nothing
+    Command3.Picture = Nothing
+
 End Sub
 
 Private Sub Command5_Click()
-Unload Me
+    Unload Me
+
 End Sub
 
 Private Sub Command6_Click()
-On Error Resume Next
+
+    On Error Resume Next
 
     If Index = 1 Then
 
@@ -304,9 +324,11 @@ On Error Resume Next
             frmmain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(ArmasHerrero(lstArmas.ListIndex + 1).Index)
-            If frmmain.macrotrabajo.Enabled Then _
-                MacroBltIndex = ArmasHerrero(lstArmas.ListIndex + 1).Index
+
+            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = ArmasHerrero(lstArmas.ListIndex + 1).Index
+
         End If
+
         Unload Me
     ElseIf Index = 2 Then
     
@@ -321,8 +343,8 @@ On Error Resume Next
             frmmain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(ArmadurasHerrero(lstArmas.ListIndex).Index)
-            If frmmain.macrotrabajo.Enabled Then _
-                MacroBltIndex = ArmadurasHerrero(lstArmas.ListIndex).Index
+
+            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = ArmadurasHerrero(lstArmas.ListIndex).Index
             
         End If
         
@@ -340,8 +362,8 @@ On Error Resume Next
             frmmain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(CascosHerrero(lstArmas.ListIndex).Index)
-            If frmmain.macrotrabajo.Enabled Then _
-                MacroBltIndex = CascosHerrero(lstArmas.ListIndex).Index
+
+            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = CascosHerrero(lstArmas.ListIndex).Index
             
         End If
         
@@ -359,116 +381,140 @@ On Error Resume Next
             frmmain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(EscudosHerrero(lstArmas.ListIndex).Index)
-            If frmmain.macrotrabajo.Enabled Then _
-                MacroBltIndex = EscudosHerrero(lstArmas.ListIndex).Index
+
+            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = EscudosHerrero(lstArmas.ListIndex).Index
             
         End If
         
         Unload Me
+
     End If
 
 End Sub
+
 Private Sub Command6_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                'Command6.Picture = LoadInterface("trabajar_construirpress.bmp")
-               ' Command6.Tag = "1"
+
+    'Command6.Picture = LoadInterface("trabajar_construirpress.bmp")
+    ' Command6.Tag = "1"
 End Sub
+
 Private Sub Command6_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command6.Tag = "0" Then
         Command6.Picture = LoadInterface("trabajar_construirhover.bmp")
         Command6.Tag = "1"
+
     End If
     
     Command5.Picture = Nothing
-Command5.Tag = "0"
+    Command5.Tag = "0"
 
 End Sub
+
 Private Sub Command5_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                'Command5.Picture = LoadInterface("trabajar_salirpress.bmp")
-                'Command5.Tag = "1"
+
+    'Command5.Picture = LoadInterface("trabajar_salirpress.bmp")
+    'Command5.Tag = "1"
 End Sub
+
 Private Sub Command5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command5.Tag = "0" Then
         Command5.Picture = LoadInterface("trabajar_salirhover.bmp")
         Command5.Tag = "1"
-    End If
-    
 
-Command6.Picture = Nothing
-Command6.Tag = "0"
+    End If
+
+    Command6.Picture = Nothing
+    Command6.Tag = "0"
+
 End Sub
+
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                'Command4.Picture = LoadInterface("herreria_escudospress.bmp")
-                'Command4.Tag = "1"
+
+    'Command4.Picture = LoadInterface("herreria_escudospress.bmp")
+    'Command4.Tag = "1"
 End Sub
+
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-               ' 'Command3.Picture = LoadInterface("herreria_cascospress.bmp")
-               ' Command3.Tag = "1"
+
+    ' 'Command3.Picture = LoadInterface("herreria_cascospress.bmp")
+    ' Command3.Tag = "1"
 End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                'Command2.Picture = LoadInterface("herreria_armaduraspress.bmp")
-               ' Command2.Tag = "1"
-End Sub
-Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-Index = 3
+
+    'Command2.Picture = LoadInterface("herreria_armaduraspress.bmp")
+    ' Command2.Tag = "1"
 End Sub
 
+Private Sub Form_Load()
+    Call FormParser.Parse_Form(Me)
+    Index = 3
+
+End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-Command5.Picture = Nothing
-Command5.Tag = "0"
+    Command5.Picture = Nothing
+    Command5.Tag = "0"
 
-Command6.Picture = Nothing
-Command6.Tag = "0"
+    Command6.Picture = Nothing
+    Command6.Tag = "0"
 
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-UsingSkill = 0
+    UsingSkill = 0
+
 End Sub
 
-
 Private Sub List1_Click()
-On Error Resume Next
-Dim SR As RECT, DR As RECT
 
-SR.Left = 0
-SR.Top = 0
-SR.Right = 32
-SR.bottom = 32
+    On Error Resume Next
 
-DR.Left = 0
-DR.Top = 0
-DR.Right = 32
-DR.bottom = 32
-Dim grh As Long
-If List1.ListIndex = 0 Then
-grh = 724
-ElseIf List1.ListIndex = 1 Then
-grh = 725
-ElseIf List1.ListIndex = 2 Then
-grh = 723
-End If
+    Dim SR As RECT, DR As RECT
 
-Call Grh_Render_To_Hdc(picture1, grh, 0, 0, False)
+    SR.Left = 0
+    SR.Top = 0
+    SR.Right = 32
+    SR.bottom = 32
+
+    DR.Left = 0
+    DR.Top = 0
+    DR.Right = 32
+    DR.bottom = 32
+
+    Dim grh As Long
+
+    If List1.ListIndex = 0 Then
+        grh = 724
+    ElseIf List1.ListIndex = 1 Then
+        grh = 725
+    ElseIf List1.ListIndex = 2 Then
+        grh = 723
+
+    End If
+
+    Call Grh_Render_To_Hdc(picture1, grh, 0, 0, False)
 
 End Sub
 
 Private Sub lstArmas_Click()
-On Error Resume Next
-Dim SR As RECT, DR As RECT
 
-SR.Left = 0
-SR.Top = 0
-SR.Right = 32
-SR.bottom = 32
+    On Error Resume Next
 
-DR.Left = 0
-DR.Top = 0
-DR.Right = 32
-DR.bottom = 32
+    Dim SR As RECT, DR As RECT
+
+    SR.Left = 0
+    SR.Top = 0
+    SR.Right = 32
+    SR.bottom = 32
+
+    DR.Left = 0
+    DR.Top = 0
+    DR.Right = 32
+    DR.bottom = 32
 
     List1.Clear
     List2.Clear
@@ -476,38 +522,35 @@ DR.bottom = 32
     List1.AddItem ("Lingo de plata")
     List1.AddItem ("Lingotes de Oro")
 
-If Index = 1 Then
-Call Grh_Render_To_Hdc(picture1, ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-    List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingH)
-    List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingP)
-    List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingO)
-    desc.Caption = "Golpe: " & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MinHit & "/" & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MaxHit
+    If Index = 1 Then
+        Call Grh_Render_To_Hdc(picture1, ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
+        List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingH)
+        List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingP)
+        List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingO)
+        desc.Caption = "Golpe: " & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MinHit & "/" & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MaxHit
     
-    
-ElseIf Index = 2 Then
-Call Grh_Render_To_Hdc(picture1, ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-    List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingH)
-    List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingP)
-    List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingO)
-    desc.Caption = "Defensa: " & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MaxDef
-ElseIf Index = 3 Then
-Call Grh_Render_To_Hdc(picture1, ObjData(CascosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-    List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingH)
-    List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingP)
-    List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingO)
-    desc.Caption = "Defensa: " & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MaxDef
-ElseIf Index = 4 Then
-Call Grh_Render_To_Hdc(picture1, ObjData(EscudosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-    List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingH)
-    List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingP)
-    List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingO)
-    desc.Caption = "Defensa: " & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MaxDef
-End If
+    ElseIf Index = 2 Then
+        Call Grh_Render_To_Hdc(picture1, ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
+        List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingH)
+        List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingP)
+        List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingO)
+        desc.Caption = "Defensa: " & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MaxDef
+    ElseIf Index = 3 Then
+        Call Grh_Render_To_Hdc(picture1, ObjData(CascosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
+        List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingH)
+        List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingP)
+        List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingO)
+        desc.Caption = "Defensa: " & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MaxDef
+    ElseIf Index = 4 Then
+        Call Grh_Render_To_Hdc(picture1, ObjData(EscudosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
+        List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingH)
+        List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingP)
+        List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingO)
+        desc.Caption = "Defensa: " & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MaxDef
+
+    End If
 
     picture1.Visible = True
-    
-    
-
 
 End Sub
 

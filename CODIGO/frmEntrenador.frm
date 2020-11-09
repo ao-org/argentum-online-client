@@ -126,8 +126,6 @@ Attribute VB_Exposed = False
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
-
-
 '[CODE]:MatuX
 '
 '    Le puse el iconito de la manito a los botones ^_^,
@@ -141,9 +139,11 @@ Option Explicit
 Private Sub Command1_Click()
     Call WriteTrain(lstCriaturas.ListIndex + 1)
     Unload Me
+
 End Sub
 
 Private Sub Command2_Click()
     Unload Me
+
 End Sub
 

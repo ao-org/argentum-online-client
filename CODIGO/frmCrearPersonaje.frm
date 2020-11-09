@@ -548,66 +548,69 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Dim AnimHead As Byte
-
-
+Dim AnimHead       As Byte
 
 Public SkillPoints As Byte
+
 Function CheckData() As Boolean
-If UserRaza = 0 Then
-    MsgBox "Seleccione la raza del personaje."
-    Exit Function
-End If
 
-If MiCabeza = 0 Then
-    MsgBox "Seleccione una cabeza para el personaje."
-    Exit Function
-End If
+    If UserRaza = 0 Then
+        MsgBox "Seleccione la raza del personaje."
+        Exit Function
 
+    End If
 
-If UserSexo = 0 Then
-    MsgBox "Seleccione el sexo del personaje."
-    Exit Function
-End If
+    If MiCabeza = 0 Then
+        MsgBox "Seleccione una cabeza para el personaje."
+        Exit Function
 
-If UserClase = 0 Then
-    MsgBox "Seleccione la clase del personaje."
-    Exit Function
-End If
+    End If
 
+    If UserSexo = 0 Then
+        MsgBox "Seleccione el sexo del personaje."
+        Exit Function
 
-CheckData = True
+    End If
 
+    If UserClase = 0 Then
+        MsgBox "Seleccione la clase del personaje."
+        Exit Function
+
+    End If
+
+    CheckData = True
 
 End Function
+
 Function RandomNumber(ByVal LowerBound As Variant, ByVal UpperBound As Variant) As Single
     Randomize Timer
     RandomNumber = (UpperBound - LowerBound + 1) * Rnd + LowerBound
+
     If RandomNumber > UpperBound Then RandomNumber = UpperBound
+
 End Function
+
 Private Sub Form_Activate()
-QueRender = 3
+    QueRender = 3
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-'Call SwitchMapIAO(281)
+    Call FormParser.Parse_Form(Me)
+    'Call SwitchMapIAO(281)
 
-
-
-'lstProfesion.ListIndex = 0
-'LstFamiliar.ListIndex = 0
-
+    'lstProfesion.ListIndex = 0
+    'LstFamiliar.ListIndex = 0
 
 End Sub
 
-
-
 Private Sub lstProfesion_Click()
-'LstFamiliar.Clear
-'Dim i As Byte
-Select Case (lstProfesion.List(lstProfesion.ListIndex))
-    Case Is = "Mago"
+
+    'LstFamiliar.Clear
+    'Dim i As Byte
+    Select Case (lstProfesion.List(lstProfesion.ListIndex))
+
+        Case Is = "Mago"
             RazaRecomendada = "Gnomo / Elfo / Humano / Elfo Drow"
             CPBody = 640
             CPBodyE = 641
@@ -615,8 +618,9 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPGorro = 58
             CPEscudo = 0
             CPAura = "35532:&HDD7C40:0:248"
+
             'CPHead=
-    Case Is = "Paladin"
+        Case Is = "Paladin"
             RazaRecomendada = "Humano / Elfo Drow / Elfo"
             CPBody = 524
             CPBodyE = 525
@@ -624,7 +628,8 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPGorro = 73
             CPEscudo = 72
             CPAura = "35448:&HFFF306:0:248"
-    Case Is = "Cazador"
+
+        Case Is = "Cazador"
             RazaRecomendada = "Enano / Humano"
             CPBody = 526
             CPBodyE = 527
@@ -632,7 +637,8 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPGorro = 78
             CPEscudo = 51
             CPAura = "20200:&H904D17:0:248"
-    Case Is = "Guerrero"
+
+        Case Is = "Guerrero"
             RazaRecomendada = "Enano / Humano"
             CPBody = 528
             CPBodyE = 529
@@ -640,7 +646,8 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPGorro = 79
             CPEscudo = 73
             CPAura = "35498:&H8700CE:0:248"
-    Case Is = "Bardo"
+
+        Case Is = "Bardo"
             RazaRecomendada = "Elfo / Humano"
             CPBody = 636
             CPBodyE = 637
@@ -648,7 +655,8 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPGorro = 43
             CPEscudo = 48
             CPAura = "35445:&H800080:0:248"
-    Case Is = "Clerigo"
+
+        Case Is = "Clerigo"
             RazaRecomendada = "Humano / Elfo Drow / Elfo"
             CPBody = 520
             CPBodyE = 521
@@ -656,7 +664,8 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPGorro = 83
             CPEscudo = 60
             CPAura = "35443:&H83CEDD:0:248"
-    Case Is = "Asesino"
+
+        Case Is = "Asesino"
             RazaRecomendada = "Humano / ElfoDrow"
             CPBody = 518
             CPBodyE = 519
@@ -664,7 +673,8 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPGorro = 74
             CPEscudo = 58
             CPAura = "35432:&HFB0813:0:248"
-    Case Is = "Druida"
+
+        Case Is = "Druida"
             RazaRecomendada = "Humano / Elfo"
             CPBody = 632
             CPBodyE = 633
@@ -672,7 +682,8 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPGorro = 70
             CPEscudo = 40
             CPAura = "35466:&HF622D:0:248"
-    Case Is = "Trabajador"
+
+        Case Is = "Trabajador"
             RazaRecomendada = "Enano / Humano"
             CPBody = 602
             CPBodyE = 603
@@ -680,16 +691,19 @@ Select Case (lstProfesion.List(lstProfesion.ListIndex))
             CPGorro = 95
             CPEscudo = 0
             CPAura = ""
- End Select
+
+    End Select
  
- RazaRecomendada = RazaRecomendada
+    RazaRecomendada = RazaRecomendada
 
 End Sub
 
 Private Sub lstRaza_Click()
+
     If lstRaza.ListIndex < 0 Then Exit Sub
     
     Dim i As Integer
+
     i = lstRaza.ListIndex + 1
 
     Call DameOpciones
@@ -700,310 +714,297 @@ Private Sub lstRaza_Click()
     modAgilidad.Caption = IIf(Sgn(ModRaza(i).Agilidad) < 0, "-", "+") & " " & Abs(ModRaza(i).Agilidad)
     modInteligencia.Caption = IIf(Sgn(ModRaza(i).Inteligencia) < 0, "-", "+") & " " & Abs(ModRaza(i).Inteligencia)
     modConstitucion.Caption = IIf(Sgn(ModRaza(i).Constitucion) < 0, "-", "+") & " " & Abs(ModRaza(i).Constitucion)
+
 End Sub
-
-
-
 
 Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
+    If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
+        If Cabeza.ListCount = 0 Then Exit Sub
+        If Cabeza.ListIndex > 0 Then
+            Cabeza.ListIndex = Cabeza.ListIndex - 1
 
-If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
-If cabeza.ListCount = 0 Then Exit Sub
-    If cabeza.ListIndex > 0 Then
-        cabeza.ListIndex = cabeza.ListIndex - 1
-    End If
-    If cabeza.ListIndex = 0 Then
-    cabeza.ListIndex = cabeza.ListCount - 1
-    End If
-End If
+        End If
 
-If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
-If cabeza.ListCount = 0 Then Exit Sub
-    If (cabeza.ListIndex + 1) <> cabeza.ListCount Then
-    cabeza.ListIndex = cabeza.ListIndex + 1
-    End If
-    If (cabeza.ListIndex + 1) = cabeza.ListCount Then
-    cabeza.ListIndex = 0
-    End If
-End If
+        If Cabeza.ListIndex = 0 Then
+            Cabeza.ListIndex = Cabeza.ListCount - 1
 
-
-If x > 348 And x < 408 And y > 511 And y < 523 Then 'Boton Equipar
-CPEquipado = Not CPEquipado
-End If
-
-
-
-If x > 290 And x < 326 And y > 453 And y < 486 Then 'Boton Equipar
-If CPHeading + 1 >= 5 Then
-CPHeading = 1
-Else
-CPHeading = CPHeading + 1
-End If
-End If
-
-
-
-If x > 421 And x < 452 And y > 453 And y < 486 Then 'Boton Equipar
-If CPHeading - 1 <= 0 Then
-CPHeading = 4
-Else
-CPHeading = CPHeading - 1
-End If
-End If
-
-
-
- 
-
-
-If x > 548 And x < 560 And y > 258 And y < 271 Then 'Boton Derecha cabezas
-
-    If lstProfesion.ListIndex < lstProfesion.ListCount - 1 Then
-        lstProfesion.ListIndex = lstProfesion.ListIndex + 1
-    Else
-    lstProfesion.ListIndex = 0
-    End If
-End If
-
-
-If x > 435 And x < 446 And y > 260 And y < 271 Then 'Boton Derecha cabezas
-
-
-    If lstProfesion.ListIndex - 1 < 0 Then
-        lstProfesion.ListIndex = lstProfesion.ListCount - 1
-    Else
-    lstProfesion.ListIndex = lstProfesion.ListIndex - 1
+        End If
 
     End If
 
+    If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
+        If Cabeza.ListCount = 0 Then Exit Sub
+        If (Cabeza.ListIndex + 1) <> Cabeza.ListCount Then
+            Cabeza.ListIndex = Cabeza.ListIndex + 1
 
-End If
+        End If
 
+        If (Cabeza.ListIndex + 1) = Cabeza.ListCount Then
+            Cabeza.ListIndex = 0
 
+        End If
 
-
-If x > 548 And x < 560 And y > 304 And y < 323 Then 'Boton Derecha cabezas
-    If lstRaza.ListIndex < lstRaza.ListCount - 1 Then
-        lstRaza.ListIndex = lstRaza.ListIndex + 1
-    Else
-    lstRaza.ListIndex = 0
     End If
-End If
 
-If x > 435 And x < 446 And y > 304 And y < 323 Then 'Boton Derecha cabezas
-    If lstRaza.ListIndex - 1 < 0 Then
-        lstRaza.ListIndex = lstRaza.ListCount - 1
-    Else
-    lstRaza.ListIndex = lstRaza.ListIndex - 1
+    If x > 348 And x < 408 And y > 511 And y < 523 Then 'Boton Equipar
+        CPEquipado = Not CPEquipado
+
     End If
-End If
 
+    If x > 290 And x < 326 And y > 453 And y < 486 Then 'Boton Equipar
+        If CPHeading + 1 >= 5 Then
+            CPHeading = 1
+        Else
+            CPHeading = CPHeading + 1
 
+        End If
 
-
-If x > 548 And x < 560 And y > 351 And y < 367 Then 'Boton Derecha cabezas
-    If lstGenero.ListIndex < lstGenero.ListCount - 1 Then
-        lstGenero.ListIndex = lstGenero.ListIndex + 1
-    Else
-    lstGenero.ListIndex = 0
     End If
-End If
 
-If x > 435 And x < 446 And y > 351 And y < 367 Then 'Boton Derecha cabezas
-    If lstGenero.ListIndex - 1 < 0 Then
-        lstGenero.ListIndex = lstGenero.ListCount - 1
-    Else
-    lstGenero.ListIndex = lstGenero.ListIndex - 1
+    If x > 421 And x < 452 And y > 453 And y < 486 Then 'Boton Equipar
+        If CPHeading - 1 <= 0 Then
+            CPHeading = 4
+        Else
+            CPHeading = CPHeading - 1
+
+        End If
+
     End If
-End If
 
+    If x > 548 And x < 560 And y > 258 And y < 271 Then 'Boton Derecha cabezas
 
+        If lstProfesion.ListIndex < lstProfesion.ListCount - 1 Then
+            lstProfesion.ListIndex = lstProfesion.ListIndex + 1
+        Else
+            lstProfesion.ListIndex = 0
 
+        End If
 
+    End If
 
+    If x > 435 And x < 446 And y > 260 And y < 271 Then 'Boton Derecha cabezas
 
-'If X > 258 And X < 272 And Y > 413 And Y < 421 Then 'Boton < FUERZA
-'    Call Sound.Sound_Play(SND_CLICK)
-'    If Not frmCrearPersonaje.lbFuerza.Caption = 6 Then
-'    frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
-'    frmCrearPersonaje.lbFuerza.Caption = frmCrearPersonaje.lbFuerza.Caption - 1
-'End If
+        If lstProfesion.ListIndex - 1 < 0 Then
+            lstProfesion.ListIndex = lstProfesion.ListCount - 1
+        Else
+            lstProfesion.ListIndex = lstProfesion.ListIndex - 1
 
+        End If
 
-'End If
+    End If
 
+    If x > 548 And x < 560 And y > 304 And y < 323 Then 'Boton Derecha cabezas
+        If lstRaza.ListIndex < lstRaza.ListCount - 1 Then
+            lstRaza.ListIndex = lstRaza.ListIndex + 1
+        Else
+            lstRaza.ListIndex = 0
 
-'If X > 258 And X < 272 And Y > 442 And Y < 454 Then 'Boton < Agilidad
-'Call Sound.Sound_Play(SND_CLICK)
-'If frmCrearPersonaje.lbAgilidad.Caption = 6 Then Exit Sub
-'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
-'frmCrearPersonaje.lbAgilidad.Caption = frmCrearPersonaje.lbAgilidad.Caption - 1
+        End If
 
-'End If
+    End If
 
-'If X > 258 And X < 272 And Y > 474 And Y < 483 Then 'Boton < Inteligencia
+    If x > 435 And x < 446 And y > 304 And y < 323 Then 'Boton Derecha cabezas
+        If lstRaza.ListIndex - 1 < 0 Then
+            lstRaza.ListIndex = lstRaza.ListCount - 1
+        Else
+            lstRaza.ListIndex = lstRaza.ListIndex - 1
 
-'Call Sound.Sound_Play(SND_CLICK)
-'If frmCrearPersonaje.lbInteligencia.Caption = 6 Then Exit Sub
-'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
-'frmCrearPersonaje.lbInteligencia.Caption = frmCrearPersonaje.lbInteligencia.Caption - 1
-'End If
+        End If
 
-'If X > 258 And X < 272 And Y > 505 And Y < 517 Then 'Boton < Carisma
-'Call Sound.Sound_Play(SND_CLICK)
-'If frmCrearPersonaje.lbCarisma.Caption = 6 Then Exit Sub
-'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
-'frmCrearPersonaje.lbCarisma.Caption = frmCrearPersonaje.lbCarisma.Caption - 1
-'End If
+    End If
 
+    If x > 548 And x < 560 And y > 351 And y < 367 Then 'Boton Derecha cabezas
+        If lstGenero.ListIndex < lstGenero.ListCount - 1 Then
+            lstGenero.ListIndex = lstGenero.ListIndex + 1
+        Else
+            lstGenero.ListIndex = 0
 
-'If X > 258 And X < 272 And Y > 500 And Y < 517 Then 'Boton < Constitucion
-'    Call Sound.Sound_Play(SND_CLICK)
-'    If frmCrearPersonaje.lbConstitucion.Caption = 6 Then Exit Sub
-'    frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
-'    frmCrearPersonaje.lbConstitucion.Caption = frmCrearPersonaje.lbConstitucion.Caption - 1
-'End If
+        End If
 
+    End If
 
+    If x > 435 And x < 446 And y > 351 And y < 367 Then 'Boton Derecha cabezas
+        If lstGenero.ListIndex - 1 < 0 Then
+            lstGenero.ListIndex = lstGenero.ListCount - 1
+        Else
+            lstGenero.ListIndex = lstGenero.ListIndex - 1
 
-'If X > 308 And X < 320 And Y > 411 And Y < 424 Then 'Boton > Fuerza
-'Call Sound.Sound_Play(SND_CLICK)
-'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
-'If Not frmCrearPersonaje.lbFuerza.Caption = 18 Then
-'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
-'frmCrearPersonaje.lbFuerza.Caption = frmCrearPersonaje.lbFuerza.Caption + 1
-'End If
-'End If
+        End If
 
+    End If
 
-'If X > 308 And X < 320 And Y > 442 And Y < 454 Then 'Boton > Agilidad
-'Call Sound.Sound_Play(SND_CLICK)
-'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
-'If Not frmCrearPersonaje.lbAgilidad.Caption = 18 Then
-'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
-'frmCrearPersonaje.lbAgilidad.Caption = frmCrearPersonaje.lbAgilidad.Caption + 1
-'End If
+    'If X > 258 And X < 272 And Y > 413 And Y < 421 Then 'Boton < FUERZA
+    '    Call Sound.Sound_Play(SND_CLICK)
+    '    If Not frmCrearPersonaje.lbFuerza.Caption = 6 Then
+    '    frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
+    '    frmCrearPersonaje.lbFuerza.Caption = frmCrearPersonaje.lbFuerza.Caption - 1
+    'End If
 
-'End If
+    'End If
 
+    'If X > 258 And X < 272 And Y > 442 And Y < 454 Then 'Boton < Agilidad
+    'Call Sound.Sound_Play(SND_CLICK)
+    'If frmCrearPersonaje.lbAgilidad.Caption = 6 Then Exit Sub
+    'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
+    'frmCrearPersonaje.lbAgilidad.Caption = frmCrearPersonaje.lbAgilidad.Caption - 1
 
-'If X > 308 And X < 320 And Y > 472 And Y < 485 Then 'Boton > Inteligencia
-'Call Sound.Sound_Play(SND_CLICK)
-'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
-'If Not frmCrearPersonaje.lbInteligencia.Caption = 18 Then
-'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
-'frmCrearPersonaje.lbInteligencia.Caption = frmCrearPersonaje.lbInteligencia.Caption + 1
-'End If
+    'End If
 
-'End If
+    'If X > 258 And X < 272 And Y > 474 And Y < 483 Then 'Boton < Inteligencia
 
-'If X > 308 And X < 320 And Y > 504 And Y < 516 Then 'Boton > Carisma
-'Call Sound.Sound_Play(SND_CLICK)
-'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
-'If Not frmCrearPersonaje.lbCarisma.Caption = 18 Then
-'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
-'frmCrearPersonaje.lbCarisma.Caption = frmCrearPersonaje.lbCarisma.Caption + 1
-'End If
-'End If
+    'Call Sound.Sound_Play(SND_CLICK)
+    'If frmCrearPersonaje.lbInteligencia.Caption = 6 Then Exit Sub
+    'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
+    'frmCrearPersonaje.lbInteligencia.Caption = frmCrearPersonaje.lbInteligencia.Caption - 1
+    'End If
 
-'If X > 308 And X < 320 And Y > 497 And Y < 516 Then 'Boton > Constitucion
-'Call Sound.Sound_Play(SND_CLICK)
-'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
-'If Not frmCrearPersonaje.lbConstitucion.Caption = 18 Then
-'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
-'frmCrearPersonaje.lbConstitucion.Caption = frmCrearPersonaje.lbConstitucion.Caption + 1
-'End If
-'End If
+    'If X > 258 And X < 272 And Y > 505 And Y < 517 Then 'Boton < Carisma
+    'Call Sound.Sound_Play(SND_CLICK)
+    'If frmCrearPersonaje.lbCarisma.Caption = 6 Then Exit Sub
+    'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
+    'frmCrearPersonaje.lbCarisma.Caption = frmCrearPersonaje.lbCarisma.Caption - 1
+    'End If
 
-If x > 148 And x < 246 And y > 630 And y < 670 Then 'Boton > Volver
-Call Sound.Sound_Play(SND_CLICK)
+    'If X > 258 And X < 272 And Y > 500 And Y < 517 Then 'Boton < Constitucion
+    '    Call Sound.Sound_Play(SND_CLICK)
+    '    If frmCrearPersonaje.lbConstitucion.Caption = 6 Then Exit Sub
+    '    frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption + 1
+    '    frmCrearPersonaje.lbConstitucion.Caption = frmCrearPersonaje.lbConstitucion.Caption - 1
+    'End If
 
-    UserMap = 307
-    AlphaNiebla = 25
-    EntradaY = 1
-    EntradaX = 1
+    'If X > 308 And X < 320 And Y > 411 And Y < 424 Then 'Boton > Fuerza
+    'Call Sound.Sound_Play(SND_CLICK)
+    'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
+    'If Not frmCrearPersonaje.lbFuerza.Caption = 18 Then
+    'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
+    'frmCrearPersonaje.lbFuerza.Caption = frmCrearPersonaje.lbFuerza.Caption + 1
+    'End If
+    'End If
+
+    'If X > 308 And X < 320 And Y > 442 And Y < 454 Then 'Boton > Agilidad
+    'Call Sound.Sound_Play(SND_CLICK)
+    'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
+    'If Not frmCrearPersonaje.lbAgilidad.Caption = 18 Then
+    'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
+    'frmCrearPersonaje.lbAgilidad.Caption = frmCrearPersonaje.lbAgilidad.Caption + 1
+    'End If
+
+    'End If
+
+    'If X > 308 And X < 320 And Y > 472 And Y < 485 Then 'Boton > Inteligencia
+    'Call Sound.Sound_Play(SND_CLICK)
+    'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
+    'If Not frmCrearPersonaje.lbInteligencia.Caption = 18 Then
+    'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
+    'frmCrearPersonaje.lbInteligencia.Caption = frmCrearPersonaje.lbInteligencia.Caption + 1
+    'End If
+
+    'End If
+
+    'If X > 308 And X < 320 And Y > 504 And Y < 516 Then 'Boton > Carisma
+    'Call Sound.Sound_Play(SND_CLICK)
+    'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
+    'If Not frmCrearPersonaje.lbCarisma.Caption = 18 Then
+    'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
+    'frmCrearPersonaje.lbCarisma.Caption = frmCrearPersonaje.lbCarisma.Caption + 1
+    'End If
+    'End If
+
+    'If X > 308 And X < 320 And Y > 497 And Y < 516 Then 'Boton > Constitucion
+    'Call Sound.Sound_Play(SND_CLICK)
+    'If Not frmCrearPersonaje.lbLagaRulzz.Caption > 0 Then Exit Sub
+    'If Not frmCrearPersonaje.lbConstitucion.Caption = 18 Then
+    'frmCrearPersonaje.lbLagaRulzz.Caption = frmCrearPersonaje.lbLagaRulzz.Caption - 1
+    'frmCrearPersonaje.lbConstitucion.Caption = frmCrearPersonaje.lbConstitucion.Caption + 1
+    'End If
+    'End If
+
+    If x > 148 And x < 246 And y > 630 And y < 670 Then 'Boton > Volver
+        Call Sound.Sound_Play(SND_CLICK)
+
+        UserMap = 307
+        AlphaNiebla = 25
+        EntradaY = 1
+        EntradaX = 1
     
-    Call SwitchMapIAO(UserMap)
+        Call SwitchMapIAO(UserMap)
        
-            'FrmCuenta.Visible = True
-            frmConnect.Visible = True
-            QueRender = 2
+        'FrmCuenta.Visible = True
+        frmConnect.Visible = True
+        QueRender = 2
             
-            Unload Me
-End If
+        Unload Me
 
+    End If
 
-If x > 731 And x < 829 And y > 630 And y < 670 Then 'Boton > Crear
-Call Sound.Sound_Play(SND_CLICK)
-            Dim k As Object
-            If StopCreandoCuenta = True Then Exit Sub
+    If x > 731 And x < 829 And y > 630 And y < 670 Then 'Boton > Crear
+        Call Sound.Sound_Play(SND_CLICK)
 
-            
-            
-            
-            If Right$(UserName, 1) = " " Then
-                UserName = RTrim$(UserName)
-                'MsgBox "Nombre invalido, se han removido los espacios al final del nombre"
-            End If
-            
-            
-            UserRaza = lstRaza.ListIndex + 1
-            UserSexo = lstGenero.ListIndex + 1
-            UserClase = lstProfesion.ListIndex + 1
-            
-            UserAtributos(1) = Val(lbFuerza.Caption) + Val(modfuerza.Caption)
-            UserAtributos(2) = Val(lbAgilidad.Caption) + Val(modAgilidad.Caption)
-            UserAtributos(3) = Val(lbInteligencia.Caption) + Val(modInteligencia.Caption)
-            UserAtributos(4) = Val(lbConstitucion.Caption) + Val(modConstitucion.Caption)
-            
-            'Ladder Atributos Negativos
-            If UserAtributos(1) < 1 Then UserAtributos(1) = 1
-            If UserAtributos(2) < 1 Then UserAtributos(2) = 1
-            If UserAtributos(3) < 1 Then UserAtributos(3) = 1
-            If UserAtributos(4) < 1 Then UserAtributos(4) = 1
-            
-            
-           
+        Dim k As Object
 
-            'Barrin 3/10/03
-            If CheckData() Then
-                UserPassword = CuentaPassword
-                'UserEmail = "noseusa@a.com"
+        If StopCreandoCuenta = True Then Exit Sub
+            
+        If Right$(UserName, 1) = " " Then
+            UserName = RTrim$(UserName)
 
-                StopCreandoCuenta = True
-                    
+            'MsgBox "Nombre invalido, se han removido los espacios al final del nombre"
+        End If
+            
+        UserRaza = lstRaza.ListIndex + 1
+        UserSexo = lstGenero.ListIndex + 1
+        UserClase = lstProfesion.ListIndex + 1
+            
+        UserAtributos(1) = Val(lbFuerza.Caption) + Val(modfuerza.Caption)
+        UserAtributos(2) = Val(lbAgilidad.Caption) + Val(modAgilidad.Caption)
+        UserAtributos(3) = Val(lbInteligencia.Caption) + Val(modInteligencia.Caption)
+        UserAtributos(4) = Val(lbConstitucion.Caption) + Val(modConstitucion.Caption)
+            
+        'Ladder Atributos Negativos
+        If UserAtributos(1) < 1 Then UserAtributos(1) = 1
+        If UserAtributos(2) < 1 Then UserAtributos(2) = 1
+        If UserAtributos(3) < 1 Then UserAtributos(3) = 1
+        If UserAtributos(4) < 1 Then UserAtributos(4) = 1
+
+        'Barrin 3/10/03
+        If CheckData() Then
+            UserPassword = CuentaPassword
+            'UserEmail = "noseusa@a.com"
+
+            StopCreandoCuenta = True
                 
-                    If frmmain.Socket1.Connected Then
-                        EstadoLogin = E_MODO.CrearNuevoPj
-                        Call Login
-                        frmmain.Second.Enabled = True
-                        Exit Sub
-                    Else
-                        EstadoLogin = E_MODO.CrearNuevoPj
-                        frmmain.Socket1.HostName = IPdelServidor
-                        frmmain.Socket1.RemotePort = PuertoDelServidor
-                        frmmain.Socket1.Connect
-                    End If
+            If frmmain.Socket1.Connected Then
+                EstadoLogin = E_MODO.CrearNuevoPj
+                Call Login
+                frmmain.Second.Enabled = True
+                Exit Sub
+            Else
+                EstadoLogin = E_MODO.CrearNuevoPj
+                frmmain.Socket1.HostName = IPdelServidor
+                frmmain.Socket1.RemotePort = PuertoDelServidor
+                frmmain.Socket1.Connect
+
             End If
-End If
+
+        End If
+
+    End If
+
 End Sub
 
 Private Sub Cabeza_Click()
-MiCabeza = Val(cabeza.List(cabeza.ListIndex))
-Call DibujarCPJ(MiCabeza, 3)
+    MiCabeza = Val(Cabeza.List(Cabeza.ListIndex))
+    Call DibujarCPJ(MiCabeza, 3)
 
-CPHead = MiCabeza
+    CPHead = MiCabeza
 
 End Sub
  
 Private Sub lstGenero_Click()
-Call DameOpciones
-AnimHead = 3
+    Call DameOpciones
+    AnimHead = 3
 
 End Sub
-
 
 Private Sub Timer1_Timer()
 

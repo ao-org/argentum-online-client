@@ -270,37 +270,36 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private ListaPociones(1 To 13) As Integer
 
-
 Private Sub Command2_Click()
-Unload Me
-Manual.Show
+    Unload Me
+    Manual.Show
+
 End Sub
 
 Private Sub Form_Load()
-Dim i As Byte
 
-ListaPociones(1) = 37
-ListaPociones(2) = 38
-ListaPociones(3) = 36
-ListaPociones(4) = 39
-ListaPociones(5) = 166
-ListaPociones(6) = 891
-ListaPociones(7) = 894
-ListaPociones(8) = 889
-ListaPociones(9) = 892
-ListaPociones(10) = 893
-ListaPociones(11) = 895
-ListaPociones(12) = 896
-ListaPociones(13) = 1096
+    Dim i As Byte
 
+    ListaPociones(1) = 37
+    ListaPociones(2) = 38
+    ListaPociones(3) = 36
+    ListaPociones(4) = 39
+    ListaPociones(5) = 166
+    ListaPociones(6) = 891
+    ListaPociones(7) = 894
+    ListaPociones(8) = 889
+    ListaPociones(9) = 892
+    ListaPociones(10) = 893
+    ListaPociones(11) = 895
+    ListaPociones(12) = 896
+    ListaPociones(13) = 1096
 
-
-For i = 1 To 13
-List1.AddItem ObjData(ListaPociones(i)).name
-Next i
-
+    For i = 1 To 13
+        List1.AddItem ObjData(ListaPociones(i)).name
+    Next i
 
 End Sub
 
@@ -309,14 +308,18 @@ Private Sub Label21_Click()
 End Sub
 
 Private Sub List1_Click()
-Label6.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).name
-Label7.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Valor
-Label8.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Raices
-Label9.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).SkPociones
-If ObjData(ListaPociones(List1.ListIndex + 1)).Raices = 0 Then
-Label8.Caption = "-"
-Label9.Caption = "-"
-End If
-Label3.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Texto
-Call Grh_Render_To_Hdc(picture1, ObjData(ListaPociones(List1.ListIndex + 1)).GrhIndex, 0, 0, False)
+    Label6.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).name
+    Label7.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Valor
+    Label8.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Raices
+    Label9.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).SkPociones
+
+    If ObjData(ListaPociones(List1.ListIndex + 1)).Raices = 0 Then
+        Label8.Caption = "-"
+        Label9.Caption = "-"
+
+    End If
+
+    Label3.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Texto
+    Call Grh_Render_To_Hdc(picture1, ObjData(ListaPociones(List1.ListIndex + 1)).GrhIndex, 0, 0, False)
+
 End Sub

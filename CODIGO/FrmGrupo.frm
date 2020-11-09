@@ -67,144 +67,165 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub cmdAbandonar_Click()
-Call WriteAbandonarGrupo
-Unload Me
+    Call WriteAbandonarGrupo
+    Unload Me
+
 End Sub
+
 Private Sub cmdAbandonar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-               ' cmdAbandonar.Picture = LoadInterface("grupo_abandonarpress.bmp")
-               ' cmdAbandonar.Tag = "1"
+
+    ' cmdAbandonar.Picture = LoadInterface("grupo_abandonarpress.bmp")
+    ' cmdAbandonar.Tag = "1"
 End Sub
+
 Private Sub cmdAbandonar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdAbandonar.Tag = "0" Then
         cmdAbandonar.Picture = LoadInterface("grupo_abandonarhover.bmp")
         cmdAbandonar.Tag = "1"
+
     End If
     
-    
-cmdExpulsar.Picture = Nothing
-cmdExpulsar.Tag = "0"
+    cmdExpulsar.Picture = Nothing
+    cmdExpulsar.Tag = "0"
 
-cmdInvitar.Picture = Nothing
-cmdInvitar.Tag = "0"
+    cmdInvitar.Picture = Nothing
+    cmdInvitar.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
+
 End Sub
+
 Private Sub cmdExpulsar_Click()
-If lstGrupo.ListIndex >= 0 Then
-    Call WriteHecharDeGrupo(lstGrupo.ListIndex)
-    Unload Me
-End If
+
+    If lstGrupo.ListIndex >= 0 Then
+        Call WriteHecharDeGrupo(lstGrupo.ListIndex)
+        Unload Me
+
+    End If
+
 End Sub
+
 Private Sub cmdExpulsar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-               ' cmdExpulsar.Picture = LoadInterface("grupo_expulsarpress.bmp")
-              '  cmdExpulsar.Tag = "1"
+
+    ' cmdExpulsar.Picture = LoadInterface("grupo_expulsarpress.bmp")
+    '  cmdExpulsar.Tag = "1"
 End Sub
+
 Private Sub cmdExpulsar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     
     If cmdExpulsar.Tag = "0" Then
         cmdExpulsar.Picture = LoadInterface("grupo_expulsarhover.bmp")
         cmdExpulsar.Tag = "1"
+
     End If
-    
 
+    cmdInvitar.Picture = Nothing
+    cmdInvitar.Tag = "0"
 
-cmdInvitar.Picture = Nothing
-cmdInvitar.Tag = "0"
+    cmdAbandonar.Picture = Nothing
+    cmdAbandonar.Tag = "0"
 
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-cmdAbandonar.Picture = Nothing
-cmdAbandonar.Tag = "0"
-
-Command2.Picture = Nothing
-Command2.Tag = "0"
 End Sub
 
 Private Sub cmdInvitar_Click()
-Unload Me
-Call WriteInvitarGrupo
+    Unload Me
+    Call WriteInvitarGrupo
+
 End Sub
+
 Private Sub cmdInvitar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                'cmdInvitar.Picture = LoadInterface("grupo_invitarpress.bmp")
-                'cmdInvitar.Tag = "1"
+
+    'cmdInvitar.Picture = LoadInterface("grupo_invitarpress.bmp")
+    'cmdInvitar.Tag = "1"
 End Sub
+
 Private Sub cmdInvitar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdInvitar.Tag = "0" Then
         cmdInvitar.Picture = LoadInterface("grupo_invitarhover.bmp")
         cmdInvitar.Tag = "1"
+
     End If
     
-    
     cmdExpulsar.Picture = Nothing
-cmdExpulsar.Tag = "0"
+    cmdExpulsar.Tag = "0"
 
-cmdAbandonar.Picture = Nothing
-cmdAbandonar.Tag = "0"
+    cmdAbandonar.Picture = Nothing
+    cmdAbandonar.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
+
 End Sub
 
 Private Sub Command2_Click()
-Unload Me
+    Unload Me
+
 End Sub
+
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-              '  Command2.Picture = LoadInterface("grupo_salirpress.bmp")
-               ' Command2.Tag = "1"
+
+    '  Command2.Picture = LoadInterface("grupo_salirpress.bmp")
+    ' Command2.Tag = "1"
 End Sub
-
-
 
 Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command2.Tag = "0" Then
         Command2.Picture = LoadInterface("grupo_salirhover.bmp")
         Command2.Tag = "1"
+
     End If
     
     cmdExpulsar.Picture = Nothing
-cmdExpulsar.Tag = "0"
+    cmdExpulsar.Tag = "0"
 
-cmdInvitar.Picture = Nothing
-cmdInvitar.Tag = "0"
+    cmdInvitar.Picture = Nothing
+    cmdInvitar.Tag = "0"
 
+    cmdAbandonar.Picture = Nothing
+    cmdAbandonar.Tag = "0"
 
-cmdAbandonar.Picture = Nothing
-cmdAbandonar.Tag = "0"
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-cmdExpulsar.Picture = Nothing
-cmdExpulsar.Tag = "0"
+    cmdExpulsar.Picture = Nothing
+    cmdExpulsar.Tag = "0"
 
-cmdInvitar.Picture = Nothing
-cmdInvitar.Tag = "0"
+    cmdInvitar.Picture = Nothing
+    cmdInvitar.Tag = "0"
 
+    cmdAbandonar.Picture = Nothing
+    cmdAbandonar.Tag = "0"
 
-cmdAbandonar.Picture = Nothing
-cmdAbandonar.Tag = "0"
-
-Command2.Picture = Nothing
-Command2.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
 End Sub
 
 Private Sub lstGrupo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-cmdExpulsar.Picture = Nothing
-cmdExpulsar.Tag = "0"
+    cmdExpulsar.Picture = Nothing
+    cmdExpulsar.Tag = "0"
 
-cmdInvitar.Picture = Nothing
-cmdInvitar.Tag = "0"
+    cmdInvitar.Picture = Nothing
+    cmdInvitar.Tag = "0"
 
+    cmdAbandonar.Picture = Nothing
+    cmdAbandonar.Tag = "0"
 
-cmdAbandonar.Picture = Nothing
-cmdAbandonar.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
 End Sub

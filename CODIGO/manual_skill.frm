@@ -126,15 +126,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Combo1_Click()
-Label5 = SkillsDesc(Combo1.ListIndex + 1)
+    Label5 = SkillsDesc(Combo1.ListIndex + 1)
+
 End Sub
 
 Private Sub Form_Load()
-Dim i As Byte
-Combo1.Clear
-For i = 1 To NUMSKILLS
-Combo1.AddItem (SkillsNames(i))
-Next i
-Combo1.ListIndex = 0
+
+    Dim i As Byte
+
+    Combo1.Clear
+
+    For i = 1 To NUMSKILLS
+        Combo1.AddItem (SkillsNames(i))
+    Next i
+
+    Combo1.ListIndex = 0
+
 End Sub

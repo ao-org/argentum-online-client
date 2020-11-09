@@ -398,38 +398,41 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Command1_Click()
 
 End Sub
 
 Private Sub Form_Load()
-On Error Resume Next
-Dim SR As RECT, DR As RECT
 
-SR.Left = 0
-SR.Top = 0
-SR.Right = 32
-SR.bottom = 32
+    On Error Resume Next
 
-DR.Left = 0
-DR.Top = 0
-DR.Right = 32
-DR.bottom = 32
+    Dim SR As RECT, DR As RECT
 
-If NPcLogros.Finalizada Then
-    Frame4.Caption = "Reclamar"
-    Label1.Caption = "Ya podes reclamar tu recompensa"
-Else
-    Frame4.Caption = "Recompensa"
-    Label1.Caption = NPcLogros.NpcsMatados & "/" & NPcLogros.cant
-End If
+    SR.Left = 0
+    SR.Top = 0
+    SR.Right = 32
+    SR.bottom = 32
 
-FrameNpcs.Caption = NPcLogros.Nombre
-labelNpcs.Caption = NPcLogros.desc
-ProgressNpcs.max = NPcLogros.cant
-ProgressNpcs.value = NPcLogros.NpcsMatados
-ProgressNpcs.min = 0
+    DR.Left = 0
+    DR.Top = 0
+    DR.Right = 32
+    DR.bottom = 32
 
+    If NPcLogros.Finalizada Then
+        Frame4.Caption = "Reclamar"
+        Label1.Caption = "Ya podes reclamar tu recompensa"
+    Else
+        Frame4.Caption = "Recompensa"
+        Label1.Caption = NPcLogros.NpcsMatados & "/" & NPcLogros.cant
+
+    End If
+
+    FrameNpcs.Caption = NPcLogros.nombre
+    labelNpcs.Caption = NPcLogros.desc
+    ProgressNpcs.max = NPcLogros.cant
+    ProgressNpcs.value = NPcLogros.NpcsMatados
+    ProgressNpcs.min = 0
 
     If NPcLogros.TipoRecompensa = 1 Then
         Label6.Caption = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
@@ -437,6 +440,7 @@ ProgressNpcs.min = 0
         Call Grh_Render_To_Hdc(picture1, (ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).GrhIndex), 0, 0)
         
         Label7.Caption = "Cant: " & Val(ReadField(2, NPcLogros.ObjRecompensa, 45))
+
     End If
     
     If NPcLogros.TipoRecompensa = 2 Then
@@ -461,117 +465,118 @@ ProgressNpcs.min = 0
         
     End If
 
+    If LevelLogros.Finalizada Then
+        Frame5.Caption = "Reclamar"
+        Label2.Caption = "Ya podes reclamar tu recompensa"
+    Else
+        Frame5.Caption = "Recompensa"
+        Label2.Caption = LevelLogros.NivelUser & "/" & LevelLogros.cant
 
+    End If
 
+    Frame2.Caption = LevelLogros.nombre
+    Label3.Caption = LevelLogros.desc
 
-If LevelLogros.Finalizada Then
-    Frame5.Caption = "Reclamar"
-    Label2.Caption = "Ya podes reclamar tu recompensa"
-Else
-    Frame5.Caption = "Recompensa"
-    Label2.Caption = LevelLogros.NivelUser & "/" & LevelLogros.cant
-End If
+    ProgressLevel.max = LevelLogros.cant
+    ProgressLevel.value = LevelLogros.NivelUser
+    ProgressLevel.min = 0
 
-
-Frame2.Caption = LevelLogros.Nombre
-Label3.Caption = LevelLogros.desc
-
-ProgressLevel.max = LevelLogros.cant
-ProgressLevel.value = LevelLogros.NivelUser
-ProgressLevel.min = 0
-
-
-
-If LevelLogros.TipoRecompensa = 1 Then
+    If LevelLogros.TipoRecompensa = 1 Then
         Label8.Caption = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
         Picture2.ToolTipText = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
         'Call Grh_Render_To_Hdc(Picture2.hdc, (ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).grhindex), 0, 0)
         Picture2.Refresh
         Label9.Caption = "Cant: " & Val(ReadField(2, NPcLogros.ObjRecompensa, 45))
+
     End If
     
     If LevelLogros.TipoRecompensa = 2 Then
         Label8.Caption = "Monedas de oro"
         Label9.Caption = "Cant: " & LevelLogros.OroRecompensa
-       ' Call Grh_Render_To_Hdc(Picture2.hdc, (511), 0, 0)
+        ' Call Grh_Render_To_Hdc(Picture2.hdc, (511), 0, 0)
         Picture2.Refresh
+
     End If
     
     If LevelLogros.TipoRecompensa = 3 Then
     
         Label8.Caption = "Puntos de exp."
         Label9.Caption = LevelLogros.ExpRecompensa & "+ exp."
-       ' Call Grh_Render_To_Hdc(Picture2.hdc, (19979), 0, 0)
+        ' Call Grh_Render_To_Hdc(Picture2.hdc, (19979), 0, 0)
         Picture2.Refresh
+
     End If
     
     If LevelLogros.TipoRecompensa = 4 Then
         Label8.Caption = "Hechizo"
         Label9.Caption = "Apocalipsis"
-       ' Call Grh_Render_To_Hdc(Picture2.hdc, (609), 0, 0)
+        ' Call Grh_Render_To_Hdc(Picture2.hdc, (609), 0, 0)
         Picture2.Refresh
+
     End If
 
+    If UserLogros.Finalizada Then
+        Frame6.Caption = "Reclamar"
+        Label5.Caption = "Ya podes reclamar tu recompensa"
+    Else
+        Frame6.Caption = "Recompensa"
+        Label5.Caption = UserLogros.UserMatados & "/" & UserLogros.cant
 
+    End If
 
+    Frame3.Caption = UserLogros.nombre
+    Label4.Caption = UserLogros.desc
+    ProgressKill.max = UserLogros.cant
+    ProgressKill.value = UserLogros.UserMatados
+    ProgressKill.min = 0
 
-If UserLogros.Finalizada Then
-    Frame6.Caption = "Reclamar"
-    Label5.Caption = "Ya podes reclamar tu recompensa"
-Else
-    Frame6.Caption = "Recompensa"
-    Label5.Caption = UserLogros.UserMatados & "/" & UserLogros.cant
-End If
-
-
-
-Frame3.Caption = UserLogros.Nombre
-Label4.Caption = UserLogros.desc
-ProgressKill.max = UserLogros.cant
-ProgressKill.value = UserLogros.UserMatados
-ProgressKill.min = 0
-
-If UserLogros.TipoRecompensa = 1 Then
+    If UserLogros.TipoRecompensa = 1 Then
         Label11.Caption = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
         Picture3.ToolTipText = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
-       ' Call Grh_Render_To_Hdc(Picture3.hdc, (ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).grhindex), 0, 0)
+        ' Call Grh_Render_To_Hdc(Picture3.hdc, (ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).grhindex), 0, 0)
         Picture3.Refresh
         Label10.Caption = "Cant: 1"
+
     End If
     
     If UserLogros.TipoRecompensa = 2 Then
         Label11.Caption = "Monedas de oro"
         Label10.Caption = "Cant: " & UserLogros.OroRecompensa
-       ' Call Grh_Render_To_Hdc(Picture3.hdc, (511), 0, 0)
+        ' Call Grh_Render_To_Hdc(Picture3.hdc, (511), 0, 0)
         Picture3.Refresh
+
     End If
     
     If UserLogros.TipoRecompensa = 3 Then
     
         Label11.Caption = "Puntos de exp."
         Label10.Caption = UserLogros.ExpRecompensa & "+ exp."
-       ' Call Grh_Render_To_Hdc(Picture3.hdc, (19979), 0, 0)
+        ' Call Grh_Render_To_Hdc(Picture3.hdc, (19979), 0, 0)
         Picture3.Refresh
+
     End If
     
     If UserLogros.TipoRecompensa = 4 Then
         Label11.Caption = "Hechizo"
         Label10.Caption = "Apocalipsis"
-       ' Call Grh_Render_To_Hdc(Picture3.hdc, (609), 0, 0)
+        ' Call Grh_Render_To_Hdc(Picture3.hdc, (609), 0, 0)
         Picture3.Refresh
+
     End If
 
 End Sub
 
-
 Private Sub Picture1_Click()
-Call WriteReclamarRecompensa(1)
+    Call WriteReclamarRecompensa(1)
+
 End Sub
 
 Private Sub Picture2_Click()
-Call WriteReclamarRecompensa(3)
+    Call WriteReclamarRecompensa(3)
+
 End Sub
 
 Private Sub Picture3_Click()
-Call WriteReclamarRecompensa(2)
+    Call WriteReclamarRecompensa(2)
+
 End Sub

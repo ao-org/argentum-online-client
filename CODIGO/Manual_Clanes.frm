@@ -234,8 +234,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Command1_Click()
-Unload Me
-Manual.Show , frmmain
+    Unload Me
+    Manual.Show , frmmain
+
 End Sub
 

@@ -280,6 +280,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Picture1_Click()
 
 End Sub
@@ -289,46 +290,55 @@ Private Sub Picture8_Click()
 End Sub
 
 Private Sub Label10_Click()
-Unload Me
-manual_skill.Show , frmmain
+    Unload Me
+    manual_skill.Show , frmmain
+
 End Sub
 
 Private Sub Label11_Click()
-Unload Me
-Manual_Quest.Show , frmmain
+    Unload Me
+    Manual_Quest.Show , frmmain
+
 End Sub
 
 Private Sub Label12_Click()
-Unload Me
-Manual_Clanes.Show , frmmain
+    Unload Me
+    Manual_Clanes.Show , frmmain
+
 End Sub
 
 Private Sub Label21_Click()
-Unload Me
-Manual_Mineria.Show , frmmain
+    Unload Me
+    Manual_Mineria.Show , frmmain
+
 End Sub
 
 Private Sub Label4_Click()
-Unload Me
-Manual_Razas.Show , frmmain
+    Unload Me
+    Manual_Razas.Show , frmmain
+
 End Sub
 
 Private Sub Label5_Click()
-Unload Me
-Manual_Atributos.Show , frmmain
+    Unload Me
+    Manual_Atributos.Show , frmmain
+
 End Sub
 
 Private Sub Label6_Click()
-Unload Me
-Manual_Alquimia.Show , frmmain
+    Unload Me
+    Manual_Alquimia.Show , frmmain
+
 End Sub
 
 Private Sub Label7_Click()
-Unload Me
-Manual_Pociones.Show , frmmain
+    Unload Me
+    Manual_Pociones.Show , frmmain
+
 End Sub
 
 Private Sub Label8_Click()
-Unload Me
-Manual_Herreria.Show , frmmain
+    Unload Me
+    Manual_Herreria.Show , frmmain
+
 End Sub

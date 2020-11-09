@@ -151,111 +151,140 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Command1_Click()
 
 End Sub
 
 Private Sub Command3_Click()
+
     On Error Resume Next
     
     If lstArmas.ListIndex < 0 Then
-    MsgBox "Debes seleccionar un objeto de la lista"
-    Exit Sub
+        MsgBox "Debes seleccionar un objeto de la lista"
+        Exit Sub
+
     End If
-If cantidad > 0 Then
-    UserMacro.cantidad = cantidad
-    UserMacro.TIPO = 1
-    UserMacro.Index = ObjAlquimista(lstArmas.ListIndex + 1)
-    AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-    UserMacro.Intervalo = IntervaloTrabajo
-    UserMacro.Activado = True
-    frmmain.MacroLadder.Interval = IntervaloTrabajo
-    frmmain.MacroLadder.Enabled = True
-Else
-    Call WriteCraftAlquimista(ObjAlquimista(lstArmas.ListIndex + 1))
-    If frmmain.macrotrabajo.Enabled Then _
-        MacroBltIndex = ObjAlquimista(lstArmas.ListIndex + 1)
+
+    If cantidad > 0 Then
+        UserMacro.cantidad = cantidad
+        UserMacro.TIPO = 1
+        UserMacro.Index = ObjAlquimista(lstArmas.ListIndex + 1)
+        AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+        UserMacro.Intervalo = IntervaloTrabajo
+        UserMacro.Activado = True
+        frmmain.MacroLadder.Interval = IntervaloTrabajo
+        frmmain.MacroLadder.Enabled = True
+    Else
+        Call WriteCraftAlquimista(ObjAlquimista(lstArmas.ListIndex + 1))
+
+        If frmmain.macrotrabajo.Enabled Then MacroBltIndex = ObjAlquimista(lstArmas.ListIndex + 1)
     
-End If
+    End If
+
     Unload Me
+
 End Sub
 
 Private Sub Command4_Click()
     Unload Me
+
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-If (KeyAscii = 27) Then
-    Unload Me
-End If
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
 End Sub
+
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
+
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Command4.Picture = Nothing
-Command4.Tag = "0"
-Command3.Picture = Nothing
-Command3.Tag = "0"
+    Command4.Picture = Nothing
+    Command4.Tag = "0"
+    Command3.Picture = Nothing
+    Command3.Tag = "0"
+
 End Sub
 
 Private Sub List1_Click()
-On Error Resume Next
-Dim SR As RECT, DR As RECT
 
-SR.Left = 0
-SR.Top = 0
-SR.Right = 32
-SR.bottom = 32
+    On Error Resume Next
 
-DR.Left = 0
-DR.Top = 0
-DR.Right = 32
-DR.bottom = 32
-Call Grh_Render_To_Hdc(picture1, 21926, 0, 0, False)
+    Dim SR As RECT, DR As RECT
+
+    SR.Left = 0
+    SR.Top = 0
+    SR.Right = 32
+    SR.bottom = 32
+
+    DR.Left = 0
+    DR.Top = 0
+    DR.Right = 32
+    DR.bottom = 32
+    Call Grh_Render_To_Hdc(picture1, 21926, 0, 0, False)
 
 End Sub
+
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-               ' Command3.Picture = LoadInterface("trabajar_construirpress.bmp")
-              '  Command3.Tag = "1"
+
+    ' Command3.Picture = LoadInterface("trabajar_construirpress.bmp")
+    '  Command3.Tag = "1"
 End Sub
+
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command3.Tag = "0" Then
         Command3.Picture = LoadInterface("trabajar_construirhover.bmp")
         Command3.Tag = "1"
+
     End If
     
     Command4.Picture = Nothing
-Command4.Tag = "0"
+    Command4.Tag = "0"
 
 End Sub
+
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-'                Command4.Picture = LoadInterface("trabajar_salirpress.bmp")
-'                Command4.Tag = "1"
+
+    '                Command4.Picture = LoadInterface("trabajar_salirpress.bmp")
+    '                Command4.Tag = "1"
 End Sub
+
 Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command4.Tag = "0" Then
         Command4.Picture = LoadInterface("trabajar_salirhover.bmp")
         Command4.Tag = "1"
+
     End If
-    
 
-Command3.Picture = Nothing
-Command3.Tag = "0"
+    Command3.Picture = Nothing
+    Command3.Tag = "0"
+
 End Sub
+
 Private Sub lstArmas_Click()
-On Error Resume Next
-Dim SR As RECT, DR As RECT
 
-SR.Left = 0
-SR.Top = 0
-SR.Right = 32
-SR.bottom = 32
+    On Error Resume Next
 
-DR.Left = 0
-DR.Top = 0
-DR.Right = 32
-DR.bottom = 32
+    Dim SR As RECT, DR As RECT
+
+    SR.Left = 0
+    SR.Top = 0
+    SR.Right = 32
+    SR.bottom = 32
+
+    DR.Left = 0
+    DR.Top = 0
+    DR.Right = 32
+    DR.bottom = 32
     Call frmAlqui.List1.Clear
     Call frmAlqui.List2.Clear
     frmAlqui.List1.AddItem ("Raices")
@@ -263,7 +292,7 @@ DR.bottom = 32
     
     desc.Caption = ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Texto
 
-Call Grh_Render_To_Hdc(picture1, ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).GrhIndex, 0, 0, False)
+    Call Grh_Render_To_Hdc(picture1, ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).GrhIndex, 0, 0, False)
     
 End Sub
 

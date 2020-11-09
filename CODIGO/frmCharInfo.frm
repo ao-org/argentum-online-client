@@ -296,42 +296,50 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Enum CharInfoFrmType
+
     frmMembers
     frmMembershipRequests
+
 End Enum
 
 Public frmType As CharInfoFrmType
 
 Private Sub Aceptar_Click()
-    Call WriteGuildAcceptNewMember(Trim$(Right$(Nombre, Len(Nombre) - 8)))
+    Call WriteGuildAcceptNewMember(Trim$(Right$(nombre, Len(nombre) - 8)))
     Unload frmGuildLeader
     Call WriteRequestGuildLeaderInfo
     Unload Me
+
 End Sub
 
 Private Sub Command1_Click()
     Unload Me
+
 End Sub
 
 Private Sub desc_Click()
-    Call WriteGuildRequestJoinerInfo(Right$(Nombre, Len(Nombre) - 8))
+    Call WriteGuildRequestJoinerInfo(Right$(nombre, Len(nombre) - 8))
+
 End Sub
 
 Private Sub Echar_Click()
-    Call WriteGuildKickMember(Right$(Nombre, Len(Nombre) - 8))
+    Call WriteGuildKickMember(Right$(nombre, Len(nombre) - 8))
     Unload frmGuildLeader
     Call WriteRequestGuildLeaderInfo
     Unload Me
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
 
 Private Sub Rechazar_Click()
     Load frmCommet
     frmCommet.T = RECHAZOPJ
-    frmCommet.Nombre = Right$(Nombre, Len(Nombre) - 8)
+    frmCommet.nombre = Right$(nombre, Len(nombre) - 8)
     frmCommet.Caption = "Ingrese motivo para rechazo"
     frmCommet.Show vbModeless, frmCharInfo
+
 End Sub

@@ -887,28 +887,33 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Command1_Click()
-Frame2.Visible = True
-Frame1.Visible = False
+    Frame2.Visible = True
+    Frame1.Visible = False
+
 End Sub
 
 Private Sub Command2_Click()
-Frame2.Visible = False
-Frame1.Visible = True
+    Frame2.Visible = False
+    Frame1.Visible = True
+
 End Sub
 
 Private Sub Command3_Click()
-Manual.Show
-Unload Me
+    Manual.Show
+    Unload Me
 
 End Sub
 
 Private Sub Label21_Click()
-Frame3.Visible = True
-Frame1.Visible = False
+    Frame3.Visible = True
+    Frame1.Visible = False
+
 End Sub
 
 Private Sub Manual_Mineria_Click()
-Frame3.Visible = False
-Frame1.Visible = True
+    Frame3.Visible = False
+    Frame1.Visible = True
+
 End Sub

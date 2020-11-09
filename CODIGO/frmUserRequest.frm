@@ -89,16 +89,18 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
-Unload Me
+    Unload Me
+
 End Sub
 
 Public Sub recievePeticion(ByVal p As String)
 
-Text1 = Replace$(p, "º", vbCrLf)
-Me.Show vbModeless, frmmain
+    Text1 = Replace$(p, "º", vbCrLf)
+    Me.Show vbModeless, frmmain
 
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub

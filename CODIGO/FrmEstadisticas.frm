@@ -646,7 +646,7 @@ Begin VB.Form frmEstadisticas
       BackStyle       =   0  'Transparent
       Caption         =   "0"
       BeginProperty Font 
-         Name            =   "Arial Rounded MT Bold"
+         Name            =   "Arial"
          Size            =   8.25
          Charset         =   0
          Weight          =   400
@@ -668,7 +668,7 @@ Begin VB.Form frmEstadisticas
       BackStyle       =   0  'Transparent
       Caption         =   "0"
       BeginProperty Font 
-         Name            =   "Arial Rounded MT Bold"
+         Name            =   "Arial"
          Size            =   8.25
          Charset         =   0
          Weight          =   400
@@ -1620,257 +1620,324 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Public bmoving As Boolean
-Public dX As Integer
-Public dy As Integer
+
+Public bmoving      As Boolean
+
+Public dX           As Integer
+
+Public dy           As Integer
 
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
-Const MOUSE_MOVE As Long = &HF012&
+
+Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
-        (ByVal hwnd As Long, ByVal wMsg As Long, _
-        ByVal wParam As Long, lParam As Long) As Long
 
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
+Private RealizoCambios                As Long
 
- Private RealizoCambios As Long
- Private PonerloEnRojo(1 To NUMSKILLS) As Boolean
+Private PonerloEnRojo(1 To NUMSKILLS) As Boolean
+
 Private Sub moverForm()
+
     Dim res As Long
+
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+
 End Sub
+
 Public Sub Iniciar_Labels()
-'Iniciamos los labels con los valores de los atributos y los skills
-Dim i As Integer
-For i = 1 To NUMATRIBUTOS 'Colocado
-    Atri(i).Caption = UserAtributos(i)
-Next
 
-For i = 1 To NUMSKILLS
-    If UserSkills(i) > 100 Then
-    UserSkills(i) = 100
-    End If
-   ' Skills(I).Caption = SkillsNames(I) & ":"
-Text1(i).Caption = UserSkills(i)
-Next
+    'Iniciamos los labels con los valores de los atributos y los skills
+    Dim i As Integer
 
+    For i = 1 To NUMATRIBUTOS 'Colocado
+        Atri(i).Caption = UserAtributos(i)
+    Next
 
-Select Case UserEstadisticas.Alineacion
-    Case 0
-        Label6(9).Caption = "Neutral"
-        Label6(9).ForeColor = RGB(127, 127, 127)
-    Case 1
-        Label6(9).Caption = "Ciudadano"
-        Label6(9).ForeColor = RGB(0, 128, 255)
-    Case 2
-        Label6(9).Caption = "Caos"
-         Label6(9).ForeColor = RGB(128, 0, 0)
-    Case 3
-        Label6(9).Caption = "Imperial"
-        Label6(9).ForeColor = RGB(33, 133, 132)
+    For i = 1 To NUMSKILLS
+
+        If UserSkills(i) > 100 Then
+            UserSkills(i) = 100
+
+        End If
+
+        ' Skills(I).Caption = SkillsNames(I) & ":"
+        Text1(i).Caption = UserSkills(i)
+    Next
+
+    Select Case UserEstadisticas.Alineacion
+
+        Case 0
+            Label6(9).Caption = "Neutral"
+            Label6(9).ForeColor = RGB(127, 127, 127)
+
+        Case 1
+            Label6(9).Caption = "Ciudadano"
+            Label6(9).ForeColor = RGB(0, 128, 255)
+
+        Case 2
+            Label6(9).Caption = "Caos"
+            Label6(9).ForeColor = RGB(128, 0, 0)
+
+        Case 3
+            Label6(9).Caption = "Imperial"
+            Label6(9).ForeColor = RGB(33, 133, 132)
         
-    Case Else
-        Label6(9).Caption = "Desconocido"
-End Select
-    
-    
+        Case Else
+            Label6(9).Caption = "Desconocido"
+
+    End Select
 
     'estado = LoadInterface("estadisticascriminal.bmp")
-'Else
- '   Label6(9).Caption = "Ciudadano"
+    'Else
+    '   Label6(9).Caption = "Ciudadano"
     'estado = LoadInterface("estadisticasciudadano.bmp")
-'End If
+    'End If
 
-With UserEstadisticas
+    With UserEstadisticas
 
-    Label6(0).Caption = .CriminalesMatados 'Colocado
-    Label6(1).Caption = .CiudadanosMatados 'Colocado
-    Label6(3).Caption = .NpcsMatados
-    Label6(4).Caption = .Clase 'Colocado
-    Label6(5).Caption = .PenaCarcel & " min"
-    Label6(6).Caption = .Genero
-    Label6(7).Caption = .VecesQueMoriste
-    Label6(8).Caption = .Raza
-    If .Donador = 0 Then
-        lbldonador.Caption = "Inactivo"
-    Else
-        lbldonador.Caption = "Activo"
-    End If
-    'lbldonador.Caption = .Donador
-    lbldiasrestantes.Caption = .DiasRestantes
-    lblcredito.Caption = .CreditoDonador
-    lblpuntosbattle.Caption = .BattlePuntos
+        Label6(0).Caption = .CriminalesMatados 'Colocado
+        Label6(1).Caption = .CiudadanosMatados 'Colocado
+        Label6(3).Caption = .NpcsMatados
+        Label6(4).Caption = .Clase 'Colocado
+        Label6(5).Caption = .PenaCarcel & " min"
+        Label6(6).Caption = .Genero
+        Label6(7).Caption = .VecesQueMoriste
+        Label6(8).Caption = .Raza
+
+        If .Donador = 0 Then
+            lbldonador.Caption = "Inactivo"
+        Else
+            lbldonador.Caption = "Activo"
+
+        End If
+
+        'lbldonador.Caption = .Donador
+        lbldiasrestantes.Caption = .DiasRestantes
+        lblcredito.Caption = .CreditoDonador
+        lblpuntosbattle.Caption = .BattlePuntos
     
-End With
+    End With
 
 End Sub
 
 Private Sub Command1_Click(Index As Integer)
 
-Dim indice
-Dim skilloriginal
+    Dim indice
 
-indice = Index \ 2 + 1
+    Dim skilloriginal
 
-If (Index And &H1) = 0 Then
-    If Alocados > 0 Then
-        indice = Index \ 2 + 1
-        If indice > NUMSKILLS Then indice = NUMSKILLS
-        If Val(Text1(indice).Caption) < MAXSKILLPOINTS Then
-            Text1(indice).Caption = Val(Text1(indice).Caption) + 1
-            flags(indice) = flags(indice) + 1
-            Alocados = Alocados - 1
-            RealizoCambios = RealizoCambios + 1
-        End If
+    indice = Index \ 2 + 1
+
+    If (Index And &H1) = 0 Then
+        If Alocados > 0 Then
+            indice = Index \ 2 + 1
+
+            If indice > NUMSKILLS Then indice = NUMSKILLS
+            If Val(Text1(indice).Caption) < MAXSKILLPOINTS Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) + 1
+                flags(indice) = flags(indice) + 1
+                Alocados = Alocados - 1
+                RealizoCambios = RealizoCambios + 1
+
+            End If
             
-    End If
-Else
-    If Alocados < SkillPoints Then
-        
-        indice = Index \ 2 + 1
-        If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
-            Text1(indice).Caption = Val(Text1(indice).Caption) - 1
-            flags(indice) = flags(indice) - 1
-            Alocados = Alocados + 1
-            RealizoCambios = RealizoCambios - 1
         End If
-    End If
-End If
 
-puntos.Caption = Alocados
+    Else
 
+        If Alocados < SkillPoints Then
+        
+            indice = Index \ 2 + 1
 
-Dim ladder As Byte
-ladder = Val(Text1(indice).Caption)
-             If UserSkills(indice) < ladder Then
-                Text1(indice).ForeColor = vbRed
-                PonerloEnRojo(indice) = True
-             End If
-             If UserSkills(indice) = ladder Then
-                Text1(indice).ForeColor = &H40C0&
+            If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) - 1
+                flags(indice) = flags(indice) - 1
+                Alocados = Alocados + 1
                 RealizoCambios = RealizoCambios - 1
-                PonerloEnRojo(indice) = False
-             End If
+
+            End If
+
+        End If
+
+    End If
+
+    puntos.Caption = Alocados
+
+    Dim ladder As Byte
+
+    ladder = Val(Text1(indice).Caption)
+
+    If UserSkills(indice) < ladder Then
+        Text1(indice).ForeColor = vbRed
+        PonerloEnRojo(indice) = True
+
+    End If
+
+    If UserSkills(indice) = ladder Then
+        Text1(indice).ForeColor = &H40C0&
+        RealizoCambios = RealizoCambios - 1
+        PonerloEnRojo(indice) = False
+
+    End If
+
 End Sub
+
 Private Sub Command2_Click()
-Unload Me
+    Unload Me
+
 End Sub
+
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
-If KeyCode = 27 Then
-            Unload Me
-End If
+
+    If KeyCode = 27 Then
+        Unload Me
+
+    End If
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-'Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
-RealizoCambios = 0
-ReDim flags(1 To NUMSKILLS)
-End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-moverForm
-'If Image1.Tag = "1" Then
-' Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
-'    Image1.Tag = "0"
-'End If
-Image1.Picture = Nothing
-Dim a As Integer
-For a = 1 To NUMSKILLS
-If Not PonerloEnRojo(a) Then
-    Text1(a).ForeColor = &H40C0&
-    'Skills(a).ForeColor = vbWhite
-End If
+    Call FormParser.Parse_Form(Me)
+    'Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
+    RealizoCambios = 0
+    ReDim flags(1 To NUMSKILLS)
 
-If PonerloEnRojo(a) = True Then
-    Text1(a).ForeColor = vbRed
-End If
-Next a
+End Sub
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    moverForm
+    'If Image1.Tag = "1" Then
+    ' Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
+    '    Image1.Tag = "0"
+    'End If
+    Image1.Picture = Nothing
+
+    Dim a As Integer
+
+    For a = 1 To NUMSKILLS
+
+        If Not PonerloEnRojo(a) Then
+            Text1(a).ForeColor = &H40C0&
+
+            'Skills(a).ForeColor = vbWhite
+        End If
+
+        If PonerloEnRojo(a) = True Then
+            Text1(a).ForeColor = vbRed
+
+        End If
+
+    Next a
 
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
-Unload Me
+    Unload Me
+
 End Sub
 
 Private Sub Image1_Click()
-If RealizoCambios >= 1 Then
-   If MsgBox("Realizo cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
 
-    Dim skillChanges(NUMSKILLS) As Byte
-    Dim i As Long
+    If RealizoCambios >= 1 Then
+        If MsgBox("Realizo cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
 
-    For i = 1 To NUMSKILLS
-        skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
-        'Actualizamos nuestros datos locales
-        UserSkills(i) = Val(Text1(i).Caption)
+            Dim skillChanges(NUMSKILLS) As Byte
+
+            Dim i                       As Long
+
+            For i = 1 To NUMSKILLS
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
+                'Actualizamos nuestros datos locales
+                UserSkills(i) = Val(Text1(i).Caption)
         
-    Next i
+            Next i
     
-    Call WriteModifySkills(skillChanges())
+            Call WriteModifySkills(skillChanges())
     
-    SkillPoints = Alocados
-    Unload Me
+            SkillPoints = Alocados
+            Unload Me
+
+        End If
+
     End If
-End If
+
     Unload Me
     
     For i = 1 To NUMSKILLS
-    PonerloEnRojo(i) = False
+        PonerloEnRojo(i) = False
     Next i
+
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     'Image1 = LoadInterface("aceptarpress.bmp")
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-        Image1.Picture = LoadInterface("estadisticaswidehover.bmp")
+    Image1.Picture = LoadInterface("estadisticaswidehover.bmp")
 
 End Sub
 
 Private Sub Label1_Click()
-If RealizoCambios >= 1 Then
-   If MsgBox("Realizo cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
 
-    Dim skillChanges(NUMSKILLS) As Byte
-    Dim i As Long
+    If RealizoCambios >= 1 Then
+        If MsgBox("Realizo cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
 
-    For i = 1 To NUMSKILLS
-        skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
-        'Actualizamos nuestros datos locales
-        UserSkills(i) = Val(Text1(i).Caption)
-    Next i
+            Dim skillChanges(NUMSKILLS) As Byte
+
+            Dim i                       As Long
+
+            For i = 1 To NUMSKILLS
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
+                'Actualizamos nuestros datos locales
+                UserSkills(i) = Val(Text1(i).Caption)
+            Next i
     
-    Call WriteModifySkills(skillChanges())
+            Call WriteModifySkills(skillChanges())
     
-    SkillPoints = Alocados
-    Unload Me
+            SkillPoints = Alocados
+            Unload Me
+
+        End If
+
     End If
-End If
+
     Unload Me
     
     For i = 1 To NUMSKILLS
-    PonerloEnRojo(i) = False
+        PonerloEnRojo(i) = False
     Next i
+
 End Sub
 
 Private Sub skills_Click(Index As Integer)
-AddtoRichTextBox frmmain.RecTxt, "Información del skill> " & SkillsDesc(Index), 2, 51, 223, 1, 1
+    AddtoRichTextBox frmmain.RecTxt, "Información del skill> " & SkillsDesc(Index), 2, 51, 223, 1, 1
+
 End Sub
 
 Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-Dim a As Integer
-For a = 1 To NUMSKILLS
-If Not PonerloEnRojo(a) Then
-    Text1(a).ForeColor = &H40C0&
-End If
-'Skills(a).ForeColor = vbWhite
-Next a
-Text1(Index).ForeColor = vbBlue
-'Skills(index).ForeColor = vbBlue
+
+    Dim a As Integer
+
+    For a = 1 To NUMSKILLS
+
+        If Not PonerloEnRojo(a) Then
+            Text1(a).ForeColor = &H40C0&
+
+        End If
+
+        'Skills(a).ForeColor = vbWhite
+    Next a
+
+    Text1(Index).ForeColor = vbBlue
+
+    'Skills(index).ForeColor = vbBlue
 End Sub
 

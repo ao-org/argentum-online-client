@@ -69,77 +69,104 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Public bmoving As Boolean
-Public dX As Integer
-Public dy As Integer
+
+Public dX      As Integer
+
+Public dy      As Integer
 Option Explicit
+
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
-Const MOUSE_MOVE As Long = &HF012&
+
+Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
-        (ByVal hwnd As Long, ByVal wMsg As Long, _
-        ByVal wParam As Long, lParam As Long) As Long
+
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-If (KeyAscii = 27) Then
-    Unload Me
-End If
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
 End Sub
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
+
     If (KeyAscii <> 8) Then
         If (KeyAscii < 48 Or KeyAscii > 57) Then
             KeyAscii = 0
+
         End If
+
     End If
+
 End Sub
+
 Private Sub moverForm()
+
     Dim res As Long
+
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+
 End Sub
+
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-Text1.SelStart = 1
+    Call FormParser.Parse_Form(Me)
+    Text1.SelStart = 1
+
 End Sub
+
 Private Sub Text1_Change()
 
-On Error GoTo errhandler
+    On Error GoTo errhandler
+
     If Val(Text1.Text) < 0 Then
         Text1.Text = "1"
+
     End If
     
     If Val(Text1.Text) > MAX_INVENTORY_OBJS Then
         Text1.Text = "10000"
         Text1.SelStart = Len(Text1.Text)
+
     End If
     
     Exit Sub
 errhandler:
     'If we got here the user may have pasted (Shift + Insert) a REALLY large number, causing an overflow, so we set amount back to 1
     Text1.Text = "1"
+
 End Sub
+
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-moverForm
-If tirar.Tag = "1" Then
-    tirar.Picture = Nothing
-    tirar.Tag = "0"
-End If
+    moverForm
 
-If tirartodo.Tag = "1" Then
-    tirartodo.Picture = Nothing
-    tirartodo.Tag = "0"
-End If
+    If tirar.Tag = "1" Then
+        tirar.Picture = Nothing
+        tirar.Tag = "0"
 
+    End If
+
+    If tirartodo.Tag = "1" Then
+        tirartodo.Picture = Nothing
+        tirartodo.Tag = "0"
+
+    End If
 
 End Sub
+
 Private Sub tirar_click()
     
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
 
-Call Sound.Sound_Play(SND_CLICK)
+    Call Sound.Sound_Play(SND_CLICK)
+
     If LenB(frmCantidad.Text1.Text) > 0 Then
         If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
         
@@ -155,32 +182,44 @@ Call Sound.Sound_Play(SND_CLICK)
                 
                 PreguntaLocal = True
                 PreguntaNUM = 1
+
             End If
+
         Else
             Call WriteDrop(frmmain.Inventario.SelectedItem, frmCantidad.Text1.Text)
+
         End If
         
         frmCantidad.Text1.Text = ""
+
     End If
+
     Unload Me
+
 End Sub
+
 Private Sub tirar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-        'tirar.Picture = LoadInterface("botontirarapretado.bmp")
+
+    'tirar.Picture = LoadInterface("botontirarapretado.bmp")
 End Sub
+
 Private Sub tirar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If tirar.Tag = "0" Then
         tirar.Picture = LoadInterface("botontirarmarcado.bmp")
         tirar.Tag = "1"
+
     End If
+
 End Sub
 
-
 Private Sub tirartodo_click()
+
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
 
     Call Sound.Sound_Play(SND_CLICK)
+
     If frmmain.Inventario.SelectedItem = 0 Then Exit Sub
-    
 
     If frmmain.Inventario.SelectedItem <> FLAGORO Then
         If ObjData(frmmain.Inventario.OBJIndex(frmmain.Inventario.SelectedItem)).Destruye = 0 Then
@@ -193,27 +232,39 @@ Private Sub tirartodo_click()
             
             PreguntaLocal = True
             PreguntaNUM = 1
+
         End If
+
         Unload Me
     Else
+
         If UserGLD > 100000 Then
             Call WriteDrop(frmmain.Inventario.SelectedItem, 100000)
             Unload Me
         Else
             Call WriteDrop(frmmain.Inventario.SelectedItem, UserGLD)
             Unload Me
+
         End If
+
     End If
 
     frmCantidad.Text1.Text = ""
+
 End Sub
+
 Private Sub tirartodo_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-        'tirartodo.Picture = LoadInterface("botontirartodoapretado.bmp")
+
+    'tirartodo.Picture = LoadInterface("botontirartodoapretado.bmp")
 End Sub
+
 Private Sub tirartodo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If tirartodo.Tag = "0" Then
         tirartodo.Picture = LoadInterface("botontirartodomarcado.bmp")
         tirartodo.Tag = "1"
+
     End If
+
 End Sub
 
