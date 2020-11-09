@@ -92,7 +92,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
 
         End If
 
-        If UserDescansar Or UserMeditar Then Exit Function
+        If UserDescansar Then Exit Function
         If MainTimer.Check(TimersIndex.CastAttack, False) Then
             If MainTimer.Check(TimersIndex.Attack) Then
                 Call MainTimer.Restart(TimersIndex.AttackSpell)
