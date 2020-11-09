@@ -667,7 +667,7 @@ End Enum
 
 Public Enum eSkill
 
-    Magia = 1
+    magia = 1
     Robar = 2
     Tacticas = 3
     Armas = 4
@@ -683,8 +683,15 @@ Public Enum eSkill
     Navegacion = 14
     equitacion = 15
     Resistencia = 16
-    Recoleccion = 17
-    Manualidades = 18
+    
+    Talar = 17
+    Pescar = 18
+    Mineria = 19
+    Herreria = 20
+    Carpinteria = 21
+    Alquimia = 22
+    Sastreria = 23
+    
     Grupo = 90
     MarcaDeClan = 91
     MarcaDeGM = 92
