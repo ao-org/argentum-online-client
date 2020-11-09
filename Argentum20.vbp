@@ -116,7 +116,7 @@ Form=CODIGO\manual_skill.frm
 Form=CODIGO\Frmcarga.frm
 Form=CODIGO\Manual_Quest.frm
 Form=CODIGO\Manual_Clanes.frm
-Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0; MSCOMCTL.OCX
+Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0; mscomctl.ocx
 Form=CODIGO\frmCerrar.frm
 ResFile32="RAO.res"
 IconForm="frmmain"
@@ -137,7 +137,7 @@ VersionComments="www.argentum20.com"
 VersionCompanyName="Argentum20"
 VersionLegalCopyright="Argentum20 Staff"
 VersionProductName="Argentum20 by Noland Studios"
-CondComp="UsarWrench = 1 : ConMenuseConextuales = 1 : ConAlfaB = 1 : AntiExternos = 0 : Compresion = 1 : DEBUGGING = 0"
+CondComp="UsarWrench = 1 : ConMenuseConextuales = 1 : ConAlfaB = 1 : AntiExternos = 0 : Compresion = 0 : DEBUGGING = 1"
 CompilationType=-1
 OptimizationType=2
 FavorPentiumPro(tm)=0
