@@ -500,7 +500,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1632,7 +1631,7 @@ Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As 
     Alocados = SkillPoints
     frmEstadisticas.puntos.Caption = SkillPoints
     frmEstadisticas.Iniciar_Labels
-    frmEstadisticas.Picture = LoadInterface("estadisticas.bmp")
+    frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
     HayFormularioAbierto = True
     frmEstadisticas.Show , frmmain
     LlegaronAtrib = False
@@ -2249,10 +2248,10 @@ Private Sub MacroLadder_Timer()
 End Sub
 
 Private Sub macrotrabajo_Timer()
-    '    If Inventario.SelectedItem = 0 Then
+    'If Inventario.SelectedItem = 0 Then
     '   DesactivarMacroTrabajo
     '   Exit Sub
-    ' End If
+    'End If
     
     'Macros are disabled if not using Argentum!
     If Not Application.IsAppActive() Then
@@ -2261,7 +2260,7 @@ Private Sub macrotrabajo_Timer()
 
     End If
     
-    If eSkill.Recoleccion Or UsingSkill = FundirMetal Or (UsingSkill = eSkill.Manualidades And Not frmHerrero.Visible) Then
+    If UsingSkill = FundirMetal Or (UsingSkill = eSkill.Herreria And Not frmHerrero.Visible) Then
         Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
         UsingSkill = 0
 
@@ -3135,7 +3134,7 @@ Public Sub Form_Click()
                     
                     Dim SendSkill As Boolean
                     
-                    If UsingSkill = Magia Then
+                    If UsingSkill = magia Then
                         If MainTimer.Check(TimersIndex.AttackSpell, False) Then
                             If MainTimer.Check(TimersIndex.CastSpell) Then
                                 SendSkill = True
@@ -3201,7 +3200,8 @@ Public Sub Form_Click()
 
                     End If
                     
-                    If (UsingSkill = Recoleccion Or UsingSkill = FundirMetal Or UsingSkill = Manualidades) Then
+                    If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or UsingSkill = FundirMetal) Then
+                        
                         If MainTimer.Check(TimersIndex.Work) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
                             Call FormParser.Parse_Form(frmmain)
