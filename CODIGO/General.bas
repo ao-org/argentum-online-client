@@ -1618,7 +1618,7 @@ Private Sub InicializarNombres()
     ListaClases(eClass.Hunter) = "Cazador"
     ListaClases(eClass.Trabajador) = "Trabajador"
 
-    SkillsNames(eSkill.Magia) = "Magia"
+    SkillsNames(eSkill.magia) = "Magia"
     SkillsNames(eSkill.Robar) = "Robar"
     SkillsNames(eSkill.Tacticas) = "Tacticas de combate"
     SkillsNames(eSkill.Armas) = "Combate con armas"
@@ -1634,10 +1634,8 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Navegacion) = "Navegacion"
     SkillsNames(eSkill.equitacion) = "Equitación"
     SkillsNames(eSkill.Resistencia) = "Resistencia Mágica"
-    SkillsNames(eSkill.Recoleccion) = "Recoleccion"
-    SkillsNames(eSkill.Manualidades) = "Manualidades"
 
-    SkillsDesc(eSkill.Magia) = "Los hechizos requieren un cierto número de puntos mágicos para ser usados. Sube lanzando cualquier hechizo."
+    SkillsDesc(eSkill.magia) = "Los hechizos requieren un cierto número de puntos mágicos para ser usados. Sube lanzando cualquier hechizo."
     SkillsDesc(eSkill.Robar) = "Aumenta las posibilidades de conseguir objetos u oro mientras robas. Se sube robando. Solo el ladrón puede robar objetos, las otras clases solo pueden robar oro."
     SkillsDesc(eSkill.Tacticas) = "Aumenta la posibilidad de esquivar ataques. Cuantos más puntos tengas, mejor será tu evasión. Sube mientras peleas cuerpo a cuerpo."
     SkillsDesc(eSkill.Armas) = "Aumenta las posibilidades de golpear al enemigo con un arma.Subes peleando cuerpo a cuerpo usando cualquier arma."
@@ -1653,9 +1651,15 @@ Private Sub InicializarNombres()
     SkillsDesc(eSkill.Navegacion) = "Necesaria para poder utilizar traje de baño, barcas, galeras o galeones."
     SkillsDesc(eSkill.equitacion) = " Necesaria para equipar una montura."
     SkillsDesc(eSkill.Resistencia) = "Sirve para que los hechizos no te peguen tan fuerte, mientras más puntos tengas, menos es el daño mágico que recibes. Se sube cuando un NPC o una persona te ataca con hechizos."
-    SkillsDesc(eSkill.Recoleccion) = "Sirve para recolectar mayor cantidad de recursos y más rápido. Se sube recolectando."
-    SkillsDesc(eSkill.Manualidades) = "Sirve para fábricar cualquier tipo de objetos, se sube fabricando."
-
+    
+    SkillsNames(eSkill.Talar) = "Tala"
+    SkillsNames(eSkill.Pescar) = "Pesca"
+    SkillsNames(eSkill.Mineria) = "Mineria"
+    SkillsNames(eSkill.Herreria) = "Herreria"
+    SkillsNames(eSkill.Carpinteria) = "Carpinteria"
+    SkillsNames(eSkill.Alquimia) = "Alquimia"
+    SkillsNames(eSkill.Sastreria) = "Sastreria"
+    
     AtributosNames(eAtributos.Fuerza) = "Fuerza"
     AtributosNames(eAtributos.Agilidad) = "Agilidad"
     AtributosNames(eAtributos.Inteligencia) = "Inteligencia"

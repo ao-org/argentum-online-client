@@ -5034,7 +5034,7 @@ Private Sub HandleWorkRequestTarget()
     
     Select Case UsingSkill
 
-        Case Magia
+        Case magia
             Call FormParser.Parse_Form(frmmain, E_CAST)
             Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
 
@@ -5050,7 +5050,7 @@ Private Sub HandleWorkRequestTarget()
             Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_TRABAJO_PROYECTILES, 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(frmmain, E_ARROW)
 
-        Case Recoleccion
+        Case eSkill.Talar, eSkill.Alquimia, eSkill.Carpinteria, eSkill.Herreria, eSkill.Mineria, eSkill.Pescar
             Call AddtoRichTextBox(frmmain.RecTxt, "Has click donde deseas trabajar...", 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(frmmain, E_SHOOT)
 
