@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form frmmain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -500,6 +500,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2297,7 +2298,7 @@ End Sub
 
 Private Sub manabar_Click()
 
-    If UserMinMAN = UserMaxMAN Then Exit Sub
+    'If UserMinMAN = UserMaxMAN Then Exit Sub
             
     If UserEstado = 1 Then
 
@@ -3183,11 +3184,11 @@ Public Sub Form_Click()
 
                                 Dim Pos As Integer
 
-                                If MapData(tX, tY).charindex <> 0 Then
-                                    Pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
+                                If MapData(tX, tY).CharIndex <> 0 Then
+                                    Pos = InStr(charlist(MapData(tX, tY).CharIndex).nombre, "<")
                                 
-                                    If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
-                                    frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
+                                    If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).CharIndex).nombre) + 2
+                                    frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).CharIndex).nombre, Pos - 2)
 
                                 End If
 
@@ -3269,10 +3270,10 @@ Public Sub Form_Click()
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 4 Or MouseBoton = vbRightButton And ACCION2 = 4 Or MouseBoton = 4 And ACCION3 = 4 Then
 
-        If MapData(tX, tY).charindex <> 0 Then
-            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
-                If charlist(MapData(tX, tY).charindex).EsNpc = False Then
-                    SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
+        If MapData(tX, tY).CharIndex <> 0 Then
+            If charlist(MapData(tX, tY).CharIndex).nombre <> charlist(MapData(UserPos.x, UserPos.y).CharIndex).nombre Then
+                If charlist(MapData(tX, tY).CharIndex).EsNpc = False Then
+                    SendTxt.Text = "\" & charlist(MapData(tX, tY).CharIndex).nombre & " "
 
                     If SendTxt.Visible = False Then
                         Call WriteEscribiendo

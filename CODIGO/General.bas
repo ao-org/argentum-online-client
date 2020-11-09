@@ -734,14 +734,8 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     
     If LegalOk And Not UserParalizado And Not UserInmovilizado Then
         If Not UserDescansar Then
-            If UserMeditar Then
-                WriteMeditate 'Stop meditation Ladder BUG CAMINABA Y LAGEABA DESPUES DE MEDITAR
-
-            End If
-            
             If UserMacro.Activado Then
                 Call ResetearUserMacro
-
             End If
 
             Moviendose = True
@@ -755,9 +749,6 @@ Sub MoveTo(ByVal Direccion As E_Heading)
             If Not UserAvisado Then
                 If UserDescansar Then
                     WriteRest 'Stop resting (we do NOT have the 1 step enforcing anymore) sono como un tema de los guns.
-                ElseIf UserMeditar Then
-                    WriteMeditate 'Stop meditation
-
                 End If
 
                 UserAvisado = True
