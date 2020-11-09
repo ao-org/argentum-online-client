@@ -14,12 +14,12 @@ Attribute VB_Exposed = False
 Option Explicit
 #If AntiExternos Then
  
-Rem Desencriptador / Encriptador - Check de paquetes
-Rem @writer: MENDUZ - MENDUZ@NOICODER.COM
-Rem @date: 03122008
-Rem ###################################################
+    Rem Desencriptador / Encriptador - Check de paquetes
+    Rem @writer: MENDUZ - MENDUZ@NOICODER.COM
+    Rem @date: 03122008
+    Rem ###################################################
  
-Public Redundance As Byte 'CLIENTE
+    Public Redundance As Byte 'CLIENTE
  
 Public Sub NAC_E_Byte(ByRef ByteArray() As Byte, ByVal code As Byte)
 Rem Encriptador de ByteArrays

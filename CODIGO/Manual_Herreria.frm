@@ -513,103 +513,102 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private ListaHerreria(1 To 49) As Integer
 
-
 Private Sub Command2_Click()
-Unload Me
-Manual.Show
+    Unload Me
+    Manual.Show
+
 End Sub
 
 Private Sub Form_Load()
-Dim i As Byte
 
-ListaHerreria(1) = 1828
-ListaHerreria(2) = 1821
-ListaHerreria(3) = 1790
-ListaHerreria(4) = 1830
-ListaHerreria(5) = 1789
-ListaHerreria(6) = 1849
-ListaHerreria(7) = 1825
-ListaHerreria(8) = 1875
-ListaHerreria(9) = 1819
-ListaHerreria(10) = 1818
-ListaHerreria(11) = 1822
-ListaHerreria(12) = 1823
-ListaHerreria(13) = 1829
-ListaHerreria(14) = 1831
-ListaHerreria(15) = 1832
-ListaHerreria(16) = 1834
-ListaHerreria(17) = 1858
-ListaHerreria(18) = 1868
-ListaHerreria(19) = 1876
+    Dim i As Byte
 
-ListaHerreria(20) = 1903
-ListaHerreria(21) = 1904
-ListaHerreria(22) = 1907
-ListaHerreria(23) = 1906
-ListaHerreria(24) = 1932
-ListaHerreria(25) = 1934
-ListaHerreria(26) = 1936
-ListaHerreria(27) = 1938
-ListaHerreria(28) = 1940
-ListaHerreria(29) = 1922
+    ListaHerreria(1) = 1828
+    ListaHerreria(2) = 1821
+    ListaHerreria(3) = 1790
+    ListaHerreria(4) = 1830
+    ListaHerreria(5) = 1789
+    ListaHerreria(6) = 1849
+    ListaHerreria(7) = 1825
+    ListaHerreria(8) = 1875
+    ListaHerreria(9) = 1819
+    ListaHerreria(10) = 1818
+    ListaHerreria(11) = 1822
+    ListaHerreria(12) = 1823
+    ListaHerreria(13) = 1829
+    ListaHerreria(14) = 1831
+    ListaHerreria(15) = 1832
+    ListaHerreria(16) = 1834
+    ListaHerreria(17) = 1858
+    ListaHerreria(18) = 1868
+    ListaHerreria(19) = 1876
 
-ListaHerreria(30) = 1762
-ListaHerreria(31) = 1763
-ListaHerreria(32) = 1768
-ListaHerreria(33) = 1767
-ListaHerreria(34) = 1772
-ListaHerreria(35) = 1709
-ListaHerreria(36) = 1696
-ListaHerreria(37) = 1695
-ListaHerreria(38) = 1711
-ListaHerreria(39) = 1720
+    ListaHerreria(20) = 1903
+    ListaHerreria(21) = 1904
+    ListaHerreria(22) = 1907
+    ListaHerreria(23) = 1906
+    ListaHerreria(24) = 1932
+    ListaHerreria(25) = 1934
+    ListaHerreria(26) = 1936
+    ListaHerreria(27) = 1938
+    ListaHerreria(28) = 1940
+    ListaHerreria(29) = 1922
 
-ListaHerreria(40) = 1727
-ListaHerreria(41) = 1728
-ListaHerreria(42) = 1725
-ListaHerreria(43) = 1726
-ListaHerreria(44) = 1699
-ListaHerreria(45) = 1703
-ListaHerreria(46) = 1704
-ListaHerreria(47) = 1705
-ListaHerreria(48) = 1701
-ListaHerreria(49) = 1722
+    ListaHerreria(30) = 1762
+    ListaHerreria(31) = 1763
+    ListaHerreria(32) = 1768
+    ListaHerreria(33) = 1767
+    ListaHerreria(34) = 1772
+    ListaHerreria(35) = 1709
+    ListaHerreria(36) = 1696
+    ListaHerreria(37) = 1695
+    ListaHerreria(38) = 1711
+    ListaHerreria(39) = 1720
 
+    ListaHerreria(40) = 1727
+    ListaHerreria(41) = 1728
+    ListaHerreria(42) = 1725
+    ListaHerreria(43) = 1726
+    ListaHerreria(44) = 1699
+    ListaHerreria(45) = 1703
+    ListaHerreria(46) = 1704
+    ListaHerreria(47) = 1705
+    ListaHerreria(48) = 1701
+    ListaHerreria(49) = 1722
 
+    For i = 1 To 49
+        List1.AddItem ObjData(ListaHerreria(i)).name
+    Next i
 
+    List1.ListIndex = 0
 
-
-For i = 1 To 49
-List1.AddItem ObjData(ListaHerreria(i)).name
-Next i
-
-List1.ListIndex = 0
 End Sub
 
 Private Sub List1_Click()
 
-If ObjData(ListaHerreria(List1.ListIndex + 1)).ObjType = 2 Or ObjData(ListaHerreria(List1.ListIndex + 1)).ObjType = 46 Then
-Label14.Caption = "Golpe:"
-Label17.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).MinHit & "/" & ObjData(ListaHerreria(List1.ListIndex + 1)).MaxHit
-Else
-Label14.Caption = "Defensa:"
-Label17.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).MinDef & "/" & ObjData(ListaHerreria(List1.ListIndex + 1)).MaxDef
-End If
+    If ObjData(ListaHerreria(List1.ListIndex + 1)).ObjType = 2 Or ObjData(ListaHerreria(List1.ListIndex + 1)).ObjType = 46 Then
+        Label14.Caption = "Golpe:"
+        Label17.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).MinHit & "/" & ObjData(ListaHerreria(List1.ListIndex + 1)).MaxHit
+    Else
+        Label14.Caption = "Defensa:"
+        Label17.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).MinDef & "/" & ObjData(ListaHerreria(List1.ListIndex + 1)).MaxDef
 
-Label6.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).name
-Label7.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).Valor
+    End If
 
+    Label6.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).name
+    Label7.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).Valor
 
-'Label17.Caption = traer min level
-Label13.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).LingH
-Label8.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).LingP
-Label20.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).LingO
-Label9.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).SkHerreria
+    'Label17.Caption = traer min level
+    Label13.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).LingH
+    Label8.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).LingP
+    Label20.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).LingO
+    Label9.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).SkHerreria
 
+    Label3.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).Texto
 
-Label3.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).Texto
+    Call Grh_Render_To_Hdc(picture1, ObjData(ListaHerreria(List1.ListIndex + 1)).GrhIndex, 0, 0, False)
 
-Call Grh_Render_To_Hdc(picture1, ObjData(ListaHerreria(List1.ListIndex + 1)).GrhIndex, 0, 0, False)
 End Sub

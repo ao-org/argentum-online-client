@@ -23,34 +23,46 @@ Attribute VB_Name = "modCompression"
 '   - First Release
 '*****************************************************************
 Option Explicit
+
 'Loading pictures from byte arrays
 Private Declare Function CreateStreamOnHGlobal Lib "ole32" (ByVal hGlobal As Long, ByVal fDeleteOnRelease As Long, ppstm As Any) As Long
-Private Declare Function OleLoadPicture Lib "olepro32" (pStream As Any, ByVal lSize As Long, ByVal fRunmode As Long, riid As Any, ppvObj As Any) As Long
-Private Declare Function CLSIDFromString Lib "ole32" (ByVal lpsz As Any, pclsid As Any) As Long
-Private Declare Function GlobalAlloc Lib "kernel32" (ByVal uFlags As Long, ByVal dwBytes As Long) As Long
-Private Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
-Private Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
-Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSource As Any, ByVal dwLength As Long)
-Private Declare Function GetDiskFreeSpace Lib "kernel32" Alias "GetDiskFreeSpaceExA" (ByVal lpRootPathName As String, FreeBytesToCaller As Currency, BytesTotal As Currency, FreeBytesTotal As Currency) As Long
 
+Private Declare Function OleLoadPicture Lib "olepro32" (pStream As Any, ByVal lSize As Long, ByVal fRunmode As Long, riid As Any, ppvObj As Any) As Long
+
+Private Declare Function CLSIDFromString Lib "ole32" (ByVal lpsz As Any, pclsid As Any) As Long
+
+Private Declare Function GlobalAlloc Lib "kernel32" (ByVal uFlags As Long, ByVal dwBytes As Long) As Long
+
+Private Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
+
+Private Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
+
+Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSource As Any, ByVal dwLength As Long)
+
+Private Declare Function GetDiskFreeSpace Lib "kernel32" Alias "GetDiskFreeSpaceExA" (ByVal lpRootPathName As String, FreeBytesToCaller As Currency, BytesTotal As Currency, FreeBytesTotal As Currency) As Long
 
 'This structure will describe our binary file's
 'size and number of contained files
 Public Type FILEHEADER
+
     lngFileSize As Long                 'How big is this file? (Used to check integrity)
     intNumFiles As Integer              'How many files are inside?
+
 End Type
 
 'This structure will describe each file contained
 'in our binary file
 Public Type INFOHEADER
+
     lngFileStart As Long            'Where does the chunk start?
     lngFileSize As Long             'How big is this chunk of stored data?
     strFileName As String * 32      'What's the name of the file this data came from?
     lngFileSizeUncompressed As Long 'How big is the file compressed
+
 End Type
 
 Public Enum resource_file_type
+
     graphics
     midi
     mp3
@@ -59,31 +71,45 @@ Public Enum resource_file_type
     PATCH
     interface
     Maps
+
 End Enum
 
-Private Const GRAPHIC_PATH As String = "\Graficos\"
-Private Const MIDI_PATH As String = "\Midi\"
-Private Const MP3_PATH As String = "\Mp3\"
-Private Const WAV_PATH As String = "\Wav\"
+Private Const GRAPHIC_PATH   As String = "\Graficos\"
+
+Private Const MIDI_PATH      As String = "\Midi\"
+
+Private Const MP3_PATH       As String = "\Mp3\"
+
+Private Const WAV_PATH       As String = "\Wav\"
+
 Private Const INTERFACE_PATH As String = "\Interface\"
-Private Const SCRIPT_PATH As String = "\Init\"
-Private Const PATCH_PATH As String = "\Patches\"
-Private Const OUTPUT_PATH As String = "\Output\"
-Private Const MAP_PATH As String = "\Mapas\"
+
+Private Const SCRIPT_PATH    As String = "\Init\"
+
+Private Const PATCH_PATH     As String = "\Patches\"
+
+Private Const OUTPUT_PATH    As String = "\Output\"
+
+Private Const MAP_PATH       As String = "\Mapas\"
 
 Private Declare Function Compress Lib "zlib.dll" Alias "compress" (dest As Any, destLen As Any, src As Any, ByVal srcLen As Long) As Long
+
 Private Declare Function UnCompress Lib "zlib.dll" Alias "uncompress" (dest As Any, destLen As Any, src As Any, ByVal srcLen As Long) As Long
 
 Public Sub Compress_Data(ByRef Data() As Byte)
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Compresses binary data avoiding data loses
-'*****************************************************************
+
+    '*****************************************************************
+    'Author: Juan Martín Dotuyo Dodero
+    'Last Modify Date: 10/13/2004
+    'Compresses binary data avoiding data loses
+    '*****************************************************************
     Dim Dimensions As Long
-    Dim DimBuffer As Long
-    Dim BufTemp() As Byte
-    Dim loopc As Long
+
+    Dim DimBuffer  As Long
+
+    Dim BufTemp()  As Byte
+
+    Dim loopc      As Long
     
     Dimensions = UBound(Data) + 1
     
@@ -106,11 +132,12 @@ Public Sub Compress_Data(ByRef Data() As Byte)
 End Sub
 
 Public Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Decompresses binary data
-'*****************************************************************
+
+    '*****************************************************************
+    'Author: Juan Martín Dotuyo Dodero
+    'Last Modify Date: 10/13/2004
+    'Decompresses binary data
+    '*****************************************************************
     Dim BufTemp() As Byte
     
     ReDim BufTemp(OrigSize - 1)
@@ -122,84 +149,117 @@ Public Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
     Data = BufTemp
     
     Erase BufTemp
+
 End Sub
 
 Public Function Extract_All_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Extracts all files from a resource file
-'*****************************************************************
-    Dim loopc As Long
+
+    '*****************************************************************
+    'Author: Juan Martín Dotuyo Dodero
+    'Last Modify Date: 10/13/2004
+    'Extracts all files from a resource file
+    '*****************************************************************
+    Dim loopc          As Long
+
     Dim SourceFilePath As String
+
     Dim OutputFilePath As String
-    Dim SourceFile As Integer
-    Dim SourceData() As Byte
-    Dim FileHead As FILEHEADER
-    Dim InfoHead() As INFOHEADER
-    Dim handle As Integer
+
+    Dim SourceFile     As Integer
+
+    Dim SourceData()   As Byte
+
+    Dim FileHead       As FILEHEADER
+
+    Dim InfoHead()     As INFOHEADER
+
+    Dim handle         As Integer
     
-'Set up the error handler
-On Local Error GoTo errhandler
+    'Set up the error handler
+    On Local Error GoTo errhandler
     
     Select Case file_type
+
         Case graphics
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "Graficos.rao"
             Else
                 SourceFilePath = resource_path & "\Graficos.rao"
+
             End If
+
             OutputFilePath = resource_path & GRAPHIC_PATH
             
         Case midi
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "Midi.rao"
             Else
                 SourceFilePath = resource_path & "\MIDI.rao"
+
             End If
+
             OutputFilePath = resource_path & MIDI_PATH
         
         Case mp3
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "MP3.rao"
             Else
                 SourceFilePath = resource_path & "\MP3.rao"
+
             End If
+
             OutputFilePath = resource_path & MP3_PATH
         
         Case wav
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "Sounds.rao"
             Else
                 SourceFilePath = resource_path & "\Sounds.rao"
+
             End If
+
             OutputFilePath = resource_path & WAV_PATH
         
         Case Scripts
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "init.rao"
             Else
                 SourceFilePath = resource_path & "\Init.rao"
+
             End If
+
             OutputFilePath = resource_path & SCRIPT_PATH
         
         Case interface
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "Interface.rao"
             Else
                 SourceFilePath = resource_path & "\Interface.rao"
+
             End If
+
             OutputFilePath = resource_path & INTERFACE_PATH
         
         Case Maps
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "mapas.rao"
             Else
                 SourceFilePath = resource_path & "\mapas.rao"
+
             End If
+
             OutputFilePath = resource_path & MAP_PATH
+
         Case Else
             Exit Function
+
     End Select
     
     'Open the binary file
@@ -215,6 +275,7 @@ On Local Error GoTo errhandler
         Close SourceFile
         Erase InfoHead
         Exit Function
+
     End If
     
     'Size the InfoHead array
@@ -230,6 +291,7 @@ On Local Error GoTo errhandler
         If InfoHead(loopc).lngFileSizeUncompressed > General_Drive_Get_Free_Bytes(Left(App.Path, 3)) Then
             MsgBox "There is not enough free memory to continue extracting files."
             Exit Function
+
         End If
         
         'Resize the byte data array
@@ -262,7 +324,7 @@ On Local Error GoTo errhandler
     Erase InfoHead
     
     Extract_All_Files = True
-Exit Function
+    Exit Function
 
 errhandler:
     Close SourceFile
@@ -270,47 +332,72 @@ errhandler:
     Erase InfoHead
     'Display an error message if it didn't work
     MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+
 End Function
 
 Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As String) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Comrpesses all files to a resource file
-'*****************************************************************
-    Dim loopc As Long
-    Dim LoopC2 As Long
-    Dim LoopC3 As Long
-    Dim OutputFile As Integer
-    Dim UpdatedFile As Integer
-    Dim SourceFilePath As String
-    Dim SourceFile As Integer
-    Dim SourceData() As Byte
-    Dim ResFileHead As FILEHEADER
-    Dim ResInfoHead() As INFOHEADER
+
+    '*****************************************************************
+    'Author: Juan Martín Dotuyo Dodero
+    'Last Modify Date: 10/13/2004
+    'Comrpesses all files to a resource file
+    '*****************************************************************
+    Dim loopc           As Long
+
+    Dim LoopC2          As Long
+
+    Dim LoopC3          As Long
+
+    Dim OutputFile      As Integer
+
+    Dim UpdatedFile     As Integer
+
+    Dim SourceFilePath  As String
+
+    Dim SourceFile      As Integer
+
+    Dim SourceData()    As Byte
+
+    Dim ResFileHead     As FILEHEADER
+
+    Dim ResInfoHead()   As INFOHEADER
+
     Dim UpdatedInfoHead As INFOHEADER
-    Dim FileHead As FILEHEADER
-    Dim InfoHead() As INFOHEADER
-    Dim RequiredSpace As Currency
-    Dim FileExtension As String
-    Dim DataOffset As Long
-    Dim OutputFilePath As String
+
+    Dim FileHead        As FILEHEADER
+
+    Dim InfoHead()      As INFOHEADER
+
+    Dim RequiredSpace   As Currency
+
+    Dim FileExtension   As String
+
+    Dim DataOffset      As Long
+
+    Dim OutputFilePath  As String
     
     'Done flags
-    Dim bmp_done As Boolean
-    Dim wav_done As Boolean
-    Dim mid_done As Boolean
-    Dim mp3_done As Boolean
-    Dim exe_done As Boolean
-    Dim gui_done As Boolean
-    Dim ind_done As Boolean
-    Dim dat_done As Boolean
+    Dim bmp_done        As Boolean
+
+    Dim wav_done        As Boolean
+
+    Dim mid_done        As Boolean
+
+    Dim mp3_done        As Boolean
+
+    Dim exe_done        As Boolean
+
+    Dim gui_done        As Boolean
+
+    Dim ind_done        As Boolean
+
+    Dim dat_done        As Boolean
     
     '************************************************************************************************
     'This is similar to Extract, but has some small differences to make sure what is being updated
     '************************************************************************************************
-'Set up the error handler
-On Local Error GoTo errhandler
+    'Set up the error handler
+    On Local Error GoTo errhandler
     
     'Open the binary file
     SourceFile = FreeFile
@@ -323,9 +410,10 @@ On Local Error GoTo errhandler
     'Check the file for validity
     If LOF(SourceFile) <> FileHead.lngFileSize Then
     
-       MsgBox "Resource file " & SourceFilePath & " seems to be corrupted.", , "Error"
+        MsgBox "Resource file " & SourceFilePath & " seems to be corrupted.", , "Error"
         Exit Function
-End If
+
+    End If
     
     'Size the InfoHead array
     ReDim InfoHead(FileHead.intNumFiles - 1)
@@ -342,47 +430,64 @@ End If
         Erase InfoHead
         MsgBox "¡No hay espacio suficiente para extraer el archivo!", , "Error"
         Exit Function
+
     End If
     
     'Extract all of the files from the binary file
     For loopc = 0 To UBound(InfoHead())
+
         'Check the extension of the file
         Select Case LCase(Right(Trim(InfoHead(loopc).strFileName), 3))
+
             Case Is = "bmp"
+
                 If bmp_done Then GoTo EndMainLoop
                 FileExtension = "bmp"
                 OutputFilePath = resource_path & "\Graficos.rao"
                 bmp_done = True
+
             Case Is = "mid"
+
                 If mid_done Then GoTo EndMainLoop
                 FileExtension = "mid"
                 OutputFilePath = resource_path & "\MIDI.rao"
                 mid_done = True
+
             Case Is = "mp3"
+
                 If mp3_done Then GoTo EndMainLoop
                 FileExtension = "mp3"
                 OutputFilePath = resource_path & "\MP3.rao"
                 mp3_done = True
+
             Case Is = "wav"
+
                 If wav_done Then GoTo EndMainLoop
                 FileExtension = "wav"
                 OutputFilePath = resource_path & "\Sounds.rao"
                 wav_done = True
+
             Case Is = "gif"
+
                 If gui_done Then GoTo EndMainLoop
                 FileExtension = "gif"
                 OutputFilePath = resource_path & "\Interface.rao"
                 gui_done = True
+
             Case Is = "ind"
+
                 If ind_done Then GoTo EndMainLoop
                 FileExtension = "ind"
                 OutputFilePath = resource_path & "\Init.rao"
                 ind_done = True
+
             Case Is = "dat"
+
                 If dat_done Then GoTo EndMainLoop
                 FileExtension = "dat"
                 OutputFilePath = resource_path & "\Init.rao"
                 dat_done = True
+
         End Select
         
         OutputFile = FreeFile
@@ -399,12 +504,17 @@ End If
                 
         'Check how many of the files are new, and how many are replacements
         For LoopC2 = loopc To UBound(InfoHead())
+
             If LCase$(Right$(Trim$(InfoHead(LoopC2).strFileName), 3)) = FileExtension Then
+
                 'Look for same name in the resource file
                 For LoopC3 = 0 To UBound(ResInfoHead())
+
                     If ResInfoHead(LoopC3).strFileName = InfoHead(LoopC2).strFileName Then
                         Exit For
+
                     End If
+
                 Next LoopC3
                 
                 'Update the File Head
@@ -415,8 +525,11 @@ End If
                 Else
                     'We substract the size of the old file and add the one of the new one
                     ResFileHead.lngFileSize = ResFileHead.lngFileSize - ResInfoHead(LoopC3).lngFileSize + InfoHead(LoopC2).lngFileSize
+
                 End If
+
             End If
+
         Next LoopC2
         
         'Get the offset of the compressed data
@@ -431,8 +544,11 @@ End If
         
         'Start storing the Info Heads
         LoopC2 = loopc
+
         For LoopC3 = 0 To UBound(ResInfoHead())
+
             Do While LoopC2 <= UBound(InfoHead())
+
                 If LCase$(ResInfoHead(LoopC3).strFileName) < LCase$(InfoHead(LoopC2).strFileName) Then Exit Do
                 If LCase$(Right$(Trim$(InfoHead(LoopC2).strFileName), 3)) = FileExtension Then
                     'Copy the info head data
@@ -447,12 +563,14 @@ End If
                     DoEvents
                     
                 End If
+
                 LoopC2 = LoopC2 + 1
             Loop
             
             'If the file was replaced in the patch, we skip it
             If LoopC2 Then
                 If LCase$(ResInfoHead(LoopC3).strFileName) <= LCase$(InfoHead(LoopC2 - 1).strFileName) Then GoTo EndLoop
+
             End If
             
             'Copy the info head data
@@ -468,6 +586,7 @@ EndLoop:
         
         'If there was any file in the patch that would go in the bottom of the list we put it now
         For LoopC2 = LoopC2 To UBound(InfoHead())
+
             If LCase$(Right$(Trim$(InfoHead(LoopC2).strFileName), 3)) = FileExtension Then
                 'Copy the info head data
                 UpdatedInfoHead = InfoHead(LoopC2)
@@ -477,13 +596,18 @@ EndLoop:
                 DataOffset = DataOffset + UpdatedInfoHead.lngFileSize
                                 
                 Put UpdatedFile, , UpdatedInfoHead
+
             End If
+
         Next LoopC2
         
         'Now we start adding the compressed data
         LoopC2 = loopc
+
         For LoopC3 = 0 To UBound(ResInfoHead())
+
             Do While LoopC2 <= UBound(InfoHead())
+
                 If LCase$(ResInfoHead(LoopC3).strFileName) < LCase$(InfoHead(LoopC2).strFileName) Then Exit Do
                 If LCase$(Right$(Trim$(InfoHead(LoopC2).strFileName), 3)) = FileExtension Then
                     'Get the compressed data
@@ -492,13 +616,16 @@ EndLoop:
                     Get SourceFile, InfoHead(LoopC2).lngFileStart, SourceData
                     
                     Put UpdatedFile, , SourceData
+
                 End If
+
                 LoopC2 = LoopC2 + 1
             Loop
             
             'If the file was replaced in the patch, we skip it
             If LoopC2 Then
                 If LCase$(ResInfoHead(LoopC3).strFileName) <= LCase$(InfoHead(LoopC2 - 1).strFileName) Then GoTo EndLoop2
+
             End If
             
             'Get the compressed data
@@ -512,6 +639,7 @@ EndLoop2:
         
         'If there was any file in the patch that would go in the bottom of the lsit we put it now
         For LoopC2 = LoopC2 To UBound(InfoHead())
+
             If LCase$(Right$(Trim$(InfoHead(LoopC2).strFileName), 3)) = FileExtension Then
                 'Get the compressed data
                 ReDim SourceData(InfoHead(LoopC2).lngFileSize - 1)
@@ -519,7 +647,9 @@ EndLoop2:
                 Get SourceFile, InfoHead(LoopC2).lngFileStart, SourceData
                 
                 Put UpdatedFile, , SourceData
+
             End If
+
         Next LoopC2
         
         'We are done updating the file
@@ -544,7 +674,7 @@ EndMainLoop:
     Erase ResInfoHead
     
     Extract_Patch = True
-Exit Function
+    Exit Function
 
 errhandler:
     Erase SourceData
@@ -553,28 +683,41 @@ errhandler:
 End Function
 
 Public Function Compress_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal dest_path As String) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Comrpesses all files to a resource file
-'*****************************************************************
-    Dim SourceFilePath As String
+
+    '*****************************************************************
+    'Author: Juan Martín Dotuyo Dodero
+    'Last Modify Date: 10/13/2004
+    'Comrpesses all files to a resource file
+    '*****************************************************************
+    Dim SourceFilePath      As String
+
     Dim SourceFileExtension As String
-    Dim OutputFilePath As String
-    Dim SourceFile As Long
-    Dim OutputFile As Long
-    Dim SourceFileName As String
-    Dim SourceData() As Byte
-    Dim FileHead As FILEHEADER
-    Dim InfoHead() As INFOHEADER
-    Dim FileNames() As String
-    Dim lngFileStart As Long
-    Dim loopc As Long
+
+    Dim OutputFilePath      As String
+
+    Dim SourceFile          As Long
+
+    Dim OutputFile          As Long
+
+    Dim SourceFileName      As String
+
+    Dim SourceData()        As Byte
+
+    Dim FileHead            As FILEHEADER
+
+    Dim InfoHead()          As INFOHEADER
+
+    Dim FileNames()         As String
+
+    Dim lngFileStart        As Long
+
+    Dim loopc               As Long
     
-'Set up the error handler
-On Local Error GoTo errhandler
+    'Set up the error handler
+    On Local Error GoTo errhandler
     
     Select Case file_type
+
         Case graphics
             SourceFilePath = resource_path & GRAPHIC_PATH
             SourceFileExtension = ".bmp"
@@ -624,6 +767,7 @@ On Local Error GoTo errhandler
     
     'Get all other files i nthe directory
     While SourceFileName <> ""
+
         FileHead.intNumFiles = FileHead.intNumFiles + 1
         
         ReDim Preserve FileNames(FileHead.intNumFiles - 1)
@@ -637,6 +781,7 @@ On Local Error GoTo errhandler
     If FileHead.intNumFiles = 0 Then
         MsgBox "There are no files of extension " & SourceFileExtension & " in " & SourceFilePath & ".", , "Error"
         Exit Function
+
     End If
     
     'Sort file names alphabetically (this will make patching much easier).
@@ -648,6 +793,7 @@ On Local Error GoTo errhandler
     'Destroy file if it previuosly existed
     If Dir(OutputFilePath, vbNormal) <> "" Then
         Kill OutputFilePath
+
     End If
     
     'Open a new file
@@ -696,6 +842,7 @@ On Local Error GoTo errhandler
     
     'Set InfoHead data
     lngFileStart = Len(FileHead) + CLng(FileHead.intNumFiles) * Len(InfoHead(0)) + 1
+
     For loopc = 0 To FileHead.intNumFiles - 1
         InfoHead(loopc).lngFileStart = lngFileStart
         lngFileStart = lngFileStart + InfoHead(loopc).lngFileSize
@@ -720,81 +867,103 @@ On Local Error GoTo errhandler
     
     Erase InfoHead
     Erase SourceData
-Exit Function
+    Exit Function
 
 errhandler:
     Erase SourceData
     Erase InfoHead
     'Display an error message if it didn't work
     MsgBox "Unable to create binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+
 End Function
 
 Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByVal OutputFilePath As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Extracts all files from a resource file
-'*****************************************************************
-    Dim loopc As Long
-    Dim SourceFilePath As String
-    Dim SourceData() As Byte
-    Dim InfoHead As INFOHEADER
-    Dim handle As Integer
 
-On Local Error GoTo errhandler
+    '*****************************************************************
+    'Author: Juan Martín Dotuyo Dodero
+    'Last Modify Date: 10/13/2004
+    'Extracts all files from a resource file
+    '*****************************************************************
+    Dim loopc          As Long
+
+    Dim SourceFilePath As String
+
+    Dim SourceData()   As Byte
+
+    Dim InfoHead       As INFOHEADER
+
+    Dim handle         As Integer
+
+    On Local Error GoTo errhandler
     
     Select Case file_type
+
         Case graphics
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "Graficos.rao"
             Else
                 SourceFilePath = resource_path & "\Graficos.rao"
+
             End If
             
         Case midi
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "MIDI.rao"
             Else
                 SourceFilePath = resource_path & "\MIDI.rao"
+
             End If
         
         Case mp3
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "MP3.rao"
             Else
                 SourceFilePath = resource_path & "\MP3.rao"
+
             End If
         
         Case wav
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "Sounds.rao"
             Else
                 SourceFilePath = resource_path & "\Sounds.rao"
+
             End If
         
         Case Scripts
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "init.rao"
             Else
                 SourceFilePath = resource_path & "\init.rao"
+
             End If
         
         Case interface
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "Interface.rao"
             Else
                 SourceFilePath = resource_path & "\Interface.rao"
+
             End If
             
         Case Maps
+
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "mapas.rao"
             Else
                 SourceFilePath = resource_path & "\mapas.rao"
+
             End If
         
         Case Else
             Exit Function
+
     End Select
     
     'Find the Info Head of the desired file
@@ -818,6 +987,7 @@ On Local Error GoTo errhandler
         Close handle
         MsgBox "There is not enough drive space to extract the compressed file.", , "Error"
         Exit Function
+
     End If
     
     'Extract file from the binary file
@@ -846,46 +1016,61 @@ On Local Error GoTo errhandler
     Erase SourceData
         
     Extract_File = True
-Exit Function
+    Exit Function
 
 errhandler:
     Close handle
     Erase SourceData
+
     'Display an error message if it didn't work
     'MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
 End Function
-Public Function Extract_File_EX(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef bytArr() As Byte, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Extracts all files from a resource file
-'*****************************************************************
-    Dim loopc As Long
-    Dim SourceFilePath As String
-    Dim SourceData() As Byte
-    Dim InfoHead As INFOHEADER
-    Dim handle As Integer
 
-On Local Error GoTo errhandler
+Public Function Extract_File_EX(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef bytArr() As Byte, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
+
+    '*****************************************************************
+    'Author: Juan Martín Dotuyo Dodero
+    'Last Modify Date: 10/13/2004
+    'Extracts all files from a resource file
+    '*****************************************************************
+    Dim loopc          As Long
+
+    Dim SourceFilePath As String
+
+    Dim SourceData()   As Byte
+
+    Dim InfoHead       As INFOHEADER
+
+    Dim handle         As Integer
+
+    On Local Error GoTo errhandler
     
     Select Case file_type
+
         Case graphics
-                SourceFilePath = resource_path & "\Graficos.rao"
+            SourceFilePath = resource_path & "\Graficos.rao"
+
         Case midi
-                SourceFilePath = resource_path & "\MIDI.rao"
+            SourceFilePath = resource_path & "\MIDI.rao"
+
         Case mp3
-                SourceFilePath = resource_path & "\MP3.rao"
+            SourceFilePath = resource_path & "\MP3.rao"
+
         Case wav
-                SourceFilePath = resource_path & "\Sounds.rao"
+            SourceFilePath = resource_path & "\Sounds.rao"
+
         Case Scripts
-                SourceFilePath = resource_path & "\init.rao"
+            SourceFilePath = resource_path & "\init.rao"
+
         Case interface
-                SourceFilePath = resource_path & "\Interface.rao"
+            SourceFilePath = resource_path & "\Interface.rao"
+
         Case Maps
-                SourceFilePath = resource_path & "\mapas.rao"
+            SourceFilePath = resource_path & "\mapas.rao"
         
         Case Else
             Exit Function
+
     End Select
     
     'Find the Info Head of the desired file
@@ -896,23 +1081,22 @@ On Local Error GoTo errhandler
     'Open the binary file
     handle = FreeFile
     Open SourceFilePath For Binary Access Read Lock Write As handle
-
     
     'Make sure there is enough space in the HD
     If InfoHead.lngFileSizeUncompressed > General_Drive_Get_Free_Bytes(Left$(App.Path, 3)) Then
         Close handle
         MsgBox "There is not enough drive space to extract the compressed file.", , "Error"
         Exit Function
+
     End If
     
     'Extract file from the binary file
     
-        'Resize the byte data array
+    'Resize the byte data array
     ReDim bytArr(InfoHead.lngFileSize - 1)
    
     'Get the data
     Get handle, InfoHead.lngFileStart, bytArr
-    
 
     'Decompress all data
     Decompress_Data_B bytArr, InfoHead.lngFileSizeUncompressed
@@ -921,21 +1105,24 @@ On Local Error GoTo errhandler
     Close handle
 
     Extract_File_EX = True
-Exit Function
+    Exit Function
 
 errhandler:
     Close handle
-   ' Erase SourceData
+    ' Erase SourceData
     Erase bytArr
+
     'Display an error message if it didn't work
     'MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
 End Function
+
 Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Decompresses binary data
-'*****************************************************************
+
+    '*****************************************************************
+    'Author: Juan Martín Dotuyo Dodero
+    'Last Modify Date: 10/13/2004
+    'Decompresses binary data
+    '*****************************************************************
     Dim BufTemp() As Byte
    
     ReDim BufTemp(OrigSize - 1)
@@ -951,13 +1138,16 @@ Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
     Erase BufTemp
     
 End Sub
+
 Public Sub Delete_File(ByVal file_path As String)
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 3/03/2005
-'Deletes a resource files
-'*****************************************************************
+
+    '*****************************************************************
+    'Author: Juan Martín Dotuyo Dodero
+    'Last Modify Date: 3/03/2005
+    'Deletes a resource files
+    '*****************************************************************
     Dim handle As Integer
+
     Dim Data() As Byte
     
     On Error GoTo Error_Handler
@@ -984,22 +1174,28 @@ Error_Handler:
 End Sub
 
 Private Function File_Find(ByVal resource_file_path As String, ByVal file_name As String) As INFOHEADER
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'Looks for a compressed file in a resource file. Uses binary search ;)
-'**************************************************************
-On Error GoTo errhandler
-    Dim max As Integer  'Max index
-    Dim min As Integer  'Min index
-    Dim mid As Integer  'Middle index
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    'Looks for a compressed file in a resource file. Uses binary search ;)
+    '**************************************************************
+    On Error GoTo errhandler
+
+    Dim max          As Integer  'Max index
+
+    Dim min          As Integer  'Min index
+
+    Dim mid          As Integer  'Middle index
+
     Dim file_handler As Integer
-    Dim file_head As FILEHEADER
-    Dim info_head As INFOHEADER
+
+    Dim file_head    As FILEHEADER
+
+    Dim info_head    As INFOHEADER
     
     'Fill file name with spaces for compatibility
-    If Len(file_name) < Len(info_head.strFileName) Then _
-        file_name = file_name & Space$(Len(info_head.strFileName) - Len(file_name))
+    If Len(file_name) < Len(info_head.strFileName) Then file_name = file_name & Space$(Len(info_head.strFileName) - Len(file_name))
     
     'Open resource file
     file_handler = FreeFile
@@ -1022,13 +1218,18 @@ On Error GoTo errhandler
                 max = max - 1
             Else
                 max = mid
+
             End If
+
         ElseIf file_name > info_head.strFileName Then
+
             If min = mid Then
                 min = min + 1
             Else
                 min = mid
+
             End If
+
         Else
             'Copy info head
             File_Find = info_head
@@ -1036,7 +1237,9 @@ On Error GoTo errhandler
             'Close file and exit
             Close file_handler
             Exit Function
+
         End If
+
     Loop
     
 errhandler:
@@ -1044,143 +1247,169 @@ errhandler:
     Close file_handler
     File_Find.strFileName = ""
     File_Find.lngFileSize = 0
+
 End Function
 
-
-
 Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Currency
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 6/07/2004
-'
-'**************************************************************
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 6/07/2004
+    '
+    '**************************************************************
     Dim RetVal As Long
-    Dim FB As Currency
-    Dim BT As Currency
-    Dim FBT As Currency
+
+    Dim FB     As Currency
+
+    Dim BT     As Currency
+
+    Dim FBT    As Currency
     
     RetVal = GetDiskFreeSpace(Left(DriveName, 2), FB, BT, FBT)
     
     General_Drive_Get_Free_Bytes = FB * 10000 'convert result to actual size in bytes
+
 End Function
 
-
 Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal First As Long, ByVal Last As Long)
-'**************************************************************
-'Author: juan Martín Sotuyo Dodero
-'Last Modify Date: 3/03/2005
-'Good old QuickSort algorithm :)
-'**************************************************************
-    Dim Low As Long, High As Long
-    Dim temp As Variant
+
+    '**************************************************************
+    'Author: juan Martín Sotuyo Dodero
+    'Last Modify Date: 3/03/2005
+    'Good old QuickSort algorithm :)
+    '**************************************************************
+    Dim Low            As Long, High As Long
+
+    Dim temp           As Variant
+
     Dim List_Separator As Variant
     
     Low = First
     High = Last
     List_Separator = SortArray((First + Last) / 2)
+
     Do While (Low <= High)
         Do While SortArray(Low) < List_Separator
             Low = Low + 1
         Loop
+
         Do While SortArray(High) > List_Separator
             High = High - 1
         Loop
+
         If Low <= High Then
             temp = SortArray(Low)
             SortArray(Low) = SortArray(High)
             SortArray(High) = temp
             Low = Low + 1
             High = High - 1
+
         End If
+
     Loop
+
     If First < High Then General_Quick_Sort SortArray, First, High
     If Low < Last Then General_Quick_Sort SortArray, Low, Last
+
 End Sub
 
-
 Public Function GAeneral_Load_Picture_From_Resource(ByVal picture_file_name As String) As IPicture
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 6/11/2005
-'Loads a picture from a resource file and returns it
-'**************************************************************
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 6/11/2005
+    'Loads a picture from a resource file and returns it
+    '**************************************************************
 
-'On Error GoTo ErrorHandler
+    'On Error GoTo ErrorHandler
 
-If Extract_File(interface, App.Path & "\..\Recursos\OUTPUT\", picture_file_name, Windows_Temp_Dir, False) Then
-    Set GAeneral_Load_Picture_From_Resource = LoadPicture(Windows_Temp_Dir & picture_file_name)
-    Call Delete_File(Windows_Temp_Dir & picture_file_name)
-Else
-    Set GAeneral_Load_Picture_From_Resource = Nothing
-End If
+    If Extract_File(interface, App.Path & "\..\Recursos\OUTPUT\", picture_file_name, Windows_Temp_Dir, False) Then
+        Set GAeneral_Load_Picture_From_Resource = LoadPicture(Windows_Temp_Dir & picture_file_name)
+        Call Delete_File(Windows_Temp_Dir & picture_file_name)
+    Else
+        Set GAeneral_Load_Picture_From_Resource = Nothing
 
-Exit Function
+    End If
+
+    Exit Function
 
 ErrorHandler:
+
     If FileExist(Windows_Temp_Dir & picture_file_name, vbNormal) Then
         Call Delete_File(Windows_Temp_Dir & picture_file_name)
+
     End If
 
 End Function
 
 Public Function General_Load_Picture_From_Resource_Ex(ByVal picture_file_name As String) As IPicture
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 2/2/2006
-'Loads a picture from a resource file loaded in memory and returns it
-'**************************************************************
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 2/2/2006
+    'Loads a picture from a resource file loaded in memory and returns it
+    '**************************************************************
 
-On Error GoTo ErrorHandler
+    On Error GoTo ErrorHandler
 
-Dim bytArr() As Byte
-    
+    Dim bytArr() As Byte
 
+    If Extract_File_EX(interface, App.Path & "\..\Recursos\OUTPUT\", picture_file_name, bytArr()) Then
+        Set General_Load_Picture_From_Resource_Ex = General_Load_Picture_From_BArray(bytArr())
+    Else
+        Set General_Load_Picture_From_Resource_Ex = Nothing
 
-If Extract_File_EX(interface, App.Path & "\..\Recursos\OUTPUT\", picture_file_name, bytArr()) Then
-    Set General_Load_Picture_From_Resource_Ex = General_Load_Picture_From_BArray(bytArr())
-Else
-    Set General_Load_Picture_From_Resource_Ex = Nothing
-End If
+    End If
 
-Exit Function
+    Exit Function
 
 ErrorHandler:
 
 End Function
 
 Public Function General_Load_Picture_From_BArray(ByRef bytArr() As Byte) As IPicture
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 2/2/2006
-'Loads a picture from a byte array
-'**************************************************************
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 2/2/2006
+    'Loads a picture from a byte array
+    '**************************************************************
 
-On Error GoTo ErrorHandler
+    On Error GoTo ErrorHandler
 
-Dim LowerBound As Long
-Dim ByteCount As Long
-Dim hMem As Long
-Dim lpMem As Long
-Dim IID_IPicture(15) As Long
-Dim istm As stdole.IUnknown
+    Dim LowerBound       As Long
+
+    Dim ByteCount        As Long
+
+    Dim hMem             As Long
+
+    Dim lpMem            As Long
+
+    Dim IID_IPicture(15) As Long
+
+    Dim istm             As stdole.IUnknown
     
-LowerBound = LBound(bytArr)
-ByteCount = (UBound(bytArr) - LowerBound) + 1
-hMem = GlobalAlloc(&H2, ByteCount)
-If hMem <> 0 Then
-    lpMem = GlobalLock(hMem)
-    If lpMem <> 0 Then
-        MoveMemory ByVal lpMem, bytArr(LowerBound), ByteCount
-        Call GlobalUnlock(hMem)
-        If CreateStreamOnHGlobal(hMem, 1, istm) = 0 Then
-            If CLSIDFromString(StrPtr("{7BF80980-BF32-101A-8BBB-00AA00300CAB}"), IID_IPicture(0)) = 0 Then
-                Call OleLoadPicture(ByVal ObjPtr(istm), ByteCount, 0, IID_IPicture(0), General_Load_Picture_From_BArray)
-            End If
-        End If
-    End If
-End If
+    LowerBound = LBound(bytArr)
+    ByteCount = (UBound(bytArr) - LowerBound) + 1
+    hMem = GlobalAlloc(&H2, ByteCount)
 
-Exit Function
+    If hMem <> 0 Then
+        lpMem = GlobalLock(hMem)
+
+        If lpMem <> 0 Then
+            MoveMemory ByVal lpMem, bytArr(LowerBound), ByteCount
+            Call GlobalUnlock(hMem)
+
+            If CreateStreamOnHGlobal(hMem, 1, istm) = 0 Then
+                If CLSIDFromString(StrPtr("{7BF80980-BF32-101A-8BBB-00AA00300CAB}"), IID_IPicture(0)) = 0 Then
+                    Call OleLoadPicture(ByVal ObjPtr(istm), ByteCount, 0, IID_IPicture(0), General_Load_Picture_From_BArray)
+
+                End If
+
+            End If
+
+        End If
+
+    End If
+
+    Exit Function
 
 ErrorHandler:
 

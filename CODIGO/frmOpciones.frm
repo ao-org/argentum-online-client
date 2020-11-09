@@ -334,181 +334,201 @@ Attribute VB_Exposed = False
 'Argentum Online 0.11.6
 '
 Option Explicit
-Private Bajar As Boolean
-Private Subir As Boolean
-Public bmoving As Boolean
-Public dX As Integer
-Public dy As Integer
+
+Private Bajar       As Boolean
+
+Private Subir       As Boolean
+
+Public bmoving      As Boolean
+
+Public dX           As Integer
+
+Public dy           As Integer
+
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
-Const MOUSE_MOVE As Long = &HF012&
+
+Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
-        (ByVal hwnd As Long, ByVal wMsg As Long, _
-        ByVal wParam As Long, lParam As Long) As Long
+
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 ' función Api para aplicar la transparencia a la ventana
-Private Declare Function SetLayeredWindowAttributes Lib "user32" _
-    (ByVal hwnd As Long, _
-     ByVal crKey As Long, _
-     ByVal bAlpha As Byte, _
-     ByVal dwFlags As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" _
-    (ByVal hwnd As Long, _
-     ByVal nIndex As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" _
-    (ByVal hwnd As Long, _
-     ByVal nIndex As Long, _
-     ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 'constantes
 Private Const GWL_EXSTYLE = (-20)
+
 Private Const LWA_ALPHA = &H2
+
 Private Const WS_EX_LAYERED = &H80000
 
+Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
-Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, _
-  ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 Private Const HWND_TOPMOST = -1
+
 Private Const HWND_NOTOPMOST = -2
+
 Private Const SWP_NOMOVE = &H2
+
 Private Const SWP_NOSIZE = &H1
+
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
-On Error Resume Next
+
+    On Error Resume Next
   
-Dim msg As Long
+    Dim msg As Long
   
     msg = GetWindowLong(hwnd, GWL_EXSTYLE)
          
-       If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
-          Is_Transparent = True
-       Else
-          Is_Transparent = False
-       End If
+    If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
+        Is_Transparent = True
+    Else
+        Is_Transparent = False
+
+    End If
   
     If Err Then
-       Is_Transparent = False
+        Is_Transparent = False
+
     End If
   
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, _
-                                      Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
   
-Dim msg As Long
+    Dim msg As Long
   
-On Error Resume Next
+    On Error Resume Next
   
-If Valor < 0 Or Valor > 255 Then
-   Aplicar_Transparencia = 1
-Else
-   msg = GetWindowLong(hwnd, GWL_EXSTYLE)
-   msg = msg Or WS_EX_LAYERED
+    If Valor < 0 Or Valor > 255 Then
+        Aplicar_Transparencia = 1
+    Else
+        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+        msg = msg Or WS_EX_LAYERED
      
-   SetWindowLong hwnd, GWL_EXSTYLE, msg
+        SetWindowLong hwnd, GWL_EXSTYLE, msg
      
-   'Establece la transparencia
-   SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
+        'Establece la transparencia
+        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
   
-   Aplicar_Transparencia = 0
+        Aplicar_Transparencia = 0
   
-End If
+    End If
   
-  
-If Err Then
-   Aplicar_Transparencia = 2
-End If
+    If Err Then
+        Aplicar_Transparencia = 2
+
+    End If
   
 End Function
 
 Private Sub Alpha_Change()
-AlphaMacro = Alpha.value
+    AlphaMacro = Alpha.value
+
 End Sub
 
 Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-        If OcultarMacrosAlCastear = 1 Then
-            OcultarMacrosAlCastear = 0
-        Else
-            OcultarMacrosAlCastear = 1
-        End If
+
+    If OcultarMacrosAlCastear = 1 Then
+        OcultarMacrosAlCastear = 0
+    Else
+        OcultarMacrosAlCastear = 1
+
+    End If
         
     If OcultarMacrosAlCastear = 0 Then
         Check1.Picture = Nothing
     Else
         Check1.Picture = LoadInterface("config_stick.bmp")
+
     End If
         
 End Sub
 
 Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-If PermitirMoverse = 1 Then
-    PermitirMoverse = 0
-Else
-    PermitirMoverse = 1
-End If
+
+    If PermitirMoverse = 1 Then
+        PermitirMoverse = 0
+    Else
+        PermitirMoverse = 1
+
+    End If
 
     If PermitirMoverse = 0 Then
         Check4.Picture = Nothing
     Else
         Check4.Picture = LoadInterface("config_stick.bmp")
+
     End If
+
 End Sub
 
 Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-If MoverVentana = 1 Then
-    MoverVentana = 0
-Else
-    MoverVentana = 1
-End If
+
+    If MoverVentana = 1 Then
+        MoverVentana = 0
+    Else
+        MoverVentana = 1
+
+    End If
 
     If MoverVentana = 0 Then
         Check5.Picture = Nothing
     Else
         Check5.Picture = LoadInterface("config_stick.bmp")
+
     End If
+
 End Sub
 
-
 Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-If CursoresGraficos = 1 Then
-    Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini", "OPCIONES", "CursoresGraficos", 0)
-    MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
-Else
-    CursoresGraficos = 1
-    Call FormParser.Parse_Form(Me)
-    Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini", "OPCIONES", "CursoresGraficos", 1)
-    
-End If
 
+    If CursoresGraficos = 1 Then
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini", "OPCIONES", "CursoresGraficos", 0)
+        MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
+    Else
+        CursoresGraficos = 1
+        Call FormParser.Parse_Form(Me)
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini", "OPCIONES", "CursoresGraficos", 1)
+    
+    End If
 
     If CursoresGraficos = 0 Then
         Check2.Picture = Nothing
     Else
         Check2.Picture = LoadInterface("config_stick.bmp")
+
     End If
+
 End Sub
 
-
 Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-        If InvertirSonido = 1 Then
-            InvertirSonido = 0
+
+    If InvertirSonido = 1 Then
+        InvertirSonido = 0
             
-            Sound.InvertirSonido = False
-        Else
-            InvertirSonido = 1
-            Sound.InvertirSonido = True
-        End If
+        Sound.InvertirSonido = False
+    Else
+        InvertirSonido = 1
+        Sound.InvertirSonido = True
+
+    End If
         
-        If InvertirSonido = 0 Then
-            chkInvertir.Picture = Nothing
-        Else
-            chkInvertir.Picture = LoadInterface("config_stick.bmp")
-        End If
+    If InvertirSonido = 0 Then
+        chkInvertir.Picture = Nothing
+    Else
+        chkInvertir.Picture = LoadInterface("config_stick.bmp")
+
+    End If
+
 End Sub
 
 Private Sub chkInvertir2_Click()
@@ -517,181 +537,237 @@ End Sub
 
 Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
-Call Sound.Sound_Play(SND_CLICK)
+    Call Sound.Sound_Play(SND_CLICK)
 
-Select Case Index
-    Case 0
-       If Musica <> CONST_DESHABILITADA Then
-            Sound.Music_Stop
-            Musica = CONST_DESHABILITADA
-            scrMidi.Enabled = False
-        Else
-            Musica = CONST_MP3
-          scrMidi.Enabled = True
-           Sound.NextMusic = MapDat.music_numberHi
-             Sound.Fading = 100
-        End If
-        If Musica = 0 Then
-            chko(0).Picture = Nothing
-        Else
-            chko(0).Picture = LoadInterface("config_stick.bmp")
-        End If
-    Case 1
-        If fX = 1 Then
-            fX = 0
-            chko(2).Enabled = False
-            scrVolume.Enabled = False
+    Select Case Index
+
+        Case 0
+
+            If Musica <> CONST_DESHABILITADA Then
+                Sound.Music_Stop
+                Musica = CONST_DESHABILITADA
+                scrMidi.Enabled = False
+            Else
+                Musica = CONST_MP3
+                scrMidi.Enabled = True
+                Sound.NextMusic = MapDat.music_numberHi
+                Sound.Fading = 100
+
+            End If
+
+            If Musica = 0 Then
+                chko(0).Picture = Nothing
+            Else
+                chko(0).Picture = LoadInterface("config_stick.bmp")
+
+            End If
+
+        Case 1
+
+            If fX = 1 Then
+                fX = 0
+                chko(2).Enabled = False
+                scrVolume.Enabled = False
             
-            Call Sound.Sound_Stop_All
-        Else
-            fX = 1
-            chko(2).Enabled = True
-            scrVolume.Enabled = True
-        End If
+                Call Sound.Sound_Stop_All
+            Else
+                fX = 1
+                chko(2).Enabled = True
+                scrVolume.Enabled = True
+
+            End If
         
-        If fX = 0 Then
-            chko(1).Picture = Nothing
-        Else
-            chko(1).Picture = LoadInterface("config_stick.bmp")
-        End If
-    Case 2
-        If FxNavega = 1 Then
-            FxNavega = 0
-        Else
-            FxNavega = 1
-        End If
+            If fX = 0 Then
+                chko(1).Picture = Nothing
+            Else
+                chko(1).Picture = LoadInterface("config_stick.bmp")
+
+            End If
+
+        Case 2
+
+            If FxNavega = 1 Then
+                FxNavega = 0
+            Else
+                FxNavega = 1
+
+            End If
         
-        If FxNavega = 0 Then
-            chko(2).Picture = Nothing
-        Else
-            chko(2).Picture = LoadInterface("config_stick.bmp")
-        End If
-    Case 3
-        If AmbientalActivated = 1 Then
+            If FxNavega = 0 Then
+                chko(2).Picture = Nothing
+            Else
+                chko(2).Picture = LoadInterface("config_stick.bmp")
+
+            End If
+
+        Case 3
+
+            If AmbientalActivated = 1 Then
                 HScroll1.Enabled = False
                 AmbientalActivated = 0
                 Sound.LastAmbienteActual = 0
                 Sound.AmbienteActual = 0
                 Sound.Ambient_Stop
-        Else
+            Else
                 HScroll1.Enabled = True
                 AmbientalActivated = 1
                 Call AmbientarAudio(UserMap)
-        End If
-        If AmbientalActivated = 0 Then
-            chko(3).Picture = Nothing
-        Else
-            chko(3).Picture = LoadInterface("config_stick.bmp")
-        End If
-End Select
+
+            End If
+
+            If AmbientalActivated = 0 Then
+                chko(3).Picture = Nothing
+            Else
+                chko(3).Picture = LoadInterface("config_stick.bmp")
+
+            End If
+
+    End Select
 
 End Sub
 
 Private Sub cmdayuda_Click()
-Call FrmGmAyuda.Show
+    Call FrmGmAyuda.Show
+
 End Sub
 
 Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdayuda.Tag = "0" Then
         cmdayuda.Picture = LoadInterface("config_ayuda.bmp")
         cmdayuda.Tag = "1"
+
     End If
+
 End Sub
+
 Private Sub discord_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If discord.Tag = "0" Then
         discord.Picture = LoadInterface("config_discord.bmp")
         discord.Tag = "1"
+
     End If
     
-cmdweb = Nothing
-cmdweb.Tag = "0"
-instagram = Nothing
-instagram.Tag = "0"
-facebook = Nothing
-facebook.Tag = "0"
+    cmdweb = Nothing
+    cmdweb.Tag = "0"
+    instagram = Nothing
+    instagram.Tag = "0"
+    facebook = Nothing
+    facebook.Tag = "0"
+
 End Sub
+
 Private Sub cmdweb_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdweb.Tag = "0" Then
         cmdweb.Picture = LoadInterface("config_web.bmp")
         cmdweb.Tag = "1"
+
     End If
     
     discord = Nothing
-discord.Tag = "0"
-instagram = Nothing
-instagram.Tag = "0"
-facebook = Nothing
-facebook.Tag = "0"
+    discord.Tag = "0"
+    instagram = Nothing
+    instagram.Tag = "0"
+    facebook = Nothing
+    facebook.Tag = "0"
+
 End Sub
 
 Private Sub instagram_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If instagram.Tag = "0" Then
         instagram.Picture = LoadInterface("config_instagram.bmp")
         instagram.Tag = "1"
+
     End If
     
-discord = Nothing
-discord.Tag = "0"
-cmdweb = Nothing
-cmdweb.Tag = "0"
-facebook = Nothing
-facebook.Tag = "0"
+    discord = Nothing
+    discord.Tag = "0"
+    cmdweb = Nothing
+    cmdweb.Tag = "0"
+    facebook = Nothing
+    facebook.Tag = "0"
+
 End Sub
+
 Private Sub facebook_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If facebook.Tag = "0" Then
         facebook.Picture = LoadInterface("config_facebook.bmp")
         facebook.Tag = "1"
+
     End If
 
-discord = Nothing
-discord.Tag = "0"
-cmdweb = Nothing
-cmdweb.Tag = "0"
-instagram = Nothing
-instagram.Tag = "0"
+    discord = Nothing
+    discord.Tag = "0"
+    cmdweb = Nothing
+    cmdweb.Tag = "0"
+    instagram = Nothing
+    instagram.Tag = "0"
+
 End Sub
+
 Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command1.Tag = "0" Then
         Command1.Picture = LoadInterface("config_teclas.bmp")
         Command1.Tag = "1"
+
     End If
-        cmdCerrar = Nothing
-cmdCerrar.Tag = "0"
+
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
     
 End Sub
+
 Private Sub cmdcerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdCerrar.Tag = "0" Then
         cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
         cmdCerrar.Tag = "1"
+
     End If
+
     cmdChangePassword = Nothing
-cmdChangePassword.Tag = "0"
-Command1 = Nothing
-Command1.Tag = "0"
+    cmdChangePassword.Tag = "0"
+    Command1 = Nothing
+    Command1.Tag = "0"
+
 End Sub
+
 Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdChangePassword.Tag = "0" Then
         cmdChangePassword.Picture = LoadInterface("config_contraseñ.bmp")
         cmdChangePassword.Tag = "1"
+
     End If
+
     cmdCerrar = Nothing
-cmdCerrar.Tag = "0"
+    cmdCerrar.Tag = "0"
+
 End Sub
 
 Private Sub cmdWeb_Click()
-ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+
 End Sub
 
 Private Sub Command5_Click()
-MsgBox ("Proximamente")
+    MsgBox ("Proximamente")
+
 End Sub
 
 Private Sub discord_Click()
-ShellExecute Me.hwnd, "open", "https://discord.gg/e3juVbF", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://discord.gg/e3juVbF", "", "", 0
+
 End Sub
 
 Private Sub facebook_Click()
-ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+
 End Sub
 
 Private Sub Form_Load()
@@ -700,223 +776,237 @@ Private Sub Form_Load()
     Me.Picture = LoadInterface("config.bmp")
     
 End Sub
+
 Private Sub moverForm()
+
     Dim res As Long
+
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+
 End Sub
 
 Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-'    If Check3 Then
+
+    '    If Check3 Then
     '    SwapMouseButton 1
-   ' Else
-     '   SwapMouseButton 0
- '   End If
+    ' Else
+    '   SwapMouseButton 0
+    '   End If
 End Sub
+
 Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-        If FPSFLAG = 1 Then
-            FPSFLAG = 0
-        Else
-            FPSFLAG = 1
-        End If
-        
+
+    If FPSFLAG = 1 Then
+        FPSFLAG = 0
+    Else
+        FPSFLAG = 1
+
+    End If
         
     If FPSFLAG = 0 Then
         Check6.Picture = Nothing
     Else
         Check6.Picture = LoadInterface("config_stick.bmp")
+
     End If
+
 End Sub
+
 Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-        If CopiarDialogoAConsola = 1 Then
-            CopiarDialogoAConsola = 0
-        Else
-            CopiarDialogoAConsola = 1
-        End If
+
+    If CopiarDialogoAConsola = 1 Then
+        CopiarDialogoAConsola = 0
+    Else
+        CopiarDialogoAConsola = 1
+
+    End If
         
     If CopiarDialogoAConsola = 0 Then
         Check9.Picture = Nothing
     Else
         Check9.Picture = LoadInterface("config_stick.bmp")
+
     End If
+
 End Sub
 
 Private Sub Command2_Click()
-Bajar = True
-Subir = False
-Timer1.Enabled = True
+    Bajar = True
+    Subir = False
+    Timer1.Enabled = True
+
 End Sub
 
 Private Sub Command3_Click()
-Subir = True
-Bajar = False
-Timer1.Enabled = True
+    Subir = True
+    Bajar = False
+    Timer1.Enabled = True
+
 End Sub
-
-
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-moverForm
-cmdayuda = Nothing
-cmdayuda.Tag = "0"
-discord = Nothing
-discord.Tag = "0"
-cmdweb = Nothing
-cmdweb.Tag = "0"
-instagram = Nothing
-instagram.Tag = "0"
-facebook = Nothing
-facebook.Tag = "0"
-Command1 = Nothing
-Command1.Tag = "0"
-cmdCerrar = Nothing
-cmdCerrar.Tag = "0"
-cmdChangePassword = Nothing
-cmdChangePassword.Tag = "0"
+    moverForm
+    cmdayuda = Nothing
+    cmdayuda.Tag = "0"
+    discord = Nothing
+    discord.Tag = "0"
+    cmdweb = Nothing
+    cmdweb.Tag = "0"
+    instagram = Nothing
+    instagram.Tag = "0"
+    facebook = Nothing
+    facebook.Tag = "0"
+    Command1 = Nothing
+    Command1.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
+    cmdChangePassword = Nothing
+    cmdChangePassword.Tag = "0"
+
 End Sub
+
 Private Sub cmdcerrar_Click()
     Call GuardarOpciones
     Me.Visible = False
     frmmain.SetFocus
+
 End Sub
+
 Private Sub cmdChangePassword_Click()
     Call frmNewPassword.Show(vbModeless, Me)
+
 End Sub
+
 Private Sub Command1_Click()
     Call frmCustomKeys.Show(vbModeless, Me)
+
 End Sub
+
 Public Sub Init()
-
-
     
     If CopiarDialogoAConsola = 0 Then
         Check9.Picture = Nothing
     Else
         Check9.Picture = LoadInterface("config_stick.bmp")
+
     End If
-    
     
     If MoverVentana = 0 Then
         Check5.Picture = Nothing
     Else
         Check5.Picture = LoadInterface("config_stick.bmp")
+
     End If
-    
 
     If CursoresGraficos = 0 Then
         Check2.Picture = Nothing
     Else
         Check2.Picture = LoadInterface("config_stick.bmp")
+
     End If
-
-
 
     If PermitirMoverse = 0 Then
         Check4.Picture = Nothing
     Else
         Check4.Picture = LoadInterface("config_stick.bmp")
-    End If
 
+    End If
     
     If Musica = 0 Then
         chko(0).Picture = Nothing
     Else
         chko(0).Picture = LoadInterface("config_stick.bmp")
+
     End If
     
     If FxNavega = 0 Then
         chko(2).Picture = Nothing
     Else
         chko(2).Picture = LoadInterface("config_stick.bmp")
+
     End If
-    
     
     If AmbientalActivated = 0 Then
         chko(3).Picture = Nothing
     Else
         chko(3).Picture = LoadInterface("config_stick.bmp")
+
     End If
     
     If fX = 0 Then
         chko(1).Picture = Nothing
     Else
         chko(1).Picture = LoadInterface("config_stick.bmp")
+
     End If
-    
     
     If InvertirSonido = 0 Then
         chkInvertir.Picture = Nothing
     Else
         chkInvertir.Picture = LoadInterface("config_stick.bmp")
+
     End If
-    
-    
     
     If FPSFLAG = 0 Then
         Check6.Picture = Nothing
     Else
         Check6.Picture = LoadInterface("config_stick.bmp")
+
     End If
-    
-    
     
     If OcultarMacrosAlCastear = 0 Then
         Check1.Picture = Nothing
     Else
         Check1.Picture = LoadInterface("config_stick.bmp")
+
     End If
-
-    
-        
-
     
     scrVolume.value = VolFX
     HScroll1.value = VolAmbient
     scrMidi.value = VolMusic
     
-    
     Alpha.value = AlphaMacro
     
-    
     scrSens.value = SensibilidadMouse
-
-
     
-Me.Show vbModeless, frmmain
+    Me.Show vbModeless, frmmain
 
 End Sub
 
 Private Sub HScroll1_Change()
-Sound.Ambient_Volume_Set HScroll1.value
-VolAmbient = HScroll1.value
-End Sub
+    Sound.Ambient_Volume_Set HScroll1.value
+    VolAmbient = HScroll1.value
 
+End Sub
 
 Private Sub instagram_Click()
-ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+
 End Sub
 
-
 Private Sub scrMidi_Change()
-If Musica <> CONST_DESHABILITADA Then
-    Sound.Music_Volume_Set scrMidi.value
-    Sound.VolumenActualMusicMax = scrMidi.value
-    VolMusic = Sound.VolumenActualMusicMax
-End If
+
+    If Musica <> CONST_DESHABILITADA Then
+        Sound.Music_Volume_Set scrMidi.value
+        Sound.VolumenActualMusicMax = scrMidi.value
+        VolMusic = Sound.VolumenActualMusicMax
+
+    End If
 
 End Sub
 
 Private Sub scrSens_Change()
-MouseS = scrSens.value
-SensibilidadMouse = MouseS
-Call General_Set_Mouse_Speed(MouseS)
-txtMSens.Caption = scrSens.value
+    MouseS = scrSens.value
+    SensibilidadMouse = MouseS
+    Call General_Set_Mouse_Speed(MouseS)
+    txtMSens.Caption = scrSens.value
+
 End Sub
 
 Private Sub scrVolume_Change()
-Sound.VolumenActual = scrVolume.value
-VolFX = Sound.VolumenActual
+    Sound.VolumenActual = scrVolume.value
+    VolFX = Sound.VolumenActual
 
 End Sub
-
 

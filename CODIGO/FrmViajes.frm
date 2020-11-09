@@ -78,37 +78,49 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-If (KeyAscii = 27) Then
-    Unload Me
-End If
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Image1.Tag = "1" Then
-         Image1.Picture = Nothing
-         Image2.Picture = Nothing
-         Image1.Tag = "0"
+
+    If Image1.Tag = "1" Then
+        Image1.Picture = Nothing
+        Image2.Picture = Nothing
+        Image1.Tag = "0"
+
     End If
+
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image1.Tag = "0" Then
-         Image1.Picture = LoadInterface("viajarhover" & ViajarInterface & ".bmp")
-         Image2.Picture = LoadInterface("viaje" & ViajarInterface & "ok.bmp")
-         Image1.Tag = "1"
+        Image1.Picture = LoadInterface("viajarhover" & ViajarInterface & ".bmp")
+        Image2.Picture = LoadInterface("viaje" & ViajarInterface & "ok.bmp")
+        Image1.Tag = "1"
+
     End If
+
 End Sub
 
-
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-Dim destino As Byte
 
-destino = List1.ListIndex + 1
-If destino <= 0 Then Exit Sub
-Unload Me
-Call WriteCompletarViaje(Destinos(destino).CityDest, Destinos(destino).costo)
+    Dim destino As Byte
+
+    destino = List1.ListIndex + 1
+
+    If destino <= 0 Then Exit Sub
+    Unload Me
+    Call WriteCompletarViaje(Destinos(destino).CityDest, Destinos(destino).costo)
+
 End Sub

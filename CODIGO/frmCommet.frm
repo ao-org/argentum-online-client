@@ -93,68 +93,88 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public nombre As String
-Public T As TIPO
+
+Public T      As TIPO
+
 Public Enum TIPO
+
     ALIANZA = 1
     PAZ = 2
     RECHAZOPJ = 3
+
 End Enum
 
 Public Sub SetTipo(ByVal T As TIPO)
+
     Select Case T
+
         Case TIPO.ALIANZA
             Me.Caption = "Detalle de solicitud de alianza"
             Me.Text1.MaxLength = 200
+
         Case TIPO.PAZ
             Me.Caption = "Detalle de solicitud de Paz"
             Me.Text1.MaxLength = 200
+
         Case TIPO.RECHAZOPJ
             Me.Caption = "Detalle de rechazo de membresía"
             Me.Text1.MaxLength = 50
-    End Select
-End Sub
 
+    End Select
+
+End Sub
 
 Private Sub Command1_Click()
 
+    If Text1 = "" Then
+        If T = PAZ Or T = ALIANZA Then
+            MsgBox "Debes redactar un mensaje solicitando la paz o alianza al líder de " & nombre
+        Else
+            MsgBox "Debes indicar el motivo por el cual rechazas la membresía de " & nombre
 
-If Text1 = "" Then
-    If T = PAZ Or T = ALIANZA Then
-        MsgBox "Debes redactar un mensaje solicitando la paz o alianza al líder de " & nombre
-    Else
-        MsgBox "Debes indicar el motivo por el cual rechazas la membresía de " & nombre
-    End If
-    Exit Sub
-End If
-
-If T = PAZ Then
-    Call WriteGuildOfferPeace(nombre, Replace(Text1, vbCrLf, "º"))
-ElseIf T = ALIANZA Then
-    Call WriteGuildOfferAlliance(nombre, Replace(Text1, vbCrLf, "º"))
-ElseIf T = RECHAZOPJ Then
-    Call WriteGuildRejectNewMember(nombre, Replace(Replace(Text1.Text, ",", " "), vbCrLf, " "))
-    'Sacamos el char de la lista de aspirantes
-    Dim i As Long
-    For i = 0 To frmGuildLeader.solicitudes.ListCount - 1
-        If frmGuildLeader.solicitudes.List(i) = nombre Then
-            frmGuildLeader.solicitudes.RemoveItem i
-            Exit For
         End If
-    Next i
+
+        Exit Sub
+
+    End If
+
+    If T = PAZ Then
+        Call WriteGuildOfferPeace(nombre, Replace(Text1, vbCrLf, "º"))
+    ElseIf T = ALIANZA Then
+        Call WriteGuildOfferAlliance(nombre, Replace(Text1, vbCrLf, "º"))
+    ElseIf T = RECHAZOPJ Then
+        Call WriteGuildRejectNewMember(nombre, Replace(Replace(Text1.Text, ",", " "), vbCrLf, " "))
+
+        'Sacamos el char de la lista de aspirantes
+        Dim i As Long
+
+        For i = 0 To frmGuildLeader.solicitudes.ListCount - 1
+
+            If frmGuildLeader.solicitudes.List(i) = nombre Then
+                frmGuildLeader.solicitudes.RemoveItem i
+                Exit For
+
+            End If
+
+        Next i
     
-    Me.Hide
-    Unload frmCharInfo
-    'Call SendData("GLINFO")
-End If
-Unload Me
+        Me.Hide
+        Unload frmCharInfo
+
+        'Call SendData("GLINFO")
+    End If
+
+    Unload Me
 
 End Sub
 
 Private Sub Command2_Click()
-Unload Me
+    Unload Me
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
 

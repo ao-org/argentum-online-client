@@ -492,22 +492,27 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Command1_Click()
-Frame2.Visible = True
-Frame1.Visible = False
+    Frame2.Visible = True
+    Frame1.Visible = False
+
 End Sub
 
 Private Sub Command2_Click()
-Frame2.Visible = False
-Frame1.Visible = True
+    Frame2.Visible = False
+    Frame1.Visible = True
+
 End Sub
 
 Private Sub Command3_Click()
-Unload Me
-Manual.Show
+    Unload Me
+    Manual.Show
+
 End Sub
 
 Private Sub Label21_Click()
-Unload Me
-Manual_Atributos.Show
+    Unload Me
+    Manual_Atributos.Show
+
 End Sub

@@ -168,11 +168,14 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cmdOk_Click()
+
     Dim T() As String
-    Dim i As Long, N As Long, Pos As Long
+
+    Dim i   As Long, N As Long, Pos As Long
     
     If Len(txtMotd.Text) >= 2 Then
-        If Right$(txtMotd.Text, 2) = vbCrLf Then txtMotd.Text = left$(txtMotd.Text, Len(txtMotd.Text) - 2)
+        If Right$(txtMotd.Text, 2) = vbCrLf Then txtMotd.Text = Left$(txtMotd.Text, Len(txtMotd.Text) - 2)
+
     End If
     
     T = Split(txtMotd.Text, vbCrLf)
@@ -182,50 +185,63 @@ Private Sub cmdOk_Click()
     For i = LBound(T) To UBound(T)
         N = 0
         Pos = InStr(1, T(i), "~")
+
         Do While Pos > 0 And Pos < Len(T(i))
             N = N + 1
             Pos = InStr(Pos + 1, T(i), "~")
         Loop
+
         If N <> 5 Then
             MsgBox "Error en el formato de la linea " & i + 1 & "."
             Exit Sub
+
         End If
+
     Next i
     
     Call WriteSetMOTD(txtMotd.Text)
     Unload Me
+
 End Sub
 
 'A partir de Command2_Click son todos buttons para agregar color al texto
 Private Sub cmdAzul_Click()
     txtMotd.Text = txtMotd & "~50~70~250~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
+
 End Sub
 
 Private Sub cmdRojo_Click()
     txtMotd.Text = txtMotd & "~255~0~0~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
+
 End Sub
 
 Private Sub cmdBlanco_Click()
     txtMotd.Text = txtMotd & "~255~255~255~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
+
 End Sub
 
 Private Sub cmdGris_Click()
     txtMotd.Text = txtMotd & "~157~157~157~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
+
 End Sub
 
 Private Sub cmdAmarillo_Click()
     txtMotd.Text = txtMotd & "~244~244~0~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
+
 End Sub
 
 Private Sub cmdMorado_Click()
     txtMotd.Text = txtMotd & "~128~0~128~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
+
 End Sub
 
 Private Sub cmdVerde_Click()
-  txtMotd.Text = txtMotd & "~23~104~26~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
+    txtMotd.Text = txtMotd & "~23~104~26~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
+
 End Sub
 
 Private Sub cmdMarron_Click()
     txtMotd.Text = txtMotd & "~97~58~31~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
+
 End Sub
 

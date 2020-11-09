@@ -395,454 +395,527 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private ItemRecibido(1 To 10) As Obj
+
 Private Sub adjItem_Click()
-lstInv.Enabled = Not lstInv.Enabled
-txCantidad.Enabled = Not txCantidad.Enabled
-ListaAenviar.Enabled = Not ListaAenviar.Enabled
-Command1.Enabled = Not Command1.Enabled
-Command2.Enabled = Not Command2.Enabled
-If lstInv.Enabled Then
-    adjItem.Picture = LoadInterface("check-amarillo.bmp")
-    lblCosto.Caption = "Gratis"
-Else
-    lblCosto.Caption = "Gratis"
-    adjItem.Picture = Nothing
-End If
+    lstInv.Enabled = Not lstInv.Enabled
+    txCantidad.Enabled = Not txCantidad.Enabled
+    ListaAenviar.Enabled = Not ListaAenviar.Enabled
+    Command1.Enabled = Not Command1.Enabled
+    Command2.Enabled = Not Command2.Enabled
+
+    If lstInv.Enabled Then
+        adjItem.Picture = LoadInterface("check-amarillo.bmp")
+        lblCosto.Caption = "Gratis"
+    Else
+        lblCosto.Caption = "Gratis"
+        adjItem.Picture = Nothing
+
+    End If
+
 End Sub
 
-
 Private Sub cmdClean_Click()
-txTo.Text = ""
-txSndMsg.Text = ""
-'adjItem.value = 0
-Dim i As Byte
+    txTo.Text = ""
+    txSndMsg.Text = ""
+
+    'adjItem.value = 0
+    Dim i As Byte
+
     Call lstInv.Clear
+
     'Fill the inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
+
         If frmmain.Inventario.OBJIndex(i) <> 0 Then
             lstInv.AddItem frmmain.Inventario.ItemName(i) & " - " & frmmain.Inventario.Amount(i)
         Else
             lstInv.AddItem "Vacio"
+
         End If
+
     Next i
-    
     
     ListaAenviar.Clear
 
-For i = 1 To 10
-    ItemLista(i).OBJIndex = 0
-    ItemLista(i).Amount = 0
-    ListaAenviar.AddItem "Nada"
-Next i
+    For i = 1 To 10
+        ItemLista(i).OBJIndex = 0
+        ItemLista(i).Amount = 0
+        ListaAenviar.AddItem "Nada"
+    Next i
 
-
-ItemCount = 0
-Label4.Caption = "No agregaste ningun item"
+    ItemCount = 0
+    Label4.Caption = "No agregaste ningun item"
 
 End Sub
 
 Private Sub cmdDel_Click()
 
-If lstMsg.List(lstMsg.ListIndex) = "" Then Exit Sub
+    If lstMsg.List(lstMsg.ListIndex) = "" Then Exit Sub
 
-Call WriteBorrarCorreo(lstMsg.ListIndex + 1)
+    Call WriteBorrarCorreo(lstMsg.ListIndex + 1)
+
 End Sub
 
 Private Sub cmdDel_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-           'cmdDel.Picture = LoadInterface("correo_borrarpress.bmp")
-            'cmdDel.Tag = "1"
+
+    'cmdDel.Picture = LoadInterface("correo_borrarpress.bmp")
+    'cmdDel.Tag = "1"
 End Sub
 
 Private Sub cmdDel_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdDel.Tag = "0" Then
         cmdDel.Picture = LoadInterface("correo_borrarhover.bmp")
         cmdDel.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub cmdSave_Click()
-If lstMsg.ListIndex < 0 Then Exit Sub
-Call WriteRetirarItemCorreo(lstMsg.ListIndex + 1)
+
+    If lstMsg.ListIndex < 0 Then Exit Sub
+    Call WriteRetirarItemCorreo(lstMsg.ListIndex + 1)
+
 End Sub
 
 Private Sub cmdSave_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                'cmdSave.Picture = LoadInterface("correo_guardaritempress.bmp")
-                'cmdSave.Tag = "1"
+
+    'cmdSave.Picture = LoadInterface("correo_guardaritempress.bmp")
+    'cmdSave.Tag = "1"
 End Sub
 
 Private Sub cmdSave_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If cmdSave.Tag = "0" Then
+
+    If cmdSave.Tag = "0" Then
         cmdSave.Picture = LoadInterface("correo_guardaritemhover.bmp")
         cmdSave.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub cmdSend_Click()
-If txTo.Text = "" Then
-    MsgBox ("¡Ingrese el nick del destinatario!")
-    Exit Sub
-End If
 
-
-
-
-If adjItem Then
-    If Not IsNumeric(txCantidad.Text) Or txCantidad.Text < 1 Or txCantidad.Text > 9999 Or txCantidad.Text > frmmain.Inventario.Amount(lstInv.ListIndex + 1) Then
-        MsgBox ("¡Cantidad invalida!")
+    If txTo.Text = "" Then
+        MsgBox ("¡Ingrese el nick del destinatario!")
         Exit Sub
-    End If
-    If ItemCount <= 0 Then
-        MsgBox ("¡Seleccione el item que desea enviar!")
-        Exit Sub
-    End If
-    Call WriteSendCorreo(txTo.Text, txSndMsg.Text, ItemCount)
-Else
-    Call WriteSendCorreo(txTo.Text, txSndMsg.Text, 0)
-End If
-Unload Me
-Call cmdClean_Click
 
+    End If
+
+    If adjItem Then
+        If Not IsNumeric(txCantidad.Text) Or txCantidad.Text < 1 Or txCantidad.Text > 9999 Or txCantidad.Text > frmmain.Inventario.Amount(lstInv.ListIndex + 1) Then
+            MsgBox ("¡Cantidad invalida!")
+            Exit Sub
+
+        End If
+
+        If ItemCount <= 0 Then
+            MsgBox ("¡Seleccione el item que desea enviar!")
+            Exit Sub
+
+        End If
+
+        Call WriteSendCorreo(txTo.Text, txSndMsg.Text, ItemCount)
+    Else
+        Call WriteSendCorreo(txTo.Text, txSndMsg.Text, 0)
+
+    End If
+
+    Unload Me
+    Call cmdClean_Click
 
 End Sub
 
 Private Sub cmdSend_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                cmdSend.Picture = LoadInterface("correo_enviarpress.bmp")
-                cmdSend.Tag = "1"
+    cmdSend.Picture = LoadInterface("correo_enviarpress.bmp")
+    cmdSend.Tag = "1"
+
 End Sub
 
 Private Sub cmdSend_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If cmdSend.Tag = "0" Then
         cmdSend.Picture = LoadInterface("correo_enviarhover.bmp")
         cmdSend.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Command1_Click()
 
-If ItemCount = 0 Then
-Label4.Caption = "No adjuntaste nada:"
-End If
-
-
-If ListaAenviar.ListIndex < 0 Then
     If ItemCount = 0 Then
         Label4.Caption = "No adjuntaste nada:"
-    Else
-        Label4.Caption = ItemCount & " items adjuntos:"
+
     End If
-Exit Sub
-End If
-If ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0 Then Exit Sub
 
-ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0
-ListaAenviar.Clear
+    If ListaAenviar.ListIndex < 0 Then
+        If ItemCount = 0 Then
+            Label4.Caption = "No adjuntaste nada:"
+        Else
+            Label4.Caption = ItemCount & " items adjuntos:"
 
-Dim i As Long
-For i = 1 To 10
+        End If
 
-If ItemLista(i).OBJIndex = 0 Then
-    If i = 10 Then
-        ItemLista(i).OBJIndex = 0
-        ItemLista(i).Amount = 0
-        Exit For
+        Exit Sub
+
     End If
-        ItemLista(i).OBJIndex = ItemLista(i + 1).OBJIndex
-        ItemLista(i).Amount = ItemLista(i + 1).Amount
-        ItemLista(i + 1).OBJIndex = 0
-        ItemLista(i + 1).Amount = 0
-End If
-Next i
-    
 
-For i = 1 To 10
-    If ItemLista(i).OBJIndex > 0 Then
-        ListaAenviar.AddItem frmmain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
-        ItemCount = i
-    Else
-        ListaAenviar.AddItem "Nada"
+    If ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0 Then Exit Sub
+
+    ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0
+    ListaAenviar.Clear
+
+    Dim i As Long
+
+    For i = 1 To 10
+
+        If ItemLista(i).OBJIndex = 0 Then
+            If i = 10 Then
+                ItemLista(i).OBJIndex = 0
+                ItemLista(i).Amount = 0
+                Exit For
+
+            End If
+
+            ItemLista(i).OBJIndex = ItemLista(i + 1).OBJIndex
+            ItemLista(i).Amount = ItemLista(i + 1).Amount
+            ItemLista(i + 1).OBJIndex = 0
+            ItemLista(i + 1).Amount = 0
+
+        End If
+
+    Next i
+
+    For i = 1 To 10
+
+        If ItemLista(i).OBJIndex > 0 Then
+            ListaAenviar.AddItem frmmain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
+            ItemCount = i
+        Else
+            ListaAenviar.AddItem "Nada"
+
+        End If
+
+    Next i
+
+    If ItemLista(1).OBJIndex = 0 Then
+        ItemCount = 0
+        Label4.Caption = "No agregaste ningun item"
+        Exit Sub
+
     End If
-Next i
 
-If ItemLista(1).OBJIndex = 0 Then
-ItemCount = 0
-Label4.Caption = "No agregaste ningun item"
-Exit Sub
-End If
-
-
-Label4.Caption = ItemCount & " items adjuntos:"
-
+    Label4.Caption = ItemCount & " items adjuntos:"
 
 End Sub
 
 Private Sub Command1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-        Command1.Picture = LoadInterface("correo_quitarpress.bmp")
-        Command1.Tag = "1"
+    Command1.Picture = LoadInterface("correo_quitarpress.bmp")
+    Command1.Tag = "1"
+
 End Sub
 
 Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command1.Tag = "0" Then
         Command1.Picture = LoadInterface("correo_quitarhover.bmp")
         Command1.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Command2_Click()
 
-Dim i As Byte
-Dim Encontre As Boolean
-Dim Existia As Boolean
-Dim NoTieneCantidad As Boolean
+    Dim i               As Byte
 
-If frmmain.Inventario.Amount(lstInv.ListIndex + 1) = 0 Then Exit Sub
+    Dim Encontre        As Boolean
 
-If frmmain.Inventario.Amount(lstInv.ListIndex + 1) < txCantidad.Text Then
-    txCantidad.Text = frmmain.Inventario.Amount(lstInv.ListIndex + 1)
-End If
+    Dim Existia         As Boolean
 
+    Dim NoTieneCantidad As Boolean
 
-ListaAenviar.Clear
+    If frmmain.Inventario.Amount(lstInv.ListIndex + 1) = 0 Then Exit Sub
 
+    If frmmain.Inventario.Amount(lstInv.ListIndex + 1) < txCantidad.Text Then
+        txCantidad.Text = frmmain.Inventario.Amount(lstInv.ListIndex + 1)
 
+    End If
 
-For i = 1 To 10
-    If ItemLista(i).OBJIndex = CByte(lstInv.ListIndex + 1) Then
-        ItemLista(i).OBJIndex = CByte(lstInv.ListIndex + 1)
-        ItemLista(i).Amount = ItemLista(i).Amount + CInt(txCantidad.Text)
+    ListaAenviar.Clear
+
+    For i = 1 To 10
+
+        If ItemLista(i).OBJIndex = CByte(lstInv.ListIndex + 1) Then
+            ItemLista(i).OBJIndex = CByte(lstInv.ListIndex + 1)
+            ItemLista(i).Amount = ItemLista(i).Amount + CInt(txCantidad.Text)
         
-        If ItemLista(i).Amount > frmmain.Inventario.Amount(ItemLista(i).OBJIndex) Then
-            ItemLista(i).Amount = frmmain.Inventario.Amount(ItemLista(i).OBJIndex)
+            If ItemLista(i).Amount > frmmain.Inventario.Amount(ItemLista(i).OBJIndex) Then
+                ItemLista(i).Amount = frmmain.Inventario.Amount(ItemLista(i).OBJIndex)
+
+            End If
+        
+            Existia = True
+            Encontre = True
+            Exit For
+
         End If
-        
-        Existia = True
-        Encontre = True
-        Exit For
+
+    Next i
+
+    If Existia = False Then
+
+        For i = 1 To 10
+
+            If ItemLista(i).OBJIndex = 0 Then
+                ItemLista(i).OBJIndex = CByte(lstInv.ListIndex + 1)
+                ItemLista(i).Amount = CInt(txCantidad.Text)
+                Encontre = True
+                Exit For
+
+            End If
+
+        Next i
+
     End If
-Next i
 
+    For i = 1 To 10
 
+        If ItemLista(i).OBJIndex > 0 Then
+            ListaAenviar.AddItem frmmain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
+            ItemCount = i
+        Else
+            ListaAenviar.AddItem "Nada"
 
-If Existia = False Then
-For i = 1 To 10
-    If ItemLista(i).OBJIndex = 0 Then
-        ItemLista(i).OBJIndex = CByte(lstInv.ListIndex + 1)
-        ItemLista(i).Amount = CInt(txCantidad.Text)
-        Encontre = True
-        Exit For
-    End If
-Next i
-End If
+        End If
 
+    Next i
 
+    Label4.Caption = ItemCount & " items adjuntos:"
 
-For i = 1 To 10
-    If ItemLista(i).OBJIndex > 0 Then
-        ListaAenviar.AddItem frmmain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
-        ItemCount = i
-    Else
-        ListaAenviar.AddItem "Nada"
-    End If
-Next i
+    ListaAenviar.Refresh
 
-Label4.Caption = ItemCount & " items adjuntos:"
-
-ListaAenviar.Refresh
-
-If Not Encontre Then MsgBox ("Solo podes enviar hasta 10 items.")
+    If Not Encontre Then MsgBox ("Solo podes enviar hasta 10 items.")
 
 End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                'Command2.Picture = LoadInterface("correo_agregarpress.bmp")
-                'Command2.Tag = "1"
+
+    'Command2.Picture = LoadInterface("correo_agregarpress.bmp")
+    'Command2.Tag = "1"
 End Sub
 
 Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command2.Tag = "0" Then
         Command2.Picture = LoadInterface("correo_agregarhvoer.bmp")
         Command2.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Command3_Click()
-Me.Picture = LoadInterface("ventanacorreo.bmp")
-lstMsg.Visible = True
-txMensaje.Visible = True
-ListAdjuntos.Visible = True
-picitem.Visible = True
-lbItem.Visible = True
-lbFecha.Visible = True
-cmdDel.Visible = True
-cmdSave.Visible = True
-Command9.Visible = True
+    Me.Picture = LoadInterface("ventanacorreo.bmp")
+    lstMsg.Visible = True
+    txMensaje.Visible = True
+    ListAdjuntos.Visible = True
+    picitem.Visible = True
+    lbItem.Visible = True
+    lbFecha.Visible = True
+    cmdDel.Visible = True
+    cmdSave.Visible = True
+    Command9.Visible = True
 
+    txTo.Visible = False
+    txSndMsg.Visible = False
+    lstInv.Visible = False
+    txCantidad.Visible = False
+    ListaAenviar.Visible = False
+    picInvT.Visible = False
+    lblCosto.Visible = False
+    Command2.Visible = False
+    Command1.Visible = False
+    cmdSend.Visible = False
+    Command3.Visible = False
+    adjItem.Visible = False
+    Label4.Visible = False
 
-
-txTo.Visible = False
-txSndMsg.Visible = False
-lstInv.Visible = False
-txCantidad.Visible = False
-ListaAenviar.Visible = False
-picInvT.Visible = False
-lblCosto.Visible = False
-Command2.Visible = False
-Command1.Visible = False
-cmdSend.Visible = False
-Command3.Visible = False
-adjItem.Visible = False
-Label4.Visible = False
 End Sub
 
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-               ' Command3.Picture = LoadInterface("correo_atraspress.bmp")
-               ' Command3.Tag = "1"
+
+    ' Command3.Picture = LoadInterface("correo_atraspress.bmp")
+    ' Command3.Tag = "1"
 End Sub
 
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command3.Tag = "0" Then
         Command3.Picture = LoadInterface("correo_atrashover.bmp")
         Command3.Tag = "1"
+
     End If
+
 End Sub
 
 Private Sub Command9_Click()
-lstMsg.Visible = False
-txMensaje.Visible = False
-ListAdjuntos.Visible = False
-picitem.Visible = False
-lbItem.Visible = False
-lbFecha.Visible = False
-cmdDel.Visible = False
-cmdSave.Visible = False
-Command9.Visible = False
-txTo.Visible = True
-txSndMsg.Visible = True
-lstInv.Visible = True
-txCantidad.Visible = True
-ListaAenviar.Visible = True
-picInvT.Visible = True
-lblCosto.Visible = True
-Command2.Visible = True
-Command1.Visible = True
-cmdSend.Visible = True
-Command3.Visible = True
-adjItem.Visible = True
-Label4.Visible = True
-Me.Picture = LoadInterface("ventananuevocorreo.bmp")
+    lstMsg.Visible = False
+    txMensaje.Visible = False
+    ListAdjuntos.Visible = False
+    picitem.Visible = False
+    lbItem.Visible = False
+    lbFecha.Visible = False
+    cmdDel.Visible = False
+    cmdSave.Visible = False
+    Command9.Visible = False
+    txTo.Visible = True
+    txSndMsg.Visible = True
+    lstInv.Visible = True
+    txCantidad.Visible = True
+    ListaAenviar.Visible = True
+    picInvT.Visible = True
+    lblCosto.Visible = True
+    Command2.Visible = True
+    Command1.Visible = True
+    cmdSend.Visible = True
+    Command3.Visible = True
+    adjItem.Visible = True
+    Label4.Visible = True
+    Me.Picture = LoadInterface("ventananuevocorreo.bmp")
+
 End Sub
 
 Private Sub Command9_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-                'Command9.Picture = LoadInterface("correo_nuevomensajepress.bmp")
-                'command9.Tag = "1"
+
+    'Command9.Picture = LoadInterface("correo_nuevomensajepress.bmp")
+    'command9.Tag = "1"
 End Sub
+
 Private Sub Command9_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Command9.Tag = "0" Then
         Command9.Picture = LoadInterface("correo_nuevomensajehover.bmp")
         Command9.Tag = "1"
+
     End If
+
 End Sub
 
-
-
-
 Private Sub Form_KeyPress(KeyAscii As Integer)
-If (KeyAscii = 27) Then
-    Unload Me
-End If
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-        Dim i As Byte
-        For i = 1 To 10
-          ItemLista(i).OBJIndex = 0
-          ItemLista(i).Amount = 0
-        Next i
+    Call FormParser.Parse_Form(Me)
+
+    Dim i As Byte
+
+    For i = 1 To 10
+        ItemLista(i).OBJIndex = 0
+        ItemLista(i).Amount = 0
+    Next i
+
 End Sub
+
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Command9.Picture = Nothing
-Command9.Tag = "0"
+    Command9.Picture = Nothing
+    Command9.Tag = "0"
 
-cmdDel.Picture = Nothing
-cmdDel.Tag = "0"
+    cmdDel.Picture = Nothing
+    cmdDel.Tag = "0"
 
-cmdSave.Picture = Nothing
-cmdSave.Tag = "0"
+    cmdSave.Picture = Nothing
+    cmdSave.Tag = "0"
 
-Command3.Picture = Nothing
-Command3.Tag = "0"
+    Command3.Picture = Nothing
+    Command3.Tag = "0"
 
+    cmdSend.Picture = Nothing
+    cmdSend.Tag = "0"
 
-cmdSend.Picture = Nothing
-cmdSend.Tag = "0"
+    Command1.Picture = Nothing
+    Command1.Tag = "0"
 
-Command1.Picture = Nothing
-Command1.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+
     Dim i As Byte
+
     For i = 1 To 10
-         ItemLista(i).OBJIndex = 0
-         ItemLista(i).Amount = 0
+        ItemLista(i).OBJIndex = 0
+        ItemLista(i).Amount = 0
     Next i
+
 End Sub
 
 Private Sub Image1_Click()
-lstInv.Enabled = Not lstInv.Enabled
-txCantidad.Enabled = Not txCantidad.Enabled
-ListaAenviar.Enabled = Not ListaAenviar.Enabled
-Command1.Enabled = Not Command1.Enabled
-Command2.Enabled = Not Command2.Enabled
-If lstInv.Enabled Then
-    lblCosto.Caption = "Gratis"
-Else
-    lblCosto.Caption = "Gratis"
-End If
+    lstInv.Enabled = Not lstInv.Enabled
+    txCantidad.Enabled = Not txCantidad.Enabled
+    ListaAenviar.Enabled = Not ListaAenviar.Enabled
+    Command1.Enabled = Not Command1.Enabled
+    Command2.Enabled = Not Command2.Enabled
+
+    If lstInv.Enabled Then
+        lblCosto.Caption = "Gratis"
+    Else
+        lblCosto.Caption = "Gratis"
+
+    End If
+
 End Sub
 
-
-
 Private Sub ListaAenviar_Click()
-If ListaAenviar.ListIndex + 1 > 10 Then Exit Sub
-If ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0 Then
-picInvT.BackColor = vbBlack
-Else
-Call Grh_Render_To_Hdc(picInvT, frmmain.Inventario.GrhIndex(ItemLista(ListaAenviar.ListIndex + 1).OBJIndex), 0, 0)
-End If
+
+    If ListaAenviar.ListIndex + 1 > 10 Then Exit Sub
+    If ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0 Then
+        picInvT.BackColor = vbBlack
+    Else
+        Call Grh_Render_To_Hdc(picInvT, frmmain.Inventario.GrhIndex(ItemLista(ListaAenviar.ListIndex + 1).OBJIndex), 0, 0)
+
+    End If
+
 End Sub
 
 Private Sub ListaAenviar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Command9.Picture = Nothing
-Command9.Tag = "0"
+    Command9.Picture = Nothing
+    Command9.Tag = "0"
 
-cmdDel.Picture = Nothing
-cmdDel.Tag = "0"
+    cmdDel.Picture = Nothing
+    cmdDel.Tag = "0"
 
-cmdSave.Picture = Nothing
-cmdSave.Tag = "0"
+    cmdSave.Picture = Nothing
+    cmdSave.Tag = "0"
 
-Command3.Picture = Nothing
-Command3.Tag = "0"
+    Command3.Picture = Nothing
+    Command3.Tag = "0"
 
+    cmdSend.Picture = Nothing
+    cmdSend.Tag = "0"
 
-cmdSend.Picture = Nothing
-cmdSend.Tag = "0"
+    Command1.Picture = Nothing
+    Command1.Tag = "0"
 
-Command1.Picture = Nothing
-Command1.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
 End Sub
 
 Private Sub ListAdjuntos_Click()
@@ -850,152 +923,160 @@ Private Sub ListAdjuntos_Click()
     FrmCorreo.picitem.Refresh
     Call Grh_Render_To_Hdc(picitem, ObjData(ItemRecibido(ListAdjuntos.ListIndex + 1).OBJIndex).GrhIndex, 0, 0)
     lbItem.Caption = ObjData(ItemRecibido(ListAdjuntos.ListIndex + 1).OBJIndex).name & " (" & ItemRecibido(ListAdjuntos.ListIndex + 1).Amount & ")"
+
 End Sub
 
 Private Sub ListAdjuntos_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Command9.Picture = Nothing
-Command9.Tag = "0"
+    Command9.Picture = Nothing
+    Command9.Tag = "0"
 
-cmdDel.Picture = Nothing
-cmdDel.Tag = "0"
+    cmdDel.Picture = Nothing
+    cmdDel.Tag = "0"
 
-cmdSave.Picture = Nothing
-cmdSave.Tag = "0"
+    cmdSave.Picture = Nothing
+    cmdSave.Tag = "0"
 
-Command3.Picture = Nothing
-Command3.Tag = "0"
+    Command3.Picture = Nothing
+    Command3.Tag = "0"
 
+    cmdSend.Picture = Nothing
+    cmdSend.Tag = "0"
 
-cmdSend.Picture = Nothing
-cmdSend.Tag = "0"
+    Command1.Picture = Nothing
+    Command1.Tag = "0"
 
-Command1.Picture = Nothing
-Command1.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
 End Sub
 
 Private Sub lstInv_Click()
 
-If frmmain.Inventario.GrhIndex(lstInv.ListIndex + 1) = 0 Then
-picInvT.BackColor = vbBlack
-Else
+    If frmmain.Inventario.GrhIndex(lstInv.ListIndex + 1) = 0 Then
+        picInvT.BackColor = vbBlack
+    Else
 
-Call Grh_Render_To_Hdc(picInvT, frmmain.Inventario.GrhIndex(lstInv.ListIndex + 1), 0, 0)
-End If
+        Call Grh_Render_To_Hdc(picInvT, frmmain.Inventario.GrhIndex(lstInv.ListIndex + 1), 0, 0)
+
+    End If
+
 End Sub
 
 Private Sub lstInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Command9.Picture = Nothing
-Command9.Tag = "0"
+    Command9.Picture = Nothing
+    Command9.Tag = "0"
 
-cmdDel.Picture = Nothing
-cmdDel.Tag = "0"
+    cmdDel.Picture = Nothing
+    cmdDel.Tag = "0"
 
-cmdSave.Picture = Nothing
-cmdSave.Tag = "0"
+    cmdSave.Picture = Nothing
+    cmdSave.Tag = "0"
 
-Command3.Picture = Nothing
-Command3.Tag = "0"
+    Command3.Picture = Nothing
+    Command3.Tag = "0"
 
+    cmdSend.Picture = Nothing
+    cmdSend.Tag = "0"
 
-cmdSend.Picture = Nothing
-cmdSend.Tag = "0"
+    Command1.Picture = Nothing
+    Command1.Tag = "0"
 
-Command1.Picture = Nothing
-Command1.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
 End Sub
 
 Private Sub lstMsg_Click()
-Dim rdata As String
-Dim item As String
-Dim Index As Long
-Dim cantidad As String
 
-ListAdjuntos.Clear
-If lstMsg.ListIndex < 0 Then Exit Sub
-txMensaje = CorreoMsj(lstMsg.ListIndex + 1).mensaje
-If CorreoMsj(lstMsg.ListIndex + 1).ItemCount > 0 Then
-    'FrmCorreo.picItem.Visible = True
-    cmdSave.Enabled = True
+    Dim rdata    As String
+
+    Dim Item     As String
+
+    Dim Index    As Long
+
+    Dim cantidad As String
+
+    ListAdjuntos.Clear
+
+    If lstMsg.ListIndex < 0 Then Exit Sub
+    txMensaje = CorreoMsj(lstMsg.ListIndex + 1).mensaje
+
+    If CorreoMsj(lstMsg.ListIndex + 1).ItemCount > 0 Then
+        'FrmCorreo.picItem.Visible = True
+        cmdSave.Enabled = True
     
+        Dim i As Long
+
+        For i = 1 To CorreoMsj(lstMsg.ListIndex + 1).ItemCount
     
-    
-    Dim i As Long
-    For i = 1 To CorreoMsj(lstMsg.ListIndex + 1).ItemCount
-    
-        rdata = Right$(CorreoMsj(lstMsg.ListIndex + 1).ItemArray, Len(CorreoMsj(lstMsg.ListIndex + 1).ItemArray))
-        item = (ReadField(i, rdata, Asc("@")))
-        
+            rdata = Right$(CorreoMsj(lstMsg.ListIndex + 1).ItemArray, Len(CorreoMsj(lstMsg.ListIndex + 1).ItemArray))
+            Item = (ReadField(i, rdata, Asc("@")))
                 
-        rdata = Left$(item, Len(item))
-        Index = (ReadField(1, rdata, Asc("-")))
+            rdata = Left$(Item, Len(Item))
+            Index = (ReadField(1, rdata, Asc("-")))
         
-        rdata = Right$(item, Len(item))
-        cantidad = (ReadField(2, rdata, Asc("-")))
+            rdata = Right$(Item, Len(Item))
+            cantidad = (ReadField(2, rdata, Asc("-")))
         
-        ItemRecibido(i).OBJIndex = Index
-        ItemRecibido(i).Amount = cantidad
-        ListAdjuntos.AddItem ObjData(Index).name
-    Next i
+            ItemRecibido(i).OBJIndex = Index
+            ItemRecibido(i).Amount = cantidad
+            ListAdjuntos.AddItem ObjData(Index).name
+        Next i
     
-    ListAdjuntos.Enabled = True
+        ListAdjuntos.Enabled = True
 
-   ' For i = 1 To CorreoMsj(lstMsg.ListIndex + 1).ItemCount
+        ' For i = 1 To CorreoMsj(lstMsg.ListIndex + 1).ItemCount
     
-    'FrmCorreo.picItem.Refresh
-   ' Call Grh_Render_To_Hdc(picItem, ObjData(CorreoMsj(lstMsg.ListIndex + 1).item.OBJIndex).GrhIndex, 0, 0)
-    'lbItem.Caption = ObjData(CorreoMsj(lstMsg.ListIndex + 1).item.OBJIndex).name & " (" & CorreoMsj(lstMsg.ListIndex + 1).item.Amount & ")"
-Else
+        'FrmCorreo.picItem.Refresh
+        ' Call Grh_Render_To_Hdc(picItem, ObjData(CorreoMsj(lstMsg.ListIndex + 1).item.OBJIndex).GrhIndex, 0, 0)
+        'lbItem.Caption = ObjData(CorreoMsj(lstMsg.ListIndex + 1).item.OBJIndex).name & " (" & CorreoMsj(lstMsg.ListIndex + 1).item.Amount & ")"
+    Else
 
-ListAdjuntos.Enabled = False
+        ListAdjuntos.Enabled = False
 
-    picitem.BackColor = RGB(0, 0, 0)
-    FrmCorreo.picitem.Refresh
+        picitem.BackColor = RGB(0, 0, 0)
+        FrmCorreo.picitem.Refresh
    
-    'FrmCorreo.picItem.Visible = False
-    cmdSave.Enabled = False
-    lbItem.Caption = ""
+        'FrmCorreo.picItem.Visible = False
+        cmdSave.Enabled = False
+        lbItem.Caption = ""
    
-End If
+    End If
 
-lbFecha.Caption = "Fecha de envío: " & CorreoMsj(lstMsg.ListIndex + 1).Fecha
+    lbFecha.Caption = "Fecha de envío: " & CorreoMsj(lstMsg.ListIndex + 1).Fecha
+
 End Sub
 
 Private Sub txMensaje_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Command9.Picture = Nothing
-Command9.Tag = "0"
+    Command9.Picture = Nothing
+    Command9.Tag = "0"
 
-cmdDel.Picture = Nothing
-cmdDel.Tag = "0"
+    cmdDel.Picture = Nothing
+    cmdDel.Tag = "0"
 
-cmdSave.Picture = Nothing
-cmdSave.Tag = "0"
+    cmdSave.Picture = Nothing
+    cmdSave.Tag = "0"
 
-Command3.Picture = Nothing
-Command3.Tag = "0"
+    Command3.Picture = Nothing
+    Command3.Tag = "0"
 
+    cmdSend.Picture = Nothing
+    cmdSend.Tag = "0"
 
-cmdSend.Picture = Nothing
-cmdSend.Tag = "0"
+    Command1.Picture = Nothing
+    Command1.Tag = "0"
 
-Command1.Picture = Nothing
-Command1.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
+    Command2.Picture = Nothing
+    Command2.Tag = "0"
 
-Command2.Picture = Nothing
-Command2.Tag = "0"
 End Sub
 

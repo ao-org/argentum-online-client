@@ -95,33 +95,42 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-Me.Picture = LoadInterface("password.bmp")
+    Call FormParser.Parse_Form(Me)
+    Me.Picture = LoadInterface("password.bmp")
+
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Image1.Picture = Nothing
-Image1.Tag = "0"
+    Image1.Picture = Nothing
+    Image1.Tag = "0"
+
 End Sub
 
 Private Sub Image1_Click()
-If Text2.Text = "" Then
-Unload Me
-End If
+
+    If Text2.Text = "" Then
+        Unload Me
+
+    End If
+
     If Text2.Text <> Text3.Text Then
         Call MsgBox("Las contraseñas no coinciden", vbCritical Or vbOKOnly Or vbApplicationModal Or vbDefaultButton1, "Cambiar Contraseña")
         Exit Sub
+
     End If
     
     Call WriteChangePassword(Text1.Text, Text2.Text)
     Unload Me
+
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("password_aceptar.bmp")
         Image1.Tag = "1"
+
     End If
+
 End Sub

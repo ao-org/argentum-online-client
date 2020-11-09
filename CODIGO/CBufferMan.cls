@@ -46,40 +46,48 @@ Option Explicit
 Private Const MAX_BUFFERS As Integer = 3
 
 Private Type WAV_DB_ENTRY
+
     FileName As Integer
     UltimoAcceso As Long
     buffer(1 To MAX_BUFFERS) As DirectSoundSecondaryBuffer8
+
 End Type
 
-Private mBuffers() As WAV_DB_ENTRY
-Private mDS As DirectSound8
+Private mBuffers()       As WAV_DB_ENTRY
 
-Private mMaxEntries As Integer
+Private mDS              As DirectSound8
+
+Private mMaxEntries      As Integer
+
 Private mCantidadBuffers As Integer
 
-Private WavPath As String
+Private WavPath          As String
 
 Private Declare Function GetTickCount Lib "kernel32" () As Long
+
 Private Declare Sub CopyMem Lib "kernel32" Alias "RtlCopyMemory" (destination As Any, source As Any, ByVal length As Long)
 
 Private Sub Class_Initialize()
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Modified by Augusto José Rando
-'Last Modify Date: 5/04/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Modified by Augusto José Rando
+    'Last Modify Date: 5/04/2005
+    '
+    '**************************************************************
 
 End Sub
 
 Private Sub Class_Terminate()
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'
-'**************************************************************
-On Error Resume Next
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    '
+    '**************************************************************
+    On Error Resume Next
+
     Dim i As Long
+
     Dim j As Long
     
     For i = 1 To mCantidadBuffers
@@ -93,23 +101,25 @@ On Error Resume Next
 End Sub
 
 Public Property Let Path(ByVal inString As String)
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    '
+    '**************************************************************
     WavPath = inString
+
 End Property
 
 Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuffer8
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Modified by Augusto José Rando
-'Last Modify Date: 9/05/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Modified by Augusto José Rando
+    'Last Modify Date: 9/05/2005
+    '
+    '**************************************************************
 
     Dim IndiceObtenido As Integer, i As Integer
+
     IndiceObtenido = ObtenerIndice(FileName)
     i = 1
     
@@ -138,25 +148,36 @@ Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuf
                     Set mBuffers(IndiceObtenido).buffer(2) = mDS.DuplicateSoundBuffer(ByVal mBuffers(IndiceObtenido).buffer(1))
                     Set GetBuffer = mBuffers(IndiceObtenido).buffer(2)
                 Else
+
                     If mBuffers(IndiceObtenido).buffer(2).GetStatus = DSBSTATUS_PLAYING Then
                         If mBuffers(IndiceObtenido).buffer(3) Is Nothing Then
                             Set mBuffers(IndiceObtenido).buffer(3) = mDS.DuplicateSoundBuffer(ByVal mBuffers(IndiceObtenido).buffer(1))
                             Set GetBuffer = mBuffers(IndiceObtenido).buffer(3)
                         Else
                             Set GetBuffer = mBuffers(IndiceObtenido).buffer(3)
+
                         End If
+
                     Else
                         Set GetBuffer = mBuffers(IndiceObtenido).buffer(2)
+
                     End If
+
                 End If
+
             Else
                 'Devuelvo un buffer con el sonido cargado
                 Set GetBuffer = mBuffers(IndiceObtenido).buffer(1)
+
             End If
+
         Else
+
             If CreateBufferFromFile(FileName, IndiceObtenido, 1) Then
                 Set GetBuffer = mBuffers(IndiceObtenido).buffer(1)
+
             End If
+
         End If
         
         'Devolvemos el buffer SIEMPRE, aunque hayamos llegado al máximo de buffers simultáneos
@@ -167,11 +188,13 @@ Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuf
             
     Else    'Sonido no cargado
         GoTo CrearNuevoBuffer
+
     End If
     
-Exit Function
+    Exit Function
     
 CrearNuevoBuffer:
+
     'Vemos si puedo agregar uno a la lista
     If mMaxEntries = mCantidadBuffers Then
         'Sacamos el que hace más que no usamos, y utilizamos el slot
@@ -181,56 +204,72 @@ CrearNuevoBuffer:
         'Agrego un buffer nueva a la lista
         IndiceObtenido = CrearBuffer(FileName)
         Set GetBuffer = mBuffers(IndiceObtenido).buffer(1)
+
     End If
     
 End Function
 
 Private Function ObtenerIndice(ByVal FileName As Integer) As Integer
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'Busqueda binaria para hallar el buffer deseado
-'**************************************************************
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    'Busqueda binaria para hallar el buffer deseado
+    '**************************************************************
     Dim max As Integer  'Max index
+
     Dim min As Integer  'Min index
+
     Dim mid As Integer  'Middle index
     
     min = 1
     max = mCantidadBuffers
+
     Do While min <= max
         mid = (min + max) / 2
+
         If FileName < mBuffers(mid).FileName Then
+
             'El índice no existe
             If max = mid Then
                 max = max - 1
             Else
                 max = mid
+
             End If
+
         ElseIf FileName > mBuffers(mid).FileName Then
+
             'El índice no existe
             If min = mid Then
                 min = min + 1
             Else
                 min = mid
+
             End If
+
         Else
             ObtenerIndice = mid
             Exit Function
+
         End If
+
     Loop
+
 End Function
 
 Public Function Init(ByRef DS8 As DirectSound8, ByVal MaxEntries As Integer) As Boolean
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    '
+    '**************************************************************
     
     mMaxEntries = MaxEntries
     
     If mMaxEntries < 1 Then 'por lo menos 1 sonido
         Exit Function
+
     End If
     
     mCantidadBuffers = 0
@@ -239,14 +278,16 @@ Public Function Init(ByRef DS8 As DirectSound8, ByVal MaxEntries As Integer) As 
     Set mDS = DS8
     
     Init = True
+
 End Function
 
 Public Sub BorrarTodo()
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'Vacia la lista de sonidos
-'**************************************************************
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    'Vacia la lista de sonidos
+    '**************************************************************
     Dim i As Long, j As Long
     
     For i = 1 To mCantidadBuffers
@@ -257,59 +298,75 @@ Public Sub BorrarTodo()
     
     ReDim mBuffers(0)
     mCantidadBuffers = 0
+
 End Sub
 
 Public Sub DetenerTodo()
-On Error Resume Next
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 5/04/2005
-'Detiene todos los sonidos
-'**************************************************************
+
+    On Error Resume Next
+
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 5/04/2005
+    'Detiene todos los sonidos
+    '**************************************************************
     Dim i As Long
+
     Dim j As Long
     
     For i = 1 To mCantidadBuffers
         For j = 1 To MAX_BUFFERS
+
             If Not mBuffers(i).buffer(j) Is Nothing Then
                 If (mBuffers(i).buffer(j).GetStatus = DSBSTATUS_PLAYING + DSBSTATUS_LOOPING) Or (mBuffers(i).buffer(j).GetStatus = DSBSTATUS_PLAYING) Then
                     mBuffers(i).buffer(j).Stop
                     mBuffers(i).buffer(j).SetCurrentPosition 0
+
                 End If
+
             End If
+
         Next j
     Next i
     
 End Sub
 
 Public Sub ModificarVolumenTodo(ByVal Volume As Long)
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 5/04/2005
-'Detiene todos los sonidos
-'**************************************************************
-On Error Resume Next
+
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 5/04/2005
+    'Detiene todos los sonidos
+    '**************************************************************
+    On Error Resume Next
+
     Dim i As Long
+
     Dim j As Long
     
     For i = 1 To mCantidadBuffers
         For j = 1 To MAX_BUFFERS
+
             If Not mBuffers(i).buffer(j) Is Nothing Then
                 If (mBuffers(i).buffer(j).GetStatus = DSBSTATUS_LOOPING + DSBSTATUS_PLAYING) Or (mBuffers(i).buffer(j).GetStatus = DSBSTATUS_PLAYING) Then
                     mBuffers(i).buffer(j).SetVolume Volume
+
                 End If
+
             End If
+
         Next j
     Next i
     
 End Sub
 
 Public Function Borrar(ByVal FileName As Integer) As Integer
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'Borra un sonido
-'**************************************************************
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    'Borra un sonido
+    '**************************************************************
     Dim indice As Long
     
     'Obtenemos el ìndice
@@ -318,6 +375,7 @@ Public Function Borrar(ByVal FileName As Integer) As Integer
     'Lo eliminamos
     With mBuffers(indice)
         Erase .buffer
+
     End With
     
     'Actualizamos el número de sonidos
@@ -330,20 +388,23 @@ Public Function Borrar(ByVal FileName As Integer) As Integer
     
     'Redimencionamos la lista
     ReDim Preserve mBuffers(1 To mCantidadBuffers)
+
 End Function
 
 Private Function CrearBuffer(ByVal Archivo As Integer, Optional ByVal Index As Integer = -1, Optional ByVal Extraido As Boolean = False) As Integer
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'
-'**************************************************************
-On Error GoTo errhandler
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    '
+    '**************************************************************
+    On Error GoTo errhandler
     
     If Index = -1 Then
         'Agregamos al final de la lista
         Index = mCantidadBuffers + 1
         ReDim Preserve mBuffers(1 To Index) As WAV_DB_ENTRY
+
     End If
                 
     With mBuffers(Index)
@@ -354,6 +415,7 @@ On Error GoTo errhandler
         .UltimoAcceso = (GetTickCount() And &H7FFFFFFF)
         
         Call CreateBufferFromFile(Archivo, Index, 1, Extraido)
+
     End With
     
     'Aumentamos la cantidad de sonidos
@@ -364,7 +426,7 @@ On Error GoTo errhandler
     
     'Devolvemos el ìndice en que lo cargamos
     CrearBuffer = ObtenerIndice(Archivo)
-Exit Function
+    Exit Function
 
 errhandler:
     
@@ -373,6 +435,7 @@ End Function
 Private Function CreateBufferFromFile(ByVal file_name As Integer, ByVal buffer_index, ByVal buffer_sub_index As Integer, Optional ByVal Extraido As Boolean = False) As Boolean
 
     Dim dsbd As DSBUFFERDESC
+
     dsbd.lFlags = DSBCAPS_CTRLFREQUENCY Or DSBCAPS_CTRLPAN Or DSBCAPS_CTRLVOLUME
     dsbd.fxFormat.nFormatTag = WAVE_FORMAT_PCM
     dsbd.fxFormat.nChannels = 2
@@ -381,45 +444,58 @@ Private Function CreateBufferFromFile(ByVal file_name As Integer, ByVal buffer_i
     dsbd.fxFormat.nBlockAlign = dsbd.fxFormat.nBitsPerSample / 8 * dsbd.fxFormat.nChannels
     dsbd.fxFormat.lAvgBytesPerSec = dsbd.fxFormat.lSamplesPerSec * dsbd.fxFormat.nBlockAlign
     
-#If Compresion Then
-    If Extraido = False Then
-        If Extract_File(wav, App.Path & "\..\Recursos\OUTPUT\", file_name & ".wav", Windows_Temp_Dir, False) Then
+    #If Compresion Then
+
+        If Extraido = False Then
+            If Extract_File(wav, App.Path & "\..\Recursos\OUTPUT\", file_name & ".wav", Windows_Temp_Dir, False) Then
+                Set mBuffers(buffer_index).buffer(buffer_sub_index) = mDS.CreateSoundBufferFromFile(Windows_Temp_Dir & file_name & ".wav", dsbd)
+                Delete_File Windows_Temp_Dir & file_name & ".wav"
+                CreateBufferFromFile = True
+
+            End If
+
+        Else
             Set mBuffers(buffer_index).buffer(buffer_sub_index) = mDS.CreateSoundBufferFromFile(Windows_Temp_Dir & file_name & ".wav", dsbd)
             Delete_File Windows_Temp_Dir & file_name & ".wav"
             CreateBufferFromFile = True
+
         End If
-    Else
-        Set mBuffers(buffer_index).buffer(buffer_sub_index) = mDS.CreateSoundBufferFromFile(Windows_Temp_Dir & file_name & ".wav", dsbd)
-        Delete_File Windows_Temp_Dir & file_name & ".wav"
-        CreateBufferFromFile = True
-    End If
-#Else
-    Dim PathToFile As String
-    PathToFile = App.Path & "\..\Recursos\WAV\" & file_name & ".wav"
+
+    #Else
+
+        Dim PathToFile As String
+
+        PathToFile = App.Path & "\..\Recursos\WAV\" & file_name & ".wav"
     
-    If FileExist(PathToFile, vbArchive) Then
-        Set mBuffers(buffer_index).buffer(buffer_sub_index) = mDS.CreateSoundBufferFromFile(PathToFile, dsbd)
-        CreateBufferFromFile = True
-    End If
-#End If
+        If FileExist(PathToFile, vbArchive) Then
+            Set mBuffers(buffer_index).buffer(buffer_sub_index) = mDS.CreateSoundBufferFromFile(PathToFile, dsbd)
+            CreateBufferFromFile = True
+
+        End If
+
+    #End If
 
 errhandler:
     'Ocurrió un error, la causa más probable es que el archivo no exista
-   ' If General_File_Exists(Windows_Temp_Dir & file_name & ".wav", vbNormal) Then
+    ' If General_File_Exists(Windows_Temp_Dir & file_name & ".wav", vbNormal) Then
     '    Delete_File Windows_Temp_Dir & file_name & ".wav"
     'End If
 
 End Function
 
 Private Sub OrdenarBuffers(ByVal primero As Integer, ByVal ultimo As Integer)
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'Ordenamos los sonidos por nombre usando QuickSort
-'**************************************************************
-    Dim min As Integer      'Primer item de la lista
-    Dim max As Integer      'Ultimo item de la lista
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    'Ordenamos los sonidos por nombre usando QuickSort
+    '**************************************************************
+    Dim min  As Integer      'Primer item de la lista
+
+    Dim max  As Integer      'Ultimo item de la lista
+
     Dim comp As Integer     'Item usado para comparar
+
     Dim temp As WAV_DB_ENTRY
     
     min = primero
@@ -431,30 +507,38 @@ Private Sub OrdenarBuffers(ByVal primero As Integer, ByVal ultimo As Integer)
         Do While mBuffers(min).FileName < comp And min < ultimo
             min = min + 1
         Loop
+
         Do While mBuffers(max).FileName > comp And max > primero
             max = max - 1
         Loop
+
         If min <= max Then
             temp = mBuffers(min)
             mBuffers(min) = mBuffers(max)
             mBuffers(max) = temp
             min = min + 1
             max = max - 1
+
         End If
+
     Loop
+
     If primero < max Then OrdenarBuffers primero, max
     If min < ultimo Then OrdenarBuffers min, ultimo
+
 End Sub
 
 Private Function BorraMenosUsado() As Integer
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'Borra el sonido menos usado. Devuelve el index del borrado para ser reutilizado
-'NO redimenciona la lista, estamos forzando a sacar uno para meter otro en su lugar
-'**************************************************************
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    'Borra el sonido menos usado. Devuelve el index del borrado para ser reutilizado
+    'NO redimenciona la lista, estamos forzando a sacar uno para meter otro en su lugar
+    '**************************************************************
     Dim Valor As Long
-    Dim i As Long
+
+    Dim i     As Long
     
     'Inicializamos todo
     Valor = mBuffers(1).UltimoAcceso
@@ -462,10 +546,13 @@ Private Function BorraMenosUsado() As Integer
     
     'Buscamos cual es el que lleva más tiempo sin ser utilizado
     For i = 1 To mCantidadBuffers
+
         If mBuffers(i).UltimoAcceso < Valor And (Not PlayingCheck(0, i)) Then
             Valor = mBuffers(i).UltimoAcceso
             BorraMenosUsado = i
+
         End If
+
     Next i
     
     'Disminuimos el contador
@@ -477,78 +564,94 @@ Private Function BorraMenosUsado() As Integer
 End Function
 
 Public Property Get MaxEntries() As Integer
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    '
+    '**************************************************************
     MaxEntries = mMaxEntries
+
 End Property
 
 Public Property Let MaxEntries(ByVal vNewValue As Integer)
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    '
+    '**************************************************************
     mMaxEntries = vNewValue
+
 End Property
 
 Public Property Get CantidadBuffers() As Integer
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    '
+    '**************************************************************
     CantidadBuffers = mCantidadBuffers
+
 End Property
 
 Public Sub BorraTimerProc()
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
-'Cada un minuto revisamos que buffers se pueden eliminar
-'**************************************************************
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 5/04/2005
+    'Cada un minuto revisamos que buffers se pueden eliminar
+    '**************************************************************
     On Error Resume Next
     
-    Dim loopc As Long
-    Dim offset As Integer
+    Dim loopc        As Long
+
+    Dim offset       As Integer
+
     Dim TiempoActual As Long
     
     TiempoActual = (GetTickCount() And &H7FFFFFFF)
     
     For loopc = 1 To mCantidadBuffers
+
         'Revisar cuales usamos
         If mBuffers(loopc).UltimoAcceso > TiempoActual - 60000 Then
+
             'Si el offset está seteado, movemos para atrás la lista
             If offset Then
                 mBuffers(loopc - offset) = mBuffers(loopc)
+
             End If
+
         Else
+
             If PlayingCheck(0, loopc) = False Then
                 'Eliminar de memoria
                 Erase mBuffers(loopc).buffer
                 offset = offset + 1
+
             End If
+
         End If
+
     Next loopc
     
     'Actualizar el número de sonidos
     mCantidadBuffers = mCantidadBuffers - offset
+
 End Sub
 
 Public Function CargarBuffer(ByVal FileName As Integer) As Boolean
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 17/08/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 17/08/2005
+    '
+    '**************************************************************
 
     Dim Index As Integer
 
     If ObtenerIndice(FileName) <> 0 Then
         CargarBuffer = True
     Else    'Sonido no cargado
+
         'Vemos si puedo agregar uno a la lista
         If mMaxEntries = mCantidadBuffers Then
             'Sacamos el que hace más que no usamos, y utilizamos el slot
@@ -558,28 +661,33 @@ Public Function CargarBuffer(ByVal FileName As Integer) As Boolean
             'Agrego un buffer nueva a la lista
             Call CrearBuffer(FileName)
             CargarBuffer = True
+
         End If
+
     End If
+
 End Function
 
 Public Function Reproducir(ByVal file_name As Integer, play_format As CONST_DSBPLAYFLAGS, ByVal Volume As Long, ByVal pan As Long) As Boolean
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 17/08/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 17/08/2005
+    '
+    '**************************************************************
 
-Dim Sound_Buffer As DirectSoundSecondaryBuffer8
+    Dim Sound_Buffer As DirectSoundSecondaryBuffer8
 
-On Error GoTo ErrorHandler
+    On Error GoTo ErrorHandler
 
     Set Sound_Buffer = GetBuffer(file_name)
+
     If Sound_Buffer Is Nothing Then Exit Function
     
     'Esto solo debería pasar si ya hay MAX_BUFFERS en reproducción
     If Sound_Buffer.GetStatus = DSBSTATUS_PLAYING Then
         Sound_Buffer.Stop
         Sound_Buffer.SetCurrentPosition 0
+
     End If
     
     Sound_Buffer.SetPan pan
@@ -595,24 +703,28 @@ ErrorHandler:
 End Function
 
 Public Function Detener(ByVal file_name As Integer) As Boolean
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 17/08/2005
-'
-'**************************************************************
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 17/08/2005
+    '
+    '**************************************************************
 
-On Error GoTo ErrorHandler
+    On Error GoTo ErrorHandler
 
-Dim IndiceObtenido As Integer, i As Long
+    Dim IndiceObtenido As Integer, i As Long
 
     IndiceObtenido = ObtenerIndice(file_name)
+
     If IndiceObtenido <= 0 Then Exit Function
     
     For i = 1 To MAX_BUFFERS
+
         If Not mBuffers(IndiceObtenido).buffer(i) Is Nothing Then
             mBuffers(IndiceObtenido).buffer(i).Stop
             mBuffers(IndiceObtenido).buffer(i).SetCurrentPosition 0
+
         End If
+
     Next i
     
     Detener = True
@@ -625,24 +737,29 @@ ErrorHandler:
 End Function
 
 Public Function CambiarVolumen(ByVal file_name As Integer, ByVal volumen As Long) As Boolean
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 17/08/2005
-'Returns true if successfully changed volume of a playing buffer
-'**************************************************************
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 17/08/2005
+    'Returns true if successfully changed volume of a playing buffer
+    '**************************************************************
 
-On Error GoTo ErrorHandler
+    On Error GoTo ErrorHandler
 
-Dim IndiceObtenido As Integer, i As Long, bFlag As Boolean
+    Dim IndiceObtenido As Integer, i As Long, bFlag As Boolean
 
     IndiceObtenido = ObtenerIndice(file_name)
+
     If IndiceObtenido <= 0 Then Exit Function
     
     For i = 1 To MAX_BUFFERS
+
         If Not mBuffers(IndiceObtenido).buffer(i) Is Nothing Then
             mBuffers(IndiceObtenido).buffer(i).SetVolume volumen
+
             If (mBuffers(IndiceObtenido).buffer(i).GetStatus = DSBSTATUS_PLAYING Or mBuffers(IndiceObtenido).buffer(i).GetStatus = DSBSTATUS_PLAYING + DSBSTATUS_LOOPING) Then bFlag = True
+
         End If
+
     Next i
     
     CambiarVolumen = bFlag
@@ -655,24 +772,29 @@ ErrorHandler:
 End Function
 
 Public Function CambiarPan(ByVal file_name As Integer, ByVal pan As Long) As Boolean
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 17/08/2005
-'Returns true if successfully changed pan of a playing buffer
-'**************************************************************
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 17/08/2005
+    'Returns true if successfully changed pan of a playing buffer
+    '**************************************************************
 
-On Error GoTo ErrorHandler
+    On Error GoTo ErrorHandler
 
-Dim IndiceObtenido As Integer, i As Long, bFlag As Boolean
+    Dim IndiceObtenido As Integer, i As Long, bFlag As Boolean
 
     IndiceObtenido = ObtenerIndice(file_name)
+
     If IndiceObtenido <= 0 Then Exit Function
     
     For i = 1 To MAX_BUFFERS
+
         If Not mBuffers(IndiceObtenido).buffer(i) Is Nothing Then
             mBuffers(IndiceObtenido).buffer(i).SetPan pan
+
             If (mBuffers(IndiceObtenido).buffer(i).GetStatus = DSBSTATUS_PLAYING Or mBuffers(IndiceObtenido).buffer(i).GetStatus = DSBSTATUS_PLAYING + DSBSTATUS_LOOPING) Then bFlag = True
+
         End If
+
     Next i
     
     CambiarPan = bFlag
@@ -686,28 +808,34 @@ End Function
 
 Public Function PlayingCheck(ByVal file_name As Integer, Optional ByVal IndiceObtenido As Integer = -1) As Boolean
 
-'**************************************************************
-'Author: Augusto José Rando
-'Last Modify Date: 17/08/2005
-'Returns true if playing
-'**************************************************************
+    '**************************************************************
+    'Author: Augusto José Rando
+    'Last Modify Date: 17/08/2005
+    'Returns true if playing
+    '**************************************************************
 
-On Error GoTo ErrorHandler
+    On Error GoTo ErrorHandler
 
-Dim i As Long, bFlag As Boolean
+    Dim i As Long, bFlag As Boolean
 
     If IndiceObtenido = -1 Then
         IndiceObtenido = ObtenerIndice(file_name)
+
         If IndiceObtenido <= 0 Then Exit Function
+
     End If
     
     For i = 1 To MAX_BUFFERS
+
         If Not mBuffers(IndiceObtenido).buffer(i) Is Nothing Then
             If (mBuffers(IndiceObtenido).buffer(i).GetStatus = DSBSTATUS_PLAYING + DSBSTATUS_LOOPING) Or (mBuffers(IndiceObtenido).buffer(i).GetStatus = DSBSTATUS_PLAYING) Then
                 PlayingCheck = True
                 Exit Function
+
             End If
+
         End If
+
     Next i
 
     Exit Function

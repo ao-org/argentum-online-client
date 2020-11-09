@@ -187,25 +187,28 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Command1_Click()
-Unload Me
-Manual.Show , frmmain
+    Unload Me
+    Manual.Show , frmmain
+
 End Sub
 
 Private Sub Form_Load()
 
+    Dim i As Byte
 
-Dim i As Byte
+    For i = 1 To NumQuest
+        List1.AddItem Quest_Name(i)
+    Next i
 
-For i = 1 To NumQuest
-    List1.AddItem Quest_Name(i)
-Next i
+    List1.ListIndex = 0
 
-List1.ListIndex = 0
 End Sub
 
 Private Sub List1_Click()
-ubicacion = "Ubicación: " & NameMaps(PosMap(List1.ListIndex + 1)).name & "(" & PosMap(List1.ListIndex + 1) & ")"
-descripccion = "Descripción: " & Quest_Desc(List1.ListIndex + 1)
-nivel = "Nivel requerido: " & RequiredLevel(List1.ListIndex + 1)
+    ubicacion = "Ubicación: " & NameMaps(PosMap(List1.ListIndex + 1)).name & "(" & PosMap(List1.ListIndex + 1) & ")"
+    descripccion = "Descripción: " & Quest_Desc(List1.ListIndex + 1)
+    nivel = "Nivel requerido: " & RequiredLevel(List1.ListIndex + 1)
+
 End Sub

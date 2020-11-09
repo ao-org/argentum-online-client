@@ -135,113 +135,115 @@ Option Explicit
 'Declaraciï¿½n del Api SetLayeredWindowAttributes que establece _
  la transparencia al form
 
-Private Declare Function SetLayeredWindowAttributes Lib "user32" _
-                (ByVal hwnd As Long, _
-                 ByVal crKey As Long, _
-                 ByVal bAlpha As Byte, _
-                 ByVal dwFlags As Long) As Long
-
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 'Recupera el estilo de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" _
-                (ByVal hwnd As Long, _
-                 ByVal nIndex As Long) As Long
-
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
 
 'Declaraciï¿½n del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" _
-               (ByVal hwnd As Long, _
-                ByVal nIndex As Long, _
-                ByVal dwNewLong As Long) As Long
-
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 Private Const GWL_EXSTYLE = (-20)
+
 Private Const LWA_ALPHA = &H2
+
 Private Const WS_EX_LAYERED = &H80000
+
 'Funciï¿½n para saber si formulario ya es transparente. _
  Se le pasa el Hwnd del formulario en cuestiï¿½n
 
-Public bmoving As Boolean
-Public dX As Integer
-Public dy As Integer
+Public bmoving      As Boolean
+
+Public dX           As Integer
+
+Public dy           As Integer
 
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
-Const MOUSE_MOVE As Long = &HF012&
+
+Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
-        (ByVal hwnd As Long, ByVal wMsg As Long, _
-        ByVal wParam As Long, lParam As Long) As Long
 
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
+Private RealizoCambios As String
 
- Private RealizoCambios As String
+Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
-Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, _
-  ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 Private Const HWND_TOPMOST = -1
+
 Private Const HWND_NOTOPMOST = -2
+
 Private Const SWP_NOMOVE = &H2
+
 Private Const SWP_NOSIZE = &H1
+
 Private Sub moverForm()
+
     Dim res As Long
+
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
-End Sub
-Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
-On Error Resume Next
 
-Dim msg As Long
+End Sub
+
+Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+
+    On Error Resume Next
+
+    Dim msg As Long
 
     msg = GetWindowLong(hwnd, GWL_EXSTYLE)
 
-       If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
-          Is_Transparent = True
-       Else
-          Is_Transparent = False
-       End If
+    If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
+        Is_Transparent = True
+    Else
+        Is_Transparent = False
+
+    End If
 
     If Err Then
-       Is_Transparent = False
+        Is_Transparent = False
+
     End If
 
 End Function
 
 'Funciï¿½n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, _
-                                      Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
 
-Dim msg As Long
+    Dim msg As Long
 
-On Error Resume Next
+    On Error Resume Next
 
-If Valor < 0 Or Valor > 255 Then
-   Aplicar_Transparencia = 1
-Else
-   msg = GetWindowLong(hwnd, GWL_EXSTYLE)
-   msg = msg Or WS_EX_LAYERED
+    If Valor < 0 Or Valor > 255 Then
+        Aplicar_Transparencia = 1
+    Else
+        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+        msg = msg Or WS_EX_LAYERED
 
-   SetWindowLong hwnd, GWL_EXSTYLE, msg
+        SetWindowLong hwnd, GWL_EXSTYLE, msg
 
-   'Establece la transparencia
-   SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
+        'Establece la transparencia
+        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
 
-   Aplicar_Transparencia = 0
+        Aplicar_Transparencia = 0
 
-End If
+    End If
 
+    If Err Then
+        Aplicar_Transparencia = 2
 
-If Err Then
-   Aplicar_Transparencia = 2
-End If
+    End If
 
 End Function
 
 Private Sub btnCuenta_Click()
     Call ShellExecute(0, "Open", "https://www.argentum20.com/", "", App.Path, 1)
+
 End Sub
 
 Private Sub Form_Load()
@@ -251,132 +253,167 @@ Private Sub Form_Load()
     'Call CargarLst
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hwnd, 220)
+
     If lstServers.ListCount > 0 Then lstServers.ListIndex = 0
     Rem Call SetWindowPos(FrmLogear.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE)
     
-#If DEBUGGING = 1 Then
-    lstServers.Visible = True
-#End If
+    #If DEBUGGING = 1 Then
+        lstServers.Visible = True
+    #End If
+
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If btnCuenta.Tag = "1" Then
-   btnCuenta.Picture = Nothing
-   btnCuenta.Tag = "0"
-End If
-If Image1.Tag = "1" Then
-    Image1.Picture = Nothing
-    Image1.Tag = "0"
-End If
-If Image3.Tag = "1" Then
-    Image3.Picture = Nothing
-    Image3.Tag = "0"
-End If
+
+    If btnCuenta.Tag = "1" Then
+        btnCuenta.Picture = Nothing
+        btnCuenta.Tag = "0"
+
+    End If
+
+    If Image1.Tag = "1" Then
+        Image1.Picture = Nothing
+        Image1.Tag = "0"
+
+    End If
+
+    If Image3.Tag = "1" Then
+        Image3.Picture = Nothing
+        Image3.Tag = "0"
+
+    End If
+
 End Sub
 
 Private Sub Image1_Click()
-Call CloseClient
+    Call CloseClient
+
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("boton-salir-ES-over.bmp")
         Image1.Tag = "1"
+
     End If
 
-If btnCuenta.Tag = "1" Then
-   btnCuenta.Picture = Nothing
-   btnCuenta.Tag = "0"
-End If
-If Image3.Tag = "1" Then
-    Image3.Picture = Nothing
-    Image3.Tag = "0"
-End If
+    If btnCuenta.Tag = "1" Then
+        btnCuenta.Picture = Nothing
+        btnCuenta.Tag = "0"
+
+    End If
+
+    If Image3.Tag = "1" Then
+        Image3.Picture = Nothing
+        Image3.Tag = "0"
+
+    End If
+
 End Sub
 
 Private Sub btnCuenta_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If btnCuenta.Tag = "0" Then
         btnCuenta.Picture = LoadInterface("boton-cuenta-ES-over.bmp")
         btnCuenta.Tag = "1"
+
     End If
 
-If Image1.Tag = "1" Then
-    Image1.Picture = Nothing
-    Image1.Tag = "0"
-End If
-If Image3.Tag = "1" Then
-    Image3.Picture = Nothing
-    Image3.Tag = "0"
-End If
+    If Image1.Tag = "1" Then
+        Image1.Picture = Nothing
+        Image1.Tag = "0"
+
+    End If
+
+    If Image3.Tag = "1" Then
+        Image3.Picture = Nothing
+        Image3.Tag = "0"
+
+    End If
+
 End Sub
 
 Private Sub Image3_Click()
-Call FormParser.Parse_Form(Me, E_WAIT)
- If IntervaloPermiteConectar Then
+    Call FormParser.Parse_Form(Me, E_WAIT)
+
+    If IntervaloPermiteConectar Then
         If frmmain.Socket1.Connected Then
             frmmain.Socket1.Disconnect
             frmmain.Socket1.Cleanup
             DoEvents
+
         End If
 
         CuentaEmail = NameTxt.Text
+
         Dim aux As String
+
         aux = PasswordTxt.Text
 
         CuentaPassword = aux
 
         If Image4.Tag = "1" Then
-         '       If ExisteCuenta(UserCuenta) Then
-        '            Call MensajeAdvertencia("La cuenta ya se encuentra almacenada, no ha sido guardada.")
-       ' '            RecordarCheck.value = 0
-          '      Else
+            '       If ExisteCuenta(UserCuenta) Then
+            '            Call MensajeAdvertencia("La cuenta ya se encuentra almacenada, no ha sido guardada.")
+            ' '            RecordarCheck.value = 0
+            '      Else
 
-                    CuentaRecordada.nombre = CuentaEmail
-                    CuentaRecordada.Password = aux
-                    Call GrabarNuevaCuenta(CuentaEmail, aux)
-          '      End If
-         Else
-           Call ResetearCuentas
+            CuentaRecordada.nombre = CuentaEmail
+            CuentaRecordada.Password = aux
+            Call GrabarNuevaCuenta(CuentaEmail, aux)
+            '      End If
+        Else
+            Call ResetearCuentas
+
         End If
 
-       ' If CuentaRecordada(1).Password <> "" And Val(CuentaRecordada(1).Password) <> Val(PasswordTxt.Text) Then
-          '          CuentaRecordada(1).Nombre = UserCuenta
-         '           CuentaRecordada(1).Password = aux
+        ' If CuentaRecordada(1).Password <> "" And Val(CuentaRecordada(1).Password) <> Val(PasswordTxt.Text) Then
+        '          CuentaRecordada(1).Nombre = UserCuenta
+        '           CuentaRecordada(1).Password = aux
         '            Call GrabarNuevaCuenta(UserCuenta, aux)
         '            Call MensajeAdvertencia("Se a almacenado la nueva password.")
-      '  End If
+        '  End If
 
-
-            If CheckUserDataLoged() = True Then
-                EstadoLogin = E_MODO.IngresandoConCuenta
-                frmmain.Socket1.HostName = IPdelServidor
-                frmmain.Socket1.RemotePort = PuertoDelServidor
-                frmmain.Socket1.Connect
-            End If
-
-
-                ServerIndex = Int(lstServers.ListIndex)
-    Call SaveRAOInit
+        If CheckUserDataLoged() = True Then
+            EstadoLogin = E_MODO.IngresandoConCuenta
+            frmmain.Socket1.HostName = IPdelServidor
+            frmmain.Socket1.RemotePort = PuertoDelServidor
+            frmmain.Socket1.Connect
 
         End If
+
+        ServerIndex = Int(lstServers.ListIndex)
+        Call SaveRAOInit
+
+    End If
+
 End Sub
 
 Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image3.Tag = "0" Then
         Image3.Picture = LoadInterface("boton-ingresar-ES-over.bmp")
         Image3.Tag = "1"
+
     End If
+
     If btnCuenta.Tag = "1" Then
-       btnCuenta.Picture = Nothing
-       btnCuenta.Tag = "0"
+        btnCuenta.Picture = Nothing
+        btnCuenta.Tag = "0"
+
     End If
+
     If Image1.Tag = "1" Then
         Image1.Picture = Nothing
         Image1.Tag = "0"
+
     End If
+
 End Sub
 
 Private Sub Image4_Click()
+
     If Image4.Tag = "0" Then
         Image4.Picture = LoadInterface("check-amarillo.bmp")
         Call TextoAlAsistente("¡Recordare la cuenta para la proxima!")
@@ -385,11 +422,13 @@ Private Sub Image4_Click()
         Image4.Picture = Nothing
         Image4.Tag = "0"
         Call TextoAlAsistente("¡No recordare nada!")
+
     End If
 
 End Sub
 
 Private Sub Label1_Click()
+
     If Image4.Tag = "0" Then
         Image4.Picture = LoadInterface("check-amarillo.bmp")
         Call TextoAlAsistente("ï¿½Recordare la cuenta para la proxima!")
@@ -398,45 +437,61 @@ Private Sub Label1_Click()
         Image4.Picture = Nothing
         Image4.Tag = "0"
         Call TextoAlAsistente("ï¿½No recordare nada!")
+
     End If
+
 End Sub
 
 Private Sub lstServers_Click()
     IPdelServidor = ServersLst(lstServers.ListIndex + 1).IP
     PuertoDelServidor = ServersLst(lstServers.ListIndex + 1).puerto
+
 End Sub
 
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
+
     If KeyCode = 27 Then
         prgRun = False
         End
     
     ElseIf KeyCode = vbKeyReturn Then
-       Call Image3_Click
+        Call Image3_Click
+
     End If
+
 End Sub
 
 Private Sub PasswordTxt_KeyDown(KeyCode As Integer, Shift As Integer)
+
     If KeyCode = 27 Then
         prgRun = False
         End
 
     ElseIf KeyCode = vbKeyReturn Then
-       Call Image3_Click
+        Call Image3_Click
+
     End If
+
 End Sub
 
 Private Sub PasswordTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If btnCuenta.Tag = "1" Then
-   btnCuenta.Picture = Nothing
-   btnCuenta.Tag = "0"
-End If
-If Image1.Tag = "1" Then
-    Image1.Picture = Nothing
-    Image1.Tag = "0"
-End If
-If Image3.Tag = "1" Then
-    Image3.Picture = Nothing
-    Image3.Tag = "0"
-End If
+
+    If btnCuenta.Tag = "1" Then
+        btnCuenta.Picture = Nothing
+        btnCuenta.Tag = "0"
+
+    End If
+
+    If Image1.Tag = "1" Then
+        Image1.Picture = Nothing
+        Image1.Tag = "0"
+
+    End If
+
+    If Image3.Tag = "1" Then
+        Image3.Picture = Nothing
+        Image3.Tag = "0"
+
+    End If
+
 End Sub

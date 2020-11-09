@@ -204,283 +204,325 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private QueOperacion As Byte
+Private QueOperacion       As Byte
 
-Private CantTransferencia As Long
+Private CantTransferencia  As Long
+
 Private EtapaTransferencia As Byte
-Private OroDep As Long
+
+Private OroDep             As Long
 
 Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
 
-OroDep = oro
-gold.Caption = "$" & OroDep
+    OroDep = oro
+    gold.Caption = "$" & OroDep
 
-Me.Picture = LoadInterface("goliath.bmp")
-HayFormularioAbierto = True
-Me.Show vbModeless, frmmain
+    Me.Picture = LoadInterface("goliath.bmp")
+    HayFormularioAbierto = True
+    Me.Show vbModeless, frmmain
 
-Exit Sub
+    Exit Sub
+
 End Sub
 
-
 Private Sub Form_Click()
-'Me.Picture = LoadInterface("goliath.bmp")
-'QueOperacion = 0
-'gold.Visible = True
-'txtDatos.Visible = False
+
+    'Me.Picture = LoadInterface("goliath.bmp")
+    'QueOperacion = 0
+    'gold.Visible = True
+    'txtDatos.Visible = False
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
+
 Private Sub Form_KeyPress(KeyAscii As Integer)
-If (KeyAscii = 27) Then
-    Unload Me
-End If
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
+    operacion(1).Tag = "0"
+    operacion(2).Tag = "0"
+    operacion(3).Tag = "0"
+    operacion(4).Tag = "0"
 
+    Image3.Picture = Nothing
 
+    Image2.Picture = Nothing
 
-operacion(1).Tag = "0"
-operacion(2).Tag = "0"
-operacion(3).Tag = "0"
-operacion(4).Tag = "0"
-
-
-Image3.Picture = Nothing
-
-Image2.Picture = Nothing
-
-
-Image2.Tag = "0"
+    Image2.Tag = "0"
 
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("goliathaceptar.bmp")
         Image2.Tag = "1"
-    End If
-End Sub
 
+    End If
+
+End Sub
 
 Private Sub Image2_Click()
 
-Select Case QueOperacion
-    Case 0
-        Unload Me
-    
-    Case 5 'Depositar
-    
-        'Negativos y ceros
-        If (Val(txtDatos.Text) < 1 And (UCase$(txtDatos.Text) <> "TODO")) Then lblDatos.Caption = "Cantidad inválida."
-    
-        If Val(txtDatos.Text) <= UserGLD Or UCase$(txtDatos.Text) = "TODO" Then
-                    
-    
-            Call WriteBankDepositGold(IIf(Val(txtDatos.Text) > 0, Val(txtDatos.Text), UserGLD))
+    Select Case QueOperacion
+
+        Case 0
             Unload Me
-        Else
-            lblDatos.Caption = "No tienes esa cantidad, reintenta."
-        End If
-    Case 1 'Retirar
     
-        'Negativos y ceros
-        If (Val(txtDatos.Text) < 1 And (UCase$(txtDatos.Text) <> "TODO")) Then lblDatos.Caption = "Cantidad inválida."
+        Case 5 'Depositar
     
-        If Val(txtDatos.Text) <= OroDep Or UCase$(txtDatos.Text) = "TODO" Then
-            Call WriteBankExtractGold(IIf(Val(txtDatos.Text) > 0, Val(txtDatos.Text), OroDep))
-            Unload Me
-        Else
-            lblDatos.Caption = "No tienes esa cantidad, reintenta."
-        End If
-    Case 4 'Transferir - Destino - Cantidad
-        If EtapaTransferencia = 0 Then
-        
             'Negativos y ceros
-            If Val(txtDatos.Text) < 1 Then
-                Label1.Caption = "Cantidad inválida, reintenta."
-                txtDatos.Text = ""
-                Exit Sub
-            End If
-            
-            If Val(txtDatos.Text) <= OroDep Then
-                CantTransferencia = Val(txtDatos.Text)
-                Label1.Caption = "¿A quién le deseas transferir?"
-                EtapaTransferencia = 1
-                txtDatos.Text = ""
-            Else
-                Label1.Caption = "No tienes esa cantidad depositada."
-                txtDatos.Text = ""
-            End If
-        ElseIf EtapaTransferencia = 1 Then
-            If txtDatos.Text <> "" Then
-            Call WriteTransFerGold(CantTransferencia, txtDatos.Text)
+            If (Val(txtDatos.Text) < 1 And (UCase$(txtDatos.Text) <> "TODO")) Then lblDatos.Caption = "Cantidad inválida."
+    
+            If Val(txtDatos.Text) <= UserGLD Or UCase$(txtDatos.Text) = "TODO" Then
+    
+                Call WriteBankDepositGold(IIf(Val(txtDatos.Text) > 0, Val(txtDatos.Text), UserGLD))
                 Unload Me
             Else
-                Label1.Caption = "¡Nombre de destino inválido!"
-                txtDatos.Text = ""
+                lblDatos.Caption = "No tienes esa cantidad, reintenta."
+
             End If
-        End If
-End Select
+
+        Case 1 'Retirar
+    
+            'Negativos y ceros
+            If (Val(txtDatos.Text) < 1 And (UCase$(txtDatos.Text) <> "TODO")) Then lblDatos.Caption = "Cantidad inválida."
+    
+            If Val(txtDatos.Text) <= OroDep Or UCase$(txtDatos.Text) = "TODO" Then
+                Call WriteBankExtractGold(IIf(Val(txtDatos.Text) > 0, Val(txtDatos.Text), OroDep))
+                Unload Me
+            Else
+                lblDatos.Caption = "No tienes esa cantidad, reintenta."
+
+            End If
+
+        Case 4 'Transferir - Destino - Cantidad
+
+            If EtapaTransferencia = 0 Then
+        
+                'Negativos y ceros
+                If Val(txtDatos.Text) < 1 Then
+                    Label1.Caption = "Cantidad inválida, reintenta."
+                    txtDatos.Text = ""
+                    Exit Sub
+
+                End If
+            
+                If Val(txtDatos.Text) <= OroDep Then
+                    CantTransferencia = Val(txtDatos.Text)
+                    Label1.Caption = "¿A quién le deseas transferir?"
+                    EtapaTransferencia = 1
+                    txtDatos.Text = ""
+                Else
+                    Label1.Caption = "No tienes esa cantidad depositada."
+                    txtDatos.Text = ""
+
+                End If
+
+            ElseIf EtapaTransferencia = 1 Then
+
+                If txtDatos.Text <> "" Then
+                    Call WriteTransFerGold(CantTransferencia, txtDatos.Text)
+                    Unload Me
+                Else
+                    Label1.Caption = "¡Nombre de destino inválido!"
+                    txtDatos.Text = ""
+
+                End If
+
+            End If
+
+    End Select
 
 End Sub
-
 
 Private Sub lstBanco_Click()
 
-
-
 End Sub
 
-
 Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-Select Case Index
-    Case 0 ' depositar
-        lblDatos.Caption = ""
-        Me.Picture = LoadInterface("goliathdepositar.bmp")
-        operacion(1).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(4).Tag = "0"
-        txtDatos.Visible = True
-        gold.Visible = False
-        Label1.Visible = False
-    Case 1 ' retirar
-        lblDatos.Caption = ""
 
-        Me.Picture = LoadInterface("goliathretiro.bmp")
-        operacion(0).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(4).Tag = "0"
-        txtDatos.Visible = True
-        gold.Visible = False
-        Label1.Visible = False
-    Case 2 ' boveda
-        lblDatos.Caption = ""
-        Me.Picture = LoadInterface("goliathboveda.bmp")
+    Select Case Index
 
-        operacion(1).Tag = "0"
-        operacion(0).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(4).Tag = "0"
-        txtDatos.Visible = False
-        Label1.Visible = False
+        Case 0 ' depositar
+            lblDatos.Caption = ""
+            Me.Picture = LoadInterface("goliathdepositar.bmp")
+            operacion(1).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(4).Tag = "0"
+            txtDatos.Visible = True
+            gold.Visible = False
+            Label1.Visible = False
+
+        Case 1 ' retirar
+            lblDatos.Caption = ""
+
+            Me.Picture = LoadInterface("goliathretiro.bmp")
+            operacion(0).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(4).Tag = "0"
+            txtDatos.Visible = True
+            gold.Visible = False
+            Label1.Visible = False
+
+        Case 2 ' boveda
+            lblDatos.Caption = ""
+            Me.Picture = LoadInterface("goliathboveda.bmp")
+
+            operacion(1).Tag = "0"
+            operacion(0).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(4).Tag = "0"
+            txtDatos.Visible = False
+            Label1.Visible = False
         
-    Case 3 ' transfer
+        Case 3 ' transfer
+
+            Me.Picture = LoadInterface("goliathtransferencia.bmp")
+
+            operacion(1).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(0).Tag = "0"
+            operacion(4).Tag = "0"
+            txtDatos.Visible = True
+            gold.Visible = False
+            Label1.Caption = "Ingrese la cantidad a transferir"
+            Label1.Visible = True
         
+        Case 4 ' shop
+            lblDatos.Caption = ""
+            Me.Picture = LoadInterface("goliathshop.bmp")
 
-        Me.Picture = LoadInterface("goliathtransferencia.bmp")
-
-        operacion(1).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(0).Tag = "0"
-        operacion(4).Tag = "0"
-        txtDatos.Visible = True
-        gold.Visible = False
-        Label1.Caption = "Ingrese la cantidad a transferir"
-        Label1.Visible = True
-        
-    Case 4 ' shop
-        lblDatos.Caption = ""
-        Me.Picture = LoadInterface("goliathshop.bmp")
-
-        operacion(1).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(0).Tag = "0"
-        txtDatos.Visible = False
-        Label1.Visible = False
+            operacion(1).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(0).Tag = "0"
+            txtDatos.Visible = False
+            Label1.Visible = False
     
     End Select
+
 End Sub
 
 Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-Select Case Index
-    Case 0 ' depositar
-        If operacion(Index).Tag = "0" Then
-            Image3.Picture = LoadInterface("goliathdepositoover.bmp")
-            operacion(Index).Tag = "1"
-        End If
-        operacion(1).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(4).Tag = "0"
-    Case 1 ' retirar
-        If operacion(Index).Tag = "0" Then
-            Image3.Picture = LoadInterface("goliathretirarover.bmp")
-            operacion(Index).Tag = "1"
-        End If
-        operacion(0).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(4).Tag = "0"
-    Case 2 ' boveda
-        If operacion(Index).Tag = "0" Then
-            Image3.Picture = LoadInterface("goliathbovedaover.bmp")
-            operacion(Index).Tag = "1"
-        End If
-        operacion(0).Tag = "0"
-        operacion(1).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(4).Tag = "0"
-    Case 3 ' transfer
-        If operacion(Index).Tag = "0" Then
-            Image3.Picture = LoadInterface("goliathtransferenciaover.bmp")
-            operacion(Index).Tag = "1"
-        End If
-        operacion(1).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(0).Tag = "0"
-        operacion(4).Tag = "0"
+
+    Select Case Index
+
+        Case 0 ' depositar
+
+            If operacion(Index).Tag = "0" Then
+                Image3.Picture = LoadInterface("goliathdepositoover.bmp")
+                operacion(Index).Tag = "1"
+
+            End If
+
+            operacion(1).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(4).Tag = "0"
+
+        Case 1 ' retirar
+
+            If operacion(Index).Tag = "0" Then
+                Image3.Picture = LoadInterface("goliathretirarover.bmp")
+                operacion(Index).Tag = "1"
+
+            End If
+
+            operacion(0).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(4).Tag = "0"
+
+        Case 2 ' boveda
+
+            If operacion(Index).Tag = "0" Then
+                Image3.Picture = LoadInterface("goliathbovedaover.bmp")
+                operacion(Index).Tag = "1"
+
+            End If
+
+            operacion(0).Tag = "0"
+            operacion(1).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(4).Tag = "0"
+
+        Case 3 ' transfer
+
+            If operacion(Index).Tag = "0" Then
+                Image3.Picture = LoadInterface("goliathtransferenciaover.bmp")
+                operacion(Index).Tag = "1"
+
+            End If
+
+            operacion(1).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(0).Tag = "0"
+            operacion(4).Tag = "0"
         
-    Case 4 ' shop
-        If operacion(Index).Tag = "0" Then
-            Image3.Picture = LoadInterface("goliathshopover.bmp")
-            operacion(Index).Tag = "1"
-        End If
+        Case 4 ' shop
+
+            If operacion(Index).Tag = "0" Then
+                Image3.Picture = LoadInterface("goliathshopover.bmp")
+                operacion(Index).Tag = "1"
+
+            End If
         
-        operacion(1).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(0).Tag = "0"
-    
+            operacion(1).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(0).Tag = "0"
     
     End Select
+
 End Sub
 
 Private Sub operacion_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-Select Case Index
-    Case 0 ' depositar
-        QueOperacion = 5
-        Me.Picture = LoadInterface("goliathdepositar.bmp")
-        operacion(1).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(4).Tag = "0"
-    Case 1 ' retirar
-        QueOperacion = 1
-        Me.Picture = LoadInterface("goliathretiro.bmp")
-        operacion(0).Tag = "0"
-        operacion(2).Tag = "0"
-        operacion(3).Tag = "0"
-        operacion(4).Tag = "0"
-    Case 2 ' boveda
-        Call WriteBankStart
-        Unload Me
-    Case 3 ' transfer
-    QueOperacion = 4
-        EtapaTransferencia = 0
-        lblDatos.Caption = "¿Qué cantidad deseas transferir?"
-    Case 4 ' shop
-        Call WriteTraerShop
-        Unload Me
-    
+
+    Select Case Index
+
+        Case 0 ' depositar
+            QueOperacion = 5
+            Me.Picture = LoadInterface("goliathdepositar.bmp")
+            operacion(1).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(4).Tag = "0"
+
+        Case 1 ' retirar
+            QueOperacion = 1
+            Me.Picture = LoadInterface("goliathretiro.bmp")
+            operacion(0).Tag = "0"
+            operacion(2).Tag = "0"
+            operacion(3).Tag = "0"
+            operacion(4).Tag = "0"
+
+        Case 2 ' boveda
+            Call WriteBankStart
+            Unload Me
+
+        Case 3 ' transfer
+            QueOperacion = 4
+            EtapaTransferencia = 0
+            lblDatos.Caption = "¿Qué cantidad deseas transferir?"
+
+        Case 4 ' shop
+            Call WriteTraerShop
+            Unload Me
     
     End Select
+
 End Sub
 

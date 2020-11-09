@@ -54,31 +54,30 @@ Option Base 0       'It's the default, but we make it explicit just in case...
 ' The error number thrown when there is not enough data in
 ' the buffer to read the specified data type.
 ' It's 9 (subscript out of range) + the object error constant
-Private Const NOT_ENOUGH_DATA As Long = vbObjectError + 9
+Private Const NOT_ENOUGH_DATA  As Long = vbObjectError + 9
 
 ''
 ' The error number thrown when there is not enough space in
 ' the buffer to write.
 Private Const NOT_ENOUGH_SPACE As Long = vbObjectError + 10
 
-
 ''
 ' Default size of a data buffer (10 Kbs)
 '
 ' @see Class_Initialize
-Private Const DATA_BUFFER As Long = 10240 'Ladder TAMAÑO DEL BUFFER   REVISAR
+Private Const DATA_BUFFER      As Long = 10240 'Ladder TAMAÑO DEL BUFFER   REVISAR
 
 ''
 ' The byte data
-Dim Data() As Byte
+Dim Data()                     As Byte
 
 ''
 ' How big the data array is
-Dim queueCapacity As Long
+Dim queueCapacity              As Long
 
 ''
 ' How far into the data array have we written
-Dim queueLength As Long
+Dim queueLength                As Long
 
 ''
 ' CopyMemory is the fastest way to copy memory blocks, so we abuse of it
@@ -95,26 +94,28 @@ Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef desti
 ' @see DATA_BUFFER
 
 Private Sub Class_Initialize()
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Initializes the queue with the default queueCapacity
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Initializes the queue with the default queueCapacity
+    '***************************************************
     ReDim Data(DATA_BUFFER - 1) As Byte
     
     queueCapacity = DATA_BUFFER
+
 End Sub
 
 ''
 ' Clean up and release resources
 
 Private Sub Class_Terminate()
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Clean up
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Clean up
+    '***************************************************
     Erase Data
+
 End Sub
 
 ''
@@ -125,15 +126,17 @@ End Sub
 '           the source. All previous data on this object will be lost.
 
 Public Sub CopyBuffer(ByRef source As clsByteQueue)
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'A Visual Basic equivalent of a Copy Contructor
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'A Visual Basic equivalent of a Copy Contructor
+    '***************************************************
     If source.length = 0 Then
         'Clear the list and exit
         Call RemoveData(length)
         Exit Sub
+
     End If
     
     ' Set capacity and resize array - make sure all data is lost
@@ -143,6 +146,7 @@ Public Sub CopyBuffer(ByRef source As clsByteQueue)
     
     ' Read buffer
     Dim buf() As Byte
+
     ReDim buf(source.length - 1) As Byte
     
     Call source.PeekBlock(buf, source.length)
@@ -151,6 +155,7 @@ Public Sub CopyBuffer(ByRef source As clsByteQueue)
     
     ' Write buffer
     Call WriteBlock(buf, source.length)
+
 End Sub
 
 ''
@@ -162,16 +167,19 @@ End Sub
 ' @remarks  This method is faster than Iif() and cleaner, therefore it's used instead of it
 
 Private Function min(ByVal val1 As Long, ByVal val2 As Long) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'It's faster than iif and I like it better
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'It's faster than iif and I like it better
+    '***************************************************
     If val1 < val2 Then
         min = val1
     Else
         min = val2
+
     End If
+
 End Function
 
 ''
@@ -188,15 +196,16 @@ End Function
 
 Private Function WriteData(ByRef buf() As Byte, ByVal dataLength As Long) As Long
 
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'If the queueCapacity allows it copyes a byte buffer to the queue, if not it throws NOT_ENOUGH_DATA
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'If the queueCapacity allows it copyes a byte buffer to the queue, if not it throws NOT_ENOUGH_DATA
+    '***************************************************
     'Check if there is enough free space
     If queueCapacity - queueLength - dataLength < 0 Then
-    Call Err.Raise(NOT_ENOUGH_SPACE)
+        Call Err.Raise(NOT_ENOUGH_SPACE)
         Exit Function
+
     End If
     
     'Copy data from buffer
@@ -205,6 +214,7 @@ Private Function WriteData(ByRef buf() As Byte, ByVal dataLength As Long) As Lon
     'Update length of data
     queueLength = queueLength + dataLength
     WriteData = dataLength
+
 End Function
 
 ''
@@ -222,21 +232,25 @@ End Function
 ' @see NOT_ENOUGH_DATA
 
 Private Function ReadData(ByRef buf() As Byte, ByVal dataLength As Long) As Long
-On Error Resume Next
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'If enough memory is available, it copies the requested number of bytes to the buffer
-'***************************************************
+
+    On Error Resume Next
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'If enough memory is available, it copies the requested number of bytes to the buffer
+    '***************************************************
     'Check if we can read the number of bytes requested
     If dataLength > queueLength Then
         Call Err.Raise(NOT_ENOUGH_DATA)
         Exit Function
+
     End If
     
     'Copy data to buffer
     Call CopyMemory(buf(0), Data(0), dataLength)
     ReadData = dataLength
+
 End Function
 
 ''
@@ -249,20 +263,20 @@ End Function
 ' @see ReadData
 
 Private Function RemoveData(ByVal dataLength As Long) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Moves forward the queue overwriting the first dataLength bytes
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Moves forward the queue overwriting the first dataLength bytes
+    '***************************************************
     'Figure out how many bytes we can remove
     RemoveData = min(dataLength, queueLength)
     
     'Remove data - prevent rt9 when cleaning a full queue
-    If RemoveData <> queueCapacity Then _
-        Call CopyMemory(Data(0), Data(RemoveData), queueLength - RemoveData)
+    If RemoveData <> queueCapacity Then Call CopyMemory(Data(0), Data(RemoveData), queueLength - RemoveData)
     
     'Update length
     queueLength = queueLength - RemoveData
+
 End Function
 
 ''
@@ -274,16 +288,18 @@ End Function
 ' @see ReadByte
 
 Public Function WriteByte(ByVal value As Byte) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Writes a byte to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Writes a byte to the queue
+    '***************************************************
     Dim buf(0) As Byte
     
     buf(0) = value
     
     WriteByte = WriteData(buf, 1)
+
 End Function
 
 ''
@@ -295,17 +311,19 @@ End Function
 ' @see ReadInteger
 
 Public Function WriteInteger(ByVal value As Integer) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Writes an integer to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Writes an integer to the queue
+    '***************************************************
     Dim buf(1) As Byte
     
     'Copy data to temp buffer
     Call CopyMemory(buf(0), value, 2)
     
     WriteInteger = WriteData(buf, 2)
+
 End Function
 
 ''
@@ -317,17 +335,19 @@ End Function
 ' @see ReadLong
 
 Public Function WriteLong(ByVal value As Long) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Writes a long to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Writes a long to the queue
+    '***************************************************
     Dim buf(3) As Byte
     
     'Copy data to temp buffer
     Call CopyMemory(buf(0), value, 4)
     
     WriteLong = WriteData(buf, 4)
+
 End Function
 
 ''
@@ -339,17 +359,19 @@ End Function
 ' @see ReadSingle
 
 Public Function WriteSingle(ByVal value As Single) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 10/28/07
-'Writes a single to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 10/28/07
+    'Writes a single to the queue
+    '***************************************************
     Dim buf(3) As Byte
     
     'Copy data to temp buffer
     Call CopyMemory(buf(0), value, 4)
     
     WriteSingle = WriteData(buf, 4)
+
 End Function
 
 ''
@@ -361,17 +383,19 @@ End Function
 ' @see ReadDouble
 
 Public Function WriteDouble(ByVal value As Double) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 10/28/07
-'Writes a double to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 10/28/07
+    'Writes a double to the queue
+    '***************************************************
     Dim buf(7) As Byte
     
     'Copy data to temp buffer
     Call CopyMemory(buf(0), value, 8)
     
     WriteDouble = WriteData(buf, 8)
+
 End Function
 
 ''
@@ -383,16 +407,18 @@ End Function
 ' @see ReadBoolean
 
 Public Function WriteBoolean(ByVal value As Boolean) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Writes a byte to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Writes a byte to the queue
+    '***************************************************
     Dim buf(0) As Byte
     
     If value Then buf(0) = 1
     
     WriteBoolean = WriteData(buf, 1)
+
 End Function
 
 ''
@@ -404,18 +430,21 @@ End Function
 ' @see ReadASCIIStringFixed
 
 Public Function WriteASCIIStringFixed(ByVal value As String) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Writes a fixed length ASCII string to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Writes a fixed length ASCII string to the queue
+    '***************************************************
     Dim buf() As Byte
+
     ReDim buf(Len(value) - 1) As Byte
     
     'Copy data to temp buffer
     Call CopyMemory(buf(0), ByVal StrPtr(StrConv(value, vbFromUnicode)), Len(value))
     
     WriteASCIIStringFixed = WriteData(buf, Len(value))
+
 End Function
 
 ''
@@ -427,18 +456,21 @@ End Function
 ' @see ReadUnicodeStringFixed
 
 Public Function WriteUnicodeStringFixed(ByVal value As String) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Writes a fixed length UNICODE string to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Writes a fixed length UNICODE string to the queue
+    '***************************************************
     Dim buf() As Byte
+
     ReDim buf(LenB(value)) As Byte
     
     'Copy data to temp buffer
     Call CopyMemory(buf(0), ByVal StrPtr(value), LenB(value))
 
     WriteUnicodeStringFixed = WriteData(buf, LenB(value))
+
 End Function
 
 ''
@@ -450,12 +482,14 @@ End Function
 ' @see ReadASCIIString
 
 Public Function WriteASCIIString(ByVal value As String) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Writes a variable length ASCII string to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Writes a variable length ASCII string to the queue
+    '***************************************************
     Dim buf() As Byte
+
     ReDim buf(Len(value) + 1) As Byte
     
     'Copy length to temp buffer
@@ -464,9 +498,11 @@ Public Function WriteASCIIString(ByVal value As String) As Long
     If Len(value) > 0 Then
         'Copy data to temp buffer
         Call CopyMemory(buf(2), ByVal StrPtr(StrConv(value, vbFromUnicode)), Len(value))
+
     End If
 
     WriteASCIIString = WriteData(buf, Len(value) + 2)
+
 End Function
 
 ''
@@ -478,12 +514,14 @@ End Function
 ' @see ReadUnicodeString
 
 Public Function WriteUnicodeString(ByVal value As String) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Writes a variable length UNICODE string to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Writes a variable length UNICODE string to the queue
+    '***************************************************
     Dim buf() As Byte
+
     ReDim buf(LenB(value) + 1) As Byte
     
     'Copy length to temp buffer
@@ -492,9 +530,11 @@ Public Function WriteUnicodeString(ByVal value As String) As Long
     If Len(value) > 0 Then
         'Copy data to temp buffer
         Call CopyMemory(buf(2), ByVal StrPtr(value), LenB(value))
+
     End If
     
     WriteUnicodeString = WriteData(buf, LenB(value) + 2)
+
 End Function
 
 ''
@@ -508,15 +548,17 @@ End Function
 ' @see ReadBlock
 
 Public Function WriteBlock(ByRef value() As Byte, Optional ByVal length As Long = -1) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Writes a byte array to the queue
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Writes a byte array to the queue
+    '***************************************************
     'Prevent from copying memory outside the array
     If length > UBound(value()) + 1 Or length < 0 Then length = UBound(value()) + 1
     
     WriteBlock = WriteData(value, length)
+
 End Function
 
 ''
@@ -529,17 +571,19 @@ End Function
 ' @see WriteByte
 
 Public Function ReadByte() As Byte
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a byte from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a byte from the queue and removes it
+    '***************************************************
     Dim buf(0) As Byte
     
     'Read the data and remove it
     Call RemoveData(ReadData(buf, 1))
     
     ReadByte = buf(0)
+
 End Function
 
 ''
@@ -552,11 +596,12 @@ End Function
 ' @see WriteInteger
 
 Public Function ReadInteger() As Integer
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads an integer from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads an integer from the queue and removes it
+    '***************************************************
     Dim buf(1) As Byte
     
     'Read the data and remove it
@@ -564,6 +609,7 @@ Public Function ReadInteger() As Integer
     
     'Copy data to temp buffer
     Call CopyMemory(ReadInteger, buf(0), 2)
+
 End Function
 
 ''
@@ -576,11 +622,12 @@ End Function
 ' @see WriteLong
 
 Public Function ReadLong() As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a long from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a long from the queue and removes it
+    '***************************************************
     Dim buf(3) As Byte
     
     'Read the data and remove it
@@ -588,6 +635,7 @@ Public Function ReadLong() As Long
     
     'Copy data to temp buffer
     Call CopyMemory(ReadLong, buf(0), 4)
+
 End Function
 
 ''
@@ -600,11 +648,12 @@ End Function
 ' @see WriteSingle
 
 Public Function ReadSingle() As Single
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 10/28/07
-'Reads a single from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 10/28/07
+    'Reads a single from the queue and removes it
+    '***************************************************
     Dim buf(3) As Byte
     
     'Read the data and remove it
@@ -612,6 +661,7 @@ Public Function ReadSingle() As Single
     
     'Copy data to temp buffer
     Call CopyMemory(ReadSingle, buf(0), 4)
+
 End Function
 
 ''
@@ -624,11 +674,12 @@ End Function
 ' @see WriteDouble
 
 Public Function ReadDouble() As Double
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 10/28/07
-'Reads a double from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 10/28/07
+    'Reads a double from the queue and removes it
+    '***************************************************
     Dim buf(7) As Byte
     
     'Read the data and remove it
@@ -636,6 +687,7 @@ Public Function ReadDouble() As Double
     
     'Copy data to temp buffer
     Call CopyMemory(ReadDouble, buf(0), 8)
+
 End Function
 
 ''
@@ -648,17 +700,19 @@ End Function
 ' @see WriteBoolean
 
 Public Function ReadBoolean() As Boolean
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a Boolean from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a Boolean from the queue and removes it
+    '***************************************************
     Dim buf(0) As Byte
     
     'Read the data and remove it
     Call RemoveData(ReadData(buf, 1))
     
     If buf(0) = 1 Then ReadBoolean = True
+
 End Function
 
 ''
@@ -673,15 +727,18 @@ End Function
 ' @see WriteUnicodeStringFixed
 
 Public Function ReadASCIIStringFixed(ByVal length As Long) As String
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a fixed length ASCII string from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a fixed length ASCII string from the queue and removes it
+    '***************************************************
     If length <= 0 Then Exit Function
     
     If queueLength >= length Then
+
         Dim buf() As Byte
+
         ReDim buf(length - 1) As Byte
         
         'Read the data and remove it
@@ -690,7 +747,9 @@ Public Function ReadASCIIStringFixed(ByVal length As Long) As String
         ReadASCIIStringFixed = StrConv(buf, vbUnicode)
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
+
     End If
+
 End Function
 
 ''
@@ -705,15 +764,18 @@ End Function
 ' @see WriteUnicodeStringFixed
 
 Public Function ReadUnicodeStringFixed(ByVal length As Long) As String
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a fixed length UNICODE string from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a fixed length UNICODE string from the queue and removes it
+    '***************************************************
     If length <= 0 Then Exit Function
     
     If queueLength >= length * 2 Then
+
         Dim buf() As Byte
+
         ReDim buf(length * 2 - 1) As Byte
         
         'Read the data and remove it
@@ -722,7 +784,9 @@ Public Function ReadUnicodeStringFixed(ByVal length As Long) As String
         ReadUnicodeStringFixed = buf
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
+
     End If
+
 End Function
 
 ''
@@ -736,13 +800,14 @@ End Function
 ' @see WriteASCIIString
 
 Public Function ReadASCIIString() As String
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a variable length ASCII string from the queue and removes it
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a variable length ASCII string from the queue and removes it
+    '***************************************************
 
     Dim buf(1) As Byte
+
     Dim length As Integer
     
     'Make sure we can read a valid length
@@ -757,23 +822,29 @@ Public Function ReadASCIIString() As String
             Call RemoveData(2)
             
             If length > 0 Then
+
                 Dim buf2() As Byte
+
                 ReDim buf2(length - 1) As Byte
-                
                 
                 'Read the data and remove it
                 Call RemoveData(ReadData(buf2, length))
                 
                 ReadASCIIString = StrConv(buf2, vbUnicode)
+
             End If
+
         Else
              
-             
-             Call Err.Raise(NOT_ENOUGH_DATA)
+            Call Err.Raise(NOT_ENOUGH_DATA)
+
         End If
+
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
+
     End If
+
 End Function
 
 ''
@@ -787,12 +858,14 @@ End Function
 ' @see WriteUnicodeString
 
 Public Function ReadUnicodeString() As String
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a variable length UNICODE string from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a variable length UNICODE string from the queue and removes it
+    '***************************************************
     Dim buf(1) As Byte
+
     Dim length As Integer
     
     'Make sure we can read a valid length
@@ -807,6 +880,7 @@ Public Function ReadUnicodeString() As String
             Call RemoveData(2)
             
             Dim buf2() As Byte
+
             ReDim buf2(length * 2 - 1) As Byte
             
             'Read the data and remove it
@@ -815,10 +889,14 @@ Public Function ReadUnicodeString() As String
             ReadUnicodeString = buf2
         Else
             Call Err.Raise(NOT_ENOUGH_DATA)
+
         End If
+
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
+
     End If
+
 End Function
 
 ''
@@ -834,14 +912,15 @@ End Function
 ' @see WriteBlock
 
 Public Function ReadBlock(ByRef block() As Byte, ByVal dataLength As Long) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a byte array from the queue and removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a byte array from the queue and removes it
+    '***************************************************
     'Read the data and remove it
-    If dataLength > 0 Then _
-        ReadBlock = RemoveData(ReadData(block(), dataLength))
+    If dataLength > 0 Then ReadBlock = RemoveData(ReadData(block(), dataLength))
+
 End Function
 
 ''
@@ -853,18 +932,21 @@ End Function
 ' @see WriteByte
 
 Public Function PeekByte() As Byte
-On Error Resume Next
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a byte from the queue but doesn't removes it
-'***************************************************
+
+    On Error Resume Next
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a byte from the queue but doesn't removes it
+    '***************************************************
     Dim buf(0) As Byte
     
     'Read the data and remove it
     Call ReadData(buf, 1)
     
     PeekByte = buf(0)
+
 End Function
 
 ''
@@ -876,11 +958,12 @@ End Function
 ' @see WriteInteger
 
 Public Function PeekInteger() As Integer
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads an integer from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads an integer from the queue but doesn't removes it
+    '***************************************************
     Dim buf(1) As Byte
     
     'Read the data and remove it
@@ -888,6 +971,7 @@ Public Function PeekInteger() As Integer
     
     'Copy data to temp buffer
     Call CopyMemory(PeekInteger, buf(0), 2)
+
 End Function
 
 ''
@@ -899,11 +983,12 @@ End Function
 ' @see WriteLong
 
 Public Function PeekLong() As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a long from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a long from the queue but doesn't removes it
+    '***************************************************
     Dim buf(3) As Byte
     
     'Read the data and remove it
@@ -911,6 +996,7 @@ Public Function PeekLong() As Long
     
     'Copy data to temp buffer
     Call CopyMemory(PeekLong, buf(0), 4)
+
 End Function
 
 ''
@@ -922,11 +1008,12 @@ End Function
 ' @see WriteSingle
 
 Public Function PeekSingle() As Single
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 10/28/07
-'Reads a single from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 10/28/07
+    'Reads a single from the queue but doesn't removes it
+    '***************************************************
     Dim buf(3) As Byte
     
     'Read the data and remove it
@@ -934,6 +1021,7 @@ Public Function PeekSingle() As Single
     
     'Copy data to temp buffer
     Call CopyMemory(PeekSingle, buf(0), 4)
+
 End Function
 
 ''
@@ -945,11 +1033,12 @@ End Function
 ' @see WriteDouble
 
 Public Function PeekDouble() As Double
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 10/28/07
-'Reads a double from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 10/28/07
+    'Reads a double from the queue but doesn't removes it
+    '***************************************************
     Dim buf(7) As Byte
     
     'Read the data and remove it
@@ -957,6 +1046,7 @@ Public Function PeekDouble() As Double
     
     'Copy data to temp buffer
     Call CopyMemory(PeekDouble, buf(0), 8)
+
 End Function
 
 ''
@@ -968,17 +1058,19 @@ End Function
 ' @see WriteBoolean
 
 Public Function PeekBoolean() As Boolean
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a Boolean from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a Boolean from the queue but doesn't removes it
+    '***************************************************
     Dim buf(0) As Byte
     
     'Read the data and remove it
     Call ReadData(buf, 1)
     
     If buf(0) = 1 Then PeekBoolean = True
+
 End Function
 
 ''
@@ -992,15 +1084,18 @@ End Function
 ' @see WriteASCIIStringFixed
 
 Public Function PeekASCIIStringFixed(ByVal length As Long) As String
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a fixed length ASCII string from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a fixed length ASCII string from the queue but doesn't removes it
+    '***************************************************
     If length <= 0 Then Exit Function
     
     If queueLength >= length Then
+
         Dim buf() As Byte
+
         ReDim buf(length - 1) As Byte
         
         'Read the data and remove it
@@ -1009,7 +1104,9 @@ Public Function PeekASCIIStringFixed(ByVal length As Long) As String
         PeekASCIIStringFixed = StrConv(buf, vbUnicode)
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
+
     End If
+
 End Function
 
 ''
@@ -1023,15 +1120,18 @@ End Function
 ' @see WriteUnicodeStringFixed
 
 Public Function PeekUnicodeStringFixed(ByVal length As Long) As String
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a fixed length UNICODE string from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a fixed length UNICODE string from the queue but doesn't removes it
+    '***************************************************
     If length <= 0 Then Exit Function
     
     If queueLength >= length * 2 Then
+
         Dim buf() As Byte
+
         ReDim buf(length * 2 - 1) As Byte
         
         'Read the data and remove it
@@ -1040,7 +1140,9 @@ Public Function PeekUnicodeStringFixed(ByVal length As Long) As String
         PeekUnicodeStringFixed = buf
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
+
     End If
+
 End Function
 
 ''
@@ -1053,12 +1155,14 @@ End Function
 ' @see WriteASCIIString
 
 Public Function PeekASCIIString() As String
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a variable length ASCII string from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a variable length ASCII string from the queue but doesn't removes it
+    '***************************************************
     Dim buf(1) As Byte
+
     Dim length As Integer
     
     'Make sure we can read a valid length
@@ -1069,26 +1173,36 @@ Public Function PeekASCIIString() As String
         
         'Make sure there are enough bytes
         If queueLength >= length + 2 Then
+
             Dim buf2() As Byte
+
             ReDim buf2(length + 1) As Byte
             
             'Read the data (we have to read the length again)
             Call ReadData(buf2, length + 2)
             
             If length > 0 Then
+
                 'Get rid of the length
                 Dim buf3() As Byte
+
                 ReDim buf3(length - 1) As Byte
                 Call CopyMemory(buf3(0), buf2(2), length)
                 
                 PeekASCIIString = StrConv(buf3, vbUnicode)
+
             End If
+
         Else
             Call Err.Raise(NOT_ENOUGH_DATA)
+
         End If
+
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
+
     End If
+
 End Function
 
 ''
@@ -1101,12 +1215,14 @@ End Function
 ' @see WriteUnicodeString
 
 Public Function PeekUnicodeString() As String
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a variable length UNICODE string from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a variable length UNICODE string from the queue but doesn't removes it
+    '***************************************************
     Dim buf(1) As Byte
+
     Dim length As Integer
     
     'Make sure we can read a valid length
@@ -1117,7 +1233,9 @@ Public Function PeekUnicodeString() As String
         
         'Make sure there are enough bytes
         If queueLength >= length * 2 + 2 Then
+
             Dim buf2() As Byte
+
             ReDim buf2(length * 2 + 1) As Byte
             
             'Read the data (we need to read the length again)
@@ -1125,16 +1243,21 @@ Public Function PeekUnicodeString() As String
             
             'Get rid of the length bytes
             Dim buf3() As Byte
+
             ReDim buf3(length * 2 - 1) As Byte
             Call CopyMemory(buf3(0), buf2(2), length * 2)
             
             PeekUnicodeString = buf3
         Else
             Call Err.Raise(NOT_ENOUGH_DATA)
+
         End If
+
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
+
     End If
+
 End Function
 
 ''
@@ -1148,14 +1271,15 @@ End Function
 ' @see WriteBlock
 
 Public Function PeekBlock(ByRef block() As Byte, ByVal dataLength As Long) As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Reads a byte array from the queue but doesn't removes it
-'***************************************************
+
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Reads a byte array from the queue but doesn't removes it
+    '***************************************************
     'Read the data
-    If dataLength > 0 Then _
-        PeekBlock = ReadData(block(), dataLength)
+    If dataLength > 0 Then PeekBlock = ReadData(block(), dataLength)
+
 End Function
 
 ''
@@ -1164,12 +1288,13 @@ End Function
 ' @return   The current capacity of the queue.
 
 Public Property Get Capacity() As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Retrieves the current capacity of the queue
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Retrieves the current capacity of the queue
+    '***************************************************
     Capacity = queueCapacity
+
 End Property
 
 ''
@@ -1180,12 +1305,12 @@ End Property
 ' @see Length
 
 Public Property Let Capacity(ByVal value As Long)
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Sets the current capacity of the queue.
-'All data in the queue exceeding the new capacity is lost
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Sets the current capacity of the queue.
+    'All data in the queue exceeding the new capacity is lost
+    '***************************************************
     'Upate capacity
     queueCapacity = value
     
@@ -1194,6 +1319,7 @@ Public Property Let Capacity(ByVal value As Long)
     
     'Resize the queue
     ReDim Preserve Data(queueCapacity - 1) As Byte
+
 End Property
 
 ''
@@ -1202,12 +1328,13 @@ End Property
 ' @return   The length of the total data in the queue.
 
 Public Property Get length() As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Retrieves the current number of bytes in the queue
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Retrieves the current number of bytes in the queue
+    '***************************************************
     length = queueLength
+
 End Property
 
 ''
@@ -1216,12 +1343,13 @@ End Property
 ' @return   NOT_ENOUGH_DATA.
 
 Public Property Get NotEnoughDataErrCode() As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Retrieves the NOT_ENOUGH_DATA error code
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Retrieves the NOT_ENOUGH_DATA error code
+    '***************************************************
     NotEnoughDataErrCode = NOT_ENOUGH_DATA
+
 End Property
 
 ''
@@ -1230,11 +1358,12 @@ End Property
 ' @return   NOT_ENOUGH_SPACE.
 
 Public Property Get NotEnoughSpaceErrCode() As Long
-'***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/27/06
-'Retrieves the NOT_ENOUGH_SPACE error code
-'***************************************************
+    '***************************************************
+    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 04/27/06
+    'Retrieves the NOT_ENOUGH_SPACE error code
+    '***************************************************
     NotEnoughSpaceErrCode = NOT_ENOUGH_SPACE
+
 End Property
 

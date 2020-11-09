@@ -225,12 +225,15 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Command1_Click()
-Unload Me
-Manual.Show
+    Unload Me
+    Manual.Show
+
 End Sub
 
 Private Sub Label6_Click()
-Unload Me
-Manual_Pociones.Show
+    Unload Me
+    Manual_Pociones.Show
+
 End Sub

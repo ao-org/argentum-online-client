@@ -175,29 +175,34 @@ Option Explicit
 Public EsLeader As Boolean
 
 Private Sub aliado_Click()
-    frmCommet.Nombre = Right(Nombre.Caption, Len(Nombre.Caption) - 7)
+    frmCommet.nombre = Right(nombre.Caption, Len(nombre.Caption) - 7)
     frmCommet.T = TIPO.ALIANZA
     frmCommet.Caption = "Ingrese propuesta de alianza"
     Call frmCommet.Show(vbModal, frmGuildBrief)
+
 End Sub
 
 Private Sub Command2_Click()
-    Call frmGuildSol.RecieveSolicitud(Right$(Nombre, Len(Nombre) - 7))
+    Call frmGuildSol.RecieveSolicitud(Right$(nombre, Len(nombre) - 7))
     Call frmGuildSol.Show(vbModal, frmGuildBrief)
+
 End Sub
 
 Private Sub Command3_Click()
-    frmCommet.Nombre = Right(Nombre.Caption, Len(Nombre.Caption) - 7)
+    frmCommet.nombre = Right(nombre.Caption, Len(nombre.Caption) - 7)
     frmCommet.T = TIPO.PAZ
     frmCommet.Caption = "Ingrese propuesta de paz"
     Call frmCommet.Show(vbModal, frmGuildBrief)
+
 End Sub
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
+
 End Sub
 
 Private Sub Guerra_Click()
-    Call WriteGuildDeclareWar(Right(Nombre.Caption, Len(Nombre.Caption) - 7))
+    Call WriteGuildDeclareWar(Right(nombre.Caption, Len(nombre.Caption) - 7))
     Unload Me
+
 End Sub

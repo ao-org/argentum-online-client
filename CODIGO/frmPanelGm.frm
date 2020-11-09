@@ -644,214 +644,277 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim Nick As String
-Dim tmp As String
+Dim Nick       As String
+
+Dim tmp        As String
+
 Public LastStr As String
+
 Private Const MAX_GM_MSG = 300
-Dim reason As Long
+
+Dim reason                      As Long
 
 Private MisMSG(0 To MAX_GM_MSG) As String
-Private Apunt(0 To MAX_GM_MSG) As Integer
 
+Private Apunt(0 To MAX_GM_MSG)  As Integer
 
 Public Sub CrearGMmSg(Nick As String, msg As String)
-If List1.ListCount < MAX_GM_MSG Then
+
+    If List1.ListCount < MAX_GM_MSG Then
         List1.AddItem Nick & "-" & List1.ListCount
         MisMSG(List1.ListCount - 1) = msg
         Apunt(List1.ListCount - 1) = List1.ListCount - 1
-End If
+
+    End If
+
 End Sub
 
 Private Sub BanCuenta_Click()
     tmp = InputBox("¿Motivo?", "Ingrese el motivo")
     Nick = cboListaUsus.Text
+
     If MsgBox("¿Está seguro que desea banear la cuenta de """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
         Call WriteBanCuenta(Nick, tmp)
+
     End If
+
 End Sub
 
 Private Sub banMacYHD_Click()
-Call WriteBanSerial(cboListaUsus.Text)
+    Call WriteBanSerial(cboListaUsus.Text)
+
 End Sub
 
 Private Sub BorrarPersonaje_Click()
-If MsgBox("¿Está seguro que desea Borrar el personaje " & cboListaUsus.Text & "?", vbYesNo + vbQuestion) = vbYes Then
-'Call SendData("/KILLCHAR " & cboListaUsus.Text)
-End If
+
+    If MsgBox("¿Está seguro que desea Borrar el personaje " & cboListaUsus.Text & "?", vbYesNo + vbQuestion) = vbYes Then
+
+        'Call SendData("/KILLCHAR " & cboListaUsus.Text)
+    End If
+
 End Sub
 
 Private Sub BusqedaTesoro_Click()
 
-tmp = InputBox("Ingrese tipo de evento:" & vbCrLf & "0: Busqueda de tesoro en continente" & vbCrLf & "1: Busqueda de tesoro en dungeon" & vbCrLf & "2: Aparicion de criatura", "Iniciar evento")
+    tmp = InputBox("Ingrese tipo de evento:" & vbCrLf & "0: Busqueda de tesoro en continente" & vbCrLf & "1: Busqueda de tesoro en dungeon" & vbCrLf & "2: Aparicion de criatura", "Iniciar evento")
 
-If tmp > 255 Then Exit Sub
-If IsNumeric(tmp) Then
+    If tmp > 255 Then Exit Sub
+    If IsNumeric(tmp) Then
 
-    Call WriteBusquedaTesoro(CByte(tmp))
-Else
-    MsgBox ("Tipo invalido")
-End If
+        Call WriteBusquedaTesoro(CByte(tmp))
+    Else
+        MsgBox ("Tipo invalido")
+
+    End If
 
 End Sub
 
 Private Sub Cabeza_Click()
-tmp = InputBox("Ingrese el valor de cabeza que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " Head " & tmp)
+    tmp = InputBox("Ingrese el valor de cabeza que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " Head " & tmp)
 End Sub
+
 Private Sub CentinelaEstado_Click()
-'Call SendData("/CENTINELAACTIVADO")
+
+    'Call SendData("/CENTINELAACTIVADO")
 End Sub
 
 Private Sub CerrarleCliente_Click()
-Call WriteCerraCliente(cboListaUsus.Text)
+    Call WriteCerraCliente(cboListaUsus.Text)
+
 End Sub
 
 Private Sub CerrarProceso_Click()
     tmp = InputBox("Ingrese el nombre del proceso", "Cerrar Proceso")
+
     If tmp <> "" Then
-    'Call SendData("/CERRARPROCESO " & cboListaUsus.Text & "@" & tmp)
+
+        'Call SendData("/CERRARPROCESO " & cboListaUsus.Text & "@" & tmp)
     End If
+
 End Sub
 
 Private Sub ciudadanos_Click()
-tmp = InputBox("Ingrese el valor de ciudadanos que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " CIU " & tmp)
+    tmp = InputBox("Ingrese el valor de ciudadanos que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " CIU " & tmp)
 End Sub
 
 Private Sub Clase_Click()
-tmp = InputBox("Ingrese el valor de clase Libres que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " CLASE " & tmp)
+    tmp = InputBox("Ingrese el valor de clase Libres que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " CLASE " & tmp)
 End Sub
 
 Private Sub cmdAccion_Click(Index As Integer)
-Nick = Replace(cboListaUsus.Text, " ", "+")
+    Nick = Replace(cboListaUsus.Text, " ", "+")
 
-Select Case Index
+    Select Case Index
 
-Case 0 '/ECHAR NICK 0.12.1
-    Call WriteKick(Nick)
-Case 1 '/BAN NICK MOTIVO 0.12.1
-    tmp = InputBox("¿Motivo?", "Ingrese el motivo")
-    If MsgBox("¿Está seguro que desea banear al personaje """ & cboListaUsus.Text & """?", vbYesNo + vbQuestion) = vbYes Then
-        Call WriteBanChar(Nick, tmp)
-    End If
-Case 2 '/SUM NICK 0.12.1
-    If LenB(Nick) <> 0 Then _
-        Call WriteSummonChar(Nick)
-Case 3 '/ira NICK 0.12.1
-        If LenB(Nick) <> 0 Then _
-        Call WriteGoToChar(Nick)
-Case 4 '/REM 0.12.1
-    tmp = InputBox("¿Comentario?", "Ingrese comentario")
-    Call WriteComment(tmp)
-Case 5 '/HORA 0.12.1
-   Call Protocol.WriteServerTime
-Case 6 '/DONDE NICK 0.12.1
-    If LenB(Nick) <> 0 Then _
-        Call WriteWhere(Nick)
-Case 7 '/NENE 0.12.1
-    tmp = InputBox("¿En qué mapa?", "")
-    Call ParseUserCommand("/NENE " & tmp)
-Case 8 '/info nick
-   ' Call SendData("/INFO " & Nick)
+        Case 0 '/ECHAR NICK 0.12.1
+            Call WriteKick(Nick)
+
+        Case 1 '/BAN NICK MOTIVO 0.12.1
+            tmp = InputBox("¿Motivo?", "Ingrese el motivo")
+
+            If MsgBox("¿Está seguro que desea banear al personaje """ & cboListaUsus.Text & """?", vbYesNo + vbQuestion) = vbYes Then
+                Call WriteBanChar(Nick, tmp)
+
+            End If
+
+        Case 2 '/SUM NICK 0.12.1
+
+            If LenB(Nick) <> 0 Then Call WriteSummonChar(Nick)
+
+        Case 3 '/ira NICK 0.12.1
+
+            If LenB(Nick) <> 0 Then Call WriteGoToChar(Nick)
+
+        Case 4 '/REM 0.12.1
+            tmp = InputBox("¿Comentario?", "Ingrese comentario")
+            Call WriteComment(tmp)
+
+        Case 5 '/HORA 0.12.1
+            Call Protocol.WriteServerTime
+
+        Case 6 '/DONDE NICK 0.12.1
+
+            If LenB(Nick) <> 0 Then Call WriteWhere(Nick)
+
+        Case 7 '/NENE 0.12.1
+            tmp = InputBox("¿En qué mapa?", "")
+            Call ParseUserCommand("/NENE " & tmp)
+
+        Case 8 '/info nick
+            ' Call SendData("/INFO " & Nick)
    
-Case 9 '/inv nick
-   ' Call SendData("/INV " & Nick)
+        Case 9 '/inv nick
+            ' Call SendData("/INV " & Nick)
    
-Case 10 '/skills nick
-   ' Call SendData("/SKILLS " & Nick)
+        Case 10 '/skills nick
+            ' Call SendData("/SKILLS " & Nick)
    
-Case 11 '/CARCEL NICK @ MOTIVO  0.12.1
-    tmp = InputBox("¿Minutos a encarcelar? (hasta 60)", "")
-        If tmp > 1 Then
-           Call ParseUserCommand("/CARCEL " & Nick & "@encarcelado via panelgm@" & tmp)
+        Case 11 '/CARCEL NICK @ MOTIVO  0.12.1
+            tmp = InputBox("¿Minutos a encarcelar? (hasta 60)", "")
+
+            If tmp > 1 Then
+                Call ParseUserCommand("/CARCEL " & Nick & "@encarcelado via panelgm@" & tmp)
            
-           
-        Else
-            MsgBox ("Ingreso un tiempo invalido.")
+            Else
+                MsgBox ("Ingreso un tiempo invalido.")
             
-            
-        End If
-Case 13 '/nick2ip NICK 0.12.1
-    Call WriteNickToIP(Nick)
-Case 14 '/Lastip NICK 0.12.1
-    Call WriteLastIP(Nick)
-Case 15 '/IrCerca NICK 0.12.1
-    If LenB(Nick) <> 0 Then _
-        Call WriteGoNearby(Nick)
-Case 16 '/LASTMAIL NICK 0.12.1
-    Call WriteRequestCharMail(Nick)
-Case 17 '/BANIP IP 0.12.1
-    tmp = InputBox("Escriba la dirección IP a banear.", "")
-    reason = InputBox("Escriba el motivo del baneo.", "")
-        If MsgBox("¿Esta seguro que desea banear la IP """ & tmp & ", debido a " & reason & """?", vbYesNo + vbQuestion) = vbYes Then
-            Call ParseUserCommand("/BANIP " & tmp & " " & reason)
-        End If
-Case 18 '/bov nick
+            End If
 
+        Case 13 '/nick2ip NICK 0.12.1
+            Call WriteNickToIP(Nick)
 
-Case 19 '/BANED IP AND PERSONAJE 0.12.1   REVISAR
+        Case 14 '/Lastip NICK 0.12.1
+            Call WriteLastIP(Nick)
+
+        Case 15 '/IrCerca NICK 0.12.1
+
+            If LenB(Nick) <> 0 Then Call WriteGoNearby(Nick)
+
+        Case 16 '/LASTMAIL NICK 0.12.1
+            Call WriteRequestCharMail(Nick)
+
+        Case 17 '/BANIP IP 0.12.1
+            tmp = InputBox("Escriba la dirección IP a banear.", "")
+            reason = InputBox("Escriba el motivo del baneo.", "")
+
+            If MsgBox("¿Esta seguro que desea banear la IP """ & tmp & ", debido a " & reason & """?", vbYesNo + vbQuestion) = vbYes Then
+                Call ParseUserCommand("/BANIP " & tmp & " " & reason)
+
+            End If
+
+        Case 18 '/bov nick
+
+        Case 19 '/BANED IP AND PERSONAJE 0.12.1   REVISAR
     
-    If MsgBox("¿Esta seguro que desea banear la IP y el personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
-
+            If MsgBox("¿Esta seguro que desea banear la IP y el personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
         
-        Call ParseUserCommand("/banip " & Nick & " panelgm")
-        'Call WriteBanIP(False, str2ipv4l("0.0.0.0"), ArgumentosAll(0), Right$(ArgumentosRaw, Len(ArgumentosRaw) - Len(ArgumentosAll(0)) - 1))
-    End If
-Case 20 '/PENAS NICK 0.12.1
-    Call WritePunishments(Nick)
-Case 21 '/REVIVIR NICK 0.12.1
-    Call WriteReviveChar(Nick)
-Case 22 'ADVERTENCIA 0.12.1
-       tmp = InputBox("Escriba el motivo de la advertencia.", "Advertir a " & Nick)
-        If LenB(tmp) <> 0 Then
-            Call ParseUserCommand("/ADVERTENCIA " & Nick & "@" & tmp)
-        End If
-Case 23 '/TRABAJANDO 0.12.1
-    Call WriteWorking
-Case 25 '/BANIPLIST 0.12.1
-    Call WriteBannedIPList
-Case 26 '/BLOQ 0.12.1
-    Call WriteTileBlockedToggle
-Case 27 '/APAGAR 0.12.1
-    'Call WriteTurnOffServer
-Case 28 '/GRABAR 0.12.1
-    Call WriteSaveChars
-Case 29 '/DOBACKUP 0.12.1
-    Call WriteDoBackup
-Case 30 '/ONLINEMAP 0.12.1
-    Call WriteOnlineMap
-Case 31 '/LLUVIA 0.12.1
-    Call WriteRainToggle
-Case 32 '/NOCHE 0.12.1
-     Call WriteNight
-Case 33
-    'Call SendData("/PAUSAR")
-Case 34 '/LIMPIARMUNDO 0.12.1
-    Call WriteCleanWorld
-Case 35 '/SILENCIO NICK@TIEMPO
+                Call ParseUserCommand("/banip " & Nick & " panelgm")
 
-    tmp = InputBox("¿Minutos a silenciar? (hasta 255)", "")
-    If MsgBox("¿Esta seguro que desea silenciar al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
-    If tmp > 255 Then Exit Sub
-     Call ParseUserCommand("/SILENCIO " & cboListaUsus.Text & "@" & tmp)
-    End If
-End Select
+                'Call WriteBanIP(False, str2ipv4l("0.0.0.0"), ArgumentosAll(0), Right$(ArgumentosRaw, Len(ArgumentosRaw) - Len(ArgumentosAll(0)) - 1))
+            End If
 
-Nick = ""
+        Case 20 '/PENAS NICK 0.12.1
+            Call WritePunishments(Nick)
+
+        Case 21 '/REVIVIR NICK 0.12.1
+            Call WriteReviveChar(Nick)
+
+        Case 22 'ADVERTENCIA 0.12.1
+            tmp = InputBox("Escriba el motivo de la advertencia.", "Advertir a " & Nick)
+
+            If LenB(tmp) <> 0 Then
+                Call ParseUserCommand("/ADVERTENCIA " & Nick & "@" & tmp)
+
+            End If
+
+        Case 23 '/TRABAJANDO 0.12.1
+            Call WriteWorking
+
+        Case 25 '/BANIPLIST 0.12.1
+            Call WriteBannedIPList
+
+        Case 26 '/BLOQ 0.12.1
+            Call WriteTileBlockedToggle
+
+        Case 27 '/APAGAR 0.12.1
+
+            'Call WriteTurnOffServer
+        Case 28 '/GRABAR 0.12.1
+            Call WriteSaveChars
+
+        Case 29 '/DOBACKUP 0.12.1
+            Call WriteDoBackup
+
+        Case 30 '/ONLINEMAP 0.12.1
+            Call WriteOnlineMap
+
+        Case 31 '/LLUVIA 0.12.1
+            Call WriteRainToggle
+
+        Case 32 '/NOCHE 0.12.1
+            Call WriteNight
+
+        Case 33
+
+            'Call SendData("/PAUSAR")
+        Case 34 '/LIMPIARMUNDO 0.12.1
+            Call WriteCleanWorld
+
+        Case 35 '/SILENCIO NICK@TIEMPO
+
+            tmp = InputBox("¿Minutos a silenciar? (hasta 255)", "")
+
+            If MsgBox("¿Esta seguro que desea silenciar al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+                If tmp > 255 Then Exit Sub
+                Call ParseUserCommand("/SILENCIO " & cboListaUsus.Text & "@" & tmp)
+
+            End If
+
+    End Select
+
+    Nick = ""
 
 End Sub
+
 Private Sub cmdActualiza_Click()
     Call WriteRequestUserList
     Call FlushBuffer
+
 End Sub
 
 Private Sub cmdcerrar_Click()
 
-Me.Visible = False
-List1.Clear
-List2.Clear
-txtMsg.Text = ""
+    Me.Visible = False
+    List1.Clear
+    List2.Clear
+    txtMsg.Text = ""
+
 End Sub
 
 Private Sub cmdOnline_Click()
@@ -859,92 +922,121 @@ Private Sub cmdOnline_Click()
 End Sub
 
 Private Sub cmdTarget_Click()
-'Dim Usuaritio As String
+    'Dim Usuaritio As String
 
-'cboListaUsus = List1.List(List1.ListIndex)
-'Call AddtoRichTextBox(frmMain.RecTxt, "Haz click sobre el personaje...", 100, 100, 120, 0, 0)
-'frmMain.MousePointer = 2
-'frmMain.PanelSelect = True
-'Call SendData("TGUSER")
-Call WriteMarcaDeGm
+    'cboListaUsus = List1.List(List1.ListIndex)
+    'Call AddtoRichTextBox(frmMain.RecTxt, "Haz click sobre el personaje...", 100, 100, 120, 0, 0)
+    'frmMain.MousePointer = 2
+    'frmMain.PanelSelect = True
+    'Call SendData("TGUSER")
+    Call WriteMarcaDeGm
+
 End Sub
+
 Private Sub Command1_Click()
-List1.Visible = True
-List2.Visible = False
+    List1.Visible = True
+    List2.Visible = False
+
 End Sub
+
 Private Sub Command2_Click()
-List1.Visible = False
-List2.Visible = True
+    List1.Visible = False
+    List2.Visible = True
+
 End Sub
+
 Private Sub CrearTeleport_Click()
-tmp = InputBox("Ingrese las cordenadas, por ejemplo para ulla: 1 50 50", "Ingrese Posiciones")
-Call ParseUserCommand("/CT " & tmp)
+    tmp = InputBox("Ingrese las cordenadas, por ejemplo para ulla: 1 50 50", "Ingrese Posiciones")
+    Call ParseUserCommand("/CT " & tmp)
+
 End Sub
 
 Private Sub creartoneo_Click()
-FrmTorneo.Show
+    FrmTorneo.Show
+
 End Sub
 
 Private Sub Criminales_Click()
-tmp = InputBox("Ingrese el valor de criminales que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " CRI " & tmp)
+    tmp = InputBox("Ingrese el valor de criminales que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " CRI " & tmp)
 End Sub
+
 Private Sub Cuerpo_Click()
-tmp = InputBox("Ingrese el valor de cuerpo que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " BODY " & tmp)
+    tmp = InputBox("Ingrese el valor de cuerpo que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " BODY " & tmp)
 End Sub
+
 Private Sub Desbanear_Click()
     tmp = InputBox("Escriba la dirección IP a desbanear", "")
+
     If MsgBox("¿Esta seguro que desea desbanear la IP """ & tmp & """?", vbYesNo + vbQuestion) = vbYes Then
         Call ParseUserCommand("/UNBANIP " & tmp)
+
     End If
+
 End Sub
 
 Private Sub Destrabar_Click()
-Nick = Replace(cboListaUsus.Text, " ", "+")
-Call WritePossUser(Nick)
+    Nick = Replace(cboListaUsus.Text, " ", "+")
+    Call WritePossUser(Nick)
+
 End Sub
 
 Private Sub DestruirTeleport_Click()
-Call WriteTeleportDestroy '/DT 0.12.1
+    Call WriteTeleportDestroy '/DT 0.12.1
+
 End Sub
+
 Private Sub Ejecutar_Click()
-Nick = cboListaUsus.Text
-Call WriteExecute(Nick) '/EJECUTAR NICK 0.12.1
+    Nick = cboListaUsus.Text
+    Call WriteExecute(Nick) '/EJECUTAR NICK 0.12.1
+
 End Sub
+
 Private Sub Energia_Click()
-tmp = InputBox("Ingrese el valor de energia que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " EN " & tmp)
+    tmp = InputBox("Ingrese el valor de energia que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " EN " & tmp)
 End Sub
 
 Private Sub evento1_Click()
-Call WriteCrearEvento(5, 30, 2)
+    Call WriteCrearEvento(5, 30, 2)
+
 End Sub
 
 Private Sub evento2_Click()
-Call WriteCrearEvento(5, 59, 2)
+    Call WriteCrearEvento(5, 59, 2)
+
 End Sub
 
 Private Sub evento3_Click()
-Call WriteCrearEvento(7, 30, 2)
+    Call WriteCrearEvento(7, 30, 2)
+
 End Sub
 
 Private Sub evento4_Click()
-Call WriteCrearEvento(2, 30, 3)
+    Call WriteCrearEvento(2, 30, 3)
+
 End Sub
 
 Private Sub finalizarevento_Click()
-If MsgBox("¿Esta seguro que desea finalizar el evento?", vbYesNo + vbQuestion, "¡ATENCION!") = vbYes Then
-Call WriteDenounce
-End If
+
+    If MsgBox("¿Esta seguro que desea finalizar el evento?", vbYesNo + vbQuestion, "¡ATENCION!") = vbYes Then
+        Call WriteDenounce
+
+    End If
+
 End Sub
 
 Private Sub Form_Load()
-List1.Clear
-List2.Clear
-txtMsg.Text = ""
-Call WriteRequestUserList
-Call FlushBuffer
+    List1.Clear
+    List2.Clear
+    txtMsg.Text = ""
+    Call WriteRequestUserList
+    Call FlushBuffer
+
 End Sub
 
 Private Sub lento_Click()
@@ -952,148 +1044,212 @@ Private Sub lento_Click()
 End Sub
 
 Private Sub GlobalEstado_Click()
-'Call SendData("/ACTIVAR")
+
+    'Call SendData("/ACTIVAR")
 End Sub
 
 Private Sub GuardarMapa_Click()
-'Call SendData("/BACK")
+
+    'Call SendData("/BACK")
 End Sub
+
 Private Sub Limpiarmundo_Click()
-'Call SendData("/LIMPIARMUNDO")
+
+    'Call SendData("/LIMPIARMUNDO")
 End Sub
 
 Private Sub LimpiarVision_Click()
-Call WriteDestroyAllItemsInArea
+    Call WriteDestroyAllItemsInArea
+
 End Sub
 
 Private Sub List1_Click()
-Dim ind As Integer
-ind = Val(ReadField(2, List1.List(List1.ListIndex), Asc("@")))
-txtMsg = List2.List(List1.ListIndex)
+
+    Dim ind As Integer
+
+    ind = Val(ReadField(2, List1.List(List1.ListIndex), Asc("@")))
+    txtMsg = List2.List(List1.ListIndex)
+
 End Sub
+
 Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Button = vbRightButton Then
-    PopUpMenu mnuUsuario
-End If
+
+    If Button = vbRightButton Then
+        PopUpMenu mnuUsuario
+
+    End If
+
 End Sub
 
 Private Sub Mana_Click()
-tmp = InputBox("Ingrese el valor de mana que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " MP " & tmp)
+    tmp = InputBox("Ingrese el valor de mana que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " MP " & tmp)
 End Sub
+
 Private Sub MensajeriaMenu_Click(Index As Integer)
-Select Case Index
-    Case 0 'Mensaje por consola a usuarios 0.12.1
-        tmp = InputBox("Ingrese el texto:", "Mensaje por consola a usuarios")
-        Call WriteServerMessage(tmp)
-    Case 1 'Mensaje por ventana a usuarios 0.12.1
-        tmp = InputBox("Ingrese el texto:", "Mensaje del sistema a usuarios")
-        Call WriteSystemMessage(tmp)
-    Case 2 'Mensaje por consola a GMS 0.12.1
-        tmp = InputBox("Escriba el mensaje.", "Mensaje por consola de GM")
-        Call WriteGMMessage(tmp)
-    Case 3 'Hablar como NPC 0.12.1
-        tmp = InputBox("Escriba un Mensaje.", "Hablar por NPC")
-        Call WriteTalkAsNPC(tmp)
+
+    Select Case Index
+
+        Case 0 'Mensaje por consola a usuarios 0.12.1
+            tmp = InputBox("Ingrese el texto:", "Mensaje por consola a usuarios")
+            Call WriteServerMessage(tmp)
+
+        Case 1 'Mensaje por ventana a usuarios 0.12.1
+            tmp = InputBox("Ingrese el texto:", "Mensaje del sistema a usuarios")
+            Call WriteSystemMessage(tmp)
+
+        Case 2 'Mensaje por consola a GMS 0.12.1
+            tmp = InputBox("Escriba el mensaje.", "Mensaje por consola de GM")
+            Call WriteGMMessage(tmp)
+
+        Case 3 'Hablar como NPC 0.12.1
+            tmp = InputBox("Escriba un Mensaje.", "Hablar por NPC")
+            Call WriteTalkAsNPC(tmp)
+
     End Select
+
 End Sub
 
 Private Sub mnuBorrar_Click()
-Dim elitem As String
-Dim ProximamentTipo As String
-Dim TIPO As String
-elitem = List1.ListIndex
-If List1.ListIndex < 0 Then Exit Sub
-Call ReadNick
-ProximamentTipo = General_Field_Read(2, List1.List(List1.ListIndex), "(")
-TIPO = General_Field_Read(1, ProximamentTipo, ")")
-Call WriteSOSRemove(Nick & "Ø" & txtMsg & "Ø" & TIPO)
-List1.RemoveItem List1.ListIndex
-List2.RemoveItem elitem
-txtMsg.Text = ""
+
+    Dim elitem          As String
+
+    Dim ProximamentTipo As String
+
+    Dim TIPO            As String
+
+    elitem = List1.ListIndex
+
+    If List1.ListIndex < 0 Then Exit Sub
+    Call ReadNick
+    ProximamentTipo = General_Field_Read(2, List1.List(List1.ListIndex), "(")
+    TIPO = General_Field_Read(1, ProximamentTipo, ")")
+    Call WriteSOSRemove(Nick & "Ø" & txtMsg & "Ø" & TIPO)
+    List1.RemoveItem List1.ListIndex
+    List2.RemoveItem elitem
+    txtMsg.Text = ""
+
 End Sub
 
 Private Sub MnuEnviar_Click(Index As Integer)
-Dim Coordenadas As String
-Nick = Replace(cboListaUsus.Text, " ", "+")
-Select Case Index
-    Case 0 'Ulla
-        Coordenadas = "55 57 46"
-        Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
-    Case 1 'Nix
-        Coordenadas = "106 30 72"
-        Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
-    Case 2 'Bander
-        Coordenadas = "59 50 50"
-        Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
-    Case 3 'Arghal
-        Coordenadas = "151 50 50"
-        Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
-    Case 4 'Otro
-        If LenB(Nick) <> 0 Then
-        Coordenadas = InputBox("Indique la posición (MAPA X Y).", "Transportar a " & Nick)
-        If LenB(Coordenadas) <> 0 Then _
+
+    Dim Coordenadas As String
+
+    Nick = Replace(cboListaUsus.Text, " ", "+")
+
+    Select Case Index
+
+        Case 0 'Ulla
+            Coordenadas = "55 57 46"
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
-        End If
+
+        Case 1 'Nix
+            Coordenadas = "106 30 72"
+            Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
+
+        Case 2 'Bander
+            Coordenadas = "59 50 50"
+            Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
+
+        Case 3 'Arghal
+            Coordenadas = "151 50 50"
+            Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
+
+        Case 4 'Otro
+
+            If LenB(Nick) <> 0 Then
+                Coordenadas = InputBox("Indique la posición (MAPA X Y).", "Transportar a " & Nick)
+
+                If LenB(Coordenadas) <> 0 Then Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
+
+            End If
+
     End Select
+
 End Sub
 
 Private Sub mnuIRa_Click()
-Call WriteGoToChar(ReadField(1, List1.List(List1.ListIndex), Asc("(")))
+    Call WriteGoToChar(ReadField(1, List1.List(List1.ListIndex), Asc("(")))
+
 End Sub
+
 Private Sub mnutraer_Click()
-Call WriteSummonChar(ReadField(1, List1.List(List1.ListIndex), Asc("(")))
+    Call WriteSummonChar(ReadField(1, List1.List(List1.ListIndex), Asc("(")))
+
 End Sub
+
 Private Sub mnuInvalida_Click()
-Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta catalogada como invalida.")
+    Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta catalogada como invalida.")
+
 End Sub
+
 Private Sub mnuResponder_Click()
-Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-tmp = InputBox("Ingrese la respuesta:", "Responder consulta")
-Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & tmp)
+    Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
+    tmp = InputBox("Ingrese la respuesta:", "Responder consulta")
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & tmp)
+
 End Sub
+
 Private Sub mnuManual_Click()
-Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
+    Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
+
 End Sub
+
 Private Sub mnuAccion_Click(Index As Integer)
     Nick = cboListaUsus.Text
+
     If LenB(Nick) <> 0 Then
+
         Select Case Index
+
             Case 0 ' Informacion General
                 Call WriteRequestCharStats(Nick)
+
             Case 1 ' Inventario
                 Call WriteRequestCharInventory(Nick)
+
             Case 2 'Skill
                 Call WriteRequestCharSkills(Nick)
+
             Case 3 'Atributos
                 Call WriteRequestCharInfo(Nick)
+
             Case 4 'Boveda
                 Call WriteRequestCharBank(Nick)
                 Call WriteRequestCharGold(Nick)
+
         End Select
+
     End If
+
 End Sub
 
 Private Sub mnuAdmin_Click(Index As Integer)
-Call cmdAccion_Click(Index)
+    Call cmdAccion_Click(Index)
+
 End Sub
 
 Private Sub mnuAmbiente_Click(Index As Integer)
-Call cmdAccion_Click(Index)
+    Call cmdAccion_Click(Index)
+
 End Sub
 
 Private Sub mnuBan_Click(Index As Integer)
-Call cmdAccion_Click(Index)
+    Call cmdAccion_Click(Index)
+
 End Sub
 
 Private Sub mnuCarcel_Click(Index As Integer)
 
-If Index = 60 Then
-    Call cmdAccion_Click(11)
-    Exit Sub
-End If
+    If Index = 60 Then
+        Call cmdAccion_Click(11)
+        Exit Sub
+
+    End If
+
     Nick = cboListaUsus.Text
 
     Call ParseUserCommand("/CARCEL " & Nick & "@encarcelado via panelgm@" & Index)
@@ -1102,161 +1258,222 @@ End Sub
 
 Private Sub mnuSilencio_Click(Index As Integer)
 
-If Index = 60 Then
-    Call cmdAccion_Click(35)
-    Exit Sub
-End If
+    If Index = 60 Then
+        Call cmdAccion_Click(35)
+        Exit Sub
 
-Call ParseUserCommand("/SILENCIO " & cboListaUsus.Text & "@" & Index)
+    End If
+
+    Call ParseUserCommand("/SILENCIO " & cboListaUsus.Text & "@" & Index)
+
 End Sub
 
-
 Private Sub mnuHerramientas_Click(Index As Integer)
-Call cmdAccion_Click(Index)
+    Call cmdAccion_Click(Index)
+
 End Sub
 
 Private Sub mnuIP_Click(Index As Integer)
-Call cmdAccion_Click(Index)
+    Call cmdAccion_Click(Index)
+
 End Sub
 
 Private Sub mnuReload_Click(Index As Integer)
 
-Select Case Index
-    Case 1 'Reload objetos
-        Call WriteReloadObjects
-    Case 2 'Reload server.ini
-        Call WriteReloadServerIni
-    Case 3 'Reload mapas
-       ' Call SendData("/RELOAD MAP")
-    Case 4 'Reload hechizos
-         Call WriteReloadSpells
-    Case 5 'Reload motd
-      '  Call SendData("/RELOADMOTD")
-    Case 6 'Reload npcs
-        Call WriteReloadNPCs
-    Case 7 'Reload sockets
-        If MsgBox("Al realizar esta acción reiniciará la API de Winsock. Se cerrarán todas las conexiónes.", vbYesNo, "Advertencia") = vbYes Then _
-         '   Call SendData("/RELOAD SOCK")
-         End If
+    Select Case Index
+
+        Case 1 'Reload objetos
+            Call WriteReloadObjects
+
+        Case 2 'Reload server.ini
+            Call WriteReloadServerIni
+
+        Case 3 'Reload mapas
+
+            ' Call SendData("/RELOAD MAP")
+        Case 4 'Reload hechizos
+            Call WriteReloadSpells
+
+        Case 5 'Reload motd
+
+            '  Call SendData("/RELOADMOTD")
+        Case 6 'Reload npcs
+            Call WriteReloadNPCs
+
+        Case 7 'Reload sockets
+
+             If MsgBox("Al realizar esta acción reiniciará la API de Winsock. Se cerrarán todas las conexiónes.", vbYesNo, "Advertencia") = vbYes Then
+               '   Call SendData("/RELOAD SOCK")
+           End If
+
     Case 8 'Reload otros
-       ' Call SendData("/RELOADOPCIONES")
+
+        ' Call SendData("/RELOADOPCIONES")
 End Select
 
 End Sub
 
 Private Sub MOTD_Click()
-Call WriteChangeMOTD 'Cambiar MOTD 0.12.1
+    Call WriteChangeMOTD 'Cambiar MOTD 0.12.1
+
 End Sub
+
 Private Sub muyrapido_Click()
-charlist(UserCharIndex).Speeding = 5
+    charlist(UserCharIndex).Speeding = 5
+
 End Sub
+
 Private Sub Normal_Click()
-charlist(UserCharIndex).Speeding = 1#
+    charlist(UserCharIndex).Speeding = 1#
+
 End Sub
+
 Private Sub oro_Click()
-tmp = InputBox("Ingrese el valor de oro que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " ORO " & tmp)
+    tmp = InputBox("Ingrese el valor de oro que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " ORO " & tmp)
 End Sub
 
 Private Sub personalizado_Click()
-tmp = InputBox("Ingrese evento  Tipo@Duracion@Multiplicacion" & vbCrLf & vbCrLf & "Tipo 1=Multiplica Oro" & vbCrLf & "Tipo 2=Multiplica Experiencia" _
-& vbCrLf & "Tipo 3=Multiplica Recoleccion" & vbCrLf & "Tipo 4=Multiplica Dropeo" & vbCrLf & "Tipo 5=Multiplica Oro y Experiencia" _
-& vbCrLf & "Tipo 6=Multiplica Oro, experiencia y recoleccion" & vbCrLf & "Tipo 7=Multiplica Todo" & vbCrLf & "Duracion= Maximo: 59" & vbCrLf & "Multiplicacion= Maximo 10", "Creacion de nuevo evento")
-Call ParseUserCommand("/CREAREVENTO " & tmp)
+    tmp = InputBox("Ingrese evento  Tipo@Duracion@Multiplicacion" & vbCrLf & vbCrLf & "Tipo 1=Multiplica Oro" & vbCrLf & "Tipo 2=Multiplica Experiencia" & vbCrLf & "Tipo 3=Multiplica Recoleccion" & vbCrLf & "Tipo 4=Multiplica Dropeo" & vbCrLf & "Tipo 5=Multiplica Oro y Experiencia" & vbCrLf & "Tipo 6=Multiplica Oro, experiencia y recoleccion" & vbCrLf & "Tipo 7=Multiplica Todo" & vbCrLf & "Duracion= Maximo: 59" & vbCrLf & "Multiplicacion= Maximo 10", "Creacion de nuevo evento")
+    Call ParseUserCommand("/CREAREVENTO " & tmp)
+
 End Sub
 
 Private Sub quitarnpcs_Click()
-'Call SendData("/LIMPIAR")
+
+    'Call SendData("/LIMPIAR")
 End Sub
+
 Private Sub rapido_Click()
-charlist(UserCharIndex).Speeding = 2
+    charlist(UserCharIndex).Speeding = 2
+
 End Sub
+
 Private Sub Raza_Click()
-tmp = InputBox("Ingrese el valor de raza que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " RAZA " & tmp)
+    tmp = InputBox("Ingrese el valor de raza que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " RAZA " & tmp)
 End Sub
+
 Private Sub ResetPozos_Click()
-'Call SendData("/RESETPOZOS")
+
+    'Call SendData("/RESETPOZOS")
 End Sub
+
 Private Sub SeguroInseguro_Click()
-'Call SendData("/SEGURO")
+
+    'Call SendData("/SEGURO")
 End Sub
 
 Private Sub SkillLibres_Click()
-tmp = InputBox("Ingrese el valor de skills Libres que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp)
+    tmp = InputBox("Ingrese el valor de skills Libres que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp)
 End Sub
 
 Private Sub Spawn_Click()
-Call WriteSpawnListRequest
+    Call WriteSpawnListRequest
+
 End Sub
+
 Private Sub StaffOnline_Click()
- Call WriteOnlineGM '/ONLINEGM 0.12.1
+    Call WriteOnlineGM '/ONLINEGM 0.12.1
+
 End Sub
 
 Private Sub SubastaEstado_Click()
-'Call SendData("/SUBASTAACTIVADA")
+
+    'Call SendData("/SUBASTAACTIVADA")
 End Sub
 
 Private Sub Temporal_Click()
-    Dim tmp As String
+
+    Dim tmp  As String
+
     Dim tmp2 As Byte
+
     tmp2 = InputBox("¿Dias?", "Ingrese cantidad de días (Maximo 255)")
     tmp = InputBox("¿Motivo?", "Ingrese el motivo")
+
     If MsgBox("¿Está seguro que desea banear el personaje de """ & cboListaUsus.Text & """ por " & tmp2 & " días?", vbYesNo + vbQuestion) = vbYes Then
         Call WriteBanTemporal(cboListaUsus.Text, tmp, tmp2)
+
     End If
+
 End Sub
 
 Private Sub torneo_cancelar_Click()
-Call WriteCancelarTorneo
+    Call WriteCancelarTorneo
+
 End Sub
 
 Private Sub torneo_comenzar_Click()
-Call WriteComenzarTorneo
+    Call WriteComenzarTorneo
+
 End Sub
 
 Private Sub UnbanCuenta_Click()
-Call WriteUnBanCuenta(cboListaUsus.Text)
+    Call WriteUnBanCuenta(cboListaUsus.Text)
+
 End Sub
 
 Private Sub UnbanPersonaje_Click()
-Nick = cboListaUsus.Text
-If MsgBox("¿Esta seguro que desea removerle el ban al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+    Nick = cboListaUsus.Text
+
+    If MsgBox("¿Esta seguro que desea removerle el ban al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
         Call WriteUnbanChar(Nick)
-End If
+
+    End If
+
 End Sub
 
 Private Sub usersOnline_Click()
-'Call SendData("/ONLINE")
+
+    'Call SendData("/ONLINE")
 End Sub
+
 Private Sub VerProcesos_Click()
-'Call SendData("/VERPROCESOS " & cboListaUsus.Text)
+
+    'Call SendData("/VERPROCESOS " & cboListaUsus.Text)
 End Sub
+
 Private Sub Vida_Click()
-tmp = InputBox("Ingrese el valor de vida que desea editar.", "Edicion de Usuarios")
-'Call SendData("/MOD " & cboListaUsus.Text & " HP " & tmp)
+    tmp = InputBox("Ingrese el valor de vida que desea editar.", "Edicion de Usuarios")
+
+    'Call SendData("/MOD " & cboListaUsus.Text & " HP " & tmp)
 End Sub
+
 Private Sub ReadNick()
-If List1.Visible Then
-    Nick = General_Field_Read(1, List1.List(List1.ListIndex), "(")
-    If Nick = "" Then Exit Sub
-    Nick = Left$(Nick, Len(Nick))
-Else
-    Nick = General_Field_Read(1, List2.List(List2.ListIndex), "(")
-    If Nick = "" Then Exit Sub
-    Nick = Left$(Nick, Len(Nick))
-End If
+
+    If List1.Visible Then
+        Nick = General_Field_Read(1, List1.List(List1.ListIndex), "(")
+
+        If Nick = "" Then Exit Sub
+        Nick = Left$(Nick, Len(Nick))
+    Else
+        Nick = General_Field_Read(1, List2.List(List2.ListIndex), "(")
+
+        If Nick = "" Then Exit Sub
+        Nick = Left$(Nick, Len(Nick))
+
+    End If
+
 End Sub
 
 Private Sub YoAcciones_Click(Index As Integer)
-Select Case Index
-    Case 0 '/INVISIBLE 0.12.1
-        Call WriteInvisible
-    Case 1 'CHATCOLOR 0.12.1
-        tmp = InputBox("Defina el color (R G B). Deje en blanco para usar el default.", "Cambiar color del chat")
-        Call ParseUserCommand("/CHATCOLOR " & tmp)
-    Case 2
+
+    Select Case Index
+
+        Case 0 '/INVISIBLE 0.12.1
+            Call WriteInvisible
+
+        Case 1 'CHATCOLOR 0.12.1
+            tmp = InputBox("Defina el color (R G B). Deje en blanco para usar el default.", "Cambiar color del chat")
+            Call ParseUserCommand("/CHATCOLOR " & tmp)
+
+        Case 2
+
     End Select
     
 End Sub

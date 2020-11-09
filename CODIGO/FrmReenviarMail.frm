@@ -152,116 +152,118 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-
 Option Explicit
+
 Dim ValidacionNumber As Long
-Private Declare Function SetLayeredWindowAttributes Lib "user32" _
-                (ByVal hwnd As Long, _
-                 ByVal crKey As Long, _
-                 ByVal bAlpha As Byte, _
-                 ByVal dwFlags As Long) As Long
-  
+
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
   
 'Recupera el estilo de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" _
-                (ByVal hwnd As Long, _
-                 ByVal nIndex As Long) As Long
-  
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
   
 'Declaración del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
   
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" _
-               (ByVal hwnd As Long, _
-                ByVal nIndex As Long, _
-                ByVal dwNewLong As Long) As Long
-  
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
   
 Private Const GWL_EXSTYLE = (-20)
+
 Private Const LWA_ALPHA = &H2
+
 Private Const WS_EX_LAYERED = &H80000
+
 'Función para saber si formulario ya es transparente. _
  Se le pasa el Hwnd del formulario en cuestión
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
-On Error Resume Next
+
+    On Error Resume Next
   
-Dim msg As Long
+    Dim msg As Long
   
     msg = GetWindowLong(hwnd, GWL_EXSTYLE)
          
-       If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
-          Is_Transparent = True
-       Else
-          Is_Transparent = False
-       End If
+    If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
+        Is_Transparent = True
+    Else
+        Is_Transparent = False
+
+    End If
   
     If Err Then
-       Is_Transparent = False
+        Is_Transparent = False
+
     End If
   
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, _
-                                      Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
   
-Dim msg As Long
+    Dim msg As Long
   
-On Error Resume Next
+    On Error Resume Next
   
-If Valor < 0 Or Valor > 255 Then
-   Aplicar_Transparencia = 1
-Else
-   msg = GetWindowLong(hwnd, GWL_EXSTYLE)
-   msg = msg Or WS_EX_LAYERED
+    If Valor < 0 Or Valor > 255 Then
+        Aplicar_Transparencia = 1
+    Else
+        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+        msg = msg Or WS_EX_LAYERED
      
-   SetWindowLong hwnd, GWL_EXSTYLE, msg
+        SetWindowLong hwnd, GWL_EXSTYLE, msg
      
-   'Establece la transparencia
-   SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
+        'Establece la transparencia
+        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
   
-   Aplicar_Transparencia = 0
+        Aplicar_Transparencia = 0
   
-End If
+    End If
   
-  
-If Err Then
-   Aplicar_Transparencia = 2
-End If
+    If Err Then
+        Aplicar_Transparencia = 2
+
+    End If
   
 End Function
 
 Private Sub Form_Load()
-Call FormParser.Parse_Form(Me)
-Me.Picture = LoadInterface("reenviar.bmp")
-Call Aplicar_Transparencia(Me.hwnd, 240)
-        If CuentaEmail <> "" Then
-            NombreDeCuenta = CuentaEmail
-        End If
+    Call FormParser.Parse_Form(Me)
+    Me.Picture = LoadInterface("reenviar.bmp")
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+
+    If CuentaEmail <> "" Then
+        NombreDeCuenta = CuentaEmail
+
+    End If
+
     ValidacionNumber = RandomNumber(10000, 90000)
     valcar = ValidacionNumber
+
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Image2.Tag = "1" Then
-   Image2.Picture = Nothing
-   Image2.Tag = "0"
-End If
-If Image1.Tag = "1" Then
-    Image1.Picture = Nothing
-    Image1.Tag = "0"
-End If
-End Sub
 
+    If Image2.Tag = "1" Then
+        Image2.Picture = Nothing
+        Image2.Tag = "0"
+
+    End If
+
+    If Image1.Tag = "1" Then
+        Image1.Picture = Nothing
+        Image1.Tag = "0"
+
+    End If
+
+End Sub
 
 Private Sub Image1_Click()
-        Call Sound.Sound_Play(SND_CLICK)
-            Unload Me
-            frmMasOpciones.Show , frmConnect
-            frmMasOpciones.Top = frmMasOpciones.Top + 3000
-End Sub
+    Call Sound.Sound_Play(SND_CLICK)
+    Unload Me
+    frmMasOpciones.Show , frmConnect
+    frmMasOpciones.Top = frmMasOpciones.Top + 3000
 
+End Sub
 
 Private Sub Image2_Click()
     CuentaEmail = NombreDeCuenta.Text
@@ -269,16 +271,20 @@ Private Sub Image2_Click()
     If CuentaEmail = "" Or texVer = "" Then
         Call MensajeAdvertencia("Complete todos los campos.")
         Exit Sub
+
     End If
 
     If IsNumeric(texVer) Then
         If ValidacionNumber <> texVer Then
             Call MensajeAdvertencia("Codigo de seguridad erroneo.")
             Exit Sub
+
         End If
+
     Else
-            Call MensajeAdvertencia("Codigo de seguridad erroneo.")
-            Exit Sub
+        Call MensajeAdvertencia("Codigo de seguridad erroneo.")
+        Exit Sub
+
     End If
     
     ValidacionNumber = RandomNumber(100000, 900000)
@@ -291,37 +297,53 @@ Private Sub Image2_Click()
         frmmain.Socket1.Disconnect
         frmmain.Socket1.Cleanup
         DoEvents
+
     End If
+
     frmmain.Socket1.HostName = IPdelServidor
     frmmain.Socket1.RemotePort = PuertoDelServidor
     frmmain.Socket1.Connect
     Unload Me
+
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-      '  Image1.Picture = LoadInterface("volverpress.bmp")
-      '  Image1.Tag = "1"
+
+    '  Image1.Picture = LoadInterface("volverpress.bmp")
+    '  Image1.Tag = "1"
 End Sub
+
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("volverhover.bmp")
         Image1.Tag = "1"
+
     End If
+
 End Sub
+
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("enviarhover.bmp")
         Image2.Tag = "1"
+
     End If
+
 End Sub
+
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-'        Image2.Picture = LoadInterface("enviarpress.bmp")
+
+    '        Image2.Picture = LoadInterface("enviarpress.bmp")
 End Sub
 
 Private Sub Label1_Click()
-texVer.SetFocus
+    texVer.SetFocus
+
 End Sub
 
 Private Sub valcar_Click()
-texVer.SetFocus
+    texVer.SetFocus
+
 End Sub
