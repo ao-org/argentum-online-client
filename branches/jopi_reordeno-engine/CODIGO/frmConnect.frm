@@ -109,7 +109,7 @@ Option Explicit
 Private Char As Byte
 
 Private Sub Form_Activate()
-    Call engine.Engine_Select_Particle_Set(203)
+    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
 End Sub
@@ -357,7 +357,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 frmConnect.txtNombre.Visible = False
                 QueRender = 2
                 
-                Call engine.Engine_Select_Particle_Set(203)
+                Call Graficos_Particulas.Engine_Select_Particle_Set(203)
                 ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
             End If

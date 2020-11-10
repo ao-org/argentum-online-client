@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Begin VB.Form frmmain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -2831,10 +2831,10 @@ Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
     ' End If
     
-    'engine.Light_Remove (10)
+    'LucesCuadradas.Light_Remove (10)
     
-    'engine.Light_Create tX, tY, &HFFFFFFF, 1, 10
-    'engine.Light_Render_All
+    'LucesCuadradas.Light_Create tX, tY, &HFFFFFFF, 1, 10
+    'LucesCuadradas.Light_Render_All
     
 End Sub
 
@@ -3099,7 +3099,7 @@ Private Sub TimerLluvia_Timer()
         If CantPartLLuvia < 250 Then
 
             CantPartLLuvia = CantPartLLuvia + 1
-            engine.Particle_Group_Edit (MeteoIndex)
+            Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
         Else
             CantPartLLuvia = 250
             TimerLluvia.Enabled = False
@@ -3110,7 +3110,7 @@ Private Sub TimerLluvia_Timer()
 
         If CantPartLLuvia > 0 Then
             CantPartLLuvia = CantPartLLuvia - 1
-            engine.Particle_Group_Edit (MeteoIndex)
+            Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
         Else
     
             engine.Engine_Meteo_Particle_Set (-1)

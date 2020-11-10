@@ -941,7 +941,7 @@ Sub SwitchMapIAO(ByVal map As Integer)
 
     Dim Luces()      As tDatosLuces
 
-    Dim particulas() As tDatosParticulas
+    Dim Particulas() As tDatosParticulas
 
     Dim Objetos()    As tDatosObjs
 
@@ -973,10 +973,10 @@ Sub SwitchMapIAO(ByVal map As Integer)
         MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
     #End If
 
-    engine.Light_Remove_All
+    LucesCuadradas.Light_Remove_All
         
-    LightA.Delete_All_LigthRound False
-    engine.Particle_Group_Remove_All
+    LucesRedondas.Delete_All_LigthRound False
+    Graficos_Particulas.Particle_Group_Remove_All
    
     HayLayer2 = False
     HayLayer4 = False
@@ -1099,13 +1099,13 @@ Sub SwitchMapIAO(ByVal map As Integer)
         End If
     
         If .NumeroParticulas > 0 Then
-            ReDim particulas(1 To .NumeroParticulas)
-            Get #fh, , particulas
+            ReDim Particulas(1 To .NumeroParticulas)
+            Get #fh, , Particulas
 
             For i = 1 To .NumeroParticulas
             
-                MapData(particulas(i).x, particulas(i).y).particle_Index = particulas(i).Particula
-                General_Particle_Create MapData(particulas(i).x, particulas(i).y).particle_Index, particulas(i).x, particulas(i).y
+                MapData(Particulas(i).x, Particulas(i).y).particle_Index = Particulas(i).Particula
+                General_Particle_Create MapData(Particulas(i).x, Particulas(i).y).particle_Index, Particulas(i).x, Particulas(i).y
 
             Next i
 
@@ -1121,7 +1121,7 @@ Sub SwitchMapIAO(ByVal map As Integer)
 
                 If MapData(Luces(i).x, Luces(i).y).luz.Rango <> 0 Then
                     If MapData(Luces(i).x, Luces(i).y).luz.Rango < 100 Then
-                        engine.Light_Create Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.color, MapData(Luces(i).x, Luces(i).y).luz.Rango, Luces(i).x & Luces(i).y
+                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.color, MapData(Luces(i).x, Luces(i).y).luz.Rango, Luces(i).x & Luces(i).y
                     Else
 
                         Dim r, g, b As Byte
@@ -1129,7 +1129,7 @@ Sub SwitchMapIAO(ByVal map As Integer)
                         b = (MapData(Luces(i).x, Luces(i).y).luz.color And 16711680) / 65536
                         g = (MapData(Luces(i).x, Luces(i).y).luz.color And 65280) / 256
                         r = MapData(Luces(i).x, Luces(i).y).luz.color And 255
-                        LightA.Create_Light_To_Map Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.Rango - 99, b, g, r
+                        LucesRedondas.Create_Light_To_Map Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.Rango - 99, b, g, r
 
                     End If
 
@@ -1179,8 +1179,8 @@ Sub SwitchMapIAO(ByVal map As Integer)
 
     Map_light_baseBackup = Map_light_base
 
-    LightA.LightRenderAll
-    engine.Light_Render_All
+    LucesRedondas.LightRenderAll
+    LucesCuadradas.Light_Render_All
     
     'frmMain.MiniMap.Picture = LoadInterface("mapa" & map & ".bmp")
     Call DibujarMiniMapa
@@ -1219,9 +1219,10 @@ Sub SwitchMapIAO(ByVal map As Integer)
     End If
 
     If bRain And MapDat.LLUVIA Then
-        engine.Engine_Meteo_Particle_Set (Particula_Lluvia)
+        Graficos_Particulas.Engine_Meteo_Particle_Set (Particula_Lluvia)
+    
     ElseIf bNieve And MapDat.NIEVE Then
-        engine.Engine_Meteo_Particle_Set (Particula_Nieve)
+        Graficos_Particulas.Engine_Meteo_Particle_Set (Particula_Nieve)
 
     End If
     
@@ -1371,7 +1372,10 @@ Sub Main()
 
     Call ComprobarEstado
     Call CargarLst
-    Set LightA = New clsLight
+    
+    Set LucesRedondas = New clsLucesRedondas
+    Set LucesCuadradas = New clsLucesCuadradas
+    
     Set Meteo_Engine = New clsMeteorologic
     
     'Esto es para el movimiento suave de pjs, para que el pj termine de hacer el movimiento antes de empezar otro
@@ -1877,7 +1881,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
     Dim Luces()      As tDatosLuces
 
-    Dim particulas() As tDatosParticulas
+    Dim Particulas() As tDatosParticulas
 
     Dim Objetos()    As tDatosObjs
 
@@ -2000,8 +2004,8 @@ Sub CargarDatosMapa(ByVal map As Integer)
             End If
     
             If .NumeroParticulas > 0 Then
-                ReDim particulas(1 To .NumeroParticulas)
-                Get #fh, , particulas
+                ReDim Particulas(1 To .NumeroParticulas)
+                Get #fh, , Particulas
 
                 For i = 1 To .NumeroParticulas
             
@@ -2021,10 +2025,10 @@ Sub CargarDatosMapa(ByVal map As Integer)
                     '    MapData(Luces(i).X, Luces(i).Y).luz.Rango = Luces(i).Rango
                     '    If MapData(Luces(i).X, Luces(i).Y).luz.Rango <> 0 Then
                     '  LightRound.Create_Light_To_Map Luces(I).x, Luces(I).y, CByte(MapData(Luces(I).x, Luces(I).y).luz.Rango), MapData(Luces(I).x, Luces(I).y).luz.color
-                    'engine.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
+                    'LucesCuadradas.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
                     'LightRound.Render_All_Light
-                    'LightA.Create_Light_To_Map Luces(i).X, Luces(i).Y, CByte(MapData(Luces(i).X, Luces(i).Y).luz.Rango), 255, 255, 255
-                    '   engine.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
+                    'LucesRedondas.Create_Light_To_Map Luces(i).X, Luces(i).Y, CByte(MapData(Luces(i).X, Luces(i).Y).luz.Rango), 255, 255, 255
+                    '   LucesCuadradas.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
                
                 Next i
 
