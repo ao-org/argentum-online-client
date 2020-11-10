@@ -3,10 +3,10 @@ Begin VB.Form frmMensaje
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   ClientHeight    =   2745
+   ClientHeight    =   3195
    ClientLeft      =   15
    ClientTop       =   15
-   ClientWidth     =   3270
+   ClientWidth     =   4365
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    DrawMode        =   1  'Blackness
@@ -16,22 +16,30 @@ Begin VB.Form frmMensaje
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   183
+   Picture         =   "frmMensaje.frx":0000
+   ScaleHeight     =   213
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   218
+   ScaleWidth      =   291
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Image imgCerrar 
+      Height          =   420
+      Left            =   3900
+      Tag             =   "0"
+      Top             =   15
+      Width           =   465
+   End
    Begin VB.Image Image1 
-      Height          =   525
-      Left            =   900
+      Height          =   420
+      Left            =   1200
       Tag             =   "1"
-      Top             =   2160
-      Width           =   1560
+      Top             =   2535
+      Width           =   1980
    End
    Begin VB.Label msg 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   $"frmMensaje.frx":0000
+      Caption         =   "Mensaje"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -42,11 +50,11 @@ Begin VB.Form frmMensaje
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C0C0C0&
-      Height          =   1455
-      Left            =   120
+      Height          =   1215
+      Left            =   600
       TabIndex        =   0
-      Top             =   720
-      Width           =   3045
+      Top             =   1200
+      Width           =   3165
       WordWrap        =   -1  'True
    End
    Begin VB.Menu mnuMensaje 
@@ -108,7 +116,7 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 'Argentum Online 0.11.6
 
 ' función Api para aplicar la transparencia a la ventana
@@ -209,7 +217,6 @@ End Sub
 'Ladder 21/09/2012
 
 Private Sub Form_Load()
-
     'Call FormParser.Parse_Form(Me)
     SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE
     'Call Aplicar_Transparencia(Me.hwnd, 200)
@@ -217,17 +224,21 @@ Private Sub Form_Load()
     frmMensaje.Picture = LoadInterface("mensaje.bmp")
     Me.Caption = "A"
     Call Form_RemoveTitleBar(Me)
-    Me.Height = 2750
-
+    Me.Height = 3190
+    Me.Width = 4380
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     moverForm
 
     If Image1.Tag = "1" Then
         Image1.Picture = Nothing
         Image1.Tag = "0"
-
+    End If
+    
+    If imgCerrar.Tag = "1" Then
+        imgCerrar.Picture = Nothing
+        imgCerrar.Tag = "0"
     End If
 
 End Sub
@@ -235,27 +246,21 @@ End Sub
 Private Sub Image1_Click()
     'Call Sound.Sound_Play(SND_CLICK)
     Unload Me
-
 End Sub
 
-Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    ' Image1.Picture = LoadInterface("botonaceptarapretado.bmp")
-    ' Image1.Tag = "1"
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Image1.Picture = LoadInterface("boton-aceptar-ES-off.jpg")
+    Image1.Tag = "1"
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("mensaje_aceptar.bmp")
+        Image1.Picture = LoadInterface("boton-aceptar-ES-over.jpg")
         Image1.Tag = "1"
-
     End If
-
 End Sub
 
 Private Sub Form_Deactivate()
-
     ' Me.SetFocus
 End Sub
 
@@ -323,6 +328,22 @@ Public Sub PopupMenuMensaje()
 
     PopUpMenu mnuMensaje
 
+End Sub
+
+Private Sub imgCerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
+    imgCerrar.Tag = "1"
+End Sub
+
+Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If imgCerrar.Tag = "0" Then
+        imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
+        imgCerrar.Tag = "1"
+    End If
 End Sub
 
 Private Sub mnuNormal_Click()
