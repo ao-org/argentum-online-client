@@ -1856,14 +1856,14 @@ Public Sub Iniciar_Labels()
     For i = 1 To NUMSKILLS
         If UserSkills(i) > 100 Then UserSkills(i) = 100
 
-        Text1(i).Caption = UserSkills(i)
+        text1(i).Caption = UserSkills(i)
     Next
 
     Select Case UserEstadisticas.Alineacion
 
         Case 0
-            Label6(9).Caption = "Neutral"
-            Label6(9).ForeColor = RGB(127, 127, 127)
+            Label6(9).Caption = "Criminal"
+            Label6(9).ForeColor = RGB(255, 0, 0)
 
         Case 1
             Label6(9).Caption = "Ciudadano"
@@ -1928,8 +1928,8 @@ Private Sub Command1_Click(Index As Integer)
             indice = Index \ 2 + 1
 
             If indice > NUMSKILLS Then indice = NUMSKILLS
-            If Val(Text1(indice).Caption) < MAXSKILLPOINTS Then
-                Text1(indice).Caption = Val(Text1(indice).Caption) + 1
+            If Val(text1(indice).Caption) < MAXSKILLPOINTS Then
+                text1(indice).Caption = Val(text1(indice).Caption) + 1
                 flags(indice) = flags(indice) + 1
                 Alocados = Alocados - 1
                 RealizoCambios = RealizoCambios + 1
@@ -1944,8 +1944,8 @@ Private Sub Command1_Click(Index As Integer)
         
             indice = Index \ 2 + 1
 
-            If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
-                Text1(indice).Caption = Val(Text1(indice).Caption) - 1
+            If Val(text1(indice).Caption) > 0 And flags(indice) > 0 Then
+                text1(indice).Caption = Val(text1(indice).Caption) - 1
                 flags(indice) = flags(indice) - 1
                 Alocados = Alocados + 1
                 RealizoCambios = RealizoCambios - 1
@@ -1960,16 +1960,16 @@ Private Sub Command1_Click(Index As Integer)
 
     Dim ladder As Byte
 
-    ladder = Val(Text1(indice).Caption)
+    ladder = Val(text1(indice).Caption)
 
     If UserSkills(indice) < ladder Then
-        Text1(indice).ForeColor = vbRed
+        text1(indice).ForeColor = vbRed
         PonerloEnRojo(indice) = True
 
     End If
 
     If UserSkills(indice) = ladder Then
-        Text1(indice).ForeColor = &H40C0&
+        text1(indice).ForeColor = &H40C0&
         RealizoCambios = RealizoCambios - 1
         PonerloEnRojo(indice) = False
 
@@ -2012,13 +2012,13 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            Text1(a).ForeColor = &H40C0&
+            text1(a).ForeColor = &H40C0&
 
             'Skills(a).ForeColor = vbWhite
         End If
 
         If PonerloEnRojo(a) = True Then
-            Text1(a).ForeColor = vbRed
+            text1(a).ForeColor = vbRed
 
         End If
 
@@ -2051,9 +2051,9 @@ Private Sub Image1_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(Text1(i).Caption)
+                UserSkills(i) = Val(text1(i).Caption)
         
             Next i
     
@@ -2097,9 +2097,9 @@ Private Sub imgCerrar_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(Text1(i).Caption)
+                UserSkills(i) = Val(text1(i).Caption)
             Next i
     
             Call WriteModifySkills(skillChanges())
@@ -2144,14 +2144,14 @@ Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integ
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            Text1(a).ForeColor = &H40C0&
+            text1(a).ForeColor = &H40C0&
 
         End If
 
         'Skills(a).ForeColor = vbWhite
     Next a
 
-    Text1(Index).ForeColor = vbBlue
+    text1(Index).ForeColor = vbBlue
 
     'Skills(index).ForeColor = vbBlue
 End Sub
