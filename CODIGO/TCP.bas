@@ -7,7 +7,7 @@ Option Explicit
 Public Warping        As Boolean
 
 Public LlegaronSkills As Boolean
-
+Public LlegaronStats  As Boolean
 Public LlegaronAtrib  As Boolean
 
 Public Function PuedoQuitarFoco() As Boolean

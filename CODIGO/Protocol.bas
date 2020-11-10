@@ -5605,7 +5605,7 @@ Private Sub HandleAtributes()
         End With
 
     Else
-        If LlegaronSkills Then
+        If LlegaronSkills And LlegaronStats Then
             Alocados = SkillPoints
             frmEstadisticas.puntos.Caption = SkillPoints
             frmEstadisticas.Iniciar_Labels
@@ -6611,7 +6611,6 @@ Private Sub HandleMiniStats()
     If incomingData.length < 34 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
-
     End If
     
     'Remove packet ID
@@ -6644,6 +6643,17 @@ Private Sub HandleMiniStats()
         .BattlePuntos = incomingData.ReadLong()
 
     End With
+    
+    If LlegaronAtrib And LlegaronSkills Then
+        Alocados = SkillPoints
+        frmEstadisticas.puntos.Caption = SkillPoints
+        frmEstadisticas.Iniciar_Labels
+        frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
+        HayFormularioAbierto = True
+        frmEstadisticas.Show , frmmain
+    Else
+        LlegaronStats = True
+    End If
 
 End Sub
 
@@ -6917,7 +6927,7 @@ Private Sub HandleSendSkills()
         'frmEstadisticas.skills(i).Caption = SkillsNames(i)
     Next i
 
-    If LlegaronAtrib Then
+    If LlegaronAtrib And LlegaronStats Then
         Alocados = SkillPoints
         frmEstadisticas.puntos.Caption = SkillPoints
         frmEstadisticas.Iniciar_Labels
