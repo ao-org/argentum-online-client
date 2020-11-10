@@ -186,12 +186,14 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
 
         End If
 
-        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call WriteEquipItem(frmmain.Inventario.SelectedItem)
+        If MainTimer.Check(TimersIndex.UseItemWithU) Then
+            If frmmain.Inventario.IsItemSelected Then Call WriteEquipItem(frmmain.Inventario.SelectedItem)
+        End If
     
     ElseIf KeyCode = BindKeys(4).KeyCode Then
 
         If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
-        Call WriteUseItem(frmmain.Inventario.SelectedItem)
+        If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
     
     ElseIf KeyCode = BindKeys(10).KeyCode Then
 

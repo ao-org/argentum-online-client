@@ -29,9 +29,9 @@ Begin VB.Form frmmain
    Moveable        =   0   'False
    NegotiateMenus  =   0   'False
    Picture         =   "frmMain.frx":57E2
-   ScaleHeight     =   815.007
-   ScaleMode       =   0  'User
-   ScaleWidth      =   1356.391
+   ScaleHeight     =   887
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   1353
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin SocketWrenchCtrl.Socket Socket1 
@@ -553,6 +553,12 @@ Begin VB.Form frmmain
          Strikethrough   =   0   'False
       EndProperty
    End
+   Begin VB.Image imgOro 
+      Height          =   255
+      Left            =   11520
+      Top             =   7920
+      Width           =   255
+   End
    Begin VB.Label manabar 
       Alignment       =   2  'Center
       BackColor       =   &H80000006&
@@ -569,10 +575,10 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   285
-      Left            =   12840
+      Left            =   12720
       TabIndex        =   14
-      Top             =   8718
-      Width           =   1335
+      Top             =   8715
+      Width           =   1575
    End
    Begin VB.Image Temp2 
       Height          =   495
@@ -755,87 +761,92 @@ Begin VB.Form frmmain
    End
    Begin VB.Label lblArmor 
       Alignment       =   2  'Center
+      AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "0/0"
+      Caption         =   "99/99"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H008080FF&
-      Height          =   255
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
       Left            =   14610
       TabIndex        =   23
-      Top             =   9450
+      Top             =   9510
       Width           =   525
    End
    Begin VB.Label lblHelm 
       Alignment       =   2  'Center
+      AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "0/0"
+      Caption         =   "99/99"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000080FF&
-      Height          =   255
-      Left            =   13620
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   13695
       TabIndex        =   22
-      Top             =   9452
-      Width           =   615
+      Top             =   9510
+      Width           =   525
    End
    Begin VB.Label lblShielder 
       Alignment       =   2  'Center
+      AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "0/0"
+      Caption         =   "99/99"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFF80&
-      Height          =   255
-      Left            =   12750
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   12735
       TabIndex        =   21
-      Top             =   9452
-      Width           =   495
+      Top             =   9510
+      Width           =   525
    End
    Begin VB.Label lblWeapon 
       Alignment       =   2  'Center
+      AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "0/0"
+      Caption         =   "99/99"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000000FF&
-      Height          =   255
-      Left            =   11760
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   11805
       TabIndex        =   20
-      Top             =   9452
-      Width           =   615
+      Top             =   9510
+      Width           =   525
    End
    Begin VB.Label AgilidadLbl 
+      AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "00"
+      Caption         =   "40"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75
@@ -846,15 +857,15 @@ Begin VB.Form frmmain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   210
-      Left            =   14400
+      Height          =   240
+      Left            =   14340
       TabIndex        =   19
-      Top             =   7885
-      Width           =   450
+      Top             =   7890
+      Width           =   240
    End
    Begin VB.Label Fuerzalbl 
       BackStyle       =   0  'Transparent
-      Caption         =   "00"
+      Caption         =   "40"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75
@@ -866,15 +877,15 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   210
-      Left            =   15000
+      Left            =   14925
       TabIndex        =   18
-      Top             =   7885
+      Top             =   7890
       Width           =   330
    End
    Begin VB.Label GldLbl 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "100000"
+      Caption         =   "100.000"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75
@@ -886,10 +897,10 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H0080FFFF&
       Height          =   240
-      Left            =   11880
+      Left            =   11820
       TabIndex        =   17
-      Top             =   7885
-      Width           =   720
+      Top             =   7890
+      Width           =   780
    End
    Begin VB.Image TiendaBoton 
       Height          =   405
@@ -922,10 +933,10 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   240
-      Left            =   13785
+      Left            =   13725
       TabIndex        =   11
       ToolTipText     =   "Oxigeno acumulado"
-      Top             =   7885
+      Top             =   7890
       Width           =   255
    End
    Begin VB.Image mapMundo 
@@ -1284,7 +1295,7 @@ Begin VB.Form frmmain
       Height          =   240
       Left            =   11865
       Picture         =   "frmMain.frx":78905
-      Top             =   8709
+      Top             =   8715
       Width           =   3240
    End
    Begin VB.Label stabar 
@@ -1303,7 +1314,7 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   165
-      Left            =   11880
+      Left            =   11850
       TabIndex        =   16
       Top             =   9142
       Width           =   1335
@@ -1657,7 +1668,6 @@ End Sub
 Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     EstadisticasBoton.Picture = LoadInterface("boton-estadisticas-off.bmp")
     EstadisticasBoton.Tag = "1"
-
 End Sub
 
 Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -1665,7 +1675,6 @@ Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x A
     If EstadisticasBoton.Tag = "0" Then
         EstadisticasBoton.Picture = LoadInterface("boton-estadisticas-over.bmp")
         EstadisticasBoton.Tag = "1"
-
     End If
 
 End Sub
@@ -1676,22 +1685,6 @@ Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As 
     Call WriteRequestAtributes
     Call WriteRequestSkills
     Call WriteRequestMiniStats
-            
-    Call FlushBuffer
-
-    Do While Not LlegaronSkills Or Not LlegaronAtrib
-        DoEvents 'esperamos a que lleguen y mantenemos la interfaz viva
-    Loop
-            
-    Alocados = SkillPoints
-    frmEstadisticas.puntos.Caption = SkillPoints
-    frmEstadisticas.Iniciar_Labels
-    frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
-    HayFormularioAbierto = True
-    frmEstadisticas.Show , frmmain
-    LlegaronAtrib = False
-    LlegaronSkills = False
-
 End Sub
 
 Private Sub exp_Click()
@@ -2001,7 +1994,13 @@ Private Sub Image4_Click(Index As Integer)
             Me.WindowState = vbMinimized
 
         Case 1
-            frmCerrar.Show , frmmain
+            If frmCerrar.Visible Then Exit Sub
+            Dim mForm As Form
+            For Each mForm In Forms
+                If mForm.hwnd <> Me.hwnd Then Unload mForm
+                Set mForm = Nothing
+            Next
+            frmCerrar.Show , Me
 
     End Select
 
@@ -2090,7 +2089,7 @@ End Sub
 Private Sub imgHechizos_Click()
 
     If hlst.Visible Then Exit Sub
-    Panel.Picture = LoadInterface("centrohechizo.bmp")
+    panel.Picture = LoadInterface("centrohechizo.bmp")
     picInv.Visible = False
     hlst.Visible = True
 
@@ -2127,7 +2126,7 @@ Private Sub imgInventario_Click()
 
     If picInv.Visible Then Exit Sub
 
-    Panel.Picture = LoadInterface("centroinventario.bmp")
+    panel.Picture = LoadInterface("centroinventario.bmp")
     'Call Audio.PlayWave(SND_CLICK)
     picInv.Visible = True
     hlst.Visible = False
@@ -2160,11 +2159,19 @@ Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Si
 
 End Sub
 
+Private Sub imgOro_Click()
+    GldLbl_Click
+End Sub
+
 Private Sub LlamaDeclan_Timer()
     frmMapaGrande.llamadadeclan.Visible = False
     frmMapaGrande.Shape2.Visible = False
     LlamaDeclan.Enabled = False
 
+End Sub
+
+Private Sub MANShp_Click()
+    manabar_Click
 End Sub
 
 Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2207,6 +2214,10 @@ Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer,
 
     End If
 
+End Sub
+
+Private Sub picInv_Paint()
+    Inventario.ReDraw
 End Sub
 
 Private Sub PicSegClanOff_Click()
@@ -2326,7 +2337,9 @@ Private Sub macrotrabajo_Timer()
     End If
     
     'If Inventario.OBJType(Inventario.SelectedItem) = eObjType.otWeapon Then
-    If Not (frmCarp.Visible = True) Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+    If Not (frmCarp.Visible = True) Then
+        If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+    End If
 
 End Sub
 
@@ -2444,7 +2457,8 @@ End Sub
 
 Private Sub mnuUsar_Click()
 
-    If MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+    If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Sub
+    If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
 
 End Sub
 
@@ -2555,6 +2569,11 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     UsaMacro = False
     
     slot = Inventario.GetSlot(x, y)
+    
+    If slot <= 0 Then
+        ObjLbl.Visible = False
+        Exit Sub
+    End If
     
     If Inventario.Amount(slot) > 0 Then
     
@@ -2948,7 +2967,6 @@ End Sub
 
 Private Sub renderer_Click()
     Call Form_Click
-
 End Sub
 
 Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
@@ -3324,7 +3342,9 @@ Public Sub Form_Click()
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 3 Or MouseBoton = vbRightButton And ACCION2 = 3 Or MouseBoton = 4 And ACCION3 = 3 Then
 
-        If MainTimer.Check(TimersIndex.UseItemWithU) Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+        If MainTimer.Check(TimersIndex.UseItemWithU) Then
+            If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+        End If
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 4 Or MouseBoton = vbRightButton And ACCION2 = 4 Or MouseBoton = 4 And ACCION3 = 4 Then
 
@@ -3389,10 +3409,11 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     ' Disable links checking (not over consola)
     StopCheckingLinks
     
-    If PantallaCompleta = 0 Then
+    If PantallaCompleta = 0 And Button = vbLeftButton Then
         If MoverVentana = 1 Then
             If UserMoving = 0 Then
-                moverForm
+                ' Mover form sólo en la parte superior
+                If y < 30 Then moverForm
 
                 'Call Auto_Drag(Me.hwnd)
             End If
@@ -3543,7 +3564,7 @@ Private Sub picInv_DblClick()
     
     If macrotrabajo.Enabled Then DesactivarMacroTrabajo
     
-    If Inventario.SelectedItem <= 0 Then Exit Sub
+    If Not Inventario.IsItemSelected Then Exit Sub
 
     ' Hacemos acción del doble clic correspondiente
     Dim ObjType As Byte
@@ -3758,6 +3779,21 @@ Private Sub Socket1_Disconnect()
 
         For i = 1 To NUMATRIBUTOS
             UserAtributos(i) = 0
+        Next i
+        
+        For i = 1 To UserInvUnlocked
+            frmmain.imgInvLock(i - 1).Picture = Nothing
+        Next i
+        
+        For i = 1 To MAX_INVENTORY_SLOTS
+            Call frmmain.Inventario.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+            Call frmBancoObj.InvBankUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+            Call frmComerciar.InvComNpc.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+            Call frmComerciar.InvComUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Next i
+        
+        For i = 1 To MAX_BANCOINVENTORY_SLOTS
+            Call frmBancoObj.InvBoveda.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Next i
         
         UserParalizado = False

@@ -220,6 +220,11 @@ Public Property Get SelectedItem() As Long
 
 End Property
 
+Public Property Get IsItemSelected() As Boolean
+    If SelectedItem <= 0 Or SelectedItem >= MaxSlots Then Exit Sub
+    IsItemSelected = (UserInventory(SelectedItem).GrhIndex > 0)
+End Property
+
 Public Property Get MaxHit(ByVal slot As Byte) As Integer
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -571,10 +576,11 @@ Private Sub InventoryWindow_MouseDown(Button As Integer, Shift As Integer, x As 
 
         ' Si hay un item, iniciamos el drag
         If slot > 0 Then
-            Dragging = slot
-            XDrag = x
-            YDrag = y
-
+            If UserInventory(slot).GrhIndex > 0 Then
+                Dragging = slot
+                XDrag = x
+                YDrag = y
+            End If
         End If
 
     End If
@@ -602,6 +608,12 @@ Private Sub InventoryWindow_MouseMove(Button As Integer, Shift As Integer, x As 
 End Sub
 
 Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    ' Me mantengo dentro de los límites
+    If x < HALF_ITEM_SIZE Then x = HALF_ITEM_SIZE
+    If y < HALF_ITEM_SIZE Then y = HALF_ITEM_SIZE
+    If x > InventoryWindow.ScaleWidth - HALF_ITEM_SIZE Then x = InventoryWindow.ScaleWidth - HALF_ITEM_SIZE
+    If y > InventoryWindow.ScaleHeight - HALF_ITEM_SIZE Then y = InventoryWindow.ScaleHeight - HALF_ITEM_SIZE
 
     ' Calculo el slot
     Dim slot As Byte
