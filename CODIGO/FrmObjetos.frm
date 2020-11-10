@@ -341,3 +341,9 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
     End If
 
 End Sub
+
+Private Sub Text1_KeyDown(KeyCode As Integer, Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        Command3_Click
+    End If
+End Sub
