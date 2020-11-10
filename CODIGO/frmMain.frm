@@ -536,7 +536,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1682,6 +1681,7 @@ End Sub
 Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     LlegaronAtrib = False
     LlegaronSkills = False
+    LlegaronStats = False
     Call WriteRequestAtributes
     Call WriteRequestSkills
     Call WriteRequestMiniStats
