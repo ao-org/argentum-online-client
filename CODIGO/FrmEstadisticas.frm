@@ -931,7 +931,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -939,11 +939,11 @@ Begin VB.Form frmEstadisticas
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H000040C0&
-      Height          =   210
-      Left            =   7320
+      Height          =   240
+      Left            =   8160
       TabIndex        =   26
-      Top             =   8520
-      Width           =   90
+      Top             =   1365
+      Width           =   105
    End
    Begin VB.Label text1 
       Alignment       =   2  'Center
