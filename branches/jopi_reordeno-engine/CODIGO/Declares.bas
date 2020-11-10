@@ -255,35 +255,20 @@ Public Windows_Temp_Dir       As String
 
 'Declaraciones Ladder
 Public spell_particle         As Long
-
 Public Select_part            As Long
-
 Public EfectoEnproceso        As Boolean
-
 Public ColorAmbiente          As D3DCOLORVALUE
-
 Public VSync_FPS              As Boolean
-
 Public MostrarOnline          As Boolean
-
 Public usersOnline            As Integer
-
 Public meteo_particle         As Long
-
 Public meteo_estado           As Byte
-
 Public map_base_light         As Long
-
 Public Map_light_base         As Long
-
 Public Map_light_baseBackup   As Long
-
 Public Const Particula_Lluvia As Long = 58
-
 Public Const Particula_Nieve  As Long = 57
-
 Public VolMusicFadding        As Byte
-
 Public RawServersList         As String
 
 Public Type tServerInfo
@@ -318,10 +303,6 @@ Public Const Mp3_Dir = "\..\Recursos\Mp3\"
 
 'Opciones Clasicas
 
-Rem Particle Groups
-Public ParticulasTotales As Integer
-
-Public StreamData()      As Stream
 
 'RGB Type
 Public Type RGB
@@ -347,47 +328,7 @@ Public StreamFile As String
 
 Public NumAuras   As Byte
 
-Public Type Stream
 
-    name As String
-    NumOfParticles As Long
-    NumGrhs As Long
-    id As Long
-    x1 As Long
-    y1 As Long
-    x2 As Long
-    y2 As Long
-    angle As Long
-    vecx1 As Long
-    vecx2 As Long
-    vecy1 As Long
-    vecy2 As Long
-    life1 As Long
-    life2 As Long
-    friction As Long
-    spin As Byte
-    spin_speedL As Single
-    spin_speedH As Single
-    AlphaBlend As Byte
-    gravity As Byte
-    grav_strength As Long
-    bounce_strength As Long
-    XMove As Byte
-    YMove As Byte
-    move_x1 As Long
-    move_x2 As Long
-    move_y1 As Long
-    move_y2 As Long
-    grh_list() As Long
-    colortint(0 To 3) As RGB
-    
-    speed As Single
-    life_counter As Long
-    grh_resize As Boolean
-    grh_resizex As Integer
-    grh_resizey As Integer
-
-End Type
 
 Public Sound                   As New clsSoundEngine
 
@@ -395,7 +336,9 @@ Public Meteo_Engine            As clsMeteorologic
 
 Public Dialogos                As New clsDialogs
 
-Public LightA                  As New clsLight
+Public LucesRedondas           As New clsLucesRedondas
+
+Public LucesCuadradas          As New clsLucesCuadradas
 
 Public InvOroComUsu(2)         As New clsGrapchicalInventory ' Inventarios de oro (ambos usuarios)
 

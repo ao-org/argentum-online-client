@@ -165,7 +165,7 @@ Public Type Char
     Escudo As ShieldAnimData
     MovArmaEscudo As Boolean
     
-    FX As grh
+    fX As grh
     FxIndex As Integer
     BarTime As Single
     Escribiendo As Boolean
@@ -281,14 +281,14 @@ End Type
 
 Public Type MapBlock
 
-    FX As grh
+    fX As grh
     FxIndex As Byte
     
     FxCount As Integer
     FxList() As grh
     
     Graphic(1 To 4) As grh
-    CharIndex As Integer
+    charindex As Integer
     ObjGrh As grh
     GrhBlend As Single
     light_value(3) As Long
@@ -367,71 +367,51 @@ Public FramesPerSecCounter     As Long
 Private fpsLastCheck           As Long
 
 'Tamaño del la vista en Tiles
-Private WindowTileWidth        As Integer
-
-Private WindowTileHeight       As Integer
-
-Private HalfWindowTileWidth    As Integer
-
-Private HalfWindowTileHeight   As Integer
+Public WindowTileWidth        As Integer
+Public WindowTileHeight       As Integer
+Public HalfWindowTileWidth    As Integer
+Public HalfWindowTileHeight   As Integer
 
 'Offset del desde 0,0 del main view
-Private MainViewTop            As Integer
-
-Private MainViewLeft           As Integer
+Public MainViewTop            As Integer
+Public MainViewLeft           As Integer
 
 'Cuantos tiles el engine mete en el BUFFER cuando
 'dibuja el mapa. Ojo un tamaño muy grande puede
 'volver el engine muy lento
 Public TileBufferSize          As Integer
-
-Private TileBufferPixelOffsetX As Integer
-
-Private TileBufferPixelOffsetY As Integer
+Public TileBufferPixelOffsetX As Integer
+Public TileBufferPixelOffsetY As Integer
 
 'Tamaño de los tiles en pixels
 Public Const TilePixelHeight   As Integer = 32
-
 Public Const TilePixelWidth    As Integer = 32
 
 'Number of pixels the engine scrolls per frame. MUST divide evenly into pixels per tile
 Public ScrollPixelsPerFrameX   As Single
-
 Public ScrollPixelsPerFrameY   As Single
 
-Dim timerElapsedTime           As Single
-
-Dim timerTicksPerFrame         As Single
-
-Dim engineBaseSpeed            As Single
+Public timerElapsedTime           As Single
+Public timerTicksPerFrame         As Single
+Public engineBaseSpeed            As Single
 
 Public NumBodies               As Integer
-
 Public Numheads                As Integer
-
 Public NumFxs                  As Integer
-
 Public NumChars                As Integer
-
 Public LastChar                As Long
-
 Public NumWeaponAnims          As Integer
-
 Public NumShieldAnims          As Integer
 
-Private MainDestRect           As RECT
+Public MainDestRect           As RECT
+Public MainViewRect           As RECT
+Public BackBufferRect         As RECT
 
-Private MainViewRect           As RECT
+Public MainViewWidth          As Integer
+Public MainViewHeight         As Integer
 
-Private BackBufferRect         As RECT
-
-Private MainViewWidth          As Integer
-
-Private MainViewHeight         As Integer
-
-Private MouseTileX             As Byte
-
-Private MouseTileY             As Byte
+Public MouseTileX             As Byte
+Public MouseTileY             As Byte
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Graficos¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Public GrhData()               As GrhData 'Guarda todos los grh
@@ -540,9 +520,9 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
 
 End Sub
 
-Sub ResetCharInfo(ByVal CharIndex As Integer)
+Sub ResetCharInfo(ByVal charindex As Integer)
 
-    With charlist(CharIndex)
+    With charlist(charindex)
     
         .active = 0
         .AlphaPJ = 0
@@ -594,15 +574,15 @@ Sub ResetCharInfo(ByVal CharIndex As Integer)
     
 End Sub
 
-Sub MakeChar(ByVal CharIndex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
 
     On Error Resume Next
 
     'Apuntamos al ultimo Char
     ' Debug.Print charindex
-    If CharIndex > LastChar Then LastChar = CharIndex
+    If charindex > LastChar Then LastChar = charindex
     
-    With charlist(CharIndex)
+    With charlist(charindex)
 
         'If the char wasn't allready active (we are rewritting it) don't increase char count
         If .active = 0 Then NumChars = NumChars + 1
@@ -651,29 +631,29 @@ Sub MakeChar(ByVal CharIndex As Integer, ByVal Body As Integer, ByVal Head As In
         
         If ParticulaFx <> 0 Then
             .Particula = ParticulaFx
-            Call General_Char_Particle_Create(ParticulaFx, CharIndex, -1)
+            Call General_Char_Particle_Create(ParticulaFx, charindex, -1)
 
         End If
       
     End With
     
     'Plot on map
-    MapData(x, y).CharIndex = CharIndex
+    MapData(x, y).charindex = charindex
 
 End Sub
 
-Sub EraseChar(ByVal CharIndex As Integer)
+Sub EraseChar(ByVal charindex As Integer)
     '*****************************************************************
     'Erases a character from CharList and map
     '*****************************************************************
     
-    If CharIndex = 0 Then Exit Sub
-    If charlist(CharIndex).active = 0 Then Exit Sub
+    If charindex = 0 Then Exit Sub
+    If charlist(charindex).active = 0 Then Exit Sub
 
-    charlist(CharIndex).active = 0
+    charlist(charindex).active = 0
     
     'Update lastchar
-    If CharIndex = LastChar Then
+    If charindex = LastChar Then
 
         Do Until charlist(LastChar).active = 1
             LastChar = LastChar - 1
@@ -683,12 +663,12 @@ Sub EraseChar(ByVal CharIndex As Integer)
 
     End If
     
-    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = 0
+    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
     
     'Remove char's dialog
-    Call Dialogos.RemoveDialog(CharIndex)
+    Call Dialogos.RemoveDialog(charindex)
     
-    Call ResetCharInfo(CharIndex)
+    Call ResetCharInfo(charindex)
     
     'Update NumChars
     NumChars = NumChars - 1
@@ -755,16 +735,16 @@ Public Sub DoFogataFx()
 
 End Sub
 
-Private Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
+Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
 
-    With charlist(CharIndex).Pos
+    With charlist(charindex).Pos
         EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
 
     End With
 
 End Function
 
-Sub DoPasosFx(ByVal CharIndex As Integer)
+Sub DoPasosFx(ByVal charindex As Integer)
 
     Static TerrenoDePaso As TipoPaso
 
@@ -772,9 +752,9 @@ Sub DoPasosFx(ByVal CharIndex As Integer)
 
     If Not UserNavegando Then
 
-        With charlist(CharIndex)
+        With charlist(charindex)
 
-            If Not .MUERTO And EstaPCarea(CharIndex) And (.priv = 0 Or .priv > 5) Then
+            If Not .MUERTO And EstaPCarea(charindex) And (.priv = 0 Or .priv > 5) Then
                 If .Speeding > 1.3 Then
                    
                     Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
@@ -831,7 +811,7 @@ Private Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
 
 End Function
 
-Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As Integer)
+Sub MoveCharbyPos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
 
     On Error Resume Next
 
@@ -845,11 +825,11 @@ Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As I
 
     Dim nHeading As E_Heading
     
-    With charlist(CharIndex)
+    With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
         
-        MapData(x, y).CharIndex = 0
+        MapData(x, y).charindex = 0
         
         addx = nX - x
         addy = nY - y
@@ -874,7 +854,7 @@ Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As I
 
         End If
         
-        MapData(nX, nY).CharIndex = CharIndex
+        MapData(nX, nY).charindex = charindex
         
         .Pos.x = nX
         .Pos.y = nY
@@ -890,10 +870,10 @@ Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As I
 
     End With
     
-    If Not EstaPCarea(CharIndex) Then Call Dialogos.RemoveDialog(CharIndex)
+    If Not EstaPCarea(charindex) Then Call Dialogos.RemoveDialog(charindex)
     
     If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
-        Call EraseChar(CharIndex)
+        Call EraseChar(charindex)
 
     End If
 
@@ -1044,8 +1024,8 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer) As Boolean
     End If
     
     '¿Hay un personaje?
-    If MapData(x, y).CharIndex > 0 Then
-        If charlist(MapData(x, y).CharIndex).MUERTO Then
+    If MapData(x, y).charindex > 0 Then
+        If charlist(MapData(x, y).charindex).MUERTO Then
         Else
             Exit Function
 
@@ -1335,9 +1315,9 @@ Private Function GetElapsedTime() As Single
 
 End Function
 
-Public Sub SetCharacterFx(ByVal CharIndex As Integer, ByVal FX As Integer, ByVal Loops As Integer)
+Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
 
-    If FX = 0 Then Exit Sub
+    If fX = 0 Then Exit Sub
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -1346,11 +1326,11 @@ Public Sub SetCharacterFx(ByVal CharIndex As Integer, ByVal FX As Integer, ByVal
     '***************************************************
     Dim indice As Byte
 
-    With charlist(CharIndex)
+    With charlist(charindex)
     
-        indice = engine.Char_FX_Group_Next_Open(CharIndex)
-        .FxList(indice).FxIndex = FX
-        Call InitGrh(.FxList(indice), FxData(FX).Animacion)
+        indice = engine.Char_FX_Group_Next_Open(charindex)
+        .FxList(indice).FxIndex = fX
+        Call InitGrh(.FxList(indice), FxData(fX).Animacion)
         .FxList(indice).Loops = Loops
             
     End With

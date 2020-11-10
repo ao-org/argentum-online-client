@@ -1665,7 +1665,7 @@ Private Sub HandleDisconnect()
     frmConnect.Visible = True
     QueRender = 2
 
-    Call engine.Particle_Group_Remove_All
+    Call Graficos_Particulas.Particle_Group_Remove_All
     Call engine.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
@@ -3856,9 +3856,9 @@ Private Sub HandleMostrarCuenta()
     '  Sound.NextMusic = 2
     '  Sound.Fading = 350
       
-    Call engine.Particle_Group_Remove_All
-    Call engine.Engine_Select_Particle_Set(203)
-    ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
+    Call Graficos_Particulas.Particle_Group_Remove_All
+    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
     
     frmConnect.relampago.Enabled = False
             
@@ -4338,8 +4338,8 @@ Private Sub HandleObjectCreate()
         
         If Rango < 100 Then
             id = x & y
-            engine.Light_Create x, y, color, Rango, id
-            engine.Light_Render_All
+            LucesCuadradas.Light_Create x, y, color, Rango, id
+            LucesCuadradas.Light_Render_All
         Else
 
             Dim r, g, b As Byte
@@ -4347,9 +4347,9 @@ Private Sub HandleObjectCreate()
             b = (color And 16711680) / 65536
             g = (color And 65280) / 256
             r = color And 255
-            LightA.Create_Light_To_Map x, y, Rango - 99, b, g, r
-            LightA.LightRenderAll
-            engine.Light_Render_All
+            LucesRedondas.Create_Light_To_Map x, y, Rango - 99, b, g, r
+            LucesRedondas.LightRenderAll
+            LucesCuadradas.Light_Render_All
 
         End If
         
@@ -4421,18 +4421,18 @@ Private Sub HandleObjectDelete()
     y = incomingData.ReadByte()
     
     If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
-        id = engine.Light_Find(x & y)
-        engine.Light_Remove id
+        id = LucesCuadradas.Light_Find(x & y)
+        LucesCuadradas.Light_Remove id
         MapData(x, y).luz.color = 0
         MapData(x, y).luz.Rango = 0
-        engine.Light_Render_All
+        LucesCuadradas.Light_Render_All
 
     End If
     
     MapData(x, y).ObjGrh.GrhIndex = 0
     
     If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaParticulaPiso <> 0 Then
-        engine.Particle_Group_Remove (MapData(x, y).particle_group)
+        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
 
     End If
 
@@ -13786,7 +13786,7 @@ Private Sub HandleParticleFXToFloor()
     End If
 
     If Borrar Then
-        engine.Particle_Group_Remove (MapData(x, y).particle_group)
+        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
     Else
 
         If MapData(x, y).particle_group = 0 Then
@@ -13837,17 +13837,17 @@ Private Sub HandleLightToFloor()
     If color = 0 Then
    
         If MapData(x, y).luz.Rango > 100 Then
-            LightA.Delete_Light_To_Map x, y
+            LucesRedondas.Delete_Light_To_Map x, y
    
-            engine.Light_Render_All
-            LightA.LightRenderAll
+            LucesCuadradas.Light_Render_All
+            LucesRedondas.LightRenderAll
             Exit Sub
         Else
-            id = engine.Light_Find(x & y)
-            engine.Light_Remove id
+            id = LucesCuadradas.Light_Find(x & y)
+            LucesCuadradas.Light_Remove id
             MapData(x, y).luz.color = color
             MapData(x, y).luz.Rango = 0
-            engine.Light_Render_All
+            LucesCuadradas.Light_Render_All
             Exit Sub
 
         End If
@@ -13859,8 +13859,8 @@ Private Sub HandleLightToFloor()
     
     If Rango < 100 Then
         id = x & y
-        engine.Light_Create x, y, color, Rango, id
-        engine.Light_Render_All
+        LucesCuadradas.Light_Create x, y, color, Rango, id
+        LucesCuadradas.Light_Render_All
     Else
 
         Dim r, g, b As Byte
@@ -13868,7 +13868,7 @@ Private Sub HandleLightToFloor()
         b = (color And 16711680) / 65536
         g = (color And 65280) / 256
         r = color And 255
-        LightA.Create_Light_To_Map x, y, Rango - 99, b, g, r
+        LucesRedondas.Create_Light_To_Map x, y, Rango - 99, b, g, r
 
     End If
 

@@ -426,7 +426,7 @@ Public Sub Meteo_Logic()
         ColorAmbiente.r = m_Color.r
         ColorAmbiente.g = m_Color.g
         ColorAmbiente.b = m_Color.b
-        LightA.LightRenderAll
+        LucesRedondas.LightRenderAll
 
     End If
 
