@@ -364,14 +364,14 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000080FF&
       Height          =   195
       Index           =   9
       Left            =   1920
       TabIndex        =   57
-      Top             =   3120
+      Top             =   3135
       UseMnemonic     =   0   'False
-      Width           =   1380
+      Width           =   1260
    End
    Begin VB.Label Fami 
       Alignment       =   2  'Center
@@ -812,13 +812,13 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000080FF&
       Height          =   195
       Index           =   5
       Left            =   1920
       TabIndex        =   32
-      Top             =   3390
-      Width           =   705
+      Top             =   3405
+      Width           =   1185
    End
    Begin VB.Label Label6 
       BackStyle       =   0  'Transparent
@@ -897,13 +897,13 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000080FF&
       Height          =   195
       Index           =   6
       Left            =   1920
       TabIndex        =   28
-      Top             =   2880
-      Width           =   1380
+      Top             =   2850
+      Width           =   1260
    End
    Begin VB.Label Label6 
       BackStyle       =   0  'Transparent
@@ -917,13 +917,13 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000080FF&
       Height          =   195
       Index           =   8
       Left            =   1920
       TabIndex        =   27
-      Top             =   2640
-      Width           =   900
+      Top             =   2580
+      Width           =   1140
    End
    Begin VB.Label puntos 
       AutoSize        =   -1  'True
@@ -1651,13 +1651,13 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000080FF&
       Height          =   195
       Index           =   4
       Left            =   1920
       TabIndex        =   5
-      Top             =   2400
-      Width           =   1500
+      Top             =   2325
+      Width           =   1260
    End
    Begin VB.Label Atri 
       AutoSize        =   -1  'True
@@ -1856,7 +1856,7 @@ Public Sub Iniciar_Labels()
     For i = 1 To NUMSKILLS
         If UserSkills(i) > 100 Then UserSkills(i) = 100
 
-        text1(i).Caption = UserSkills(i)
+        Text1(i).Caption = UserSkills(i)
     Next
 
     Select Case UserEstadisticas.Alineacion
@@ -1928,8 +1928,8 @@ Private Sub Command1_Click(Index As Integer)
             indice = Index \ 2 + 1
 
             If indice > NUMSKILLS Then indice = NUMSKILLS
-            If Val(text1(indice).Caption) < MAXSKILLPOINTS Then
-                text1(indice).Caption = Val(text1(indice).Caption) + 1
+            If Val(Text1(indice).Caption) < MAXSKILLPOINTS Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) + 1
                 flags(indice) = flags(indice) + 1
                 Alocados = Alocados - 1
                 RealizoCambios = RealizoCambios + 1
@@ -1944,8 +1944,8 @@ Private Sub Command1_Click(Index As Integer)
         
             indice = Index \ 2 + 1
 
-            If Val(text1(indice).Caption) > 0 And flags(indice) > 0 Then
-                text1(indice).Caption = Val(text1(indice).Caption) - 1
+            If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) - 1
                 flags(indice) = flags(indice) - 1
                 Alocados = Alocados + 1
                 RealizoCambios = RealizoCambios - 1
@@ -1960,16 +1960,16 @@ Private Sub Command1_Click(Index As Integer)
 
     Dim ladder As Byte
 
-    ladder = Val(text1(indice).Caption)
+    ladder = Val(Text1(indice).Caption)
 
     If UserSkills(indice) < ladder Then
-        text1(indice).ForeColor = vbRed
+        Text1(indice).ForeColor = vbRed
         PonerloEnRojo(indice) = True
 
     End If
 
     If UserSkills(indice) = ladder Then
-        text1(indice).ForeColor = &H40C0&
+        Text1(indice).ForeColor = &H40C0&
         RealizoCambios = RealizoCambios - 1
         PonerloEnRojo(indice) = False
 
@@ -1999,7 +1999,7 @@ Private Sub Form_Load()
 
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     moverForm
     'If Image1.Tag = "1" Then
     ' Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
@@ -2012,13 +2012,13 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            text1(a).ForeColor = &H40C0&
+            Text1(a).ForeColor = &H40C0&
 
             'Skills(a).ForeColor = vbWhite
         End If
 
         If PonerloEnRojo(a) = True Then
-            text1(a).ForeColor = vbRed
+            Text1(a).ForeColor = vbRed
 
         End If
 
@@ -2051,9 +2051,9 @@ Private Sub Image1_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(text1(i).Caption)
+                UserSkills(i) = Val(Text1(i).Caption)
         
             Next i
     
@@ -2074,12 +2074,12 @@ Private Sub Image1_Click()
 
 End Sub
 
-Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     Image1 = LoadInterface("boton-aceptar-ES-off.jpg")
     Image1.Tag = "1"
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Image1.Tag = "0" Then
         Image1 = LoadInterface("boton-aceptar-ES-over.jpg")
@@ -2097,9 +2097,9 @@ Private Sub imgCerrar_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(text1(i).Caption)
+                UserSkills(i) = Val(Text1(i).Caption)
             Next i
     
             Call WriteModifySkills(skillChanges())
@@ -2119,12 +2119,12 @@ Private Sub imgCerrar_Click()
 
 End Sub
 
-Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     imgCerrar.Tag = "1"
 End Sub
 
-Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If imgCerrar.Tag = "0" Then
         imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         imgCerrar.Tag = "1"
@@ -2137,21 +2137,21 @@ Private Sub skills_Click(Index As Integer)
 
 End Sub
 
-Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
     Dim a As Integer
 
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            text1(a).ForeColor = &H40C0&
+            Text1(a).ForeColor = &H40C0&
 
         End If
 
         'Skills(a).ForeColor = vbWhite
     Next a
 
-    text1(Index).ForeColor = vbBlue
+    Text1(Index).ForeColor = vbBlue
 
     'Skills(index).ForeColor = vbBlue
 End Sub
