@@ -10,7 +10,6 @@ Begin VB.Form frmComerciar
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmComerciar.frx":0000
    ScaleHeight     =   476
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   544
@@ -42,7 +41,6 @@ Begin VB.Form frmComerciar
       Height          =   3660
       Left            =   630
       MousePointer    =   99  'Custom
-      Picture         =   "frmComerciar.frx":BC69A
       ScaleHeight     =   244
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   459
