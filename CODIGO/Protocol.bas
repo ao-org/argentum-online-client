@@ -1466,16 +1466,15 @@ Private Sub HandleLogged()
 
     If UserMaxMAN <> 0 Then
         frmmain.manabar.Visible = True
-
     End If
 
     frmmain.hambar.Visible = True
     frmmain.AGUbar.Visible = True
-    frmmain.Hpshp.Visible = True
-    frmmain.MANShp.Visible = True
-    frmmain.STAShp.Visible = True
-    frmmain.AGUAsp.Visible = True
-    frmmain.COMIDAsp.Visible = True
+    frmmain.Hpshp.Visible = (UserMinHp > 0)
+    frmmain.MANShp.Visible = (UserMinMAN > 0)
+    frmmain.STAShp.Visible = (UserMinSTA > 0)
+    frmmain.AGUAsp.Visible = (UserMinAGU > 0)
+    frmmain.COMIDAsp.Visible = (UserMinHAM > 0)
     frmmain.GldLbl.Visible = True
     ' frmMain.Label6.Visible = True
     frmmain.Fuerzalbl.Visible = True
@@ -1738,11 +1737,18 @@ Private Sub HandleDisconnect()
         frmmain.imgInvLock(i - 1).Picture = Nothing
     Next i
     
-    UserInvUnlocked = 0
-    
     For i = 1 To MAX_INVENTORY_SLOTS
         Call frmmain.Inventario.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmBancoObj.InvBankUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmComerciar.InvComNpc.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmComerciar.InvComUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
     Next i
+    
+    For i = 1 To MAX_BANCOINVENTORY_SLOTS
+        Call frmBancoObj.InvBoveda.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+    Next i
+    
+    UserInvUnlocked = 0
 
     Alocados = 0
 
@@ -2506,6 +2512,7 @@ Private Sub HandleUpdateSta()
     UserMinSTA = incomingData.ReadInteger()
     frmmain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
     frmmain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
+    frmmain.STAShp.Visible = (UserMinSTA > 0)
 
 End Sub
 
@@ -2533,12 +2540,13 @@ Private Sub HandleUpdateMana()
     UserMinMAN = incomingData.ReadInteger()
     
     If UserMaxMAN > 0 Then
-        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 217
+        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
         frmmain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
+        frmmain.MANShp.Visible = (UserMinMAN > 0)
     Else
         frmmain.MANShp.Width = 0
         frmmain.manabar.Visible = False
-
+        frmmain.MANShp.Visible = False
     End If
 
 End Sub
@@ -2565,8 +2573,9 @@ Private Sub HandleUpdateHP()
     
     'Get data and update form
     UserMinHp = incomingData.ReadInteger()
-    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 217
+    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 216
     frmmain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
+    frmmain.Hpshp.Visible = (UserMinHp > 0)
     
     'Velocidad de la musica
     
@@ -2653,7 +2662,7 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-    frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+    frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
     frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
 
 End Sub
@@ -4713,7 +4722,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guildsStr As String
 
@@ -4738,7 +4747,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -4752,7 +4761,7 @@ Private Sub HandleGuildList()
     frmGuildAdm.Picture = LoadInterface("clanes.bmp")
     
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     frmGuildAdm.Show vbModeless, frmmain
@@ -4964,29 +4973,31 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.EXPBAR.Width = 204
+        frmmain.ExpBar.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel Maximo!"
 
     End If
     
-    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 217
-    frmmain.HpBar.Caption = "" & UserMinHp & " / " & UserMaxHp & ""
+    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 216
+    frmmain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
+    frmmain.Hpshp.Visible = (UserMinHp > 0)
 
     If UserMaxMAN > 0 Then
-        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 217
+        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
         frmmain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
-        'frmMain.manabar.Visible = True
+        frmmain.MANShp.Visible = (UserMinMAN > 0)
     Else
         frmmain.manabar.Visible = False
         frmmain.MANShp.Width = 0
-
+        frmmain.MANShp.Visible = False
     End If
     
     frmmain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
-    frmmain.stabar.Caption = "" & UserMinSTA & " / " & UserMaxSTA & ""
+    frmmain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
+    frmmain.STAShp.Visible = (UserMinSTA > 0)
     
     frmmain.GldLbl.Caption = PonerPuntos(UserGLD)
     frmmain.lblLvl.Caption = UserLvl
@@ -5594,8 +5605,16 @@ Private Sub HandleAtributes()
         End With
 
     Else
-        LlegaronAtrib = True
-
+        If LlegaronSkills Then
+            Alocados = SkillPoints
+            frmEstadisticas.puntos.Caption = SkillPoints
+            frmEstadisticas.Iniciar_Labels
+            frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
+            HayFormularioAbierto = True
+            frmEstadisticas.Show , frmmain
+        Else
+            LlegaronAtrib = True
+        End If
     End If
 
 End Sub
@@ -6244,7 +6263,8 @@ Private Sub HandleUpdateHungerAndThirst()
     frmmain.COMIDAsp.Width = UserMinHAM / UserMaxHAM * 32
     frmmain.AGUbar.Caption = UserMinAGU '& " / " & UserMaxAGU
     frmmain.hambar.Caption = UserMinHAM ' & " / " & UserMaxHAM
-
+    frmmain.AGUAsp.Visible = (UserMinAGU > 0)
+    frmmain.COMIDAsp.Visible = (UserMinHAM > 0)
 End Sub
 
 Private Sub HandleHora()
@@ -6897,7 +6917,16 @@ Private Sub HandleSendSkills()
         'frmEstadisticas.skills(i).Caption = SkillsNames(i)
     Next i
 
-    LlegaronSkills = True
+    If LlegaronAtrib Then
+        Alocados = SkillPoints
+        frmEstadisticas.puntos.Caption = SkillPoints
+        frmEstadisticas.Iniciar_Labels
+        frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
+        HayFormularioAbierto = True
+        frmEstadisticas.Show , frmmain
+    Else
+        LlegaronSkills = True
+    End If
 
 End Sub
 
@@ -7002,10 +7031,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.guildslist.Clear
+    Call frmGuildNews.GuildsList.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7037,7 +7066,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7401,10 +7430,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -7444,7 +7473,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        

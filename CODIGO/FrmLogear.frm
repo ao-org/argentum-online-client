@@ -254,7 +254,6 @@ Private Sub Form_Load()
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hwnd, 220)
 
-    If lstServers.ListCount > 0 Then lstServers.ListIndex = 0
     Rem Call SetWindowPos(FrmLogear.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE)
     
     #If DEBUGGING = 1 Then
@@ -383,7 +382,7 @@ Private Sub Image3_Click()
 
         End If
 
-        ServerIndex = Int(lstServers.ListIndex)
+        ServerIndex = lstServers.ListIndex
         Call SaveRAOInit
 
     End If
@@ -445,7 +444,6 @@ End Sub
 Private Sub lstServers_Click()
     IPdelServidor = ServersLst(lstServers.ListIndex + 1).IP
     PuertoDelServidor = ServersLst(lstServers.ListIndex + 1).puerto
-
 End Sub
 
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)

@@ -424,7 +424,7 @@ Private Sub interface_DblClick()
     ' Nos aseguramos que lo último que cliqueó fue el inventario
     If Not InvBankUsu.ClickedInside Then Exit Sub
     
-    If InvBankUsu.SelectedItem <= 0 Then Exit Sub
+    If Not InvBankUsu.IsItemSelected Then Exit Sub
 
     ' Hacemos acción del doble clic correspondiente
     Dim ObjType As Byte
@@ -528,7 +528,7 @@ Private Sub InvBoveda_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         ' Si lo soltó dentro del inventario
         If Drop > 0 Then
             ' Retiramos el item
-            Call WriteBankExtractItem(Drag, max(Val(cantidad.Text), InvBoveda.Amount(InvBoveda.SelectedItem)), Drop)
+            Call WriteBankExtractItem(Drag, min(Val(cantidad.Text), InvBoveda.Amount(InvBoveda.SelectedItem)), Drop)
 
         End If
 

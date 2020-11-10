@@ -699,7 +699,7 @@ Sub SetConnected()
 
     frmmain.Visible = True
     frmmain.cerrarcuenta.Enabled = True
-    
+
 End Sub
 
 Sub MoveTo(ByVal Direccion As E_Heading)
