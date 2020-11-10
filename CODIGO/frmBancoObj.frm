@@ -10,7 +10,6 @@ Begin VB.Form frmBancoObj
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmBancoObj.frx":0000
    ScaleHeight     =   481
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   544
@@ -64,7 +63,6 @@ Begin VB.Form frmBancoObj
       Height          =   3660
       Left            =   630
       MousePointer    =   99  'Custom
-      Picture         =   "frmBancoObj.frx":BFAA2
       ScaleHeight     =   244
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   459

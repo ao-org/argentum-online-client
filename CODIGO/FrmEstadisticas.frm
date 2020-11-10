@@ -210,7 +210,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   21
       Left            =   9195
@@ -232,7 +232,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   20
       Left            =   9195
@@ -251,7 +251,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
+      ForeColor       =   &H000EA4EB&
       Height          =   150
       Index           =   20
       Left            =   5160
@@ -306,7 +306,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   19
       Left            =   9195
@@ -364,7 +364,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000080FF&
+      ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   9
       Left            =   1920
@@ -812,7 +812,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000080FF&
+      ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   5
       Left            =   1920
@@ -832,7 +832,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   0
       Left            =   1680
@@ -897,7 +897,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000080FF&
+      ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   6
       Left            =   1920
@@ -917,7 +917,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000080FF&
+      ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   8
       Left            =   1920
@@ -938,7 +938,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   240
       Left            =   8160
       TabIndex        =   26
@@ -959,7 +959,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   1
       Left            =   5940
@@ -981,7 +981,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   2
       Left            =   5940
@@ -1003,7 +1003,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   3
       Left            =   5940
@@ -1025,7 +1025,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   4
       Left            =   5940
@@ -1047,7 +1047,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   5
       Left            =   5940
@@ -1069,7 +1069,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   6
       Left            =   5940
@@ -1091,7 +1091,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   7
       Left            =   9195
@@ -1113,7 +1113,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   8
       Left            =   9195
@@ -1135,7 +1135,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   9
       Left            =   9195
@@ -1157,7 +1157,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   10
       Left            =   5940
@@ -1179,7 +1179,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   11
       Left            =   9195
@@ -1201,7 +1201,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   12
       Left            =   5940
@@ -1223,7 +1223,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   13
       Left            =   5940
@@ -1245,7 +1245,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   14
       Left            =   9195
@@ -1289,7 +1289,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   16
       Left            =   5940
@@ -1311,7 +1311,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   17
       Left            =   9195
@@ -1333,7 +1333,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   18
       Left            =   9195
@@ -1630,7 +1630,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   1
       Left            =   1680
@@ -1651,7 +1651,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000080FF&
+      ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   4
       Left            =   1920
@@ -1672,7 +1672,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   4
       Left            =   1680
@@ -1693,7 +1693,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   3
       Left            =   1680
@@ -1714,7 +1714,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   2
       Left            =   1680
@@ -1735,7 +1735,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   1
       Left            =   1680
@@ -1755,7 +1755,7 @@ Begin VB.Form frmEstadisticas
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
+      ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   3
       Left            =   1680
@@ -1856,7 +1856,7 @@ Public Sub Iniciar_Labels()
     For i = 1 To NUMSKILLS
         If UserSkills(i) > 100 Then UserSkills(i) = 100
 
-        text1(i).Caption = UserSkills(i)
+        Text1(i).Caption = UserSkills(i)
     Next
 
     Select Case UserEstadisticas.Alineacion
@@ -1928,8 +1928,8 @@ Private Sub Command1_Click(Index As Integer)
             indice = Index \ 2 + 1
 
             If indice > NUMSKILLS Then indice = NUMSKILLS
-            If Val(text1(indice).Caption) < MAXSKILLPOINTS Then
-                text1(indice).Caption = Val(text1(indice).Caption) + 1
+            If Val(Text1(indice).Caption) < MAXSKILLPOINTS Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) + 1
                 flags(indice) = flags(indice) + 1
                 Alocados = Alocados - 1
                 RealizoCambios = RealizoCambios + 1
@@ -1944,8 +1944,8 @@ Private Sub Command1_Click(Index As Integer)
         
             indice = Index \ 2 + 1
 
-            If Val(text1(indice).Caption) > 0 And flags(indice) > 0 Then
-                text1(indice).Caption = Val(text1(indice).Caption) - 1
+            If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) - 1
                 flags(indice) = flags(indice) - 1
                 Alocados = Alocados + 1
                 RealizoCambios = RealizoCambios - 1
@@ -1960,16 +1960,16 @@ Private Sub Command1_Click(Index As Integer)
 
     Dim ladder As Byte
 
-    ladder = Val(text1(indice).Caption)
+    ladder = Val(Text1(indice).Caption)
 
     If UserSkills(indice) < ladder Then
-        text1(indice).ForeColor = vbRed
+        Text1(indice).ForeColor = vbRed
         PonerloEnRojo(indice) = True
 
     End If
 
     If UserSkills(indice) = ladder Then
-        text1(indice).ForeColor = &H40C0&
+        Text1(indice).ForeColor = &H40C0&
         RealizoCambios = RealizoCambios - 1
         PonerloEnRojo(indice) = False
 
@@ -2012,13 +2012,13 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            text1(a).ForeColor = &H40C0&
+            Text1(a).ForeColor = &HEA4EB
 
             'Skills(a).ForeColor = vbWhite
         End If
 
         If PonerloEnRojo(a) = True Then
-            text1(a).ForeColor = vbRed
+            Text1(a).ForeColor = vbRed
 
         End If
 
@@ -2051,9 +2051,9 @@ Private Sub Image1_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(text1(i).Caption)
+                UserSkills(i) = Val(Text1(i).Caption)
         
             Next i
     
@@ -2075,14 +2075,14 @@ Private Sub Image1_Click()
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    Image1 = LoadInterface("boton-aceptar-ES-off.jpg")
+    Image1 = LoadInterface("boton-aceptar-ES-off.bmp")
     Image1.Tag = "1"
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Image1.Tag = "0" Then
-        Image1 = LoadInterface("boton-aceptar-ES-over.jpg")
+        Image1 = LoadInterface("boton-aceptar-ES-over.bmp")
         Image1.Tag = "1"
     End If
 
@@ -2097,9 +2097,9 @@ Private Sub imgCerrar_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(text1(i).Caption)
+                UserSkills(i) = Val(Text1(i).Caption)
             Next i
     
             Call WriteModifySkills(skillChanges())
@@ -2144,14 +2144,14 @@ Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integ
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            text1(a).ForeColor = &H40C0&
+            Text1(a).ForeColor = &HEA4EB
 
         End If
 
         'Skills(a).ForeColor = vbWhite
     Next a
 
-    text1(Index).ForeColor = vbBlue
+    Text1(Index).ForeColor = vbBlue
 
     'Skills(index).ForeColor = vbBlue
 End Sub

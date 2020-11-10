@@ -2124,12 +2124,16 @@ Public Function min(a As Double, b As Double) As Double
 End Function
 
 Public Function LoadInterface(FileName As String) As IPicture
-
+On Error GoTo errhandler
     #If Compresion = 1 Then
         Set LoadInterface = General_Load_Picture_From_Resource_Ex(FileName)
     #Else
         Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & FileName)
     #End If
+    
+Exit Function
+errhandler:
+    MsgBox "Error al cargar la interface: " & FileName
 
 End Function
 
