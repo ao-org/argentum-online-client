@@ -66,6 +66,42 @@ Begin VB.Form frmmain
       Type            =   1
       Urgent          =   0   'False
    End
+   Begin VB.CommandButton createObj 
+      Caption         =   "Crear OBJ"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   4800
+      TabIndex        =   38
+      Top             =   0
+      Visible         =   0   'False
+      Width           =   1335
+   End
+   Begin VB.CommandButton panelGM 
+      Caption         =   "Panel GM"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   3240
+      TabIndex        =   37
+      Top             =   0
+      Visible         =   0   'False
+      Width           =   1335
+   End
    Begin VB.PictureBox panel 
       Appearance      =   0  'Flat
       AutoSize        =   -1  'True
@@ -500,7 +536,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1593,6 +1628,24 @@ Private Sub Contadores_Timer()
 
 End Sub
 
+Private Sub createObj_Click()
+    Dim i As Long
+    For i = 1 To NumOBJs
+
+        If ObjData(i).name <> "" Then
+
+            Dim subelemento As ListItem
+
+            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).name)
+            
+            subelemento.SubItems(1) = i
+
+        End If
+
+    Next i
+    FrmObjetos.Show , Me
+End Sub
+
 Private Sub Efecto_Timer()
     Call engine.Map_Base_Light_Set(Map_light_baseBackup)
     Efecto.Enabled = False
@@ -2132,6 +2185,10 @@ Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Si
     OpcionesBoton.Picture = LoadInterface("opcionesoverdown.bmp")
     OpcionesBoton.Tag = "1"
 
+End Sub
+
+Private Sub panelGM_Click()
+    frmPanelGm.Show , Me
 End Sub
 
 Private Sub PicCorreo_Click()
@@ -3184,11 +3241,11 @@ Public Sub Form_Click()
 
                                 Dim Pos As Integer
 
-                                If MapData(tX, tY).CharIndex <> 0 Then
-                                    Pos = InStr(charlist(MapData(tX, tY).CharIndex).nombre, "<")
+                                If MapData(tX, tY).charindex <> 0 Then
+                                    Pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
                                 
-                                    If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).CharIndex).nombre) + 2
-                                    frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).CharIndex).nombre, Pos - 2)
+                                    If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
+                                    frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
 
                                 End If
 
@@ -3270,10 +3327,10 @@ Public Sub Form_Click()
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 4 Or MouseBoton = vbRightButton And ACCION2 = 4 Or MouseBoton = 4 And ACCION3 = 4 Then
 
-        If MapData(tX, tY).CharIndex <> 0 Then
-            If charlist(MapData(tX, tY).CharIndex).nombre <> charlist(MapData(UserPos.x, UserPos.y).CharIndex).nombre Then
-                If charlist(MapData(tX, tY).CharIndex).EsNpc = False Then
-                    SendTxt.Text = "\" & charlist(MapData(tX, tY).CharIndex).nombre & " "
+        If MapData(tX, tY).charindex <> 0 Then
+            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
+                If charlist(MapData(tX, tY).charindex).EsNpc = False Then
+                    SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
 
                     If SendTxt.Visible = False Then
                         Call WriteEscribiendo
@@ -3318,6 +3375,11 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(frmmain)
     MenuNivel = 1
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
+    
+#If DEBUGGING = 1 Then
+    panelGM.Visible = True
+    createObj.Visible = True
+#End If
 
 End Sub
 
