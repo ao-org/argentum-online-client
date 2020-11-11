@@ -337,7 +337,7 @@ Private Const SPI_GETMOUSESPEED = 112
 
 Public Declare Function SwapMouseButton Lib "user32" (ByVal bSwap As Long) As Long
 
-Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 
 Public Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 
@@ -353,9 +353,9 @@ End Type
 
 Public Const WM_COPYDATA = &H4A
 
-Private Declare Function SetTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
+Private Declare Function SetTimer Lib "user32" (ByVal hWnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
 
-Private Declare Function KillTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long) As Long
+Private Declare Function KillTimer Lib "user32" (ByVal hWnd As Long, ByVal nIDEvent As Long) As Long
 
 Private hBuffersTimer As Long
 
@@ -488,7 +488,7 @@ Private Declare Function CombineRgn Lib "gdi32" (ByVal hDestRgn As Long, ByVal h
 
 Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 
-Private Declare Function SetWindowRgn Lib "user32" (ByVal hwnd As Long, ByVal hRgn As Long, ByVal bRedraw As Long) As Long
+Private Declare Function SetWindowRgn Lib "user32" (ByVal hWnd As Long, ByVal hRgn As Long, ByVal bRedraw As Long) As Long
 
 Private Declare Function CreatePolygonRgn Lib "gdi32" (lpPoint As POINTAPI, ByVal nCount As Long, ByVal nPolyFillMode As Long) As Long
 
@@ -514,7 +514,7 @@ Public Const HWND_TOPMOST = -1
 
 Public Const HWND_NOTOPMOST = -2
 
-Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Declare Function CreateIconFromResourceEx Lib "user32.dll" (ByRef presbits As Any, ByVal dwResSize As Long, ByVal fIcon As Long, ByVal dwVer As Long, ByVal cxDesired As Long, ByVal cyDesired As Long, ByVal flags As Long) As Long
 
@@ -524,7 +524,7 @@ Private Declare Function DestroyIcon Lib "user32.dll" (ByVal hIcon As Long) As L
 
 Public Declare Function DrawIconEx Lib "user32.dll" (ByVal hdc As Long, ByVal xLeft As Long, ByVal yTop As Long, ByVal hIcon As Long, ByVal cxWidth As Long, ByVal cyWidth As Long, ByVal istepIfAniCur As Long, ByVal hbrFlickerFreeDraw As Long, ByVal diFlags As Long) As Long
   
-Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Long) As Long
+Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Long) As Long
                            
 Private m_ASC As Long
 
@@ -532,11 +532,11 @@ Sub inputbox_Password(El_Form As Form, Caracter As String)
       
     m_ASC = Asc(Caracter)
       
-    Call SetTimer(El_Form.hwnd, &H5000&, 100, AddressOf TimerProc)
+    Call SetTimer(El_Form.hWnd, &H5000&, 100, AddressOf TimerProc)
   
 End Sub
   
-Private Sub TimerProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idEvent As Long, ByVal dwTime As Long)
+Private Sub TimerProc(ByVal hWnd As Long, ByVal uMsg As Long, ByVal idEvent As Long, ByVal dwTime As Long)
            
     Dim Handle_InputBox As Long
       
@@ -546,7 +546,7 @@ Private Sub TimerProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idEvent As L
     'Le establece el PasswordChar
     Call SendMessageLongRef(Handle_InputBox, &HCC&, m_ASC, 0)
     'Finaliza el Timer
-    Call KillTimer(hwnd, idEvent)
+    Call KillTimer(hWnd, idEvent)
   
 End Sub
 
@@ -578,12 +578,12 @@ Public Function LoadPNGtoICO(pngData() As Byte) As IPicture
     
 End Function
 
-Public Function SetTopMostWindow(hwnd As Long, Topmost As Boolean) As Long
+Public Function SetTopMostWindow(hWnd As Long, Topmost As Boolean) As Long
 
     If Topmost = True Then 'Make the window topmost
-        SetTopMostWindow = SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, FLAGSz)
+        SetTopMostWindow = SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, FLAGSz)
     Else
-        SetTopMostWindow = SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, FLAGSz)
+        SetTopMostWindow = SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, FLAGSz)
         SetTopMostWindow = False
 
     End If
@@ -660,7 +660,7 @@ Sub General_Set_Connect()
     intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -729,7 +729,7 @@ Public Sub ReleaseSurfaceCapture(frm As Form)
 End Sub
  
 Public Sub ApplySurfaceTo(frm As Form)
-    Call SetWindowRgn(frm.hwnd, lRegion, True)
+    Call SetWindowRgn(frm.hWnd, lRegion, True)
 
 End Sub
  
@@ -2705,74 +2705,6 @@ Public Function GetMacAddress() As String
     GetMacAddress = sRetVal
 
 End Function
-
-Public Sub EstablecerImgEstado()
-
-    If HoraFantasia > 0 And HoraFantasia < 60 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a29.bmp")
-    ElseIf HoraFantasia < 120 And HoraFantasia >= 60 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a1.bmp")
-    ElseIf HoraFantasia < 180 And HoraFantasia >= 120 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a2.bmp")
-    ElseIf HoraFantasia < 240 And HoraFantasia >= 180 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a3.bmp")
-    ElseIf HoraFantasia < 270 And HoraFantasia >= 240 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a4.bmp")
-    ElseIf HoraFantasia < 300 And HoraFantasia >= 270 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a5.bmp")
-    ElseIf HoraFantasia < 330 And HoraFantasia >= 300 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a6.bmp")
-    ElseIf HoraFantasia < 360 And HoraFantasia >= 330 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a7.bmp")
-    ElseIf HoraFantasia < 420 And HoraFantasia >= 360 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a8.bmp")
-    ElseIf HoraFantasia < 450 And HoraFantasia >= 420 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a9.bmp")
-    ElseIf HoraFantasia < 480 And HoraFantasia >= 450 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a10.bmp")
-    ElseIf HoraFantasia < 510 And HoraFantasia >= 480 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a11.bmp")
-    ElseIf HoraFantasia < 540 And HoraFantasia >= 510 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a12.bmp")
-    ElseIf HoraFantasia < 600 And HoraFantasia >= 540 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a13.bmp")
-    ElseIf HoraFantasia < 660 And HoraFantasia >= 600 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a14.bmp")
-    ElseIf HoraFantasia < 720 And HoraFantasia >= 660 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a15.bmp")
-    ElseIf HoraFantasia < 780 And HoraFantasia >= 720 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a16.bmp")
-    ElseIf HoraFantasia < 840 And HoraFantasia >= 780 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a17.bmp")
-    ElseIf HoraFantasia < 900 And HoraFantasia >= 840 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a18.bmp")
-    ElseIf HoraFantasia < 960 And HoraFantasia >= 900 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a19.bmp")
-    ElseIf HoraFantasia < 1020 And HoraFantasia >= 960 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a20.bmp")
-    ElseIf HoraFantasia < 1080 And HoraFantasia >= 1020 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a21.bmp")
-    ElseIf HoraFantasia < 1140 And HoraFantasia >= 1080 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a22.bmp")
-    ElseIf HoraFantasia < 1170 And HoraFantasia >= 1140 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a23.bmp")
-    ElseIf HoraFantasia < 1200 And HoraFantasia >= 1170 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a24.bmp")
-    ElseIf HoraFantasia < 1260 And HoraFantasia >= 1200 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a25.bmp")
-    ElseIf HoraFantasia < 1320 And HoraFantasia >= 1260 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a26.bmp")
-    ElseIf HoraFantasia < 1380 And HoraFantasia >= 1320 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a27.bmp")
-    ElseIf HoraFantasia >= 1380 Then
-        frmmain.PicMeteo.Picture = LoadInterface("a28.bmp")
-
-    End If
-
-    Exit Sub
-
-End Sub
-
 Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal mapa As Integer) As Integer
 
     Dim i        As Integer
@@ -2817,8 +2749,8 @@ Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal mapa As Integer) As Integer
 
 End Function
 
-Public Sub Auto_Drag(ByVal hwnd As Long)
+Public Sub Auto_Drag(ByVal hWnd As Long)
     Call ReleaseCapture
-    Call SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, ByVal 0&)
+    Call SendMessage(hWnd, WM_NCLBUTTONDOWN, HTCAPTION, ByVal 0&)
 
 End Sub

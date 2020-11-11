@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
+Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
 Begin VB.Form frmmain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -536,6 +536,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1373,7 +1374,7 @@ Private Const WS_EX_TRANSPARENT = &H20&
 
 Private Const GWL_EXSTYLE = (-20)
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
@@ -1421,9 +1422,9 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
 
 Private Const EM_GETLINE = &HC4
 
@@ -1820,97 +1821,7 @@ Private Sub HoraFantasiaTimer_Timer()
     HoraFantasia = HoraFantasia + 1
 
     'frmMain.lblHoraFantasia.Caption = GetTimeFormated(HoraFantasia)
-    Select Case HoraFantasia
-
-        Case 0 '0
-            frmmain.PicMeteo.Picture = LoadInterface("a29.bmp")
-
-        Case 60 '1
-            frmmain.PicMeteo.Picture = LoadInterface("a1.bmp")
-
-        Case 120 '2
-            frmmain.PicMeteo.Picture = LoadInterface("a2.bmp")
-
-        Case 180 '3
-            frmmain.PicMeteo.Picture = LoadInterface("a3.bmp")
-
-        Case 240 '4
-            frmmain.PicMeteo.Picture = LoadInterface("a4.bmp")
-
-        Case 270 '4:30
-            frmmain.PicMeteo.Picture = LoadInterface("a5.bmp")
-
-        Case 300 '5
-            frmmain.PicMeteo.Picture = LoadInterface("a6.bmp")
-
-        Case 330 '5:30
-            frmmain.PicMeteo.Picture = LoadInterface("a7.bmp")
-
-        Case 360 '6:00
-            frmmain.PicMeteo.Picture = LoadInterface("a8.bmp")
-
-        Case 420 '7:00
-            frmmain.PicMeteo.Picture = LoadInterface("a9.bmp")
-
-        Case 450 '7:30
-            frmmain.PicMeteo.Picture = LoadInterface("a10.bmp")
-
-        Case 480 '8:00
-            frmmain.PicMeteo.Picture = LoadInterface("a11.bmp")
-
-        Case 510 '8:30
-            frmmain.PicMeteo.Picture = LoadInterface("a12.bmp")
-
-        Case 540 '9:00
-            frmmain.PicMeteo.Picture = LoadInterface("a13.bmp")
-
-        Case 600 '10:00
-            frmmain.PicMeteo.Picture = LoadInterface("a14.bmp")
-
-        Case 660 '11:00
-            frmmain.PicMeteo.Picture = LoadInterface("a15.bmp")
-
-        Case 720 '12:00
-            frmmain.PicMeteo.Picture = LoadInterface("a16.bmp")
-
-        Case 780 '13:00
-            frmmain.PicMeteo.Picture = LoadInterface("a17.bmp")
-
-        Case 840 '14:00
-            frmmain.PicMeteo.Picture = LoadInterface("a18.bmp")
-
-        Case 900 '15:00
-            frmmain.PicMeteo.Picture = LoadInterface("a19.bmp")
-
-        Case 960 '16:00
-            frmmain.PicMeteo.Picture = LoadInterface("a20.bmp")
-
-        Case 1020 '17:00
-            frmmain.PicMeteo.Picture = LoadInterface("a21.bmp")
-
-        Case 1080 '18:00
-            frmmain.PicMeteo.Picture = LoadInterface("a22.bmp")
-
-        Case 1140 '19:00
-            frmmain.PicMeteo.Picture = LoadInterface("a23.bmp")
-
-        Case 1170 '19:30
-            frmmain.PicMeteo.Picture = LoadInterface("a24.bmp")
-
-        Case 1200 '20:00
-            frmmain.PicMeteo.Picture = LoadInterface("a25.bmp")
-
-        Case 1260 '21:00
-            frmmain.PicMeteo.Picture = LoadInterface("a26.bmp")
-
-        Case 1320 '22:00
-            frmmain.PicMeteo.Picture = LoadInterface("a27.bmp")
-
-        Case 1380 '23:00
-            frmmain.PicMeteo.Picture = LoadInterface("a28.bmp")
-
-    End Select
-
+    
     If HoraFantasia - 1 = "300" Then
         Call Sound.Sound_Play(FXSound.Gallo_Sound, False, 0, 0)
     ElseIf HoraFantasia - 1 = "1260" Then
@@ -1997,7 +1908,7 @@ Private Sub Image4_Click(Index As Integer)
             If frmCerrar.Visible Then Exit Sub
             Dim mForm As Form
             For Each mForm In Forms
-                If mForm.hwnd <> Me.hwnd Then Unload mForm
+                If mForm.hWnd <> Me.hWnd Then Unload mForm
                 Set mForm = Nothing
             Next
             frmCerrar.Show , Me
@@ -2689,11 +2600,11 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
         intCurrentLine = RecTxt.GetLineFromChar(RecTxt.SelStart)
         'get line length
-        lngLength = SendMessage(RecTxt.hwnd, EM_LINELENGTH, intCurrentLine, 0)
+        lngLength = SendMessage(RecTxt.hWnd, EM_LINELENGTH, intCurrentLine, 0)
         'resize buffer
         strBuffer = Space(lngLength)
         'get line text
-        Call SendMessage(RecTxt.hwnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
+        Call SendMessage(RecTxt.hWnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
 
         Dim partea       As String
 
@@ -4086,7 +3997,7 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
 End Sub
 

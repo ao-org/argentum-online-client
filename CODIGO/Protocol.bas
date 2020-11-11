@@ -2656,7 +2656,7 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-    frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+    frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
 
 End Sub
@@ -4699,7 +4699,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -4724,7 +4724,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -4732,7 +4732,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
@@ -4949,9 +4949,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel Maximo!"
 
@@ -6252,9 +6252,7 @@ Private Sub HandleHora()
     frmmain.HoraFantasiaTimer.Enabled = True
     
     HoraFantasia = HoraServer
-    
-    Call EstablecerImgEstado
-    
+        
     'frmMain.lblHoraFantasia.Caption = GetTimeFormated(HoraFantasia)
     
     If UserEstado = 1 Then Exit Sub
@@ -6999,10 +6997,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.GuildsList.Clear
+    Call frmGuildNews.guildslist.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7034,7 +7032,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7398,10 +7396,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -7441,7 +7439,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
