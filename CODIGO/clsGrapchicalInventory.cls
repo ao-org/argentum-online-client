@@ -482,16 +482,16 @@ Public Sub DrawInventory()
 
                 If (i - MAX_NORMAL_INVENTORY_SLOTS) <= (UserInvUnlocked * (InvWidth / (ITEM_OFFSET_X))) Then
                     'Slot Desbloqueado
-                    Call engine.Draw_GrhColor(GRH_INVENTORYSLOT_EXTRA, x, y, COLOR_WHITE)
+                    Call Draw_GrhColor(GRH_INVENTORYSLOT_EXTRA, x, y, COLOR_WHITE)
                 Else
                     'Slot Bloqueado
-                    Call engine.Draw_GrhColor(GRH_INVENTORYSLOT_LOCKED, x, y, COLOR_WHITE)
+                    Call Draw_GrhColor(GRH_INVENTORYSLOT_LOCKED, x, y, COLOR_WHITE)
 
                 End If
 
             Else
                 'Slot Default
-                Call engine.Draw_GrhColor(GRH_INVENTORYSLOT, x, y, COLOR_WHITE)
+                Call Draw_GrhColor(GRH_INVENTORYSLOT, x, y, COLOR_WHITE)
 
             End If
 
@@ -509,10 +509,10 @@ Public Sub DrawInventory()
                 color(1) = D3DColorXRGB(255, 100, 100)
                 color(2) = D3DColorXRGB(255, 100, 100)
                 color(3) = D3DColorXRGB(255, 100, 100)
-                Call engine.Draw_GrhColor(UserInventory(i).GrhIndex, x, y, color)
+                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, color)
 
             Else
-                Call engine.Draw_GrhColor(UserInventory(i).GrhIndex, x, y, COLOR_WHITE)
+                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, COLOR_WHITE)
 
             End If
                 
@@ -529,15 +529,15 @@ Public Sub DrawInventory()
             End If
             
             If InvSelectedItem <> i Then
-                engine.Engine_Text_Render_LetraChica tmpString, x + LETRA_CHICA_X, y + LETRA_CHICA_Y, color, 4, True
+                Engine_Text_Render_LetraChica tmpString, x + LETRA_CHICA_X, y + LETRA_CHICA_Y, color, 4, True
             Else
-                engine.Engine_Text_Render tmpString, x + LETRA_GRANDE_X, y + LETRA_GRANDE_Y, color, 1, True
+                Engine_Text_Render tmpString, x + LETRA_GRANDE_X, y + LETRA_GRANDE_Y, color, 1, True
 
             End If
         
             If UserInventory(i).Equipped Then
                 tmpString = EQUIPPED_CHARACTER
-                engine.Engine_Text_Render tmpString, x + EQUIPPED_X - engine.Engine_Text_Width(tmpString, True) \ 2, y + EQUIPPED_Y - engine.Engine_Text_Height(tmpString, True), COLOR_WHITE, 1, True
+                Engine_Text_Render tmpString, x + EQUIPPED_X - Engine_Text_Width(tmpString, True) \ 2, y + EQUIPPED_Y - Engine_Text_Height(tmpString, True), COLOR_WHITE, 1, True
 
             End If
 
@@ -556,7 +556,7 @@ Public Sub DrawDraggedItem()
         color(1) = D3DColorARGB(200, 255, 255, 255)
         color(2) = D3DColorARGB(200, 255, 255, 255)
         color(3) = D3DColorARGB(200, 255, 255, 255)
-        Call engine.Draw_GrhColor(UserInventory(Dragging).GrhIndex, XDrag - HALF_ITEM_SIZE, YDrag - HALF_ITEM_SIZE, color)
+        Call Draw_GrhColor(UserInventory(Dragging).GrhIndex, XDrag - HALF_ITEM_SIZE, YDrag - HALF_ITEM_SIZE, color)
 
     End If
 

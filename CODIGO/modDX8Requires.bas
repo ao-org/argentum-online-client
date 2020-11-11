@@ -3,66 +3,21 @@ Attribute VB_Name = "modDX8Requires"
 'Pablo Mercavides
 Option Explicit
 
+'*******************************************************
+' CARGA DE TEXTURAS
+'*******************************************************
 Public SurfaceDB As clsTexManager
 
 Public Type D3D8Textures
-
     texture As Direct3DTexture8
     texwidth As Long
     texheight As Long
-
 End Type
-
-Public dX        As DirectX8
-
-Public D3D       As Direct3D8
-
-Public D3DDevice As Direct3DDevice8
-
-Public D3DX      As D3DX8
-
-Public Type TLVERTEX
-
-    x As Single
-    y As Single
-    Z As Single
-    rhw As Single
-    color As Long
-    Specular As Long
-    tu As Single
-    tv As Single
-
-End Type
-
-Public Type TLVERTEX2
-
-    x As Single
-    y As Single
-    Z As Single
-    rhw As Single
-    color As Long
-    Specular As Long
-    tu1 As Single
-    tv1 As Single
-    tu2 As Single
-    tv2 As Single
-
-End Type
-
-Public Const PI       As Single = 3.14159265358979
-
-'JOJOJO
-Public engine         As New clsDX8Engine
-'JOJOJO
-
-' Colores comunes
-Public COLOR_WHITE(3) As Long
 
 'To get free bytes in drive
 Private Declare Function GetDiskFreeSpace Lib "kernel32" Alias "GetDiskFreeSpaceExA" (ByVal lpRootPathName As String, FreeBytesToCaller As Currency, BytesTotal As Currency, FreeBytesTotal As Currency) As Long
 
 'To get free bytes in RAM
-
 Private pUdtMemStatus As MEMORYSTATUS
 
 Private Type MEMORYSTATUS
@@ -79,6 +34,50 @@ Private Type MEMORYSTATUS
 End Type
 
 Private Declare Sub GlobalMemoryStatus Lib "kernel32" (lpBuffer As MEMORYSTATUS)
+'*******************************************************
+' FIN - CARGA DE TEXTURAS
+'*******************************************************
+
+'*******************************************************
+' MOTOR GRAFICO
+'*******************************************************
+Public dX        As DirectX8
+Public D3D       As Direct3D8
+Public D3DDevice As Direct3DDevice8
+Public D3DX      As D3DX8
+
+Public Type TLVERTEX
+    x As Single
+    y As Single
+    Z As Single
+    rhw As Single
+    color As Long
+    Specular As Long
+    tu As Single
+    tv As Single
+End Type
+
+Public Type TLVERTEX2
+    x As Single
+    y As Single
+    Z As Single
+    rhw As Single
+    color As Long
+    Specular As Long
+    tu1 As Single
+    tv1 As Single
+    tu2 As Single
+    tv2 As Single
+End Type
+
+Public Const PI       As Single = 3.14159265358979
+
+'*******************************************************
+' FIN - MOTOR GRAFICO
+'*******************************************************
+
+' Colores comunes
+Public COLOR_WHITE(3) As Long
 
 Public Function General_Bytes_To_Megabytes(Bytes As Double) As Double
 

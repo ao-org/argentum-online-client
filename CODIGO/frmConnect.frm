@@ -109,7 +109,7 @@ Option Explicit
 Private Char As Byte
 
 Private Sub Form_Activate()
-    Call engine.Engine_Select_Particle_Set(203)
+    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
 End Sub
@@ -192,7 +192,7 @@ Private Sub relampago_Timer()
         r = color And 255
         color = D3DColorARGB(255, r, g, b)
         
-        engine.Map_Base_Light_Set (color)
+        Map_Base_Light_Set (color)
         RelampagoFin.Interval = duraciontrueno
         RelampagoFin.Enabled = True
 
@@ -201,7 +201,7 @@ Private Sub relampago_Timer()
 End Sub
 
 Private Sub RelampagoFin_Timer()
-    Call engine.Map_Base_Light_Set(Map_light_base)
+    Call Map_Base_Light_Set(Map_light_base)
     RelampagoFin.Enabled = False
 
 End Sub
@@ -357,7 +357,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 frmConnect.txtNombre.Visible = False
                 QueRender = 2
                 
-                Call engine.Engine_Select_Particle_Set(203)
+                Call Graficos_Particulas.Engine_Select_Particle_Set(203)
                 ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
             End If

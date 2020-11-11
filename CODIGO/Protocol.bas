@@ -1665,8 +1665,9 @@ Private Sub HandleDisconnect()
     frmConnect.Visible = True
     QueRender = 2
 
-    Call engine.Particle_Group_Remove_All
-    Call engine.Engine_Select_Particle_Set(203)
+    Call Graficos_Particulas.Particle_Group_Remove_All
+    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
     frmmain.hlst.Visible = False
@@ -2594,7 +2595,7 @@ Private Sub HandleUpdateHP()
         '     ColorAmbiente.b = 255
         '     ColorAmbiente.g = 255
         '    ColorAmbiente.a = 255
-        '    Call engine.Map_Base_Light_Set(map_base_light)
+        '    Call Map_Base_Light_Set(map_base_light)
         ' Else
         ' Call Obtener_RGB(MapDat.base_light, Rojo, Verde, Azul)
         ' ColorAmbiente.r = Rojo
@@ -2602,7 +2603,7 @@ Private Sub HandleUpdateHP()
         '  ColorAmbiente.g = Verde
         '  ColorAmbiente.a = 255
         '  Map_light_base = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        'Call engine.Map_Base_Light_Set(Map_light_base)
+        'Call Map_Base_Light_Set(Map_light_base)
         'End If
         UserEstado = 0
 
@@ -2662,7 +2663,7 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-    frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+    frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
 
 End Sub
@@ -3146,7 +3147,7 @@ Private Sub HandleChatOverHead()
     'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
     If charlist(charindex).active Then
 
-        engine.Char_Dialog_Set charindex, chat, colortexto, duracion, 30
+        Call Char_Dialog_Set(charindex, chat, colortexto, duracion, 30)
 
     End If
     
@@ -3856,9 +3857,9 @@ Private Sub HandleMostrarCuenta()
     '  Sound.NextMusic = 2
     '  Sound.Fading = 350
       
-    Call engine.Particle_Group_Remove_All
-    Call engine.Engine_Select_Particle_Set(203)
-    ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
+    Call Graficos_Particulas.Particle_Group_Remove_All
+    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
     
     frmConnect.relampago.Enabled = False
             
@@ -4194,7 +4195,7 @@ Private Sub HandleCharacterMove()
 
     End With
     
-    Call engine.Char_Move_by_Pos(charindex, x, y)
+    Call Char_Move_by_Pos(charindex, x, y)
     
     Call RefreshAllChars
 
@@ -4338,8 +4339,8 @@ Private Sub HandleObjectCreate()
         
         If Rango < 100 Then
             id = x & y
-            engine.Light_Create x, y, color, Rango, id
-            engine.Light_Render_All
+            LucesCuadradas.Light_Create x, y, color, Rango, id
+            LucesCuadradas.Light_Render_All
         Else
 
             Dim r, g, b As Byte
@@ -4347,9 +4348,9 @@ Private Sub HandleObjectCreate()
             b = (color And 16711680) / 65536
             g = (color And 65280) / 256
             r = color And 255
-            LightA.Create_Light_To_Map x, y, Rango - 99, b, g, r
-            LightA.LightRenderAll
-            engine.Light_Render_All
+            LucesRedondas.Create_Light_To_Map x, y, Rango - 99, b, g, r
+            LucesRedondas.LightRenderAll
+            LucesCuadradas.Light_Render_All
 
         End If
         
@@ -4388,7 +4389,7 @@ Private Sub HandleFxPiso()
     y = incomingData.ReadByte()
     fX = incomingData.ReadInteger()
     
-    Call engine.SetMapFx(x, y, fX, 0)
+    Call SetMapFx(x, y, fX, 0)
     
 End Sub
 
@@ -4421,18 +4422,18 @@ Private Sub HandleObjectDelete()
     y = incomingData.ReadByte()
     
     If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
-        id = engine.Light_Find(x & y)
-        engine.Light_Remove id
+        id = LucesCuadradas.Light_Find(x & y)
+        LucesCuadradas.Light_Remove id
         MapData(x, y).luz.color = 0
         MapData(x, y).luz.Rango = 0
-        engine.Light_Render_All
+        LucesCuadradas.Light_Render_All
 
     End If
     
     MapData(x, y).ObjGrh.GrhIndex = 0
     
     If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaParticulaPiso <> 0 Then
-        engine.Particle_Group_Remove (MapData(x, y).particle_group)
+        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
 
     End If
 
@@ -4547,7 +4548,7 @@ Private Sub HandlePlayWave()
         Call Sound.Sound_Play(CStr(wave), False, 0, 0)
     Else
 
-        If Not engine.EstaEnArea(srcX, srcY) Then
+        If Not EstaEnArea(srcX, srcY) Then
         Else
             Call Sound.Sound_Play(CStr(wave), False, Sound.Calculate_Volume(srcX, srcY), Sound.Calculate_Pan(srcX, srcY))
 
@@ -4722,7 +4723,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String
 
@@ -4747,7 +4748,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -4761,7 +4762,7 @@ Private Sub HandleGuildList()
     frmGuildAdm.Picture = LoadInterface("clanes.bmp")
     
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     frmGuildAdm.Show vbModeless, frmmain
@@ -4854,14 +4855,16 @@ Private Sub HandleRainToggle()
             End If
             
             Call Sound.Ambient_Stop
-            engine.Engine_Meteo_Particle_Set (-1)
+            
+            Call Graficos_Particulas.Engine_Meteo_Particle_Set(-1)
 
         End If
 
     Else
 
         If MapDat.LLUVIA Then
-            engine.Engine_Meteo_Particle_Set (Particula_Lluvia)
+        
+            Call Graficos_Particulas.Engine_Meteo_Particle_Set(Particula_Lluvia)
 
         End If
 
@@ -4973,9 +4976,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel Maximo!"
 
@@ -6301,7 +6304,7 @@ Private Sub HandleHora()
     
     If UserEstado = 1 Then Exit Sub
     If Map_light_base <> -1 Then
-        engine.Map_Base_Light_Set (Map_light_base)
+        Map_Base_Light_Set (Map_light_base)
             
     End If
     
@@ -6383,7 +6386,7 @@ Private Sub HandleLight()
     ColorAmbiente.b = b
     ColorAmbiente.g = g
     ColorAmbiente.a = 255
-    Call engine.Map_Base_Light_Set(Map_light_base)
+    Call Map_Base_Light_Set(Map_light_base)
  
 End Sub
  
@@ -6597,7 +6600,7 @@ Private Sub HandleEfectToScreen()
 
     End If
 
-    Call engine.EfectoEnPantalla(color, duracion)
+    Call EfectoEnPantalla(color, duracion)
     
 End Sub
 
@@ -7041,10 +7044,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.GuildsList.Clear
+    Call frmGuildNews.guildslist.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7076,7 +7079,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7440,10 +7443,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -7483,7 +7486,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -13786,7 +13789,7 @@ Private Sub HandleParticleFXToFloor()
     End If
 
     If Borrar Then
-        engine.Particle_Group_Remove (MapData(x, y).particle_group)
+        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
     Else
 
         If MapData(x, y).particle_group = 0 Then
@@ -13837,17 +13840,17 @@ Private Sub HandleLightToFloor()
     If color = 0 Then
    
         If MapData(x, y).luz.Rango > 100 Then
-            LightA.Delete_Light_To_Map x, y
+            LucesRedondas.Delete_Light_To_Map x, y
    
-            engine.Light_Render_All
-            LightA.LightRenderAll
+            LucesCuadradas.Light_Render_All
+            LucesRedondas.LightRenderAll
             Exit Sub
         Else
-            id = engine.Light_Find(x & y)
-            engine.Light_Remove id
+            id = LucesCuadradas.Light_Find(x & y)
+            LucesCuadradas.Light_Remove id
             MapData(x, y).luz.color = color
             MapData(x, y).luz.Rango = 0
-            engine.Light_Render_All
+            LucesCuadradas.Light_Render_All
             Exit Sub
 
         End If
@@ -13859,8 +13862,8 @@ Private Sub HandleLightToFloor()
     
     If Rango < 100 Then
         id = x & y
-        engine.Light_Create x, y, color, Rango, id
-        engine.Light_Render_All
+        LucesCuadradas.Light_Create x, y, color, Rango, id
+        LucesCuadradas.Light_Render_All
     Else
 
         Dim r, g, b As Byte
@@ -13868,7 +13871,7 @@ Private Sub HandleLightToFloor()
         b = (color And 16711680) / 65536
         g = (color And 65280) / 256
         r = color And 255
-        LightA.Create_Light_To_Map x, y, Rango - 99, b, g, r
+        LucesRedondas.Create_Light_To_Map x, y, Rango - 99, b, g, r
 
     End If
 
@@ -13904,8 +13907,9 @@ Private Sub HandleParticleFX()
     Remove = incomingData.ReadBoolean()
     
     If Remove Then
-        engine.Char_Particle_Group_Remove charindex, ParticulaIndex
+        Call Char_Particle_Group_Remove(charindex, ParticulaIndex)
         charlist(charindex).Particula = 0
+    
     Else
         charlist(charindex).Particula = ParticulaIndex
         charlist(charindex).ParticulaTime = time
@@ -13955,9 +13959,9 @@ Private Sub HandleParticleFXWithDestino()
     wav = incomingData.ReadInteger()
     fX = incomingData.ReadInteger()
 
-    engine.Engine_spell_Particle_Set (ParticulaViaje)
+    Engine_spell_Particle_Set (ParticulaViaje)
 
-    Call engine.Effect_Begin(ParticulaViaje, 9, engine.Get_Pixelx_Of_Char(Emisor), engine.Get_PixelY_Of_Char(Emisor), ParticulaFinal, time, receptor, Emisor, wav, fX)
+    Call Effect_Begin(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), ParticulaFinal, time, receptor, Emisor, wav, fX)
 
     ' charlist(charindex).Particula = ParticulaIndex
     ' charlist(charindex).ParticulaTime = time
@@ -14011,9 +14015,9 @@ Private Sub HandleParticleFXWithDestinoXY()
     
     ' Debug.Print "RECIBI FX= " & fX
 
-    engine.Engine_spell_Particle_Set (ParticulaViaje)
+    Engine_spell_Particle_Set (ParticulaViaje)
 
-    Call engine.Effect_BeginXY(ParticulaViaje, 9, engine.Get_Pixelx_Of_Char(Emisor), engine.Get_PixelY_Of_Char(Emisor), x, y, ParticulaFinal, time, Emisor, wav, fX)
+    Call Effect_BeginXY(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), x, y, ParticulaFinal, time, Emisor, wav, fX)
 
     ' charlist(charindex).Particula = ParticulaIndex
     ' charlist(charindex).ParticulaTime = time
@@ -14130,7 +14134,7 @@ Private Sub HandleNieveToggle()
     bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger = 4)
             
     If MapDat.NIEVE Then
-        engine.Engine_Meteo_Particle_Set (Particula_Nieve)
+        Engine_Meteo_Particle_Set (Particula_Nieve)
 
     End If
 
