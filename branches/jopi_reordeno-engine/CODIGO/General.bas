@@ -380,7 +380,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
     'Jopi 17/08/2019 : Ahora podes especificar el alineamiento del texto.
     '****************************************************
 
-    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
+    Call EnableURLDetect(frmmain.RecTxt.hWnd, frmmain.hWnd)
 
     With RichTextBox
         
@@ -666,10 +666,10 @@ Sub SetConnected()
     ' establece el borde al listbox
     Call Establecer_Borde(frmmain.hlst, frmmain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmmain.RecTxt.hwnd)
+    Call Make_Transparent_Richtext(frmmain.RecTxt.hWnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
+    Call EnableURLDetect(frmmain.RecTxt.hWnd, frmmain.hWnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(frmmain)
@@ -741,8 +741,8 @@ Sub MoveTo(ByVal Direccion As E_Heading)
             Moviendose = True
             Call MainTimer.Restart(TimersIndex.Walk)
             Call WriteWalk(Direccion) 'We only walk if we are not meditating or resting
-            engine.Char_Move_by_Head UserCharIndex, Direccion
-            MoveScreen Direccion
+            Call Char_Move_by_Head(UserCharIndex, Direccion)
+            Call MoveScreen(Direccion)
             
         Else
 
@@ -1165,7 +1165,7 @@ Sub SwitchMapIAO(ByVal map As Integer)
         ColorAmbiente.b = 255
         ColorAmbiente.g = 255
         ColorAmbiente.a = 255
-        Call engine.Map_Base_Light_Set(D3DColorARGB(255, 255, 255, 255))
+        Call Map_Base_Light_Set(D3DColorARGB(255, 255, 255, 255))
     Else
         Call Obtener_RGB(MapDat.base_light, Rojo, Verde, Azul)
         ColorAmbiente.r = Rojo
@@ -1173,7 +1173,7 @@ Sub SwitchMapIAO(ByVal map As Integer)
         ColorAmbiente.g = Verde
         ColorAmbiente.a = 255
         Map_light_base = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        Call engine.Map_Base_Light_Set(Map_light_base)
+        Call Map_Base_Light_Set(Map_light_base)
 
     End If
 
@@ -1358,7 +1358,7 @@ Sub Main()
     End If
  
     If Sonido Then
-        If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+        If Sound.Initialize_Engine(frmConnect.hWnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
         
         Else
             MsgBox "¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde www.argentum20.com", vbCritical, "Saliendo"
@@ -1385,13 +1385,17 @@ Sub Main()
     Sound.Ambient_Volume_Set VolAmbient
 
     Call InicializarNombres
-    Call engine.Engine_Init
     
+    'Inicializamos el motor grafico.
+    Call Engine_Init
+
     If UtilizarPreCarga = 1 Then
         Call PreloadGraphics
-
     End If
-
+    
+    'Iniciamos el motor de tiles
+    Call Init_TileEngine
+    
     Call CargarParticulasBinary
     Call CargarIndicesOBJ
     Call Cargarmapsworlddata
@@ -1416,7 +1420,7 @@ Sub Main()
     textcolorAsistente(2) = textcolorAsistente(0)
     textcolorAsistente(3) = textcolorAsistente(0)
 
-    engine.Initialize
+    Initialize
  
     Call CargarAnimArmas
     Call CargarAnimEscudos
@@ -1446,7 +1450,7 @@ Sub Main()
     Unload Frmcarga
     General_Set_Connect
     
-    engine.Start
+    Start
  
 End Sub
 
@@ -1700,10 +1704,10 @@ Public Sub CloseClient()
     
     ' Call Resolution.ResetResolution
     'Stop tile engine
-    'engine.Engine_Deinit
+    'Engine_Deinit
     'Stop tile engine
     'Call DeinitTileEngine
-    'engine.Engine_Deinit
+    'Engine_Deinit
     
     'Destruimos los objetos públicos creados
     Set CustomKeys = Nothing

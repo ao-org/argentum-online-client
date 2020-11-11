@@ -435,7 +435,7 @@ Public Sub Meteo_Logic()
     ColorAmbiente.g = m_Color.g
     ColorAmbiente.b = m_Color.b
         
-    Call engine.Map_Base_Light_Set(Out_Color)
+    Call Map_Base_Light_Set(Out_Color)
 
 End Sub
 

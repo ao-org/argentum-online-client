@@ -536,6 +536,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1658,7 +1659,7 @@ Private Sub createObj_Click()
 End Sub
 
 Private Sub Efecto_Timer()
-    Call engine.Map_Base_Light_Set(Map_light_baseBackup)
+    Call Map_Base_Light_Set(Map_light_baseBackup)
     Efecto.Enabled = False
     EfectoEnproceso = False
 
@@ -3060,7 +3061,7 @@ End Sub
 
 Private Sub Second_Timer()
 
-    If engine.bRunning Then engine.Engine_ActFPS
+    If bRunning Then Engine_ActFPS
 
     Rem   If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
 End Sub
@@ -3113,7 +3114,7 @@ Private Sub TimerLluvia_Timer()
             Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
         Else
     
-            engine.Engine_Meteo_Particle_Set (-1)
+            Call Graficos_Particulas.Engine_Meteo_Particle_Set(-1)
             CantPartLLuvia = 0
             TimerLluvia.Enabled = False
 
@@ -3840,7 +3841,7 @@ Private Sub Socket1_Disconnect()
     
         Call SwitchMapIAO(UserMap)
     
-        Call engine.Engine_Select_Particle_Set(203)
+        Call Graficos_Particulas.Engine_Select_Particle_Set(203)
         ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
     
         frmConnect.txtNombre.Visible = False

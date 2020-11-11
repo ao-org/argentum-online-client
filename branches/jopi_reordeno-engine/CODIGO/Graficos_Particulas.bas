@@ -886,7 +886,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     
         If temp_particle.grh.GrhIndex Then
     
-            engine.Grh_Render_Advance temp_particle.grh, temp_particle.x + screen_x, temp_particle.y + screen_y, grh_resizex, grh_resizey, rgb_list(), True, True, alpha_blend
+            Grh_Render_Advance temp_particle.grh, temp_particle.x + screen_x, temp_particle.y + screen_y, grh_resizex, grh_resizey, rgb_list(), True, True, alpha_blend
             
             Exit Sub
 
@@ -896,7 +896,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
 
     If temp_particle.grh.GrhIndex Then
 
-        engine.Grh_Render temp_particle.grh, temp_particle.x + screen_x, temp_particle.y + screen_y, rgb_list(), True, True, alpha_blend
+        Grh_Render temp_particle.grh, temp_particle.x + screen_x, temp_particle.y + screen_y, rgb_list(), True, True, alpha_blend
 
     End If
     
@@ -1071,7 +1071,7 @@ Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal c
     rgb_list(2) = RGB(StreamData(ParticulaInd).colortint(2).r, StreamData(ParticulaInd).colortint(2).g, StreamData(ParticulaInd).colortint(2).b)
     rgb_list(3) = RGB(StreamData(ParticulaInd).colortint(3).r, StreamData(ParticulaInd).colortint(3).g, StreamData(ParticulaInd).colortint(3).b)
 
-    General_Char_Particle_Create = engine.Char_Particle_Group_Create(char_index, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
+    General_Char_Particle_Create = Char_Particle_Group_Create(char_index, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
        StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).angle, _
        StreamData(ParticulaInd).vecx1, StreamData(ParticulaInd).vecx2, StreamData(ParticulaInd).vecy1, StreamData(ParticulaInd).vecy2, _
        StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
@@ -1099,6 +1099,154 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As I
        StreamData(ParticulaInd).gravity, StreamData(ParticulaInd).grav_strength, StreamData(ParticulaInd).bounce_strength, StreamData(ParticulaInd).x2, _
        StreamData(ParticulaInd).y2, StreamData(ParticulaInd).XMove, StreamData(ParticulaInd).move_x1, StreamData(ParticulaInd).move_x2, StreamData(ParticulaInd).move_y1, _
        StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey)
+
+End Function
+
+Public Function Char_Particle_Group_Create(ByVal char_index As Integer, ByRef grh_index_list() As Long, ByRef rgb_list() As Long, _
+   Optional ByVal particle_count As Long = 20, Optional ByVal stream_type As Long = 1, _
+   Optional ByVal alpha_blend As Boolean, Optional ByVal alive_counter As Long = -1, _
+   Optional ByVal frame_speed As Single = 0.5, Optional ByVal id As Long, _
+   Optional ByVal x1 As Integer, Optional ByVal y1 As Integer, Optional ByVal angle As Integer, _
+   Optional ByVal vecx1 As Integer, Optional ByVal vecx2 As Integer, _
+   Optional ByVal vecy1 As Integer, Optional ByVal vecy2 As Integer, _
+   Optional ByVal life1 As Integer, Optional ByVal life2 As Integer, _
+   Optional ByVal fric As Integer, Optional ByVal spin_speedL As Single, _
+   Optional ByVal gravity As Boolean, Optional grav_strength As Long, _
+   Optional bounce_strength As Long, Optional ByVal x2 As Integer, Optional ByVal y2 As Integer, _
+   Optional ByVal XMove As Boolean, Optional ByVal move_x1 As Integer, Optional ByVal move_x2 As Integer, _
+   Optional ByVal move_y1 As Integer, Optional ByVal move_y2 As Integer, Optional ByVal YMove As Boolean, _
+   Optional ByVal spin_speedH As Single, Optional ByVal spin As Boolean, Optional grh_resize As Boolean, _
+   Optional grh_resizex As Integer, Optional grh_resizey As Integer)
+    '**************************************************************
+    'Author: Augusto José Rando
+    '**************************************************************
+
+    Dim char_part_free_index As Integer
+    
+    Rem If charlist(char_index).Particula = stream_type Then Exit Function
+    'If Char_Particle_Group_Find(char_index, stream_type) Then Exit Function ' hay que ver si dejar o sacar esto...
+    If Not Char_Check(char_index) Then Exit Function
+    char_part_free_index = Char_Particle_Group_Next_Open(char_index)
+    
+    If char_part_free_index > 0 Then
+        Char_Particle_Group_Create = Particle_Group_Next_Open
+        Char_Particle_Group_Make Char_Particle_Group_Create, char_index, char_part_free_index, particle_count, stream_type, grh_index_list(), rgb_list(), alpha_blend, alive_counter, frame_speed, id, x1, y1, angle, vecx1, vecx2, vecy1, vecy2, life1, life2, fric, spin_speedL, gravity, grav_strength, bounce_strength, x2, y2, XMove, move_x1, move_x2, move_y1, move_y2, YMove, spin_speedH, spin, grh_resize, grh_resizex, grh_resizey
+
+    End If
+
+End Function
+
+
+Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal stream_type As Long)
+    '**************************************************************
+    'Author: Augusto José Rando
+    '**************************************************************
+
+    Dim char_part_index As Integer
+
+    If Char_Check(char_index) Then
+        char_part_index = Char_Particle_Group_Find(char_index, stream_type)
+
+        If char_part_index = -1 Then Exit Function
+        If char_part_index = 0 Then Exit Function
+        
+        'Call Particle_Group_Remove(char_part_index)
+        Rem  particle_group_list(char_part_index).alive_counter = 20
+        particle_group_list(char_part_index).alive_counter = 0
+        particle_group_list(char_part_index).never_die = False
+        particle_group_list(char_part_index).destruir = True
+     
+        'Ladder
+    End If
+
+End Function
+
+Public Function Char_Particle_Group_Remove_All(ByVal char_index As Integer)
+
+    '**************************************************************
+    'Author: Augusto José Rando
+    '**************************************************************
+    Dim i As Integer
+    
+    If Char_Check(char_index) Then
+
+        For i = 1 To charlist(char_index).particle_count
+
+            If charlist(char_index).particle_group(i) <> 0 Then Call Particle_Group_Remove(charlist(char_index).particle_group(i))
+        Next i
+
+    End If
+    
+End Function
+
+Private Function Char_Particle_Group_Find(ByVal char_index As Integer, ByVal stream_type As Long) As Integer
+
+    '*****************************************************************
+    'Author: Augusto José Rando
+    'Modified: returns slot or -1
+    '*****************************************************************
+    On Error GoTo ErrorHandler:
+
+    Dim i As Integer
+
+    For i = 1 To charlist(char_index).particle_count
+
+        If particle_group_list(charlist(char_index).particle_group(i)).stream_type = stream_type Then
+            If particle_group_list(charlist(char_index).particle_group(i)).destruir = False Then
+                Char_Particle_Group_Find = charlist(char_index).particle_group(i)
+                Exit Function
+
+            End If
+
+        End If
+
+    Next i
+
+    Char_Particle_Group_Find = -1
+ErrorHandler:
+
+End Function
+
+Public Function Char_Particle_Group_Next_Open(ByVal char_index As Integer) As Integer
+
+    '*****************************************************************
+    'Author: Augusto José Rando
+    '*****************************************************************
+    On Error GoTo ErrorHandler:
+
+    Dim loopc As Long
+    
+    If charlist(char_index).particle_count = 0 Then
+        charlist(char_index).particle_count = 1
+        ReDim charlist(char_index).particle_group(1 To 1)
+        Char_Particle_Group_Next_Open = 1
+        Exit Function
+
+    End If
+    
+    loopc = 1
+
+    Do Until charlist(char_index).particle_group(loopc) = 0
+
+        If loopc = charlist(char_index).particle_count Then
+            Char_Particle_Group_Next_Open = charlist(char_index).particle_count + 1
+            charlist(char_index).particle_count = Char_Particle_Group_Next_Open
+            ReDim Preserve charlist(char_index).particle_group(1 To Char_Particle_Group_Next_Open)
+            Exit Function
+
+        End If
+
+        loopc = loopc + 1
+    Loop
+    
+    Char_Particle_Group_Next_Open = loopc
+
+    Exit Function
+
+ErrorHandler:
+    charlist(char_index).particle_count = 1
+    ReDim charlist(char_index).particle_group(1 To 1)
+    Char_Particle_Group_Next_Open = 1
 
 End Function
 
