@@ -150,9 +150,8 @@ Private Enum ServerPacketID
     ShowGuildFundationForm  ' SHOWFUN
     ParalizeOK              ' PARADOK
     ShowUserRequest         ' PETICIO
-    TradeOK                 ' TRANSOK
-    BankOK                  ' BANCOOK
     ChangeUserTradeSlot     ' COMUSUINV
+    SendNight               ' NOC
     Pong
     UpdateTagAndStatus
     FYA
@@ -1266,12 +1265,6 @@ Public Sub HandleIncomingData()
         
         Case ServerPacketID.ShowUserRequest         ' PETICIO
             Call HandleShowUserRequest
-        
-        Case ServerPacketID.TradeOK                 ' TRANSOK
-            Call HandleTradeOK
-        
-        Case ServerPacketID.BankOK                  ' BANCOOK
-            Call HandleBankOK
         
         Case ServerPacketID.ChangeUserTradeSlot     ' COMUSUINV
             Call HandleChangeUserTradeSlot
@@ -5119,40 +5112,25 @@ Private Sub HandleChangeInventorySlot()
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
     Set buffer = New clsByteQueue
-
     Call buffer.CopyBuffer(incomingData)
     
     'Remove packet ID
     Call buffer.ReadByte
     
     Dim slot              As Byte
-
     Dim OBJIndex          As Integer
-
     Dim name              As String
-
     Dim Amount            As Integer
-
     Dim Equipped          As Boolean
-
     Dim GrhIndex          As Long
-
     Dim ObjType           As Byte
-
     Dim MaxHit            As Integer
-
     Dim MinHit            As Integer
-
     Dim MaxDef            As Integer
-
     Dim MinDef            As Integer
-
     Dim value             As Single
-
     Dim podrausarlo       As Byte
-
     Dim ResistenciaMagica As Byte
-
     Dim DañoMagico As Byte
     
     slot = buffer.ReadByte()
@@ -5163,6 +5141,8 @@ Private Sub HandleChangeInventorySlot()
     podrausarlo = buffer.ReadByte()
     ResistenciaMagica = buffer.ReadByte()
     DañoMagico = buffer.ReadByte()
+    
+    Call incomingData.CopyBuffer(buffer)
     
     name = ObjData(OBJIndex).name
     GrhIndex = ObjData(OBJIndex).GrhIndex
@@ -5227,21 +5207,15 @@ Private Sub HandleChangeInventorySlot()
     
     Call frmmain.Inventario.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
     
-    If frmComerciar.Visible Then
-        Call frmComerciar.InvComUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
-    ElseIf frmBancoObj.Visible Then
-        Call frmBancoObj.InvBankUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
-
-    End If
-
-    Call incomingData.CopyBuffer(buffer)
-    Set buffer = Nothing
+    Call frmComerciar.InvComUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
+    
+    Call frmBancoObj.InvBankUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
+    
+    Exit Sub
     
 errhandler:
 
-    Dim Error As Long
-
-    Error = Err.number
+    Dim Error As Long: Error = Err.number
 
     On Error GoTo 0
     
@@ -5402,7 +5376,9 @@ Private Sub HandleRefreshAllInventorySlot()
 
     '  End If
     Call incomingData.CopyBuffer(buffer)
-    
+     
+    Exit Sub
+     
 errhandler:
 
     Dim Error As Long
@@ -5431,26 +5407,27 @@ Private Sub HandleChangeBankSlot()
     If incomingData.length < 11 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
-
     End If
     
     On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
+    Dim buffer As clsByteQueue
+    Set buffer = New clsByteQueue
     Call buffer.CopyBuffer(incomingData)
     
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim slot As Byte
-
-    slot = buffer.ReadByte()
+    Dim slot As Byte: slot = buffer.ReadByte()
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call incomingData.CopyBuffer(buffer)
     
     Dim BankSlot As Inventory
     
     With BankSlot
+    
         .OBJIndex = buffer.ReadInteger()
         .name = ObjData(.OBJIndex).name
         .Amount = buffer.ReadInteger()
@@ -5462,20 +5439,13 @@ Private Sub HandleChangeBankSlot()
         .Valor = buffer.ReadLong()
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .name, .PuedeUsar)
+        If frmBancoObj.Visible Then
+            Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .name, .PuedeUsar)
+        End If
 
     End With
     
-    ' If frmBancoObj.List1(0).ListCount >= slot Then _
-      Call frmBancoObj.List1(0).RemoveItem(slot - 1)
-        
-    ' If UserBancoInventory(slot).name <> "" Then
-    '  Call frmBancoObj.List1(0).AddItem(UserBancoInventory(slot).name, slot - 1)
-    ' Else
-    '    Call frmBancoObj.List1(0).AddItem("Vacio", slot - 1)
-    ' End If
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
+    Exit Sub
     
 errhandler:
 
@@ -5551,6 +5521,8 @@ Private Sub HandleChangeSpellSlot()
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
+    
+    Exit Sub
     
 errhandler:
 
@@ -5677,6 +5649,8 @@ Private Sub HandleBlacksmithWeapons()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
+    Exit Sub
+    
 errhandler:
 
     Dim Error As Long
@@ -5787,6 +5761,8 @@ Private Sub HandleBlacksmithArmors()
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
+    
+    Exit Sub
     
 errhandler:
 
@@ -6192,19 +6168,16 @@ Private Sub HandleChangeNPCInventorySlot()
     On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
+    Dim buffer As clsByteQueue
+    Set buffer = New clsByteQueue
     Call buffer.CopyBuffer(incomingData)
     
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim slot As Byte
-
-    slot = buffer.ReadByte()
-        
-    Dim SlotInv As NpCinV
+    Dim slot As Byte: slot = buffer.ReadByte()
     
+    Dim SlotInv As NpCinV
     With SlotInv
         .OBJIndex = buffer.ReadInteger()
         .name = ObjData(.OBJIndex).name
@@ -6218,11 +6191,13 @@ Private Sub HandleChangeNPCInventorySlot()
         .PuedeUsar = buffer.ReadByte()
         
         Call frmComerciar.InvComNpc.SetItem(slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .name, .PuedeUsar)
-
+        
     End With
-
+    
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
+    
+    Exit Sub
     
 errhandler:
 
@@ -7694,36 +7669,6 @@ errhandler:
 
     If Error <> 0 Then Err.Raise Error
 
-End Sub
-
-''
-' Handles the TradeOK message.
-
-Private Sub HandleTradeOK()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    ' TODO: Remover este paquete
-End Sub
-
-''
-' Handles the BankOK message.
-
-Private Sub HandleBankOK()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    ' TODO: Remover este paquete
 End Sub
 
 ''
