@@ -3,10 +3,10 @@ Begin VB.Form frmGuildAdm
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Lista de clanes registrados"
-   ClientHeight    =   6675
+   ClientHeight    =   5865
    ClientLeft      =   0
    ClientTop       =   -180
-   ClientWidth     =   5595
+   ClientWidth     =   6225
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -16,24 +16,26 @@ Begin VB.Form frmGuildAdm
       Italic          =   0   'False
       Strikethrough   =   0   'False
    EndProperty
+   KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6675
-   ScaleWidth      =   5595
+   Picture         =   "frmGuildAdm.frx":0000
+   ScaleHeight     =   5865
+   ScaleWidth      =   6225
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox GuildsList 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       ForeColor       =   &H00FFFFFF&
-      Height          =   2175
-      ItemData        =   "frmGuildAdm.frx":0000
-      Left            =   840
-      List            =   "frmGuildAdm.frx":0002
+      Height          =   2565
+      ItemData        =   "frmGuildAdm.frx":768A4
+      Left            =   495
+      List            =   "frmGuildAdm.frx":768A6
       TabIndex        =   2
-      Top             =   3390
-      Width           =   3830
+      Top             =   2160
+      Width           =   4080
    End
    Begin VB.ComboBox Combo1 
       Appearance      =   0  'Flat
@@ -49,13 +51,13 @@ Begin VB.Form frmGuildAdm
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   285
-      ItemData        =   "frmGuildAdm.frx":0004
-      Left            =   2560
-      List            =   "frmGuildAdm.frx":0011
+      ItemData        =   "frmGuildAdm.frx":768A8
+      Left            =   2790
+      List            =   "frmGuildAdm.frx":768B5
       Style           =   2  'Dropdown List
       TabIndex        =   1
-      Top             =   2580
-      Width           =   2250
+      Top             =   1600
+      Width           =   1655
    End
    Begin VB.TextBox qhi9t0 
       Alignment       =   2  'Center
@@ -79,25 +81,34 @@ Begin VB.Form frmGuildAdm
       Top             =   1950
       Width           =   2115
    End
+   Begin VB.Label lblClose 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Height          =   435
+      Left            =   5760
+      TabIndex        =   3
+      Top             =   0
+      Width           =   405
+   End
    Begin VB.Image Image3 
-      Height          =   555
+      Height          =   420
       Left            =   2760
       Tag             =   "0"
-      Top             =   5730
-      Width           =   2280
+      Top             =   5040
+      Width           =   1950
    End
    Begin VB.Image Image2 
-      Height          =   495
-      Left            =   770
+      Height          =   420
+      Left            =   480
       Tag             =   "0"
-      Top             =   5780
-      Width           =   1890
+      Top             =   5040
+      Width           =   1950
    End
    Begin VB.Image Image1 
       Height          =   225
-      Left            =   4940
+      Left            =   2280
       Tag             =   "0"
-      Top             =   1920
+      Top             =   1320
       Width           =   270
    End
 End
@@ -112,7 +123,7 @@ Private Sub Combo1_Click()
     
     If Not ListaClanes Then Exit Sub
 
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim i As Long
 
@@ -120,13 +131,13 @@ Private Sub Combo1_Click()
 
         If Combo1.ListIndex < 2 Then
             If ClanesList(i).Alineacion = Combo1.ListIndex Then
-                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
 
             End If
 
         Else
             
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
 
         End If
 
@@ -134,8 +145,18 @@ Private Sub Combo1_Click()
 
 End Sub
 
+Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+
+    If KeyCode = vbKeyEscape Then Unload Me
+
+End Sub
+
 Private Sub Form_Load()
+
     Call FormParser.Parse_Form(Me)
+    
+    Me.Picture = LoadInterface("VentanaClanes.bmp")
+    
     Combo1.ListIndex = 2
 
 End Sub
@@ -156,10 +177,10 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 
     Dim b As Integer
 
-    For b = 0 To guildslist.ListCount - 1
-        guildslist.ListIndex = b
+    For b = 0 To GuildsList.ListCount - 1
+        GuildsList.ListIndex = b
 
-        If LCase$(guildslist) = LCase$(qhi9t0) Then
+        If LCase$(GuildsList) = LCase$(qhi9t0) Then
             Exit Sub
 
         End If
@@ -199,7 +220,7 @@ End Sub
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface("clan_fundarapretado.bmp")
+        Image2.Picture = LoadInterface("boton-fundar-clan-es-over.bmp")
         Image2.Tag = "1"
 
     End If
@@ -207,8 +228,13 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub Image3_Click()
+    
+    'Si nos encontramos con un guild con nombre vacío algo sospechoso está pasando, x las dudas no hacemos nada.
+    If Len(GuildsList.List(GuildsList.ListIndex)) = 0 Then Exit Sub
+    
     frmGuildBrief.EsLeader = False
-    Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
+    
+    Call WriteGuildRequestDetails(GuildsList.List(GuildsList.ListIndex))
 
 End Sub
 
@@ -222,3 +248,6 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
 End Sub
 
+Private Sub lblClose_Click()
+    Unload Me
+End Sub

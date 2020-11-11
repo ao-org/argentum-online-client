@@ -2656,7 +2656,7 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-    frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+    frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
     frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
 
 End Sub
@@ -3370,59 +3370,39 @@ Private Sub HandleConsoleMessage()
     If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
-
     End If
     
     On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
+    Dim buffer As clsByteQueue
+    Set buffer = New clsByteQueue
     Call buffer.CopyBuffer(incomingData)
     
     'Remove packet ID
     Call buffer.ReadByte
     
     Dim chat      As String
-
     Dim fontIndex As Integer
-
     Dim str       As String
-
     Dim r         As Byte
-
     Dim g         As Byte
-
     Dim b         As Byte
-
     Dim QueEs     As String
-
     Dim NpcName   As String
-
     Dim objname   As String
-
     Dim Hechizo   As Byte
-
     Dim UserName  As String
-
     Dim Valor     As String
 
     chat = buffer.ReadASCIIString()
     fontIndex = buffer.ReadByte()
     
-    If ChatGlobal = 0 And fontIndex = FontTypeNames.FONTTYPE_GLOBAL Then
-        Call incomingData.CopyBuffer(buffer)
-        Set buffer = Nothing
-        Exit Sub
-
-    End If
+    'If we got here then packet is complete, copy data back to original queue
+    Call incomingData.CopyBuffer(buffer)
     
-    '  If ChatCombate = 0 And fontIndex = FontTypeNames.FONTTYPE_GLOBAL Then
-    '          Call incomingData.CopyBuffer(buffer)
-    '     Set buffer = Nothing
-    '     Exit Sub
-    '  End If
-   
+    If ChatGlobal = 0 And fontIndex = FontTypeNames.FONTTYPE_GLOBAL Then Exit Sub
+
     QueEs = ReadField(1, chat, Asc("*"))
 
     Select Case QueEs
@@ -3437,7 +3417,12 @@ Private Sub HandleConsoleMessage()
 
         Case "HECINF"
             Hechizo = ReadField(2, chat, Asc("*"))
-            chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
+            chat = "------------< Información del hechizo >------------" & vbCrLf & _
+                    "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & _
+                    "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & _
+                    "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & _
+                    "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & _
+                    "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
 
         Case "ProMSG"
             Hechizo = ReadField(2, chat, Asc("*"))
@@ -3464,7 +3449,6 @@ Private Sub HandleConsoleMessage()
         Case "ID"
 
             Dim id    As Integer
-
             Dim extra As String
 
             id = ReadField(2, chat, Asc("*"))
@@ -3503,17 +3487,16 @@ Private Sub HandleConsoleMessage()
         End If
             
         Call AddtoRichTextBox(frmmain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, g, b, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
+    
     Else
 
         With FontTypes(fontIndex)
             Call AddtoRichTextBox(frmmain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
-
         End With
 
     End If
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
+    Exit Sub
     
 errhandler:
 
@@ -4708,27 +4691,27 @@ Private Sub HandleGuildList()
     On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
+    Dim buffer As clsByteQueue
+    Set buffer = New clsByteQueue
     Call buffer.CopyBuffer(incomingData)
     
     'Remove packet ID
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
-    Dim guildsStr As String
-
-    guildsStr = buffer.ReadASCIIString()
+    Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call incomingData.CopyBuffer(buffer)
     
     If Len(guildsStr) > 0 Then
 
-        Dim guilds() As String
-
-        guilds = Split(guildsStr, SEPARATOR)
+        Dim guilds() As String: guilds = Split(guildsStr, SEPARATOR)
         
         ReDim ClanesList(0 To UBound(guilds())) As Tclan
+        
         ListaClanes = True
         
         Dim i As Long
@@ -4741,24 +4724,21 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
     End If
     
-    'Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).Nombre)
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
-    frmGuildAdm.Picture = LoadInterface("clanes.bmp")
-    
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
-    frmGuildAdm.Show vbModeless, frmmain
+    
+    Call frmGuildAdm.Show(vbModeless, frmmain)
+    
+    Exit Sub
     
 errhandler:
 
@@ -4969,9 +4949,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.EXPBAR.Width = 204
+        frmmain.ExpBar.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel Maximo!"
 
@@ -7019,10 +6999,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.guildslist.Clear
+    Call frmGuildNews.GuildsList.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7054,7 +7034,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7418,10 +7398,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -7461,7 +7441,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
