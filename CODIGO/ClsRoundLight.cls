@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "clsLight"
+Attribute VB_Name = "clsLucesRedondas"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -50,7 +50,7 @@ Public Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Op
     light_list(NumLights).map_x = map_x
     light_list(NumLights).map_y = map_y
        
-    LightA.LightRenderAll
+    LucesRedondas.LightRenderAll
 
 End Function
 
@@ -107,7 +107,7 @@ Public Function Delete_Light_To_Index(ByVal light_index As Byte, Optional Render
     Next Ya
 
     If RenderFinal Then
-        LightA.LightRenderAll
+        LucesRedondas.LightRenderAll
 
     End If
        

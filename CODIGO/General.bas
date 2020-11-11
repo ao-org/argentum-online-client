@@ -380,7 +380,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
     'Jopi 17/08/2019 : Ahora podes especificar el alineamiento del texto.
     '****************************************************
 
-    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
+    Call EnableURLDetect(frmmain.RecTxt.hWnd, frmmain.hWnd)
 
     With RichTextBox
         
@@ -666,10 +666,10 @@ Sub SetConnected()
     ' establece el borde al listbox
     Call Establecer_Borde(frmmain.hlst, frmmain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmmain.RecTxt.hwnd)
+    Call Make_Transparent_Richtext(frmmain.RecTxt.hWnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
+    Call EnableURLDetect(frmmain.RecTxt.hWnd, frmmain.hWnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(frmmain)
@@ -741,8 +741,8 @@ Sub MoveTo(ByVal Direccion As E_Heading)
             Moviendose = True
             Call MainTimer.Restart(TimersIndex.Walk)
             Call WriteWalk(Direccion) 'We only walk if we are not meditating or resting
-            engine.Char_Move_by_Head UserCharIndex, Direccion
-            MoveScreen Direccion
+            Call Char_Move_by_Head(UserCharIndex, Direccion)
+            Call MoveScreen(Direccion)
             
         Else
 
@@ -941,7 +941,7 @@ Sub SwitchMapIAO(ByVal map As Integer)
 
     Dim Luces()      As tDatosLuces
 
-    Dim particulas() As tDatosParticulas
+    Dim Particulas() As tDatosParticulas
 
     Dim Objetos()    As tDatosObjs
 
@@ -973,10 +973,10 @@ Sub SwitchMapIAO(ByVal map As Integer)
         MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
     #End If
 
-    engine.Light_Remove_All
+    LucesCuadradas.Light_Remove_All
         
-    LightA.Delete_All_LigthRound False
-    engine.Particle_Group_Remove_All
+    LucesRedondas.Delete_All_LigthRound False
+    Graficos_Particulas.Particle_Group_Remove_All
    
     HayLayer2 = False
     HayLayer4 = False
@@ -1099,13 +1099,13 @@ Sub SwitchMapIAO(ByVal map As Integer)
         End If
     
         If .NumeroParticulas > 0 Then
-            ReDim particulas(1 To .NumeroParticulas)
-            Get #fh, , particulas
+            ReDim Particulas(1 To .NumeroParticulas)
+            Get #fh, , Particulas
 
             For i = 1 To .NumeroParticulas
             
-                MapData(particulas(i).x, particulas(i).y).particle_Index = particulas(i).Particula
-                General_Particle_Create MapData(particulas(i).x, particulas(i).y).particle_Index, particulas(i).x, particulas(i).y
+                MapData(Particulas(i).x, Particulas(i).y).particle_Index = Particulas(i).Particula
+                General_Particle_Create MapData(Particulas(i).x, Particulas(i).y).particle_Index, Particulas(i).x, Particulas(i).y
 
             Next i
 
@@ -1121,7 +1121,7 @@ Sub SwitchMapIAO(ByVal map As Integer)
 
                 If MapData(Luces(i).x, Luces(i).y).luz.Rango <> 0 Then
                     If MapData(Luces(i).x, Luces(i).y).luz.Rango < 100 Then
-                        engine.Light_Create Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.color, MapData(Luces(i).x, Luces(i).y).luz.Rango, Luces(i).x & Luces(i).y
+                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.color, MapData(Luces(i).x, Luces(i).y).luz.Rango, Luces(i).x & Luces(i).y
                     Else
 
                         Dim r, g, b As Byte
@@ -1129,7 +1129,7 @@ Sub SwitchMapIAO(ByVal map As Integer)
                         b = (MapData(Luces(i).x, Luces(i).y).luz.color And 16711680) / 65536
                         g = (MapData(Luces(i).x, Luces(i).y).luz.color And 65280) / 256
                         r = MapData(Luces(i).x, Luces(i).y).luz.color And 255
-                        LightA.Create_Light_To_Map Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.Rango - 99, b, g, r
+                        LucesRedondas.Create_Light_To_Map Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.Rango - 99, b, g, r
 
                     End If
 
@@ -1165,7 +1165,7 @@ Sub SwitchMapIAO(ByVal map As Integer)
         ColorAmbiente.b = 255
         ColorAmbiente.g = 255
         ColorAmbiente.a = 255
-        Call engine.Map_Base_Light_Set(D3DColorARGB(255, 255, 255, 255))
+        Call Map_Base_Light_Set(D3DColorARGB(255, 255, 255, 255))
     Else
         Call Obtener_RGB(MapDat.base_light, Rojo, Verde, Azul)
         ColorAmbiente.r = Rojo
@@ -1173,14 +1173,14 @@ Sub SwitchMapIAO(ByVal map As Integer)
         ColorAmbiente.g = Verde
         ColorAmbiente.a = 255
         Map_light_base = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        Call engine.Map_Base_Light_Set(Map_light_base)
+        Call Map_Base_Light_Set(Map_light_base)
 
     End If
 
     Map_light_baseBackup = Map_light_base
 
-    LightA.LightRenderAll
-    engine.Light_Render_All
+    LucesRedondas.LightRenderAll
+    LucesCuadradas.Light_Render_All
     
     'frmMain.MiniMap.Picture = LoadInterface("mapa" & map & ".bmp")
     Call DibujarMiniMapa
@@ -1219,9 +1219,10 @@ Sub SwitchMapIAO(ByVal map As Integer)
     End If
 
     If bRain And MapDat.LLUVIA Then
-        engine.Engine_Meteo_Particle_Set (Particula_Lluvia)
+        Graficos_Particulas.Engine_Meteo_Particle_Set (Particula_Lluvia)
+    
     ElseIf bNieve And MapDat.NIEVE Then
-        engine.Engine_Meteo_Particle_Set (Particula_Nieve)
+        Graficos_Particulas.Engine_Meteo_Particle_Set (Particula_Nieve)
 
     End If
     
@@ -1357,7 +1358,7 @@ Sub Main()
     End If
  
     If Sonido Then
-        If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+        If Sound.Initialize_Engine(frmConnect.hWnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
         
         Else
             MsgBox "¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde www.argentum20.com", vbCritical, "Saliendo"
@@ -1371,7 +1372,10 @@ Sub Main()
 
     Call ComprobarEstado
     Call CargarLst
-    Set LightA = New clsLight
+    
+    Set LucesRedondas = New clsLucesRedondas
+    Set LucesCuadradas = New clsLucesCuadradas
+    
     Set Meteo_Engine = New clsMeteorologic
     
     'Esto es para el movimiento suave de pjs, para que el pj termine de hacer el movimiento antes de empezar otro
@@ -1381,13 +1385,17 @@ Sub Main()
     Sound.Ambient_Volume_Set VolAmbient
 
     Call InicializarNombres
-    Call engine.Engine_Init
     
+    'Inicializamos el motor grafico.
+    Call Engine_Init
+
     If UtilizarPreCarga = 1 Then
         Call PreloadGraphics
-
     End If
-
+    
+    'Iniciamos el motor de tiles
+    Call Init_TileEngine
+    
     Call CargarParticulasBinary
     Call CargarIndicesOBJ
     Call Cargarmapsworlddata
@@ -1412,7 +1420,7 @@ Sub Main()
     textcolorAsistente(2) = textcolorAsistente(0)
     textcolorAsistente(3) = textcolorAsistente(0)
 
-    engine.Initialize
+    Initialize
  
     Call CargarAnimArmas
     Call CargarAnimEscudos
@@ -1442,7 +1450,7 @@ Sub Main()
     Unload Frmcarga
     General_Set_Connect
     
-    engine.Start
+    Start
  
 End Sub
 
@@ -1696,10 +1704,10 @@ Public Sub CloseClient()
     
     ' Call Resolution.ResetResolution
     'Stop tile engine
-    'engine.Engine_Deinit
+    'Engine_Deinit
     'Stop tile engine
     'Call DeinitTileEngine
-    'engine.Engine_Deinit
+    'Engine_Deinit
     
     'Destruimos los objetos públicos creados
     Set CustomKeys = Nothing
@@ -1877,7 +1885,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
     Dim Luces()      As tDatosLuces
 
-    Dim particulas() As tDatosParticulas
+    Dim Particulas() As tDatosParticulas
 
     Dim Objetos()    As tDatosObjs
 
@@ -2000,8 +2008,8 @@ Sub CargarDatosMapa(ByVal map As Integer)
             End If
     
             If .NumeroParticulas > 0 Then
-                ReDim particulas(1 To .NumeroParticulas)
-                Get #fh, , particulas
+                ReDim Particulas(1 To .NumeroParticulas)
+                Get #fh, , Particulas
 
                 For i = 1 To .NumeroParticulas
             
@@ -2021,10 +2029,10 @@ Sub CargarDatosMapa(ByVal map As Integer)
                     '    MapData(Luces(i).X, Luces(i).Y).luz.Rango = Luces(i).Rango
                     '    If MapData(Luces(i).X, Luces(i).Y).luz.Rango <> 0 Then
                     '  LightRound.Create_Light_To_Map Luces(I).x, Luces(I).y, CByte(MapData(Luces(I).x, Luces(I).y).luz.Rango), MapData(Luces(I).x, Luces(I).y).luz.color
-                    'engine.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
+                    'LucesCuadradas.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
                     'LightRound.Render_All_Light
-                    'LightA.Create_Light_To_Map Luces(i).X, Luces(i).Y, CByte(MapData(Luces(i).X, Luces(i).Y).luz.Rango), 255, 255, 255
-                    '   engine.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
+                    'LucesRedondas.Create_Light_To_Map Luces(i).X, Luces(i).Y, CByte(MapData(Luces(i).X, Luces(i).Y).luz.Rango), 255, 255, 255
+                    '   LucesCuadradas.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
                
                 Next i
 

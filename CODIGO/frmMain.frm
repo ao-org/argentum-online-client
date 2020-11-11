@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Begin VB.Form frmmain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -536,6 +536,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1658,7 +1659,7 @@ Private Sub createObj_Click()
 End Sub
 
 Private Sub Efecto_Timer()
-    Call engine.Map_Base_Light_Set(Map_light_baseBackup)
+    Call Map_Base_Light_Set(Map_light_baseBackup)
     Efecto.Enabled = False
     EfectoEnproceso = False
 
@@ -2831,10 +2832,10 @@ Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
     ' End If
     
-    'engine.Light_Remove (10)
+    'LucesCuadradas.Light_Remove (10)
     
-    'engine.Light_Create tX, tY, &HFFFFFFF, 1, 10
-    'engine.Light_Render_All
+    'LucesCuadradas.Light_Create tX, tY, &HFFFFFFF, 1, 10
+    'LucesCuadradas.Light_Render_All
     
 End Sub
 
@@ -3060,7 +3061,7 @@ End Sub
 
 Private Sub Second_Timer()
 
-    If engine.bRunning Then engine.Engine_ActFPS
+    If bRunning Then Engine_ActFPS
 
     Rem   If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
 End Sub
@@ -3099,7 +3100,7 @@ Private Sub TimerLluvia_Timer()
         If CantPartLLuvia < 250 Then
 
             CantPartLLuvia = CantPartLLuvia + 1
-            engine.Particle_Group_Edit (MeteoIndex)
+            Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
         Else
             CantPartLLuvia = 250
             TimerLluvia.Enabled = False
@@ -3110,10 +3111,10 @@ Private Sub TimerLluvia_Timer()
 
         If CantPartLLuvia > 0 Then
             CantPartLLuvia = CantPartLLuvia - 1
-            engine.Particle_Group_Edit (MeteoIndex)
+            Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
         Else
     
-            engine.Engine_Meteo_Particle_Set (-1)
+            Call Graficos_Particulas.Engine_Meteo_Particle_Set(-1)
             CantPartLLuvia = 0
             TimerLluvia.Enabled = False
 
@@ -3840,7 +3841,7 @@ Private Sub Socket1_Disconnect()
     
         Call SwitchMapIAO(UserMap)
     
-        Call engine.Engine_Select_Particle_Set(203)
+        Call Graficos_Particulas.Engine_Select_Particle_Set(203)
         ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
     
         frmConnect.txtNombre.Visible = False

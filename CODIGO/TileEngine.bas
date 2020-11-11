@@ -1,4 +1,4 @@
-Attribute VB_Name = "Mod_TileEngine"
+Attribute VB_Name = "TileEngine"
 'MENDUZ DX8 VERSION www.noicoder.com
 'RevolucionAo 1.0
 'Pablo Mercavides
@@ -165,7 +165,7 @@ Public Type Char
     Escudo As ShieldAnimData
     MovArmaEscudo As Boolean
     
-    FX As grh
+    fX As grh
     FxIndex As Integer
     BarTime As Single
     Escribiendo As Boolean
@@ -281,14 +281,14 @@ End Type
 
 Public Type MapBlock
 
-    FX As grh
+    fX As grh
     FxIndex As Byte
     
     FxCount As Integer
     FxList() As grh
     
     Graphic(1 To 4) As grh
-    CharIndex As Integer
+    charindex As Integer
     ObjGrh As grh
     GrhBlend As Single
     light_value(3) As Long
@@ -367,71 +367,51 @@ Public FramesPerSecCounter     As Long
 Private fpsLastCheck           As Long
 
 'Tamaño del la vista en Tiles
-Private WindowTileWidth        As Integer
-
-Private WindowTileHeight       As Integer
-
-Private HalfWindowTileWidth    As Integer
-
-Private HalfWindowTileHeight   As Integer
+Public WindowTileWidth        As Integer
+Public WindowTileHeight       As Integer
+Public HalfWindowTileWidth    As Integer
+Public HalfWindowTileHeight   As Integer
 
 'Offset del desde 0,0 del main view
-Private MainViewTop            As Integer
-
-Private MainViewLeft           As Integer
+Public MainViewTop            As Integer
+Public MainViewLeft           As Integer
 
 'Cuantos tiles el engine mete en el BUFFER cuando
 'dibuja el mapa. Ojo un tamaño muy grande puede
 'volver el engine muy lento
 Public TileBufferSize          As Integer
-
-Private TileBufferPixelOffsetX As Integer
-
-Private TileBufferPixelOffsetY As Integer
+Public TileBufferPixelOffsetX As Integer
+Public TileBufferPixelOffsetY As Integer
 
 'Tamaño de los tiles en pixels
 Public Const TilePixelHeight   As Integer = 32
-
 Public Const TilePixelWidth    As Integer = 32
 
 'Number of pixels the engine scrolls per frame. MUST divide evenly into pixels per tile
 Public ScrollPixelsPerFrameX   As Single
-
 Public ScrollPixelsPerFrameY   As Single
 
-Dim timerElapsedTime           As Single
-
-Dim timerTicksPerFrame         As Single
-
-Dim engineBaseSpeed            As Single
+Public timerElapsedTime           As Single
+Public timerTicksPerFrame         As Single
+Public engineBaseSpeed            As Single
 
 Public NumBodies               As Integer
-
 Public Numheads                As Integer
-
 Public NumFxs                  As Integer
-
 Public NumChars                As Integer
-
 Public LastChar                As Long
-
 Public NumWeaponAnims          As Integer
-
 Public NumShieldAnims          As Integer
 
-Private MainDestRect           As RECT
+Public MainDestRect           As RECT
+Public MainViewRect           As RECT
+Public BackBufferRect         As RECT
 
-Private MainViewRect           As RECT
+Public MainViewWidth          As Integer
+Public MainViewHeight         As Integer
 
-Private BackBufferRect         As RECT
-
-Private MainViewWidth          As Integer
-
-Private MainViewHeight         As Integer
-
-Private MouseTileX             As Byte
-
-Private MouseTileY             As Byte
+Public MouseTileX             As Byte
+Public MouseTileY             As Byte
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Graficos¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Public GrhData()               As GrhData 'Guarda todos los grh
@@ -527,6 +507,29 @@ Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCo
 'Text width computation. Needed to center text.
 Private Declare Function GetTextExtentPoint32 Lib "gdi32" Alias "GetTextExtentPoint32A" (ByVal hdc As Long, ByVal lpsz As String, ByVal cbString As Long, lpSize As size) As Long
 
+Public Sub Init_TileEngine()
+
+    HalfWindowTileHeight = (frmmain.renderer.ScaleHeight / 32) \ 2
+    HalfWindowTileWidth = (frmmain.renderer.ScaleWidth / 32) \ 2
+    
+    TileBufferSize = 8
+    TileBufferPixelOffsetX = (TileBufferSize - 1) * 32
+    TileBufferPixelOffsetY = (TileBufferSize - 1) * 32
+    
+    ReDim MapData(XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
+    
+    UserPos.x = 50
+    UserPos.y = 50
+    
+    MinXBorder = XMinMapSize + (frmmain.renderer.ScaleWidth / 64)
+    MaxXBorder = XMaxMapSize - (frmmain.renderer.ScaleWidth / 64)
+    MinYBorder = YMinMapSize + (frmmain.renderer.ScaleHeight / 64)
+    MaxYBorder = YMaxMapSize - (frmmain.renderer.ScaleHeight / 64)
+    MinYBorder = MinYBorder
+    
+
+End Sub
+
 Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
     '******************************************
     'Converts where the mouse is in the main window to a tile position. MUST be called eveytime the mouse moves.
@@ -537,161 +540,6 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
 
     tX = UserPos.x + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
     tY = UserPos.y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
-
-End Sub
-
-Sub ResetCharInfo(ByVal CharIndex As Integer)
-
-    With charlist(CharIndex)
-    
-        .active = 0
-        .AlphaPJ = 0
-        .Escribiendo = False
-        .appear = 0
-        .status = 0
-        .invisible = False
-        .Arma_Aura = ""
-        .Body_Aura = ""
-        .AuraAngle = 0
-        .Head_Aura = ""
-        .Speeding = 0
-        .Otra_Aura = ""
-        .Escudo_Aura = ""
-        .Particula = 0
-        .ParticulaTime = 0
-        .particle_count = 0
-        .FxCount = 0
-        .CreandoCant = 0
-        .Moving = 0
-        .MUERTO = False
-        .nombre = ""
-        .pie = False
-        ' .Pos.X = 0
-        '.Pos.Y = 0
-        
-        .MovArmaEscudo = False
-        .TimerAct = False
-        .TimerM = 128
-        .TimerI = 128
-        .TimerIAct = False
-        .dialog = ""
-        .dialogExp = ""
-        .dialogEfec = ""
-        .dialogOro = ""
-        .SubeExp = 0
-        .group_index = 0
-        .clan_index = 0
-        .clan_nivel = 0
-        .BarTime = 0
-        .BarAccion = 0
-        .MaxBarTime = 0
-        .UserMaxHp = 0
-        .UserMinHp = 0
-        
-        .FxIndex = 0
-        
-    End With
-    
-End Sub
-
-Sub MakeChar(ByVal CharIndex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
-
-    On Error Resume Next
-
-    'Apuntamos al ultimo Char
-    ' Debug.Print charindex
-    If CharIndex > LastChar Then LastChar = CharIndex
-    
-    With charlist(CharIndex)
-
-        'If the char wasn't allready active (we are rewritting it) don't increase char count
-        If .active = 0 Then NumChars = NumChars + 1
-        
-        If Arma = 0 Then Arma = 2
-        If Escudo = 0 Then Escudo = 2
-        If Casco = 0 Then Casco = 2
-        
-        .iHead = Head
-        .iBody = Body
-        
-        .Head = HeadData(Head)
-        .Body = BodyData(Body)
-        .Arma = WeaponAnimData(Arma)
-        
-        .Escudo = ShieldAnimData(Escudo)
-        .Casco = CascoAnimData(Casco)
-        
-        .Heading = Heading
-        
-        'Reset moving stats
-        .Moving = 0
-        .MoveOffsetX = 0
-        .MoveOffsetY = 0
-        
-        'Update position
-        .Pos.x = x
-        .Pos.y = y
-        
-        'Make active
-        .active = 1
-        
-        .AlphaPJ = 255
-        
-        If BodyData(Body).HeadOffset.y = -26 Then
-            .EsEnano = True
-        Else
-            .EsEnano = False
-
-        End If
-        
-        If .Particula = ParticulaFx Then
-            ParticulaFx = 0
-
-        End If
-        
-        If ParticulaFx <> 0 Then
-            .Particula = ParticulaFx
-            Call General_Char_Particle_Create(ParticulaFx, CharIndex, -1)
-
-        End If
-      
-    End With
-    
-    'Plot on map
-    MapData(x, y).CharIndex = CharIndex
-
-End Sub
-
-Sub EraseChar(ByVal CharIndex As Integer)
-    '*****************************************************************
-    'Erases a character from CharList and map
-    '*****************************************************************
-    
-    If CharIndex = 0 Then Exit Sub
-    If charlist(CharIndex).active = 0 Then Exit Sub
-
-    charlist(CharIndex).active = 0
-    
-    'Update lastchar
-    If CharIndex = LastChar Then
-
-        Do Until charlist(LastChar).active = 1
-            LastChar = LastChar - 1
-
-            If LastChar = 0 Then Exit Do
-        Loop
-
-    End If
-    
-    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = 0
-    
-    'Remove char's dialog
-    Call Dialogos.RemoveDialog(CharIndex)
-    
-    Call ResetCharInfo(CharIndex)
-    
-    'Update NumChars
-    NumChars = NumChars - 1
 
 End Sub
 
@@ -755,16 +603,16 @@ Public Sub DoFogataFx()
 
 End Sub
 
-Private Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
+Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
 
-    With charlist(CharIndex).Pos
+    With charlist(charindex).Pos
         EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
 
     End With
 
 End Function
 
-Sub DoPasosFx(ByVal CharIndex As Integer)
+Sub DoPasosFx(ByVal charindex As Integer)
 
     Static TerrenoDePaso As TipoPaso
 
@@ -772,9 +620,9 @@ Sub DoPasosFx(ByVal CharIndex As Integer)
 
     If Not UserNavegando Then
 
-        With charlist(CharIndex)
+        With charlist(charindex)
 
-            If Not .MUERTO And EstaPCarea(CharIndex) And (.priv = 0 Or .priv > 5) Then
+            If Not .MUERTO And EstaPCarea(charindex) And (.priv = 0 Or .priv > 5) Then
                 If .Speeding > 1.3 Then
                    
                     Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
@@ -831,7 +679,7 @@ Private Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
 
 End Function
 
-Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As Integer)
+Sub MoveCharbyPos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
 
     On Error Resume Next
 
@@ -845,11 +693,11 @@ Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As I
 
     Dim nHeading As E_Heading
     
-    With charlist(CharIndex)
+    With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
         
-        MapData(x, y).CharIndex = 0
+        MapData(x, y).charindex = 0
         
         addx = nX - x
         addy = nY - y
@@ -874,7 +722,7 @@ Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As I
 
         End If
         
-        MapData(nX, nY).CharIndex = CharIndex
+        MapData(nX, nY).charindex = charindex
         
         .Pos.x = nX
         .Pos.y = nY
@@ -890,10 +738,10 @@ Sub MoveCharbyPos(ByVal CharIndex As Integer, ByVal nX As Integer, ByVal nY As I
 
     End With
     
-    If Not EstaPCarea(CharIndex) Then Call Dialogos.RemoveDialog(CharIndex)
+    If Not EstaPCarea(charindex) Then Call Dialogos.RemoveDialog(charindex)
     
     If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
-        Call EraseChar(CharIndex)
+        Call EraseChar(charindex)
 
     End If
 
@@ -1044,8 +892,8 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer) As Boolean
     End If
     
     '¿Hay un personaje?
-    If MapData(x, y).CharIndex > 0 Then
-        If charlist(MapData(x, y).CharIndex).MUERTO Then
+    If MapData(x, y).charindex > 0 Then
+        If charlist(MapData(x, y).charindex).MUERTO Then
         Else
             Exit Function
 
@@ -1168,12 +1016,11 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     s(2) = -1
     s(3) = -1
 
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET, 0, 0, 0
-    D3DDevice.BeginScene
-    engine.Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
-                           
-    D3DDevice.EndScene
-    D3DDevice.Present Piture, ByVal 0, pic.hwnd, ByVal 0
+    Call Engine_BeginScene
+    
+        Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
+
+    Call Engine_EndScene(Piture, pic.hWnd)
     
 End Sub
 
@@ -1204,57 +1051,15 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
     s(2) = -1
     s(3) = -1
 
-    'D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET, 0, 0, 0
-    D3DDevice.BeginScene
-    engine.Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
+
+    Call Engine_BeginScene
+    
+        Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
                            
-    D3DDevice.EndScene
-    D3DDevice.Present Piture, ByVal 0, pic.hwnd, ByVal 0
+    Call Engine_EndScene(Piture, pic.hWnd)
     
 End Sub
 
-Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
-    '**************************************************************
-    'Author: Mannakia
-    'Last Modify Date: 14/05/2009
-    'Modificado hoy(?) agregue funcion de agrandar y achicar para ladder :P
-    '**************************************************************
-
-    Static Piture As RECT
-
-    With Piture
-        .Left = 0
-        .Top = 0
-        
-        If ModSizeX2 = 1 Then
-            .bottom = pic.ScaleHeight / 2
-            .Right = pic.ScaleWidth / 2
-        ElseIf ModSizeX2 = 2 Then
-            .bottom = pic.ScaleHeight * 2
-            .Right = pic.ScaleWidth * 2
-        Else
-            .bottom = pic.ScaleHeight
-            .Right = pic.ScaleWidth
-
-        End If
-        
-    End With
-
-    Dim s(3) As Long
-
-    s(0) = color
-    s(1) = color
-    s(2) = color
-    s(3) = color
-
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET, 0, 0, 0
-    D3DDevice.BeginScene
-    engine.Device_Box_Textured_Render grh, x, y, GrhData(grh).pixelWidth, GrhData(grh).pixelHeight, s, GrhData(grh).sX, GrhData(grh).sY, Alpha, angle
-                           
-    D3DDevice.EndScene
-    D3DDevice.Present Piture, ByVal 0, pic.hwnd, ByVal 0
-
-End Sub
 
 Public Function RenderSounds()
 
@@ -1335,28 +1140,6 @@ Private Function GetElapsedTime() As Single
 
 End Function
 
-Public Sub SetCharacterFx(ByVal CharIndex As Integer, ByVal FX As Integer, ByVal Loops As Integer)
-
-    If FX = 0 Then Exit Sub
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/03/04
-    'Sets an FX to the character.
-    '***************************************************
-    Dim indice As Byte
-
-    With charlist(CharIndex)
-    
-        indice = engine.Char_FX_Group_Next_Open(CharIndex)
-        .FxList(indice).FxIndex = FX
-        Call InitGrh(.FxList(indice), FxData(FX).Animacion)
-        .FxList(indice).Loops = Loops
-            
-    End With
-
-End Sub
-
 Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal src_x As Integer, ByVal src_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer)
 
     '**************************************************************
@@ -1401,4 +1184,33 @@ Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal sr
     Next y
 
 End Sub
+
+Public Function Convert_Tile_To_View_X(ByVal x As Integer) As Integer
+    '**************************************************************
+    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
+    'Last Modify Date: 10/07/2002
+    'Convert tile position into position in view area
+    '**************************************************************
+    'If engine_windowed Then
+    Convert_Tile_To_View_X = ((x - 1) * 32)
+
+    ' Else
+    '  Convert_Tile_To_View_X = view_screen_left + ((x - 1) * base_tile_size)
+    '  End If
+End Function
+
+Public Function Convert_Tile_To_View_Y(ByVal y As Integer) As Integer
+    '**************************************************************
+    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
+    'Last Modify Date: 10/07/2002
+    'Convert tile position into position in view area
+    '**************************************************************
+    ' If engine_windowed Then
+    Convert_Tile_To_View_Y = ((y - 1) * 32)
+
+    'Else
+    '   Convert_Tile_To_View_Y = view_screen_top + ((y - 1) * base_tile_size)
+    'End If
+End Function
+
 
