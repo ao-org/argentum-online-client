@@ -87,10 +87,10 @@ Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY
 
             End Select
                 
-            Width = engine.Engine_Text_Width(Text)
+            Width = Engine_Text_Width(Text)
                 
             'Dibujo ; D
-            engine.Engine_Text_Render2 Text, (PixelX - Width \ 2), (PixelY - 48) + .Downloading, .ColorRGB, , , .TimeRendered ' .RenderFont,
+            Engine_Text_Render2 Text, (PixelX - Width \ 2), (PixelY - 48) + .Downloading, .ColorRGB, , , .TimeRendered ' .RenderFont,
                
             'Si llego al tiempo lo limpio
             If .TimeRendered <= 0 Then

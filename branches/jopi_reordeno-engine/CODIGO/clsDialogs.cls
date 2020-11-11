@@ -122,6 +122,7 @@ End Sub
 Private Sub Class_Terminate()
 
     '***************************************************
+    
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 07/28/07
     'Clean up
@@ -376,7 +377,7 @@ Public Sub render()
                 'Render it
                 For j = 0 To UBound(.textLine())
                 
-                    Call engine.Text_Render_ext(.textLine(j), .y + offset, .x, 400, 15, .color, True, DT_TOP Or DT_CENTER)
+                    Call Text_Render_ext(.textLine(j), .y + offset, .x, 400, 15, .color, True, DT_TOP Or DT_CENTER)
                     offset = offset + usedFont.size + 5
                 Next j
                 

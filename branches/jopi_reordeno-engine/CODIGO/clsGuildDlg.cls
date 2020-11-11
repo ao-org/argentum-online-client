@@ -103,9 +103,9 @@ Public Sub Draw()
 
         If Trim$(p_Dialogos(i).Texto) <> vbNullString Then
             If Left$(p_Dialogos(i).Texto, 1) = Chr(3) Then
-                Call engine.Text_Render_ext(mid(p_Dialogos(i).Texto, 2), i * 10, 5, 400, 12, &HFF00FF00)
+                Call Text_Render_ext(mid(p_Dialogos(i).Texto, 2), i * 10, 5, 400, 12, &HFF00FF00)
             Else
-                Call engine.Text_Render_ext(p_Dialogos(i).Texto, i * 10, 5, 400, 12, &HFFFFFF00)
+                Call Text_Render_ext(p_Dialogos(i).Texto, i * 10, 5, 400, 12, &HFFFFFF00)
 
             End If
 

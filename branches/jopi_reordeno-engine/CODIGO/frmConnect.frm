@@ -192,7 +192,7 @@ Private Sub relampago_Timer()
         r = color And 255
         color = D3DColorARGB(255, r, g, b)
         
-        engine.Map_Base_Light_Set (color)
+        Map_Base_Light_Set (color)
         RelampagoFin.Interval = duraciontrueno
         RelampagoFin.Enabled = True
 
@@ -201,7 +201,7 @@ Private Sub relampago_Timer()
 End Sub
 
 Private Sub RelampagoFin_Timer()
-    Call engine.Map_Base_Light_Set(Map_light_base)
+    Call Map_Base_Light_Set(Map_light_base)
     RelampagoFin.Enabled = False
 
 End Sub

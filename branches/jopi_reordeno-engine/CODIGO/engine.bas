@@ -19,19 +19,19 @@ Private map_letter_fadestatus As Byte
 
 ''
 ' Maximum number of dialogs that can exist.
-Private Const MAX_DIALOGS     As Byte = 100
+Public Const MAX_DIALOGS     As Byte = 100
 
 ''
 ' Maximum length of any dialog line without having to split it.
-Private Const MAX_LENGTH      As Byte = 18
+Public Const MAX_LENGTH      As Byte = 18
 
 ''
 ' Number of milliseconds to add to the lifetime per dialog character
-Private Const MS_PER_CHAR     As Byte = 100
+Public Const MS_PER_CHAR     As Byte = 100
 
 ''
 ' Number of extra milliseconds to add to the lifetime of a new dialog
-Private Const MS_ADD_EXTRA    As Integer = 5000
+Public Const MS_ADD_EXTRA    As Integer = 5000
 
 ''
 ' The dialog structure
@@ -59,24 +59,17 @@ Private Type dialog
 
 End Type
 
-Dim scroll_dialog_pixels_per_frame As Single
+Public scroll_dialog_pixels_per_frame As Single
 
 ''
 ' Array if dialogs, sorted by the charIndex.
-Private dialogs(MAX_DIALOGS - 1)   As dialog
+Public dialogs(MAX_DIALOGS - 1)   As dialog
 
 ''
 ' The number of dialogs being used at the moment.
-Private dialogCount                As Byte
+Public dialogCount                As Byte
 
-Private Type Fuente
 
-    Tamanio As Integer
-    Caracteres(0 To 255) As Long 'indice de cada letra
-
-End Type
-
-Private Fuentes(1 To 6)    As Fuente
 
 Public WeatherFogX1        As Single
 
@@ -100,9 +93,9 @@ Public LastOffsetY         As Integer
 
 Public EndTime             As Long
 
-Private Const ScreenWidth  As Long = 538
+Public Const ScreenWidth  As Long = 538
 
-Private Const ScreenHeight As Long = 376
+Public Const ScreenHeight As Long = 376
 
 Public bRunning            As Boolean
 
@@ -110,25 +103,6 @@ Private Const FVF = D3DFVF_XYZRHW Or D3DFVF_TEX1 Or D3DFVF_DIFFUSE Or D3DFVF_SPE
 
 Private Const FVF2 = D3DFVF_XYZRHW Or D3DFVF_DIFFUSE Or D3DFVF_SPECULAR Or D3DFVF_TEX2
 
-Dim font_count      As Long
-
-Dim font_last       As Long
-
-Private font_list() As D3DXFont
-
-Public Enum FontAlignment
-
-    fa_center = DT_CENTER
-    fa_top = DT_TOP
-    fa_left = DT_LEFT
-    fa_topleft = DT_TOP Or DT_LEFT
-    fa_bottomleft = DT_BOTTOM Or DT_LEFT
-    fa_bottom = DT_BOTTOM
-    fa_right = DT_RIGHT
-    fa_bottomright = DT_BOTTOM Or DT_RIGHT
-    fa_topright = DT_TOP Or DT_RIGHT
-
-End Enum
 
 Dim texture      As Direct3DTexture8
 
@@ -202,334 +176,61 @@ Private Function GetElapsedTime() As Single
 
 End Function
 
-Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal color As Long, ByVal format As Long, Optional ByVal shadow As Boolean = False)
+Private Function Init_DirectDevice(ByVal ModoAceleracion As CONST_D3DCREATEFLAGS) As Boolean
+On Error GoTo ErrorHandler:
 
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
-    Dim TextRect   As RECT
-
-    Dim ShadowRect As RECT
+    Dim DispMode    As D3DDISPLAYMODE
+    Dim D3DWindow   As D3DPRESENT_PARAMETERS
     
-    TextRect.Top = Top
-    TextRect.Left = Left
-    TextRect.bottom = Top + Height
-    TextRect.Right = Left + Width
+    Dim VSync As String: VSync = CBool(GetVar(App.Path & "\..\Recursos\OUTPUT\raoinit.ini", "VIDEO", "VSync"))
     
-    If shadow Then
-        ShadowRect.Top = Top - 1
-        ShadowRect.Left = Left - 2
-        ShadowRect.bottom = (Top + Height) - 1
-        ShadowRect.Right = (Left + Width) - 2
-        D3DX.DrawText font, &HFF000000, Text, ShadowRect, format
-
-    End If
+    Set dX = New DirectX8
+    Set D3D = dX.Direct3DCreate()
+    Set D3DX = New D3DX8
     
-    D3DX.DrawText font, color, Text, TextRect, format
-
-End Sub
-
-Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal color As Long, Optional ByVal shadow As Boolean = False, Optional ByVal center As Boolean = False, Optional ByVal font As Long = 0)
-
-    If center = True Then
-        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, color, DT_VCENTER & DT_CENTER, shadow)
-    Else
-        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, color, DT_TOP Or DT_LEFT, shadow)
-
-    End If
-
-End Sub
-
-Private Sub Font_Make(ByVal font_index As Long, ByVal Style As String, ByVal bold As Boolean, ByVal italic As Boolean, ByVal size As Long)
-
-    If font_index > font_last Then
-        font_last = font_index
-        ReDim Preserve font_list(1 To font_last)
-
-    End If
-
-    font_count = font_count + 1
+    Call D3D.GetAdapterDisplayMode(D3DADAPTER_DEFAULT, DispMode)
     
-    Dim font_desc As IFont
-
-    Dim fnt       As New StdFont
-
-    fnt.name = Style
-    fnt.size = size
-    fnt.bold = bold
-    fnt.italic = italic
+    With D3DWindow
     
-    Set font_desc = fnt
-    Set font_list(font_index) = D3DX.CreateFont(D3DDevice, font_desc.hFont)
+        .Windowed = True
 
-End Sub
-
-Public Function Font_Create(ByVal Style As String, ByVal size As Long, ByVal bold As Boolean, ByVal italic As Boolean) As Long
-
-    On Error GoTo ErrorHandler:
-
-    Font_Create = Font_Next_Open
-    Font_Make Font_Create, Style, bold, italic, size
+        If VSync Then
+            .SwapEffect = D3DSWAPEFFECT_COPY_VSYNC
+        Else
+            .SwapEffect = D3DSWAPEFFECT_DISCARD
+        End If
+        
+        .BackBufferFormat = D3DFMT_X8R8G8B8
+        
+        'set color depth
+        .BackBufferWidth = 1024
+        .BackBufferHeight = 768
+        
+        .EnableAutoDepthStencil = 1
+        .AutoDepthStencilFormat = D3DFMT_D16
+        .hDeviceWindow = frmmain.renderer.hWnd
+        
+    End With
+    
+    If Not D3DDevice Is Nothing Then Set D3DDevice = Nothing
+    
+    Set D3DDevice = D3D.CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, D3DWindow.hDeviceWindow, ModoAceleracion, D3DWindow)
+    
+    Init_DirectDevice = True
+    
+    Exit Function
+    
 ErrorHandler:
-    Font_Create = 0
-
-End Function
-
-Private Function Font_Next_Open() As Long
-    Font_Next_Open = font_last + 1
-
-End Function
-
-Private Function Font_Check(ByVal font_index As Long) As Boolean
-
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
-    If font_index > 0 And font_index <= font_last Then
-        Font_Check = True
-
-    End If
-
-End Function
-
-Function MakeVector(ByVal x As Single, ByVal y As Single, ByVal Z As Single) As D3DVECTOR
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
-    MakeVector.x = x
-    MakeVector.y = y
-    MakeVector.Z = Z
-
-End Function
-
-Public Sub Engine_ReInit()
-
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
-    On Error GoTo errhandler:
-
-    Dim DispMode    As D3DDISPLAYMODE
-
-    Dim DispModeBK  As D3DDISPLAYMODE
-
-    Dim D3DWindow   As D3DPRESENT_PARAMETERS
-
-    Dim ColorKeyVal As Long
     
-    Set SurfaceDB = New clsTexManager
+    Set D3DDevice = Nothing
     
-    Set dX = New DirectX8
-    Set D3D = dX.Direct3DCreate()
-    Set D3DX = New D3DX8
-    
-    D3D.GetAdapterDisplayMode D3DADAPTER_DEFAULT, DispMode
-    D3D.GetAdapterDisplayMode D3DADAPTER_DEFAULT, DispModeBK
+    Init_DirectDevice = False
+
+End Function
+
+Private Sub Engine_InitExtras()
     
     Call Engine_Font_Initialize
-
-    With D3DWindow
-        .Windowed = True
-
-        'VSync_FPS = True
-        If VSync_FPS = True Then
-            .SwapEffect = D3DSWAPEFFECT_COPY_VSYNC
-        Else
-            .SwapEffect = D3DSWAPEFFECT_DISCARD
-
-        End If
-        
-        .BackBufferFormat = DispMode.format
-        'set color depth
-        .BackBufferWidth = 1024 'frmMain.renderer.ScaleWidth
-        .BackBufferHeight = 768 'frmMain.renderer.ScaleHeight
-        .EnableAutoDepthStencil = 1
-        .AutoDepthStencilFormat = D3DFMT_D16
-        .hDeviceWindow = frmmain.renderer.hwnd
-
-    End With
-
-    DispMode.format = D3DFMT_X8R8G8B8
-
-    If D3D.CheckDeviceFormat(0, D3DDEVTYPE_HAL, DispMode.format, 0, D3DRTYPE_TEXTURE, D3DFMT_A8R8G8B8) = D3D_OK Then
-
-        Dim Caps8 As D3DCAPS8
-
-        D3D.GetDeviceCaps 0, D3DDEVTYPE_HAL, Caps8
-
-        If (Caps8.TextureOpCaps And D3DTEXOPCAPS_DOTPRODUCT3) = D3DTEXOPCAPS_DOTPRODUCT3 Then
-            bump_map_supported = True
-        Else
-            bump_map_supported = False
-            DispMode.format = DispModeBK.format
-
-        End If
-
-    Else
-        bump_map_supported = False
-        DispMode.format = DispModeBK.format
-
-    End If
-
-    Set D3DDevice = D3D.CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, frmmain.renderer.hwnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, D3DWindow)
-                                                            
-    'frmMain.renderer.Width = 545
-    'frmMain.renderer.Height = 415
-    'frmMain.renderer.ScaleMode = 3
-    'frmMain.renderer.ScaleWidth = 545
-    'frmMain.renderer.ScaleHeight = 415
-    
-    HalfWindowTileHeight = (frmmain.renderer.ScaleHeight / 32) \ 2
-    HalfWindowTileWidth = (frmmain.renderer.ScaleWidth / 32) \ 2
-    
-    TileBufferSize = 8
-    TileBufferPixelOffsetX = (TileBufferSize - 1) * 32
-    TileBufferPixelOffsetY = (TileBufferSize - 1) * 32
-    
-    D3DDevice.SetVertexShader FVF
-    
-    '//Transformed and lit vertices dont need lighting
-    '   so we disable it...
-    D3DDevice.SetRenderState D3DRS_LIGHTING, False
-    
-    D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
-    D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
-    D3DDevice.SetRenderState D3DRS_ALPHABLENDENABLE, True
-    
-    Call SurfaceDB.Init(D3DX, D3DDevice, General_Get_Free_Ram_Bytes)
-    
-    MinXBorder = XMinMapSize + (frmmain.renderer.ScaleWidth / 64)
-    MaxXBorder = XMaxMapSize - (frmmain.renderer.ScaleWidth / 64)
-    MinYBorder = YMinMapSize + (frmmain.renderer.ScaleHeight / 64)
-    MaxYBorder = YMaxMapSize - (frmmain.renderer.ScaleHeight / 64)
-    MinYBorder = MinYBorder
-
-    With Render_Connect_Rect
-        .Top = 0
-        .Left = 0
-        .Right = frmConnect.render.ScaleWidth
-        .bottom = frmConnect.render.ScaleHeight
-
-    End With
-    
-    With Render_Main_Rect
-        .Top = 0
-        .Left = 0
-        .Right = frmmain.renderer.ScaleWidth
-        .bottom = frmmain.renderer.ScaleHeight
-
-    End With
-    
-    D3DDevice.SetRenderState D3DRS_POINTSIZE, Engine_FToDW(2)
-    D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
-    D3DDevice.SetRenderState D3DRS_POINTSPRITE_ENABLE, 1
-    D3DDevice.SetRenderState D3DRS_POINTSCALE_ENABLE, 0
-    
-    Font_Create "Tahoma", 8, True, 0
-    Font_Create "Verdana", 8, False, 0
-    Font_Create "Verdana", 11, True, False
-    
-    bRunning = True
-    Exit Sub
-errhandler:
-    MsgBox ("Se ha producido un error desconocido al inicializar el engine. En juego se cerrara." & " Error: " & Err.number & " - " & Err.Description)
-    Debug.Print "Error Number Returned: " & Err.number
-    End
-
-    bRunning = False
-
-End Sub
-
-Public Sub Engine_Init()
-
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
-    On Error GoTo errhandler:
-
-    Dim DispMode    As D3DDISPLAYMODE
-
-    Dim DispModeBK  As D3DDISPLAYMODE
-
-    Dim D3DWindow   As D3DPRESENT_PARAMETERS
-
-    Dim ColorKeyVal As Long
-    
-    Set SurfaceDB = New clsTexManager
-    
-    Set dX = New DirectX8
-    Set D3D = dX.Direct3DCreate()
-    Set D3DX = New D3DX8
-    
-    D3D.GetAdapterDisplayMode D3DADAPTER_DEFAULT, DispMode
-    D3D.GetAdapterDisplayMode D3DADAPTER_DEFAULT, DispModeBK
-    
-    Call Engine_Font_Initialize
-
-    With D3DWindow
-        .Windowed = True
-
-        'VSync_FPS = True
-        If VSync_FPS = True Then
-            .SwapEffect = D3DSWAPEFFECT_COPY_VSYNC
-        Else
-            .SwapEffect = D3DSWAPEFFECT_DISCARD
-
-        End If
-        
-        .BackBufferFormat = DispMode.format
-        'set color depth
-        .BackBufferWidth = 1024 'frmMain.renderer.ScaleWidth
-        .BackBufferHeight = 768 'frmMain.renderer.ScaleHeight
-        .EnableAutoDepthStencil = 1
-        .AutoDepthStencilFormat = D3DFMT_D16
-        .hDeviceWindow = frmmain.renderer.hwnd
-
-    End With
-
-    DispMode.format = D3DFMT_X8R8G8B8
-
-    Set D3DDevice = D3D.CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, frmmain.renderer.hwnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, D3DWindow)
-                                                            
-    'frmMain.renderer.Width = 545
-    'frmMain.renderer.Height = 415
-    'frmMain.renderer.ScaleMode = 3
-    'frmMain.renderer.ScaleWidth = 545
-    'frmMain.renderer.ScaleHeight = 415
-    
-    HalfWindowTileHeight = (frmmain.renderer.ScaleHeight / 32) \ 2
-    HalfWindowTileWidth = (frmmain.renderer.ScaleWidth / 32) \ 2
-    
-    TileBufferSize = 8
-    TileBufferPixelOffsetX = (TileBufferSize - 1) * 32
-    TileBufferPixelOffsetY = (TileBufferSize - 1) * 32
-    
-    D3DDevice.SetVertexShader FVF
-    
-    '//Transformed and lit vertices dont need lighting
-    '   so we disable it...
-    D3DDevice.SetRenderState D3DRS_LIGHTING, False
-    
-    D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
-    D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
-    D3DDevice.SetRenderState D3DRS_ALPHABLENDENABLE, True
-    
-    Call SurfaceDB.Init(D3DX, D3DDevice, General_Get_Free_Ram_Bytes)
-
-    engineBaseSpeed = 0.018
-    
-    ReDim MapData(XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
-    
-    'Set FPS value to 60 for startup
-    fps = 60
-    FramesPerSecCounter = 60
-    scroll_dialog_pixels_per_frame = 4
-    
-    ScrollPixelsPerFrameX = 8.5
-    ScrollPixelsPerFrameY = 8.5
-    
-    UserPos.x = 50
-    UserPos.y = 50
     
     Estrella.framecounter = 1
     Estrella.GrhIndex = 35764
@@ -551,12 +252,16 @@ Public Sub Engine_Init()
     BarraGris.GrhIndex = 842
     BarraGris.Started = 1
     
-    MinXBorder = XMinMapSize + (frmmain.renderer.ScaleWidth / 64)
-    MaxXBorder = XMaxMapSize - (frmmain.renderer.ScaleWidth / 64)
-    MinYBorder = YMinMapSize + (frmmain.renderer.ScaleHeight / 64)
-    MaxYBorder = YMaxMapSize - (frmmain.renderer.ScaleHeight / 64)
-    MinYBorder = MinYBorder
-
+    Font_Create "Tahoma", 8, True, 0
+    Font_Create "Verdana", 8, False, 0
+    Font_Create "Verdana", 11, True, False
+    
+    ' Colores comunes
+    COLOR_WHITE(0) = D3DColorXRGB(255, 255, 255)
+    COLOR_WHITE(1) = D3DColorXRGB(255, 255, 255)
+    COLOR_WHITE(2) = D3DColorXRGB(255, 255, 255)
+    COLOR_WHITE(3) = D3DColorXRGB(255, 255, 255)
+    
     With Render_Connect_Rect
         .Top = 0
         .Left = 0
@@ -573,55 +278,135 @@ Public Sub Engine_Init()
 
     End With
     
-    D3DDevice.SetRenderState D3DRS_POINTSIZE, Engine_FToDW(2)
-    D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
-    D3DDevice.SetRenderState D3DRS_POINTSPRITE_ENABLE, 1
-    D3DDevice.SetRenderState D3DRS_POINTSCALE_ENABLE, 0
-    
-    Font_Create "Tahoma", 8, True, 0
-    Font_Create "Verdana", 8, False, 0
-    Font_Create "Verdana", 11, True, False
-    
-    ' Colores comunes
-    COLOR_WHITE(0) = D3DColorXRGB(255, 255, 255)
-    COLOR_WHITE(1) = D3DColorXRGB(255, 255, 255)
-    COLOR_WHITE(2) = D3DColorXRGB(255, 255, 255)
-    COLOR_WHITE(3) = D3DColorXRGB(255, 255, 255)
-    
-    bRunning = True
-    Exit Sub
-errhandler:
-    MsgBox ("Se ha producido un error desconocido al inicializar el engine. En juego se cerrara." & " Error Number Returned: " & Err.number)
-    Debug.Print "Error Number Returned: " & Err.number
-    End
+End Sub
 
-    bRunning = False
+Public Sub Engine_Init()
+
+    '*****************************************************
+    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
+    '*****************************************************
+    On Error GoTo errhandler:
+    
+    Dim Modo As String: Modo = GetVar(App.Path & "\..\Recursos\OUTPUT\raoinit.ini", "VIDEO", "Aceleracion")
+    
+    Select Case Modo
+    
+        Case "Auto"
+            If Not Init_DirectDevice(D3DCREATE_HARDWARE_VERTEXPROCESSING) Then
+                If Not Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) Then
+                    If Not Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) Then
+                        
+                        GoTo errhandler
+                        
+                    End If
+                End If
+            End If
+                
+        Case "Hardware"
+            If Init_DirectDevice(D3DCREATE_HARDWARE_VERTEXPROCESSING) = False Then GoTo errhandler
+            Debug.Print "Modo de Renderizado: HARDWARE"
+            
+        Case "Mixed"
+            If Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) = False Then GoTo errhandler
+            Debug.Print "Modo de Renderizado: MIXED"
+        
+        Case Else
+            If Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) = False Then GoTo errhandler
+            Debug.Print "Modo de Renderizado: SOFTWARE"
+    
+    End Select
+    
+    With D3DDevice
+    
+        .SetVertexShader FVF
+    
+        '//Transformed and lit vertices dont need lighting
+        '   so we disable it...
+        .SetRenderState D3DRS_LIGHTING, False
+        
+        .SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
+        .SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
+        .SetRenderState D3DRS_ALPHABLENDENABLE, True
+        
+        .SetRenderState D3DRS_POINTSIZE, Engine_FToDW(2)
+        .SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
+        .SetRenderState D3DRS_POINTSPRITE_ENABLE, 1
+        .SetRenderState D3DRS_POINTSCALE_ENABLE, 0
+    
+    End With
+    
+    ' Carga de texturas
+    Set SurfaceDB = New clsTexManager
+    Call SurfaceDB.Init(D3DX, D3DDevice, General_Get_Free_Ram_Bytes)
+
+    ' Configuracion del motor
+    engineBaseSpeed = 0.018
+    
+    'Set FPS value to 60 for startup
+    fps = 60
+    FramesPerSecCounter = 60
+    scroll_dialog_pixels_per_frame = 4
+    
+    ScrollPixelsPerFrameX = 8.5
+    ScrollPixelsPerFrameY = 8.5
+    
+    Call Engine_InitExtras
+
+    bRunning = True
+    
+    Exit Sub
+    
+errhandler:
+    
+    Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
+                "Asegúrate de tener los drivers gráficos actualizados y la librería DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
+    
+    Debug.Print "Error Number Returned: " & Err.number
+
+    End
 
 End Sub
 
+Public Sub Engine_BeginScene()
+    
+    Call D3DDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, 1#, 1#, 0)
+    Call D3DDevice.BeginScene
+
+End Sub
+
+Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
+
+On Error GoTo ErrorHandler:
+    
+    Call D3DDevice.EndScene
+    Call D3DDevice.Present(DestRect, ByVal 0, hWnd, ByVal 0)
+    
+    Exit Sub
+    
+ErrorHandler:
+
+    If D3DDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
+        
+        Call Engine_Init
+        
+        prgRun = True
+        pausa = False
+        QueRender = 0
+
+    End If
+        
+End Sub
+
 Public Sub Engine_Deinit()
+    
     Erase MapData
     Erase charlist
+    
     Set D3DDevice = Nothing
     Set D3D = Nothing
     Set dX = Nothing
 
 End Sub
-
-Private Function CreateTLVertex(x As Single, y As Single, Z As Single, rhw As Single, color As Long, Specular As Long, tu As Single, tv As Single) As TLVERTEX
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
-    CreateTLVertex.x = x
-    CreateTLVertex.y = y
-    CreateTLVertex.Z = Z
-    CreateTLVertex.rhw = rhw
-    CreateTLVertex.color = color
-    CreateTLVertex.Specular = Specular
-    CreateTLVertex.tu = tu
-    CreateTLVertex.tv = tv
-
-End Function
 
 Public Sub Engine_ActFPS()
 
@@ -672,7 +457,7 @@ Public Sub Draw_GrhIndexColor(ByVal grh_index As Long, ByVal x As Integer, ByVal
 
 End Sub
 
-Private Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
+Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
 
     On Error Resume Next
 
@@ -906,51 +691,6 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
 
 End Sub
 
-Public Function Map_Base_Light_Get() As Long
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Augusto José Rando
-    'Last Modify Date: 6/12/2005
-    '
-    '**************************************************************
-    Map_Base_Light_Get = map_base_light
-
-End Function
-
-Public Function Map_Base_Light_Set(ByVal base_light As Long)
-
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '**************************************************************
-    If map_base_light <> base_light Then
-        map_base_light = base_light
-        
-    End If
-    
-End Function
-
-Public Function Map_Fill(ByVal grh_index As Long, ByVal layer As Byte, Optional ByVal light_base_color As Long = -1, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single) As Boolean
-
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 1/04/2003
-    '
-    '**************************************************************
-    Dim x As Integer
-
-    Dim y As Integer
-    
-    'Base light color
-    If light_base_color <> -1 Then
-        If Not Map_Base_Light_Set(light_base_color) Then Exit Function
-
-    End If
-        
-    Map_Fill = True
-
-End Function
-
 Public Sub render()
 
     '*****************************************************
@@ -958,8 +698,6 @@ Public Sub render()
     '*****************************************************
     Rem On Error GoTo ErrorHandler:
     Dim temp_array(3) As Long
-
-    On Error GoTo ErrorHandler:
     
     If Map_light_base = -1 And Not EfectoEnproceso Then
         Meteo_Engine.Meteo_Logic
@@ -967,10 +705,10 @@ Public Sub render()
         Meteo_Engine.Meteo_Logic
        
     End If
-
-    D3DDevice.BeginScene
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, 1#, 1#, 0
-    ShowNextFrame
+    
+    Call Engine_BeginScene
+    
+    Call ShowNextFrame
 
     frmmain.fps.Caption = "FPS: " & fps
     frmmain.ms.Caption = PingRender & "ms"
@@ -1058,152 +796,15 @@ Public Sub render()
         End If
 
     End If
-
-    D3DDevice.EndScene
-    D3DDevice.Present Render_Main_Rect, ByVal 0, 0, ByVal 0
-
+    
+    Call Engine_EndScene(Render_Main_Rect)
+    
     lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
 
     Exit Sub
-ErrorHandler:
-
-    If D3DDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
-        Call engine.Engine_ReInit
-        prgRun = True
-        pausa = False
-        QueRender = 0
-
-    End If
- 
-End Sub
-
-Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1)
-    
-    If Char_Check(char_index) Then
-        charlist(char_index).dialog = char_dialog
-        charlist(char_index).dialog_color = char_dialog_color
-        charlist(char_index).dialog_life = char_dialog_life
-        charlist(char_index).dialog_font_index = font_index
-        charlist(char_index).dialog_scroll = True
-        charlist(char_index).dialog_offset_counter_y = -(IIf(BodyData(charlist(char_index).iBody).HeadOffset.y = 0, -32, BodyData(charlist(char_index).iBody).HeadOffset.y) / 2)
-        charlist(char_index).AlphaText = 255
-
-    End If
-
-    Dim slot As Integer
-
-    Dim i    As Long
-    
-    slot = BinarySearch(char_index)
-    
-    If slot < 0 Then
-        If dialogCount = MAX_DIALOGS Then Exit Sub  'Out of space! Should never happen....
-        
-        'We need to add it. Get insertion index and move list backwards.
-        slot = Not slot
-        
-        For i = dialogCount To slot + 1 Step -1
-            dialogs(i) = dialogs(i - 1)
-        Next i
-        
-        dialogCount = dialogCount + 1
-
-    End If
-    
-    If char_dialog_life = 250 Then
-
-        With dialogs(slot)
-            .startTime = (GetTickCount() And &H7FFFFFFF)
-            .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(char_dialog))
-            .charindex = char_index
-
-        End With
-
-    Else
-
-        With dialogs(slot)
-            .startTime = (GetTickCount() And &H7FFFFFFF)
-            .lifeTime = (MS_PER_CHAR * Len(char_dialog))
-            .charindex = char_index
-
-        End With
-
-    End If
-    
-End Sub
-
-Private Function BinarySearch(ByVal charindex As Integer) As Integer
-
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 07/28/07
-    'Returns the index of the dialog in the list, or the negation
-    'of the position were it should be if not found (for binary insertion)
-    '**************************************************************
-    Dim min As Long
-
-    Dim max As Long
-
-    Dim mid As Long
-    
-    min = 0
-    max = dialogCount - 1
-    
-    Do While min <= max
-        mid = (min + max) \ 2
-        
-        If dialogs(mid).charindex < charindex Then
-            min = mid + 1
-        ElseIf dialogs(mid).charindex > charindex Then
-            max = mid - 1
-        Else
-            'We found it
-            BinarySearch = mid
-            Exit Function
-
-        End If
-
-    Loop
-    
-    'Not found, return the negation of the position where it should be
-    '(all higher values are to the right of the list and lower values are to the left)
-    BinarySearch = Not min
-
-End Function
-
-Public Sub Char_Dialog_Remove(ByVal char_index As Integer, ByVal Index As Integer)
-
-    If char_index = 0 Then Exit Sub
-
-    If charlist(char_index).AlphaText > 0 Then
-        charlist(char_index).AlphaText = charlist(char_index).AlphaText - (scroll_dialog_pixels_per_frame * timerTicksPerFrame)
-        Exit Sub
-
-    End If
-
-    Dim slot As Integer
-
-    Dim i    As Long
-    
-    slot = BinarySearch(char_index)
-    
-    If slot < 0 Then Exit Sub
-    
-    For i = slot To MAX_DIALOGS - 2
-        dialogs(i) = dialogs(i + 1)
-    Next i
-    
-    dialogCount = dialogCount - 1
-    
-    If Char_Check(char_index) Then
-        charlist(char_index).dialog = ""
-        charlist(char_index).dialog_color = 0
-        charlist(char_index).dialog_life = 0
-
-    End If
 
 End Sub
 
@@ -1627,7 +1228,7 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
 
     If bNieve Then
         If MapDat.NIEVE Then
-            If engine.Engine_Meteo_Particle_Get <> 0 Then
+            If Engine_Meteo_Particle_Get <> 0 Then
                 'Screen positions were hardcoded by now
                 ScreenX = 250
                 ScreenY = 0
@@ -2211,185 +1812,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
 End Sub
 
-Private Function Convert_Tile_To_View_X(ByVal x As Integer) As Integer
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 10/07/2002
-    'Convert tile position into position in view area
-    '**************************************************************
-    'If engine_windowed Then
-    Convert_Tile_To_View_X = ((x - 1) * 32)
-
-    ' Else
-    '  Convert_Tile_To_View_X = view_screen_left + ((x - 1) * base_tile_size)
-    '  End If
-End Function
-
-Private Function Convert_Tile_To_View_Y(ByVal y As Integer) As Integer
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 10/07/2002
-    'Convert tile position into position in view area
-    '**************************************************************
-    ' If engine_windowed Then
-    Convert_Tile_To_View_Y = ((y - 1) * 32)
-
-    'Else
-    '   Convert_Tile_To_View_Y = view_screen_top + ((y - 1) * base_tile_size)
-    'End If
-End Function
-
-Private Function Geometry_Create_TLVertex(ByVal x As Single, ByVal y As Single, ByVal Z As Single, ByVal rhw As Single, ByVal color As Long, ByVal Specular As Long, tu As Single, ByVal tv As Single) As TLVERTEX
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '**************************************************************
-    Geometry_Create_TLVertex.x = x
-    Geometry_Create_TLVertex.y = y
-    Geometry_Create_TLVertex.Z = Z
-    Geometry_Create_TLVertex.rhw = rhw
-    Geometry_Create_TLVertex.color = color
-    Geometry_Create_TLVertex.Specular = Specular
-    Geometry_Create_TLVertex.tu = tu
-    Geometry_Create_TLVertex.tv = tv
-
-End Function
-
-Private Function Geometry_Create_TLVertex2(x As Single, y As Single, Z As Single, rhw As Single, color As Long, Specular As Long, tu1 As Single, tv1 As Single, tu2 As Single, tv2 As Single) As TLVERTEX2
-    'mz
-    Geometry_Create_TLVertex2.x = x
-    Geometry_Create_TLVertex2.y = y
-    Geometry_Create_TLVertex2.Z = Z
-    Geometry_Create_TLVertex2.rhw = rhw
-    Geometry_Create_TLVertex2.color = color
-    Geometry_Create_TLVertex2.Specular = Specular
-    Geometry_Create_TLVertex2.tu1 = tu1
-    Geometry_Create_TLVertex2.tv1 = tv1
-    Geometry_Create_TLVertex2.tu2 = tu2
-    Geometry_Create_TLVertex2.tv2 = tv2
-
-End Function
-
-Private Sub Geometry_Create_Box(ByRef verts() As TLVERTEX, ByRef dest As RECT, ByRef src As RECT, ByRef rgb_list() As Long, Optional ByRef Textures_Width As Long, Optional ByRef Textures_Height As Long, Optional ByVal angle As Single)
-
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 11/17/2002
-    '
-    ' * v1      * v3
-    ' |\        |
-    ' |  \      |
-    ' |    \    |
-    ' |      \  |
-    ' |        \|
-    ' * v0      * v2
-    '**************************************************************
-    Dim x_center    As Single
-
-    Dim y_center    As Single
-
-    Dim radius      As Single
-
-    Dim x_Cor       As Single
-
-    Dim y_Cor       As Single
-
-    Dim left_point  As Single
-
-    Dim right_point As Single
-
-    Dim temp        As Single
-    
-    If angle > 0 Then
-        'Center coordinates on screen of the square
-        x_center = dest.Left + (dest.Right - dest.Left) / 2
-        y_center = dest.Top + (dest.bottom - dest.Top) / 2
-        
-        'Calculate radius
-        radius = Sqr((dest.Right - x_center) ^ 2 + (dest.bottom - y_center) ^ 2)
-        
-        'Calculate left and right points
-        temp = (dest.Right - x_center) / radius
-        right_point = Atn(temp / Sqr(-temp * temp + 1))
-        left_point = PI - right_point
-
-    End If
-    
-    'Calculate screen coordinates of sprite, and only rotate if necessary
-    If angle = 0 Then
-        x_Cor = dest.Left
-        y_Cor = dest.bottom
-    Else
-        x_Cor = x_center + Cos(-left_point - angle) * radius
-        y_Cor = y_center - Sin(-left_point - angle) * radius
-
-    End If
-    
-    '0 - Bottom left vertex
-    If Textures_Width And Textures_Height Then
-        verts(0) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(0), 0, src.Left / Textures_Width, (src.bottom + 1) / Textures_Height)
-    Else
-        verts(0) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(0), 0, 0, 0)
-
-    End If
-
-    'Calculate screen coordinates of sprite, and only rotate if necessary
-    If angle = 0 Then
-        x_Cor = dest.Left
-        y_Cor = dest.Top
-    Else
-        x_Cor = x_center + Cos(left_point - angle) * radius
-        y_Cor = y_center - Sin(left_point - angle) * radius
-
-    End If
-    
-    '1 - Top left vertex
-    If Textures_Width And Textures_Height Then
-        verts(1) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(1), 0, src.Left / Textures_Width, src.Top / Textures_Height)
-    Else
-        verts(1) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(1), 0, 0, 1)
-
-    End If
-
-    'Calculate screen coordinates of sprite, and only rotate if necessary
-    If angle = 0 Then
-        x_Cor = dest.Right
-        y_Cor = dest.bottom
-    Else
-        x_Cor = x_center + Cos(-right_point - angle) * radius
-        y_Cor = y_center - Sin(-right_point - angle) * radius
-
-    End If
-    
-    '2 - Bottom right vertex
-    If Textures_Width And Textures_Height Then
-        verts(2) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(2), 0, (src.Right + 1) / Textures_Width, (src.bottom + 1) / Textures_Height)
-    Else
-        verts(2) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(2), 0, 1, 0)
-
-    End If
-
-    'Calculate screen coordinates of sprite, and only rotate if necessary
-    If angle = 0 Then
-        x_Cor = dest.Right
-        y_Cor = dest.Top
-    Else
-        x_Cor = x_center + Cos(right_point - angle) * radius
-        y_Cor = y_center - Sin(right_point - angle) * radius
-
-    End If
-    
-    '3 - Top right vertex
-    If Textures_Width And Textures_Height Then
-        verts(3) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(3), 0, (src.Right + 1) / Textures_Width, src.Top / Textures_Height)
-    Else
-        verts(3) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(3), 0, 1, 1)
-
-    End If
-
-End Sub
-
 Private Sub Device_Box_Textured_Render_Advance(ByVal GrhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef rgb_list() As Long, ByVal src_x As Integer, ByVal src_y As Integer, ByVal dest_width As Integer, Optional ByVal dest_height As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single)
 
     '**************************************************************
@@ -2844,7 +2266,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                     ' simbolo.framecounter = 1
                     ' simbolo.GrhIndex = 5259 + .simbolo
                     'Call Draw_Grh(TempGrh, PixelOffsetX + 20, PixelOffsetY - 45, 1, 0, colorz, False, 0, 0, 0)
-                    Call engine.Draw_GrhIndex(5259 + .simbolo, PixelOffsetX + 6, PixelOffsetY + .Body.HeadOffset.y - 10)
+                    Call Draw_GrhIndex(5259 + .simbolo, PixelOffsetX + 6, PixelOffsetY + .Body.HeadOffset.y - 10)
                                 
                     ' Debug.Print .simbolo
                 End If
@@ -3600,18 +3022,18 @@ Public Sub Start()
             Select Case QueRender
 
                 Case 0
-                    engine.render
+                    render
                 
                     Check_Keys
                     Moviendose = False
-                    engine.DrawMainInventory
+                    DrawMainInventory
 
                     If HayFormularioAbierto Then
                         If frmComerciar.Visible Then
-                            engine.DrawInterfaceComerciar
+                            DrawInterfaceComerciar
                     
                         ElseIf frmBancoObj.Visible Then
-                            engine.DrawInterfaceBoveda
+                            DrawInterfaceBoveda
 
                         End If
 
@@ -3623,7 +3045,7 @@ Public Sub Start()
                     End If
 
                 Case 1
-                    engine.RenderConnect 48, 49, 0, 0
+                    RenderConnect 48, 49, 0, 0
 
                     If Not frmConnect.Visible Then
                         frmConnect.Show
@@ -3633,10 +3055,10 @@ Public Sub Start()
                     End If
 
                 Case 2
-                    engine.rendercuenta 42, 43, 0, 0
+                    rendercuenta 42, 43, 0, 0
 
                 Case 3
-                    engine.RenderCrearPJ 13, 67, 0, 0
+                    RenderCrearPJ 13, 67, 0, 0
 
             End Select
 
@@ -3665,25 +3087,6 @@ Public Sub Start()
 
 End Sub
 
-Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/03/04
-    'Sets an FX to the character.
-    '***************************************************
-    Dim indice As Byte
-
-    With charlist(charindex)
-        indice = engine.Char_FX_Group_Next_Open(charindex)
-        .FxList(indice).FxIndex = fX
-        Call InitGrh(.FxList(indice), FxData(fX).Animacion)
-        .FxList(indice).Loops = Loops
-
-    End With
-
-End Sub
-
 Public Sub SetMapFx(ByVal x As Byte, ByVal y As Byte, ByVal fX As Integer, ByVal Loops As Integer)
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -3697,7 +3100,7 @@ Public Sub SetMapFx(ByVal x As Byte, ByVal y As Byte, ByVal fX As Integer, ByVal
 
     With MapData(x, y)
     
-        indice = engine.Map_FX_Group_Next_Open(x, y)
+        indice = Map_FX_Group_Next_Open(x, y)
     
         .FxList(indice).FxIndex = fX
         Call InitGrh(.FxList(indice), FxData(fX).Animacion)
@@ -3706,179 +3109,6 @@ Public Sub SetMapFx(ByVal x As Byte, ByVal y As Byte, ByVal fX As Integer, ByVal
     End With
 
 End Sub
-
-Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Heading)
-    '*****************************************************************
-    'Starts the movement of a character in nHeading direction
-    '*****************************************************************
-
-    If nHeading = 0 Then
-        Debug.Print "Heading: " & nHeading
-
-    End If
-
-    On Error Resume Next
-
-    Dim addx As Integer
-
-    Dim addy As Integer
-
-    Dim x    As Integer
-
-    Dim y    As Integer
-
-    Dim nX   As Integer
-
-    Dim nY   As Integer
-    
-    With charlist(charindex)
-        x = .Pos.x
-        y = .Pos.y
-        
-        'Figure out which way to move
-        Select Case nHeading
-
-            Case E_Heading.NORTH
-                addy = -1
-        
-            Case E_Heading.EAST
-                addx = 1
-        
-            Case E_Heading.south
-                addy = 1
-            
-            Case E_Heading.WEST
-                addx = -1
-
-        End Select
-        
-        nX = x + addx
-        nY = y + addy
-        
-        MapData(nX, nY).charindex = charindex
-        .Pos.x = nX
-        .Pos.y = nY
-        MapData(x, y).charindex = 0
-        
-        .MoveOffsetX = -1 * (32 * addx)
-        .MoveOffsetY = -1 * (32 * addy)
-        
-        .Moving = 1
-        
-        'Attached to ladder ;)
-        If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Then
-            .Heading = E_Heading.NORTH
-        Else
-            .Heading = nHeading
-
-        End If
-        
-        .scrollDirectionX = addx
-        .scrollDirectionY = addy
-
-    End With
-    
-    If UserEstado <> 1 Then Call DoPasosFx(charindex)
-    
-    'areas viejos
-    If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
-        Call EraseChar(charindex)
-
-    End If
-    
-End Sub
-
-Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
-
-    On Error Resume Next
-
-    Dim x        As Integer
-
-    Dim y        As Integer
-
-    Dim addx     As Integer
-
-    Dim addy     As Integer
-
-    Dim nHeading As E_Heading
-    
-    With charlist(charindex)
-        x = .Pos.x
-        y = .Pos.y
-        
-        MapData(x, y).charindex = 0
-        
-        addx = nX - x
-        addy = nY - y
-        
-        If Sgn(addx) = 1 Then
-            nHeading = E_Heading.EAST
-
-        End If
-        
-        If Sgn(addx) = -1 Then
-            nHeading = E_Heading.WEST
-
-        End If
-        
-        If Sgn(addy) = -1 Then
-            nHeading = E_Heading.NORTH
-
-        End If
-        
-        If Sgn(addy) = 1 Then
-            nHeading = E_Heading.south
-
-        End If
-        
-        MapData(nX, nY).charindex = charindex
-        
-        .Pos.x = nX
-        .Pos.y = nY
-        
-        .MoveOffsetX = -1 * (TilePixelWidth * addx)
-        .MoveOffsetY = -1 * (TilePixelHeight * addy)
-        
-        .Moving = 1
-        
-        If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Then
-            .Heading = E_Heading.NORTH
-        Else
-            .Heading = nHeading
-
-        End If
-        
-        .scrollDirectionX = Sgn(addx)
-        .scrollDirectionY = Sgn(addy)
-
-    End With
-    
-    If Not EstaPCarea(charindex) Then
-
-        'Call Dialogos.RemoveDialog(CharIndex)
-        'Call Hits.RemoveHit(CharIndex)
-    End If
-
-    If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
-        Call EraseChar(charindex)
-
-    End If
-
-End Sub
-
-Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
-
-    With charlist(charindex).Pos
-        EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
-
-    End With
-
-End Function
-
-Public Function EstaEnArea(ByVal x As Integer, ByVal y As Integer) As Boolean
-    EstaEnArea = x > UserPos.x - MinXBorder And x < UserPos.x + MinXBorder And y > UserPos.y - MinYBorder And y < UserPos.y + MinYBorder
-
-End Function
 
 Private Function Engine_FToDW(f As Single) As Long
 
@@ -3916,11 +3146,10 @@ Public Sub DrawMainInventory()
     InvRect.bottom = frmmain.picInv.ScaleHeight
 
     ' Comenzamos la escena
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET, 0, 0, 0
-    D3DDevice.BeginScene
+    Call Engine_BeginScene
 
     ' Dibujamos el fondo del inventario principal
-    'Call engine.Draw_GrhIndex(6, 0, 0)
+    'Call Draw_GrhIndex(6, 0, 0)
 
     ' Dibujamos items
     Call frmmain.Inventario.DrawInventory
@@ -3929,8 +3158,7 @@ Public Sub DrawMainInventory()
     Call frmmain.Inventario.DrawDraggedItem
 
     ' Presentamos la escena
-    D3DDevice.EndScene
-    D3DDevice.Present InvRect, ByVal 0, frmmain.picInv.hwnd, ByVal 0
+    Call Engine_EndScene(InvRect, frmmain.picInv.hWnd)
 
 End Sub
 
@@ -3947,11 +3175,10 @@ Public Sub DrawInterfaceComerciar()
     InvRect.bottom = frmComerciar.interface.ScaleHeight
 
     ' Comenzamos la escena
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET, 0, 0, 0
-    D3DDevice.BeginScene
+    Call Engine_BeginScene
 
     ' Dibujamos el fondo del inventario de comercio
-    Call engine.Draw_GrhIndex(837, 0, 0)
+    Call Draw_GrhIndex(837, 0, 0)
 
     ' Dibujamos items del NPC
     Call frmComerciar.InvComNpc.DrawInventory
@@ -3982,7 +3209,7 @@ Public Sub DrawInterfaceComerciar()
     ' Si hay alguno seleccionado
     If Not CurrentInventory Is Nothing Then
         ' Dibujo el item seleccionado
-        'Call engine.Draw_GrhColor(CurrentInventory.GrhIndex(CurrentInventory.SelectedItem), 282, 251, COLOR_WHITE)
+        'Call Draw_GrhColor(CurrentInventory.GrhIndex(CurrentInventory.SelectedItem), 282, 251, COLOR_WHITE)
     
         ' Muestro info del item
         Dim str As String
@@ -4023,8 +3250,7 @@ Public Sub DrawInterfaceComerciar()
     End If
 
     ' Presentamos la escena
-    D3DDevice.EndScene
-    D3DDevice.Present InvRect, ByVal 0, frmComerciar.interface.hwnd, ByVal 0
+    Call Engine_EndScene(InvRect, frmComerciar.interface.hWnd)
 
 End Sub
 
@@ -4041,11 +3267,10 @@ Public Sub DrawInterfaceBoveda()
     InvRect.bottom = frmBancoObj.interface.ScaleHeight
 
     ' Comenzamos la escena
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET, 0, 0, 0
-    D3DDevice.BeginScene
+    Call Engine_BeginScene
 
     ' Dibujamos el fondo de la bóveda
-    Call engine.Draw_GrhIndex(838, 0, 0)
+    Call Draw_GrhIndex(838, 0, 0)
 
     ' Dibujamos items de la bóveda
     Call frmBancoObj.InvBoveda.DrawInventory
@@ -4108,8 +3333,7 @@ Public Sub DrawInterfaceBoveda()
     End If
 
     ' Presentamos la escena
-    D3DDevice.EndScene
-    D3DDevice.Present InvRect, ByVal 0, frmBancoObj.interface.hwnd, ByVal 0
+    Call Engine_EndScene(InvRect, frmBancoObj.interface.hWnd)
 
 End Sub
 
@@ -4131,8 +3355,7 @@ Public Sub DrawMapaMundo()
     frmMapaGrande.PlayerView.ScaleHeight = 89
     frmMapaGrande.PlayerView.ScaleWidth = 177
     
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET, 0, 0, 0
-    D3DDevice.BeginScene
+    Call Engine_BeginScene
         
     Dim color(0 To 3) As Long
 
@@ -4169,9 +3392,7 @@ Public Sub DrawMapaMundo()
     y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
     Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
     
-    D3DDevice.EndScene
-    
-    D3DDevice.Present re, ByVal 0, frmMapaGrande.PlayerView.hwnd, ByVal 0
+    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hWnd)
 
 End Sub
 
@@ -4357,394 +3578,6 @@ Private Function Grh_Check(ByVal grh_index As Long) As Boolean
 
 End Function
 
-Public Function Char_Particle_Group_Create(ByVal char_index As Integer, ByRef grh_index_list() As Long, ByRef rgb_list() As Long, _
-   Optional ByVal particle_count As Long = 20, Optional ByVal stream_type As Long = 1, _
-   Optional ByVal alpha_blend As Boolean, Optional ByVal alive_counter As Long = -1, _
-   Optional ByVal frame_speed As Single = 0.5, Optional ByVal id As Long, _
-   Optional ByVal x1 As Integer, Optional ByVal y1 As Integer, Optional ByVal angle As Integer, _
-   Optional ByVal vecx1 As Integer, Optional ByVal vecx2 As Integer, _
-   Optional ByVal vecy1 As Integer, Optional ByVal vecy2 As Integer, _
-   Optional ByVal life1 As Integer, Optional ByVal life2 As Integer, _
-   Optional ByVal fric As Integer, Optional ByVal spin_speedL As Single, _
-   Optional ByVal gravity As Boolean, Optional grav_strength As Long, _
-   Optional bounce_strength As Long, Optional ByVal x2 As Integer, Optional ByVal y2 As Integer, _
-   Optional ByVal XMove As Boolean, Optional ByVal move_x1 As Integer, Optional ByVal move_x2 As Integer, _
-   Optional ByVal move_y1 As Integer, Optional ByVal move_y2 As Integer, Optional ByVal YMove As Boolean, _
-   Optional ByVal spin_speedH As Single, Optional ByVal spin As Boolean, Optional grh_resize As Boolean, _
-   Optional grh_resizex As Integer, Optional grh_resizey As Integer)
-    '**************************************************************
-    'Author: Augusto José Rando
-    '**************************************************************
-
-    Dim char_part_free_index As Integer
-    
-    Rem If charlist(char_index).Particula = stream_type Then Exit Function
-    'If Char_Particle_Group_Find(char_index, stream_type) Then Exit Function ' hay que ver si dejar o sacar esto...
-    If Not Char_Check(char_index) Then Exit Function
-    char_part_free_index = Char_Particle_Group_Next_Open(char_index)
-    
-    If char_part_free_index > 0 Then
-        Char_Particle_Group_Create = Particle_Group_Next_Open
-        Char_Particle_Group_Make Char_Particle_Group_Create, char_index, char_part_free_index, particle_count, stream_type, grh_index_list(), rgb_list(), alpha_blend, alive_counter, frame_speed, id, x1, y1, angle, vecx1, vecx2, vecy1, vecy2, life1, life2, fric, spin_speedL, gravity, grav_strength, bounce_strength, x2, y2, XMove, move_x1, move_x2, move_y1, move_y2, YMove, spin_speedH, spin, grh_resize, grh_resizex, grh_resizey
-
-    End If
-
-End Function
-
-Public Function Char_Check(ByVal char_index As Integer) As Boolean
-
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 1/04/2003
-    '
-    '**************************************************************
-    'check char_index
-    If char_index > 0 And char_index <= LastChar Then
-        Char_Check = (charlist(char_index).Heading > 0)
-
-    End If
-    
-End Function
-
-Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal stream_type As Long)
-    '**************************************************************
-    'Author: Augusto José Rando
-    '**************************************************************
-
-    Dim char_part_index As Integer
-
-    If Char_Check(char_index) Then
-        char_part_index = Char_Particle_Group_Find(char_index, stream_type)
-
-        If char_part_index = -1 Then Exit Function
-        If char_part_index = 0 Then Exit Function
-        
-        'Call Particle_Group_Remove(char_part_index)
-        Rem  particle_group_list(char_part_index).alive_counter = 20
-        particle_group_list(char_part_index).alive_counter = 0
-        particle_group_list(char_part_index).never_die = False
-        particle_group_list(char_part_index).destruir = True
-     
-        'Ladder
-    End If
-
-End Function
-
-Public Function Char_Particle_Group_Remove_All(ByVal char_index As Integer)
-
-    '**************************************************************
-    'Author: Augusto José Rando
-    '**************************************************************
-    Dim i As Integer
-    
-    If Char_Check(char_index) Then
-
-        For i = 1 To charlist(char_index).particle_count
-
-            If charlist(char_index).particle_group(i) <> 0 Then Call Particle_Group_Remove(charlist(char_index).particle_group(i))
-        Next i
-
-    End If
-    
-End Function
-
-Private Function Char_Particle_Group_Find(ByVal char_index As Integer, ByVal stream_type As Long) As Integer
-
-    '*****************************************************************
-    'Author: Augusto José Rando
-    'Modified: returns slot or -1
-    '*****************************************************************
-    On Error GoTo ErrorHandler:
-
-    Dim i As Integer
-
-    For i = 1 To charlist(char_index).particle_count
-
-        If particle_group_list(charlist(char_index).particle_group(i)).stream_type = stream_type Then
-            If particle_group_list(charlist(char_index).particle_group(i)).destruir = False Then
-                Char_Particle_Group_Find = charlist(char_index).particle_group(i)
-                Exit Function
-
-            End If
-
-        End If
-
-    Next i
-
-    Char_Particle_Group_Find = -1
-ErrorHandler:
-
-End Function
-
-Private Function Char_Particle_Group_Next_Open(ByVal char_index As Integer) As Integer
-
-    '*****************************************************************
-    'Author: Augusto José Rando
-    '*****************************************************************
-    On Error GoTo ErrorHandler:
-
-    Dim loopc As Long
-    
-    If charlist(char_index).particle_count = 0 Then
-        charlist(char_index).particle_count = 1
-        ReDim charlist(char_index).particle_group(1 To 1)
-        Char_Particle_Group_Next_Open = 1
-        Exit Function
-
-    End If
-    
-    loopc = 1
-
-    Do Until charlist(char_index).particle_group(loopc) = 0
-
-        If loopc = charlist(char_index).particle_count Then
-            Char_Particle_Group_Next_Open = charlist(char_index).particle_count + 1
-            charlist(char_index).particle_count = Char_Particle_Group_Next_Open
-            ReDim Preserve charlist(char_index).particle_group(1 To Char_Particle_Group_Next_Open)
-            Exit Function
-
-        End If
-
-        loopc = loopc + 1
-    Loop
-    
-    Char_Particle_Group_Next_Open = loopc
-
-    Exit Function
-
-ErrorHandler:
-    charlist(char_index).particle_count = 1
-    ReDim charlist(char_index).particle_group(1 To 1)
-    Char_Particle_Group_Next_Open = 1
-
-End Function
-
-Public Function Char_FX_Group_Next_Open(ByVal char_index As Integer) As Integer
-
-    '*****************************************************************
-    'Author: Augusto José Rando
-    '*****************************************************************
-    On Error GoTo ErrorHandler:
-
-    Dim loopc As Long
-    
-    If charlist(char_index).FxCount = 0 Then
-        charlist(char_index).FxCount = 1
-        ReDim charlist(char_index).FxList(1 To 1)
-        Char_FX_Group_Next_Open = 1
-        Exit Function
-
-    End If
-    
-    loopc = 1
-
-    Do Until charlist(char_index).FxList(loopc).FxIndex = 0
-
-        If loopc = charlist(char_index).FxCount Then
-            Char_FX_Group_Next_Open = charlist(char_index).FxCount + 1
-            charlist(char_index).FxCount = Char_FX_Group_Next_Open
-            ReDim Preserve charlist(char_index).FxList(1 To Char_FX_Group_Next_Open)
-            Exit Function
-
-        End If
-
-        loopc = loopc + 1
-    Loop
-
-    Char_FX_Group_Next_Open = loopc
-    Exit Function
-
-ErrorHandler:
-    charlist(char_index).FxCount = 1
-    ReDim charlist(char_index).FxList(1 To 1)
-    Char_FX_Group_Next_Open = 1
-
-End Function
-
-Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Integer
-
-    '*****************************************************************
-    'Author: Augusto José Rando
-    '*****************************************************************
-    On Error GoTo ErrorHandler:
-
-    Dim loopc As Long
-    
-    If MapData(x, y).FxCount = 0 Then
-        MapData(x, y).FxCount = 1
-        ReDim MapData(x, y).FxList(1 To 1)
-        Map_FX_Group_Next_Open = 1
-        Exit Function
-
-    End If
-    
-    loopc = 1
-
-    Do Until MapData(x, y).FxList(loopc).FxIndex = 0
-
-        If loopc = MapData(x, y).FxCount Then
-            Map_FX_Group_Next_Open = MapData(x, y).FxCount + 1
-            MapData(x, y).FxCount = Map_FX_Group_Next_Open
-            ReDim Preserve MapData(x, y).FxList(1 To Map_FX_Group_Next_Open)
-            Exit Function
-
-        End If
-
-        loopc = loopc + 1
-    Loop
-
-    Map_FX_Group_Next_Open = loopc
-    Exit Function
-
-ErrorHandler:
-    MapData(x, y).FxCount = 1
-    ReDim MapData(x, y).FxList(1 To 1)
-    Map_FX_Group_Next_Open = 1
-
-End Function
-
-Private Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
-
-    On Error Resume Next
-
-    ' If meteo_estado = 3 Or meteo_estado = 4 Then Exit Sub
-    ' If UserEstado = 1 Then Exit Sub
-    ' If bTecho Then Exit Sub
-    Dim CurrentGrhIndex As Long
-
-    If grh.GrhIndex = 0 Then Exit Sub
-    'Por ladder
-    
-    CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(grh.framecounter)
-
-    If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-        x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
-
-    End If
-
-    If GrhData(grh.GrhIndex).TileHeight <> 1 Then
-        y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
-
-    End If
-
-    Dim SRGB(3) As Long
-
-    SRGB(0) = D3DColorARGB(50, 0, 0, 0)
-    SRGB(1) = D3DColorARGB(50, 0, 0, 0)
-    SRGB(2) = D3DColorARGB(50, 0, 0, 0)
-    SRGB(3) = D3DColorARGB(50, 0, 0, 0)
-    'Por ladder
-    Device_Box_Textured_Render CurrentGrhIndex, x + 5, y + 5, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, SRGB(), GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, False, 0.4
-
-    'Por ladder
-End Sub
-
-Sub Engine_Weather_UpdateFog()
-
-    '*****************************************************************
-    'Update the fog effects
-    '*****************************************************************
-    Dim TempGrh     As grh
-
-    Dim i           As Long
-
-    Dim x           As Long
-
-    Dim y           As Long
-
-    Dim cc(3)       As Long
-
-    Dim ElapsedTime As Single
-
-    ElapsedTime = Engine_ElapsedTime
-
-    If WeatherFogCount = 0 Then WeatherFogCount = 13
-
-    WeatherFogX1 = WeatherFogX1 + (ElapsedTime * (0.018 + Rnd * 0.01)) + (LastOffsetX - ParticleOffsetX)
-    WeatherFogY1 = WeatherFogY1 + (ElapsedTime * (0.013 + Rnd * 0.01)) + (LastOffsetY - ParticleOffsetY)
-    
-    Do While WeatherFogX1 < -512
-        WeatherFogX1 = WeatherFogX1 + 512
-    Loop
-
-    Do While WeatherFogY1 < -512
-        WeatherFogY1 = WeatherFogY1 + 512
-    Loop
-
-    Do While WeatherFogX1 > 0
-        WeatherFogX1 = WeatherFogX1 - 512
-    Loop
-
-    Do While WeatherFogY1 > 0
-        WeatherFogY1 = WeatherFogY1 - 512
-    Loop
-    
-    WeatherFogX2 = WeatherFogX2 - (ElapsedTime * (0.037 + Rnd * 0.01)) + (LastOffsetX - ParticleOffsetX)
-    WeatherFogY2 = WeatherFogY2 - (ElapsedTime * (0.021 + Rnd * 0.01)) + (LastOffsetY - ParticleOffsetY)
-
-    Do While WeatherFogX2 < -512
-        WeatherFogX2 = WeatherFogX2 + 512
-    Loop
-
-    Do While WeatherFogY2 < -512
-        WeatherFogY2 = WeatherFogY2 + 512
-    Loop
-
-    Do While WeatherFogX2 > 0
-        WeatherFogX2 = WeatherFogX2 - 512
-    Loop
-
-    Do While WeatherFogY2 > 0
-        WeatherFogY2 = WeatherFogY2 - 512
-    Loop
-
-    TempGrh.framecounter = 1
-    
-    'Render fog 2
-    TempGrh.GrhIndex = 32014
-    x = 2
-    y = -1
-
-    cc(1) = D3DColorARGB(AlphaNiebla, 255, 255, 255)
-    cc(2) = D3DColorARGB(AlphaNiebla, 255, 255, 255)
-    cc(3) = D3DColorARGB(AlphaNiebla, 255, 255, 255)
-    cc(0) = D3DColorARGB(AlphaNiebla, 255, 255, 255)
-
-    For i = 1 To WeatherFogCount
-        Draw_Grh TempGrh, (x * 512) + WeatherFogX2, (y * 512) + WeatherFogY2, 0, 0, cc()
-        x = x + 1
-
-        If x > (1 + (ScreenWidth \ 512)) Then
-            x = 0
-            y = y + 1
-
-        End If
-
-    Next i
-            
-    'Render fog 1
-    TempGrh.GrhIndex = 32015
-    x = 0
-    y = 0
-    cc(1) = D3DColorARGB(AlphaNiebla, 255, 255, 255)
-    cc(2) = D3DColorARGB(AlphaNiebla, 255, 255, 255)
-    cc(3) = D3DColorARGB(AlphaNiebla, 255, 255, 255)
-    cc(0) = D3DColorARGB(AlphaNiebla, 255, 255, 255)
-
-    For i = 1 To WeatherFogCount
-        Draw_Grh TempGrh, (x * 512) + WeatherFogX1, (y * 512) + WeatherFogY1, 0, 0, cc()
-        x = x + 1
-
-        If x > (2 + (ScreenWidth \ 512)) Then
-            x = 0
-            y = y + 1
-
-        End If
-
-    Next i
-
-End Sub
-
 Function Engine_PixelPosX(ByVal x As Integer) As Integer
     '*****************************************************************
     'Converts a tile position to a screen position
@@ -4761,7 +3594,7 @@ Function Engine_PixelPosY(ByVal y As Integer) As Integer
 
 End Function
 
-Private Function Engine_ElapsedTime() As Long
+Function Engine_ElapsedTime() As Long
 
     '**************************************************************
     'Gets the time that past since the last call
@@ -4890,1708 +3723,9 @@ Private Sub Renderizar_AuraCiego(ByVal aura_index As String, ByVal x As Integer,
     
 End Sub
 
-Private Sub Engine_Font_Initialize()
-
-    Dim a As Integer
-
-    Fuentes(1).Tamanio = 9
-    Fuentes(1).Caracteres(48) = 21452
-    Fuentes(1).Caracteres(49) = 21453
-    Fuentes(1).Caracteres(50) = 21454
-    Fuentes(1).Caracteres(51) = 21455
-    Fuentes(1).Caracteres(52) = 21456
-    Fuentes(1).Caracteres(53) = 21457
-    Fuentes(1).Caracteres(54) = 21458
-    Fuentes(1).Caracteres(55) = 21459
-    Fuentes(1).Caracteres(56) = 21460
-    Fuentes(1).Caracteres(57) = 21461
-
-    For a = 0 To 25
-        Fuentes(1).Caracteres(a + 97) = 21400 + a
-    Next a
-
-    For a = 0 To 25
-        Fuentes(1).Caracteres(a + 65) = 21426 + a
-    Next a
-
-    Fuentes(1).Caracteres(33) = 21462
-    Fuentes(1).Caracteres(161) = 21463
-    Fuentes(1).Caracteres(34) = 21464
-    Fuentes(1).Caracteres(36) = 21465
-    Fuentes(1).Caracteres(191) = 21466
-    Fuentes(1).Caracteres(35) = 21467
-    Fuentes(1).Caracteres(36) = 21468
-    Fuentes(1).Caracteres(37) = 21469
-    Fuentes(1).Caracteres(38) = 21470
-    Fuentes(1).Caracteres(47) = 21471
-    Fuentes(1).Caracteres(92) = 21472
-    Fuentes(1).Caracteres(40) = 21473
-    Fuentes(1).Caracteres(41) = 21474
-    Fuentes(1).Caracteres(61) = 21475
-    Fuentes(1).Caracteres(39) = 21476
-    Fuentes(1).Caracteres(123) = 21477
-    Fuentes(1).Caracteres(125) = 21478
-    Fuentes(1).Caracteres(95) = 21479
-    Fuentes(1).Caracteres(45) = 21480
-    Fuentes(1).Caracteres(63) = 21465
-    Fuentes(1).Caracteres(64) = 21481
-    Fuentes(1).Caracteres(94) = 21482
-    Fuentes(1).Caracteres(91) = 21483
-    Fuentes(1).Caracteres(93) = 21484
-    Fuentes(1).Caracteres(60) = 21485
-    Fuentes(1).Caracteres(62) = 21486
-    Fuentes(1).Caracteres(42) = 21487
-    Fuentes(1).Caracteres(43) = 21488
-    Fuentes(1).Caracteres(46) = 21489
-    Fuentes(1).Caracteres(44) = 21490
-    Fuentes(1).Caracteres(58) = 21491
-    Fuentes(1).Caracteres(59) = 21492
-    Fuentes(1).Caracteres(124) = 21493
-    Fuentes(1).Caracteres(252) = 21800
-    Fuentes(1).Caracteres(220) = 21801
-    Fuentes(1).Caracteres(225) = 21802
-    Fuentes(1).Caracteres(233) = 21803
-    Fuentes(1).Caracteres(237) = 21804
-    Fuentes(1).Caracteres(243) = 21805
-    Fuentes(1).Caracteres(250) = 21806
-    Fuentes(1).Caracteres(253) = 21807
-    Fuentes(1).Caracteres(193) = 21808
-    Fuentes(1).Caracteres(201) = 21809
-    Fuentes(1).Caracteres(205) = 21810
-    Fuentes(1).Caracteres(211) = 21811
-    Fuentes(1).Caracteres(218) = 21812
-    Fuentes(1).Caracteres(221) = 21813
-    Fuentes(1).Caracteres(224) = 21814
-    Fuentes(1).Caracteres(232) = 21815
-    Fuentes(1).Caracteres(236) = 21816
-    Fuentes(1).Caracteres(242) = 21817
-    Fuentes(1).Caracteres(249) = 21818
-    Fuentes(1).Caracteres(192) = 21819
-    Fuentes(1).Caracteres(200) = 21820
-    Fuentes(1).Caracteres(204) = 21821
-    Fuentes(1).Caracteres(210) = 21822
-    Fuentes(1).Caracteres(217) = 21823
-    Fuentes(1).Caracteres(241) = 21824
-    Fuentes(1).Caracteres(209) = 21825
-    Fuentes(1).Caracteres(196) = 25238
-    Fuentes(1).Caracteres(194) = 25239
-    Fuentes(1).Caracteres(203) = 25240
-    Fuentes(1).Caracteres(207) = 25241
-    Fuentes(1).Caracteres(214) = 25242
-    Fuentes(1).Caracteres(212) = 25243
-
-    Fuentes(2).Tamanio = 9
-    Fuentes(2).Caracteres(97) = 21936
-    Fuentes(2).Caracteres(108) = 21937
-    Fuentes(2).Caracteres(115) = 21938
-    Fuentes(2).Caracteres(70) = 21939
-    Fuentes(2).Caracteres(48) = 21940
-    Fuentes(2).Caracteres(49) = 21941
-    Fuentes(2).Caracteres(50) = 21942
-    Fuentes(2).Caracteres(51) = 21943
-    Fuentes(2).Caracteres(52) = 21944
-    Fuentes(2).Caracteres(53) = 21945
-    Fuentes(2).Caracteres(54) = 21946
-    Fuentes(2).Caracteres(55) = 21947
-    Fuentes(2).Caracteres(56) = 21948
-    Fuentes(2).Caracteres(57) = 21949
-    Fuentes(2).Caracteres(33) = 21950
-    Fuentes(2).Caracteres(161) = 21951
-    Fuentes(2).Caracteres(42) = 21952
-
-    Fuentes(3).Tamanio = 40
-    Fuentes(3).Caracteres(48) = 20428 '0
-    Fuentes(3).Caracteres(49) = 20429 '1
-    Fuentes(3).Caracteres(50) = 20430 '2
-    Fuentes(3).Caracteres(51) = 20431 '3
-    Fuentes(3).Caracteres(52) = 20432 '4
-    Fuentes(3).Caracteres(53) = 20433 '5
-    Fuentes(3).Caracteres(54) = 20434 '6
-    Fuentes(3).Caracteres(55) = 20435 '7
-    Fuentes(3).Caracteres(56) = 20436 '8
-    Fuentes(3).Caracteres(57) = 20437 '9
-
-    For a = 0 To 25
-        Fuentes(3).Caracteres(a + 97) = 20477 + a 'Desde la a hasta la z (sin ñ)
-    Next a
-
-    For a = 0 To 25
-        Fuentes(3).Caracteres(a + 65) = 20445 + a 'Desde la A hasta la Z (sin Ñ)
-
-    Next a
-
-    Fuentes(3).Caracteres(33) = 20413 '!
-    Fuentes(3).Caracteres(161) = 20541 '¡
-    Fuentes(3).Caracteres(34) = 20414 '"
-    Fuentes(3).Caracteres(191) = 8488 '¿
-    Fuentes(3).Caracteres(35) = 8332 '#
-    Fuentes(3).Caracteres(36) = 20416    '$
-    Fuentes(3).Caracteres(37) = 20417 '%
-    Fuentes(3).Caracteres(38) = 20418 '&
-    Fuentes(3).Caracteres(47) = 20427 '/
-    Fuentes(3).Caracteres(92) = 8389 '\
-    Fuentes(3).Caracteres(40) = 20420 '(
-    Fuentes(3).Caracteres(41) = 20421 ')
-    Fuentes(3).Caracteres(61) = 20441 '=
-    Fuentes(3).Caracteres(39) = 24930 ''
-    Fuentes(3).Caracteres(123) = 24932 ' '
-    Fuentes(3).Caracteres(125) = 24931 '}
-    Fuentes(3).Caracteres(95) = 20475  '_
-    Fuentes(3).Caracteres(45) = 20425 '-
-    Fuentes(3).Caracteres(63) = 20443 ' ?
-    Fuentes(3).Caracteres(64) = 20444 '@
-    Fuentes(3).Caracteres(94) = 20516 '^
-    Fuentes(3).Caracteres(91) = 8388 '[
-    Fuentes(3).Caracteres(93) = 8390 ']
-    Fuentes(3).Caracteres(60) = 20440 '<
-    Fuentes(3).Caracteres(62) = 20442 '>
-    Fuentes(3).Caracteres(42) = 20422 '*
-    Fuentes(3).Caracteres(43) = 20423 '+
-    Fuentes(3).Caracteres(46) = 20426 '.
-    Fuentes(3).Caracteres(44) = 20510 ',
-    Fuentes(3).Caracteres(58) = 8355 ':
-    Fuentes(3).Caracteres(59) = 8356 ';
-    Fuentes(3).Caracteres(124) = 20504 '|
-    Fuentes(3).Caracteres(252) = 24948 '    ü
-    Fuentes(3).Caracteres(220) = 24949 'Ü
-    Fuentes(3).Caracteres(225) = 8490 'á
-    Fuentes(3).Caracteres(233) = 8498 'é
-    Fuentes(3).Caracteres(237) = 8502 'í
-    Fuentes(3).Caracteres(243) = 8508 'ó
-    Fuentes(3).Caracteres(250) = 8515 'ú
-    Fuentes(3).Caracteres(253) = 24955 'ý
-    Fuentes(3).Caracteres(193) = 8490 'Á
-    Fuentes(3).Caracteres(201) = 8498 'É
-    Fuentes(3).Caracteres(205) = 8502 'Í
-    Fuentes(3).Caracteres(211) = 8508 'Ó
-    Fuentes(3).Caracteres(218) = 8515 'Ú
-    Fuentes(3).Caracteres(221) = 24961 'Ý
-    Fuentes(3).Caracteres(224) = 24962 'à
-    Fuentes(3).Caracteres(232) = 24963 'è
-    Fuentes(3).Caracteres(236) = 24964 'ì
-    Fuentes(3).Caracteres(242) = 24965 'ò
-    Fuentes(3).Caracteres(249) = 24966 'ù
-    Fuentes(3).Caracteres(192) = 24967 'ü
-    Fuentes(3).Caracteres(200) = 24968 '
-    Fuentes(3).Caracteres(204) = 24969 '
-    Fuentes(3).Caracteres(210) = 24970 '
-    Fuentes(3).Caracteres(217) = 24971 '
-    Fuentes(3).Caracteres(241) = 8506 'ñ
-    Fuentes(3).Caracteres(209) = 24872 '
-    Fuentes(3).Caracteres(196) = 24874 '
-    Fuentes(3).Caracteres(194) = 24875 '
-    Fuentes(3).Caracteres(203) = 24876 '
-    Fuentes(3).Caracteres(207) = 24877 '
-    Fuentes(3).Caracteres(214) = 24878 '
-    Fuentes(3).Caracteres(212) = 24879 '
-
-    Fuentes(3).Caracteres(172) = 20552 '¬
-    Fuentes(3).Caracteres(186) = 20556 'º
-
-    Fuentes(4).Tamanio = 3
-    Fuentes(4).Caracteres(48) = 13852
-    Fuentes(4).Caracteres(49) = 13853
-    Fuentes(4).Caracteres(50) = 13854
-    Fuentes(4).Caracteres(51) = 13855
-    Fuentes(4).Caracteres(52) = 13856
-    Fuentes(4).Caracteres(53) = 13857
-    Fuentes(4).Caracteres(54) = 13858
-    Fuentes(4).Caracteres(55) = 13859
-    Fuentes(4).Caracteres(56) = 13860
-    Fuentes(4).Caracteres(57) = 13861
-
-    For a = 0 To 25
-        Fuentes(4).Caracteres(a + 97) = 13800 + a
-    Next a
-
-    For a = 0 To 25
-        Fuentes(4).Caracteres(a + 65) = 13826 + a
-    Next a
-
-    Fuentes(4).Caracteres(33) = 13862
-    Fuentes(4).Caracteres(161) = 13863
-    Fuentes(4).Caracteres(34) = 13864
-    Fuentes(4).Caracteres(36) = 13865
-    Fuentes(4).Caracteres(191) = 13866
-    Fuentes(4).Caracteres(35) = 13867
-    Fuentes(4).Caracteres(36) = 13868
-    Fuentes(4).Caracteres(37) = 13869
-    Fuentes(4).Caracteres(38) = 13870
-    Fuentes(4).Caracteres(47) = 13871
-    Fuentes(4).Caracteres(92) = 13872
-    Fuentes(4).Caracteres(40) = 13873
-    Fuentes(4).Caracteres(41) = 13874
-    Fuentes(4).Caracteres(61) = 13875
-    Fuentes(4).Caracteres(39) = 13876
-    Fuentes(4).Caracteres(123) = 13877
-    Fuentes(4).Caracteres(125) = 13878
-    Fuentes(4).Caracteres(95) = 13879
-    Fuentes(4).Caracteres(45) = 13880
-    Fuentes(4).Caracteres(63) = 13865
-    Fuentes(4).Caracteres(64) = 13881
-    Fuentes(4).Caracteres(94) = 13882
-    Fuentes(4).Caracteres(91) = 13883
-    Fuentes(4).Caracteres(93) = 13884
-    Fuentes(4).Caracteres(60) = 13885
-    Fuentes(4).Caracteres(62) = 13886
-    Fuentes(4).Caracteres(42) = 13887
-    Fuentes(4).Caracteres(43) = 13888
-    Fuentes(4).Caracteres(46) = 13889
-    Fuentes(4).Caracteres(44) = 13890
-    Fuentes(4).Caracteres(58) = 13891
-    Fuentes(4).Caracteres(59) = 13892
-    Fuentes(4).Caracteres(124) = 13893
-
-    Fuentes(4).Caracteres(252) = 24948 '    ü
-    Fuentes(4).Caracteres(220) = 24949 'Ü
-    Fuentes(3).Caracteres(225) = 8490 'á
-    Fuentes(3).Caracteres(233) = 8498 'é
-    Fuentes(3).Caracteres(237) = 8502 'í
-    Fuentes(3).Caracteres(243) = 8508 'ó
-    Fuentes(3).Caracteres(250) = 8515 'ú
-    Fuentes(3).Caracteres(253) = 24955 'ý
-    Fuentes(3).Caracteres(193) = 8490 'Á
-    Fuentes(3).Caracteres(201) = 8498 'É
-    Fuentes(3).Caracteres(205) = 8502 'Í
-    Fuentes(3).Caracteres(211) = 8508 'Ó
-    Fuentes(3).Caracteres(218) = 8515 'Ú
-    Fuentes(3).Caracteres(221) = 24961 'Ý
-    Fuentes(3).Caracteres(224) = 24962 'à
-    Fuentes(3).Caracteres(232) = 24963 'è
-    Fuentes(3).Caracteres(236) = 24964 'ì
-    Fuentes(3).Caracteres(242) = 24965 'ò
-    Fuentes(3).Caracteres(249) = 24966 'ù
-    Fuentes(3).Caracteres(192) = 24967 'ü
-    Fuentes(3).Caracteres(200) = 24968 '
-    Fuentes(3).Caracteres(204) = 24969 '
-    Fuentes(3).Caracteres(210) = 24970 '
-    Fuentes(3).Caracteres(217) = 24971 '
-    Fuentes(3).Caracteres(241) = 8506 'ñ
-    Fuentes(3).Caracteres(209) = 24872 '
-    Fuentes(3).Caracteres(196) = 24874 '
-    Fuentes(3).Caracteres(194) = 24875 '
-    Fuentes(3).Caracteres(203) = 24876 '
-    Fuentes(3).Caracteres(207) = 24877 '
-    Fuentes(3).Caracteres(214) = 24878 '
-    Fuentes(3).Caracteres(212) = 24879 '
-
-    Fuentes(3).Caracteres(172) = 20552 '¬
-    Fuentes(3).Caracteres(186) = 20556 'º
-
-    Fuentes(1).Caracteres(196) = 25238
-    Fuentes(1).Caracteres(194) = 25239
-    Fuentes(1).Caracteres(203) = 25240
-    Fuentes(1).Caracteres(207) = 25241
-    Fuentes(1).Caracteres(214) = 25242
-    Fuentes(1).Caracteres(212) = 25243
-
-    Fuentes(5).Tamanio = 50
-    Fuentes(5).Caracteres(48) = 30127
-    Fuentes(5).Caracteres(49) = 30128
-    Fuentes(5).Caracteres(50) = 30129
-    Fuentes(5).Caracteres(51) = 30130
-    Fuentes(5).Caracteres(52) = 30131
-    Fuentes(5).Caracteres(53) = 30132
-    Fuentes(5).Caracteres(54) = 30133
-    Fuentes(5).Caracteres(55) = 30134
-    Fuentes(5).Caracteres(56) = 30135
-    Fuentes(5).Caracteres(57) = 30136
-
-    For a = 0 To 25
-        Fuentes(5).Caracteres(a + 97) = 30176 + a
-    Next a
-
-    For a = 0 To 25
-        Fuentes(5).Caracteres(a + 65) = 30144 + a
-    Next a
-
-    Fuentes(5).Caracteres(33) = 30112 '!
-    Fuentes(5).Caracteres(161) = 20541 '¡
-    Fuentes(5).Caracteres(34) = 30113 '"
-    Fuentes(5).Caracteres(191) = 8488 '¿
-    Fuentes(5).Caracteres(35) = 8332 '#
-    Fuentes(5).Caracteres(36) = 20416    '$
-    Fuentes(5).Caracteres(37) = 20417 '%
-    Fuentes(5).Caracteres(38) = 20418 '&
-    Fuentes(5).Caracteres(47) = 20427 '/
-    Fuentes(5).Caracteres(92) = 8389 '\
-    Fuentes(5).Caracteres(40) = 30119 '(
-    Fuentes(5).Caracteres(41) = 30120 ')
-    Fuentes(5).Caracteres(61) = 30140 '=
-    Fuentes(5).Caracteres(39) = 24930 ''
-    Fuentes(5).Caracteres(123) = 24932 ' '
-    Fuentes(5).Caracteres(125) = 24931 '}
-    Fuentes(5).Caracteres(95) = 20475  '_
-    Fuentes(5).Caracteres(45) = 20425 '-
-    Fuentes(5).Caracteres(63) = 20443 ' ?
-    Fuentes(5).Caracteres(64) = 20444 '@
-    Fuentes(5).Caracteres(94) = 20516 '^
-    Fuentes(5).Caracteres(91) = 8388 '[
-    Fuentes(5).Caracteres(93) = 8390 ']
-    Fuentes(5).Caracteres(60) = 30139 '<
-    Fuentes(5).Caracteres(62) = 30141 '>
-    Fuentes(5).Caracteres(42) = 20422 '*
-    Fuentes(5).Caracteres(43) = 20423 '+
-    Fuentes(5).Caracteres(46) = 20426 '.
-    Fuentes(5).Caracteres(44) = 20510 ',
-    Fuentes(5).Caracteres(58) = 8355 ':
-    Fuentes(5).Caracteres(59) = 8356 ';
-    Fuentes(5).Caracteres(124) = 20504 '|
-    Fuentes(5).Caracteres(252) = 24948 '    ü
-    Fuentes(5).Caracteres(220) = 24949 'Ü
-    Fuentes(5).Caracteres(225) = 30304 'á
-    Fuentes(5).Caracteres(233) = 30312 'é
-    Fuentes(5).Caracteres(237) = 30316 'í
-    Fuentes(5).Caracteres(243) = 30322 'ó
-    Fuentes(5).Caracteres(250) = 30329 'ú
-    Fuentes(5).Caracteres(253) = 24955 'ý
-    Fuentes(5).Caracteres(193) = 30272 'Á
-    Fuentes(5).Caracteres(201) = 30280 'É
-    Fuentes(5).Caracteres(205) = 8502 'Í
-    Fuentes(5).Caracteres(211) = 30290 'Ó
-    Fuentes(5).Caracteres(218) = 8515 'Ú
-    Fuentes(5).Caracteres(221) = 24961 'Ý
-    Fuentes(5).Caracteres(224) = 24962 'à
-    Fuentes(5).Caracteres(232) = 24963 'è
-    Fuentes(5).Caracteres(236) = 24964 'ì
-    Fuentes(5).Caracteres(242) = 24965 'ò
-    Fuentes(5).Caracteres(249) = 24966 'ù
-    Fuentes(5).Caracteres(192) = 24967 'ü
-    Fuentes(5).Caracteres(200) = 24968 '
-    Fuentes(5).Caracteres(204) = 24969 '
-    Fuentes(5).Caracteres(210) = 24970 '
-    Fuentes(5).Caracteres(217) = 24971 '
-    Fuentes(5).Caracteres(241) = 30288 'ñ
-    Fuentes(5).Caracteres(209) = 24872 '
-    Fuentes(5).Caracteres(196) = 24874 '
-    Fuentes(5).Caracteres(194) = 30305 'â
-    Fuentes(5).Caracteres(203) = 24876 '
-    Fuentes(5).Caracteres(207) = 24877 '
-    Fuentes(5).Caracteres(214) = 24878 '
-    Fuentes(5).Caracteres(212) = 24879 '
-
-    Fuentes(5).Caracteres(172) = 20552 '¬
-    Fuentes(5).Caracteres(186) = 20556 'º
-
-    Fuentes(6).Tamanio = 50
-    Fuentes(6).Caracteres(48) = 45866
-    Fuentes(6).Caracteres(49) = 45867
-    Fuentes(6).Caracteres(50) = 45868
-    Fuentes(6).Caracteres(51) = 45869
-    Fuentes(6).Caracteres(52) = 45870
-    Fuentes(6).Caracteres(53) = 45871
-    Fuentes(6).Caracteres(54) = 45872
-    Fuentes(6).Caracteres(55) = 45873
-    Fuentes(6).Caracteres(56) = 45874
-    Fuentes(6).Caracteres(57) = 45875
-
-    For a = 0 To 25
-        Fuentes(6).Caracteres(a + 97) = 45915 + a
-    Next a
-
-    For a = 0 To 25
-        Fuentes(6).Caracteres(a + 65) = 45883 + a
-    Next a
-
-    Fuentes(6).Caracteres(33) = 13862
-    Fuentes(6).Caracteres(161) = 13863
-    Fuentes(6).Caracteres(34) = 13864
-    Fuentes(6).Caracteres(36) = 13865
-    Fuentes(6).Caracteres(191) = 13866
-    Fuentes(6).Caracteres(35) = 13867
-    Fuentes(6).Caracteres(36) = 13868
-    Fuentes(6).Caracteres(37) = 13869
-    Fuentes(6).Caracteres(38) = 13870
-    Fuentes(6).Caracteres(47) = 13871
-    Fuentes(6).Caracteres(92) = 13872
-    Fuentes(6).Caracteres(40) = 13873
-    Fuentes(6).Caracteres(41) = 13874
-    Fuentes(6).Caracteres(61) = 13875
-    Fuentes(6).Caracteres(39) = 13876
-    Fuentes(6).Caracteres(123) = 13877
-    Fuentes(6).Caracteres(125) = 13878
-    Fuentes(6).Caracteres(95) = 13879
-    Fuentes(6).Caracteres(45) = 13880
-    Fuentes(6).Caracteres(63) = 13865
-    Fuentes(6).Caracteres(64) = 13881
-    Fuentes(6).Caracteres(94) = 13882
-    Fuentes(6).Caracteres(91) = 13883
-    Fuentes(6).Caracteres(93) = 13884
-    Fuentes(6).Caracteres(60) = 13885
-    Fuentes(6).Caracteres(62) = 13886
-    Fuentes(6).Caracteres(42) = 13887
-    Fuentes(6).Caracteres(43) = 13888
-    Fuentes(6).Caracteres(46) = 13889
-    Fuentes(6).Caracteres(44) = 13890
-    Fuentes(6).Caracteres(58) = 13891
-    Fuentes(6).Caracteres(59) = 13892
-    Fuentes(6).Caracteres(124) = 13893
-
-    Fuentes(6).Caracteres(252) = 18200
-    Fuentes(6).Caracteres(220) = 18201
-    Fuentes(6).Caracteres(225) = 18202
-    Fuentes(6).Caracteres(233) = 18203
-    Fuentes(6).Caracteres(237) = 18204
-    Fuentes(6).Caracteres(243) = 18205
-    Fuentes(6).Caracteres(250) = 18206
-    Fuentes(6).Caracteres(253) = 18207
-    Fuentes(6).Caracteres(193) = 18208
-    Fuentes(6).Caracteres(201) = 18209
-    Fuentes(6).Caracteres(205) = 18210
-    Fuentes(6).Caracteres(211) = 18211
-    Fuentes(6).Caracteres(218) = 18212
-    Fuentes(6).Caracteres(221) = 18213
-    Fuentes(6).Caracteres(224) = 18214
-    Fuentes(6).Caracteres(232) = 18215
-    Fuentes(6).Caracteres(236) = 18216
-    Fuentes(6).Caracteres(242) = 18217
-    Fuentes(6).Caracteres(249) = 18218
-    Fuentes(6).Caracteres(192) = 18219
-    Fuentes(6).Caracteres(200) = 18220
-    Fuentes(6).Caracteres(204) = 18221
-    Fuentes(6).Caracteres(210) = 18222
-    Fuentes(6).Caracteres(217) = 18223
-    Fuentes(6).Caracteres(241) = 18224
-    Fuentes(6).Caracteres(209) = 18225
-
-End Sub
-
-Function Engine_Text_Height(Texto As String, Optional multi As Boolean = False, Optional font As Byte = 1) As Integer
-
-    Dim a, b, c, d, e, f As Integer
-
-    Dim graf As grh
-  
-    If multi = False Then
-        Engine_Text_Height = 0
-    Else
-        e = 0
-        f = 0
-
-        If font = 1 Then
-
-            For a = 1 To Len(Texto)
-                b = Asc(mid(Texto, a, 1))
-                graf.GrhIndex = Fuentes(1).Caracteres(b)
-
-                If b = 32 Or b = 13 Then
-                    If e >= 20 Then 'reemplazar por lo que os plazca
-                        f = f + 1
-                        e = 0
-                        d = 0
-                    Else
-
-                        If b = 32 Then
-                            d = d + 4
-
-                        End If
-
-                    End If
-
-                    'Else
-                    'If graf.GrhIndex > 12 Then
-                End If
-
-                e = e + 1
-            Next a
-
-        Else
-    
-            For a = 1 To Len(Texto)
-                b = Asc(mid(Texto, a, 1))
-                graf.GrhIndex = Fuentes(font).Caracteres(b)
-
-                If b = 32 Or b = 13 Then
-                    If e >= 20 Then 'reemplazar por lo que os plazca
-                        f = f + 1
-                        e = 0
-                        d = 0
-                    Else
-
-                        If b = 32 Then
-                            d = d + 4
-
-                        End If
-
-                    End If
-
-                    'Else
-                    'If graf.GrhIndex > 12 Then
-                End If
-
-                e = e + 1
-            Next a
-  
-        End If
-
-        Engine_Text_Height = f * 14
-  
-    End If
-
-End Function
-
-Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
-
-    On Error Resume Next
-
-    Dim a, b, c, d, e, f As Integer
-
-    Dim graf          As grh
-
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-
-    temp_array(0) = text_color(0)
-
-    If charindex = 0 Then
-        a = 255
-    Else
-        a = charlist(charindex).AlphaText
-
-    End If
-
-    If Alpha <> 255 Then
-        a = Alpha
-
-    End If
-
-    Dim r, g As Byte
-
-    r = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    b = temp_array(0) And 255
-             
-    temp_array(0) = D3DColorARGB(a, r, g, b)
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
-
-    Dim i              As Long
-
-    Dim removedDialogs As Long
-
-    For i = 0 To dialogCount - 1
-
-        'Decrease index to prevent jumping over a dialog
-        'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
-        With dialogs(i - removedDialogs)
-
-            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
-                Call Char_Dialog_Remove(.charindex, charindex)
-                             
-                If charlist(charindex).AlphaText = 0 Then
-                    removedDialogs = removedDialogs + 1
-
-                End If
-
-            Else
-            
-            End If
-
-        End With
-
-    Next i
-
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(a, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
-    If (Len(Texto) = 0) Then Exit Sub
-
-    d = 0
-
-    If multi_line = False Then
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 35 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 30
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-                    If font_index <> 3 Then
-
-                        'Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, Sombra())
-                    End If
-
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 70
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    Else
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 33 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 2
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-                    ' Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    If font_index = 5 Then
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 50
-                    Else
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-                    End If
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    End If
-
-End Sub
-
-Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
-
-    On Error Resume Next
-
-    Dim a, b, c, d, e, f As Integer
-
-    Dim graf          As grh
-
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-
-    temp_array(0) = text_color(0)
-
-    If charindex = 0 Then
-        a = 255
-    Else
-        a = charlist(charindex).AlphaText
-
-    End If
-
-    If Alpha <> 255 Then
-        a = Alpha
-
-    End If
-
-    Dim r, g As Byte
-
-    b = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    r = temp_array(0) And 255
-             
-    temp_array(0) = D3DColorARGB(a, r, g, b)
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
-
-    Dim i              As Long
-
-    Dim removedDialogs As Long
-
-    For i = 0 To dialogCount - 1
-
-        'Decrease index to prevent jumping over a dialog
-        'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
-        With dialogs(i - removedDialogs)
-
-            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
-                Call Char_Dialog_Remove(.charindex, charindex)
-                             
-                If a <= 0 Then
-                    removedDialogs = removedDialogs + 1
-
-                End If
-
-            Else
-            
-            End If
-
-        End With
-
-    Next i
-
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(a, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
-    If (Len(Texto) = 0) Then Exit Sub
-
-    d = 0
-
-    If multi_line = False Then
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 30 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 2
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-                    If font_index <> 3 Then
-
-                        'Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, Sombra())
-                    End If
-
-                    'Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
-                
-                    Call InitGrh(graf, graf.GrhIndex)
-                    'Call Draw_Grh(graf, (x + d) + 1, y + 1 + f * 14, 0, 0, Sombra(), True, 0, 0, 0)
-                    Call Draw_Grh(graf, (x + d) + 1, y + 1 + f * 14, 0, 0, temp_array(), True, 0, 0, 0)
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    Else
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 33 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 2
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-                    ' Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    If font_index = 4 Then
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 1
-                    Else
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-                    End If
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    End If
-
-End Sub
-
-Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
-
-    On Error Resume Next
-
-    Dim a, b, c, d, e, f As Integer
-
-    Dim graf          As grh
-
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-
-    temp_array(0) = text_color(0)
-
-    If charindex = 0 Then
-        a = 255
-    Else
-        a = charlist(charindex).AlphaText
-
-    End If
-
-    If Alpha <> 255 Then
-        a = Alpha
-
-    End If
-
-    Dim r, g As Byte
-
-    b = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    r = temp_array(0) And 255
-             
-    temp_array(0) = D3DColorARGB(a, r, g, b)
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
-
-    Dim i              As Long
-
-    Dim removedDialogs As Long
-
-    For i = 0 To dialogCount - 1
-
-        'Decrease index to prevent jumping over a dialog
-        'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
-        With dialogs(i - removedDialogs)
-
-            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
-                Call Char_Dialog_Remove(.charindex, charindex)
-                             
-                If a <= 0 Then
-                    removedDialogs = removedDialogs + 1
-
-                End If
-
-            Else
-            
-            End If
-
-        End With
-
-    Next i
-
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(a, r / 4, g / 4, b / 4)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
-    If (Len(Texto) = 0) Then Exit Sub
-
-    d = 0
-
-    If multi_line = False Then
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 35 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 4
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-                    If font_index <> 3 Then
-                        Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, Sombra())
-
-                    End If
-
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    Else
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 20 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 4
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    If font_index = 4 Then
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 1
-                    Else
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-                    End If
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    End If
-
-End Sub
-
-Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
-
-    On Error Resume Next
-
-    Dim a, b, c, d, e, f As Integer
-
-    Dim graf          As grh
-
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-
-    temp_array(0) = text_color(0)
-
-    If charindex = 0 Then
-        a = 255
-    Else
-        a = charlist(charindex).AlphaText
-
-    End If
-
-    If Alpha <> 255 Then
-        a = Alpha
-
-    End If
-
-    Dim r, g As Byte
-
-    r = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    b = temp_array(0) And 255
-             
-    temp_array(0) = D3DColorARGB(a, r, g, b)
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
-
-    Dim i              As Long
-
-    Dim removedDialogs As Long
-
-    For i = 0 To dialogCount - 1
-
-        'Decrease index to prevent jumping over a dialog
-        'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
-        With dialogs(i - removedDialogs)
-
-            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
-                Call Char_Dialog_Remove(.charindex, charindex)
-                             
-                If a <= 0 Then
-                    removedDialogs = removedDialogs + 1
-
-                End If
-
-            Else
-            
-            End If
-
-        End With
-
-    Next i
-
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(a, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
-    If (Len(Texto) = 0) Then Exit Sub
-
-    d = 0
-
-    If multi_line = False Then
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 35 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 12
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-                    If font_index <> 3 Then
-                        Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, Sombra())
-
-                    End If
-
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    Else
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 10 Then 'reemplazar por lo que os plazca
-                    f = f + 3
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 12
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-                    'Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    If font_index = 4 Then
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-                    Else
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-                    End If
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    End If
-
-End Sub
-
-Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRef text_color As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Long = 0)
-
-    On Error Resume Next
-
-    Dim a, b, c, d, e, f As Integer
-
-    Dim graf          As grh
-
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-
-    temp_array(0) = text_color
-
-    Dim r, g As Byte
-
-    r = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    b = temp_array(0) And 255
-             
-    temp_array(0) = text_color
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
-
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(charindex, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
-    If (Len(Texto) = 0) Then Exit Sub
-
-    d = 0
-
-    If multi_line = False Then
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 35 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 4
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-                    If font_index <> 3 Then
-                        Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-
-                    End If
-
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    Else
-        e = 0
-        f = 0
-
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-            If b = 32 Or b = 13 Then
-                If e >= 20 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If b = 32 Then d = d + 4
-
-                End If
-
-            Else
-
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                    If font_index <> 3 Then
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-                    Else
-                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-                    End If
-
-                End If
-
-            End If
-
-            e = e + 1
-        Next a
-
-    End If
-
-End Sub
-
-Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional ByVal Alpha As Byte = 255)
-
-    Dim a, b, c, d, e, f As Integer
-
-    Dim graf As grh
-
-    If (Len(Texto) = 0) Then Exit Sub
-
-    d = 0
-    e = 0
-    f = 0
-
-    Dim r, g As Byte
-
-    r = (text_color(0) And 16711680) / 65536
-    g = (text_color(0) And 65280) / 256
-    b = text_color(0) And 255
-
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(Alpha, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
-    For a = 1 To Len(Texto)
-        b = Asc(mid(Texto, a, 1))
-        graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-        If b = 32 Or b = 13 Then
-            If e >= 20 Then 'reemplazar por lo que os plazca
-                f = f + 1
-                e = 0
-                d = 0
-            Else
-
-                If b = 32 Then d = d + 4
-
-            End If
-
-        Else
-
-            If graf.GrhIndex > 12 Then
-
-                'mega sombra O-matica
-                graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-                
-                Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-      
-                Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, text_color())
-                
-                ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-            End If
-
-        End If
-
-        e = e + 1
-    Next a
-
-End Sub
-
-Sub Engine_Text_Render_Exp(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False)
-
-    Dim a, b, c, d, e, f As Integer
-
-    Dim graf As grh
-
-    Dim r, g As Byte
-
-    r = (text_color(0) And 16711680) / 65536
-    g = (text_color(0) And 65280) / 256
-    b = text_color(0) And 255
-
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(200, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
-    If (Len(Texto) = 0) Then Exit Sub
-
-    d = 0
-    e = 0
-    f = 0
-
-    For a = 1 To Len(Texto)
-        b = Asc(mid(Texto, a, 1))
-        graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-        If b = 32 Or b = 13 Then
-            If e >= 20 Then 'reemplazar por lo que os plazca
-                f = f + 1
-                e = 0
-                d = 0
-            Else
-
-                If b = 32 Then d = d + 4
-
-            End If
-
-        Else
-
-            If graf.GrhIndex > 12 Then
-
-                'mega sombra O-matica
-                graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-      
-                'Call Draw_GrhColor(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, text_color())
-                ' Call Draw_GrhColor(graf.GrhIndex, (X + d), Y + f * 14, text_color())
-                
-                ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-            End If
-
-        End If
-
-        e = e + 1
-    Next a
-
-End Sub
-
-Function Engine_Text_Width(Texto As String, Optional multi As Boolean = False, Optional Fon As Byte = 1) As Integer
-
-    Dim a, b, d, e, f As Integer
-
-    Dim graf As grh
-
-    Select Case Fon
-
-        Case 1
-
-            If multi = False Then
-
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(1).Caracteres(b)
-
-                    If graf.GrhIndex = 0 Then graf.GrhIndex = 1
-                    If b <> 32 Then
-                        Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth '+ 1
-                    Else
-                        Engine_Text_Width = Engine_Text_Width + 4
-
-                    End If
-
-                Next a
-
-            Else
-                e = 0
-                f = 0
-
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(1).Caracteres(b)
-
-                    If b = 32 Or b = 13 Then
-                        If e >= 20 Then 'reemplazar por lo que os plazca
-                            f = f + 1
-                            e = 0
-                            d = 0
-                        Else
-
-                            If b = 32 Then d = d + 4
-
-                        End If
-
-                    Else
-
-                        If graf.GrhIndex > 12 Then
-                            d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
-
-                            If d > Engine_Text_Width Then Engine_Text_Width = d
-
-                        End If
-
-                    End If
-
-                    e = e + 1
-                Next a
-
-            End If
-
-        Case 4
-
-            If multi = False Then
-
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(Fon).Caracteres(b)
-
-                    If graf.GrhIndex = 0 Then graf.GrhIndex = 1
-                    If b <> 20 Then
-                        Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth + 10
-                    Else
-                        Engine_Text_Width = Engine_Text_Width - 15
-
-                    End If
-
-                Next a
-
-            Else
-                e = 0
-                f = 0
-
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(Fon).Caracteres(b)
-
-                    If b = 32 Or b = 13 Then
-                        If e >= 20 Then 'reemplazar por lo que os plazca
-                            f = f + 1
-                            e = 0
-                            d = 0
-                        Else
-
-                            If b = 32 Then d = d + 4
-
-                        End If
-
-                    Else
-
-                        If graf.GrhIndex > 12 Then
-                            d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
-
-                            If d > Engine_Text_Width Then Engine_Text_Width = d
-
-                        End If
-
-                    End If
-
-                    e = e + 1
-                Next a
-
-            End If
-
-    End Select
-
-End Function
-
-Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boolean = False, Optional Fon As Byte = 1) As Integer
-
-    Dim a, b, d, e, f As Integer
-
-    Dim graf As grh
-
-    Select Case Fon
-
-        Case 1
-            '
-
-            If multi = False Then
-
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(1).Caracteres(b)
-
-                    If graf.GrhIndex = 0 Then graf.GrhIndex = 1
-                    If b <> 32 Then
-                        Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth '+ 1
-                    Else
-                        Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + 4
-
-                    End If
-
-                Next a
-
-            Else
-                e = 0
-                f = 0
-
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(1).Caracteres(b)
-
-                    If b = 32 Or b = 13 Then
-                        If e >= 20 Then 'reemplazar por lo que os plazca
-                            f = f + 1
-                            e = 0
-                            d = 0
-                        Else
-
-                            If b = 32 Then d = d + 4
-
-                        End If
-
-                    Else
-
-                        If graf.GrhIndex > 12 Then
-                            d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
-
-                            If d > Engine_Text_WidthCentrado Then Engine_Text_WidthCentrado = d
-
-                        End If
-
-                    End If
-
-                    e = e + 1
-                Next a
-
-            End If
-
-        Case 4
-
-            If multi = False Then
-
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(Fon).Caracteres(b)
-
-                    If graf.GrhIndex = 0 Then graf.GrhIndex = 1
-                    If b <> 20 Then
-                        Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth + 10
-                    Else
-                        Engine_Text_WidthCentrado = Engine_Text_WidthCentrado - 15
-
-                    End If
-
-                Next a
-
-            Else
-                e = 0
-                f = 0
-
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(Fon).Caracteres(b)
-
-                    If b = 32 Or b = 13 Then
-                        If e >= 20 Then 'reemplazar por lo que os plazca
-                            f = f + 1
-                            e = 0
-                            d = 0
-                        Else
-
-                            If b = 32 Then d = d + 4
-
-                        End If
-
-                    Else
-
-                        If graf.GrhIndex > 12 Then
-                            d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
-
-                            If d > Engine_Text_WidthCentrado Then Engine_Text_WidthCentrado = d
-
-                        End If
-
-                    End If
-
-                    e = e + 1
-                Next a
-
-            End If
-
-    End Select
-
-End Function
-
 Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
 
-    On Error GoTo ErrorHandler:
-
-    D3DDevice.BeginScene
-
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, 1#, 1#, 0
+    Call Engine_BeginScene
 
     Dim y                As Integer     'Keeps track of where on map we are
 
@@ -6889,7 +4023,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         'itemname = "abcdfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789¡!¿TEST?#$100%&/\()=-@^[]<>*+.,:; pálmas séso te píso sólo púto ý LÁL LÉ"
             
         ' itemname = "pálmas séso te píso sólo púto ý lÁ Élefante PÍSÓS PÚTO ÑOño"
-        engine.Engine_Text_Render_LetraChica ItemName, 100, 730, DefaultColor, 4, False
+        Engine_Text_Render_LetraChica ItemName, 100, 730, DefaultColor, 4, False
 
         If ClickEnAsistente < 30 Then
             Call Particle_Group_Render(spell_particle, 500, 365)
@@ -6980,8 +4114,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     ' cc(3) = cc(0)
 
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
-    D3DDevice.EndScene
-    D3DDevice.Present Render_Connect_Rect, ByVal 0, frmConnect.render.hwnd, ByVal 0
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     
     lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
     'FramesPerSecCounter = FramesPerSecCounter + 1
@@ -6990,24 +4123,11 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Exit Sub
 
-ErrorHandler:
-
-    If D3DDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
-        Call engine.Engine_ReInit
-        prgRun = True
-        pausa = False
-
-    End If
-
 End Sub
 
 Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
 
-    On Error GoTo ErrorHandler:
-
-    D3DDevice.BeginScene
-
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, 1#, 1#, 0
+    Call Engine_BeginScene
 
     Dim y                As Integer     'Keeps track of where on map we are
 
@@ -7237,7 +4357,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Engine_Weather_UpdateFog
 
-    engine.RenderUICrearPJ
+    RenderUICrearPJ
 
     Dim cc(3)   As Long
 
@@ -7265,57 +4385,34 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     cc(3) = cc(0)
 
     Draw_Grh TempGrh, 0, 0, 0, 0, cc(), False
-    
-    D3DDevice.EndScene
-    ' D3DDevice.Present Render_CrearPj_Rect, ByVal 0, frmCrearPersonaje.render.hwnd, ByVal 0
-    D3DDevice.Present Render_Connect_Rect, ByVal 0, frmConnect.render.hwnd, ByVal 0
+
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
 
     lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
 
-    'engine.RenderPjsCuenta
-
-ErrorHandler:
-
-    If D3DDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
-        Call engine.Engine_ReInit
-        prgRun = True
-        pausa = False
-
-    End If
+    'RenderPjsCuenta
 
 End Sub
 
 Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
 
-    On Error GoTo ErrorHandler:
-
-    D3DDevice.BeginScene
-
-    D3DDevice.Clear 0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, 1#, 1#, 0
+    Call Engine_BeginScene
 
     lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
 
-    engine.RenderPjsCuenta
+    RenderPjsCuenta
     
     Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
 
-    D3DDevice.EndScene
-    D3DDevice.Present Render_Connect_Rect, ByVal 0, frmConnect.render.hwnd, ByVal 0
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    
     Exit Sub
-ErrorHandler:
-
-    If D3DDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
-        Call engine.Engine_ReInit
-        prgRun = True
-        pausa = False
-
-    End If
 
 End Sub
 
@@ -7783,7 +4880,7 @@ Sub EfectoEnPantalla(ByVal color As Long, ByVal time As Long)
     frmmain.Efecto.Interval = time
     frmmain.Efecto.Enabled = True
     EfectoEnproceso = True
-    Call engine.Map_Base_Light_Set(color)
+    Call Map_Base_Light_Set(color)
 
 End Sub
 
@@ -7798,659 +4895,6 @@ Public Sub SetBarFx(ByVal charindex As Integer, ByVal BarTime As Integer)
         .BarTime = BarTime
 
     End With
-
-End Sub
-
-Public Function Light_Remove(ByVal light_index As Long) As Boolean
-
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    '
-    '*****************************************************************
-    'Make sure it's a legal index
-    If Light_Check(light_index) Then
-        Light_Destroy light_index
-        Light_Remove = True
-
-    End If
-
-End Function
-
-Public Function Light_Color_Value_Get(ByVal light_index As Long, ByRef color_value As Long) As Boolean
-
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 2/28/2003
-    '
-    '*****************************************************************
-    'Make sure it's a legal index
-    If Light_Check(light_index) Then
-        color_value = light_list(light_index).color
-        Light_Color_Value_Get = True
-
-    End If
-
-End Function
-
-Public Function Light_Create(ByVal map_x As Integer, ByVal map_y As Integer, Optional ByVal color_value As Long = &HFFFFFFFF, Optional ByVal range As Byte = 1, Optional ByVal id As Long) As Long
-
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    'Returns the light_index if successful, else 0
-    'Edited by Juan Martín Sotuyo Dodero
-    '**************************************************************
-    If InMapBounds(map_x, map_y) Then
-
-        'Make sure there is no light in the given map pos
-        If Map_Light_Get(map_x, map_y) <> 0 Then
-            Light_Create = 0
-            Exit Function
-
-        End If
-
-        Light_Create = Light_Next_Open
-        Light_Make Light_Create, map_x, map_y, color_value, range, id
-
-    End If
-
-End Function
-
-Public Function Map_Light_Get(ByVal map_x As Integer, ByVal map_y As Integer) As Long
-
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 2/20/2003
-    'Checks to see if a tile position has a light_index and return it
-    '*****************************************************************
-    On Error GoTo ErrorHandler:
-
-    Dim loopc As Long
-    
-    'We start from the back, to get the last light to be placed on the tile first
-    If light_last = 0 Then Exit Function
-    
-    loopc = light_last
-
-    Do Until light_list(loopc).map_x = map_x And light_list(loopc).map_y = map_y
-
-        If loopc = 0 Then
-            Map_Light_Get = 0
-            Exit Function
-
-        End If
-
-        loopc = loopc - 1
-
-        If loopc = 0 Then Exit Function
-    Loop
-    
-    Map_Light_Get = loopc
-    Exit Function
-ErrorHandler:
-    Map_Light_Get = 0
-
-End Function
-
-Public Function Light_Move(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer) As Boolean
-
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    'Returns true if successful, else false
-    '**************************************************************
-    'Make sure it's a legal CharIndex
-    If Light_Check(light_index) Then
-
-        'Make sure it's a legal move
-        If InMapBounds(map_x, map_y) Then
-        
-            'Move it
-            Light_Erase light_index
-            light_list(light_index).map_x = map_x
-            light_list(light_index).map_y = map_y
-    
-            Light_Move = True
-            
-        End If
-
-    End If
-
-End Function
-
-Public Function Light_Move_By_Head(ByVal light_index As Long, ByVal Heading As Byte) As Boolean
-
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 15/05/2002
-    'Returns true if successful, else false
-    '**************************************************************
-    Dim map_x As Integer
-
-    Dim map_y As Integer
-
-    Dim nX    As Integer
-
-    Dim nY    As Integer
-
-    Dim addy  As Byte
-
-    Dim addx  As Byte
-
-    'Check for valid heading
-    If Heading < 1 Or Heading > 8 Then
-        Light_Move_By_Head = False
-        Exit Function
-
-    End If
-
-    'Make sure it's a legal CharIndex
-    If Light_Check(light_index) Then
-    
-        map_x = light_list(light_index).map_x
-        map_y = light_list(light_index).map_y
-
-        Select Case Heading
-
-            Case NORTH
-                addy = -1
-        
-            Case EAST
-                addx = 1
-        
-            Case south
-                addy = 1
-            
-            Case WEST
-                addx = -1
-
-        End Select
-        
-        nX = map_x + addx
-        nY = map_y + addy
-        
-        'Make sure it's a legal move
-        If InMapBounds(nX, nY) Then
-        
-            'Move it
-            Light_Erase light_index
-
-            light_list(light_index).map_x = nX
-            light_list(light_index).map_y = nY
-    
-            Light_Move_By_Head = True
-            
-        End If
-
-    End If
-
-End Function
-
-Private Sub Light_Make(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer, ByVal rgb_value As Long, ByVal range As Long, Optional ByVal id As Long)
-
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '*****************************************************************
-    'Update array size
-    If light_index > light_last Then
-        light_last = light_index
-        ReDim Preserve light_list(1 To light_last)
-
-    End If
-
-    light_count = light_count + 1
-    
-    'Make active
-    light_list(light_index).active = True
-    
-    If rgb_value = 0 Then
-        rgb_value = map_base_light
-
-    End If
-
-    Dim r, g, b As Byte
-
-    r = rgb_value And 255
-    g = (rgb_value \ 256) And 255
-    b = (rgb_value \ 65536) And 255
-    light_list(light_index).map_x = map_x
-    light_list(light_index).map_y = map_y
-    
-    Dim rgb_list As Long
-
-    rgb_list = D3DColorARGB(255, b, g, r)
-
-    light_list(light_index).color = rgb_list
-    light_list(light_index).range = range
-    light_list(light_index).id = id
-
-End Sub
-
-Private Function Light_Check(ByVal light_index As Long) As Boolean
-
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    '
-    '**************************************************************
-    'check light_index
-    If light_index > 0 And light_index <= light_last Then
-        If light_list(light_index).active Then
-            Light_Check = True
-
-        End If
-
-    End If
-
-End Function
-
-Public Sub Light_Render_All()
-
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '**************************************************************
-    Dim loop_counter As Long
-            
-    For loop_counter = 1 To light_count
-        
-        If light_list(loop_counter).active Then
-            Light_Render loop_counter
-
-        End If
-    
-    Next loop_counter
-
-End Sub
-
-Private Sub Light_Render(ByVal light_index As Long)
-
-    'menduz
-    Dim min_x As Integer
-
-    Dim min_y As Integer
-
-    Dim max_x As Integer
-
-    Dim max_y As Integer
-
-    Dim x     As Integer
-
-    Dim y     As Integer
-
-    Dim ia    As Single
-
-    Dim i     As Integer
-
-    Dim color As Long
-    
-    'Set up light borders
-    min_x = light_list(light_index).map_x - light_list(light_index).range
-    min_y = light_list(light_index).map_y - light_list(light_index).range
-    max_x = light_list(light_index).map_x + light_list(light_index).range
-    max_y = light_list(light_index).map_y + light_list(light_index).range
-    
-    'Set color
-    color = light_list(light_index).color
-    
-    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(0) = color
-    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(1) = color
-    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(2) = color
-    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(3) = color
-                
-    'For ia = 0 To 6.5 Step 0.05
-    '    For i = 1 To light_list(light_index).range / 2
-    '        x = (Sin(ia) * i) + light_list(light_index).map_x
-    '        y = (Cos(ia) * i) + light_list(light_index).map_y
-    '        'Debug.Print x; y
-    '        If InMapBounds(x, y) Then
-    '            If i = (light_list(light_index).range / 2) Then
-    '                If MapData(x - 1, y - 1).light_value(2) <> color Then MapData(x, y).light_value(0) = 0
-    '                If MapData(x + 1, y + 1).light_value(0) <> color Then MapData(x, y).light_value(2) = 0
-    '                If MapData(x + 1, y - 1).light_value(1) <> color Then MapData(x, y).light_value(1) = 0
-    '                If MapData(x - 1, y + 1).light_value(3) <> color Then MapData(x, y).light_value(3) = 0
-    '                If MapData(x - 1, y).light_value(0) = color Then MapData(x, y).light_value(3) = color
-    '                If MapData(x + 1, y).light_value(1) = color And MapData(x + 1, y).light_value(2) = color Then
-    '                    MapData(x, y).light_value(0) = &HFFFF0FFF
-    '                    MapData(x, y).light_value(3) = &HFFFF0FFF
-    '                End If
-    '                If MapData(x, y - 1).light_value(2) = color Then MapData(x, y).light_value(3) = color
-    '                If MapData(x, y + 1).light_value(3) = color Then MapData(x, y).light_value(1) = color''
-
-    '            Else
-    '                MapData(x, y).light_value(0) = &HFFFFFFFF
-    '                MapData(x, y).light_value(1) = &HFFFFFFFF
-    '                MapData(x, y).light_value(2) = &HFFFFFFFF
-    '                MapData(x, y).light_value(3) = &HFFFFFFFF
-    '            End If
-    '        End If
-    '    Next i
-    'Next ia
-    'Arrange corners
-    'NE
-    If InMapBounds(min_x, min_y) Then
-        MapData(min_x, min_y).light_value(2) = color
-
-    End If
-
-    'NW
-    If InMapBounds(max_x, min_y) Then
-        MapData(max_x, min_y).light_value(0) = color
-
-    End If
-
-    'SW
-    If InMapBounds(max_x, max_y) Then
-        MapData(max_x, max_y).light_value(1) = color
-
-    End If
-
-    'SE
-    If InMapBounds(min_x, max_y) Then
-        MapData(min_x, max_y).light_value(3) = color
-
-    End If
-    
-    'Arrange borders
-    'Upper border
-    For x = min_x + 1 To max_x - 1
-
-        If InMapBounds(x, min_y) Then
-            MapData(x, min_y).light_value(0) = color
-            MapData(x, min_y).light_value(2) = color
-
-        End If
-
-    Next x
-    
-    'Lower border
-    For x = min_x + 1 To max_x - 1
-
-        If InMapBounds(x, max_y) Then
-            MapData(x, max_y).light_value(1) = color
-            MapData(x, max_y).light_value(3) = color
-
-        End If
-
-    Next x
-    
-    'Left border
-    For y = min_y + 1 To max_y - 1
-
-        If InMapBounds(min_x, y) Then
-            MapData(min_x, y).light_value(2) = color
-            MapData(min_x, y).light_value(3) = color
-
-        End If
-
-    Next y
-    
-    'Right border
-    For y = min_y + 1 To max_y - 1
-
-        If InMapBounds(max_x, y) Then
-            MapData(max_x, y).light_value(0) = color
-            MapData(max_x, y).light_value(1) = color
-
-        End If
-
-    Next y
-    
-    'Set the inner part of the light
-    For x = min_x + 1 To max_x - 1
-        For y = min_y + 1 To max_y - 1
-
-            If InMapBounds(x, y) Then
-                MapData(x, y).light_value(0) = color
-                MapData(x, y).light_value(1) = color
-                MapData(x, y).light_value(2) = color
-                MapData(x, y).light_value(3) = color
-
-            End If
-
-        Next y
-    Next x
-
-End Sub
-
-Private Function Light_Next_Open() As Long
-
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '*****************************************************************
-    On Error GoTo ErrorHandler:
-
-    Dim loopc As Long
-    
-    If light_last = 0 Then
-        Light_Next_Open = 1
-        Exit Function
-
-    End If
-    
-    loopc = 1
-
-    Do Until light_list(loopc).active = False
-
-        If loopc = light_last Then
-            Light_Next_Open = light_last + 1
-            Exit Function
-
-        End If
-
-        loopc = loopc + 1
-    Loop
-    
-    Light_Next_Open = loopc
-    Exit Function
-ErrorHandler:
-    Light_Next_Open = 1
-
-End Function
-
-Public Function Light_Find(ByVal id As Long) As Long
-
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    'Find the index related to the handle
-    '*****************************************************************
-    On Error GoTo ErrorHandler:
-
-    Dim loopc As Long
-    
-    loopc = 1
-
-    Do Until light_list(loopc).id = id
-
-        If loopc = light_last Then
-            Light_Find = 0
-            Exit Function
-
-        End If
-
-        loopc = loopc + 1
-    Loop
-    
-    Light_Find = loopc
-    Exit Function
-ErrorHandler:
-    Light_Find = 0
-
-End Function
-
-Public Function Light_Remove_All() As Boolean
-
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    '
-    '*****************************************************************
-    Dim Index As Long
-    
-    For Index = 1 To light_last
-
-        'Make sure it's a legal index
-        If Light_Check(Index) Then
-            Light_Destroy Index
-
-        End If
-
-    Next Index
-    
-    Light_Remove_All = True
-
-End Function
-
-Private Sub Light_Destroy(ByVal light_index As Long)
-
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '**************************************************************
-    Dim temp As Light
-    
-    Light_Erase light_index
-    
-    light_list(light_index) = temp
-    
-    'Update array size
-    If light_index = light_last Then
-
-        Do Until light_list(light_last).active
-            light_last = light_last - 1
-
-            If light_last = 0 Then
-                light_count = 0
-                Exit Sub
-
-            End If
-
-        Loop
-        ReDim Preserve light_list(1 To light_last)
-
-    End If
-
-    light_count = light_count - 1
-
-End Sub
-
-Private Sub Light_Erase(ByVal light_index As Long)
-
-    '***************************************'
-    'Author: Juan Martín Sotuyo Dodero
-    'Last modified: 3/31/2003
-    'Correctly erases a light
-    '***************************************'
-    Dim min_x As Integer
-
-    Dim min_y As Integer
-
-    Dim max_x As Integer
-
-    Dim max_y As Integer
-
-    Dim x     As Integer
-
-    Dim y     As Integer
-    
-    'Set up light borders
-    min_x = light_list(light_index).map_x - light_list(light_index).range
-    min_y = light_list(light_index).map_y - light_list(light_index).range
-    max_x = light_list(light_index).map_x + light_list(light_index).range
-    max_y = light_list(light_index).map_y + light_list(light_index).range
-    
-    'Arrange corners
-    'NE
-    If InMapBounds(min_x, min_y) Then
-        MapData(min_x, min_y).light_value(2) = 0
-
-    End If
-
-    'NW
-    If InMapBounds(max_x, min_y) Then
-        MapData(max_x, min_y).light_value(0) = 0
-
-    End If
-
-    'SW
-    If InMapBounds(max_x, max_y) Then
-        MapData(max_x, max_y).light_value(1) = 0
-
-    End If
-
-    'SE
-    If InMapBounds(min_x, max_y) Then
-        MapData(min_x, max_y).light_value(3) = 0
-
-    End If
-    
-    'Arrange borders
-    'Upper border
-    For x = min_x + 1 To max_x - 1
-
-        If InMapBounds(x, min_y) Then
-            MapData(x, min_y).light_value(0) = 0
-            MapData(x, min_y).light_value(2) = 0
-
-        End If
-
-    Next x
-    
-    'Lower border
-    For x = min_x + 1 To max_x - 1
-
-        If InMapBounds(x, max_y) Then
-            MapData(x, max_y).light_value(1) = 0
-            MapData(x, max_y).light_value(3) = 0
-
-        End If
-
-    Next x
-    
-    'Left border
-    For y = min_y + 1 To max_y - 1
-
-        If InMapBounds(min_x, y) Then
-            MapData(min_x, y).light_value(2) = 0
-            MapData(min_x, y).light_value(3) = 0
-
-        End If
-
-    Next y
-    
-    'Right border
-    For y = min_y + 1 To max_y - 1
-
-        If InMapBounds(max_x, y) Then
-            MapData(max_x, y).light_value(0) = 0
-            MapData(max_x, y).light_value(1) = 0
-
-        End If
-
-    Next y
-    
-    'Set the inner part of the light
-    For x = min_x + 1 To max_x - 1
-        For y = min_y + 1 To max_y - 1
-
-            If InMapBounds(x, y) Then
-                MapData(x, y).light_value(0) = 0
-                MapData(x, y).light_value(1) = 0
-                MapData(x, y).light_value(2) = 0
-                MapData(x, y).light_value(3) = 0
-
-            End If
-
-        Next y
-    Next x
 
 End Sub
 
@@ -8768,7 +5212,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 If (.FxEnd_Effect > 0) And (.DestinoChar = 0) Then
                     Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(.DestX, .DesyY), Sound.Calculate_Pan(.DestX, .DesyY))
               
-                    Call engine.SetMapFx(.DestX, .DesyY, .FxEnd_Effect, 0)
+                    Call SetMapFx(.DestX, .DesyY, .FxEnd_Effect, 0)
                     .Slot_Used = False
                     Exit Sub
 
@@ -8881,54 +5325,6 @@ Public Function GetFreeIndex() As Integer
  
 End Function
 
-Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
-
-    '*****************************************************************
-    'Author: Pablo Mercavides
-    '*****************************************************************
-    'Make sure it's a legal char_index
-    If Char_Check(char_index) Then
-        Get_PixelY_Of_Char = (charlist(char_index).Pos.y - 2 - UserPos.y) * 32 + frmmain.renderer.ScaleWidth / 2
-        Get_PixelY_Of_Char = Get_PixelY_Of_Char - 16
-
-    End If
-
-End Function
-
-Public Function Get_Pixelx_Of_Char(ByVal char_index As Integer) As Integer
-
-    '*****************************************************************
-    'Author: Pablo Mercavides
-    '*****************************************************************
-    'Make sure it's a legal char_index
-    If Char_Check(char_index) Then
-        Get_Pixelx_Of_Char = (charlist(char_index).Pos.x - UserPos.x) * 32 + frmmain.renderer.ScaleWidth / 2
-        Get_Pixelx_Of_Char = Get_Pixelx_Of_Char
-
-    End If
-
-End Function
-
-Public Function Get_Pixelx_Of_XY(ByVal x As Byte) As Integer
-    '*****************************************************************
-    'Author: Pablo Mercavides
-    '*****************************************************************
-    'Make sure it's a legal char_index
-    Get_Pixelx_Of_XY = (x - UserPos.x) * 32 + frmmain.renderer.ScaleWidth / 2
-    Get_Pixelx_Of_XY = Get_Pixelx_Of_XY
-
-End Function
-
-Public Function Get_PixelY_Of_XY(ByVal y As Byte) As Integer
-    '*****************************************************************
-    'Author: Pablo Mercavides
-    '*****************************************************************
-    'Make sure it's a legal char_index
-    Get_PixelY_Of_XY = (y - 2 - UserPos.y) * 32 + frmmain.renderer.ScaleWidth / 2
-    Get_PixelY_Of_XY = Get_PixelY_Of_XY - 16
-
-End Function
-
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
     '*****************************************************************
     'Author: Augusto José Rando
@@ -9002,4 +5398,47 @@ Sub RenderConsola()
     If UltimaLineavisible = True Then Text_Render font_list(1), Con(i).T, ComienzoY + (MaxLineas * 15) + OffSetConsola - 20, 10, frmmain.renderer.Width, frmmain.renderer.Height, ARGB(Con(MaxLineas).r, Con(MaxLineas).g, Con(i).b, 255), DT_TOP Or DT_LEFT, False
  
 End Sub
+
+Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
+    '**************************************************************
+    'Author: Mannakia
+    'Last Modify Date: 14/05/2009
+    'Modificado hoy(?) agregue funcion de agrandar y achicar para ladder :P
+    '**************************************************************
+
+    Static Piture As RECT
+
+    With Piture
+        .Left = 0
+        .Top = 0
+        
+        If ModSizeX2 = 1 Then
+            .bottom = pic.ScaleHeight / 2
+            .Right = pic.ScaleWidth / 2
+        ElseIf ModSizeX2 = 2 Then
+            .bottom = pic.ScaleHeight * 2
+            .Right = pic.ScaleWidth * 2
+        Else
+            .bottom = pic.ScaleHeight
+            .Right = pic.ScaleWidth
+
+        End If
+        
+    End With
+
+    Dim s(3) As Long
+
+    s(0) = color
+    s(1) = color
+    s(2) = color
+    s(3) = color
+
+    Call Engine_BeginScene
+    
+        Device_Box_Textured_Render grh, x, y, GrhData(grh).pixelWidth, GrhData(grh).pixelHeight, s, GrhData(grh).sX, GrhData(grh).sY, Alpha, angle
+
+    Call Engine_EndScene(Piture, pic.hWnd)
+
+End Sub
+
 

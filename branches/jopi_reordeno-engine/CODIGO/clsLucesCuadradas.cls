@@ -690,3 +690,4 @@ Private Sub Light_Erase(ByVal light_index As Long)
     Next x
 
 End Sub
+
