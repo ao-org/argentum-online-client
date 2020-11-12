@@ -5560,7 +5560,7 @@ Private Sub HandleAtributes()
             Alocados = SkillPoints
             frmEstadisticas.puntos.Caption = SkillPoints
             frmEstadisticas.Iniciar_Labels
-            frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
+            frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
             HayFormularioAbierto = True
             frmEstadisticas.Show , frmmain
         Else
@@ -6600,7 +6600,7 @@ Private Sub HandleMiniStats()
         Alocados = SkillPoints
         frmEstadisticas.puntos.Caption = SkillPoints
         frmEstadisticas.Iniciar_Labels
-        frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
+        frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
         HayFormularioAbierto = True
         frmEstadisticas.Show , frmmain
     Else
