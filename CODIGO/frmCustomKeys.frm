@@ -27,6 +27,17 @@ Begin VB.Form frmCustomKeys
       BackColor       =   &H00FFFFFF&
       ForeColor       =   &H00000000&
       Height          =   300
+      Index           =   22
+      Left            =   4080
+      Locked          =   -1  'True
+      TabIndex        =   61
+      Top             =   1440
+      Width           =   1770
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
       Index           =   21
       Left            =   4125
       Locked          =   -1  'True
@@ -59,7 +70,7 @@ Begin VB.Form frmCustomKeys
       Height          =   255
       Left            =   4110
       TabIndex        =   53
-      Top             =   3840
+      Top             =   4440
       Width           =   1215
    End
    Begin VB.OptionButton Option1 
@@ -67,7 +78,7 @@ Begin VB.Form frmCustomKeys
       Height          =   255
       Left            =   4110
       TabIndex        =   52
-      Top             =   3480
+      Top             =   4080
       Width           =   1215
    End
    Begin VB.ComboBox AccionList3 
@@ -77,7 +88,7 @@ Begin VB.Form frmCustomKeys
       List            =   "frmCustomKeys.frx":0013
       Style           =   2  'Dropdown List
       TabIndex        =   49
-      Top             =   2760
+      Top             =   3360
       Width           =   1815
    End
    Begin VB.ComboBox AccionList1 
@@ -87,7 +98,7 @@ Begin VB.Form frmCustomKeys
       List            =   "frmCustomKeys.frx":008E
       Style           =   2  'Dropdown List
       TabIndex        =   46
-      Top             =   1560
+      Top             =   2160
       Width           =   1815
    End
    Begin VB.ComboBox AccionList2 
@@ -97,7 +108,7 @@ Begin VB.Form frmCustomKeys
       List            =   "frmCustomKeys.frx":0109
       Style           =   2  'Dropdown List
       TabIndex        =   45
-      Top             =   2160
+      Top             =   2760
       Width           =   1815
    End
    Begin VB.CommandButton cmdAccion 
@@ -106,7 +117,7 @@ Begin VB.Form frmCustomKeys
       Index           =   2
       Left            =   4080
       TabIndex        =   44
-      Top             =   5040
+      Top             =   5400
       Width           =   1695
    End
    Begin VB.CommandButton cmdAccion 
@@ -115,7 +126,7 @@ Begin VB.Form frmCustomKeys
       Index           =   0
       Left            =   4080
       TabIndex        =   43
-      Top             =   4440
+      Top             =   4800
       Width           =   1695
    End
    Begin VB.TextBox txConfig 
@@ -421,7 +432,19 @@ Begin VB.Form frmCustomKeys
          Width           =   1215
       End
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Domar"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   21
+      Left            =   4080
+      TabIndex        =   62
+      Top             =   1200
+      Width           =   465
+   End
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Meditar"
@@ -433,7 +456,7 @@ Begin VB.Form frmCustomKeys
       Top             =   0
       Width           =   540
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Salir del juego"
@@ -445,7 +468,7 @@ Begin VB.Form frmCustomKeys
       Top             =   600
       Width           =   1005
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "(Clan) Marca de Clan"
@@ -457,7 +480,7 @@ Begin VB.Form frmCustomKeys
       Top             =   3000
       Width           =   1500
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "(Clan) Llamada de Clan"
@@ -469,7 +492,7 @@ Begin VB.Form frmCustomKeys
       Top             =   2400
       Width           =   1650
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Configuración rapida:"
@@ -487,10 +510,10 @@ Begin VB.Form frmCustomKeys
       Index           =   32
       Left            =   4110
       TabIndex        =   51
-      Top             =   3120
+      Top             =   3720
       Width           =   1785
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Acción Click 3"
@@ -507,10 +530,10 @@ Begin VB.Form frmCustomKeys
       Index           =   31
       Left            =   4110
       TabIndex        =   50
-      Top             =   2520
+      Top             =   3120
       Width           =   1140
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Acción Click 1"
@@ -527,10 +550,10 @@ Begin VB.Form frmCustomKeys
       Index           =   33
       Left            =   4110
       TabIndex        =   48
-      Top             =   1320
+      Top             =   1920
       Width           =   1140
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Acción Click 2"
@@ -547,10 +570,10 @@ Begin VB.Form frmCustomKeys
       Index           =   34
       Left            =   4110
       TabIndex        =   47
-      Top             =   1920
+      Top             =   2520
       Width           =   1140
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Tomar screenshot"
@@ -562,7 +585,7 @@ Begin VB.Form frmCustomKeys
       Top             =   4800
       Width           =   1290
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Estadisticas del juego"
@@ -574,7 +597,7 @@ Begin VB.Form frmCustomKeys
       Top             =   4200
       Width           =   1545
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Moverse hacia arriba"
@@ -586,7 +609,7 @@ Begin VB.Form frmCustomKeys
       Top             =   3000
       Width           =   1500
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Moverse hacia Derecha"
@@ -598,7 +621,7 @@ Begin VB.Form frmCustomKeys
       Top             =   4800
       Width           =   1680
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Moverse hacia Izquierda"
@@ -610,7 +633,7 @@ Begin VB.Form frmCustomKeys
       Top             =   4200
       Width           =   1755
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Moverse hacia abajo"
@@ -622,7 +645,7 @@ Begin VB.Form frmCustomKeys
       Top             =   3600
       Width           =   1485
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Mostrar/ocultar macros"
@@ -634,7 +657,7 @@ Begin VB.Form frmCustomKeys
       Top             =   1200
       Width           =   1665
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Mostrar/ocultar nombres"
@@ -646,7 +669,7 @@ Begin VB.Form frmCustomKeys
       Top             =   1800
       Width           =   1770
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Ocultarse"
@@ -658,7 +681,7 @@ Begin VB.Form frmCustomKeys
       Top             =   5400
       Width           =   690
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Actualizar Posición"
@@ -670,7 +693,7 @@ Begin VB.Form frmCustomKeys
       Top             =   3600
       Width           =   1320
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Robar"
@@ -682,7 +705,7 @@ Begin VB.Form frmCustomKeys
       Top             =   5400
       Width           =   435
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Seguro de grupo"
@@ -694,7 +717,7 @@ Begin VB.Form frmCustomKeys
       Top             =   600
       Width           =   1200
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Seguro"
@@ -706,7 +729,7 @@ Begin VB.Form frmCustomKeys
       Top             =   0
       Width           =   510
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Equipar objeto"
@@ -718,7 +741,7 @@ Begin VB.Form frmCustomKeys
       Top             =   2400
       Width           =   1050
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Usar objeto"
@@ -730,7 +753,7 @@ Begin VB.Form frmCustomKeys
       Top             =   1800
       Width           =   840
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Tirar objeto"
@@ -742,7 +765,7 @@ Begin VB.Form frmCustomKeys
       Top             =   1200
       Width           =   840
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Tomar objeto"
@@ -754,7 +777,7 @@ Begin VB.Form frmCustomKeys
       Top             =   600
       Width           =   960
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Atacar"
@@ -766,7 +789,7 @@ Begin VB.Form frmCustomKeys
       Top             =   0
       Width           =   480
    End
-   Begin VB.Label lbNames 
+   Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Modo rol"
