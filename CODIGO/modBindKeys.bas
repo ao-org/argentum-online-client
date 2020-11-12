@@ -80,197 +80,207 @@ End Sub
 
 Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     
-    If KeyCode = BindKeys(1).KeyCode Then
-        If UserEstado = 1 Then
-
-            With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-
-            End With
-
-            Exit Function
-
-        End If
-
-        If UserDescansar Then Exit Function
-        If MainTimer.Check(TimersIndex.CastAttack, False) Then
-            If MainTimer.Check(TimersIndex.Attack) Then
-                Call MainTimer.Restart(TimersIndex.AttackSpell)
-                Call WriteAttack
-
+    Select Case KeyCode
+        Case BindKeys(1).KeyCode
+            If UserEstado = 1 Then
+    
+                With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+    
+                End With
+    
+                Exit Function
+    
             End If
-
-        End If
-
-    ElseIf KeyCode = BindKeys(2).KeyCode Then
-
-        If UserEstado = 1 Then
-
-            With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-
-            End With
-
-            Exit Function
-
-        End If
-
-        If Not Comerciando Then
-            Call AgarrarItem
-        Else
-            Call AddtoRichTextBox(frmmain.RecTxt, "No podes agarrar objetos mientras comercias", 255, 0, 32, False, False, False)
-
-        End If
-
-    ElseIf KeyCode = BindKeys(3).KeyCode Then
-
-        If UserEstado = 1 Then
-
-            With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-
-            End With
-
-            Exit Function
-
-        End If
-
-        If Not Comerciando Then
-            Call TirarItem
-        Else
-            Call AddtoRichTextBox(frmmain.RecTxt, "No podes tirar objetos mientras comercias", 255, 0, 32, False, False, False)
-
-        End If
-
-    ElseIf KeyCode = BindKeys(6).KeyCode Then
-        Call WriteSafeToggle
-    ElseIf KeyCode = BindKeys(12).KeyCode Then
-        MostrarOnline = Not MostrarOnline
-    ElseIf KeyCode = BindKeys(7).KeyCode Then
-        Nombres = Not Nombres
-    ElseIf KeyCode = BindKeys(8).KeyCode Then
-        Call WriteParyToggle
-    ElseIf KeyCode = BindKeys(9).KeyCode Then
-
-        If UserEstado = 1 Then
-
-            With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-
-            End With
-
-            Exit Function
-
-        End If
-
-        Call WriteWork(eSkill.Robar)
-        
-    ElseIf KeyCode = BindKeys(18).KeyCode Then
-
-        If IntervaloPermiteLLamadaClan Then Call WriteLlamadadeClan
-        
-    ElseIf KeyCode = BindKeys(20).KeyCode Then
-
-        If IntervaloPermiteLLamadaClan Then Call WriteMarcaDeClan
     
-    ElseIf KeyCode = BindKeys(5).KeyCode Then
-
-        If UserEstado = 1 Then
-
-            With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-
-            End With
-
-            Exit Function
-
-        End If
-
-        If MainTimer.Check(TimersIndex.UseItemWithU) Then
-            If frmmain.Inventario.IsItemSelected Then Call WriteEquipItem(frmmain.Inventario.SelectedItem)
-        End If
+            If UserDescansar Then Exit Function
+            If MainTimer.Check(TimersIndex.CastAttack, False) Then
+                If MainTimer.Check(TimersIndex.Attack) Then
+                    Call MainTimer.Restart(TimersIndex.AttackSpell)
+                    Call WriteAttack
     
-    ElseIf KeyCode = BindKeys(4).KeyCode Then
-
-        If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
-        If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+                End If
     
-    ElseIf KeyCode = BindKeys(10).KeyCode Then
-
-        If MainTimer.Check(TimersIndex.SendRPU) Then
-            Call WriteRequestPositionUpdate
-            Beep
-
-        End If
+            End If
     
-    ElseIf KeyCode = BindKeys(11).KeyCode Then
-
-        If UserEstado = 1 Then
-
-            With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-
-            End With
-
-            Exit Function
-
-        End If
-
-        Call WriteWork(eSkill.Ocultarse)
-        
-    ElseIf KeyCode = BindKeys(13).KeyCode Then
+        Case BindKeys(2).KeyCode
     
-        Call ScreenCapture
-
-    ElseIf KeyCode = BindKeys(12).KeyCode Then
-        'If ShowMacros = 0 Then
-        '  ShowMacros = 1
-        ' frmMain.picmacroOn.Visible = True
-        'frmMain.picmacroOff.Visible = False
-        'Else
-        '   frmMain.picmacroOn.Visible = False
-        '  frmMain.picmacroOff.Visible = True
-        ' ShowMacros = 0
-        'End If
-    ElseIf KeyCode = BindKeys(19).KeyCode Then
-        'FPSFLAG = Not FPSFLAG
-        
-        ' If FPSFLAG Then
-        ' frmMain.Timerping.Enabled = True
-        ' Else
-        '  frmMain.Timerping.Enabled = False
-        'End If
-        
-        Dim Arch As String
-
-        Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
-        Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
-        
-    ElseIf KeyCode = BindKeys(21).KeyCode Then
-
-        'If UserMinMAN = UserMaxMAN Then Exit Function
+            If UserEstado = 1 Then
+    
+                With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+    
+                End With
+    
+                Exit Function
+    
+            End If
+    
+            If Not Comerciando Then
+                Call AgarrarItem
+            Else
+                Call AddtoRichTextBox(frmmain.RecTxt, "No podes agarrar objetos mientras comercias", 255, 0, 32, False, False, False)
+    
+            End If
+    
+        Case BindKeys(3).KeyCode
+    
+            If UserEstado = 1 Then
+    
+                With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+    
+                End With
+    
+                Exit Function
+    
+            End If
+    
+            If Not Comerciando Then
+                Call TirarItem
+            Else
+                Call AddtoRichTextBox(frmmain.RecTxt, "No podes tirar objetos mientras comercias", 255, 0, 32, False, False, False)
+    
+            End If
+    
+        Case BindKeys(6).KeyCode
+            Call WriteSafeToggle
+        Case BindKeys(12).KeyCode
+            MostrarOnline = Not MostrarOnline
+        Case BindKeys(7).KeyCode
+            Nombres = Not Nombres
+        Case BindKeys(8).KeyCode
+            Call WriteParyToggle
+        Case BindKeys(9).KeyCode
+    
+            If UserEstado = 1 Then
+    
+                With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+    
+                End With
+    
+                Exit Function
+    
+            End If
+    
+            Call WriteWork(eSkill.Robar)
             
-        If UserEstado = 1 Then
-
-            With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-
-            End With
-
+        Case BindKeys(18).KeyCode
+    
+            If IntervaloPermiteLLamadaClan Then Call WriteLlamadadeClan
+            
+        Case BindKeys(20).KeyCode
+    
+            If IntervaloPermiteLLamadaClan Then Call WriteMarcaDeClan
+        
+        Case BindKeys(5).KeyCode
+    
+            If UserEstado = 1 Then
+    
+                With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+    
+                End With
+    
+                Exit Function
+    
+            End If
+    
+            If MainTimer.Check(TimersIndex.UseItemWithU) Then
+                If frmmain.Inventario.IsItemSelected Then Call WriteEquipItem(frmmain.Inventario.SelectedItem)
+            End If
+        
+        Case BindKeys(4).KeyCode
+    
+            If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
+            If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+        
+        Case BindKeys(10).KeyCode
+    
+            If MainTimer.Check(TimersIndex.SendRPU) Then
+                Call WriteRequestPositionUpdate
+                Beep
+    
+            End If
+        
+        Case BindKeys(11).KeyCode
+    
+            If UserEstado = 1 Then
+    
+                With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+    
+                End With
+    
+                Exit Function
+    
+            End If
+    
+            Call WriteWork(eSkill.Ocultarse)
+            
+        Case BindKeys(13).KeyCode
+        
+            Call ScreenCapture
+    
+        Case BindKeys(12).KeyCode
+            'If ShowMacros = 0 Then
+            '  ShowMacros = 1
+            ' frmMain.picmacroOn.Visible = True
+            'frmMain.picmacroOff.Visible = False
+            'Else
+            '   frmMain.picmacroOn.Visible = False
+            '  frmMain.picmacroOff.Visible = True
+            ' ShowMacros = 0
+            'End If
+        Case BindKeys(19).KeyCode
+            'FPSFLAG = Not FPSFLAG
+            
+            ' If FPSFLAG Then
+            ' frmMain.Timerping.Enabled = True
+            ' Else
+            '  frmMain.Timerping.Enabled = False
+            'End If
+            
+            Dim Arch As String
+    
+            Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
+            Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
+            
+        Case BindKeys(21).KeyCode
+    
+            'If UserMinMAN = UserMaxMAN Then Exit Function
+                
+            If UserEstado = 1 Then
+    
+                With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+    
+                End With
+    
+                Exit Function
+    
+            End If
+            
+            Call WriteMeditate
+            
+        Case BindKeys(22).KeyCode
+            Call WriteQuit
+    
+        Case BindKeys(23).KeyCode
+            If UserEstado = 1 Then
+                With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                    'Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                End With
+            Else
+                'Call WriteWork(eSkill.Domar)
+            End If
+    
+        Case Else
+            Accionar = False
             Exit Function
 
-        End If
-        
-        Call WriteMeditate
-        
-    ElseIf KeyCode = BindKeys(22).KeyCode Then
-        Call WriteQuit
-
-    Else
-        Accionar = False
-        Exit Function
-
-    End If
+    End Select
 
     Accionar = True
 

@@ -116,7 +116,7 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 'Argentum Online 0.11.6
 
 ' función Api para aplicar la transparencia a la ventana
@@ -228,7 +228,7 @@ Private Sub Form_Load()
     Me.Width = 4380
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     moverForm
 
     If Image1.Tag = "1" Then
@@ -248,14 +248,14 @@ Private Sub Image1_Click()
     Unload Me
 End Sub
 
-Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    Image1.Picture = LoadInterface("boton-aceptar-ES-off.jpg")
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    Image1.Picture = LoadInterface("boton-aceptar-ES-off.bmp")
     Image1.Tag = "1"
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("boton-aceptar-ES-over.jpg")
+        Image1.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
         Image1.Tag = "1"
     End If
 End Sub
@@ -334,12 +334,12 @@ Private Sub imgCerrar_Click()
     Unload Me
 End Sub
 
-Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     imgCerrar.Tag = "1"
 End Sub
 
-Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If imgCerrar.Tag = "0" Then
         imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         imgCerrar.Tag = "1"

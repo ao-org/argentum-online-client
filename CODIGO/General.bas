@@ -1633,6 +1633,14 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Navegacion) = "Navegacion"
     SkillsNames(eSkill.equitacion) = "Equitación"
     SkillsNames(eSkill.Resistencia) = "Resistencia Mágica"
+    SkillsNames(eSkill.Talar) = "Tala"
+    SkillsNames(eSkill.Pescar) = "Pesca"
+    SkillsNames(eSkill.Mineria) = "Mineria"
+    SkillsNames(eSkill.Herreria) = "Herreria"
+    SkillsNames(eSkill.Carpinteria) = "Carpinteria"
+    SkillsNames(eSkill.Alquimia) = "Alquimia"
+    SkillsNames(eSkill.Sastreria) = "Sastreria"
+    SkillsNames(eSkill.Domar) = "Domar"
 
     SkillsDesc(eSkill.magia) = "Los hechizos requieren un cierto número de puntos mágicos para ser usados. Sube lanzando cualquier hechizo."
     SkillsDesc(eSkill.Robar) = "Aumenta las posibilidades de conseguir objetos u oro mientras robas. Se sube robando. Solo el ladrón puede robar objetos, las otras clases solo pueden robar oro."
@@ -1650,19 +1658,20 @@ Private Sub InicializarNombres()
     SkillsDesc(eSkill.Navegacion) = "Necesaria para poder utilizar traje de baño, barcas, galeras o galeones."
     SkillsDesc(eSkill.equitacion) = " Necesaria para equipar una montura."
     SkillsDesc(eSkill.Resistencia) = "Sirve para que los hechizos no te peguen tan fuerte, mientras más puntos tengas, menos es el daño mágico que recibes. Se sube cuando un NPC o una persona te ataca con hechizos."
-    
-    SkillsNames(eSkill.Talar) = "Tala"
-    SkillsNames(eSkill.Pescar) = "Pesca"
-    SkillsNames(eSkill.Mineria) = "Mineria"
-    SkillsNames(eSkill.Herreria) = "Herreria"
-    SkillsNames(eSkill.Carpinteria) = "Carpinteria"
-    SkillsNames(eSkill.Alquimia) = "Alquimia"
-    SkillsNames(eSkill.Sastreria) = "Sastreria"
+    SkillsDesc(eSkill.Talar) = "Aumenta la velocidad a la que recoletas madera de los árboles."
+    SkillsDesc(eSkill.Pescar) = "Aumenta la velocidad a la que capturas peces."
+    SkillsDesc(eSkill.Mineria) = "Aumenta la velocidad a la que extraes minerales de los yacimientos."
+    SkillsDesc(eSkill.Herreria) = "Te permite construir mejores objetos de herrería."
+    SkillsDesc(eSkill.Carpinteria) = "Te permite construir mejores objetos de carpintería."
+    SkillsDesc(eSkill.Alquimia) = "Te permite crear pociones más poderosas."
+    SkillsDesc(eSkill.Sastreria) = "Te permite confeccionar mejores vestimentas."
+    SkillsDesc(eSkill.Domar) = "Aumenta tu habilidad para domar animales."
     
     AtributosNames(eAtributos.Fuerza) = "Fuerza"
     AtributosNames(eAtributos.Agilidad) = "Agilidad"
     AtributosNames(eAtributos.Inteligencia) = "Inteligencia"
     AtributosNames(eAtributos.Constitucion) = "Constitucion"
+    AtributosNames(eAtributos.Carisma) = "Carisma"
 
 End Sub
 

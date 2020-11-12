@@ -4586,11 +4586,21 @@ Public Sub RenderUICrearPJ()
     'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
     ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
     Engine_Draw_Box 280 + OffX, 500 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 503 + Offy, DefaultColor, 1, True ' Atributo Carisma
+    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 503 + Offy, DefaultColor, 1, True ' Atributo Constitución
     '
     ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
     Engine_Draw_Box 317 + OffX, 500 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 503 + Offy, DefaultColor, 1, True ' Bonificacion Carisma
+    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 503 + Offy, DefaultColor, 1, True ' Bonificacion Constitución
+    
+    Engine_Text_Render "Constitución ", 185 + OffX, 500 + Offy, DefaultColor, , True
+    'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
+    ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
+    Engine_Draw_Box 280 + OffX, 530 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.lbCarisma.Caption, 283 + OffX, 533 + Offy, DefaultColor, 1, True ' Atributo Carisma
+    '
+    ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
+    Engine_Draw_Box 317 + OffX, 530 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.modCarisma.Caption, 320 + OffX, 533 + Offy, DefaultColor, 1, True ' Bonificacion Carisma
       
     '
     'Engine_Draw_Box 290, 528, 20, 20, D3DColorARGB(120, 1, 150, 150)

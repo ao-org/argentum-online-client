@@ -92,10 +92,10 @@ Begin VB.Form frmGuildAdm
    End
    Begin VB.Image Image3 
       Height          =   420
-      Left            =   2760
+      Left            =   4645
       Tag             =   "0"
-      Top             =   5040
-      Width           =   1950
+      Top             =   4230
+      Width           =   390
    End
    Begin VB.Image Image2 
       Height          =   420
@@ -238,15 +238,6 @@ Private Sub Image3_Click()
 
 End Sub
 
-Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    If Image3.Tag = "0" Then
-        Image3.Picture = LoadInterface("clan_detallesclanapretado.bmp")
-        Image3.Tag = "1"
-
-    End If
-
-End Sub
 
 Private Sub lblClose_Click()
     Unload Me
