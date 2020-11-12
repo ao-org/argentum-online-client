@@ -3,10 +3,10 @@ Begin VB.Form frmOpciones
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
    BorderStyle     =   0  'None
-   ClientHeight    =   7350
+   ClientHeight    =   7575
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   8040
+   ClientWidth     =   8025
    ControlBox      =   0   'False
    FillColor       =   &H00C0C0C0&
    BeginProperty Font 
@@ -22,64 +22,64 @@ Begin VB.Form frmOpciones
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7350
-   ScaleWidth      =   8040
+   ScaleHeight     =   7575
+   ScaleWidth      =   8025
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.HScrollBar scrSens 
       Height          =   315
       LargeChange     =   5
-      Left            =   4650
+      Left            =   4200
       Max             =   20
       Min             =   1
       TabIndex        =   14
-      Top             =   5040
+      Top             =   5280
       Value           =   10
-      Width           =   2415
+      Width           =   3375
    End
    Begin VB.HScrollBar Alpha 
       Height          =   315
       LargeChange     =   60
-      Left            =   4680
+      Left            =   9240
       Max             =   255
       SmallChange     =   2
       TabIndex        =   13
-      Top             =   3000
+      Top             =   2880
       Value           =   120
       Width           =   2775
    End
    Begin VB.HScrollBar HScroll1 
       Height          =   315
       LargeChange     =   1000
-      Left            =   720
+      Left            =   460
       Max             =   0
       Min             =   -4000
       SmallChange     =   2
       TabIndex        =   12
-      Top             =   5400
-      Width           =   2775
-   End
-   Begin VB.HScrollBar scrMidi 
-      Height          =   315
-      LargeChange     =   1000
-      Left            =   720
-      Max             =   0
-      Min             =   -4000
-      SmallChange     =   2
-      TabIndex        =   11
-      Top             =   4500
-      Width           =   2775
+      Top             =   5920
+      Width           =   3375
    End
    Begin VB.HScrollBar scrVolume 
       Height          =   315
       LargeChange     =   1000
-      Left            =   720
+      Left            =   460
+      Max             =   0
+      Min             =   -4000
+      SmallChange     =   2
+      TabIndex        =   11
+      Top             =   4750
+      Width           =   3375
+   End
+   Begin VB.HScrollBar scrMidi 
+      Height          =   315
+      LargeChange     =   1000
+      Left            =   460
       Max             =   0
       Min             =   -4000
       SmallChange     =   2
       TabIndex        =   10
-      Top             =   3625
-      Width           =   2775
+      Top             =   3600
+      Width           =   3375
    End
    Begin VB.CheckBox Macro 
       Caption         =   "Arriba"
@@ -167,62 +167,63 @@ Begin VB.Form frmOpciones
       Width           =   1335
    End
    Begin VB.Image facebook 
-      Height          =   390
-      Left            =   3300
+      Height          =   375
+      Left            =   4200
       Tag             =   "0"
-      Top             =   5800
+      Top             =   6840
       Width           =   435
    End
    Begin VB.Image instagram 
       Height          =   390
-      Left            =   2850
+      Left            =   4560
       Tag             =   "0"
-      Top             =   5790
+      Top             =   6840
       Width           =   435
    End
    Begin VB.Image discord 
-      Height          =   390
-      Left            =   1890
+      Height          =   375
+      Left            =   3480
       Tag             =   "0"
-      Top             =   5805
-      Width           =   435
+      Top             =   6840
+      Width           =   315
    End
    Begin VB.Image cmdChangePassword 
-      Height          =   480
-      Left            =   5050
+      Height          =   420
+      Left            =   5290
       Tag             =   "0"
-      Top             =   6550
-      Width           =   2760
+      Top             =   6790
+      Width           =   2265
    End
    Begin VB.Image Command1 
-      Height          =   525
-      Left            =   370
+      Height          =   420
+      Left            =   480
       Tag             =   "0"
-      Top             =   6540
-      Width           =   2790
+      Top             =   6790
+      Width           =   2265
    End
    Begin VB.Image cmdcerrar 
-      Height          =   480
-      Left            =   3280
+      Height          =   360
+      Left            =   7560
       Tag             =   "0"
-      Top             =   6800
-      Width           =   1755
+      Top             =   0
+      Width           =   435
    End
    Begin VB.Image cmdweb 
-      Height          =   390
-      Left            =   2370
+      Height          =   375
+      Left            =   3120
       Tag             =   "0"
-      Top             =   5800
-      Width           =   435
+      Top             =   6840
+      Width           =   315
    End
    Begin VB.Image cmdayuda 
       Height          =   435
-      Left            =   400
+      Left            =   9120
       Tag             =   "0"
-      Top             =   5790
+      Top             =   5880
       Width           =   1395
    End
    Begin VB.Label txtMSens 
+      Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
       Caption         =   "10"
       BeginProperty Font 
@@ -236,86 +237,86 @@ Begin VB.Form frmOpciones
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7200
+      Left            =   4200
       TabIndex        =   15
-      Top             =   5070
-      Width           =   375
+      Top             =   5640
+      Width           =   3375
    End
    Begin VB.Image Check4 
-      Height          =   210
-      Left            =   4540
-      Top             =   4150
-      Width           =   180
+      Height          =   255
+      Left            =   4240
+      Top             =   3940
+      Width           =   255
    End
    Begin VB.Image Check9 
-      Height          =   210
-      Left            =   4540
-      Top             =   3870
-      Width           =   180
+      Height          =   255
+      Left            =   4240
+      Top             =   3600
+      Width           =   255
    End
    Begin VB.Image check1 
       Height          =   210
-      Left            =   4560
-      Top             =   2190
+      Left            =   8760
+      Top             =   3840
       Width           =   180
    End
    Begin VB.Image Check5 
-      Height          =   210
-      Left            =   4560
-      Top             =   1900
-      Width           =   180
+      Height          =   255
+      Left            =   4240
+      Top             =   2160
+      Width           =   255
    End
    Begin VB.Image Check6 
-      Height          =   210
-      Left            =   4560
-      Top             =   1600
-      Width           =   180
+      Height          =   255
+      Left            =   4240
+      Top             =   1810
+      Width           =   255
    End
    Begin VB.Image Check2 
-      Height          =   210
-      Left            =   4420
-      Top             =   5840
-      Width           =   180
+      Height          =   255
+      Left            =   5850
+      Top             =   5940
+      Width           =   255
    End
    Begin VB.Image Check3 
-      Height          =   210
-      Left            =   4420
-      Top             =   5520
-      Width           =   180
+      Height          =   255
+      Left            =   4240
+      Top             =   5940
+      Width           =   255
    End
    Begin VB.Image chkInvertir 
-      Height          =   210
-      Left            =   680
-      Top             =   2840
-      Width           =   180
+      Height          =   255
+      Left            =   2130
+      Top             =   2360
+      Width           =   255
    End
    Begin VB.Image chko 
-      Height          =   210
+      Height          =   255
       Index           =   2
-      Left            =   680
-      Top             =   2540
-      Width           =   180
+      Left            =   2130
+      Top             =   1810
+      Width           =   255
    End
    Begin VB.Image chko 
-      Height          =   210
+      Height          =   255
       Index           =   3
-      Left            =   680
-      Top             =   2240
-      Width           =   180
+      Left            =   490
+      Top             =   2500
+      Width           =   255
    End
    Begin VB.Image chko 
-      Height          =   210
-      Index           =   1
-      Left            =   680
-      Top             =   1940
-      Width           =   180
-   End
-   Begin VB.Image chko 
-      Height          =   210
+      Height          =   255
       Index           =   0
-      Left            =   680
-      Top             =   1630
-      Width           =   180
+      Left            =   490
+      Top             =   2160
+      Width           =   255
+   End
+   Begin VB.Image chko 
+      Height          =   255
+      Index           =   1
+      Left            =   490
+      Top             =   1810
+      Width           =   255
    End
    Begin VB.Label Label1 
       Caption         =   "Label1"
@@ -352,15 +353,15 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 ' función Api para aplicar la transparencia a la ventana
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 'constantes
 Private Const GWL_EXSTYLE = (-20)
@@ -369,7 +370,7 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
 
-Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Const HWND_TOPMOST = -1
 
@@ -379,13 +380,13 @@ Private Const SWP_NOMOVE = &H2
 
 Private Const SWP_NOSIZE = &H1
 
-Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
 
     On Error Resume Next
   
     Dim msg As Long
   
-    msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+    msg = GetWindowLong(hWnd, GWL_EXSTYLE)
          
     If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
         Is_Transparent = True
@@ -402,7 +403,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
   
     Dim msg As Long
   
@@ -411,13 +412,13 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
     Else
-        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+        msg = GetWindowLong(hWnd, GWL_EXSTYLE)
         msg = msg Or WS_EX_LAYERED
      
-        SetWindowLong hwnd, GWL_EXSTYLE, msg
+        SetWindowLong hWnd, GWL_EXSTYLE, msg
      
         'Establece la transparencia
-        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
+        SetLayeredWindowAttributes hWnd, 0, Valor, LWA_ALPHA
   
         Aplicar_Transparencia = 0
   
@@ -445,9 +446,9 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
         
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("config_stick.bmp")
+        check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
         
@@ -465,7 +466,7 @@ Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If PermitirMoverse = 0 Then
         Check4.Picture = Nothing
     Else
-        Check4.Picture = LoadInterface("config_stick.bmp")
+        Check4.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
 
@@ -483,7 +484,7 @@ Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If MoverVentana = 0 Then
         Check5.Picture = Nothing
     Else
-        Check5.Picture = LoadInterface("config_stick.bmp")
+        Check5.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
 
@@ -504,7 +505,7 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If CursoresGraficos = 0 Then
         Check2.Picture = Nothing
     Else
-        Check2.Picture = LoadInterface("config_stick.bmp")
+        Check2.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
 
@@ -525,7 +526,7 @@ Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single
     If InvertirSonido = 0 Then
         chkInvertir.Picture = Nothing
     Else
-        chkInvertir.Picture = LoadInterface("config_stick.bmp")
+        chkInvertir.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
 
@@ -558,7 +559,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If Musica = 0 Then
                 chko(0).Picture = Nothing
             Else
-                chko(0).Picture = LoadInterface("config_stick.bmp")
+                chko(0).Picture = LoadInterface("check-amarillo.bmp")
 
             End If
 
@@ -580,7 +581,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If fX = 0 Then
                 chko(1).Picture = Nothing
             Else
-                chko(1).Picture = LoadInterface("config_stick.bmp")
+                chko(1).Picture = LoadInterface("check-amarillo.bmp")
 
             End If
 
@@ -596,7 +597,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If FxNavega = 0 Then
                 chko(2).Picture = Nothing
             Else
-                chko(2).Picture = LoadInterface("config_stick.bmp")
+                chko(2).Picture = LoadInterface("check-amarillo.bmp")
 
             End If
 
@@ -618,7 +619,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If AmbientalActivated = 0 Then
                 chko(3).Picture = Nothing
             Else
-                chko(3).Picture = LoadInterface("config_stick.bmp")
+                chko(3).Picture = LoadInterface("check-amarillo.bmp")
 
             End If
 
@@ -640,93 +641,24 @@ Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single,
     End If
 
 End Sub
-
-Private Sub discord_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    If discord.Tag = "0" Then
-        discord.Picture = LoadInterface("config_discord.bmp")
-        discord.Tag = "1"
-
-    End If
-    
-    cmdweb = Nothing
-    cmdweb.Tag = "0"
-    instagram = Nothing
-    instagram.Tag = "0"
-    facebook = Nothing
-    facebook.Tag = "0"
-
-End Sub
-
-Private Sub cmdweb_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    If cmdweb.Tag = "0" Then
-        cmdweb.Picture = LoadInterface("config_web.bmp")
-        cmdweb.Tag = "1"
-
-    End If
-    
-    discord = Nothing
-    discord.Tag = "0"
-    instagram = Nothing
-    instagram.Tag = "0"
-    facebook = Nothing
-    facebook.Tag = "0"
-
-End Sub
-
-Private Sub instagram_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    If instagram.Tag = "0" Then
-        instagram.Picture = LoadInterface("config_instagram.bmp")
-        instagram.Tag = "1"
-
-    End If
-    
-    discord = Nothing
-    discord.Tag = "0"
-    cmdweb = Nothing
-    cmdweb.Tag = "0"
-    facebook = Nothing
-    facebook.Tag = "0"
-
-End Sub
-
-Private Sub facebook_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    If facebook.Tag = "0" Then
-        facebook.Picture = LoadInterface("config_facebook.bmp")
-        facebook.Tag = "1"
-
-    End If
-
-    discord = Nothing
-    discord.Tag = "0"
-    cmdweb = Nothing
-    cmdweb.Tag = "0"
-    instagram = Nothing
-    instagram.Tag = "0"
-
-End Sub
-
 Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Command1.Tag = "0" Then
-        Command1.Picture = LoadInterface("config_teclas.bmp")
+        Command1.Picture = LoadInterface("boton-configurar-teclas-over.bmp")
         Command1.Tag = "1"
 
     End If
 
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     
 End Sub
 
 Private Sub cmdcerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    If cmdCerrar.Tag = "0" Then
-        cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdCerrar.Tag = "1"
+    If cmdcerrar.Tag = "0" Then
+        'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
+        cmdcerrar.Tag = "1"
 
     End If
 
@@ -740,18 +672,18 @@ End Sub
 Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If cmdChangePassword.Tag = "0" Then
-        cmdChangePassword.Picture = LoadInterface("config_contraseñ.bmp")
+        cmdChangePassword.Picture = LoadInterface("boton-cambiar-contrasena-over.bmp")
         cmdChangePassword.Tag = "1"
 
     End If
 
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
 
 End Sub
 
 Private Sub cmdWeb_Click()
-    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
 
 End Sub
 
@@ -761,19 +693,19 @@ Private Sub Command5_Click()
 End Sub
 
 Private Sub discord_Click()
-    ShellExecute Me.hwnd, "open", "https://discord.gg/e3juVbF", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://discord.gg/e3juVbF", "", "", 0
 
 End Sub
 
 Private Sub facebook_Click()
-    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
 
 End Sub
 
 Private Sub Form_Load()
-    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
-    Me.Picture = LoadInterface("config.bmp")
+    Me.Picture = LoadInterface("VentanaConfiguracion.bmp")
     
 End Sub
 
@@ -782,17 +714,19 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
 End Sub
 
 Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    '    If Check3 Then
-    '    SwapMouseButton 1
-    ' Else
-    '   SwapMouseButton 0
-    '   End If
+   ' If Check3 Then
+      '  SwapMouseButton 1
+       ' Check3.Picture = LoadInterface("check-amarillo.bmp")
+  '   Else
+      ' SwapMouseButton 0
+      ' Check3.Picture = Nothing
+  '  End If
 End Sub
 
 Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -807,7 +741,7 @@ Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If FPSFLAG = 0 Then
         Check6.Picture = Nothing
     Else
-        Check6.Picture = LoadInterface("config_stick.bmp")
+        Check6.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
 
@@ -825,7 +759,7 @@ Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If CopiarDialogoAConsola = 0 Then
         Check9.Picture = Nothing
     Else
-        Check9.Picture = LoadInterface("config_stick.bmp")
+        Check9.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
 
@@ -859,8 +793,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     facebook.Tag = "0"
     Command1 = Nothing
     Command1.Tag = "0"
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
@@ -888,77 +822,77 @@ Public Sub Init()
     If CopiarDialogoAConsola = 0 Then
         Check9.Picture = Nothing
     Else
-        Check9.Picture = LoadInterface("config_stick.bmp")
+        Check9.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
     If MoverVentana = 0 Then
         Check5.Picture = Nothing
     Else
-        Check5.Picture = LoadInterface("config_stick.bmp")
+        Check5.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
 
     If CursoresGraficos = 0 Then
         Check2.Picture = Nothing
     Else
-        Check2.Picture = LoadInterface("config_stick.bmp")
+        Check2.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
 
     If PermitirMoverse = 0 Then
         Check4.Picture = Nothing
     Else
-        Check4.Picture = LoadInterface("config_stick.bmp")
+        Check4.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
     If Musica = 0 Then
         chko(0).Picture = Nothing
     Else
-        chko(0).Picture = LoadInterface("config_stick.bmp")
+        chko(0).Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
     If FxNavega = 0 Then
         chko(2).Picture = Nothing
     Else
-        chko(2).Picture = LoadInterface("config_stick.bmp")
+        chko(2).Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
     If AmbientalActivated = 0 Then
         chko(3).Picture = Nothing
     Else
-        chko(3).Picture = LoadInterface("config_stick.bmp")
+        chko(3).Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
     If fX = 0 Then
         chko(1).Picture = Nothing
     Else
-        chko(1).Picture = LoadInterface("config_stick.bmp")
+        chko(1).Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
     If InvertirSonido = 0 Then
         chkInvertir.Picture = Nothing
     Else
-        chkInvertir.Picture = LoadInterface("config_stick.bmp")
+        chkInvertir.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
     If FPSFLAG = 0 Then
         Check6.Picture = Nothing
     Else
-        Check6.Picture = LoadInterface("config_stick.bmp")
+        Check6.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("config_stick.bmp")
+        check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
@@ -981,7 +915,7 @@ Private Sub HScroll1_Change()
 End Sub
 
 Private Sub instagram_Click()
-    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
 
 End Sub
 
