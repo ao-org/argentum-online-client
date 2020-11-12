@@ -2145,10 +2145,10 @@ Public Function LoadInterface(FileName As String) As IPicture
 On Error GoTo errhandler
 
     #If Compresion = 1 Then
-        Set LoadInterface = General_Load_Picture_From_Resource_Ex(FileName)
+        Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName))
     
     #Else
-        Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & FileName)
+        Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & LCase$(FileName))
     #End If
     
 Exit Function
