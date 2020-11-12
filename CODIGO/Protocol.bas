@@ -5401,9 +5401,6 @@ Private Sub HandleChangeBankSlot()
     
     Dim slot As Byte: slot = buffer.ReadByte()
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
     Dim BankSlot As Inventory
     
     With BankSlot
@@ -5419,13 +5416,12 @@ Private Sub HandleChangeBankSlot()
         .Valor = buffer.ReadLong()
         .PuedeUsar = buffer.ReadByte()
         
-        If frmBancoObj.Visible Then
-            Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .name, .PuedeUsar)
-        End If
+        Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .name, .PuedeUsar)
 
     End With
     
-    Exit Sub
+    'If we got here then packet is complete, copy data back to original queue
+    Call incomingData.CopyBuffer(buffer)
     
 errhandler:
 

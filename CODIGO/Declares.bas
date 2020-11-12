@@ -634,6 +634,7 @@ Public Enum eSkill
     Carpinteria = 21
     Alquimia = 22
     Sastreria = 23
+    Domar = 24
     
     Grupo = 90
     MarcaDeClan = 91
@@ -647,6 +648,7 @@ Public Enum eAtributos
     Agilidad = 2
     Inteligencia = 3
     Constitucion = 4
+    Carisma = 5
 
 End Enum
 
@@ -970,9 +972,9 @@ Public SendingType                              As Byte
 
 Public sndPrivateTo                             As String
 
-Public Const NUMSKILLS                          As Byte = 23
+Public Const NUMSKILLS                          As Byte = 24
 
-Public Const NUMATRIBUTOS                       As Byte = 4
+Public Const NUMATRIBUTOS                       As Byte = 5
 
 Public Const NUMCLASES                          As Byte = 9
 
@@ -1131,7 +1133,7 @@ Public Declare Function GetAsyncKeyState Lib "user32" (ByVal nVirtKey As Long) A
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 'Para ejecutar el Internet Explorer para el manual
-Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
+Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hWnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 
 'Lista de cabezas
 Public Type tIndiceCabeza

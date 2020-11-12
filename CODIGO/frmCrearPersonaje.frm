@@ -720,28 +720,28 @@ End Sub
 Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
-        If Cabeza.ListCount = 0 Then Exit Sub
-        If Cabeza.ListIndex > 0 Then
-            Cabeza.ListIndex = Cabeza.ListIndex - 1
+        If cabeza.ListCount = 0 Then Exit Sub
+        If cabeza.ListIndex > 0 Then
+            cabeza.ListIndex = cabeza.ListIndex - 1
 
         End If
 
-        If Cabeza.ListIndex = 0 Then
-            Cabeza.ListIndex = Cabeza.ListCount - 1
+        If cabeza.ListIndex = 0 Then
+            cabeza.ListIndex = cabeza.ListCount - 1
 
         End If
 
     End If
 
     If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
-        If Cabeza.ListCount = 0 Then Exit Sub
-        If (Cabeza.ListIndex + 1) <> Cabeza.ListCount Then
-            Cabeza.ListIndex = Cabeza.ListIndex + 1
+        If cabeza.ListCount = 0 Then Exit Sub
+        If (cabeza.ListIndex + 1) <> cabeza.ListCount Then
+            cabeza.ListIndex = cabeza.ListIndex + 1
 
         End If
 
-        If (Cabeza.ListIndex + 1) = Cabeza.ListCount Then
-            Cabeza.ListIndex = 0
+        If (cabeza.ListIndex + 1) = cabeza.ListCount Then
+            cabeza.ListIndex = 0
 
         End If
 
@@ -959,12 +959,14 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         UserAtributos(2) = Val(lbAgilidad.Caption) + Val(modAgilidad.Caption)
         UserAtributos(3) = Val(lbInteligencia.Caption) + Val(modInteligencia.Caption)
         UserAtributos(4) = Val(lbConstitucion.Caption) + Val(modConstitucion.Caption)
+        UserAtributos(4) = Val(lbCarisma.Caption) + Val(modCarisma.Caption)
             
         'Ladder Atributos Negativos
         If UserAtributos(1) < 1 Then UserAtributos(1) = 1
         If UserAtributos(2) < 1 Then UserAtributos(2) = 1
         If UserAtributos(3) < 1 Then UserAtributos(3) = 1
         If UserAtributos(4) < 1 Then UserAtributos(4) = 1
+        If UserAtributos(5) < 1 Then UserAtributos(5) = 1
 
         'Barrin 3/10/03
         If CheckData() Then
@@ -993,7 +995,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 End Sub
 
 Private Sub Cabeza_Click()
-    MiCabeza = Val(Cabeza.List(Cabeza.ListIndex))
+    MiCabeza = Val(cabeza.List(cabeza.ListIndex))
     Call DibujarCPJ(MiCabeza, 3)
 
     CPHead = MiCabeza
