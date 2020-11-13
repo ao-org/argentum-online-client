@@ -125,6 +125,7 @@ Module=TileEngine_Chars; CODIGO\TileEngine_Chars.bas
 Module=TileEngine_Map; CODIGO\TileEngine_Map.bas
 Module=engine; CODIGO\engine.bas
 ResFile32="RAO.res"
+Form=CODIGO\FrmKeyInv.frm
 IconForm="frmmain"
 Startup="Sub Main"
 HelpFile=""

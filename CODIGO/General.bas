@@ -1736,6 +1736,8 @@ Public Sub CloseClient()
     Set frmBancoObj.InvBankUsu = Nothing
     Set frmBancoObj.InvBoveda = Nothing
     
+    Set FrmKeyInv.InvKeys = Nothing
+    
     ' Call UnloadAllForms
     End
 

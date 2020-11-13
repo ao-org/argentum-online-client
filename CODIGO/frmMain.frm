@@ -66,6 +66,23 @@ Begin VB.Form frmmain
       Type            =   1
       Urgent          =   0   'False
    End
+   Begin VB.CommandButton cmdLlaver 
+      Caption         =   "llaves"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   360
+      Left            =   11520
+      TabIndex        =   39
+      Top             =   7320
+      Width           =   1050
+   End
    Begin VB.CommandButton createObj 
       Caption         =   "Crear OBJ"
       BeginProperty Font 
@@ -536,7 +553,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1456,6 +1472,10 @@ End Sub
 Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Call Form_MouseMove(Button, Shift, x, y)
 
+End Sub
+
+Private Sub cmdLlaver_Click()
+FrmKeyInv.Show , frmmain
 End Sub
 
 Private Sub cmdMoverHechi_Click(Index As Integer)
