@@ -4648,6 +4648,7 @@ Public Sub RenderUICrearPJ()
         'End If
     
         Dim Raza As Byte
+        Dim genero As Byte
 
         If frmCrearPersonaje.lstRaza.ListIndex < 0 Then
             frmCrearPersonaje.lstRaza.ListIndex = 0
@@ -4655,6 +4656,15 @@ Public Sub RenderUICrearPJ()
         End If
 
         Raza = frmCrearPersonaje.lstRaza.ListIndex
+        
+        
+        
+        If frmCrearPersonaje.lstGenero.ListIndex < 0 Then
+            frmCrearPersonaje.lstGenero.ListIndex = 0
+
+        End If
+
+        genero = frmCrearPersonaje.lstGenero.ListIndex
 
         Dim enanooff As Byte
 
@@ -4666,15 +4676,19 @@ Public Sub RenderUICrearPJ()
 
         End If
     
-        If CPEquipado Then
-            Call Renderizar_Aura(CPAura, 686 + 15 + OffX, 360 - Offy + enanooff, 0, 0)
-
-        End If
             
         If enanooff > 0 Then
-            Draw_Grh BodyData(CPBodyE).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
+            If genero = 0 Then
+                Draw_Grh BodyData(52).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
+            Else
+                Draw_Grh BodyData(52).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
+            End If
         Else
-            Draw_Grh BodyData(CPBody).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
+            If genero = 0 Then
+                Draw_Grh BodyData(1).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
+            Else
+                 Draw_Grh BodyData(80).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
+            End If
 
         End If
             
