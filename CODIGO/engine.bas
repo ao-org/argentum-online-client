@@ -3041,6 +3041,10 @@ Public Sub Start()
                             DrawMapaMundo
 
                         End If
+                        
+                        If FrmKeyInv.Visible Then
+                            DrawInterfaceKeys
+                        End If
 
                     End If
 
@@ -3334,6 +3338,64 @@ Public Sub DrawInterfaceBoveda()
 
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmBancoObj.interface.hWnd)
+
+End Sub
+Public Sub DrawInterfaceKeys()
+
+    ' Sólo dibujamos cuando es necesario
+    'If Not FrmKeyInv.InvKeys.NeedsRedraw Then Exit Sub
+
+    Dim InvRect As RECT
+
+    InvRect.Left = 0
+    InvRect.Top = 0
+    InvRect.Right = FrmKeyInv.interface.ScaleWidth
+    InvRect.bottom = FrmKeyInv.interface.ScaleHeight
+
+    ' Comenzamos la escena
+    Call Engine_BeginScene
+
+    ' Dibujamos el fondo de la bóveda
+    'Call Draw_GrhIndex(838, 0, 0)
+    
+    
+    Engine_Draw_Box 0, 0, 32, 32, D3DColorARGB(200, 255, 7, 7) 'pongo un color de fondo para chequear que dibuje
+    Engine_Draw_Box 32, 0, 32, 32, D3DColorARGB(200, 0, 255, 7) 'pongo un color de fondo para chequear que dibuje
+    Engine_Draw_Box 64, 0, 32, 32, D3DColorARGB(200, 0, 0, 255) 'pongo un color de fondo para chequear que dibuje
+    Engine_Draw_Box 96, 0, 32, 32, D3DColorARGB(200, 255, 255, 0) 'pongo un color de fondo para chequear que dibuje
+    Engine_Draw_Box 128, 0, 32, 32, D3DColorARGB(200, 0, 255, 255) 'pongo un color de fondo para chequear que dibuje
+    
+    
+    
+    Engine_Draw_Box 0, 32, 32, 32, D3DColorARGB(200, 0, 255, 255) 'pongo un color de fondo para chequear que dibuje
+    Engine_Draw_Box 32, 32, 32, 32, D3DColorARGB(200, 255, 255, 7) 'pongo un color de fondo para chequear que dibuje
+    Engine_Draw_Box 64, 32, 32, 32, D3DColorARGB(200, 255, 0, 0) 'pongo un color de fondo para chequear que dibuje
+    Engine_Draw_Box 96, 32, 32, 32, D3DColorARGB(200, 0, 0, 250) 'pongo un color de fondo para chequear que dibuje
+    Engine_Draw_Box 128, 32, 32, 32, D3DColorARGB(200, 0, 255, 0) 'pongo un color de fondo para chequear que dibuje
+    
+    
+    ' Dibujamos items de la bóveda
+    Call FrmKeyInv.InvKeys.DrawInventory
+    
+    ' Dibujamos items del usuario
+
+
+    ' Dibujamos "ambos" items arrastrados (aunque sólo puede estar uno activo a la vez)
+    Call FrmKeyInv.InvKeys.DrawDraggedItem
+    
+    ' Me fijo qué inventario está seleccionado
+    Dim CurrentInventory As clsGrapchicalInventory
+    
+    If FrmKeyInv.InvKeys.SelectedItem > 0 Then
+        Set CurrentInventory = FrmKeyInv.InvKeys
+    ElseIf frmBancoObj.InvBankUsu.SelectedItem > 0 Then
+        Set CurrentInventory = frmBancoObj.InvBankUsu
+
+    End If
+    
+
+    ' Presentamos la escena
+    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hWnd)
 
 End Sub
 
@@ -4648,7 +4710,7 @@ Public Sub RenderUICrearPJ()
         'End If
     
         Dim Raza As Byte
-        Dim genero As Byte
+        Dim Genero As Byte
 
         If frmCrearPersonaje.lstRaza.ListIndex < 0 Then
             frmCrearPersonaje.lstRaza.ListIndex = 0
@@ -4664,7 +4726,7 @@ Public Sub RenderUICrearPJ()
 
         End If
 
-        genero = frmCrearPersonaje.lstGenero.ListIndex
+        Genero = frmCrearPersonaje.lstGenero.ListIndex
 
         Dim enanooff As Byte
 
@@ -4678,13 +4740,13 @@ Public Sub RenderUICrearPJ()
     
             
         If enanooff > 0 Then
-            If genero = 0 Then
+            If Genero = 0 Then
                 Draw_Grh BodyData(52).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
             Else
                 Draw_Grh BodyData(52).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
             End If
         Else
-            If genero = 0 Then
+            If Genero = 0 Then
                 Draw_Grh BodyData(1).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
             Else
                  Draw_Grh BodyData(80).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
@@ -4995,12 +5057,18 @@ Public Sub Initialize()
     Set frmBancoObj.InvBankUsu = New clsGrapchicalInventory
     Set frmBancoObj.InvBoveda = New clsGrapchicalInventory
 
+    Set FrmKeyInv.InvKeys = New clsGrapchicalInventory
+    
     Call frmmain.Inventario.Initialize(frmmain.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True, 9)
-    Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True) 'Nuev
-    Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3) 'Nuevo
+    Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
+    Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3)
    
     Call frmBancoObj.InvBankUsu.Initialize(frmBancoObj.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmBancoObj.InvBoveda.Initialize(frmBancoObj.interface, MAX_BANCOINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3)
+    
+    
+    'Ladder
+    Call FrmKeyInv.InvKeys.Initialize(FrmKeyInv.interface, 10, 0, 0, 0, 0, 0, 0) 'Inventario de llaves
  
 End Sub
 
