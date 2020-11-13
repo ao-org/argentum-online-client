@@ -90,8 +90,9 @@ Public Enum TimersIndex
     Arrows = 7
     CastAttack = 8
     AttackSpell = 9
-    Walk = 10
-    Drop = 11
+    AttackUse = 10
+    Walk = 11
+    Drop = 12
 
 End Enum
 

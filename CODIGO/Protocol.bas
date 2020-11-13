@@ -2405,20 +2405,23 @@ Private Sub HandleIntervals()
     IntervaloGolpeMagia = incomingData.ReadLong()
     IntervaloMagia = incomingData.ReadLong()
     IntervaloMagiaGolpe = incomingData.ReadLong()
+    IntervaloGolpeUsar = incomingData.ReadLong()
     IntervaloTrabajo = incomingData.ReadLong()
-    IntervaloUsar = incomingData.ReadLong()
+    IntervaloUsarU = incomingData.ReadLong()
+    IntervaloUsarClic = incomingData.ReadLong()
     IntervaloTirar = incomingData.ReadLong()
     
     'Set the intervals of timers
     Call MainTimer.SetInterval(TimersIndex.Attack, IntervaloGolpe)
     Call MainTimer.SetInterval(TimersIndex.Work, IntervaloTrabajo)
-    Call MainTimer.SetInterval(TimersIndex.UseItemWithU, INT_USEITEMU)
-    Call MainTimer.SetInterval(TimersIndex.UseItemWithDblClick, IntervaloUsar)
+    Call MainTimer.SetInterval(TimersIndex.UseItemWithU, IntervaloUsarU)
+    Call MainTimer.SetInterval(TimersIndex.UseItemWithDblClick, IntervaloUsarClic)
     Call MainTimer.SetInterval(TimersIndex.SendRPU, INT_SENTRPU)
     Call MainTimer.SetInterval(TimersIndex.CastSpell, IntervaloMagia)
     Call MainTimer.SetInterval(TimersIndex.Arrows, IntervaloArco)
     Call MainTimer.SetInterval(TimersIndex.CastAttack, IntervaloMagiaGolpe)
     Call MainTimer.SetInterval(TimersIndex.AttackSpell, IntervaloGolpeMagia)
+    Call MainTimer.SetInterval(TimersIndex.AttackUse, IntervaloGolpeUsar)
     Call MainTimer.SetInterval(TimersIndex.Drop, IntervaloTirar)
     Call MainTimer.SetInterval(TimersIndex.Walk, IntervaloCaminar)
     
@@ -2435,6 +2438,7 @@ Private Sub HandleIntervals()
     Call MainTimer.Start(TimersIndex.Arrows)
     Call MainTimer.Start(TimersIndex.CastAttack)
     Call MainTimer.Start(TimersIndex.AttackSpell)
+    Call MainTimer.Start(TimersIndex.AttackUse)
     Call MainTimer.Start(TimersIndex.Drop)
     Call MainTimer.Start(TimersIndex.Walk)
 
@@ -4704,7 +4708,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -4729,7 +4733,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -4737,7 +4741,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
@@ -6582,12 +6586,12 @@ Private Sub HandleMiniStats()
         .Clase = ListaClases(incomingData.ReadByte())
         .PenaCarcel = incomingData.ReadLong()
         .VecesQueMoriste = incomingData.ReadLong()
-        .Genero = incomingData.ReadByte()
+        .genero = incomingData.ReadByte()
 
-        If .Genero = 1 Then
-            .Genero = "Hombre"
+        If .genero = 1 Then
+            .genero = "Hombre"
         Else
-            .Genero = "Mujer"
+            .genero = "Mujer"
 
         End If
 
@@ -6998,10 +7002,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.GuildsList.Clear
+    Call frmGuildNews.guildslist.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7296,9 +7300,9 @@ Private Sub HandleCharacterInfo()
         .Clase.Caption = "Clase: " & ListaClases(buffer.ReadByte())
         
         If buffer.ReadByte() = 1 Then
-            .Genero.Caption = "Genero: Hombre"
+            .genero.Caption = "Genero: Hombre"
         Else
-            .Genero.Caption = "Genero: Mujer"
+            .genero.Caption = "Genero: Mujer"
 
         End If
         
@@ -7397,10 +7401,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
