@@ -34,7 +34,7 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   5
-      Left            =   1680
+      Left            =   1920
       TabIndex        =   74
       Top             =   5310
       Width           =   180
@@ -42,15 +42,17 @@ Begin VB.Form frmEstadisticas
    Begin VB.Image command1 
       Height          =   300
       Index           =   47
-      Left            =   8715
-      Top             =   6360
+      Left            =   9615
+      Tag             =   "0"
+      Top             =   6375
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   46
-      Left            =   9615
-      Top             =   6360
+      Left            =   8715
+      Tag             =   "0"
+      Top             =   6375
       Width           =   330
    End
    Begin VB.Label text1 
@@ -246,30 +248,34 @@ Begin VB.Form frmEstadisticas
    End
    Begin VB.Image command1 
       Height          =   300
-      Index           =   41
+      Index           =   39
       Left            =   8715
-      Top             =   3360
+      Tag             =   "0"
+      Top             =   3375
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
-      Index           =   40
+      Index           =   41
       Left            =   8715
+      Tag             =   "0"
       Top             =   3765
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
-      Index           =   39
+      Index           =   40
       Left            =   9615
-      Top             =   3360
+      Tag             =   "0"
+      Top             =   3765
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   38
       Left            =   9615
-      Top             =   3765
+      Tag             =   "0"
+      Top             =   3375
       Width           =   330
    End
    Begin VB.Label text1 
@@ -358,6 +364,7 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   37
       Left            =   8715
+      Tag             =   "0"
       Top             =   3000
       Width           =   330
    End
@@ -365,6 +372,7 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   36
       Left            =   9615
+      Tag             =   "0"
       Top             =   3000
       Width           =   330
    End
@@ -911,7 +919,7 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   0
-      Left            =   1680
+      Left            =   1920
       TabIndex        =   31
       Top             =   6660
       UseMnemonic     =   0   'False
@@ -1444,6 +1452,7 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   0
       Left            =   6360
+      Tag             =   "0"
       Top             =   2235
       Width           =   330
    End
@@ -1451,13 +1460,15 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   2
       Left            =   6360
-      Top             =   6360
+      Tag             =   "0"
+      Top             =   6375
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   4
       Left            =   6360
+      Tag             =   "0"
       Top             =   3735
       Width           =   330
    End
@@ -1465,6 +1476,7 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   6
       Left            =   6360
+      Tag             =   "0"
       Top             =   4500
       Width           =   330
    End
@@ -1472,27 +1484,31 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   8
       Left            =   6360
-      Top             =   2595
+      Tag             =   "0"
+      Top             =   2610
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   10
       Left            =   6360
-      Top             =   5610
+      Tag             =   "0"
+      Top             =   5625
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   12
       Left            =   9615
-      Top             =   4470
+      Tag             =   "0"
+      Top             =   4485
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   14
-      Left            =   9600
+      Left            =   9615
+      Tag             =   "0"
       Top             =   4860
       Width           =   330
    End
@@ -1500,20 +1516,23 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   16
       Left            =   9615
-      Top             =   5595
+      Tag             =   "0"
+      Top             =   5610
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   18
       Left            =   6360
-      Top             =   4860
+      Tag             =   "0"
+      Top             =   4875
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   20
       Left            =   9615
+      Tag             =   "0"
       Top             =   6000
       Width           =   330
    End
@@ -1521,20 +1540,23 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   22
       Left            =   6360
-      Top             =   5235
+      Tag             =   "0"
+      Top             =   5250
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   24
       Left            =   6360
-      Top             =   4095
+      Tag             =   "0"
+      Top             =   4110
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   26
-      Left            =   9600
+      Left            =   9615
+      Tag             =   "0"
       Top             =   6765
       Width           =   330
    End
@@ -1550,6 +1572,7 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   30
       Left            =   6360
+      Tag             =   "0"
       Top             =   3000
       Width           =   330
    End
@@ -1557,13 +1580,15 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   32
       Left            =   9615
-      Top             =   2220
+      Tag             =   "0"
+      Top             =   2235
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   34
       Left            =   9615
+      Tag             =   "0"
       Top             =   2610
       Width           =   330
    End
@@ -1571,20 +1596,23 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   3
       Left            =   5460
-      Top             =   6360
+      Tag             =   "0"
+      Top             =   6375
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   5
       Left            =   5460
-      Top             =   3720
+      Tag             =   "0"
+      Top             =   3735
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   7
       Left            =   5460
+      Tag             =   "0"
       Top             =   4500
       Width           =   330
    End
@@ -1592,20 +1620,23 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   9
       Left            =   5460
-      Top             =   2595
+      Tag             =   "0"
+      Top             =   2610
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   11
       Left            =   5460
-      Top             =   5610
+      Tag             =   "0"
+      Top             =   5625
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   13
       Left            =   8715
+      Tag             =   "0"
       Top             =   4485
       Width           =   330
    End
@@ -1613,6 +1644,7 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   15
       Left            =   8715
+      Tag             =   "0"
       Top             =   4860
       Width           =   330
    End
@@ -1620,20 +1652,23 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   17
       Left            =   8715
-      Top             =   5595
+      Tag             =   "0"
+      Top             =   5610
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   19
       Left            =   5460
-      Top             =   4860
+      Tag             =   "0"
+      Top             =   4875
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   21
       Left            =   8715
+      Tag             =   "0"
       Top             =   6000
       Width           =   330
    End
@@ -1641,20 +1676,23 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   23
       Left            =   5460
-      Top             =   5235
+      Tag             =   "0"
+      Top             =   5250
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   25
       Left            =   5460
-      Top             =   4095
+      Tag             =   "0"
+      Top             =   4110
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   27
       Left            =   8715
+      Tag             =   "0"
       Top             =   6765
       Width           =   330
    End
@@ -1670,6 +1708,7 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   31
       Left            =   5460
+      Tag             =   "0"
       Top             =   3000
       Width           =   330
    End
@@ -1677,13 +1716,15 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   33
       Left            =   8715
-      Top             =   2220
+      Tag             =   "0"
+      Top             =   2235
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   35
       Left            =   8715
+      Tag             =   "0"
       Top             =   2610
       Width           =   330
    End
@@ -1691,7 +1732,8 @@ Begin VB.Form frmEstadisticas
       Height          =   300
       Index           =   1
       Left            =   5460
-      Top             =   2220
+      Tag             =   "0"
+      Top             =   2235
       Width           =   330
    End
    Begin VB.Label Label6 
@@ -1709,7 +1751,7 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   1
-      Left            =   1680
+      Left            =   1920
       TabIndex        =   6
       Top             =   6390
       UseMnemonic     =   0   'False
@@ -1751,7 +1793,7 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   4
-      Left            =   1680
+      Left            =   1920
       TabIndex        =   4
       Top             =   5025
       Width           =   180
@@ -1772,7 +1814,7 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   3
-      Left            =   1680
+      Left            =   1920
       TabIndex        =   3
       Top             =   4740
       Width           =   180
@@ -1793,7 +1835,7 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   2
-      Left            =   1680
+      Left            =   1920
       TabIndex        =   2
       Top             =   4470
       Width           =   180
@@ -1814,7 +1856,7 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   1
-      Left            =   1680
+      Left            =   1920
       TabIndex        =   1
       Top             =   4230
       Width           =   180
@@ -1834,7 +1876,7 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   195
       Index           =   3
-      Left            =   1680
+      Left            =   1920
       TabIndex        =   0
       Top             =   6900
       WhatsThisHelpID =   8000
@@ -1932,7 +1974,7 @@ Public Sub Iniciar_Labels()
     For i = 1 To NUMSKILLS
         If UserSkills(i) > 100 Then UserSkills(i) = 100
 
-        text1(i).Caption = UserSkills(i)
+        Text1(i).Caption = UserSkills(i)
     Next
 
     Select Case UserEstadisticas.Alineacion
@@ -2004,8 +2046,8 @@ Private Sub Command1_Click(Index As Integer)
             indice = Index \ 2 + 1
 
             If indice > NUMSKILLS Then indice = NUMSKILLS
-            If Val(text1(indice).Caption) < MAXSKILLPOINTS Then
-                text1(indice).Caption = Val(text1(indice).Caption) + 1
+            If Val(Text1(indice).Caption) < MAXSKILLPOINTS Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) + 1
                 flags(indice) = flags(indice) + 1
                 Alocados = Alocados - 1
                 RealizoCambios = RealizoCambios + 1
@@ -2020,8 +2062,8 @@ Private Sub Command1_Click(Index As Integer)
         
             indice = Index \ 2 + 1
 
-            If Val(text1(indice).Caption) > 0 And flags(indice) > 0 Then
-                text1(indice).Caption = Val(text1(indice).Caption) - 1
+            If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) - 1
                 flags(indice) = flags(indice) - 1
                 Alocados = Alocados + 1
                 RealizoCambios = RealizoCambios - 1
@@ -2036,16 +2078,16 @@ Private Sub Command1_Click(Index As Integer)
 
     Dim ladder As Byte
 
-    ladder = Val(text1(indice).Caption)
+    ladder = Val(Text1(indice).Caption)
 
     If UserSkills(indice) < ladder Then
-        text1(indice).ForeColor = vbRed
+        Text1(indice).ForeColor = vbRed
         PonerloEnRojo(indice) = True
 
     End If
 
     If UserSkills(indice) = ladder Then
-        text1(indice).ForeColor = &H40C0&
+        Text1(indice).ForeColor = &H40C0&
         RealizoCambios = RealizoCambios - 1
         PonerloEnRojo(indice) = False
 
@@ -2056,6 +2098,23 @@ End Sub
 Private Sub Command2_Click()
     Unload Me
 
+End Sub
+
+Private Sub Command1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    Set Command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-off.bmp", "boton-sm-flecha-der-off.bmp"))
+    Command1(Index).Tag = "1"
+End Sub
+
+Private Sub Command1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    If Command1(Index).Tag = "0" Then
+        Set Command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-over.bmp", "boton-sm-flecha-der-over.bmp"))
+        Command1(Index).Tag = "1"
+    End If
+End Sub
+
+Private Sub command1_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    Set Command1(Index) = Nothing
+    Command1(Index).Tag = "0"
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -2088,13 +2147,13 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            text1(a).ForeColor = &HEA4EB
+            Text1(a).ForeColor = &HEA4EB
 
             'Skills(a).ForeColor = vbWhite
         End If
 
         If PonerloEnRojo(a) = True Then
-            text1(a).ForeColor = vbRed
+            Text1(a).ForeColor = vbRed
 
         End If
 
@@ -2109,6 +2168,13 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         Set imgCerrar.Picture = Nothing
         imgCerrar.Tag = "0"
     End If
+
+    For a = 0 To NUMSKILLS * 2 - 1
+        If Command1(a).Tag = "1" Then
+            Set Command1(a).Picture = Nothing
+            Command1(a).Tag = "0"
+        End If
+    Next
 
 End Sub
 
@@ -2127,9 +2193,9 @@ Private Sub Image1_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(text1(i).Caption)
+                UserSkills(i) = Val(Text1(i).Caption)
         
             Next i
     
@@ -2173,9 +2239,9 @@ Private Sub imgCerrar_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(text1(i).Caption)
+                UserSkills(i) = Val(Text1(i).Caption)
             Next i
     
             Call WriteModifySkills(skillChanges())
@@ -2220,14 +2286,14 @@ Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integ
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            text1(a).ForeColor = &HEA4EB
+            Text1(a).ForeColor = &HEA4EB
 
         End If
 
         'Skills(a).ForeColor = vbWhite
     Next a
 
-    text1(Index).ForeColor = vbBlue
+    Text1(Index).ForeColor = vbBlue
 
     'Skills(index).ForeColor = vbBlue
 End Sub
