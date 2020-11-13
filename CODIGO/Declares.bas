@@ -547,7 +547,7 @@ End Type
 
 Public ObjDonador(0 To 100)           As ObjDonador
 
-Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 48
+Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 42
 
 Public Const LoopAdEternum            As Integer = 999
 
