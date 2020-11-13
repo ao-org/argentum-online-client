@@ -380,7 +380,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
     'Jopi 17/08/2019 : Ahora podes especificar el alineamiento del texto.
     '****************************************************
 
-    Call EnableURLDetect(frmmain.RecTxt.hWnd, frmmain.hWnd)
+    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
 
     With RichTextBox
         
@@ -666,10 +666,10 @@ Sub SetConnected()
     ' establece el borde al listbox
     Call Establecer_Borde(frmmain.hlst, frmmain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmmain.RecTxt.hWnd)
+    Call Make_Transparent_Richtext(frmmain.RecTxt.hwnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmmain.RecTxt.hWnd, frmmain.hWnd)
+    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(frmmain)
@@ -677,7 +677,7 @@ Sub SetConnected()
     frmmain.Image2(1).Tag = "0"
     OpcionMenu = 0
     frmmain.Image2(1).Picture = Nothing
-    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmmain.Panel.Picture = LoadInterface("centroinventario.bmp")
     '            Image2(0).Visible = False
     ' Image2(1).Visible = True
 
@@ -1307,14 +1307,13 @@ Sub Main()
 
     On Error Resume Next
 
-    Frmcarga.Show
     InitCommonControls
     
     'Call LeerLineaComandos
 
     If Not RunningInVB Then
         If FindPreviousInstance Then
-            Call MsgBox("Revolucion Online ya esta corriendo! No es posible correr otra instancia del juego. Haga click en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
+            Call MsgBox("¡Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga clic en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
             End
 
         End If
@@ -1354,11 +1353,12 @@ Sub Main()
     If PantallaCompleta Then
         Call Resolution.SetResolution
         PantallaCompleta = 1
-
     End If
+    
+    Frmcarga.Show
  
     If Sonido Then
-        If Sound.Initialize_Engine(frmConnect.hWnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+        If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
         
         Else
             MsgBox "¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde www.argentum20.com", vbCritical, "Saliendo"
