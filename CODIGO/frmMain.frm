@@ -553,6 +553,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -779,7 +780,7 @@ Begin VB.Form frmmain
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "99/99"
+      Caption         =   "0/0"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -791,16 +792,16 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   14610
+      Left            =   14715
       TabIndex        =   23
       Top             =   9510
-      Width           =   525
+      Width           =   315
    End
    Begin VB.Label lblHelm 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "99/99"
+      Caption         =   "0/0"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -812,16 +813,16 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   13695
+      Left            =   13800
       TabIndex        =   22
       Top             =   9510
-      Width           =   525
+      Width           =   315
    End
    Begin VB.Label lblShielder 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "99/99"
+      Caption         =   "0/0"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -833,16 +834,16 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   12735
+      Left            =   12840
       TabIndex        =   21
       Top             =   9510
-      Width           =   525
+      Width           =   315
    End
    Begin VB.Label lblWeapon 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "99/99"
+      Caption         =   "0/0"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -854,10 +855,10 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   11805
+      Left            =   11910
       TabIndex        =   20
       Top             =   9510
-      Width           =   525
+      Width           =   315
    End
    Begin VB.Label AgilidadLbl 
       AutoSize        =   -1  'True
