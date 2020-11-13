@@ -1471,12 +1471,15 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
                     Dim ColorFantasma(3) As Long
                     
-                    If MapData(x, y).CharFantasma.AlphaB >= 3 Then
-                        MapData(x, y).CharFantasma.AlphaB = MapData(x, y).CharFantasma.AlphaB - (timerTicksPerFrame * 6.7)
+                    If MapData(x, y).CharFantasma.AlphaB > 0 Then
+                        MapData(x, y).CharFantasma.AlphaB = MapData(x, y).CharFantasma.AlphaB - (timerTicksPerFrame * 30)
+                        If MapData(x, y).CharFantasma.AlphaB < 0 Then MapData(x, y).CharFantasma.AlphaB = 0
+
                         ColorFantasma(0) = D3DColorARGB(CInt(MapData(x, y).CharFantasma.AlphaB), ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
                         ColorFantasma(1) = ColorFantasma(0)
                         ColorFantasma(2) = ColorFantasma(0)
                         ColorFantasma(3) = ColorFantasma(0)
+
 
                         If .CharFantasma.Heading = 1 Or .CharFantasma.Heading = 2 Then
                             Call Draw_Grh(.CharFantasma.Escudo, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
