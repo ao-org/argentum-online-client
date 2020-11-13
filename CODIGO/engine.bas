@@ -208,7 +208,7 @@ On Error GoTo ErrorHandler:
         
         .EnableAutoDepthStencil = 1
         .AutoDepthStencilFormat = D3DFMT_D16
-        .hDeviceWindow = frmmain.renderer.hWnd
+        .hDeviceWindow = frmmain.renderer.hwnd
         
     End With
     
@@ -374,12 +374,12 @@ Public Sub Engine_BeginScene()
 
 End Sub
 
-Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
+Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hwnd As Long = 0)
 
 On Error GoTo ErrorHandler:
     
     Call D3DDevice.EndScene
-    Call D3DDevice.Present(DestRect, ByVal 0, hWnd, ByVal 0)
+    Call D3DDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
     
     Exit Sub
     
@@ -3162,7 +3162,7 @@ Public Sub DrawMainInventory()
     Call frmmain.Inventario.DrawDraggedItem
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmmain.picInv.hWnd)
+    Call Engine_EndScene(InvRect, frmmain.picInv.hwnd)
 
 End Sub
 
@@ -3254,7 +3254,7 @@ Public Sub DrawInterfaceComerciar()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmComerciar.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmComerciar.interface.hwnd)
 
 End Sub
 
@@ -3337,7 +3337,7 @@ Public Sub DrawInterfaceBoveda()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoObj.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmBancoObj.interface.hwnd)
 
 End Sub
 Public Sub DrawInterfaceKeys()
@@ -3395,7 +3395,7 @@ Public Sub DrawInterfaceKeys()
     
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hWnd)
+    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hwnd)
 
 End Sub
 
@@ -3454,7 +3454,7 @@ Public Sub DrawMapaMundo()
     y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
     Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
     
-    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hWnd)
+    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
 
 End Sub
 
@@ -4176,7 +4176,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     ' cc(3) = cc(0)
 
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
     
     lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
     'FramesPerSecCounter = FramesPerSecCounter + 1
@@ -4448,7 +4448,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Draw_Grh TempGrh, 0, 0, 0, 0, cc(), False
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
 
     lFrameLimiter = (GetTickCount() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
@@ -4472,7 +4472,7 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
     
     Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
     
     Exit Sub
 
@@ -4613,56 +4613,56 @@ Public Sub RenderUICrearPJ()
     OffX = 350
     
     'Atributos
-    Engine_Text_Render_LetraChica "Atributos ", 240 + OffX, 385 + Offy, DefaultColor, 6, True
+    Engine_Text_Render_LetraChica "Atributos", 240 + OffX, 385 + Offy, DefaultColor, 6, True
     Engine_Draw_Box 175 + OffX, 405 + Offy, 185, 120, D3DColorARGB(80, 0, 0, 0)
     '  Engine_Draw_Box 610, 405, 220, 180, D3DColorARGB(120, 100, 100, 100)
     
-    Engine_Text_Render_LetraChica "Fuerza ", 185 + OffX, 410 + Offy, DefaultColor, 1, True
+    Engine_Text_Render_LetraChica "Fuerza", 185 + OffX, 410 + Offy, DefaultColor, 1, True
     ' Engine_Text_Render "<", 260, 410, DefaultColor, 1, True
     ' Engine_Text_Render ">", 310, 410, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 409 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render_LetraChica frmCrearPersonaje.lbFuerza.Caption, 282 + OffX, 413 + Offy, DefaultColor, 1, True ' Atributo fuerza
+    Engine_Draw_Box 280 + OffX, 407 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.lbFuerza.Caption, 282 + OffX, 410 + Offy, DefaultColor, 1, True ' Atributo fuerza
     'Engine_Text_Render "+", 335, 410, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 409 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render_LetraChica frmCrearPersonaje.modfuerza.Caption, 320 + OffX, 413 + Offy, DefaultColor, 1, True ' Bonificacion fuerza
+    Engine_Draw_Box 317 + OffX, 407 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.modfuerza.Caption, 320 + OffX, 410 + Offy, DefaultColor, 1, True ' Bonificacion fuerza
     
-    Engine_Text_Render "Agilidad ", 185 + OffX, 440 + Offy, DefaultColor, 1, True
+    Engine_Text_Render "Agilidad", 185 + OffX, 430 + Offy, DefaultColor, 1, True
     ' Engine_Text_Render "<", 260, 440, DefaultColor, 1, True
     ' Engine_Text_Render ">", 310, 440, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 440 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbAgilidad.Caption, 282 + OffX, 443 + Offy, DefaultColor, 1, True ' Atributo Agilidad
+    Engine_Draw_Box 280 + OffX, 227 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.lbAgilidad.Caption, 282 + OffX, 430 + Offy, DefaultColor, 1, True ' Atributo Agilidad
     ' Engine_Text_Render "+", 335, 440, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 440 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modAgilidad.Caption, 320 + OffX, 443 + Offy, DefaultColor, 1, True ' Bonificacion Agilidad
+    Engine_Draw_Box 317 + OffX, 227 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.modAgilidad.Caption, 320 + OffX, 430 + Offy, DefaultColor, 1, True ' Bonificacion Agilidad
     
-    Engine_Text_Render "Inteligencia ", 185 + OffX, 470 + Offy, DefaultColor, 1, True
+    Engine_Text_Render "Inteligencia", 185 + OffX, 450 + Offy, DefaultColor, 1, True
     'Engine_Text_Render "<", 260, 470, DefaultColor, 1, True
     'Engine_Text_Render ">", 310, 470, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 470 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbInteligencia.Caption, 282 + OffX, 473 + Offy, DefaultColor, 1, True ' Atributo Inteligencia
+    Engine_Draw_Box 280 + OffX, 447 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.lbInteligencia.Caption, 282 + OffX, 450 + Offy, DefaultColor, 1, True ' Atributo Inteligencia
     'Engine_Text_Render "+", 335, 470, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 470 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modInteligencia.Caption, 320 + OffX, 473 + Offy, DefaultColor, 1, True ' Bonificacion Inteligencia
+    Engine_Draw_Box 317 + OffX, 447 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.modInteligencia.Caption, 320 + OffX, 450 + Offy, DefaultColor, 1, True ' Bonificacion Inteligencia
     
-    Engine_Text_Render "Constitución ", 185 + OffX, 500 + Offy, DefaultColor, , True
+    Engine_Text_Render "Constitución", 185 + OffX, 470 + Offy, DefaultColor, , True
     'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
     ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 500 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 503 + Offy, DefaultColor, 1, True ' Atributo Constitución
+    Engine_Draw_Box 280 + OffX, 467 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 470 + Offy, DefaultColor, 1, True ' Atributo Constitución
     '
     ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 500 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 503 + Offy, DefaultColor, 1, True ' Bonificacion Constitución
+    Engine_Draw_Box 317 + OffX, 467 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 470 + Offy, DefaultColor, 1, True ' Bonificacion Constitución
     
-    Engine_Text_Render "Constitución ", 185 + OffX, 500 + Offy, DefaultColor, , True
+    Engine_Text_Render "Carisma", 185 + OffX, 490 + Offy, DefaultColor, , True
     'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
     ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 530 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbCarisma.Caption, 283 + OffX, 533 + Offy, DefaultColor, 1, True ' Atributo Carisma
+    Engine_Draw_Box 280 + OffX, 487 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.lbCarisma.Caption, 283 + OffX, 490 + Offy, DefaultColor, 1, True ' Atributo Carisma
     '
     ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 530 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modCarisma.Caption, 320 + OffX, 533 + Offy, DefaultColor, 1, True ' Bonificacion Carisma
+    Engine_Draw_Box 317 + OffX, 487 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.modCarisma.Caption, 320 + OffX, 490 + Offy, DefaultColor, 1, True ' Bonificacion Carisma
       
     '
     'Engine_Draw_Box 290, 528, 20, 20, D3DColorARGB(120, 1, 150, 150)
@@ -5529,7 +5529,7 @@ Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x 
     
         Device_Box_Textured_Render grh, x, y, GrhData(grh).pixelWidth, GrhData(grh).pixelHeight, s, GrhData(grh).sX, GrhData(grh).sY, Alpha, angle
 
-    Call Engine_EndScene(Piture, pic.hWnd)
+    Call Engine_EndScene(Piture, pic.hwnd)
 
 End Sub
 

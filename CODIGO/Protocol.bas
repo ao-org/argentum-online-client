@@ -5555,10 +5555,11 @@ Private Sub HandleAtributes()
         With frmCrearPersonaje
 
             If .Visible Then
-                .lbFuerza.Caption = UserAtributos(1)
-                .lbAgilidad.Caption = UserAtributos(2)
-                .lbInteligencia.Caption = UserAtributos(3)
-                .lbConstitucion.Caption = UserAtributos(4)
+                .lbFuerza.Caption = UserAtributos(eAtributos.Fuerza)
+                .lbAgilidad.Caption = UserAtributos(eAtributos.Agilidad)
+                .lbInteligencia.Caption = UserAtributos(eAtributos.Inteligencia)
+                .lbConstitucion.Caption = UserAtributos(eAtributos.Constitucion)
+                .lbCarisma = UserAtributos(eAtributos.Carisma)
 
             End If
 
@@ -6797,11 +6798,13 @@ Private Sub HandleDiceRoll()
     UserAtributos(eAtributos.Agilidad) = incomingData.ReadByte()
     UserAtributos(eAtributos.Inteligencia) = incomingData.ReadByte()
     UserAtributos(eAtributos.Constitucion) = incomingData.ReadByte()
+    UserAtributos(eAtributos.Carisma) = incomingData.ReadByte()
     
     frmCrearPersonaje.lbFuerza = UserAtributos(eAtributos.Fuerza)
     frmCrearPersonaje.lbAgilidad = UserAtributos(eAtributos.Agilidad)
     frmCrearPersonaje.lbInteligencia = UserAtributos(eAtributos.Inteligencia)
     frmCrearPersonaje.lbConstitucion = UserAtributos(eAtributos.Constitucion)
+    frmCrearPersonaje.lbCarisma = UserAtributos(eAtributos.Carisma)
 
 End Sub
 
