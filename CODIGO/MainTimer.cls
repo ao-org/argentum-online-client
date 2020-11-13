@@ -47,7 +47,7 @@ Option Explicit
 ' How many timers we are going to use-
 '
 ' @see See MainTimer.CreateAll
-Private Const CANTIDADTIMERS As Byte = 11
+Private Const CANTIDADTIMERS As Byte = 12
 
 ''
 ' A Timer data structure.

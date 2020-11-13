@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form frmCantidad 
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   ClientHeight    =   1860
+   ClientHeight    =   2895
    ClientLeft      =   1635
    ClientTop       =   4410
-   ClientWidth     =   3240
+   ClientWidth     =   4365
    ControlBox      =   0   'False
    FillColor       =   &H00C00000&
    ForeColor       =   &H8000000D&
@@ -13,8 +13,10 @@ Begin VB.Form frmCantidad
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1860
-   ScaleWidth      =   3240
+   Picture         =   "frmCantidad.frx":0000
+   ScaleHeight     =   193
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   291
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Visible         =   0   'False
@@ -25,35 +27,56 @@ Begin VB.Form frmCantidad
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   9
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H000040C0&
-      Height          =   225
-      Left            =   960
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Left            =   1410
       MaxLength       =   9999
       TabIndex        =   0
       Text            =   "1"
-      Top             =   940
-      Width           =   1320
+      Top             =   1620
+      Width           =   1560
+   End
+   Begin VB.Image imgMas 
+      Height          =   300
+      Left            =   3120
+      Tag             =   "0"
+      Top             =   1605
+      Width           =   300
+   End
+   Begin VB.Image imgMenos 
+      Height          =   300
+      Left            =   960
+      Tag             =   "0"
+      Top             =   1605
+      Width           =   300
+   End
+   Begin VB.Image imgCerrar 
+      Height          =   420
+      Left            =   3900
+      Tag             =   "0"
+      Top             =   15
+      Width           =   480
    End
    Begin VB.Image tirartodo 
       Height          =   420
-      Left            =   1400
-      Tag             =   "1"
-      Top             =   1360
-      Width           =   1740
+      Left            =   2250
+      Tag             =   "0"
+      Top             =   2175
+      Width           =   1680
    End
    Begin VB.Image tirar 
       Height          =   420
-      Left            =   90
-      Tag             =   "1"
-      Top             =   1360
-      Width           =   1305
+      Left            =   435
+      Tag             =   "0"
+      Top             =   2175
+      Width           =   1680
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
@@ -93,6 +116,34 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 
     End If
 
+End Sub
+
+Private Sub imgCerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
+    imgCerrar.Tag = "1"
+End Sub
+
+Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If imgCerrar.Tag = "0" Then
+        imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
+        imgCerrar.Tag = "1"
+    End If
+End Sub
+
+Private Sub imgMas_Click()
+    If Val(Text1.Text) < MAX_INVENTORY_OBJS Then
+        Text1.Text = Val(Text1.Text) + 1
+    End If
+End Sub
+
+Private Sub imgMenos_Click()
+    If Val(Text1.Text) > 0 Then
+        Text1.Text = Val(Text1.Text) - 1
+    End If
 End Sub
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
@@ -158,6 +209,11 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         tirartodo.Tag = "0"
 
     End If
+    
+    If imgCerrar.Tag = "1" Then
+        imgCerrar.Picture = Nothing
+        imgCerrar.Tag = "0"
+    End If
 
 End Sub
 
@@ -200,13 +256,13 @@ End Sub
 
 Private Sub tirar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'tirar.Picture = LoadInterface("botontirarapretado.bmp")
+    tirar.Picture = LoadInterface("boton-tirar-es-off.bmp")
 End Sub
 
 Private Sub tirar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If tirar.Tag = "0" Then
-        tirar.Picture = LoadInterface("botontirarmarcado.bmp")
+        tirar.Picture = LoadInterface("boton-tirar-es-over.bmp")
         tirar.Tag = "1"
 
     End If
@@ -254,14 +310,13 @@ Private Sub tirartodo_click()
 End Sub
 
 Private Sub tirartodo_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    'tirartodo.Picture = LoadInterface("botontirartodoapretado.bmp")
+    tirartodo.Picture = LoadInterface("boton-tirar-todo-es-off.bmp")
 End Sub
 
 Private Sub tirartodo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If tirartodo.Tag = "0" Then
-        tirartodo.Picture = LoadInterface("botontirartodomarcado.bmp")
+        tirartodo.Picture = LoadInterface("boton-tirar-todo-es-over.bmp")
         tirartodo.Tag = "1"
 
     End If
