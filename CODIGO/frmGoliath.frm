@@ -265,7 +265,7 @@ Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
 
 End Sub
 
-Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
     Call Sound.Sound_Play(SND_CLICK)
 
@@ -289,7 +289,7 @@ Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As 
 
 End Sub
 
-Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
     Select Case Index
 
@@ -313,8 +313,8 @@ Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As 
 
 End Sub
 
-Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
-    Call Form_MouseMove(Button, Shift, X, Y)
+Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    Call Form_MouseMove(Button, Shift, x, y)
     tmrNumber.Enabled = False
 
 End Sub
@@ -328,7 +328,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     End If
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     operacion(1).Tag = "0"
     operacion(2).Tag = "0"
     operacion(3).Tag = "0"
@@ -343,7 +343,7 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y A
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     operacion(0).Tag = "0"
     operacion(1).Tag = "0"
     operacion(2).Tag = "0"
@@ -370,11 +370,11 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
 
 End Sub
 
-Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     Image2 = LoadInterface("boton-aceptar-ES-off.bmp")
 End Sub
 
-Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
         Image2.Tag = "1"
@@ -397,7 +397,6 @@ Private Sub Image2_Click()
             If Val(txtDatos.Text) <= UserGLD Or UCase$(txtDatos.Text) = "TODO" Then
     
                 Call WriteBankDepositGold(IIf(Val(txtDatos.Text) > 0, Val(txtDatos.Text), UserGLD))
-                Unload Me
             Else
                 lblDatos.Caption = "No tienes esa cantidad, reintente."
 
@@ -410,7 +409,6 @@ Private Sub Image2_Click()
     
             If Val(txtDatos.Text) <= OroDep Or UCase$(txtDatos.Text) = "TODO" Then
                 Call WriteBankExtractGold(IIf(Val(txtDatos.Text) > 0, Val(txtDatos.Text), OroDep))
-                Unload Me
             Else
                 lblDatos.Caption = "No tienes esa cantidad, reintente."
 
@@ -419,39 +417,38 @@ Private Sub Image2_Click()
         Case 4 'Transferir - Destino - Cantidad
 
         
-                'Negativos y ceros
-                If Val(txtDatos.Text) < 1 Then
-                    lblDatos.Caption = "Cantidad inválida, reintente."
-                    'txtDatos.Text = ""
-                    Exit Sub
+            'Negativos y ceros
+            If Val(txtDatos.Text) < 1 Then
+                lblDatos.Caption = "Cantidad inválida, reintente."
+                'txtDatos.Text = ""
+                Exit Sub
 
-                End If
-            
-                If Val(txtDatos.Text) <= OroDep Then
-                    CantTransferencia = Val(txtDatos.Text)
-                    txtDatos.Text = ""
-                Else
-                    lblDatos.Caption = "No tienes esa cantidad depositada."
-                    txtDatos.Text = ""
+            End If
+        
+            If Val(txtDatos.Text) <= OroDep Then
+                CantTransferencia = Val(txtDatos.Text)
+                txtDatos.Text = ""
+            Else
+                lblDatos.Caption = "No tienes esa cantidad depositada."
+                txtDatos.Text = ""
 
-                End If
+            End If
 
 
-                If txtname.Text <> "" Then
-                    Call WriteTransFerGold(CantTransferencia, txtname.Text)
-                    Unload Me
-                Else
-                    lblDatos.Caption = "¡Nombre de destino inválido!"
-                    txtDatos.Text = ""
+            If txtname.Text <> "" Then
+                Call WriteTransFerGold(CantTransferencia, txtname.Text)
+            Else
+                lblDatos.Caption = "¡Nombre de destino inválido!"
+                txtDatos.Text = ""
 
-                End If
+            End If
 
 
     End Select
 
 End Sub
 
-Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
      If cmdMasMenos(0).Tag = "1" Then
         cmdMasMenos(0).Picture = Nothing
         cmdMasMenos(0).Tag = "0"
@@ -467,7 +464,7 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, X As Single, Y
     Image2.Tag = "0"
 End Sub
 
-Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
     Select Case Index
 
@@ -528,7 +525,7 @@ Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As In
 
 End Sub
 
-Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
     Select Case Index
 
         Case 0 ' depositar
@@ -584,7 +581,7 @@ Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As In
 
 End Sub
 
-Private Sub operacion_MouseUp(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub operacion_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
     Select Case Index
 
