@@ -2661,10 +2661,10 @@ Private Sub HandleUpdateExp()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     If UserPasarNivel > 0 Then
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "¡Nivel máximo!"
     End If
 
@@ -4958,9 +4958,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel máximo!"
 
@@ -6586,12 +6586,12 @@ Private Sub HandleMiniStats()
         .Clase = ListaClases(incomingData.ReadByte())
         .PenaCarcel = incomingData.ReadLong()
         .VecesQueMoriste = incomingData.ReadLong()
-        .genero = incomingData.ReadByte()
+        .Genero = incomingData.ReadByte()
 
-        If .genero = 1 Then
-            .genero = "Hombre"
+        If .Genero = 1 Then
+            .Genero = "Hombre"
         Else
-            .genero = "Mujer"
+            .Genero = "Mujer"
 
         End If
 
@@ -6823,10 +6823,13 @@ Private Sub HandleMeditateToggle()
     End If
     
     With charlist(charindex)
-        .FxIndex = fX
         If fX <> 0 Then
             Call InitGrh(.fX, FxData(fX).Animacion)
         End If
+        
+        .FxIndex = fX
+        .fX.Loops = -1
+        .fX.AnimacionContador = 0
     End With
 
 End Sub
@@ -7037,7 +7040,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7300,9 +7303,9 @@ Private Sub HandleCharacterInfo()
         .Clase.Caption = "Clase: " & ListaClases(buffer.ReadByte())
         
         If buffer.ReadByte() = 1 Then
-            .genero.Caption = "Genero: Hombre"
+            .Genero.Caption = "Genero: Hombre"
         Else
-            .genero.Caption = "Genero: Mujer"
+            .Genero.Caption = "Genero: Mujer"
 
         End If
         
@@ -7444,7 +7447,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
