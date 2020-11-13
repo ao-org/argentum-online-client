@@ -97,8 +97,8 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If MainTimer.Check(TimersIndex.CastAttack, False) Then
                 If MainTimer.Check(TimersIndex.Attack) Then
                     Call MainTimer.Restart(TimersIndex.AttackSpell)
+                    Call MainTimer.Restart(TimersIndex.AttackUse)
                     Call WriteAttack
-    
                 End If
     
             End If
@@ -194,6 +194,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(4).KeyCode
     
             If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
+            If Not MainTimer.Check(TimersIndex.AttackUse, False) Then Exit Function
             If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
         
         Case BindKeys(10).KeyCode

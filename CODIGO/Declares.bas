@@ -408,13 +408,15 @@ Public IntervaloCaminar        As Long
 
 Public IntervaloTirar          As Long
 
-Public IntervaloUsar           As Long
+Public IntervaloUsarU          As Long
+
+Public IntervaloUsarClic       As Long
 
 Public IntervaloGolpeMagia     As Long
 
 Public IntervaloMagiaGolpe     As Long
 
-Public Const INT_USEITEMU      As Integer = 450
+Public IntervaloGolpeUsar      As Long
 
 Public Const INT_SENTRPU       As Integer = 2000
 
@@ -869,7 +871,7 @@ Type tEstadisticasUsu
     Clase As String
     PenaCarcel As Long
     VecesQueMoriste As Long
-    Genero As String
+    genero As String
     Raza As String
     Donador As Byte
     CreditoDonador As Long
