@@ -4629,10 +4629,10 @@ Public Sub RenderUICrearPJ()
     Engine_Text_Render "Agilidad", 185 + OffX, 430 + Offy, DefaultColor, 1, True
     ' Engine_Text_Render "<", 260, 440, DefaultColor, 1, True
     ' Engine_Text_Render ">", 310, 440, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 227 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Draw_Box 280 + OffX, 427 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
     Engine_Text_Render frmCrearPersonaje.lbAgilidad.Caption, 282 + OffX, 430 + Offy, DefaultColor, 1, True ' Atributo Agilidad
     ' Engine_Text_Render "+", 335, 440, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 227 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Draw_Box 317 + OffX, 427 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
     Engine_Text_Render frmCrearPersonaje.modAgilidad.Caption, 320 + OffX, 430 + Offy, DefaultColor, 1, True ' Bonificacion Agilidad
     
     Engine_Text_Render "Inteligencia", 185 + OffX, 450 + Offy, DefaultColor, 1, True
