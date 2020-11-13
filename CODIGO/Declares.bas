@@ -424,7 +424,7 @@ Public MacroBltIndex           As Integer
 
 Public Const CASPER_HEAD       As Integer = 621
 
-Public Const NUMATRIBUTES      As Byte = 4
+Public Const NUMATRIBUTES      As Byte = 5
 
 'Musica
 Public Const MIdi_Inicio       As Byte = 6
@@ -871,7 +871,7 @@ Type tEstadisticasUsu
     Clase As String
     PenaCarcel As Long
     VecesQueMoriste As Long
-    genero As String
+    Genero As String
     Raza As String
     Donador As Byte
     CreditoDonador As Long
@@ -990,6 +990,7 @@ Type tModRaza
     Agilidad As Integer
     Inteligencia As Integer
     Constitucion As Integer
+    Carisma As Integer
 
 End Type
 

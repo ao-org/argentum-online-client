@@ -440,7 +440,7 @@ Begin VB.Form frmCrearPersonaje
    Begin VB.Label modfuerza 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "0"
+      Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -460,7 +460,7 @@ Begin VB.Form frmCrearPersonaje
    Begin VB.Label modAgilidad 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "0"
+      Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -480,7 +480,7 @@ Begin VB.Form frmCrearPersonaje
    Begin VB.Label modInteligencia 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "0"
+      Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -500,7 +500,7 @@ Begin VB.Form frmCrearPersonaje
    Begin VB.Label modCarisma 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "0"
+      Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -520,7 +520,7 @@ Begin VB.Form frmCrearPersonaje
    Begin VB.Label modConstitucion 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "0"
+      Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -714,34 +714,35 @@ Private Sub lstRaza_Click()
     modAgilidad.Caption = IIf(Sgn(ModRaza(i).Agilidad) < 0, "-", "+") & " " & Abs(ModRaza(i).Agilidad)
     modInteligencia.Caption = IIf(Sgn(ModRaza(i).Inteligencia) < 0, "-", "+") & " " & Abs(ModRaza(i).Inteligencia)
     modConstitucion.Caption = IIf(Sgn(ModRaza(i).Constitucion) < 0, "-", "+") & " " & Abs(ModRaza(i).Constitucion)
+    modCarisma.Caption = IIf(Sgn(ModRaza(i).Carisma) < 0, "-", "+") & " " & Abs(ModRaza(i).Carisma)
 
 End Sub
 
 Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
-        If Cabeza.ListCount = 0 Then Exit Sub
-        If Cabeza.ListIndex > 0 Then
-            Cabeza.ListIndex = Cabeza.ListIndex - 1
+        If cabeza.ListCount = 0 Then Exit Sub
+        If cabeza.ListIndex > 0 Then
+            cabeza.ListIndex = cabeza.ListIndex - 1
 
         End If
 
-        If Cabeza.ListIndex = 0 Then
-            Cabeza.ListIndex = Cabeza.ListCount - 1
+        If cabeza.ListIndex = 0 Then
+            cabeza.ListIndex = cabeza.ListCount - 1
 
         End If
 
     End If
 
     If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
-        If Cabeza.ListCount = 0 Then Exit Sub
-        If (Cabeza.ListIndex + 1) <> Cabeza.ListCount Then
-            Cabeza.ListIndex = Cabeza.ListIndex + 1
+        If cabeza.ListCount = 0 Then Exit Sub
+        If (cabeza.ListIndex + 1) <> cabeza.ListCount Then
+            cabeza.ListIndex = cabeza.ListIndex + 1
 
         End If
 
-        If (Cabeza.ListIndex + 1) = Cabeza.ListCount Then
-            Cabeza.ListIndex = 0
+        If (cabeza.ListIndex + 1) = cabeza.ListCount Then
+            cabeza.ListIndex = 0
 
         End If
 
@@ -995,7 +996,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 End Sub
 
 Private Sub Cabeza_Click()
-    MiCabeza = Val(Cabeza.List(Cabeza.ListIndex))
+    MiCabeza = Val(cabeza.List(cabeza.ListIndex))
     Call DibujarCPJ(MiCabeza, 3)
 
     CPHead = MiCabeza
