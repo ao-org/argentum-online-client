@@ -81,6 +81,7 @@ Begin VB.Form frmmain
       Left            =   11520
       TabIndex        =   39
       Top             =   7320
+      Visible         =   0   'False
       Width           =   1050
    End
    Begin VB.CommandButton createObj 
@@ -553,7 +554,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2021,7 +2021,7 @@ End Sub
 Private Sub imgHechizos_Click()
 
     If hlst.Visible Then Exit Sub
-    panel.Picture = LoadInterface("centrohechizo.bmp")
+    Panel.Picture = LoadInterface("centrohechizo.bmp")
     picInv.Visible = False
     hlst.Visible = True
 
@@ -2058,7 +2058,7 @@ Private Sub imgInventario_Click()
 
     If picInv.Visible Then Exit Sub
 
-    panel.Picture = LoadInterface("centroinventario.bmp")
+    Panel.Picture = LoadInterface("centroinventario.bmp")
     'Call Audio.PlayWave(SND_CLICK)
     picInv.Visible = True
     hlst.Visible = False
