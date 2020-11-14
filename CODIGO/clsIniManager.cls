@@ -377,8 +377,8 @@ Public Function GetValue(ByVal Main As String, ByVal key As String)
         If IsNumeric(retval) Then
             GetValue = Val(retval)
         
-        ElseIf InStr(0, retval, "True", vbTextCompare) Or _
-               InStr(0, retval, "False", vbTextCompare) Then
+        ElseIf InStr(1, retval, "True", vbTextCompare) Or _
+               InStr(1, retval, "False", vbTextCompare) Then
             
             GetValue = CBool(retval)
         
