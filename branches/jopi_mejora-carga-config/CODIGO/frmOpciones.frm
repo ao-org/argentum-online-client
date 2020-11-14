@@ -353,15 +353,15 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 ' función Api para aplicar la transparencia a la ventana
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 'constantes
 Private Const GWL_EXSTYLE = (-20)
@@ -370,7 +370,7 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
 
-Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Const HWND_TOPMOST = -1
 
@@ -380,13 +380,13 @@ Private Const SWP_NOMOVE = &H2
 
 Private Const SWP_NOSIZE = &H1
 
-Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
+Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
     On Error Resume Next
   
     Dim msg As Long
   
-    msg = GetWindowLong(hWnd, GWL_EXSTYLE)
+    msg = GetWindowLong(hwnd, GWL_EXSTYLE)
          
     If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
         Is_Transparent = True
@@ -403,7 +403,7 @@ Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
   
     Dim msg As Long
   
@@ -412,13 +412,13 @@ Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As L
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
     Else
-        msg = GetWindowLong(hWnd, GWL_EXSTYLE)
+        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
         msg = msg Or WS_EX_LAYERED
      
-        SetWindowLong hWnd, GWL_EXSTYLE, msg
+        SetWindowLong hwnd, GWL_EXSTYLE, msg
      
         'Establece la transparencia
-        SetLayeredWindowAttributes hWnd, 0, Valor, LWA_ALPHA
+        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
   
         Aplicar_Transparencia = 0
   
@@ -446,9 +446,9 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
         
     If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
+        Check1.Picture = Nothing
     Else
-        check1.Picture = LoadInterface("check-amarillo.bmp")
+        Check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
         
@@ -493,12 +493,12 @@ End Sub
 Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If CursoresGraficos = 1 Then
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini", "OPCIONES", "CursoresGraficos", 0)
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "OPCIONES", "CursoresGraficos", 0)
         MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
     Else
         CursoresGraficos = 1
         Call FormParser.Parse_Form(Me)
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini", "OPCIONES", "CursoresGraficos", 1)
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "OPCIONES", "CursoresGraficos", 1)
     
     End If
 
@@ -649,16 +649,16 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
     
 End Sub
 
 Private Sub cmdcerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    If cmdcerrar.Tag = "0" Then
+    If cmdCerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdcerrar.Tag = "1"
+        cmdCerrar.Tag = "1"
 
     End If
 
@@ -677,13 +677,13 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
 
     End If
 
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
 
 End Sub
 
 Private Sub cmdWeb_Click()
-    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
 
 End Sub
 
@@ -693,17 +693,17 @@ Private Sub Command5_Click()
 End Sub
 
 Private Sub discord_Click()
-    ShellExecute Me.hWnd, "open", "https://discord.gg/e3juVbF", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://discord.gg/e3juVbF", "", "", 0
 
 End Sub
 
 Private Sub facebook_Click()
-    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
 
 End Sub
 
 Private Sub Form_Load()
-    Call Aplicar_Transparencia(Me.hWnd, 240)
+    Call Aplicar_Transparencia(Me.hwnd, 240)
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("VentanaConfiguracion.bmp")
     
@@ -714,7 +714,7 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
 End Sub
 
@@ -793,14 +793,14 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     facebook.Tag = "0"
     Command1 = Nothing
     Command1.Tag = "0"
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
 End Sub
 
-Private Sub cmdcerrar_Click()
+Private Sub cmdCerrar_Click()
     Call GuardarOpciones
     Me.Visible = False
     frmmain.SetFocus
@@ -890,9 +890,9 @@ Public Sub Init()
     End If
     
     If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
+        Check1.Picture = Nothing
     Else
-        check1.Picture = LoadInterface("check-amarillo.bmp")
+        Check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
@@ -915,7 +915,7 @@ Private Sub HScroll1_Change()
 End Sub
 
 Private Sub instagram_Click()
-    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
 
 End Sub
 

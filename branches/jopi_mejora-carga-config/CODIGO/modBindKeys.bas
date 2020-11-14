@@ -50,7 +50,7 @@ Sub LoadDefaultBinds()
 
     Dim Arch As String, lC As Integer
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
+    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
 
     NUMBINDS = Val(General_Var_Get(Arch, "INIT", "NumBinds"))
     ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
@@ -66,7 +66,7 @@ Sub LoadDefaultBinds2()
 
     Dim Arch As String, lC As Integer
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
+    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
 
     NUMBINDS = Val(General_Var_Get(Arch, "INIT", "NumBinds"))
     ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
@@ -245,7 +245,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             
             Dim Arch As String
     
-            Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
+            Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
             Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
             
         Case BindKeys(21).KeyCode
