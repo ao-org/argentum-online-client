@@ -1254,6 +1254,7 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "AUDIO", "VolMusic", VolMusic)
     Call WriteVar(Arch, "AUDIO", "Volfx", VolFX)
     Call WriteVar(Arch, "AUDIO", "VolAmbient", VolAmbient)
+    Call WriteVar(Arch, "AUDIO", "AmbientalActivated", AmbientalActivated)
     
     'Call WriteVar(Arch, "VIDEO", "CursoresGraficos", CursoresGraficos)
     
@@ -1264,7 +1265,7 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
     Call WriteVar(Arch, "OPCIONES", "AlphaMacro", AlphaMacro)
     Call WriteVar(Arch, "OPCIONES", "FxNavega", FxNavega)
-    Call WriteVar(Arch, "OPCIONES", "AmbientalActivated", AmbientalActivated)
+
     Call WriteVar(Arch, "OPCIONES", "OcultarMacrosAlCastear", OcultarMacrosAlCastear)
     
     Call WriteVar(Arch, "OPCIONES", "SensibilidadMouse", SensibilidadMouse)
