@@ -182,7 +182,7 @@ Public MacrosBloqeados    As Boolean
 Public Type ObjDatas
 
     GrhIndex As Long ' Indice del grafico que representa el obj
-    name As String
+    Name As String
     MinDef As Integer
     MaxDef As Integer
     MinHit As Integer
@@ -212,7 +212,7 @@ End Type
 
 Public Type NpcDatas
 
-    name As String
+    Name As String
     desc As String
     Body As Integer
     Hp As Long
@@ -244,7 +244,7 @@ End Type
 
 Public Type NameMapas
 
-    name As String ' Indice del grafico que representa el obj
+    Name As String ' Indice del grafico que representa el obj
     desc As String
 
 End Type
@@ -923,13 +923,13 @@ Public Sub CreateSurfacefromMask_GetPixel(Obj As Object, Optional lBackColor As 
 
 End Sub
 
-Public Sub General_Var_Write(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
+Public Sub General_Var_Write(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 10/07/2002
     'Writes a var to a text file
     '*****************************************************************
-    writeprivateprofilestring Main, Var, value, file
+    writeprivateprofilestring Main, Var, Value, File
 
 End Sub
 
@@ -988,12 +988,12 @@ Public Sub CargarCuentasGuardadas()
     Rem FrmLogear.PasswordTxt = CuentaRecordada(1).Password
 End Sub
 
-Public Sub GrabarNuevaCuenta(ByVal name As String, ByVal Password As String)
+Public Sub GrabarNuevaCuenta(ByVal Name As String, ByVal Password As String)
 
     Dim Arch As String
 
     Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-    Call WriteVar(Arch, "CUENTA", "Nombre", name)
+    Call WriteVar(Arch, "CUENTA", "Nombre", Name)
     Call WriteVar(Arch, "CUENTA", "Password", EncryptStr(Password, 9256))
     Call CargarCuentasGuardadas
 
@@ -1003,7 +1003,7 @@ Public Sub ResetearCuentas()
 
     Dim Arch As String
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+    Arch = App.Path & "\..\Recursos\OUTPUT\Configuracion.ini"
     Call WriteVar(Arch, "CUENTA", "Nombre", "")
     Call WriteVar(Arch, "CUENTA", "Password", "")
     Call CargarCuentasGuardadas
@@ -1014,28 +1014,28 @@ Public Sub LoadImpAoInit()
 
     Windows_Temp_Dir = General_Get_Temp_Dir
 
-    Dim file As String
+    Dim File As String
 
-    file = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+    File = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
 
     Dim lC As Integer, tmpStr As String
 
-    ServerIndex = Val(GetVar(file, "INIT", "ServerIndex"))
+    ServerIndex = Val(GetVar(File, "INIT", "ServerIndex"))
 
-    NUMBINDS = Val(GetVar(file, "INIT", "NUMBINDS"))
+    NUMBINDS = Val(GetVar(File, "INIT", "NUMBINDS"))
 
-    ACCION1 = Val(GetVar(file, "INIT", "ACCION1"))
-    ACCION2 = Val(GetVar(file, "INIT", "ACCION2"))
-    ACCION3 = Val(GetVar(file, "INIT", "ACCION3"))
+    ACCION1 = Val(GetVar(File, "INIT", "ACCION1"))
+    ACCION2 = Val(GetVar(File, "INIT", "ACCION2"))
+    ACCION3 = Val(GetVar(File, "INIT", "ACCION3"))
 
     ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
 
     lC = 0
 
     For lC = 1 To NUMBINDS
-        tmpStr = General_Var_Get(file, "USER", str(lC))
+        tmpStr = General_Var_Get(File, "USER", str(lC))
         BindKeys(lC).KeyCode = Val(General_Field_Read(1, tmpStr, ","))
-        BindKeys(lC).name = General_Field_Read(2, tmpStr, ",")
+        BindKeys(lC).Name = General_Field_Read(2, tmpStr, ",")
     Next lC
 
 End Sub
@@ -1054,7 +1054,7 @@ Public Sub SaveRAOInit()
     Call General_Var_Write(Arch, "INIT", "ACCION3", ACCION3)
 
     For lC = 1 To NUMBINDS
-        Call General_Var_Write(Arch, "User", str(lC), str(BindKeys(lC).KeyCode) & "," & BindKeys(lC).name)
+        Call General_Var_Write(Arch, "User", str(lC), str(BindKeys(lC).KeyCode) & "," & BindKeys(lC).Name)
     Next lC
 
     lC = 0
@@ -1331,15 +1331,15 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
             
         If Pos = 0 Then Pos = LenB(.nombre) + 2
         
-        Dim name As String
+        Dim Name As String
 
-        name = Left$(.nombre, Pos - 2)
+        Name = Left$(.nombre, Pos - 2)
        
         'Si el npc tiene nombre lo escribimos en la consola
         ChatText = Trim$(ChatText)
 
         If LenB(.nombre) <> 0 And LenB(ChatText) > 0 Then
-            Call AddtoRichTextBox2(frmmain.RecTxt, "[" & name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
+            Call AddtoRichTextBox2(frmmain.RecTxt, "[" & Name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
             Call AddtoRichTextBox2(frmmain.RecTxt, ChatText, red, green, blue, False, False, False, rtfLeft)
 
         End If
@@ -1354,7 +1354,7 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
             Con(i - 1).r = Con(i).r
         Next i
  
-        Con(MaxLineas).T = vbCrLf & "[" & name & "] " & ChatText
+        Con(MaxLineas).T = vbCrLf & "[" & Name & "] " & ChatText
         Con(MaxLineas).b = blue
         Con(MaxLineas).g = green
         Con(MaxLineas).r = red
@@ -1492,7 +1492,7 @@ Sub AmbientarAudio(ByVal UserMap As Long)
 
 End Sub
 
-Public Function General_Var_Get(ByVal file As String, ByVal Main As String, ByVal Var As String) As String
+Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -1511,7 +1511,7 @@ Public Function General_Var_Get(ByVal file As String, ByVal Main As String, ByVa
     
     sSpaces = Space$(5000)
     
-    getprivateprofilestring Main, Var, szReturn, sSpaces, Len(sSpaces), file
+    getprivateprofilestring Main, Var, szReturn, sSpaces, Len(sSpaces), File
     
     General_Var_Get = RTrim$(sSpaces)
     General_Var_Get = Left$(General_Var_Get, Len(General_Var_Get) - 1)
@@ -1558,7 +1558,7 @@ Public Sub CargarParticulas()
     
     'fill StreamData array with info from Particles.ini
     For loopc = 1 To ParticulasTotales
-        StreamData(loopc).name = General_Var_Get(StreamFile, Val(loopc), "Name")
+        StreamData(loopc).Name = General_Var_Get(StreamFile, Val(loopc), "Name")
         StreamData(loopc).NumOfParticles = General_Var_Get(StreamFile, Val(loopc), "NumOfParticles")
         StreamData(loopc).x1 = General_Var_Get(StreamFile, Val(loopc), "X1")
         StreamData(loopc).y1 = General_Var_Get(StreamFile, Val(loopc), "Y1")
@@ -2041,8 +2041,7 @@ Public Sub CargarIndicesOBJ()
         ObjFile = App.Path & "\..\Recursos\init\localindex.dat"
     #End If
             
-    Dim Leer As New clsIniReader
-    
+    Dim Leer As New clsIniManager
     Call Leer.Initialize(ObjFile)
 
     NumOBJs = Val(Leer.GetValue("INIT", "NumObjs"))
@@ -2075,7 +2074,7 @@ Public Sub CargarIndicesOBJ()
     For Obj = 1 To NumOBJs
         DoEvents
         ObjData(Obj).GrhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
-        ObjData(Obj).name = Leer.GetValue("OBJ" & Obj, "Name")
+        ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
         ObjData(Obj).MinDef = Val(Leer.GetValue("OBJ" & Obj, "MinDef"))
         ObjData(Obj).MaxDef = Val(Leer.GetValue("OBJ" & Obj, "MaxDef"))
         ObjData(Obj).MinHit = Val(Leer.GetValue("OBJ" & Obj, "MinHit"))
@@ -2110,10 +2109,10 @@ Public Sub CargarIndicesOBJ()
     For Npc = 1 To NumNpcs
         DoEvents
         
-        NpcData(Npc).name = Leer.GetValue("npc" & Npc, "Name")
+        NpcData(Npc).Name = Leer.GetValue("npc" & Npc, "Name")
 
-        If NpcData(Npc).name = "" Then
-            NpcData(Npc).name = "Vacio"
+        If NpcData(Npc).Name = "" Then
+            NpcData(Npc).Name = "Vacio"
 
         End If
 
@@ -2165,7 +2164,7 @@ Public Sub CargarIndicesOBJ()
     
     For Hechizo = 1 To 350
         DoEvents
-        NameMaps(Hechizo).name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
+        NameMaps(Hechizo).Name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
         NameMaps(Hechizo).desc = Leer.GetValue("NameMapa", "Mapa" & Hechizo & "Desc")
     Next Hechizo
     
@@ -2233,8 +2232,7 @@ Public Sub Cargarmapsworlddata()
         MapFile = App.Path & "\..\Recursos\init\mapsworlddata.dat"
     #End If
 
-    Dim Leer As New clsIniReader
-
+    Dim Leer As New clsIniManager
     Call Leer.Initialize(MapFile)
 
     WordMapaNum = Val(Leer.GetValue("WORLDMAP", "NumMap"))

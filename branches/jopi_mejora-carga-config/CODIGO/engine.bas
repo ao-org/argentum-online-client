@@ -182,7 +182,7 @@ On Error GoTo ErrorHandler:
     Dim DispMode    As D3DDISPLAYMODE
     Dim D3DWindow   As D3DPRESENT_PARAMETERS
     
-    Dim VSync As String: VSync = CBool(GetVar(App.Path & "\..\Recursos\OUTPUT\raoinit.ini", "VIDEO", "VSync"))
+    Dim VSync As String: VSync = CByte(GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "VSync"))
     
     Set dX = New DirectX8
     Set D3D = dX.Direct3DCreate()
@@ -289,7 +289,7 @@ Public Sub Engine_Init()
     '*****************************************************
     On Error GoTo errhandler:
     
-    Dim Modo As String: Modo = GetVar(App.Path & "\..\Recursos\OUTPUT\raoinit.ini", "VIDEO", "Aceleracion")
+    Dim Modo As String: Modo = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "Aceleracion")
     
     Select Case Modo
     
