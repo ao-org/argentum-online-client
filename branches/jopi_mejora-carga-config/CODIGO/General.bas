@@ -188,8 +188,6 @@ Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCo
 Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As Currency) As Long
 'debemos mostrar la animacion de la lluvia
 
-Private keysMovementPressedQueue As clsArrayList
-
 Private lFrameTimer              As Long
 
 Public Function DirGraficos() As String
@@ -677,7 +675,7 @@ Sub SetConnected()
     frmmain.Image2(1).Tag = "0"
     OpcionMenu = 0
     frmmain.Image2(1).Picture = Nothing
-    frmmain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
     '            Image2(0).Visible = False
     ' Image2(1).Visible = True
 
@@ -1298,8 +1296,8 @@ Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
 
 End Function
 
-Function FileExist(ByVal file As String, ByVal FileType As VbFileAttribute) As Boolean
-    FileExist = (Dir$(file, FileType) <> "")
+Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As Boolean
+    FileExist = (Dir$(File, FileType) <> "")
 
 End Function
 
@@ -1342,11 +1340,16 @@ Sub Main()
     
     'Cursores******
     Set FormParser = New clsCursor
-    
     Call FormParser.Init
     'Cursores******
     
     Call CargarOpciones
+    
+    MacAdress = GetMacAddress
+    HDserial = GetDriveSerialNumber
+    
+    Call Load(frmConnect)
+    Call Load(FrmLogear)
         
     'If MsgBox("¿Desea jugar en pantalla completa?", vbYesNo, "¡Atención!") = vbYes Then
     
@@ -1358,10 +1361,14 @@ Sub Main()
     Frmcarga.Show
  
     If Sonido Then
+    
         If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+            Call Sound.Ambient_Volume_Set(VolAmbient)
         
         Else
-            MsgBox "¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde www.argentum20.com", vbCritical, "Saliendo"
+
+            Call MsgBox("¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde www.argentum20.com", vbCritical, "Saliendo")
+            
             Call CloseClient
 
         End If
@@ -1373,17 +1380,6 @@ Sub Main()
     Call ComprobarEstado
     Call CargarLst
     
-    Set LucesRedondas = New clsLucesRedondas
-    Set LucesCuadradas = New clsLucesCuadradas
-    
-    Set Meteo_Engine = New clsMeteorologic
-    
-    'Esto es para el movimiento suave de pjs, para que el pj termine de hacer el movimiento antes de empezar otro
-    Set keysMovementPressedQueue = New clsArrayList
-    Call keysMovementPressedQueue.Initialize(1, 4)
-
-    Sound.Ambient_Volume_Set VolAmbient
-
     Call InicializarNombres
     
     'Inicializamos el motor grafico.
@@ -1454,15 +1450,15 @@ Sub Main()
  
 End Sub
 
-Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
+Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
-    writeprivateprofilestring Main, Var, value, file
+    writeprivateprofilestring Main, Var, Value, File
 
 End Sub
 
-Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String) As String
+Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
 
     '*****************************************************************
     'Gets a Var from a text file
@@ -1471,7 +1467,7 @@ Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String)
     
     sSpaces = Space$(100) ' This tells the computer how long the longest string can be. If you want, you can change the number 100 to any number you wish
     
-    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), file
+    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), File
     
     GetVar = RTrim$(sSpaces)
     GetVar = Left$(GetVar, Len(GetVar) - 1)
@@ -2095,7 +2091,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
                             Dim subelemento As ListItem
 
-                            Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).name)
+                            Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).Name)
 
                             subelemento.SubItems(1) = NpcWorlds(c)
                             subelemento.SubItems(2) = c
