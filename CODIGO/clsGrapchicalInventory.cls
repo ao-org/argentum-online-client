@@ -221,7 +221,7 @@ Public Property Get SelectedItem() As Long
 End Property
 
 Public Property Get IsItemSelected() As Boolean
-    If SelectedItem <= 0 Or SelectedItem >= MaxSlots Then Exit Sub
+    If SelectedItem <= 0 Or SelectedItem > MaxSlots Then Exit Sub
     IsItemSelected = (UserInventory(SelectedItem).GrhIndex > 0)
 End Property
 
@@ -317,7 +317,7 @@ Public Property Get ItemName(ByVal slot As Byte) As String
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's name
     '***************************************************
-    ItemName = UserInventory(slot).name
+    ItemName = UserInventory(slot).Name
 
 End Property
 
@@ -383,7 +383,7 @@ Public Sub SetItem(ByVal slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount
         .GrhIndex = eGrhIndex
         .MaxHit = eMaxHit
         .MinHit = eMinHit
-        .name = eName
+        .Name = eName
         .OBJIndex = eOBJIndex
         .ObjType = eObjType
         .Valor = eValor
