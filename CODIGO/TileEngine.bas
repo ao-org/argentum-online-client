@@ -249,18 +249,14 @@ End Type
 
 'Info de un objeto
 Public Type Obj
-
     OBJIndex As Integer
     Amount As Integer
-
 End Type
 
 'Tipo de las celdas del mapa
 Public Type Light
-
     Rango As Integer
     color As Long
-
 End Type
 
 Public Type Fantasma
@@ -311,34 +307,21 @@ End Type
 
 'Info de cada mapa
 Public Type MapInfo
-
     Music As String
-    name As String
+    Name As String
     StartPos As WorldPos
     MapVersion As Integer
     Llueve As Byte
     Nieba As Byte
-
 End Type
 
-'DX7 Objects
-'Public DirectX As New DirectX7
-'Public DirectDraw As DirectDraw7
-'Private PrimarySurface As DirectDrawSurface7
-'Private PrimaryClipper As DirectDrawClipper
-'Private BackBufferSurface As DirectDrawSurface7
-
 Public IniPath                 As String
-
 Public MapPath                 As String
 
 'Bordes del mapa
 Public MinXBorder              As Byte
-
 Public MaxXBorder              As Byte
-
 Public MinYBorder              As Byte
-
 Public MaxYBorder              As Byte
 
 'Status del user
@@ -347,11 +330,8 @@ Public CurMap                  As Integer 'Mapa actual
 Public userindex               As Integer
 
 Public UserMoving              As Byte
-
 Public UserBody                As Integer
-
 Public UserHead                As Integer
-
 Public UserPos                 As Position 'Posicion
 
 Public AddtoUserPos            As Position 'Si se mueve
@@ -361,9 +341,7 @@ Public UserCharIndex           As Integer
 Public EngineRun               As Boolean
 
 Public fps                     As Long
-
 Public FramesPerSecCounter     As Long
-
 Private fpsLastCheck           As Long
 
 'Tamaño del la vista en Tiles
@@ -415,48 +393,33 @@ Public MouseTileY             As Byte
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Graficos¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Public GrhData()               As GrhData 'Guarda todos los grh
-
 Public BodyData()              As BodyData
-
 Public HeadData()              As HeadData
-
 Public FxData()                As tIndiceFx
-
 Public WeaponAnimData()        As WeaponAnimData
-
 Public ShieldAnimData()        As ShieldAnimData
-
 Public CascoAnimData()         As HeadData
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Mapa?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Public MapData()               As MapBlock ' Mapa
-
 Public MapInfo                 As MapInfo ' Info acerca del mapa en uso
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
 Public bRain                   As Boolean 'está raineando?
-
 Public bNieve                  As Boolean 'está nevando?
-
 Public bNiebla                 As Boolean 'Hay niebla?
-
 Public bTecho                  As Boolean 'hay techo?
 
 Public brstTick                As Long
-
 Private iFrameIndex            As Byte  'Frame actual de la LL
-
 Private llTick                 As Long  'Contador
 
 Public charlist(1 To 10000)    As Char
 
 #If SeguridadAlkon Then
-
     Public MI(1 To 1233) As clsManagerInvisibles
-
     Public CualMI        As Integer
-
 #End If
 
 ' Used by GetTextExtentPoint32
@@ -482,33 +445,32 @@ End Enum
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
 Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
-
 Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long
-
 Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As Long
-
 Private Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
-
 Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 
 'Added by Juan Martín Sotuyo Dodero
 Private Declare Function StretchBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
-
 Private Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
-
 Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 'Added by Barrin
 
 'Very percise counter 64bit system counter
 Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As Currency) As Long
-
 Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
 
 'Text width computation. Needed to center text.
 Private Declare Function GetTextExtentPoint32 Lib "gdi32" Alias "GetTextExtentPoint32A" (ByVal hdc As Long, ByVal lpsz As String, ByVal cbString As Long, lpSize As size) As Long
 
-Public Sub Init_TileEngine()
+Public keysMovementPressedQueue As clsArrayList
 
+Public Sub Init_TileEngine()
+    
+    'Esto es para el movimiento suave de pjs, para que el pj termine de hacer el movimiento antes de empezar otro
+    Set keysMovementPressedQueue = New clsArrayList
+    Call keysMovementPressedQueue.Initialize(1, 4)
+    
     HalfWindowTileHeight = (frmmain.renderer.ScaleHeight / 32) \ 2
     HalfWindowTileWidth = (frmmain.renderer.ScaleWidth / 32) \ 2
     
@@ -1020,7 +982,7 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     
         Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
 
-    Call Engine_EndScene(Piture, pic.hWnd)
+    Call Engine_EndScene(Piture, pic.hwnd)
     
 End Sub
 
@@ -1056,7 +1018,7 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
     
         Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
                            
-    Call Engine_EndScene(Piture, pic.hWnd)
+    Call Engine_EndScene(Piture, pic.hwnd)
     
 End Sub
 
