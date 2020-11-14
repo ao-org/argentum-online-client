@@ -1,54 +1,40 @@
 Attribute VB_Name = "ModLadder"
-'RevolucionAo 1.0
-'Pablo Mercavides
+Option Explicit
 
 Public StopCreandoCuenta    As Boolean
 
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
-
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
 
 'Nueva seguridad
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal length As Long)
-
 Private Declare Function GetAdaptersInfo Lib "iphlpapi" (lpAdapterInfo As Any, lpSize As Long) As Long
-
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 'get mac adress
 
 Public Type Tclan
-
     nombre As String
     Alineacion As Byte
     indice As Integer
-
 End Type
 
 Public ListaClanes      As Boolean
-
 Public ClanesList()     As Tclan
 
 Public MacAdress        As String
-
 Public HDserial         As Long
 
 Public intro            As Byte
 
 Public InviCounter      As Integer
-
 Public ScrollExpCounter As Long
-
 Public ScrollOroCounter As Long
-
 Public OxigenoCounter   As Long
-
 Public DrogaCounter     As Integer
 
 'Sistema de mapas
 Public PosREAL          As Integer
-
 Public Dungeon          As Boolean
-
 Public idmap            As Integer
 
 Type Effect_Type
@@ -80,26 +66,19 @@ Public Effect()     As Effect_Type
 
 'Destruccion de items
 Public DestItemSlot As Byte
-
 Public DestItemCant As Integer
-
 Public HoraFantasia As Integer
 
 Public Enum FXSound
-
     Lobo_Sound = 124
     Gallo_Sound = 137
     Dropeo_Sound = 132
     Casamiento_sound = 161
     BARCA_SOUND = 202
     MP_SOUND = 150
-
 End Enum
 
 Public ColorCiego(0 To 3) As Long
-
-Option Explicit
-
 Public Const MAX_CORREOS_SLOTS = 60
 
 Public LastIndex2                        As Integer
@@ -107,18 +86,15 @@ Public LastIndex2                        As Integer
 Public CorreoMsj(1 To MAX_CORREOS_SLOTS) As CorreoMsj
 
 Public ItemLista(1 To 10)                As Obj
-
 Public ItemCount                         As Byte
 
 Public Type CorreoMsj
-
     Remitente As String
     mensaje As String
     ItemCount As Byte
     ItemArray As String
     Leido As Byte
     Fecha As String
-    
 End Type
 
 Public TieneFamiliar As Long
@@ -131,15 +107,11 @@ Public HayLayer4     As Boolean
 
 'Logros
 Public NPcLogros     As TLogros
-
 Public UserLogros    As TLogros
-
 Public LevelLogros   As TLogros
-
 Public MostrarTrofeo As Boolean
 
 Type TLogros
-
     nombre As String
     desc As String
     cant As Long
@@ -152,55 +124,37 @@ Type TLogros
     NivelUser As Byte
     UserMatados As Integer
     Finalizada As Boolean
-
 End Type
 
 Public CantPartLLuvia     As Integer
-
 Public MeteoIndex         As Integer
 
 'Servidores
 Public ChequeandoServidor As Byte
-
 Public CantServer         As Byte
 
 'Dropeo
 Public CantdPaquetes      As Long
-
 Public PingRender         As Integer
-
 Public InBytes            As Long
-
 Public OutBytes           As Long
 
 Public NumOBJs            As Integer
-
 Public NumNpcs            As Integer
-
 Public NumHechizos        As Integer
-
 Public NumLocaleMsg       As Integer
-
 Public NumQuest           As Integer
-
 Public NumSug             As Integer
 
 Public Sugerencia()       As String
-
 Public Quest_Name()       As String
-
 Public Quest_Desc()       As String
-
 Public DESCFINAL()        As String
-
 Public NEXTQUEST()        As String
-
 Public RequiredLevel()    As Integer
-
 Public PosMap()           As Integer
 
 Public ObjData()          As ObjDatas
-
 Public NpcData()          As NpcDatas
 
 Public Locale_SMG()       As String
@@ -228,7 +182,7 @@ Public MacrosBloqeados    As Boolean
 Public Type ObjDatas
 
     GrhIndex As Long ' Indice del grafico que representa el obj
-    name As String
+    Name As String
     MinDef As Integer
     MaxDef As Integer
     MinHit As Integer
@@ -258,7 +212,7 @@ End Type
 
 Public Type NpcDatas
 
-    name As String
+    Name As String
     desc As String
     Body As Integer
     Hp As Long
@@ -290,7 +244,7 @@ End Type
 
 Public Type NameMapas
 
-    name As String ' Indice del grafico que representa el obj
+    Name As String ' Indice del grafico que representa el obj
     desc As String
 
 End Type
@@ -661,7 +615,7 @@ Sub General_Set_Connect()
     intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -969,13 +923,13 @@ Public Sub CreateSurfacefromMask_GetPixel(Obj As Object, Optional lBackColor As 
 
 End Sub
 
-Public Sub General_Var_Write(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
+Public Sub General_Var_Write(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 10/07/2002
     'Writes a var to a text file
     '*****************************************************************
-    writeprivateprofilestring Main, Var, value, file
+    writeprivateprofilestring Main, Var, Value, File
 
 End Sub
 
@@ -1011,7 +965,7 @@ Public Sub CargarCuentasGuardadas()
 
     Dim Arch As String
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
+    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
     CuentaRecordada.nombre = GetVar(Arch, "CUENTA", "Nombre")
     CuentaRecordada.Password = UnEncryptStr(GetVar(Arch, "CUENTA", "Password"), 9256)
     FrmLogear.Image4.Tag = "0"
@@ -1034,12 +988,12 @@ Public Sub CargarCuentasGuardadas()
     Rem FrmLogear.PasswordTxt = CuentaRecordada(1).Password
 End Sub
 
-Public Sub GrabarNuevaCuenta(ByVal name As String, ByVal Password As String)
+Public Sub GrabarNuevaCuenta(ByVal Name As String, ByVal Password As String)
 
     Dim Arch As String
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
-    Call WriteVar(Arch, "CUENTA", "Nombre", name)
+    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+    Call WriteVar(Arch, "CUENTA", "Nombre", Name)
     Call WriteVar(Arch, "CUENTA", "Password", EncryptStr(Password, 9256))
     Call CargarCuentasGuardadas
 
@@ -1049,7 +1003,7 @@ Public Sub ResetearCuentas()
 
     Dim Arch As String
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
+    Arch = App.Path & "\..\Recursos\OUTPUT\Configuracion.ini"
     Call WriteVar(Arch, "CUENTA", "Nombre", "")
     Call WriteVar(Arch, "CUENTA", "Password", "")
     Call CargarCuentasGuardadas
@@ -1060,28 +1014,28 @@ Public Sub LoadImpAoInit()
 
     Windows_Temp_Dir = General_Get_Temp_Dir
 
-    Dim file As String
+    Dim File As String
 
-    file = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
+    File = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
 
     Dim lC As Integer, tmpStr As String
 
-    ServerIndex = Val(GetVar(file, "INIT", "ServerIndex"))
+    ServerIndex = Val(GetVar(File, "INIT", "ServerIndex"))
 
-    NUMBINDS = Val(GetVar(file, "INIT", "NUMBINDS"))
+    NUMBINDS = Val(GetVar(File, "INIT", "NUMBINDS"))
 
-    ACCION1 = Val(GetVar(file, "INIT", "ACCION1"))
-    ACCION2 = Val(GetVar(file, "INIT", "ACCION2"))
-    ACCION3 = Val(GetVar(file, "INIT", "ACCION3"))
+    ACCION1 = Val(GetVar(File, "INIT", "ACCION1"))
+    ACCION2 = Val(GetVar(File, "INIT", "ACCION2"))
+    ACCION3 = Val(GetVar(File, "INIT", "ACCION3"))
 
     ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
 
     lC = 0
 
     For lC = 1 To NUMBINDS
-        tmpStr = General_Var_Get(file, "USER", str(lC))
+        tmpStr = General_Var_Get(File, "USER", str(lC))
         BindKeys(lC).KeyCode = Val(General_Field_Read(1, tmpStr, ","))
-        BindKeys(lC).name = General_Field_Read(2, tmpStr, ",")
+        BindKeys(lC).Name = General_Field_Read(2, tmpStr, ",")
     Next lC
 
 End Sub
@@ -1090,7 +1044,7 @@ Public Sub SaveRAOInit()
 
     Dim lC As Integer, Arch As String
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
+    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
 
     Call General_Var_Write(Arch, "INIT", "NUMBINDS", Int(NUMBINDS))
     Call General_Var_Write(Arch, "INIT", "ServerIndex", Int(ServerIndex))
@@ -1100,7 +1054,7 @@ Public Sub SaveRAOInit()
     Call General_Var_Write(Arch, "INIT", "ACCION3", ACCION3)
 
     For lC = 1 To NUMBINDS
-        Call General_Var_Write(Arch, "User", str(lC), str(BindKeys(lC).KeyCode) & "," & BindKeys(lC).name)
+        Call General_Var_Write(Arch, "User", str(lC), str(BindKeys(lC).KeyCode) & "," & BindKeys(lC).Name)
     Next lC
 
     lC = 0
@@ -1236,66 +1190,73 @@ End Function
 
 Sub CargarOpciones()
 
-    On Error Resume Next
+    On Error GoTo ErrorHandler
 
-    Dim Arch As String
-
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
-    'Musica
-    Musica = GetVar(Arch, "OPCIONES", "Musica")
-    VolMusic = Val(GetVar(Arch, "OPCIONES", "VolMusic"))
+    Dim ConfigFile As clsIniManager
+    Set ConfigFile = New clsIniManager
+    Call ConfigFile.Initialize(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini")
     
-    fX = GetVar(Arch, "OPCIONES", "Fx")
-    VolFX = Val(GetVar(Arch, "OPCIONES", "VolFX"))
-    VolAmbient = Val(GetVar(Arch, "OPCIONES", "VolAmbient"))
-    AmbientalActivated = GetVar(Arch, "OPCIONES", "AmbientalActivated")
-    InvertirSonido = GetVar(Arch, "OPCIONES", "InvertirSonido")
-    CopiarDialogoAConsola = GetVar(Arch, "OPCIONES", "CopiarDialogoAConsola")
-    PermitirMoverse = GetVar(Arch, "OPCIONES", "PermitirMoverse")
-    MoverVentana = GetVar(Arch, "OPCIONES", "MoverVentana")
-    FPSFLAG = GetVar(Arch, "OPCIONES", "FPSFLAG")
-    AlphaMacro = GetVar(Arch, "OPCIONES", "AlphaMacro")
-    FxNavega = GetVar(Arch, "OPCIONES", "FxNavega")
+    'Musica y Sonido
+    Musica = ConfigFile.GetValue("AUDIO", "Musica")
+    Sonido = ConfigFile.GetValue("AUDIO", "Sonido")
+    fX = ConfigFile.GetValue("AUDIO", "Fx")
+    AmbientalActivated = ConfigFile.GetValue("AUDIO", "AmbientalActivated")
+    InvertirSonido = ConfigFile.GetValue("AUDIO", "InvertirSonido")
     
-    OcultarMacrosAlCastear = GetVar(Arch, "OPCIONES", "OcultarMacrosAlCastear")
-    MostrarIconosMeteorologicos = GetVar(Arch, "OPCIONES", "MostrarIconosMeteorologicos")
-    PantallaCompleta = GetVar(Arch, "OPCIONES", "PantallaCompleta")
-    Sonido = GetVar(Arch, "OPCIONES", "Sonido")
-
+    'Musica y Sonido - Volumen
     VolMusicFadding = VolMusic
+    VolMusic = Val(ConfigFile.GetValue("AUDIO", "VolMusic"))
+    VolFX = Val(ConfigFile.GetValue("AUDIO", "VolFX"))
+    VolAmbient = Val(ConfigFile.GetValue("AUDIO", "VolAmbient"))
+    
+    'Video
+    PantallaCompleta = ConfigFile.GetValue("VIDEO", "PantallaCompleta")
+    CursoresGraficos = IIf(RunningInVB, 0, ConfigFile.GetValue("VIDEO", "CursoresGraficos"))
+    UtilizarPreCarga = ConfigFile.GetValue("VIDEO", "UtilizarPreCarga")
+    
+    FxNavega = ConfigFile.GetValue("OPCIONES", "FxNavega")
+    OcultarMacrosAlCastear = ConfigFile.GetValue("OPCIONES", "OcultarMacrosAlCastear")
+    MostrarIconosMeteorologicos = ConfigFile.GetValue("OPCIONES", "MostrarIconosMeteorologicos")
+    CopiarDialogoAConsola = ConfigFile.GetValue("OPCIONES", "CopiarDialogoAConsola")
+    PermitirMoverse = ConfigFile.GetValue("OPCIONES", "PermitirMoverse")
+    MoverVentana = ConfigFile.GetValue("OPCIONES", "MoverVentana")
+    FPSFLAG = ConfigFile.GetValue("OPCIONES", "FPSFLAG")
+    AlphaMacro = ConfigFile.GetValue("OPCIONES", "AlphaMacro")
 
-    MacAdress = GetMacAddress
-    HDserial = GetDriveSerialNumber
+    SensibilidadMouse = ConfigFile.GetValue("OPCIONES", "SensibilidadMouse")
     
-    CursoresGraficos = IIf(RunningInVB, 0, GetVar(Arch, "OPCIONES", "CursoresGraficos"))
+    Set ConfigFile = Nothing
     
-    UtilizarPreCarga = GetVar(Arch, "OPCIONES", "UtilizarPreCarga")
-    
-    SensibilidadMouse = GetVar(Arch, "OPCIONES", "SensibilidadMouse")
+    If SensibilidadMouse = 0 Then: SensibilidadMouse = 10
 
-    If SensibilidadMouse = 0 Then
-        SensibilidadMouse = 10
-
-    End If
-    
     SensibilidadMouseOriginal = General_Get_Mouse_Speed
+    
     Call General_Set_Mouse_Speed(SensibilidadMouse)
-        
-    Load frmConnect
-    Load FrmLogear
-        
+    
+    Exit Sub
+    
+ErrorHandler:
+    
+    Set ConfigFile = Nothing
+    
+    Call MsgBox("Ha ocurrido un error al cargar la configuración del juego.", vbCritical, "Configuración del Juego")
+    
+    End
+    
 End Sub
 
 Sub GuardarOpciones()
 
-    Dim Arch As String
+    Dim Arch As String: Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "raoinit.ini"
-    Call WriteVar(Arch, "OPCIONES", "Musica", Musica)
-    Call WriteVar(Arch, "OPCIONES", "Fx", fX)
-    Call WriteVar(Arch, "OPCIONES", "VolMusic", VolMusic)
-    Call WriteVar(Arch, "OPCIONES", "Volfx", VolFX)
-    Call WriteVar(Arch, "OPCIONES", "VolAmbient", VolAmbient)
+    Call WriteVar(Arch, "AUDIO", "Musica", Musica)
+    Call WriteVar(Arch, "AUDIO", "Fx", fX)
+    Call WriteVar(Arch, "AUDIO", "VolMusic", VolMusic)
+    Call WriteVar(Arch, "AUDIO", "Volfx", VolFX)
+    Call WriteVar(Arch, "AUDIO", "VolAmbient", VolAmbient)
+    
+    'Call WriteVar(Arch, "VIDEO", "CursoresGraficos", CursoresGraficos)
+    
     Call WriteVar(Arch, "OPCIONES", "MoverVentana", MoverVentana)
     Call WriteVar(Arch, "OPCIONES", "PermitirMoverse", PermitirMoverse)
     Call WriteVar(Arch, "OPCIONES", "CopiarDialogoAConsola", CopiarDialogoAConsola)
@@ -1305,7 +1266,7 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "OPCIONES", "FxNavega", FxNavega)
     Call WriteVar(Arch, "OPCIONES", "AmbientalActivated", AmbientalActivated)
     Call WriteVar(Arch, "OPCIONES", "OcultarMacrosAlCastear", OcultarMacrosAlCastear)
-    ' Call WriteVar(Arch, "OPCIONES", "CursoresGraficos", CursoresGraficos)
+    
     Call WriteVar(Arch, "OPCIONES", "SensibilidadMouse", SensibilidadMouse)
 
 End Sub
@@ -1370,15 +1331,15 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
             
         If Pos = 0 Then Pos = LenB(.nombre) + 2
         
-        Dim name As String
+        Dim Name As String
 
-        name = Left$(.nombre, Pos - 2)
+        Name = Left$(.nombre, Pos - 2)
        
         'Si el npc tiene nombre lo escribimos en la consola
         ChatText = Trim$(ChatText)
 
         If LenB(.nombre) <> 0 And LenB(ChatText) > 0 Then
-            Call AddtoRichTextBox2(frmmain.RecTxt, "[" & name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
+            Call AddtoRichTextBox2(frmmain.RecTxt, "[" & Name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
             Call AddtoRichTextBox2(frmmain.RecTxt, ChatText, red, green, blue, False, False, False, rtfLeft)
 
         End If
@@ -1393,7 +1354,7 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
             Con(i - 1).r = Con(i).r
         Next i
  
-        Con(MaxLineas).T = vbCrLf & "[" & name & "] " & ChatText
+        Con(MaxLineas).T = vbCrLf & "[" & Name & "] " & ChatText
         Con(MaxLineas).b = blue
         Con(MaxLineas).g = green
         Con(MaxLineas).r = red
@@ -1531,7 +1492,7 @@ Sub AmbientarAudio(ByVal UserMap As Long)
 
 End Sub
 
-Public Function General_Var_Get(ByVal file As String, ByVal Main As String, ByVal Var As String) As String
+Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -1550,7 +1511,7 @@ Public Function General_Var_Get(ByVal file As String, ByVal Main As String, ByVa
     
     sSpaces = Space$(5000)
     
-    getprivateprofilestring Main, Var, szReturn, sSpaces, Len(sSpaces), file
+    getprivateprofilestring Main, Var, szReturn, sSpaces, Len(sSpaces), File
     
     General_Var_Get = RTrim$(sSpaces)
     General_Var_Get = Left$(General_Var_Get, Len(General_Var_Get) - 1)
@@ -1597,7 +1558,7 @@ Public Sub CargarParticulas()
     
     'fill StreamData array with info from Particles.ini
     For loopc = 1 To ParticulasTotales
-        StreamData(loopc).name = General_Var_Get(StreamFile, Val(loopc), "Name")
+        StreamData(loopc).Name = General_Var_Get(StreamFile, Val(loopc), "Name")
         StreamData(loopc).NumOfParticles = General_Var_Get(StreamFile, Val(loopc), "NumOfParticles")
         StreamData(loopc).x1 = General_Var_Get(StreamFile, Val(loopc), "X1")
         StreamData(loopc).y1 = General_Var_Get(StreamFile, Val(loopc), "Y1")
@@ -2080,8 +2041,7 @@ Public Sub CargarIndicesOBJ()
         ObjFile = App.Path & "\..\Recursos\init\localindex.dat"
     #End If
             
-    Dim Leer As New clsIniReader
-    
+    Dim Leer As New clsIniManager
     Call Leer.Initialize(ObjFile)
 
     NumOBJs = Val(Leer.GetValue("INIT", "NumObjs"))
@@ -2114,7 +2074,7 @@ Public Sub CargarIndicesOBJ()
     For Obj = 1 To NumOBJs
         DoEvents
         ObjData(Obj).GrhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
-        ObjData(Obj).name = Leer.GetValue("OBJ" & Obj, "Name")
+        ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
         ObjData(Obj).MinDef = Val(Leer.GetValue("OBJ" & Obj, "MinDef"))
         ObjData(Obj).MaxDef = Val(Leer.GetValue("OBJ" & Obj, "MaxDef"))
         ObjData(Obj).MinHit = Val(Leer.GetValue("OBJ" & Obj, "MinHit"))
@@ -2149,10 +2109,10 @@ Public Sub CargarIndicesOBJ()
     For Npc = 1 To NumNpcs
         DoEvents
         
-        NpcData(Npc).name = Leer.GetValue("npc" & Npc, "Name")
+        NpcData(Npc).Name = Leer.GetValue("npc" & Npc, "Name")
 
-        If NpcData(Npc).name = "" Then
-            NpcData(Npc).name = "Vacio"
+        If NpcData(Npc).Name = "" Then
+            NpcData(Npc).Name = "Vacio"
 
         End If
 
@@ -2204,7 +2164,7 @@ Public Sub CargarIndicesOBJ()
     
     For Hechizo = 1 To 350
         DoEvents
-        NameMaps(Hechizo).name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
+        NameMaps(Hechizo).Name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
         NameMaps(Hechizo).desc = Leer.GetValue("NameMapa", "Mapa" & Hechizo & "Desc")
     Next Hechizo
     
@@ -2272,8 +2232,7 @@ Public Sub Cargarmapsworlddata()
         MapFile = App.Path & "\..\Recursos\init\mapsworlddata.dat"
     #End If
 
-    Dim Leer As New clsIniReader
-
+    Dim Leer As New clsIniManager
     Call Leer.Initialize(MapFile)
 
     WordMapaNum = Val(Leer.GetValue("WORLDMAP", "NumMap"))

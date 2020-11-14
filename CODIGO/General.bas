@@ -188,8 +188,6 @@ Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCo
 Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As Currency) As Long
 'debemos mostrar la animacion de la lluvia
 
-Private keysMovementPressedQueue As clsArrayList
-
 Private lFrameTimer              As Long
 
 Public Function DirGraficos() As String
@@ -677,7 +675,7 @@ Sub SetConnected()
     frmmain.Image2(1).Tag = "0"
     OpcionMenu = 0
     frmmain.Image2(1).Picture = Nothing
-    frmmain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
     '            Image2(0).Visible = False
     ' Image2(1).Visible = True
 
@@ -1332,7 +1330,7 @@ Sub Main()
 
     End If
 
-    If FileExist(App.Path & "\..\Recursos\OUTPUT\raoinit.ini", vbArchive) Then
+    If FileExist(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", vbArchive) Then
         Call LoadImpAoInit
     Else
         MsgBox "¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar"
@@ -1342,11 +1340,16 @@ Sub Main()
     
     'Cursores******
     Set FormParser = New clsCursor
-    
     Call FormParser.Init
     'Cursores******
     
     Call CargarOpciones
+    
+    MacAdress = GetMacAddress
+    HDserial = GetDriveSerialNumber
+    
+    Call Load(frmConnect)
+    Call Load(FrmLogear)
         
     'If MsgBox("¿Desea jugar en pantalla completa?", vbYesNo, "¡Atención!") = vbYes Then
     
@@ -1358,10 +1361,14 @@ Sub Main()
     Frmcarga.Show
  
     If Sonido Then
+    
         If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+            Call Sound.Ambient_Volume_Set(VolAmbient)
         
         Else
-            MsgBox "¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde www.argentum20.com", vbCritical, "Saliendo"
+
+            Call MsgBox("¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde www.argentum20.com", vbCritical, "Saliendo")
+            
             Call CloseClient
 
         End If
@@ -1373,17 +1380,6 @@ Sub Main()
     Call ComprobarEstado
     Call CargarLst
     
-    Set LucesRedondas = New clsLucesRedondas
-    Set LucesCuadradas = New clsLucesCuadradas
-    
-    Set Meteo_Engine = New clsMeteorologic
-    
-    'Esto es para el movimiento suave de pjs, para que el pj termine de hacer el movimiento antes de empezar otro
-    Set keysMovementPressedQueue = New clsArrayList
-    Call keysMovementPressedQueue.Initialize(1, 4)
-
-    Sound.Ambient_Volume_Set VolAmbient
-
     Call InicializarNombres
     
     'Inicializamos el motor grafico.

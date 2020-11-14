@@ -182,7 +182,7 @@ On Error GoTo ErrorHandler:
     Dim DispMode    As D3DDISPLAYMODE
     Dim D3DWindow   As D3DPRESENT_PARAMETERS
     
-    Dim VSync As String: VSync = CBool(GetVar(App.Path & "\..\Recursos\OUTPUT\raoinit.ini", "VIDEO", "VSync"))
+    Dim VSync As String: VSync = CByte(GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "VSync"))
     
     Set dX = New DirectX8
     Set D3D = dX.Direct3DCreate()
@@ -232,6 +232,10 @@ Private Sub Engine_InitExtras()
     
     Call Engine_Font_Initialize
     
+    Set LucesRedondas = New clsLucesRedondas
+    Set LucesCuadradas = New clsLucesCuadradas
+    Set Meteo_Engine = New clsMeteorologic
+    
     Estrella.framecounter = 1
     Estrella.GrhIndex = 35764
     Estrella.Started = 1
@@ -252,9 +256,9 @@ Private Sub Engine_InitExtras()
     BarraGris.GrhIndex = 842
     BarraGris.Started = 1
     
-    Font_Create "Tahoma", 8, True, 0
-    Font_Create "Verdana", 8, False, 0
-    Font_Create "Verdana", 11, True, False
+    Call Font_Create("Tahoma", 8, True, 0)
+    Call Font_Create("Verdana", 8, False, 0)
+    Call Font_Create("Verdana", 11, True, False)
     
     ' Colores comunes
     COLOR_WHITE(0) = D3DColorXRGB(255, 255, 255)
@@ -267,7 +271,6 @@ Private Sub Engine_InitExtras()
         .Left = 0
         .Right = frmConnect.render.ScaleWidth
         .bottom = frmConnect.render.ScaleHeight
-
     End With
     
     With Render_Main_Rect
@@ -275,7 +278,6 @@ Private Sub Engine_InitExtras()
         .Left = 0
         .Right = frmmain.renderer.ScaleWidth
         .bottom = frmmain.renderer.ScaleHeight
-
     End With
     
 End Sub
@@ -287,7 +289,7 @@ Public Sub Engine_Init()
     '*****************************************************
     On Error GoTo errhandler:
     
-    Dim Modo As String: Modo = GetVar(App.Path & "\..\Recursos\OUTPUT\raoinit.ini", "VIDEO", "Aceleracion")
+    Dim Modo As String: Modo = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "Aceleracion")
     
     Select Case Modo
     
