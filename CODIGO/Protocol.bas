@@ -42,16 +42,6 @@ Option Explicit
 'having too many string lengths in the queue. Yes, each string is NULL-terminated :P
 Private Const SEPARATOR As String * 1 = vbNullChar
 
-Private Type tFont
-
-    red As Byte
-    green As Byte
-    blue As Byte
-    bold As Boolean
-    italic As Boolean
-
-End Type
-
 Private Enum ServerPacketID
 
     logged                  ' LOGGED  0
@@ -548,351 +538,6 @@ Private Enum NewPacksID
     SeguroClan
 
 End Enum
-
-Public Enum FontTypeNames
-
-    FONTTYPE_TALK
-    FONTTYPE_FIGHT
-    FONTTYPE_WARNING
-    FONTTYPE_INFO
-    FONTTYPE_INFOBOLD
-    FONTTYPE_EJECUCION
-    FONTTYPE_PARTY
-    FONTTYPE_VENENO
-    FONTTYPE_GUILD
-    FONTTYPE_SERVER
-    FONTTYPE_GUILDMSG
-    FONTTYPE_CONSEJO
-    FONTTYPE_CONSEJOCAOS
-    FONTTYPE_CONSEJOVesA
-    FONTTYPE_CONSEJOCAOSVesA
-    FONTTYPE_CENTINELA
-    FONTTYPE_GMMSG
-    FONTTYPE_GM
-    FONTTYPE_DIOS
-    FONTTYPE_CITIZEN
-    FONTTYPE_EXP
-    FONTTYPE_SUBASTA
-    FONTTYPE_GLOBAL
-    FONTTYPE_MP
-    FONTTYPE_ROSA
-    FONTTYPE_VIOLETA
-    FONTTYPE_INFOIAO
-    FONTTYPE_New_Amarillo_Oscuro
-    FONTTYPE_New_Verde_Oscuro
-    FONTTYPE_New_Naranja
-    FONTTYPE_New_Celeste
-    FONTTYPE_New_Amarillo_Verdoso
-    FONTTYPE_New_Gris
-    FONTTYPE_New_Blanco
-    FONTTYPE_New_Rojo_Salmon
-    FONTTYPE_New_DONADOR
-    FONTTYPE_New_GRUPO
-    FONTTYPE_New_Eventos '39
-
-End Enum
-
-Public FontTypes(39) As tFont
-
-''
-' Initializes the fonts array
-
-Public Sub InitFonts()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    With FontTypes(FontTypeNames.FONTTYPE_TALK)
-        .red = 255
-        .green = 255
-        .blue = 255
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_FIGHT)
-        .red = 255
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_WARNING)
-        .red = 32
-        .green = 51
-        .blue = 223
-        .bold = 1
-        .italic = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_INFO)
-        .red = 65
-        .green = 190
-        .blue = 156
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_INFOBOLD)
-        .red = 65
-        .green = 190
-        .blue = 156
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_EJECUCION)
-        .red = 130
-        .green = 130
-        .blue = 130
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_PARTY)
-        .red = 255
-        .green = 180
-        .blue = 250
-
-    End With
-    
-    FontTypes(FontTypeNames.FONTTYPE_VENENO).green = 255
-    
-    With FontTypes(FontTypeNames.FONTTYPE_GUILD)
-        .red = 255
-        .green = 255
-        .blue = 255
-        .bold = 1
-
-    End With
-    
-    FontTypes(FontTypeNames.FONTTYPE_SERVER).green = 185
-    
-    With FontTypes(FontTypeNames.FONTTYPE_GUILDMSG)
-        .red = 228
-        .green = 199
-        .blue = 27
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_CONSEJO)
-        .red = 31
-        .green = 139
-        .blue = 139
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_CONSEJOCAOS)
-        .red = 179
-        .green = 0
-        .blue = 4
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_CONSEJOVesA)
-        .red = 31
-        .green = 139
-        .blue = 139
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_CONSEJOCAOSVesA)
-        .red = 189
-        .green = 0
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_CENTINELA)
-        .green = 255
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_GMMSG)
-        .red = 255
-        .green = 255
-        .blue = 255
-        .italic = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_GM)
-        .red = 2
-        .green = 161
-        .blue = 38
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_DIOS)
-        .red = 217
-        .green = 164
-        .blue = 32
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_CITIZEN)
-        .red = 0
-        .green = 128
-        .blue = 255
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_EXP)
-        .red = 42
-        .green = 169
-        .blue = 222
-        .bold = 1
-
-    End With
-        
-    With FontTypes(FontTypeNames.FONTTYPE_SUBASTA)
-        .red = 188
-        .green = 192
-        .blue = 103
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_GLOBAL)
-        .red = 0
-        .green = 176
-        .blue = 176
-        .bold = 0
-        .italic = True
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_MP)
-        .red = 157
-        .green = 226
-        .blue = 20
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_ROSA)
-        .red = 255
-        .green = 0
-        .blue = 128
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_VIOLETA)
-        .red = 99
-        .green = 0
-        .blue = 198
-        .bold = 0
-
-    End With
-        
-    With FontTypes(FontTypeNames.FONTTYPE_INFOIAO)
-        .red = 204
-        .green = 193
-        .blue = 115
-        .bold = 0
-        .italic = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_Amarillo_Oscuro)
-        .red = 150
-        .green = 100
-        .blue = 20
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_Verde_Oscuro)
-        .red = 0
-        .green = 120
-        .blue = 70
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_Naranja)
-        .red = 255
-        .green = 80
-        .blue = 0
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_Celeste)
-        .red = 0
-        .green = 200
-        .blue = 255
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_Amarillo_Verdoso)
-        .red = 150
-        .green = 150
-        .blue = 0
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_Gris)
-        .red = 128
-        .green = 128
-        .blue = 128
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_Blanco)
-        .red = 255
-        .green = 255
-        .blue = 255
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_Rojo_Salmon)
-        .red = 200
-        .green = 50
-        .blue = 50
-        .bold = 0
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_DONADOR)
-        .red = 100
-        .green = 180
-        .blue = 200
-        .bold = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_GRUPO)
-        .red = 250
-        .green = 200
-        .blue = 0
-        .bold = 0
-        .italic = 1
-
-    End With
-    
-    With FontTypes(FontTypeNames.FONTTYPE_New_Eventos)
-        .red = 0
-        .green = 200
-        .blue = 250
-        .bold = 1
-        .italic = 1
-
-    End With
-
-End Sub
 
 ''
 ' Handles incoming data.
@@ -1798,7 +1443,7 @@ Private Sub HandleDisconnect()
     
     For Each frm In Forms
 
-        If frm.name <> frmmain.name And frm.name <> frmConnect.name And frm.name <> frmMensaje.name Then
+        If frm.Name <> frmmain.Name And frm.Name <> frmConnect.Name And frm.Name <> frmMensaje.Name Then
             Unload frm
 
         End If
@@ -2098,7 +1743,7 @@ Private Sub HandleShowBlacksmithForm()
         For i = 0 To UBound(CascosHerrero())
 
             If CascosHerrero(i).Index = 0 Then Exit For
-            Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).name)
+            Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).Name)
         Next i
 
         frmHerrero.Command3.Picture = LoadInterface("herreria_cascoshover.bmp")
@@ -2199,7 +1844,7 @@ Private Sub HandleShowSastreForm()
         For i = 1 To UBound(SastreRopas())
 
             If SastreRopas(i).Index = 0 Then Exit For
-            FrmSastre.lstArmas.AddItem (ObjData(SastreRopas(i).Index).name)
+            FrmSastre.lstArmas.AddItem (ObjData(SastreRopas(i).Index).Name)
         Next i
     
         FrmSastre.Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
@@ -2661,10 +2306,10 @@ Private Sub HandleUpdateExp()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     If UserPasarNivel > 0 Then
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "¡Nivel máximo!"
     End If
 
@@ -3417,11 +3062,11 @@ Private Sub HandleConsoleMessage()
     Select Case QueEs
 
         Case "NPCNAME"
-            NpcName = NpcData(ReadField(2, chat, Asc("*"))).name
+            NpcName = NpcData(ReadField(2, chat, Asc("*"))).Name
             chat = NpcName & ReadField(3, chat, Asc("*"))
 
         Case "O" 'OBJETO
-            objname = ObjData(ReadField(2, chat, Asc("*"))).name
+            objname = ObjData(ReadField(2, chat, Asc("*"))).Name
             chat = objname & ReadField(3, chat, Asc("*"))
 
         Case "HECINF"
@@ -4708,7 +4353,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -4733,7 +4378,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -4741,7 +4386,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
@@ -4958,9 +4603,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel máximo!"
 
@@ -5108,7 +4753,7 @@ Private Sub HandleChangeInventorySlot()
     
     Dim slot              As Byte
     Dim OBJIndex          As Integer
-    Dim name              As String
+    Dim Name              As String
     Dim Amount            As Integer
     Dim Equipped          As Boolean
     Dim GrhIndex          As Long
@@ -5117,7 +4762,7 @@ Private Sub HandleChangeInventorySlot()
     Dim MinHit            As Integer
     Dim MaxDef            As Integer
     Dim MinDef            As Integer
-    Dim value             As Single
+    Dim Value             As Single
     Dim podrausarlo       As Byte
     Dim ResistenciaMagica As Byte
     Dim DañoMagico As Byte
@@ -5126,14 +4771,14 @@ Private Sub HandleChangeInventorySlot()
     OBJIndex = buffer.ReadInteger()
     Amount = buffer.ReadInteger()
     Equipped = buffer.ReadBoolean()
-    value = buffer.ReadSingle()
+    Value = buffer.ReadSingle()
     podrausarlo = buffer.ReadByte()
     ResistenciaMagica = buffer.ReadByte()
     DañoMagico = buffer.ReadByte()
     
     Call incomingData.CopyBuffer(buffer)
     
-    name = ObjData(OBJIndex).name
+    Name = ObjData(OBJIndex).Name
     GrhIndex = ObjData(OBJIndex).GrhIndex
     ObjType = ObjData(OBJIndex).ObjType
     MaxHit = ObjData(OBJIndex).MaxHit
@@ -5194,11 +4839,11 @@ Private Sub HandleChangeInventorySlot()
     frmmain.lblResis = ResistenciaMagica & "%"
     frmmain.lbldm = DañoMagico & "%"
     
-    Call frmmain.Inventario.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
+    Call frmmain.Inventario.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
     
-    Call frmComerciar.InvComUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
+    Call frmComerciar.InvComUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
     
-    Call frmBancoObj.InvBankUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
+    Call frmBancoObj.InvBankUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
     
     Exit Sub
     
@@ -5266,7 +4911,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     Dim OBJIndex         As Integer
 
-    Dim name             As String
+    Dim Name             As String
 
     Dim Amount           As Integer
 
@@ -5282,7 +4927,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     Dim defense          As Integer
 
-    Dim value            As Single
+    Dim Value            As Single
 
     Dim PuedeUsar        As Byte
 
@@ -5415,7 +5060,7 @@ Private Sub HandleChangeBankSlot()
     With BankSlot
     
         .OBJIndex = buffer.ReadInteger()
-        .name = ObjData(.OBJIndex).name
+        .Name = ObjData(.OBJIndex).Name
         .Amount = buffer.ReadInteger()
         .GrhIndex = ObjData(.OBJIndex).GrhIndex
         .ObjType = ObjData(.OBJIndex).ObjType
@@ -5425,7 +5070,7 @@ Private Sub HandleChangeBankSlot()
         .Valor = buffer.ReadLong()
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .name, .PuedeUsar)
+        Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
 
     End With
     
@@ -5804,7 +5449,7 @@ Private Sub HandleCarpenterObjects()
     For i = 1 To count
         ObjCarpintero(i) = buffer.ReadInteger()
         
-        Call frmCarp.lstArmas.AddItem(ObjData(ObjCarpintero(i)).name)
+        Call frmCarp.lstArmas.AddItem(ObjData(ObjCarpintero(i)).Name)
     Next i
     
     For i = i To UBound(ObjCarpintero())
@@ -5960,7 +5605,7 @@ Private Sub HandleAlquimiaObjects()
     
     For i = 1 To count
         Obj = buffer.ReadInteger()
-        tmp = ObjData(Obj).name        'Get the object's name
+        tmp = ObjData(Obj).Name        'Get the object's name
 
         ObjAlquimista(i) = Obj
         Call frmAlqui.lstArmas.AddItem(tmp)
@@ -6166,7 +5811,7 @@ Private Sub HandleChangeNPCInventorySlot()
     Dim SlotInv As NpCinV
     With SlotInv
         .OBJIndex = buffer.ReadInteger()
-        .name = ObjData(.OBJIndex).name
+        .Name = ObjData(.OBJIndex).Name
         .Amount = buffer.ReadInteger()
         .Valor = buffer.ReadSingle()
         .GrhIndex = ObjData(.OBJIndex).GrhIndex
@@ -6176,7 +5821,7 @@ Private Sub HandleChangeNPCInventorySlot()
         .Def = ObjData(.OBJIndex).MaxDef
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmComerciar.InvComNpc.SetItem(slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .name, .PuedeUsar)
+        Call frmComerciar.InvComNpc.SetItem(slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
         
     End With
     
@@ -7010,10 +6655,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.GuildsList.Clear
+    Call frmGuildNews.guildslist.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7045,7 +6690,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7409,10 +7054,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -7452,7 +7097,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -7690,7 +7335,7 @@ Private Sub HandleChangeUserTradeSlot()
     
     With OtroInventario(1)
         .OBJIndex = buffer.ReadInteger()
-        .name = buffer.ReadASCIIString()
+        .Name = buffer.ReadASCIIString()
         .Amount = buffer.ReadLong()
         .GrhIndex = buffer.ReadInteger()
         .ObjType = buffer.ReadByte()
@@ -7701,7 +7346,7 @@ Private Sub HandleChangeUserTradeSlot()
         
         frmComerciarUsu.List2.Clear
         
-        Call frmComerciarUsu.List2.AddItem(.name)
+        Call frmComerciarUsu.List2.AddItem(.Name)
         frmComerciarUsu.List2.ItemData(frmComerciarUsu.List2.NewIndex) = .Amount
         
         frmComerciarUsu.lblEstadoResp.Visible = False
@@ -7759,7 +7404,7 @@ Private Sub HandleSpawnList()
     creatureList = Split(buffer.ReadASCIIString(), SEPARATOR)
     
     For i = 0 To UBound(creatureList())
-        Call frmSpawnList.lstCriaturas.AddItem(NpcData(creatureList(i)).name)
+        Call frmSpawnList.lstCriaturas.AddItem(NpcData(creatureList(i)).Name)
     Next i
 
     frmSpawnList.Show , frmmain
@@ -8827,7 +8472,7 @@ End Sub
 ' @param    codex   Array of all rules of the guild.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal name As String, ByVal Alineacion As Byte)
+Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal Name As String, ByVal Alineacion As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8842,7 +8487,7 @@ Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal name As String, ByVal
         Call .WriteByte(ClientPacketID.CreateNewGuild)
         
         Call .WriteASCIIString(desc)
-        Call .WriteASCIIString(name)
+        Call .WriteASCIIString(Name)
         
         Call .WriteByte(Alineacion)
 
@@ -13533,7 +13178,7 @@ Private Sub HandlePersonajesDeCuenta()
     For ii = 1 To 10
         Pjs(ii).Body = 0
         Pjs(ii).Head = 0
-        Pjs(ii).mapa = 0
+        Pjs(ii).Mapa = 0
         Pjs(ii).nivel = 0
         Pjs(ii).nombre = ""
         Pjs(ii).Criminal = 0
@@ -13548,7 +13193,7 @@ Private Sub HandlePersonajesDeCuenta()
     For ii = 1 To CantidadDePersonajesEnCuenta
         Pjs(ii).nombre = buffer.ReadASCIIString()
         Pjs(ii).nivel = buffer.ReadByte()
-        Pjs(ii).mapa = buffer.ReadInteger()
+        Pjs(ii).Mapa = buffer.ReadInteger()
         Pjs(ii).Body = buffer.ReadInteger()
         
         Pjs(ii).Head = buffer.ReadInteger()
@@ -13561,7 +13206,7 @@ Private Sub HandlePersonajesDeCuenta()
         Pjs(ii).ClanName = "<" & buffer.ReadASCIIString() & ">"
        
         ' Pjs(ii).NameMapa = Pjs(ii).mapa
-        Pjs(ii).NameMapa = NameMaps(Pjs(ii).mapa).name
+        Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).Name
 
     Next ii
     
@@ -14485,7 +14130,7 @@ Private Sub HandleQuestDetails()
                        
                         Dim subelemento As ListItem
 
-                        Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(NpcIndex).name)
+                        Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(NpcIndex).Name)
                        
                         subelemento.SubItems(1) = cantidadnpc
                         subelemento.SubItems(2) = NpcIndex
@@ -14506,7 +14151,7 @@ Private Sub HandleQuestDetails()
                     cantidadobj = .ReadInteger
                     OBJIndex = .ReadInteger
                    
-                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(OBJIndex).name)
+                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(OBJIndex).Name)
                     subelemento.SubItems(1) = cantidadobj
                     subelemento.SubItems(2) = OBJIndex
                     subelemento.SubItems(3) = 1
@@ -14544,7 +14189,7 @@ Private Sub HandleQuestDetails()
                     cantidadobjs = .ReadInteger
                     obindex = .ReadInteger
                    
-                    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(obindex).name)
+                    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(obindex).Name)
                        
                     subelemento.SubItems(1) = cantidadobjs
                     subelemento.SubItems(2) = obindex
@@ -14586,7 +14231,7 @@ Private Sub HandleQuestDetails()
                
                     matados = .ReadInteger
                                      
-                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , NpcData(NpcIndex).name)
+                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , NpcData(NpcIndex).Name)
                        
                     Dim cantok As Integer
 
@@ -14616,7 +14261,7 @@ Private Sub HandleQuestDetails()
                     cantidadobj = .ReadInteger
                     OBJIndex = .ReadInteger
                    
-                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , ObjData(OBJIndex).name)
+                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , ObjData(OBJIndex).Name)
                     subelemento.SubItems(1) = cantidadobj
                     subelemento.SubItems(2) = OBJIndex
                     subelemento.SubItems(3) = 1
@@ -14650,7 +14295,7 @@ Private Sub HandleQuestDetails()
                     cantidadobjs = .ReadInteger
                     obindex = .ReadInteger
                    
-                    Set subelemento = FrmQuests.ListView2.ListItems.Add(, , ObjData(obindex).name)
+                    Set subelemento = FrmQuests.ListView2.ListItems.Add(, , ObjData(obindex).Name)
                        
                     subelemento.SubItems(1) = cantidadobjs
                     subelemento.SubItems(2) = obindex
@@ -15262,7 +14907,7 @@ Private Sub HandleDonadorObjects()
     
     For i = 1 To count
         Obj = buffer.ReadInteger()
-        tmp = ObjData(Obj).name           'Get the object's name
+        tmp = ObjData(Obj).Name           'Get the object's name
         precio = buffer.ReadInteger()
         ObjDonador(i).Index = Obj
         ObjDonador(i).precio = precio
@@ -15392,7 +15037,7 @@ Public Sub WriteCodigo(ByVal Codigo As String)
 
 End Sub
 
-Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal name As String, ByVal reglas As String)
+Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal Name As String, ByVal reglas As String)
     '***************************************************
     'Author: Pablo Mercavides
     'Last Modification: 16/05/2020
@@ -15417,7 +15062,7 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byt
     Call outgoingData.WriteInteger(map)
     Call outgoingData.WriteByte(x)
     Call outgoingData.WriteByte(y)
-    Call outgoingData.WriteASCIIString(name)
+    Call outgoingData.WriteASCIIString(Name)
     Call outgoingData.WriteASCIIString(reglas)
      
 End Sub

@@ -369,7 +369,7 @@ Type UserCuentaPJS
 
     nombre As String
     nivel As Byte
-    mapa As Integer
+    Mapa As Integer
     Body As Integer
     Head As Integer
     Criminal As Byte
@@ -1191,7 +1191,14 @@ End Function
 Sub CargarOpciones()
 
     On Error GoTo ErrorHandler
-
+    
+    If FileExist(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", vbArchive) Then
+        Call LoadImpAoInit
+    Else
+        Call MsgBox("¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
+        End
+    End If
+    
     Dim ConfigFile As clsIniManager
     Set ConfigFile = New clsIniManager
     Call ConfigFile.Initialize(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini")
@@ -1519,198 +1526,6 @@ Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVa
 
 End Function
 
-Public Sub CargarParticulas()
-
-    '*************************************
-    'Coded by OneZero (onezero_ss@hotmail.com)
-    'Last Modified: 6/4/03
-    'Loads the Particles.ini file to the ComboBox
-    'Edited by Juan Martín Sotuyo Dodero to add speed and life
-    '*************************************
-    Dim loopc      As Long
-
-    Dim i          As Long
-
-    Dim GrhListing As String
-
-    Dim TempSet    As String
-
-    Dim ColorSet   As Long
-
-    Dim temp       As Integer
-
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ini", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de particles.ini!"
-            MsgBox Err.Description
-
-        End If
-
-        StreamFile = Windows_Temp_Dir & "particles.ini"
-    #Else
-        StreamFile = App.Path & "\..\Recursos\init\particles.ini"
-    #End If
-
-    ParticulasTotales = Val(General_Var_Get(StreamFile, "INIT", "Total"))
-    
-    'resize StreamData array
-    ReDim StreamData(1 To ParticulasTotales) As Stream
-    
-    'fill StreamData array with info from Particles.ini
-    For loopc = 1 To ParticulasTotales
-        StreamData(loopc).Name = General_Var_Get(StreamFile, Val(loopc), "Name")
-        StreamData(loopc).NumOfParticles = General_Var_Get(StreamFile, Val(loopc), "NumOfParticles")
-        StreamData(loopc).x1 = General_Var_Get(StreamFile, Val(loopc), "X1")
-        StreamData(loopc).y1 = General_Var_Get(StreamFile, Val(loopc), "Y1")
-        StreamData(loopc).x2 = General_Var_Get(StreamFile, Val(loopc), "X2")
-        StreamData(loopc).y2 = General_Var_Get(StreamFile, Val(loopc), "Y2")
-        StreamData(loopc).angle = General_Var_Get(StreamFile, Val(loopc), "Angle")
-        StreamData(loopc).vecx1 = General_Var_Get(StreamFile, Val(loopc), "VecX1")
-        StreamData(loopc).vecx2 = General_Var_Get(StreamFile, Val(loopc), "VecX2")
-        StreamData(loopc).vecy1 = General_Var_Get(StreamFile, Val(loopc), "VecY1")
-        StreamData(loopc).vecy2 = General_Var_Get(StreamFile, Val(loopc), "VecY2")
-        StreamData(loopc).life1 = General_Var_Get(StreamFile, Val(loopc), "Life1")
-        StreamData(loopc).life2 = General_Var_Get(StreamFile, Val(loopc), "Life2")
-        StreamData(loopc).friction = General_Var_Get(StreamFile, Val(loopc), "Friction")
-        StreamData(loopc).spin = General_Var_Get(StreamFile, Val(loopc), "Spin")
-        StreamData(loopc).spin_speedL = General_Var_Get(StreamFile, Val(loopc), "Spin_SpeedL")
-        StreamData(loopc).spin_speedH = General_Var_Get(StreamFile, Val(loopc), "Spin_SpeedH")
-        StreamData(loopc).AlphaBlend = General_Var_Get(StreamFile, Val(loopc), "AlphaBlend")
-        StreamData(loopc).gravity = General_Var_Get(StreamFile, Val(loopc), "Gravity")
-        StreamData(loopc).grav_strength = General_Var_Get(StreamFile, Val(loopc), "Grav_Strength")
-        StreamData(loopc).bounce_strength = General_Var_Get(StreamFile, Val(loopc), "Bounce_Strength")
-        StreamData(loopc).XMove = General_Var_Get(StreamFile, Val(loopc), "XMove")
-        StreamData(loopc).YMove = General_Var_Get(StreamFile, Val(loopc), "YMove")
-        StreamData(loopc).move_x1 = General_Var_Get(StreamFile, Val(loopc), "move_x1")
-        StreamData(loopc).move_x2 = General_Var_Get(StreamFile, Val(loopc), "move_x2")
-        StreamData(loopc).move_y1 = General_Var_Get(StreamFile, Val(loopc), "move_y1")
-        StreamData(loopc).move_y2 = General_Var_Get(StreamFile, Val(loopc), "move_y2")
-        StreamData(loopc).life_counter = General_Var_Get(StreamFile, Val(loopc), "life_counter")
-        StreamData(loopc).speed = Val(General_Var_Get(StreamFile, Val(loopc), "Speed"))
-        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
-        StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
-        StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
-        
-        StreamData(loopc).NumGrhs = General_Var_Get(StreamFile, Val(loopc), "NumGrhs")
-        ReDim StreamData(loopc).grh_list(1 To StreamData(loopc).NumGrhs)
-        GrhListing = General_Var_Get(StreamFile, Val(loopc), "Grh_List")
-        
-        For i = 1 To StreamData(loopc).NumGrhs
-            StreamData(loopc).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
-        Next i
-
-        StreamData(loopc).grh_list(i - 1) = StreamData(loopc).grh_list(i - 1)
-        
-        For ColorSet = 1 To 4
-            TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).g = General_Field_Read(2, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).b = General_Field_Read(3, TempSet, ",")
-        Next ColorSet
-        
-    Next loopc
-        
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "particles.ini"
-    #End If
-
-End Sub
-
-Public Sub CargarParticulasBinary()
-
-    '*************************************
-    'Coded by OneZero (onezero_ss@hotmail.com)
-    'Last Modified: 6/4/03
-    'Loads the Particles.ini file to the ComboBox
-    'Edited by Juan Martín Sotuyo Dodero to add speed and life
-    '*************************************
-    Dim loopc      As Long
-
-    Dim i          As Long
-
-    Dim GrhListing As String
-
-    Dim TempSet    As String
-
-    Dim ColorSet   As Long
-
-    Dim temp       As Integer
-    
-    Dim handle     As Integer
-
-    'Open files
-    handle = FreeFile()
-
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de particles.ind!"
-            MsgBox Err.Description
-
-        End If
-
-        StreamFile = Windows_Temp_Dir & "particles.ind"
-    #Else
-        StreamFile = App.Path & "\..\Recursos\init\particles.ind"
-    #End If
-
-    Dim N As Integer
-    
-    N = FreeFile()
-
-    Open StreamFile For Binary Access Read As #N
-    'num de cabezas
-    Get #N, , ParticulasTotales
-
-    ReDim StreamData(1 To ParticulasTotales) As Stream
-
-    'fill StreamData array with info from Particles.ini
-    For loopc = 1 To ParticulasTotales
-        Get #N, , StreamData(loopc)
-    Next loopc
-    
-    Close #N
-
-    Exit Sub
-    ParticulasTotales = Val(General_Var_Get(StreamFile, "INIT", "Total"))
-    
-    'resize StreamData array
-    
-    'fill StreamData array with info from Particles.ini
-    For loopc = 1 To ParticulasTotales
-
-        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
-        StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
-        StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
-        
-        StreamData(loopc).NumGrhs = General_Var_Get(StreamFile, Val(loopc), "NumGrhs")
-        ReDim StreamData(loopc).grh_list(1 To StreamData(loopc).NumGrhs)
-        GrhListing = General_Var_Get(StreamFile, Val(loopc), "Grh_List")
-        
-        For i = 1 To StreamData(loopc).NumGrhs
-            StreamData(loopc).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
-        Next i
-
-        StreamData(loopc).grh_list(i - 1) = StreamData(loopc).grh_list(i - 1)
-        
-        For ColorSet = 1 To 4
-            TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).g = General_Field_Read(2, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).b = General_Field_Read(3, TempSet, ",")
-        Next ColorSet
-        
-    Next loopc
-        
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "particles.ini"
-    #End If
-
-End Sub
-
 Public Sub DibujarMiniMapa()
 
     Dim map_x   As Long, map_y As Long
@@ -1922,340 +1737,6 @@ Public Sub ResetearUserMacro()
 
 End Sub
 
-Public Sub CargarIndicesOBJBinary()
-
-    Dim Obj       As Integer
-
-    Dim Npc       As Integer
-
-    Dim Hechizo   As Integer
-
-    Dim i         As Integer
-
-    Dim SearchVar As String
-
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de localindex.ind!"
-            MsgBox Err.Description
-
-        End If
-    
-        ObjFile = Windows_Temp_Dir & "localindex.ind"
-    #Else
-        ObjFile = App.Path & "\..\Recursos\init\localindex.ind"
-    #End If
-
-    Dim handle As Integer
-
-    'Open files
-    handle = FreeFile()
-
-    Dim N As Integer
-    
-    N = FreeFile()
-
-    Open ObjFile For Binary Access Read As #N
-    'num de cabezas
-    Get #N, , NumOBJs
-
-    ReDim ObjData(0 To NumOBJs) As ObjDatas
-    
-    'ReDim NpcData(0 To NumNpcs) As NpcDatas
-    ' ReDim HechizoData(0 To NumHechizos) As HechizoDatas
-    'ReDim Locale_SMG(0 To NumLocaleMsg) As String
-
-    For Obj = 1 To NumOBJs
-        DoEvents
-        Get #N, , ObjData(Obj)
-    Next Obj
-
-    Get #N, , NumNpcs
-
-    ReDim NpcData(0 To NumNpcs) As NpcDatas
-    
-    For Npc = 1 To NumNpcs
-        Get #N, , NpcData(Npc)
-    Next Npc
-
-    Get #N, , NumHechizos
-    
-    ReDim HechizoData(0 To NumHechizos) As HechizoDatas
-    
-    For Hechizo = 1 To NumHechizos
-        DoEvents
-        Get #N, , HechizoData(Npc)
-    Next Hechizo
-
-    Get #N, , NumLocaleMsg
-    
-    ReDim Locale_SMG(0 To NumLocaleMsg) As String
-    
-    For i = 1 To NumLocaleMsg
-        Get #N, , Locale_SMG(i)
-    Next i
-
-    'Modificadores de Raza
-    For i = 1 To NUMRAZAS
-
-        With ModRaza(i)
-            Get #N, , .Fuerza
-            Get #N, , .Agilidad
-            Get #N, , .Inteligencia
-            Get #N, , .Constitucion
-            Get #N, , .Carisma
-        End With
-
-    Next i
-    
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "localindex.ind"
-    #End If
-
-    Close #N
-
-    Exit Sub
-
-End Sub
-
-Public Sub CargarIndicesOBJ()
-
-    Dim Obj     As Integer
-
-    Dim Npc     As Integer
-
-    Dim Hechizo As Integer
-
-    Dim i       As Integer
-    
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de localindex.dat!"
-            MsgBox Err.Description
-
-        End If
-    
-        ObjFile = Windows_Temp_Dir & "localindex.dat"
-    #Else
-        ObjFile = App.Path & "\..\Recursos\init\localindex.dat"
-    #End If
-            
-    Dim Leer As New clsIniManager
-    Call Leer.Initialize(ObjFile)
-
-    NumOBJs = Val(Leer.GetValue("INIT", "NumObjs"))
-    NumNpcs = Val(Leer.GetValue("INIT", "NumNpcs"))
-    NumHechizos = Val(Leer.GetValue("INIT", "NumeroHechizo"))
-    NumHechizos = Val(Leer.GetValue("INIT", "NumeroHechizo"))
-    NumLocaleMsg = Val(Leer.GetValue("INIT", "NumLocaleMsg"))
-    
-    NumQuest = Val(Leer.GetValue("INIT", "NUMQUESTS"))
-    
-    NumSug = Val(Leer.GetValue("INIT", "NUMSUGERENCIAS"))
-    
-    ReDim ObjData(0 To NumOBJs) As ObjDatas
-    ReDim NpcData(0 To NumNpcs) As NpcDatas
-    ReDim HechizoData(0 To NumHechizos) As HechizoDatas
-    ReDim Locale_SMG(0 To NumLocaleMsg) As String
-    
-    ReDim Quest_Name(1 To NumQuest) As String
-    ReDim Quest_Desc(1 To NumQuest) As String
-    
-    ReDim Sugerencia(1 To NumSug) As String
-    
-    ReDim DESCFINAL(1 To NumQuest) As String
-    ReDim NEXTQUEST(1 To NumQuest) As String
-    
-    ReDim RequiredLevel(1 To NumQuest) As Integer
-    
-    ReDim PosMap(1 To NumQuest) As Integer
-
-    For Obj = 1 To NumOBJs
-        DoEvents
-        ObjData(Obj).GrhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
-        ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
-        ObjData(Obj).MinDef = Val(Leer.GetValue("OBJ" & Obj, "MinDef"))
-        ObjData(Obj).MaxDef = Val(Leer.GetValue("OBJ" & Obj, "MaxDef"))
-        ObjData(Obj).MinHit = Val(Leer.GetValue("OBJ" & Obj, "MinHit"))
-        ObjData(Obj).MaxHit = Val(Leer.GetValue("OBJ" & Obj, "MaxHit"))
-        ObjData(Obj).ObjType = Val(Leer.GetValue("OBJ" & Obj, "ObjType"))
-        ObjData(Obj).info = Leer.GetValue("OBJ" & Obj, "Info")
-        ObjData(Obj).Texto = Leer.GetValue("OBJ" & Obj, "Texto")
-        ObjData(Obj).CreaGRH = Leer.GetValue("OBJ" & Obj, "CreaGRH")
-        ObjData(Obj).CreaLuz = Leer.GetValue("OBJ" & Obj, "CreaLuz")
-        ObjData(Obj).CreaParticulaPiso = Val(Leer.GetValue("OBJ" & Obj, "CreaParticulaPiso"))
-        ObjData(Obj).proyectil = Val(Leer.GetValue("OBJ" & Obj, "proyectil"))
-        ObjData(Obj).Raices = Val(Leer.GetValue("OBJ" & Obj, "Raices"))
-        ObjData(Obj).Madera = Val(Leer.GetValue("OBJ" & Obj, "Madera"))
-        ObjData(Obj).PielLobo = Val(Leer.GetValue("OBJ" & Obj, "PielLobo"))
-        ObjData(Obj).PielOsoPardo = Val(Leer.GetValue("OBJ" & Obj, "PielOsoPardo"))
-        ObjData(Obj).PielOsoPolar = Val(Leer.GetValue("OBJ" & Obj, "PielOsoPolar"))
-        ObjData(Obj).LingH = Val(Leer.GetValue("OBJ" & Obj, "LingH"))
-        ObjData(Obj).LingP = Val(Leer.GetValue("OBJ" & Obj, "LingP"))
-        ObjData(Obj).LingO = Val(Leer.GetValue("OBJ" & Obj, "LingO"))
-        ObjData(Obj).Destruye = Val(Leer.GetValue("OBJ" & Obj, "Destruye"))
-        ObjData(Obj).SkHerreria = Val(Leer.GetValue("OBJ" & Obj, "SkHerreria"))
-        ObjData(Obj).SkPociones = Val(Leer.GetValue("OBJ" & Obj, "SkPociones"))
-        ObjData(Obj).Sksastreria = Val(Leer.GetValue("OBJ" & Obj, "Sksastreria"))
-        ObjData(Obj).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
-        
-    Next Obj
-    
-    Dim aux   As String
-
-    Dim loopc As Byte
-    
-    For Npc = 1 To NumNpcs
-        DoEvents
-        
-        NpcData(Npc).Name = Leer.GetValue("npc" & Npc, "Name")
-
-        If NpcData(Npc).Name = "" Then
-            NpcData(Npc).Name = "Vacio"
-
-        End If
-
-        NpcData(Npc).desc = Leer.GetValue("npc" & Npc, "desc")
-        NpcData(Npc).Body = Val(Leer.GetValue("npc" & Npc, "Body"))
-        NpcData(Npc).exp = Val(Leer.GetValue("npc" & Npc, "exp"))
-        NpcData(Npc).Head = Val(Leer.GetValue("npc" & Npc, "Head"))
-        NpcData(Npc).Hp = Val(Leer.GetValue("npc" & Npc, "Hp"))
-        NpcData(Npc).MaxHit = Val(Leer.GetValue("npc" & Npc, "MaxHit"))
-        NpcData(Npc).MinHit = Val(Leer.GetValue("npc" & Npc, "MinHit"))
-        NpcData(Npc).oro = Val(Leer.GetValue("npc" & Npc, "oro"))
-        
-        NpcData(Npc).ExpClan = Val(Leer.GetValue("npc" & Npc, "GiveEXPClan"))
-       
-        aux = Val(Leer.GetValue("npc" & Npc, "NumQuiza"))
-
-        If aux = 0 Then
-            NpcData(Npc).NumQuiza = 0
-        Else
-            NpcData(Npc).NumQuiza = Val(aux)
-            ReDim NpcData(Npc).QuizaDropea(1 To NpcData(Npc).NumQuiza) As Integer
-
-            For loopc = 1 To NpcData(Npc).NumQuiza
-               
-                NpcData(Npc).QuizaDropea(loopc) = Val(Leer.GetValue("npc" & Npc, "QuizaDropea" & loopc))
-                ' Debug.Print NpcData(Npc).QuizaDropea(loopc)
-            Next loopc
-
-        End If
-
-    Next Npc
-    
-    For Hechizo = 1 To NumHechizos
-        DoEvents
-        HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
-        HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "desc")
-        HechizoData(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
-        HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
-        HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "TargetMsg")
-        HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "PropioMsg")
-        HechizoData(Hechizo).ManaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "ManaRequerido"))
-        HechizoData(Hechizo).MinSkill = Val(Leer.GetValue("Hechizo" & Hechizo, "MinSkill"))
-        HechizoData(Hechizo).StaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "StaRequerido"))
-        HechizoData(Hechizo).IconoIndex = Val(Leer.GetValue("Hechizo" & Hechizo, "IconoIndex"))
-        'HechizoData(Hechizo).IconoIndex = 35696
-    Next Hechizo
-    
-    Hechizo = 1
-    
-    For Hechizo = 1 To 350
-        DoEvents
-        NameMaps(Hechizo).Name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
-        NameMaps(Hechizo).desc = Leer.GetValue("NameMapa", "Mapa" & Hechizo & "Desc")
-    Next Hechizo
-    
-    For Hechizo = 1 To NumQuest
-        DoEvents
-        Quest_Name(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
-        Quest_Desc(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "DESC")
-        NEXTQUEST(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
-        DESCFINAL(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
-        RequiredLevel(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
-        PosMap(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "PosMap")
-    Next Hechizo
-    
-    For Hechizo = 1 To NumSug
-        DoEvents
-        Sugerencia(Hechizo) = Leer.GetValue("SUGERENCIAS", "SUGERENCIA" & Hechizo)
-    Next Hechizo
-    
-    For i = 1 To NumLocaleMsg
-        DoEvents
-        Locale_SMG(i) = Leer.GetValue("msg", "Msg" & i)
-    Next i
-    
-    Dim SearchVar As String
-    
-    'Modificadores de Raza
-    For i = 1 To NUMRAZAS
-
-        With ModRaza(i)
-            SearchVar = Replace(ListaRazas(i), " ", vbNullString)
-            
-            .Fuerza = Val(Leer.GetValue("MODRAZA", SearchVar + "Fuerza"))
-            .Agilidad = Val(Leer.GetValue("MODRAZA", SearchVar + "Agilidad"))
-            .Inteligencia = Val(Leer.GetValue("MODRAZA", SearchVar + "Inteligencia"))
-            .Constitucion = Val(Leer.GetValue("MODRAZA", SearchVar + "Constitucion"))
-            .Carisma = Val(Leer.GetValue("MODRAZA", SearchVar + "Carisma"))
-
-        End With
-
-    Next i
-    
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "localindex.dat"
-    #End If
-
-End Sub
-
-Public Sub Cargarmapsworlddata()
-
-    'Ladder
-    Dim MapFile As String
-
-    Dim i       As Integer
-
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "mapsworlddata.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de mapsworlddata.dat!"
-            MsgBox Err.Description
-
-        End If
-    
-        MapFile = Windows_Temp_Dir & "mapsworlddata.dat"
-    #Else
-        MapFile = App.Path & "\..\Recursos\init\mapsworlddata.dat"
-    #End If
-
-    Dim Leer As New clsIniManager
-    Call Leer.Initialize(MapFile)
-
-    WordMapaNum = Val(Leer.GetValue("WORLDMAP", "NumMap"))
-    DungeonDataNum = Val(Leer.GetValue("DUNGEON", "NumMap"))
-     
-    ReDim WordMapa(1 To WordMapaNum) As String
-    ReDim DungeonData(1 To DungeonDataNum) As String
-    
-    For i = 1 To WordMapaNum
-        WordMapa(i) = Val(Leer.GetValue("WORLDMAP", i))
-    Next i
-    
-    For i = 1 To DungeonDataNum
-        DungeonData(i) = Val(Leer.GetValue("DUNGEON", i))
-    Next i
-
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "mapsworlddata.dat"
-    #End If
-
-End Sub
-
 Public Sub CargarLst()
 
     Dim i As Integer
@@ -2365,42 +1846,6 @@ Public Sub TextoAlAsistente(ByVal Texto As String)
 End Sub
 
 Public Sub CargarMacro(ByVal NumMacro As Byte)
-
-End Sub
-
-Public Sub CargarPasos()
-
-    ReDim Pasos(1 To NUM_PASOS) As tPaso
-
-    Pasos(CONST_BOSQUE).CantPasos = 2  ' OK
-    ReDim Pasos(CONST_BOSQUE).wav(1 To Pasos(CONST_BOSQUE).CantPasos) As Integer
-    Pasos(CONST_BOSQUE).wav(1) = 201
-    Pasos(CONST_BOSQUE).wav(2) = 69
-
-    Pasos(CONST_NIEVE).CantPasos = 2 ' OK
-    ReDim Pasos(CONST_NIEVE).wav(1 To Pasos(CONST_NIEVE).CantPasos) As Integer
-    Pasos(CONST_NIEVE).wav(1) = 199
-    Pasos(CONST_NIEVE).wav(2) = 200
-
-    Pasos(CONST_CABALLO).CantPasos = 2
-    ReDim Pasos(CONST_CABALLO).wav(1 To Pasos(CONST_CABALLO).CantPasos) As Integer
-    Pasos(CONST_CABALLO).wav(1) = 70
-    Pasos(CONST_CABALLO).wav(2) = 71
-
-    Pasos(CONST_DUNGEON).CantPasos = 2 '
-    ReDim Pasos(CONST_DUNGEON).wav(1 To Pasos(CONST_DUNGEON).CantPasos) As Integer
-    Pasos(CONST_DUNGEON).wav(1) = 23
-    Pasos(CONST_DUNGEON).wav(2) = 24
-
-    Pasos(CONST_DESIERTO).CantPasos = 2 ' OK
-    ReDim Pasos(CONST_DESIERTO).wav(1 To Pasos(CONST_DESIERTO).CantPasos) As Integer
-    Pasos(CONST_DESIERTO).wav(1) = 197
-    Pasos(CONST_DESIERTO).wav(2) = 198
-
-    Pasos(CONST_PISO).CantPasos = 2 ' OK
-    ReDim Pasos(CONST_PISO).wav(1 To Pasos(CONST_PISO).CantPasos) As Integer
-    Pasos(CONST_PISO).wav(1) = 23
-    Pasos(CONST_PISO).wav(2) = 24
 
 End Sub
 
@@ -2667,7 +2112,7 @@ Public Function GetMacAddress() As String
     GetMacAddress = sRetVal
 
 End Function
-Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal mapa As Integer) As Integer
+Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal Mapa As Integer) As Integer
 
     Dim i        As Integer
 
@@ -2675,7 +2120,7 @@ Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal mapa As Integer) As Integer
 
     For i = 1 To WordMapaNum
 
-        If WordMapa(i) = mapa Then
+        If WordMapa(i) = Mapa Then
             ObtenerIdMapaDeLlamadaDeClan = i
             frmMapaGrande.llamadadeclan.Tag = 0
             Exit Function
@@ -2692,7 +2137,7 @@ Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal mapa As Integer) As Integer
     
         For i = 1 To DungeonDataNum
 
-            If DungeonData(i) = mapa Then
+            If DungeonData(i) = Mapa Then
                 frmMapaGrande.llamadadeclan.Tag = 1
                 ObtenerIdMapaDeLlamadaDeClan = i
                 Exit Function

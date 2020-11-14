@@ -5,12 +5,6 @@ Attribute VB_Name = "Mod_General"
 
 Option Explicit
 
-'***************************
-'Sinuhe - Map format .CSM
-'***************************
-
-'The only current map
-
 Private Type Position
 
     x As Integer
@@ -61,123 +55,6 @@ Private Type GrhData
 
 End Type
 
-Private Type tMapHeader
-
-    NumeroBloqueados As Long
-    NumeroLayers(1 To 4) As Long
-    NumeroTriggers As Long
-    NumeroLuces As Long
-    NumeroParticulas As Long
-    NumeroNPCs As Long
-    NumeroOBJs As Long
-    NumeroTE As Long
-
-End Type
-
-Private Type tDatosBloqueados
-
-    x As Integer
-    y As Integer
-
-End Type
-
-Private Type tDatosGrh
-
-    x As Integer
-    y As Integer
-    GrhIndex As Long
-
-End Type
-
-Private Type tDatosTrigger
-
-    x As Integer
-    y As Integer
-    Trigger As Integer
-
-End Type
-
-Private Type tDatosLuces
-
-    x As Integer
-    y As Integer
-    color As Long
-    Rango As Byte
-
-End Type
-
-Private Type tDatosParticulas
-
-    x As Integer
-    y As Integer
-    Particula As Long
-
-End Type
-
-Public Type tDatosNPC
-
-    x As Integer
-    y As Integer
-    NpcIndex As Integer
-
-End Type
-
-Private Type tDatosObjs
-
-    x As Integer
-    y As Integer
-    OBJIndex As Integer
-    ObjAmmount As Integer
-
-End Type
-
-Private Type tDatosTE
-
-    x As Integer
-    y As Integer
-    DestM As Integer
-    DestX As Integer
-    DestY As Integer
-
-End Type
-
-Private Type tMapSize
-
-    XMax As Integer
-    XMin As Integer
-    YMax As Integer
-    YMin As Integer
-
-End Type
-
-Private Type tMapDat
-
-    map_name As String
-    backup_mode As Byte
-    restrict_mode As String
-    music_numberHi As Long
-    music_numberLow As Long
-    Seguro As Byte
-    zone As String
-    terrain As String
-    ambient As String
-    base_light As Long
-    letter_grh As Long
-    extra1 As Long
-    extra2 As Long
-    extra3 As String
-    LLUVIA As Byte
-    NIEVE As Byte
-    niebla As Byte
-
-End Type
-
-Private MapSize As tMapSize
-
-Public MapDat   As tMapDat
-
-Public iplst    As String
-
 Private Declare Sub InitCommonControls Lib "comctl32" ()
 
 Public bFogata As Boolean
@@ -219,96 +96,6 @@ Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long)
 
 End Function
 
-Sub CargarAnimArmas()
-
-    On Error Resume Next
-
-    Dim loopc As Long
-
-    Dim Arch  As String
-    
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de armas.dat!"
-            MsgBox Err.Description
-
-        End If
-
-        Arch = Windows_Temp_Dir & "armas.dat"
-    #Else
-        Arch = App.Path & "\..\Recursos\init\armas.dat"
-    #End If
-    
-    NumWeaponAnims = Val(GetVar(Arch, "INIT", "NumArmas"))
-    
-    ReDim WeaponAnimData(1 To NumWeaponAnims) As WeaponAnimData
-
-    For loopc = 1 To NumWeaponAnims
-        InitGrh WeaponAnimData(loopc).WeaponWalk(1), Val(GetVar(Arch, "ARMA" & loopc, "Dir1")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(2), Val(GetVar(Arch, "ARMA" & loopc, "Dir2")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(3), Val(GetVar(Arch, "ARMA" & loopc, "Dir3")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(4), Val(GetVar(Arch, "ARMA" & loopc, "Dir4")), 0
-    Next loopc
-    
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "armas.dat"
-    #End If
-
-End Sub
-
-Sub CargarColores()
-
-    On Error Resume Next
-
-    Dim archivoC As String
-
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "colores.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de colores.dat!"
-            MsgBox Err.Description
-
-        End If
-
-        archivoC = Windows_Temp_Dir & "colores.dat"
-    #Else
-        archivoC = App.Path & "\..\Recursos\init\colores.dat"
-    #End If
-    
-    If Not FileExist(archivoC, vbArchive) Then
-        'TODO : Si hay que reinstalar, porque no cierra???
-        Call MsgBox("ERROR: no se ha podido cargar los colores. Falta el archivo colores.dat, reinstale el juego", vbCritical + vbOKOnly)
-        Exit Sub
-
-    End If
-    
-    Dim i As Long
-    
-    For i = 0 To 47 '49 y 50 reservados para ciudadano y criminal
-        ColoresPJ(i).r = CByte(GetVar(archivoC, CStr(i), "R"))
-        ColoresPJ(i).g = CByte(GetVar(archivoC, CStr(i), "G"))
-        ColoresPJ(i).b = CByte(GetVar(archivoC, CStr(i), "B"))
-    Next i
-    
-    ColoresPJ(50).r = CByte(GetVar(archivoC, "CR", "R"))
-    ColoresPJ(50).g = CByte(GetVar(archivoC, "CR", "G"))
-    ColoresPJ(50).b = CByte(GetVar(archivoC, "CR", "B"))
-    
-    ColoresPJ(49).r = CByte(GetVar(archivoC, "CI", "R"))
-    ColoresPJ(49).g = CByte(GetVar(archivoC, "CI", "G"))
-    ColoresPJ(49).b = CByte(GetVar(archivoC, "CI", "B"))
-    
-    ColoresPJ(48).r = CByte(GetVar(archivoC, "NE", "R"))
-    ColoresPJ(48).g = CByte(GetVar(archivoC, "NE", "G"))
-    ColoresPJ(48).b = CByte(GetVar(archivoC, "NE", "B"))
-    
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "colores.dat"
-    #End If
-
-End Sub
-
 #If SeguridadAlkon Then
 Sub InitMI()
     Dim alternativos As Integer
@@ -328,42 +115,6 @@ Sub InitMI()
     CualMI = CualMITemp
 End Sub
 #End If
-
-Sub CargarAnimEscudos()
-
-    Dim loopc As Long
-
-    Dim Arch  As String
-    
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de escudos.dat!"
-            MsgBox Err.Description
-
-        End If
-
-        Arch = Windows_Temp_Dir & "escudos.dat"
-    #Else
-        Arch = App.Path & "\..\Recursos\init\escudos.dat"
-    #End If
-    
-    NumEscudosAnims = Val(GetVar(Arch, "INIT", "NumEscudos"))
-    
-    ReDim ShieldAnimData(1 To NumEscudosAnims) As ShieldAnimData
-    
-    For loopc = 1 To NumEscudosAnims
-        InitGrh ShieldAnimData(loopc).ShieldWalk(1), Val(GetVar(Arch, "ESC" & loopc, "Dir1")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(2), Val(GetVar(Arch, "ESC" & loopc, "Dir2")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(3), Val(GetVar(Arch, "ESC" & loopc, "Dir3")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(4), Val(GetVar(Arch, "ESC" & loopc, "Dir4")), 0
-    Next loopc
-    
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "escudos.dat"
-    #End If
-
-End Sub
 
 Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = True, Optional ByVal Alignment As Byte = rtfLeft)
     
@@ -914,273 +665,41 @@ End Sub
 
 'TODO : Si bien nunca estuvo allí, el mapa es algo independiente o a lo sumo dependiente del engine, no va acá!!!
 Sub SwitchMapIAO(ByVal map As Integer)
-
-    '**************************************************************
-    'Formato de mapas optimizado para reducir el espacio que ocupan.
-    'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
-    '**************************************************************
-    Dim fh           As Integer
-
-    Dim MH           As tMapHeader
-
-    Dim Blqs()       As tDatosBloqueados
-
-    Dim MapRoute     As String
-
-    Dim L1()         As tDatosGrh
-
-    Dim L2()         As tDatosGrh
-
-    Dim L3()         As tDatosGrh
-
-    Dim L4()         As tDatosGrh
-
-    Dim Triggers()   As tDatosTrigger
-
-    Dim Luces()      As tDatosLuces
-
-    Dim Particulas() As tDatosParticulas
-
-    Dim Objetos()    As tDatosObjs
-
-    Dim i            As Long
-
-    Dim j            As Long
-
-    Dim x            As Long
-
-    Dim y            As Long
-
-    Dim demora       As Long
-
-    Dim demorafinal  As Long
-
-    demora = timeGetTime
     
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
-            MsgBox Err.Description
-            End
-
-        End If
-
-        MapRoute = Windows_Temp_Dir & "mapa" & map & ".csm"
-    #Else
-        MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
-    #End If
-
-    LucesCuadradas.Light_Remove_All
-        
-    LucesRedondas.Delete_All_LigthRound False
-    Graficos_Particulas.Particle_Group_Remove_All
-   
-    HayLayer2 = False
-    HayLayer4 = False
+    'Cargamos el mapa.
+    Call Recursos.CargarMapa(map)
     
-    For i = 1 To LastChar
-        'If charlist(i).active = 1 Then
-        Call EraseChar(i)
-        ' End If
-    Next i
-            
-    For x = 1 To 100
-        For y = 1 To 100
-            'Erase NPCs
-            '  If MapData(X, Y).charindex > 0 Then
-            '  Call EraseChar(MapData(X, Y).charindex)
-            ' End If
-            'Erase OBJs
-            MapData(x, y).ObjGrh.GrhIndex = 0
-        Next y
-    Next x
-
-    'BUG CLONES
-
-    fh = FreeFile
-    Open MapRoute For Binary As fh
-    Get #fh, , MH
-    Get #fh, , MapSize
-    Get #fh, , MapDat
-
-    With MapSize
-        ReDim MapData(1 To 100, 1 To 100)
-
-        Rem      ReDim L1(1 To 100, 1 To 100)
-    End With
-    
-    ' Get #fh, , L1
-    With MH
-
-        'Cargamos Bloqueos
-        
-        If .NumeroBloqueados > 0 Then
-            ReDim Blqs(1 To .NumeroBloqueados)
-            Get #fh, , Blqs
-
-            For i = 1 To .NumeroBloqueados
-            
-                MapData(Blqs(i).x, Blqs(i).y).Blocked = 1
-            Next i
-
-        End If
-    
-        'Cargamos Layer 1
-        
-        If .NumeroLayers(1) > 0 Then
-        
-            ReDim L1(1 To .NumeroLayers(1))
-            Get #fh, , L1
-
-            For i = 1 To .NumeroLayers(1)
-            
-                MapData(L1(i).x, L1(i).y).Graphic(1).GrhIndex = L1(i).GrhIndex
-            
-                InitGrh MapData(L1(i).x, L1(i).y).Graphic(1), MapData(L1(i).x, L1(i).y).Graphic(1).GrhIndex
-                ' Call Map_Grh_Set(L2(i).x, L2(i).y, L2(i).GrhIndex, 2)
-            Next i
-
-        End If
-    
-        If .NumeroLayers(2) > 0 Then
-            HayLayer2 = True
-            ReDim L2(1 To .NumeroLayers(2))
-            Get #fh, , L2
-
-            For i = 1 To .NumeroLayers(2)
-            
-                MapData(L2(i).x, L2(i).y).Graphic(2).GrhIndex = L2(i).GrhIndex
-            
-                InitGrh MapData(L2(i).x, L2(i).y).Graphic(2), MapData(L2(i).x, L2(i).y).Graphic(2).GrhIndex
-            Next i
-
-        End If
-    
-        If .NumeroLayers(3) > 0 Then
-            ReDim L3(1 To .NumeroLayers(3))
-            Get #fh, , L3
-
-            For i = 1 To .NumeroLayers(3)
-            
-                MapData(L3(i).x, L3(i).y).Graphic(3).GrhIndex = L3(i).GrhIndex
-            
-                InitGrh MapData(L3(i).x, L3(i).y).Graphic(3), MapData(L3(i).x, L3(i).y).Graphic(3).GrhIndex
-            Next i
-
-        End If
-    
-        If .NumeroLayers(4) > 0 Then
-            HayLayer4 = True
-            ReDim L4(1 To .NumeroLayers(4))
-            Get #fh, , L4
-
-            For i = 1 To .NumeroLayers(4)
-            
-                MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex = L4(i).GrhIndex
-                MapData(L4(i).x, L4(i).y).GrhBlend = 255
-                InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex
-            Next i
-
-        End If
-    
-        If .NumeroTriggers > 0 Then
-            ReDim Triggers(1 To .NumeroTriggers)
-            Get #fh, , Triggers
-            
-            For i = 1 To .NumeroTriggers
-            
-                Rem   If Triggers(i).Trigger > 8 Then Triggers(i).Trigger = 1
-                MapData(Triggers(i).x, Triggers(i).y).Trigger = Triggers(i).Trigger
-            Next i
-
-        End If
-    
-        If .NumeroParticulas > 0 Then
-            ReDim Particulas(1 To .NumeroParticulas)
-            Get #fh, , Particulas
-
-            For i = 1 To .NumeroParticulas
-            
-                MapData(Particulas(i).x, Particulas(i).y).particle_Index = Particulas(i).Particula
-                General_Particle_Create MapData(Particulas(i).x, Particulas(i).y).particle_Index, Particulas(i).x, Particulas(i).y
-
-            Next i
-
-        End If
-
-        If .NumeroLuces > 0 Then
-            ReDim Luces(1 To .NumeroLuces)
-            Get #fh, , Luces
-
-            For i = 1 To .NumeroLuces
-                MapData(Luces(i).x, Luces(i).y).luz.color = Luces(i).color
-                MapData(Luces(i).x, Luces(i).y).luz.Rango = Luces(i).Rango
-
-                If MapData(Luces(i).x, Luces(i).y).luz.Rango <> 0 Then
-                    If MapData(Luces(i).x, Luces(i).y).luz.Rango < 100 Then
-                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.color, MapData(Luces(i).x, Luces(i).y).luz.Rango, Luces(i).x & Luces(i).y
-                    Else
-
-                        Dim r, g, b As Byte
-
-                        b = (MapData(Luces(i).x, Luces(i).y).luz.color And 16711680) / 65536
-                        g = (MapData(Luces(i).x, Luces(i).y).luz.color And 65280) / 256
-                        r = MapData(Luces(i).x, Luces(i).y).luz.color And 255
-                        LucesRedondas.Create_Light_To_Map Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.Rango - 99, b, g, r
-
-                    End If
-
-                End If
-               
-            Next i
-
-        End If
-
-        If .NumeroOBJs > 0 Then
-            ReDim Objetos(1 To .NumeroOBJs)
-            Get #fh, , Objetos
-
-            For i = 1 To .NumeroOBJs
-                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
-                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
-                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).OBJIndex).GrhIndex
-                Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex)
-
-            Next i
-
-        End If
-
-    End With
-
-    Close fh
-
     Dim Rojo As Byte, Verde As Byte, Azul As Byte
 
     If MapDat.base_light = 16777215 Then
+    
         Map_light_base = D3DColorARGB(255, 255, 255, 255)
         ColorAmbiente.r = 255
         ColorAmbiente.b = 255
         ColorAmbiente.g = 255
         ColorAmbiente.a = 255
+        
         Call Map_Base_Light_Set(D3DColorARGB(255, 255, 255, 255))
+        
     Else
+        
         Call Obtener_RGB(MapDat.base_light, Rojo, Verde, Azul)
+        
         ColorAmbiente.r = Rojo
         ColorAmbiente.b = Azul
         ColorAmbiente.g = Verde
         ColorAmbiente.a = 255
         Map_light_base = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
+        
         Call Map_Base_Light_Set(Map_light_base)
 
     End If
 
     Map_light_baseBackup = Map_light_base
 
-    LucesRedondas.LightRenderAll
-    LucesCuadradas.Light_Render_All
+    Call LucesRedondas.LightRenderAll
+    Call LucesCuadradas.Light_Render_All
     
-    'frmMain.MiniMap.Picture = LoadInterface("mapa" & map & ".bmp")
     Call DibujarMiniMapa
     
     CurMap = map
@@ -1192,23 +711,22 @@ Sub SwitchMapIAO(ByVal map As Integer)
             If Sound.MusicActual <> MapDat.music_numberLow Then
                 Sound.NextMusic = MapDat.music_numberLow
                 Sound.Fading = 200
-
-                'Sound.Music_Load MapDat.music_numberLow, 0, 0
-                'Sound.Music_Play
             End If
 
         Else
 
             If MapDat.music_numberHi > 0 Then
+                
                 If Sound.MusicActual <> MapDat.music_numberHi Then
                     Sound.NextMusic = MapDat.music_numberHi
                     Sound.Fading = 100
-
                 End If
 
                 Call ReproducirMp3(MapDat.music_numberHi)
-                Sound.Music_Load MapDat.music_numberHi, 0, 0
-                Sound.Music_Play
+                
+                Call Sound.Music_Load(MapDat.music_numberHi, 0, 0)
+                
+                Call Sound.Music_Play
 
             End If
 
@@ -1217,24 +735,19 @@ Sub SwitchMapIAO(ByVal map As Integer)
     End If
 
     If bRain And MapDat.LLUVIA Then
-        Graficos_Particulas.Engine_Meteo_Particle_Set (Particula_Lluvia)
+        Call Graficos_Particulas.Engine_Meteo_Particle_Set(Particula_Lluvia)
     
     ElseIf bNieve And MapDat.NIEVE Then
-        Graficos_Particulas.Engine_Meteo_Particle_Set (Particula_Nieve)
+        Call Graficos_Particulas.Engine_Meteo_Particle_Set(Particula_Nieve)
 
     End If
     
     If AmbientalActivated = 1 Then
         Call AmbientarAudio(map)
-
     End If
 
     Call NameMapa(map)
 
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
-    #End If
-        
 End Sub
 
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
@@ -1296,8 +809,8 @@ Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
 
 End Function
 
-Function FileExist(ByVal file As String, ByVal FileType As VbFileAttribute) As Boolean
-    FileExist = (Dir$(file, FileType) <> "")
+Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As Boolean
+    FileExist = (Dir$(File, FileType) <> "")
 
 End Function
 
@@ -1305,15 +818,13 @@ Sub Main()
 
     On Error Resume Next
 
-    InitCommonControls
-    
-    'Call LeerLineaComandos
+    Call InitCommonControls
 
     If Not RunningInVB Then
+    
         If FindPreviousInstance Then
             Call MsgBox("¡Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga clic en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
             End
-
         End If
 
     End If
@@ -1322,7 +833,9 @@ Sub Main()
     '  Call MsgBox("¡El Juego debe ser abierto desde el Launcher! El Cliente ahora se cerrara.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
     ' End
     ' End If
-
+    
+    Call CargarOpciones
+    
     If FileExist(App.Path & "\..\LauncherAO20.ex_", vbNormal) Then
         Call Sleep(2)
         Delete_File App.Path & "\..\LauncherAO20.exe"
@@ -1330,21 +843,11 @@ Sub Main()
 
     End If
 
-    If FileExist(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", vbArchive) Then
-        Call LoadImpAoInit
-    Else
-        MsgBox "¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar"
-        End
-
-    End If
-    
     'Cursores******
     Set FormParser = New clsCursor
     Call FormParser.Init
     'Cursores******
-    
-    Call CargarOpciones
-    
+
     MacAdress = GetMacAddress
     HDserial = GetDriveSerialNumber
     
@@ -1358,8 +861,9 @@ Sub Main()
         PantallaCompleta = 1
     End If
     
-    Frmcarga.Show
+    Call Frmcarga.Show
  
+    
     If Sonido Then
     
         If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
@@ -1384,49 +888,22 @@ Sub Main()
     
     'Inicializamos el motor grafico.
     Call Engine_Init
-
-    If UtilizarPreCarga = 1 Then
-        Call PreloadGraphics
-    End If
     
     'Iniciamos el motor de tiles
     Call Init_TileEngine
     
-    Call CargarParticulasBinary
-    Call CargarIndicesOBJ
-    Call Cargarmapsworlddata
-    Call Protocol.InitFonts
+    'Cargamos todos los init
+    Call CargarRecursos
     
-    LoadGrhData
-    CargarCabezas
-    CargarCascos
-    CargarCuerpos
-    CargarFxs
-    CargarMiniMap
-    Call CargarPasos
     UserMap = 1
     AlphaNiebla = 75
     EntradaY = 10
     EntradaX = 10
     
     Call SwitchMapIAO(UserMap)
-    
-    textcolorAsistente(0) = D3DColorXRGB(0, 200, 0)
-    textcolorAsistente(1) = textcolorAsistente(0)
-    textcolorAsistente(2) = textcolorAsistente(0)
-    textcolorAsistente(3) = textcolorAsistente(0)
 
-    Initialize
- 
-    Call CargarAnimArmas
-    Call CargarAnimEscudos
-    Call CargarColores
-
-    'Sincronizacion Vertical
-    VSync_FPS = False
-    'Sincronizacion Vertical
-    
-    frmmain.Socket1.Startup
+    'Inicializamos el socket
+    Call frmmain.Socket1.Startup
     
     'Set the dialog's font
     Dialogos.font = frmmain.font
@@ -1434,31 +911,26 @@ Sub Main()
     ' Load the form for screenshots
     Call Load(frmScreenshots)
 
-    ' If Musica <> CONST_DESHABILITADA Then
-    '    Sound.NextMusic = 1
-
-    '    Sound.Fading = 350
-    ' End If
-  
     prgRun = True
     pausa = False
 
-    Unload Frmcarga
-    General_Set_Connect
+    Call Unload(Frmcarga)
     
-    Start
+    Call General_Set_Connect
+    
+    Call Start
  
 End Sub
 
-Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
+Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
-    writeprivateprofilestring Main, Var, value, file
+    writeprivateprofilestring Main, Var, Value, File
 
 End Sub
 
-Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String) As String
+Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
 
     '*****************************************************************
     'Gets a Var from a text file
@@ -1467,7 +939,7 @@ Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String)
     
     sSpaces = Space$(100) ' This tells the computer how long the longest string can be. If you want, you can change the number 100 to any number you wish
     
-    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), file
+    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), File
     
     GetVar = RTrim$(sSpaces)
     GetVar = Left$(GetVar, Len(GetVar) - 1)
@@ -1858,263 +1330,6 @@ Public Function General_Get_Elapsed_Time() As Single
 
 End Function
 
-Sub CargarDatosMapa(ByVal map As Integer)
-
-    If NameMaps(map).desc <> "" Then
-        frmMapaGrande.Label1.Caption = NameMaps(map).desc
-    Else
-        frmMapaGrande.Label1.Caption = "Sin información relevante."
-
-    End If
-
-    '**************************************************************
-    'Formato de mapas optimizado para reducir el espacio que ocupan.
-    'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
-    '**************************************************************
-
-    Dim fh           As Integer
-
-    Dim MH           As tMapHeader
-
-    Dim Blqs()       As tDatosBloqueados
-
-    Dim MapRoute     As String
-
-    Dim L1()         As tDatosGrh
-
-    Dim L2()         As tDatosGrh
-
-    Dim L3()         As tDatosGrh
-
-    Dim L4()         As tDatosGrh
-
-    Dim Triggers()   As tDatosTrigger
-
-    Dim Luces()      As tDatosLuces
-
-    Dim Particulas() As tDatosParticulas
-
-    Dim Objetos()    As tDatosObjs
-
-    Dim NPCs()       As tDatosNPC
-
-    Dim i            As Long
-
-    Dim j            As Long
-
-    Dim x            As Long
-
-    Dim y            As Long
-    
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
-            MsgBox Err.Description
-            End
-
-        End If
-
-        MapRoute = Windows_Temp_Dir & "mapa" & map & ".csm"
-    #Else
-        MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
-    #End If
-
-    fh = FreeFile
-    Open MapRoute For Binary As fh
-    Get #fh, , MH
-    Get #fh, , MapSize
-    Get #fh, , MapDat
-
-    With MapSize
-    
-        ' Get #fh, , L1
-        With MH
-
-            'Cargamos Bloqueos
-        
-            If .NumeroBloqueados > 0 Then
-                ReDim Blqs(1 To .NumeroBloqueados)
-                Get #fh, , Blqs
-
-                For i = 1 To .NumeroBloqueados
-            
-                    'MapData(Blqs(i).X, Blqs(i).Y).Blocked = 1
-                Next i
-
-            End If
-    
-            'Cargamos Layer 1
-        
-            If .NumeroLayers(1) > 0 Then
-        
-                ReDim L1(1 To .NumeroLayers(1))
-                Get #fh, , L1
-
-                For i = 1 To .NumeroLayers(1)
-            
-                    ' MapData(L1(i).X, L1(i).Y).Graphic(1).grhindex = L1(i).grhindex
-            
-                    '  InitGrh MapData(L1(i).X, L1(i).Y).Graphic(1), MapData(L1(i).X, L1(i).Y).Graphic(1).grhindex
-                    ' Call Map_Grh_Set(L2(i).x, L2(i).y, L2(i).GrhIndex, 2)
-                Next i
-
-            End If
-    
-            If .NumeroLayers(2) > 0 Then
-
-                ReDim L2(1 To .NumeroLayers(2))
-                Get #fh, , L2
-
-                For i = 1 To .NumeroLayers(2)
-            
-                    '   MapData(L2(i).X, L2(i).Y).Graphic(2).grhindex = L2(i).grhindex
-            
-                    '  InitGrh MapData(L2(i).X, L2(i).Y).Graphic(2), MapData(L2(i).X, L2(i).Y).Graphic(2).grhindex
-                Next i
-
-            End If
-    
-            If .NumeroLayers(3) > 0 Then
-                ReDim L3(1 To .NumeroLayers(3))
-                Get #fh, , L3
-
-                For i = 1 To .NumeroLayers(3)
-            
-                    '  MapData(L3(i).X, L3(i).Y).Graphic(3).grhindex = L3(i).grhindex
-            
-                    ' InitGrh MapData(L3(i).X, L3(i).Y).Graphic(3), MapData(L3(i).X, L3(i).Y).Graphic(3).grhindex
-                Next i
-
-            End If
-    
-            If .NumeroLayers(4) > 0 Then
-
-                ReDim L4(1 To .NumeroLayers(4))
-                Get #fh, , L4
-
-                For i = 1 To .NumeroLayers(4)
-            
-                    '   MapData(L4(i).X, L4(i).Y).Graphic(4).grhindex = L4(i).grhindex
-                    '   MapData(L4(i).X, L4(i).Y).GrhBlend = 255
-                    '   InitGrh MapData(L4(i).X, L4(i).Y).Graphic(4), MapData(L4(i).X, L4(i).Y).Graphic(4).grhindex
-                Next i
-
-            End If
-    
-            If .NumeroTriggers > 0 Then
-                ReDim Triggers(1 To .NumeroTriggers)
-                Get #fh, , Triggers
-            
-                For i = 1 To .NumeroTriggers
-            
-                    Rem   If Triggers(i).Trigger > 8 Then Triggers(i).Trigger = 1
-                    '      MapData(Triggers(i).X, Triggers(i).Y).Trigger = Triggers(i).Trigger
-                Next i
-
-            End If
-    
-            If .NumeroParticulas > 0 Then
-                ReDim Particulas(1 To .NumeroParticulas)
-                Get #fh, , Particulas
-
-                For i = 1 To .NumeroParticulas
-            
-                    '   MapData(Particulas(i).X, Particulas(i).Y).particle_Index = Particulas(i).Particula
-                    '   General_Particle_Create MapData(Particulas(i).X, Particulas(i).Y).particle_Index, Particulas(i).X, Particulas(i).Y
-
-                Next i
-
-            End If
-
-            If .NumeroLuces > 0 Then
-                ReDim Luces(1 To .NumeroLuces)
-                Get #fh, , Luces
-
-                For i = 1 To .NumeroLuces
-                    '     MapData(Luces(i).X, Luces(i).Y).luz.color = Luces(i).color
-                    '    MapData(Luces(i).X, Luces(i).Y).luz.Rango = Luces(i).Rango
-                    '    If MapData(Luces(i).X, Luces(i).Y).luz.Rango <> 0 Then
-                    '  LightRound.Create_Light_To_Map Luces(I).x, Luces(I).y, CByte(MapData(Luces(I).x, Luces(I).y).luz.Rango), MapData(Luces(I).x, Luces(I).y).luz.color
-                    'LucesCuadradas.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
-                    'LightRound.Render_All_Light
-                    'LucesRedondas.Create_Light_To_Map Luces(i).X, Luces(i).Y, CByte(MapData(Luces(i).X, Luces(i).Y).luz.Rango), 255, 255, 255
-                    '   LucesCuadradas.Light_Create Luces(i).X, Luces(i).Y, MapData(Luces(i).X, Luces(i).Y).luz.color, MapData(Luces(i).X, Luces(i).Y).luz.Rango, Luces(i).X & Luces(i).Y
-               
-                Next i
-
-            End If
-
-            If .NumeroOBJs > 0 Then
-                ReDim Objetos(1 To .NumeroOBJs)
-                Get #fh, , Objetos
-
-                For i = 1 To .NumeroOBJs
-                    '                 MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
-                    '   MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.Amount = Objetos(i).ObjAmmount
-                    '    MapData(Objetos(i).X, Objetos(i).Y).ObjGrh.grhindex = ObjData(Objetos(i).OBJIndex).grhindex
-       
-                    '    Call InitGrh(MapData(Objetos(i).X, Objetos(i).Y).ObjGrh, MapData(Objetos(i).X, Objetos(i).Y).ObjGrh.grhindex)
-
-                Next i
-
-            End If
-        
-            frmMapaGrande.ListView1.ListItems.Clear
-
-            frmMapaGrande.listdrop.ListItems.Clear
-
-            If .NumeroNPCs > 0 Then
-                CantNpcWorld = .NumeroNPCs
-        
-                ReDim NPCs(1 To .NumeroNPCs)
-                Get #fh, , NPCs
-
-                Dim c As Long
-                
-                For c = 1 To 1000
-                    NpcWorlds(c) = 0
-                Next c
-
-                ' frmMapaGrande.ListView1.ListItems.Clear
-                For i = 1 To .NumeroNPCs
-                
-                    NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
-
-                Next i
-               
-                For c = 1 To 1000
-
-                    If NpcWorlds(c) > 0 Then
-
-                        If c > 399 And c < 450 Or c > 499 Then
-
-                            Dim subelemento As ListItem
-
-                            Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).name)
-
-                            subelemento.SubItems(1) = NpcWorlds(c)
-                            subelemento.SubItems(2) = c
-
-                        End If
-
-                    End If
-
-                Next c
-                
-            End If
-
-        End With
-
-        Close fh
-
-    End With
-    
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
-    #End If
-
-End Sub
 
 Public Function max(a As Double, b As Double) As Double
 
