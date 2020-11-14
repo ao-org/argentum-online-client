@@ -489,6 +489,8 @@ Public Sub Init_TileEngine()
     MaxYBorder = YMaxMapSize - (frmmain.renderer.ScaleHeight / 64)
     MinYBorder = MinYBorder
     
+    
+    
 
 End Sub
 

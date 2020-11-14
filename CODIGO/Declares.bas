@@ -328,26 +328,15 @@ Public StreamFile As String
 
 Public NumAuras   As Byte
 
-
-
-Public Sound                   As New clsSoundEngine
-
-Public Meteo_Engine            As clsMeteorologic
-
-Public Dialogos                As New clsDialogs
-
-Public LucesRedondas           As New clsLucesRedondas
-
-Public LucesCuadradas          As New clsLucesCuadradas
-
 Public InvOroComUsu(2)         As New clsGrapchicalInventory ' Inventarios de oro (ambos usuarios)
 
 Public InvOfferComUsu(1)       As New clsGrapchicalInventory ' Inventarios de ofertas (ambos usuarios)
 
 Public CustomKeys              As New clsCustomKeys
 
-Public incomingData            As New clsByteQueue
+Public Sound                   As New clsSoundEngine
 
+Public incomingData            As New clsByteQueue
 Public outgoingData            As New clsByteQueue
 
 Public Audio_MP3_Load          As Boolean
