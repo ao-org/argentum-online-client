@@ -41,7 +41,7 @@ Begin VB.Form frmEstadisticas
    End
    Begin VB.Image command1 
       Height          =   300
-      Index           =   47
+      Index           =   46
       Left            =   9615
       Tag             =   "0"
       Top             =   6375
@@ -49,7 +49,7 @@ Begin VB.Form frmEstadisticas
    End
    Begin VB.Image command1 
       Height          =   300
-      Index           =   46
+      Index           =   47
       Left            =   8715
       Tag             =   "0"
       Top             =   6375
