@@ -1847,7 +1847,7 @@ Private Sub HandleShowSastreForm()
             FrmSastre.lstArmas.AddItem (ObjData(SastreRopas(i).Index).Name)
         Next i
     
-        FrmSastre.Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
+        FrmSastre.command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
         FrmSastre.Show , frmmain
         HayFormularioAbierto = True
 
@@ -6020,7 +6020,7 @@ Private Sub HandleFYA()
 
     End If
     
-    If UserAtributos(eAtributos.Fuerza) >= 35 Then
+    If UserAtributos(eAtributos.Fuerza) >= 33 Then
         frmmain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
     ElseIf UserAtributos(eAtributos.Fuerza) >= 25 Then
         frmmain.Fuerzalbl.ForeColor = RGB(204, 100, 100)
@@ -6028,7 +6028,7 @@ Private Sub HandleFYA()
         frmmain.Fuerzalbl.ForeColor = vbWhite
     End If
     
-    If UserAtributos(eAtributos.Agilidad) >= 35 Then
+    If UserAtributos(eAtributos.Agilidad) >= 33 Then
         frmmain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
     ElseIf UserAtributos(eAtributos.Agilidad) >= 25 Then
         frmmain.AgilidadLbl.ForeColor = RGB(204, 100, 100)
