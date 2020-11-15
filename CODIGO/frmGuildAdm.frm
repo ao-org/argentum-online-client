@@ -52,7 +52,7 @@ Begin VB.Form frmGuildAdm
       ForeColor       =   &H00FFFFFF&
       Height          =   285
       ItemData        =   "frmGuildAdm.frx":768A8
-      Left            =   2790
+      Left            =   2280
       List            =   "frmGuildAdm.frx":768B5
       Style           =   2  'Dropdown List
       TabIndex        =   1
@@ -105,11 +105,11 @@ Begin VB.Form frmGuildAdm
       Width           =   1950
    End
    Begin VB.Image Image1 
-      Height          =   225
-      Left            =   2280
+      Height          =   425
+      Left            =   4020
       Tag             =   "0"
-      Top             =   1320
-      Width           =   270
+      Top             =   1560
+      Width           =   425
    End
 End
 Attribute VB_Name = "frmGuildAdm"
@@ -123,7 +123,7 @@ Private Sub Combo1_Click()
     
     If Not ListaClanes Then Exit Sub
 
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim i As Long
 
@@ -131,13 +131,13 @@ Private Sub Combo1_Click()
 
         If Combo1.ListIndex < 2 Then
             If ClanesList(i).Alineacion = Combo1.ListIndex Then
-                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
 
             End If
 
         Else
             
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
 
         End If
 
@@ -156,6 +156,7 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     
     Me.Picture = LoadInterface("VentanaClanes.bmp")
+    
     
     Combo1.ListIndex = 2
 
@@ -177,10 +178,10 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 
     Dim b As Integer
 
-    For b = 0 To GuildsList.ListCount - 1
-        GuildsList.ListIndex = b
+    For b = 0 To guildslist.ListCount - 1
+        guildslist.ListIndex = b
 
-        If LCase$(GuildsList) = LCase$(qhi9t0) Then
+        If LCase$(guildslist) = LCase$(qhi9t0) Then
             Exit Sub
 
         End If
@@ -193,9 +194,9 @@ End Sub
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("clan_buscarclan.bmp")
+        Image1.Picture = LoadInterface("boton-buscar-over.bmp")
         Image1.Tag = "1"
-
+    
     End If
 
 End Sub
@@ -230,11 +231,11 @@ End Sub
 Private Sub Image3_Click()
     
     'Si nos encontramos con un guild con nombre vacío algo sospechoso está pasando, x las dudas no hacemos nada.
-    If Len(GuildsList.List(GuildsList.ListIndex)) = 0 Then Exit Sub
+    If Len(guildslist.List(guildslist.ListIndex)) = 0 Then Exit Sub
     
     frmGuildBrief.EsLeader = False
     
-    Call WriteGuildRequestDetails(GuildsList.List(GuildsList.ListIndex))
+    Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
 
 End Sub
 
