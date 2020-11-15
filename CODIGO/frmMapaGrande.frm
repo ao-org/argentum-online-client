@@ -638,7 +638,7 @@ Private Sub listdrop_Click()
     picture1.Refresh
 
     'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
-    If listdrop.SelectedItem.SubItems(1) = "" Then Exit Sub
+    If listdrop.ListItems.count <= 0 Then Exit Sub
     Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
 
 End Sub
@@ -649,6 +649,8 @@ Private Sub ListView1_Click()
 
     Label8.Caption = ""
     picture1.Refresh
+    
+    If ListView1.ListItems.count <= 0 Then Exit Sub
 
     Label8.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).name
 
