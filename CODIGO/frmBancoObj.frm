@@ -299,7 +299,6 @@ Private Sub Image1_Click(Index As Integer)
     Call Sound.Sound_Play(SND_CLICK)
 
     If Not IsNumeric(cantidad.Text) Then Exit Sub
-    If Val(cantidad.Text) <= 0 Then Exit Sub
 
     Select Case Index
 

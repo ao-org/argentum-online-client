@@ -182,7 +182,7 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Public LastIndex1           As Integer
 
@@ -206,7 +206,7 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
 End Sub
 
@@ -293,8 +293,7 @@ End Sub
 Private Sub Image1_Click(Index As Integer)
     Call Sound.Sound_Play(SND_CLICK)
     
-    If Not IsNumeric(cantidad.Text) Then Exit Sub
-    If Val(cantidad.Text) <= 0 Then Exit Sub
+    If Not IsNumeric(cantidad.Text) Or cantidad.Text = 0 Then Exit Sub
 
     Select Case Index
 
