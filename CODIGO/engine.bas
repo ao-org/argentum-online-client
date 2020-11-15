@@ -4,24 +4,17 @@ Option Explicit
 
 Public FrameNum               As Long
 
-'Depentientes del motor grafico
-Public Meteo_Engine             As clsMeteorologic
-Public Dialogos                 As clsDialogs
-Public LucesRedondas            As clsLucesRedondas
-Public LucesCuadradas           As clsLucesCuadradas
-Private Estrella                As grh
-Private Marco                   As grh
-Private BarraMana               As grh
-Private BarraVida               As grh
-Private BarraGris               As grh
-
-
 'Letter showing on screen
 Private letter_text           As String
+
 Private letter_grh            As grh
+
 Private map_letter_grh        As grh
+
 Private map_letter_grh_next   As Long
+
 Private map_letter_a          As Single
+
 Private map_letter_fadestatus As Byte
 
 ''
@@ -79,48 +72,75 @@ Public dialogCount                As Byte
 
 
 Public WeatherFogX1        As Single
+
 Public WeatherFogY1        As Single
+
 Public WeatherFogX2        As Single
+
 Public WeatherFogY2        As Single
+
 Public WeatherDoFog        As Byte
+
 Public WeatherFogCount     As Byte
 
 Public ParticleOffsetX     As Long
+
 Public ParticleOffsetY     As Long
 
 Public LastOffsetX         As Integer
+
 Public LastOffsetY         As Integer
 
 Public EndTime             As Long
 
 Public Const ScreenWidth  As Long = 538
+
 Public Const ScreenHeight As Long = 376
 
 Public bRunning            As Boolean
 
 Private Const FVF = D3DFVF_XYZRHW Or D3DFVF_TEX1 Or D3DFVF_DIFFUSE Or D3DFVF_SPECULAR
+
 Private Const FVF2 = D3DFVF_XYZRHW Or D3DFVF_DIFFUSE Or D3DFVF_SPECULAR Or D3DFVF_TEX2
 
+
 Dim texture      As Direct3DTexture8
+
 Dim TransTexture As Direct3DTexture8
 
 Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Long
+
 Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As Currency) As Long
+
 Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
 
 Public fps                     As Long
+
 Private FramesPerSecCounter    As Long
+
 Private lFrameTimer            As Long
+
 Private lFrameLimiter          As Long
 
 Private ScrollPixelsPerFrameX  As Single
+
 Private ScrollPixelsPerFrameY  As Single
 
 Private TileBufferPixelOffsetX As Integer
+
 Private TileBufferPixelOffsetY As Integer
 
 Private Const GrhFogata        As Integer = 1521
 
+Private Estrella  As grh
+
+Private Marco     As grh
+
+Private BarraMana As grh
+
+Private BarraVida As grh
+
+Private BarraGris As grh
 
 'Sets a Grh animation to loop indefinitely.
 
@@ -140,7 +160,10 @@ Private Function GetElapsedTime() As Single
     Static timer_freq As Currency
 
     'Get the timer frequency
-    If timer_freq = 0 Then Call QueryPerformanceFrequency(timer_freq)
+    If timer_freq = 0 Then
+        QueryPerformanceFrequency timer_freq
+
+    End If
     
     'Get current time
     Call QueryPerformanceCounter(Start_Time)
@@ -207,6 +230,12 @@ End Function
 
 Private Sub Engine_InitExtras()
     
+    Call Engine_Font_Initialize
+    
+    Set LucesRedondas = New clsLucesRedondas
+    Set LucesCuadradas = New clsLucesCuadradas
+    Set Meteo_Engine = New clsMeteorologic
+    
     Estrella.framecounter = 1
     Estrella.GrhIndex = 35764
     Estrella.Started = 1
@@ -227,6 +256,10 @@ Private Sub Engine_InitExtras()
     BarraGris.GrhIndex = 842
     BarraGris.Started = 1
     
+    Call Font_Create("Tahoma", 8, True, 0)
+    Call Font_Create("Verdana", 8, False, 0)
+    Call Font_Create("Verdana", 11, True, False)
+    
     ' Colores comunes
     COLOR_WHITE(0) = D3DColorXRGB(255, 255, 255)
     COLOR_WHITE(1) = D3DColorXRGB(255, 255, 255)
@@ -246,26 +279,6 @@ Private Sub Engine_InitExtras()
         .Right = frmmain.renderer.ScaleWidth
         .bottom = frmmain.renderer.ScaleHeight
     End With
-    
-    textcolorAsistente(0) = D3DColorXRGB(0, 200, 0)
-    textcolorAsistente(1) = textcolorAsistente(0)
-    textcolorAsistente(2) = textcolorAsistente(0)
-    textcolorAsistente(3) = textcolorAsistente(0)
-
-    ' Sistemas dependientes de el motor grafico
-    Set Meteo_Engine = New clsMeteorologic
-    Set LucesRedondas = New clsLucesRedondas
-    Set LucesCuadradas = New clsLucesCuadradas
-    Set Dialogos = New clsDialogs
-    
-    ' Fuentes graficas.
-    Call Engine_Font_Initialize
-    Call Font_Create("Tahoma", 8, True, 0)
-    Call Font_Create("Verdana", 8, False, 0)
-    Call Font_Create("Verdana", 11, True, False)
-    
-    'Inventario
-    Call Initialize
     
 End Sub
 
@@ -3424,13 +3437,10 @@ Public Sub DrawMapaMundo()
 
     Dim y    As Integer
     
-    Dim Head As grh
-
-    Head = HeadData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Head).Head(3)
-    
-    Dim grh As grh
-
-    grh = BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).Walk(3)
+    Dim Head As grh, grh As grh
+    Dim HeadID As Integer, BodyID As Integer
+    HeadID = NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Head
+    BodyID = NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body
     
     Dim tmp           As String
 
@@ -3438,13 +3448,19 @@ Public Sub DrawMapaMundo()
 
     Engine_Draw_Box x, y, 177, 89, D3DColorARGB(255, 7, 7, 7) 'Fondo del inventario
     
-    x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
-    y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
-    Call Draw_Grh(grh, x, y, 0, 0, color, False, 0, 0, 0)
+    If BodyID > 0 Then
+        grh = BodyData(BodyID).Walk(3)
+        x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
+        y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
+        Call Draw_Grh(grh, x, y, 0, 0, color, False, 0, 0, 0)
+    End If
 
-    x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(Head.GrhIndex).pixelWidth / 2
-    y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
-    Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
+    If HeadID > 0 Then
+        Head = HeadData(HeadID).Head(3)
+        x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(Head.GrhIndex).pixelWidth / 2
+        y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
+        Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
+    End If
     
     Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
 
