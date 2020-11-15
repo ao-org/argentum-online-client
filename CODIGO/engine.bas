@@ -3409,6 +3409,8 @@ Public Sub DrawMapaMundo()
     frmMapaGrande.PlayerView.ScaleHeight = 89
     frmMapaGrande.PlayerView.ScaleWidth = 177
     
+    If frmMapaGrande.ListView1.ListItems.count <= 0 Then Exit Sub
+    
     Call Engine_BeginScene
         
     Dim color(0 To 3) As Long
@@ -3424,13 +3426,10 @@ Public Sub DrawMapaMundo()
 
     Dim y    As Integer
     
-    Dim Head As grh
-
-    Head = HeadData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Head).Head(3)
-    
-    Dim grh As grh
-
-    grh = BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).Walk(3)
+    Dim Head As grh, grh As grh
+    Dim HeadID As Integer, BodyID As Integer
+    HeadID = NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Head
+    BodyID = NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body
     
     Dim tmp           As String
 
@@ -3438,13 +3437,19 @@ Public Sub DrawMapaMundo()
 
     Engine_Draw_Box x, y, 177, 89, D3DColorARGB(255, 7, 7, 7) 'Fondo del inventario
     
-    x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
-    y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
-    Call Draw_Grh(grh, x, y, 0, 0, color, False, 0, 0, 0)
+    If BodyID > 0 Then
+        grh = BodyData(BodyID).Walk(3)
+        x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
+        y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
+        Call Draw_Grh(grh, x, y, 0, 0, color, False, 0, 0, 0)
+    End If
 
-    x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(Head.GrhIndex).pixelWidth / 2
-    y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
-    Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
+    If HeadID > 0 Then
+        Head = HeadData(HeadID).Head(3)
+        x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(Head.GrhIndex).pixelWidth / 2
+        y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
+        Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
+    End If
     
     Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
 
