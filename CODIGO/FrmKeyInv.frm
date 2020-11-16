@@ -110,14 +110,14 @@ End Sub
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanallavero.bmp")
-    
-    If InvKeys.OBJIndex(0) = 0 Then
-        NombreLlave.Caption = "Aquí aparecerán las llaves que consigas"
-    End If
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    NombreLlave.Caption = vbNullString
+    If InvKeys.OBJIndex(0) = 0 Then
+        NombreLlave.Caption = "Aquí aparecerán las llaves que consigas"
+    Else
+        NombreLlave.Caption = vbNullString
+    End If
     
     ReleaseCapture
     Call SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
