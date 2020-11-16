@@ -1847,7 +1847,7 @@ Private Sub HandleShowSastreForm()
             FrmSastre.lstArmas.AddItem (ObjData(SastreRopas(i).Index).Name)
         Next i
     
-        FrmSastre.command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
+        FrmSastre.Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
         FrmSastre.Show , frmmain
         HayFormularioAbierto = True
 
@@ -6462,6 +6462,8 @@ Private Sub HandleMeditateToggle()
     '***************************************************
     'Remove packet ID
     Call incomingData.ReadByte
+    
+    If UserMinMAN = UserMaxMAN Then Exit Sub
     
     Dim charindex As Integer, fX As Integer
     
