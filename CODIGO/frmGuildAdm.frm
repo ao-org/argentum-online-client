@@ -25,6 +25,25 @@ Begin VB.Form frmGuildAdm
    ScaleWidth      =   6225
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.TextBox Filtro 
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   545
+      TabIndex        =   4
+      Top             =   1615
+      Width           =   1575
+   End
    Begin VB.ListBox GuildsList 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -121,28 +140,49 @@ Option Explicit
 
 Private Sub Combo1_Click()
     
-    If Not ListaClanes Then Exit Sub
+    Call Filtro_Change
 
-    frmGuildAdm.guildslist.Clear
-    
+End Sub
+
+Private Sub Filtro_Change()
     Dim i As Long
 
-    For i = 0 To UBound(ClanesList)
+    frmGuildAdm.GuildsList.Clear
+    
+    If Not ListaClanes Then Exit Sub
+    
+    If Len(Filtro.Text) <> 0 Then
+        For i = 0 To UBound(ClanesList)
 
-        If Combo1.ListIndex < 2 Then
-            If ClanesList(i).Alineacion = Combo1.ListIndex Then
-                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
-
+            If Combo1.ListIndex < 2 Then
+                If ClanesList(i).Alineacion = Combo1.ListIndex Then
+                    If InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.Text)) <> 0 Then
+                        Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+                    End If
+                End If
+            ElseIf InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.Text)) <> 0 Then
+                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             End If
+    
+        Next i
+        
+    Else
+        For i = 0 To UBound(ClanesList)
 
-        Else
-            
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
-
-        End If
-
-    Next i
-
+            If Combo1.ListIndex < 2 Then
+                If ClanesList(i).Alineacion = Combo1.ListIndex Then
+                    Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+    
+                End If
+    
+            Else
+                
+                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+    
+            End If
+    
+        Next i
+    End If
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -178,10 +218,10 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 
     Dim b As Integer
 
-    For b = 0 To guildslist.ListCount - 1
-        guildslist.ListIndex = b
+    For b = 0 To GuildsList.ListCount - 1
+        GuildsList.ListIndex = b
 
-        If LCase$(guildslist) = LCase$(qhi9t0) Then
+        If LCase$(GuildsList) = LCase$(qhi9t0) Then
             Exit Sub
 
         End If
@@ -231,11 +271,11 @@ End Sub
 Private Sub Image3_Click()
     
     'Si nos encontramos con un guild con nombre vacío algo sospechoso está pasando, x las dudas no hacemos nada.
-    If Len(guildslist.List(guildslist.ListIndex)) = 0 Then Exit Sub
+    If Len(GuildsList.List(GuildsList.ListIndex)) = 0 Then Exit Sub
     
     frmGuildBrief.EsLeader = False
     
-    Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
+    Call WriteGuildRequestDetails(GuildsList.List(GuildsList.ListIndex))
 
 End Sub
 
