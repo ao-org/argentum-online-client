@@ -4785,7 +4785,7 @@ Private Sub HandleChangeInventorySlot()
     Dim MinHit            As Integer
     Dim MaxDef            As Integer
     Dim MinDef            As Integer
-    Dim value             As Single
+    Dim Value             As Single
     Dim podrausarlo       As Byte
     Dim ResistenciaMagica As Byte
     Dim DañoMagico As Byte
@@ -4794,7 +4794,7 @@ Private Sub HandleChangeInventorySlot()
     OBJIndex = buffer.ReadInteger()
     Amount = buffer.ReadInteger()
     Equipped = buffer.ReadBoolean()
-    value = buffer.ReadSingle()
+    Value = buffer.ReadSingle()
     podrausarlo = buffer.ReadByte()
     ResistenciaMagica = buffer.ReadByte()
     DañoMagico = buffer.ReadByte()
@@ -4862,11 +4862,11 @@ Private Sub HandleChangeInventorySlot()
     frmmain.lblResis = ResistenciaMagica & "%"
     frmmain.lbldm = DañoMagico & "%"
     
-    Call frmmain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
+    Call frmmain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, name, podrausarlo)
     
-    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
+    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, name, podrausarlo)
     
-    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
+    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, name, podrausarlo)
     
     Exit Sub
     
@@ -4950,7 +4950,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     Dim defense          As Integer
 
-    Dim value            As Single
+    Dim Value            As Single
 
     Dim PuedeUsar        As Byte
 
@@ -10508,12 +10508,12 @@ Public Sub WriteDarLlaveAUsuario(ByVal User As String, ByVal Llave As Integer)
 
 End Sub
 
-Public Sub WriteSacarLlave(ByVal Params As String)
+Public Sub WriteSacarLlave(ByVal Llave As Integer)
 
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.SacarLlave)
-        Call .WriteASCIIString(Params)
+        Call .writeingeter(Llave)
     End With
 
 End Sub
