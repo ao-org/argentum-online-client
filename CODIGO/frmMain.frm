@@ -66,24 +66,6 @@ Begin VB.Form frmmain
       Type            =   1
       Urgent          =   0   'False
    End
-   Begin VB.CommandButton cmdLlaver 
-      Caption         =   "llaves"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   360
-      Left            =   11520
-      TabIndex        =   39
-      Top             =   7320
-      Visible         =   0   'False
-      Width           =   1050
-   End
    Begin VB.CommandButton createObj 
       Caption         =   "Crear OBJ"
       BeginProperty Font 
@@ -128,7 +110,7 @@ Begin VB.Form frmmain
       ForeColor       =   &H80000008&
       Height          =   4875
       Left            =   11520
-      Picture         =   "frmMain.frx":30469
+      Picture         =   "frmMain.frx":245826
       ScaleHeight     =   4875
       ScaleWidth      =   3705
       TabIndex        =   34
@@ -224,7 +206,7 @@ Begin VB.Form frmmain
          Height          =   285
          Index           =   0
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":6B533
+         MouseIcon       =   "frmMain.frx":2808F0
          MousePointer    =   99  'Custom
          Tag             =   "0"
          Top             =   4550
@@ -235,9 +217,9 @@ Begin VB.Form frmmain
          Height          =   285
          Index           =   1
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":6B685
+         MouseIcon       =   "frmMain.frx":280A42
          MousePointer    =   99  'Custom
-         Picture         =   "frmMain.frx":6B7D7
+         Picture         =   "frmMain.frx":280B94
          Tag             =   "0"
          Top             =   4260
          Visible         =   0   'False
@@ -559,7 +541,7 @@ Begin VB.Form frmmain
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmMain.frx":6BE55
+      TextRTF         =   $"frmMain.frx":281212
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
          Size            =   8.25
@@ -606,13 +588,12 @@ Begin VB.Form frmmain
       Visible         =   0   'False
       Width           =   540
    End
-   Begin VB.Image Temp1 
+   Begin VB.Image cmdLlavero 
       Height          =   495
       Left            =   13376
       Tag             =   "0"
-      ToolTipText     =   "Deshabilitado por el momento"
+      ToolTipText     =   "Llavero"
       Top             =   10122
-      Visible         =   0   'False
       Width           =   540
    End
    Begin VB.Image imgBugReport 
@@ -967,14 +948,14 @@ Begin VB.Form frmmain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":6BECC
+      Picture         =   "frmMain.frx":281289
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":6C450
+      Picture         =   "frmMain.frx":28180D
       Top             =   2008
       Width           =   555
    End
@@ -1102,7 +1083,7 @@ Begin VB.Form frmmain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   13560
-      Picture         =   "frmMain.frx":6C9D4
+      Picture         =   "frmMain.frx":281D91
       Top             =   10920
       Visible         =   0   'False
       Width           =   525
@@ -1110,7 +1091,7 @@ Begin VB.Form frmmain
    Begin VB.Image PicResu 
       Height          =   510
       Left            =   11970
-      Picture         =   "frmMain.frx":6D654
+      Picture         =   "frmMain.frx":282A11
       ToolTipText     =   "Seguro de grupo"
       Top             =   10872
       Width           =   510
@@ -1118,7 +1099,7 @@ Begin VB.Form frmmain
    Begin VB.Image PicResuOn 
       Height          =   510
       Left            =   11970
-      Picture         =   "frmMain.frx":6E466
+      Picture         =   "frmMain.frx":283823
       ToolTipText     =   "Seguro de grupo"
       Top             =   10872
       Visible         =   0   'False
@@ -1188,7 +1169,7 @@ Begin VB.Form frmmain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11573
-      Picture         =   "frmMain.frx":6F278
+      Picture         =   "frmMain.frx":284635
       Top             =   1545
       Width           =   3045
    End
@@ -1215,7 +1196,7 @@ Begin VB.Form frmmain
    Begin VB.Image Hpshp 
       Height          =   240
       Left            =   11865
-      Picture         =   "frmMain.frx":72111
+      Picture         =   "frmMain.frx":2874CE
       Top             =   8309
       Width           =   3240
    End
@@ -1262,7 +1243,7 @@ Begin VB.Form frmmain
    Begin VB.Image AGUAsp 
       Height          =   135
       Left            =   13680
-      Picture         =   "frmMain.frx":749D5
+      Picture         =   "frmMain.frx":289D92
       Top             =   9150
       Width           =   480
    End
@@ -1270,7 +1251,7 @@ Begin VB.Form frmmain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   11446
-      Picture         =   "frmMain.frx":74D79
+      Picture         =   "frmMain.frx":28A136
       ToolTipText     =   "Seguro de ataque"
       Top             =   10872
       Width           =   510
@@ -1278,7 +1259,7 @@ Begin VB.Form frmmain
    Begin VB.Image Image6 
       Height          =   510
       Left            =   11446
-      Picture         =   "frmMain.frx":75B8B
+      Picture         =   "frmMain.frx":28AF48
       ToolTipText     =   "Seguro de ataque"
       Top             =   10872
       Width           =   510
@@ -1287,7 +1268,7 @@ Begin VB.Form frmmain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12494
-      Picture         =   "frmMain.frx":7699D
+      Picture         =   "frmMain.frx":28BD5A
       ToolTipText     =   "Seguro de clan"
       Top             =   10875
       Width           =   510
@@ -1296,7 +1277,7 @@ Begin VB.Form frmmain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12494
-      Picture         =   "frmMain.frx":777AF
+      Picture         =   "frmMain.frx":28CB6C
       ToolTipText     =   "Seguro de ataque"
       Top             =   10875
       Width           =   510
@@ -1304,14 +1285,14 @@ Begin VB.Form frmmain
    Begin VB.Image COMIDAsp 
       Height          =   120
       Left            =   14618
-      Picture         =   "frmMain.frx":785C1
+      Picture         =   "frmMain.frx":28D97E
       Top             =   9158
       Width           =   480
    End
    Begin VB.Image MANShp 
       Height          =   240
       Left            =   11865
-      Picture         =   "frmMain.frx":78905
+      Picture         =   "frmMain.frx":28DCC2
       Top             =   8715
       Width           =   3240
    End
@@ -1339,7 +1320,7 @@ Begin VB.Form frmmain
    Begin VB.Image STAShp 
       Height          =   135
       Left            =   11850
-      Picture         =   "frmMain.frx":7B1C9
+      Picture         =   "frmMain.frx":290586
       Top             =   9153
       Width           =   1335
    End
@@ -1404,8 +1385,8 @@ Private MenuNivel As Byte
 
 Private Type POINTAPI
 
-    x As Long
-    y As Long
+    X As Long
+    Y As Long
 
 End Type
 
@@ -1439,7 +1420,7 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
 
@@ -1447,7 +1428,7 @@ Private Const EM_GETLINE = &HC4
 
 Private Const EM_LINELENGTH = &HC1
 
-Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If clanimg.Tag = "0" Then
         clanimg.Picture = LoadInterface("claniluminado.bmp")
@@ -1457,26 +1438,38 @@ Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, 
 
 End Sub
 
-Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If frmGuildLeader.Visible Then Unload frmGuildLeader
     Call WriteRequestGuildLeaderInfo
 
 End Sub
 
-Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     cmdlanzar.Picture = LoadInterface("boton-lanzar-ES-off.bmp")
     cmdlanzar.Tag = "1"
 
 End Sub
 
-Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    Call Form_MouseMove(Button, Shift, x, y)
+Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Call Form_MouseMove(Button, Shift, X, Y)
 
 End Sub
 
-Private Sub cmdLlaver_Click()
-FrmKeyInv.Show , frmmain
+Private Sub cmdLlavero_Click()
+    FrmKeyInv.Show , frmmain
+End Sub
+
+Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    cmdLlavero.Picture = LoadInterface("boton-llavero-off.bmp")
+    cmdLlavero.Tag = "1"
+End Sub
+
+Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If cmdLlavero.Tag = "0" Then
+        cmdLlavero.Picture = LoadInterface("boton-llavero-over.bmp")
+        cmdLlavero.Tag = "1"
+    End If
 End Sub
 
 Private Sub cmdMoverHechi_Click(Index As Integer)
@@ -1548,7 +1541,7 @@ Public Sub DesDibujarSeguro()
 
 End Sub
 
-Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     Select Case Index
 
@@ -1686,12 +1679,12 @@ Private Sub Efecto_Timer()
 
 End Sub
 
-Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     EstadisticasBoton.Picture = LoadInterface("boton-estadisticas-off.bmp")
     EstadisticasBoton.Tag = "1"
 End Sub
 
-Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If EstadisticasBoton.Tag = "0" Then
         EstadisticasBoton.Picture = LoadInterface("boton-estadisticas-over.bmp")
@@ -1700,7 +1693,7 @@ Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x A
 
 End Sub
 
-Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     LlegaronAtrib = False
     LlegaronSkills = False
     LlegaronStats = False
@@ -1750,7 +1743,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
 
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     MouseBoton = Button
     MouseShift = Shift
     
@@ -1766,9 +1759,9 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y A
 
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    clicX = x
-    clicY = y
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    clicX = X
+    clicY = Y
 
 End Sub
 
@@ -1815,7 +1808,7 @@ Private Sub GlobalIcon_Click()
 
 End Sub
 
-Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If cmdlanzar.Tag = "1" Then
         cmdlanzar.Picture = Nothing
@@ -1854,7 +1847,7 @@ Private Sub HoraFantasiaTimer_Timer()
 
 End Sub
 
-Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If Index = 0 Then
         If OpcionMenu <> 0 Then
@@ -1880,7 +1873,7 @@ Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integ
 
 End Sub
 
-Private Sub Image2_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image2_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If OpcionMenu = 1 Then
     
@@ -1902,13 +1895,13 @@ Private Sub Image2_MouseMove(Index As Integer, Button As Integer, Shift As Integ
 
 End Sub
 
-Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '    Image3.Picture = LoadInterface("elegirchatapretado.bmp")
     frmMensaje.PopupMenuMensaje
 
 End Sub
 
-Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If Image3.Tag = "0" Then
         Image3.Picture = LoadInterface("elegirchatmarcado.bmp")
@@ -1938,7 +1931,7 @@ Private Sub Image4_Click(Index As Integer)
 
 End Sub
 
-Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     Select Case Index
 
@@ -1952,7 +1945,7 @@ Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integ
 
 End Sub
 
-Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     Select Case Index
 
@@ -1998,7 +1991,7 @@ Private Sub Image5_Click()
 
 End Sub
 
-Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If Image5.Tag = "0" Then
         Image5.Picture = LoadInterface("grupoover.bmp")
@@ -2038,13 +2031,13 @@ Private Sub imgHechizos_Click()
 
 End Sub
 
-Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     imgHechizos.Picture = LoadInterface("boton-hechizos-ES-off.bmp")
     imgHechizos.Tag = "1"
 
 End Sub
 
-Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If imgHechizos.Tag = "0" Then
         imgHechizos.Picture = LoadInterface("boton-hechizos-ES-default.bmp")
@@ -2074,13 +2067,13 @@ Private Sub imgInventario_Click()
 
 End Sub
 
-Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     imgInventario.Picture = LoadInterface("boton-inventory-ES-off.bmp")
     imgInventario.Tag = "1"
 
 End Sub
 
-Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Call Inventario.ReDraw
 
     If imgInventario.Tag = "0" Then
@@ -2106,7 +2099,7 @@ Private Sub MANShp_Click()
     manabar_Click
 End Sub
 
-Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If manualboton.Tag = "0" Then
         manualboton.Picture = LoadInterface("manualover.bmp")
@@ -2116,12 +2109,12 @@ Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Sing
 
 End Sub
 
-Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Manual.Show , frmmain
 
 End Sub
 
-Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     OpcionesBoton.Picture = LoadInterface("opcionesoverdown.bmp")
     OpcionesBoton.Tag = "1"
 
@@ -2137,7 +2130,7 @@ Private Sub PicCorreo_Click()
 
 End Sub
 
-Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal X As Integer, ByVal Y As Integer)
 
     ' Si soltó un item en un slot válido
     
@@ -2163,7 +2156,7 @@ Private Sub PicSegClanOn_Click()
 
 End Sub
 
-Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If QuestBoton.Tag = "0" Then
         QuestBoton.Picture = LoadInterface("questover.bmp")
@@ -2173,12 +2166,12 @@ Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Singl
 
 End Sub
 
-Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Call WriteQuestListRequest
 
 End Sub
 
-Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If rankingBoton.Tag = "0" Then
         rankingBoton.Picture = LoadInterface("rankingover.bmp")
@@ -2188,7 +2181,7 @@ Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, x As Sin
 
 End Sub
 
-Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Call WriteTraerRanking
 
 End Sub
@@ -2329,7 +2322,7 @@ Private Sub mapMundo_Click()
 
 End Sub
 
-Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If mapMundo.Tag = "0" Then
         mapMundo.Picture = LoadInterface("boton-mapa-over.bmp")
@@ -2339,10 +2332,10 @@ Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
 End Sub
 
-Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If Button = vbRightButton Then
-        Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
+        Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(X) & " " & CByte(Y))
         Exit Sub
 
     End If
@@ -2356,7 +2349,7 @@ Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, 
   
 End Sub
 
-Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If mapMundo.Tag = "1" Then
         mapMundo.Picture = Nothing
@@ -2395,7 +2388,7 @@ Private Sub mnuUsar_Click()
 
 End Sub
 
-Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If mapMundo.Tag = "1" Then
         mapMundo.Picture = Nothing
@@ -2410,7 +2403,7 @@ Private Sub onlines_Click()
 
 End Sub
 
-Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If OpcionesBoton.Tag = "0" Then
         OpcionesBoton.Picture = LoadInterface("opcionesover.bmp")
@@ -2420,12 +2413,12 @@ Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Si
 
 End Sub
 
-Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Call frmOpciones.Init
 
 End Sub
 
-Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     ObjLbl.Visible = False
     
@@ -2495,39 +2488,39 @@ Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y 
 
 End Sub
 
-Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-    Dim slot As Byte
+    Dim Slot As Byte
 
     UsaMacro = False
     
-    slot = Inventario.GetSlot(x, y)
+    Slot = Inventario.GetSlot(X, Y)
     
-    If slot <= 0 Then
+    If Slot <= 0 Then
         ObjLbl.Visible = False
         Exit Sub
     End If
     
-    If Inventario.Amount(slot) > 0 Then
+    If Inventario.Amount(Slot) > 0 Then
     
         ObjLbl.Visible = True
         
-        Select Case ObjData(Inventario.OBJIndex(slot)).ObjType
+        Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
 
             Case eObjType.otCASCO
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
 
             Case eObjType.otESCUDO
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
 
             Case Else
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & ObjData(Inventario.OBJIndex(slot)).Texto
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & ObjData(Inventario.OBJIndex(Slot)).Texto
 
         End Select
         
@@ -2608,7 +2601,7 @@ Private Sub CompletarEnvioMensajes()
 
 End Sub
 
-Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     On Error Resume Next
 
@@ -2663,7 +2656,7 @@ Private Sub refuerzolanzar_Click()
 
 End Sub
 
-Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     UsaMacro = False
     CnTd = 0
 
@@ -2675,7 +2668,7 @@ Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As S
 
 End Sub
 
-Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     'If DropItem Then
     '    frmMain.UsandoDrag = False
@@ -2685,15 +2678,15 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     '    Call FormParser.Parse_Form(Me)
     'End If
 
-    clicX = x
-    clicY = y
+    clicX = X
+    clicY = Y
     
     Dim PosX As Integer
 
     Dim PosY As Integer
 
     If Pregunta Then
-        If x > 395 And x < 410 And y > 233 And y < 250 Then
+        If X > 395 And X < 410 And Y > 233 And Y < 250 Then
             If PreguntaLocal Then
 
                 Select Case PreguntaNUM
@@ -2714,7 +2707,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
 
         End If
     
-        If x > 417 And x < 439 And y > 233 And y < 250 Then
+        If X > 417 And X < 439 And Y > 233 And Y < 250 Then
             If PreguntaLocal Then
 
                 Select Case PreguntaNUM
@@ -2738,9 +2731,9 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     
 End Sub
 
-Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    MouseX = x
-    MouseY = y
+Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    MouseX = X
+    MouseY = Y
     
     DisableURLDetect
 
@@ -2771,7 +2764,7 @@ Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 End Sub
 
-Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     MouseBoton = Button
     MouseShift = Shift
@@ -3002,7 +2995,7 @@ Private Sub Socket1_Timeout(status As Integer, Response As Integer)
 
 End Sub
 
-Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If TiendaBoton.Tag = "0" Then
         TiendaBoton.Picture = LoadInterface("tiendaover.bmp")
@@ -3012,7 +3005,7 @@ Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Sing
 
 End Sub
 
-Private Sub TiendaBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub TiendaBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Call WriteTraerShop
 
 End Sub
@@ -3117,7 +3110,7 @@ Private Sub cmdLanzar_Click()
 
 End Sub
 
-Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     UsaMacro = False
     CnTd = 0
 
@@ -3283,7 +3276,7 @@ Public Sub Form_Click()
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 4 Or MouseBoton = vbRightButton And ACCION2 = 4 Or MouseBoton = 4 And ACCION3 = 4 Then
 
         If MapData(tX, tY).charindex <> 0 Then
-            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
+            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.X, UserPos.Y).charindex).nombre Then
                 If charlist(MapData(tX, tY).charindex).EsNpc = False Then
                     SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
 
@@ -3338,7 +3331,7 @@ Private Sub Form_Load()
 
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     ' Disable links checking (not over consola)
     StopCheckingLinks
@@ -3347,7 +3340,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         If MoverVentana = 1 Then
             If UserMoving = 0 Then
                 ' Mover form sólo en la parte superior
-                If y < 30 Then moverForm
+                If Y < 30 Then moverForm
 
                 'Call Auto_Drag(Me.hwnd)
             End If
@@ -3356,8 +3349,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    MouseX = x - MainViewShp.Left
-    MouseY = y - MainViewShp.Top
+    MouseX = X - MainViewShp.Left
+    MouseY = Y - MainViewShp.Top
     ObjLbl.Visible = False
     
     If EstadisticasBoton.Tag = "1" Then
@@ -3471,6 +3464,11 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
             End If
 
     End Select
+    
+    If cmdLlavero.Tag = "1" Then
+        cmdLlavero.Picture = Nothing
+        cmdLlavero.Tag = "0"
+    End If
 
 End Sub
 
@@ -3551,7 +3549,7 @@ Private Sub RecTxt_Change()
 
 End Sub
 
-Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     StartCheckingLinks
 
 End Sub

@@ -1493,15 +1493,24 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
                 End If
 
-                '*************************************************
-                If EsArbol(.Graphic(3).GrhIndex) Then
-                    Call Draw_Sombra(.Graphic(3), PixelOffsetXTemp + 40, PixelOffsetYTemp, 1, 1, False, x, y)
-
-                End If
-                
                 'Layer 3 *****************************************
                 If .Graphic(3).GrhIndex <> 0 Then
-                    Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value, False, x, y)
+                    If EsArbol(.Graphic(3).GrhIndex) Then
+                        Call Draw_Sombra(.Graphic(3), PixelOffsetXTemp + 40, PixelOffsetYTemp, 1, 1, False, x, y)
+                        
+                        If Abs(UserPos.x - x) <= 3 And y - UserPos.y <= 0 And y - UserPos.y >= 6 Then
+                            Dim arbol_alfa(0 To 3) As Long
+                            arbol_alfa(0) = D3DColorARGB(200, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
+                            arbol_alfa(1) = arbol_alfa(0)
+                            arbol_alfa(2) = arbol_alfa(0)
+                            arbol_alfa(3) = arbol_alfa(0)
+                            Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, arbol_alfa(), False, x, y)
+                        Else
+                            Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value, False, x, y)
+                        End If
+                    Else
+                        Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value, False, x, y)
+                    End If
 
                 End If
 
@@ -3335,7 +3344,7 @@ End Sub
 Public Sub DrawInterfaceKeys()
 
     ' Sólo dibujamos cuando es necesario
-    'If Not FrmKeyInv.InvKeys.NeedsRedraw Then Exit Sub
+    If Not FrmKeyInv.InvKeys.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
 
@@ -3350,41 +3359,8 @@ Public Sub DrawInterfaceKeys()
     ' Dibujamos el fondo de la bóveda
     'Call Draw_GrhIndex(838, 0, 0)
     
-    
-    Engine_Draw_Box 0, 0, 32, 32, D3DColorARGB(200, 255, 7, 7) 'pongo un color de fondo para chequear que dibuje
-    Engine_Draw_Box 32, 0, 32, 32, D3DColorARGB(200, 0, 255, 7) 'pongo un color de fondo para chequear que dibuje
-    Engine_Draw_Box 64, 0, 32, 32, D3DColorARGB(200, 0, 0, 255) 'pongo un color de fondo para chequear que dibuje
-    Engine_Draw_Box 96, 0, 32, 32, D3DColorARGB(200, 255, 255, 0) 'pongo un color de fondo para chequear que dibuje
-    Engine_Draw_Box 128, 0, 32, 32, D3DColorARGB(200, 0, 255, 255) 'pongo un color de fondo para chequear que dibuje
-    
-    
-    
-    Engine_Draw_Box 0, 32, 32, 32, D3DColorARGB(200, 0, 255, 255) 'pongo un color de fondo para chequear que dibuje
-    Engine_Draw_Box 32, 32, 32, 32, D3DColorARGB(200, 255, 255, 7) 'pongo un color de fondo para chequear que dibuje
-    Engine_Draw_Box 64, 32, 32, 32, D3DColorARGB(200, 255, 0, 0) 'pongo un color de fondo para chequear que dibuje
-    Engine_Draw_Box 96, 32, 32, 32, D3DColorARGB(200, 0, 0, 250) 'pongo un color de fondo para chequear que dibuje
-    Engine_Draw_Box 128, 32, 32, 32, D3DColorARGB(200, 0, 255, 0) 'pongo un color de fondo para chequear que dibuje
-    
-    
-    ' Dibujamos items de la bóveda
+    ' Dibujamos llaves
     Call FrmKeyInv.InvKeys.DrawInventory
-    
-    ' Dibujamos items del usuario
-
-
-    ' Dibujamos "ambos" items arrastrados (aunque sólo puede estar uno activo a la vez)
-    Call FrmKeyInv.InvKeys.DrawDraggedItem
-    
-    ' Me fijo qué inventario está seleccionado
-    Dim CurrentInventory As clsGrapchicalInventory
-    
-    If FrmKeyInv.InvKeys.SelectedItem > 0 Then
-        Set CurrentInventory = FrmKeyInv.InvKeys
-    ElseIf frmBancoObj.InvBankUsu.SelectedItem > 0 Then
-        Set CurrentInventory = frmBancoObj.InvBankUsu
-
-    End If
-    
 
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, FrmKeyInv.interface.hwnd)
@@ -5053,7 +5029,6 @@ Public Sub Initialize()
     Set frmComerciar.InvComNpc = New clsGrapchicalInventory
     Set frmBancoObj.InvBankUsu = New clsGrapchicalInventory
     Set frmBancoObj.InvBoveda = New clsGrapchicalInventory
-
     Set FrmKeyInv.InvKeys = New clsGrapchicalInventory
     
     Call frmmain.Inventario.Initialize(frmmain.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True, 9)
@@ -5065,7 +5040,8 @@ Public Sub Initialize()
     
     
     'Ladder
-    Call FrmKeyInv.InvKeys.Initialize(FrmKeyInv.interface, 10, 0, 0, 0, 0, 0, 0) 'Inventario de llaves
+    Call FrmKeyInv.InvKeys.Initialize(FrmKeyInv.interface, 10, , , , , , , True) 'Inventario de llaves
+    FrmKeyInv.InvKeys.MostrarCantidades = False
  
 End Sub
 
