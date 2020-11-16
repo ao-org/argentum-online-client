@@ -10513,7 +10513,7 @@ Public Sub WriteSacarLlave(ByVal Llave As Integer)
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.SacarLlave)
-        Call .writeingeter(Llave)
+        Call .WriteInteger(Llave)
     End With
 
 End Sub
