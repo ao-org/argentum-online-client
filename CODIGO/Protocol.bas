@@ -1443,7 +1443,7 @@ Private Sub HandleDisconnect()
     
     For Each frm In Forms
 
-        If frm.Name <> frmmain.Name And frm.Name <> frmConnect.Name And frm.Name <> frmMensaje.Name Then
+        If frm.name <> frmmain.name And frm.name <> frmConnect.name And frm.name <> frmMensaje.name Then
             Unload frm
 
         End If
@@ -1743,7 +1743,7 @@ Private Sub HandleShowBlacksmithForm()
         For i = 0 To UBound(CascosHerrero())
 
             If CascosHerrero(i).Index = 0 Then Exit For
-            Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).Name)
+            Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).name)
         Next i
 
         frmHerrero.Command3.Picture = LoadInterface("herreria_cascoshover.bmp")
@@ -1844,7 +1844,7 @@ Private Sub HandleShowSastreForm()
         For i = 1 To UBound(SastreRopas())
 
             If SastreRopas(i).Index = 0 Then Exit For
-            FrmSastre.lstArmas.AddItem (ObjData(SastreRopas(i).Index).Name)
+            FrmSastre.lstArmas.AddItem (ObjData(SastreRopas(i).Index).name)
         Next i
     
         FrmSastre.Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
@@ -3062,11 +3062,11 @@ Private Sub HandleConsoleMessage()
     Select Case QueEs
 
         Case "NPCNAME"
-            NpcName = NpcData(ReadField(2, chat, Asc("*"))).Name
+            NpcName = NpcData(ReadField(2, chat, Asc("*"))).name
             chat = NpcName & ReadField(3, chat, Asc("*"))
 
         Case "O" 'OBJETO
-            objname = ObjData(ReadField(2, chat, Asc("*"))).Name
+            objname = ObjData(ReadField(2, chat, Asc("*"))).name
             chat = objname & ReadField(3, chat, Asc("*"))
 
         Case "HECINF"
@@ -4753,7 +4753,7 @@ Private Sub HandleChangeInventorySlot()
     
     Dim slot              As Byte
     Dim OBJIndex          As Integer
-    Dim Name              As String
+    Dim name              As String
     Dim Amount            As Integer
     Dim Equipped          As Boolean
     Dim GrhIndex          As Long
@@ -4762,7 +4762,7 @@ Private Sub HandleChangeInventorySlot()
     Dim MinHit            As Integer
     Dim MaxDef            As Integer
     Dim MinDef            As Integer
-    Dim Value             As Single
+    Dim value             As Single
     Dim podrausarlo       As Byte
     Dim ResistenciaMagica As Byte
     Dim DañoMagico As Byte
@@ -4771,14 +4771,14 @@ Private Sub HandleChangeInventorySlot()
     OBJIndex = buffer.ReadInteger()
     Amount = buffer.ReadInteger()
     Equipped = buffer.ReadBoolean()
-    Value = buffer.ReadSingle()
+    value = buffer.ReadSingle()
     podrausarlo = buffer.ReadByte()
     ResistenciaMagica = buffer.ReadByte()
     DañoMagico = buffer.ReadByte()
     
     Call incomingData.CopyBuffer(buffer)
     
-    Name = ObjData(OBJIndex).Name
+    name = ObjData(OBJIndex).name
     GrhIndex = ObjData(OBJIndex).GrhIndex
     ObjType = ObjData(OBJIndex).ObjType
     MaxHit = ObjData(OBJIndex).MaxHit
@@ -4839,11 +4839,11 @@ Private Sub HandleChangeInventorySlot()
     frmmain.lblResis = ResistenciaMagica & "%"
     frmmain.lbldm = DañoMagico & "%"
     
-    Call frmmain.Inventario.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmmain.Inventario.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
     
-    Call frmComerciar.InvComUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmComerciar.InvComUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
     
-    Call frmBancoObj.InvBankUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmBancoObj.InvBankUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
     
     Exit Sub
     
@@ -4911,7 +4911,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     Dim OBJIndex         As Integer
 
-    Dim Name             As String
+    Dim name             As String
 
     Dim Amount           As Integer
 
@@ -4927,7 +4927,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     Dim defense          As Integer
 
-    Dim Value            As Single
+    Dim value            As Single
 
     Dim PuedeUsar        As Byte
 
@@ -5060,7 +5060,7 @@ Private Sub HandleChangeBankSlot()
     With BankSlot
     
         .OBJIndex = buffer.ReadInteger()
-        .Name = ObjData(.OBJIndex).Name
+        .name = ObjData(.OBJIndex).name
         .Amount = buffer.ReadInteger()
         .GrhIndex = ObjData(.OBJIndex).GrhIndex
         .ObjType = ObjData(.OBJIndex).ObjType
@@ -5070,7 +5070,7 @@ Private Sub HandleChangeBankSlot()
         .Valor = buffer.ReadLong()
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .name, .PuedeUsar)
 
     End With
     
@@ -5449,7 +5449,7 @@ Private Sub HandleCarpenterObjects()
     For i = 1 To count
         ObjCarpintero(i) = buffer.ReadInteger()
         
-        Call frmCarp.lstArmas.AddItem(ObjData(ObjCarpintero(i)).Name)
+        Call frmCarp.lstArmas.AddItem(ObjData(ObjCarpintero(i)).name)
     Next i
     
     For i = i To UBound(ObjCarpintero())
@@ -5605,7 +5605,7 @@ Private Sub HandleAlquimiaObjects()
     
     For i = 1 To count
         Obj = buffer.ReadInteger()
-        tmp = ObjData(Obj).Name        'Get the object's name
+        tmp = ObjData(Obj).name        'Get the object's name
 
         ObjAlquimista(i) = Obj
         Call frmAlqui.lstArmas.AddItem(tmp)
@@ -5811,7 +5811,7 @@ Private Sub HandleChangeNPCInventorySlot()
     Dim SlotInv As NpCinV
     With SlotInv
         .OBJIndex = buffer.ReadInteger()
-        .Name = ObjData(.OBJIndex).Name
+        .name = ObjData(.OBJIndex).name
         .Amount = buffer.ReadInteger()
         .Valor = buffer.ReadSingle()
         .GrhIndex = ObjData(.OBJIndex).GrhIndex
@@ -5821,7 +5821,7 @@ Private Sub HandleChangeNPCInventorySlot()
         .Def = ObjData(.OBJIndex).MaxDef
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmComerciar.InvComNpc.SetItem(slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmComerciar.InvComNpc.SetItem(slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .name, .PuedeUsar)
         
     End With
     
@@ -6462,8 +6462,6 @@ Private Sub HandleMeditateToggle()
     '***************************************************
     'Remove packet ID
     Call incomingData.ReadByte
-    
-    If UserMinMAN = UserMaxMAN Then Exit Sub
     
     Dim charindex As Integer, fX As Integer
     
@@ -7337,7 +7335,7 @@ Private Sub HandleChangeUserTradeSlot()
     
     With OtroInventario(1)
         .OBJIndex = buffer.ReadInteger()
-        .Name = buffer.ReadASCIIString()
+        .name = buffer.ReadASCIIString()
         .Amount = buffer.ReadLong()
         .GrhIndex = buffer.ReadInteger()
         .ObjType = buffer.ReadByte()
@@ -7348,7 +7346,7 @@ Private Sub HandleChangeUserTradeSlot()
         
         frmComerciarUsu.List2.Clear
         
-        Call frmComerciarUsu.List2.AddItem(.Name)
+        Call frmComerciarUsu.List2.AddItem(.name)
         frmComerciarUsu.List2.ItemData(frmComerciarUsu.List2.NewIndex) = .Amount
         
         frmComerciarUsu.lblEstadoResp.Visible = False
@@ -7406,7 +7404,7 @@ Private Sub HandleSpawnList()
     creatureList = Split(buffer.ReadASCIIString(), SEPARATOR)
     
     For i = 0 To UBound(creatureList())
-        Call frmSpawnList.lstCriaturas.AddItem(NpcData(creatureList(i)).Name)
+        Call frmSpawnList.lstCriaturas.AddItem(NpcData(creatureList(i)).name)
     Next i
 
     frmSpawnList.Show , frmmain
@@ -8474,7 +8472,7 @@ End Sub
 ' @param    codex   Array of all rules of the guild.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal Name As String, ByVal Alineacion As Byte)
+Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal name As String, ByVal Alineacion As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8489,7 +8487,7 @@ Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal Name As String, ByVal
         Call .WriteByte(ClientPacketID.CreateNewGuild)
         
         Call .WriteASCIIString(desc)
-        Call .WriteASCIIString(Name)
+        Call .WriteASCIIString(name)
         
         Call .WriteByte(Alineacion)
 
@@ -13208,7 +13206,7 @@ Private Sub HandlePersonajesDeCuenta()
         Pjs(ii).ClanName = "<" & buffer.ReadASCIIString() & ">"
        
         ' Pjs(ii).NameMapa = Pjs(ii).mapa
-        Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).Name
+        Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).name
 
     Next ii
     
@@ -14132,7 +14130,7 @@ Private Sub HandleQuestDetails()
                        
                         Dim subelemento As ListItem
 
-                        Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(NpcIndex).Name)
+                        Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(NpcIndex).name)
                        
                         subelemento.SubItems(1) = cantidadnpc
                         subelemento.SubItems(2) = NpcIndex
@@ -14153,7 +14151,7 @@ Private Sub HandleQuestDetails()
                     cantidadobj = .ReadInteger
                     OBJIndex = .ReadInteger
                    
-                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(OBJIndex).Name)
+                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(OBJIndex).name)
                     subelemento.SubItems(1) = cantidadobj
                     subelemento.SubItems(2) = OBJIndex
                     subelemento.SubItems(3) = 1
@@ -14191,7 +14189,7 @@ Private Sub HandleQuestDetails()
                     cantidadobjs = .ReadInteger
                     obindex = .ReadInteger
                    
-                    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(obindex).Name)
+                    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(obindex).name)
                        
                     subelemento.SubItems(1) = cantidadobjs
                     subelemento.SubItems(2) = obindex
@@ -14233,7 +14231,7 @@ Private Sub HandleQuestDetails()
                
                     matados = .ReadInteger
                                      
-                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , NpcData(NpcIndex).Name)
+                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , NpcData(NpcIndex).name)
                        
                     Dim cantok As Integer
 
@@ -14263,7 +14261,7 @@ Private Sub HandleQuestDetails()
                     cantidadobj = .ReadInteger
                     OBJIndex = .ReadInteger
                    
-                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , ObjData(OBJIndex).Name)
+                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , ObjData(OBJIndex).name)
                     subelemento.SubItems(1) = cantidadobj
                     subelemento.SubItems(2) = OBJIndex
                     subelemento.SubItems(3) = 1
@@ -14297,7 +14295,7 @@ Private Sub HandleQuestDetails()
                     cantidadobjs = .ReadInteger
                     obindex = .ReadInteger
                    
-                    Set subelemento = FrmQuests.ListView2.ListItems.Add(, , ObjData(obindex).Name)
+                    Set subelemento = FrmQuests.ListView2.ListItems.Add(, , ObjData(obindex).name)
                        
                     subelemento.SubItems(1) = cantidadobjs
                     subelemento.SubItems(2) = obindex
@@ -14909,7 +14907,7 @@ Private Sub HandleDonadorObjects()
     
     For i = 1 To count
         Obj = buffer.ReadInteger()
-        tmp = ObjData(Obj).Name           'Get the object's name
+        tmp = ObjData(Obj).name           'Get the object's name
         precio = buffer.ReadInteger()
         ObjDonador(i).Index = Obj
         ObjDonador(i).precio = precio
@@ -15039,7 +15037,7 @@ Public Sub WriteCodigo(ByVal Codigo As String)
 
 End Sub
 
-Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal Name As String, ByVal reglas As String)
+Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal name As String, ByVal reglas As String)
     '***************************************************
     'Author: Pablo Mercavides
     'Last Modification: 16/05/2020
@@ -15064,7 +15062,7 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byt
     Call outgoingData.WriteInteger(map)
     Call outgoingData.WriteByte(x)
     Call outgoingData.WriteByte(y)
-    Call outgoingData.WriteASCIIString(Name)
+    Call outgoingData.WriteASCIIString(name)
     Call outgoingData.WriteASCIIString(reglas)
      
 End Sub
