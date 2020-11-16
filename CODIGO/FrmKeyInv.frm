@@ -23,7 +23,6 @@ Begin VB.Form FrmKeyInv
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox interface 
       Appearance      =   0  'Flat
-      AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       CausesValidation=   0   'False
@@ -107,15 +106,19 @@ Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     End If
 End Sub
 
+Private Sub Form_Activate()
+    If InvKeys.OBJIndex(1) = 0 Then
+        NombreLlave.Caption = "Aquí aparecerán las llaves que consigas"
+    End If
+End Sub
+
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanallavero.bmp")
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If InvKeys.OBJIndex(0) = 0 Then
-        NombreLlave.Caption = "Aquí aparecerán las llaves que consigas"
-    Else
+    If InvKeys.OBJIndex(1) <> 0 Then
         NombreLlave.Caption = vbNullString
     End If
     
@@ -141,7 +144,9 @@ Private Sub interface_MouseMove(Button As Integer, Shift As Integer, x As Single
     Slot = InvKeys.GetSlot(x, y)
     
     If Slot <> 0 Then
-        NombreLlave.Caption = InvKeys.ItemName(Slot)
+        If InvKeys.OBJIndex(Slot) <> 0 Then
+            NombreLlave.Caption = InvKeys.ItemName(Slot)
+        End If
     End If
     
     If cmdCerrar.Tag = "1" Then
