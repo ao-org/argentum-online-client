@@ -98,7 +98,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteOnline
                 
             Case "/SALIR"
-
                 If UserParalizado Or UserInmovilizado Then 'Inmo
 
                     With FontTypes(FontTypeNames.FONTTYPE_WARNING)
@@ -116,7 +115,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteGuildLeave
                 
             Case "/BALANCE"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -131,7 +129,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteRequestAccountState
                 
             Case "/QUIETO"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -146,7 +143,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WritePetStand
                                 
             Case "/ENTRENAR"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -161,7 +157,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteTrainList
                 
             Case "/DESCANSAR"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -176,13 +171,18 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteRest
                 
             Case "/MEDITAR"
-                If UserMinMAN = UserMaxMAN Then Exit Sub
+                If UserMinMAN = UserMaxMAN Then
+                    With FontTypes(FontTypeNames.FONTTYPE_INFOBOLD)
+                        Call ShowConsoleMsg("¡Tu maná está completo!", .red, .green, .blue, .bold, .italic)
+                    End With
+
+                    Exit Sub
+                End If
                 
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
-
                     End With
 
                     Exit Sub
@@ -210,7 +210,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteEventoInfo
                 
             Case "/COMERCIAR"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -234,7 +233,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteCommerceStart
                 
             Case "/BOVEDA"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -267,7 +265,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteUpTime
                 
             Case "/ENCUESTA"
-
                 If CantidadArgumentos = 0 Then
                     ' Version sin argumentos: Inquiry
                     Call WriteInquiry
@@ -285,7 +282,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
         
             Case "/CMSG"
-
                 'Ojo, no usar notNullArguments porque se usa el string vacio para borrar cartel.
                 If CantidadArgumentos > 0 Then
                     Call WriteGuildMessage(ArgumentosRaw)
@@ -296,7 +292,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/GRUPO"
-
                 'Ojo, no usar notNullArguments porque se usa el string vacio para borrar cartel.
                 If CantidadArgumentos > 0 Then
                     Call WriteGrupoMsg(ArgumentosRaw)
@@ -307,7 +302,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
             
             Case "/CENTINELA"
-
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then
                         Call WriteCentinelReport(CInt(ArgumentosRaw))
@@ -327,7 +321,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteGuildOnline
                 
             Case "/BMSG"
-
                 If notNullArguments Then
                     Call WriteCouncilMessage(ArgumentosRaw)
                 Else
@@ -337,7 +330,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/ROL"
-
                 If notNullArguments Then
                     Call WriteRoleMasterRequest(ArgumentosRaw)
                 Else
@@ -350,7 +342,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 FrmGmAyuda.Show vbModeless, frmmain
                  
             Case "/OFERTAINICIAL"
-
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
                         If ArgumentosRaw > 0 Then
@@ -373,7 +364,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
             
             Case "/OFERTAR"
-
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
                         If ArgumentosRaw > 0 Then
@@ -396,7 +386,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                         
             Case "/DESC"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -422,7 +411,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteChangeDescription(ArgumentosRaw)
             
             Case "/VOTO"
-
                 If notNullArguments Then
                     Call WriteGuildVote(ArgumentosRaw)
                 Else
@@ -432,7 +420,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                
             Case "/PENAS"
-
                 If notNullArguments Then
                     Call WritePunishments(ArgumentosRaw)
                 Else
@@ -445,7 +432,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call frmNewPassword.Show(vbModal, frmmain)
             
             Case "/APOSTAR"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -473,7 +459,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/RETIRAR"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -502,7 +487,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
     
             Case "/DEPOSITAR"
-
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -541,7 +525,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteDenounce
 
             Case "/PROPONER"
-
                 If notNullArguments Then
                     Call WriteCasamiento(ArgumentosRaw)
                 Else
@@ -555,7 +538,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 '
             
             Case "/GMSG"
-
                 If notNullArguments Then
                     Call WriteGMMessage(ArgumentosRaw)
                 Else
@@ -574,7 +556,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteOnlineChaosLegion
                 
             Case "/IRCERCA"
-
                 If notNullArguments Then
                     Call WriteGoNearby(ArgumentosRaw)
                 Else
@@ -584,7 +565,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/REM"
-
                 If notNullArguments Then
                     Call WriteComment(ArgumentosRaw)
                 Else
@@ -597,7 +577,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call Protocol.WriteServerTime
             
             Case "/DONDE"
-
                 If notNullArguments Then
                     Call WriteWhere(ArgumentosRaw)
                 Else
@@ -607,7 +586,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/NENE"
-
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then
                         Call WriteCreaturesInMap(ArgumentosRaw)
@@ -627,7 +605,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteWarpMeToTarget
                 
             Case "/TELEP"
-            
                 If notNullArguments Then
                     If CantidadArgumentos >= 4 Then
                         If ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Byte) Then
@@ -659,7 +636,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/SILENCIAR"
-
                 If notNullArguments Then
                     Call WriteSilence(ArgumentosRaw)
                 Else
@@ -669,7 +645,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/CUENTAREGRESIVA"
-
                 If notNullArguments Then
                     Call WriteCuentaRegresiva(ArgumentosRaw)
                 Else
@@ -679,7 +654,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
             
             Case "/LOG"
-
                 If notNullArguments Then
                     Call WritePossUser(ArgumentosRaw)
                 Else
@@ -689,7 +663,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/SHOW"
-
                 If notNullArguments Then
 
                     Select Case UCase$(ArgumentosAll(0))
@@ -702,7 +675,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/IRA"
-
                 If EsGM Then
                     If notNullArguments Then
                         Call WriteGoToChar(ArgumentosRaw)
@@ -715,7 +687,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/GO"
-
                 If EsGM Then
                     If notNullArguments Then
                         If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
@@ -734,11 +705,36 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/DESBUGGEAR"
-
                 If EsGM Then
                     Call WriteDesbuggear(ArgumentosRaw)
-
                 End If
+                
+            Case "/DARLLAVE"
+                If EsGM Then
+                    If notNullArguments Or CantidadArgumentos < 2 Then
+                        If Not ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
+                            Call ShowConsoleMsg("Número de llave inválida. Utilice /darllave NICKNAME LLAVE(ID DE OBJETO)")
+                        Else
+                            Call WriteDarLlaveAUsuario(ArgumentosAll(0), Val(ArgumentosAll(1)))
+                        End If
+                    Else
+                        'Avisar que falta el parametro
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /darllave NICKNAME LLAVE")
+                    End If
+                End If
+                
+            Case "/SACARLLAVE"
+                If EsGM Then
+                    If notNullArguments Then
+                        Call WriteSacarLlave(ArgumentosRaw)
+                    Else
+                        'Avisar que falta el parametro
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /sacarllave NICKNAME o /sacarllave LLAVE")
+                    End If
+                End If
+                
+            Case "/VERLLAVES"
+                Call WriteVerLlaves
         
             Case "/INVISIBLE"
                 Call WriteInvisible
@@ -760,7 +756,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteHiding
                 
             Case "/CARCEL"
-
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@")
 

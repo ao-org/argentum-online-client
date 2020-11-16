@@ -809,8 +809,8 @@ Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
 
 End Function
 
-Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As Boolean
-    FileExist = (Dir$(File, FileType) <> "")
+Function FileExist(ByVal file As String, ByVal FileType As VbFileAttribute) As Boolean
+    FileExist = (Dir$(file, FileType) <> "")
 
 End Function
 
@@ -922,15 +922,15 @@ Sub Main()
  
 End Sub
 
-Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
+Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
-    writeprivateprofilestring Main, Var, Value, File
+    writeprivateprofilestring Main, Var, value, file
 
 End Sub
 
-Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
+Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String) As String
 
     '*****************************************************************
     'Gets a Var from a text file
@@ -939,7 +939,7 @@ Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String)
     
     sSpaces = Space$(100) ' This tells the computer how long the longest string can be. If you want, you can change the number 100 to any number you wish
     
-    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), File
+    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), file
     
     GetVar = RTrim$(sSpaces)
     GetVar = Left$(GetVar, Len(GetVar) - 1)
@@ -1203,7 +1203,6 @@ Public Sub CloseClient()
     Set frmComerciar.InvComUsu = Nothing
     Set frmBancoObj.InvBankUsu = Nothing
     Set frmBancoObj.InvBoveda = Nothing
-    
     Set FrmKeyInv.InvKeys = Nothing
     
     ' Call UnloadAllForms
