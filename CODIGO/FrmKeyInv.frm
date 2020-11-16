@@ -69,9 +69,9 @@ Begin VB.Form FrmKeyInv
    End
    Begin VB.Image cmdCerrar 
       Height          =   420
-      Left            =   3135
+      Left            =   3150
       Tag             =   "0"
-      Top             =   0
+      Top             =   15
       Width           =   465
    End
 End
@@ -91,7 +91,7 @@ Public WithEvents InvKeys As clsGrapchicalInventory
 Attribute InvKeys.VB_VarHelpID = -1
 
 Private Sub cmdcerrar_Click()
-    Unload Me
+    frmmain.CerrarLlavero
 End Sub
 
 Private Sub cmdCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -99,7 +99,7 @@ Private Sub cmdCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single
     cmdCerrar.Tag = "1"
 End Sub
 
-Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If cmdCerrar.Tag = "0" Then
         cmdCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         cmdCerrar.Tag = "1"
@@ -115,6 +115,7 @@ End Sub
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanallavero.bmp")
+    cmdCerrar.Picture = Nothing
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)

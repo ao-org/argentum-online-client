@@ -726,10 +726,14 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/SACARLLAVE"
                 If EsGM Then
                     If notNullArguments Then
-                        Call WriteSacarLlave(ArgumentosRaw)
+                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
+                            Call WriteSacarLlave(Val(ArgumentosAll(0)))
+                        Else
+                            Call ShowConsoleMsg("Parámetro inválido. Utilice /sacarllave LLAVE(ID DE OBJETO)")
+                        End If
                     Else
                         'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan parámetros. Utilice /sacarllave NICKNAME o /sacarllave LLAVE")
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /sacarllave LLAVE")
                     End If
                 End If
                 
