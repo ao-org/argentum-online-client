@@ -2303,7 +2303,7 @@ End Sub
 
 Private Sub manabar_Click()
 
-    'If UserMinMAN = UserMaxMAN Then Exit Sub
+    If UserMinMAN = UserMaxMAN Then Exit Sub
             
     If UserEstado = 1 Then
 
@@ -2945,7 +2945,6 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
             ElseIf Left$(stxtbuffer, 1) = ";" Then
 
                 If Right$(stxtbuffer, Len(stxtbuffer) - 1) <> "" Then Call ParseUserCommand("/CONSOLA " & Right$(stxtbuffer, Len(stxtbuffer) - 1))
-                SendingType = 7
                 sndPrivateTo = ""
             
             ElseIf Left$(stxtbuffer, 1) = "/RMSG" Then
