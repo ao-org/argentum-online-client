@@ -26,7 +26,7 @@ End Type
 Type tBindedKey
 
     KeyCode As Integer
-    name As String
+    Name As String
 
 End Type
 
@@ -57,7 +57,7 @@ Sub LoadDefaultBinds()
 
     For lC = 1 To NUMBINDS
         BindKeys(lC).KeyCode = Val(General_Field_Read(1, General_Var_Get(Arch, "DEFAULTS", str(lC)), ","))
-        BindKeys(lC).name = General_Field_Read(2, General_Var_Get(Arch, "DEFAULTS", str(lC)), ",")
+        BindKeys(lC).Name = General_Field_Read(2, General_Var_Get(Arch, "DEFAULTS", str(lC)), ",")
     Next lC
 
 End Sub
@@ -73,7 +73,7 @@ Sub LoadDefaultBinds2()
 
     For lC = 1 To NUMBINDS
         BindKeys(lC).KeyCode = Val(General_Field_Read(1, General_Var_Get(Arch, "DEFAULTSMODERN", str(lC)), ","))
-        BindKeys(lC).name = General_Field_Read(2, General_Var_Get(Arch, "DEFAULTSMODERN", str(lC)), ",")
+        BindKeys(lC).Name = General_Field_Read(2, General_Var_Get(Arch, "DEFAULTSMODERN", str(lC)), ",")
     Next lC
 
 End Sub
@@ -250,7 +250,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             
         Case BindKeys(21).KeyCode
     
-            'If UserMinMAN = UserMaxMAN Then Exit Function
+            If UserMinMAN = UserMaxMAN Then Exit Function
                 
             If UserEstado = 1 Then
     
