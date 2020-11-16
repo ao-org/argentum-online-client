@@ -138,8 +138,8 @@ Begin VB.Form frmmain
          Appearance      =   0  'Flat
          BackColor       =   &H00000000&
          BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
+            Name            =   "Tahoma"
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -554,7 +554,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1139,11 +1138,11 @@ Begin VB.Form frmmain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00E0E0E0&
-      Height          =   255
-      Left            =   9456
+      Height          =   165
+      Left            =   9210
       TabIndex        =   0
-      Top             =   33
-      Width           =   1740
+      Top             =   30
+      Width           =   2205
    End
    Begin VB.Label lblLvl 
       Alignment       =   2  'Center
