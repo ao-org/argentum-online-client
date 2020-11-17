@@ -178,7 +178,125 @@ Public Sub Geometry_Create_Box(ByRef verts() As TLVERTEX, ByRef dest As RECT, By
 
 End Sub
 
+Public Sub Geometry_Create_Box_Viejo(ByRef verts() As TLVERTEX, ByRef dest As RECT, ByRef src As RECT, ByRef rgb_list() As Long, Optional ByRef Textures_Width As Long, Optional ByRef Textures_Height As Long, Optional ByVal angle As Single)
 
+    '**************************************************************
+    'Author: Aaron Perkins
+    'Modified by Juan Martín Sotuyo Dodero
+    'Last Modify Date: 11/17/2002
+    '
+    ' * v1      * v3
+    ' |\        |
+    ' |  \      |
+    ' |    \    |
+    ' |      \  |
+    ' |        \|
+    ' * v0      * v2
+    '**************************************************************
+    Dim x_center    As Single
+
+    Dim y_center    As Single
+
+    Dim radius      As Single
+
+    Dim x_Cor       As Single
+
+    Dim y_Cor       As Single
+
+    Dim left_point  As Single
+
+    Dim right_point As Single
+
+    Dim temp        As Single
+    
+    If angle > 0 Then
+        'Center coordinates on screen of the square
+        x_center = dest.Left + (dest.Right - dest.Left) / 2
+        y_center = dest.Top + (dest.bottom - dest.Top) / 2
+        
+        'Calculate radius
+        radius = Sqr((dest.Right - x_center) ^ 2 + (dest.bottom - y_center) ^ 2)
+        
+        'Calculate left and right points
+        temp = (dest.Right - x_center) / radius
+        right_point = Atn(temp / Sqr(-temp * temp + 1))
+        left_point = PI - right_point
+
+    End If
+    
+    'Calculate screen coordinates of sprite, and only rotate if necessary
+    If angle = 0 Then
+        x_Cor = dest.Left
+        y_Cor = dest.bottom
+    Else
+        x_Cor = x_center + Cos(-left_point - angle) * radius
+        y_Cor = y_center - Sin(-left_point - angle) * radius
+
+    End If
+    
+    '0 - Bottom left vertex
+    If Textures_Width And Textures_Height Then
+        verts(0) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(0), 0, src.Left / Textures_Width, (src.bottom + 1) / Textures_Height)
+    Else
+        verts(0) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(0), 0, 0, 0)
+
+    End If
+
+    'Calculate screen coordinates of sprite, and only rotate if necessary
+    If angle = 0 Then
+        x_Cor = dest.Left
+        y_Cor = dest.Top
+    Else
+        x_Cor = x_center + Cos(left_point - angle) * radius
+        y_Cor = y_center - Sin(left_point - angle) * radius
+
+    End If
+    
+    '1 - Top left vertex
+    If Textures_Width And Textures_Height Then
+        verts(1) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(1), 0, src.Left / Textures_Width, src.Top / Textures_Height)
+    Else
+        verts(1) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(1), 0, 0, 1)
+
+    End If
+
+    'Calculate screen coordinates of sprite, and only rotate if necessary
+    If angle = 0 Then
+        x_Cor = dest.Right
+        y_Cor = dest.bottom
+    Else
+        x_Cor = x_center + Cos(-right_point - angle) * radius
+        y_Cor = y_center - Sin(-right_point - angle) * radius
+
+    End If
+    
+    '2 - Bottom right vertex
+    If Textures_Width And Textures_Height Then
+        verts(2) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(2), 0, (src.Right + 1) / Textures_Width, (src.bottom + 1) / Textures_Height)
+    Else
+        verts(2) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(2), 0, 1, 0)
+
+    End If
+
+    'Calculate screen coordinates of sprite, and only rotate if necessary
+    If angle = 0 Then
+        x_Cor = dest.Right
+        y_Cor = dest.Top
+    Else
+        x_Cor = x_center + Cos(right_point - angle) * radius
+        y_Cor = y_center - Sin(right_point - angle) * radius
+
+    End If
+    
+    '3 - Top right vertex
+    If Textures_Width And Textures_Height Then
+        verts(3) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(3), 0, (src.Right + 1) / Textures_Width, src.Top / Textures_Height)
+    Else
+        verts(3) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(3), 0, 1, 1)
+
+    End If
+
+End Sub
 
 Public Function BinarySearch(ByVal charindex As Integer) As Integer
 

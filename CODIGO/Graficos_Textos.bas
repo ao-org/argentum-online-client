@@ -986,11 +986,11 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
                     graf.GrhIndex = Fuentes(font_index).Caracteres(b)
 
                     If font_index <> 3 Then
-                        Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, Sombra())
+                        Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, Sombra())
 
                     End If
 
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -1028,8 +1028,8 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
 
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
+                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico

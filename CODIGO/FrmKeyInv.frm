@@ -61,10 +61,10 @@ Begin VB.Form FrmKeyInv
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   375
+      Height          =   480
       Left            =   240
       TabIndex        =   1
-      Top             =   2325
+      Top             =   2295
       Width           =   3135
    End
    Begin VB.Image cmdCerrar 

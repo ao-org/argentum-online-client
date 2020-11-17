@@ -431,6 +431,14 @@ Public Sub Draw_GrhColor(ByVal grh_index As Long, ByVal x As Integer, ByVal y As
 
 End Sub
 
+Public Sub Draw_GrhFont(ByVal grh_index As Long, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As Long)
+
+    If grh_index <= 0 Then Exit Sub
+
+    Device_Box_Textured_Render_Viejo grh_index, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, text_color, GrhData(grh_index).sX, GrhData(grh_index).sY
+
+End Sub
+
 Public Sub Draw_GrhIndexColor(ByVal grh_index As Long, ByVal x As Integer, ByVal y As Integer)
 
     If grh_index <= 0 Then Exit Sub
@@ -1944,6 +1952,84 @@ Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As In
     
     'Set up the TempVerts(3) vertices
     Geometry_Create_Box temp_verts(), dest_rect, src_rect, light_value(), d3dTextures.texwidth, d3dTextures.texheight, angle
+     
+    'Set Textures
+    D3DDevice.SetTexture 0, d3dTextures.texture
+    
+    If alpha_blend Then
+        'Set Rendering for alphablending
+        D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_ONE
+        D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_ONE
+
+    End If
+    
+    'Draw the triangles that make up our square Textures
+    D3DDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    
+    If alpha_blend Then
+        'Set Rendering for colokeying
+        D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
+        D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
+
+    End If
+    
+    D3DDevice.SetRenderState D3DRS_ALPHABLENDENABLE, 1
+    D3DDevice.SetRenderState D3DRS_ALPHATESTENABLE, 1
+ 
+    'D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE
+    'D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1
+
+End Sub
+
+Public Sub Device_Box_Textured_Render_Viejo(ByVal GrhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef rgb_list() As Long, ByVal src_x As Integer, ByVal src_y As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single)
+
+    '**************************************************************
+    'Author: Juan Martín Sotuyo Dodero
+    'Last Modify Date: 2/12/2004
+    'Just copies the Textures
+    '**************************************************************
+    Static src_rect            As RECT
+
+    Static dest_rect           As RECT
+
+    Static temp_verts(3)       As TLVERTEX
+
+    Static d3dTextures         As D3D8Textures
+
+    Static light_value(0 To 3) As Long
+    
+    If GrhIndex = 0 Then Exit Sub
+    
+    Set d3dTextures.texture = SurfaceDB.GetTexture(GrhData(GrhIndex).FileNum, d3dTextures.texwidth, d3dTextures.texheight)
+    
+    light_value(0) = rgb_list(0)
+    light_value(1) = rgb_list(1)
+    light_value(2) = rgb_list(2)
+    light_value(3) = rgb_list(3)
+ 
+    If (light_value(0) = 0) Then light_value(0) = map_base_light
+    If (light_value(1) = 0) Then light_value(1) = map_base_light
+    If (light_value(2) = 0) Then light_value(2) = map_base_light
+    If (light_value(3) = 0) Then light_value(3) = map_base_light
+        
+    'Set up the source rectangle
+    With src_rect
+        .bottom = src_y + src_height
+        .Left = src_x
+        .Right = src_x + src_width
+        .Top = src_y
+    End With
+                
+    'Set up the destination rectangle
+    With dest_rect
+        .bottom = dest_y + src_height
+        .Left = dest_x
+        .Right = dest_x + src_width
+        .Top = dest_y
+    End With
+    
+    'Set up the TempVerts(3) vertices
+    Geometry_Create_Box_Viejo temp_verts(), dest_rect, src_rect, light_value(), d3dTextures.texwidth, d3dTextures.texheight, angle
      
     'Set Textures
     D3DDevice.SetTexture 0, d3dTextures.texture
