@@ -484,18 +484,18 @@ Public Sub DrawInventory()
             If (i > MAX_NORMAL_INVENTORY_SLOTS) Then
                 y = y + MAININVENTORY_MIDSPACE
 
-                If (i - MAX_NORMAL_INVENTORY_SLOTS) <= (UserInvUnlocked * (InvWidth / (ITEM_OFFSET_X))) Then
+                If (i - MAX_NORMAL_INVENTORY_SLOTS) <= (UserInvUnlocked * (InvWidth / ITEM_OFFSET_X)) Then
                     'Slot Desbloqueado
-                    Call Draw_GrhColor(GRH_INVENTORYSLOT_EXTRA, x, y, COLOR_WHITE)
+                    Call Draw_GrhIndex(GRH_INVENTORYSLOT_EXTRA, x, y)
                 Else
                     'Slot Bloqueado
-                    Call Draw_GrhColor(GRH_INVENTORYSLOT_LOCKED, x, y, COLOR_WHITE)
+                    Call Draw_GrhIndex(GRH_INVENTORYSLOT_LOCKED, x, y)
 
                 End If
 
             Else
                 'Slot Default
-                Call Draw_GrhColor(GRH_INVENTORYSLOT, x, y, COLOR_WHITE)
+                Call Draw_GrhIndex(GRH_INVENTORYSLOT, x, y)
             End If
         End If
 

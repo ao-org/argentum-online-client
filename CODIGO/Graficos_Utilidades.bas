@@ -116,7 +116,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TLVERTEX, ByRef dest As RECT, By
     
     '0 - Bottom left vertex
     If Textures_Width And Textures_Height Then
-        verts(0) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(0), 0, src.Left / Textures_Width, (src.bottom + 1) / Textures_Height)
+        verts(0) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(0), 0, src.Left / Textures_Width, src.bottom / Textures_Height)
     Else
         verts(0) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(0), 0, 0, 0)
 
@@ -152,7 +152,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TLVERTEX, ByRef dest As RECT, By
     
     '2 - Bottom right vertex
     If Textures_Width And Textures_Height Then
-        verts(2) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(2), 0, (src.Right + 1) / Textures_Width, (src.bottom + 1) / Textures_Height)
+        verts(2) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(2), 0, src.Right / Textures_Width, src.bottom / Textures_Height)
     Else
         verts(2) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(2), 0, 1, 0)
 
@@ -170,7 +170,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TLVERTEX, ByRef dest As RECT, By
     
     '3 - Top right vertex
     If Textures_Width And Textures_Height Then
-        verts(3) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(3), 0, (src.Right + 1) / Textures_Width, src.Top / Textures_Height)
+        verts(3) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(3), 0, src.Right / Textures_Width, src.Top / Textures_Height)
     Else
         verts(3) = Geometry_Create_TLVertex(x_Cor, y_Cor, 0, 1, rgb_list(3), 0, 1, 1)
 

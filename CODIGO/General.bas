@@ -426,7 +426,7 @@ Sub SetConnected()
     frmmain.Image2(1).Tag = "0"
     OpcionMenu = 0
     frmmain.Image2(1).Picture = Nothing
-    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmmain.Panel.Picture = LoadInterface("centroinventario.bmp")
     '            Image2(0).Visible = False
     ' Image2(1).Visible = True
 
@@ -508,12 +508,10 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     Else
 
-        If charlist(UserCharIndex).Heading <> Direccion And Not UserParalizado Then
+        If charlist(UserCharIndex).Heading <> Direccion Then
             If IntervaloPermiteHeading(True) Then
                 Call WriteChangeHeading(Direccion)
-
             End If
-
         End If
 
     End If
@@ -922,11 +920,11 @@ Sub Main()
  
 End Sub
 
-Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
+Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
-    writeprivateprofilestring Main, Var, value, file
+    writeprivateprofilestring Main, Var, Value, file
 
 End Sub
 
