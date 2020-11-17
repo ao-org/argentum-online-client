@@ -1442,7 +1442,12 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
                 'Object Layer **********************************
                 If MapData(x, y).ObjGrh.GrhIndex <> 0 Then
-                    Call Draw_Grh(MapData(x, y).ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value(), , x, y)
+                
+                    If EsArbol(MapData(x, y).ObjGrh.GrhIndex) Then
+                    
+                    Else
+                        Call Draw_Grh(MapData(x, y).ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value(), , x, y)
+                    End If
 
                 End If
                 
@@ -1504,9 +1509,9 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                 'Layer 3 *****************************************
                 If .Graphic(3).GrhIndex <> 0 Then
                     If EsArbol(.Graphic(3).GrhIndex) Then
-                        Call Draw_Sombra(.Graphic(3), PixelOffsetXTemp + 40, PixelOffsetYTemp, 1, 1, False, x, y)
+                        'Call Draw_Sombra(.Graphic(3), PixelOffsetXTemp + 40, PixelOffsetYTemp, 1, 1, False, x, y)
                         
-                        If Abs(UserPos.x - x) <= 3 And y - UserPos.y <= 0 And y - UserPos.y >= 6 Then
+                        If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 5 And (Abs(UserPos.y) < y) Then
                             Dim arbol_alfa(0 To 3) As Long
                             arbol_alfa(0) = D3DColorARGB(200, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
                             arbol_alfa(1) = arbol_alfa(0)
