@@ -432,7 +432,7 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
 End Function
 
 Private Sub Alpha_Change()
-    AlphaMacro = Alpha.value
+    AlphaMacro = Alpha.Value
 
 End Sub
 
@@ -654,7 +654,7 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 End Sub
 
-Private Sub cmdcerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If cmdCerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
@@ -708,7 +708,14 @@ Private Sub Form_Load()
     Me.Picture = LoadInterface("VentanaConfiguracion.bmp")
     
 End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
 
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+End Sub
 Private Sub moverForm()
 
     Dim res As Long
@@ -800,7 +807,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
 End Sub
 
-Private Sub cmdCerrar_Click()
+Private Sub cmdcerrar_Click()
     Call GuardarOpciones
     Me.Visible = False
     frmmain.SetFocus
@@ -896,21 +903,21 @@ Public Sub Init()
 
     End If
     
-    scrVolume.value = VolFX
-    HScroll1.value = VolAmbient
-    scrMidi.value = VolMusic
+    scrVolume.Value = VolFX
+    HScroll1.Value = VolAmbient
+    scrMidi.Value = VolMusic
     
-    Alpha.value = AlphaMacro
+    Alpha.Value = AlphaMacro
     
-    scrSens.value = SensibilidadMouse
+    scrSens.Value = SensibilidadMouse
     
     Me.Show vbModeless, frmmain
 
 End Sub
 
 Private Sub HScroll1_Change()
-    Sound.Ambient_Volume_Set HScroll1.value
-    VolAmbient = HScroll1.value
+    Sound.Ambient_Volume_Set HScroll1.Value
+    VolAmbient = HScroll1.Value
 
 End Sub
 
@@ -922,8 +929,8 @@ End Sub
 Private Sub scrMidi_Change()
 
     If Musica <> CONST_DESHABILITADA Then
-        Sound.Music_Volume_Set scrMidi.value
-        Sound.VolumenActualMusicMax = scrMidi.value
+        Sound.Music_Volume_Set scrMidi.Value
+        Sound.VolumenActualMusicMax = scrMidi.Value
         VolMusic = Sound.VolumenActualMusicMax
 
     End If
@@ -931,15 +938,15 @@ Private Sub scrMidi_Change()
 End Sub
 
 Private Sub scrSens_Change()
-    MouseS = scrSens.value
+    MouseS = scrSens.Value
     SensibilidadMouse = MouseS
     Call General_Set_Mouse_Speed(MouseS)
-    txtMSens.Caption = scrSens.value
+    txtMSens.Caption = scrSens.Value
 
 End Sub
 
 Private Sub scrVolume_Change()
-    Sound.VolumenActual = scrVolume.value
+    Sound.VolumenActual = scrVolume.Value
     VolFX = Sound.VolumenActual
 
 End Sub

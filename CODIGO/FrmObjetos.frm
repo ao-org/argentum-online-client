@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
 Begin VB.Form FrmObjetos 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Crear objeto"
@@ -304,11 +304,11 @@ Private Sub Command3_Click()
 
     For i = 1 To NumOBJs
 
-        If InStr(1, Tilde(UCase$(ObjData(i).name)), Tilde(UCase$(Text1)), vbTextCompare) Then
+        If InStr(1, Tilde(UCase$(ObjData(i).Name)), Tilde(UCase$(Text1)), vbTextCompare) Then
 
             Dim subelemento As ListItem
 
-            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).name)
+            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
             
             subelemento.SubItems(1) = i
 
@@ -330,6 +330,14 @@ End Sub
 
 Private Sub Command2_Click()
     Unload Me
+
+End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
 
 End Sub
 

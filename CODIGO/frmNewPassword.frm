@@ -100,6 +100,14 @@ Private Sub Form_Load()
     Me.Picture = LoadInterface("password.bmp")
 
 End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     Image1.Picture = Nothing

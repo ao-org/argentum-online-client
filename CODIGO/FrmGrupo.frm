@@ -199,6 +199,14 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
 
 End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     cmdExpulsar.Picture = Nothing

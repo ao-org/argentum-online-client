@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
 Begin VB.Form frmMapaGrande 
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
@@ -14,7 +14,6 @@ Begin VB.Form frmMapaGrande
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmMapaGrande.frx":0000
    ScaleHeight     =   719
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   690
@@ -142,7 +141,7 @@ Begin VB.Form frmMapaGrande
       ForeColor       =   &H80000008&
       Height          =   8910
       Left            =   480
-      Picture         =   "frmMapaGrande.frx":16BBAA
+      Picture         =   "frmMapaGrande.frx":0000
       ScaleHeight     =   594
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   432
@@ -472,6 +471,7 @@ Private Sub Form_Activate()
     ' SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
 End Sub
 
+
 Private Sub moverForm()
 
     Dim res As Long
@@ -652,7 +652,7 @@ Private Sub ListView1_Click()
     
     If ListView1.ListItems.count <= 0 Then Exit Sub
 
-    Label8.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).name
+    Label8.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Name
 
     Dim i As Byte
 
@@ -663,7 +663,7 @@ Private Sub ListView1_Click()
     Label9.Caption = "Exp. de clan: " & NpcData(ListView1.SelectedItem.SubItems(2)).ExpClan & " puntos"
     listdrop.ListItems.Clear
     
-    ListView1.ToolTipText = NpcData(ListView1.SelectedItem.SubItems(2)).name
+    ListView1.ToolTipText = NpcData(ListView1.SelectedItem.SubItems(2)).Name
     
     If ListView1.SelectedItem.SubItems(2) <> "" Then
     
@@ -680,7 +680,7 @@ Private Sub ListView1_Click()
 
                 Dim subelemento As ListItem
 
-                Set subelemento = frmMapaGrande.listdrop.ListItems.Add(, , ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).name)
+                Set subelemento = frmMapaGrande.listdrop.ListItems.Add(, , ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).Name)
 
                 subelemento.SubItems(1) = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).GrhIndex
 
@@ -704,7 +704,7 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 
     Dim PosY As Integer
 
-    Dim mapa As Integer
+    Dim Mapa As Integer
     
     'lblAllies.top = Y * 18 / 32
     'lblAllies.left = X * 14 / 32
@@ -720,30 +720,30 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     PosY = Int(y / TILE_SIZE) ' PosY = Valor entero entre 0 y (MAPAS_ALTO - 1)
     
     ' Uso estas coordeandas para calcular el índice del mapa
-    mapa = PosX + PosY * MAPAS_ANCHO + 1 ' +1 porque los mapas empiezan en 1
+    Mapa = PosX + PosY * MAPAS_ANCHO + 1 ' +1 porque los mapas empiezan en 1
     
     ' Luego multiplico por TILE_SIZE para tener la posición final en donde poner el indicador
     PosX = PosX * TILE_SIZE
     PosY = PosY * TILE_SIZE
 
     If Dungeon Then
-        If DungeonData(mapa) <> 0 Then Exit Sub
-        Call CargarDatosMapa(DungeonData(mapa))
-        lblMapInfo(0) = MapDat.map_name & "(" & DungeonData(mapa) & ")"
+        If DungeonData(Mapa) <> 0 Then Exit Sub
+        Call CargarDatosMapa(DungeonData(Mapa))
+        lblMapInfo(0) = MapDat.map_name & "(" & DungeonData(Mapa) & ")"
         
         If Button = vbRightButton Then
-            Call ParseUserCommand("/TELEP YO " & DungeonData(mapa) & " " & 50 & " " & 50)
+            Call ParseUserCommand("/TELEP YO " & DungeonData(Mapa) & " " & 50 & " " & 50)
 
         End If
 
     Else
 
-        If WordMapa(mapa) = 0 Then Exit Sub
-        Call CargarDatosMapa(WordMapa(mapa))
-        lblMapInfo(0) = MapDat.map_name & "(" & WordMapa(mapa) & ")"
+        If WordMapa(Mapa) = 0 Then Exit Sub
+        Call CargarDatosMapa(WordMapa(Mapa))
+        lblMapInfo(0) = MapDat.map_name & "(" & WordMapa(Mapa) & ")"
         
         If Button = vbRightButton Then
-            Call ParseUserCommand("/TELEP YO " & WordMapa(mapa) & " " & 50 & " " & 50)
+            Call ParseUserCommand("/TELEP YO " & WordMapa(Mapa) & " " & 50 & " " & 50)
 
         End If
 
