@@ -90,6 +90,7 @@ Private Enum ServerPacketID
     CharacterCreate         ' CC
     CharacterRemove         ' BP
     CharacterMove           ' MP, +, * and _ '
+    ForceCharMove
     CharacterChange         ' CP
     ObjectCreate            ' HO
     fxpiso
@@ -539,7 +540,9 @@ Private Enum NewPacksID
     QuestDetailsRequest
     QuestAbandon
     SeguroClan
-
+    CreatePretorianClan     '/CREARPRETORIANOS
+    RemovePretorianClan     '/ELIMINARPRETORIANOS
+    
 End Enum
 
 ''
@@ -742,6 +745,9 @@ Public Sub HandleIncomingData()
         
         Case ServerPacketID.CharacterMove           ' MP, +, * and _ '
             Call HandleCharacterMove
+            
+        Case ServerPacketID.ForceCharMove
+            Call HandleForceCharMove
         
         Case ServerPacketID.CharacterChange         ' CP
             Call HandleCharacterChange
@@ -2333,10 +2339,10 @@ Private Sub HandleUpdateExp()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     If UserPasarNivel > 0 Then
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "¡Nivel máximo!"
     End If
 
@@ -3833,9 +3839,7 @@ Private Sub HandleCharacterMove()
     Call incomingData.ReadByte
     
     Dim charindex As Integer
-
     Dim x         As Byte
-
     Dim y         As Byte
     
     charindex = incomingData.ReadInteger()
@@ -3856,6 +3860,27 @@ Private Sub HandleCharacterMove()
     
     Call RefreshAllChars
 
+End Sub
+
+''
+' Handles the ForceCharMove message.
+
+Private Sub HandleForceCharMove()
+    
+    If incomingData.length < 2 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    'Remove packet ID
+    Call incomingData.ReadByte
+    
+    Dim Direccion As Byte: Direccion = incomingData.ReadByte()
+    
+    Call Char_Move_by_Head(UserCharIndex, Direccion)
+    
+    Call RefreshAllChars
+    
 End Sub
 
 ''
@@ -4630,9 +4655,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel máximo!"
 
@@ -4789,7 +4814,7 @@ Private Sub HandleChangeInventorySlot()
     Dim MinHit            As Integer
     Dim MaxDef            As Integer
     Dim MinDef            As Integer
-    Dim Value             As Single
+    Dim value             As Single
     Dim podrausarlo       As Byte
     Dim ResistenciaMagica As Byte
     Dim DañoMagico As Byte
@@ -4798,7 +4823,7 @@ Private Sub HandleChangeInventorySlot()
     OBJIndex = buffer.ReadInteger()
     Amount = buffer.ReadInteger()
     Equipped = buffer.ReadBoolean()
-    Value = buffer.ReadSingle()
+    value = buffer.ReadSingle()
     podrausarlo = buffer.ReadByte()
     ResistenciaMagica = buffer.ReadByte()
     DañoMagico = buffer.ReadByte()
@@ -4866,11 +4891,11 @@ Private Sub HandleChangeInventorySlot()
     frmmain.lblResis = ResistenciaMagica & "%"
     frmmain.lbldm = DañoMagico & "%"
     
-    Call frmmain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, name, podrausarlo)
+    Call frmmain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
     
-    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, name, podrausarlo)
+    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
     
-    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, name, podrausarlo)
+    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, name, podrausarlo)
     
     Exit Sub
     
@@ -4954,7 +4979,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     Dim defense          As Integer
 
-    Dim Value            As Single
+    Dim value            As Single
 
     Dim PuedeUsar        As Byte
 
@@ -6717,7 +6742,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7124,7 +7149,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -7981,6 +8006,48 @@ Public Sub WriteTraerBoveda()
     Call outgoingData.WriteByte(ClientPacketID.newPacketID)
     Call outgoingData.WriteByte(NewPacksID.TraerBoveda)
 
+End Sub
+
+''
+' Writes the "CreatePretorianClan" message to the outgoing data buffer.
+'
+' @param    Map         The map in which create the pretorian clan.
+' @param    X           The x pos where the king is settled.
+' @param    Y           The y pos where the king is settled.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 29/10/2010
+'Writes the "CreatePretorianClan" message to the outgoing data buffer
+'***************************************************
+    With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.CreatePretorianClan)
+        Call .WriteInteger(map)
+        Call .WriteByte(x)
+        Call .WriteByte(y)
+    End With
+End Sub
+
+''
+' Writes the "DeletePretorianClan" message to the outgoing data buffer.
+'
+' @param    Map         The map which contains the pretorian clan to be removed.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteDeletePretorianClan(ByVal map As Integer)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 29/10/2010
+'Writes the "DeletePretorianClan" message to the outgoing data buffer
+'***************************************************
+    With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.RemovePretorianClan)
+        Call .WriteInteger(map)
+    End With
 End Sub
 
 ''
