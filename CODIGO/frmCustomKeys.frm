@@ -860,7 +860,7 @@ Private Sub GuardaConfigEnVariables()
     Dim i As Integer
 
     For i = 1 To NUMBINDS
-        BindKeys(i).name = txConfig(i - 1).Text
+        BindKeys(i).Name = txConfig(i - 1).Text
         BindKeys(i).KeyCode = TempVars(i - 1)
     Next
 
@@ -875,7 +875,7 @@ Private Sub CargaConfigEnForm()
     Dim i As Integer
 
     For i = 1 To NUMBINDS
-        txConfig(i - 1).Text = BindKeys(i).name
+        txConfig(i - 1).Text = BindKeys(i).Name
         TempVars(i - 1) = BindKeys(i).KeyCode
     Next
 
@@ -888,6 +888,14 @@ End Sub
 Private Sub Form_Load()
     Call CargaConfigEnForm
     Call FormParser.Parse_Form(Me)
+
+End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
 
 End Sub
 
@@ -936,9 +944,9 @@ End Sub
 
 Private Sub txConfig_KeyUp(Index As Integer, KeyCode As Integer, Shift As Integer)
 
-    Dim name As String
+    Dim Name As String
 
-    name = txConfig(Index).Text
+    Name = txConfig(Index).Text
 
     If KeyCode > 0 Then
     
@@ -950,110 +958,110 @@ Private Sub txConfig_KeyUp(Index As Integer, KeyCode As Integer, Shift As Intege
         End If
     
         If KeyCode = vbKeyShift Then
-            name = "Shift"
+            Name = "Shift"
         ElseIf KeyCode = vbKeyLeft Then
-            name = "Flecha Izquierda"
+            Name = "Flecha Izquierda"
         ElseIf KeyCode = vbKeyRight Then
-            name = "Flecha Derecha"
+            Name = "Flecha Derecha"
         ElseIf KeyCode = vbKeyDown Then
-            name = "Flecha Abajo"
+            Name = "Flecha Abajo"
         ElseIf KeyCode = vbKeyUp Then
-            name = "Flecha Arriba"
+            Name = "Flecha Arriba"
         ElseIf KeyCode = vbKeyControl Then
-            name = "Control"
+            Name = "Control"
         ElseIf KeyCode = vbKeyPageDown Then
-            name = "Page Down"
+            Name = "Page Down"
         ElseIf KeyCode = vbKeyPageUp Then
-            name = "Page Up"
+            Name = "Page Up"
         ElseIf KeyCode = vbKeySeparator Then 'Enter teclado numerico
-            name = "Intro"
+            Name = "Intro"
         ElseIf KeyCode = vbKeySpace Then
-            name = "Barra Espaciadora"
+            Name = "Barra Espaciadora"
         ElseIf KeyCode = vbKeyDelete Then
-            name = "Delete"
+            Name = "Delete"
         ElseIf KeyCode = vbKeyEnd Then
-            name = "Fin"
+            Name = "Fin"
         ElseIf KeyCode = vbKeyHome Then
-            name = "Inicio"
+            Name = "Inicio"
         ElseIf KeyCode = vbKeyInsert Then
-            name = "Insert"
+            Name = "Insert"
         ElseIf KeyCode = 109 Then
-            name = "-"
+            Name = "-"
         ElseIf KeyCode = 112 Then
-            name = "F1"
+            Name = "F1"
         ElseIf KeyCode = 113 Then
-            name = "F2"
+            Name = "F2"
         ElseIf KeyCode = 114 Then
-            name = "F3"
+            Name = "F3"
         ElseIf KeyCode = 115 Then
-            name = "F4"
+            Name = "F4"
         ElseIf KeyCode = 116 Then
-            name = "F5"
+            Name = "F5"
         ElseIf KeyCode = 117 Then
-            name = "F6"
+            Name = "F6"
         ElseIf KeyCode = 118 Then
-            name = "F7"
+            Name = "F7"
         ElseIf KeyCode = 119 Then
-            name = "F8"
+            Name = "F8"
         ElseIf KeyCode = 120 Then
-            name = "F9"
+            Name = "F9"
         ElseIf KeyCode = 121 Then
-            name = "F10"
+            Name = "F10"
         ElseIf KeyCode = 122 Then
-            name = "F11"
+            Name = "F11"
         ElseIf KeyCode = 123 Then
-            name = "F12"
+            Name = "F12"
         ElseIf KeyCode = 44 Then
-            name = "Impr. Pant"
+            Name = "Impr. Pant"
         ElseIf KeyCode = 106 Then
-            name = "*"
+            Name = "*"
         ElseIf KeyCode = vbKeyNumpad0 Then
-            name = "Numerico 0"
+            Name = "Numerico 0"
         ElseIf KeyCode = vbKeyNumpad1 Then
-            name = "Numerico 1"
+            Name = "Numerico 1"
         ElseIf KeyCode = vbKeyNumpad2 Then
-            name = "Numerico 2"
+            Name = "Numerico 2"
         ElseIf KeyCode = vbKeyNumpad3 Then
-            name = "Numerico 3"
+            Name = "Numerico 3"
         ElseIf KeyCode = vbKeyNumpad4 Then
-            name = "Numerico 4"
+            Name = "Numerico 4"
         ElseIf KeyCode = vbKeyNumpad5 Then
-            name = "Numerico 5"
+            Name = "Numerico 5"
         ElseIf KeyCode = vbKeyNumpad6 Then
-            name = "Numerico 6"
+            Name = "Numerico 6"
         ElseIf KeyCode = vbKeyNumpad7 Then
-            name = "Numerico 7"
+            Name = "Numerico 7"
         ElseIf KeyCode = vbKeyNumpad8 Then
-            name = "Numerico 8"
+            Name = "Numerico 8"
         ElseIf KeyCode = vbKeyNumpad9 Then
-            name = "Numerico 9"
+            Name = "Numerico 9"
         ElseIf KeyCode = vbKeyAdd Then
-            name = "Numerico +"
+            Name = "Numerico +"
         ElseIf KeyCode = 110 Then
-            name = "Numerico ."
+            Name = "Numerico ."
         ElseIf KeyCode = 226 Then
-            name = "<"
+            Name = "<"
         ElseIf KeyCode = 189 Then
-            name = "-"
+            Name = "-"
         ElseIf KeyCode = 188 Then
-            name = ","
+            Name = ","
         ElseIf KeyCode = 190 Then
-            name = "."
+            Name = "."
         Else
     
-            name = Chr(KeyCode)
+            Name = Chr(KeyCode)
 
         End If
     
-        Call Change_TempKey(Index, KeyCode, name)
+        Call Change_TempKey(Index, KeyCode, Name)
 
     End If
 
 End Sub
 
-Sub Change_TempKey(Index As Integer, KeyCode As Integer, name As String)
+Sub Change_TempKey(Index As Integer, KeyCode As Integer, Name As String)
     TempVars(Index) = KeyCode
-    txConfig(Index).Text = name
+    txConfig(Index).Text = Name
 
 End Sub
 

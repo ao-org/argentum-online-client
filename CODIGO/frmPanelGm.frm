@@ -1038,6 +1038,14 @@ Private Sub Form_Load()
     Call FlushBuffer
 
 End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+End Sub
 
 Private Sub lento_Click()
 

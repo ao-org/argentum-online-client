@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
 Begin VB.Form FrmQuestInfo 
    BackColor       =   &H00000709&
    BorderStyle     =   0  'None
@@ -246,6 +246,14 @@ Private Sub Form_Load()
     'Me.Picture = LoadInterface("mision.bmp")
 
 End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     Image1.Picture = Nothing
@@ -292,7 +300,7 @@ Public Sub ListView1_Click()
         If ListView1.SelectedItem.SubItems(3) = 0 Then
             Call DibujarBody(ListView1.SelectedItem.SubItems(2), 3)
       
-            npclbl.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+            npclbl.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
     
         Else
 
@@ -304,7 +312,7 @@ Public Sub ListView1_Click()
             y = PlayerView.ScaleHeight / 2 - GrhData(ListView1.SelectedItem.SubItems(2)).pixelHeight / 2
             Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False)
         
-            npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+            npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
     
         End If
 
@@ -349,6 +357,6 @@ Public Sub ListView2_Click()
     
     End If
     
-    objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
+    objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
 
 End Sub

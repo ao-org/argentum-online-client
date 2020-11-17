@@ -16,7 +16,6 @@ Begin VB.Form frmMensaje
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmMensaje.frx":0000
    ScaleHeight     =   213
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   291

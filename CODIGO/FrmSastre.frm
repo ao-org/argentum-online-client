@@ -177,7 +177,7 @@ Private Sub Command1_Click()
     For i = 1 To UBound(SastreRopas())
 
         If SastreRopas(i).Index = 0 Then Exit For
-        lstArmas.AddItem (ObjData(SastreRopas(i).Index).name)
+        lstArmas.AddItem (ObjData(SastreRopas(i).Index).Name)
     Next i
 
     Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
@@ -195,7 +195,7 @@ Private Sub Command2_Click()
     For i = 1 To UBound(SastreGorros())
 
         If SastreGorros(i).Index = 0 Then Exit For
-        lstArmas.AddItem (ObjData(SastreGorros(i).Index).name)
+        lstArmas.AddItem (ObjData(SastreGorros(i).Index).Name)
     Next i
     
     Command2.Picture = LoadInterface("sastreria_gorroshover.bmp")
@@ -276,6 +276,14 @@ End Sub
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     indice = 1
+
+End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
 
 End Sub
 

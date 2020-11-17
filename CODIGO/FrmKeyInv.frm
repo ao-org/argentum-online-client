@@ -111,6 +111,14 @@ Private Sub Form_Activate()
         NombreLlave.Caption = "Aquí aparecerán las llaves que consigas"
     End If
 End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+End Sub
 
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)

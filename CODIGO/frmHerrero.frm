@@ -221,7 +221,7 @@ Private Sub Command1_Click()
     For i = 1 To UBound(ArmasHerrero())
 
         If ArmasHerrero(i).Index = 0 Then Exit For
-        Call frmHerrero.lstArmas.AddItem(ObjData(ArmasHerrero(i).Index).name)
+        Call frmHerrero.lstArmas.AddItem(ObjData(ArmasHerrero(i).Index).Name)
     Next i
     
     Command1.Picture = LoadInterface("herreria_armashover.bmp")
@@ -248,7 +248,7 @@ Private Sub Command2_Click()
 
         If ArmadurasHerrero(i).Index = 0 Then Exit For
         If ObjData(ArmadurasHerrero(i).Index).ObjType = 3 Then
-            Call frmHerrero.lstArmas.AddItem(ObjData(ArmadurasHerrero(i).Index).name)
+            Call frmHerrero.lstArmas.AddItem(ObjData(ArmadurasHerrero(i).Index).Name)
 
         End If
 
@@ -271,7 +271,7 @@ Private Sub Command3_Click()
     For i = 0 To UBound(CascosHerrero())
 
         If CascosHerrero(i).Index = 0 Then Exit For
-        Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).name)
+        Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).Name)
     Next i
 
     Command3.Picture = LoadInterface("herreria_cascoshover.bmp")
@@ -292,7 +292,7 @@ Private Sub Command4_Click()
     For i = 0 To UBound(EscudosHerrero())
 
         If EscudosHerrero(i).Index = 0 Then Exit For
-        Call frmHerrero.lstArmas.AddItem(ObjData(EscudosHerrero(i).Index).name)
+        Call frmHerrero.lstArmas.AddItem(ObjData(EscudosHerrero(i).Index).Name)
     Next i
 
     Command4.Picture = LoadInterface("herreria_escudoshover.bmp")
@@ -451,6 +451,14 @@ End Sub
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     Index = 3
+
+End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
 
 End Sub
 

@@ -123,6 +123,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 
 End Sub
 
+
 Private Sub Form_Load()
 
     Call FormParser.Parse_Form(Me)
@@ -158,7 +159,7 @@ End Sub
 Private Sub Image1_Click()
     Dim i As Long
 
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     If Not ListaClanes Then Exit Sub
     
@@ -168,11 +169,11 @@ Private Sub Image1_Click()
             If Combo1.ListIndex < 2 Then
                 If ClanesList(i).Alineacion = Combo1.ListIndex Then
                     If InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.Text)) <> 0 Then
-                        Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+                        Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
                     End If
                 End If
             ElseIf InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.Text)) <> 0 Then
-                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             End If
     
         Next i
@@ -182,13 +183,13 @@ Private Sub Image1_Click()
 
             If Combo1.ListIndex < 2 Then
                 If ClanesList(i).Alineacion = Combo1.ListIndex Then
-                    Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+                    Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
     
                 End If
     
             Else
                 
-                Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
     
             End If
     
@@ -241,11 +242,11 @@ End Sub
 Private Sub Image3_Click()
     
     'Si nos encontramos con un guild con nombre vacío algo sospechoso está pasando, x las dudas no hacemos nada.
-    If Len(GuildsList.List(GuildsList.ListIndex)) = 0 Then Exit Sub
+    If Len(guildslist.List(guildslist.ListIndex)) = 0 Then Exit Sub
     
     frmGuildBrief.EsLeader = False
     
-    Call WriteGuildRequestDetails(GuildsList.List(GuildsList.ListIndex))
+    Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
 
 End Sub
 

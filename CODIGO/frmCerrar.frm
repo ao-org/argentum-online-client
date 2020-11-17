@@ -206,6 +206,14 @@ Private Sub Opcion_MouseDown(Index As Integer, Button As Integer, Shift As Integ
     End Select
 
 End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+End Sub
 
 Private Sub Opcion_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
