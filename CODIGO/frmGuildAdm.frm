@@ -134,7 +134,7 @@ Private Sub Form_Load()
 
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Image1.Tag = "1" Then
         Image1.Picture = Nothing
         Image1.Tag = "0"
@@ -151,8 +151,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
     End If
 End Sub
 
-Private Sub GuildsList_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    Form_MouseMove
+Private Sub GuildsList_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    Call Form_MouseMove(Button, Shift, x, y)
 End Sub
 
 Private Sub Image1_Click()
@@ -196,12 +196,12 @@ Private Sub Image1_Click()
     End If
 End Sub
 
-Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     Image1.Picture = LoadInterface("boton-buscar-off.bmp")
     Image1.Tag = "1"
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("boton-buscar-over.bmp")
@@ -228,7 +228,7 @@ Private Sub Image2_Click()
 
 End Sub
 
-Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("boton-fundar-clan-es-over.bmp")
