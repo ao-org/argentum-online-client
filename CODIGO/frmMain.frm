@@ -535,7 +535,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3143,11 +3142,11 @@ Public Sub Form_Click()
             'If Not InGameArea() Then Exit Sub
 
             If MouseShift = 0 Then
-                If UsingSkill = 0 Then
+                If UsingSkill = 0 Or MacroLadder.Enabled Then
                     Call WriteLeftClick(tX, tY)
                 Else
 
-                    If macrotrabajo.Enabled Then DesactivarMacroTrabajo
+                    'If macrotrabajo.Enabled Then DesactivarMacroTrabajo
                     
                     Dim SendSkill As Boolean
                     
