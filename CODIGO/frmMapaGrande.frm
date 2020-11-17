@@ -222,7 +222,6 @@ Begin VB.Form frmMapaGrande
    Begin VB.Label Label9 
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
-      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75
@@ -319,7 +318,6 @@ Begin VB.Form frmMapaGrande
    Begin VB.Label Label3 
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
-      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75
@@ -339,7 +337,6 @@ Begin VB.Form frmMapaGrande
    Begin VB.Label Label4 
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
-      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75
@@ -360,7 +357,6 @@ Begin VB.Form frmMapaGrande
    Begin VB.Label Label5 
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
-      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75
@@ -380,7 +376,6 @@ Begin VB.Form frmMapaGrande
    Begin VB.Label Label2 
       BackColor       =   &H0000FFFF&
       BackStyle       =   0  'Transparent
-      Caption         =   "a"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75

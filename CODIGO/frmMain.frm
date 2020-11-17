@@ -9,7 +9,7 @@ Begin VB.Form frmmain
    ClientHeight    =   13305
    ClientLeft      =   345
    ClientTop       =   240
-   ClientWidth     =   20295
+   ClientWidth     =   16995
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -30,7 +30,7 @@ Begin VB.Form frmmain
    NegotiateMenus  =   0   'False
    ScaleHeight     =   887
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1353
+   ScaleWidth      =   1133
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin SocketWrenchCtrl.Socket Socket1 
@@ -535,6 +535,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1670,11 +1671,11 @@ Private Sub createObj_Click()
     Dim i As Long
     For i = 1 To NumOBJs
 
-        If ObjData(i).name <> "" Then
+        If ObjData(i).Name <> "" Then
 
             Dim subelemento As ListItem
 
-            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).name)
+            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
             
             subelemento.SubItems(1) = i
 
@@ -3689,9 +3690,9 @@ Private Sub Socket1_Disconnect()
 
         For Each mForm In Forms
 
-            Select Case mForm.name
+            Select Case mForm.Name
 
-                Case Me.name, frmConnect.name, frmCrearPersonaje.name, frmMensaje.name
+                Case Me.Name, frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
             
                 Case Else
                     Unload mForm
@@ -3825,9 +3826,9 @@ Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Respo
 
         For Each mForm In Forms
 
-            Select Case mForm.name
+            Select Case mForm.Name
 
-                Case Me.name, frmConnect.name, frmCrearPersonaje.name, frmMensaje.name
+                Case Me.Name, frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
                 
                 Case Else
                     Unload mForm
@@ -3910,8 +3911,8 @@ Private Sub Winsock1_Close()
 
     Dim mForm As Form
     For Each mForm In Forms
-        Select Case mForm.name
-            Case Me.name, frmConnect.name, frmCrearPersonaje.name, frmMensaje.name
+        Select Case mForm.Name
+            Case Me.Name, frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
             
             Case Else
                 Unload mForm
