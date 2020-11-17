@@ -37,9 +37,9 @@ Public Const GRH_SLOT_INVENTARIO_NEGRO  As Long = 26095
 Public Const GRH_SLOT_INVENTARIO_ROJO   As Long = 26096
 
 'Slots de Inventario Principal
-Public Const GRH_INVENTORYSLOT          As Long = 47742
+Public Const GRH_INVENTORYSLOT          As Long = 47743
 
-Public Const GRH_INVENTORYSLOT_EXTRA    As Long = 47743
+Public Const GRH_INVENTORYSLOT_EXTRA    As Long = 47742
 
 Public Const GRH_INVENTORYSLOT_LOCKED   As Long = 1122
 
@@ -360,7 +360,7 @@ Public Const SND_OVER          As Integer = 0
 
 Public Const SND_DICE          As Integer = 188
 
-Public Const SND_FUEGO         As Integer = 79
+Public Const SND_FUEGO         As Integer = 116
 
 Public Const SND_LLUVIAIN      As Integer = 191
 
@@ -537,6 +537,8 @@ End Type
 Public ObjDonador(0 To 100)           As ObjDonador
 
 Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 42
+
+Public Const MAX_KEYS As Byte = 10
 
 Public Const LoopAdEternum            As Integer = 999
 
@@ -801,7 +803,7 @@ Public Const MENSAJE_NENE                          As String = "Cantidad de NPCs
 Type Inventory
 
     OBJIndex As Integer
-    Name As String
+    name As String
     GrhIndex As Long
     '[Alejo]: tipo de datos ahora es Long
     Amount As Long
@@ -819,7 +821,7 @@ End Type
 Type MakeObj
 
     GrhIndex As Long ' Indice del grafico que representa el obj
-    Name As String
+    name As String
     MinDef As Integer
     MaxDef As Integer
     MinHit As Integer
@@ -831,7 +833,7 @@ End Type
 Type NpCinV
 
     OBJIndex As Integer
-    Name As String
+    name As String
     GrhIndex As Long
     Amount As Integer
     Valor As Single

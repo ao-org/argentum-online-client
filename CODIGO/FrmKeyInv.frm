@@ -37,16 +37,16 @@ Begin VB.Form FrmKeyInv
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000008&
-      Height          =   960
-      Left            =   600
+      Height          =   1050
+      Left            =   495
       MousePointer    =   99  'Custom
-      ScaleHeight     =   64
+      ScaleHeight     =   70
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   160
+      ScaleWidth      =   175
       TabIndex        =   0
       TabStop         =   0   'False
-      Top             =   1200
-      Width           =   2400
+      Top             =   1245
+      Width           =   2625
    End
    Begin VB.Label NombreLlave 
       Alignment       =   2  'Center
@@ -61,10 +61,10 @@ Begin VB.Form FrmKeyInv
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   495
+      Height          =   375
       Left            =   240
       TabIndex        =   1
-      Top             =   2280
+      Top             =   2325
       Width           =   3135
    End
    Begin VB.Image cmdCerrar 

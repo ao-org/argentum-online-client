@@ -1932,7 +1932,6 @@ Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As In
         .Left = src_x
         .Right = src_x + src_width
         .Top = src_y
-
     End With
                 
     'Set up the destination rectangle
@@ -1941,7 +1940,6 @@ Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As In
         .Left = dest_x
         .Right = dest_x + src_width
         .Top = dest_y
-
     End With
     
     'Set up the TempVerts(3) vertices
@@ -5040,7 +5038,7 @@ Public Sub Initialize()
     
     
     'Ladder
-    Call FrmKeyInv.InvKeys.Initialize(FrmKeyInv.interface, 10, , , , , , , True) 'Inventario de llaves
+    Call FrmKeyInv.InvKeys.Initialize(FrmKeyInv.interface, MAX_KEYS, , , 0, 0, 3, 3, True) 'Inventario de llaves
     FrmKeyInv.InvKeys.MostrarCantidades = False
  
 End Sub

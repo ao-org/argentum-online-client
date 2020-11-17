@@ -535,6 +535,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3738,6 +3739,10 @@ Private Sub Socket1_Disconnect()
         
         For i = 1 To MAX_BANCOINVENTORY_SLOTS
             Call frmBancoObj.InvBoveda.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Next i
+        
+        For i = 1 To MAX_KEYS
+            Call FrmKeyInv.InvKeys.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Next i
         
         UserParalizado = False
