@@ -21,8 +21,9 @@ Begin VB.Form frmGuildAdm
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Picture         =   "frmGuildAdm.frx":0000
-   ScaleHeight     =   5865
-   ScaleWidth      =   6225
+   ScaleHeight     =   391
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   415
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox Filtro 
@@ -40,7 +41,7 @@ Begin VB.Form frmGuildAdm
       ForeColor       =   &H00FFFFFF&
       Height          =   255
       Left            =   545
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   1615
       Width           =   1575
    End
@@ -52,7 +53,7 @@ Begin VB.Form frmGuildAdm
       ItemData        =   "frmGuildAdm.frx":768A4
       Left            =   495
       List            =   "frmGuildAdm.frx":768A6
-      TabIndex        =   2
+      TabIndex        =   1
       Top             =   2160
       Width           =   4080
    End
@@ -74,38 +75,16 @@ Begin VB.Form frmGuildAdm
       Left            =   2280
       List            =   "frmGuildAdm.frx":768B5
       Style           =   2  'Dropdown List
-      TabIndex        =   1
+      TabIndex        =   0
       Top             =   1600
       Width           =   1655
-   End
-   Begin VB.TextBox qhi9t0 
-      Alignment       =   2  'Center
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   2640
-      TabIndex        =   0
-      ToolTipText     =   "Nombre del clan a buscar"
-      Top             =   1950
-      Width           =   2115
    End
    Begin VB.Label lblClose 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Height          =   435
       Left            =   5760
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   0
       Width           =   405
    End
@@ -125,10 +104,10 @@ Begin VB.Form frmGuildAdm
    End
    Begin VB.Image Image1 
       Height          =   425
-      Left            =   4020
+      Left            =   4005
       Tag             =   "0"
       Top             =   1560
-      Width           =   425
+      Width           =   450
    End
 End
 Attribute VB_Name = "frmGuildAdm"
@@ -138,13 +117,45 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Sub Combo1_Click()
-    
-    Call Filtro_Change
+Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+
+    If KeyCode = vbKeyEscape Then Unload Me
 
 End Sub
 
-Private Sub Filtro_Change()
+Private Sub Form_Load()
+
+    Call FormParser.Parse_Form(Me)
+    
+    Me.Picture = LoadInterface("VentanaClanes.bmp")
+    
+    
+    Combo1.ListIndex = 2
+
+End Sub
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Image1.Tag = "1" Then
+        Image1.Picture = Nothing
+        Image1.Tag = "0"
+    End If
+    
+    If Image2.Tag = "1" Then
+        Image2.Picture = Nothing
+        Image2.Tag = "0"
+    End If
+
+    If Image3.Tag = "1" Then
+        Image3.Picture = Nothing
+        Image3.Tag = "0"
+    End If
+End Sub
+
+Private Sub GuildsList_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Form_MouseMove
+End Sub
+
+Private Sub Image1_Click()
     Dim i As Long
 
     frmGuildAdm.GuildsList.Clear
@@ -185,53 +196,12 @@ Private Sub Filtro_Change()
     End If
 End Sub
 
-Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
-
-    If KeyCode = vbKeyEscape Then Unload Me
-
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Image1.Picture = LoadInterface("boton-buscar-off.bmp")
+    Image1.Tag = "1"
 End Sub
 
-Private Sub Form_Load()
-
-    Call FormParser.Parse_Form(Me)
-    
-    Me.Picture = LoadInterface("VentanaClanes.bmp")
-    
-    
-    Combo1.ListIndex = 2
-
-End Sub
-
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    Image1.Picture = Nothing
-    Image1.Tag = "0"
-
-    Image2.Picture = Nothing
-    Image2.Tag = "0"
-
-    Image3.Picture = Nothing
-    Image3.Tag = "0"
-
-End Sub
-
-Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    Dim b As Integer
-
-    For b = 0 To GuildsList.ListCount - 1
-        GuildsList.ListIndex = b
-
-        If LCase$(GuildsList) = LCase$(qhi9t0) Then
-            Exit Sub
-
-        End If
-
-    Next
-    MsgBox "Clan no encontrado"
-
-End Sub
-
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("boton-buscar-over.bmp")
@@ -258,7 +228,7 @@ Private Sub Image2_Click()
 
 End Sub
 
-Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("boton-fundar-clan-es-over.bmp")
