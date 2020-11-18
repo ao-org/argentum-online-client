@@ -906,10 +906,10 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
     screenminX = tilex - HalfWindowTileWidth
     screenmaxX = tilex + HalfWindowTileWidth
     
-    minY = screenminY - TileBufferSize
-    MaxY = screenmaxY + TileBufferSize
-    minX = screenminX - TileBufferSize
-    MaxX = screenmaxX + TileBufferSize
+    minY = screenminY
+    MaxY = screenmaxY + TileBufferSizeY
+    minX = screenminX - TileBufferSizeX
+    MaxX = screenmaxX + TileBufferSizeX
     
     'Make sure mins and maxs are allways in map bounds
     If minY < XMinMapSize Then
@@ -982,10 +982,10 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
     Next y
     
     If HayLayer2 Then
-        ScreenY = minYOffset - TileBufferSize
+        ScreenY = minYOffset - TileBufferSizeX
 
         For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
+            ScreenX = minXOffset - TileBufferSizeY
 
             For x = minX To MaxX
 
@@ -1007,10 +1007,10 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
 
     End If
     
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset - TileBufferSizeY
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset - TileBufferSizeX
 
         For x = minX To MaxX
             PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
@@ -1063,10 +1063,10 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
 
     ScreenY = minYOffset - 5
 
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset - TileBufferSizeY
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset - TileBufferSizeY
 
         For x = minX To MaxX
 
@@ -1113,10 +1113,10 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
         rgb_list2(2) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
         rgb_list2(3) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
     
-        ScreenY = minYOffset - TileBufferSize
+        ScreenY = minYOffset - TileBufferSizeY
 
         For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
+            ScreenX = minXOffset - TileBufferSizeY
 
             For x = minX To MaxX
         
@@ -1325,16 +1325,18 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     screenminX = tilex - HalfWindowTileWidth
     screenmaxX = tilex + HalfWindowTileWidth
     
-    minY = screenminY - TileBufferSize
-    MaxY = screenmaxY + TileBufferSize
-    minX = screenminX - TileBufferSize
-    MaxX = screenmaxX + TileBufferSize
+    minY = screenminY - 1
+    MaxY = screenmaxY + TileBufferSizeY
+    minX = screenminX - TileBufferSizeX
+    MaxX = screenmaxX + TileBufferSizeX
+    
+    minYOffset = -1
+    minXOffset = -TileBufferSizeX
     
     'Make sure mins and maxs are allways in map bounds
     If minY < XMinMapSize Then
         minYOffset = YMinMapSize - minY
         minY = YMinMapSize
-
     End If
     
     If MaxY > YMaxMapSize Then MaxY = YMaxMapSize
@@ -1342,7 +1344,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     If minX < XMinMapSize Then
         minXOffset = XMinMapSize - minX
         minX = XMinMapSize
-
     End If
     
     If MaxX > XMaxMapSize Then MaxX = XMaxMapSize
@@ -1353,7 +1354,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     Else
         screenminY = 1
         ScreenY = 1
-
     End If
     
     If screenmaxY < YMaxMapSize Then screenmaxY = screenmaxY + 1
@@ -1363,7 +1363,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     Else
         screenminX = 1
         ScreenX = 1
-
     End If
     
     If screenmaxX < XMaxMapSize Then screenmaxX = screenmaxX + 1
@@ -1376,15 +1375,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     Dim PicClimaRGB(0 To 3) As Long
 
     Dim Climapic            As grh
-   
-    'If minY < 1 Then minY = 1
-    'If minX < 1 Then minX = 1
-    ' If maxY > 100 Then maxY = 100
-    ' If maxX > 100 Then maxX = 100
-    'estoy renderizando 20 de Y y deberian ser 18
-    'estoy renderizando 24 de x y deberian ser 18
-
-    screenmaxY = screenmaxY ' 1 tile menos dibujo, vamos a ver que onda
 
     'Draw floor layer
     For y = screenminY To screenmaxY
@@ -1403,12 +1393,12 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     Next y
     
     If HayLayer2 Then
-        ScreenY = minYOffset - TileBufferSize
+        ScreenY = minYOffset
 
-        For y = minY To MaxY ' el -8 lo agrego
-            ScreenX = minXOffset - TileBufferSize
+        For y = minY To MaxY
+            ScreenX = minXOffset
 
-            For x = minX To MaxX  ' -7 lo agrego
+            For x = minX To MaxX
 
                 With MapData(x, y)
 
@@ -1428,10 +1418,10 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
     End If
     
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset
 
         For x = minX To MaxX
             PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
@@ -1537,12 +1527,10 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
         ScreenY = ScreenY + 1
     Next y
 
-    ScreenY = minYOffset - 5
-
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset
 
         For x = minX To MaxX
 
@@ -1575,10 +1563,10 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
         rgb_list2(2) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
         rgb_list2(3) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
     
-        ScreenY = minYOffset - TileBufferSize
+        ScreenY = minYOffset
 
         For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
+            ScreenX = minXOffset
 
             For x = minX To MaxX
         
@@ -1633,10 +1621,10 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
         
     End If
         
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset
 
         For x = minX To MaxX
             PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
@@ -3895,10 +3883,13 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     screenminX = tilex - HalfWindowTileWidth
     screenmaxX = tilex + HalfWindowTileWidth
     
-    minY = screenminY - TileBufferSize
-    MaxY = screenmaxY + TileBufferSize
-    minX = screenminX - TileBufferSize
-    MaxX = screenmaxX + TileBufferSize
+    minY = screenminY - 1
+    MaxY = screenmaxY + TileBufferSizeY
+    minX = screenminX - TileBufferSizeX
+    MaxX = screenmaxX + TileBufferSizeX
+    
+    minYOffset = -1
+    minXOffset = -TileBufferSizeX
     
     'Make sure mins and maxs are allways in map bounds
     If minY < XMinMapSize Then
@@ -3961,10 +3952,10 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Next y
     
     If HayLayer2 Then
-        ScreenY = minYOffset - TileBufferSize
+        ScreenY = minYOffset
 
         For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
+            ScreenX = minXOffset
 
             For x = minX To MaxX + 2
 
@@ -3986,10 +3977,10 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     End If
     
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset
 
         For x = minX To MaxX
             PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
@@ -4036,10 +4027,10 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     ' Draw_Grh TempGrh, 494, 735, 1, 1, cc(), False
     'nubes negras
 
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset
 
         For x = minX To MaxX
 
@@ -4065,10 +4056,10 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
         Dim rgb_list(0 To 3) As Long
     
-        ScreenY = minYOffset - TileBufferSize
+        ScreenY = minYOffset
 
         For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
+            ScreenX = minXOffset
 
             For x = minX To MaxX
         
@@ -4092,10 +4083,10 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         
     End If
         
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset
 
         For x = minX To MaxX
             PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
@@ -4297,10 +4288,13 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     screenminX = tilex - HalfWindowTileWidth
     screenmaxX = tilex + HalfWindowTileWidth
     
-    minY = screenminY - TileBufferSize
-    MaxY = screenmaxY + TileBufferSize
-    minX = screenminX - TileBufferSize
-    MaxX = screenmaxX + TileBufferSize
+    minY = screenminY
+    MaxY = screenmaxY + TileBufferSizeY
+    minX = screenminX - TileBufferSizeX
+    MaxX = screenmaxX + TileBufferSizeX
+    
+    minYOffset = -1
+    minXOffset = -TileBufferSizeX
     
     'Make sure mins and maxs are allways in map bounds
     If minY < XMinMapSize Then
@@ -4362,10 +4356,10 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Next y
     
     If HayLayer2 Then
-        ScreenY = minYOffset - TileBufferSize
+        ScreenY = minYOffset
 
         For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
+            ScreenX = minXOffset
 
             For x = minX To MaxX
 
@@ -4387,10 +4381,10 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     End If
     
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset
 
         For x = minX To MaxX
             PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
@@ -4421,12 +4415,10 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         ScreenY = ScreenY + 1
     Next y
 
-    ScreenY = minYOffset - 5
-
-    ScreenY = minYOffset - TileBufferSize
+    ScreenY = minYOffset
 
     For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSize
+        ScreenX = minXOffset
 
         For x = minX To MaxX
 
@@ -4452,10 +4444,10 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
         Dim rgb_list(0 To 3) As Long
     
-        ScreenY = minYOffset - TileBufferSize
+        ScreenY = minYOffset
 
         For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
+            ScreenX = minXOffset
 
             For x = minX To MaxX
         
