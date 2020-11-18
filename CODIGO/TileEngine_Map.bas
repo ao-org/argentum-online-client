@@ -119,9 +119,9 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
     SRGB(2) = D3DColorARGB(50, 0, 0, 0)
     SRGB(3) = D3DColorARGB(50, 0, 0, 0)
     'Por ladder
-    Device_Box_Textured_Render CurrentGrhIndex, x + 5, y + 5, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, SRGB(), GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, False, 0.4
+    'Device_Box_Textured_Render CurrentGrhIndex, x + 5, y + 5, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, SRGB(), GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, False, 0.4
 
-    'Por ladder
+    Call Batch_Textured_Box(x + 5, y + 5, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, SRGB, True, 0.4)
 End Sub
 
 Sub Engine_Weather_UpdateFog()

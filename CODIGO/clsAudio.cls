@@ -40,7 +40,7 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private dX                        As DirectX8
+Private DirectX                        As DirectX8
 
 '**** Direct Sound ********
 Private DS                        As DirectSound8
@@ -158,7 +158,7 @@ Public Function Engine_DeInitialize()
     Set dmSeg = Nothing
     Set dmPath = Nothing
     Set dmPerf = Nothing
-    Set dX = Nothing
+    Set DirectX = Nothing
 
     Call Music_Empty
 
@@ -181,7 +181,7 @@ Public Function Engine_DeInitialize()
 
     Set DS_Enum = Nothing
     Set DS = Nothing
-    Set dX = Nothing
+    Set DirectX = Nothing
 
 End Function
 
@@ -191,12 +191,12 @@ Public Function Initialize_Engine(ByVal main_hwnd As String, ByVal Set_Wav_Path 
 
     Dim dmA As DMUS_AUDIOPARAMS
 
-    Set dX = New DirectX8
+    Set DirectX = New DirectX8
 
     If Initialize_Sounds Then
         SetWavPath = Set_Wav_Path
-        Set DS_Enum = dX.GetDSEnum
-        Set DS = dX.DirectSoundCreate(DS_Enum.GetGuid(1))
+        Set DS_Enum = DirectX.GetDSEnum
+        Set DS = DirectX.DirectSoundCreate(DS_Enum.GetGuid(1))
     
         Set Buffers = New CBufferMan
         Buffers.Path = Set_Wav_Path
@@ -218,8 +218,8 @@ Public Function Initialize_Engine(ByVal main_hwnd As String, ByVal Set_Wav_Path 
         SetMidiPath = Set_Midi_Path
         SetMP3Path = Set_MP3_Path
         VolumenActualMusicMax = music_volume
-        Set dmLoader = dX.DirectMusicLoaderCreate
-        Set dmPerf = dX.DirectMusicPerformanceCreate
+        Set dmLoader = DirectX.DirectMusicLoaderCreate
+        Set dmPerf = DirectX.DirectMusicPerformanceCreate
         dmPerf.InitAudio main_hwnd, DMUS_AUDIOF_ENVIRON + DMUS_AUDIOF_BUFFERS + DMUS_AUDIOF_3D + DMUS_AUDIOF_EAX + DMUS_AUDIOF_DMOS, dmA
         dmPerf.SetMasterVolume (music_volume)
         Set dmPath = dmPerf.CreateStandardAudioPath(DMUS_APATH_DYNAMIC_3D, 64, True)
