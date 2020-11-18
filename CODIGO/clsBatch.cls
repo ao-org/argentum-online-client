@@ -105,17 +105,17 @@ Public Sub Draw(ByVal x As Long, _
                 ByVal y As Long, _
                 ByVal Width As Long, _
                 ByVal Height As Long, _
-                ByRef Color() As Long, _
+                ByRef color() As Long, _
                 Optional ByVal Tx1 As Single = 0, _
                 Optional ByVal Ty1 As Single = 0, _
                 Optional ByVal Tx2 As Single = 1, _
                 Optional ByVal Ty2 As Single = 1, _
                 Optional ByVal angle As Single = 0)
                 
-    If (Color(0) = 0) Then Color(0) = map_base_light
-    If (Color(1) = 0) Then Color(1) = map_base_light
-    If (Color(2) = 0) Then Color(2) = map_base_light
-    If (Color(3) = 0) Then Color(3) = map_base_light
+    If (color(0) = 0) Then color(0) = map_base_light
+    If (color(1) = 0) Then color(1) = map_base_light
+    If (color(2) = 0) Then color(2) = map_base_light
+    If (color(3) = 0) Then color(3) = map_base_light
                
     If angle > 0 And angle <= 360 Then
         Dim NewX     As Single
@@ -139,7 +139,7 @@ Public Sub Draw(ByVal x As Long, _
     m_Data(m_Position).x = x
     m_Data(m_Position).y = y
     m_Data(m_Position).Z = 0
-    m_Data(m_Position).Colour = Color(1)
+    m_Data(m_Position).Colour = color(1)
     m_Data(m_Position).TX = Tx1
     m_Data(m_Position).TY = Ty1
    
@@ -158,7 +158,7 @@ Public Sub Draw(ByVal x As Long, _
     m_Data(m_Position).x = x
     m_Data(m_Position).y = y + Height
     m_Data(m_Position).Z = 0
-    m_Data(m_Position).Colour = Color(0)
+    m_Data(m_Position).Colour = color(0)
     m_Data(m_Position).TX = Tx1
     m_Data(m_Position).TY = Ty2
  
@@ -177,7 +177,7 @@ Public Sub Draw(ByVal x As Long, _
     m_Data(m_Position).x = x + Width
     m_Data(m_Position).y = y + Height
     m_Data(m_Position).Z = 0
-    m_Data(m_Position).Colour = Color(2)
+    m_Data(m_Position).Colour = color(2)
     m_Data(m_Position).TX = Tx2
     m_Data(m_Position).TY = Ty2
  
@@ -196,7 +196,7 @@ Public Sub Draw(ByVal x As Long, _
     m_Data(m_Position).x = x + Width
     m_Data(m_Position).y = y
     m_Data(m_Position).Z = 0
-    m_Data(m_Position).Colour = Color(3)
+    m_Data(m_Position).Colour = color(3)
     m_Data(m_Position).TX = Tx2
     m_Data(m_Position).TY = Ty1
  
@@ -252,33 +252,33 @@ End Sub
  
 Public Sub Initialise(ByVal Capacity As Long)
 
-    ReDim m_Data(4 * Capacity) As TYPE_VERTEX
+    ReDim m_Data(Capacity * 4 - 1) As TYPE_VERTEX
    
     '
     '  Create the vertice buffer
     '
-    Set m_VBuffer = DirectDevice.CreateVertexBuffer(24 * Capacity, D3DUSAGE_DYNAMIC, D3DFVF_XYZ Or D3DFVF_DIFFUSE Or D3DFVF_TEX1, D3DPOOL_DEFAULT)
+    Set m_VBuffer = DirectDevice.CreateVertexBuffer(24 * 4 * Capacity, D3DUSAGE_DYNAMIC, D3DFVF_XYZ Or D3DFVF_DIFFUSE Or D3DFVF_TEX1, D3DPOOL_DEFAULT)
  
     '
     '  Create the indice buffer, fill it with pre-baked indices
     '
-    Set m_IBuffer = DirectDevice.CreateIndexBuffer(12 * Capacity, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_DEFAULT)
+    Set m_IBuffer = DirectDevice.CreateIndexBuffer(12 * 4 * Capacity, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_DEFAULT)
    
     Dim lpIndices() As Integer
    
-    ReDim lpIndices(0 To Capacity * 6 - 1) As Integer
+    ReDim lpIndices(Capacity * 6 - 1) As Integer
    
-    Dim i As Long, J As Integer
+    Dim i As Long, j As Integer
    
     For i = 0 To UBound(lpIndices) Step 6
-        lpIndices(i) = J
-        lpIndices(i + 1) = J + 1
-        lpIndices(i + 2) = J + 2
-        lpIndices(i + 3) = J + 2
-        lpIndices(i + 4) = J + 3
-        lpIndices(i + 5) = J
+        lpIndices(i) = j
+        lpIndices(i + 1) = j + 1
+        lpIndices(i + 2) = j + 2
+        lpIndices(i + 3) = j + 2
+        lpIndices(i + 4) = j + 3
+        lpIndices(i + 5) = j
        
-        J = J + 4
+        j = j + 4
     Next
    
     Call D3DIndexBuffer8SetData(m_IBuffer, 0, UBound(lpIndices), 0, lpIndices(0))
