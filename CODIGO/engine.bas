@@ -60,7 +60,7 @@ Private Type dialog
     startTime   As Long
     lifeTime    As Long
     charindex   As Integer
-    color       As Long
+    Color       As Long
     renderable  As Boolean
     Sube As Byte
 
@@ -96,12 +96,11 @@ Public EndTime             As Long
 Public Const ScreenWidth  As Long = 538
 Public Const ScreenHeight As Long = 376
 
+Public temp_rgb(3) As Long
+
 Public bRunning            As Boolean
 
-Private Const FVF = D3DFVF_XYZRHW Or D3DFVF_TEX1 Or D3DFVF_DIFFUSE Or D3DFVF_SPECULAR
-Private Const FVF2 = D3DFVF_XYZRHW Or D3DFVF_DIFFUSE Or D3DFVF_SPECULAR Or D3DFVF_TEX2
-
-Dim texture      As Direct3DTexture8
+Dim Texture      As Direct3DTexture8
 Dim TransTexture As Direct3DTexture8
 
 Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Long
@@ -155,17 +154,11 @@ End Function
 
 Private Function Init_DirectDevice(ByVal ModoAceleracion As CONST_D3DCREATEFLAGS) As Boolean
 On Error GoTo ErrorHandler:
-
-    Dim DispMode    As D3DDISPLAYMODE
-    Dim D3DWindow   As D3DPRESENT_PARAMETERS
     
     Dim VSync As String: VSync = CByte(GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "VSync"))
     
-    Set dX = New DirectX8
-    Set D3D = dX.Direct3DCreate()
-    Set D3DX = New D3DX8
-    
-    Call D3D.GetAdapterDisplayMode(D3DADAPTER_DEFAULT, DispMode)
+    ' Retrieve the information about your current display adapter.
+    Call DirectD3D.GetAdapterDisplayMode(D3DADAPTER_DEFAULT, DispMode)
     
     With D3DWindow
     
@@ -177,21 +170,21 @@ On Error GoTo ErrorHandler:
             .SwapEffect = D3DSWAPEFFECT_DISCARD
         End If
         
-        .BackBufferFormat = D3DFMT_X8R8G8B8
+        .BackBufferFormat = DispMode.format
         
         'set color depth
         .BackBufferWidth = 1024
         .BackBufferHeight = 768
         
-        .EnableAutoDepthStencil = 1
-        .AutoDepthStencilFormat = D3DFMT_D16
+        '.EnableAutoDepthStencil = 1
+        '.AutoDepthStencilFormat = 16
         .hDeviceWindow = frmmain.renderer.hwnd
         
     End With
     
-    If Not D3DDevice Is Nothing Then Set D3DDevice = Nothing
+    If Not DirectDevice Is Nothing Then Set DirectDevice = Nothing
     
-    Set D3DDevice = D3D.CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, D3DWindow.hDeviceWindow, ModoAceleracion, D3DWindow)
+    Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, D3DWindow.hDeviceWindow, ModoAceleracion, D3DWindow)
     
     Init_DirectDevice = True
     
@@ -199,7 +192,7 @@ On Error GoTo ErrorHandler:
     
 ErrorHandler:
     
-    Set D3DDevice = Nothing
+    Set DirectDevice = Nothing
     
     Init_DirectDevice = False
 
@@ -271,10 +264,12 @@ End Sub
 
 Public Sub Engine_Init()
 
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
-    On Error GoTo errhandler:
+On Error GoTo errhandler:
+    
+    ' Initialize all DirectX objects.
+    Set DirectX = New DirectX8
+    Set DirectD3D = DirectX.Direct3DCreate()
+    Set DirectD3D8 = New D3DX8
     
     Dim Modo As String: Modo = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "Aceleracion")
     
@@ -305,28 +300,31 @@ Public Sub Engine_Init()
     
     End Select
     
-    With D3DDevice
+    'Seteamos la matriz de proyeccion.
+    Call D3DXMatrixOrthoOffCenterLH(Projection, 0, 1024, 768, 0, -1#, 1#)
+    Call D3DXMatrixIdentity(View)
+    Call DirectDevice.SetTransform(D3DTS_PROJECTION, Projection)
+    Call DirectDevice.SetTransform(D3DTS_VIEW, View)
     
-        .SetVertexShader FVF
-    
-        '//Transformed and lit vertices dont need lighting
-        '   so we disable it...
-        .SetRenderState D3DRS_LIGHTING, False
-        
-        .SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
-        .SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
-        .SetRenderState D3DRS_ALPHABLENDENABLE, True
-        
-        .SetRenderState D3DRS_POINTSIZE, Engine_FToDW(2)
-        .SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
-        .SetRenderState D3DRS_POINTSPRITE_ENABLE, 1
-        .SetRenderState D3DRS_POINTSCALE_ENABLE, 0
-    
+    'Set the render states
+    With DirectDevice
+        Call .SetVertexShader(D3DFVF_XYZ Or D3DFVF_DIFFUSE Or D3DFVF_TEX1)
+        Call .SetRenderState(D3DRS_LIGHTING, False)
+        Call .SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA)
+        Call .SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA)
+        Call .SetRenderState(D3DRS_ALPHABLENDENABLE, True)
+        Call .SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID)
+        Call .SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE)
+        Call .SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE)
     End With
     
     ' Carga de texturas
     Set SurfaceDB = New clsTexManager
-    Call SurfaceDB.Init(D3DX, D3DDevice, General_Get_Free_Ram_Bytes)
+    Call SurfaceDB.Init(DirectD3D8, DirectDevice, General_Get_Free_Ram_Bytes)
+    
+    'Sprite batching.
+    Set SpriteBatch = New clsBatch
+    Call SpriteBatch.Initialise(2000)
 
     ' Configuracion del motor
     engineBaseSpeed = 0.018
@@ -356,10 +354,11 @@ errhandler:
 
 End Sub
 
-Public Sub Engine_BeginScene()
+Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
     
-    Call D3DDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, 1#, 1#, 0)
-    Call D3DDevice.BeginScene
+    Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1#, 0)
+    Call SpriteBatch.Begin
 
 End Sub
 
@@ -367,14 +366,17 @@ Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hwnd As Long =
 
 On Error GoTo ErrorHandler:
     
-    Call D3DDevice.EndScene
-    Call D3DDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
+    Call SpriteBatch.Flush
+    
+    Call DirectDevice.EndScene
+        
+    Call DirectDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
     
     Exit Sub
     
 ErrorHandler:
 
-    If D3DDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
+    If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
         
         Call Engine_Init
         
@@ -391,9 +393,10 @@ Public Sub Engine_Deinit()
     Erase MapData
     Erase charlist
     
-    Set D3DDevice = Nothing
-    Set D3D = Nothing
-    Set dX = Nothing
+    Set DirectDevice = Nothing
+    Set DirectD3D = Nothing
+    Set DirectX = Nothing
+    Set SpriteBatch = Nothing
 
 End Sub
 
@@ -419,7 +422,8 @@ Public Sub Draw_GrhIndex(ByVal grh_index As Long, ByVal x As Integer, ByVal y As
     rgb_list(2) = D3DColorXRGB(255, 255, 255)
     rgb_list(3) = D3DColorXRGB(255, 255, 255)
     
-    Device_Box_Textured_Render grh_index, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY
+    'Device_Box_TexBatch_Textured_Boxtured_Render grh_index, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY
+    Call Batch_Textured_Box(x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, rgb_list)
 
 End Sub
 
@@ -427,7 +431,8 @@ Public Sub Draw_GrhColor(ByVal grh_index As Long, ByVal x As Integer, ByVal y As
 
     If grh_index <= 0 Then Exit Sub
     
-    Device_Box_Textured_Render grh_index, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, text_color, GrhData(grh_index).sX, GrhData(grh_index).sY
+    'Device_Box_Textured_Render grh_index, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, text_color, GrhData(grh_index).sX, GrhData(grh_index).sY
+    Call Batch_Textured_Box(x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, text_color)
 
 End Sub
 
@@ -435,7 +440,7 @@ Public Sub Draw_GrhFont(ByVal grh_index As Long, ByVal x As Integer, ByVal y As 
 
     If grh_index <= 0 Then Exit Sub
 
-    Device_Box_Textured_Render_Viejo grh_index, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, text_color, GrhData(grh_index).sX, GrhData(grh_index).sY
+    Call Batch_Textured_Box_Advance(x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, GrhData(grh_index).pixelWidth + 1, GrhData(grh_index).pixelHeight + 1, text_color)
 
 End Sub
 
@@ -450,11 +455,12 @@ Public Sub Draw_GrhIndexColor(ByVal grh_index As Long, ByVal x As Integer, ByVal
     rgb_list(2) = rgb_list(0)
     rgb_list(3) = rgb_list(0)
     
-    Device_Box_Textured_Render grh_index, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY, True
+    'Device_Box_Textured_Render grh_index, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY, True
+    Call Batch_Textured_Box(x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, rgb_list, True)
 
 End Sub
 
-Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
+Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean = False, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
 
     On Error Resume Next
 
@@ -502,8 +508,8 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
 
     End If
 
-    Device_Box_Textured_Render CurrentGrhIndex, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, rgb_list, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, Alpha, angle
-    'exits:
+    'Device_Box_Textured_Render CurrentGrhIndex, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, rgb_list, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, Alpha, angle
+    Call Batch_Textured_Box(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, rgb_list, Alpha, angle)
 
 End Sub
 
@@ -626,7 +632,8 @@ Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
 
     End If
 
-    Device_Box_Textured_Render CurrentGrhIndex, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, rgb_list, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, Alpha, angle
+    'Device_Box_Textured_Render CurrentGrhIndex, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, rgb_list, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, Alpha, angle
+    Call Batch_Textured_Box(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, rgb_list, Alpha, angle)
     'exits:
 
 End Sub
@@ -683,8 +690,8 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
     light_value(2) = light_value(0)
     light_value(3) = light_value(0)
 
-    Device_Box_Textured_Render CurrentGrhIndex, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, light_value, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, Alpha, angle
-    'exits:
+    'Device_Box_Textured_Render CurrentGrhIndex, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, light_value, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, Alpha, angle
+    Call Batch_Textured_Box(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, light_value, Alpha, angle)
 
 End Sub
 
@@ -843,11 +850,11 @@ Sub ShowNextFrame()
     End If
 
     If UserCiego Then
-        Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
+        Call ConvertCPtoTP(MouseX, MouseY, TX, TY)
         Call RenderScreenCiego(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY)
     Else
         'Reparacion de pj
-        Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
+        Call ConvertCPtoTP(MouseX, MouseY, TX, TY)
         Call RenderScreen(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY)
                 
     End If
@@ -1405,7 +1412,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     '***********************************************
                     If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
                         Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
-
                     End If
               
                 End With
@@ -1495,8 +1501,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                 'Layer 3 *****************************************
                 If .Graphic(3).GrhIndex <> 0 Then
                     If EsArbol(.Graphic(3).GrhIndex) Then
-                        'Call Draw_Sombra(.Graphic(3), PixelOffsetXTemp + 40, PixelOffsetYTemp, 1, 1, False, x, y)
-                        
                         If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 5 And (Abs(UserPos.y) < y) Then
                             Dim arbol_alfa(0 To 3) As Long
                             arbol_alfa(0) = D3DColorARGB(200, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
@@ -1505,6 +1509,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                             arbol_alfa(3) = arbol_alfa(0)
                             Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, arbol_alfa(), False, x, y)
                         Else
+                            Call Draw_Sombra(.Graphic(3), PixelOffsetXTemp + 40, PixelOffsetYTemp, 1, 1, False, x, y)
                             Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value, False, x, y)
                         End If
                     Else
@@ -1535,7 +1540,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                 '***********************************************
                 If .particle_group > 0 Then
                     Call Particle_Group_Render(.particle_group, ScreenX * 32 + PixelOffsetX + 16, ScreenY * 32 + PixelOffsetY + 16)
-
                 End If
 
             End With
@@ -1631,9 +1635,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                 If MapData(x, y).charindex <> 0 Then
                     If charlist(MapData(x, y).charindex).active = 1 Then
                         Call Char_TextRender(MapData(x, y).charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
-
                     End If
-
                 End If
 
                 modRenderValue.Draw x, y, PixelOffsetXTemp + 16, PixelOffsetYTemp, timerTicksPerFrame
@@ -1825,7 +1827,7 @@ Private Sub Device_Box_Textured_Render_Advance(ByVal GrhIndex As Long, ByVal des
     
     If GrhIndex = 0 Then Exit Sub
     
-    Set d3dTextures.texture = SurfaceDB.GetTexture(GrhData(GrhIndex).FileNum, d3dTextures.texwidth, d3dTextures.texheight)
+    Set d3dTextures.Texture = SurfaceDB.GetTexture(GrhData(GrhIndex).FileNum, d3dTextures.texwidth, d3dTextures.texheight)
     
     light_value(0) = rgb_list(0)
     light_value(1) = rgb_list(1)
@@ -1866,25 +1868,88 @@ Private Sub Device_Box_Textured_Render_Advance(ByVal GrhIndex As Long, ByVal des
     Geometry_Create_Box temp_verts(), dest_rect, src_rect, light_value(), d3dTextures.texwidth, d3dTextures.texheight, angle
         
     'Set Textures
-    D3DDevice.SetTexture 0, d3dTextures.texture
+    DirectDevice.SetTexture 0, d3dTextures.Texture
     
     If alpha_blend Then
         'Set Rendering for alphablending
-        D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_ONE
-        D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_ONE
+        DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_ONE
+        DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_ONE
 
     End If
     
     'Draw the triangles that make up our square Textures
-    D3DDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
     
     If alpha_blend Then
         'Set Rendering for colokeying
-        D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
-        D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
+        DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
+        DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
 
     End If
 
+End Sub
+
+Public Sub Batch_Textured_Box(ByVal x As Single, ByVal y As Single, _
+                            ByVal Width As Integer, ByVal Height As Integer, _
+                            ByVal sX As Integer, ByVal sY As Integer, _
+                            ByVal tex As Long, _
+                            ByRef Color() As Long, _
+                            Optional ByVal Alpha As Boolean = False, _
+                            Optional ByVal angle As Single = 0, _
+                            Optional ByVal ScaleX As Single = 1!, _
+                            Optional ByVal ScaleY As Single = 1!)
+
+    Dim Texture As Direct3DTexture8
+        
+    Dim TextureWidth As Long, TextureHeight As Long
+    Set Texture = SurfaceDB.GetTexture(tex, TextureWidth, TextureHeight)
+    
+    With SpriteBatch
+
+            Call .SetTexture(Texture)
+                
+            Call .SetAlpha(Alpha)
+            
+            If TextureWidth <> 0 And TextureHeight <> 0 Then
+                Call .Draw(x, y, Width * ScaleX, Height * ScaleY, Color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
+            Else
+                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , angle)
+            End If
+            
+    End With
+        
+End Sub
+
+Public Sub Batch_Textured_Box_Advance(ByVal x As Single, ByVal y As Single, _
+                            ByVal Width As Integer, ByVal Height As Integer, _
+                            ByVal sX As Integer, ByVal sY As Integer, _
+                            ByVal tex As Long, _
+                            ByVal dW As Integer, ByVal dH As Integer, _
+                            ByRef Color() As Long, _
+                            Optional ByVal Alpha As Boolean = False, _
+                            Optional ByVal angle As Single = 0, _
+                            Optional ByVal ScaleX As Single = 1!, _
+                            Optional ByVal ScaleY As Single = 1!)
+
+    Dim Texture As Direct3DTexture8
+        
+    Dim TextureWidth As Long, TextureHeight As Long
+    Set Texture = SurfaceDB.GetTexture(tex, TextureWidth, TextureHeight)
+    
+    With SpriteBatch
+
+            Call .SetTexture(Texture)
+                
+            Call .SetAlpha(Alpha)
+            
+            If TextureWidth <> 0 And TextureHeight <> 0 Then
+                Call .Draw(x, y, dW * ScaleX, dH * ScaleY, Color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
+            Else
+                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , angle)
+            End If
+            
+    End With
+        
 End Sub
 
 Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef rgb_list() As Long, ByVal src_x As Integer, ByVal src_y As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single)
@@ -1906,7 +1971,7 @@ Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As In
     
     If GrhIndex = 0 Then Exit Sub
     
-    Set d3dTextures.texture = SurfaceDB.GetTexture(GrhData(GrhIndex).FileNum, d3dTextures.texwidth, d3dTextures.texheight)
+    Set d3dTextures.Texture = SurfaceDB.GetTexture(GrhData(GrhIndex).FileNum, d3dTextures.texwidth, d3dTextures.texheight)
     
     light_value(0) = rgb_list(0)
     light_value(1) = rgb_list(1)
@@ -1938,108 +2003,30 @@ Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As In
     Geometry_Create_Box temp_verts(), dest_rect, src_rect, light_value(), d3dTextures.texwidth, d3dTextures.texheight, angle
      
     'Set Textures
-    D3DDevice.SetTexture 0, d3dTextures.texture
+    DirectDevice.SetTexture 0, d3dTextures.Texture
     
     If alpha_blend Then
         'Set Rendering for alphablending
-        D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_ONE
-        D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_ONE
+        DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_ONE
+        DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_ONE
 
     End If
     
     'Draw the triangles that make up our square Textures
-    D3DDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
     
     If alpha_blend Then
         'Set Rendering for colokeying
-        D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
-        D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
+        DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
+        DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
 
     End If
     
-    D3DDevice.SetRenderState D3DRS_ALPHABLENDENABLE, 1
-    D3DDevice.SetRenderState D3DRS_ALPHATESTENABLE, 1
+    DirectDevice.SetRenderState D3DRS_ALPHABLENDENABLE, 1
+    DirectDevice.SetRenderState D3DRS_ALPHATESTENABLE, 1
  
-    'D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE
-    'D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1
-
-End Sub
-
-Public Sub Device_Box_Textured_Render_Viejo(ByVal GrhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef rgb_list() As Long, ByVal src_x As Integer, ByVal src_y As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single)
-
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 2/12/2004
-    'Just copies the Textures
-    '**************************************************************
-    Static src_rect            As RECT
-
-    Static dest_rect           As RECT
-
-    Static temp_verts(3)       As TLVERTEX
-
-    Static d3dTextures         As D3D8Textures
-
-    Static light_value(0 To 3) As Long
-    
-    If GrhIndex = 0 Then Exit Sub
-    
-    Set d3dTextures.texture = SurfaceDB.GetTexture(GrhData(GrhIndex).FileNum, d3dTextures.texwidth, d3dTextures.texheight)
-    
-    light_value(0) = rgb_list(0)
-    light_value(1) = rgb_list(1)
-    light_value(2) = rgb_list(2)
-    light_value(3) = rgb_list(3)
- 
-    If (light_value(0) = 0) Then light_value(0) = map_base_light
-    If (light_value(1) = 0) Then light_value(1) = map_base_light
-    If (light_value(2) = 0) Then light_value(2) = map_base_light
-    If (light_value(3) = 0) Then light_value(3) = map_base_light
-        
-    'Set up the source rectangle
-    With src_rect
-        .bottom = src_y + src_height
-        .Left = src_x
-        .Right = src_x + src_width
-        .Top = src_y
-    End With
-                
-    'Set up the destination rectangle
-    With dest_rect
-        .bottom = dest_y + src_height
-        .Left = dest_x
-        .Right = dest_x + src_width
-        .Top = dest_y
-    End With
-    
-    'Set up the TempVerts(3) vertices
-    Geometry_Create_Box_Viejo temp_verts(), dest_rect, src_rect, light_value(), d3dTextures.texwidth, d3dTextures.texheight, angle
-     
-    'Set Textures
-    D3DDevice.SetTexture 0, d3dTextures.texture
-    
-    If alpha_blend Then
-        'Set Rendering for alphablending
-        D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_ONE
-        D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_ONE
-
-    End If
-    
-    'Draw the triangles that make up our square Textures
-    D3DDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
-    
-    If alpha_blend Then
-        'Set Rendering for colokeying
-        D3DDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
-        D3DDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
-
-    End If
-    
-    D3DDevice.SetRenderState D3DRS_ALPHABLENDENABLE, 1
-    D3DDevice.SetRenderState D3DRS_ALPHATESTENABLE, 1
- 
-    'D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE
-    'D3DDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1
+    'DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE
+    'DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1
 
 End Sub
 
@@ -2052,9 +2039,9 @@ Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
 
     Dim y  As Integer
 
-    Dim tX As Integer
+    Dim TX As Integer
 
-    Dim tY As Integer
+    Dim TY As Integer
     
     'Figure out which way to move
     Select Case nHeading
@@ -2074,18 +2061,18 @@ Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
     End Select
     
     'Fill temp pos
-    tX = UserPos.x + x
-    tY = UserPos.y + y
+    TX = UserPos.x + x
+    TY = UserPos.y + y
     
     'Check to see if its out of bounds
-    If tX < MinXBorder Or tX > MaxXBorder Or tY < MinYBorder Or tY > MaxYBorder Then
+    If TX < MinXBorder Or TX > MaxXBorder Or TY < MinYBorder Or TY > MaxYBorder Then
         Exit Sub
     Else
         'Start moving... MainLoop does the rest
         AddtoUserPos.x = x
-        UserPos.x = tX
+        UserPos.x = TX
         AddtoUserPos.y = y
-        UserPos.y = tY
+        UserPos.y = TY
         UserMoving = 1
         
         bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
@@ -2102,7 +2089,7 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
 
     Dim line          As String
 
-    Dim color(0 To 3) As Long
+    Dim Color(0 To 3) As Long
 
     Dim i             As Long
     
@@ -2220,7 +2207,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
     Dim line                 As String
 
-    Dim color(0 To 3)        As Long
+    Dim Color(0 To 3)        As Long
 
     Dim colorCorazon(0 To 3) As Long
 
@@ -2309,7 +2296,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
  
         If .EsNpc Then
             If Len(.nombre) > 0 Then
-                If Abs(tX - .Pos.x) < 1 And (Abs(tY - .Pos.y)) < 1 Then
+                If Abs(TX - .Pos.x) < 1 And (Abs(TY - .Pos.y)) < 1 Then
 
                     Dim colornpcs(3) As Long
 
@@ -2452,40 +2439,40 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                             Select Case .status
 
                                 Case 0
-                                    color(0) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
-                                    color(1) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
-                                    color(2) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
-                                    color(3) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    Color(0) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    Color(1) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    Color(2) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    Color(3) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(3) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
 
                                 Case 1
-                                    color(0) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
-                                    color(1) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
-                                    color(2) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
-                                    color(3) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    Color(0) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    Color(1) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    Color(2) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    Color(3) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(3) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
 
                                 Case 2
-                                    color(0) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
-                                    color(1) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
-                                    color(2) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
-                                    color(3) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    Color(0) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    Color(1) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    Color(2) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    Color(3) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(3) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
 
                                 Case 3
-                                    color(0) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
-                                    color(1) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
-                                    color(2) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
-                                    color(3) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    Color(0) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    Color(1) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    Color(2) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    Color(3) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
@@ -2494,10 +2481,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                             End Select
                                     
                         Else
-                            color(0) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
-                            color(1) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
-                            color(2) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
-                            color(3) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            Color(0) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            Color(1) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            Color(2) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            Color(3) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
                             colorCorazon(0) = D3DColorXRGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
                             colorCorazon(1) = D3DColorXRGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
                             colorCorazon(2) = D3DColorXRGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
@@ -2507,10 +2494,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                                             
                         If .group_index > 0 Then
                             If charlist(charindex).group_index = charlist(UserCharIndex).group_index Then
-                                color(0) = D3DColorXRGB(255, 255, 255)
-                                color(1) = D3DColorXRGB(255, 255, 255)
-                                color(2) = D3DColorXRGB(255, 255, 255)
-                                color(3) = D3DColorXRGB(255, 255, 255)
+                                Color(0) = D3DColorXRGB(255, 255, 255)
+                                Color(1) = D3DColorXRGB(255, 255, 255)
+                                Color(2) = D3DColorXRGB(255, 255, 255)
+                                Color(3) = D3DColorXRGB(255, 255, 255)
                                 colorCorazon(0) = D3DColorXRGB(255, 255, 0)
                                 colorCorazon(1) = D3DColorXRGB(0, 255, 255)
                                 colorCorazon(2) = D3DColorXRGB(0, 255, 0)
@@ -2525,9 +2512,9 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                             OffsetYClan = 14
                             line = Left$(.nombre, Pos - 2)
                             Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, colorz, True, True, False
-                            Draw_FilledBox PixelOffsetX + 3, PixelOffsetY + 31, (((UserMinHp + 1 / 100) / (UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
+                            Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 31, (((UserMinHp + 1 / 100) / (UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
                             Grh_Render Marco, PixelOffsetX, PixelOffsetY + 14, colorz, True, True, False
-                            Draw_FilledBox PixelOffsetX + 3, PixelOffsetY + 40, (((UserMinMAN + 1 / 100) / (UserMaxMAN + 1 / 100))) * 26, 4, D3DColorARGB(255, 0, 0, 255), D3DColorARGB(0, 200, 200, 200)
+                            Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 40, (((UserMinMAN + 1 / 100) / (UserMaxMAN + 1 / 100))) * 26, 4, D3DColorARGB(255, 0, 0, 255), D3DColorARGB(0, 200, 200, 200)
 
                         End If
                             
@@ -2537,7 +2524,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                                     OffsetYname = 8
                                     OffsetYClan = 6
                                     Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, colorz, True, True, False
-                                    Draw_FilledBox PixelOffsetX + 3, PixelOffsetY + 31, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
+                                    Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 31, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
 
                                 End If
 
@@ -2547,7 +2534,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
   
                         'Nick
                         line = Left$(.nombre, Pos - 2)
-                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), color, 1, True
+                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), Color, 1, True
                         
                         'Clan
                         Select Case .priv
@@ -2566,7 +2553,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
                         End Select
                             
-                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), color, 1, True
+                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), Color, 1, True
 
                         If .Donador = 1 Then
                             line = Left$(.nombre, Pos - 2)
@@ -2627,10 +2614,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
                     If Pos = 0 Then Pos = Len(.nombre) + 2
 
-                    color(0) = D3DColorXRGB(255, 255, 255)
-                    color(1) = color(0)
-                    color(2) = color(0)
-                    color(3) = color(0)
+                    Color(0) = D3DColorXRGB(255, 255, 255)
+                    Color(1) = Color(0)
+                    Color(2) = Color(0)
+                    Color(3) = Color(0)
                     colorCorazon(0) = D3DColorXRGB(120, 100, 200)
                     colorCorazon(1) = colorCorazon(0)
                     colorCorazon(2) = colorCorazon(0)
@@ -2640,20 +2627,20 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                         OffsetYname = 16
                         OffsetYClan = 14
                         line = Left$(.nombre, Pos - 2)
-                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, color, True, True, False
-                        Draw_FilledBox PixelOffsetX + 3, PixelOffsetY + 31, (((UserMinHp + 1 / 100) / (UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
-                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 14, color, True, True, False
-                        Draw_FilledBox PixelOffsetX + 3, PixelOffsetY + 40, (((UserMinMAN + 1 / 100) / (UserMaxMAN + 1 / 100))) * 26, 4, D3DColorARGB(255, 0, 0, 255), D3DColorARGB(0, 200, 200, 200)
+                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, Color, True, True, False
+                        Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 31, (((UserMinHp + 1 / 100) / (UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
+                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 14, Color, True, True, False
+                        Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 40, (((UserMinMAN + 1 / 100) / (UserMaxMAN + 1 / 100))) * 26, 4, D3DColorARGB(255, 0, 0, 255), D3DColorARGB(0, 200, 200, 200)
 
                     End If
                                 
-                    color(0) = D3DColorXRGB(200, 100, 100)
-                    color(1) = color(0)
-                    color(2) = color(0)
-                    color(3) = color(0)
+                    Color(0) = D3DColorXRGB(200, 100, 100)
+                    Color(1) = Color(0)
+                    Color(2) = Color(0)
+                    Color(3) = Color(0)
 
                     line = Left$(.nombre, Pos - 2)
-                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), color, 1, True
+                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), Color, 1, True
                         
                     'Clan
                     Select Case .priv
@@ -2672,7 +2659,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
                     End Select
                             
-                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), color, 1, True
+                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), Color, 1, True
 
                     If .Donador = 1 Then
                         line = Left$(.nombre, Pos - 2)
@@ -2726,8 +2713,8 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
     
             'Barra de tiempo
             If .BarTime < .MaxBarTime Then
-                Draw_FilledBox PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, D3DColorARGB(100, 0, 0, 0), D3DColorARGB(100, 0, 0, 0)
-                Draw_FilledBox PixelOffsetX - 17, PixelOffsetY - 40, (((.BarTime / 100) / (.MaxBarTime / 100))) * 69, 7, D3DColorARGB(100, 200, 0, 0), D3DColorARGB(1, 200, 200, 200)
+                Engine_Draw_Box_Border PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, D3DColorARGB(100, 0, 0, 0), D3DColorARGB(100, 0, 0, 0)
+                Engine_Draw_Box_Border PixelOffsetX - 17, PixelOffsetY - 40, (((.BarTime / 100) / (.MaxBarTime / 100))) * 69, 7, D3DColorARGB(100, 200, 0, 0), D3DColorARGB(1, 200, 200, 200)
                 .BarTime = .BarTime + (4 * timerTicksPerFrame * Sgn(1))
                                  
                 If .BarTime >= .MaxBarTime Then
@@ -2821,7 +2808,7 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
 
     Dim line          As String
 
-    Dim color(0 To 3) As Long
+    Dim Color(0 To 3) As Long
 
     Dim i             As Long
     
@@ -3022,14 +3009,13 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
     
             'Barra de tiempo
             If .BarTime < .MaxBarTime Then
-                Draw_FilledBox PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, D3DColorARGB(100, 0, 0, 0), D3DColorARGB(100, 0, 0, 0)
-                Draw_FilledBox PixelOffsetX - 17, PixelOffsetY - 40, (((.BarTime / 100) / (.MaxBarTime / 100))) * 69, 7, D3DColorARGB(100, 200, 0, 0), D3DColorARGB(1, 200, 200, 200)
+                Engine_Draw_Box_Border PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, D3DColorARGB(100, 0, 0, 0), D3DColorARGB(100, 0, 0, 0)
+                Engine_Draw_Box_Border PixelOffsetX - 17, PixelOffsetY - 40, (((.BarTime / 100) / (.MaxBarTime / 100))) * 69, 7, D3DColorARGB(100, 200, 0, 0), D3DColorARGB(1, 200, 200, 200)
                 .BarTime = .BarTime + (4 * timerTicksPerFrame * Sgn(1))
                                  
                 '  Engine_Text_Render "time: " & .BarTime, 50, 50, color, 1, True
                 If .BarTime >= .MaxBarTime And charindex = UserCharIndex Then
                     Call CompletarAccionBarra(.BarAccion)
-                                
                 End If
 
             End If
@@ -3188,9 +3174,9 @@ Private Function Engine_FToDW(f As Single) As Long
     ' single > long
     Dim buf As D3DXBuffer
 
-    Set buf = D3DX.CreateBuffer(4)
-    D3DX.BufferSetData buf, 0, 4, 1, f
-    D3DX.BufferGetData buf, 0, 4, 1, Engine_FToDW
+    Set buf = DirectD3D8.CreateBuffer(4)
+    DirectD3D8.BufferSetData buf, 0, 4, 1, f
+    DirectD3D8.BufferGetData buf, 0, 4, 1, Engine_FToDW
 
 End Function
 
@@ -3457,12 +3443,12 @@ Public Sub DrawMapaMundo()
     
     Call Engine_BeginScene
         
-    Dim color(0 To 3) As Long
+    Dim Color(0 To 3) As Long
 
-    color(0) = D3DColorARGB(255, 255, 255, 255)
-    color(1) = color(0)
-    color(2) = color(0)
-    color(3) = color(0)
+    Color(0) = D3DColorARGB(255, 255, 255, 255)
+    Color(1) = Color(0)
+    Color(2) = Color(0)
+    Color(3) = Color(0)
         
     Dim i    As Byte
 
@@ -3485,66 +3471,17 @@ Public Sub DrawMapaMundo()
         grh = BodyData(BodyID).Walk(3)
         x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
         y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
-        Call Draw_Grh(grh, x, y, 0, 0, color, False, 0, 0, 0)
+        Call Draw_Grh(grh, x, y, 0, 0, Color, False, 0, 0, 0)
     End If
 
     If HeadID > 0 Then
         Head = HeadData(HeadID).Head(3)
         x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(Head.GrhIndex).pixelWidth / 2
         y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
-        Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
+        Call Draw_Grh(Head, x, y, 0, 0, Color, False, 0, 0, 0)
     End If
     
     Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
-
-End Sub
-
-Public Sub Draw_FilledBox(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, color As Long, outlinecolor As Long)
-
-    Static box_rect     As RECT
-
-    Static Outline      As RECT
-
-    Static rgb_list(3)  As Long
-
-    Static rgb_list2(3) As Long
-
-    Static Vertex(3)    As TLVERTEX
-
-    Static Vertex2(3)   As TLVERTEX
-    
-    rgb_list(0) = color
-    rgb_list(1) = color
-    rgb_list(2) = color
-    rgb_list(3) = color
-    
-    rgb_list2(0) = outlinecolor
-    rgb_list2(1) = outlinecolor
-    rgb_list2(2) = outlinecolor
-    rgb_list2(3) = outlinecolor
-    
-    With box_rect
-        .bottom = y + Height
-        .Left = x
-        .Right = x + Width
-        .Top = y
-
-    End With
-    
-    With Outline
-        .bottom = y + Height + 1
-        .Left = x - 1
-        .Right = x + Width + 1
-        .Top = y - 1
-
-    End With
-    
-    Geometry_Create_Box Vertex2(), Outline, Outline, rgb_list2(), 0, 0
-    Geometry_Create_Box Vertex(), box_rect, box_rect, rgb_list(), 0, 0
-    
-    D3DDevice.SetTexture 0, Nothing
-    D3DDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, Vertex2(0), Len(Vertex2(0))
-    D3DDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, Vertex(0), Len(Vertex(0))
 
 End Sub
 
@@ -3592,7 +3529,8 @@ Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal
     End If
     
     'Draw it to device
-    Device_Box_Textured_Render_Advance grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY, Width, Height, alpha_blend, grh.angle
+    'Device_Box_Textured_Render_Advance grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY, Width, Height, alpha_blend, grh.angle
+    Call Batch_Textured_Box_Advance(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, Width, Height, rgb_list, alpha_blend, grh.angle)
 
 End Sub
 
@@ -3662,7 +3600,8 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
     End If
     
     'Draw it to device
-    Device_Box_Textured_Render grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list(), GrhData(grh_index).sX, GrhData(grh_index).sY, alpha_blend, grh.angle
+    'Device_Box_Textured_Render grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list(), GrhData(grh_index).sX, GrhData(grh_index).sY, alpha_blend, grh.angle
+    Call Batch_Textured_Box(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, rgb_list, alpha_blend, grh.angle)
 
 End Sub
 
@@ -3720,7 +3659,7 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
 
     Dim Index            As Long
 
-    Dim color            As Long
+    Dim Color            As Long
 
     Dim aura_grh         As grh
 
@@ -3731,7 +3670,7 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
     Dim lado             As Byte
 
     Index = Val(ReadField(1, aura_index, Asc(":")))
-    color = Val(ReadField(2, aura_index, Asc(":")))
+    Color = Val(ReadField(2, aura_index, Asc(":")))
     giro = Val(ReadField(3, aura_index, Asc(":")))
     lado = Val(ReadField(4, aura_index, Asc(":")))
 
@@ -3756,9 +3695,9 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
 
     Dim b As Integer
 
-    r = &HFF& And color
-    g = (&HFF00& And color) \ 256
-    b = (&HFF0000 And color) \ 65536
+    r = &HFF& And Color
+    g = (&HFF00& And Color) \ 256
+    b = (&HFF0000 And Color) \ 65536
     TRANS = 255
 
     rgb_list(0) = D3DColorARGB(TRANS, b, g, r)
@@ -3787,14 +3726,14 @@ Private Sub Renderizar_AuraCiego(ByVal aura_index As String, ByVal x As Integer,
 
     Dim Index            As Long
 
-    Dim color            As Long
+    Dim Color            As Long
 
     Dim aura_grh         As grh
 
     Dim TRANS            As Integer
 
     Index = Val(ReadField(1, aura_index, Asc(":")))
-    color = Val(ReadField(2, aura_index, Asc(":")))
+    Color = Val(ReadField(2, aura_index, Asc(":")))
     TRANS = 1 'Val(ReadField(4, aura_index, Asc(":")))
 
     Dim r As Integer
@@ -3803,9 +3742,9 @@ Private Sub Renderizar_AuraCiego(ByVal aura_index As String, ByVal x As Integer,
 
     Dim b As Integer
 
-    r = &HFF& And color
-    g = (&HFF00& And color) \ 256
-    b = (&HFF0000 And color) \ 65536
+    r = &HFF& And Color
+    g = (&HFF00& And Color) \ 256
+    b = (&HFF0000 And Color) \ 65536
 
     Dim ColorCiego(0 To 3) As Long
 
@@ -4105,7 +4044,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         
     Dim DefaultColor(3) As Long
 
-    Dim color           As Long
+    Dim Color           As Long
 
     intro = 1
 
@@ -4854,7 +4793,7 @@ Public Sub RenderPjsCuenta()
 
     Dim DefaultColor(3) As Long
 
-    Dim color           As Long
+    Dim Color           As Long
 
     Dim Texto           As String
 
@@ -5007,11 +4946,11 @@ Public Sub RenderPjsCuenta()
 
 End Sub
 
-Sub EfectoEnPantalla(ByVal color As Long, ByVal time As Long)
+Sub EfectoEnPantalla(ByVal Color As Long, ByVal time As Long)
     frmmain.Efecto.Interval = time
     frmmain.Efecto.Enabled = True
     EfectoEnproceso = True
-    Call Map_Base_Light_Set(color)
+    Call Map_Base_Light_Set(Color)
 
 End Sub
 
@@ -5519,7 +5458,7 @@ Public Function Letter_UnSet() As Boolean
 
 End Function
 
-Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
+Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal Color As Long = -1)
     '**************************************************************
     'Author: Mannakia
     'Last Modify Date: 14/05/2009
@@ -5548,10 +5487,10 @@ Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x 
 
     Dim s(3) As Long
 
-    s(0) = color
-    s(1) = color
-    s(2) = color
-    s(3) = color
+    s(0) = Color
+    s(1) = Color
+    s(2) = Color
+    s(3) = Color
 
     Call Engine_BeginScene
     

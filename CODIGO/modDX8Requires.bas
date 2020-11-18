@@ -9,7 +9,7 @@ Option Explicit
 Public SurfaceDB As clsTexManager
 
 Public Type D3D8Textures
-    texture As Direct3DTexture8
+    Texture As Direct3DTexture8
     texwidth As Long
     texheight As Long
 End Type
@@ -41,28 +41,55 @@ Private Declare Sub GlobalMemoryStatus Lib "kernel32" (lpBuffer As MEMORYSTATUS)
 '*******************************************************
 ' MOTOR GRAFICO
 '*******************************************************
-Public dX        As DirectX8
-Public D3D       As Direct3D8
-Public D3DDevice As Direct3DDevice8
-Public D3DX      As D3DX8
+' No matter what you do with DirectX8, you will need to start with
+' the DirectX8 object. You will need to create a new instance of
+' the object, using the New keyword, rather than just getting a
+' pointer to it, since there's nowhere to get a pointer from yet (duh!).
+
+Public DirectX As New DirectX8
+
+' The D3DX8 object contains lots of helper functions, mostly math
+' to make Direct3D alot easier to use. Notice we create a new
+' instance of the object using the New keyword.
+Public DirectD3D8 As D3DX8
+Public DirectD3D As Direct3D8
+
+' The Direct3DDevice8 represents our rendering device, which could
+' be a hardware or a software device. The great thing is we still
+' use the same object no matter what it is
+Public DirectDevice As Direct3DDevice8
+
+' The D3DDISPLAYMODE type structure that holds
+' the information about your current display adapter.
+Public DispMode  As D3DDISPLAYMODE
+    
+' The D3DPRESENT_PARAMETERS type holds a description of the way
+' in which DirectX will display it's rendering.
+Public D3DWindow As D3DPRESENT_PARAMETERS
+
+Public SpriteBatch As New clsBatch
+
+Public Viewport As D3DVIEWPORT8
+Public Projection As D3DMATRIX
+Public View As D3DMATRIX
 
 Public Type TLVERTEX
-    x As Single
-    y As Single
+    X As Single
+    Y As Single
     Z As Single
     rhw As Single
-    color As Long
+    Color As Long
     Specular As Long
     tu As Single
     tv As Single
 End Type
 
 Public Type TLVERTEX2
-    x As Single
-    y As Single
+    X As Single
+    Y As Single
     Z As Single
     rhw As Single
-    color As Long
+    Color As Long
     Specular As Long
     tu1 As Single
     tv1 As Single
