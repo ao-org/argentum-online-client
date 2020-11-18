@@ -357,7 +357,8 @@ Public MainViewLeft           As Integer
 'Cuantos tiles el engine mete en el BUFFER cuando
 'dibuja el mapa. Ojo un tamaño muy grande puede
 'volver el engine muy lento
-Public TileBufferSize          As Integer
+Public TileBufferSizeX        As Integer
+Public TileBufferSizeY        As Integer
 Public TileBufferPixelOffsetX As Integer
 Public TileBufferPixelOffsetY As Integer
 
@@ -474,9 +475,10 @@ Public Sub Init_TileEngine()
     HalfWindowTileHeight = (frmmain.renderer.ScaleHeight / 32) \ 2
     HalfWindowTileWidth = (frmmain.renderer.ScaleWidth / 32) \ 2
     
-    TileBufferSize = 8
-    TileBufferPixelOffsetX = (TileBufferSize - 1) * 32
-    TileBufferPixelOffsetY = (TileBufferSize - 1) * 32
+    TileBufferSizeX = 5
+    TileBufferSizeY = 9
+    TileBufferPixelOffsetX = (TileBufferSizeX - 1) * 32
+    TileBufferPixelOffsetY = (TileBufferSizeY - 1) * 32
     
     ReDim MapData(XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
     

@@ -65,6 +65,25 @@ Begin VB.Form frmmain
       Type            =   1
       Urgent          =   0   'False
    End
+   Begin VB.CommandButton btnInvisible 
+      Caption         =   "/INVISIBLE"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   6360
+      TabIndex        =   39
+      TabStop         =   0   'False
+      Top             =   0
+      Visible         =   0   'False
+      Width           =   1335
+   End
    Begin VB.CommandButton createObj 
       Caption         =   "Crear OBJ"
       BeginProperty Font 
@@ -79,6 +98,7 @@ Begin VB.Form frmmain
       Height          =   375
       Left            =   4800
       TabIndex        =   38
+      TabStop         =   0   'False
       Top             =   0
       Visible         =   0   'False
       Width           =   1335
@@ -97,6 +117,7 @@ Begin VB.Form frmmain
       Height          =   375
       Left            =   3240
       TabIndex        =   37
+      TabStop         =   0   'False
       Top             =   0
       Visible         =   0   'False
       Width           =   1335
@@ -535,7 +556,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1428,6 +1448,10 @@ Private Const EM_GETLINE = &HC4
 
 Private Const EM_LINELENGTH = &HC1
 
+Private Sub btnInvisible_Click()
+    Call ParseUserCommand("/INVISIBLE")
+End Sub
+
 Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If clanimg.Tag = "0" Then
@@ -1718,6 +1742,14 @@ End Sub
 Private Sub exp_Click()
     Call WriteScrollInfo
 
+End Sub
+
+Private Sub Form_Activate()
+    If EsGM Then
+        panelGM.Visible = True
+        createObj.Visible = True
+        btnInvisible.Visible = True
+    End If
 End Sub
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
@@ -3336,11 +3368,6 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(frmmain)
     MenuNivel = 1
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
-    
-#If DEBUGGING = 1 Then
-    panelGM.Visible = True
-    createObj.Visible = True
-#End If
 
 End Sub
 
