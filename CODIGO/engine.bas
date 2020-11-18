@@ -1449,14 +1449,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     
                 End If
                 
-                If .charindex <> 0 Then
-                    If charlist(.charindex).active = 1 Then
-                        Call Char_Render(.charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
-
-                    End If
-
-                End If
-
                 If .CharFantasma.Activo Then
 
                     Dim ColorFantasma(3) As Long
@@ -1492,6 +1484,12 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
                     End If
 
+                End If
+                
+                If .charindex <> 0 Then
+                    If charlist(.charindex).active = 1 Then
+                        Call Char_Render(.charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
+                    End If
                 End If
 
                 'Layer 3 *****************************************
@@ -1536,7 +1534,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
                 '***********************************************
                 If .particle_group > 0 Then
-                    Call Particle_Group_Render(.particle_group, ScreenX * 32 + PixelOffsetX + 15, ScreenY * 32 + PixelOffsetY + 15)
+                    Call Particle_Group_Render(.particle_group, ScreenX * 32 + PixelOffsetX + 16, ScreenY * 32 + PixelOffsetY + 16)
 
                 End If
 
@@ -1802,11 +1800,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
         temp_array(3) = D3DColorARGB(CInt(map_letter_a), 179, 95, 0)
         Grh_Render letter_grh, 250, 300, temp_array()
         Engine_Text_RenderGrande letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2, 1, temp_array, 5, False, , CInt(map_letter_a)
-
-    End If
-
-    If FullScreen Then
-        RenderConsola
 
     End If
 
@@ -2382,7 +2375,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
                                                                     
                         If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + 1, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
+                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
                         Else
                             Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
 
@@ -2401,7 +2394,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
                                              
                         If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + 1, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
+                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
                         Else
                             Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
 
@@ -2416,7 +2409,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
                                              
                         If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + 1, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
+                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
                         Else
                             Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
 
@@ -2431,7 +2424,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                     Case south
                                          
                         If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + 1, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
+                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
                         Else
                             Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
 
@@ -5525,23 +5518,6 @@ Public Function Letter_UnSet() As Boolean
     Letter_UnSet = True
 
 End Function
-
-Sub RenderConsola()
-
-    Dim i As Byte
- 
-    If OffSetConsola > 0 Then OffSetConsola = OffSetConsola - 1
-    If OffSetConsola = 0 Then UltimaLineavisible = True
- 
-    For i = 1 To MaxLineas - 1
- 
-        Text_Render font_list(1), Con(i).T, ComienzoY + (i * 15) + OffSetConsola - 20, 10, frmmain.renderer.Width, frmmain.renderer.Height, ARGB(Con(i).r, Con(i).g, Con(i).b, i * (255 / MaxLineas)), DT_TOP Or DT_LEFT, False
-        
-    Next i
- 
-    If UltimaLineavisible = True Then Text_Render font_list(1), Con(i).T, ComienzoY + (MaxLineas * 15) + OffSetConsola - 20, 10, frmmain.renderer.Width, frmmain.renderer.Height, ARGB(Con(MaxLineas).r, Con(MaxLineas).g, Con(i).b, 255), DT_TOP Or DT_LEFT, False
- 
-End Sub
 
 Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
     '**************************************************************
