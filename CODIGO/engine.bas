@@ -1334,15 +1334,15 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     minXOffset = -TileBufferSizeX
     
     'Make sure mins and maxs are allways in map bounds
-    If minY < XMinMapSize Then
-        minYOffset = YMinMapSize - minY
+    If minY < YMinMapSize Then
+        minYOffset = YMinMapSize - minY - 1
         minY = YMinMapSize
     End If
     
     If MaxY > YMaxMapSize Then MaxY = YMaxMapSize
     
     If minX < XMinMapSize Then
-        minXOffset = XMinMapSize - minX
+        minXOffset = XMinMapSize - minX - TileBufferSizeX
         minX = XMinMapSize
     End If
     
@@ -1433,9 +1433,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                 'Object Layer **********************************
                 If MapData(x, y).ObjGrh.GrhIndex <> 0 Then
                 
-                    If EsArbol(MapData(x, y).ObjGrh.GrhIndex) Then
-                    
-                    Else
+                    If Not EsArbol(MapData(x, y).ObjGrh.GrhIndex) Then
                         Call Draw_Grh(MapData(x, y).ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value(), , x, y)
                     End If
 
@@ -2384,7 +2382,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
                                                                     
                         If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
+                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + 1, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
                         Else
                             Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
 
@@ -2403,7 +2401,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
                                              
                         If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
+                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + 1, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
                         Else
                             Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
 
@@ -2418,7 +2416,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
                                              
                         If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
+                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + 1, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
                         Else
                             Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
 
@@ -2433,7 +2431,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                     Case south
                                          
                         If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
+                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + 1, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
                         Else
                             Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
 
