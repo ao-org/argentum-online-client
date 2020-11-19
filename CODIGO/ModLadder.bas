@@ -275,8 +275,8 @@ Type Macro
     TIPO As Byte
     cantidad As Integer
     Index As Integer
-    tX As Byte
-    tY As Byte
+    TX As Byte
+    TY As Byte
     Skill As Byte
 
 End Type
@@ -1723,8 +1723,8 @@ Public Sub ResetearUserMacro()
     UserMacro.Index = 0
     UserMacro.Intervalo = 0
     UserMacro.TIPO = 0
-    UserMacro.tX = 0
-    UserMacro.tY = 0
+    UserMacro.TX = 0
+    UserMacro.TY = 0
     UserMacro.Skill = 0
 
     If UsingSkill <> 0 Then
@@ -1845,10 +1845,6 @@ Public Sub TextoAlAsistente(ByVal Texto As String)
 
 End Sub
 
-Public Sub CargarMacro(ByVal NumMacro As Byte)
-
-End Sub
-
 Public Function GetTimeFormated(Mins As Integer) As String
 
     Dim Horita    As Byte
@@ -1941,7 +1937,7 @@ Public Sub PreloadGraphics()
 
             Static d3dTextures As D3D8Textures
 
-            Set d3dTextures.texture = SurfaceDB.GetTexture(j, d3dTextures.texwidth, d3dTextures.texheight)
+            Set d3dTextures.Texture = SurfaceDB.GetTexture(j, d3dTextures.texwidth, d3dTextures.texheight)
             'Call SurfaceDB.GetTexture(j, 1024, 1024)
             DoEvents
         Next j

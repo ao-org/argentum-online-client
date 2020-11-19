@@ -426,7 +426,7 @@ Sub SetConnected()
     frmmain.Image2(1).Tag = "0"
     OpcionMenu = 0
     frmmain.Image2(1).Picture = Nothing
-    frmmain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
     '            Image2(0).Visible = False
     ' Image2(1).Visible = True
 
@@ -468,16 +468,16 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.x, UserPos.y - 1)
+            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.x + 1, UserPos.y)
+            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.x, UserPos.y + 1)
+            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.x - 1, UserPos.y)
+            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
 
     End Select
     
@@ -807,8 +807,8 @@ Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
 
 End Function
 
-Function FileExist(ByVal file As String, ByVal FileType As VbFileAttribute) As Boolean
-    FileExist = (Dir$(file, FileType) <> "")
+Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As Boolean
+    FileExist = (Dir$(File, FileType) <> "")
 
 End Function
 
@@ -920,15 +920,15 @@ Sub Main()
  
 End Sub
 
-Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
+Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
-    writeprivateprofilestring Main, Var, Value, file
+    writeprivateprofilestring Main, Var, Value, File
 
 End Sub
 
-Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String) As String
+Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
 
     '*****************************************************************
     'Gets a Var from a text file
@@ -937,7 +937,7 @@ Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String)
     
     sSpaces = Space$(100) ' This tells the computer how long the longest string can be. If you want, you can change the number 100 to any number you wish
     
-    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), file
+    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), File
     
     GetVar = RTrim$(sSpaces)
     GetVar = Left$(GetVar, Len(GetVar) - 1)

@@ -563,6 +563,10 @@ Public Const MAXSKILLPOINTS          As Byte = 100
 
 Public Const FLAGORO                 As Integer = 200
 
+Public Const FLAG_AGUA               As Byte = &H20
+
+Public Const FLAG_ARBOL              As Byte = &H40
+
 Public Const FOgata                  As Integer = 1521
 
 Public Enum eClass

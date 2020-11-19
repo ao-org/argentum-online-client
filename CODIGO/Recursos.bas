@@ -85,6 +85,7 @@ Private Type tDatosBloqueados
 
     x As Integer
     y As Integer
+    lados As Byte
 
 End Type
 
@@ -894,10 +895,8 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Blqs
 
             For i = 1 To .NumeroBloqueados
-            
-                MapData(Blqs(i).x, Blqs(i).y).Blocked = 1
+                MapData(Blqs(i).x, Blqs(i).y).Blocked = Blqs(i).lados
             Next i
-
         End If
     
         'Cargamos Layer 1
@@ -909,10 +908,17 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(1)
             
-                MapData(L1(i).x, L1(i).y).Graphic(1).GrhIndex = L1(i).GrhIndex
+                x = L1(i).x
+                y = L1(i).y
             
-                InitGrh MapData(L1(i).x, L1(i).y).Graphic(1), MapData(L1(i).x, L1(i).y).Graphic(1).GrhIndex
+                MapData(x, y).Graphic(1).GrhIndex = L1(i).GrhIndex
+            
+                InitGrh MapData(x, y).Graphic(1), MapData(x, y).Graphic(1).GrhIndex
                 ' Call Map_Grh_Set(L2(i).x, L2(i).y, L2(i).GrhIndex, 2)
+                
+                If HayAgua(x, y) Then
+                    MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_AGUA
+                End If
             Next i
 
         End If
@@ -937,9 +943,16 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(3)
             
-                MapData(L3(i).x, L3(i).y).Graphic(3).GrhIndex = L3(i).GrhIndex
+                x = L3(i).x
+                y = L3(i).y
             
-                InitGrh MapData(L3(i).x, L3(i).y).Graphic(3), MapData(L3(i).x, L3(i).y).Graphic(3).GrhIndex
+                MapData(x, y).Graphic(3).GrhIndex = L3(i).GrhIndex
+            
+                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
+                
+                If EsArbol(L3(i).GrhIndex) Then
+                    MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
+                End If
             Next i
 
         End If
