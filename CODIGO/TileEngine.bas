@@ -186,6 +186,7 @@ Public Type Char
     Body_Aura As String
     Arma_Aura As String
     Escudo_Aura As String
+    Anillo_Aura As String
     Otra_Aura As String
 
     AuraAngle As Single
@@ -496,7 +497,7 @@ Public Sub Init_TileEngine()
 
 End Sub
 
-Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
+Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef TX As Byte, ByRef TY As Byte)
     '******************************************
     'Converts where the mouse is in the main window to a tile position. MUST be called eveytime the mouse moves.
     '******************************************
@@ -504,8 +505,8 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
     If viewPortX < 0 Or viewPortX > frmmain.renderer.ScaleWidth Then Exit Sub
     If viewPortY < 0 Or viewPortY > frmmain.renderer.ScaleHeight Then Exit Sub
 
-    tX = UserPos.x + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
-    tY = UserPos.y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
+    TX = UserPos.x + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
+    TY = UserPos.y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
 
 End Sub
 
@@ -722,9 +723,9 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
 
     Dim y  As Integer
 
-    Dim tX As Integer
+    Dim TX As Integer
 
-    Dim tY As Integer
+    Dim TY As Integer
     
     'Figure out which way to move
     Select Case nHeading
@@ -744,18 +745,18 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
     End Select
     
     'Fill temp pos
-    tX = UserPos.x + x
-    tY = UserPos.y + y
+    TX = UserPos.x + x
+    TY = UserPos.y + y
     
     'Check to see if its out of bounds
-    If tX < MinXBorder Or tX > MaxXBorder Or tY < MinYBorder Or tY > MaxYBorder Then
+    If TX < MinXBorder Or TX > MaxXBorder Or TY < MinYBorder Or TY > MaxYBorder Then
         Exit Sub
     Else
         'Start moving... MainLoop does the rest
         AddtoUserPos.x = x
-        UserPos.x = tX
+        UserPos.x = TX
         AddtoUserPos.y = y
-        UserPos.y = tY
+        UserPos.y = TY
         UserMoving = 1
         
         bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)

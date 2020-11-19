@@ -60,7 +60,7 @@ Private Type dialog
     startTime   As Long
     lifeTime    As Long
     charindex   As Integer
-    Color       As Long
+    color       As Long
     renderable  As Boolean
     Sube As Byte
 
@@ -354,10 +354,10 @@ errhandler:
 
 End Sub
 
-Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
+Public Sub Engine_BeginScene(Optional ByVal color As Long = 0)
     
     Call DirectDevice.BeginScene
-    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1#, 0)
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, color, 1#, 0)
     Call SpriteBatch.Begin
 
 End Sub
@@ -1893,7 +1893,7 @@ Public Sub Batch_Textured_Box(ByVal x As Single, ByVal y As Single, _
                             ByVal Width As Integer, ByVal Height As Integer, _
                             ByVal sX As Integer, ByVal sY As Integer, _
                             ByVal tex As Long, _
-                            ByRef Color() As Long, _
+                            ByRef color() As Long, _
                             Optional ByVal Alpha As Boolean = False, _
                             Optional ByVal angle As Single = 0, _
                             Optional ByVal ScaleX As Single = 1!, _
@@ -1911,9 +1911,9 @@ Public Sub Batch_Textured_Box(ByVal x As Single, ByVal y As Single, _
             Call .SetAlpha(Alpha)
             
             If TextureWidth <> 0 And TextureHeight <> 0 Then
-                Call .Draw(x, y, Width * ScaleX, Height * ScaleY, Color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
+                Call .Draw(x, y, Width * ScaleX, Height * ScaleY, color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
             Else
-                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , angle)
+                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, color, , , , , angle)
             End If
             
     End With
@@ -1924,8 +1924,8 @@ Public Sub Batch_Textured_Box_Advance(ByVal x As Single, ByVal y As Single, _
                             ByVal Width As Integer, ByVal Height As Integer, _
                             ByVal sX As Integer, ByVal sY As Integer, _
                             ByVal tex As Long, _
-                            ByVal dW As Integer, ByVal dH As Integer, _
-                            ByRef Color() As Long, _
+                            ByVal dw As Integer, ByVal dH As Integer, _
+                            ByRef color() As Long, _
                             Optional ByVal Alpha As Boolean = False, _
                             Optional ByVal angle As Single = 0, _
                             Optional ByVal ScaleX As Single = 1!, _
@@ -1943,9 +1943,9 @@ Public Sub Batch_Textured_Box_Advance(ByVal x As Single, ByVal y As Single, _
             Call .SetAlpha(Alpha)
             
             If TextureWidth <> 0 And TextureHeight <> 0 Then
-                Call .Draw(x, y, dW * ScaleX, dH * ScaleY, Color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
+                Call .Draw(x, y, dw * ScaleX, dH * ScaleY, color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
             Else
-                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , angle)
+                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, color, , , , , angle)
             End If
             
     End With
@@ -2089,7 +2089,7 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
 
     Dim line          As String
 
-    Dim Color(0 To 3) As Long
+    Dim color(0 To 3) As Long
 
     Dim i             As Long
     
@@ -2207,7 +2207,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
     Dim line                 As String
 
-    Dim Color(0 To 3)        As Long
+    Dim color(0 To 3)        As Long
 
     Dim colorCorazon(0 To 3) As Long
 
@@ -2354,6 +2354,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                 If Len(.Arma_Aura) <> 0 Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
                 If Len(.Otra_Aura) <> 0 Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
                 If Len(.Escudo_Aura) <> 0 Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                If Len(.Anillo_Aura) <> 0 Then Call Renderizar_Aura(.Anillo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
                                 
                 Select Case .Heading
 
@@ -2440,40 +2441,40 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                             Select Case .status
 
                                 Case 0
-                                    Color(0) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
-                                    Color(1) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
-                                    Color(2) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
-                                    Color(3) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    color(0) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    color(1) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    color(2) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    color(3) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(3) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
 
                                 Case 1
-                                    Color(0) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
-                                    Color(1) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
-                                    Color(2) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
-                                    Color(3) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    color(0) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    color(1) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    color(2) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    color(3) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(3) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
 
                                 Case 2
-                                    Color(0) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
-                                    Color(1) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
-                                    Color(2) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
-                                    Color(3) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    color(0) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    color(1) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    color(2) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    color(3) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(3) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
 
                                 Case 3
-                                    Color(0) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
-                                    Color(1) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
-                                    Color(2) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
-                                    Color(3) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    color(0) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    color(1) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    color(2) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    color(3) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
@@ -2482,10 +2483,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                             End Select
                                     
                         Else
-                            Color(0) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
-                            Color(1) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
-                            Color(2) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
-                            Color(3) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            color(0) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            color(1) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            color(2) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            color(3) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
                             colorCorazon(0) = D3DColorXRGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
                             colorCorazon(1) = D3DColorXRGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
                             colorCorazon(2) = D3DColorXRGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
@@ -2495,10 +2496,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                                             
                         If .group_index > 0 Then
                             If charlist(charindex).group_index = charlist(UserCharIndex).group_index Then
-                                Color(0) = D3DColorXRGB(255, 255, 255)
-                                Color(1) = D3DColorXRGB(255, 255, 255)
-                                Color(2) = D3DColorXRGB(255, 255, 255)
-                                Color(3) = D3DColorXRGB(255, 255, 255)
+                                color(0) = D3DColorXRGB(255, 255, 255)
+                                color(1) = D3DColorXRGB(255, 255, 255)
+                                color(2) = D3DColorXRGB(255, 255, 255)
+                                color(3) = D3DColorXRGB(255, 255, 255)
                                 colorCorazon(0) = D3DColorXRGB(255, 255, 0)
                                 colorCorazon(1) = D3DColorXRGB(0, 255, 255)
                                 colorCorazon(2) = D3DColorXRGB(0, 255, 0)
@@ -2535,7 +2536,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
   
                         'Nick
                         line = Left$(.nombre, Pos - 2)
-                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), Color, 1, True
+                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), color, 1, True
                         
                         'Clan
                         Select Case .priv
@@ -2554,7 +2555,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
                         End Select
                             
-                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), Color, 1, True
+                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), color, 1, True
 
                         If .Donador = 1 Then
                             line = Left$(.nombre, Pos - 2)
@@ -2615,10 +2616,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
                     If Pos = 0 Then Pos = Len(.nombre) + 2
 
-                    Color(0) = D3DColorXRGB(255, 255, 255)
-                    Color(1) = Color(0)
-                    Color(2) = Color(0)
-                    Color(3) = Color(0)
+                    color(0) = D3DColorXRGB(255, 255, 255)
+                    color(1) = color(0)
+                    color(2) = color(0)
+                    color(3) = color(0)
                     colorCorazon(0) = D3DColorXRGB(120, 100, 200)
                     colorCorazon(1) = colorCorazon(0)
                     colorCorazon(2) = colorCorazon(0)
@@ -2628,20 +2629,20 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                         OffsetYname = 16
                         OffsetYClan = 14
                         line = Left$(.nombre, Pos - 2)
-                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, Color, True, True, False
+                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, color, True, True, False
                         Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 31, (((UserMinHp + 1 / 100) / (UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
-                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 14, Color, True, True, False
+                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 14, color, True, True, False
                         Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 40, (((UserMinMAN + 1 / 100) / (UserMaxMAN + 1 / 100))) * 26, 4, D3DColorARGB(255, 0, 0, 255), D3DColorARGB(0, 200, 200, 200)
 
                     End If
                                 
-                    Color(0) = D3DColorXRGB(200, 100, 100)
-                    Color(1) = Color(0)
-                    Color(2) = Color(0)
-                    Color(3) = Color(0)
+                    color(0) = D3DColorXRGB(200, 100, 100)
+                    color(1) = color(0)
+                    color(2) = color(0)
+                    color(3) = color(0)
 
                     line = Left$(.nombre, Pos - 2)
-                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), Color, 1, True
+                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), color, 1, True
                         
                     'Clan
                     Select Case .priv
@@ -2660,7 +2661,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
                     End Select
                             
-                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), Color, 1, True
+                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), color, 1, True
 
                     If .Donador = 1 Then
                         line = Left$(.nombre, Pos - 2)
@@ -2809,7 +2810,7 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
 
     Dim line          As String
 
-    Dim Color(0 To 3) As Long
+    Dim color(0 To 3) As Long
 
     Dim i             As Long
     
@@ -2922,6 +2923,7 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
                 If .Arma_Aura <> "" Then Call Renderizar_AuraCiego(.Arma_Aura, PixelOffsetX, PixelOffsetY, x, y)
                 If .Otra_Aura <> "" Then Call Renderizar_AuraCiego(.Otra_Aura, PixelOffsetX, PixelOffsetY, x, y)
                 If .Escudo_Aura <> "" Then Call Renderizar_AuraCiego(.Escudo_Aura, PixelOffsetX, PixelOffsetY, x, y)
+                If .Anillo_Aura <> "" Then Call Renderizar_AuraCiego(.Anillo_Aura, PixelOffsetX, PixelOffsetY, x, y)
 
                 If .Heading = EAST Or .Heading = NORTH Then
                     If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
@@ -3444,12 +3446,12 @@ Public Sub DrawMapaMundo()
     
     Call Engine_BeginScene
         
-    Dim Color(0 To 3) As Long
+    Dim color(0 To 3) As Long
 
-    Color(0) = D3DColorARGB(255, 255, 255, 255)
-    Color(1) = Color(0)
-    Color(2) = Color(0)
-    Color(3) = Color(0)
+    color(0) = D3DColorARGB(255, 255, 255, 255)
+    color(1) = color(0)
+    color(2) = color(0)
+    color(3) = color(0)
         
     Dim i    As Byte
 
@@ -3472,14 +3474,14 @@ Public Sub DrawMapaMundo()
         grh = BodyData(BodyID).Walk(3)
         x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
         y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
-        Call Draw_Grh(grh, x, y, 0, 0, Color, False, 0, 0, 0)
+        Call Draw_Grh(grh, x, y, 0, 0, color, False, 0, 0, 0)
     End If
 
     If HeadID > 0 Then
         Head = HeadData(HeadID).Head(3)
         x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(Head.GrhIndex).pixelWidth / 2
         y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
-        Call Draw_Grh(Head, x, y, 0, 0, Color, False, 0, 0, 0)
+        Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
     End If
     
     Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
@@ -3660,7 +3662,7 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
 
     Dim Index            As Long
 
-    Dim Color            As Long
+    Dim color            As Long
 
     Dim aura_grh         As grh
 
@@ -3671,7 +3673,7 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
     Dim lado             As Byte
 
     Index = Val(ReadField(1, aura_index, Asc(":")))
-    Color = Val(ReadField(2, aura_index, Asc(":")))
+    color = Val(ReadField(2, aura_index, Asc(":")))
     giro = Val(ReadField(3, aura_index, Asc(":")))
     lado = Val(ReadField(4, aura_index, Asc(":")))
 
@@ -3696,9 +3698,9 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
 
     Dim b As Integer
 
-    r = &HFF& And Color
-    g = (&HFF00& And Color) \ 256
-    b = (&HFF0000 And Color) \ 65536
+    r = &HFF& And color
+    g = (&HFF00& And color) \ 256
+    b = (&HFF0000 And color) \ 65536
     TRANS = 255
 
     rgb_list(0) = D3DColorARGB(TRANS, b, g, r)
@@ -3727,14 +3729,14 @@ Private Sub Renderizar_AuraCiego(ByVal aura_index As String, ByVal x As Integer,
 
     Dim Index            As Long
 
-    Dim Color            As Long
+    Dim color            As Long
 
     Dim aura_grh         As grh
 
     Dim TRANS            As Integer
 
     Index = Val(ReadField(1, aura_index, Asc(":")))
-    Color = Val(ReadField(2, aura_index, Asc(":")))
+    color = Val(ReadField(2, aura_index, Asc(":")))
     TRANS = 1 'Val(ReadField(4, aura_index, Asc(":")))
 
     Dim r As Integer
@@ -3743,9 +3745,9 @@ Private Sub Renderizar_AuraCiego(ByVal aura_index As String, ByVal x As Integer,
 
     Dim b As Integer
 
-    r = &HFF& And Color
-    g = (&HFF00& And Color) \ 256
-    b = (&HFF0000 And Color) \ 65536
+    r = &HFF& And color
+    g = (&HFF00& And color) \ 256
+    b = (&HFF0000 And color) \ 65536
 
     Dim ColorCiego(0 To 3) As Long
 
@@ -4045,7 +4047,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         
     Dim DefaultColor(3) As Long
 
-    Dim Color           As Long
+    Dim color           As Long
 
     intro = 1
 
@@ -4794,7 +4796,7 @@ Public Sub RenderPjsCuenta()
 
     Dim DefaultColor(3) As Long
 
-    Dim Color           As Long
+    Dim color           As Long
 
     Dim Texto           As String
 
@@ -4947,11 +4949,11 @@ Public Sub RenderPjsCuenta()
 
 End Sub
 
-Sub EfectoEnPantalla(ByVal Color As Long, ByVal time As Long)
+Sub EfectoEnPantalla(ByVal color As Long, ByVal time As Long)
     frmmain.Efecto.Interval = time
     frmmain.Efecto.Enabled = True
     EfectoEnproceso = True
-    Call Map_Base_Light_Set(Color)
+    Call Map_Base_Light_Set(color)
 
 End Sub
 
@@ -5459,7 +5461,7 @@ Public Function Letter_UnSet() As Boolean
 
 End Function
 
-Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal Color As Long = -1)
+Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
     '**************************************************************
     'Author: Mannakia
     'Last Modify Date: 14/05/2009
@@ -5488,10 +5490,10 @@ Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x 
 
     Dim s(3) As Long
 
-    s(0) = Color
-    s(1) = Color
-    s(2) = Color
-    s(3) = Color
+    s(0) = color
+    s(1) = color
+    s(2) = color
+    s(3) = color
 
     Call Engine_BeginScene
     
