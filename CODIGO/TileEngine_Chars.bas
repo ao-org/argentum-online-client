@@ -18,6 +18,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .Speeding = 0
         .Otra_Aura = vbNullString
         .Escudo_Aura = vbNullString
+        .Anillo_Aura = vbNullString
         .Particula = 0
         .ParticulaTime = 0
         .particle_count = 0
@@ -400,19 +401,19 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
 
     End If
 
-    Dim slot As Integer
+    Dim Slot As Integer
 
     Dim i    As Long
     
-    slot = BinarySearch(char_index)
+    Slot = BinarySearch(char_index)
     
-    If slot < 0 Then
+    If Slot < 0 Then
         If dialogCount = MAX_DIALOGS Then Exit Sub  'Out of space! Should never happen....
         
         'We need to add it. Get insertion index and move list backwards.
-        slot = Not slot
+        Slot = Not Slot
         
-        For i = dialogCount To slot + 1 Step -1
+        For i = dialogCount To Slot + 1 Step -1
             dialogs(i) = dialogs(i - 1)
         Next i
         
@@ -422,7 +423,7 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
     
     If char_dialog_life = 250 Then
 
-        With dialogs(slot)
+        With dialogs(Slot)
             .startTime = (GetTickCount() And &H7FFFFFFF)
             .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(char_dialog))
             .charindex = char_index
@@ -431,7 +432,7 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
 
     Else
 
-        With dialogs(slot)
+        With dialogs(Slot)
             .startTime = (GetTickCount() And &H7FFFFFFF)
             .lifeTime = (MS_PER_CHAR * Len(char_dialog))
             .charindex = char_index
@@ -453,15 +454,15 @@ Public Sub Char_Dialog_Remove(ByVal char_index As Integer, ByVal Index As Intege
 
     End If
 
-    Dim slot As Integer
+    Dim Slot As Integer
 
     Dim i    As Long
     
-    slot = BinarySearch(char_index)
+    Slot = BinarySearch(char_index)
     
-    If slot < 0 Then Exit Sub
+    If Slot < 0 Then Exit Sub
     
-    For i = slot To MAX_DIALOGS - 2
+    For i = Slot To MAX_DIALOGS - 2
         dialogs(i) = dialogs(i + 1)
     Next i
     

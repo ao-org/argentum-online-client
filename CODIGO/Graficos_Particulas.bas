@@ -48,7 +48,7 @@ End Type
 '*******************************************************
 Public Type Stream
 
-    name As String
+    Name As String
     NumOfParticles As Long
     NumGrhs As Long
     id As Long
@@ -807,11 +807,10 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
             End If
 
             'Do rotation
-            If spin = True Then temp_particle.grh.angle = temp_particle.grh.angle + (RandomNumber(spin_speedL, spin_speedH) / 100)
-            If temp_particle.angle >= 360 Then
-                temp_particle.angle = 0
-
-            End If
+            If spin = True Then temp_particle.grh.angle = temp_particle.grh.angle + RandomNumber(spin_speedL, spin_speedH) / 5
+            Do While temp_particle.grh.angle >= 360
+                temp_particle.grh.angle = temp_particle.grh.angle - 360
+            Loop
             
             If XMove = True Then temp_particle.vector_x = RandomNumber(move_x1, move_x2)
             If YMove = True Then temp_particle.vector_y = RandomNumber(move_y1, move_y2)

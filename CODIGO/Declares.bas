@@ -240,9 +240,9 @@ Public MouseX                 As Long
 
 Public MouseY                 As Long
 
-Public tX                     As Byte
+Public TX                     As Byte
 
-Public tY                     As Byte
+Public TY                     As Byte
 
 Public UltimaTextura          As Long
 
@@ -691,6 +691,7 @@ Public Enum eObjType
     otInstrumentos = 26
     otYunque = 27
     otFragua = 28
+    otAnillos = 30
     otBarcos = 31
     otFlechas = 32
     otBotellaVacia = 33
@@ -803,7 +804,7 @@ Public Const MENSAJE_NENE                          As String = "Cantidad de NPCs
 Type Inventory
 
     OBJIndex As Integer
-    name As String
+    Name As String
     GrhIndex As Long
     '[Alejo]: tipo de datos ahora es Long
     Amount As Long
@@ -821,7 +822,7 @@ End Type
 Type MakeObj
 
     GrhIndex As Long ' Indice del grafico que representa el obj
-    name As String
+    Name As String
     MinDef As Integer
     MaxDef As Integer
     MinHit As Integer
@@ -833,7 +834,7 @@ End Type
 Type NpCinV
 
     OBJIndex As Integer
-    name As String
+    Name As String
     GrhIndex As Long
     Amount As Integer
     Valor As Single

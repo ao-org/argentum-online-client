@@ -556,6 +556,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -991,7 +992,7 @@ Begin VB.Form frmmain
    Begin VB.Label lblResis 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "25%"
+      Caption         =   "+0"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   8.25
@@ -1003,16 +1004,16 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00E0E0E0&
       Height          =   255
-      Left            =   16200
+      Left            =   12480
       TabIndex        =   6
       ToolTipText     =   "Tu daño magico"
-      Top             =   10680
+      Top             =   9840
       Width           =   420
    End
    Begin VB.Label lbldm 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "25%"
+      Caption         =   "+0%"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   8.25
@@ -1024,10 +1025,10 @@ Begin VB.Form frmmain
       EndProperty
       ForeColor       =   &H00E0E0E0&
       Height          =   255
-      Left            =   16320
+      Left            =   13800
       TabIndex        =   5
       ToolTipText     =   "Tu defensa magica"
-      Top             =   11160
+      Top             =   9840
       Width           =   420
    End
    Begin VB.Image Image3 
@@ -2315,8 +2316,8 @@ Private Sub macrotrabajo_Timer()
 End Sub
 
 Public Sub ActivarMacroTrabajo()
-    TargetXMacro = tX
-    TargetYMacro = tY
+    TargetXMacro = TX
+    TargetYMacro = TY
     macrotrabajo.Interval = IntervaloTrabajo
     macrotrabajo.Enabled = True
     Call AddtoRichTextBox(frmmain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
@@ -2411,13 +2412,13 @@ Private Sub mnuEquipar_Click()
 End Sub
 
 Private Sub mnuNPCComerciar_Click()
-    Call WriteLeftClick(tX, tY)
+    Call WriteLeftClick(TX, TY)
     Call WriteCommerceStart
 
 End Sub
 
 Private Sub mnuNpcDesc_Click()
-    Call WriteLeftClick(tX, tY)
+    Call WriteLeftClick(TX, TY)
 
 End Sub
 
@@ -3176,7 +3177,7 @@ Public Sub Form_Click()
 
             If MouseShift = 0 Then
                 If UsingSkill = 0 Or MacroLadder.Enabled Then
-                    Call WriteLeftClick(tX, tY)
+                    Call WriteLeftClick(TX, TY)
                 Else
 
                     'If macrotrabajo.Enabled Then DesactivarMacroTrabajo
@@ -3232,11 +3233,11 @@ Public Sub Form_Click()
 
                                 Dim Pos As Integer
 
-                                If MapData(tX, tY).charindex <> 0 Then
-                                    Pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
+                                If MapData(TX, TY).charindex <> 0 Then
+                                    Pos = InStr(charlist(MapData(TX, TY).charindex).nombre, "<")
                                 
-                                    If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
-                                    frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
+                                    If Pos = 0 Then Pos = LenB(charlist(MapData(TX, TY).charindex).nombre) + 2
+                                    frmPanelGm.cboListaUsus.Text = Left$(charlist(MapData(TX, TY).charindex).nombre, Pos - 2)
 
                                 End If
 
@@ -3252,7 +3253,7 @@ Public Sub Form_Click()
                     If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or UsingSkill = FundirMetal) Then
                         
                         If MainTimer.Check(TimersIndex.Work) Then
-                            Call WriteWorkLeftClick(tX, tY, UsingSkill)
+                            Call WriteWorkLeftClick(TX, TY, UsingSkill)
                             Call FormParser.Parse_Form(frmmain)
 
                             If CursoresGraficos = 0 Then
@@ -3267,7 +3268,7 @@ Public Sub Form_Click()
                     End If
                    
                     If SendSkill Then
-                        Call WriteWorkLeftClick(tX, tY, UsingSkill)
+                        Call WriteWorkLeftClick(TX, TY, UsingSkill)
 
                     End If
                    
@@ -3289,7 +3290,7 @@ Public Sub Form_Click()
                 End If
 
             Else
-                Call WriteWarpChar("YO", UserMap, tX, tY)
+                Call WriteWarpChar("YO", UserMap, TX, TY)
 
             End If
             
@@ -3298,7 +3299,7 @@ Public Sub Form_Click()
         End If
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 1 Or MouseBoton = vbRightButton And ACCION2 = 1 Or MouseBoton = 4 And ACCION3 = 1 Then
-        Call WriteDoubleClick(tX, tY)
+        Call WriteDoubleClick(TX, TY)
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 2 Or MouseBoton = vbRightButton And ACCION2 = 2 Or MouseBoton = 4 And ACCION3 = 2 Then
 
@@ -3320,10 +3321,10 @@ Public Sub Form_Click()
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 4 Or MouseBoton = vbRightButton And ACCION2 = 4 Or MouseBoton = 4 And ACCION3 = 4 Then
 
-        If MapData(tX, tY).charindex <> 0 Then
-            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
-                If charlist(MapData(tX, tY).charindex).EsNpc = False Then
-                    SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
+        If MapData(TX, TY).charindex <> 0 Then
+            If charlist(MapData(TX, TY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
+                If charlist(MapData(TX, TY).charindex).EsNpc = False Then
+                    SendTxt.Text = "\" & charlist(MapData(TX, TY).charindex).nombre & " "
 
                     If SendTxt.Visible = False Then
                         Call WriteEscribiendo
@@ -3545,7 +3546,7 @@ Private Sub picInv_DblClick()
 
     Select Case ObjType
 
-        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
+        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos, eObjType.otAnillos
             Call WriteEquipItem(Inventario.SelectedItem)
             
         Case eObjType.otWeapon

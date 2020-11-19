@@ -474,7 +474,7 @@ Private Sub interface_DblClick()
         
         Select Case ObjType
 
-            Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos
+            Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos, eObjType.otAnillos
                 Call WriteEquipItem(InvComUsu.SelectedItem)
                 
             Case eObjType.otWeapon
