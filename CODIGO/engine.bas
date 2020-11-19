@@ -2350,10 +2350,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                 
                 If .EsEnano Then OffArma = 7
                                 
-                If .Body_Aura <> "" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If .Arma_Aura <> "" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If .Otra_Aura <> "" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If .Escudo_Aura <> "" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                If Len(.Body_Aura) <> 0 Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                If Len(.Arma_Aura) <> 0 Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                If Len(.Otra_Aura) <> 0 Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                If Len(.Escudo_Aura) <> 0 Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
                                 
                 Select Case .Heading
 
@@ -2428,12 +2428,13 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                 End Select
 
                 'Draw name over head
-                '  If .transformado = False Then
                 If Nombres Then
-                    If Len(.nombre) > 0 And Not .EsNpc Then
+                
+                    If Len(.nombre) > 0 And Not .EsNpc And Not bTecho Then
                         Pos = InStr(.nombre, "<")
 
                         If Pos = 0 Then Pos = Len(.nombre) + 2
+                        
                         If .priv = 0 Then
                                 
                             Select Case .status
