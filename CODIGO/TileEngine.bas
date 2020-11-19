@@ -841,7 +841,7 @@ End Function
 '
 ' @return   True if the load was successfull, False otherwise.
 
-Function LegalPos(ByVal x As Integer, ByVal y As Integer) As Boolean
+Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Heading) As Boolean
 
     '*****************************************************************
     'Checks to see if a tile position is legal
@@ -849,23 +849,18 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer) As Boolean
     'Limites del mapa
     If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
         Exit Function
-
-    End If
-    
-    'Tile Bloqueado?
-    If MapData(x, y).Blocked = 1 Then
-        Exit Function
-
     End If
     
     '¿Hay un personaje?
     If MapData(x, y).charindex > 0 Then
-        If charlist(MapData(x, y).charindex).MUERTO Then
-        Else
+        If Not charlist(MapData(x, y).charindex).MUERTO Then
             Exit Function
-
         End If
-
+    End If
+    
+    'Tile Bloqueado?
+    If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 Then
+        Exit Function
     End If
 
     'If Not UserNadando And MapData(x, y).Trigger = 8 Then
@@ -895,7 +890,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer) As Boolean
 
     End If
    
-    If UserNavegando <> HayAgua(x, y) Then
+    If UserNavegando <> ((MapData(x, y).Blocked And FLAG_AGUA) <> 0) Then
         Exit Function
 
     End If

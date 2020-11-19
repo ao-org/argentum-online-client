@@ -1406,12 +1406,25 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
             ScreenX = minXOffset
 
             For x = minX To MaxX
+            
+                PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
+                PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
 
                 With MapData(x, y)
 
                     '***********************************************
-                    If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
-                        Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
+                    If .Graphic(2).GrhIndex <> 0 Then
+                        Call Draw_Grh(.Graphic(2), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
+                    End If
+                    
+                    'Capa de objetos en el suelo (items, decorativos, etc) **********************************
+                    If .ObjGrh.GrhIndex <> 0 Then
+                        Select Case ObjData(.OBJInfo.OBJIndex).ObjType
+                            Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento
+                            
+                            Case Else
+                                Call Draw_Grh(.ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
+                        End Select
                     End If
               
                 End With
@@ -1434,23 +1447,12 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
             PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
             
             With MapData(x, y)
-                '******************************************
-
-                'Object Layer **********************************
-                If MapData(x, y).ObjGrh.GrhIndex <> 0 Then
-                
-                    If Not EsArbol(MapData(x, y).ObjGrh.GrhIndex) Then
-                        Call Draw_Grh(MapData(x, y).ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value(), , x, y)
-                    End If
-
-                End If
                 
                 'Char layer ************************************
                 'evitamos reenderizar un clon del usuario
                 If MapData(x, y).charindex = UserCharIndex Then
                     If x <> UserPos.x Then
                         MapData(x, y).charindex = 0
-
                     End If
                     
                 End If
@@ -1476,13 +1478,11 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                             Call Draw_Grh(.CharFantasma.Casco, PixelOffsetXTemp + .CharFantasma.OffX, PixelOffsetYTemp + .CharFantasma.Offy, 1, 1, ColorFantasma, False, x, y)
                             Call Draw_Grh(.CharFantasma.Arma, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
                         Else
-                        
                             Call Draw_Grh(.CharFantasma.Body, PixelOffsetXTemp + 1, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
                             Call Draw_Grh(.CharFantasma.Head, PixelOffsetXTemp + .CharFantasma.OffX, PixelOffsetYTemp + .CharFantasma.Offy, 1, 1, ColorFantasma, False, x, y)
                             Call Draw_Grh(.CharFantasma.Escudo, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
                             Call Draw_Grh(.CharFantasma.Casco, PixelOffsetXTemp + .CharFantasma.OffX, PixelOffsetYTemp + .CharFantasma.Offy, 1, 1, ColorFantasma, False, x, y)
                             Call Draw_Grh(.CharFantasma.Arma, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
-
                         End If
 
                     Else
@@ -1497,10 +1497,32 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                         Call Char_Render(.charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
                     End If
                 End If
+                '************************************************
+                
+            End With
+            
+            ScreenX = ScreenX + 1
+        Next x
+        
+        ' Repetimos la fila pero esta vez con objetos y capa 3 (para que se dibujen encima de personajes :D)
+        ScreenX = minXOffset
+
+        For x = minX To MaxX
+            PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
+            PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
+            
+            With MapData(x, y)
+                ' Capa de objetos grandes (árboles, puertas, etc.)
+                If .ObjGrh.GrhIndex <> 0 Then
+                    Select Case ObjData(.OBJInfo.OBJIndex).ObjType
+                        Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento
+                            Call Draw_Grh(.ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
+                    End Select
+                End If
 
                 'Layer 3 *****************************************
                 If .Graphic(3).GrhIndex <> 0 Then
-                    If EsArbol(.Graphic(3).GrhIndex) Then
+                    If (.Blocked And FLAG_ARBOL) <> 0 Then
                         If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 5 And (Abs(UserPos.y) < y) Then
                             Dim arbol_alfa(0 To 3) As Long
                             arbol_alfa(0) = D3DColorARGB(200, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
@@ -1517,9 +1539,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     End If
 
                 End If
-
-                '************************************************
-                
+                '***********************************************
             End With
             
             ScreenX = ScreenX + 1
@@ -1537,7 +1557,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
             With MapData(x, y)
 
-                '***********************************************
                 If .particle_group > 0 Then
                     Call Particle_Group_Render(.particle_group, ScreenX * 32 + PixelOffsetX + 16, ScreenY * 32 + PixelOffsetY + 16)
                 End If
