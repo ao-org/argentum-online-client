@@ -6104,7 +6104,7 @@ Private Sub HandleFYA()
 
     End If
     
-    If UserAtributos(eAtributos.Fuerza) >= 33 Then
+    If UserAtributos(eAtributos.Fuerza) >= 35 Then
         frmmain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
     ElseIf UserAtributos(eAtributos.Fuerza) >= 25 Then
         frmmain.Fuerzalbl.ForeColor = RGB(204, 100, 100)
@@ -6112,7 +6112,7 @@ Private Sub HandleFYA()
         frmmain.Fuerzalbl.ForeColor = vbWhite
     End If
     
-    If UserAtributos(eAtributos.Agilidad) >= 33 Then
+    If UserAtributos(eAtributos.Agilidad) >= 35 Then
         frmmain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
     ElseIf UserAtributos(eAtributos.Agilidad) >= 25 Then
         frmmain.AgilidadLbl.ForeColor = RGB(204, 100, 100)
