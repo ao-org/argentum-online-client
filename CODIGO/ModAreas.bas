@@ -12,14 +12,14 @@ Public MaxLimiteY      As Integer
 
 Private Const AREA_DIM As Byte = 12
 
-Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
+Public Sub CambioDeArea(ByVal X As Byte, ByVal Y As Byte)
 
     Dim loopX As Long, loopY As Long
     
-    MinLimiteX = (x \ AREA_DIM - 1) * AREA_DIM
+    MinLimiteX = (X \ AREA_DIM - 1) * AREA_DIM
     MaxLimiteX = MinLimiteX + (AREA_DIM * 3) - 1
     
-    MinLimiteY = (y \ AREA_DIM - 1) * AREA_DIM
+    MinLimiteY = (Y \ AREA_DIM - 1) * AREA_DIM
     MaxLimiteY = MinLimiteY + (AREA_DIM * 3) - 1
     
     For loopX = 1 To 100
@@ -33,11 +33,12 @@ Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
                         Call EraseChar(MapData(loopX, loopY).charindex)
 
                     End If
-
                 End If
                 
                 'Erase OBJs
-                MapData(loopX, loopY).ObjGrh.GrhIndex = 0
+                If Not EsObjetoFijo(loopX, loopY) Then
+                    MapData(loopX, loopY).ObjGrh.GrhIndex = 0
+                End If
                 
             End If
         

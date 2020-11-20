@@ -2071,7 +2071,7 @@ Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
         Case E_Heading.EAST
             x = 1
         
-        Case E_Heading.south
+        Case E_Heading.SOUTH
             y = 1
         
         Case E_Heading.WEST
@@ -2377,7 +2377,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                                 
                 Select Case .Heading
 
-                    Case EAST
+                    Case E_Heading.EAST
 
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
                                                                     
@@ -2394,7 +2394,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                                              
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY + OffArma, 1, 1, colorz, False, x, y)
                                      
-                    Case NORTH
+                    Case E_Heading.NORTH
 
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY + OffArma, 1, 1, colorz, False, x, y)
                                              
@@ -2411,7 +2411,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                                          
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
                                      
-                    Case WEST
+                    Case E_Heading.WEST
 
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
                                              
@@ -2428,7 +2428,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                                          
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY + OffArma, 1, 1, colorz, False, x, y)
 
-                    Case south
+                    Case E_Heading.SOUTH
                                          
                         If .iBody < 488 Then
                             Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
@@ -2944,7 +2944,7 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
                 If .Escudo_Aura <> "" Then Call Renderizar_AuraCiego(.Escudo_Aura, PixelOffsetX, PixelOffsetY, x, y)
                 If .Anillo_Aura <> "" Then Call Renderizar_AuraCiego(.Anillo_Aura, PixelOffsetX, PixelOffsetY, x, y)
 
-                If .Heading = EAST Or .Heading = NORTH Then
+                If .Heading = E_Heading.EAST Or .Heading = E_Heading.NORTH Then
                     If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
 
                     If .Body.Walk(.Heading).GrhIndex Then
@@ -2954,7 +2954,7 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
 
                 Else
 
-                    If .Heading = WEST Then
+                    If .Heading = E_Heading.WEST Then
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
 
                     End If
@@ -2984,7 +2984,7 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
 
                 If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
                             
-                If .Heading <> WEST Then
+                If .Heading <> E_Heading.WEST Then
                     If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
 
                 End If

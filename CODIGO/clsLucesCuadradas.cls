@@ -190,16 +190,16 @@ Public Function Light_Move_By_Head(ByVal light_index As Long, ByVal Heading As B
 
         Select Case Heading
 
-            Case NORTH
+            Case E_Heading.NORTH
                 addy = -1
         
-            Case EAST
+            Case E_Heading.EAST
                 addx = 1
         
-            Case south
+            Case E_Heading.SOUTH
                 addy = 1
             
-            Case WEST
+            Case E_Heading.WEST
                 addx = -1
 
         End Select
