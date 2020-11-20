@@ -556,7 +556,6 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -714,7 +713,6 @@ Begin VB.Form frmmain
       Tag             =   "0"
       ToolTipText     =   "Quests"
       Top             =   10122
-      Visible         =   0   'False
       Width           =   540
    End
    Begin VB.Label Coord 

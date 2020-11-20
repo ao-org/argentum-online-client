@@ -14563,7 +14563,7 @@ Public Sub HandleQuestListSend()
     
     COLOR_AZUL = RGB(0, 0, 0)
     Call Establecer_Borde(FrmQuests.lstQuests, FrmQuests, COLOR_AZUL, 0, 0)
-    FrmQuests.Picture = LoadInterface("encurso.bmp")
+    FrmQuests.Picture = LoadInterface("ventanadetallemision.bmp")
     FrmQuests.Show vbModeless, frmmain
     
     'Pedimos la informaci�n de la primer quest (si la hay)
