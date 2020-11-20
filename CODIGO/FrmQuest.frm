@@ -2,19 +2,19 @@ VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
 Begin VB.Form FrmQuests 
    Appearance      =   0  'Flat
-   BackColor       =   &H80000005&
+   BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Quest"
    ClientHeight    =   6495
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   10305
+   ClientWidth     =   10350
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Picture         =   "FrmQuest.frx":0000
    ScaleHeight     =   6495
-   ScaleWidth      =   10305
+   ScaleWidth      =   10350
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.PictureBox PlayerView 
@@ -36,14 +36,16 @@ Begin VB.Form FrmQuests
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
+      Enabled         =   0   'False
       ForeColor       =   &H80000008&
       Height          =   465
-      Left            =   600
+      Left            =   360
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   6
-      Top             =   5640
+      Top             =   5760
+      Visible         =   0   'False
       Width           =   480
    End
    Begin VB.ListBox lstQuests 

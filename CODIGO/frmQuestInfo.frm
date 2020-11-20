@@ -4,13 +4,14 @@ Begin VB.Form FrmQuestInfo
    BackColor       =   &H00000709&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   5925
+   ClientHeight    =   6510
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   8115
+   ClientWidth     =   10365
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5925
-   ScaleWidth      =   8115
+   Picture         =   "frmQuestInfo.frx":0000
+   ScaleHeight     =   6510
+   ScaleWidth      =   10365
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.PictureBox picture1 
@@ -19,12 +20,12 @@ Begin VB.Form FrmQuestInfo
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   465
-      Left            =   6370
+      Left            =   8520
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   5
-      Top             =   1640
+      Top             =   1700
       Width           =   480
    End
    Begin VB.PictureBox PlayerView 
@@ -33,36 +34,35 @@ Begin VB.Form FrmQuestInfo
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
-      Height          =   1500
-      Left            =   3000
-      ScaleHeight     =   100
+      Height          =   1380
+      Left            =   4830
+      ScaleHeight     =   92
       ScaleMode       =   0  'User
-      ScaleWidth      =   157
+      ScaleWidth      =   165
       TabIndex        =   3
-      Top             =   3310
-      Width           =   2355
+      Top             =   3990
+      Width           =   2475
    End
    Begin MSComctlLib.ListView ListView1 
-      Height          =   1125
-      Left            =   2895
+      Height          =   1500
+      Left            =   4850
       TabIndex        =   2
-      Top             =   1560
-      Width           =   2445
-      _ExtentX        =   4313
-      _ExtentY        =   1984
+      Top             =   1700
+      Width           =   2505
+      _ExtentX        =   4419
+      _ExtentY        =   2646
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True
       HideColumnHeaders=   -1  'True
-      TextBackground  =   -1  'True
       _Version        =   393217
-      ForeColor       =   12632256
+      ForeColor       =   14737632
       BackColor       =   0
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Verdana"
-         Size            =   6.75
+         Name            =   "Tahoma"
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -92,15 +92,16 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
+      Picture         =   "frmQuestInfo.frx":DB8F4
    End
    Begin MSComctlLib.ListView ListView2 
-      Height          =   1845
-      Left            =   5640
+      Height          =   3000
+      Left            =   7680
       TabIndex        =   4
-      Top             =   2805
-      Width           =   1845
-      _ExtentX        =   3254
-      _ExtentY        =   3254
+      Top             =   2280
+      Width           =   2200
+      _ExtentX        =   3889
+      _ExtentY        =   5292
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
@@ -112,7 +113,7 @@ Begin VB.Form FrmQuestInfo
       BackColor       =   0
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Arial"
+         Name            =   "Tahoma"
          Size            =   8.25
          Charset         =   0
          Weight          =   400
@@ -123,7 +124,7 @@ Begin VB.Form FrmQuestInfo
       NumItems        =   4
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Criatura"
-         Object.Width           =   2119
+         Object.Width           =   2646
       EndProperty
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
@@ -143,14 +144,21 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
-      Picture         =   "frmQuestInfo.frx":0000
+      Picture         =   "frmQuestInfo.frx":DC1C5
+   End
+   Begin VB.Image Image3 
+      Height          =   375
+      Left            =   9840
+      Top             =   0
+      Width           =   495
    End
    Begin VB.Label npclbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
+      Caption         =   "adsdasda"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -159,14 +167,15 @@ Begin VB.Form FrmQuestInfo
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   495
-      Left            =   2960
+      Left            =   4920
       TabIndex        =   7
-      Top             =   3160
+      Top             =   3800
       Width           =   2295
    End
    Begin VB.Label objetolbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
+      Caption         =   "info_obj"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6.75
@@ -178,28 +187,30 @@ Begin VB.Form FrmQuestInfo
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   375
-      Left            =   5640
+      Left            =   7800
       TabIndex        =   6
-      Top             =   2360
+      Top             =   720
+      Visible         =   0   'False
       Width           =   1935
    End
    Begin VB.Image Image2 
-      Height          =   480
-      Left            =   5080
+      Height          =   420
+      Left            =   5440
       Tag             =   "0"
-      Top             =   5260
-      Width           =   1470
+      Top             =   5730
+      Width           =   1980
    End
    Begin VB.Image Image1 
-      Height          =   495
-      Left            =   1980
+      Height          =   420
+      Left            =   2920
       Tag             =   "0"
-      Top             =   5250
-      Width           =   1665
+      Top             =   5730
+      Width           =   1980
    End
    Begin VB.Label detalle 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
+      Caption         =   "asdsaad"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   6.75
@@ -210,18 +221,19 @@ Begin VB.Form FrmQuestInfo
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C0C0C0&
-      Height          =   3255
-      Left            =   435
+      Height          =   3375
+      Left            =   540
       TabIndex        =   1
-      Top             =   1605
-      Width           =   2295
+      Top             =   1920
+      Width           =   4005
    End
    Begin VB.Label titulo 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
+      Caption         =   "Mision"
       BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   6.75
+         Name            =   "Tahoma"
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -230,10 +242,10 @@ Begin VB.Form FrmQuestInfo
       EndProperty
       ForeColor       =   &H00E0E0E0&
       Height          =   255
-      Left            =   360
+      Left            =   380
       TabIndex        =   0
-      Top             =   1230
-      Width           =   2175
+      Top             =   1680
+      Width           =   4335
    End
 End
 Attribute VB_Name = "FrmQuestInfo"
@@ -266,7 +278,7 @@ End Sub
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("quest_volver.bmp")
+        Image1.Picture = LoadInterface("boton-rechazar-es-over.bmp")
         Image1.Tag = "1"
 
     End If
@@ -281,7 +293,7 @@ End Sub
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface("quest_acepto.bmp")
+        Image2.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
         Image2.Tag = "1"
 
     End If
@@ -292,6 +304,10 @@ Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Call WriteQuestAccept
     Unload Me
 
+End Sub
+
+Private Sub Image3_Click()
+Unload Me
 End Sub
 
 Public Sub ListView1_Click()
@@ -360,3 +376,4 @@ Public Sub ListView2_Click()
     objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
 
 End Sub
+
