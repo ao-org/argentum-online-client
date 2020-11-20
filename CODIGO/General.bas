@@ -15,7 +15,7 @@ End Type
 'Item type
 Private Type tItem
 
-    OBJIndex As Integer
+    ObjIndex As Integer
     Amount As Integer
 
 End Type
@@ -473,7 +473,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
         Case E_Heading.EAST
             LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
 
-        Case E_Heading.south
+        Case E_Heading.SOUTH
             LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
 
         Case E_Heading.WEST
@@ -550,7 +550,7 @@ Sub RandomMove()
     'Last Modify Date: 06/03/2006
     ' 06/03/2006: AlejoLp - Ahora utiliza la funcion MoveTo
     '***************************************************
-    Call MoveTo(RandomNumber(NORTH, WEST))
+    Call MoveTo(RandomNumber(E_Heading.NORTH, E_Heading.WEST))
 
 End Sub
 
@@ -616,28 +616,28 @@ Sub Check_Keys()
             
                 'Move Up
                 If keysMovementPressedQueue.GetLastItem() = BindKeys(14).KeyCode Then
-                    Call MoveTo(NORTH)
+                    Call MoveTo(E_Heading.NORTH)
 
                     ' Exit Sub
                 End If
             
                 'Move Right
                 If keysMovementPressedQueue.GetLastItem() = BindKeys(17).KeyCode Then
-                    Call MoveTo(EAST)
+                    Call MoveTo(E_Heading.EAST)
 
                     ' Exit Sub
                 End If
         
                 'Move down
                 If keysMovementPressedQueue.GetLastItem() = BindKeys(15).KeyCode Then
-                    Call MoveTo(south)
+                    Call MoveTo(E_Heading.SOUTH)
 
                     '  Exit Sub
                 End If
         
                 'Move left
                 If keysMovementPressedQueue.GetLastItem() = BindKeys(16).KeyCode Then
-                    Call MoveTo(WEST)
+                    Call MoveTo(E_Heading.WEST)
 
                     ' Exit Sub
                 End If
@@ -996,7 +996,7 @@ End Function
 
 'TODO : como todo lo relativo a mapas, no tiene nada que hacer acá....
 Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
-    HayAgua = ((MapData(x, y).Graphic(1).GrhIndex >= 1505 And MapData(x, y).Graphic(1).GrhIndex <= 1520) Or (MapData(x, y).Graphic(1).GrhIndex >= 24223 And MapData(x, y).Graphic(1).GrhIndex <= 24238) Or (MapData(x, y).Graphic(1).GrhIndex >= 24143 And MapData(x, y).Graphic(1).GrhIndex <= 24158) Or (MapData(x, y).Graphic(1).GrhIndex >= 468 And MapData(x, y).Graphic(1).GrhIndex <= 483) Or (MapData(x, y).Graphic(1).GrhIndex >= 44668 And MapData(x, y).Graphic(1).GrhIndex <= 44939) Or (MapData(x, y).Graphic(1).GrhIndex >= 24303 And MapData(x, y).Graphic(1).GrhIndex <= 24318)) And MapData(x, y).Graphic(2).GrhIndex = 0
+    HayAgua = ((MapData(x, y).Graphic(1).GrhIndex >= 1505 And MapData(x, y).Graphic(1).GrhIndex <= 1520) Or (MapData(x, y).Graphic(1).GrhIndex >= 24223 And MapData(x, y).Graphic(1).GrhIndex <= 24238) Or (MapData(x, y).Graphic(1).GrhIndex >= 24143 And MapData(x, y).Graphic(1).GrhIndex <= 24158) Or (MapData(x, y).Graphic(1).GrhIndex >= 468 And MapData(x, y).Graphic(1).GrhIndex <= 483) Or (MapData(x, y).Graphic(1).GrhIndex >= 44668 And MapData(x, y).Graphic(1).GrhIndex <= 44939) Or (MapData(x, y).Graphic(1).GrhIndex >= 24303 And MapData(x, y).Graphic(1).GrhIndex <= 24318))
                 
     'If MapData(x, y).Trigger = 8 Then
     ' HayAgua = True
@@ -1014,6 +1014,17 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
        GrhIndex = 14964 Or GrhIndex = 14967 Or GrhIndex = 14968 Or GrhIndex = 14969 Or GrhIndex = 14970 Or GrhIndex = 14971 Or GrhIndex = 14972 Or _
        GrhIndex = 14973 Or GrhIndex = 14974 Or GrhIndex = 14975 Or GrhIndex = 14976 Or GrhIndex = 14978 Or GrhIndex = 14980 Or GrhIndex = 14982 Or _
        GrhIndex = 14983 Or GrhIndex = 14984 Or GrhIndex = 14985 Or GrhIndex = 14987 Or GrhIndex = 14988 Or GrhIndex = 26078 Or GrhIndex = 26192
+
+End Function
+
+Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
+    Dim ObjIndex As Integer
+    ObjIndex = MapData(x, y).OBJInfo.ObjIndex
+    
+    Dim OBJType As eOBJType
+    OBJType = ObjData(ObjIndex).OBJType
+    
+    EsObjetoFijo = OBJType = eOBJType.otForos Or OBJType = eOBJType.otCarteles Or OBJType = eOBJType.otArboles Or OBJType = eOBJType.otYacimiento Or OBJType = eOBJType.OtDecoraciones
 
 End Function
 

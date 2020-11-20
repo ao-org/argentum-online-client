@@ -923,16 +923,23 @@ Public Sub CargarMapa(ByVal map As Integer)
 
         End If
     
+        'Cargamos Layer 2
         If .NumeroLayers(2) > 0 Then
             HayLayer2 = True
             ReDim L2(1 To .NumeroLayers(2))
             Get #fh, , L2
 
             For i = 1 To .NumeroLayers(2)
-            
-                MapData(L2(i).x, L2(i).y).Graphic(2).GrhIndex = L2(i).GrhIndex
-            
-                InitGrh MapData(L2(i).x, L2(i).y).Graphic(2), MapData(L2(i).x, L2(i).y).Graphic(2).GrhIndex
+                
+                x = L2(i).x
+                y = L2(i).y
+
+                MapData(x, y).Graphic(2).GrhIndex = L2(i).GrhIndex
+                
+                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).GrhIndex
+                
+                MapData(x, y).Blocked = MapData(x, y).Blocked And Not FLAG_AGUA
+                
             Next i
 
         End If

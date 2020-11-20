@@ -234,7 +234,7 @@ Public EntradaX                    As Byte
 
 Public EntradaY                    As Byte
 
-Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
+Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
 
 Public MouseX                 As Long
 
@@ -547,8 +547,19 @@ Public Enum E_Heading
 
     NORTH = 1
     EAST = 2
-    south = 3
+    SOUTH = 3
     WEST = 4
+
+End Enum
+
+Public Enum eBlock
+
+    NORTH = &H1
+    EAST = &H2
+    SOUTH = &H4
+    WEST = &H8
+    ALL_SIDES = &HF
+    GM = &H10
 
 End Enum
 
@@ -669,7 +680,7 @@ Public Enum PlayerType
 
 End Enum
 
-Public Enum eObjType
+Public Enum eOBJType
 
     otUseOnce = 1
     otWeapon = 2
@@ -680,14 +691,16 @@ Public Enum eObjType
     otContenedores = 7
     otCarteles = 8
     otLlaves = 9
+    otForos = 10
     otPociones = 11
     otBebidas = 13
     otLeña = 14
     otFogata = 15
     otESCUDO = 16
     otCASCO = 17
-    OtHerramientas = 18
+    otHerramientas = 18
     otTeleport = 19
+    OtDecoraciones = 20
     otmagicos = 21
     otYacimiento = 22
     otMinerales = 23
@@ -706,8 +719,9 @@ Public Enum eObjType
     OtPozos = 40
     otMonturas = 44
     otRunas = 45
-    otNudillos = 46
+    otNUDILLOS = 46
     OtCorreo = 47
+    OtCofre = 48
     OtDonador = 50
     otCualquiera = 1000
 
@@ -807,7 +821,7 @@ Public Const MENSAJE_NENE                          As String = "Cantidad de NPCs
 'Inventario
 Type Inventory
 
-    OBJIndex As Integer
+    ObjIndex As Integer
     Name As String
     GrhIndex As Long
     '[Alejo]: tipo de datos ahora es Long
@@ -815,7 +829,7 @@ Type Inventory
     '[/Alejo]
     Equipped As Byte
     Valor As Single
-    ObjType As Integer
+    OBJType As Integer
     Def As Integer
     MaxHit As Integer
     MinHit As Integer
@@ -831,19 +845,19 @@ Type MakeObj
     MaxDef As Integer
     MinHit As Integer
     MaxHit As Integer
-    ObjType As Byte
+    OBJType As Byte
 
 End Type
 
 Type NpCinV
 
-    OBJIndex As Integer
+    ObjIndex As Integer
     Name As String
     GrhIndex As Long
     Amount As Integer
     Valor As Single
     PuedeUsar As Byte
-    ObjType As Integer
+    OBJType As Integer
     Def As Integer
     MaxHit As Integer
     MinHit As Integer
