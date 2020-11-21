@@ -117,8 +117,6 @@ End Type
 
 Public Const NUM_PASOS       As Byte = 6
 
-Public textcolorAsistente(3) As Long
-
 Public Pasos()               As tPaso
 
 Public PosXMacro             As Integer
@@ -234,7 +232,7 @@ Public EntradaX                    As Byte
 
 Public EntradaY                    As Byte
 
-Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
+Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
 
 Public MouseX                 As Long
 
@@ -680,7 +678,7 @@ Public Enum PlayerType
 
 End Enum
 
-Public Enum eOBJType
+Public Enum eObjType
 
     otUseOnce = 1
     otWeapon = 2
@@ -698,7 +696,7 @@ Public Enum eOBJType
     otFogata = 15
     otESCUDO = 16
     otCASCO = 17
-    otHerramientas = 18
+    OtHerramientas = 18
     otTeleport = 19
     OtDecoraciones = 20
     otmagicos = 21
@@ -719,7 +717,7 @@ Public Enum eOBJType
     OtPozos = 40
     otMonturas = 44
     otRunas = 45
-    otNUDILLOS = 46
+    otNudillos = 46
     OtCorreo = 47
     OtCofre = 48
     OtDonador = 50
@@ -821,7 +819,7 @@ Public Const MENSAJE_NENE                          As String = "Cantidad de NPCs
 'Inventario
 Type Inventory
 
-    ObjIndex As Integer
+    OBJIndex As Integer
     Name As String
     GrhIndex As Long
     '[Alejo]: tipo de datos ahora es Long
@@ -829,7 +827,7 @@ Type Inventory
     '[/Alejo]
     Equipped As Byte
     Valor As Single
-    OBJType As Integer
+    ObjType As Integer
     Def As Integer
     MaxHit As Integer
     MinHit As Integer
@@ -845,19 +843,19 @@ Type MakeObj
     MaxDef As Integer
     MinHit As Integer
     MaxHit As Integer
-    OBJType As Byte
+    ObjType As Byte
 
 End Type
 
 Type NpCinV
 
-    ObjIndex As Integer
+    OBJIndex As Integer
     Name As String
     GrhIndex As Long
     Amount As Integer
     Valor As Single
     PuedeUsar As Byte
-    OBJType As Integer
+    ObjType As Integer
     Def As Integer
     MaxHit As Integer
     MinHit As Integer

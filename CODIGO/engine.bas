@@ -120,6 +120,8 @@ Private TileBufferPixelOffsetY As Integer
 
 Private Const GrhFogata        As Integer = 1521
 
+Public COLOR_WHITE(3) As Long
+Public textcolorAsistente(3) As Long
 
 'Sets a Grh animation to loop indefinitely.
 
@@ -1650,14 +1652,12 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                 End If
 
                 Call modRenderValue.Draw(x, y, PixelOffsetXTemp + 16, PixelOffsetYTemp, timerTicksPerFrame)
-                
-                Dim i         As Byte
-
-                Dim colorz(3) As Long
 
                 If .FxCount > 0 Then
-                    
+                
+                    Dim colorz(3) As Long
                     Dim i As Byte
+                    
                     For i = 1 To .FxCount
 
                         If .FxList(i).FxIndex > 0 And .FxList(i).Started <> 0 Then
