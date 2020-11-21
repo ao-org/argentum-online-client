@@ -759,11 +759,28 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
         UserPos.y = TY
         UserMoving = 1
         
-        bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+        bTecho = HayTecho(UserPos.X, UserPos.Y)
 
     End If
 
 End Sub
+
+Public Function HayTecho(ByVal X As Integer, ByVal Y As Integer) As Boolean
+    
+    Select Case MapData(X, Y).Trigger
+        
+        Case 1, 2, 4, 6
+            HayTecho = True
+                
+        Case Is > 9
+            HayTecho = True
+                
+        Case Else
+            HayTecho = False
+        
+    End Select
+    
+End Function
 
 Public Function HayFogata(ByRef location As Position) As Boolean
 

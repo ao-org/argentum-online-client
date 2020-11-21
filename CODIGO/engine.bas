@@ -1289,41 +1289,32 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
     '**************************************************************
     Dim y                As Integer     'Keeps track of where on map we are
-
     Dim x                As Integer     'Keeps track of where on map we are
 
     Dim screenminY       As Integer  'Start Y pos on current screen
-
     Dim screenmaxY       As Integer  'End Y pos on current screen
 
     Dim screenminX       As Integer  'Start X pos on current screen
-
     Dim screenmaxX       As Integer  'End X pos on current screen
 
     Dim minY             As Integer  'Start Y pos on current map
-
     Dim MaxY             As Integer  'End Y pos on current map
 
     Dim minX             As Integer  'Start X pos on current map
-
     Dim MaxX             As Integer  'End X pos on current map
 
     Dim ScreenX          As Integer  'Keeps track of where to place tile on screen
-
     Dim ScreenY          As Integer  'Keeps track of where to place tile on screen
 
     Dim minXOffset       As Integer
-
     Dim minYOffset       As Integer
 
     Dim PixelOffsetXTemp As Integer 'For centering grhs
-
     Dim PixelOffsetYTemp As Integer 'For centering grhs
 
     Dim CurrentGrhIndex  As Integer
 
     Dim OffX             As Integer
-
     Dim Offy             As Integer
 
     'Figure out Ends and Starts of screen
@@ -1599,15 +1590,16 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
                     'Layer 4 **********************************
                     If bTecho Then
+                    
                         If MapData(UserPos.x, UserPos.y).Trigger = MapData(x, y).Trigger Then
                     
                             If MapData(x, y).GrhBlend <= 20 Then MapData(x, y).GrhBlend = 20
                             MapData(x, y).GrhBlend = MapData(x, y).GrhBlend - (timerTicksPerFrame * 12)
-                    
-                            rgb_list(0) = D3DColorARGB(CInt(MapData(x, y).GrhBlend), b, g, r)
-                            rgb_list(1) = rgb_list(0)
-                            rgb_list(2) = rgb_list(0)
-                            rgb_list(3) = rgb_list(0)
+                            
+                            If MapData(x, y).GrhBlend < 0 Then
+                                MapData(x, y).GrhBlend = 0
+                            End If
+                            
                         
                             Call Draw_Grh(MapData(x, y).Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, rgb_list(), , x, y)
                         Else
@@ -1657,20 +1649,19 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     End If
                 End If
 
-                modRenderValue.Draw x, y, PixelOffsetXTemp + 16, PixelOffsetYTemp, timerTicksPerFrame
+                Call modRenderValue.Draw(x, y, PixelOffsetXTemp + 16, PixelOffsetYTemp, timerTicksPerFrame)
                 
                 Dim i         As Byte
 
                 Dim colorz(3) As Long
 
                 If .FxCount > 0 Then
-
+                    
+                    Dim i As Byte
                     For i = 1 To .FxCount
 
                         If .FxList(i).FxIndex > 0 And .FxList(i).Started <> 0 Then
-                            colorz(0) = D3DColorARGB(220, 255, 255, 255)
-                            colorz(1) = D3DColorARGB(220, 255, 255, 255)
-                            colorz(2) = D3DColorARGB(220, 255, 255, 255)
+    
                             colorz(3) = D3DColorARGB(220, 255, 255, 255)
 
                             If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
@@ -1683,17 +1674,11 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
                         End If
 
-                        If .FxList(i).Started = 0 Then
-                            .FxList(i).FxIndex = 0
-
-                        End If
+                        If .FxList(i).Started = 0 Then .FxList(i).FxIndex = 0
 
                     Next i
 
-                    If .FxList(.FxCount).Started = 0 Then
-                        .FxCount = .FxCount - 1
-
-                    End If
+                    If .FxList(.FxCount).Started = 0 Then .FxCount = .FxCount - 1
 
                 End If
 
@@ -1721,10 +1706,8 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     End If
 
     If AlphaNiebla Then
-        If MapDat.niebla Then
-            Engine_Weather_UpdateFog
-
-        End If
+    
+        If MapDat.niebla Then Call Engine_Weather_UpdateFog
 
     End If
 
