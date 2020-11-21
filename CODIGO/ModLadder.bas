@@ -101,8 +101,6 @@ Public TieneFamiliar As Long
 
 Public PetPercExp    As Long
 
-Public HayLayer2     As Boolean
-
 Public HayLayer4     As Boolean
 
 'Logros

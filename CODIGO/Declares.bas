@@ -576,6 +576,8 @@ Public Const FLAG_AGUA               As Byte = &H20
 
 Public Const FLAG_ARBOL              As Byte = &H40
 
+Public Const PRIMER_TRIGGER_TECHO    As Byte = 9
+
 Public Const FOgata                  As Integer = 1521
 
 Public Enum eClass
