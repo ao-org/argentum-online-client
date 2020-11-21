@@ -255,9 +255,9 @@ Private Sub Engine_InitExtras()
     
     ' Fuentes graficas.
     Call Engine_Font_Initialize
-    Call Font_Create("Tahoma", 8, True, 0)
-    Call Font_Create("Verdana", 8, False, 0)
-    Call Font_Create("Verdana", 11, True, False)
+    'Call Font_Create("Tahoma", 8, True, 0)
+    'Call Font_Create("Verdana", 8, False, 0)
+    'Call Font_Create("Verdana", 11, True, False)
     
     ' Inventario
     Call Initialize
@@ -1321,6 +1321,9 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
     Dim OffX             As Integer
     Dim Offy             As Integer
+    
+    Dim minYTechos       As Integer
+    Dim minYTechoOffset  As Integer
 
     'Figure out Ends and Starts of screen
     screenminY = tiley - HalfWindowTileHeight
@@ -1333,13 +1336,18 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     minX = screenminX - TileBufferSizeX
     MaxX = screenmaxX + TileBufferSizeX
     
+    minYTechos = minY - 5
+    minYTechoOffset = -6
+    
     minYOffset = -1
     minXOffset = -TileBufferSizeX
     
     'Make sure mins and maxs are allways in map bounds
     If minY < YMinMapSize Then
         minYOffset = YMinMapSize - minY - 1
+        minYTechoOffset = YMinMapSize - minY - 6
         minY = YMinMapSize
+        minYTechos = minY - 5
     End If
     
     If MaxY > YMaxMapSize Then MaxY = YMaxMapSize
@@ -1578,9 +1586,9 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
         rgb_list2(2) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
         rgb_list2(3) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
     
-        ScreenY = minYOffset
+        ScreenY = minYTechoOffset
 
-        For y = minY To MaxY
+        For y = minYTechos To MaxY
             ScreenX = minXOffset
 
             For x = minX To MaxX
