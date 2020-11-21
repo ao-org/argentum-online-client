@@ -74,22 +74,22 @@ Public Projection As D3DMATRIX
 Public View As D3DMATRIX
 
 Public Type TLVERTEX
-    X As Single
-    Y As Single
+    x As Single
+    y As Single
     Z As Single
     rhw As Single
-    Color As Long
+    color As Long
     Specular As Long
     tu As Single
     tv As Single
 End Type
 
 Public Type TLVERTEX2
-    X As Single
-    Y As Single
+    x As Single
+    y As Single
     Z As Single
     rhw As Single
-    Color As Long
+    color As Long
     Specular As Long
     tu1 As Single
     tv1 As Single
@@ -103,8 +103,6 @@ Public Const PI       As Single = 3.14159265358979
 ' FIN - MOTOR GRAFICO
 '*******************************************************
 
-' Colores comunes
-Public COLOR_WHITE(3) As Long
 
 Public Function General_Bytes_To_Megabytes(Bytes As Double) As Double
 

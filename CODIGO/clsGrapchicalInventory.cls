@@ -321,7 +321,7 @@ Public Property Get ItemName(ByVal Slot As Byte) As String
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's name
     '***************************************************
-    ItemName = UserInventory(Slot).name
+    ItemName = UserInventory(Slot).Name
 
 End Property
 
@@ -387,7 +387,7 @@ Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount
         .GrhIndex = eGrhIndex
         .MaxHit = eMaxHit
         .MinHit = eMinHit
-        .name = eName
+        .Name = eName
         .OBJIndex = eOBJIndex
         .ObjType = eObjType
         .Valor = eValor
@@ -513,7 +513,7 @@ Public Sub DrawInventory()
                 Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, color)
 
             Else
-                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, COLOR_WHITE)
+                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, COLOR_WHITE())
             End If
             
             If ShowQuantities Then
