@@ -519,8 +519,6 @@ Public SastreGorros(0 To 100)     As tSasteria
 
 Public UsaLanzar                  As Boolean
 
-Public FullScreen                 As Boolean
-
 Public UsaMacro                   As Boolean
 
 Public CnTd                       As Byte

@@ -263,7 +263,7 @@ Private Sub Engine_InitExtras()
     Call Initialize
     
     ' Inicializar textura compuesta
-    'Call InitComposedTexture
+    Call InitComposedTexture
     
 End Sub
 
@@ -465,7 +465,7 @@ Public Sub Draw_GrhIndexColor(ByVal grh_index As Long, ByVal x As Integer, ByVal
 
 End Sub
 
-Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean = False, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
+Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal Center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean = False, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
 
     On Error Resume Next
 
@@ -500,7 +500,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(grh.framecounter)
 
     'Center Grh over X,Y pos
-    If center Then
+    If Center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
 
@@ -518,7 +518,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
 
 End Sub
 
-Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal charindex As Integer)
+Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal Center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal charindex As Integer)
 
     On Error Resume Next
 
@@ -624,7 +624,7 @@ Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(grh.framecounter)
 
     'Center Grh over X,Y pos
-    If center Then
+    If Center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
 
@@ -643,7 +643,7 @@ Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
 
 End Sub
 
-Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
+Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal Center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
 
     Dim CurrentGrhIndex As Long
 
@@ -675,7 +675,7 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(grh.framecounter)
 
     'Center Grh over X,Y pos
-    If center Then
+    If Center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
 
@@ -728,27 +728,8 @@ Public Sub render()
        
         Dim PosX As Integer
 
-        If FullScreen Then
-            PosY = 90
-            PosX = 10
-            
-            temp_array(0) = RGB(0, 255, 0)
-            temp_array(1) = temp_array(0)
-            temp_array(2) = temp_array(0)
-            temp_array(3) = temp_array(0)
-            Engine_Draw_Box 665, 480, 37, 15, D3DColorARGB(150, 100, 100, 100)
-            
-            Engine_Text_Render Val(UserAtributos(eAtributos.Fuerza)), 665, 480, temp_array, 1, True, 10, 160
-            temp_array(0) = RGB(255, 255, 0)
-            temp_array(1) = temp_array(0)
-            temp_array(2) = temp_array(0)
-            temp_array(3) = temp_array(0)
-            Engine_Text_Render Val(UserAtributos(eAtributos.Agilidad)), 685, 480, temp_array, 1, True, 0, 160
-        Else
-            PosY = -10
-            PosX = 5
-
-        End If
+        PosY = -10
+        PosX = 5
 
         If DrogaCounter > 0 Then
             temp_array(0) = D3DColorXRGB(0, 153, 0)
@@ -855,11 +836,11 @@ Sub ShowNextFrame()
     End If
 
     If UserCiego Then
-        Call ConvertCPtoTP(MouseX, MouseY, TX, TY)
+        Call ConvertCPtoTP(MouseX, MouseY, tx, ty)
         Call RenderScreenCiego(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY)
     Else
         'Reparacion de pj
-        Call ConvertCPtoTP(MouseX, MouseY, TX, TY)
+        Call ConvertCPtoTP(MouseX, MouseY, tx, ty)
         Call RenderScreen(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY)
                 
     End If
@@ -1818,7 +1799,7 @@ Private Sub Device_Box_Textured_Render_Advance(ByVal GrhIndex As Long, ByVal des
 
     Static dest_rect           As RECT
 
-    Static temp_verts(3)       As TLVERTEX
+    Static temp_verts(3)       As TYPE_VERTEX
 
     Static d3dTextures         As D3D8Textures
 
@@ -1962,7 +1943,7 @@ Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As In
 
     Static dest_rect           As RECT
 
-    Static temp_verts(3)       As TLVERTEX
+    Static temp_verts(3)       As TYPE_VERTEX
 
     Static d3dTextures         As D3D8Textures
 
@@ -2038,9 +2019,9 @@ Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
 
     Dim y  As Integer
 
-    Dim TX As Integer
+    Dim tx As Integer
 
-    Dim TY As Integer
+    Dim ty As Integer
     
     'Figure out which way to move
     Select Case nHeading
@@ -2060,18 +2041,18 @@ Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
     End Select
     
     'Fill temp pos
-    TX = UserPos.x + x
-    TY = UserPos.y + y
+    tx = UserPos.x + x
+    ty = UserPos.y + y
     
     'Check to see if its out of bounds
-    If TX < MinXBorder Or TX > MaxXBorder Or TY < MinYBorder Or TY > MaxYBorder Then
+    If tx < MinXBorder Or tx > MaxXBorder Or ty < MinYBorder Or ty > MaxYBorder Then
         Exit Sub
     Else
         'Start moving... MainLoop does the rest
         AddtoUserPos.x = x
-        UserPos.x = TX
+        UserPos.x = tx
         AddtoUserPos.y = y
-        UserPos.y = TY
+        UserPos.y = ty
         UserMoving = 1
         
         bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
@@ -2216,6 +2197,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
     Dim OffsetYClan          As Byte
     
+    Dim TextureX             As Integer
+
+    Dim TextureY             As Integer
+    
     Dim OffArma              As Byte
     
     With charlist(charindex)
@@ -2295,7 +2280,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
  
         If .EsNpc Then
             If Len(.nombre) > 0 Then
-                If Abs(TX - .Pos.x) < 1 And (Abs(TY - .Pos.y)) < 1 Then
+                If Abs(tx - .Pos.x) < 1 And (Abs(ty - .Pos.y)) < 1 Then
 
                     Dim colornpcs(3) As Long
 
@@ -2348,84 +2333,73 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                 colorz(3) = MapData(x, y).light_value(3)
                 
                 If .EsEnano Then OffArma = 7
-                                
-                If Len(.Body_Aura) <> 0 Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If Len(.Arma_Aura) <> 0 Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If Len(.Otra_Aura) <> 0 Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If Len(.Escudo_Aura) <> 0 Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If Len(.Anillo_Aura) <> 0 Then Call Renderizar_Aura(.Anillo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                
+                BeginComposedTexture
+                
+                TextureX = ComposedTextureCenterX - 16
+                TextureY = ComposedTextureHeight - 32
+
+                If Len(.Body_Aura) <> 0 Then Call Renderizar_Aura(.Body_Aura, TextureX, TextureY + OffArma, x, y, charindex)
+                If Len(.Arma_Aura) <> 0 Then Call Renderizar_Aura(.Arma_Aura, TextureX, TextureY + OffArma, x, y, charindex)
+                If Len(.Otra_Aura) <> 0 Then Call Renderizar_Aura(.Otra_Aura, TextureX, TextureY + OffArma, x, y, charindex)
+                If Len(.Escudo_Aura) <> 0 Then Call Renderizar_Aura(.Escudo_Aura, TextureX, TextureY + OffArma, x, y, charindex)
+                If Len(.Anillo_Aura) <> 0 Then Call Renderizar_Aura(.Anillo_Aura, TextureX, TextureY + OffArma, x, y, charindex)
                                 
                 Select Case .Heading
 
                     Case E_Heading.EAST
 
-                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
+                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, False, x, y)
                                                                     
-                        If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
-                        Else
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
-
-                        End If
+                        Call Draw_Grh(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, False, x, y, 0)
                                          
-                        If .Head.Head(.Heading).GrhIndex Then Call Draw_Grh(.Head.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
+                        If .Head.Head(.Heading).GrhIndex Then Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + .Body.HeadOffset.y, 1, 0, COLOR_WHITE, False, x, y)
                                          
-                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
+                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + .Body.HeadOffset.y, 1, 0, COLOR_WHITE, False, x, y)
                                              
-                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY + OffArma, 1, 1, colorz, False, x, y)
+                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                                      
                     Case E_Heading.NORTH
 
-                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY + OffArma, 1, 1, colorz, False, x, y)
+                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                                              
-                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
+                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, False, x, y)
                                              
-                        If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
-                        Else
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
-
-                        End If
+                        Call Draw_Grh(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, False, x, y, 0)
                                          
-                        If .Head.Head(.Heading).GrhIndex Then Call Draw_Grh(.Head.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
+                        If .Head.Head(.Heading).GrhIndex Then Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + .Body.HeadOffset.y, 1, 0, COLOR_WHITE, False, x, y)
                                          
-                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
+                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + .Body.HeadOffset.y, 1, 0, COLOR_WHITE, False, x, y)
                                      
                     Case E_Heading.WEST
 
-                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
+                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, False, x, y)
                                              
-                        If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
-                        Else
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
-
-                        End If
+                        Call Draw_Grh(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, False, x, y, 0)
                                          
-                        If .Head.Head(.Heading).GrhIndex Then Call Draw_Grh(.Head.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
+                        If .Head.Head(.Heading).GrhIndex Then Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + .Body.HeadOffset.y, 1, 0, COLOR_WHITE, False, x, y)
                                          
-                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
+                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + .Body.HeadOffset.y, 1, 0, COLOR_WHITE, False, x, y)
                                          
-                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY + OffArma, 1, 1, colorz, False, x, y)
+                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
 
                     Case E_Heading.SOUTH
                                          
-                        If .iBody < 488 Then
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
-                        Else
-                            Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y, 0)
-
-                        End If
+                        Call Draw_Grh(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, False, x, y, 0)
                                          
-                        If .Head.Head(.Heading).GrhIndex Then Call Draw_Grh(.Head.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
+                        If .Head.Head(.Heading).GrhIndex Then Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + .Body.HeadOffset.y, 1, 0, COLOR_WHITE, False, x, y)
                                          
-                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), PixelOffsetX + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y, 1, 0, colorz, False, x, y)
+                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + .Body.HeadOffset.y, 1, 0, COLOR_WHITE, False, x, y)
                                          
-                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY + OffArma, 1, 1, colorz, False, x, y)
+                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                                              
-                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), PixelOffsetX, PixelOffsetY + OffArma, 1, 1, colorz, False, x, y)
+                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
 
                 End Select
+                
+                EndComposedTexture
+                
+                PresentComposedTexture PixelOffsetX, PixelOffsetY, colorz, False
 
                 'Draw name over head
                 If Nombres Then
@@ -2508,17 +2482,6 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                                 colorCorazon(3) = D3DColorXRGB(0, 255, 255)
 
                             End If
-
-                        End If
-
-                        If FullScreen And charindex = UserCharIndex And UserEstado = 0 Then
-                            OffsetYname = 16
-                            OffsetYClan = 14
-                            line = Left$(.nombre, Pos - 2)
-                            Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, colorz, True, True, False
-                            Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 31, (((UserMinHp + 1 / 100) / (UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
-                            Grh_Render Marco, PixelOffsetX, PixelOffsetY + 14, colorz, True, True, False
-                            Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 40, (((UserMinMAN + 1 / 100) / (UserMaxMAN + 1 / 100))) * 26, 4, D3DColorARGB(255, 0, 0, 255), D3DColorARGB(0, 200, 200, 200)
 
                         End If
                             
@@ -2626,18 +2589,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                     colorCorazon(1) = colorCorazon(0)
                     colorCorazon(2) = colorCorazon(0)
                     colorCorazon(3) = colorCorazon(0)
-                                
-                    If FullScreen And charindex = UserCharIndex And UserEstado = 0 Then
-                        OffsetYname = 16
-                        OffsetYClan = 14
-                        line = Left$(.nombre, Pos - 2)
-                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, Color, True, True, False
-                        Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 31, (((UserMinHp + 1 / 100) / (UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
-                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 14, Color, True, True, False
-                        Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 40, (((UserMinMAN + 1 / 100) / (UserMaxMAN + 1 / 100))) * 26, 4, D3DColorARGB(255, 0, 0, 255), D3DColorARGB(0, 200, 200, 200)
 
-                    End If
-                                
                     Color(0) = D3DColorXRGB(200, 100, 100)
                     Color(1) = Color(0)
                     Color(2) = Color(0)
@@ -5464,9 +5416,9 @@ Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x 
     'Modificado hoy(?) agregue funcion de agrandar y achicar para ladder :P
     '**************************************************************
 
-    Static Piture As RECT
+    Static Picture As RECT
 
-    With Piture
+    With Picture
         .Left = 0
         .Top = 0
         
@@ -5491,11 +5443,13 @@ Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x 
     s(2) = Color
     s(3) = Color
 
-    Call Engine_BeginScene
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
     
-        Device_Box_Textured_Render grh, x, y, GrhData(grh).pixelWidth, GrhData(grh).pixelHeight, s, GrhData(grh).sX, GrhData(grh).sY, Alpha, angle
+    Device_Box_Textured_Render grh, x, y, GrhData(grh).pixelWidth, GrhData(grh).pixelHeight, s, GrhData(grh).sX, GrhData(grh).sY, Alpha, angle
 
-    Call Engine_EndScene(Piture, pic.hwnd)
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
 
 End Sub
 

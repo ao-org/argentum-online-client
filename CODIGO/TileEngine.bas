@@ -502,7 +502,7 @@ Public Sub Init_TileEngine()
 
 End Sub
 
-Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef TX As Byte, ByRef TY As Byte)
+Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tx As Byte, ByRef ty As Byte)
     '******************************************
     'Converts where the mouse is in the main window to a tile position. MUST be called eveytime the mouse moves.
     '******************************************
@@ -510,8 +510,8 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
     If viewPortX < 0 Or viewPortX > frmmain.renderer.ScaleWidth Then Exit Sub
     If viewPortY < 0 Or viewPortY > frmmain.renderer.ScaleHeight Then Exit Sub
 
-    TX = UserPos.x + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
-    TY = UserPos.y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
+    tx = UserPos.x + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
+    ty = UserPos.y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
 
 End Sub
 
@@ -728,9 +728,9 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
 
     Dim y  As Integer
 
-    Dim TX As Integer
+    Dim tx As Integer
 
-    Dim TY As Integer
+    Dim ty As Integer
     
     'Figure out which way to move
     Select Case nHeading
@@ -750,18 +750,18 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
     End Select
     
     'Fill temp pos
-    TX = UserPos.x + x
-    TY = UserPos.y + y
+    tx = UserPos.x + x
+    ty = UserPos.y + y
     
     'Check to see if its out of bounds
-    If TX < MinXBorder Or TX > MaxXBorder Or TY < MinYBorder Or TY > MaxYBorder Then
+    If tx < MinXBorder Or tx > MaxXBorder Or ty < MinYBorder Or ty > MaxYBorder Then
         Exit Sub
     Else
         'Start moving... MainLoop does the rest
         AddtoUserPos.x = x
-        UserPos.x = TX
+        UserPos.x = tx
         AddtoUserPos.y = y
-        UserPos.y = TY
+        UserPos.y = ty
         UserMoving = 1
         
         bTecho = HayTecho(UserPos.x, UserPos.y)
@@ -982,15 +982,14 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
      ByVal alpha As Boolean, ByVal angle As Single, _
      Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
 
-    Static Piture As RECT
+    Static Picture As RECT
 
-    With Piture
+    With Picture
         .Left = 0
         .Top = 0
 
         .bottom = pic.ScaleHeight
         .Right = pic.ScaleWidth
-
     End With
 
     Dim s(3) As Long
@@ -1000,11 +999,13 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     s(2) = -1
     s(3) = -1
 
-    Call Engine_BeginScene
+    Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1#, 0)
     
-        Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
+    Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
 
-    Call Engine_EndScene(Piture, pic.hwnd)
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
     
 End Sub
 
@@ -1017,9 +1018,9 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
      ByVal alpha As Boolean, ByVal angle As Single, _
      Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
 
-    Static Piture As RECT
+    Static Picture As RECT
 
-    With Piture
+    With Picture
         .Left = 0
         .Top = 0
 
@@ -1036,11 +1037,13 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
     s(3) = -1
 
 
-    Call Engine_BeginScene
+    Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1#, 0)
     
-        Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
+    Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
                            
-    Call Engine_EndScene(Piture, pic.hwnd)
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
     
 End Sub
 
@@ -1161,7 +1164,6 @@ Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal sr
                 SetPixel hdcsrc, x, y, vbBlack
             Else
                 SetPixel MaskDC, x, y, vbBlack
-
             End If
 
         Next x

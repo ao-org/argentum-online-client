@@ -26,8 +26,8 @@ Type RVList
     ColorRGB       As Long     'Color.
     RenderType     As RVType   'Tipo, se usa para saber si es apu o no.
     'RenderFont     As New StdFont  'Efecto del apu.
-    TimeRendered   As Long  'Tiempo transcurrido.
-    Downloading    As Byte     'Contador para la posicion Y.
+    TimeRendered   As Single  'Tiempo transcurrido.
+    Downloading    As Single     'Contador para la posicion Y.
     Activated      As Boolean  'Si está activado..
 
 End Type
@@ -68,7 +68,7 @@ Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY
 
             End If
                 
-            .ColorRGB = ModifyColour(.TimeRendered, .RenderType)
+            .ColorRGB = ModifyColor(.TimeRendered, .RenderType)
             Call ColorToDX8(.ColorRGB)
                 
             Select Case .RenderType
@@ -90,7 +90,7 @@ Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY
             Width = Engine_Text_Width(Text)
                 
             'Dibujo ; D
-            Engine_Text_Render2 Text, (PixelX - Width \ 2), (PixelY - 48) + .Downloading, .ColorRGB, , , .TimeRendered ' .RenderFont,
+            Engine_Text_Render2 Text, (PixelX - Width \ 2), (PixelY - 48) + .Downloading, .ColorRGB, , , Int(.TimeRendered) ' .RenderFont,
                
             'Si llego al tiempo lo limpio
             If .TimeRendered <= 0 Then
@@ -141,7 +141,7 @@ Public Function ColorToDX8(ByVal Long_Color As Long) As Long
 
 End Function
 
-Private Function ModifyColour(ByVal TimeNowRendered As Integer, ByVal RenderType As RVType) As Long
+Private Function ModifyColor(ByVal TimeNowRendered As Integer, ByVal RenderType As RVType) As Long
  
     ' @ Se usa para los "efectos" en el tiempo.
     
@@ -157,23 +157,23 @@ Private Function ModifyColour(ByVal TimeNowRendered As Integer, ByVal RenderType
     Select Case RenderType
 
         Case RVType.ePuñal
-            ModifyColour = ARGB(0, 0, 0, TimeX2)
+            ModifyColor = ARGB(0, 0, 0, TimeX2)
 
         Case RVType.eNormal
-            ModifyColour = ARGB(255, 0, 0, TimeX2)
+            ModifyColor = ARGB(255, 0, 0, TimeX2)
 
         Case RVType.eMagic
-            ModifyColour = ARGB(0, 0, 0, TimeX2)
+            ModifyColor = ARGB(0, 0, 0, TimeX2)
 
         Case RVType.eGold
-            ModifyColour = ARGB(204, 193, 115, TimeX2)
+            ModifyColor = ARGB(204, 193, 115, TimeX2)
 
-            ' ModifyColour = ARGB(0, 0, 0, TimeX2)
+            ' ModifyColor = ARGB(0, 0, 0, TimeX2)
         Case RVType.eExp
-            ModifyColour = ARGB(0, 169, 255, TimeX2)
+            ModifyColor = ARGB(0, 169, 255, TimeX2)
 
         Case RVType.eTrabajo
-            ModifyColour = ARGB(255, 255, 255, TimeX2)
+            ModifyColor = ARGB(255, 255, 255, TimeX2)
 
     End Select
  

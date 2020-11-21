@@ -34,6 +34,7 @@ Public Enum FontTypeNames
     FONTTYPE_GM
     FONTTYPE_DIOS
     FONTTYPE_CITIZEN
+    FONTTYPE_CRIMINAL
     FONTTYPE_EXP
     FONTTYPE_SUBASTA
     FONTTYPE_GLOBAL
@@ -359,6 +360,11 @@ Public Sub InitFonts()
         .blue = 255
         .bold = 1
 
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_CRIMINAL)
+        .red = 255
+        .bold = 1
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_EXP)
