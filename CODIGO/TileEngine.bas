@@ -25,7 +25,12 @@ Public Const YMinMapSize     As Byte = 1
 Private Const GrhFogata      As Integer = 1521
 
 ' Transparencia de techos
-Public RoofsLight           As Dictionary
+Public RoofsLight()          As tRoofLight
+
+Type tRoofLight
+    Alpha As Single
+    Color As Long
+End Type
 
 ''
 'Sets a Grh animation to loop indefinitely.
@@ -494,9 +499,6 @@ Public Sub Init_TileEngine()
     MinYBorder = YMinMapSize + (frmmain.renderer.ScaleHeight / 64)
     MaxYBorder = YMaxMapSize - (frmmain.renderer.ScaleHeight / 64)
     MinYBorder = MinYBorder
-    
-    ' Transparencia de techos
-    Set RoofsLight = New Dictionary
 
 End Sub
 
