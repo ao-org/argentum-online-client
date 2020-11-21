@@ -819,7 +819,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim Particulas() As tDatosParticulas
     Dim Objetos()    As tDatosObjs
     
-    Dim RoofLight    As clsRoofLight
+    Dim LBoundRoof As Integer, UBoundRoof As Integer
 
     Dim i            As Long
     Dim j            As Long
@@ -970,9 +970,7 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , L4
 
             For i = 1 To .NumeroLayers(4)
-            
                 MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex = L4(i).GrhIndex
-                MapData(L4(i).x, L4(i).y).GrhBlend = 255
                 InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex
             Next i
 
@@ -987,16 +985,17 @@ Public Sub CargarMapa(ByVal map As Integer)
                 
                 ' Transparencia de techos
                 If Triggers(i).Trigger >= PRIMER_TRIGGER_TECHO Then
-                    If Not RoofsLight.Exists(Triggers(i).Trigger) Then
-                    
-                        Set RoofLight = New clsRoofLight
+                    ' Array con todos los distintos tipos de triggers para techo
+                    If Triggers(i).Trigger < LBoundRoof Then
+                        LBoundRoof = Triggers(i).Trigger
+                        ReDim Preserve RoofsLight(LBoundRoof To UBoundRoof)
 
-                        RoofLight.Alpha = 255
-                        
-                        Call RoofsLight.Add(Triggers(i).Trigger, RoofLight)
-
-                        Set RoofLight = Nothing
+                    ElseIf Triggers(i).Trigger > UBoundRoof Then
+                        UBoundRoof = Triggers(i).Trigger
+                        ReDim Preserve RoofsLight(LBoundRoof To UBoundRoof)
                     End If
+                    
+                    RoofsLight(Triggers(i).Trigger).Alpha = 255
                 End If
             Next i
 

@@ -1560,14 +1560,13 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
  
     ' Layer 4 - roofs
     If HayLayer4 Then
-    
-        ' Actualizo techos
-        Dim Trigger As Variant, RoofLight As clsRoofLight
-        For Each Trigger In RoofsLight.Keys
-            ' Obtengo la referencia a la clase
-            Set RoofLight = RoofsLight.Item(Trigger)
+
+        Dim Trigger As Integer
         
-            With RoofLight
+        ' Actualizo techos
+        For Trigger = LBound(RoofsLight) To UBound(RoofsLight)
+            With RoofsLight(Trigger)
+
                 ' Si estoy bajo este techo
                 If Trigger = MapData(UserPos.x, UserPos.y).Trigger Then
                     If .Alpha > 0 Then
@@ -1581,15 +1580,12 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     .Alpha = .Alpha + timerTicksPerFrame * 12
                     If .Alpha > 255 Then .Alpha = 255
                 End If
-    
+                
                 ' Guardo el color nuevo
                 .Color = D3DColorARGB(.Alpha, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-            End With
 
-            Set Trigger = Nothing
-            Set RoofLight = Nothing
-            
-        Next Trigger
+            End With
+        Next
 
         Dim rgb_list(0 To 3)  As Long
 
@@ -1612,7 +1608,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     If .Graphic(4).GrhIndex Then
                         
                         If .Trigger >= PRIMER_TRIGGER_TECHO Then
-                            rgb_list(0) = RoofsLight.Item(.Trigger).Color
+                            rgb_list(0) = RoofsLight(.Trigger).Color
                             rgb_list(1) = rgb_list(0)
                             rgb_list(2) = rgb_list(0)
                             rgb_list(3) = rgb_list(0)
