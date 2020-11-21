@@ -60,7 +60,7 @@ Private Type dialog
     startTime   As Long
     lifeTime    As Long
     charindex   As Integer
-    color       As Long
+    Color       As Long
     renderable  As Boolean
     Sube As Byte
 
@@ -359,10 +359,10 @@ errhandler:
 
 End Sub
 
-Public Sub Engine_BeginScene(Optional ByVal color As Long = 0)
+Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
     
     Call DirectDevice.BeginScene
-    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, color, 1#, 0)
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1#, 0)
     Call SpriteBatch.Begin
 
 End Sub
@@ -992,32 +992,29 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
         ScreenX = ScreenX - x + screenminX
         ScreenY = ScreenY + 1
     Next y
-    
-    If HayLayer2 Then
-        ScreenY = minYOffset - TileBufferSizeX
 
-        For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSizeY
+    ScreenY = minYOffset - TileBufferSizeX
 
-            For x = minX To MaxX
+    For y = minY To MaxY
+        ScreenX = minXOffset - TileBufferSizeY
 
-                With MapData(x, y)
+        For x = minX To MaxX
 
-                    '***********************************************
-                    If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
-                        Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, ColorCiego, , x, y)
+            With MapData(x, y)
 
-                    End If
-              
-                End With
+                '***********************************************
+                If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
+                    Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, ColorCiego, , x, y)
 
-                ScreenX = ScreenX + 1
-            Next x
+                End If
+          
+            End With
 
-            ScreenY = ScreenY + 1
-        Next y
+            ScreenX = ScreenX + 1
+        Next x
 
-    End If
+        ScreenY = ScreenY + 1
+    Next y
     
     ScreenY = minYOffset - TileBufferSizeY
 
@@ -1321,9 +1318,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
     Dim OffX             As Integer
     Dim Offy             As Integer
-    
-    Dim minYTechos       As Integer
-    Dim minYTechoOffset  As Integer
 
     'Figure out Ends and Starts of screen
     screenminY = tiley - HalfWindowTileHeight
@@ -1335,19 +1329,14 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     MaxY = screenmaxY + TileBufferSizeY
     minX = screenminX - TileBufferSizeX
     MaxX = screenmaxX + TileBufferSizeX
-    
-    minYTechos = minY - 5
-    minYTechoOffset = -6
-    
+
     minYOffset = -1
     minXOffset = -TileBufferSizeX
     
     'Make sure mins and maxs are allways in map bounds
     If minY < YMinMapSize Then
         minYOffset = YMinMapSize - minY - 1
-        minYTechoOffset = YMinMapSize - minY - 6
         minY = YMinMapSize
-        minYTechos = minY - 5
     End If
     
     If MaxY > YMaxMapSize Then MaxY = YMaxMapSize
@@ -1402,45 +1391,42 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
         ScreenY = ScreenY + 1
         
     Next y
-    
-    If HayLayer2 Then
-        ScreenY = minYOffset
 
-        For y = minY To MaxY
-            ScreenX = minXOffset
+    ScreenY = minYOffset
 
-            For x = minX To MaxX
-            
-                PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
-                PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
+    For y = minY To MaxY
+        ScreenX = minXOffset
 
-                With MapData(x, y)
+        For x = minX To MaxX
+        
+            PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
+            PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
 
-                    '***********************************************
-                    If .Graphic(2).GrhIndex <> 0 Then
-                        Call Draw_Grh(.Graphic(2), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
-                    End If
-                    
-                    'Capa de objetos en el suelo (items, decorativos, etc) **********************************
-                    If .ObjGrh.GrhIndex <> 0 Then
-                        Select Case ObjData(.OBJInfo.OBJIndex).ObjType
-                            Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento
-                            
-                            Case Else
-                                Call Draw_Grh(.ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
-                        End Select
-                    End If
-              
-                End With
+            With MapData(x, y)
 
-                ScreenX = ScreenX + 1
-            Next x
+                '***********************************************
+                If .Graphic(2).GrhIndex <> 0 Then
+                    Call Draw_Grh(.Graphic(2), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
+                End If
+                
+                'Capa de objetos en el suelo (items, decorativos, etc) **********************************
+                If .ObjGrh.GrhIndex <> 0 Then
+                    Select Case ObjData(.OBJInfo.OBJIndex).ObjType
+                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento
+                        
+                        Case Else
+                            Call Draw_Grh(.ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
+                    End Select
+                End If
+          
+            End With
 
-            ScreenY = ScreenY + 1
-        Next y
+            ScreenX = ScreenX + 1
+        Next x
 
-    End If
-    
+        ScreenY = ScreenY + 1
+    Next y
+
     ScreenY = minYOffset
 
     For y = minY To MaxY
@@ -1458,7 +1444,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     If x <> UserPos.x Then
                         MapData(x, y).charindex = 0
                     End If
-                    
                 End If
                 
                 If .CharFantasma.Activo Then
@@ -1573,67 +1558,74 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
         ScreenY = ScreenY + 1
     Next y
  
-    'Draw blocked tiles and grid
- 
+    ' Layer 4 - roofs
     If HayLayer4 Then
+    
+        ' Actualizo techos
+        Dim Trigger As Variant, RoofLight As clsRoofLight
+        For Each Trigger In RoofsLight.Keys
+            ' Obtengo la referencia a la clase
+            Set RoofLight = RoofsLight.Item(Trigger)
+        
+            With RoofLight
+                ' Si estoy bajo este techo
+                If Trigger = MapData(UserPos.x, UserPos.y).Trigger Then
+                    If .Alpha > 0 Then
+                        ' Reduzco el alpha
+                        .Alpha = .Alpha - timerTicksPerFrame * 12
+                        If .Alpha < 0 Then .Alpha = 0
+                    End If
+    
+                ElseIf .Alpha < 255 Then
+                    ' Aumento el alpha
+                    .Alpha = .Alpha + timerTicksPerFrame * 12
+                    If .Alpha > 255 Then .Alpha = 255
+                End If
+    
+                ' Guardo el color nuevo
+                .Color = D3DColorARGB(.Alpha, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
+            End With
+
+            Set Trigger = Nothing
+            Set RoofLight = Nothing
+            
+        Next Trigger
 
         Dim rgb_list(0 To 3)  As Long
 
         Dim rgb_list2(0 To 3) As Long
 
-        rgb_list2(0) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        rgb_list2(1) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        rgb_list2(2) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        rgb_list2(3) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
+        rgb_list2(0) = map_base_light
+        rgb_list2(1) = map_base_light
+        rgb_list2(2) = map_base_light
+        rgb_list2(3) = map_base_light
     
-        ScreenY = minYTechoOffset
+        ScreenY = minYOffset
 
-        For y = minYTechos To MaxY
+        For y = minY To MaxY
             ScreenX = minXOffset
 
             For x = minX To MaxX
+            
+                With MapData(x, y)
         
-                If MapData(x, y).Graphic(4).GrhIndex Then
-                            
-                    Dim r, g, b As Byte
-
-                    b = (map_base_light And 16711680) / 65536
-                    g = (map_base_light And 65280) / 256
-                    r = map_base_light And 255
-
-                    'Layer 4 **********************************
-                    If bTecho Then
-                    
-                        If MapData(UserPos.x, UserPos.y).Trigger = MapData(x, y).Trigger Then
-                            MapData(x, y).GrhBlend = MapData(x, y).GrhBlend - (timerTicksPerFrame * 12)
-                            If MapData(x, y).GrhBlend < 0 Then MapData(x, y).GrhBlend = 0
-                            
-                            rgb_list(0) = D3DColorARGB(CInt(MapData(x, y).GrhBlend), b, g, r)
+                    If .Graphic(4).GrhIndex Then
+                        
+                        If .Trigger >= PRIMER_TRIGGER_TECHO Then
+                            rgb_list(0) = RoofsLight.Item(.Trigger).Color
                             rgb_list(1) = rgb_list(0)
                             rgb_list(2) = rgb_list(0)
                             rgb_list(3) = rgb_list(0)
                         
-                            Call Draw_Grh(MapData(x, y).Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, rgb_list(), , x, y)
+                            Call Draw_Grh(.Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, rgb_list(), , x, y)
                         Else
-                            Call Draw_Grh(MapData(x, y).Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, rgb_list2(), , x, y)
-
+                            Call Draw_Grh(.Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, rgb_list2(), , x, y)
+    
                         End If
-
-                    Else
-                 
-                        MapData(x, y).GrhBlend = MapData(x, y).GrhBlend + (timerTicksPerFrame * 12)
-                        If MapData(x, y).GrhBlend >= 255 Then MapData(x, y).GrhBlend = 255
-
-                        rgb_list(0) = D3DColorARGB(CInt(MapData(x, y).GrhBlend), b, g, r)
-                        rgb_list(1) = rgb_list(0)
-                        rgb_list(2) = rgb_list(0)
-                        rgb_list(3) = rgb_list(0)
-                        
-                        Call Draw_Grh(MapData(x, y).Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, rgb_list(), , x, y)
-          
+    
                     End If
-
-                End If
+                
+                End With
 
                 ScreenX = ScreenX + 1
             Next x
@@ -1904,7 +1896,7 @@ Public Sub Batch_Textured_Box(ByVal x As Single, ByVal y As Single, _
                             ByVal Width As Integer, ByVal Height As Integer, _
                             ByVal sX As Integer, ByVal sY As Integer, _
                             ByVal tex As Long, _
-                            ByRef color() As Long, _
+                            ByRef Color() As Long, _
                             Optional ByVal Alpha As Boolean = False, _
                             Optional ByVal angle As Single = 0, _
                             Optional ByVal ScaleX As Single = 1!, _
@@ -1922,9 +1914,9 @@ Public Sub Batch_Textured_Box(ByVal x As Single, ByVal y As Single, _
             Call .SetAlpha(Alpha)
             
             If TextureWidth <> 0 And TextureHeight <> 0 Then
-                Call .Draw(x, y, Width * ScaleX, Height * ScaleY, color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
+                Call .Draw(x, y, Width * ScaleX, Height * ScaleY, Color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
             Else
-                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, color, , , , , angle)
+                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , angle)
             End If
             
     End With
@@ -1936,7 +1928,7 @@ Public Sub Batch_Textured_Box_Advance(ByVal x As Single, ByVal y As Single, _
                             ByVal sX As Integer, ByVal sY As Integer, _
                             ByVal tex As Long, _
                             ByVal dw As Integer, ByVal dH As Integer, _
-                            ByRef color() As Long, _
+                            ByRef Color() As Long, _
                             Optional ByVal Alpha As Boolean = False, _
                             Optional ByVal angle As Single = 0, _
                             Optional ByVal ScaleX As Single = 1!, _
@@ -1954,9 +1946,9 @@ Public Sub Batch_Textured_Box_Advance(ByVal x As Single, ByVal y As Single, _
             Call .SetAlpha(Alpha)
             
             If TextureWidth <> 0 And TextureHeight <> 0 Then
-                Call .Draw(x, y, dw * ScaleX, dH * ScaleY, color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
+                Call .Draw(x, y, dw * ScaleX, dH * ScaleY, Color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, angle)
             Else
-                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, color, , , , , angle)
+                Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , angle)
             End If
             
     End With
@@ -2100,7 +2092,7 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
 
     Dim line          As String
 
-    Dim color(0 To 3) As Long
+    Dim Color(0 To 3) As Long
 
     Dim i             As Long
     
@@ -2218,7 +2210,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
     Dim line                 As String
 
-    Dim color(0 To 3)        As Long
+    Dim Color(0 To 3)        As Long
 
     Dim colorCorazon(0 To 3) As Long
 
@@ -2455,40 +2447,40 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                             Select Case .status
 
                                 Case 0
-                                    color(0) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
-                                    color(1) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
-                                    color(2) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
-                                    color(3) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    Color(0) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    Color(1) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    Color(2) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
+                                    Color(3) = RGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
                                     colorCorazon(3) = D3DColorXRGB(ColoresPJ(50).r, ColoresPJ(50).g, ColoresPJ(50).b)
 
                                 Case 1
-                                    color(0) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
-                                    color(1) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
-                                    color(2) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
-                                    color(3) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    Color(0) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    Color(1) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    Color(2) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
+                                    Color(3) = RGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
                                     colorCorazon(3) = D3DColorXRGB(ColoresPJ(49).r, ColoresPJ(49).g, ColoresPJ(49).b)
 
                                 Case 2
-                                    color(0) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
-                                    color(1) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
-                                    color(2) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
-                                    color(3) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    Color(0) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    Color(1) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    Color(2) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
+                                    Color(3) = RGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
                                     colorCorazon(3) = D3DColorXRGB(ColoresPJ(6).r, ColoresPJ(6).g, ColoresPJ(6).b)
 
                                 Case 3
-                                    color(0) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
-                                    color(1) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
-                                    color(2) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
-                                    color(3) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    Color(0) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    Color(1) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    Color(2) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
+                                    Color(3) = RGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
                                     colorCorazon(0) = D3DColorXRGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
                                     colorCorazon(1) = D3DColorXRGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
                                     colorCorazon(2) = D3DColorXRGB(ColoresPJ(7).r, ColoresPJ(7).g, ColoresPJ(7).b)
@@ -2497,10 +2489,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                             End Select
                                     
                         Else
-                            color(0) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
-                            color(1) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
-                            color(2) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
-                            color(3) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            Color(0) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            Color(1) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            Color(2) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
+                            Color(3) = RGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
                             colorCorazon(0) = D3DColorXRGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
                             colorCorazon(1) = D3DColorXRGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
                             colorCorazon(2) = D3DColorXRGB(ColoresPJ(.priv).r, ColoresPJ(.priv).g, ColoresPJ(.priv).b)
@@ -2510,10 +2502,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                                             
                         If .group_index > 0 Then
                             If charlist(charindex).group_index = charlist(UserCharIndex).group_index Then
-                                color(0) = D3DColorXRGB(255, 255, 255)
-                                color(1) = D3DColorXRGB(255, 255, 255)
-                                color(2) = D3DColorXRGB(255, 255, 255)
-                                color(3) = D3DColorXRGB(255, 255, 255)
+                                Color(0) = D3DColorXRGB(255, 255, 255)
+                                Color(1) = D3DColorXRGB(255, 255, 255)
+                                Color(2) = D3DColorXRGB(255, 255, 255)
+                                Color(3) = D3DColorXRGB(255, 255, 255)
                                 colorCorazon(0) = D3DColorXRGB(255, 255, 0)
                                 colorCorazon(1) = D3DColorXRGB(0, 255, 255)
                                 colorCorazon(2) = D3DColorXRGB(0, 255, 0)
@@ -2550,7 +2542,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
   
                         'Nick
                         line = Left$(.nombre, Pos - 2)
-                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), color, 1, True
+                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), Color, 1, True
                         
                         'Clan
                         Select Case .priv
@@ -2569,7 +2561,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
                         End Select
                             
-                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), color, 1, True
+                        Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), Color, 1, True
 
                         If .Donador = 1 Then
                             line = Left$(.nombre, Pos - 2)
@@ -2630,10 +2622,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
                     If Pos = 0 Then Pos = Len(.nombre) + 2
 
-                    color(0) = D3DColorXRGB(255, 255, 255)
-                    color(1) = color(0)
-                    color(2) = color(0)
-                    color(3) = color(0)
+                    Color(0) = D3DColorXRGB(255, 255, 255)
+                    Color(1) = Color(0)
+                    Color(2) = Color(0)
+                    Color(3) = Color(0)
                     colorCorazon(0) = D3DColorXRGB(120, 100, 200)
                     colorCorazon(1) = colorCorazon(0)
                     colorCorazon(2) = colorCorazon(0)
@@ -2643,20 +2635,20 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                         OffsetYname = 16
                         OffsetYClan = 14
                         line = Left$(.nombre, Pos - 2)
-                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, color, True, True, False
+                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, Color, True, True, False
                         Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 31, (((UserMinHp + 1 / 100) / (UserMaxHp + 1 / 100))) * 26, 4, D3DColorARGB(255, 200, 0, 0), D3DColorARGB(0, 200, 200, 200)
-                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 14, color, True, True, False
+                        Grh_Render Marco, PixelOffsetX, PixelOffsetY + 14, Color, True, True, False
                         Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 40, (((UserMinMAN + 1 / 100) / (UserMaxMAN + 1 / 100))) * 26, 4, D3DColorARGB(255, 0, 0, 255), D3DColorARGB(0, 200, 200, 200)
 
                     End If
                                 
-                    color(0) = D3DColorXRGB(200, 100, 100)
-                    color(1) = color(0)
-                    color(2) = color(0)
-                    color(3) = color(0)
+                    Color(0) = D3DColorXRGB(200, 100, 100)
+                    Color(1) = Color(0)
+                    Color(2) = Color(0)
+                    Color(3) = Color(0)
 
                     line = Left$(.nombre, Pos - 2)
-                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), color, 1, True
+                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), Color, 1, True
                         
                     'Clan
                     Select Case .priv
@@ -2675,7 +2667,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
                     End Select
                             
-                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), color, 1, True
+                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), Color, 1, True
 
                     If .Donador = 1 Then
                         line = Left$(.nombre, Pos - 2)
@@ -2824,7 +2816,7 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
 
     Dim line          As String
 
-    Dim color(0 To 3) As Long
+    Dim Color(0 To 3) As Long
 
     Dim i             As Long
     
@@ -3460,12 +3452,12 @@ Public Sub DrawMapaMundo()
     
     Call Engine_BeginScene
         
-    Dim color(0 To 3) As Long
+    Dim Color(0 To 3) As Long
 
-    color(0) = D3DColorARGB(255, 255, 255, 255)
-    color(1) = color(0)
-    color(2) = color(0)
-    color(3) = color(0)
+    Color(0) = D3DColorARGB(255, 255, 255, 255)
+    Color(1) = Color(0)
+    Color(2) = Color(0)
+    Color(3) = Color(0)
         
     Dim i    As Byte
 
@@ -3488,14 +3480,14 @@ Public Sub DrawMapaMundo()
         grh = BodyData(BodyID).Walk(3)
         x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
         y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
-        Call Draw_Grh(grh, x, y, 0, 0, color, False, 0, 0, 0)
+        Call Draw_Grh(grh, x, y, 0, 0, Color, False, 0, 0, 0)
     End If
 
     If HeadID > 0 Then
         Head = HeadData(HeadID).Head(3)
         x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(Head.GrhIndex).pixelWidth / 2
         y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
-        Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
+        Call Draw_Grh(Head, x, y, 0, 0, Color, False, 0, 0, 0)
     End If
     
     Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
@@ -3676,7 +3668,7 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
 
     Dim Index            As Long
 
-    Dim color            As Long
+    Dim Color            As Long
 
     Dim aura_grh         As grh
 
@@ -3687,7 +3679,7 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
     Dim lado             As Byte
 
     Index = Val(ReadField(1, aura_index, Asc(":")))
-    color = Val(ReadField(2, aura_index, Asc(":")))
+    Color = Val(ReadField(2, aura_index, Asc(":")))
     giro = Val(ReadField(3, aura_index, Asc(":")))
     lado = Val(ReadField(4, aura_index, Asc(":")))
 
@@ -3712,9 +3704,9 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
 
     Dim b As Integer
 
-    r = &HFF& And color
-    g = (&HFF00& And color) \ 256
-    b = (&HFF0000 And color) \ 65536
+    r = &HFF& And Color
+    g = (&HFF00& And Color) \ 256
+    b = (&HFF0000 And Color) \ 65536
     TRANS = 255
 
     rgb_list(0) = D3DColorARGB(TRANS, b, g, r)
@@ -3743,14 +3735,14 @@ Private Sub Renderizar_AuraCiego(ByVal aura_index As String, ByVal x As Integer,
 
     Dim Index            As Long
 
-    Dim color            As Long
+    Dim Color            As Long
 
     Dim aura_grh         As grh
 
     Dim TRANS            As Integer
 
     Index = Val(ReadField(1, aura_index, Asc(":")))
-    color = Val(ReadField(2, aura_index, Asc(":")))
+    Color = Val(ReadField(2, aura_index, Asc(":")))
     TRANS = 1 'Val(ReadField(4, aura_index, Asc(":")))
 
     Dim r As Integer
@@ -3759,9 +3751,9 @@ Private Sub Renderizar_AuraCiego(ByVal aura_index As String, ByVal x As Integer,
 
     Dim b As Integer
 
-    r = &HFF& And color
-    g = (&HFF00& And color) \ 256
-    b = (&HFF0000 And color) \ 65536
+    r = &HFF& And Color
+    g = (&HFF00& And Color) \ 256
+    b = (&HFF0000 And Color) \ 65536
 
     Dim ColorCiego(0 To 3) As Long
 
@@ -3897,32 +3889,29 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         ScreenX = ScreenX - x + screenminX
         ScreenY = ScreenY + 1
     Next y
-    
-    If HayLayer2 Then
-        ScreenY = minYOffset
 
-        For y = minY To MaxY
-            ScreenX = minXOffset
+    ScreenY = minYOffset
 
-            For x = minX To MaxX + 2
+    For y = minY To MaxY
+        ScreenX = minXOffset
 
-                With MapData(x, y)
+        For x = minX To MaxX + 2
 
-                    '***********************************************
-                    If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
-                        Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
+            With MapData(x, y)
 
-                    End If
-              
-                End With
+                '***********************************************
+                If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
+                    Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
 
-                ScreenX = ScreenX + 1
-            Next x
+                End If
+          
+            End With
 
-            ScreenY = ScreenY + 1
-        Next y
+            ScreenX = ScreenX + 1
+        Next x
 
-    End If
+        ScreenY = ScreenY + 1
+    Next y
     
     ScreenY = minYOffset
 
@@ -4061,7 +4050,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         
     Dim DefaultColor(3) As Long
 
-    Dim color           As Long
+    Dim Color           As Long
 
     intro = 1
 
@@ -4302,31 +4291,28 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         ScreenY = ScreenY + 1
     Next y
     
-    If HayLayer2 Then
-        ScreenY = minYOffset
+    ScreenY = minYOffset
 
-        For y = minY To MaxY
-            ScreenX = minXOffset
+    For y = minY To MaxY
+        ScreenX = minXOffset
 
-            For x = minX To MaxX
+        For x = minX To MaxX
 
-                With MapData(x, y)
+            With MapData(x, y)
 
-                    '***********************************************
-                    If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
-                        Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
+                '***********************************************
+                If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
+                    Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
 
-                    End If
-              
-                End With
+                End If
+          
+            End With
 
-                ScreenX = ScreenX + 1
-            Next x
+            ScreenX = ScreenX + 1
+        Next x
 
-            ScreenY = ScreenY + 1
-        Next y
-
-    End If
+        ScreenY = ScreenY + 1
+    Next y
     
     ScreenY = minYOffset
 
@@ -4810,7 +4796,7 @@ Public Sub RenderPjsCuenta()
 
     Dim DefaultColor(3) As Long
 
-    Dim color           As Long
+    Dim Color           As Long
 
     Dim Texto           As String
 
@@ -4963,11 +4949,11 @@ Public Sub RenderPjsCuenta()
 
 End Sub
 
-Sub EfectoEnPantalla(ByVal color As Long, ByVal time As Long)
+Sub EfectoEnPantalla(ByVal Color As Long, ByVal time As Long)
     frmmain.Efecto.Interval = time
     frmmain.Efecto.Enabled = True
     EfectoEnproceso = True
-    Call Map_Base_Light_Set(color)
+    Call Map_Base_Light_Set(Color)
 
 End Sub
 
@@ -5475,7 +5461,7 @@ Public Function Letter_UnSet() As Boolean
 
 End Function
 
-Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
+Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal Color As Long = -1)
     '**************************************************************
     'Author: Mannakia
     'Last Modify Date: 14/05/2009
@@ -5504,10 +5490,10 @@ Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x 
 
     Dim s(3) As Long
 
-    s(0) = color
-    s(1) = color
-    s(2) = color
-    s(3) = color
+    s(0) = Color
+    s(1) = Color
+    s(2) = Color
+    s(3) = Color
 
     Call Engine_BeginScene
     

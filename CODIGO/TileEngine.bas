@@ -24,6 +24,9 @@ Public Const YMinMapSize     As Byte = 1
 
 Private Const GrhFogata      As Integer = 1521
 
+' Transparencia de techos
+Public RoofsLight           As Dictionary
+
 ''
 'Sets a Grh animation to loop indefinitely.
 Private Const INFINITE_LOOPS As Integer = -1
@@ -257,7 +260,7 @@ End Type
 'Tipo de las celdas del mapa
 Public Type Light
     Rango As Integer
-    color As Long
+    Color As Long
 End Type
 
 Public Type Fantasma
@@ -492,8 +495,8 @@ Public Sub Init_TileEngine()
     MaxYBorder = YMaxMapSize - (frmmain.renderer.ScaleHeight / 64)
     MinYBorder = MinYBorder
     
-    
-    
+    ' Transparencia de techos
+    Set RoofsLight = New Dictionary
 
 End Sub
 
@@ -685,7 +688,7 @@ Sub MoveCharbyPos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As I
         End If
         
         If Sgn(addy) = 1 Then
-            nHeading = E_Heading.south
+            nHeading = E_Heading.SOUTH
 
         End If
         
@@ -736,7 +739,7 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
         Case E_Heading.EAST
             x = 1
         
-        Case E_Heading.south
+        Case E_Heading.SOUTH
             y = 1
         
         Case E_Heading.WEST
@@ -759,20 +762,20 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
         UserPos.y = TY
         UserMoving = 1
         
-        bTecho = HayTecho(UserPos.X, UserPos.Y)
+        bTecho = HayTecho(UserPos.x, UserPos.y)
 
     End If
 
 End Sub
 
-Public Function HayTecho(ByVal X As Integer, ByVal Y As Integer) As Boolean
+Public Function HayTecho(ByVal x As Integer, ByVal y As Integer) As Boolean
     
-    Select Case MapData(X, Y).Trigger
+    Select Case MapData(x, y).Trigger
         
         Case 1, 2, 4, 6
             HayTecho = True
                 
-        Case Is > 9
+        Case Is > PRIMER_TRIGGER_TECHO
             HayTecho = True
                 
         Case Else

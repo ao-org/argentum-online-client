@@ -109,7 +109,7 @@ Private Type tDatosLuces
 
     x As Integer
     y As Integer
-    color As Long
+    Color As Long
     Rango As Byte
 
 End Type
@@ -818,6 +818,8 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim Luces()      As tDatosLuces
     Dim Particulas() As tDatosParticulas
     Dim Objetos()    As tDatosObjs
+    
+    Dim RoofLight    As clsRoofLight
 
     Dim i            As Long
     Dim j            As Long
@@ -850,8 +852,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     Call LucesCuadradas.Light_Remove_All
     Call LucesRedondas.Delete_All_LigthRound(False)
     Call Graficos_Particulas.Particle_Group_Remove_All
-   
-    HayLayer2 = False
+
     HayLayer4 = False
     
     For i = 1 To LastChar
@@ -925,7 +926,6 @@ Public Sub CargarMapa(ByVal map As Integer)
     
         'Cargamos Layer 2
         If .NumeroLayers(2) > 0 Then
-            HayLayer2 = True
             ReDim L2(1 To .NumeroLayers(2))
             Get #fh, , L2
 
@@ -983,9 +983,21 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Triggers
             
             For i = 1 To .NumeroTriggers
-            
-                Rem   If Triggers(i).Trigger > 8 Then Triggers(i).Trigger = 1
                 MapData(Triggers(i).x, Triggers(i).y).Trigger = Triggers(i).Trigger
+                
+                ' Transparencia de techos
+                If Triggers(i).Trigger >= PRIMER_TRIGGER_TECHO Then
+                    If Not RoofsLight.Exists(Triggers(i).Trigger) Then
+                    
+                        Set RoofLight = New clsRoofLight
+
+                        RoofLight.Alpha = 255
+                        
+                        Call RoofsLight.Add(Triggers(i).Trigger, RoofLight)
+
+                        Set RoofLight = Nothing
+                    End If
+                End If
             Next i
 
         End If
@@ -1008,19 +1020,19 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Luces
 
             For i = 1 To .NumeroLuces
-                MapData(Luces(i).x, Luces(i).y).luz.color = Luces(i).color
+                MapData(Luces(i).x, Luces(i).y).luz.Color = Luces(i).Color
                 MapData(Luces(i).x, Luces(i).y).luz.Rango = Luces(i).Rango
 
                 If MapData(Luces(i).x, Luces(i).y).luz.Rango <> 0 Then
                     If MapData(Luces(i).x, Luces(i).y).luz.Rango < 100 Then
-                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.color, MapData(Luces(i).x, Luces(i).y).luz.Rango, Luces(i).x & Luces(i).y
+                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.Color, MapData(Luces(i).x, Luces(i).y).luz.Rango, Luces(i).x & Luces(i).y
                     Else
 
                         Dim r, g, b As Byte
 
-                        b = (MapData(Luces(i).x, Luces(i).y).luz.color And 16711680) / 65536
-                        g = (MapData(Luces(i).x, Luces(i).y).luz.color And 65280) / 256
-                        r = MapData(Luces(i).x, Luces(i).y).luz.color And 255
+                        b = (MapData(Luces(i).x, Luces(i).y).luz.Color And 16711680) / 65536
+                        g = (MapData(Luces(i).x, Luces(i).y).luz.Color And 65280) / 256
+                        r = MapData(Luces(i).x, Luces(i).y).luz.Color And 255
                         LucesRedondas.Create_Light_To_Map Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.Rango - 99, b, g, r
 
                     End If
