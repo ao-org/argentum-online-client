@@ -259,8 +259,11 @@ Private Sub Engine_InitExtras()
     Call Font_Create("Verdana", 8, False, 0)
     Call Font_Create("Verdana", 11, True, False)
     
-    'Inventario
+    ' Inventario
     Call Initialize
+    
+    ' Inicializar textura compuesta
+    'Call InitComposedTexture
     
 End Sub
 
@@ -1594,14 +1597,13 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     If bTecho Then
                     
                         If MapData(UserPos.x, UserPos.y).Trigger = MapData(x, y).Trigger Then
-                    
-                            If MapData(x, y).GrhBlend <= 20 Then MapData(x, y).GrhBlend = 20
                             MapData(x, y).GrhBlend = MapData(x, y).GrhBlend - (timerTicksPerFrame * 12)
+                            If MapData(x, y).GrhBlend < 0 Then MapData(x, y).GrhBlend = 0
                             
-                            If MapData(x, y).GrhBlend < 0 Then
-                                MapData(x, y).GrhBlend = 0
-                            End If
-                            
+                            rgb_list(0) = D3DColorARGB(CInt(MapData(x, y).GrhBlend), b, g, r)
+                            rgb_list(1) = rgb_list(0)
+                            rgb_list(2) = rgb_list(0)
+                            rgb_list(3) = rgb_list(0)
                         
                             Call Draw_Grh(MapData(x, y).Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, rgb_list(), , x, y)
                         Else
@@ -1612,7 +1614,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     Else
                  
                         MapData(x, y).GrhBlend = MapData(x, y).GrhBlend + (timerTicksPerFrame * 12)
-
                         If MapData(x, y).GrhBlend >= 255 Then MapData(x, y).GrhBlend = 255
 
                         rgb_list(0) = D3DColorARGB(CInt(MapData(x, y).GrhBlend), b, g, r)
