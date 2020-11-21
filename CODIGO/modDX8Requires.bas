@@ -73,31 +73,20 @@ Public Viewport As D3DVIEWPORT8
 Public Projection As D3DMATRIX
 Public View As D3DMATRIX
 
-Public Type TLVERTEX
-    x As Single
-    y As Single
-    Z As Single
-    rhw As Single
-    color As Long
-    Specular As Long
-    tu As Single
-    tv As Single
+Public Type TYPE_VERTEX
+
+    x       As Single
+    y       As Single
+    Z       As Single
+ 
+    Color   As Long
+   
+    tx      As Single
+    ty      As Single
+
 End Type
 
-Public Type TLVERTEX2
-    x As Single
-    y As Single
-    Z As Single
-    rhw As Single
-    color As Long
-    Specular As Long
-    tu1 As Single
-    tv1 As Single
-    tu2 As Single
-    tv2 As Single
-End Type
-
-Public Const PI       As Single = 3.14159265358979
+Public Const PI As Single = 3.14159265358979
 
 '*******************************************************
 ' FIN - MOTOR GRAFICO

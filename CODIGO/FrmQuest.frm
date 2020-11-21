@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form FrmQuests 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -389,15 +389,14 @@ Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
 
     grhH = HeadData(NpcData(MyBody).Head).Head(3)
 
-    x = PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
-    y = PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
+    x = (PlayerView.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) / 2
+    y = (PlayerView.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2
     Call Grh_Render_To_Hdc(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False)
 
     If NpcData(MyBody).Head <> 0 Then
-        x = PlayerView.ScaleWidth / 2 - GrhData(grhH.GrhIndex).pixelWidth / 2
-        y = PlayerView.ScaleHeight / 2 - GrhData(grhH.GrhIndex).pixelHeight + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y / 2
+        x = (PlayerView.ScaleWidth - GrhData(grhH.GrhIndex).pixelWidth) / 2
+        y = (PlayerView.ScaleHeight - GrhData(grhH.GrhIndex).pixelHeight) / 2 + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y
         Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
-
     End If
 
 End Sub
