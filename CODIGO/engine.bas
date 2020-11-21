@@ -2433,7 +2433,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                 'Draw name over head
                 If Nombres Then
                 
-                    If Len(.nombre) > 0 And Not .EsNpc And Not bTecho Then
+                    If Len(.nombre) > 0 And _
+                        Not .EsNpc And _
+                        Not HayTecho(.Pos.x, .Pos.y) Then
+                        
                         Pos = InStr(.nombre, "<")
 
                         If Pos = 0 Then Pos = Len(.nombre) + 2
