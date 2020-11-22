@@ -45,7 +45,6 @@ Private Declare Sub GlobalMemoryStatus Lib "kernel32" (lpBuffer As MEMORYSTATUS)
 ' the DirectX8 object. You will need to create a new instance of
 ' the object, using the New keyword, rather than just getting a
 ' pointer to it, since there's nowhere to get a pointer from yet (duh!).
-
 Public DirectX As New DirectX8
 
 ' The D3DX8 object contains lots of helper functions, mostly math

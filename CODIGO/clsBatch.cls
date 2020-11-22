@@ -33,8 +33,8 @@ End Type
 
 Private Type DT_VERTEX
     Color  As Long
-    tx      As Single
-    ty      As Single
+    TX      As Single
+    TY      As Single
 End Type
 
 Private m_Pre_VBuffer As Direct3DVertexBuffer8
@@ -109,17 +109,17 @@ Public Sub Draw(ByVal x As Long, _
                 ByVal y As Long, _
                 ByVal Width As Long, _
                 ByVal Height As Long, _
-                ByRef Color() As Long, _
+                ByRef color() As Long, _
                 Optional ByVal Tx1 As Single = 0, _
                 Optional ByVal Ty1 As Single = 0, _
                 Optional ByVal Tx2 As Single = 1, _
                 Optional ByVal Ty2 As Single = 1, _
                 Optional ByVal angle As Single = 0)
                 
-    If (Color(0) = 0) Then Color(0) = map_base_light
-    If (Color(1) = 0) Then Color(1) = map_base_light
-    If (Color(2) = 0) Then Color(2) = map_base_light
-    If (Color(3) = 0) Then Color(3) = map_base_light
+    If (color(0) = 0) Then color(0) = map_base_light
+    If (color(1) = 0) Then color(1) = map_base_light
+    If (color(2) = 0) Then color(2) = map_base_light
+    If (color(3) = 0) Then color(3) = map_base_light
                
     If angle > 0 And angle <= 360 Then
         Dim NewX     As Single
@@ -144,7 +144,7 @@ Public Sub Draw(ByVal x As Long, _
     m_Data(m_Position).y = y + Height
     m_Data(m_Position).Z = 0
     m_Data(m_Position).Color = Color(0)
-    m_Data(m_Position).tx = Tx1
+    m_Data(m_Position).TX = Tx1
     m_Data(m_Position).ty = Ty2
  
     If angle > 0 And angle <= 360 Then
@@ -163,7 +163,7 @@ Public Sub Draw(ByVal x As Long, _
     m_Data(m_Position).y = y
     m_Data(m_Position).Z = 0
     m_Data(m_Position).Color = Color(1)
-    m_Data(m_Position).tx = Tx1
+    m_Data(m_Position).TX = Tx1
     m_Data(m_Position).ty = Ty1
    
     If angle > 0 And angle <= 360 Then
@@ -182,8 +182,8 @@ Public Sub Draw(ByVal x As Long, _
     m_Data(m_Position).y = y + Height
     m_Data(m_Position).Z = 0
     m_Data(m_Position).Color = Color(2)
-    m_Data(m_Position).tx = Tx2
-    m_Data(m_Position).ty = Ty2
+    m_Data(m_Position).TX = Tx2
+    m_Data(m_Position).TY = Ty2
  
     If angle > 0 And angle <= 360 Then
    
@@ -201,8 +201,8 @@ Public Sub Draw(ByVal x As Long, _
     m_Data(m_Position).y = y
     m_Data(m_Position).Z = 0
     m_Data(m_Position).Color = Color(3)
-    m_Data(m_Position).tx = Tx2
-    m_Data(m_Position).ty = Ty1
+    m_Data(m_Position).TX = Tx2
+    m_Data(m_Position).TY = Ty1
  
     If angle > 0 And angle <= 360 Then
    
@@ -303,5 +303,4 @@ Public Sub Initialise(ByVal Capacity As Long)
     Call D3DIndexBuffer8SetData(m_IBuffer, 0, UBound(lpIndices), 0, lpIndices(0))
        
 End Sub
-
 

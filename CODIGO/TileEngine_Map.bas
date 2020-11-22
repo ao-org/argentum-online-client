@@ -1,6 +1,65 @@
 Attribute VB_Name = "TileEngine_Map"
 Option Explicit
 
+Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
+    '*****************************************************************
+    'Author: Augusto José Rando
+    '*****************************************************************
+    letter_text = text_string
+    letter_grh.GrhIndex = grh_index
+    Letter_Set = True
+    map_letter_fadestatus = 1
+
+End Function
+
+Public Function Map_Letter_Fade_Set(ByVal grh_index As Long, Optional ByVal after_grh As Long = -1) As Boolean
+
+    '*****************************************************************
+    'Author: Augusto José Rando
+    '*****************************************************************
+    If grh_index <= 0 Or grh_index = map_letter_grh.GrhIndex Then Exit Function
+        
+    If after_grh = -1 Then
+    
+        map_letter_grh.GrhIndex = grh_index
+        map_letter_fadestatus = 1
+        map_letter_a = 0
+        map_letter_grh_next = 0
+        
+    Else
+        map_letter_grh.GrhIndex = after_grh
+        map_letter_fadestatus = 1
+        map_letter_a = 0
+        map_letter_grh_next = grh_index
+
+    End If
+    
+    Map_Letter_Fade_Set = True
+
+End Function
+
+Public Function Map_Letter_UnSet() As Boolean
+    '*****************************************************************
+    'Author: Augusto José Rando
+    '*****************************************************************
+    map_letter_grh.GrhIndex = 0
+    map_letter_fadestatus = 0
+    map_letter_a = 0
+    map_letter_grh_next = 0
+    Map_Letter_UnSet = True
+
+End Function
+
+Public Function Letter_UnSet() As Boolean
+    '*****************************************************************
+    'Author: Augusto José Rando
+    '*****************************************************************
+    letter_text = vbNullString
+    letter_grh.GrhIndex = 0
+    Letter_UnSet = True
+
+End Function
+
 Public Function Map_Base_Light_Get() As Long
     '**************************************************************
     'Author: Aaron Perkins - Modified by Augusto José Rando

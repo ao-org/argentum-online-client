@@ -116,11 +116,8 @@ End Function
 Private Function LightCalculate(ByVal cRadio As Integer, ByVal LightX As Integer, ByVal LightY As Integer, ByVal XCoord As Integer, ByVal YCoord As Integer, TileLight As Long, LightColor As D3DCOLORVALUE, AmbientColor As D3DCOLORVALUE) As Long
 
     Dim XDist        As Single
-
     Dim YDist        As Single
-
     Dim VertexDist   As Single
-
     Dim pRadio       As Integer
        
     Dim CurrentColor As D3DCOLORVALUE
@@ -156,7 +153,7 @@ Private Sub LightRender(ByVal light_index As Integer)
 
     Dim max_y        As Long
 
-    Dim color        As Long
+    Dim Color        As Long
 
     Dim Ya           As Long
 

@@ -839,9 +839,9 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     'Particulas Grises si esta muerto Ladder
     If UserEstado = 1 Then
         rgb_list(0) = D3DColorARGB(100, 100, 100, 100)
-        rgb_list(1) = D3DColorARGB(100, 100, 100, 100)
-        rgb_list(2) = D3DColorARGB(100, 100, 100, 100)
-        rgb_list(3) = D3DColorARGB(100, 100, 100, 100)
+        rgb_list(1) = rgb_list(0)
+        rgb_list(2) = rgb_list(0)
+        rgb_list(3) = rgb_list(0)
 
     End If
     

@@ -126,6 +126,7 @@ Form=CODIGO\FrmKeyInv.frm
 Class=clsIniManager; CODIGO\clsIniManager.cls
 Module=Recursos; CODIGO\Recursos.bas
 Class=clsBatch; CODIGO\clsBatch.cls
+Module=TileEngine_RenderScreen; CODIGO\TileEngine_RenderScreen.bas
 ResFile32="RAO.res"
 IconForm="frmmain"
 Startup="Sub Main"
