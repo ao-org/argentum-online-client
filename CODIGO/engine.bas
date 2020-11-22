@@ -15,15 +15,6 @@ Private BarraMana               As grh
 Private BarraVida               As grh
 Private BarraGris               As grh
 
-
-'Letter showing on screen
-Private letter_text           As String
-Private letter_grh            As grh
-Private map_letter_grh        As grh
-Private map_letter_grh_next   As Long
-Private map_letter_a          As Single
-Private map_letter_fadestatus As Byte
-
 ''
 ' Maximum number of dialogs that can exist.
 Public Const MAX_DIALOGS     As Byte = 100
@@ -120,8 +111,9 @@ Private TileBufferPixelOffsetY As Integer
 
 Private Const GrhFogata        As Integer = 1521
 
-Public COLOR_WHITE(3) As Long
-Public textcolorAsistente(3) As Long
+' Colores estaticos
+Public COLOR_WHITE(3)           As Long
+Public textcolorAsistente(3)    As Long
 
 'Sets a Grh animation to loop indefinitely.
 
@@ -222,12 +214,6 @@ Private Sub Engine_InitExtras()
     BarraGris.GrhIndex = 842
     BarraGris.Started = 1
     
-    ' Colores comunes
-    COLOR_WHITE(0) = D3DColorXRGB(255, 255, 255)
-    COLOR_WHITE(1) = D3DColorXRGB(255, 255, 255)
-    COLOR_WHITE(2) = D3DColorXRGB(255, 255, 255)
-    COLOR_WHITE(3) = D3DColorXRGB(255, 255, 255)
-    
     With Render_Connect_Rect
         .Top = 0
         .Left = 0
@@ -242,11 +228,8 @@ Private Sub Engine_InitExtras()
         .bottom = frmmain.renderer.ScaleHeight
     End With
     
-    textcolorAsistente(0) = D3DColorXRGB(0, 200, 0)
-    textcolorAsistente(1) = textcolorAsistente(0)
-    textcolorAsistente(2) = textcolorAsistente(0)
-    textcolorAsistente(3) = textcolorAsistente(0)
-
+    Call Engine_InitColors
+    
     ' Sistemas dependientes de el motor grafico
     Set Meteo_Engine = New clsMeteorologic
     Set LucesRedondas = New clsLucesRedondas
@@ -265,6 +248,21 @@ Private Sub Engine_InitExtras()
     ' Inicializar textura compuesta
     Call InitComposedTexture
     
+End Sub
+
+Public Sub Engine_InitColors()
+
+    ' Colores comunes
+    COLOR_WHITE(0) = D3DColorXRGB(255, 255, 255)
+    COLOR_WHITE(1) = COLOR_WHITE(0)
+    COLOR_WHITE(2) = COLOR_WHITE(0)
+    COLOR_WHITE(3) = COLOR_WHITE(0)
+    
+    textcolorAsistente(0) = D3DColorXRGB(0, 200, 0)
+    textcolorAsistente(1) = textcolorAsistente(0)
+    textcolorAsistente(2) = textcolorAsistente(0)
+    textcolorAsistente(3) = textcolorAsistente(0)
+
 End Sub
 
 Public Sub Engine_Init()
@@ -465,7 +463,7 @@ Public Sub Draw_GrhIndexColor(ByVal grh_index As Long, ByVal x As Integer, ByVal
 
 End Sub
 
-Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal Center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean = False, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
+Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean = False, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
 
     On Error Resume Next
 
@@ -500,7 +498,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(grh.framecounter)
 
     'Center Grh over X,Y pos
-    If Center Then
+    If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
 
@@ -518,7 +516,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
 
 End Sub
 
-Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal Center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal charindex As Integer)
+Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal charindex As Integer)
 
     On Error Resume Next
 
@@ -603,7 +601,6 @@ Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
     If grh.AnimacionContador > grh.CantAnim * 0.6 Then
         If grh.Alpha < 220 Then
             grh.Alpha = grh.Alpha + 1
-
         End If
         
         colorz(0) = D3DColorARGB(grh.Alpha, 255, 255, 255)
@@ -624,7 +621,7 @@ Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(grh.framecounter)
 
     'Center Grh over X,Y pos
-    If Center Then
+    If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
 
@@ -643,7 +640,7 @@ Private Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
 
 End Sub
 
-Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal Center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
+Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
 
     Dim CurrentGrhIndex As Long
 
@@ -675,7 +672,7 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(grh.framecounter)
 
     'Center Grh over X,Y pos
-    If Center Then
+    If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
 
@@ -836,953 +833,13 @@ Sub ShowNextFrame()
     End If
 
     If UserCiego Then
-        Call ConvertCPtoTP(MouseX, MouseY, tx, ty)
+        Call ConvertCPtoTP(MouseX, MouseY, TX, TY)
         Call RenderScreenCiego(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY)
     Else
         'Reparacion de pj
-        Call ConvertCPtoTP(MouseX, MouseY, tx, ty)
+        Call ConvertCPtoTP(MouseX, MouseY, TX, TY)
         Call RenderScreen(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY)
                 
-    End If
-
-End Sub
-
-Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 8/14/2007
-    'Last modified by: Juan Martín Sotuyo Dodero (Maraxus)
-    'Renders everything to the viewport
-    '**************************************************************
-
-    Dim y                As Integer     'Keeps track of where on map we are
-
-    Dim x                As Integer     'Keeps track of where on map we are
-
-    Dim screenminY       As Integer  'Start Y pos on current screen
-
-    Dim screenmaxY       As Integer  'End Y pos on current screen
-
-    Dim screenminX       As Integer  'Start X pos on current screen
-
-    Dim screenmaxX       As Integer  'End X pos on current screen
-
-    Dim minY             As Integer  'Start Y pos on current map
-
-    Dim MaxY             As Integer  'End Y pos on current map
-
-    Dim minX             As Integer  'Start X pos on current map
-
-    Dim MaxX             As Integer  'End X pos on current map
-
-    Dim ScreenX          As Integer  'Keeps track of where to place tile on screen
-
-    Dim ScreenY          As Integer  'Keeps track of where to place tile on screen
-
-    Dim minXOffset       As Integer
-
-    Dim minYOffset       As Integer
-
-    Dim PixelOffsetXTemp As Integer 'For centering grhs
-
-    Dim PixelOffsetYTemp As Integer 'For centering grhs
-
-    Dim CurrentGrhIndex  As Integer
-
-    Dim OffX             As Integer
-
-    Dim Offy             As Integer
-
-    'Figure out Ends and Starts of screen
-    screenminY = tiley - HalfWindowTileHeight
-    screenmaxY = tiley + HalfWindowTileHeight
-    screenminX = tilex - HalfWindowTileWidth
-    screenmaxX = tilex + HalfWindowTileWidth
-    
-    minY = screenminY
-    MaxY = screenmaxY + TileBufferSizeY
-    minX = screenminX - TileBufferSizeX
-    MaxX = screenmaxX + TileBufferSizeX
-    
-    'Make sure mins and maxs are allways in map bounds
-    If minY < XMinMapSize Then
-        minYOffset = YMinMapSize - minY
-        minY = YMinMapSize
-
-    End If
-    
-    If MaxY > YMaxMapSize Then MaxY = YMaxMapSize
-    
-    If minX < XMinMapSize Then
-        minXOffset = XMinMapSize - minX
-        minX = XMinMapSize
-
-    End If
-    
-    If MaxX > XMaxMapSize Then MaxX = XMaxMapSize
-    
-    'If we can, we render around the view area to make it smoother
-    If screenminY > YMinMapSize Then
-        screenminY = screenminY - 1
-    Else
-        screenminY = 1
-        ScreenY = 1
-
-    End If
-    
-    If screenmaxY < YMaxMapSize Then screenmaxY = screenmaxY + 1
-    
-    If screenminX > XMinMapSize Then
-        screenminX = screenminX - 1
-    Else
-        screenminX = 1
-        ScreenX = 1
-
-    End If
-    
-    If screenmaxX < XMaxMapSize Then screenmaxX = screenmaxX + 1
-    
-    If screenminY < 1 Then screenminY = 1
-    If screenminX < 1 Then screenminX = 1
-    If screenmaxY > 100 Then screenmaxY = 100
-    If screenmaxX > 100 Then screenmaxX = 100
-    
-    Dim PicClimaRGB(0 To 3) As Long
-
-    Dim Climapic            As grh
-   
-    ColorCiego(0) = D3DColorARGB(255, 15, 15, 15)
-    ColorCiego(1) = ColorCiego(0)
-    ColorCiego(2) = ColorCiego(0)
-    ColorCiego(3) = ColorCiego(0)
-    'If minY < 1 Then minY = 1
-    'If minX < 1 Then minX = 1
-    ' If maxY > 100 Then maxY = 100
-    ' If maxX > 100 Then maxX = 100
-    
-    'Draw floor layer
-    For y = screenminY To screenmaxY
-        For x = screenminX To screenmaxX
-            'Layer 1 **********************************
-            Call Draw_Grh(MapData(x, y).Graphic(1), (ScreenX - 1) * 32 + PixelOffsetX, (ScreenY - 1) * 32 + PixelOffsetY, 0, 1, ColorCiego, , x, y)
-            '******************************************
-            ScreenX = ScreenX + 1
-        Next x
-
-        'Reset ScreenX to original value and increment ScreenY
-        ScreenX = ScreenX - x + screenminX
-        ScreenY = ScreenY + 1
-    Next y
-
-    ScreenY = minYOffset - TileBufferSizeX
-
-    For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSizeY
-
-        For x = minX To MaxX
-
-            With MapData(x, y)
-
-                '***********************************************
-                If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
-                    Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, ColorCiego, , x, y)
-
-                End If
-          
-            End With
-
-            ScreenX = ScreenX + 1
-        Next x
-
-        ScreenY = ScreenY + 1
-    Next y
-    
-    ScreenY = minYOffset - TileBufferSizeY
-
-    For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSizeX
-
-        For x = minX To MaxX
-            PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
-            PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
-            
-            With MapData(x, y)
-                '******************************************
-
-                'Object Layer **********************************
-                If MapData(x, y).ObjGrh.GrhIndex <> 0 Then
-                    Call Draw_Grh(MapData(x, y).ObjGrh, (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, ColorCiego, , x, y)
-
-                End If
-                
-                'Char layer ************************************
-                'clones
-            
-                If MapData(x, y).charindex = UserCharIndex Then
-                    If x <> UserPos.x Then
-                        MapData(x, y).charindex = 0
-
-                    End If
-                    
-                End If
-                
-                If .charindex <> 0 Then
-                    If charlist(.charindex).AlphaPJ = 255 And charlist(.charindex).active = 1 Then
-                        Call Char_RenderCiego(.charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
-
-                    End If
-
-                End If
-                
-                'Layer 3 *****************************************
-                If .Graphic(3).GrhIndex <> 0 Then
-                
-                    Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, ColorCiego, False, x, y)
-                            
-                End If
-
-                '************************************************
-
-            End With
-            
-            ScreenX = ScreenX + 1
-        Next x
-
-        ScreenY = ScreenY + 1
-    Next y
-
-    ScreenY = minYOffset - 5
-
-    ScreenY = minYOffset - TileBufferSizeY
-
-    For y = minY To MaxY
-        ScreenX = minXOffset - TileBufferSizeY
-
-        For x = minX To MaxX
-
-            With MapData(x, y)
-                '***********************************************
-                
-                If .particle_Index = 184 Then
-                    If meteo_estado = 3 Or meteo_estado = 4 Then
-                        If .particle_group > 0 Then
-                            Call Particle_Group_Render(.particle_group, ScreenX * 32 + PixelOffsetX + 15, ScreenY * 32 + PixelOffsetY + 15)
-
-                        End If
-
-                    End If
-
-                End If
-
-                If .particle_Index <> 184 Then
-                    If .particle_group > 0 Then
-                        Call Particle_Group_Render(.particle_group, ScreenX * 32 + PixelOffsetX + 15, ScreenY * 32 + PixelOffsetY + 15)
-
-                    End If
-
-                End If
-                
-            End With
-
-            ScreenX = ScreenX + 1
-        Next x
-
-        ScreenY = ScreenY + 1
-    Next y
- 
-    'Draw blocked tiles and grid
- 
-    If HayLayer4 Then
-
-        Dim rgb_list(0 To 3)  As Long
-
-        Dim rgb_list2(0 To 3) As Long
-
-        rgb_list2(0) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        rgb_list2(1) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        rgb_list2(2) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        rgb_list2(3) = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-    
-        ScreenY = minYOffset - TileBufferSizeY
-
-        For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSizeY
-
-            For x = minX To MaxX
-        
-                If MapData(x, y).Graphic(4).GrhIndex Then
-        
-                    'Layer 4 **********************************
-                    If bTecho Then
-
-                        If MapData(UserPos.x, UserPos.y).Trigger = MapData(x, y).Trigger Then
-                    
-                            If MapData(x, y).GrhBlend <= 20 Then MapData(x, y).GrhBlend = 20
-                            MapData(x, y).GrhBlend = MapData(x, y).GrhBlend - (timerTicksPerFrame * 12)
-                    
-                            rgb_list(0) = D3DColorARGB(CInt(MapData(x, y).GrhBlend), ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-                            rgb_list(1) = rgb_list(0)
-                            rgb_list(2) = rgb_list(0)
-                            rgb_list(3) = rgb_list(0)
-                        
-                            Call Draw_Grh(MapData(x, y).Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, ColorCiego, , x, y)
-                        Else
-                            Call Draw_Grh(MapData(x, y).Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, ColorCiego, , x, y)
-
-                        End If
-
-                    Else
-                 
-                        MapData(x, y).GrhBlend = MapData(x, y).GrhBlend + (timerTicksPerFrame * 12)
-
-                        If MapData(x, y).GrhBlend >= 255 Then MapData(x, y).GrhBlend = 255
-
-                        rgb_list(0) = D3DColorARGB(CInt(MapData(x, y).GrhBlend), ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-                        rgb_list(1) = rgb_list(0)
-                        rgb_list(2) = rgb_list(0)
-                        rgb_list(3) = rgb_list(0)
-                        
-                        Call Draw_Grh(MapData(x, y).Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, ColorCiego, , x, y)
-          
-                    End If
-
-                End If
- 
-                '**********************************
-                ScreenX = ScreenX + 1
-            Next x
-
-            ScreenY = ScreenY + 1
-        Next y
-        
-    End If
-
-    'If MostrarTrofeo Then
-
-    '    Dim TrofeoRGB(0 To 3) As Long
-    '    Dim Trofeo As grh
-    '    Trofeo.FrameCounter = 1
-    '    Trofeo.grhindex = 32018
-    '    Trofeo.Started = 1
-    '    TrofeoRGB(0) = D3DColorARGB(100, 255, 0, 0)
-    '    TrofeoRGB(1) = D3DColorARGB(100, 255, 0, 0)
-    '    TrofeoRGB(2) = D3DColorARGB(100, 0, 0, 255)
-    '    TrofeoRGB(3) = D3DColorARGB(100, 0, 0, 255)
-    '  Engine_Draw_Box CInt(clicX), CInt(clicY), 190, 180, D3DColorARGB(180, 100, 100, 100)
-    '        Grh_Render Trofeo, 690, 50, TrofeoRGB, True, True, True
-    ' Call Draw_Grh(Trofeo, 690, 50, 1, 0, TrofeoRGB, False, 0, 0, 0)
-    'End If
-
-    If Pregunta Then
-        'PreguntaScreen = "¿Esta seguro que asen es gay? ¿Que se lo come a fede?"
-        Engine_Draw_Box 283, 180, 170, 80, D3DColorARGB(200, 219, 116, 3)
-        Engine_Draw_Box 288, 185, 160, 70, D3DColorARGB(200, 51, 27, 3)
-
-        Dim preguntaGrh As grh
-
-        preguntaGrh.framecounter = 1
-        preguntaGrh.GrhIndex = 32120
-        preguntaGrh.Started = 1
-        rgb_list(0) = D3DColorARGB(255, 255, 255, 255)
-        rgb_list(1) = rgb_list(0)
-        rgb_list(2) = rgb_list(0)
-        rgb_list(3) = rgb_list(0)
-        Engine_Text_Render PreguntaScreen, 290, 190, rgb_list, 1, True
-        Call Draw_Grh(preguntaGrh, 392, 223, 1, 0, rgb_list, False, 0, 0, 0)
-
-    End If
-
-    If bRain Then
-        If MapDat.LLUVIA Then
-            'Screen positions were hardcoded by now
-            ScreenX = 250
-            ScreenY = 0
-            Call Particle_Group_Render(meteo_particle, ScreenX, ScreenY)
-            LastOffsetX = ParticleOffsetX
-            LastOffsetY = ParticleOffsetY
-
-        End If
-
-    End If
-
-    If AlphaNiebla Then
-        If MapDat.niebla Then
-            Engine_Weather_UpdateFog
-
-        End If
-
-    End If
-
-    If bNieve Then
-        If MapDat.NIEVE Then
-            If Engine_Meteo_Particle_Get <> 0 Then
-                'Screen positions were hardcoded by now
-                ScreenX = 250
-                ScreenY = 0
-                Call Particle_Group_Render(meteo_particle, ScreenX, ScreenY)
-
-            End If
-
-        End If
-
-    End If
-
-    'Pelota
-    'If DibujarPelota Then
-
-    'If Pelota.Fps = 100 Then DibujarPelota = False: Exit Sub
-    '   Pelota.X = Pelota.X + Pelota.DireccionX
-    '   Pelota.Y = Pelota.Y + Pelota.DireccionY
-    '  Pelota.Fps = Pelota.Fps + 1
-    '     Call Particle_Group_Render(spell_particle, Pelota.X, Pelota.Y)
-    'End If
-    'Pelota
-
-    'If CaminandoMacro Then
-    'Call Particle_Group_Render(spell_particle, CaminarX, CaminarY)
-    'End If
-
-    If cartel Then
-
-        Dim cartelito(0 To 3) As Long
-
-        Dim TempGrh           As grh
-
-        TempGrh.framecounter = 1
-        TempGrh.GrhIndex = GrhCartel
-        cartelito(0) = D3DColorARGB(200, 255, 255, 255)
-        cartelito(1) = rgb_list(0)
-        cartelito(2) = rgb_list(0)
-        cartelito(3) = rgb_list(0)
-        Call Draw_Grh(TempGrh, CInt(clicX), CInt(clicY), 1, 0, cartelito, False, 0, 0, 0)
-        Engine_Text_Render Leyenda, CInt(clicX - 100), CInt(clicY - 130), cartelito, 1, False
-
-    End If
-
-End Sub
-
-Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
-
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 8/14/2007
-    'Last modified by: Juan Martín Sotuyo Dodero (Maraxus)
-    'Renders everything to the viewport
-    On Error Resume Next
-
-    '**************************************************************
-    Dim y                As Integer     'Keeps track of where on map we are
-    Dim x                As Integer     'Keeps track of where on map we are
-
-    Dim screenminY       As Integer  'Start Y pos on current screen
-    Dim screenmaxY       As Integer  'End Y pos on current screen
-
-    Dim screenminX       As Integer  'Start X pos on current screen
-    Dim screenmaxX       As Integer  'End X pos on current screen
-
-    Dim minY             As Integer  'Start Y pos on current map
-    Dim MaxY             As Integer  'End Y pos on current map
-
-    Dim minX             As Integer  'Start X pos on current map
-    Dim MaxX             As Integer  'End X pos on current map
-
-    Dim ScreenX          As Integer  'Keeps track of where to place tile on screen
-    Dim ScreenY          As Integer  'Keeps track of where to place tile on screen
-
-    Dim minXOffset       As Integer
-    Dim minYOffset       As Integer
-
-    Dim PixelOffsetXTemp As Integer 'For centering grhs
-    Dim PixelOffsetYTemp As Integer 'For centering grhs
-
-    Dim CurrentGrhIndex  As Integer
-
-    Dim OffX             As Integer
-    Dim Offy             As Integer
-
-    'Figure out Ends and Starts of screen
-    screenminY = tiley - HalfWindowTileHeight
-    screenmaxY = tiley + HalfWindowTileHeight
-    screenminX = tilex - HalfWindowTileWidth
-    screenmaxX = tilex + HalfWindowTileWidth
-    
-    minY = screenminY - 1
-    MaxY = screenmaxY + TileBufferSizeY
-    minX = screenminX - TileBufferSizeX
-    MaxX = screenmaxX + TileBufferSizeX
-
-    minYOffset = -1
-    minXOffset = -TileBufferSizeX
-    
-    'Make sure mins and maxs are allways in map bounds
-    If minY < YMinMapSize Then
-        minYOffset = YMinMapSize - minY - 1
-        minY = YMinMapSize
-    End If
-    
-    If MaxY > YMaxMapSize Then MaxY = YMaxMapSize
-    
-    If minX < XMinMapSize Then
-        minXOffset = XMinMapSize - minX - TileBufferSizeX
-        minX = XMinMapSize
-    End If
-    
-    If MaxX > XMaxMapSize Then MaxX = XMaxMapSize
-    
-    'If we can, we render around the view area to make it smoother
-    If screenminY > YMinMapSize Then
-        screenminY = screenminY - 1
-    Else
-        screenminY = 1
-        ScreenY = 1
-    End If
-    
-    If screenmaxY < YMaxMapSize Then screenmaxY = screenmaxY + 1
-    
-    If screenminX > XMinMapSize Then
-        screenminX = screenminX - 1
-    Else
-        screenminX = 1
-        ScreenX = 1
-    End If
-    
-    If screenmaxX < XMaxMapSize Then screenmaxX = screenmaxX + 1
-    
-    If screenminY < 1 Then screenminY = 1
-    If screenminX < 1 Then screenminX = 1
-    If screenmaxY > 100 Then screenmaxY = 100
-    If screenmaxX > 100 Then screenmaxX = 100
-    
-    Dim PicClimaRGB(0 To 3) As Long
-
-    Dim Climapic            As grh
-
-    'Draw floor layer
-    For y = screenminY To screenmaxY
-        For x = screenminX To screenmaxX
-     
-            'Layer 1 **********************************
-            Call Draw_Grh(MapData(x, y).Graphic(1), (ScreenX - 1) * 32 + PixelOffsetX, (ScreenY - 1) * 32 + PixelOffsetY, 0, 1, MapData(x, y).light_value, , x, y)
-            '******************************************
-            ScreenX = ScreenX + 1
-        Next x
-
-        'Reset ScreenX to original value and increment ScreenY
-        ScreenX = ScreenX - x + screenminX
-        ScreenY = ScreenY + 1
-        
-    Next y
-
-    ScreenY = minYOffset
-
-    For y = minY To MaxY
-        ScreenX = minXOffset
-
-        For x = minX To MaxX
-        
-            PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
-            PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
-
-            With MapData(x, y)
-
-                '***********************************************
-                If .Graphic(2).GrhIndex <> 0 Then
-                    Call Draw_Grh(.Graphic(2), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
-                End If
-                
-                'Capa de objetos en el suelo (items, decorativos, etc) **********************************
-                If .ObjGrh.GrhIndex <> 0 Then
-                    Select Case ObjData(.OBJInfo.OBJIndex).ObjType
-                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento
-                        
-                        Case Else
-                            Call Draw_Grh(.ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
-                    End Select
-                End If
-          
-            End With
-
-            ScreenX = ScreenX + 1
-        Next x
-
-        ScreenY = ScreenY + 1
-    Next y
-
-    ScreenY = minYOffset
-
-    For y = minY To MaxY
-        ScreenX = minXOffset
-
-        For x = minX To MaxX
-            PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
-            PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
-            
-            With MapData(x, y)
-                
-                'Char layer ************************************
-                'evitamos reenderizar un clon del usuario
-                If MapData(x, y).charindex = UserCharIndex Then
-                    If x <> UserPos.x Then
-                        MapData(x, y).charindex = 0
-                    End If
-                End If
-                
-                If .CharFantasma.Activo Then
-
-                    Dim ColorFantasma(3) As Long
-                    
-                    If MapData(x, y).CharFantasma.AlphaB > 0 Then
-                        MapData(x, y).CharFantasma.AlphaB = MapData(x, y).CharFantasma.AlphaB - (timerTicksPerFrame * 30)
-                        If MapData(x, y).CharFantasma.AlphaB < 0 Then MapData(x, y).CharFantasma.AlphaB = 0
-
-                        ColorFantasma(0) = D3DColorARGB(CInt(MapData(x, y).CharFantasma.AlphaB), ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-                        ColorFantasma(1) = ColorFantasma(0)
-                        ColorFantasma(2) = ColorFantasma(0)
-                        ColorFantasma(3) = ColorFantasma(0)
-
-
-                        If .CharFantasma.Heading = 1 Or .CharFantasma.Heading = 2 Then
-                            Call Draw_Grh(.CharFantasma.Escudo, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
-                            Call Draw_Grh(.CharFantasma.Body, PixelOffsetXTemp + 1, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
-                            Call Draw_Grh(.CharFantasma.Head, PixelOffsetXTemp + .CharFantasma.OffX, PixelOffsetYTemp + .CharFantasma.Offy, 1, 1, ColorFantasma, False, x, y)
-                            Call Draw_Grh(.CharFantasma.Casco, PixelOffsetXTemp + .CharFantasma.OffX, PixelOffsetYTemp + .CharFantasma.Offy, 1, 1, ColorFantasma, False, x, y)
-                            Call Draw_Grh(.CharFantasma.Arma, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
-                        Else
-                            Call Draw_Grh(.CharFantasma.Body, PixelOffsetXTemp + 1, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
-                            Call Draw_Grh(.CharFantasma.Head, PixelOffsetXTemp + .CharFantasma.OffX, PixelOffsetYTemp + .CharFantasma.Offy, 1, 1, ColorFantasma, False, x, y)
-                            Call Draw_Grh(.CharFantasma.Escudo, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
-                            Call Draw_Grh(.CharFantasma.Casco, PixelOffsetXTemp + .CharFantasma.OffX, PixelOffsetYTemp + .CharFantasma.Offy, 1, 1, ColorFantasma, False, x, y)
-                            Call Draw_Grh(.CharFantasma.Arma, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, ColorFantasma, False, x, y)
-                        End If
-
-                    Else
-                        .CharFantasma.Activo = False
-
-                    End If
-
-                End If
-                
-                If .charindex <> 0 Then
-                    If charlist(.charindex).active = 1 Then
-                        Call Char_Render(.charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
-                    End If
-                End If
-                '************************************************
-                
-            End With
-            
-            ScreenX = ScreenX + 1
-        Next x
-        
-        ' Repetimos la fila pero esta vez con objetos y capa 3 (para que se dibujen encima de personajes :D)
-        ScreenX = minXOffset
-
-        For x = minX To MaxX
-            PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
-            PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
-            
-            With MapData(x, y)
-                ' Capa de objetos grandes (árboles, puertas, etc.)
-                If .ObjGrh.GrhIndex <> 0 Then
-                    Select Case ObjData(.OBJInfo.OBJIndex).ObjType
-                        Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento
-                            Call Draw_Grh(.ObjGrh, PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, .light_value(), , x, y)
-                    End Select
-                End If
-
-                'Layer 3 *****************************************
-                If .Graphic(3).GrhIndex <> 0 Then
-                    If (.Blocked And FLAG_ARBOL) <> 0 Then
-                        If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 5 And (Abs(UserPos.y) < y) Then
-                            Dim arbol_alfa(0 To 3) As Long
-                            arbol_alfa(0) = D3DColorARGB(200, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-                            arbol_alfa(1) = arbol_alfa(0)
-                            arbol_alfa(2) = arbol_alfa(0)
-                            arbol_alfa(3) = arbol_alfa(0)
-                            Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, arbol_alfa(), False, x, y)
-                        Else
-                            Call Draw_Sombra(.Graphic(3), PixelOffsetXTemp + 40, PixelOffsetYTemp, 1, 1, False, x, y)
-                            Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value, False, x, y)
-                        End If
-                    Else
-                        Call Draw_Grh(.Graphic(3), PixelOffsetXTemp, PixelOffsetYTemp, 1, 1, MapData(x, y).light_value, False, x, y)
-                    End If
-
-                End If
-                '***********************************************
-            End With
-            
-            ScreenX = ScreenX + 1
-        Next x
-
-        ScreenY = ScreenY + 1
-    Next y
-
-    ScreenY = minYOffset
-
-    For y = minY To MaxY
-        ScreenX = minXOffset
-
-        For x = minX To MaxX
-
-            With MapData(x, y)
-
-                If .particle_group > 0 Then
-                    Call Particle_Group_Render(.particle_group, ScreenX * 32 + PixelOffsetX + 16, ScreenY * 32 + PixelOffsetY + 16)
-                End If
-
-            End With
-
-            ScreenX = ScreenX + 1
-        Next x
-
-        ScreenY = ScreenY + 1
-    Next y
- 
-    ' Layer 4 - roofs
-    If HayLayer4 Then
-
-        Dim Trigger As Integer
-        
-        ' Actualizo techos
-        For Trigger = LBound(RoofsLight) To UBound(RoofsLight)
-            With RoofsLight(Trigger)
-
-                ' Si estoy bajo este techo
-                If Trigger = MapData(UserPos.x, UserPos.y).Trigger Then
-                    If .Alpha > 0 Then
-                        ' Reduzco el alpha
-                        .Alpha = .Alpha - timerTicksPerFrame * 12
-                        If .Alpha < 0 Then .Alpha = 0
-                    End If
-    
-                ElseIf .Alpha < 255 Then
-                    ' Aumento el alpha
-                    .Alpha = .Alpha + timerTicksPerFrame * 12
-                    If .Alpha > 255 Then .Alpha = 255
-                End If
-                
-                ' Guardo el color nuevo
-                .Color = D3DColorARGB(.Alpha, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-
-            End With
-        Next
-
-        Dim rgb_list(0 To 3)  As Long
-
-        Dim rgb_list2(0 To 3) As Long
-
-        rgb_list2(0) = map_base_light
-        rgb_list2(1) = map_base_light
-        rgb_list2(2) = map_base_light
-        rgb_list2(3) = map_base_light
-    
-        ScreenY = minYOffset
-
-        For y = minY To MaxY
-            ScreenX = minXOffset
-
-            For x = minX To MaxX
-            
-                With MapData(x, y)
-        
-                    If .Graphic(4).GrhIndex Then
-                        
-                        If .Trigger >= PRIMER_TRIGGER_TECHO Then
-                            rgb_list(0) = RoofsLight(.Trigger).Color
-                            rgb_list(1) = rgb_list(0)
-                            rgb_list(2) = rgb_list(0)
-                            rgb_list(3) = rgb_list(0)
-                        
-                            Call Draw_Grh(.Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, rgb_list(), , x, y)
-                        Else
-                            Call Draw_Grh(.Graphic(4), ScreenX * 32 + PixelOffsetX, ScreenY * 32 + PixelOffsetY, 1, 1, rgb_list2(), , x, y)
-    
-                        End If
-    
-                    End If
-                
-                End With
-
-                ScreenX = ScreenX + 1
-            Next x
-
-            ScreenY = ScreenY + 1
-        Next y
-        
-    End If
-        
-    ScreenY = minYOffset
-
-    For y = minY To MaxY
-        ScreenX = minXOffset
-
-        For x = minX To MaxX
-            PixelOffsetXTemp = ScreenX * 32 + PixelOffsetX
-            PixelOffsetYTemp = ScreenY * 32 + PixelOffsetY
-
-            With MapData(x, y)
-                
-                If MapData(x, y).charindex <> 0 Then
-                    If charlist(MapData(x, y).charindex).active = 1 Then
-                        Call Char_TextRender(MapData(x, y).charindex, PixelOffsetXTemp, PixelOffsetYTemp, x, y)
-                    End If
-                End If
-
-                Call modRenderValue.Draw(x, y, PixelOffsetXTemp + 16, PixelOffsetYTemp, timerTicksPerFrame)
-
-                If .FxCount > 0 Then
-                
-                    Dim colorz(3) As Long
-                    Dim i As Byte
-                    
-                    For i = 1 To .FxCount
-
-                        If .FxList(i).FxIndex > 0 And .FxList(i).Started <> 0 Then
-    
-                            colorz(3) = D3DColorARGB(220, 255, 255, 255)
-
-                            If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
-                                Call Draw_GrhFX(.FxList(i), PixelOffsetXTemp + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetYTemp + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, colorz, False)
-                                ' Call Draw_GrhFX(.FxList(i), PixelOffsetXTemp + FxData(.FxList(i).OffsetX, PixelOffsetYTemp + FxData(.FxList(i)).Offsety + 20, 1, 1, colorz, False)
-                            Else
-                                Call Draw_GrhFX(.FxList(i), PixelOffsetXTemp + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetYTemp + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, colorz, True)
-
-                            End If
-
-                        End If
-
-                        If .FxList(i).Started = 0 Then .FxList(i).FxIndex = 0
-
-                    Next i
-
-                    If .FxList(.FxCount).Started = 0 Then .FxCount = .FxCount - 1
-
-                End If
-
-            End With
-            
-            ScreenX = ScreenX + 1
-        Next x
-
-        ScreenY = ScreenY + 1
-    Next y
-
-    ScreenY = minYOffset - 5
-    
-    If bRain Then
-        If MapDat.LLUVIA Then
-            'Screen positions were hardcoded by now
-            ScreenX = 250
-            ScreenY = 0
-            Call Particle_Group_Render(meteo_particle, ScreenX, ScreenY)
-            LastOffsetX = ParticleOffsetX
-            LastOffsetY = ParticleOffsetY
-
-        End If
-
-    End If
-
-    If AlphaNiebla Then
-    
-        If MapDat.niebla Then Call Engine_Weather_UpdateFog
-
-    End If
-
-    If bNieve Then
-        If MapDat.NIEVE Then
-        
-            If Graficos_Particulas.Engine_Meteo_Particle_Get <> 0 Then
-                'Screen positions were hardcoded by now
-                ScreenX = 250
-                ScreenY = 0
-                Call Particle_Group_Render(meteo_particle, ScreenX, ScreenY)
-
-            End If
-
-        End If
-
-    End If
-
-    Dim macroPic(0 To 3) As Long
-
-    Dim TempGrh          As grh
-
-    If Pregunta Then
-        Engine_Draw_Box 283, 180, 170, 80, D3DColorARGB(200, 150, 20, 3)
-        Engine_Draw_Box 288, 185, 160, 70, D3DColorARGB(200, 25, 25, 23)
-
-        Dim preguntaGrh As grh
-
-        preguntaGrh.framecounter = 1
-        preguntaGrh.GrhIndex = 32120
-        preguntaGrh.Started = 1
-        macroPic(0) = D3DColorARGB(255, 255, 255, 255)
-        macroPic(1) = macroPic(0)
-        macroPic(2) = macroPic(0)
-        macroPic(3) = macroPic(0)
-        Engine_Text_Render PreguntaScreen, 290, 190, macroPic, 1, True
-        Call Draw_Grh(preguntaGrh, 392, 223, 1, 0, macroPic, False, 0, 0, 0)
-
-    End If
-
-    Effect_Render_All
-
-    If cartel Then
-
-        Dim cartelito(0 To 3) As Long
-
-        TempGrh.framecounter = 1
-        TempGrh.GrhIndex = GrhCartel
-        cartelito(0) = D3DColorARGB(200, 255, 255, 255)
-        cartelito(1) = rgb_list(0)
-        cartelito(2) = rgb_list(0)
-        cartelito(3) = rgb_list(0)
-        Call Draw_Grh(TempGrh, CInt(clicX), CInt(clicY), 1, 0, cartelito, False, 0, 0, 0)
-        Engine_Text_Render Leyenda, CInt(clicX - 100), CInt(clicY - 130), cartelito, 1, False
-
-    End If
-
-    Dim temp_array(0 To 3) As Long
-
-    If map_letter_fadestatus > 0 Then
-        If map_letter_fadestatus = 1 Then
-            map_letter_a = map_letter_a + (timerTicksPerFrame * 3.5)
-
-            If map_letter_a >= 255 Then
-                map_letter_a = 255
-                map_letter_fadestatus = 2
-
-            End If
-
-        Else
-            map_letter_a = map_letter_a - (timerTicksPerFrame * 3.5)
-
-            If map_letter_a <= 0 Then
-                map_letter_fadestatus = 0
-                map_letter_a = 0
-                 
-                If map_letter_grh_next > 0 Then
-                    map_letter_grh.GrhIndex = map_letter_grh_next
-                    map_letter_fadestatus = 1
-                    map_letter_grh_next = 0
-
-                End If
-                
-            End If
-
-        End If
-
-    End If
-    
-    If Len(letter_text) Then
-        temp_array(0) = D3DColorARGB(CInt(map_letter_a), 179, 95, 0)
-        temp_array(1) = D3DColorARGB(CInt(map_letter_a), 179, 95, 0)
-        temp_array(2) = D3DColorARGB(CInt(map_letter_a), 179, 95, 0)
-        temp_array(3) = D3DColorARGB(CInt(map_letter_a), 179, 95, 0)
-        Grh_Render letter_grh, 250, 300, temp_array()
-        Engine_Text_RenderGrande letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2, 1, temp_array, 5, False, , CInt(map_letter_a)
-
     End If
 
 End Sub
@@ -2019,9 +1076,9 @@ Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
 
     Dim y  As Integer
 
-    Dim tx As Integer
+    Dim TX As Integer
 
-    Dim ty As Integer
+    Dim TY As Integer
     
     'Figure out which way to move
     Select Case nHeading
@@ -2041,18 +1098,18 @@ Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
     End Select
     
     'Fill temp pos
-    tx = UserPos.x + x
-    ty = UserPos.y + y
+    TX = UserPos.x + x
+    TY = UserPos.y + y
     
     'Check to see if its out of bounds
-    If tx < MinXBorder Or tx > MaxXBorder Or ty < MinYBorder Or ty > MaxYBorder Then
+    If TX < MinXBorder Or TX > MaxXBorder Or TY < MinYBorder Or TY > MaxYBorder Then
         Exit Sub
     Else
         'Start moving... MainLoop does the rest
         AddtoUserPos.x = x
-        UserPos.x = tx
+        UserPos.x = TX
         AddtoUserPos.y = y
-        UserPos.y = ty
+        UserPos.y = TY
         UserMoving = 1
         
         bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
@@ -2061,7 +1118,7 @@ Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
 
 End Sub
 
-Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
     Dim moved         As Boolean
 
@@ -2174,7 +1231,7 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
 
 End Sub
 
-Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -2280,7 +1337,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
  
         If .EsNpc Then
             If Len(.nombre) > 0 Then
-                If Abs(tx - .Pos.x) < 1 And (Abs(ty - .Pos.y)) < 1 Then
+                If Abs(TX - .Pos.x) < 1 And (Abs(TY - .Pos.y)) < 1 Then
 
                     Dim colornpcs(3) As Long
 
@@ -2751,7 +1808,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
 End Sub
 
-Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -5350,63 +4407,6 @@ Public Function GetFreeIndex() As Integer
  
     GetFreeIndex = NO_INDEX
  
-End Function
-
-Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
-    '*****************************************************************
-    'Author: Augusto José Rando
-    '*****************************************************************
-    letter_text = text_string
-    letter_grh.GrhIndex = grh_index
-    Letter_Set = True
-    map_letter_fadestatus = 1
-
-End Function
-
-Public Function Map_Letter_Fade_Set(ByVal grh_index As Long, Optional ByVal after_grh As Long = -1) As Boolean
-
-    '*****************************************************************
-    'Author: Augusto José Rando
-    '*****************************************************************
-    If grh_index <= 0 Or grh_index = map_letter_grh.GrhIndex Then Exit Function
-        
-    If after_grh = -1 Then
-        map_letter_grh.GrhIndex = grh_index
-        map_letter_fadestatus = 1
-        map_letter_a = 0
-        map_letter_grh_next = 0
-    Else
-        map_letter_grh.GrhIndex = after_grh
-        map_letter_fadestatus = 1
-        map_letter_a = 0
-        map_letter_grh_next = grh_index
-
-    End If
-    
-    Map_Letter_Fade_Set = True
-
-End Function
-
-Public Function Map_Letter_UnSet() As Boolean
-    '*****************************************************************
-    'Author: Augusto José Rando
-    '*****************************************************************
-    map_letter_grh.GrhIndex = 0
-    map_letter_fadestatus = 0
-    map_letter_a = 0
-    map_letter_grh_next = 0
-    Map_Letter_UnSet = True
-
-End Function
-
-Public Function Letter_UnSet() As Boolean
-    '*****************************************************************
-    'Author: Augusto José Rando
-    '*****************************************************************
-    letter_text = vbNullString
-    letter_grh.GrhIndex = 0
-    Letter_UnSet = True
-
 End Function
 
 Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal angle As Single, Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal Color As Long = -1)

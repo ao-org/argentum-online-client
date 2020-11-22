@@ -502,7 +502,7 @@ Public Sub Init_TileEngine()
 
 End Sub
 
-Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tx As Byte, ByRef ty As Byte)
+Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef TX As Byte, ByRef TY As Byte)
     '******************************************
     'Converts where the mouse is in the main window to a tile position. MUST be called eveytime the mouse moves.
     '******************************************
@@ -510,8 +510,8 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
     If viewPortX < 0 Or viewPortX > frmmain.renderer.ScaleWidth Then Exit Sub
     If viewPortY < 0 Or viewPortY > frmmain.renderer.ScaleHeight Then Exit Sub
 
-    tx = UserPos.x + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
-    ty = UserPos.y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
+    TX = UserPos.x + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
+    TY = UserPos.y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
 
 End Sub
 
@@ -728,9 +728,9 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
 
     Dim y  As Integer
 
-    Dim tx As Integer
+    Dim TX As Integer
 
-    Dim ty As Integer
+    Dim TY As Integer
     
     'Figure out which way to move
     Select Case nHeading
@@ -750,18 +750,18 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
     End Select
     
     'Fill temp pos
-    tx = UserPos.x + x
-    ty = UserPos.y + y
+    TX = UserPos.x + x
+    TY = UserPos.y + y
     
     'Check to see if its out of bounds
-    If tx < MinXBorder Or tx > MaxXBorder Or ty < MinYBorder Or ty > MaxYBorder Then
+    If TX < MinXBorder Or TX > MaxXBorder Or TY < MinYBorder Or TY > MaxYBorder Then
         Exit Sub
     Else
         'Start moving... MainLoop does the rest
         AddtoUserPos.x = x
-        UserPos.x = tx
+        UserPos.x = TX
         AddtoUserPos.y = y
-        UserPos.y = ty
+        UserPos.y = TY
         UserMoving = 1
         
         bTecho = HayTecho(UserPos.x, UserPos.y)
@@ -990,6 +990,7 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
 
         .bottom = pic.ScaleHeight
         .Right = pic.ScaleWidth
+
     End With
 
     Dim s(3) As Long
@@ -1164,6 +1165,7 @@ Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal sr
                 SetPixel hdcsrc, x, y, vbBlack
             Else
                 SetPixel MaskDC, x, y, vbBlack
+
             End If
 
         Next x

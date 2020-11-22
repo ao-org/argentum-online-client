@@ -28,8 +28,8 @@ Private Function CreateVertex(x As Single, y As Single, Z As Single, Color As Lo
     CreateVertex.y = y
     CreateVertex.Z = Z
     CreateVertex.Color = Color
-    CreateVertex.tx = tu
-    CreateVertex.ty = tv
+    CreateVertex.TX = tu
+    CreateVertex.TY = tv
 
 End Function
 
@@ -43,8 +43,8 @@ Private Function Geometry_Create_Vertex(ByVal x As Single, ByVal y As Single, By
     Geometry_Create_Vertex.y = y
     Geometry_Create_Vertex.Z = Z
     Geometry_Create_Vertex.Color = Color
-    Geometry_Create_Vertex.tx = tu
-    Geometry_Create_Vertex.ty = tv
+    Geometry_Create_Vertex.TX = tu
+    Geometry_Create_Vertex.TY = tv
 
 End Function
 
@@ -64,17 +64,14 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef dest As RECT,
     ' * v0      * v2
     '**************************************************************
     Dim x_center    As Single
-
     Dim y_center    As Single
 
     Dim radius      As Single
 
     Dim x_Cor       As Single
-
     Dim y_Cor       As Single
 
     Dim left_point  As Single
-
     Dim right_point As Single
 
     Dim temp        As Single
@@ -91,6 +88,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef dest As RECT,
         temp = (dest.Right - x_center) / radius
         right_point = Atn(temp / Sqr(-temp * temp + 1))
         left_point = PI - right_point
+
     End If
     
     'Calculate screen coordinates of sprite, and only rotate if necessary
@@ -100,6 +98,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef dest As RECT,
     Else
         x_Cor = x_center + Cos(-left_point - angle) * radius
         y_Cor = y_center - Sin(-left_point - angle) * radius
+
     End If
     
     '0 - Bottom left vertex
@@ -116,6 +115,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef dest As RECT,
     Else
         x_Cor = x_center + Cos(left_point - angle) * radius
         y_Cor = y_center - Sin(left_point - angle) * radius
+
     End If
     
     '1 - Top left vertex
@@ -132,6 +132,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef dest As RECT,
     Else
         x_Cor = x_center + Cos(-right_point - angle) * radius
         y_Cor = y_center - Sin(-right_point - angle) * radius
+
     End If
     
     '2 - Bottom right vertex
@@ -148,6 +149,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef dest As RECT,
     Else
         x_Cor = x_center + Cos(right_point - angle) * radius
         y_Cor = y_center - Sin(right_point - angle) * radius
+
     End If
     
     '3 - Top right vertex
@@ -323,3 +325,16 @@ Public Function ARGBtoD3DCOLORVALUE(ByVal ARGB As Long, ByRef Color As D3DCOLORV
     Color.g = dest(1)
     Color.b = dest(0)
 End Function
+
+Public Sub Long_To_RGBList(rgb_list() As Long, long_color As Long)
+    '***************************************************
+    'Author: Ezequiel Juarez (Standelf)
+    'Last Modification: 16/05/10
+    'Blisse-AO | Set a Long Color to a RGB List
+    '***************************************************
+    rgb_list(0) = long_color
+    rgb_list(1) = rgb_list(0)
+    rgb_list(2) = rgb_list(0)
+    rgb_list(3) = rgb_list(0)
+
+End Sub
