@@ -390,6 +390,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 UserRaza = frmCrearPersonaje.lstRaza.ListIndex + 1
                 UserSexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                 UserClase = frmCrearPersonaje.lstProfesion.ListIndex + 1
+                
+                UserHogar = frmCrearPersonaje.lstHogar.ListIndex + 1
                
                 If frmCrearPersonaje.CheckData() Then
                     UserPassword = CuentaPassword

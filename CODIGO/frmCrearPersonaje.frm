@@ -590,6 +590,15 @@ Function CheckData() As Boolean
         Exit Function
 
     End If
+    
+    
+    
+    If UserHogar = 0 Then
+        MsgBox "Seleccione el hogar del personaje."
+        Exit Function
+
+    End If
+    
 
     If UserClase = 0 Then
         MsgBox "Seleccione la clase del personaje."
@@ -974,6 +983,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         UserRaza = lstRaza.ListIndex + 1
         UserSexo = lstGenero.ListIndex + 1
         UserClase = lstProfesion.ListIndex + 1
+        
+        UserHogar = lstHogar.ListIndex + 1
             
         UserAtributos(1) = Val(lbFuerza.Caption) + Val(modfuerza.Caption)
         UserAtributos(2) = Val(lbAgilidad.Caption) + Val(modAgilidad.Caption)

@@ -979,6 +979,9 @@ Public UserSexo                                 As eGenero
 
 Public UserRaza                                 As eRaza
 
+
+Public UserHogar                                 As eCiudad
+
 'Declaraciones LADDER!
 Public SendingType                              As Byte
 
