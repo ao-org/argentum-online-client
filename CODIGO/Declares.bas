@@ -992,7 +992,7 @@ Public Const NUMCLASES                          As Byte = 9
 
 Public Const NUMRAZAS                           As Byte = 5
 
-Public Const NUMCIUDADES                        As Byte = 6
+Public Const NUMCIUDADES                        As Byte = 5
 
 Type tModRaza
 
@@ -1167,7 +1167,7 @@ Public Type tIndiceFx
 
     Animacion As Long
     OffsetX As Integer
-    OffsetY As Integer
+    Offsety As Integer
     IsPNG As Integer
 
 End Type

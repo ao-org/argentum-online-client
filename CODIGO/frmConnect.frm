@@ -31,7 +31,7 @@ Begin VB.Form frmConnect
    Visible         =   0   'False
    Begin VB.PictureBox render 
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H00FFFFFF&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -67,12 +67,12 @@ Begin VB.Form frmConnect
          EndProperty
          ForeColor       =   &H00E0E0E0&
          Height          =   300
-         Left            =   6120
+         Left            =   6240
          MaxLength       =   18
          TabIndex        =   1
-         Top             =   3225
+         Top             =   3360
          Visible         =   0   'False
-         Width           =   2610
+         Width           =   2130
       End
       Begin VB.Timer RelampagoFin 
          Enabled         =   0   'False
@@ -157,7 +157,7 @@ Private Sub relampago_Timer()
     
     If trueno > 100 Then
 
-        Dim color As Long, duracion As Long
+        Dim Color As Long, duracion As Long
 
         duraciontrueno = RandomNumber(80, 200)
 
@@ -172,27 +172,27 @@ Private Sub relampago_Timer()
         Select Case truenocolor
 
             Case 1
-                color = &H8080
+                Color = &H8080
 
             Case 2
-                color = &HF8F8F8
+                Color = &HF8F8F8
 
             Case 3
-                color = &HEFEECB
+                Color = &HEFEECB
 
             Case 4
-                color = &HE2B3F7
+                Color = &HE2B3F7
 
         End Select
 
         Dim r, g, b As Byte
 
-        b = (color And 16711680) / 65536
-        g = (color And 65280) / 256
-        r = color And 255
-        color = D3DColorARGB(255, r, g, b)
+        b = (Color And 16711680) / 65536
+        g = (Color And 65280) / 256
+        r = Color And 255
+        Color = D3DColorARGB(255, r, g, b)
         
-        Map_Base_Light_Set (color)
+        Map_Base_Light_Set (Color)
         RelampagoFin.Interval = duraciontrueno
         RelampagoFin.Enabled = True
 
@@ -237,6 +237,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Select Case QueRender
 
         Case 3
+        
+        Debug.Print "x: " & x & " y:" & y
 
             If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
                 If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
@@ -266,27 +268,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
                         
-            If x > 290 And x < 326 And y > 453 And y < 486 Then 'Boton Equipar
-                If CPHeading + 1 >= 5 Then
-                    CPHeading = 1
-                Else
-                    CPHeading = CPHeading + 1
-
-                End If
-
-            End If
-
-            If x > 421 And x < 452 And y > 453 And y < 486 Then 'Boton Equipar
-                If CPHeading - 1 <= 0 Then
-                    CPHeading = 4
-                Else
-                    CPHeading = CPHeading - 1
-
-                End If
-
-            End If
                 
-            If x > 548 And x < 560 And y > 258 And y < 271 Then 'Boton Derecha cabezas
+                
+            If x > 540 And x < 554 And y > 278 And y < 291 Then 'Boton izquierda clase
                 If frmCrearPersonaje.lstProfesion.ListIndex < frmCrearPersonaje.lstProfesion.ListCount - 1 Then
                     frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex + 1
                 Else
@@ -296,7 +280,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x > 435 And x < 446 And y > 260 And y < 271 Then 'Boton Derecha cabezas
+            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.lstProfesion.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListCount - 1
                 Else
@@ -306,7 +290,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
                 
-            If x > 548 And x < 560 And y > 304 And y < 323 Then 'Boton Derecha cabezas
+            If x > 539 And x < 553 And y > 322 And y < 335 Then 'OK
                 If frmCrearPersonaje.lstRaza.ListIndex < frmCrearPersonaje.lstRaza.ListCount - 1 Then
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListIndex + 1
                 Else
@@ -316,7 +300,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x > 435 And x < 446 And y > 304 And y < 323 Then 'Boton Derecha cabezas
+            If x > 657 And x < 672 And y > 321 And y < 338 Then 'OK
                 If frmCrearPersonaje.lstRaza.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListCount - 1
                 Else
@@ -326,7 +310,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x > 548 And x < 560 And y > 351 And y < 367 Then 'Boton Derecha cabezas
+            If x > 298 And x < 314 And y > 276 And y < 291 Then 'ok
+    
                 If frmCrearPersonaje.lstGenero.ListIndex < frmCrearPersonaje.lstGenero.ListCount - 1 Then
                     frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListIndex + 1
                 Else
@@ -336,7 +321,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x > 435 And x < 446 And y > 351 And y < 367 Then 'Boton Derecha cabezas
+            If x > 415 And x < 431 And y > 277 And y < 295 Then 'ok
                 If frmCrearPersonaje.lstGenero.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListCount - 1
                 Else
@@ -346,6 +331,31 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
         
+        
+        
+        'ciudad
+        
+            If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
+    
+                If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
+                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
+                Else
+                    frmCrearPersonaje.lstHogar.ListIndex = 0
+
+                End If
+
+            End If
+            
+            If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
+                If frmCrearPersonaje.lstHogar.ListIndex - 1 < 0 Then
+                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
+                Else
+                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
+
+                End If
+
+            End If
+        'ciudad
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
                 Call Sound.Sound_Play(SND_CLICK)
                 'UserMap = 323
@@ -402,7 +412,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x >= 665 And x < 665 + 18 And y >= 385 And y < 385 + 18 Then
+            If x >= 658 And x < 682 + 18 And y >= 365 And y < 385 Then
                 Call Sound.Sound_Play(SND_DICE) ' Este sonido hay que ponerlo en el evento "click" o hacer q suene menos xq rompe oidos sino
                 
                 If frmmain.Socket1.Connected Then
@@ -577,7 +587,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     For i = 1 To 8
                         Pjs(i).Body = 0
                         Pjs(i).Head = 0
-                        Pjs(i).mapa = 0
+                        Pjs(i).Mapa = 0
                         Pjs(i).nivel = 0
                         Pjs(i).nombre = ""
                         Pjs(i).Clase = 0

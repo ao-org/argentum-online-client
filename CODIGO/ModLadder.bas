@@ -571,22 +571,23 @@ Sub IniciarCrearPj()
 
     Dim i As Integer
 
-    frmCrearPersonaje.lstProfesion.Clear
-
-    For i = LBound(ListaClases) To UBound(ListaClases)
-        frmCrearPersonaje.lstProfesion.AddItem ListaClases(i)
-    Next i
-
     frmCrearPersonaje.lstRaza.Clear
 
     For i = LBound(ListaRazas()) To UBound(ListaRazas())
         frmCrearPersonaje.lstRaza.AddItem ListaRazas(i)
+    Next i
+    
+    
+    frmCrearPersonaje.lstHogar.Clear
+    For i = LBound(ListaCiudades()) To UBound(ListaCiudades())
+        frmCrearPersonaje.lstHogar.AddItem (ListaCiudades(i))
     Next i
 
     frmCrearPersonaje.lstProfesion.Clear
 
     For i = LBound(ListaClases()) To UBound(ListaClases())
         frmCrearPersonaje.lstProfesion.AddItem ListaClases(i)
+        Debug.Print ListaClases(i)
     Next i
 
 End Sub
@@ -613,7 +614,7 @@ Sub General_Set_Connect()
     intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -666,11 +667,11 @@ Public Sub InitializeSurfaceCapture(frm As Form)
 
 End Sub
 
-Public Sub Obtener_RGB(ByVal color As Long, Rojo As Byte, Verde As Byte, Azul As Byte)
+Public Sub Obtener_RGB(ByVal Color As Long, Rojo As Byte, Verde As Byte, Azul As Byte)
     
-    Azul = (color And 16711680) / 65536
-    Verde = (color And 65280) / 256
-    Rojo = color And 255
+    Azul = (Color And 16711680) / 65536
+    Verde = (Color And 65280) / 256
+    Rojo = Color And 255
   
 End Sub
 
@@ -1372,7 +1373,7 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
     
 End Sub
 
-Public Sub CopiarDialogoToConsola(ByVal NickName As String, Dialogo As String, color As Long)
+Public Sub CopiarDialogoToConsola(ByVal NickName As String, Dialogo As String, Color As Long)
 
     If NickName = "" Then Exit Sub
     If Right$(Dialogo, 1) = " " Or Left(Dialogo, 1) = " " Then
@@ -1390,7 +1391,7 @@ Public Sub CopiarDialogoToConsola(ByVal NickName As String, Dialogo As String, c
     'Nick
     Nick = Left$(NickName, Pos - 2)
 
-    Select Case color
+    Select Case Color
 
         Case 255255255 ' Blanco comun
             Call AddtoRichTextBox(frmmain.RecTxt, Nick & "> " & Dialogo, 255, 255, 255, False, True, False)
