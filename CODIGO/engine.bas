@@ -1769,9 +1769,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         colorz(3) = D3DColorARGB(220, 255, 255, 255)
 
                         If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
-                            Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, colorz, False, , , , charindex)
+                            Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).Offsety + 20, 1, 1, colorz, False, , , , charindex)
                         Else
-                            Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, colorz, True, , , , charindex)
+                            Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).Offsety + 20, 1, 1, colorz, True, , , , charindex)
 
                         End If
 
@@ -1798,7 +1798,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 colorz(2) = D3DColorARGB(180, 255, 255, 255)
                 colorz(3) = D3DColorARGB(180, 255, 255, 255)
 
-                Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 4, 1, 1, colorz, False, , , , charindex)
+                Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).Offsety + 4, 1, 1, colorz, False, , , , charindex)
            
             End If
 
@@ -2062,9 +2062,9 @@ Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByV
                 colorz(3) = D3DColorARGB(220, 255, 255, 255)
 
                 If FxData(.FxIndex).IsPNG = 1 Then
-                    Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 20, 1, 1, colorz, False, , , , charindex)
+                    Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).Offsety + 20, 1, 1, colorz, False, , , , charindex)
                 Else
-                    Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 20, 1, 1, colorz, True, , , , charindex)
+                    Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).Offsety + 20, 1, 1, colorz, True, , , , charindex)
 
                 End If
                     
@@ -3472,9 +3472,11 @@ End Sub
 
 Public Sub RenderUICrearPJ()
 
-    Dim TempGrh         As grh
+   Dim TempGrh As grh
     
-    Dim DefaultColor(3) As Long
+    
+    Dim DefaultColor(3)  As Long
+
     
     TempGrh.framecounter = 1
     TempGrh.GrhIndex = 727
@@ -3482,6 +3484,7 @@ Public Sub RenderUICrearPJ()
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
+
     
     Draw_Grh TempGrh, 475, 545, 1, 1, DefaultColor(), False
 
@@ -3490,171 +3493,197 @@ Public Sub RenderUICrearPJ()
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
     
-    'Engine_Text_Render "Nombre del personaje", 230 + -Engine_Text_Width("Nombre del personaje", False) / 2, 110 + 40 - Engine_Text_Height("Nombre del personaje", False), DefaultColor, 3, True
-    'Engine_Text_Render "Creacion de personajes", 210, 120, DefaultColor, 3, False
-    
-    'Basico
-    'Engine_Draw_Box 217, 183, 550, 386, D3DColorARGB(20, 219, 116, 3)
-    
-    'Engine_Draw_Box 250, 190, 490, 356, D3DColorARGB(50, 128, 128, 128)
-    'Engine_Draw_Box 250, 190, 490, 356, D3DColorARGB(100, 0, 0, 0)
+
     
     'Engine_Draw_Box 220, 186, 550, 380, D3DColorARGB(80, 20, 27, 3)
     'Engine_Text_Render UserCuenta, 490 - Engine_Text_Width(UserCuenta, False, 3) / 2, 38 - Engine_Text_Height(UserCuenta, False, 3), DefaultColor, 3, False
     Engine_Text_Render "Creacion de Personaje", 280, 125, DefaultColor, 5, False
 
-    'Engine_Draw_Box 400, 215, 180, 250, D3DColorARGB(200, 100, 100, 100)
+   Dim OffsetX As Integer
+   Dim Offsety As Integer
+    
     
     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
+    Engine_Text_Render_LetraChica "Nombre ", 460, 205, DefaultColor, 6, False
     
-    Engine_Text_Render_LetraChica "Nombre ", 470, 198, DefaultColor, 6, False
-    Engine_Text_Render_LetraChica "Clase ", 477, 240, DefaultColor, 6, False
     
-    '
     
-    Engine_Draw_Box 450, 255, 95, 21, D3DColorARGB(100, 1, 1, 1)
     
-    Engine_Text_Render "<", 435, 258, DefaultColor, 1, False
+    OffsetX = 240
+    Offsety = 15
+    Engine_Text_Render_LetraChica "Clase ", 345 + OffsetX, 240 + Offsety, DefaultColor, 6, False
+
+    Engine_Draw_Box 317 + OffsetX, 260 + Offsety, 95, 21, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render "<", 300 + OffsetX, 260 + Offsety, DefaultColor, 1, False
         
-    Engine_Text_Render ">", 548, 258, DefaultColor, 1, False
+        Engine_Text_Render ">", 418 + OffsetX, 261 + Offsety, DefaultColor, 1, False
     'Engine_Text_Render ">", 403, 412, DefaultColor, 1, True
+    
+    
     
     DefaultColor(0) = D3DColorXRGB(200, 200, 200)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
     
-    Engine_Text_Render frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), 498 - Engine_Text_Width(frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), True, 1) / 2, 258, DefaultColor, 1, True
+    
+    
+    Engine_Text_Render frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), 365 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), True, 1) / 2, 262 + Offsety, DefaultColor, 1, True
     
     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
     
-    Engine_Text_Render_LetraChica "Raza ", 481, 285, DefaultColor, 6, False
-    Engine_Draw_Box 450, 302, 95, 21, D3DColorARGB(100, 1, 1, 1)
     
+    
+    
+    
+    Engine_Text_Render_LetraChica "Raza ", 347 + OffsetX, 290 + Offsety, DefaultColor, 6, False
+    Engine_Draw_Box 317 + OffsetX, 305 + Offsety, 95, 21, D3DColorARGB(100, 1, 1, 1)
+    
+
     DefaultColor(0) = D3DColorXRGB(200, 200, 200)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
 
     'Engine_Text_Render "Humano", 470 - Engine_Text_Height("Humano", False), 304, DefaultColor, 1, False
-    Engine_Text_Render frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex), 495 - Engine_Text_Width(frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex), True, 1) / 2, 305, DefaultColor, 1, True
+    Engine_Text_Render frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex), 360 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex), True, 1) / 2, 308 + Offsety, DefaultColor, 1, True
     
-    Engine_Text_Render "<", 435, 305, DefaultColor, 1, False
-    Engine_Text_Render ">", 548, 305, DefaultColor, 1, False
+    
+    
+    Engine_Text_Render "<", 300 + OffsetX, 305 + Offsety, DefaultColor, 1, False
+    Engine_Text_Render ">", 418 + OffsetX, 305 + Offsety, DefaultColor, 1, False
+    
     
     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
     
-    Engine_Text_Render_LetraChica "Genero ", 475, 330, DefaultColor, 6, False
-    Engine_Draw_Box 450, 346, 95, 21, D3DColorARGB(100, 1, 1, 1)
+    
+
+    
+    OffsetX = 5
+    Offsety = 10
+
+    Engine_Text_Render_LetraChica "Genero ", 340 + OffsetX, 255, DefaultColor, 6, False
+    
+    
+    Engine_Draw_Box 317 + OffsetX, 275, 95, 21, D3DColorARGB(100, 1, 1, 1)
+    
+    
+
+
         
     DefaultColor(0) = D3DColorXRGB(200, 200, 200)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
+
     
-    Engine_Text_Render frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex), 495 - Engine_Text_Width(frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex), True, 1) / 2, 349, DefaultColor, 1, True
+    Engine_Text_Render frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex), 360 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex), True, 1) / 2, 277, DefaultColor, 1, True
     
-    Engine_Text_Render "<", 435, 350, DefaultColor, 1, False
-    Engine_Text_Render ">", 548, 350, DefaultColor, 1, False
     
-    DefaultColor(0) = D3DColorXRGB(200, 200, 50)
+
+
+    Engine_Text_Render "<", 300 + OffsetX, 275, DefaultColor, 1, False
+    
+    Engine_Text_Render ">", 418 + OffsetX, 275, DefaultColor, 1, False
+    
+    'NACIMIENTO
+    
+
+    Offsety = 30
+    Engine_Text_Render_LetraChica "Hogar ", 340 + OffsetX, 305, DefaultColor, 6, False
+    Engine_Draw_Box 317 + OffsetX, 320, 95, 21, D3DColorARGB(100, 1, 1, 1)
+
+        
+    DefaultColor(0) = D3DColorXRGB(200, 200, 200)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
-    
-    'Engine_Text_Render RazaRecomendada, 489 - Engine_Text_Width(RazaRecomendada, False, 1) / 2, 278, DefaultColor, 1, False
-    
-    If Len(RazaRecomendada) > 0 Then
-        Engine_Text_Render "Raza sugerida:", 570, 290, DefaultColor, 4, False
-        Engine_Text_Render RazaRecomendada, 570, 300, DefaultColor, 4, False
 
-    End If
     
-    '     DefaultColor(0) = D3DColorXRGB(255, 50, 50)
-    '  DefaultColor(1) = DefaultColor(0)
-    '  DefaultColor(2) = DefaultColor(0)
-    '  DefaultColor(3) = DefaultColor(0)
+    Engine_Text_Render frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), 360 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), True, 1) / 2, 322, DefaultColor, 1, True
     
-    '' Engine_Text_Render "¡Atención! ", 240, 250, DefaultColor, 1, False
-    '     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
-    '  DefaultColor(1) = DefaultColor(0)
-    ' DefaultColor(2) = DefaultColor(0)
-    ' DefaultColor(3) = DefaultColor(0)
-    ' Engine_Text_Render "Se cuidadoso al momento de distribuir tus atributos. De estos dependen aspectos basicos como la vida o maná de tu personaje. ", 190, 270, DefaultColor, 1, True
+    
+    
+    
+    
+    Engine_Text_Render "<", 300 + OffsetX, 320, DefaultColor, 1, False
+    
+    Engine_Text_Render ">", 418 + OffsetX, 320, DefaultColor, 1, False
+
+    
+    'NACIMIENTO
     
     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
+    
+    
         
-    Dim Offy As Long
+         Dim Offy As Long
      
-    Offy = 2
-
-    Dim OffX As Long
+     Offy = -20
+     Dim OffX As Long
      
-    OffX = 350
+     OffX = 340
+    
     
     'Atributos
-    Engine_Text_Render_LetraChica "Atributos", 240 + OffX, 385 + Offy, DefaultColor, 6, True
+    Engine_Text_Render_LetraChica "Atributos ", 240 + OffX, 385 + Offy, DefaultColor, 6, True
     Engine_Draw_Box 175 + OffX, 405 + Offy, 185, 120, D3DColorARGB(80, 0, 0, 0)
-    '  Engine_Draw_Box 610, 405, 220, 180, D3DColorARGB(120, 100, 100, 100)
+  '  Engine_Draw_Box 610, 405, 220, 180, D3DColorARGB(120, 100, 100, 100)
     
-    Engine_Text_Render_LetraChica "Fuerza", 185 + OffX, 410 + Offy, DefaultColor, 1, True
-    ' Engine_Text_Render "<", 260, 410, DefaultColor, 1, True
-    ' Engine_Text_Render ">", 310, 410, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 407 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbFuerza.Caption, 282 + OffX, 410 + Offy, DefaultColor, 1, True ' Atributo fuerza
+    Engine_Text_Render_LetraChica "Fuerza ", 185 + OffX, 410 + Offy, DefaultColor, 1, True
+   ' Engine_Text_Render "<", 260, 410, DefaultColor, 1, True
+   ' Engine_Text_Render ">", 310, 410, DefaultColor, 1, True
+    Engine_Draw_Box 280 + OffX, 409 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render_LetraChica frmCrearPersonaje.lbFuerza.Caption, 282 + OffX, 413 + Offy, DefaultColor, 1, True ' Atributo fuerza
     'Engine_Text_Render "+", 335, 410, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 407 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modfuerza.Caption, 320 + OffX, 410 + Offy, DefaultColor, 1, True ' Bonificacion fuerza
+    Engine_Draw_Box 317 + OffX, 409 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render_LetraChica frmCrearPersonaje.modfuerza.Caption, 320 + OffX, 413 + Offy, DefaultColor, 1, True ' Bonificacion fuerza
     
-    Engine_Text_Render "Agilidad", 185 + OffX, 430 + Offy, DefaultColor, 1, True
-    ' Engine_Text_Render "<", 260, 440, DefaultColor, 1, True
-    ' Engine_Text_Render ">", 310, 440, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 427 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbAgilidad.Caption, 282 + OffX, 430 + Offy, DefaultColor, 1, True ' Atributo Agilidad
-    ' Engine_Text_Render "+", 335, 440, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 427 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modAgilidad.Caption, 320 + OffX, 430 + Offy, DefaultColor, 1, True ' Bonificacion Agilidad
     
-    Engine_Text_Render "Inteligencia", 185 + OffX, 450 + Offy, DefaultColor, 1, True
+    Engine_Text_Render "Agilidad ", 185 + OffX, 440 + Offy, DefaultColor, 1, True
+   ' Engine_Text_Render "<", 260, 440, DefaultColor, 1, True
+   ' Engine_Text_Render ">", 310, 440, DefaultColor, 1, True
+    Engine_Draw_Box 280 + OffX, 440 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.lbAgilidad.Caption, 282 + OffX, 443 + Offy, DefaultColor, 1, True ' Atributo Agilidad
+   ' Engine_Text_Render "+", 335, 440, DefaultColor, 1, True
+    Engine_Draw_Box 317 + OffX, 440 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.modAgilidad.Caption, 320 + OffX, 443 + Offy, DefaultColor, 1, True ' Bonificacion Agilidad
+    
+    
+    
+    Engine_Text_Render "Inteligencia ", 185 + OffX, 470 + Offy, DefaultColor, 1, True
     'Engine_Text_Render "<", 260, 470, DefaultColor, 1, True
     'Engine_Text_Render ">", 310, 470, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 447 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbInteligencia.Caption, 282 + OffX, 450 + Offy, DefaultColor, 1, True ' Atributo Inteligencia
+    Engine_Draw_Box 280 + OffX, 470 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.lbInteligencia.Caption, 282 + OffX, 473 + Offy, DefaultColor, 1, True ' Atributo Inteligencia
     'Engine_Text_Render "+", 335, 470, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 447 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modInteligencia.Caption, 320 + OffX, 450 + Offy, DefaultColor, 1, True ' Bonificacion Inteligencia
+    Engine_Draw_Box 317 + OffX, 470 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.modInteligencia.Caption, 320 + OffX, 473 + Offy, DefaultColor, 1, True ' Bonificacion Inteligencia
     
-    Engine_Text_Render "Constitución", 185 + OffX, 470 + Offy, DefaultColor, , True
-    'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
-    ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 467 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 470 + Offy, DefaultColor, 1, True ' Atributo Constitución
-    '
-    ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 467 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 470 + Offy, DefaultColor, 1, True ' Bonificacion Constitución
     
-    Engine_Text_Render "Carisma", 185 + OffX, 490 + Offy, DefaultColor, , True
+    Engine_Text_Render "Constitución ", 185 + OffX, 500 + Offy, DefaultColor, , True
     'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
-    ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 487 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbCarisma.Caption, 283 + OffX, 490 + Offy, DefaultColor, 1, True ' Atributo Carisma
+   ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
+    Engine_Draw_Box 280 + OffX, 500 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 503 + Offy, DefaultColor, 1, True ' Atributo Carisma
     '
-    ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 487 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modCarisma.Caption, 320 + OffX, 490 + Offy, DefaultColor, 1, True ' Bonificacion Carisma
+   ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
+    Engine_Draw_Box 317 + OffX, 500 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
+    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 503 + Offy, DefaultColor, 1, True ' Bonificacion Carisma
+    
+    
       
     '
     'Engine_Draw_Box 290, 528, 20, 20, D3DColorARGB(120, 1, 150, 150)
@@ -3663,106 +3692,114 @@ Public Sub RenderUICrearPJ()
     'Cabeza
     'Engine_Draw_Box 425, 415, 140, 100, D3DColorARGB(120, 100, 100, 100)
 
-    ' Engine_Text_Render "Selecciona el rostro que más te agrade.", 662, 260, DefaultColor, 1, True
-
-    OffX = -345
-    Offy = -100
-     
-    Engine_Draw_Box 280, 407, 185, 120, D3DColorARGB(80, 0, 0, 0)
-     
-    Engine_Text_Render_LetraChica "Aspecto", 345, 385, DefaultColor, 6, False
+   ' Engine_Text_Render "Selecciona el rostro que más te agrade.", 662, 260, DefaultColor, 1, True
     
-    ' Engine_Draw_Box 345, 502, 12, 12, D3DColorARGB(120, 100, 0, 0)
+    
+    
+    
+    
+
+     OffX = -340
+     Offy = -100
+
+
+
+
+    Dim OffAspectoX As Integer
+    Dim OffAspectoY As Integer
+    
+    
+    OffAspectoX = -5
+    OffAspectoY = -25
+     
+     
+         
+     Engine_Draw_Box 280 + OffAspectoX, 407 + OffAspectoY, 185, 120, D3DColorARGB(80, 0, 0, 0)
+     
+     
+     Engine_Text_Render_LetraChica "Aspecto", 345 + OffAspectoX, 385 + OffAspectoY, DefaultColor, 6, False
+     
+     
+     
+    
+   ' Engine_Draw_Box 345, 502, 12, 12, D3DColorARGB(120, 100, 0, 0)
     
     'Engine_Text_Render_LetraChica "Equipado", 360, 502, DefaultColor, 4, False
+    
+    
+
+    
+    
+
      
     ' CPHeading = 3
+    
+    
+    
+
      
     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
     DefaultColor(1) = DefaultColor(0)
     DefaultColor(2) = DefaultColor(0)
     DefaultColor(3) = DefaultColor(0)
-
     If CPHead <> 0 And CPArma <> 0 Then
+    
          
-        Engine_Text_Render_LetraChica "Cabeza", 350, 410, DefaultColor, 1, False
-        Engine_Text_Render "<", 335, 412, DefaultColor, 1, True
-        Engine_Text_Render ">", 403, 412, DefaultColor, 1, True
+    Engine_Text_Render_LetraChica "Cabeza", 350 + OffAspectoX, 410 + OffAspectoY, DefaultColor, 1, False
+    Engine_Text_Render "<", 335 + OffAspectoX, 412 + OffAspectoY, DefaultColor, 1, True
+    Engine_Text_Render ">", 403 + OffAspectoX, 412 + OffAspectoY, DefaultColor, 1, True
         
-        Engine_Text_Render ">", 423, 428, DefaultColor, 3, True
-        Engine_Text_Render "<", 293, 428, DefaultColor, 3, True
+    Engine_Text_Render ">", 423 + OffAspectoX, 428 + OffAspectoY, DefaultColor, 3, True
+    Engine_Text_Render "<", 293 + OffAspectoX, 428 + OffAspectoY, DefaultColor, 3, True
     
-        'If CPEquipado Then
-        '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
-        '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
-        '    Engine_Text_Render_LetraChica "x", 348, 512, DefaultColor, 6, False
-        'Else
-        '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
-        '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
-        'End If
+    'If CPEquipado Then
+    '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
+    '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
+    '    Engine_Text_Render_LetraChica "x", 348, 512, DefaultColor, 6, False
+    'Else
+    '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
+    '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
+    'End If
     
-        Dim Raza As Byte
-        Dim Genero As Byte
-
-        If frmCrearPersonaje.lstRaza.ListIndex < 0 Then
-            frmCrearPersonaje.lstRaza.ListIndex = 0
-
-        End If
-
-        Raza = frmCrearPersonaje.lstRaza.ListIndex
-        
-        
-        
-        If frmCrearPersonaje.lstGenero.ListIndex < 0 Then
-            frmCrearPersonaje.lstGenero.ListIndex = 0
-
-        End If
-
-        Genero = frmCrearPersonaje.lstGenero.ListIndex
-
-        Dim enanooff As Byte
-
-        If Raza = 0 Or Raza = 1 Or Raza = 2 Or Raza = 5 Then
-            enanooff = 0
     
-        Else
-            enanooff = 10
-
-        End If
     
+    Dim Raza As Byte
+    If frmCrearPersonaje.lstRaza.ListIndex < 0 Then
+    frmCrearPersonaje.lstRaza.ListIndex = 0
+    End If
+    Raza = frmCrearPersonaje.lstRaza.ListIndex
+    Dim enanooff As Byte
+    If Raza = 0 Or Raza = 1 Or Raza = 2 Or Raza = 5 Then
+    enanooff = 0
+    
+    Else
+    enanooff = 10
+    End If
+
             
-        If enanooff > 0 Then
-            If Genero = 0 Then
-                Draw_Grh BodyData(52).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
+            If enanooff > 0 Then
+                Draw_Grh BodyData(CPBodyE).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
             Else
-                Draw_Grh BodyData(52).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
+                Draw_Grh BodyData(CPBody).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
             End If
-        Else
-            If Genero = 0 Then
-                Draw_Grh BodyData(1).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
-            Else
-                 Draw_Grh BodyData(80).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, DefaultColor()
-            End If
-
-        End If
             
-        Draw_Grh HeadData(CPHead).Head(CPHeading), 685 + 15 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, DefaultColor()
+            Draw_Grh HeadData(CPHead).Head(CPHeading), 685 + 15 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, DefaultColor()
             
-        'If CPEquipado Then
-        'Draw_Grh CascoAnimData(CPGorro).Head(CPHeading), 700 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, DefaultColor()
-        'Draw_Grh WeaponAnimData(CPArma).WeaponWalk(CPHeading), 685 + 15 + OffX, 365 - Offy + enanooff, 1, 0, DefaultColor()
-        'Call Renderizar_Aura(CPAura, 686 + 15 + offx, 360 - offy, 0, 0)
-        'End If
+            'If CPEquipado Then
+            'Draw_Grh CascoAnimData(CPGorro).Head(CPHeading), 700 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, DefaultColor()
+            'Draw_Grh WeaponAnimData(CPArma).WeaponWalk(CPHeading), 685 + 15 + OffX, 365 - Offy + enanooff, 1, 0, DefaultColor()
+            'Call Renderizar_Aura(CPAura, 686 + 15 + offx, 360 - offy, 0, 0)
+            'End If
             
-        DefaultColor(0) = D3DColorXRGB(0, 128, 190)
-        DefaultColor(1) = DefaultColor(0)
-        DefaultColor(2) = DefaultColor(0)
-        DefaultColor(3) = DefaultColor(0)
-        Engine_Text_Render CPName, 372 - Engine_Text_Width(CPName, True) / 2, 495, DefaultColor, 1, True
+            DefaultColor(0) = D3DColorXRGB(0, 128, 190)
+            DefaultColor(1) = DefaultColor(0)
+            DefaultColor(2) = DefaultColor(0)
+            DefaultColor(3) = DefaultColor(0)
+            Engine_Text_Render CPName, 372 - Engine_Text_Width(CPName, True) / 2, 495, DefaultColor, 1, True
     Else
         Engine_Text_Render "X", 355, 428, DefaultColor, 3, True
-
     End If
+    
     
     'DefaultColor(0) = D3DColorXRGB(255, 255, 255)
     'DefaultColor(1) = DefaultColor(0)
@@ -3781,9 +3818,10 @@ Public Sub RenderUICrearPJ()
     '    Engine_Draw_Box 730, 630, 100, 40, D3DColorARGB(80, 0, 0, 0)
     '    Engine_Text_Render "Crear PJ >", 750, 640, DefaultColor, 1, True
     'End If
+
        
     'Engine_Text_Render "DADO", 670, 390, DefaultColor()
-    Draw_GrhIndex 1123, 665, 385
+    Draw_GrhIndex 1123, 660, 365
 
 End Sub
 

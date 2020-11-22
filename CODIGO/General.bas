@@ -15,7 +15,7 @@ End Type
 'Item type
 Private Type tItem
 
-    ObjIndex As Integer
+    OBJIndex As Integer
     Amount As Integer
 
 End Type
@@ -1018,13 +1018,13 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
 End Function
 
 Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
-    Dim ObjIndex As Integer
-    ObjIndex = MapData(x, y).OBJInfo.ObjIndex
+    Dim OBJIndex As Integer
+    OBJIndex = MapData(x, y).OBJInfo.OBJIndex
     
-    Dim OBJType As eOBJType
-    OBJType = ObjData(ObjIndex).OBJType
+    Dim ObjType As eObjType
+    ObjType = ObjData(OBJIndex).ObjType
     
-    EsObjetoFijo = OBJType = eOBJType.otForos Or OBJType = eOBJType.otCarteles Or OBJType = eOBJType.otArboles Or OBJType = eOBJType.otYacimiento Or OBJType = eOBJType.OtDecoraciones
+    EsObjetoFijo = ObjType = eObjType.otForos Or ObjType = eObjType.otCarteles Or ObjType = eObjType.otArboles Or ObjType = eObjType.otYacimiento Or ObjType = eObjType.OtDecoraciones
 
 End Function
 
@@ -1082,7 +1082,7 @@ Private Sub InicializarNombres()
     ListaCiudades(eCiudad.cBanderbill) = "Banderbill"
     ListaCiudades(eCiudad.cLindos) = "Lindos"
     ListaCiudades(eCiudad.cArghal) = "Arghal"
-    ListaCiudades(eCiudad.cHillidan) = "Hillidan"
+   ' ListaCiudades(eCiudad.cHillidan) = "Hillidan"
 
     ListaClases(eClass.Mage) = "Mago"
     ListaClases(eClass.Cleric) = "Clerigo"
