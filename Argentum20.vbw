@@ -114,4 +114,4 @@ FrmKeyInv = 130, 130, 1390, 671, , 260, 260, 1545, 898, C
 clsIniManager = 52, 52, 1482, 540, C
 Recursos = 52, 52, 1337, 690, 
 clsBatch = 52, 52, 1312, 594, 
-TileEngine_RenderScreen = 182, 182, 1442, 723, Z
+TileEngine_RenderScreen = 182, 182, 1442, 723, 
