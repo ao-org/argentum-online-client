@@ -16,11 +16,12 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     'Last Modify Date: 8/14/2007
     'Last modified by: Juan Martín Sotuyo Dodero (Maraxus)
     'Renders everything to the viewport
-    On Error Resume Next
-
     '**************************************************************
-    Dim y                As Integer     'Keeps track of where on map we are
-    Dim x                As Integer     'Keeps track of where on map we are
+    
+    On Error Resume Next
+    
+    Dim y                As Integer   'Keeps track of where on map we are
+    Dim x                As Integer   'Keeps track of where on map we are
 
     Dim screenminY       As Integer  'Start Y pos on current screen
     Dim screenmaxY       As Integer  'End Y pos on current screen
