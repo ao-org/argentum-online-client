@@ -1339,7 +1339,7 @@ Public Function General_Get_Elapsed_Time() As Single
 End Function
 
 
-Public Function max(a As Double, b As Double) As Double
+Public Function max(ByVal a As Double, ByVal b As Double) As Double
 
     If a > b Then
         max = a
@@ -1350,7 +1350,7 @@ Public Function max(a As Double, b As Double) As Double
 
 End Function
 
-Public Function min(a As Double, b As Double) As Double
+Public Function min(ByVal a As Double, ByVal b As Double) As Double
 
     If a < b Then
         min = a
@@ -1379,24 +1379,15 @@ errhandler:
 
 End Function
 
-Public Function Tilde(ByRef Data As String) As String
+Public Function Tilde(ByRef data As String) As String
 
-    Dim temp As String
-
-    'Pato
-    temp = UCase$(Data)
+    data = UCase$(data)
  
-    If InStr(1, temp, "Ã") Then temp = Replace$(temp, "Ã", "A")
-   
-    If InStr(1, temp, "e") Then temp = Replace$(temp, "e", "E")
-   
-    If InStr(1, temp, "Ã") Then temp = Replace$(temp, "Ã", "I")
-   
-    If InStr(1, temp, "Ã“") Then temp = Replace$(temp, "Ã“", "O")
-   
-    If InStr(1, temp, "U") Then temp = Replace$(temp, "U", "U")
-   
-    Tilde = temp
+    data = Replace$(data, "Á", "A")
+    data = Replace$(data, "É", "E")
+    data = Replace$(data, "Í", "I")
+    data = Replace$(data, "Ó", "O")
+    data = Replace$(data, "Ú", "U")
         
 End Function
 

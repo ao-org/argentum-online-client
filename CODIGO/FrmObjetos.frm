@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form FrmObjetos 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Crear objeto"
@@ -304,7 +304,7 @@ Private Sub Command3_Click()
 
     For i = 1 To NumOBJs
 
-        If InStr(1, Tilde(UCase$(ObjData(i).Name)), Tilde(UCase$(Text1)), vbTextCompare) Then
+        If InStr(1, Tilde(ObjData(i).Name), Tilde(Text1), vbTextCompare) Then
 
             Dim subelemento As ListItem
 

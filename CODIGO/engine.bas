@@ -1594,9 +1594,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             
                 Dim mostrarlo As Boolean
                          
-                If .priv < charlist(UserCharIndex).priv Then
+                If .priv <= charlist(UserCharIndex).priv Then
                     mostrarlo = True
-
                 End If
 
                 If .group_index > 0 Then
@@ -2316,7 +2315,7 @@ Public Sub DrawInterfaceComerciar()
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
         frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
-        frmComerciar.lblCosto = PonerPuntos(CLng(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
+        frmComerciar.lblCosto = PonerPuntos(Fix(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
         
         Set CurrentInventory = Nothing
 
