@@ -1363,7 +1363,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     ' simbolo.framecounter = 1
                     ' simbolo.GrhIndex = 5259 + .simbolo
                     'Call Draw_Grh(TempGrh, PixelOffsetX + 20, PixelOffsetY - 45, 1, 0, colorz, False, 0, 0, 0)
-                    Call Draw_GrhIndex(5259 + .simbolo, PixelOffsetX + 6, PixelOffsetY + .Body.HeadOffset.y - 10)
+                    
+                    Call Draw_GrhIndex(5257 + .simbolo, PixelOffsetX + 6, PixelOffsetY + .Body.HeadOffset.y - 10)
                                 
                     ' Debug.Print .simbolo
                 End If

@@ -556,6 +556,7 @@ Begin VB.Form frmmain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -713,7 +714,6 @@ Begin VB.Form frmmain
       Tag             =   "0"
       ToolTipText     =   "Quests"
       Top             =   10122
-      Visible         =   0   'False
       Width           =   540
    End
    Begin VB.Label Coord 
@@ -2537,37 +2537,37 @@ End Sub
 
 Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    Dim slot As Byte
+    Dim Slot As Byte
 
     UsaMacro = False
     
-    slot = Inventario.GetSlot(x, y)
+    Slot = Inventario.GetSlot(x, y)
     
-    If slot <= 0 Then
+    If Slot <= 0 Then
         ObjLbl.Visible = False
         Exit Sub
     End If
     
-    If Inventario.Amount(slot) > 0 Then
+    If Inventario.Amount(Slot) > 0 Then
     
         ObjLbl.Visible = True
         
-        Select Case ObjData(Inventario.OBJIndex(slot)).ObjType
+        Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
 
             Case eObjType.otCASCO
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
 
             Case eObjType.otESCUDO
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
 
             Case Else
-                ObjLbl = Inventario.ItemName(slot) & " (" & Inventario.Amount(slot) & ")" & vbCrLf & ObjData(Inventario.OBJIndex(slot)).Texto
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & ObjData(Inventario.OBJIndex(Slot)).Texto
 
         End Select
         
