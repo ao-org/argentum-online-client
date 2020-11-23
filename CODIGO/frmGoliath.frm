@@ -236,8 +236,6 @@ Option Explicit
 
 Private QueOperacion       As Byte
 
-Private CantTransferencia  As Long
-
 Private OroDep             As Long
 Private m_Number             As Integer
 
@@ -392,55 +390,48 @@ Private Sub Image2_Click()
         Case 5 'Depositar
     
             'Negativos y ceros
-            If (Val(txtDatos.Text) < 1 And (UCase$(txtDatos.Text) <> "TODO")) Then lblDatos.Caption = "Cantidad inválida."
-    
-            If Val(txtDatos.Text) <= UserGLD Or UCase$(txtDatos.Text) = "TODO" Then
-    
-                Call WriteBankDepositGold(IIf(Val(txtDatos.Text) > 0, Val(txtDatos.Text), UserGLD))
-            Else
-                lblDatos.Caption = "No tienes esa cantidad, reintente."
-
+            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad inválida."
+            
+            If UserGLD <= 0 Then
+                lblDatos.Caption = "No tienes oro para depositar."
+                Exit Sub
             End If
+    
+            Call WriteBankDepositGold(min(Val(txtDatos.Text), UserGLD))
+            Unload Me
 
         Case 1 'Retirar
     
             'Negativos y ceros
-            If (Val(txtDatos.Text) < 1 And (UCase$(txtDatos.Text) <> "TODO")) Then lblDatos.Caption = "Cantidad inválida."
-    
-            If Val(txtDatos.Text) <= OroDep Or UCase$(txtDatos.Text) = "TODO" Then
-                Call WriteBankExtractGold(IIf(Val(txtDatos.Text) > 0, Val(txtDatos.Text), OroDep))
-            Else
-                lblDatos.Caption = "No tienes esa cantidad, reintente."
-
+            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad inválida."
+            
+            If OroDep <= 0 Then
+                lblDatos.Caption = "No tienes oro en la cuenta."
+                Exit Sub
             End If
+    
+            Call WriteBankExtractGold(min(Val(txtDatos.Text), OroDep))
+            Unload Me
 
         Case 4 'Transferir - Destino - Cantidad
-
-        
             'Negativos y ceros
             If Val(txtDatos.Text) < 1 Then
                 lblDatos.Caption = "Cantidad inválida, reintente."
                 'txtDatos.Text = ""
                 Exit Sub
-
             End If
-        
-            If Val(txtDatos.Text) <= OroDep Then
-                CantTransferencia = Val(txtDatos.Text)
-                txtDatos.Text = ""
-            Else
-                lblDatos.Caption = "No tienes esa cantidad depositada."
-                txtDatos.Text = ""
-
+            
+            If OroDep <= 0 Then
+                lblDatos.Caption = "No tienes oro en la cuenta."
+                Exit Sub
             End If
-
 
             If txtname.Text <> "" Then
-                Call WriteTransFerGold(CantTransferencia, txtname.Text)
+                Call WriteTransFerGold(min(Val(txtDatos.Text), OroDep), txtname.Text)
+                Unload Me
             Else
                 lblDatos.Caption = "¡Nombre de destino inválido!"
                 txtDatos.Text = ""
-
             End If
 
 
