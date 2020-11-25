@@ -163,24 +163,13 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
 
     If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
         x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
-
     End If
 
     If GrhData(grh.GrhIndex).TileHeight <> 1 Then
         y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
-
     End If
 
-    Dim SRGB(3) As Long
-
-    SRGB(0) = D3DColorARGB(50, 0, 0, 0)
-    SRGB(1) = D3DColorARGB(50, 0, 0, 0)
-    SRGB(2) = D3DColorARGB(50, 0, 0, 0)
-    SRGB(3) = D3DColorARGB(50, 0, 0, 0)
-    'Por ladder
-    'Device_Box_Textured_Render CurrentGrhIndex, x + 5, y + 5, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, SRGB(), GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, False, 0.4
-
-    Call Batch_Textured_Box(x + 5, y + 5, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, SRGB, True, 0.4)
+    Call Batch_Textured_Box_Shadow(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value)
 End Sub
 
 Sub Engine_Weather_UpdateFog()

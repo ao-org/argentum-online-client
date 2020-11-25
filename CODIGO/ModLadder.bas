@@ -601,14 +601,12 @@ Sub General_Set_Connect()
     If UserMap <> 1 Then
         UserMap = 1
         Call SwitchMapIAO(UserMap)
-
     End If
 
     If QueRender <> 1 Then
         frmConnect.Show
         FrmLogear.Show , frmConnect
         FrmLogear.Top = FrmLogear.Top + 3500
-
     End If
             
     intro = 1

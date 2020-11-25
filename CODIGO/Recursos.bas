@@ -917,15 +917,23 @@ Public Sub CargarMapa(ByVal map As Integer)
             
                 x = L1(i).x
                 y = L1(i).y
-            
-                MapData(x, y).Graphic(1).GrhIndex = L1(i).GrhIndex
-            
-                InitGrh MapData(x, y).Graphic(1), MapData(x, y).Graphic(1).GrhIndex
-                ' Call Map_Grh_Set(L2(i).x, L2(i).y, L2(i).GrhIndex, 2)
                 
-                If HayAgua(x, y) Then
-                    MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_AGUA
-                End If
+                With MapData(x, y)
+            
+                    .Graphic(1).GrhIndex = L1(i).GrhIndex
+                    
+                    ' Precalculate position
+                    .Graphic(1).x = x * TilePixelWidth
+                    .Graphic(1).y = y * TilePixelHeight
+                    ' *********************
+                
+                    InitGrh .Graphic(1), .Graphic(1).GrhIndex
+                    
+                    If HayAgua(x, y) Then
+                        .Blocked = .Blocked Or FLAG_AGUA
+                    End If
+                    
+                End With
             Next i
 
         End If
@@ -944,7 +952,7 @@ Public Sub CargarMapa(ByVal map As Integer)
                 
                 InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).GrhIndex
                 
-                MapData(x, y).Blocked = MapData(x, y).Blocked And Not FLAG_AGUA
+                MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_COSTA
                 
             Next i
 

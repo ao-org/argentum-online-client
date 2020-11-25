@@ -4,29 +4,31 @@ Option Explicit
 'For composed texture
 Public ComposedTexture As Direct3DTexture8
 Public ComposedTextureSurface As Direct3DSurface8
+Public ComposedZBufferSurface As Direct3DSurface8
 Public pBackbuffer As Direct3DSurface8
+Public pZbuffer As Direct3DSurface8
 Public ComposedTextureWidth As Integer
 Public ComposedTextureHeight As Integer
 Public ComposedTextureCenterX As Integer
 Public ProjectionComposedTexture As D3DMATRIX
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal Length As Long)
 
-Function MakeVector(ByVal x As Single, ByVal y As Single, ByVal Z As Single) As D3DVECTOR
+Function MakeVector(ByVal x As Single, ByVal y As Single, ByVal z As Single) As D3DVECTOR
     '*****************************************************
     '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
     '*****************************************************
     MakeVector.x = x
     MakeVector.y = y
-    MakeVector.Z = Z
+    MakeVector.z = z
 
 End Function
 
-Private Function CreateVertex(x As Single, y As Single, Z As Single, Color As Long, tu As Single, tv As Single) As TYPE_VERTEX
+Private Function CreateVertex(x As Single, y As Single, z As Single, Color As Long, tu As Single, tv As Single) As TYPE_VERTEX
     
     CreateVertex.x = x
     CreateVertex.y = y
-    CreateVertex.Z = Z
+    CreateVertex.z = z
     CreateVertex.Color = Color
     CreateVertex.TX = tu
     CreateVertex.TY = tv
@@ -34,14 +36,14 @@ Private Function CreateVertex(x As Single, y As Single, Z As Single, Color As Lo
 End Function
 
 
-Private Function Geometry_Create_Vertex(ByVal x As Single, ByVal y As Single, ByVal Z As Single, ByVal Color As Long, tu As Single, ByVal tv As Single) As TYPE_VERTEX
+Private Function Geometry_Create_Vertex(ByVal x As Single, ByVal y As Single, ByVal z As Single, ByVal Color As Long, tu As Single, ByVal tv As Single) As TYPE_VERTEX
     '**************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 10/07/2002
     '**************************************************************
     Geometry_Create_Vertex.x = x
     Geometry_Create_Vertex.y = y
-    Geometry_Create_Vertex.Z = Z
+    Geometry_Create_Vertex.z = z
     Geometry_Create_Vertex.Color = Color
     Geometry_Create_Vertex.TX = tu
     Geometry_Create_Vertex.TY = tv
@@ -200,18 +202,24 @@ Public Function BinarySearch(ByVal charindex As Integer) As Integer
 
 End Function
 
-
 Public Sub InitComposedTexture()
 
-    ComposedTextureWidth = 256
-    ComposedTextureHeight = 256
-    
+    ComposedTextureWidth = 128
+    ComposedTextureHeight = 128
+
     ComposedTextureCenterX = ComposedTextureWidth \ 2
-    
+
     Set ComposedTexture = DirectD3D8.CreateTexture(DirectDevice, ComposedTextureWidth, ComposedTextureHeight, 0, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT)
-    Set pBackbuffer = DirectDevice.GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO)
     Set ComposedTextureSurface = ComposedTexture.GetSurfaceLevel(0)
     
+    Dim ComposedZBuffer As Direct3DTexture8
+    Set ComposedZBuffer = DirectD3D8.CreateTexture(DirectDevice, ComposedTextureWidth, ComposedTextureHeight, 0, D3DUSAGE_DEPTHSTENCIL, D3DFMT_D24S8, D3DPOOL_DEFAULT)
+    
+    Set ComposedZBufferSurface = ComposedZBuffer.GetSurfaceLevel(0)
+
+    Set pBackbuffer = DirectDevice.GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO)
+    Set pZbuffer = DirectDevice.GetDepthStencilSurface()
+
     Call D3DXMatrixOrthoOffCenterLH(ProjectionComposedTexture, 0, ComposedTextureWidth, ComposedTextureHeight, 0, -1#, 1#)
 
 End Sub
@@ -222,13 +230,13 @@ Public Sub BeginComposedTexture()
     Call DirectDevice.EndScene
 
     ' Render to texture
-    DirectDevice.SetRenderTarget ComposedTextureSurface, Nothing, 0
-    
+    DirectDevice.SetRenderTarget ComposedTextureSurface, ComposedZBufferSurface, 0
+
     ' Change viewport
     Call DirectDevice.SetTransform(D3DTS_PROJECTION, ProjectionComposedTexture)
 
     Call Engine_BeginScene
-    'Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, &HFF00FFFF, 1#, 0)
+
 End Sub
 
 Public Sub EndComposedTexture()
@@ -237,7 +245,7 @@ Public Sub EndComposedTexture()
     Call DirectDevice.EndScene
 
     ' Render to backbuffer
-    DirectDevice.SetRenderTarget pBackbuffer, Nothing, ByVal 0
+    DirectDevice.SetRenderTarget pBackbuffer, pZbuffer, 0
     
     ' Change viewport
     Call DirectDevice.SetTransform(D3DTS_PROJECTION, Projection)
@@ -248,7 +256,7 @@ Public Sub EndComposedTexture()
 
 End Sub
 
-Public Sub PresentComposedTexture(ByVal x As Integer, ByVal y As Integer, ByRef Color_List() As Long, Optional ByVal angle As Single = 0, Optional ByVal Shadow As Boolean = False)
+Public Sub PresentComposedTexture(ByVal x As Integer, ByVal y As Integer, ByRef Color_List() As Long, Optional ByVal angle As Single = 0, Optional ByVal Shadow As Boolean = False, Optional ByVal Reflection As Boolean = False)
 
     Static src_rect            As RECT
     Static dest_rect           As RECT
@@ -261,58 +269,26 @@ Public Sub PresentComposedTexture(ByVal x As Integer, ByVal y As Integer, ByRef 
     light_value(1) = Color_List(1)
     light_value(2) = Color_List(2)
     light_value(3) = Color_List(3)
- 
-    If (light_value(0) = 0) Then light_value(0) = map_base_light
-    If (light_value(1) = 0) Then light_value(1) = map_base_light
-    If (light_value(2) = 0) Then light_value(2) = map_base_light
-    If (light_value(3) = 0) Then light_value(3) = map_base_light
-        
-    'Set up the source rectangle
-    With src_rect
-        .Right = ComposedTextureWidth
-        .bottom = ComposedTextureHeight
-    End With
-                
-    'Set up the destination rectangle
-    With dest_rect
-        .bottom = y + 32
-        .Left = x + 16 - ComposedTextureWidth \ 2
-        .Right = .Left + ComposedTextureHeight
-        .Top = y + 32 - ComposedTextureHeight
-    End With
     
-    If Shadow Then
-        Call ARGBtoD3DCOLORVALUE(light_value(0), tmpColor)
-
-        Dim IntensidadSombra As Single
-        IntensidadSombra = (0.2126 * tmpColor.r + 0.7152 * tmpColor.g + 0.0722 * tmpColor.b) ^ 2 / 65025
-        
-        Dim ColorShadow(3) As Long
-        Call Engine_Long_To_RGB_List(ColorShadow(), D3DColorARGB(IntensidadSombra * 60, 0, 0, 0))
-        
-        Geometry_Create_Box vertices(), dest_rect, src_rect, ColorShadow(), ComposedTextureWidth, ComposedTextureHeight, angle
-    Else
-    
-        'Set up the vertices(3) vertices
-        Geometry_Create_Box vertices(), dest_rect, src_rect, light_value(), ComposedTextureWidth, ComposedTextureHeight, angle
-    End If
-
-    If Shadow Then
-        vertices(1).x = vertices(1).x + (dest_rect.Right - dest_rect.Left) * 0.5
-        vertices(1).y = vertices(1).y - (dest_rect.bottom - dest_rect.Top) * 0.5
-       
-        vertices(3).x = vertices(3).x + (dest_rect.Right - dest_rect.Left)
-        vertices(3).y = vertices(3).y - (dest_rect.Right - dest_rect.Left) * 0.5
-    End If
+    x = x - ComposedTextureWidth \ 2 + 16
+    y = y - ComposedTextureHeight + 32
 
     With SpriteBatch
 
         Call .SetTexture(ComposedTexture)
-        
+
         Call .SetAlpha(False)
-        
-        Call .DrawVertices(vertices)
+    
+        If Shadow Then
+            Call .DrawShadow(x, y, ComposedTextureWidth, ComposedTextureHeight, light_value)
             
+        ElseIf Reflection Then
+            Call .DrawReflection(x, y, ComposedTextureWidth, ComposedTextureHeight, light_value)
+                    
+        Else
+            Call .Draw(x, y, ComposedTextureWidth, ComposedTextureHeight, light_value, , , , , angle)
+        End If
+
     End With
  
 End Sub
@@ -338,3 +314,32 @@ Public Sub Long_To_RGBList(rgb_list() As Long, long_color As Long)
     rgb_list(3) = rgb_list(0)
 
 End Sub
+
+Public Sub Copy_RGBList(a() As Long, b() As Long)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    a(0) = b(0)
+    a(1) = b(1)
+    a(2) = b(2)
+    a(3) = b(3)
+
+End Sub
+
+Public Function EaseBreathing(ByVal t As Single) As Single
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    
+    Dim c1 As Single, c3 As Single
+    c1 = 1.70158
+    c3 = c1 + 1
+
+    If t < 1 Then
+        EaseBreathing = 1 + c3 * (t - 1) ^ 3 + c1 * (t - 1) ^ 2
+    Else
+        EaseBreathing = 1 - t * 2 / 3
+    End If
+
+End Function
+

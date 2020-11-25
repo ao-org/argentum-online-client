@@ -303,7 +303,7 @@ Public Function LoadJPG(ByRef cDib As cDIBSection, ByVal sFile As String) As Boo
         ijlFree tJ
     Else
         ' Throw error:
-        MsgBox "Failed to initialise the IJL library: " & lR, vbExclamation
+        MsgBox "Failed to Initialize the IJL library: " & lR, vbExclamation
 
     End If
    
@@ -383,7 +383,7 @@ Public Function LoadJPGFromPtr(ByRef cDib As cDIBSection, ByVal lPtr As Long, By
         ijlFree tJ
     Else
         ' Throw error:
-        MsgBox "Failed to initialise the IJL library: " & lR, vbExclamation
+        MsgBox "Failed to Initialize the IJL library: " & lR, vbExclamation
 
     End If
    
@@ -549,7 +549,7 @@ Public Function SaveJPGToPtr(ByRef cDib As cDIBSection, ByVal lPtr As Long, ByRe
         ijlFree tJ
     Else
         ' Throw error:
-        Err.Raise 26001, App.EXEName & ".mIntelJPEGLibrary", "Failed to initialise the IJL library: " & lR
+        Err.Raise 26001, App.EXEName & ".mIntelJPEGLibrary", "Failed to Initialize the IJL library: " & lR
 
     End If
 
@@ -563,7 +563,7 @@ Public Sub ScreenCapture()
 
     Dim hwnd As Long
 
-    Dim file As String
+    Dim File As String
 
     Dim sI   As String
 
@@ -587,14 +587,14 @@ Public Sub ScreenCapture()
     
     If Not FileExist(App.Path & "\Screenshots\" & UserName & "\", vbDirectory) Then MkDir (App.Path & "\Screenshots\" & UserName & "\")
     
-    file = App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg"
+    File = App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg"
     
     ' frmScreenshots.
     frmScreenshots.picture1.Picture = frmScreenshots.picture1.Image
     
     c.CreateFromPicture frmScreenshots.picture1.Picture
     
-    SaveJPG c, file
+    SaveJPG c, File
     
     AddtoRichTextBox frmmain.RecTxt, "Captura guardada en " & App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg.", 100, 200, 0, False, True, False
     Exit Sub
