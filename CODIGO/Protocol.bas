@@ -1246,7 +1246,7 @@ End Sub
 
 Private Sub HandleVelocidadToggle()
 
-    If incomingData.length < 2 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2123,12 +2123,12 @@ Private Sub HandleUpdateUserKey()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim Slot As Integer, Llave As Integer
+    Dim slot As Integer, Llave As Integer
     
-    Slot = incomingData.ReadInteger
+    slot = incomingData.ReadInteger
     Llave = incomingData.ReadInteger
 
-    Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
+    Call FrmKeyInv.InvKeys.SetItem(slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
 
 End Sub
 
@@ -2383,10 +2383,10 @@ Private Sub HandleUpdateExp()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     If UserPasarNivel > 0 Then
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "¡Nivel máximo!"
     End If
 
@@ -4695,9 +4695,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel máximo!"
 
@@ -4843,7 +4843,7 @@ Private Sub HandleChangeInventorySlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim Slot              As Byte
+    Dim slot              As Byte
     Dim OBJIndex          As Integer
     Dim Name              As String
     Dim Amount            As Integer
@@ -4857,7 +4857,7 @@ Private Sub HandleChangeInventorySlot()
     Dim Value             As Single
     Dim podrausarlo       As Byte
 
-    Slot = buffer.ReadByte()
+    slot = buffer.ReadByte()
     OBJIndex = buffer.ReadInteger()
     Amount = buffer.ReadInteger()
     Equipped = buffer.ReadBoolean()
@@ -4880,29 +4880,29 @@ Private Sub HandleChangeInventorySlot()
 
             Case eObjType.otWeapon
                 frmmain.lblWeapon = MinHit & "/" & MaxHit
-                UserWeaponEqpSlot = Slot
+                UserWeaponEqpSlot = slot
 
             Case eObjType.otNudillos
                 frmmain.lblWeapon = MinHit & "/" & MaxHit
-                UserWeaponEqpSlot = Slot
+                UserWeaponEqpSlot = slot
 
             Case eObjType.otArmadura
                 frmmain.lblArmor = MinDef & "/" & MaxDef
-                UserArmourEqpSlot = Slot
+                UserArmourEqpSlot = slot
 
             Case eObjType.otESCUDO
                 frmmain.lblShielder = MinDef & "/" & MaxDef
-                UserHelmEqpSlot = Slot
+                UserHelmEqpSlot = slot
 
             Case eObjType.otCASCO
                 frmmain.lblHelm = MinDef & "/" & MaxDef
-                UserShieldEqpSlot = Slot
+                UserShieldEqpSlot = slot
 
         End Select
         
     Else
 
-        Select Case Slot
+        Select Case slot
 
             Case UserWeaponEqpSlot
                 frmmain.lblWeapon = "0/0"
@@ -4924,11 +4924,11 @@ Private Sub HandleChangeInventorySlot()
 
     End If
 
-    Call frmmain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmmain.Inventario.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
-    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmComerciar.InvComUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
-    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmBancoObj.InvBankUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
     Exit Sub
     
@@ -4992,7 +4992,7 @@ Private Sub HandleRefreshAllInventorySlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim Slot             As Byte
+    Dim slot             As Byte
 
     Dim OBJIndex         As Integer
 
@@ -5037,15 +5037,15 @@ Private Sub HandleRefreshAllInventorySlot()
     For i = 1 To 20
     
         slotNum(i) = Right$(slotNum(i), Len(slotNum(i)))
-        Slot = ReadField(1, slotNum(i), Asc("@"))
-        Call frmmain.Inventario.SetItem(Slot, ReadField(2, slotNum(i), Asc("@")), ReadField(4, slotNum(i), Asc("@")), ReadField(5, slotNum(i), Asc("@")), ReadField(6, slotNum(i), Asc("@")), ReadField(7, slotNum(i), Asc("@")), ReadField(8, slotNum(i), Asc("@")), ReadField(9, slotNum(i), Asc("@")), ReadField(10, slotNum(i), Asc("@")), ReadField(11, slotNum(i), Asc("@")), ReadField(3, slotNum(i), Asc("@")), 0)
+        slot = ReadField(1, slotNum(i), Asc("@"))
+        Call frmmain.Inventario.SetItem(slot, ReadField(2, slotNum(i), Asc("@")), ReadField(4, slotNum(i), Asc("@")), ReadField(5, slotNum(i), Asc("@")), ReadField(6, slotNum(i), Asc("@")), ReadField(7, slotNum(i), Asc("@")), ReadField(8, slotNum(i), Asc("@")), ReadField(9, slotNum(i), Asc("@")), ReadField(10, slotNum(i), Asc("@")), ReadField(11, slotNum(i), Asc("@")), ReadField(3, slotNum(i), Asc("@")), 0)
     
         With frmmain.Inventario
 
             If frmComerciar.Visible Then
-                Call frmComerciar.InvComUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
+                Call frmComerciar.InvComUsu.SetItem(slot, .OBJIndex(slot), .Amount(slot), .Equipped(slot), .GrhIndex(slot), .ObjType(slot), .MaxHit(slot), .MinHit(slot), .Def(slot), .Valor(slot), .ItemName(slot), .PuedeUsar(slot))
             ElseIf frmBancoObj.Visible Then
-                Call frmBancoObj.InvBankUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
+                Call frmBancoObj.InvBankUsu.SetItem(slot, .OBJIndex(slot), .Amount(slot), .Equipped(slot), .GrhIndex(slot), .ObjType(slot), .MaxHit(slot), .MinHit(slot), .Def(slot), .Valor(slot), .ItemName(slot), .PuedeUsar(slot))
 
             End If
 
@@ -5138,7 +5138,7 @@ Private Sub HandleChangeBankSlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim Slot As Byte: Slot = buffer.ReadByte()
+    Dim slot As Byte: slot = buffer.ReadByte()
     
     Dim BankSlot As Inventory
     
@@ -5155,7 +5155,7 @@ Private Sub HandleChangeBankSlot()
         .Valor = buffer.ReadLong()
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmBancoObj.InvBoveda.SetItem(Slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
 
     End With
     
@@ -5203,21 +5203,21 @@ Private Sub HandleChangeSpellSlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim Slot     As Byte
+    Dim slot     As Byte
 
     Dim Index    As Byte
 
     Dim cooldown As Integer
 
-    Slot = buffer.ReadByte()
+    slot = buffer.ReadByte()
     
-    UserHechizos(Slot) = buffer.ReadInteger()
+    UserHechizos(slot) = buffer.ReadInteger()
     Index = buffer.ReadByte()
 
     If Index < 254 Then
     
-        If Slot <= frmmain.hlst.ListCount Then
-            frmmain.hlst.List(Slot - 1) = HechizoData(Index).nombre
+        If slot <= frmmain.hlst.ListCount Then
+            frmmain.hlst.List(slot - 1) = HechizoData(Index).nombre
         Else
             Call frmmain.hlst.AddItem(HechizoData(Index).nombre)
 
@@ -5225,8 +5225,8 @@ Private Sub HandleChangeSpellSlot()
 
     Else
     
-        If Slot <= frmmain.hlst.ListCount Then
-            frmmain.hlst.List(Slot - 1) = "(Vacio)"
+        If slot <= frmmain.hlst.ListCount Then
+            frmmain.hlst.List(slot - 1) = "(Vacio)"
         Else
             Call frmmain.hlst.AddItem("(Vacio)")
 
@@ -5891,7 +5891,7 @@ Private Sub HandleChangeNPCInventorySlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim Slot As Byte: Slot = buffer.ReadByte()
+    Dim slot As Byte: slot = buffer.ReadByte()
     
     Dim SlotInv As NpCinV
     With SlotInv
@@ -5906,7 +5906,7 @@ Private Sub HandleChangeNPCInventorySlot()
         .Def = ObjData(.OBJIndex).MaxDef
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmComerciar.InvComNpc.SetItem(Slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmComerciar.InvComNpc.SetItem(slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
         
     End With
     
@@ -6775,7 +6775,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7182,7 +7182,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -8263,7 +8263,7 @@ End Sub
 ' @param    amount Number of items to drop.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
+Public Sub WriteDrop(ByVal slot As Byte, ByVal Amount As Long)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8272,7 +8272,7 @@ Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.Drop)
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
         Call .WriteLong(Amount)
 
     End With
@@ -8285,7 +8285,7 @@ End Sub
 ' @param    slot Spell List slot where the spell to cast is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCastSpell(ByVal Slot As Byte)
+Public Sub WriteCastSpell(ByVal slot As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8295,7 +8295,7 @@ Public Sub WriteCastSpell(ByVal Slot As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.CastSpell)
         
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
 
     End With
 
@@ -8472,7 +8472,7 @@ End Sub
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteUseItem(ByVal Slot As Byte)
+Public Sub WriteUseItem(ByVal slot As Byte)
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
@@ -8481,7 +8481,7 @@ Public Sub WriteUseItem(ByVal Slot As Byte)
 
     With outgoingData
         Call .WriteByte(ClientPacketID.UseItem)
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
 
     End With
 
@@ -8629,7 +8629,7 @@ End Sub
 ' @param    slot Spell List slot where the spell which's info is requested is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteSpellInfo(ByVal Slot As Byte)
+Public Sub WriteSpellInfo(ByVal slot As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8639,7 +8639,7 @@ Public Sub WriteSpellInfo(ByVal Slot As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.SpellInfo)
         
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
 
     End With
 
@@ -8651,7 +8651,7 @@ End Sub
 ' @param    slot Invetory slot where the item to equip is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteEquipItem(ByVal Slot As Byte)
+Public Sub WriteEquipItem(ByVal slot As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8661,7 +8661,7 @@ Public Sub WriteEquipItem(ByVal Slot As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.EquipItem)
         
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
 
     End With
 
@@ -8744,7 +8744,7 @@ End Sub
 ' @param    amount Number of items to buy.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCommerceBuy(ByVal Slot As Byte, ByVal Amount As Integer)
+Public Sub WriteCommerceBuy(ByVal slot As Byte, ByVal Amount As Integer)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8754,18 +8754,18 @@ Public Sub WriteCommerceBuy(ByVal Slot As Byte, ByVal Amount As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.CommerceBuy)
         
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
         Call .WriteInteger(Amount)
 
     End With
 
 End Sub
 
-Public Sub WriteUseKey(ByVal Slot As Byte)
+Public Sub WriteUseKey(ByVal slot As Byte)
 
     With outgoingData
         Call .WriteByte(ClientPacketID.UseKey)
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
     End With
 
 End Sub
@@ -8777,7 +8777,7 @@ End Sub
 ' @param    amount Number of items to extract.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteBankExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
+Public Sub WriteBankExtractItem(ByVal slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8787,7 +8787,7 @@ Public Sub WriteBankExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, ByV
     With outgoingData
         Call .WriteByte(ClientPacketID.BankExtractItem)
         
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
         Call .WriteInteger(Amount)
         Call .WriteByte(slotdestino)
         
@@ -8802,7 +8802,7 @@ End Sub
 ' @param    amount Number of items to sell.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCommerceSell(ByVal Slot As Byte, ByVal Amount As Integer)
+Public Sub WriteCommerceSell(ByVal slot As Byte, ByVal Amount As Integer)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8812,7 +8812,7 @@ Public Sub WriteCommerceSell(ByVal Slot As Byte, ByVal Amount As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.CommerceSell)
         
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
         Call .WriteInteger(Amount)
 
     End With
@@ -8826,7 +8826,7 @@ End Sub
 ' @param    amount Number of items to deposit.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteBankDeposit(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
+Public Sub WriteBankDeposit(ByVal slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8835,7 +8835,7 @@ Public Sub WriteBankDeposit(ByVal Slot As Byte, ByVal Amount As Integer, ByVal s
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.BankDeposit)
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
         Call .WriteInteger(Amount)
         Call .WriteByte(slotdestino)
 
@@ -8874,7 +8874,7 @@ End Sub
 ' @param    slot Spell List slot where the spell which's info is requested is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal Slot As Byte)
+Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal slot As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8885,7 +8885,7 @@ Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal Slot As Byte)
         Call .WriteByte(ClientPacketID.MoveSpell)
         
         Call .WriteBoolean(upwards)
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
 
     End With
 
@@ -8924,7 +8924,7 @@ End Sub
 ' @param    amount Number of items to offer.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteUserCommerceOffer(ByVal Slot As Byte, ByVal Amount As Long)
+Public Sub WriteUserCommerceOffer(ByVal slot As Byte, ByVal Amount As Long)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8934,7 +8934,7 @@ Public Sub WriteUserCommerceOffer(ByVal Slot As Byte, ByVal Amount As Long)
     With outgoingData
         Call .WriteByte(ClientPacketID.UserCommerceOffer)
         
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
         Call .WriteLong(Amount)
 
     End With
@@ -13048,7 +13048,7 @@ End Sub
 ' @param    slot        The slot to be checked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCheckSlot(ByVal UserName As String, ByVal Slot As Byte)
+Public Sub WriteCheckSlot(ByVal UserName As String, ByVal slot As Byte)
 
     '***************************************************
     'Author: Pablo (ToxicWaste)
@@ -13058,7 +13058,7 @@ Public Sub WriteCheckSlot(ByVal UserName As String, ByVal Slot As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.CheckSlot)
         Call .WriteASCIIString(UserName)
-        Call .WriteByte(Slot)
+        Call .WriteByte(slot)
 
     End With
 

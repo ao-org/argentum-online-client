@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmMapaGrande 
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
@@ -672,7 +672,7 @@ Private Sub ListView1_Click()
     
     If ListView1.SelectedItem.SubItems(2) <> "" Then
     
-        If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza <> "" Then
+        If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza <> 0 Then
 
             '    Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(1)).grhindex,' 0, 0, False)
             If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza = 0 Then Exit Sub

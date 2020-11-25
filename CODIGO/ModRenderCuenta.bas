@@ -15,25 +15,25 @@ Public Sub Engine_Convert_List(rgb_list() As Long, long_color As Long)
     
 End Sub
 
-Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As Long)
+Public Sub Engine_Draw_Box(ByVal X As Integer, ByVal Y As Integer, ByVal Width As Integer, ByVal Height As Integer, color As Long)
 
-    Call Engine_Long_To_RGB_List(temp_rgb(), Color)
+    Call Engine_Long_To_RGB_List(temp_rgb(), color)
 
     Call SpriteBatch.SetTexture(Nothing)
-    Call SpriteBatch.Draw(x, y, Width, Height, temp_rgb())
+    Call SpriteBatch.Draw(X, Y, Width, Height, temp_rgb())
 
 End Sub
 
-Public Sub Engine_Draw_Box_Border(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As Long, ColorLine As Long)
+Public Sub Engine_Draw_Box_Border(ByVal X As Integer, ByVal Y As Integer, ByVal Width As Integer, ByVal Height As Integer, color As Long, ColorLine As Long)
 
-    Call Engine_Draw_Box(x, y, Width, Height, Color)
+    Call Engine_Draw_Box(X, Y, Width, Height, color)
 
     Call Engine_Long_To_RGB_List(temp_rgb(), ColorLine)
 
-    Call Engine_Draw_Box(x, y, Width, 1, ColorLine)
-    Call Engine_Draw_Box(x, y + Height, Width, 1, ColorLine)
-    Call Engine_Draw_Box(x, y, 1, Height, ColorLine)
-    Call Engine_Draw_Box(x + Width, y, 1, Height, ColorLine)
+    Call Engine_Draw_Box(X, Y, Width, 1, ColorLine)
+    Call Engine_Draw_Box(X, Y + Height, Width, 1, ColorLine)
+    Call Engine_Draw_Box(X, Y, 1, Height, ColorLine)
+    Call Engine_Draw_Box(X + Width, Y, 1, Height, ColorLine)
 
 End Sub
 

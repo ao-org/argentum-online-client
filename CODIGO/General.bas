@@ -473,7 +473,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
         Case E_Heading.EAST
             LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
 
-        Case E_Heading.SOUTH
+        Case E_Heading.south
             LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
 
         Case E_Heading.WEST
@@ -630,7 +630,7 @@ Sub Check_Keys()
         
                 'Move down
                 If keysMovementPressedQueue.GetLastItem() = BindKeys(15).KeyCode Then
-                    Call MoveTo(E_Heading.SOUTH)
+                    Call MoveTo(E_Heading.south)
 
                     '  Exit Sub
                 End If
@@ -1089,18 +1089,18 @@ Private Sub InicializarNombres()
    ' ListaCiudades(eCiudad.cHillidan) = "Hillidan"
 
     ListaClases(eClass.Mage) = "Mago"
-    ListaClases(eClass.Cleric) = "Clerigo"
+    ListaClases(eClass.Cleric) = "ClÈrigo"
     ListaClases(eClass.Warrior) = "Guerrero"
     ListaClases(eClass.Assasin) = "Asesino"
     ListaClases(eClass.Bard) = "Bardo"
     ListaClases(eClass.Druid) = "Druida"
-    ListaClases(eClass.paladin) = "Paladin"
+    ListaClases(eClass.paladin) = "PaladÌn"
     ListaClases(eClass.Hunter) = "Cazador"
     ListaClases(eClass.Trabajador) = "Trabajador"
 
     SkillsNames(eSkill.magia) = "Magia"
     SkillsNames(eSkill.Robar) = "Robar"
-    SkillsNames(eSkill.Tacticas) = "Tacticas de combate"
+    SkillsNames(eSkill.Tacticas) = "Destreza en combate"
     SkillsNames(eSkill.Armas) = "Combate con armas"
     SkillsNames(eSkill.Meditar) = "Meditar"
     SkillsNames(eSkill.ApuÒalar) = "ApuÒalar"
@@ -1109,18 +1109,18 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Comerciar) = "Comercio"
     SkillsNames(eSkill.Defensa) = "Defensa con escudos"
     SkillsNames(eSkill.Liderazgo) = "Liderazgo"
-    SkillsNames(eSkill.Proyectiles) = "Armas de proyectiles"
-    SkillsNames(eSkill.Wrestling) = "Artes Marciales"
+    SkillsNames(eSkill.Proyectiles) = "Armas a distancia"
+    SkillsNames(eSkill.Wrestling) = "Combate sin armas"
     SkillsNames(eSkill.Navegacion) = "Navegacion"
     SkillsNames(eSkill.equitacion) = "EquitaciÛn"
     SkillsNames(eSkill.Resistencia) = "Resistencia M·gica"
     SkillsNames(eSkill.Talar) = "Tala"
     SkillsNames(eSkill.Pescar) = "Pesca"
-    SkillsNames(eSkill.Mineria) = "Mineria"
-    SkillsNames(eSkill.Herreria) = "Herreria"
-    SkillsNames(eSkill.Carpinteria) = "Carpinteria"
+    SkillsNames(eSkill.Mineria) = "MinerÌa"
+    SkillsNames(eSkill.Herreria) = "HerrerÌa"
+    SkillsNames(eSkill.Carpinteria) = "CarpinteriÌa"
     SkillsNames(eSkill.Alquimia) = "Alquimia"
-    SkillsNames(eSkill.Sastreria) = "Sastreria"
+    SkillsNames(eSkill.Sastreria) = "SastrerÌa"
     SkillsNames(eSkill.Domar) = "Domar"
 
     SkillsDesc(eSkill.magia) = "Los hechizos requieren un cierto n˙mero de puntos m·gicos para ser usados. Sube lanzando cualquier hechizo."
@@ -1383,15 +1383,15 @@ errhandler:
 
 End Function
 
-Public Function Tilde(ByRef data As String) As String
+Public Function Tilde(ByRef Data As String) As String
 
-    data = UCase$(data)
+    Tilde = UCase$(Data)
  
-    data = Replace$(data, "¡Å", "A")
-    data = Replace$(data, "…", "E")
-    data = Replace$(data, "Õç", "I")
-    data = Replace$(data, "”", "O")
-    data = Replace$(data, "⁄", "U")
+    Tilde = Replace$(Tilde, "¡Å", "A")
+    Tilde = Replace$(Tilde, "…", "E")
+    Tilde = Replace$(Tilde, "Õç", "I")
+    Tilde = Replace$(Tilde, "”", "O")
+    Tilde = Replace$(Tilde, "⁄", "U")
         
 End Function
 

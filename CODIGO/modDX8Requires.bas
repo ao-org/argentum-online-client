@@ -68,9 +68,8 @@ Public D3DWindow As D3DPRESENT_PARAMETERS
 
 Public SpriteBatch As New clsBatch
 
-Public Viewport As D3DVIEWPORT8
 Public Projection As D3DMATRIX
-Public View As D3DMATRIX
+Public IdentityMatrix As D3DMATRIX
 
 Public Type TYPE_VERTEX
 
@@ -80,8 +79,8 @@ Public Type TYPE_VERTEX
  
     Color   As Long
    
-    tx      As Single
-    ty      As Single
+    TX      As Single
+    TY      As Single
 
 End Type
 

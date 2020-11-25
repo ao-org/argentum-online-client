@@ -102,6 +102,12 @@ Public Type GrhData
     speed As Single
     active As Boolean
     MiniMap_color As Long
+    
+    ' Precalculated
+    Tx1 As Single
+    Tx2 As Single
+    Ty1 As Single
+    Ty2 As Single
 
 End Type
 
@@ -118,6 +124,10 @@ Public Type grh
     CantAnim As Long
     Alpha As Byte
     FxIndex As Integer
+    
+    ' Precalculated
+    x As Single
+    y As Single
 
 End Type
 
@@ -359,6 +369,10 @@ Public WindowTileHeight       As Integer
 Public HalfWindowTileWidth    As Integer
 Public HalfWindowTileHeight   As Integer
 
+'Tamaño del connect
+Public HalfConnectTileWidth   As Integer
+Public HalfConnectTileHeight  As Integer
+
 'Offset del desde 0,0 del main view
 Public MainViewTop            As Integer
 Public MainViewLeft           As Integer
@@ -484,11 +498,14 @@ Public Sub Init_TileEngine()
     HalfWindowTileHeight = (frmmain.renderer.ScaleHeight / 32) \ 2
     HalfWindowTileWidth = (frmmain.renderer.ScaleWidth / 32) \ 2
     
-    TileBufferSizeX = 5
-    TileBufferSizeY = 9
-    TileBufferPixelOffsetX = (TileBufferSizeX - 1) * 32
-    TileBufferPixelOffsetY = (TileBufferSizeY - 1) * 32
+    HalfConnectTileHeight = (frmConnect.render.ScaleHeight / 32) \ 2
+    HalfConnectTileWidth = (frmConnect.render.ScaleWidth / 32) \ 2
     
+    TileBufferSizeX = 6
+    TileBufferSizeY = 9
+    TileBufferPixelOffsetX = -TileBufferSizeX * TilePixelWidth
+    TileBufferPixelOffsetY = -TileBufferSizeY * TilePixelHeight
+
     ReDim MapData(XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
     
     UserPos.x = 50
@@ -546,11 +563,25 @@ Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Star
         grh.Loops = INFINITE_LOOPS
     Else
         grh.Loops = 0
-
     End If
     
     grh.framecounter = 1
     grh.speed = GrhData(grh.GrhIndex).speed
+    
+    'Precalculate texture coordinates
+    With GrhData(grh.GrhIndex)
+        If .Tx2 = 0 And .FileNum > 0 Then
+            Dim Texture As Direct3DTexture8
+
+            Dim TextureWidth As Long, TextureHeight As Long
+            Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
+        
+            .Tx1 = .sX / TextureWidth
+            .Tx2 = (.sX + .pixelWidth) / TextureWidth
+            .Ty1 = .sY / TextureHeight
+            .Ty2 = (.sY + .pixelHeight) / TextureHeight
+        End If
+    End With
 
 End Sub
 
@@ -690,7 +721,7 @@ Sub MoveCharbyPos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As I
         End If
         
         If Sgn(addy) = 1 Then
-            nHeading = E_Heading.SOUTH
+            nHeading = E_Heading.south
 
         End If
         
@@ -741,7 +772,7 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
         Case E_Heading.EAST
             x = 1
         
-        Case E_Heading.SOUTH
+        Case E_Heading.south
             y = 1
         
         Case E_Heading.WEST
@@ -912,7 +943,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
 
     End If
    
-    If UserNavegando <> ((MapData(x, y).Blocked And FLAG_AGUA) <> 0) Then
+    If UserNavegando <> ((MapData(x, y).Blocked And FLAG_AGUA) <> 0 And (MapData(x, y).Blocked And FLAG_COSTA) = 0) Then
         Exit Function
 
     End If

@@ -12,7 +12,6 @@ Begin VB.Form frmEstadisticas
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "FrmEstadisticas.frx":000C
    ScaleHeight     =   551
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   690
@@ -1975,7 +1974,7 @@ Option Explicit
 
 Public bmoving      As Boolean
 
-Public dX           As Integer
+Public dx           As Integer
 
 Public dy           As Integer
 
@@ -2013,7 +2012,7 @@ Public Sub Iniciar_Labels()
     For i = 1 To NUMSKILLS
         If UserSkills(i) > 100 Then UserSkills(i) = 100
 
-        text1(i).Caption = UserSkills(i)
+        Text1(i).Caption = UserSkills(i)
     Next
 
     Select Case UserEstadisticas.Alineacion
@@ -2085,8 +2084,8 @@ Private Sub Command1_Click(Index As Integer)
             indice = Index \ 2 + 1
 
             If indice > NUMSKILLS Then indice = NUMSKILLS
-            If Val(text1(indice).Caption) < MAXSKILLPOINTS Then
-                text1(indice).Caption = Val(text1(indice).Caption) + 1
+            If Val(Text1(indice).Caption) < MAXSKILLPOINTS Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) + 1
                 flags(indice) = flags(indice) + 1
                 Alocados = Alocados - 1
                 RealizoCambios = RealizoCambios + 1
@@ -2101,8 +2100,8 @@ Private Sub Command1_Click(Index As Integer)
         
             indice = Index \ 2 + 1
 
-            If Val(text1(indice).Caption) > 0 And flags(indice) > 0 Then
-                text1(indice).Caption = Val(text1(indice).Caption) - 1
+            If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
+                Text1(indice).Caption = Val(Text1(indice).Caption) - 1
                 flags(indice) = flags(indice) - 1
                 Alocados = Alocados + 1
                 RealizoCambios = RealizoCambios - 1
@@ -2117,16 +2116,16 @@ Private Sub Command1_Click(Index As Integer)
 
     Dim ladder As Byte
 
-    ladder = Val(text1(indice).Caption)
+    ladder = Val(Text1(indice).Caption)
 
     If UserSkills(indice) < ladder Then
-        text1(indice).ForeColor = vbRed
+        Text1(indice).ForeColor = vbRed
         PonerloEnRojo(indice) = True
 
     End If
 
     If UserSkills(indice) = ladder Then
-        text1(indice).ForeColor = &H40C0&
+        Text1(indice).ForeColor = &H40C0&
         RealizoCambios = RealizoCambios - 1
         PonerloEnRojo(indice) = False
 
@@ -2140,20 +2139,20 @@ Private Sub Command2_Click()
 End Sub
 
 Private Sub Command1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    Set command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-off.bmp", "boton-sm-flecha-der-off.bmp"))
-    command1(Index).Tag = "1"
+    Set Command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-off.bmp", "boton-sm-flecha-der-off.bmp"))
+    Command1(Index).Tag = "1"
 End Sub
 
 Private Sub Command1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    If command1(Index).Tag = "0" Then
-        Set command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-over.bmp", "boton-sm-flecha-der-over.bmp"))
-        command1(Index).Tag = "1"
+    If Command1(Index).Tag = "0" Then
+        Set Command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-over.bmp", "boton-sm-flecha-der-over.bmp"))
+        Command1(Index).Tag = "1"
     End If
 End Sub
 
 Private Sub command1_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    Set command1(Index) = Nothing
-    command1(Index).Tag = "0"
+    Set Command1(Index) = Nothing
+    Command1(Index).Tag = "0"
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -2186,13 +2185,13 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            text1(a).ForeColor = &HEA4EB
+            Text1(a).ForeColor = &HEA4EB
 
             'Skills(a).ForeColor = vbWhite
         End If
 
         If PonerloEnRojo(a) = True Then
-            text1(a).ForeColor = vbRed
+            Text1(a).ForeColor = vbRed
 
         End If
 
@@ -2209,9 +2208,9 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     End If
 
     For a = 0 To NUMSKILLS * 2 - 1
-        If command1(a).Tag = "1" Then
-            Set command1(a).Picture = Nothing
-            command1(a).Tag = "0"
+        If Command1(a).Tag = "1" Then
+            Set Command1(a).Picture = Nothing
+            Command1(a).Tag = "0"
         End If
     Next
 
@@ -2232,9 +2231,9 @@ Private Sub Image1_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(text1(i).Caption)
+                UserSkills(i) = Val(Text1(i).Caption)
         
             Next i
     
@@ -2278,9 +2277,9 @@ Private Sub imgCerrar_Click()
             Dim i                       As Long
 
             For i = 1 To NUMSKILLS
-                skillChanges(i) = CByte(text1(i).Caption) - UserSkills(i)
+                skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(text1(i).Caption)
+                UserSkills(i) = Val(Text1(i).Caption)
             Next i
     
             Call WriteModifySkills(skillChanges())
@@ -2325,14 +2324,14 @@ Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integ
     For a = 1 To NUMSKILLS
 
         If Not PonerloEnRojo(a) Then
-            text1(a).ForeColor = &HEA4EB
+            Text1(a).ForeColor = &HEA4EB
 
         End If
 
         'Skills(a).ForeColor = vbWhite
     Next a
 
-    text1(Index).ForeColor = vbBlue
+    Text1(Index).ForeColor = vbBlue
 
     'Skills(index).ForeColor = vbBlue
 End Sub

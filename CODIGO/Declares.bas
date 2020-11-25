@@ -543,7 +543,7 @@ Public Enum E_Heading
 
     NORTH = 1
     EAST = 2
-    SOUTH = 3
+    south = 3
     WEST = 4
 
 End Enum
@@ -552,7 +552,7 @@ Public Enum eBlock
 
     NORTH = &H1
     EAST = &H2
-    SOUTH = &H4
+    south = &H4
     WEST = &H8
     ALL_SIDES = &HF
     GM = &H10
@@ -573,6 +573,8 @@ Public Const FLAGORO                 As Integer = 200
 Public Const FLAG_AGUA               As Byte = &H20
 
 Public Const FLAG_ARBOL              As Byte = &H40
+
+Public Const FLAG_COSTA              As Byte = &H80
 
 Public Const PRIMER_TRIGGER_TECHO    As Byte = 9
 
@@ -1170,7 +1172,7 @@ Public Type tIndiceFx
 
     Animacion As Long
     OffsetX As Integer
-    Offsety As Integer
+    OffsetY As Integer
     IsPNG As Integer
 
 End Type
