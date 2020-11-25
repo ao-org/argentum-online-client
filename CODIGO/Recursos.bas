@@ -1401,15 +1401,12 @@ Public Sub CargarIndicesOBJ()
     ReDim HechizoData(0 To NumHechizos) As HechizoDatas
     ReDim Locale_SMG(0 To NumLocaleMsg) As String
     
-    ReDim Quest_Name(1 To NumQuest) As String
-    ReDim Quest_Desc(1 To NumQuest) As String
+    
+    ReDim QuestList(1 To NumQuest)
+
     
     ReDim Sugerencia(1 To NumSug) As String
-    
-    ReDim DESCFINAL(1 To NumQuest) As String
-    ReDim NEXTQUEST(1 To NumQuest) As String
-    
-    ReDim RequiredLevel(1 To NumQuest) As Integer
+
     
     ReDim PosMap(1 To NumQuest) As Integer
 
@@ -1512,11 +1509,13 @@ Public Sub CargarIndicesOBJ()
     
     For Hechizo = 1 To NumQuest
         DoEvents
-        Quest_Name(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
-        Quest_Desc(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "DESC")
-        NEXTQUEST(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
-        DESCFINAL(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
-        RequiredLevel(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
+        
+        QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
+        
+        QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
+        QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
+        QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
+        QuestList(Hechizo).RequiredLevel = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
         PosMap(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "PosMap")
     Next Hechizo
     

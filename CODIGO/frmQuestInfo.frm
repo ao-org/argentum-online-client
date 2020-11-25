@@ -1,19 +1,39 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
 Begin VB.Form FrmQuestInfo 
-   BackColor       =   &H00000709&
+   Appearance      =   0  'Flat
+   BackColor       =   &H80000005&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
    ClientHeight    =   6510
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   10365
+   ClientWidth     =   12810
    LinkTopic       =   "Form1"
    Picture         =   "frmQuestInfo.frx":0000
    ScaleHeight     =   6510
-   ScaleWidth      =   10365
+   ScaleWidth      =   12810
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.ListBox lstQuests 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   3540
+      Left            =   10440
+      TabIndex        =   8
+      Top             =   1320
+      Width           =   2115
+   End
    Begin VB.PictureBox picture1 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -377,3 +397,92 @@ Public Sub ListView2_Click()
 
 End Sub
 
+Private Sub lstQuests_Click()
+Dim QuestIndex As Byte
+
+QuestIndex = Val(ReadField(1, lstQuests.List(lstQuests.ListIndex), Asc("-")))
+
+FrmQuestInfo.ListView2.ListItems.Clear
+FrmQuestInfo.ListView1.ListItems.Clear
+            
+                FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
+               
+                
+                FrmQuestInfo.detalle.Caption = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf
+                'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
+                'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
+               
+               
+
+                
+                
+                If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
+                    If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
+                        FrmQuestInfo.ListView1.FlatScrollBar = False
+                    Else
+                        FrmQuestInfo.ListView1.FlatScrollBar = True
+               
+                    End If
+                    
+                    
+                    For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
+                                                
+
+                            Dim subelemento As ListItem
+    
+                            Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
+                           
+                            subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
+                            subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
+                            subelemento.SubItems(3) = 0
+
+    
+                    Next i
+    
+                End If
+                    
+    
+                If LBound(QuestList(QuestIndex).RequiredOBJ) > 0 Then  'Hay OBJs
+    
+                    For i = 1 To UBound(QuestList(QuestIndex).RequiredOBJ)
+                        Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).OBJIndex).Name)
+                        subelemento.SubItems(1) = QuestList(QuestIndex).RequiredOBJ(i).Amount
+                        subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).OBJIndex
+                        subelemento.SubItems(3) = 1
+                    Next i
+    
+                End If
+        
+               
+                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
+                           
+                subelemento.SubItems(1) = QuestList(QuestIndex).RewardGLD
+                subelemento.SubItems(2) = 12
+                subelemento.SubItems(3) = 0
+               
+                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
+                           
+                subelemento.SubItems(1) = QuestList(QuestIndex).RewardEXP
+                subelemento.SubItems(2) = 608
+                subelemento.SubItems(3) = 1
+               
+
+                If UBound(QuestList(QuestIndex).RewardOBJ) > 0 Then
+                
+                    
+                    For i = 1 To UBound(QuestList(QuestIndex).RewardOBJ)
+
+                                                                   
+                        Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).OBJIndex).Name)
+                           
+                        subelemento.SubItems(1) = QuestList(QuestIndex).RewardOBJ(i).Amount
+                        subelemento.SubItems(2) = QuestList(QuestIndex).RewardOBJ(i).OBJIndex
+                        subelemento.SubItems(3) = 1
+                               
+               
+                    Next i
+    
+                End If
+
+
+End Sub

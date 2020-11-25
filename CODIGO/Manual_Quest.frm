@@ -199,7 +199,7 @@ Private Sub Form_Load()
     Dim i As Byte
 
     For i = 1 To NumQuest
-        List1.AddItem Quest_Name(i)
+        List1.AddItem QuestList(i).nombre
     Next i
 
     List1.ListIndex = 0
@@ -207,8 +207,8 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub List1_Click()
-    ubicacion = "Ubicación: " & NameMaps(PosMap(List1.ListIndex + 1)).name & "(" & PosMap(List1.ListIndex + 1) & ")"
-    descripccion = "Descripción: " & Quest_Desc(List1.ListIndex + 1)
-    nivel = "Nivel requerido: " & RequiredLevel(List1.ListIndex + 1)
+    ubicacion = "Ubicación: " & NameMaps(PosMap(List1.ListIndex + 1)).Name & "(" & PosMap(List1.ListIndex + 1) & ")"
+    descripccion = "Descripción: " & QuestList(List1.ListIndex + 1).desc
+    nivel = "Nivel requerido: " & QuestList(List1.ListIndex + 1).RequiredLevel
 
 End Sub
