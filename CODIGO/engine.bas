@@ -525,6 +525,62 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     End With
 End Sub
 
+Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean = False, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
+
+    On Error Resume Next
+
+    Dim CurrentGrhIndex As Long
+
+    If grh.GrhIndex = 0 Then Exit Sub
+    If animate Then
+        If grh.Started = 1 Then
+            grh.framecounter = grh.framecounter + (timerElapsedTime * GrhData(grh.GrhIndex).NumFrames / grh.speed) * 0.5
+
+            If grh.framecounter > GrhData(grh.GrhIndex).NumFrames Then
+                grh.framecounter = (grh.framecounter Mod GrhData(grh.GrhIndex).NumFrames) + 1
+                
+                If grh.Loops <> -1 Then
+                    If grh.Loops > 0 Then
+                        grh.Loops = grh.Loops - 1
+                    Else
+                        grh.Started = 0
+
+                        Rem Exit Sub 'Agregado por Ladder 08/09/2014
+                    End If
+
+                End If
+
+            End If
+
+        End If
+
+    End If
+    
+    'Figure out what frame to draw (always 1 if not animated)
+    CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(grh.framecounter)
+
+    'Center Grh over X,Y pos
+    If center Then
+        If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
+            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
+        End If
+
+        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
+        End If
+    End If
+
+    With GrhData(CurrentGrhIndex)
+
+        If .Tx2 > 0 Then
+            Call Batch_Textured_Box_Pre(x, y, .pixelWidth, .pixelHeight, .Tx1, .Ty1, .Tx2, .Ty2, .FileNum, rgb_list, Alpha, angle)
+        Else
+            Call Batch_Textured_Box(x, y, .pixelWidth, .pixelHeight, .sX, .sY, .FileNum, rgb_list, Alpha, angle)
+        End If
+    
+    End With
+End Sub
+
 Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As Long, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal charindex As Integer)
 
     On Error Resume Next
