@@ -127,7 +127,6 @@ Class=clsIniManager; CODIGO\clsIniManager.cls
 Module=Recursos; CODIGO\Recursos.bas
 Class=clsBatch; CODIGO\clsBatch.cls
 Module=TileEngine_RenderScreen; CODIGO\TileEngine_RenderScreen.bas
-Class=cStringBuilder; CODIGO\cStringBuilder.cls
 ResFile32="RAO.res"
 IconForm="frmmain"
 Startup="Sub Main"
