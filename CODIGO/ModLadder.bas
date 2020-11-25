@@ -7,7 +7,7 @@ Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
 
 'Nueva seguridad
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal Length As Long)
 Private Declare Function GetAdaptersInfo Lib "iphlpapi" (lpAdapterInfo As Any, lpSize As Long) As Long
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 'get mac adress
@@ -143,13 +143,53 @@ Public NumHechizos        As Integer
 Public NumLocaleMsg       As Integer
 Public NumQuest           As Integer
 Public NumSug             As Integer
-
 Public Sugerencia()       As String
-Public Quest_Name()       As String
-Public Quest_Desc()       As String
-Public DESCFINAL()        As String
-Public NEXTQUEST()        As String
-Public RequiredLevel()    As Integer
+
+
+
+
+Public Type tQuestNpc
+
+    NpcIndex As Integer
+    Amount As Integer
+
+End Type
+ 
+Public Type tUserQuest
+
+    NPCsKilled() As Integer
+    QuestIndex As Integer
+
+End Type
+
+Public QuestList() As tQuest
+
+Public Type tQuest
+
+    nombre As String
+    desc As String
+    NextQuest As String
+    DescFinal As String
+    RequiredLevel As Byte
+    
+    RequiredQuest As Byte
+    
+    RequiredOBJs As Byte
+    RequiredOBJ() As Obj
+    
+    RequiredNPCs As Byte
+    RequiredNPC() As tQuestNpc
+    
+    RewardGLD As Long
+    RewardEXP As Long
+    
+    RewardOBJs As Byte
+    RewardOBJ() As Obj
+    Repetible As Byte
+
+End Type
+
+
 Public PosMap()           As Integer
 
 Public ObjData()          As ObjDatas
@@ -550,7 +590,7 @@ Public Sub LogError(desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\errores.log" For Append Shared As #nfile
-    Print #nfile, Date & "-" & time & ":" & desc
+    Print #nfile, Date & "-" & Time & ":" & desc
     Close #nfile
 
     Exit Sub
@@ -1352,14 +1392,14 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
         Dim i As Byte
  
         For i = 2 To MaxLineas
-            Con(i - 1).T = Con(i).T
+            Con(i - 1).t = Con(i).t
             'Con(i - 1).Color = Con(i).Color
             Con(i - 1).b = Con(i).b
             Con(i - 1).g = Con(i).g
             Con(i - 1).r = Con(i).r
         Next i
  
-        Con(MaxLineas).T = vbCrLf & "[" & Name & "] " & ChatText
+        Con(MaxLineas).t = vbCrLf & "[" & Name & "] " & ChatText
         Con(MaxLineas).b = blue
         Con(MaxLineas).g = green
         Con(MaxLineas).r = red
@@ -1563,14 +1603,14 @@ Function EncryptStr(ByVal s As String, ByVal p As String) As String
 
     Dim i  As Integer, r As String
 
-    Dim C1 As Integer, C2 As Integer
+    Dim c1 As Integer, C2 As Integer
 
     r = ""
 
     If Len(p) > 0 Then
 
         For i = 1 To Len(s)
-            C1 = Asc(mid(s, i, 1))
+            c1 = Asc(mid(s, i, 1))
 
             If i > Len(p) Then
                 C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
@@ -1579,10 +1619,10 @@ Function EncryptStr(ByVal s As String, ByVal p As String) As String
 
             End If
 
-            C1 = C1 + C2 + 64
+            c1 = c1 + C2 + 64
 
-            If C1 > 255 Then C1 = C1 - 256
-            r = r + Chr(C1)
+            If c1 > 255 Then c1 = c1 - 256
+            r = r + Chr(c1)
         Next i
 
     Else
@@ -1601,14 +1641,14 @@ Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
 
     Dim i  As Integer, r As String
 
-    Dim C1 As Integer, C2 As Integer
+    Dim c1 As Integer, C2 As Integer
 
     r = ""
 
     If Len(p) > 0 Then
 
         For i = 1 To Len(s)
-            C1 = Asc(mid(s, i, 1))
+            c1 = Asc(mid(s, i, 1))
 
             If i > Len(p) Then
                 C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
@@ -1617,10 +1657,10 @@ Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
 
             End If
 
-            C1 = C1 - C2 - 64
+            c1 = c1 - C2 - 64
 
-            If Sgn(C1) = -1 Then C1 = 256 + C1
-            r = r + Chr(C1)
+            If Sgn(c1) = -1 Then c1 = 256 + c1
+            r = r + Chr(c1)
         Next i
 
     Else
