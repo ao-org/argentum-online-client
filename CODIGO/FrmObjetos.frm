@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form FrmObjetos 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Crear objeto"
@@ -216,20 +216,16 @@ Option Explicit
   
 'UDT necesarias para usar con SendMessage
 Private Type POINTAPI
-
     x As Long
     y As Long
-
 End Type
 
 Private Type LVFINDINFO
-
     flags As Long
     psz As String
     lParam As Long
     pt As POINTAPI
     vkDirection As Long
-
 End Type
 
 'Función Api SendMessage
@@ -237,17 +233,11 @@ Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hw
   
 'Constantes para SendMessage
 Private Const LVM_FIRST = &H1000
-
 Private Const LVM_FINDITEM = (LVM_FIRST + 13)
-
 Private Const LVFI_PARAM = &H1
-
 Private Const LVFI_STRING = &H2
-
 Private Const LVFI_PARTIAL = &H8
-
 Private Const LVFI_WRAP = &H20
-
 Private Const LVFI_NEARESTXY = &H40
   
 'Variable de retorno y para la estructura
@@ -266,11 +256,8 @@ Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
     LFI.flags = LVFI_PARTIAL Or LVFI_WRAP Or LVFI_WRAP
     'End If
       
-    If Cadena = "" Then
-        Exit Sub
+    If Len(Cadena) = 0 Then Exit Sub
 
-    End If
-  
     'Se le asigna a esta variable la cadena que luego se le envía a SendMessage
     LFI.psz = Cadena
       
@@ -278,15 +265,20 @@ Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
     lRet = SendMessage(ListView.hwnd, LVM_FINDITEM, -1, LFI)
       
     If lRet >= 0 Then
+        
         'Seleccionamos el item del Listview
         ListView.SelectedItem = ListView.ListItems(lRet + 1)
+        
         'Propiedad opcional
         ListView.HideSelection = False
+        
         'Si el item se encuentra fuera del área visible desplazamos la lista _
          para poder visualizarlo con el método EnsureVisible
         ListView.SelectedItem.EnsureVisible
         ListView.SetFocus
+        
     Else
+        
         'No se encontró
         MsgBox (" Elemento no encontrado "), vbInformation
 
@@ -320,8 +312,10 @@ End Sub
   
 Private Sub Command1_Click()
 
-    If ListView1.SelectedItem.SubItems(1) <> "" Then
-
+    If Len(ListView1.SelectedItem.SubItems(1)) <> 0 Then
+        
+        If Text2.Text > MAX_INVENTORY_OBJS Then Exit Sub
+        
         Call WriteCreateItem(ListView1.SelectedItem.SubItems(1), Text2.Text)
 
     End If
@@ -330,20 +324,18 @@ End Sub
 
 Private Sub Command2_Click()
     Unload Me
-
 End Sub
+
 Private Sub Form_KeyPress(KeyAscii As Integer)
 
-    If (KeyAscii = 27) Then
-        Unload Me
-
-    End If
+    If (KeyAscii = vbKeyEscape) Then Unload Me
 
 End Sub
 
 Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
 
-    If ListView1.SelectedItem.SubItems(1) <> "" Then
+    If Len(ListView1.SelectedItem.SubItems(1)) <> 0 Then
+    
         Call Grh_Render_To_Hdc(picture1, ObjData(ListView1.SelectedItem.SubItems(1)).GrhIndex, 0, 0, False)
 
     End If
@@ -351,7 +343,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
 End Sub
 
 Private Sub Text1_KeyDown(KeyCode As Integer, Shift As Integer)
-    If KeyCode = vbKeyReturn Then
-        Command3_Click
-    End If
+
+    If KeyCode = vbKeyReturn Then Command3_Click
+
 End Sub

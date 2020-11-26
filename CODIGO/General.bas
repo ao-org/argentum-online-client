@@ -209,14 +209,14 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     Dim i As Byte
  
     For i = 2 To MaxLineas
-        Con(i - 1).T = Con(i).T
+        Con(i - 1).t = Con(i).t
         'Con(i - 1).Color = Con(i).Color
         Con(i - 1).b = Con(i).b
         Con(i - 1).g = Con(i).g
         Con(i - 1).r = Con(i).r
     Next i
  
-    Con(MaxLineas).T = Text
+    Con(MaxLineas).t = Text
     Con(MaxLineas).b = blue
     Con(MaxLineas).g = green
     Con(MaxLineas).r = red
@@ -596,15 +596,30 @@ Sub Check_Keys()
 
     Static lastMovement As Long
 
-    Dim Direccion       As E_Heading
+    Dim Direccion As E_Heading
 
     Direccion = charlist(UserCharIndex).Heading
 
     If Not Application.IsAppActive() Then Exit Sub
 
-    'If Not Not Not pausa And frmMain.Visible
-
-    If Not Not Not pausa And frmmain.Visible And Not frmComerciarUsu.Visible And Not frmBancoObj.Visible And Not frmOpciones.Visible And Not frmComerciar.Visible And Not frmCantidad.Visible And Not frmGoliath.Visible And Not FrmCorreo.Visible And Not frmEstadisticas.Visible And Not frmAlqui.Visible And Not frmCarp.Visible And Not frmHerrero.Visible And Not FrmGrupo.Visible And Not FrmShop.Visible And Not FrmSastre.Visible And Not FrmCorreo.Visible And Not FrmGmAyuda.Visible Then
+    If Not pausa And _
+        frmmain.Visible And _
+        Not frmComerciarUsu.Visible And _
+        Not frmBancoObj.Visible And _
+        Not frmOpciones.Visible And _
+        Not frmComerciar.Visible And _
+        Not frmCantidad.Visible And _
+        Not frmGoliath.Visible And _
+        Not FrmCorreo.Visible And _
+        Not frmEstadisticas.Visible And _
+        Not frmAlqui.Visible And _
+        Not frmCarp.Visible And _
+        Not frmHerrero.Visible And _
+        Not FrmGrupo.Visible And _
+        Not FrmShop.Visible And _
+        Not FrmSastre.Visible And _
+        Not FrmCorreo.Visible And _
+        Not FrmGmAyuda.Visible Then
  
         If frmmain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub
  
@@ -613,45 +628,33 @@ Sub Check_Keys()
                 If Not MainTimer.Check(TimersIndex.Walk, False) Then Exit Sub
 
                 Call AddMovementToKeysMovementPressedQueue
-            
-                'Move Up
-                If keysMovementPressedQueue.GetLastItem() = BindKeys(14).KeyCode Then
-                    Call MoveTo(E_Heading.NORTH)
-
-                    ' Exit Sub
-                End If
-            
-                'Move Right
-                If keysMovementPressedQueue.GetLastItem() = BindKeys(17).KeyCode Then
-                    Call MoveTo(E_Heading.EAST)
-
-                    ' Exit Sub
-                End If
-        
-                'Move down
-                If keysMovementPressedQueue.GetLastItem() = BindKeys(15).KeyCode Then
-                    Call MoveTo(E_Heading.south)
-
-                    '  Exit Sub
-                End If
-        
-                'Move left
-                If keysMovementPressedQueue.GetLastItem() = BindKeys(16).KeyCode Then
-                    Call MoveTo(E_Heading.WEST)
-
-                    ' Exit Sub
-                End If
+                
+                Select Case keysMovementPressedQueue.GetLastItem()
+                    
+                    'Move Up
+                    Case BindKeys(14).KeyCode
+                        Call MoveTo(E_Heading.NORTH)
+                    
+                    'Move Right
+                    Case BindKeys(17).KeyCode
+                        Call MoveTo(E_Heading.EAST)
+                        
+                    'Move down
+                    Case BindKeys(15).KeyCode
+                        Call MoveTo(E_Heading.south)
+                        
+                    'Move left
+                    Case BindKeys(16).KeyCode
+                        Call MoveTo(E_Heading.WEST)
+                        
+                End Select
 
             Else
 
                 Dim kp As Boolean
-
-                kp = (GetKeyState(BindKeys(14).KeyCode) < 0) Or GetKeyState(BindKeys(17).KeyCode) < 0 Or GetKeyState(BindKeys(15).KeyCode) < 0 Or GetKeyState(BindKeys(16).KeyCode) < 0
+                    kp = (GetKeyState(BindKeys(14).KeyCode) < 0) Or GetKeyState(BindKeys(17).KeyCode) < 0 Or GetKeyState(BindKeys(15).KeyCode) < 0 Or GetKeyState(BindKeys(16).KeyCode) < 0
             
-                If kp Then
-                    Call RandomMove
-           
-                End If
+                If kp Then Call RandomMove
 
             End If
 
@@ -1045,16 +1048,16 @@ End Sub
 
 Public Sub LeerLineaComandos()
 
-    Dim T() As String
+    Dim t() As String
 
     Dim i   As Long
     
     'Parseo los comandos
-    T = Split(Command, " ")
+    t = Split(Command, " ")
 
-    For i = LBound(T) To UBound(T)
+    For i = LBound(t) To UBound(t)
 
-        Select Case UCase$(T(i))
+        Select Case UCase$(t(i))
 
             Case "/LAUNCHER" 'no cambiar la resolucion
                 Launcher = True

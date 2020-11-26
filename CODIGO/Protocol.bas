@@ -14941,39 +14941,44 @@ Private Sub HandleListaCorreo()
     Call buffer.ReadByte
     
     Dim cant       As Byte
-
     Dim i          As Byte
-
     Dim Actualizar As Boolean
 
     cant = buffer.ReadByte()
+    
     FrmCorreo.lstMsg.Clear
     FrmCorreo.ListAdjuntos.Clear
-    FrmCorreo.txMensaje.Text = ""
-    FrmCorreo.lbFecha.Caption = ""
-    FrmCorreo.lbItem.Caption = ""
+    FrmCorreo.txMensaje.Text = vbNullString
+    FrmCorreo.lbFecha.Caption = vbNullString
+    FrmCorreo.lbItem.Caption = vbNullString
 
     If cant > 0 Then
 
         For i = 1 To cant
-            CorreoMsj(i).Remitente = buffer.ReadASCIIString()
         
+            CorreoMsj(i).Remitente = buffer.ReadASCIIString()
             CorreoMsj(i).mensaje = buffer.ReadASCIIString()
             CorreoMsj(i).ItemCount = buffer.ReadByte()
             CorreoMsj(i).ItemArray = buffer.ReadASCIIString()
             CorreoMsj(i).Leido = buffer.ReadByte()
             CorreoMsj(i).Fecha = buffer.ReadASCIIString()
+            
             FrmCorreo.lstMsg.AddItem CorreoMsj(i).Remitente
             FrmCorreo.lstMsg.Enabled = True
+            
             FrmCorreo.txMensaje.Enabled = True
         Next i
 
     Else
+    
         FrmCorreo.lstMsg.AddItem ("Sin mensajes")
         FrmCorreo.txMensaje.Enabled = False
 
     End If
-    
+        
+    'If we got here then packet is complete, copy data back to original queue
+    Call incomingData.CopyBuffer(buffer)
+        
     Call FrmCorreo.lstInv.Clear
 
     'Fill the inventory list
@@ -14981,6 +14986,7 @@ Private Sub HandleListaCorreo()
 
         If frmmain.Inventario.OBJIndex(i) <> 0 Then
             FrmCorreo.lstInv.AddItem frmmain.Inventario.ItemName(i)
+            
         Else
             FrmCorreo.lstInv.AddItem "Vacio"
 
@@ -15007,12 +15013,11 @@ Private Sub HandleListaCorreo()
     End If
     
     'chat = Buffer.ReadASCIIString()
-    '  fontIndex = Buffer.ReadByte()
+    'fontIndex = Buffer.ReadByte()
     
     frmmain.PicCorreo.Visible = False
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
+    Exit Sub
     
 errhandler:
 
