@@ -627,7 +627,7 @@ Sub IniciarCrearPj()
 
     For i = LBound(ListaClases()) To UBound(ListaClases())
         frmCrearPersonaje.lstProfesion.AddItem ListaClases(i)
-        Debug.Print ListaClases(i)
+    
     Next i
 
 End Sub
@@ -652,7 +652,7 @@ Sub General_Set_Connect()
     intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")

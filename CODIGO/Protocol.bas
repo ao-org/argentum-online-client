@@ -14209,13 +14209,14 @@ Public Sub WriteQuestDetailsRequest(ByVal QuestSlot As Byte)
 
 End Sub
  
-Public Sub WriteQuestAccept()
+Public Sub WriteQuestAccept(ByVal ListInd As Byte)
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Escribe el paquete QuestAccept al servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     Call outgoingData.WriteByte(ClientPacketID.newPacketID)
     Call outgoingData.WriteByte(NewPacksID.QuestAccept)
+    Call outgoingData.WriteByte(ListInd)
 
 End Sub
  
@@ -14497,7 +14498,7 @@ Private Sub HandleQuestDetails()
     Else
         ' frmQuestInfo.txtInfo.Text = tmpStr
         FrmQuestInfo.Show vbModeless, frmmain
-        FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
+       ' FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
         Call FrmQuestInfo.ListView1_Click
         Call FrmQuestInfo.ListView2_Click
 
@@ -14599,7 +14600,7 @@ Public Sub HandleNpcQuestListSend()
     'Recibe y maneja el paquete QuestListSend del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-   If incomingData.Length < 13 Then
+   If incomingData.Length < 14 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -14630,6 +14631,8 @@ Public Sub HandleNpcQuestListSend()
     Dim OBJIndex      As Integer
     
     Dim QuestIndex    As Integer
+    
+    Dim Estado    As Byte
     
     
     Dim CantidadQuest As Byte
@@ -14758,7 +14761,19 @@ Public Sub HandleNpcQuestListSend()
     
                 End If
                 
-                FrmQuestInfo.lstQuests.AddItem QuestIndex & "-" & QuestList(QuestIndex).nombre
+                Estado = .ReadByte
+                
+                Select Case Estado
+                
+                    Case 0
+                        FrmQuestInfo.lstQuests.AddItem QuestIndex & "-" & QuestList(QuestIndex).nombre & "(Disponible)"
+                    Case 1
+                        FrmQuestInfo.lstQuests.AddItem QuestIndex & "-" & QuestList(QuestIndex).nombre & "(En curso)"
+                    Case 2
+                        FrmQuestInfo.lstQuests.AddItem QuestIndex & "-" & QuestList(QuestIndex).nombre & "(Realizada)"
+                
+                End Select
+                
             Next j
         
         
@@ -14769,7 +14784,7 @@ Public Sub HandleNpcQuestListSend()
 
         ' frmQuestInfo.txtInfo.Text = tmpStr
         FrmQuestInfo.Show vbModeless, frmmain
-        FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
+        'FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
         'Call FrmQuestInfo.ListView1_Click
         'Call FrmQuestInfo.ListView2_Click
 
