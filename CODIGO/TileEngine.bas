@@ -29,7 +29,7 @@ Public RoofsLight()          As tRoofLight
 
 Type tRoofLight
     Alpha As Single
-    Color As Long
+    color As Long
 End Type
 
 ''
@@ -275,7 +275,7 @@ End Type
 'Tipo de las celdas del mapa
 Public Type Light
     Rango As Integer
-    Color As Long
+    color As Long
 End Type
 
 Public Type Fantasma
@@ -1032,7 +1032,7 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     s(3) = -1
 
     Call DirectDevice.BeginScene
-    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1#, 0)
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, color, 1#, 0)
     
     Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
 
@@ -1041,7 +1041,7 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     
 End Sub
 
-Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False)
+Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False, Optional ByVal colorlong As Long = &H0)
 
     If GrhIndex = 0 Then Exit Sub
 
@@ -1068,9 +1068,9 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
     s(2) = -1
     s(3) = -1
 
-
+Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, colorlong, 1#, 0)
     Call DirectDevice.BeginScene
-    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1#, 0)
+    
     
     Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
                            
