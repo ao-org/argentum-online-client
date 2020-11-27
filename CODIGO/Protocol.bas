@@ -2388,10 +2388,10 @@ Private Sub HandleUpdateExp()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     If UserPasarNivel > 0 Then
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "¡Nivel máximo!"
     End If
 
@@ -2936,12 +2936,12 @@ Private Sub HandleEfectOverHead()
 
     Dim charindex As Integer
 
-    Dim color     As Long
+    Dim Color     As Long
     
     chat = buffer.ReadASCIIString()
     charindex = buffer.ReadInteger()
     
-    color = buffer.ReadLong()
+    Color = buffer.ReadLong()
     
     ' Debug.Print color
 
@@ -2950,9 +2950,9 @@ Private Sub HandleEfectOverHead()
     
     Dim r, g, b As Byte
     
-    b = (color And 16711680) / 65536
-    g = (color And 65280) / 256
-    r = color And 255
+    b = (Color And 16711680) / 65536
+    g = (Color And 65280) / 256
+    r = Color And 255
     
     charlist(charindex).dialog_Efect_color.r = b
     charlist(charindex).dialog_Efect_color.g = g
@@ -4046,7 +4046,7 @@ Private Sub HandleObjectCreate()
 
     Dim OBJIndex As Integer
 
-    Dim color    As Long
+    Dim Color    As Long
 
     Dim Rango    As Byte
 
@@ -4064,22 +4064,22 @@ Private Sub HandleObjectCreate()
     Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
     
     If ObjData(OBJIndex).CreaLuz <> "" Then
-        color = Val(ReadField(2, ObjData(OBJIndex).CreaLuz, Asc(":")))
+        Color = Val(ReadField(2, ObjData(OBJIndex).CreaLuz, Asc(":")))
         Rango = Val(ReadField(1, ObjData(OBJIndex).CreaLuz, Asc(":")))
-        MapData(x, y).luz.color = color
+        MapData(x, y).luz.Color = Color
         MapData(x, y).luz.Rango = Rango
         
         If Rango < 100 Then
             id = x & y
-            LucesCuadradas.Light_Create x, y, color, Rango, id
+            LucesCuadradas.Light_Create x, y, Color, Rango, id
             LucesCuadradas.Light_Render_All
         Else
 
             Dim r, g, b As Byte
 
-            b = (color And 16711680) / 65536
-            g = (color And 65280) / 256
-            r = color And 255
+            b = (Color And 16711680) / 65536
+            g = (Color And 65280) / 256
+            r = Color And 255
             LucesRedondas.Create_Light_To_Map x, y, Rango - 99, b, g, r
             LucesRedondas.LightRenderAll
             LucesCuadradas.Light_Render_All
@@ -4156,7 +4156,7 @@ Private Sub HandleObjectDelete()
     If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
         id = LucesCuadradas.Light_Find(x & y)
         LucesCuadradas.Light_Remove id
-        MapData(x, y).luz.color = 0
+        MapData(x, y).luz.Color = 0
         MapData(x, y).luz.Rango = 0
         LucesCuadradas.Light_Render_All
 
@@ -4450,7 +4450,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -4475,7 +4475,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -4483,7 +4483,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
@@ -4700,9 +4700,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
+        frmmain.EXPBAR.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel máximo!"
 
@@ -6059,12 +6059,12 @@ Private Sub HandleLight()
 
     End If
  
-    Dim color As String
+    Dim Color As String
 
     Call incomingData.ReadByte
-    color = incomingData.ReadASCIIString()
+    Color = incomingData.ReadASCIIString()
 
-    If color = "" Then
+    If Color = "" Then
         Map_light_base = 0
         Exit Sub
 
@@ -6072,9 +6072,9 @@ Private Sub HandleLight()
 
     Dim r, g, b As Byte
 
-    b = (color And 16711680) / 65536
-    g = (color And 65280) / 256
-    r = color And 255
+    b = (Color And 16711680) / 65536
+    g = (Color And 65280) / 256
+    r = Color And 255
     Map_light_base = D3DColorARGB(255, r, g, b)
     ColorAmbiente.r = r
     ColorAmbiente.b = b
@@ -6268,7 +6268,7 @@ Private Sub HandleEfectToScreen()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    Dim color As Long, duracion As Long, ignorar As Boolean
+    Dim Color As Long, duracion As Long, ignorar As Boolean
 
     If incomingData.Length < 10 Then
         Err.Raise incomingData.NotEnoughDataErrCode
@@ -6278,16 +6278,16 @@ Private Sub HandleEfectToScreen()
     
     'Remove packet ID
     Call incomingData.ReadByte
-    color = incomingData.ReadLong()
+    Color = incomingData.ReadLong()
     duracion = incomingData.ReadLong()
     ignorar = incomingData.ReadBoolean()
     
     Dim r, g, b As Byte
 
-    b = (color And 16711680) / 65536
-    g = (color And 65280) / 256
-    r = color And 255
-    color = D3DColorARGB(255, r, g, b)
+    b = (Color And 16711680) / 65536
+    g = (Color And 65280) / 256
+    r = Color And 255
+    Color = D3DColorARGB(255, r, g, b)
 
     If Not MapDat.niebla = 1 And Not ignorar Then
         'Debug.Print "trueno cancelado"
@@ -6296,7 +6296,7 @@ Private Sub HandleEfectToScreen()
 
     End If
 
-    Call EfectoEnPantalla(color, duracion)
+    Call EfectoEnPantalla(Color, duracion)
     
 End Sub
 
@@ -6745,10 +6745,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.GuildsList.Clear
+    Call frmGuildNews.guildslist.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -6780,7 +6780,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7144,10 +7144,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -7187,7 +7187,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -13577,20 +13577,20 @@ Private Sub HandleLightToFloor()
 
     Dim y     As Byte
 
-    Dim color As Long
+    Dim Color As Long
 
     Dim Rango As Byte
      
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
-    color = incomingData.ReadLong()
+    Color = incomingData.ReadLong()
     Rango = incomingData.ReadByte()
 
     Dim id  As Long
 
     Dim id2 As Long
 
-    If color = 0 Then
+    If Color = 0 Then
    
         If MapData(x, y).luz.Rango > 100 Then
             LucesRedondas.Delete_Light_To_Map x, y
@@ -13601,7 +13601,7 @@ Private Sub HandleLightToFloor()
         Else
             id = LucesCuadradas.Light_Find(x & y)
             LucesCuadradas.Light_Remove id
-            MapData(x, y).luz.color = color
+            MapData(x, y).luz.Color = Color
             MapData(x, y).luz.Rango = 0
             LucesCuadradas.Light_Render_All
             Exit Sub
@@ -13610,20 +13610,20 @@ Private Sub HandleLightToFloor()
 
     End If
     
-    MapData(x, y).luz.color = color
+    MapData(x, y).luz.Color = Color
     MapData(x, y).luz.Rango = Rango
     
     If Rango < 100 Then
         id = x & y
-        LucesCuadradas.Light_Create x, y, color, Rango, id
+        LucesCuadradas.Light_Create x, y, Color, Rango, id
         LucesCuadradas.Light_Render_All
     Else
 
         Dim r, g, b As Byte
 
-        b = (color And 16711680) / 65536
-        g = (color And 65280) / 256
-        r = color And 255
+        b = (Color And 16711680) / 65536
+        g = (Color And 65280) / 256
+        r = Color And 255
         LucesRedondas.Create_Light_To_Map x, y, Rango - 99, b, g, r
 
     End If
@@ -14387,7 +14387,7 @@ Private Sub HandleQuestDetails()
            
             'tmpStr = "Mision: " & .ReadASCIIString & vbCrLf
            
-            FrmQuests.detalle.Caption = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & .ReadByte & vbCrLf
+            FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & .ReadByte & vbCrLf
             'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
             'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
            
@@ -14779,9 +14779,9 @@ Public Sub HandleNpcQuestListSend()
                         Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
                         
                         subelemento.SubItems(1) = "En Curso"
-                        subelemento.ForeColor = vbYellow
+                        subelemento.ForeColor = RGB(255, 175, 10)
                         subelemento.SubItems(2) = QuestIndex
-                        subelemento.ListSubItems(1).ForeColor = vbYellow
+                        subelemento.ListSubItems(1).ForeColor = RGB(255, 175, 10)
                         FrmQuestInfo.ListViewQuest.Refresh
                         'FrmQuestInfo.lstQuests.AddItem QuestIndex & "-" & QuestList(QuestIndex).nombre & "(En curso)"
                     Case 2
@@ -14789,10 +14789,18 @@ Public Sub HandleNpcQuestListSend()
                         
                         subelemento.SubItems(1) = "Finalizada"
                         subelemento.SubItems(2) = QuestIndex
-                        subelemento.ForeColor = vbRed
-                        subelemento.ListSubItems(1).ForeColor = vbRed
+                        subelemento.ForeColor = RGB(15, 140, 50)
+                        subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
                         FrmQuestInfo.ListViewQuest.Refresh
                        ' FrmQuestInfo.lstQuests.AddItem QuestIndex & "-" & QuestList(QuestIndex).nombre & "(Realizada)"
+                    Case 3
+                        Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
+                        
+                        subelemento.SubItems(1) = "No disponible"
+                        subelemento.SubItems(2) = QuestIndex
+                        subelemento.ForeColor = RGB(255, 10, 10)
+                        subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
+                        FrmQuestInfo.ListViewQuest.Refresh
                 
                 End Select
                 
