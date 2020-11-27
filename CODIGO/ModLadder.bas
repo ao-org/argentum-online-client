@@ -207,7 +207,7 @@ Public DungeonData()      As String
 
 Public HechizoData()      As HechizoDatas
 
-Public NameMaps(1 To 400) As NameMapas
+Public NameMaps(1 To 1000) As NameMapas
 
 Public ShowMacros         As Byte
 
