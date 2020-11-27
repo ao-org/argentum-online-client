@@ -155,13 +155,13 @@ Begin VB.Form FrmQuests
       Picture         =   "FrmQuest.frx":103D2C
    End
    Begin MSComctlLib.ListView ListView2 
-      Height          =   2445
+      Height          =   2325
       Left            =   9885
       TabIndex        =   4
-      Top             =   2760
+      Top             =   2880
       Width           =   1890
       _ExtentX        =   3334
-      _ExtentY        =   4313
+      _ExtentY        =   4101
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
@@ -205,6 +205,27 @@ Begin VB.Form FrmQuests
          Object.Width           =   0
       EndProperty
       Picture         =   "FrmQuest.frx":110C36
+   End
+   Begin VB.Label objetolbl 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "                                     "
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   435
+      Left            =   9960
+      TabIndex        =   9
+      Top             =   2520
+      Width           =   1695
    End
    Begin VB.Image Image3 
       Height          =   375
@@ -375,7 +396,8 @@ Public Sub ListView1_Click()
         
             x = (PlayerView.ScaleWidth - GrhData(ListView1.SelectedItem.SubItems(2)).pixelWidth) / 2
             y = (PlayerView.ScaleHeight - GrhData(ListView1.SelectedItem.SubItems(2)).pixelHeight) / 2
-            Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False)
+            
+            Call Grh_Render_To_HdcSinBorrar(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
         
             npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
     
@@ -401,12 +423,12 @@ Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
 
     x = (PlayerView.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) / 2
     y = (PlayerView.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2
-    Call Grh_Render_To_Hdc(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False)
+    Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
 
     If NpcData(MyBody).Head <> 0 Then
         x = (PlayerView.ScaleWidth - GrhData(grhH.GrhIndex).pixelWidth) / 2
         y = (PlayerView.ScaleHeight - GrhData(grhH.GrhIndex).pixelHeight) / 2 + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y
-        Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
+        Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
 
     End If
 
@@ -418,7 +440,10 @@ Public Sub ListView2_Click()
 
     If ListView2.SelectedItem.SubItems(2) <> "" Then
  
-        Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False)
+        Call Grh_Render_To_HdcSinBorrar(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(11, 11, 11))
+        picture1.Visible = True
+        
+        objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
     
     End If
 
