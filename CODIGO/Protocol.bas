@@ -2388,10 +2388,10 @@ Private Sub HandleUpdateExp()
 
     frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     If UserPasarNivel > 0 Then
-        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
     Else
-        frmmain.EXPBAR.Width = 204
+        frmmain.ExpBar.Width = 204
         frmmain.lblPorcLvl.Caption = "¡Nivel máximo!"
     End If
 
@@ -4700,9 +4700,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.EXPBAR.Width = 204
+        frmmain.ExpBar.Width = 204
         frmmain.lblPorcLvl.Caption = "" 'nivel maximo
         frmmain.exp.Caption = "¡Nivel máximo!"
 
@@ -6475,17 +6475,6 @@ Private Sub HandleSetInvisible()
     charindex = incomingData.ReadInteger()
     charlist(charindex).invisible = incomingData.ReadBoolean()
     charlist(charindex).TimerI = 0
-    
-    #If SeguridadAlkon Then
-
-        If charlist(charindex).invisible Then
-            Call MI(CualMI).SetInvisible(charindex)
-        Else
-            Call MI(CualMI).ResetInvisible(charindex)
-
-        End If
-
-    #End If
 
 End Sub
 
@@ -6780,7 +6769,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7187,7 +7176,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        

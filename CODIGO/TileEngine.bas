@@ -29,7 +29,7 @@ Public RoofsLight()          As tRoofLight
 
 Type tRoofLight
     Alpha As Single
-    color As Long
+    Color As Long
 End Type
 
 ''
@@ -275,7 +275,7 @@ End Type
 'Tipo de las celdas del mapa
 Public Type Light
     Rango As Integer
-    color As Long
+    Color As Long
 End Type
 
 Public Type Fantasma
@@ -441,26 +441,18 @@ Private llTick                 As Long  'Contador
 
 Public charlist(1 To 10000)    As Char
 
-#If SeguridadAlkon Then
-    Public MI(1 To 1233) As clsManagerInvisibles
-    Public CualMI        As Integer
-#End If
 
 ' Used by GetTextExtentPoint32
 Private Type size
-
     cx As Long
     cy As Long
-
 End Type
 
 '[CODE 001]:MatuX
 Public Enum PlayLoop
-
     plNone = 0
     plLluviain = 1
     plLluviaout = 2
-
 End Enum
 
 '[END]'
@@ -1032,7 +1024,7 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     s(3) = -1
 
     Call DirectDevice.BeginScene
-    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, color, 1#, 0)
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1#, 0)
     
     Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
 

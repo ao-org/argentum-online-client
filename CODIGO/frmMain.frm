@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
-Begin VB.Form frmmain 
+Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
    BackColor       =   &H00000000&
@@ -34,8 +34,8 @@ Begin VB.Form frmmain
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin SocketWrenchCtrl.Socket Socket1 
-      Left            =   9240
-      Top             =   2640
+      Left            =   6360
+      Top             =   3000
       _Version        =   65536
       _ExtentX        =   741
       _ExtentY        =   741
@@ -304,7 +304,7 @@ Begin VB.Form frmmain
       TabIndex        =   24
       TabStop         =   0   'False
       ToolTipText     =   "Chat"
-      Top             =   1828
+      Top             =   1800
       Visible         =   0   'False
       Width           =   8184
    End
@@ -459,13 +459,13 @@ Begin VB.Form frmmain
    Begin VB.Timer macrotrabajo 
       Enabled         =   0   'False
       Left            =   2760
-      Top             =   2400
+      Top             =   3000
    End
    Begin VB.Timer Second 
       Enabled         =   0   'False
       Interval        =   2000
-      Left            =   10440
-      Top             =   2640
+      Left            =   4320
+      Top             =   3000
    End
    Begin VB.PictureBox renderer 
       Appearance      =   0  'Flat
@@ -492,67 +492,67 @@ Begin VB.Form frmmain
       Begin VB.Timer LlamaDeclan 
          Enabled         =   0   'False
          Interval        =   60000
-         Left            =   10200
-         Top             =   8160
+         Left            =   5640
+         Top             =   720
       End
       Begin VB.Timer cerrarcuenta 
          Enabled         =   0   'False
          Interval        =   200
-         Left            =   6960
-         Top             =   120
+         Left            =   3600
+         Top             =   720
       End
       Begin VB.Timer Contadores 
          Enabled         =   0   'False
          Interval        =   1000
-         Left            =   1200
-         Top             =   7800
+         Left            =   5160
+         Top             =   720
       End
       Begin VB.Timer HoraFantasiaTimer 
          Enabled         =   0   'False
          Interval        =   600
-         Left            =   240
-         Top             =   7920
+         Left            =   4680
+         Top             =   720
       End
       Begin VB.Timer TimerLluvia 
          Enabled         =   0   'False
          Interval        =   50
          Left            =   600
-         Top             =   120
+         Top             =   720
       End
       Begin VB.Timer TimerNiebla 
          Interval        =   100
          Left            =   1080
-         Top             =   120
+         Top             =   720
       End
       Begin VB.Timer Timerping 
          Enabled         =   0   'False
          Interval        =   7000
-         Left            =   4440
-         Top             =   120
+         Left            =   3120
+         Top             =   720
       End
       Begin VB.Timer MacroLadder 
          Enabled         =   0   'False
          Interval        =   1300
          Left            =   1560
-         Top             =   120
+         Top             =   720
       End
       Begin VB.Timer Efecto 
          Enabled         =   0   'False
          Interval        =   1000
          Left            =   2040
-         Top             =   120
+         Top             =   720
       End
    End
    Begin RichTextLib.RichTextBox RecTxt 
-      Height          =   1273
+      Height          =   1230
       Left            =   240
       TabIndex        =   7
       TabStop         =   0   'False
       ToolTipText     =   "Mensajes del servidor"
-      Top             =   490
-      Width           =   9187
+      Top             =   495
+      Width           =   9180
       _ExtentX        =   16193
-      _ExtentY        =   2249
+      _ExtentY        =   2170
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
@@ -1424,7 +1424,7 @@ Public IsPlaying  As Byte
 
 Public bmoving    As Boolean
 
-Public dX         As Integer
+Public dx         As Integer
 
 Public dy         As Integer
 
@@ -3662,8 +3662,8 @@ End Sub
         Socket1.NoDelay = True
     
         'Clean input and output buffers
-        Call incomingData.ReadASCIIStringFixed(incomingData.length)
-        Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
+        Call incomingData.ReadASCIIStringFixed(incomingData.Length)
+        Call outgoingData.ReadASCIIStringFixed(outgoingData.Length)
 
         'Security.Redundance = 13 'DEFAULT
     
@@ -3898,10 +3898,6 @@ Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
     Data = StrConv(RD, vbFromUnicode)
     
     If RD = vbNullString Then Exit Sub
-    
-    #If SeguridadAlkon Then
-        Call DataReceived(Data)
-    #End If
 
     'Put data in the buffer
     Call incomingData.WriteBlock(Data)
@@ -3985,8 +3981,8 @@ Private Sub Winsock1_Connect()
     Debug.Print "Winsock Connect"
     
     'Clean input and output buffers
-    Call incomingData.ReadASCIIStringFixed(incomingData.length)
-    Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
+    Call incomingData.ReadASCIIStringFixed(incomingData.Length)
+    Call outgoingData.ReadASCIIStringFixed(outgoingData.Length)
     
 
     
@@ -4014,13 +4010,9 @@ Private Sub Winsock1_DataArrival(ByVal BytesTotal As Long)
     Dim Data() As Byte
     
     'Socket1.Read RD, DataLength
-    Winsock1.GetData RD
+    Call Winsock1.GetData(RD)
     
     Data = StrConv(RD, vbFromUnicode)
-    
-#If SeguridadAlkon Then
-    Call DataReceived(Data)
-#End If
     
     'Set data in the buffer
     Call incomingData.WriteBlock(Data)
