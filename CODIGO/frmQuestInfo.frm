@@ -557,7 +557,7 @@ FrmQuestInfo.ListView1.ListItems.Clear
                 FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
                
                 
-                FrmQuestInfo.detalle.Caption = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf
+                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf
                 'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
                 'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
                
