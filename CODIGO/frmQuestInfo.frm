@@ -138,13 +138,13 @@ Begin VB.Form FrmQuestInfo
       Picture         =   "frmQuestInfo.frx":103D2C
    End
    Begin MSComctlLib.ListView ListView2 
-      Height          =   2400
+      Height          =   2280
       Left            =   9840
       TabIndex        =   3
-      Top             =   2880
+      Top             =   3000
       Width           =   1965
       _ExtentX        =   3466
-      _ExtentY        =   4233
+      _ExtentY        =   4022
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
@@ -272,7 +272,7 @@ Begin VB.Form FrmQuestInfo
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   375
+      Height          =   495
       Left            =   9840
       TabIndex        =   5
       Top             =   2520
@@ -542,6 +542,9 @@ FrmQuestInfo.ListView1.ListItems.Clear
                     Next i
     
                 End If
+                
+    Call ListView1_Click
+    Call ListView2_Click
 
     End If
 End Sub
