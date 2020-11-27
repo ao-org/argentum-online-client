@@ -218,13 +218,13 @@ Begin VB.Form FrmQuestInfo
       NumItems        =   3
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Quest"
-         Object.Width           =   3353
+         Object.Width           =   2824
       EndProperty
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
          SubItemIndex    =   1
          Text            =   "estado"
-         Object.Width           =   1588
+         Object.Width           =   2117
       EndProperty
       BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
@@ -382,6 +382,7 @@ Unload Me
 End Sub
 
 Public Sub ListView1_Click()
+
 
     If ListView1.SelectedItem.SubItems(2) <> "" Then
         If ListView1.SelectedItem.SubItems(3) = 0 Then
