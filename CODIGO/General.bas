@@ -96,26 +96,6 @@ Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long)
 
 End Function
 
-#If SeguridadAlkon Then
-Sub InitMI()
-    Dim alternativos As Integer
-    Dim CualMITemp As Integer
-    
-    alternativos = RandomNumber(1, 7368)
-    CualMITemp = RandomNumber(1, 1233)
-    
-
-    Set MI(CualMITemp) = New clsManagerInvisibles
-    Call MI(CualMITemp).Inicializar(alternativos, 10000)
-    
-    If CualMI <> 0 Then
-        Call MI(CualMITemp).CopyFrom(MI(CualMI))
-        Set MI(CualMI) = Nothing
-    End If
-    CualMI = CualMITemp
-End Sub
-#End If
-
 Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = True, Optional ByVal Alignment As Byte = rtfLeft)
     
     '****************************************************
@@ -402,16 +382,16 @@ Sub SetConnected()
     AlphaNiebla = 0
 
     'Vaciamos la cola de movimiento
-    keysMovementPressedQueue.Clear
+    Call keysMovementPressedQueue.Clear
 
     If FPSFLAG Then
         frmmain.Timerping.Enabled = True
     Else
         frmmain.Timerping.Enabled = False
-
     End If
 
     COLOR_AZUL = RGB(0, 0, 0)
+    
     ' establece el borde al listbox
     Call Establecer_Borde(frmmain.hlst, frmmain, COLOR_AZUL, 0, 0)
 
@@ -427,8 +407,8 @@ Sub SetConnected()
     OpcionMenu = 0
     frmmain.Image2(1).Picture = Nothing
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    '            Image2(0).Visible = False
-    ' Image2(1).Visible = True
+    'Image2(0).Visible = False
+    'Image2(1).Visible = True
 
     frmmain.picInv.Visible = True
      
@@ -439,6 +419,7 @@ Sub SetConnected()
 
     frmmain.cmdMoverHechi(0).Visible = False
     frmmain.cmdMoverHechi(1).Visible = False
+    
     Call frmmain.Inventario.ReDraw
     
     frmmain.Left = 0
