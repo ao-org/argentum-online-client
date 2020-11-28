@@ -25,11 +25,12 @@
 *.map binary
 *.exe binary
 *.inf binary
+*.csm binary
 
 # Declare encoding of all files for code.
-*.bas working-tree-encoding=windows-1252
-*.cls working-tree-encoding=windows-1252
-*.vbp working-tree-encoding=windows-1252
-*.frm working-tree-encoding=windows-1252
-*.json working-tree-encoding=windows-1252
-*.dat working-tree-encoding=windows-1252
+*.bas working-tree-encoding=windows-1252 diff=windows-1252
+*.cls working-tree-encoding=windows-1252 diff=windows-1252
+*.vbp working-tree-encoding=windows-1252 diff=windows-1252
+*.frm working-tree-encoding=windows-1252 diff=windows-1252
+*.json working-tree-encoding=windows-1252 diff=windows-1252
+*.dat working-tree-encoding=windows-1252 diff=windows-1252
