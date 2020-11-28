@@ -355,7 +355,7 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
-' funciÛn Api para aplicar la transparencia a la ventana
+' funci√≥n Api para aplicar la transparencia a la ventana
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
@@ -402,7 +402,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
   
 End Function
   
-'FunciÛn que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+'Funci√≥n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
   
     Dim msg As Long
@@ -494,7 +494,7 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     If CursoresGraficos = 1 Then
         Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "OPCIONES", "CursoresGraficos", 0)
-        MsgBox "Para que los cambios en esta opciÛn sean reflejados, deber· reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
+        MsgBox "Para que los cambios en esta opci√≥n sean reflejados, deber√° reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
     Else
         CursoresGraficos = 1
         Call FormParser.Parse_Form(Me)

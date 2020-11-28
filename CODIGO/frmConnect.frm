@@ -542,9 +542,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                     Dim tmp As String
 
-                    If MsgBox("¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
+                    If MsgBox("Â¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
                         Call inputbox_Password(Me, "*")
-                        tmp = InputBox("Para confirmar el borrado debe ingresar su contraseña.", App.title)
+                        tmp = InputBox("Para confirmar el borrado debe ingresar su contraseÃ±a.", App.title)
             
                         If tmp = CuentaPassword Then
                             If frmmain.Socket1.Connected Then
@@ -560,7 +560,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                             frmmain.Socket1.Connect
                             PJSeleccionado = 0
                         Else
-                            MsgBox ("Contraseña incorrecta")
+                            MsgBox ("ContraseÃ±a incorrecta")
 
                         End If
 
@@ -652,22 +652,22 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 ClickEnAsistente = ClickEnAsistente + 1
 
                 If ClickEnAsistente = 1 Then
-                    Call TextoAlAsistente("¿En que te puedo ayudar?")
+                    Call TextoAlAsistente("Â¿En que te puedo ayudar?")
 
                 End If
 
                 If ClickEnAsistente = 2 Then
-                    Call TextoAlAsistente("¿Ya tenes una cuenta? Logea por acá abajo.")
+                    Call TextoAlAsistente("Â¿Ya tenes una cuenta? Logea por acÃ¡ abajo.")
 
                 End If
 
                 If ClickEnAsistente = 4 Then
-                    Call TextoAlAsistente("Si necesita ayuda dentro del juego podes usar el comando /GM y un compañero mio se acercara hacia tí.")
+                    Call TextoAlAsistente("Si necesita ayuda dentro del juego podes usar el comando /GM y un compaÃ±ero mio se acercara hacia tÃ­.")
 
                 End If
 
                 If ClickEnAsistente = 5 Then
-                    Call TextoAlAsistente("¡Espero tengas un bello dia.")
+                    Call TextoAlAsistente("Â¡Espero tengas un bello dia.")
 
                 End If
 
@@ -677,7 +677,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
                 If ClickEnAsistente = 12 Then
-                    Call TextoAlAsistente("¡Auch! ¡Me haces cosquillas!")
+                    Call TextoAlAsistente("Â¡Auch! Â¡Me haces cosquillas!")
 
                 End If
 
@@ -692,12 +692,12 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
                 If ClickEnAsistente = 28 Then
-                    Call TextoAlAsistente("¡Para! ¡Por favor!")
+                    Call TextoAlAsistente("Â¡Para! Â¡Por favor!")
 
                 End If
 
                 If ClickEnAsistente = 30 Then
-                    Call TextoAlAsistente("¡Me estas desconcentrando!")
+                    Call TextoAlAsistente("Â¡Me estas desconcentrando!")
 
                 End If
 

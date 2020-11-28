@@ -108,7 +108,7 @@ End Sub
 
 Private Sub Form_Activate()
     If InvKeys.OBJIndex(1) = 0 Then
-        NombreLlave.Caption = "AquÌ aparecer·n las llaves que consigas"
+        NombreLlave.Caption = "Aqu√≠ aparecer√°n las llaves que consigas"
     End If
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)

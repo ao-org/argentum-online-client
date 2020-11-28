@@ -128,7 +128,7 @@ Begin VB.Form Manual_Quest
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
-         Caption         =   "Repartidos por el mundo podrás encontrar NPCs que te encomendarán misiones a cambio de oro y experiencia o items."
+         Caption         =   "Repartidos por el mundo podrÃ¡s encontrar NPCs que te encomendarÃ¡n misiones a cambio de oro y experiencia o items."
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -207,8 +207,8 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub List1_Click()
-    ubicacion = "Ubicación: " & NameMaps(PosMap(List1.ListIndex + 1)).Name & "(" & PosMap(List1.ListIndex + 1) & ")"
-    descripccion = "Descripción: " & QuestList(List1.ListIndex + 1).desc
+    ubicacion = "UbicaciÃ³n: " & NameMaps(PosMap(List1.ListIndex + 1)).Name & "(" & PosMap(List1.ListIndex + 1) & ")"
+    descripccion = "DescripciÃ³n: " & QuestList(List1.ListIndex + 1).desc
     nivel = "Nivel requerido: " & QuestList(List1.ListIndex + 1).RequiredLevel
 
 End Sub

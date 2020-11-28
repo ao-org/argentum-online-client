@@ -118,7 +118,7 @@ Const SWP_SHOWWINDOW = &H40
 Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 'Argentum Online 0.11.6
 
-' funci髇 Api para aplicar la transparencia a la ventana
+' funci贸n Api para aplicar la transparencia a la ventana
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
@@ -133,13 +133,13 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
   
-' Funci髇 Api SetWindowPos
+' Funci贸n Api SetWindowPos
   
-'En el primer par醡etro se le pasa el Hwnd de la ventana
+'En el primer par谩metro se le pasa el Hwnd de la ventana
 'El segundo es la constante que permite hacer el OnTop
-'Los par醡etros que est醤 en 0 son las coordenadas, o sea la _
- pocici髇, obviamente opcionales
-'El 鷏timo par醡etro es para que al establecer el OnTop la ventana _
+'Los par谩metros que est谩n en 0 son las coordenadas, o sea la _
+ pocici贸n, obviamente opcionales
+'El 煤ltimo par谩metro es para que al establecer el OnTop la ventana _
  no se mueva de lugar y no se redimensione
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
@@ -164,7 +164,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
   
 End Function
   
-'Funci髇 que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+'Funci贸n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
   
     Dim msg As Long
@@ -360,14 +360,14 @@ Private Sub mnuGritar_click()
 End Sub
 
 Private Sub mnuPrivado_click()
-    sndPrivateTo = InputBox("Escriba el usuario con el que desea iniciar una conversaci髇 privada", "")
+    sndPrivateTo = InputBox("Escriba el usuario con el que desea iniciar una conversaci贸n privada", "")
 
     If sndPrivateTo <> "" Then
         SendingType = 3
 
         If frmmain.SendTxt.Visible Then frmmain.SendTxt.SetFocus
     Else
-        Call MensajeAdvertencia("Debes escribir un usuario v醠ido")
+        Call MensajeAdvertencia("Debes escribir un usuario v谩lido")
 
     End If
 

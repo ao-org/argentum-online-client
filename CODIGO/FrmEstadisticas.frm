@@ -2224,7 +2224,7 @@ End Sub
 Private Sub Image1_Click()
 
     If RealizoCambios >= 1 Then
-        If MsgBox("Realizo cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
+        If MsgBox("Realizo cambios en sus skillpoints Â¿desea guardar antes de salir?", vbYesNo) = vbYes Then
 
             Dim skillChanges(NUMSKILLS) As Byte
 
@@ -2270,7 +2270,7 @@ End Sub
 
 Private Sub imgCerrar_Click()
     If RealizoCambios >= 1 Then
-        If MsgBox("Realizó cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
+        If MsgBox("RealizÃ³ cambios en sus skillpoints Â¿desea guardar antes de salir?", vbYesNo) = vbYes Then
 
             Dim skillChanges(NUMSKILLS) As Byte
 
@@ -2313,7 +2313,7 @@ End Sub
 
 
 Private Sub skills_Click(Index As Integer)
-    AddtoRichTextBox frmmain.RecTxt, "Información del skill> " & SkillsDesc(Index), 2, 51, 223, 1, 1
+    AddtoRichTextBox frmmain.RecTxt, "InformaciÃ³n del skill> " & SkillsDesc(Index), 2, 51, 223, 1, 1
 
 End Sub
 

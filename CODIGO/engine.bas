@@ -117,7 +117,7 @@ Public textcolorAsistente(3)    As Long
 
 'Sets a Grh animation to loop indefinitely.
 
-#Const HARDCODED = False 'True ' == M¡S FPS ^^
+#Const HARDCODED = False 'True ' == M√ÅS FPS ^^
 
 Private Function GetElapsedTime() As Single
 
@@ -353,7 +353,7 @@ On Error GoTo errhandler:
 errhandler:
     
     Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
-                "Aseg˙rate de tener los drivers gr·ficos actualizados y la librerÌa DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
+                "Aseg√∫rate de tener los drivers gr√°ficos actualizados y la librer√≠a DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
     
     Debug.Print "Error Number Returned: " & Err.number
 
@@ -915,7 +915,7 @@ Private Sub Device_Box_Textured_Render_Advance(ByVal GrhIndex As Long, ByVal des
     'Author: Aaron Perkins
     'Last Modify Date: 5/15/2003
     'Copies the Textures allowing resizing
-    'Modified by Juan MartÌn Sotuyo Dodero
+    'Modified by Juan Mart√≠n Sotuyo Dodero
     '**************************************************************
     Static src_rect            As RECT
 
@@ -1113,7 +1113,7 @@ End Sub
 Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef rgb_list() As Long, ByVal src_x As Integer, ByVal src_y As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single)
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 2/12/2004
     'Just copies the Textures
     '**************************************************************
@@ -1355,7 +1355,7 @@ End Sub
 Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/03/04
     'Draw char's to screen without offcentering them
     '***************************************************
@@ -1767,7 +1767,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
         End If
 
-        ' MeditaciÛn
+        ' Meditaci√≥n
         If .FxIndex <> 0 And .fX.Started <> 0 Then
             Call Long_To_RGBList(Color, D3DColorARGB(180, 255, 255, 255))
 
@@ -1811,7 +1811,7 @@ End Sub
 Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/03/04
     'Draw char's to screen without offcentering them
     '***************************************************
@@ -2161,7 +2161,7 @@ End Sub
 
 Public Sub SetMapFx(ByVal x As Byte, ByVal y As Byte, ByVal fX As Integer, ByVal Loops As Integer)
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/03/04
     'Sets an FX to the character.
     '***************************************************
@@ -2207,7 +2207,7 @@ End Function
 
 Public Sub DrawMainInventory()
 
-    ' SÛlo dibujamos cuando es necesario
+    ' S√≥lo dibujamos cuando es necesario
     If Not frmmain.Inventario.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
@@ -2236,7 +2236,7 @@ End Sub
 
 Public Sub DrawInterfaceComerciar()
 
-    ' SÛlo dibujamos cuando es necesario
+    ' S√≥lo dibujamos cuando es necesario
     If Not frmComerciar.InvComNpc.NeedsRedraw And Not frmComerciar.InvComUsu.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
@@ -2258,22 +2258,22 @@ Public Sub DrawInterfaceComerciar()
     ' Dibujamos items del usuario
     Call frmComerciar.InvComUsu.DrawInventory
 
-    ' Dibujamos "ambos" items arrastrados (aunque sÛlo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque s√≥lo puede estar uno activo a la vez)
     Call frmComerciar.InvComNpc.DrawDraggedItem
     Call frmComerciar.InvComUsu.DrawDraggedItem
     
-    ' Me fijo quÈ inventario est· seleccionado
+    ' Me fijo qu√© inventario est√° seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     
     Dim cantidad         As Integer
 
     If frmComerciar.InvComNpc.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComNpc
-        ' Al comprar, calculamos el valor seg˙n la cantidad exacta que ingresÛ
+        ' Al comprar, calculamos el valor seg√∫n la cantidad exacta que ingres√≥
         cantidad = Val(frmComerciar.cantidad.Text)
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
-        ' Al vender, calculamos el valor seg˙n el min(cantidad_ingresada, cantidad_items)
+        ' Al vender, calculamos el valor seg√∫n el min(cantidad_ingresada, cantidad_items)
         cantidad = min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
 
     End If
@@ -2297,7 +2297,7 @@ Public Sub DrawInterfaceComerciar()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "FacciÛn)"
+                str = str & "Facci√≥n)"
 
             Case 4
                 str = str & "Skill)"
@@ -2328,7 +2328,7 @@ End Sub
 
 Public Sub DrawInterfaceBoveda()
 
-    ' SÛlo dibujamos cuando es necesario
+    ' S√≥lo dibujamos cuando es necesario
     If Not frmBancoObj.InvBoveda.NeedsRedraw And Not frmBancoObj.InvBankUsu.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
@@ -2341,20 +2341,20 @@ Public Sub DrawInterfaceBoveda()
     ' Comenzamos la escena
     Call Engine_BeginScene
 
-    ' Dibujamos el fondo de la bÛveda
+    ' Dibujamos el fondo de la b√≥veda
     Call Draw_GrhIndex(838, 0, 0)
 
-    ' Dibujamos items de la bÛveda
+    ' Dibujamos items de la b√≥veda
     Call frmBancoObj.InvBoveda.DrawInventory
     
     ' Dibujamos items del usuario
     Call frmBancoObj.InvBankUsu.DrawInventory
 
-    ' Dibujamos "ambos" items arrastrados (aunque sÛlo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque s√≥lo puede estar uno activo a la vez)
     Call frmBancoObj.InvBoveda.DrawDraggedItem
     Call frmBancoObj.InvBankUsu.DrawDraggedItem
     
-    ' Me fijo quÈ inventario est· seleccionado
+    ' Me fijo qu√© inventario est√° seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     
     If frmBancoObj.InvBoveda.SelectedItem > 0 Then
@@ -2381,7 +2381,7 @@ Public Sub DrawInterfaceBoveda()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "FacciÛn)"
+                str = str & "Facci√≥n)"
 
             Case 4
                 str = str & "Skill)"
@@ -2410,7 +2410,7 @@ Public Sub DrawInterfaceBoveda()
 End Sub
 Public Sub DrawInterfaceKeys()
 
-    ' SÛlo dibujamos cuando es necesario
+    ' S√≥lo dibujamos cuando es necesario
     If Not FrmKeyInv.InvKeys.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
@@ -2423,7 +2423,7 @@ Public Sub DrawInterfaceKeys()
     ' Comenzamos la escena
     Call Engine_BeginScene
 
-    ' Dibujamos el fondo de la bÛveda
+    ' Dibujamos el fondo de la b√≥veda
     'Call Draw_GrhIndex(838, 0, 0)
     
     ' Dibujamos llaves
@@ -2501,9 +2501,9 @@ End Sub
 Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByVal Height As Integer, ByVal Width As Integer, ByRef rgb_list() As Long, Optional ByVal h_center As Boolean, Optional ByVal v_center As Boolean, Optional ByVal alpha_blend As Boolean = False)
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (juansotuyo@hotmail.com)
+    'Author: Juan Mart√≠n Sotuyo Dodero (juansotuyo@hotmail.com)
     'Last Modify Date: 11/19/2003
-    'Similar to Grh_Render, but let¥s you resize the Grh
+    'Similar to Grh_Render, but let¬¥s you resize the Grh
     '**************************************************************
     Dim tile_width  As Integer
 
@@ -2552,7 +2552,7 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
     '**************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 2/28/2003
-    'Modified by Juan MartÌn Sotuyo Dodero
+    'Modified by Juan Mart√≠n Sotuyo Dodero
     'Added centering
     '**************************************************************
     Dim tile_width  As Integer
@@ -2594,7 +2594,7 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
     If grh_index <= 0 Then Exit Sub
     If GrhData(grh_index).FileNum = 0 Then Exit Sub
         
-    'Modified by Augusto JosÈ Rando
+    'Modified by Augusto Jos√© Rando
     'Simplier function - according to basic ORE engine
     If h_centered Then
         If GrhData(grh.GrhIndex).TileWidth <> 1 Then
@@ -2621,7 +2621,7 @@ End Sub
 Private Function Grh_Check(ByVal grh_index As Long) As Boolean
 
     '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan MartÌn Sotuyo Dodero
+    'Author: Aaron Perkins - Modified by Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 1/04/2003
     '
     '**************************************************************
@@ -2807,9 +2807,9 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
         Dim ItemName As String
 
-        'itemname = "abcdfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789°!øTEST?#$100%&/\()=-@^[]<>*+.,:; p·lmas sÈso te pÌso sÛlo p˙to ˝ L¡L L…"
+        'itemname = "abcdfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789¬°!¬øTEST?#$100%&/\()=-@^[]<>*+.,:; p√°lmas s√©so te p√≠so s√≥lo p√∫to √Ω L√ÅL L√â"
             
-        ' itemname = "p·lmas sÈso te pÌso sÛlo p˙to ˝ l¡ …lefante PÕS”S P⁄TO —OÒo"
+        ' itemname = "p√°lmas s√©so te p√≠so s√≥lo p√∫to √Ω l√Å √âlefante P√çS√ìS P√öTO √ëO√±o"
         Engine_Text_Render_LetraChica ItemName, 100, 730, DefaultColor, 4, False
 
         If ClickEnAsistente < 30 Then
@@ -3173,7 +3173,7 @@ Public Sub RenderUICrearPJ()
     Engine_Text_Render frmCrearPersonaje.modInteligencia.Caption, 320 + OffX, 473 + Offy, DefaultColor, 1, True ' Bonificacion Inteligencia
     
     
-    Engine_Text_Render "ConstituciÛn ", 185 + OffX, 500 + Offy, DefaultColor, , True
+    Engine_Text_Render "Constituci√≥n ", 185 + OffX, 500 + Offy, DefaultColor, , True
     'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
    ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
     Engine_Draw_Box 280 + OffX, 500 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
@@ -3192,7 +3192,7 @@ Public Sub RenderUICrearPJ()
     'Cabeza
     'Engine_Draw_Box 425, 415, 140, 100, D3DColorARGB(120, 100, 100, 100)
 
-   ' Engine_Text_Render "Selecciona el rostro que m·s te agrade.", 662, 260, DefaultColor, 1, True
+   ' Engine_Text_Render "Selecciona el rostro que m√°s te agrade.", 662, 260, DefaultColor, 1, True
     
     
     
@@ -3502,7 +3502,7 @@ End Sub
 
 Public Sub SetBarFx(ByVal charindex As Integer, ByVal BarTime As Integer)
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/03/04
     'Sets an FX to the character.
     '***************************************************
@@ -3563,7 +3563,7 @@ End Function
 
 Public Function Engine_Convert_Radians_To_Degrees(ByVal s_radians As Double) As Integer
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 8/25/2004
     'Converts a radian to degrees
     '**************************************************************
@@ -3609,7 +3609,7 @@ Public Sub Terminate_Index(ByVal effect_Index As Integer)
  
     Dim clear_Index As Effect_Type
  
-    'Si es un slot v·lido
+    'Si es un slot v√°lido
     If (effect_Index <> 0) And (effect_Index <= UBound(Effect())) Then
         Effect(effect_Index) = clear_Index
 
@@ -3640,7 +3640,7 @@ Public Function Effect_Begin(ByVal Fx_Index As Integer, ByVal Bind_Speed As Sing
          
             .wav = wav
          
-            'ExplosiÛn?
+            'Explosi√≥n?
             If (explosion_FX_Index <> 0) And (fX = 0) Then
                 .End_Effect = explosion_FX_Index
                 .End_Loops = explosion_FX_Loops
@@ -3687,7 +3687,7 @@ Public Function Effect_BeginXY(ByVal Fx_Index As Integer, ByVal Bind_Speed As Si
          
             .wav = wav
          
-            'ExplosiÛn?
+            'Explosi√≥n?
             If (explosion_FX_Index <> 0) And (fX = 0) Then
                 .End_Effect = explosion_FX_Index
                 .End_Loops = explosion_FX_Loops
@@ -3773,20 +3773,20 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
         
         End If
       
-        'Actualiza el ·ngulo.
+        'Actualiza el √°ngulo.
         target_Angle = Engine_GetAngle(.Now_X, .Now_Y, CInt(.Viaje_X), CInt(.Viaje_Y))
     
-        'Actualiza la posiciÛn del efecto.
+        'Actualiza la posici√≥n del efecto.
         .Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed)
         .Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed)
 
-        'Si hay posiciÛn dibuja.
+        'Si hay posici√≥n dibuja.
         If (.Now_X <> 0) And (.Now_Y <> 0) Then
             ' Call DDrawTransGrhtoSurface(.FX_Grh, .Now_X, .Now_Y, 1, 1)
 
             Call Particle_Group_Render(spell_particle, .Now_X, .Now_Y)
         
-            'Check si terminÛ.
+            'Check si termin√≥.
             ' If (.FX_Grh.Started = 0) Then .Fx_Index = 0: .Slot_Used = False
         
             If Abs(CInt(.Viaje_X) - CInt(.Now_X)) < 5 Then
@@ -3802,7 +3802,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
         
             If (.Now_X = .Viaje_X) And (.Now_Y = .Viaje_Y) Then
        
-                'Inicializa la explosiÛn : p
+                'Inicializa la explosi√≥n : p
                 If (.End_Effect <> 0) And .DestinoChar <> 0 Then
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
@@ -3928,13 +3928,13 @@ End Function
 Public Function GetFreeIndex() As Integer
  
     '
-    ' @ Devuelve un Ìndice para un nuevo FX.
+    ' @ Devuelve un √≠ndice para un nuevo FX.
  
     Dim i As Long
  
     For i = 1 To UBound(Effect())
 
-        'No est· usado.
+        'No est√° usado.
         If Not Effect(i).Slot_Used Then
             GetFreeIndex = CInt(i)
             Exit Function

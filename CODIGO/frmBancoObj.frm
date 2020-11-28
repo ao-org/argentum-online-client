@@ -134,7 +134,7 @@ Begin VB.Form frmBancoObj
    Begin VB.Label lbldesc 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "descripción"
+      Caption         =   "descripciÃ³n"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6
@@ -193,11 +193,11 @@ Private m_Increment          As Integer
 
 Private m_Interval           As Integer
 
-' Declaro los inventarios acá para manejar el evento drop
-Public WithEvents InvBankUsu As clsGrapchicalInventory ' Inventario del usuario visible en la bóveda
+' Declaro los inventarios acÃ¡ para manejar el evento drop
+Public WithEvents InvBankUsu As clsGrapchicalInventory ' Inventario del usuario visible en la bÃ³veda
 Attribute InvBankUsu.VB_VarHelpID = -1
 
-Public WithEvents InvBoveda  As clsGrapchicalInventory ' Inventario de la bóveda
+Public WithEvents InvBoveda  As clsGrapchicalInventory ' Inventario de la bÃ³veda
 Attribute InvBoveda.VB_VarHelpID = -1
 
 Private Sub moverForm()
@@ -409,11 +409,11 @@ End Sub
 Private Sub interface_Click()
     
     If InvBoveda.ClickedInside Then
-        ' Cliqueé en la bóveda, deselecciono el inventario
+        ' CliqueÃ© en la bÃ³veda, deselecciono el inventario
         Call InvBankUsu.SeleccionarItem(0)
         
     ElseIf InvBankUsu.ClickedInside Then
-        ' Cliqueé en el inventario, deselecciono la bóveda
+        ' CliqueÃ© en el inventario, deselecciono la bÃ³veda
         Call InvBoveda.SeleccionarItem(0)
 
     End If
@@ -422,12 +422,12 @@ End Sub
 
 Private Sub interface_DblClick()
 
-    ' Nos aseguramos que lo último que cliqueó fue el inventario
+    ' Nos aseguramos que lo Ãºltimo que cliqueÃ³ fue el inventario
     If Not InvBankUsu.ClickedInside Then Exit Sub
     
     If Not InvBankUsu.IsItemSelected Then Exit Sub
 
-    ' Hacemos acción del doble clic correspondiente
+    ' Hacemos acciÃ³n del doble clic correspondiente
     Dim ObjType As Byte
 
     ObjType = ObjData(InvBankUsu.OBJIndex(InvBankUsu.SelectedItem)).ObjType
@@ -519,14 +519,14 @@ End Sub
 
 Private Sub InvBoveda_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
 
-    ' Si lo soltó dentro de la bóveda
+    ' Si lo soltÃ³ dentro de la bÃ³veda
     If Drop > 0 Then
-        ' Movemos el item dentro de la bóveda
+        ' Movemos el item dentro de la bÃ³veda
         Call WriteBovedaItemMove(Drag, Drop)
     Else
         Drop = InvBankUsu.GetSlot(x, y)
 
-        ' Si lo soltó dentro del inventario
+        ' Si lo soltÃ³ dentro del inventario
         If Drop > 0 Then
             ' Retiramos el item
             Call WriteBankExtractItem(Drag, min(Val(cantidad.Text), InvBoveda.Amount(InvBoveda.SelectedItem)), Drop)
@@ -539,14 +539,14 @@ End Sub
 
 Private Sub InvBankUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
 
-    ' Si lo soltó dentro del mismo inventario
+    ' Si lo soltÃ³ dentro del mismo inventario
     If Drop > 0 Then
         ' Movemos el item dentro del inventario
         Call WriteItemMove(Drag, Drop)
     Else
         Drop = InvBoveda.GetSlot(x, y)
 
-        ' Si lo soltó dentro de la bóveda
+        ' Si lo soltÃ³ dentro de la bÃ³veda
         If Drop > 0 Then
             ' Depositamos el item
             Call WriteBankDeposit(Drag, min(Val(cantidad.Text), InvBankUsu.Amount(InvBankUsu.SelectedItem)), Drop)

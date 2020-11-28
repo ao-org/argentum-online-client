@@ -15,7 +15,7 @@ Attribute VB_Exposed = False
 ' clsByteQueue.cls - FIFO list of bytes.
 ' Creates and manipulates byte arrays to be sent and received by both client and server
 '
-' Designed and implemented by Juan Martín Sotuyo Dodero (Maraxus)
+' Designed and implemented by Juan MartÃ­n Sotuyo Dodero (Maraxus)
 ' (juansotuyo@gmail.com)
 '**************************************************************
 
@@ -37,14 +37,14 @@ Attribute VB_Exposed = False
 ' FIFO list of bytes
 ' Used to create and manipulate the byte arrays to be sent and received by both client and server
 '
-' @author Juan Martín Sotuyo Dodero (Maraxus) juansotuyo@gmail.com
+' @author Juan MartÃ­n Sotuyo Dodero (Maraxus) juansotuyo@gmail.com
 ' @version 1.1.0
 ' @date 20060427
 
 '**************************************************************************
 ' - HISTORY
-'       v1.0.0  -   Initial release ( 2006/04/27 - Juan Martín Sotuyo Dodero )
-'       v1.1.0  -   Added Single and Double support ( 2007/10/28 - Juan Martín Sotuyo Dodero )
+'       v1.0.0  -   Initial release ( 2006/04/27 - Juan MartÃ­n Sotuyo Dodero )
+'       v1.1.0  -   Added Single and Double support ( 2007/10/28 - Juan MartÃ­n Sotuyo Dodero )
 '**************************************************************************
 
 Option Explicit
@@ -65,7 +65,7 @@ Private Const NOT_ENOUGH_SPACE As Long = vbObjectError + 10
 ' Default size of a data buffer (10 Kbs)
 '
 ' @see Class_Initialize
-Private Const DATA_BUFFER      As Long = 10240 'Ladder TAMAÑO DEL BUFFER   REVISAR
+Private Const DATA_BUFFER      As Long = 10240 'Ladder TAMAÃ‘O DEL BUFFER   REVISAR
 
 ''
 ' The byte data
@@ -95,7 +95,7 @@ Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef desti
 
 Private Sub Class_Initialize()
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Initializes the queue with the default queueCapacity
     '***************************************************
@@ -110,7 +110,7 @@ End Sub
 
 Private Sub Class_Terminate()
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Clean up
     '***************************************************
@@ -128,7 +128,7 @@ End Sub
 Public Sub CopyBuffer(ByRef source As clsByteQueue)
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'A Visual Basic equivalent of a Copy Contructor
     '***************************************************
@@ -169,7 +169,7 @@ End Sub
 Private Function min(ByVal val1 As Long, ByVal val2 As Long) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'It's faster than iif and I like it better
     '***************************************************
@@ -197,7 +197,7 @@ End Function
 Private Function WriteData(ByRef buf() As Byte, ByVal dataLength As Long) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'If the queueCapacity allows it copyes a byte buffer to the queue, if not it throws NOT_ENOUGH_DATA
     '***************************************************
@@ -236,7 +236,7 @@ Private Function ReadData(ByRef buf() As Byte, ByVal dataLength As Long) As Long
     On Error Resume Next
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'If enough memory is available, it copies the requested number of bytes to the buffer
     '***************************************************
@@ -264,7 +264,7 @@ End Function
 
 Private Function RemoveData(ByVal dataLength As Long) As Long
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Moves forward the queue overwriting the first dataLength bytes
     '***************************************************
@@ -290,7 +290,7 @@ End Function
 Public Function WriteByte(ByVal value As Byte) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a byte to the queue
     '***************************************************
@@ -313,7 +313,7 @@ End Function
 Public Function WriteInteger(ByVal value As Integer) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes an integer to the queue
     '***************************************************
@@ -337,7 +337,7 @@ End Function
 Public Function WriteLong(ByVal value As Long) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a long to the queue
     '***************************************************
@@ -361,7 +361,7 @@ End Function
 Public Function WriteSingle(ByVal value As Single) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Writes a single to the queue
     '***************************************************
@@ -385,7 +385,7 @@ End Function
 Public Function WriteDouble(ByVal value As Double) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Writes a double to the queue
     '***************************************************
@@ -409,7 +409,7 @@ End Function
 Public Function WriteBoolean(ByVal value As Boolean) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a byte to the queue
     '***************************************************
@@ -432,7 +432,7 @@ End Function
 Public Function WriteASCIIStringFixed(ByVal value As String) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a fixed length ASCII string to the queue
     '***************************************************
@@ -458,7 +458,7 @@ End Function
 Public Function WriteUnicodeStringFixed(ByVal value As String) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a fixed length UNICODE string to the queue
     '***************************************************
@@ -484,7 +484,7 @@ End Function
 Public Function WriteASCIIString(ByVal value As String) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a variable length ASCII string to the queue
     '***************************************************
@@ -516,7 +516,7 @@ End Function
 Public Function WriteUnicodeString(ByVal value As String) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a variable length UNICODE string to the queue
     '***************************************************
@@ -550,7 +550,7 @@ End Function
 Public Function WriteBlock(ByRef value() As Byte, Optional ByVal length As Long = -1) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a byte array to the queue
     '***************************************************
@@ -573,7 +573,7 @@ End Function
 Public Function ReadByte() As Byte
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a byte from the queue and removes it
     '***************************************************
@@ -598,7 +598,7 @@ End Function
 Public Function ReadInteger() As Integer
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads an integer from the queue and removes it
     '***************************************************
@@ -624,7 +624,7 @@ End Function
 Public Function ReadLong() As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a long from the queue and removes it
     '***************************************************
@@ -650,7 +650,7 @@ End Function
 Public Function ReadSingle() As Single
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Reads a single from the queue and removes it
     '***************************************************
@@ -676,7 +676,7 @@ End Function
 Public Function ReadDouble() As Double
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Reads a double from the queue and removes it
     '***************************************************
@@ -702,7 +702,7 @@ End Function
 Public Function ReadBoolean() As Boolean
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a Boolean from the queue and removes it
     '***************************************************
@@ -729,7 +729,7 @@ End Function
 Public Function ReadASCIIStringFixed(ByVal length As Long) As String
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a fixed length ASCII string from the queue and removes it
     '***************************************************
@@ -766,7 +766,7 @@ End Function
 Public Function ReadUnicodeStringFixed(ByVal length As Long) As String
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a fixed length UNICODE string from the queue and removes it
     '***************************************************
@@ -801,7 +801,7 @@ End Function
 
 Public Function ReadASCIIString() As String
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a variable length ASCII string from the queue and removes it
     '***************************************************
@@ -860,7 +860,7 @@ End Function
 Public Function ReadUnicodeString() As String
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a variable length UNICODE string from the queue and removes it
     '***************************************************
@@ -914,7 +914,7 @@ End Function
 Public Function ReadBlock(ByRef block() As Byte, ByVal dataLength As Long) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a byte array from the queue and removes it
     '***************************************************
@@ -936,7 +936,7 @@ Public Function PeekByte() As Byte
     On Error Resume Next
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a byte from the queue but doesn't removes it
     '***************************************************
@@ -960,7 +960,7 @@ End Function
 Public Function PeekInteger() As Integer
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads an integer from the queue but doesn't removes it
     '***************************************************
@@ -985,7 +985,7 @@ End Function
 Public Function PeekLong() As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a long from the queue but doesn't removes it
     '***************************************************
@@ -1010,7 +1010,7 @@ End Function
 Public Function PeekSingle() As Single
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Reads a single from the queue but doesn't removes it
     '***************************************************
@@ -1035,7 +1035,7 @@ End Function
 Public Function PeekDouble() As Double
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Reads a double from the queue but doesn't removes it
     '***************************************************
@@ -1060,7 +1060,7 @@ End Function
 Public Function PeekBoolean() As Boolean
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a Boolean from the queue but doesn't removes it
     '***************************************************
@@ -1086,7 +1086,7 @@ End Function
 Public Function PeekASCIIStringFixed(ByVal length As Long) As String
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a fixed length ASCII string from the queue but doesn't removes it
     '***************************************************
@@ -1122,7 +1122,7 @@ End Function
 Public Function PeekUnicodeStringFixed(ByVal length As Long) As String
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a fixed length UNICODE string from the queue but doesn't removes it
     '***************************************************
@@ -1157,7 +1157,7 @@ End Function
 Public Function PeekASCIIString() As String
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a variable length ASCII string from the queue but doesn't removes it
     '***************************************************
@@ -1217,7 +1217,7 @@ End Function
 Public Function PeekUnicodeString() As String
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a variable length UNICODE string from the queue but doesn't removes it
     '***************************************************
@@ -1273,7 +1273,7 @@ End Function
 Public Function PeekBlock(ByRef block() As Byte, ByVal dataLength As Long) As Long
 
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a byte array from the queue but doesn't removes it
     '***************************************************
@@ -1289,7 +1289,7 @@ End Function
 
 Public Property Get Capacity() As Long
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Retrieves the current capacity of the queue
     '***************************************************
@@ -1306,7 +1306,7 @@ End Property
 
 Public Property Let Capacity(ByVal value As Long)
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Sets the current capacity of the queue.
     'All data in the queue exceeding the new capacity is lost
@@ -1329,7 +1329,7 @@ End Property
 
 Public Property Get length() As Long
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Retrieves the current number of bytes in the queue
     '***************************************************
@@ -1344,7 +1344,7 @@ End Property
 
 Public Property Get NotEnoughDataErrCode() As Long
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Retrieves the NOT_ENOUGH_DATA error code
     '***************************************************
@@ -1359,7 +1359,7 @@ End Property
 
 Public Property Get NotEnoughSpaceErrCode() As Long
     '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+    'Autor: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Retrieves the NOT_ENOUGH_SPACE error code
     '***************************************************

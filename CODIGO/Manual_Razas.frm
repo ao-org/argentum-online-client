@@ -125,7 +125,7 @@ Begin VB.Form Manual_Mineria
          Width           =   5775
       End
       Begin VB.Label Label19 
-         Caption         =   "Con el Martillo de herrero equipado, realizar un click derecho sobre el yunque para que se abra la pestaña de creación de ítems."
+         Caption         =   "Con el Martillo de herrero equipado, realizar un click derecho sobre el yunque para que se abra la pestaÃ±a de creaciÃ³n de Ã­tems."
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -152,7 +152,7 @@ Begin VB.Form Manual_Mineria
       End
       Begin VB.Label Label17 
          BackStyle       =   0  'Transparent
-         Caption         =   "Martillo de Herrero : Se utiliza para la fabricación de items a partir de lingotes o minerales pulidos."
+         Caption         =   "Martillo de Herrero : Se utiliza para la fabricaciÃ³n de items a partir de lingotes o minerales pulidos."
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -224,7 +224,7 @@ Begin VB.Form Manual_Mineria
       End
    End
    Begin VB.Frame Frame3 
-      Caption         =   "¿Donde minar?"
+      Caption         =   "Â¿Donde minar?"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -380,7 +380,7 @@ Begin VB.Form Manual_Mineria
       End
       Begin VB.Label Label33 
          BackStyle       =   0  'Transparent
-         Caption         =   "Los minerales que podremos obtener a través de los yacimientos son los siguientes:"
+         Caption         =   "Los minerales que podremos obtener a travÃ©s de los yacimientos son los siguientes:"
          Height          =   975
          Left            =   120
          TabIndex        =   55
@@ -651,7 +651,7 @@ Begin VB.Form Manual_Mineria
       End
       Begin VB.Label Label21 
          BackStyle       =   0  'Transparent
-         Caption         =   "¿Donde minar?"
+         Caption         =   "Â¿Donde minar?"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   9.75
@@ -810,7 +810,7 @@ Begin VB.Form Manual_Mineria
          Width           =   2535
       End
       Begin VB.Label Label4 
-         Caption         =   "Piquete De Minero : Se utiliza para la extracción de distintos minerales de los yacimientos."
+         Caption         =   "Piquete De Minero : Se utiliza para la extracciÃ³n de distintos minerales de los yacimientos."
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -828,7 +828,7 @@ Begin VB.Form Manual_Mineria
          Width           =   2535
       End
       Begin VB.Label Label1 
-         Caption         =   "1) Comprar los items de Minería:"
+         Caption         =   "1) Comprar los items de MinerÃ­a:"
          Height          =   495
          Left            =   120
          TabIndex        =   6
@@ -837,7 +837,7 @@ Begin VB.Form Manual_Mineria
       End
       Begin VB.Label Label3 
          BackStyle       =   0  'Transparent
-         Caption         =   "¿Cómo fabricar un ítem de herrería?"
+         Caption         =   "Â¿CÃ³mo fabricar un Ã­tem de herrerÃ­a?"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   9

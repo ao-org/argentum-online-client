@@ -218,7 +218,7 @@ End Sub
 Public Sub InitFonts()
 
     '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
@@ -558,13 +558,13 @@ Sub CargarDatosMapa(ByVal map As Integer)
     If Len(NameMaps(map).desc) <> 0 Then
         frmMapaGrande.Label1.Caption = NameMaps(map).desc
     Else
-        frmMapaGrande.Label1.Caption = "Sin información relevante."
+        frmMapaGrande.Label1.Caption = "Sin informaciÃ³n relevante."
 
     End If
 
     '**************************************************************
     'Formato de mapas optimizado para reducir el espacio que ocupan.
-    'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
+    'DiseÃ±ado y creado por Juan MartÃ­n Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
     '**************************************************************
 
     Dim fh           As Integer
@@ -594,7 +594,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
     #If Compresion = 1 Then
 
         If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
+            Err.Description = "Â¡No se puede cargar el archivo de mapas! El juego se cerrara."
             MsgBox Err.Description
             End
 
@@ -805,7 +805,7 @@ Public Sub CargarMapa(ByVal map As Integer)
 
     '**************************************************************
     'Formato de mapas optimizado para reducir el espacio que ocupan.
-    'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
+    'DiseÃ±ado y creado por Juan MartÃ­n Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
     '**************************************************************
     Dim fh           As Integer
 
@@ -841,7 +841,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     #If Compresion = 1 Then
 
         If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
+            Err.Description = "Â¡No se puede cargar el archivo de mapas! El juego se cerrara."
             Call MsgBox(Err.Description)
             End
 
@@ -1087,7 +1087,7 @@ Public Sub CargarParticulas()
     'Coded by OneZero (onezero_ss@hotmail.com)
     'Last Modified: 6/4/03
     'Loads the Particles.ini file to the ComboBox
-    'Edited by Juan Martín Sotuyo Dodero to add speed and life
+    'Edited by Juan MartÃ­n Sotuyo Dodero to add speed and life
     '*************************************
     Dim loopc      As Long
     Dim i          As Long
@@ -1099,7 +1099,7 @@ Public Sub CargarParticulas()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ini", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de particles.ini!"
+            Err.Description = "Â¡No se puede cargar el archivo de particles.ini!"
             MsgBox Err.Description
 
         End If
@@ -1181,7 +1181,7 @@ Public Sub CargarParticulasBinary()
     'Coded by OneZero (onezero_ss@hotmail.com)
     'Last Modified: 6/4/03
     'Loads the Particles.ini file to the ComboBox
-    'Edited by Juan Martín Sotuyo Dodero to add speed and life
+    'Edited by Juan MartÃ­n Sotuyo Dodero to add speed and life
     '*************************************
     Dim loopc      As Long
     Dim i          As Long
@@ -1198,7 +1198,7 @@ Public Sub CargarParticulasBinary()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de particles.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de particles.ind!"
             MsgBox Err.Description
 
         End If
@@ -1275,7 +1275,7 @@ Public Sub CargarIndicesOBJBinary()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de localindex.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de localindex.ind!"
             MsgBox Err.Description
 
         End If
@@ -1373,7 +1373,7 @@ Public Sub CargarIndicesOBJ()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de localindex.dat!"
+            Err.Description = "Â¡No se puede cargar el archivo de localindex.dat!"
             MsgBox Err.Description
 
         End If
@@ -1563,7 +1563,7 @@ Public Sub Cargarmapsworlddata()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "mapsworlddata.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de mapsworlddata.dat!"
+            Err.Description = "Â¡No se puede cargar el archivo de mapsworlddata.dat!"
             MsgBox Err.Description
 
         End If
@@ -1611,7 +1611,7 @@ Sub CargarCabezas()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cabezas.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
 
         End If
@@ -1667,7 +1667,7 @@ Sub CargarCascos()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cascos.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
 
         End If
@@ -1723,7 +1723,7 @@ Sub CargarCuerpos()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "personajes.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de personajes.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de personajes.ind!"
             MsgBox Err.Description
 
         End If
@@ -1779,7 +1779,7 @@ Sub CargarFxs()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "fxs.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de fxs.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de fxs.ind!"
             MsgBox Err.Description
 
         End If
@@ -1826,7 +1826,7 @@ Public Function LoadGrhData() As Boolean
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "graficos.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de recurso!"
+            Err.Description = "Â¡No se puede cargar el archivo de recurso!"
             GoTo ErrorHandler
 
         End If
@@ -1960,7 +1960,7 @@ Public Function CargarMiniMap()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "minimap.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de recurso!"
+            Err.Description = "Â¡No se puede cargar el archivo de recurso!"
             GoTo ErrorHandler
 
         End If
@@ -2005,7 +2005,7 @@ Sub CargarAnimArmas()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de armas.dat!"
+            Err.Description = "Â¡No se puede cargar el archivo de armas.dat!"
             MsgBox Err.Description
 
         End If
@@ -2041,7 +2041,7 @@ Sub CargarColores()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "colores.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de colores.dat!"
+            Err.Description = "Â¡No se puede cargar el archivo de colores.dat!"
             MsgBox Err.Description
 
         End If
@@ -2093,7 +2093,7 @@ Sub CargarAnimEscudos()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de escudos.dat!"
+            Err.Description = "Â¡No se puede cargar el archivo de escudos.dat!"
             MsgBox Err.Description
 
         End If

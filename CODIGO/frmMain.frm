@@ -1005,7 +1005,7 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   12480
       TabIndex        =   6
-      ToolTipText     =   "Tu daño magico"
+      ToolTipText     =   "Tu daÃ±o magico"
       Top             =   9840
       Visible         =   0   'False
       Width           =   420
@@ -1380,10 +1380,10 @@ Attribute VB_Exposed = False
 'You can contact me at:
 'morgolock@speedy.com.ar
 '
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 nÃºmero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'CÃ³digo Postal 1900
+'Pablo Ignacio MÃ¡rquez
 'Call ParseUserCommand("/CMSG " & stxtbuffercmsg)
 Option Explicit
 
@@ -2179,7 +2179,7 @@ End Sub
 
 Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
 
-    ' Si soltó un item en un slot válido
+    ' Si soltÃ³ un item en un slot vÃ¡lido
     
     If Drop > 0 Then
         ' Muevo el item dentro del iventario
@@ -2347,7 +2347,7 @@ Private Sub manabar_Click()
     If UserEstado = 1 Then
 
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            Call ShowConsoleMsg("Â¡EstÃ¡s muerto!", .red, .green, .blue, .bold, .italic)
 
         End With
 
@@ -2555,7 +2555,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
         Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "DaÃ±o: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
@@ -2759,7 +2759,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
 
                 Select Case PreguntaNUM
 
-                    Case 1 '¿Destruir item?
+                    Case 1 'Â¿Destruir item?
                         Call WriteDrop(DestItemSlot, DestItemCant)
                         Pregunta = False
                         PreguntaLocal = False
@@ -3141,7 +3141,7 @@ Private Sub cmdLanzar_Click()
         If UserEstado = 1 Then
 
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                Call ShowConsoleMsg("Â¡Â¡EstÃ¡s muerto!!", .red, .green, .blue, .bold, .italic)
 
             End With
 
@@ -3193,7 +3193,7 @@ Public Sub Form_Click()
                             Else
 
                                 With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                    Call ShowConsoleMsg("¡No puedes lanzar hechizos tan rápido!", .red, .green, .blue, .bold, .italic)
+                                    Call ShowConsoleMsg("Â¡No puedes lanzar hechizos tan rÃ¡pido!", .red, .green, .blue, .bold, .italic)
 
                                 End With
 
@@ -3202,7 +3202,7 @@ Public Sub Form_Click()
                         Else
 
                             With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                Call ShowConsoleMsg("¡No puedes lanzar tan rápido después de un golpe!", .red, .green, .blue, .bold, .italic)
+                                Call ShowConsoleMsg("Â¡No puedes lanzar tan rÃ¡pido despuÃ©s de un golpe!", .red, .green, .blue, .bold, .italic)
 
                             End With
 
@@ -3381,7 +3381,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     If PantallaCompleta = 0 And Button = vbLeftButton Then
         If MoverVentana = 1 Then
             If UserMoving = 0 Then
-                ' Mover form sólo en la parte superior
+                ' Mover form sÃ³lo en la parte superior
                 If y < 30 Then moverForm
 
                 'Call Auto_Drag(Me.hwnd)
@@ -3540,7 +3540,7 @@ Private Sub picInv_DblClick()
     
     If Not Inventario.IsItemSelected Then Exit Sub
 
-    ' Hacemos acción del doble clic correspondiente
+    ' Hacemos acciÃ³n del doble clic correspondiente
     Dim ObjType As Byte
 
     ObjType = ObjData(Inventario.OBJIndex(Inventario.SelectedItem)).ObjType
@@ -3612,7 +3612,7 @@ Private Sub SendTxt_Change()
     '**************************************************************
     'Author: Unknown
     'Last Modify Date: 3/06/2006
-    '3/06/2006: Maraxus - impedí se inserten caractéres no imprimibles
+    '3/06/2006: Maraxus - impedÃ­ se inserten caractÃ©res no imprimibles
     '**************************************************************
     If Len(SendTxt.Text) > 160 Then
         stxtbuffer = "Soy un cheater, avisenle a un gm"
@@ -3689,8 +3689,8 @@ End Sub
             Case E_MODO.BorrandoPJ
                 Call WriteBorrandoPJ
           
-            Case E_MODO.RecuperandoConstraseña
-                Call WriteRecuperandoConstraseña
+            Case E_MODO.RecuperandoConstraseÃ±a
+                Call WriteRecuperandoConstraseÃ±a
                     
             Case E_MODO.BorrandoCuenta
                 Call WriteBorrandoCuenta
@@ -3847,7 +3847,7 @@ Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Respo
     ' Call ComprobarEstado
     
     If frmConnect.Visible Then
-        Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en www.argentum20.com y asegurarse de estar conectado a internet.")
+        Call TextoAlAsistente("Â¡No me pude conectar! Te recomiendo verificar el estado de los servidores en www.argentum20.com y asegurarse de estar conectado a internet.")
     Else
         Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en www.argentum20.com, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
     

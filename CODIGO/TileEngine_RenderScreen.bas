@@ -14,7 +14,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     '**************************************************************
     ' Author: Aaron Perkins
     ' Last Modify Date: 23/11/2020
-    ' Modified by: Juan Martín Sotuyo Dodero (Maraxus)
+    ' Modified by: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     ' Last modified by: Alexis Caraballo (WyroX)
     ' Renders everything to the viewport
     '**************************************************************
@@ -258,7 +258,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                     Select Case ObjData(.OBJInfo.OBJIndex).ObjType
                     
                         Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
-                            ' Objetos grandes (menos árboles)
+                            ' Objetos grandes (menos Ã¡rboles)
                             Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, , x, y)
                     
                     End Select
@@ -539,7 +539,7 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
     '**************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 8/14/2007
-    'Last modified by: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last modified by: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Renders everything to the viewport
     '**************************************************************
 
@@ -853,7 +853,7 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
     
     If Pregunta Then
     
-        'PreguntaScreen = "¿Esta seguro que asen es gay? ¿Que se lo come a fede?"
+        'PreguntaScreen = "Â¿Esta seguro que asen es gay? Â¿Que se lo come a fede?"
         Call Engine_Draw_Box(283, 180, 170, 80, D3DColorARGB(200, 219, 116, 3))
         Call Engine_Draw_Box(288, 185, 160, 70, D3DColorARGB(200, 51, 27, 3))
 

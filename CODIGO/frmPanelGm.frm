@@ -152,7 +152,7 @@ Begin VB.Form frmPanelGm
          Caption         =   "Responder"
       End
       Begin VB.Menu mnuInvalida 
-         Caption         =   "Inválida"
+         Caption         =   "InvÃ¡lida"
       End
       Begin VB.Menu mnuManual 
          Caption         =   "Manual/FAQ"
@@ -176,7 +176,7 @@ Begin VB.Form frmPanelGm
          Index           =   3
       End
       Begin VB.Menu cmdAccion 
-         Caption         =   "Ubicación"
+         Caption         =   "UbicaciÃ³n"
          Index           =   6
       End
       Begin VB.Menu cmdAccion 
@@ -272,7 +272,7 @@ Begin VB.Form frmPanelGm
          End
       End
       Begin VB.Menu mnuInfo 
-         Caption         =   "Información"
+         Caption         =   "InformaciÃ³n"
          Begin VB.Menu mnuAccion 
             Caption         =   "General"
             Index           =   0
@@ -290,7 +290,7 @@ Begin VB.Form frmPanelGm
             Index           =   3
          End
          Begin VB.Menu mnuAccion 
-            Caption         =   "Bóveda"
+            Caption         =   "BÃ³veda"
             Index           =   4
          End
       End
@@ -461,7 +461,7 @@ Begin VB.Form frmPanelGm
          End
       End
       Begin VB.Menu IP 
-         Caption         =   "Direcciónes de IP"
+         Caption         =   "DirecciÃ³nes de IP"
          Index           =   0
          Begin VB.Menu mnuIP 
             Caption         =   "Banear una IP"
@@ -501,7 +501,7 @@ Begin VB.Form frmPanelGm
       End
    End
    Begin VB.Menu Admin 
-      Caption         =   "Administración"
+      Caption         =   "AdministraciÃ³n"
       Index           =   0
       Begin VB.Menu mnuAdmin 
          Caption         =   "Apagar servidor"
@@ -561,7 +561,7 @@ Begin VB.Form frmPanelGm
          End
       End
       Begin VB.Menu Ambiente 
-         Caption         =   "Estado climático"
+         Caption         =   "Estado climÃ¡tico"
          Index           =   0
          Begin VB.Menu mnuAmbiente 
             Caption         =   "Iniciar o detener una lluvia"
@@ -670,10 +670,10 @@ Public Sub CrearGMmSg(Nick As String, msg As String)
 End Sub
 
 Private Sub BanCuenta_Click()
-    tmp = InputBox("¿Motivo?", "Ingrese el motivo")
+    tmp = InputBox("Â¿Motivo?", "Ingrese el motivo")
     Nick = cboListaUsus.Text
 
-    If MsgBox("¿Está seguro que desea banear la cuenta de """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox("Â¿EstÃ¡ seguro que desea banear la cuenta de """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
         Call WriteBanCuenta(Nick, tmp)
 
     End If
@@ -687,7 +687,7 @@ End Sub
 
 Private Sub BorrarPersonaje_Click()
 
-    If MsgBox("¿Está seguro que desea Borrar el personaje " & cboListaUsus.Text & "?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox("Â¿EstÃ¡ seguro que desea Borrar el personaje " & cboListaUsus.Text & "?", vbYesNo + vbQuestion) = vbYes Then
 
         'Call SendData("/KILLCHAR " & cboListaUsus.Text)
     End If
@@ -756,9 +756,9 @@ Private Sub cmdAccion_Click(Index As Integer)
             Call WriteKick(Nick)
 
         Case 1 '/BAN NICK MOTIVO 0.12.1
-            tmp = InputBox("¿Motivo?", "Ingrese el motivo")
+            tmp = InputBox("Â¿Motivo?", "Ingrese el motivo")
 
-            If MsgBox("¿Está seguro que desea banear al personaje """ & cboListaUsus.Text & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox("Â¿EstÃ¡ seguro que desea banear al personaje """ & cboListaUsus.Text & """?", vbYesNo + vbQuestion) = vbYes Then
                 Call WriteBanChar(Nick, tmp)
 
             End If
@@ -772,7 +772,7 @@ Private Sub cmdAccion_Click(Index As Integer)
             If LenB(Nick) <> 0 Then Call WriteGoToChar(Nick)
 
         Case 4 '/REM 0.12.1
-            tmp = InputBox("¿Comentario?", "Ingrese comentario")
+            tmp = InputBox("Â¿Comentario?", "Ingrese comentario")
             Call WriteComment(tmp)
 
         Case 5 '/HORA 0.12.1
@@ -783,7 +783,7 @@ Private Sub cmdAccion_Click(Index As Integer)
             If LenB(Nick) <> 0 Then Call WriteWhere(Nick)
 
         Case 7 '/NENE 0.12.1
-            tmp = InputBox("¿En qué mapa?", "")
+            tmp = InputBox("Â¿En quÃ© mapa?", "")
             Call ParseUserCommand("/NENE " & tmp)
 
         Case 8 '/info nick
@@ -796,7 +796,7 @@ Private Sub cmdAccion_Click(Index As Integer)
             ' Call SendData("/SKILLS " & Nick)
    
         Case 11 '/CARCEL NICK @ MOTIVO  0.12.1
-            tmp = InputBox("¿Minutos a encarcelar? (hasta 60)", "")
+            tmp = InputBox("Â¿Minutos a encarcelar? (hasta 60)", "")
 
             If tmp > 1 Then
                 Call ParseUserCommand("/CARCEL " & Nick & "@encarcelado via panelgm@" & tmp)
@@ -820,10 +820,10 @@ Private Sub cmdAccion_Click(Index As Integer)
             Call WriteRequestCharMail(Nick)
 
         Case 17 '/BANIP IP 0.12.1
-            tmp = InputBox("Escriba la dirección IP a banear.", "")
+            tmp = InputBox("Escriba la direcciÃ³n IP a banear.", "")
             reason = InputBox("Escriba el motivo del baneo.", "")
 
-            If MsgBox("¿Esta seguro que desea banear la IP """ & tmp & ", debido a " & reason & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox("Â¿Esta seguro que desea banear la IP """ & tmp & ", debido a " & reason & """?", vbYesNo + vbQuestion) = vbYes Then
                 Call ParseUserCommand("/BANIP " & tmp & " " & reason)
 
             End If
@@ -832,7 +832,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
         Case 19 '/BANED IP AND PERSONAJE 0.12.1   REVISAR
     
-            If MsgBox("¿Esta seguro que desea banear la IP y el personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox("Â¿Esta seguro que desea banear la IP y el personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
         
                 Call ParseUserCommand("/banip " & Nick & " panelgm")
 
@@ -888,9 +888,9 @@ Private Sub cmdAccion_Click(Index As Integer)
 
         Case 35 '/SILENCIO NICK@TIEMPO
 
-            tmp = InputBox("¿Minutos a silenciar? (hasta 255)", "")
+            tmp = InputBox("Â¿Minutos a silenciar? (hasta 255)", "")
 
-            If MsgBox("¿Esta seguro que desea silenciar al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox("Â¿Esta seguro que desea silenciar al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
                 If tmp > 255 Then Exit Sub
                 Call ParseUserCommand("/SILENCIO " & cboListaUsus.Text & "@" & tmp)
 
@@ -969,9 +969,9 @@ Private Sub Cuerpo_Click()
 End Sub
 
 Private Sub Desbanear_Click()
-    tmp = InputBox("Escriba la dirección IP a desbanear", "")
+    tmp = InputBox("Escriba la direcciÃ³n IP a desbanear", "")
 
-    If MsgBox("¿Esta seguro que desea desbanear la IP """ & tmp & """?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox("Â¿Esta seguro que desea desbanear la IP """ & tmp & """?", vbYesNo + vbQuestion) = vbYes Then
         Call ParseUserCommand("/UNBANIP " & tmp)
 
     End If
@@ -1023,7 +1023,7 @@ End Sub
 
 Private Sub finalizarevento_Click()
 
-    If MsgBox("¿Esta seguro que desea finalizar el evento?", vbYesNo + vbQuestion, "¡ATENCION!") = vbYes Then
+    If MsgBox("Â¿Esta seguro que desea finalizar el evento?", vbYesNo + vbQuestion, "Â¡ATENCION!") = vbYes Then
         Call WriteDenounce
 
     End If
@@ -1133,7 +1133,7 @@ Private Sub mnuBorrar_Click()
     Call ReadNick
     ProximamentTipo = General_Field_Read(2, List1.List(List1.ListIndex), "(")
     TIPO = General_Field_Read(1, ProximamentTipo, ")")
-    Call WriteSOSRemove(Nick & "Ø" & txtMsg & "Ø" & TIPO)
+    Call WriteSOSRemove(Nick & "Ã˜" & txtMsg & "Ã˜" & TIPO)
     List1.RemoveItem List1.ListIndex
     List2.RemoveItem elitem
     txtMsg.Text = ""
@@ -1167,7 +1167,7 @@ Private Sub MnuEnviar_Click(Index As Integer)
         Case 4 'Otro
 
             If LenB(Nick) <> 0 Then
-                Coordenadas = InputBox("Indique la posición (MAPA X Y).", "Transportar a " & Nick)
+                Coordenadas = InputBox("Indique la posiciÃ³n (MAPA X Y).", "Transportar a " & Nick)
 
                 If LenB(Coordenadas) <> 0 Then Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
@@ -1202,7 +1202,7 @@ End Sub
 
 Private Sub mnuManual_Click()
     Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas informaciÃ³n visite: www.argentum20.com.ar.")
 
 End Sub
 
@@ -1310,7 +1310,7 @@ Private Sub mnuReload_Click(Index As Integer)
 
         Case 7 'Reload sockets
 
-             If MsgBox("Al realizar esta acción reiniciará la API de Winsock. Se cerrarán todas las conexiónes.", vbYesNo, "Advertencia") = vbYes Then
+             If MsgBox("Al realizar esta acciÃ³n reiniciarÃ¡ la API de Winsock. Se cerrarÃ¡n todas las conexiÃ³nes.", vbYesNo, "Advertencia") = vbYes Then
                '   Call SendData("/RELOAD SOCK")
            End If
 
@@ -1401,10 +1401,10 @@ Private Sub Temporal_Click()
 
     Dim tmp2 As Byte
 
-    tmp2 = InputBox("¿Dias?", "Ingrese cantidad de días (Maximo 255)")
-    tmp = InputBox("¿Motivo?", "Ingrese el motivo")
+    tmp2 = InputBox("Â¿Dias?", "Ingrese cantidad de dÃ­as (Maximo 255)")
+    tmp = InputBox("Â¿Motivo?", "Ingrese el motivo")
 
-    If MsgBox("¿Está seguro que desea banear el personaje de """ & cboListaUsus.Text & """ por " & tmp2 & " días?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox("Â¿EstÃ¡ seguro que desea banear el personaje de """ & cboListaUsus.Text & """ por " & tmp2 & " dÃ­as?", vbYesNo + vbQuestion) = vbYes Then
         Call WriteBanTemporal(cboListaUsus.Text, tmp, tmp2)
 
     End If
@@ -1429,7 +1429,7 @@ End Sub
 Private Sub UnbanPersonaje_Click()
     Nick = cboListaUsus.Text
 
-    If MsgBox("¿Esta seguro que desea removerle el ban al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox("Â¿Esta seguro que desea removerle el ban al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
         Call WriteUnbanChar(Nick)
 
     End If

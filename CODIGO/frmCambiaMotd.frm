@@ -124,7 +124,7 @@ Begin VB.Form frmCambiaMotd
    Begin VB.Label Label1 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "No olvides agregar los colores al final de cada línea (ver tabla de abajo)"
+      Caption         =   "No olvides agregar los colores al final de cada lÃ­nea (ver tabla de abajo)"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75

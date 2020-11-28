@@ -167,7 +167,7 @@ Public clicY                 As Long
 
 Public FxLoops               As Long
 
-'¿Estamos haciendo efecto fade?
+'Â¿Estamos haciendo efecto fade?
 Public mFadingStatus         As Byte
 
 Public mFadingMusicMod       As Long
@@ -294,7 +294,7 @@ Public NamePj(1 To 8) As String
 
 Public ValidacionCode As String
 
-'Objetos públicos
+'Objetos pÃºblicos
 Public CurMp3         As Byte
 
 Public Const Mp3_Dir = "\..\Recursos\Mp3\"
@@ -448,7 +448,7 @@ Public UserEstupido           As Boolean
 
 Public NoRes                  As Boolean 'no cambiar la resolucion
 
-Public Launcher               As Boolean '¿Habrio desde el Launcher?
+Public Launcher               As Boolean 'Â¿Habrio desde el Launcher?
 
 Public AmbientalesBufferIndex As Long
 
@@ -583,12 +583,12 @@ Public Const FOgata                  As Integer = 1521
 Public Enum eClass
 
     Mage = 1    'Mago
-    Cleric      'Clérigo
+    Cleric      'ClÃ©rigo
     Warrior     'Guerrero
     Assasin     'Asesino
     Bard        'Bardo
     Druid       'Druida
-    paladin     'Paladín
+    paladin     'PaladÃ­n
     Hunter      'Cazador
     Trabajador  'Trabajador
 
@@ -623,7 +623,7 @@ Public Enum eSkill
     Tacticas = 3
     Armas = 4
     Meditar = 5
-    Apuñalar = 6
+    ApuÃ±alar = 6
     Ocultarse = 7
     Supervivencia = 8
     Comerciar = 9
@@ -694,7 +694,7 @@ Public Enum eObjType
     otForos = 10
     otPociones = 11
     otBebidas = 13
-    otLeña = 14
+    otLeÃ±a = 14
     otFogata = 15
     otESCUDO = 16
     otCASCO = 17
@@ -749,7 +749,7 @@ Public Const MENSAJE_SEGURO_ACTIVADO               As String = "Seguro Activado.
 
 Public Const MENSAJE_SEGURO_DESACTIVADO            As String = "Seguro Desactivado."
 
-Public Const MENSAJE_USAR_MEDITANDO                As String = "¡Estás meditando! Debes dejar de meditar para usar objetos."
+Public Const MENSAJE_USAR_MEDITANDO                As String = "Â¡EstÃ¡s meditando! Debes dejar de meditar para usar objetos."
 
 Public Const MENSAJE_SEGURO_PARTY_ON               As String = "Ahora nadie te podra invitar a un grupo."
 
@@ -768,7 +768,7 @@ Public Const MENSAJE_GOLPE_PIERNA_DER              As String = "La criatura te h
 Public Const MENSAJE_GOLPE_TORSO                   As String = "La criatura te ha pegado en el torso por "
 
 ' MENSAJE_[12]: Aparecen antes y despues del valor de los mensajes anteriores (MENSAJE_GOLPE_*)
-Public Const MENSAJE_1                             As String = "¡¡"
+Public Const MENSAJE_1                             As String = "Â¡Â¡"
 
 Public Const MENSAJE_2                             As String = "."
 
@@ -808,7 +808,7 @@ Public Const MENSAJE_TRABAJO_PESCA                 As String = "Haz click sobre 
 
 Public Const MENSAJE_TRABAJO_ROBAR                 As String = "Haz click sobre la victima..."
 
-Public Const MENSAJE_TRABAJO_TALAR                 As String = "Haz click sobre el árbol..."
+Public Const MENSAJE_TRABAJO_TALAR                 As String = "Haz click sobre el Ã¡rbol..."
 
 Public Const MENSAJE_TRABAJO_MINERIA               As String = "Haz click sobre el yacimiento..."
 
@@ -1051,7 +1051,7 @@ Public Enum E_MODO
     IngresandoConCuenta = 6
     ReValidandoCuenta = 7
     BorrandoPJ = 8
-    RecuperandoConstraseña = 9
+    RecuperandoConstraseÃ±a = 9
     BorrandoCuenta = 10
 
 End Enum

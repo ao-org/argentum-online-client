@@ -270,7 +270,7 @@ Begin VB.Form FrmQuests
    Begin VB.Label titulo 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "¡No tenes misiones!"
+      Caption         =   "Â¡No tenes misiones!"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25

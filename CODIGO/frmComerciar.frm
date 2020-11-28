@@ -95,7 +95,7 @@ Begin VB.Form frmComerciar
    Begin VB.Label lbldesc 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "descripción"
+      Caption         =   "descripciÃ³n"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6
@@ -194,7 +194,7 @@ Private m_Increment         As Integer
 
 Private m_Interval          As Integer
 
-' Declaro los inventarios acá para poder manejar los eventos de drop
+' Declaro los inventarios acÃ¡ para poder manejar los eventos de drop
 Public WithEvents InvComUsu As clsGrapchicalInventory ' Inventario del usuario visible en el comercio
 Attribute InvComUsu.VB_VarHelpID = -1
 
@@ -307,7 +307,7 @@ Private Sub Image1_Click(Index As Integer)
             If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
                 Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
             Else
-                AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+                AddtoRichTextBox frmmain.RecTxt, "No tenÃ©s suficiente oro.", 2, 51, 223, 1, 1
 
             End If
        
@@ -434,11 +434,11 @@ End Sub
 Private Sub interface_Click()
     
     If InvComNpc.ClickedInside Then
-        ' Cliqueé en la tienda, deselecciono el inventario
+        ' CliqueÃ© en la tienda, deselecciono el inventario
         Call InvComUsu.SeleccionarItem(0)
         
     ElseIf InvComUsu.ClickedInside Then
-        ' Cliqueé en el inventario, deselecciono la tienda
+        ' CliqueÃ© en el inventario, deselecciono la tienda
         Call InvComNpc.SeleccionarItem(0)
 
     End If
@@ -456,7 +456,7 @@ Private Sub interface_DblClick()
         If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
             Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
         Else
-            AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmmain.RecTxt, "No tenÃ©s suficiente oro.", 2, 51, 223, 1, 1
 
         End If
         
@@ -464,7 +464,7 @@ Private Sub interface_DblClick()
     
         If Not InvComUsu.IsItemSelected Then Exit Sub
     
-        ' Hacemos acción del doble clic correspondiente
+        ' Hacemos acciÃ³n del doble clic correspondiente
         Dim ObjType As Byte
 
         ObjType = ObjData(InvComUsu.OBJIndex(InvComUsu.SelectedItem)).ObjType
@@ -558,13 +558,13 @@ End Sub
 
 Private Sub InvComUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
 
-    ' Si soltó dentro del mismo inventario
+    ' Si soltÃ³ dentro del mismo inventario
     If Drop > 0 Then
         ' Movemos el item dentro del inventario
         Call WriteItemMove(Drag, Drop)
     Else
 
-        ' Si lo soltó dentro de la tienda
+        ' Si lo soltÃ³ dentro de la tienda
         If InvComNpc.GetSlot(x, y) > 0 Then
             ' Vendemos el item
             LasActionBuy = False
@@ -578,7 +578,7 @@ End Sub
 
 Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
 
-    ' Si lo soltó dentro del inventario
+    ' Si lo soltÃ³ dentro del inventario
     If InvComUsu.GetSlot(x, y) > 0 Then
         ' Compramos el item
         LasActionBuy = True
@@ -587,7 +587,7 @@ Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         If UserGLD >= InvComNpc.Valor(Drag) * Val(cantidad.Text) Then
             Call WriteCommerceBuy(Drag, Val(cantidad.Text))
         Else
-            AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmmain.RecTxt, "No tenÃ©s suficiente oro.", 2, 51, 223, 1, 1
 
         End If
 

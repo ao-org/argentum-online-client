@@ -8,7 +8,7 @@ Attribute VB_Name = "modBindKeys"
 'RevolucionAo 1.0
 'Pablo Mercavides
 '*****************************************************************
-'Augusto José Rando (barrin@imperiumao.com.ar)
+'Augusto JosÃ© Rando (barrin@imperiumao.com.ar)
 '   - First Relase
 '*****************************************************************
 
@@ -85,7 +85,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserEstado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("Â¡EstÃ¡s muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -108,7 +108,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserEstado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("Â¡EstÃ¡s muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -128,7 +128,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserEstado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("Â¡EstÃ¡s muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -156,7 +156,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserEstado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("Â¡EstÃ¡s muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -179,7 +179,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserEstado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("Â¡EstÃ¡s muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -210,7 +210,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserEstado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("Â¡EstÃ¡s muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -255,7 +255,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserEstado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("Â¡EstÃ¡s muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -271,7 +271,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(23).KeyCode
             If UserEstado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    'Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                    'Call ShowConsoleMsg("Â¡EstÃ¡s muerto!", .red, .green, .blue, .bold, .italic)
                 End With
             Else
                 'Call WriteWork(eSkill.Domar)
@@ -295,7 +295,7 @@ Public Sub TirarItem()
             If ObjData(frmmain.Inventario.OBJIndex(frmmain.Inventario.SelectedItem)).Destruye = 0 Then
                 Call WriteDrop(frmmain.Inventario.SelectedItem, 1)
             Else
-                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                PreguntaScreen = "El item se destruira al tirarlo Â¿Esta seguro?"
                 Pregunta = True
                 DestItemSlot = frmmain.Inventario.SelectedItem
                 DestItemCant = 1

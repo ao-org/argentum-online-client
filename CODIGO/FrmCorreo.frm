@@ -498,20 +498,20 @@ End Sub
 Private Sub cmdSend_Click()
 
     If txTo.Text = "" Then
-        MsgBox ("¡Ingrese el nick del destinatario!")
+        MsgBox ("Â¡Ingrese el nick del destinatario!")
         Exit Sub
 
     End If
 
     If adjItem Then
         If Not IsNumeric(txCantidad.Text) Or txCantidad.Text < 1 Or txCantidad.Text > 9999 Or txCantidad.Text > frmmain.Inventario.Amount(lstInv.ListIndex + 1) Then
-            MsgBox ("¡Cantidad invalida!")
+            MsgBox ("Â¡Cantidad invalida!")
             Exit Sub
 
         End If
 
         If ItemCount <= 0 Then
-            MsgBox ("¡Seleccione el item que desea enviar!")
+            MsgBox ("Â¡Seleccione el item que desea enviar!")
             Exit Sub
 
         End If
@@ -1049,7 +1049,7 @@ Private Sub lstMsg_Click()
    
     End If
 
-    lbFecha.Caption = "Fecha de envío: " & CorreoMsj(lstMsg.ListIndex + 1).Fecha
+    lbFecha.Caption = "Fecha de envÃ­o: " & CorreoMsj(lstMsg.ListIndex + 1).Fecha
 
 End Sub
 

@@ -278,7 +278,7 @@ Private Sub lstArmas_Click()
     DR.bottom = 32
     Call frmCarp.List1.Clear
     Call frmCarp.List2.Clear
-    frmCarp.List1.AddItem ("Leña")
+    frmCarp.List1.AddItem ("LeÃ±a")
     frmCarp.List2.AddItem (ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).Madera)
 
     desc.Caption = ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).Texto

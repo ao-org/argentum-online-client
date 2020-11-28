@@ -60,10 +60,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'Argentum Online 0.11.6
 '
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 MÃ¡rquez Pablo Ignacio
 'Copyright (C) 2002 Otto Perez
 'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
+'Copyright (C) 2002 MatÃ­as Fernando PequeÃ±o
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -85,10 +85,10 @@ Attribute VB_Exposed = False
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 nÃºmero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'CÃ³digo Postal 1900
+'Pablo Ignacio MÃ¡rquez
 
 Option Explicit
 
@@ -117,7 +117,7 @@ Public Sub SetTipo(ByVal T As TIPO)
             Me.Text1.MaxLength = 200
 
         Case TIPO.RECHAZOPJ
-            Me.Caption = "Detalle de rechazo de membresía"
+            Me.Caption = "Detalle de rechazo de membresÃ­a"
             Me.Text1.MaxLength = 50
 
     End Select
@@ -128,9 +128,9 @@ Private Sub Command1_Click()
 
     If Text1 = "" Then
         If T = PAZ Or T = ALIANZA Then
-            MsgBox "Debes redactar un mensaje solicitando la paz o alianza al líder de " & nombre
+            MsgBox "Debes redactar un mensaje solicitando la paz o alianza al lÃ­der de " & nombre
         Else
-            MsgBox "Debes indicar el motivo por el cual rechazas la membresía de " & nombre
+            MsgBox "Debes indicar el motivo por el cual rechazas la membresÃ­a de " & nombre
 
         End If
 
@@ -139,9 +139,9 @@ Private Sub Command1_Click()
     End If
 
     If T = PAZ Then
-        Call WriteGuildOfferPeace(nombre, Replace(Text1, vbCrLf, "º"))
+        Call WriteGuildOfferPeace(nombre, Replace(Text1, vbCrLf, "Âº"))
     ElseIf T = ALIANZA Then
-        Call WriteGuildOfferAlliance(nombre, Replace(Text1, vbCrLf, "º"))
+        Call WriteGuildOfferAlliance(nombre, Replace(Text1, vbCrLf, "Âº"))
     ElseIf T = RECHAZOPJ Then
         Call WriteGuildRejectNewMember(nombre, Replace(Replace(Text1.Text, ",", " "), vbCrLf, " "))
 

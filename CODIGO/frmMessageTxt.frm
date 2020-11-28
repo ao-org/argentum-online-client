@@ -346,6 +346,6 @@ Exit Sub
 ErrHandler:
     'Did detected an invalid message??
     If Err.Number = CustomMessages.InvalidMessageErrCode Then
-        Call MsgBox("El Mensaje " & CStr(I + 1) & " es inv·lido. Modifiquelo por favor.")
+        Call MsgBox("El Mensaje " & CStr(I + 1) & " es inv√°lido. Modifiquelo por favor.")
     End If
 End Sub

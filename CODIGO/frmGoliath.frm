@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmGoliath 
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   Caption         =   "Operación bancaria"
+   Caption         =   "OperaciÃ³n bancaria"
    ClientHeight    =   7215
    ClientLeft      =   0
    ClientTop       =   -75
@@ -114,7 +114,7 @@ Begin VB.Form frmGoliath
    Begin VB.Label lblDatos 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "¡Cantidad invalida!"
+      Caption         =   "Â¡Cantidad invalida!"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   6.75
@@ -228,7 +228,7 @@ Attribute VB_Exposed = False
 '*****************************************************************
 
 '*****************************************************************
-'Augusto José Rando (barrin@imperiumao.com.ar)
+'Augusto JosÃ© Rando (barrin@imperiumao.com.ar)
 '   - First Relase
 '*****************************************************************
 
@@ -390,7 +390,7 @@ Private Sub Image2_Click()
         Case 5 'Depositar
     
             'Negativos y ceros
-            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad inválida."
+            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad invÃ¡lida."
             
             If UserGLD <= 0 Then
                 lblDatos.Caption = "No tienes oro para depositar."
@@ -403,7 +403,7 @@ Private Sub Image2_Click()
         Case 1 'Retirar
     
             'Negativos y ceros
-            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad inválida."
+            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad invÃ¡lida."
             
             If OroDep <= 0 Then
                 lblDatos.Caption = "No tienes oro en la cuenta."
@@ -416,7 +416,7 @@ Private Sub Image2_Click()
         Case 4 'Transferir - Destino - Cantidad
             'Negativos y ceros
             If Val(txtDatos.Text) < 1 Then
-                lblDatos.Caption = "Cantidad inválida, reintente."
+                lblDatos.Caption = "Cantidad invÃ¡lida, reintente."
                 'txtDatos.Text = ""
                 Exit Sub
             End If
@@ -430,7 +430,7 @@ Private Sub Image2_Click()
                 Call WriteTransFerGold(min(Val(txtDatos.Text), OroDep), txtname.Text)
                 Unload Me
             Else
-                lblDatos.Caption = "¡Nombre de destino inválido!"
+                lblDatos.Caption = "Â¡Nombre de destino invÃ¡lido!"
                 txtDatos.Text = ""
             End If
 

@@ -34,7 +34,7 @@ Attribute VB_Exposed = False
 '*****************************************************************
 
 '*****************************************************************
-'Augusto José Rando (barrin@imperiumao.com.ar)
+'Augusto JosÃ© Rando (barrin@imperiumao.com.ar)
 '   - First Relase
 '*****************************************************************
 
@@ -85,30 +85,30 @@ Private MP3Path                   As String
 'Manejador de buffers
 Private Buffers                   As CBufferMan
 
-'El volúmen actual real (sonidos)
+'El volÃºmen actual real (sonidos)
 Private mEffectsVolume            As Long
 
-'El volúmen actual real (ambientes)
+'El volÃºmen actual real (ambientes)
 Private mEffectsVolumeAmbient     As Long
 
-'El volúmen actual real (música)
+'El volÃºmen actual real (mÃºsica)
 Private mMusicVolume              As Long
 
-'El volúmen máximo en la configuración (sonidos)
+'El volÃºmen mÃ¡ximo en la configuraciÃ³n (sonidos)
 Private mEffectsVolumeMax         As Long
 
-'El volúmen máximo en la configuración (ambientes)
+'El volÃºmen mÃ¡ximo en la configuraciÃ³n (ambientes)
 Private mAmbientVolumeMax         As Long
 
-'El volúmen máximo en la configuración (música)
+'El volÃºmen mÃ¡ximo en la configuraciÃ³n (mÃºsica)
 Private mMusicVolumeMax           As Long
 
-'¿Estamos haciendo efecto fade?
+'Â¿Estamos haciendo efecto fade?
 Private mFadingStatus             As Byte
 
 Private mFadingMusicMod           As Long
 
-'¿Próximo MP3 o MIDI?
+'Â¿PrÃ³ximo MP3 o MIDI?
 Private mNextMusic                As Integer
 
 Private INTERIOR_VOLUME           As Long
@@ -427,7 +427,7 @@ End Function
 
 Public Function Music_Load(ByVal file_str As String, Optional ByVal Volume As Long = 0, Optional ByVal balance As Long = 0) As Boolean '**** Loads a MP3 *****
     '**************************************************************
-    'Author: Augusto José Rando (barrin@imperiumao.com.ar)
+    'Author: Augusto JosÃ© Rando (barrin@imperiumao.com.ar)
     'Last Modify Date: 2/08/2006
     '**************************************************************
     
@@ -542,7 +542,7 @@ End Function
 
 Public Function Music_Play() As Boolean
     '**************************************************************
-    'Author: Augusto José Rando (barrin@imperiumao.com.ar)
+    'Author: Augusto JosÃ© Rando (barrin@imperiumao.com.ar)
     'Last Modify Date: 2/08/2006
     '**************************************************************
     
@@ -749,7 +749,7 @@ End Function
 
 Public Function Sound_Render()
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 17/08/2005
     '
     '**************************************************************
@@ -805,7 +805,7 @@ Public Function Sound_Render()
 
             End If
 
-        Else 'No aplica efectos meteorológicos a la zona
+        Else 'No aplica efectos meteorolÃ³gicos a la zona
 
             If LastAmbienteActual > 0 Then
                 Call Ambient_Stop
@@ -816,7 +816,7 @@ Public Function Sound_Render()
 
             End If
                 
-            If bTecho Then 'En los interiores el sonido es más suave :)
+            If bTecho Then 'En los interiores el sonido es mÃ¡s suave :)
                 
                 If mEffectsVolumeAmbient <> VolAmbient - 1000 Then
 
@@ -865,7 +865,7 @@ Public Function Sound_Render()
  
         TiempoActual = (GetTickCount() And &H7FFFFFFF)
         
-        '¿Fade up or fade down? Primero fade down, después fade up
+        'Â¿Fade up or fade down? Primero fade down, despuÃ©s fade up
         If TimeElapsed + 60 < TiempoActual Then
             
             TimeElapsed = TiempoActual
@@ -923,7 +923,7 @@ End Function
 
 Public Function Sound_Load(ByVal file_num As Integer) As Boolean
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 7/16/2005
     '**************************************************************
     
@@ -936,7 +936,7 @@ End Function
 
 Public Function Calculate_Pan(ByVal map_x As Integer, ByVal map_y As Integer) As Long
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 7/16/2005
     '**************************************************************
     
@@ -976,7 +976,7 @@ End Function
 
 Public Function Calculate_Volume(ByVal map_x As Integer, ByVal map_y As Integer) As Long
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 7/16/2005
     '**************************************************************
     

@@ -129,7 +129,7 @@ Begin VB.Form frmPasswd
          Width           =   3510
       End
       Begin VB.Label Label3 
-         Caption         =   "Direcci髇 de correo electronico:"
+         Caption         =   "Direcci贸n de correo electronico:"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   8.25
@@ -147,7 +147,7 @@ Begin VB.Form frmPasswd
       End
       Begin VB.Label Label5 
          AutoSize        =   -1  'True
-         Caption         =   "Verifiaci髇 del password:"
+         Caption         =   "Verifiaci贸n del password:"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   8.25
@@ -182,7 +182,7 @@ Begin VB.Form frmPasswd
          Width           =   915
       End
       Begin VB.Label Label6 
-         Caption         =   "Verificaci髇 del correo electronico:"
+         Caption         =   "Verificaci贸n del correo electronico:"
          BeginProperty Font 
             Name            =   "Verdana"
             Size            =   8.25
@@ -295,7 +295,7 @@ Begin VB.Form frmPasswd
    End
    Begin VB.Label Estado 
       Alignment       =   2  'Center
-      Caption         =   "Rellene la siguiente informaci髇 por favor."
+      Caption         =   "Rellene la siguiente informaci贸n por favor."
       Height          =   480
       Left            =   120
       TabIndex        =   15
@@ -328,10 +328,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'Argentum Online 0.11.6
 '
-'Copyright (C) 2002 M醨quez Pablo Ignacio
+'Copyright (C) 2002 M谩rquez Pablo Ignacio
 'Copyright (C) 2002 Otto Perez
 'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Mat韆s Fernando Peque駉
+'Copyright (C) 2002 Mat铆as Fernando Peque帽o
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -353,10 +353,10 @@ Attribute VB_Exposed = False
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 n鷐ero 983 piso 7 dto A
+'Calle 3 n煤mero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'C骴igo Postal 1900
-'Pablo Ignacio M醨quez
+'C贸digo Postal 1900
+'Pablo Ignacio M谩rquez
 
 
 Option Explicit

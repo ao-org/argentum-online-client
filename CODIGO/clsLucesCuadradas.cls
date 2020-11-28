@@ -76,7 +76,7 @@ Public Function Light_Create(ByVal map_x As Integer, ByVal map_y As Integer, Opt
     'Author: Aaron Perkins
     'Last Modify Date: 10/07/2002
     'Returns the light_index if successful, else 0
-    'Edited by Juan Martín Sotuyo Dodero
+    'Edited by Juan MartÃ­n Sotuyo Dodero
     '**************************************************************
     If InMapBounds(map_x, map_y) Then
 
@@ -159,7 +159,7 @@ End Function
 Public Function Light_Move_By_Head(ByVal light_index As Long, ByVal Heading As Byte) As Boolean
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
+    'Author: Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 15/05/2002
     'Returns true if successful, else false
     '**************************************************************
@@ -582,7 +582,7 @@ End Sub
 Private Sub Light_Erase(ByVal light_index As Long)
 
     '***************************************'
-    'Author: Juan Martín Sotuyo Dodero
+    'Author: Juan MartÃ­n Sotuyo Dodero
     'Last modified: 3/31/2003
     'Correctly erases a light
     '***************************************'

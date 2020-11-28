@@ -178,9 +178,9 @@ End Sub
 Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByVal Height As Integer, ByVal Width As Integer, ByRef rgb_list() As Long, Optional ByVal h_center As Boolean, Optional ByVal v_center As Boolean, Optional ByVal alpha_blend As Boolean = False)
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (juansotuyo@hotmail.com)
+    'Author: Juan Mart√≠n Sotuyo Dodero (juansotuyo@hotmail.com)
     'Last Modify Date: 11/19/2003
-    'Similar to Grh_Render, but let¥s you resize the Grh
+    'Similar to Grh_Render, but let¬¥s you resize the Grh
     '**************************************************************
     Dim tile_width  As Integer
 
@@ -229,7 +229,7 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
     '**************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 2/28/2003
-    'Modified by Juan MartÌn Sotuyo Dodero
+    'Modified by Juan Mart√≠n Sotuyo Dodero
     'Added centering
     '**************************************************************
     Dim tile_width  As Integer
@@ -271,7 +271,7 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
     If grh_index <= 0 Then Exit Sub
     If GrhData(grh_index).FileNum = 0 Then Exit Sub
         
-    'Modified by Augusto JosÈ Rando
+    'Modified by Augusto Jos√© Rando
     'Simplier function - according to basic ORE engine
     If h_centered Then
         If GrhData(grh.GrhIndex).TileWidth <> 1 Then
@@ -298,7 +298,7 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
     '**************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 8/14/2007
-    'Last modified by: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Last modified by: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Renders everything to the viewport
     '**************************************************************
 
@@ -624,7 +624,7 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
     'End If
 
     If Pregunta Then
-        'PreguntaScreen = "øEsta seguro que asen es gay? øQue se lo come a fede?"
+        'PreguntaScreen = "¬øEsta seguro que asen es gay? ¬øQue se lo come a fede?"
         Engine_Draw_Box 283, 180, 170, 80, D3DColorARGB(200, 219, 116, 3)
         Engine_Draw_Box 288, 185, 160, 70, D3DColorARGB(200, 51, 27, 3)
 
@@ -716,7 +716,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     '**************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 8/14/2007
-    'Last modified by: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Last modified by: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Renders everything to the viewport
     On Error Resume Next
 
@@ -1252,7 +1252,7 @@ End Sub
 Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/03/04
     'Draw char's to screen without offcentering them
     '***************************************************
@@ -1833,7 +1833,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
             End If
             
-            ' MeditaciÛn
+            ' Meditaci√≥n
             If .FxIndex <> 0 And .fX.Started <> 0 Then
                 colorz(0) = D3DColorARGB(180, 255, 255, 255)
                 colorz(1) = D3DColorARGB(180, 255, 255, 255)
@@ -1853,7 +1853,7 @@ End Sub
 Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/03/04
     'Draw char's to screen without offcentering them
     '***************************************************
@@ -2235,7 +2235,7 @@ End Sub
 
 Public Sub DrawMainInventory()
 
-    ' SÛlo dibujamos cuando es necesario
+    ' S√≥lo dibujamos cuando es necesario
     If Not frmmain.Inventario.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
@@ -2264,7 +2264,7 @@ End Sub
 
 Public Sub DrawInterfaceComerciar()
 
-    ' SÛlo dibujamos cuando es necesario
+    ' S√≥lo dibujamos cuando es necesario
     If Not frmComerciar.InvComNpc.NeedsRedraw And Not frmComerciar.InvComUsu.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
@@ -2286,22 +2286,22 @@ Public Sub DrawInterfaceComerciar()
     ' Dibujamos items del usuario
     Call frmComerciar.InvComUsu.DrawInventory
 
-    ' Dibujamos "ambos" items arrastrados (aunque sÛlo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque s√≥lo puede estar uno activo a la vez)
     Call frmComerciar.InvComNpc.DrawDraggedItem
     Call frmComerciar.InvComUsu.DrawDraggedItem
     
-    ' Me fijo quÈ inventario est· seleccionado
+    ' Me fijo qu√© inventario est√° seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     
     Dim cantidad         As Integer
 
     If frmComerciar.InvComNpc.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComNpc
-        ' Al comprar, calculamos el valor seg˙n la cantidad exacta que ingresÛ
+        ' Al comprar, calculamos el valor seg√∫n la cantidad exacta que ingres√≥
         cantidad = Val(frmComerciar.cantidad.Text)
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
-        ' Al vender, calculamos el valor seg˙n el min(cantidad_ingresada, cantidad_items)
+        ' Al vender, calculamos el valor seg√∫n el min(cantidad_ingresada, cantidad_items)
         cantidad = min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
 
     End If
@@ -2325,7 +2325,7 @@ Public Sub DrawInterfaceComerciar()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "FacciÛn)"
+                str = str & "Facci√≥n)"
 
             Case 4
                 str = str & "Skill)"
@@ -2356,7 +2356,7 @@ End Sub
 
 Public Sub DrawInterfaceBoveda()
 
-    ' SÛlo dibujamos cuando es necesario
+    ' S√≥lo dibujamos cuando es necesario
     If Not frmBancoObj.InvBoveda.NeedsRedraw And Not frmBancoObj.InvBankUsu.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
@@ -2369,20 +2369,20 @@ Public Sub DrawInterfaceBoveda()
     ' Comenzamos la escena
     Call Engine_BeginScene
 
-    ' Dibujamos el fondo de la bÛveda
+    ' Dibujamos el fondo de la b√≥veda
     Call Draw_GrhIndex(838, 0, 0)
 
-    ' Dibujamos items de la bÛveda
+    ' Dibujamos items de la b√≥veda
     Call frmBancoObj.InvBoveda.DrawInventory
     
     ' Dibujamos items del usuario
     Call frmBancoObj.InvBankUsu.DrawInventory
 
-    ' Dibujamos "ambos" items arrastrados (aunque sÛlo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque s√≥lo puede estar uno activo a la vez)
     Call frmBancoObj.InvBoveda.DrawDraggedItem
     Call frmBancoObj.InvBankUsu.DrawDraggedItem
     
-    ' Me fijo quÈ inventario est· seleccionado
+    ' Me fijo qu√© inventario est√° seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     
     If frmBancoObj.InvBoveda.SelectedItem > 0 Then
@@ -2409,7 +2409,7 @@ Public Sub DrawInterfaceBoveda()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "FacciÛn)"
+                str = str & "Facci√≥n)"
 
             Case 4
                 str = str & "Skill)"
@@ -2907,9 +2907,9 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
         Dim ItemName As String
 
-        'itemname = "abcdfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789°!øTEST?#$100%&/\()=-@^[]<>*+.,:; p·lmas sÈso te pÌso sÛlo p˙to ˝ L¡L L…"
+        'itemname = "abcdfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789¬°!¬øTEST?#$100%&/\()=-@^[]<>*+.,:; p√°lmas s√©so te p√≠so s√≥lo p√∫to √Ω L√ÅL L√â"
             
-        ' itemname = "p·lmas sÈso te pÌso sÛlo p˙to ˝ l¡ …lefante PÕS”S P⁄TO —OÒo"
+        ' itemname = "p√°lmas s√©so te p√≠so s√≥lo p√∫to √Ω l√Å √âlefante P√çS√ìS P√öTO √ëO√±o"
         Engine_Text_Render_LetraChica ItemName, 100, 730, DefaultColor, 4, False
 
         If ClickEnAsistente < 30 Then
@@ -3417,12 +3417,12 @@ Public Sub RenderUICrearPJ()
     '  DefaultColor(2) = DefaultColor(0)
     '  DefaultColor(3) = DefaultColor(0)
     
-    '' Engine_Text_Render "°AtenciÛn! ", 240, 250, DefaultColor, 1, False
+    '' Engine_Text_Render "¬°Atenci√≥n! ", 240, 250, DefaultColor, 1, False
     '     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
     '  DefaultColor(1) = DefaultColor(0)
     ' DefaultColor(2) = DefaultColor(0)
     ' DefaultColor(3) = DefaultColor(0)
-    ' Engine_Text_Render "Se cuidadoso al momento de distribuir tus atributos. De estos dependen aspectos basicos como la vida o man· de tu personaje. ", 190, 270, DefaultColor, 1, True
+    ' Engine_Text_Render "Se cuidadoso al momento de distribuir tus atributos. De estos dependen aspectos basicos como la vida o man√° de tu personaje. ", 190, 270, DefaultColor, 1, True
     
     DefaultColor(0) = D3DColorXRGB(255, 255, 255)
     DefaultColor(1) = DefaultColor(0)
@@ -3469,17 +3469,17 @@ Public Sub RenderUICrearPJ()
     Engine_Draw_Box 317 + OffX, 470 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
     Engine_Text_Render frmCrearPersonaje.modInteligencia.Caption, 320 + OffX, 473 + Offy, DefaultColor, 1, True ' Bonificacion Inteligencia
     
-    Engine_Text_Render "ConstituciÛn ", 185 + OffX, 500 + Offy, DefaultColor, , True
+    Engine_Text_Render "Constituci√≥n ", 185 + OffX, 500 + Offy, DefaultColor, , True
     'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
     ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
     Engine_Draw_Box 280 + OffX, 500 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 503 + Offy, DefaultColor, 1, True ' Atributo ConstituciÛn
+    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 503 + Offy, DefaultColor, 1, True ' Atributo Constituci√≥n
     '
     ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
     Engine_Draw_Box 317 + OffX, 500 + Offy, 25, 20, D3DColorARGB(100, 1, 1, 1)
-    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 503 + Offy, DefaultColor, 1, True ' Bonificacion ConstituciÛn
+    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 503 + Offy, DefaultColor, 1, True ' Bonificacion Constituci√≥n
     
-    Engine_Text_Render "ConstituciÛn ", 185 + OffX, 500 + Offy, DefaultColor, , True
+    Engine_Text_Render "Constituci√≥n ", 185 + OffX, 500 + Offy, DefaultColor, , True
     'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
     ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
     Engine_Draw_Box 280 + OffX, 530 + Offy, 20, 20, D3DColorARGB(100, 1, 1, 1)
@@ -3496,7 +3496,7 @@ Public Sub RenderUICrearPJ()
     'Cabeza
     'Engine_Draw_Box 425, 415, 140, 100, D3DColorARGB(120, 100, 100, 100)
 
-    ' Engine_Text_Render "Selecciona el rostro que m·s te agrade.", 662, 260, DefaultColor, 1, True
+    ' Engine_Text_Render "Selecciona el rostro que m√°s te agrade.", 662, 260, DefaultColor, 1, True
 
     OffX = -345
     Offy = -100
@@ -3793,7 +3793,7 @@ End Sub
 
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
     '*****************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     '*****************************************************************
     letter_text = text_string
     letter_grh.GrhIndex = grh_index
@@ -3805,7 +3805,7 @@ End Function
 Public Function Map_Letter_Fade_Set(ByVal grh_index As Long, Optional ByVal after_grh As Long = -1) As Boolean
 
     '*****************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     '*****************************************************************
     If grh_index <= 0 Or grh_index = map_letter_grh.GrhIndex Then Exit Function
         
@@ -3828,7 +3828,7 @@ End Function
 
 Public Function Map_Letter_UnSet() As Boolean
     '*****************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     '*****************************************************************
     map_letter_grh.GrhIndex = 0
     map_letter_fadestatus = 0
@@ -3840,7 +3840,7 @@ End Function
 
 Public Function Letter_UnSet() As Boolean
     '*****************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     '*****************************************************************
     letter_text = vbNullString
     letter_grh.GrhIndex = 0

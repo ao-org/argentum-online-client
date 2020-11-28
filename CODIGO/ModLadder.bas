@@ -44,23 +44,23 @@ Type Effect_Type
     ViajeChar  As Integer  '< CharIndex al que viaja.
     DestinoChar As Integer
     Viaje_X    As Integer   '< X hacia donde se dirije.
-    End_Effect As Integer  '< Particula De la explosión.
-    FxEnd_Effect As Integer  '< Particula De la explosión.
-    End_Loops  As Integer  '< Loops del fx de la explosión.
+    End_Effect As Integer  '< Particula De la explosiÃ³n.
+    FxEnd_Effect As Integer  '< Particula De la explosiÃ³n.
+    End_Loops  As Integer  '< Loops del fx de la explosiÃ³n.
     Viaje_Y    As Integer   '< Y hacia donde se dirije.
     ViajeSpeed As Single   '< Velocidad de viaje.
     Now_Moved  As Long     '< Tiempo del movimiento actual.
-    Last_Move  As Long     '< Tiempo del último movimiento.
-    Now_X      As Integer  '< Posición X actual
-    Now_Y      As Integer  '< Posición Y actual
-    Slot_Used  As Boolean  '< Si está usandose este slot.
+    Last_Move  As Long     '< Tiempo del Ãºltimo movimiento.
+    Now_X      As Integer  '< PosiciÃ³n X actual
+    Now_Y      As Integer  '< PosiciÃ³n Y actual
+    Slot_Used  As Boolean  '< Si estÃ¡ usandose este slot.
     wav        As Integer
     DestX As Byte
     DesyY As Byte
 
 End Type
  
-Public Const NO_INDEX = -1         '< Índice no válido.
+Public Const NO_INDEX = -1         '< Ãndice no vÃ¡lido.
  
 Public Effect()     As Effect_Type
 
@@ -691,9 +691,9 @@ Sub General_Set_Connect()
     ClickEnAsistente = 0
 
     If CuentaRecordada.nombre <> "" Then
-        Call TextoAlAsistente("¡Bienvenido de nuevo! ¡Disfruta tu viaje por Argentum20!") ' hay que poner 20 aniversario
+        Call TextoAlAsistente("Â¡Bienvenido de nuevo! Â¡Disfruta tu viaje por Argentum20!") ' hay que poner 20 aniversario
     Else
-        Call TextoAlAsistente("¡Bienvenido a Argentum20! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.") ' hay que poner 20 aniversario
+        Call TextoAlAsistente("Â¡Bienvenido a Argentum20! Â¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.") ' hay que poner 20 aniversario
 
     End If
 
@@ -1122,7 +1122,7 @@ End Sub
 '*****************************************************************
 
 '*****************************************************************
-'Augusto José Rando (barrin@imperiumao.com.ar)
+'Augusto JosÃ© Rando (barrin@imperiumao.com.ar)
 '   - First Relase
 '*****************************************************************
 
@@ -1232,7 +1232,7 @@ Sub CargarOpciones()
     If FileExist(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", vbArchive) Then
         Call LoadImpAoInit
     Else
-        Call MsgBox("¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
+        Call MsgBox("Â¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
         End
     End If
     
@@ -1283,7 +1283,7 @@ ErrorHandler:
     
     Set ConfigFile = Nothing
     
-    Call MsgBox("Ha ocurrido un error al cargar la configuración del juego.", vbCritical, "Configuración del Juego")
+    Call MsgBox("Ha ocurrido un error al cargar la configuraciÃ³n del juego.", vbCritical, "ConfiguraciÃ³n del Juego")
     
     End
     
@@ -1674,8 +1674,8 @@ End Function
 
 Public Function Input_Key_Get(ByVal key_code As Byte) As Boolean
     '**************************************************************
-    'Author: Aaron Perkins - Juan Martín Sotuyo Dodero
-    'Modified by Augusto José Rando
+    'Author: Aaron Perkins - Juan MartÃ­n Sotuyo Dodero
+    'Modified by Augusto JosÃ© Rando
     'Now we use DirectInput Keyboard
     'Last Modify Date: 10/07/2002
     '
@@ -1688,7 +1688,7 @@ End Function
 Public Function Input_Click_Get(ByVal Botton As Byte) As Boolean
     '**************************************************************
     'Author: Pablo Mercavides
-    'Modified by Augusto José Rando
+    'Modified by Augusto JosÃ© Rando
     'Now we use DirectInput Keyboard
     'Last Modify Date: 10/07/2002
     '
@@ -1701,7 +1701,7 @@ End Function
 Public Function General_Get_Temp_Dir() As String
 
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2005
     'Gets windows temporary directory
     '**************************************************************
@@ -1727,7 +1727,7 @@ End Function
 
 Public Function General_Get_Mouse_Speed() As Long
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2005
     '
     '**************************************************************
@@ -1738,7 +1738,7 @@ End Function
  
 Public Sub General_Set_Mouse_Speed(ByVal lngSpeed As Long)
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2005
     '
     '**************************************************************
@@ -1749,7 +1749,7 @@ End Sub
 
 Public Sub ResetearUserMacro()
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2005
     '
     '**************************************************************
@@ -1852,13 +1852,13 @@ Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByV
     '2. Eliminamos objetos DX
     Call Client_UnInitialize_DirectX_Objects
 
-    '3. Cerramos el engine meteorológico
+    '3. Cerramos el engine meteorolÃ³gico
     Set Meteo_Engine = Nothing
 
     '6. Cerramos los forms y nos vamos
     Call UnloadAllForms
 
-    '7. Adiós MuteX - Restauramos MouseSpeed
+    '7. AdiÃ³s MuteX - Restauramos MouseSpeed
 
     End
 
@@ -1872,7 +1872,7 @@ Public Sub Client_UnInitialize_DirectX_Objects()
     Sound.Engine_DeInitialize
     Set Sound = Nothing
 
-    '2. Cerramos el engine gráfico y borramos textures
+    '2. Cerramos el engine grÃ¡fico y borramos textures
 
 End Sub
 
@@ -1998,7 +1998,7 @@ Public Sub CalcularPosicionMAPA()
     If NameMaps(UserMap).desc <> "" Then
         frmMapaGrande.Label1.Caption = NameMaps(UserMap).desc
     Else
-        frmMapaGrande.Label1.Caption = "Sin información relevante."
+        frmMapaGrande.Label1.Caption = "Sin informaciÃ³n relevante."
 
     End If
 
@@ -2081,7 +2081,7 @@ Public Function GetDriveSerialNumber(Optional ByVal DriveLetter As String) As Lo
     '***************************************************
     'Author: Nahuel Casas (Zagen)
     'Last Modify Date: 07/12/2009
-    ' 07/12/2009: Zagen - Convertì las funciones, en formulas mas fàciles de modificar.
+    ' 07/12/2009: Zagen - ConvertÃ¬ las funciones, en formulas mas fÃ ciles de modificar.
     '***************************************************
     On Error Resume Next
 
@@ -2102,7 +2102,7 @@ Public Function GetDriveSerialNumber(Optional ByVal DriveLetter As String) As Lo
 
         If .IsReady Then
             DriveSerial = Abs(.SerialNumber)
-        Else    '"Si el driver no està como para empezar ..."
+        Else    '"Si el driver no estÃ  como para empezar ..."
             DriveSerial = -1
 
         End If

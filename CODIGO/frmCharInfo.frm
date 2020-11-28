@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmCharInfo 
    BorderStyle     =   4  'Fixed ToolWindow
-   Caption         =   "Información del personaje"
+   Caption         =   "InformaciÃ³n del personaje"
    ClientHeight    =   6000
    ClientLeft      =   45
    ClientTop       =   210
@@ -118,7 +118,7 @@ Begin VB.Form frmCharInfo
          Width           =   5790
       End
       Begin VB.Label lblMiembro 
-         Caption         =   "Ultimos clanes en los que participó:"
+         Caption         =   "Ultimos clanes en los que participÃ³:"
          Height          =   255
          Left            =   135
          TabIndex        =   23
@@ -126,7 +126,7 @@ Begin VB.Form frmCharInfo
          Width           =   2985
       End
       Begin VB.Label lblSolicitado 
-         Caption         =   "Ultimas membresías solicitadas:"
+         Caption         =   "Ultimas membresÃ­as solicitadas:"
          Height          =   255
          Left            =   135
          TabIndex        =   21
@@ -263,10 +263,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'Argentum Online 0.11.6
 '
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 MÃ¡rquez Pablo Ignacio
 'Copyright (C) 2002 Otto Perez
 'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
+'Copyright (C) 2002 MatÃ­as Fernando PequeÃ±o
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -288,10 +288,10 @@ Attribute VB_Exposed = False
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 nÃºmero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'CÃ³digo Postal 1900
+'Pablo Ignacio MÃ¡rquez
 
 Option Explicit
 

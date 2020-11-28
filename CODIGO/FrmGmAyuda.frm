@@ -50,7 +50,7 @@ Begin VB.Form FrmGmAyuda
       Width           =   975
    End
    Begin VB.OptionButton optConsulta 
-      Caption         =   "AcusaciÛn"
+      Caption         =   "Acusaci√≥n"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -292,22 +292,22 @@ Private Sub optConsult_Click(Index As Integer)
     Select Case Index
 
         Case 0
-            Call AddtoRichTextBox(frmmain.RecTxt, "°Por favor explique correctamente el motivo de su consulta!", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmmain.RecTxt, "¬°Por favor explique correctamente el motivo de su consulta!", 255, 255, 255, False, False, False)
 
         Case 1
-            Call AddtoRichTextBox(frmmain.RecTxt, "Deje el nombre del personaje del que est· pidiendo descargo por una medida, conjunto con el administrador que est· relacionado con ella.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmmain.RecTxt, "Deje el nombre del personaje del que est√° pidiendo descargo por una medida, conjunto con el administrador que est√° relacionado con ella.", 255, 255, 255, False, False, False)
 
         Case 2
-            Call AddtoRichTextBox(frmmain.RecTxt, "Se dar· prioridad a su consulta enviando un mensaje a los administradores conectados, por favor utilize Èsta opciÛn responsablemente.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmmain.RecTxt, "Se dar√° prioridad a su consulta enviando un mensaje a los administradores conectados, por favor utilize √©sta opci√≥n responsablemente.", 255, 255, 255, False, False, False)
 
         Case 3
-            Call AddtoRichTextBox(frmmain.RecTxt, "Su sugerencia SER¡ leÌda por un miembro del staff, y ser· tomada en cuenta para futuros cambios.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmmain.RecTxt, "Su sugerencia SER√Å le√≠da por un miembro del staff, y ser√° tomada en cuenta para futuros cambios.", 255, 255, 255, False, False, False)
 
         Case 4
-            Call AddtoRichTextBox(frmmain.RecTxt, "Explique de la forma m·s detallada la forma de repetir el error. El staff de programaciÛn lo resolver· lo antes posible.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmmain.RecTxt, "Explique de la forma m√°s detallada la forma de repetir el error. El staff de programaci√≥n lo resolver√° lo antes posible.", 255, 255, 255, False, False, False)
 
         Case 5
-            Call AddtoRichTextBox(frmmain.RecTxt, "Deje la mayor cantidad de datos posibles, esta opciÛn es para consultas que no entran en otras secciÛnes.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmmain.RecTxt, "Deje la mayor cantidad de datos posibles, esta opci√≥n es para consultas que no entran en otras secci√≥nes.", 255, 255, 255, False, False, False)
 
         Case 6
             Call AddtoRichTextBox(frmmain.RecTxt, "En caso de ser una queja hacia un miembro del staff, deje principalmente hacia quien esta referida la queja, y los motivos dejando todos los detalles posibles", 255, 255, 255, False, False, False)

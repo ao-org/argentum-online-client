@@ -230,7 +230,7 @@ Private Sub tirar_click()
             If ObjData(frmmain.Inventario.OBJIndex(frmmain.Inventario.SelectedItem)).Destruye = 0 Then
                 Call WriteDrop(frmmain.Inventario.SelectedItem, frmCantidad.Text1.Text)
             Else
-                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                PreguntaScreen = "El item se destruira al tirarlo Â¿Esta seguro?"
                 Pregunta = True
                 DestItemSlot = frmmain.Inventario.SelectedItem
                 DestItemCant = frmCantidad.Text1.Text
@@ -280,7 +280,7 @@ Private Sub tirartodo_click()
         If ObjData(frmmain.Inventario.OBJIndex(frmmain.Inventario.SelectedItem)).Destruye = 0 Then
             Call WriteDrop(frmmain.Inventario.SelectedItem, frmmain.Inventario.Amount(frmmain.Inventario.SelectedItem))
         Else
-            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+            PreguntaScreen = "El item se destruira al tirarlo Â¿Esta seguro?"
             Pregunta = True
             DestItemSlot = frmmain.Inventario.SelectedItem
             DestItemCant = frmmain.Inventario.Amount(frmmain.Inventario.SelectedItem)

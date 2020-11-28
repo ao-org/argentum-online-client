@@ -36,7 +36,7 @@ Attribute VB_Exposed = False
 
 '*****************************************************************
 'Sinuhe (sinuhe@imperiumao.com.ar)
-'Augusto José Rando (barrin@imperiumao.com.ar)
+'Augusto JosÃ© Rando (barrin@imperiumao.com.ar)
 '   - First Relase
 '*****************************************************************
 
@@ -474,13 +474,13 @@ Public Function Get_Time_String() As String
             Get_Time_String = Get_Time_String & "el sol se asoma lentamente en el horizonte..."
 
         Case 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
-            Get_Time_String = Get_Time_String & "¡No pierdas el tiempo!"
+            Get_Time_String = Get_Time_String & "Â¡No pierdas el tiempo!"
 
         Case 18, 19
-            Get_Time_String = Get_Time_String & "lentamente el día termina..."
+            Get_Time_String = Get_Time_String & "lentamente el dÃ­a termina..."
 
         Case Else
-            Get_Time_String = Get_Time_String & "¿Despierto a estas horas? ¡No olvides visitar El Mesón Hostigado!"
+            Get_Time_String = Get_Time_String & "Â¿Despierto a estas horas? Â¡No olvides visitar El MesÃ³n Hostigado!"
 
     End Select
 
@@ -491,7 +491,7 @@ Public Sub SetNuevoEstado(ByVal estado As Byte)
     TimeElapsed = 0
 
     If Meteo.MainStatus.EstadoProximo <> FIN_ANIMACION Then
-        'Como no termino la animación anterior, al menos le pongo que la que estaba haciendo sea desde donde sale
+        'Como no termino la animaciÃ³n anterior, al menos le pongo que la que estaba haciendo sea desde donde sale
         Meteo.MainStatus.EstadoActual = Meteo.MainStatus.EstadoProximo
 
     End If
@@ -581,7 +581,7 @@ Public Sub NextEstado()
     TimeElapsed = 0
 
     If Meteo.MainStatus.EstadoProximo <> FIN_ANIMACION Then
-        'Como no termino la animación anterior, al menos le pongo que la que estaba haciendo sea desde donde sale
+        'Como no termino la animaciÃ³n anterior, al menos le pongo que la que estaba haciendo sea desde donde sale
         Meteo.MainStatus.EstadoActual = Meteo.MainStatus.EstadoProximo
 
     End If

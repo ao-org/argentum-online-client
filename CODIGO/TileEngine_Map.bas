@@ -3,7 +3,7 @@ Option Explicit
 
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '*****************************************************************
     letter_text = text_string
     letter_grh.GrhIndex = grh_index
@@ -15,7 +15,7 @@ End Function
 Public Function Map_Letter_Fade_Set(ByVal grh_index As Long, Optional ByVal after_grh As Long = -1) As Boolean
 
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '*****************************************************************
     If grh_index <= 0 Or grh_index = map_letter_grh.GrhIndex Then Exit Function
         
@@ -40,7 +40,7 @@ End Function
 
 Public Function Map_Letter_UnSet() As Boolean
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '*****************************************************************
     map_letter_grh.GrhIndex = 0
     map_letter_fadestatus = 0
@@ -52,7 +52,7 @@ End Function
 
 Public Function Letter_UnSet() As Boolean
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '*****************************************************************
     letter_text = vbNullString
     letter_grh.GrhIndex = 0
@@ -62,7 +62,7 @@ End Function
 
 Public Function Map_Base_Light_Get() As Long
     '**************************************************************
-    'Author: Aaron Perkins - Modified by Augusto José Rando
+    'Author: Aaron Perkins - Modified by Augusto JosÃ© Rando
     'Last Modify Date: 6/12/2005
     '
     '**************************************************************
@@ -87,7 +87,7 @@ End Function
 Public Function Map_Fill(ByVal grh_index As Long, ByVal layer As Byte, Optional ByVal light_base_color As Long = -1, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single) As Boolean
 
     '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
+    'Author: Aaron Perkins - Modified by Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 1/04/2003
     '
     '**************************************************************
@@ -108,7 +108,7 @@ End Function
 Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Integer
 
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '*****************************************************************
     On Error GoTo ErrorHandler:
 

@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmGuildFoundation 
    BorderStyle     =   4  'Fixed ToolWindow
-   Caption         =   "Fundación de un Clan"
+   Caption         =   "FundaciÃ³n de un Clan"
    ClientHeight    =   3060
    ClientLeft      =   45
    ClientTop       =   210
@@ -66,7 +66,7 @@ Begin VB.Form frmGuildFoundation
       End
       Begin VB.Label Label2 
          BackStyle       =   0  'Transparent
-         Caption         =   "Nota: No se toleraran nombres inapropiados, para más información consultar el reglamento."
+         Caption         =   "Nota: No se toleraran nombres inapropiados, para mÃ¡s informaciÃ³n consultar el reglamento."
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   6.75
@@ -121,10 +121,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'Argentum Online 0.11.6
 '
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 MÃ¡rquez Pablo Ignacio
 'Copyright (C) 2002 Otto Perez
 'Copyright (C) 2002 Aaron Perkins
-'Copyright (C) 2002 Matías Fernando Pequeño
+'Copyright (C) 2002 MatÃ­as Fernando PequeÃ±o
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -146,17 +146,17 @@ Attribute VB_Exposed = False
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 nÃºmero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'CÃ³digo Postal 1900
+'Pablo Ignacio MÃ¡rquez
 
 Option Explicit
 
 Private Sub Command1_Click()
 
 If txtClanName.Text = "" Then
-    MensajeAdvertencia "¡Ingrese un nombre!"
+    MensajeAdvertencia "Â¡Ingrese un nombre!"
     Exit Sub
 End If
 

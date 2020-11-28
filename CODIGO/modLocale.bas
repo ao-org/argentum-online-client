@@ -54,11 +54,11 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
 
     End If
 
-    lngPos = InStr(1, strLocale, "¬")
+    lngPos = InStr(1, strLocale, "Â¬")
 
     Do While lngPos > 0
         strLocale = Replace$(strLocale, mid$(strLocale, lngPos, 2), String_To_Integer(strExtra, CInt(mid$(strLocale, lngPos + 1, 1))))
-        lngPos = InStr(lngPos + 1, strLocale, "¬")
+        lngPos = InStr(lngPos + 1, strLocale, "Â¬")
     Loop
 
     lngPos = InStr(1, strLocale, "#")
@@ -92,7 +92,7 @@ End Function
 Public Function General_Get_Line_Count(ByVal FileName As String) As Long
 
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2005
     '
     '**************************************************************
@@ -123,7 +123,7 @@ End Function
 Public Function Integer_To_String(ByVal Var As Integer) As String
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 3/12/2005
     '
     '**************************************************************
@@ -149,7 +149,7 @@ End Function
 Public Function String_To_Integer(ByRef str As String, ByVal Start As Integer) As Integer
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 3/12/2005
     '
     '**************************************************************
@@ -157,7 +157,7 @@ Public Function String_To_Integer(ByRef str As String, ByVal Start As Integer) A
     
     Dim temp_str As String
     
-    'Asergurarse sea válido
+    'Asergurarse sea vÃ¡lido
     If Len(str) < Start - 1 Or Len(str) = 0 Then Exit Function
     
     'Convertimos a hexa el valor ascii del segundo byte
@@ -180,7 +180,7 @@ End Function
 
 Public Function Byte_To_String(ByVal Var As Byte) As String
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 3/12/2005
     'Convierte un byte a string
     '**************************************************************
@@ -194,7 +194,7 @@ End Function
 Public Function String_To_Byte(ByRef str As String, ByVal Start As Integer) As Byte
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 3/12/2005
     '
     '**************************************************************
@@ -213,11 +213,11 @@ End Function
 Public Function Long_To_String(ByVal Var As Long) As String
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 3/12/2005
     '
     '**************************************************************
-    'No aceptamos valores que usen los 4 últimos its
+    'No aceptamos valores que usen los 4 Ãºltimos its
     If Var > &HFFFFFFF Then GoTo ErrorHandler
     
     Dim temp As String
@@ -253,7 +253,7 @@ End Function
 
 Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As Long
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 3/12/2005
     '
     '**************************************************************
@@ -268,7 +268,7 @@ Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As L
 
     Dim temp_str3 As String
     
-    'Tomamos los últimos 3 bytes y convertimos sus valroes ASCII a hexa
+    'Tomamos los Ãºltimos 3 bytes y convertimos sus valroes ASCII a hexa
     temp_str = Hex$(Asc(mid$(str, Start + 1, 1)))
     temp_str2 = Hex$(Asc(mid$(str, Start + 2, 1)))
     temp_str3 = Hex$(Asc(mid$(str, Start + 3, 1)))
@@ -289,7 +289,7 @@ Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As L
         temp_str3 = "0" & temp_str3
     Wend
     
-    'Convertimos a una única cadena hexa
+    'Convertimos a una Ãºnica cadena hexa
     String_To_Long = Val("&H" & Hex$(Asc(mid$(str, Start, 1))) & temp_str & temp_str2 & temp_str3)
     
     'Si el cuarto byte era cero

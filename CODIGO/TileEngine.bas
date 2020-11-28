@@ -83,7 +83,7 @@ Public Type WorldPos
 
 End Type
 
-'Contiene info acerca de donde se puede encontrar un grh tamaño y animacion
+'Contiene info acerca de donde se puede encontrar un grh tamaÃ±o y animacion
 Public Type GrhData
 
     sX As Integer
@@ -363,13 +363,13 @@ Public fps                     As Long
 Public FramesPerSecCounter     As Long
 Private fpsLastCheck           As Long
 
-'Tamaño del la vista en Tiles
+'TamaÃ±o del la vista en Tiles
 Public WindowTileWidth        As Integer
 Public WindowTileHeight       As Integer
 Public HalfWindowTileWidth    As Integer
 Public HalfWindowTileHeight   As Integer
 
-'Tamaño del connect
+'TamaÃ±o del connect
 Public HalfConnectTileWidth   As Integer
 Public HalfConnectTileHeight  As Integer
 
@@ -378,14 +378,14 @@ Public MainViewTop            As Integer
 Public MainViewLeft           As Integer
 
 'Cuantos tiles el engine mete en el BUFFER cuando
-'dibuja el mapa. Ojo un tamaño muy grande puede
+'dibuja el mapa. Ojo un tamaÃ±o muy grande puede
 'volver el engine muy lento
 Public TileBufferSizeX        As Integer
 Public TileBufferSizeY        As Integer
 Public TileBufferPixelOffsetX As Integer
 Public TileBufferPixelOffsetY As Integer
 
-'Tamaño de los tiles en pixels
+'TamaÃ±o de los tiles en pixels
 Public Const TilePixelHeight   As Integer = 32
 Public Const TilePixelWidth    As Integer = 32
 
@@ -415,7 +415,7 @@ Public MainViewHeight         As Integer
 Public MouseTileX             As Byte
 Public MouseTileY             As Byte
 
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Graficos¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿GraficosÂ¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
 Public GrhData()               As GrhData 'Guarda todos los grh
 Public BodyData()              As BodyData
 Public HeadData()              As HeadData
@@ -423,15 +423,15 @@ Public FxData()                As tIndiceFx
 Public WeaponAnimData()        As WeaponAnimData
 Public ShieldAnimData()        As ShieldAnimData
 Public CascoAnimData()         As HeadData
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
 
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Mapa?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿Mapa?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
 Public MapData()               As MapBlock ' Mapa
 Public MapInfo                 As MapInfo ' Info acerca del mapa en uso
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
 
-Public bRain                   As Boolean 'está raineando?
-Public bNieve                  As Boolean 'está nevando?
+Public bRain                   As Boolean 'estÃ¡ raineando?
+Public bNieve                  As Boolean 'estÃ¡ nevando?
 Public bNiebla                 As Boolean 'Hay niebla?
 Public bTecho                  As Boolean 'hay techo?
 
@@ -458,7 +458,7 @@ End Enum
 '[END]'
 '
 '       [END]
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
 
 Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
 Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long
@@ -466,7 +466,7 @@ Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As L
 Private Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 
-'Added by Juan Martín Sotuyo Dodero
+'Added by Juan MartÃ­n Sotuyo Dodero
 Private Declare Function StretchBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
 Private Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
 Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
@@ -896,7 +896,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
         Exit Function
     End If
     
-    '¿Hay un personaje?
+    'Â¿Hay un personaje?
     If MapData(x, y).charindex > 0 Then
         If Not charlist(MapData(x, y).charindex).MUERTO Then
             Exit Function
@@ -942,7 +942,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     
     If UserNavegando And MapData(x, y).Trigger = 8 And Not UserNadando And Not UserEstado = 1 Then
         If Not UserAvisadoBarca Then
-            Call AddtoRichTextBox(frmmain.RecTxt, "¡Atención! El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 255, 255, 255, True, False, False)
+            Call AddtoRichTextBox(frmmain.RecTxt, "Â¡AtenciÃ³n! El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 255, 255, 255, True, False, False)
             UserAvisadoBarca = True
 
         End If
@@ -1075,7 +1075,7 @@ End Sub
 Public Function RenderSounds()
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
+    'Author: Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 3/30/2008
     'Actualiza todos los sonidos del mapa.
     '**************************************************************
@@ -1154,7 +1154,7 @@ End Function
 Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal src_x As Integer, ByVal src_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer)
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
+    'Author: Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 8/30/2004
     'Creates a Mask hDC, and sets the source hDC to work for trans bliting.
     '**************************************************************
@@ -1198,7 +1198,7 @@ End Sub
 
 Public Function Convert_Tile_To_View_X(ByVal x As Integer) As Integer
     '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
+    'Author: Aaron Perkins - Modified by Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 10/07/2002
     'Convert tile position into position in view area
     '**************************************************************
@@ -1212,7 +1212,7 @@ End Function
 
 Public Function Convert_Tile_To_View_Y(ByVal y As Integer) As Integer
     '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
+    'Author: Aaron Perkins - Modified by Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 10/07/2002
     'Convert tile position into position in view area
     '**************************************************************

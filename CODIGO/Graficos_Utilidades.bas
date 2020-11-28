@@ -54,7 +54,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef dest As RECT,
 
     '**************************************************************
     'Author: Aaron Perkins
-    'Modified by Juan Martín Sotuyo Dodero
+    'Modified by Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 11/17/2002
     '
     ' * v1      * v3
@@ -166,7 +166,7 @@ End Sub
 Public Function BinarySearch(ByVal charindex As Integer) As Integer
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
+    'Author: Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 07/28/07
     'Returns the index of the dialog in the list, or the negation
     'of the position were it should be if not found (for binary insertion)

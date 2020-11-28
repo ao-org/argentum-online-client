@@ -135,7 +135,7 @@ Option Explicit
 
 Dim ValidacionNumber As Long
 
-'Declaraci髇 del Api SetLayeredWindowAttributes que establece _
+'Declaraci贸n del Api SetLayeredWindowAttributes que establece _
  la transparencia al form
   
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
@@ -143,7 +143,7 @@ Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As 
 'Recupera el estilo de la ventana
 Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
   
-'Declaraci髇 del Api SetWindowLong necesaria para aplicar un estilo _
+'Declaraci贸n del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
   
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
@@ -154,8 +154,8 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
 
-'Funci髇 para saber si formulario ya es transparente. _
- Se le pasa el Hwnd del formulario en cuesti髇
+'Funci贸n para saber si formulario ya es transparente. _
+ Se le pasa el Hwnd del formulario en cuesti贸n
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
@@ -179,7 +179,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
   
 End Function
   
-'Funci髇 que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+'Funci贸n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
   
     Dim msg As Long
@@ -278,12 +278,12 @@ Private Sub Image2_Click()
     End If
     
     If ValidacionNumber <> texVer Then
-        Call MensajeAdvertencia("El codigo de verificaci髇 es invalido, por favor reintente.")
+        Call MensajeAdvertencia("El codigo de verificaci贸n es invalido, por favor reintente.")
         Exit Sub
 
     End If
 
-    EstadoLogin = E_MODO.RecuperandoConstrase馻
+    EstadoLogin = E_MODO.RecuperandoConstrase帽a
     CuentaEmail = CuentaEmail
 
     If frmmain.Socket1.Connected Then

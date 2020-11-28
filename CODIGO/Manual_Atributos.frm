@@ -111,7 +111,7 @@ Begin VB.Form Manual_Atributos
       Begin VB.Label Label6 
          Alignment       =   2  'Center
          BackStyle       =   0  'Transparent
-         Caption         =   "Constitución"
+         Caption         =   "ConstituciÃ³n"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   11.25

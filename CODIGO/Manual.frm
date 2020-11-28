@@ -88,7 +88,7 @@ Begin VB.Form Manual
       End
       Begin VB.Label Label9 
          Alignment       =   2  'Center
-         Caption         =   "SECCION ACTUALMENTE EN CONSTRUCCIÓN"
+         Caption         =   "SECCION ACTUALMENTE EN CONSTRUCCIÃ“N"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   15.75

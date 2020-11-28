@@ -50,7 +50,7 @@ Private Declare Function GetTickCount Lib "kernel32" () As Long
 Private Sub Class_Terminate()
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
+    'Author: Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -111,7 +111,7 @@ End Function
 
 Public Function Init(ByRef D3D8 As D3DX8, ByRef d3d_device As Direct3DDevice8, ByVal MaxMemory As Long) As Boolean
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
+    'Author: Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -129,7 +129,7 @@ End Function
 Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, ByRef textheight As Long) As Direct3DTexture8
 
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
+    'Author: Juan MartÃ­n Sotuyo Dodero
     'menduz was here
     '
     '**************************************************************
@@ -165,7 +165,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
             #If Compresion = 1 Then
 
                 If Not Extract_File_EX(graphics, App.Path & "\..\Recursos\OUTPUT\", LTrim(str(Archivo)) & ".png", bytArr) Then
-                    Debug.Print "¡No se puede cargar el grafico numero " & Archivo & "!"
+                    Debug.Print "Â¡No se puede cargar el grafico numero " & Archivo & "!"
                     Exit Function
 
                 End If
@@ -183,7 +183,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
                 PathToFile = App.Path & "\..\Recursos\Graficos\" & LTrim(str(Archivo)) & ".png"
         
                 If Not FileExist(PathToFile, vbArchive) Then
-                    Debug.Print "¡No se puede cargar el grafico numero " & Archivo & "!"
+                    Debug.Print "Â¡No se puede cargar el grafico numero " & Archivo & "!"
                     Exit Function
 
                 End If
@@ -302,7 +302,7 @@ Public Sub Grh_Load(ByVal file_num As Integer)
     Static d3dTextures As D3D8Textures
 
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 7/16/2005
     'We don't return nothing
     '**************************************************************

@@ -29,7 +29,7 @@ Attribute VB_Exposed = False
 
 ''
 ' The MainTimer of the game.
-' Controls client´s intervals.
+' Controls clientÂ´s intervals.
 '
 ' @author Nacho (Integer) integer-x@hotmail.com
 ' @version 1.0
@@ -70,7 +70,7 @@ End Type
 Dim Timer(1 To CANTIDADTIMERS) As Timer
 
 ''
-' Timer´s Index.
+' TimerÂ´s Index.
 '
 ' @param Attack                 Controls the Combat system.
 ' @param Work                   Controls the Work system.
@@ -97,7 +97,7 @@ Public Enum TimersIndex
 End Enum
 
 ''
-' Window´s API Function.
+' WindowÂ´s API Function.
 ' A milisecond pricision counter.
 '
 ' @return   Miliseconds since midnight.
@@ -107,8 +107,8 @@ Private Declare Function GetTickCount Lib "kernel32" () As Long
 ''
 ' Sets a new intrval for a timer.
 '
-' @param TimerIndex Timer´s Index
-' @param Interval New lenght for the Timer´s cicle in miliseconds.
+' @param TimerIndex TimerÂ´s Index
+' @param Interval New lenght for the TimerÂ´s cicle in miliseconds.
 ' @remarks  Must be donde after creating the timer and before using it, otherwise, Interval will be 0
 
 Public Sub SetInterval(ByVal TimerIndex As TimersIndex, ByVal Interval As Long)
@@ -127,7 +127,7 @@ End Sub
 ''
 ' Starts the timer.
 '
-' @param TimerIndex Timer´s Index
+' @param TimerIndex TimerÂ´s Index
 ' @remarks  Do this for starting the timer.
 
 Public Sub Start(ByVal TimerIndex As TimersIndex)
@@ -146,7 +146,7 @@ End Sub
 ''
 ' Resume the timer form where we had stoped.
 '
-' @param TimerIndex Timer´s Index
+' @param TimerIndex TimerÂ´s Index
 ' @remarks  Makes the Timer continue from where it had stoped.
 
 Public Sub Continue(ByVal TimerIndex As TimersIndex)
@@ -160,7 +160,7 @@ Public Sub Continue(ByVal TimerIndex As TimersIndex)
     
     Timer(TimerIndex).Run = True 'We allow the Timer to run.
     
-    'We´ll set the StartTick again
+    'WeÂ´ll set the StartTick again
     Timer(TimerIndex).StartTick = Timer(TimerIndex).StartTick + Timer(TimerIndex).CurrentTick
 
 End Sub
@@ -168,7 +168,7 @@ End Sub
 ''
 ' Pauses the Timer
 '
-' @param TimerIndex Timer´s Index
+' @param TimerIndex TimerÂ´s Index
 ' @remarks  Can be resumed with Continue()
 
 Public Sub Pause(ByVal TimerIndex As TimersIndex)
@@ -180,19 +180,19 @@ Public Sub Pause(ByVal TimerIndex As TimersIndex)
     '*************************************************
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
     
-    Timer(TimerIndex).Run = False 'Don´t allow the timer to run.
+    Timer(TimerIndex).Run = False 'DonÂ´t allow the timer to run.
     
     Timer(TimerIndex).CurrentTick = (GetTickCount() And &H7FFFFFFF) - Timer(TimerIndex).StartTick 'Calculates acutual tick
 
 End Sub
 
 ''
-' Check if the timer has already completed it´s cicle.
+' Check if the timer has already completed itÂ´s cicle.
 '
-' @param TimerIndex Timer´s Index
+' @param TimerIndex TimerÂ´s Index
 ' @param Restart If true, restart if we timer has ticked
 ' @return True if the interval has already been elapsed
-' @remarks  Can´t be done if the timer is stoped or if it had never been started.
+' @remarks  CanÂ´t be done if the timer is stoped or if it had never been started.
 
 Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boolean = True) As Boolean
 
@@ -205,7 +205,7 @@ Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boole
     '*************************************************
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Function
     
-    If Not Timer(TimerIndex).Run Then Exit Function 'If we weren´t allowed to run, exit function
+    If Not Timer(TimerIndex).Run Then Exit Function 'If we werenÂ´t allowed to run, exit function
     
     Timer(TimerIndex).CurrentTick = (GetTickCount() And &H7FFFFFFF) - Timer(TimerIndex).StartTick 'Calcutates CurrentTick
     
@@ -224,7 +224,7 @@ End Function
 ''
 ' Restarts timer.
 '
-' @param TimerIndex Timer´s Index
+' @param TimerIndex TimerÂ´s Index
 
 Public Sub Restart(ByVal TimerIndex As TimersIndex)
 

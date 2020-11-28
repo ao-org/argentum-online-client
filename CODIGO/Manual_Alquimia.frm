@@ -90,7 +90,7 @@ Begin VB.Form Manual_Alquimia
       End
       Begin VB.Label Label3 
          BackStyle       =   0  'Transparent
-         Caption         =   "4) Cuando obtengas todas las raÌces deseadas, equipas la olla, de la misma forma en que equipaste la tijera."
+         Caption         =   "4) Cuando obtengas todas las ra√≠ces deseadas, equipas la olla, de la misma forma en que equipaste la tijera."
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -165,7 +165,7 @@ Begin VB.Form Manual_Alquimia
       Begin VB.Label Label4 
          Alignment       =   2  'Center
          BackStyle       =   0  'Transparent
-         Caption         =   "øCÛmo fabricar pociones?"
+         Caption         =   "¬øC√≥mo fabricar pociones?"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   11.25
@@ -184,7 +184,7 @@ Begin VB.Form Manual_Alquimia
       Begin VB.Label Label5 
          Alignment       =   2  'Center
          BackStyle       =   0  'Transparent
-         Caption         =   "1)  Dirigirte al comercio ìAlquimiaî de cualquier ciudad."
+         Caption         =   "1)  Dirigirte al comercio ‚ÄúAlquimia‚Äù de cualquier ciudad."
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25

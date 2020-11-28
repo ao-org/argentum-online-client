@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmCustomKeys 
    BorderStyle     =   4  'Fixed ToolWindow
-   Caption         =   "Configuraci髇 de controles"
+   Caption         =   "Configuraci贸n de controles"
    ClientHeight    =   6105
    ClientLeft      =   45
    ClientTop       =   315
@@ -74,7 +74,7 @@ Begin VB.Form frmCustomKeys
       Width           =   1215
    End
    Begin VB.OptionButton Option1 
-      Caption         =   "Cl醩ica"
+      Caption         =   "Cl谩sica"
       Height          =   255
       Left            =   4110
       TabIndex        =   52
@@ -495,7 +495,7 @@ Begin VB.Form frmCustomKeys
    Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Configuraci髇 rapida:"
+      Caption         =   "Configuraci贸n rapida:"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -516,7 +516,7 @@ Begin VB.Form frmCustomKeys
    Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Acci髇 Click 3"
+      Caption         =   "Acci贸n Click 3"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -536,7 +536,7 @@ Begin VB.Form frmCustomKeys
    Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Acci髇 Click 1"
+      Caption         =   "Acci贸n Click 1"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -556,7 +556,7 @@ Begin VB.Form frmCustomKeys
    Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Acci髇 Click 2"
+      Caption         =   "Acci贸n Click 2"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -684,7 +684,7 @@ Begin VB.Form frmCustomKeys
    Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Actualizar Posici髇"
+      Caption         =   "Actualizar Posici贸n"
       ForeColor       =   &H00000000&
       Height          =   195
       Index           =   2
@@ -843,7 +843,7 @@ Private Sub cmdAccion_Click(Index As Integer)
             Next
 
             If bCambio Then
-                Resultado = MsgBox("Realizo cambios en la configuraci髇 縟esea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
+                Resultado = MsgBox("Realizo cambios en la configuraci贸n 驴desea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
 
                 If Resultado = vbYes Then Call GuardaConfigEnVariables
 
@@ -918,7 +918,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Next
 
     If bCambio Then
-        Resultado = MsgBox("Realizo cambios en la configuraci髇 縟esea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
+        Resultado = MsgBox("Realizo cambios en la configuraci贸n 驴desea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
 
         If Resultado = vbYes Then Call GuardaConfigEnVariables
 

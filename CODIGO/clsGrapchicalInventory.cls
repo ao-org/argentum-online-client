@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '*****************************************************
 'Graphical inventory for ORE 0.4.1
-'Designed and implemented by Juan MartÌn Sotuyo Dodero (Maraxus)
+'Designed and implemented by Juan Mart√≠n Sotuyo Dodero (Maraxus)
 'juansotuyo@hotmail.com
 '*****************************************************
 
@@ -55,15 +55,15 @@ Dim ShowQuantities             As Boolean
 
 Private MAININVENTORY_MIDSPACE As Byte
 
-' Slot item arrastrado (0 si no est· arrastrando)
+' Slot item arrastrado (0 si no est√° arrastrando)
 Dim Dragging                   As Integer
 
-' PosiciÛn del item arrastrado
+' Posici√≥n del item arrastrado
 Dim XDrag                      As Integer
 
 Dim YDrag                      As Integer
 
-' Flag para saber si se cliqueÛ dentro del inventario
+' Flag para saber si se clique√≥ dentro del inventario
 ' al hacer clic sobre el Picture
 Dim wasClickedInside           As Boolean
 
@@ -77,7 +77,7 @@ Dim UserInventory()            As Inventory    'User's inventory
 Dim WithEvents InventoryWindow As PictureBox    'Placeholder where to render the inventory
 Attribute InventoryWindow.VB_VarHelpID = -1
 
-' Evento disparado cuando un item se soltÛ
+' Evento disparado cuando un item se solt√≥
 Public Event ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
 
 #If ConMenuesConextuales = 1 Then
@@ -86,8 +86,8 @@ Public Event ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x A
 
 #End If
 
-' Valores constantes que no ameritan que los reciba como par·metro
-Const ITEM_SIZE = 32 ' El ancho de los items (nunca deberÌa cambiar
+' Valores constantes que no ameritan que los reciba como par√°metro
+Const ITEM_SIZE = 32 ' El ancho de los items (nunca deber√≠a cambiar
 
 Const LETRA_CHICA_X = 3 ' Offset X de cantidad de items (letra chica)
 
@@ -103,11 +103,11 @@ Const EQUIPPED_Y = 0 ' Offset Y del caracter de equipado
 
 Const EQUIPPED_CHARACTER = "+" ' Caracter de item equipado
 
-Const SELECTION_BOX_W = 34 ' Ancho de la cajita de selecciÛn (se centra autom·ticamente)
+Const SELECTION_BOX_W = 34 ' Ancho de la cajita de selecci√≥n (se centra autom√°ticamente)
 
-Const SELECTION_BOX_H = 34 ' Alto de la cajita de selecciÛn (se centra autom·ticamente)
+Const SELECTION_BOX_H = 34 ' Alto de la cajita de selecci√≥n (se centra autom√°ticamente)
 
-'Private Const MAININVENTORY_MIDSPACE As Integer = 0 '9 'Separador de inventario b·sico y extra slots en el inventario principal del usuario
+'Private Const MAININVENTORY_MIDSPACE As Integer = 0 '9 'Separador de inventario b√°sico y extra slots en el inventario principal del usuario
 
 ' Valores calculados
 Const HALF_ITEM_SIZE = ITEM_SIZE \ 2
@@ -132,7 +132,7 @@ Dim HEIGHT_MAIN_INVENTORY As Integer
 Private Sub Class_Initialize()
 
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     '
     '***************************************************
@@ -141,7 +141,7 @@ End Sub
 Private Sub Class_Terminate()
 
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     '
     '***************************************************
@@ -200,7 +200,7 @@ End Sub
 Public Sub SelectGold()
 
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Sets the gold as the currently selected item
     '***************************************************
@@ -216,7 +216,7 @@ End Sub
 
 Public Property Get SelectedItem() As Long
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item index
     '***************************************************
@@ -231,7 +231,7 @@ End Property
 
 Public Property Get MaxHit(ByVal Slot As Byte) As Integer
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the max hit of the selected item
     '***************************************************
@@ -241,7 +241,7 @@ End Property
 
 Public Property Get MinHit(ByVal Slot As Byte) As Integer
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the min hit of the selected item
     '***************************************************
@@ -251,7 +251,7 @@ End Property
 
 Public Property Get Def(ByVal Slot As Byte) As Integer
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the defense of the selected item
     '***************************************************
@@ -261,7 +261,7 @@ End Property
 
 Public Property Get GrhIndex(ByVal Slot As Byte) As Long
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the grh index of the selected item
     '***************************************************
@@ -271,7 +271,7 @@ End Property
 
 Public Property Get Valor(ByVal Slot As Byte) As Single
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the value of the selected item
     '***************************************************
@@ -282,7 +282,7 @@ End Property
 Public Property Get Amount(ByVal Slot As Byte) As Long
 
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's amount
     '***************************************************
@@ -297,7 +297,7 @@ End Property
 
 Public Property Get OBJIndex(ByVal Slot As Byte) As Integer
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's object index
     '***************************************************
@@ -307,7 +307,7 @@ End Property
 
 Public Property Get ObjType(ByVal Slot As Byte) As Integer
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's object type
     '***************************************************
@@ -317,7 +317,7 @@ End Property
 
 Public Property Get ItemName(ByVal Slot As Byte) As String
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's name
     '***************************************************
@@ -327,7 +327,7 @@ End Property
 
 Public Property Get Equipped(ByVal Slot As Byte) As Boolean
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves True if the item at the given pos is eqiupped
     '***************************************************
@@ -337,7 +337,7 @@ End Property
 
 Public Property Get PuedeUsar(ByVal Slot As Byte) As Byte
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves True if the item at the given pos is eqiupped
     '***************************************************
@@ -366,14 +366,14 @@ Public Property Get NeedsRedraw() As Boolean
 End Property
 
 Public Sub ReDraw()
-    ' Provoca que el inventario se vuelta a dibujar el prÛximo frame
+    ' Provoca que el inventario se vuelta a dibujar el pr√≥ximo frame
     InvNeedsRedraw = True
 
 End Sub
 
 Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount As Integer, ByVal eEquipped As Byte, ByVal eGrhIndex As Long, ByVal eObjType As Integer, ByVal eMaxHit As Integer, ByVal eMinHit As Integer, ByVal eDef As Integer, ByVal eValor As Single, ByVal eName As String, ByVal PuedeUsar As Byte)
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/04/06
     'Sets all data for a given inventory slot
     '***************************************************
@@ -401,7 +401,7 @@ End Sub
 
 Public Sub SeleccionarItem(ByVal SelectedItem As Byte)
     '***************************************************
-    'Author: Juan MartÌn Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart√≠n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item index
     '***************************************************
@@ -417,18 +417,18 @@ End Property
 
 Public Function GetSlot(ByVal x As Integer, ByVal y As Integer) As Byte
     ' Restamos el offset del inventario
-    ' (m·s la mitad del borde, para hacer que los clics en los bordes sean como en el slot)
+    ' (m√°s la mitad del borde, para hacer que los clics en los bordes sean como en el slot)
         
     x = x - InvOffsetX + HALF_BORDER_X
     y = y - InvOffsetY + HALF_BORDER_Y
     
-    ' SeparaciÛn entre inventario principal y slots de mochilas
+    ' Separaci√≥n entre inventario principal y slots de mochilas
     If isInventory Then
 
-        ' Si est· por debajo del inventari normal
+        ' Si est√° por debajo del inventari normal
         If y >= HEIGHT_MAIN_INVENTORY Then
 
-            ' Si est· en el espacio entre medio, salimos
+            ' Si est√° en el espacio entre medio, salimos
             If y < HEIGHT_MAIN_INVENTORY + MAININVENTORY_MIDSPACE Then Exit Function
             ' Restamos el offset para los items de abajo
             y = y - MAININVENTORY_MIDSPACE
@@ -437,8 +437,8 @@ Public Function GetSlot(ByVal x As Integer, ByVal y As Integer) As Byte
 
     End If
     
-    ' ** Cambiado: queda mejor si tambiÈn se pueden cliquear los bordes
-    ' Nos aseguramos que no cliqueÛ en el borde de un slot
+    ' ** Cambiado: queda mejor si tambi√©n se pueden cliquear los bordes
+    ' Nos aseguramos que no clique√≥ en el borde de un slot
     'If x Mod ITEM_OFFSET_X >= ITEM_SIZE Then Exit Function
     'If y Mod ITEM_OFFSET_Y >= ITEM_SIZE Then Exit Function
     
@@ -446,18 +446,18 @@ Public Function GetSlot(ByVal x As Integer, ByVal y As Integer) As Byte
     x = x \ ITEM_OFFSET_X
     y = y \ ITEM_OFFSET_Y
     
-    ' Nos aseguramos que no cliqueÛ muy a izquierda ni muy a la derecha
+    ' Nos aseguramos que no clique√≥ muy a izquierda ni muy a la derecha
     If x < 0 Or x >= ITEMS_PER_ROW Then Exit Function
     
-    ' Nos aseguramos que no cliqueÛ muy arriba (despuÈs chequeamos por abajo)
+    ' Nos aseguramos que no clique√≥ muy arriba (despu√©s chequeamos por abajo)
     If y < 0 Then Exit Function
 
-    ' Calculamos el Ìndice del slot
+    ' Calculamos el √≠ndice del slot
     GetSlot = x + y * ITEMS_PER_ROW + 1
     
-    ' Nos aseguramos de no pasarnos del lÌmite de slots
-    ' (por ej. si hay 24 slots y la grilla es 5x5, al cliquear en el ˙ltimo "slot" este no existe;
-    ' o bien, si el Picture es m·s grande que el inventario)
+    ' Nos aseguramos de no pasarnos del l√≠mite de slots
+    ' (por ej. si hay 24 slots y la grilla es 5x5, al cliquear en el √∫ltimo "slot" este no existe;
+    ' o bien, si el Picture es m√°s grande que el inventario)
     If GetSlot > InvMaxSlots Then GetSlot = 0
 
 End Function
@@ -607,7 +607,7 @@ End Sub
 
 Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
-    ' Me mantengo dentro de los lÌmites
+    ' Me mantengo dentro de los l√≠mites
     If x < HALF_ITEM_SIZE Then x = HALF_ITEM_SIZE
     If y < HALF_ITEM_SIZE Then y = HALF_ITEM_SIZE
     If x > InventoryWindow.ScaleWidth - HALF_ITEM_SIZE Then x = InventoryWindow.ScaleWidth - HALF_ITEM_SIZE
@@ -620,7 +620,7 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
 
     ' Si estamos arrastrando y soltamos el clic derecho
     If Dragging > 0 And Button = vbRightButton Then
-        ' Disparo un evento para que la lÛgica del drag&drop sea independiente al inventario
+        ' Disparo un evento para que la l√≥gica del drag&drop sea independiente al inventario
         RaiseEvent ItemDropped(Dragging, Slot, x, y)
 
         ' Dejo de dibujar el item arrastrado
@@ -629,7 +629,7 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
 
     End If
     
-    ' Si es un slot v·lido
+    ' Si es un slot v√°lido
     If Slot > 0 Then
 
         ' Si no hay un item en el slot

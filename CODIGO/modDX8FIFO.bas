@@ -18,7 +18,7 @@ Sub CargarCabezas()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cabezas.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
 
         End If
@@ -74,7 +74,7 @@ Sub CargarCascos()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cascos.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
 
         End If
@@ -130,7 +130,7 @@ Sub CargarCuerpos()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "personajes.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de personajes.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de personajes.ind!"
             MsgBox Err.Description
 
         End If
@@ -186,7 +186,7 @@ Sub CargarFxs()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "fxs.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de fxs.ind!"
+            Err.Description = "Â¡No se puede cargar el archivo de fxs.ind!"
             MsgBox Err.Description
 
         End If
@@ -237,7 +237,7 @@ Public Function LoadGrhData() As Boolean
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "graficos.ind", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de recurso!"
+            Err.Description = "Â¡No se puede cargar el archivo de recurso!"
             GoTo ErrorHandler
 
         End If
@@ -371,7 +371,7 @@ Public Function CargarMiniMap()
     #If Compresion = 1 Then
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "minimap.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de recurso!"
+            Err.Description = "Â¡No se puede cargar el archivo de recurso!"
             GoTo ErrorHandler
 
         End If

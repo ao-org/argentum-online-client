@@ -34,7 +34,7 @@ Attribute VB_Name = "ModCompresion"
 '               - SC Description Here
 '*****************************************************************
 '
-'Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com) - 10/13/2004
+'Juan MartÃ­n Sotuyo Dodero (juansotuyo@hotmail.com) - 10/13/2004
 '   - First Release
 '*****************************************************************
 Option Explicit
@@ -79,7 +79,7 @@ Private Declare Function uncompress Lib "zlib.dll" (dest As Any, destlen As Any,
 
 Public Sub Compress_Data(ByRef data() As Byte)
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 10/13/2004
 'Compresses binary data avoiding data loses
 '*****************************************************************
@@ -140,7 +140,7 @@ End Sub
 
 Public Sub Decompress_Data(ByRef data() As Byte, ByVal OrigSize As Long)
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 10/13/2004
 'Decompresses binary data
 '*****************************************************************
@@ -162,7 +162,7 @@ End Sub
 
 Public Sub Encrypt_File_Header(ByRef FileHead As FILEHEADER)
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 10/13/2004
 'Encrypts normal data or turns encrypted data back to normal
 '*****************************************************************
@@ -175,7 +175,7 @@ End Sub
 
 Public Sub Encrypt_Info_Header(ByRef InfoHead As INFOHEADER)
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 10/13/2004
 'Encrypts normal data or turns encrypted data back to normal
 '*****************************************************************
@@ -201,7 +201,7 @@ End Sub
 
 Public Function Extract_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByRef ResourcePrgbar As ProgressBar, ByRef GeneralPrgBar As ProgressBar, ByRef GeneralLbl As Label, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 10/13/2004
 'Extracts all files from a resource file
 '*****************************************************************
@@ -381,7 +381,7 @@ End Function
 
 Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As String) As Boolean
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 10/13/2004
 'Comrpesses all files to a resource file
 '*****************************************************************
@@ -667,7 +667,7 @@ End Function
 
 Public Function Compress_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal dest_path As String, ByRef GeneralPrgBar As ProgressBar) As Boolean
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 10/13/2004
 'Comrpesses all files to a resource file
 '*****************************************************************
@@ -847,7 +847,7 @@ ErrHandler:
 End Function
 Public Sub Delete_Resources(ByVal resource_path As String)
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 10/13/2004
 'Deletes all resource files
 '*****************************************************************
@@ -861,7 +861,7 @@ On Local Error Resume Next
 End Sub
 Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 10/13/2004
 'Extracts all files from a resource file
 '*****************************************************************
@@ -985,7 +985,7 @@ End Function
 
 Public Function General_Load_Picture_From_Resource(ByVal picture_file_name As String) As IPicture
 '**************************************************************
-'Author: Augusto José Rando
+'Author: Augusto JosÃ© Rando
 'Last Modify Date: 6/11/2005
 'Loads a picture from a resource file and returns it
 '**************************************************************
@@ -1007,7 +1007,7 @@ Exit Function
 End Function
 Public Sub Delete_File(ByVal file_path As String)
 '*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
+'Author: Juan MartÃ­n Dotuyo Dodero
 'Last Modify Date: 3/03/2005
 'Deletes a resource files
 '*****************************************************************
@@ -1038,7 +1038,7 @@ Error_Handler:
 End Sub
 Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Currency
 '**************************************************************
-'Author: Juan Martín Sotuyo Dodero
+'Author: Juan MartÃ­n Sotuyo Dodero
 'Last Modify Date: 6/07/2004
 '
 '**************************************************************

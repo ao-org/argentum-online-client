@@ -25,7 +25,7 @@ Public Sub NAC_E_Byte(ByRef ByteArray() As Byte, ByVal code As Byte)
 Rem Encriptador de ByteArrays
 Rem @writer: MENDUZ - MENDUZ@NOICODER.COM
 Rem @date: 03122008
-    Dim i As Integer 'Ponemos integer porque no manejamos paquetes m·s grandes de 10KB
+    Dim i As Integer 'Ponemos integer porque no manejamos paquetes m√°s grandes de 10KB
     For i = 0 To UBound(ByteArray)
         ByteArray(i) = code Xor ByteArray(i)
     Next
@@ -35,7 +35,7 @@ Public Sub NAC_D_Byte(ByRef ByteArray() As Byte, ByVal code As Byte)
 Rem Desencriptador de ByteArrays
 Rem @writer: MENDUZ - MENDUZ@NOICODER.COM
 Rem @date: 03122008
-    Dim i As Integer 'Ponemos integer porque no manejamos paquetes m·s grandes de 10KB
+    Dim i As Integer 'Ponemos integer porque no manejamos paquetes m√°s grandes de 10KB
     For i = 0 To UBound(ByteArray)
         ByteArray(i) = ByteArray(i) Xor code
     Next

@@ -217,7 +217,7 @@ Private Sub Image2_Click()
     If UserEstado = 1 Then 'Muerto
 
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+            Call ShowConsoleMsg("Â¡Â¡EstÃ¡s muerto!!", .red, .green, .blue, .bold, .italic)
 
         End With
 
@@ -241,7 +241,7 @@ End Sub
 
 Private Sub Image3_Click()
     
-    'Si nos encontramos con un guild con nombre vacío algo sospechoso está pasando, x las dudas no hacemos nada.
+    'Si nos encontramos con un guild con nombre vacÃ­o algo sospechoso estÃ¡ pasando, x las dudas no hacemos nada.
     If Len(guildslist.List(guildslist.ListIndex)) = 0 Then Exit Sub
     
     frmGuildBrief.EsLeader = False

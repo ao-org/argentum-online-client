@@ -2,15 +2,15 @@ Attribute VB_Name = "modRenderValue"
 Option Explicit
 
 ' GS-Zone AO
-' Basad en el Sistema de Daño aportado por maTih.- adaptado by ^[GS]^
+' Basad en el Sistema de DaÃ±o aportado por maTih.- adaptado by ^[GS]^
 ' Fuente: http://www.gs-zone.org/dano_tds_style_en_mapa_tl6O.html
  
 Const RENDER_TIME As Integer = 300
 
 Enum RVType
 
-    ePuñal = 1                'Apuñalo.
-    eNormal = 2               'Golpe común.
+    ePuÃ±al = 1                'ApuÃ±alo.
+    eNormal = 2               'Golpe comÃºn.
     eMagic = 3                'Hechizo. ' GSZAO
     eGold = 4                 'Oro ' GSZAO
     eTrabajo = 5
@@ -28,7 +28,7 @@ Type RVList
     'RenderFont     As New StdFont  'Efecto del apu.
     TimeRendered   As Single  'Tiempo transcurrido.
     Downloading    As Single     'Contador para la posicion Y.
-    Activated      As Boolean  'Si está activado..
+    Activated      As Boolean  'Si estÃ¡ activado..
 
 End Type
  
@@ -156,7 +156,7 @@ Private Function ModifyColor(ByVal TimeNowRendered As Integer, ByVal RenderType 
     
     Select Case RenderType
 
-        Case RVType.ePuñal
+        Case RVType.ePuÃ±al
             ModifyColor = ARGB(0, 0, 0, TimeX2)
 
         Case RVType.eNormal

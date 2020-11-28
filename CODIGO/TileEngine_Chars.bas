@@ -334,7 +334,7 @@ End Function
 Public Function Char_Check(ByVal char_index As Integer) As Boolean
 
     '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
+    'Author: Aaron Perkins - Modified by Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 1/04/2003
     '
     '**************************************************************
@@ -349,7 +349,7 @@ End Function
 Public Function Char_FX_Group_Next_Open(ByVal char_index As Integer) As Integer
 
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '*****************************************************************
     On Error GoTo ErrorHandler:
 
@@ -482,7 +482,7 @@ Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal
     If fX = 0 Then Exit Sub
 
     '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/03/04
     'Sets an FX to the character.
     '***************************************************

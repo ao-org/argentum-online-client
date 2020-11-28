@@ -34,9 +34,9 @@ Attribute VB_Exposed = False
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 '*****************************************************************
-'Maraxus (Juan MartÌn Sotuyo Dodero - juansotuyo@hotmail.com)
+'Maraxus (Juan Mart√≠n Sotuyo Dodero - juansotuyo@hotmail.com)
 '   - First Relase (as CTextureMan)
-'Barrin (Augusto JosÈ Rando - barrin@imperiumao.com.ar)
+'Barrin (Augusto Jos√© Rando - barrin@imperiumao.com.ar)
 '   - Modified to use sound buffers
 '   - Modified to copy buffers when already playing
 '*****************************************************************
@@ -69,8 +69,8 @@ Private Declare Sub CopyMem Lib "kernel32" Alias "RtlCopyMemory" (destination As
 
 Private Sub Class_Initialize()
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
-    'Modified by Augusto JosÈ Rando
+    'Author: Juan Mart√≠n Sotuyo Dodero
+    'Modified by Augusto Jos√© Rando
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -80,7 +80,7 @@ End Sub
 Private Sub Class_Terminate()
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -102,7 +102,7 @@ End Sub
 
 Public Property Let Path(ByVal inString As String)
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -112,8 +112,8 @@ End Property
 
 Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuffer8
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
-    'Modified by Augusto JosÈ Rando
+    'Author: Juan Mart√≠n Sotuyo Dodero
+    'Modified by Augusto Jos√© Rando
     'Last Modify Date: 9/05/2005
     '
     '**************************************************************
@@ -128,7 +128,7 @@ Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuf
         'Do While ((Not mBuffers(IndiceObtenido).buffer(i) Is Nothing) And (mBuffers(IndiceObtenido).buffer(i).GetStatus <> DSBSTATUS_PLAYING And mBuffers(IndiceObtenido).buffer(i).GetStatus <> DSBSTATUS_LOOPING + DSBSTATUS_PLAYING)) Or (i >= MAX_BUFFERS)
         '    If mBuffers(IndiceObtenido).buffer(i) Is Nothing Then
         '        If i = 1 Then
-        '            'No deberÌa entrar ac· pero bueno, por las dudas
+        '            'No deber√≠a entrar ac√° pero bueno, por las dudas
         '            If CreateBufferFromFile(FileName, IndiceObtenido, 1) Then
         '                Set GetBuffer = mBuffers(IndiceObtenido).buffer(1)
         '            End If
@@ -180,7 +180,7 @@ Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuf
 
         End If
         
-        'Devolvemos el buffer SIEMPRE, aunque hayamos llegado al m·ximo de buffers simult·neos
+        'Devolvemos el buffer SIEMPRE, aunque hayamos llegado al m√°ximo de buffers simult√°neos
         'Set GetBuffer = mBuffers(IndiceObtenido).buffer(i)
         
         'Ultimo acceso
@@ -197,7 +197,7 @@ CrearNuevoBuffer:
 
     'Vemos si puedo agregar uno a la lista
     If mMaxEntries = mCantidadBuffers Then
-        'Sacamos el que hace m·s que no usamos, y utilizamos el slot
+        'Sacamos el que hace m√°s que no usamos, y utilizamos el slot
         IndiceObtenido = CrearBuffer(FileName, BorraMenosUsado())
         Set GetBuffer = mBuffers(IndiceObtenido).buffer(1)
     Else
@@ -212,7 +212,7 @@ End Function
 Private Function ObtenerIndice(ByVal FileName As Integer) As Integer
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     'Busqueda binaria para hallar el buffer deseado
     '**************************************************************
@@ -230,7 +230,7 @@ Private Function ObtenerIndice(ByVal FileName As Integer) As Integer
 
         If FileName < mBuffers(mid).FileName Then
 
-            'El Ìndice no existe
+            'El √≠ndice no existe
             If max = mid Then
                 max = max - 1
             Else
@@ -240,7 +240,7 @@ Private Function ObtenerIndice(ByVal FileName As Integer) As Integer
 
         ElseIf FileName > mBuffers(mid).FileName Then
 
-            'El Ìndice no existe
+            'El √≠ndice no existe
             If min = mid Then
                 min = min + 1
             Else
@@ -260,7 +260,7 @@ End Function
 
 Public Function Init(ByRef DS8 As DirectSound8, ByVal MaxEntries As Integer) As Boolean
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -284,7 +284,7 @@ End Function
 Public Sub BorrarTodo()
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     'Vacia la lista de sonidos
     '**************************************************************
@@ -306,7 +306,7 @@ Public Sub DetenerTodo()
     On Error Resume Next
 
     '**************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     'Last Modify Date: 5/04/2005
     'Detiene todos los sonidos
     '**************************************************************
@@ -334,7 +334,7 @@ End Sub
 Public Sub ModificarVolumenTodo(ByVal Volume As Long)
 
     '**************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     'Last Modify Date: 5/04/2005
     'Detiene todos los sonidos
     '**************************************************************
@@ -363,13 +363,13 @@ End Sub
 Public Function Borrar(ByVal FileName As Integer) As Integer
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     'Borra un sonido
     '**************************************************************
     Dim indice As Long
     
-    'Obtenemos el Ïndice
+    'Obtenemos el √¨ndice
     indice = ObtenerIndice(FileName)
     
     'Lo eliminamos
@@ -378,10 +378,10 @@ Public Function Borrar(ByVal FileName As Integer) As Integer
 
     End With
     
-    'Actualizamos el n˙mero de sonidos
+    'Actualizamos el n√∫mero de sonidos
     mCantidadBuffers = mCantidadBuffers - 1
     
-    'Movemos para atr·s el resto de la lista
+    'Movemos para atr√°s el resto de la lista
     For indice = indice To mCantidadBuffers
         mBuffers(indice) = mBuffers(indice + 1)
     Next indice
@@ -394,7 +394,7 @@ End Function
 Private Function CrearBuffer(ByVal Archivo As Integer, Optional ByVal Index As Integer = -1, Optional ByVal Extraido As Boolean = False) As Integer
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -424,7 +424,7 @@ Private Function CrearBuffer(ByVal Archivo As Integer, Optional ByVal Index As I
     'Ordenamos la lista (al estar agregando de a un item no es mucho trabajo, y se compensa con la velocidad de busqueda)
     Call OrdenarBuffers(1, mCantidadBuffers)
     
-    'Devolvemos el Ïndice en que lo cargamos
+    'Devolvemos el √¨ndice en que lo cargamos
     CrearBuffer = ObtenerIndice(Archivo)
     Exit Function
 
@@ -476,7 +476,7 @@ Private Function CreateBufferFromFile(ByVal file_name As Integer, ByVal buffer_i
     #End If
 
 errhandler:
-    'OcurriÛ un error, la causa m·s probable es que el archivo no exista
+    'Ocurri√≥ un error, la causa m√°s probable es que el archivo no exista
     ' If General_File_Exists(Windows_Temp_Dir & file_name & ".wav", vbNormal) Then
     '    Delete_File Windows_Temp_Dir & file_name & ".wav"
     'End If
@@ -486,7 +486,7 @@ End Function
 Private Sub OrdenarBuffers(ByVal primero As Integer, ByVal ultimo As Integer)
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     'Ordenamos los sonidos por nombre usando QuickSort
     '**************************************************************
@@ -531,7 +531,7 @@ End Sub
 Private Function BorraMenosUsado() As Integer
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     'Borra el sonido menos usado. Devuelve el index del borrado para ser reutilizado
     'NO redimenciona la lista, estamos forzando a sacar uno para meter otro en su lugar
@@ -544,7 +544,7 @@ Private Function BorraMenosUsado() As Integer
     Valor = mBuffers(1).UltimoAcceso
     BorraMenosUsado = 1
     
-    'Buscamos cual es el que lleva m·s tiempo sin ser utilizado
+    'Buscamos cual es el que lleva m√°s tiempo sin ser utilizado
     For i = 1 To mCantidadBuffers
 
         If mBuffers(i).UltimoAcceso < Valor And (Not PlayingCheck(0, i)) Then
@@ -565,7 +565,7 @@ End Function
 
 Public Property Get MaxEntries() As Integer
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -575,7 +575,7 @@ End Property
 
 Public Property Let MaxEntries(ByVal vNewValue As Integer)
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -585,7 +585,7 @@ End Property
 
 Public Property Get CantidadBuffers() As Integer
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
@@ -596,7 +596,7 @@ End Property
 Public Sub BorraTimerProc()
 
     '**************************************************************
-    'Author: Juan MartÌn Sotuyo Dodero
+    'Author: Juan Mart√≠n Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     'Cada un minuto revisamos que buffers se pueden eliminar
     '**************************************************************
@@ -615,7 +615,7 @@ Public Sub BorraTimerProc()
         'Revisar cuales usamos
         If mBuffers(loopc).UltimoAcceso > TiempoActual - 60000 Then
 
-            'Si el offset est· seteado, movemos para atr·s la lista
+            'Si el offset est√° seteado, movemos para atr√°s la lista
             If offset Then
                 mBuffers(loopc - offset) = mBuffers(loopc)
 
@@ -634,14 +634,14 @@ Public Sub BorraTimerProc()
 
     Next loopc
     
-    'Actualizar el n˙mero de sonidos
+    'Actualizar el n√∫mero de sonidos
     mCantidadBuffers = mCantidadBuffers - offset
 
 End Sub
 
 Public Function CargarBuffer(ByVal FileName As Integer) As Boolean
     '**************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     'Last Modify Date: 17/08/2005
     '
     '**************************************************************
@@ -654,7 +654,7 @@ Public Function CargarBuffer(ByVal FileName As Integer) As Boolean
 
         'Vemos si puedo agregar uno a la lista
         If mMaxEntries = mCantidadBuffers Then
-            'Sacamos el que hace m·s que no usamos, y utilizamos el slot
+            'Sacamos el que hace m√°s que no usamos, y utilizamos el slot
             Call CrearBuffer(FileName, BorraMenosUsado())
             CargarBuffer = True
         Else
@@ -670,7 +670,7 @@ End Function
 
 Public Function Reproducir(ByVal file_name As Integer, play_format As CONST_DSBPLAYFLAGS, ByVal Volume As Long, ByVal pan As Long) As Boolean
     '**************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     'Last Modify Date: 17/08/2005
     '
     '**************************************************************
@@ -683,7 +683,7 @@ Public Function Reproducir(ByVal file_name As Integer, play_format As CONST_DSBP
 
     If Sound_Buffer Is Nothing Then Exit Function
     
-    'Esto solo deberÌa pasar si ya hay MAX_BUFFERS en reproducciÛn
+    'Esto solo deber√≠a pasar si ya hay MAX_BUFFERS en reproducci√≥n
     If Sound_Buffer.GetStatus = DSBSTATUS_PLAYING Then
         Sound_Buffer.Stop
         Sound_Buffer.SetCurrentPosition 0
@@ -704,7 +704,7 @@ End Function
 
 Public Function Detener(ByVal file_name As Integer) As Boolean
     '**************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     'Last Modify Date: 17/08/2005
     '
     '**************************************************************
@@ -738,7 +738,7 @@ End Function
 
 Public Function CambiarVolumen(ByVal file_name As Integer, ByVal volumen As Long) As Boolean
     '**************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     'Last Modify Date: 17/08/2005
     'Returns true if successfully changed volume of a playing buffer
     '**************************************************************
@@ -773,7 +773,7 @@ End Function
 
 Public Function CambiarPan(ByVal file_name As Integer, ByVal pan As Long) As Boolean
     '**************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     'Last Modify Date: 17/08/2005
     'Returns true if successfully changed pan of a playing buffer
     '**************************************************************
@@ -809,7 +809,7 @@ End Function
 Public Function PlayingCheck(ByVal file_name As Integer, Optional ByVal IndiceObtenido As Integer = -1) As Boolean
 
     '**************************************************************
-    'Author: Augusto JosÈ Rando
+    'Author: Augusto Jos√© Rando
     'Last Modify Date: 17/08/2005
     'Returns true if playing
     '**************************************************************

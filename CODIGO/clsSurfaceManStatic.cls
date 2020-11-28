@@ -16,7 +16,7 @@ Attribute VB_Exposed = False
 ' surfaces at startup, and never deallocating them.
 ' This grants high performance can use a lot of RAM.
 '
-' Developed by Maraxus (Juan MartÌn Sotuyo Dodero - juansotuyo@hotmail.com)
+' Developed by Maraxus (Juan Mart√≠n Sotuyo Dodero - juansotuyo@hotmail.com)
 ' Last Modify Date: 3/06/2006
 '**************************************************************
 
@@ -64,7 +64,7 @@ Private useVideoMemory As Boolean
 
 Private Sub Class_Initialize()
 '**************************************************************
-'Author: Juan MartÌn Sotuyo Dodero
+'Author: Juan Mart√≠n Sotuyo Dodero
 'Last Modify Date: 3/06/2006
 '
 '**************************************************************
@@ -74,7 +74,7 @@ End Sub
 
 Private Sub Class_Terminate()
 '**************************************************************
-'Author: Juan MartÌn Sotuyo Dodero
+'Author: Juan Mart√≠n Sotuyo Dodero
 'Last Modify Date: 3/06/2006
 'Clean up
 '**************************************************************
@@ -91,7 +91,7 @@ End Sub
 
 Private Sub clsSurfaceManager_Initialize(ByRef DD As DirectDraw7, ByVal videoMemory As Boolean, ByVal graphicPath As String, Optional ByVal maxMemoryUsageInMb As Long = -1&)
 '**************************************************************
-'Author: Juan MartÌn Sotuyo Dodero
+'Author: Juan Mart√≠n Sotuyo Dodero
 'Last Modify Date: 3/06/2006
 '
 '**************************************************************
@@ -104,7 +104,7 @@ End Sub
 
 Private Property Get clsSurfaceManager_Surface(ByVal fileIndex As Long) As DirectDrawSurface7
 '**************************************************************
-'Author: Juan MartÌn Sotuyo Dodero
+'Author: Juan Mart√≠n Sotuyo Dodero
 'Last Modify Date: 3/06/2006
 'Retrieves the requested texture
 '**************************************************************
@@ -123,7 +123,7 @@ ErrHandler:
         MsgBox "No se encuentra el archivo " & CStr(fileIndex) & ".bmp. Reinstale el juego, " _
                 & "y si el problema persiste contactese con los adminsitradores", vbOKOnly Or vbCritical Or vbExclamation, "Error"
     Else
-        MsgBox "Un error inesperado ocurriÛ a intentar cargar el archivo " & CStr(fileIndex) & ".bmp. & vbcrlf" _
+        MsgBox "Un error inesperado ocurri√≥ a intentar cargar el archivo " & CStr(fileIndex) & ".bmp. & vbcrlf" _
                 & "Error: " & CStr(Err.number), vbOKOnly Or vbCritical Or vbExclamation, "Error"
     End If
     
@@ -132,7 +132,7 @@ End Property
 
 Private Sub LoadSurfaces(ByVal GrhPath As String)
 '**************************************************************
-'Author: Juan MartÌn Sotuyo Dodero
+'Author: Juan Mart√≠n Sotuyo Dodero
 'Last Modify Date: 3/06/2006
 'Loads all surfaces in random order and then sorts them
 '**************************************************************
@@ -177,7 +177,7 @@ End Sub
 
 Private Function BinarySearch(ByVal fileIndex As Long) As Long
 '**************************************************************
-'Author: Juan MartÌn Sotuyo Dodero
+'Author: Juan Mart√≠n Sotuyo Dodero
 'Last Modify Date: 3/06/2006
 'Returns the index of the surface in the list, or the negation
 'of the position were it should be if not found (for binary insertion)
@@ -210,7 +210,7 @@ End Function
 
 Private Sub LoadSurface(ByVal GrhPath As String, ByVal fileIndex As Long, ByVal listIndex As Long)
 '**************************************************************
-'Author: Juan MartÌn Sotuyo Dodero
+'Author: Juan Mart√≠n Sotuyo Dodero
 'Last Modify Date: 3/06/2006
 'Loads the surface named fileIndex + ".bmp" and inserts it to the
 'surface list in the listIndex position
@@ -253,15 +253,15 @@ On Error GoTo ErrHandler
 Exit Sub
 
 ErrHandler:
-    MsgBox "Un error inesperado ocurriÛ al intentar cargar el gr·fico " & filePath & ". " & vbCrLf & _
-            "El cÛdigo de error es " & CStr(Err.number) & " - " & Err.Description & vbCrLf & "Copia este mensaje y notifica a los administradores.", _
+    MsgBox "Un error inesperado ocurri√≥ al intentar cargar el gr√°fico " & filePath & ". " & vbCrLf & _
+            "El c√≥digo de error es " & CStr(Err.number) & " - " & Err.Description & vbCrLf & "Copia este mensaje y notifica a los administradores.", _
             vbOKOnly Or vbCritical Or vbExclamation, "Error"
         End
 End Sub
 
 Private Sub surfaceDimensions(ByVal Archivo As String, ByRef Height As Long, ByRef Width As Long)
 '**************************************************************
-'Author: Juan MartÌn Sotuyo Dodero
+'Author: Juan Mart√≠n Sotuyo Dodero
 'Last Modify Date: 3/06/2006
 'Loads the headers of a bmp file to retrieve it's dimensions at rt
 '**************************************************************
@@ -281,7 +281,7 @@ End Sub
 
 Private Sub SortSurfaces(ByVal first As Integer, ByVal last As Integer)
 '**************************************************************
-'Author: Juan MartÌn Sotuyo Dodero
+'Author: Juan Mart√≠n Sotuyo Dodero
 'Last Modify Date: 5/04/2005
 'Sorts the list using quicksort, this allows the use of BinarySearch for faster searches
 '**************************************************************

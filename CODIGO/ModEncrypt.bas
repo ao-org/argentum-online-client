@@ -18,7 +18,7 @@ Public Function SEncriptar(ByVal Cadena As String) As String
 
 End Function
 
-' GSZAO - Encriptación basica y rapida para Strings
+' GSZAO - EncriptaciÃ³n basica y rapida para Strings
 Public Function RndCrypt(ByVal str As String, ByVal Password As String) As String
 
     '  Made by Michael Ciurescu

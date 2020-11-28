@@ -134,7 +134,7 @@ Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" _
                  ByVal nIndex As Long) As Long
   
   
-'Declaraci髇 del Api SetWindowLong necesaria para aplicar un estilo _
+'Declaraci贸n del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
   
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" _
@@ -146,8 +146,8 @@ Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" _
 Private Const GWL_EXSTYLE = (-20)
 Private Const LWA_ALPHA = &H2
 Private Const WS_EX_LAYERED = &H80000
-'Funci髇 para saber si formulario ya es transparente. _
- Se le pasa el Hwnd del formulario en cuesti髇
+'Funci贸n para saber si formulario ya es transparente. _
+ Se le pasa el Hwnd del formulario en cuesti贸n
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 On Error Resume Next
@@ -168,7 +168,7 @@ Dim msg As Long
   
 End Function
   
-'Funci髇 que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+'Funci贸n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, _
                                       valor As Integer) As Long
   

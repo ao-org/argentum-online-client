@@ -228,7 +228,7 @@ Private Type LVFINDINFO
     vkDirection As Long
 End Type
 
-'FunciÛn Api SendMessage
+'Funci√≥n Api SendMessage
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
   
 'Constantes para SendMessage
@@ -243,11 +243,11 @@ Private Const LVFI_NEARESTXY = &H40
 'Variable de retorno y para la estructura
 Dim lRet As Long, LFI As LVFINDINFO
   
-'Procedimiento que busca: Se le envÌa el control ListView y el texto a buscar
+'Procedimiento que busca: Se le env√≠a el control ListView y el texto a buscar
 Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
   
     'Esto define si la cadena debe estar completa o si encuentra una parte _
-     seleccionar· el primer Item del ListView que mas se le paresca
+     seleccionar√° el primer Item del ListView que mas se le paresca
     'If Option1 Then
     'cadena completa
     '  LFI.flags = LVFI_WRAP
@@ -258,7 +258,7 @@ Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
       
     If Len(Cadena) = 0 Then Exit Sub
 
-    'Se le asigna a esta variable la cadena que luego se le envÌa a SendMessage
+    'Se le asigna a esta variable la cadena que luego se le env√≠a a SendMessage
     LFI.psz = Cadena
       
     'Le enviamos el mensaje LVM_FINDITEM, la estructura y rel ListView
@@ -272,14 +272,14 @@ Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
         'Propiedad opcional
         ListView.HideSelection = False
         
-        'Si el item se encuentra fuera del ·rea visible desplazamos la lista _
-         para poder visualizarlo con el mÈtodo EnsureVisible
+        'Si el item se encuentra fuera del √°rea visible desplazamos la lista _
+         para poder visualizarlo con el m√©todo EnsureVisible
         ListView.SelectedItem.EnsureVisible
         ListView.SetFocus
         
     Else
         
-        'No se encontrÛ
+        'No se encontr√≥
         MsgBox (" Elemento no encontrado "), vbInformation
 
     End If
@@ -287,7 +287,7 @@ Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
 End Sub
     
 Private Sub Command3_Click()
-    'WyroX: Cambio la lÛgica del buscar
+    'WyroX: Cambio la l√≥gica del buscar
     'Call Buscar_ListView(ListView1, Text1)
     
     FrmObjetos.ListView1.ListItems.Clear

@@ -33,7 +33,7 @@ Private Function CreateNamedMutex(ByRef mutexName As String) As Boolean
     '***************************************************
     'Author: Fredy Horacio Treboux (liquid)
     'Last Modification: 01/04/07
-    'Last Modified by: Juan Martín Sotuyo Dodero (Maraxus) - Changed Security Atributes to make it work in all OS
+    'Last Modified by: Juan MartÃ­n Sotuyo Dodero (Maraxus) - Changed Security Atributes to make it work in all OS
     '***************************************************
     Dim sa As SECURITY_ATTRIBUTES
     
@@ -77,7 +77,7 @@ End Function
 
 Public Sub ReleaseInstance()
     '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modification: 01/04/07
     '
     '***************************************************

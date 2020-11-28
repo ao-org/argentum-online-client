@@ -132,7 +132,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-'Declaraci�n del Api SetLayeredWindowAttributes que establece _
+'Declaraciï¿½n del Api SetLayeredWindowAttributes que establece _
  la transparencia al form
 
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
@@ -140,7 +140,7 @@ Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As 
 'Recupera el estilo de la ventana
 Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
 
-'Declaraci�n del Api SetWindowLong necesaria para aplicar un estilo _
+'Declaraciï¿½n del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
 
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
@@ -151,8 +151,8 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
 
-'Funci�n para saber si formulario ya es transparente. _
- Se le pasa el Hwnd del formulario en cuesti�n
+'Funciï¿½n para saber si formulario ya es transparente. _
+ Se le pasa el Hwnd del formulario en cuestiï¿½n
 
 Public bmoving      As Boolean
 
@@ -212,7 +212,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
 End Function
 
-'Funci�n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+'Funciï¿½n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
 
     Dim msg As Long
@@ -415,12 +415,12 @@ Private Sub Image4_Click()
 
     If Image4.Tag = "0" Then
         Image4.Picture = LoadInterface("check-amarillo.bmp")
-        Call TextoAlAsistente("�Recordare la cuenta para la proxima!")
+        Call TextoAlAsistente("¡Recordare la cuenta para la proxima!")
         Image4.Tag = "1"
     Else
         Image4.Picture = Nothing
         Image4.Tag = "0"
-        Call TextoAlAsistente("�No recordare nada!")
+        Call TextoAlAsistente("¡No recordare nada!")
 
     End If
 
@@ -430,12 +430,12 @@ Private Sub Label1_Click()
 
     If Image4.Tag = "0" Then
         Image4.Picture = LoadInterface("check-amarillo.bmp")
-        Call TextoAlAsistente("�Recordare la cuenta para la proxima!")
+        Call TextoAlAsistente("ï¿½Recordare la cuenta para la proxima!")
         Image4.Tag = "1"
     Else
         Image4.Picture = Nothing
         Image4.Tag = "0"
-        Call TextoAlAsistente("�No recordare nada!")
+        Call TextoAlAsistente("ï¿½No recordare nada!")
 
     End If
 

@@ -16,14 +16,14 @@ Option Explicit
 '  Date: 5 February 2007
 '  Description: Added ScreenCapture Method and removed usless things.
 '
-'  Author: Juan Martín Sotuyo Dodero (Maraxus)
+'  Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
 '  Date: 28 Febraury 2007
 '  Description: Changed ScreenCapture to use the Screenshots directory.
 '               Fixed a bug that caused the DC not to be allways released (added INVALID_HANDLE constant)
 '
 '
 ' Copyright.
-' IJL.DLL is a copyright © Intel, which is a registered trade mark of the Intel
+' IJL.DLL is a copyright Â© Intel, which is a registered trade mark of the Intel
 ' Corporation.
 '
 '

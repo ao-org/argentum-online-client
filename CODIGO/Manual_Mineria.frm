@@ -468,7 +468,7 @@ Begin VB.Form Manual_Razas
          Width           =   4695
       End
       Begin VB.Label Label8 
-         Caption         =   "Pocos inteligentes, Son los m·s h·biles en el uso del combate con armas, pero tambiÈn son la raza menos h·bil para la magia."
+         Caption         =   "Pocos inteligentes, Son los m√°s h√°biles en el uso del combate con armas, pero tambi√©n son la raza menos h√°bil para la magia."
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25

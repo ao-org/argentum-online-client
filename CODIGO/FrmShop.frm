@@ -50,7 +50,7 @@ Begin VB.Form FrmShop
    Begin VB.Label Label5 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "Ningún item de esta tienda se cae"
+      Caption         =   "NingÃºn item de esta tienda se cae"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6.75
@@ -151,7 +151,7 @@ Begin VB.Form FrmShop
    Begin VB.Label Label7 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "0 días"
+      Caption         =   "0 dÃ­as"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   8.25

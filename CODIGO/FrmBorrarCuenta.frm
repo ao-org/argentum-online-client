@@ -47,7 +47,7 @@ Begin VB.Form FrmBorrarCuenta
       Top             =   1500
       Width           =   2535
    End
-   Begin VB.TextBox Constraseña 
+   Begin VB.TextBox ConstraseÃ±a 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -65,7 +65,7 @@ Begin VB.Form FrmBorrarCuenta
       Height          =   195
       IMEMode         =   3  'DISABLE
       Left            =   480
-      PasswordChar    =   "•"
+      PasswordChar    =   "â€¢"
       TabIndex        =   1
       Top             =   2130
       Width           =   2535
@@ -155,7 +155,7 @@ Option Explicit
 
 Dim ValidacionNumber As Long
 
-'Declaración del Api SetLayeredWindowAttributes que establece _
+'DeclaraciÃ³n del Api SetLayeredWindowAttributes que establece _
  la transparencia al form
   
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
@@ -163,7 +163,7 @@ Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As 
 'Recupera el estilo de la ventana
 Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
   
-'Declaración del Api SetWindowLong necesaria para aplicar un estilo _
+'DeclaraciÃ³n del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
   
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
@@ -174,8 +174,8 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
 
-'Función para saber si formulario ya es transparente. _
- Se le pasa el Hwnd del formulario en cuestión
+'FunciÃ³n para saber si formulario ya es transparente. _
+ Se le pasa el Hwnd del formulario en cuestiÃ³n
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
@@ -199,7 +199,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
   
 End Function
   
-'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+'FunciÃ³n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
   
     Dim msg As Long
@@ -234,7 +234,7 @@ Private Sub Form_Load()
     ValidacionNumber = RandomNumber(10000, 90000)
     valcar = ValidacionNumber
     Me.Picture = LoadInterface("borrarcuenta.bmp")
-    Call MensajeAdvertencia("Use esta opción con responsabilidad, una vez borrada la cuenta no se podrá volver a recuperar.")
+    Call MensajeAdvertencia("Use esta opciÃ³n con responsabilidad, una vez borrada la cuenta no se podrÃ¡ volver a recuperar.")
 
 End Sub
 
@@ -278,8 +278,8 @@ End Sub
 
 Private Sub Image2_Click()
 
-    If Constraseña = "" Then
-        Call MensajeAdvertencia("El campo de constraseña esta vacia.")
+    If ConstraseÃ±a = "" Then
+        Call MensajeAdvertencia("El campo de constraseÃ±a esta vacia.")
         Exit Sub
 
     End If
@@ -297,15 +297,15 @@ Private Sub Image2_Click()
     End If
     
     If ValidacionNumber <> texVer Then
-        Call MensajeAdvertencia("El codigo de verificación es invalido, por favor reintente.")
+        Call MensajeAdvertencia("El codigo de verificaciÃ³n es invalido, por favor reintente.")
         Exit Sub
 
     End If
     
-    If MsgBox("Esta a punto de borrar la cuenta y todos los personajes que contiene la misma, esta acción es irreversible. ¿Esta seguro?", vbYesNo + vbQuestion, "¡ATENCION!") = vbYes Then
+    If MsgBox("Esta a punto de borrar la cuenta y todos los personajes que contiene la misma, esta acciÃ³n es irreversible. Â¿Esta seguro?", vbYesNo + vbQuestion, "Â¡ATENCION!") = vbYes Then
         EstadoLogin = E_MODO.BorrandoCuenta
         CuentaEmail = Email
-        CuentaPassword = Constraseña
+        CuentaPassword = ConstraseÃ±a
                
         If frmmain.Socket1.Connected Then
             frmmain.Socket1.Disconnect

@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmNewPassword 
    BorderStyle     =   0  'None
-   Caption         =   "Cambiar Contraseña de cuenta"
+   Caption         =   "Cambiar ContraseÃ±a de cuenta"
    ClientHeight    =   2685
    ClientLeft      =   0
    ClientTop       =   -180
@@ -123,7 +123,7 @@ Private Sub Image1_Click()
     End If
 
     If Text2.Text <> Text3.Text Then
-        Call MsgBox("Las contraseñas no coinciden", vbCritical Or vbOKOnly Or vbApplicationModal Or vbDefaultButton1, "Cambiar Contraseña")
+        Call MsgBox("Las contraseÃ±as no coinciden", vbCritical Or vbOKOnly Or vbApplicationModal Or vbDefaultButton1, "Cambiar ContraseÃ±a")
         Exit Sub
 
     End If

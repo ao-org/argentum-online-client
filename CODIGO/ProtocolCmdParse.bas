@@ -83,7 +83,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
     End If
     
-    ' Sacar cartel APESTA!! (y es ilÛgico, est·s diciendo una pausa/espacio  :rolleyes: )
+    ' Sacar cartel APESTA!! (y es il√≥gico, est√°s diciendo una pausa/espacio  :rolleyes: )
     If Comando = "" Then Comando = " "
     
     If Left$(Comando, 1) = "/" Then
@@ -118,7 +118,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -132,7 +132,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -146,7 +146,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -160,7 +160,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -173,7 +173,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/MEDITAR"
                 If UserMinMAN = UserMaxMAN Then
                     With FontTypes(FontTypeNames.FONTTYPE_INFOBOLD)
-                        Call ShowConsoleMsg("°Tu man· est· completo!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°Tu man√° est√° completo!", .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -182,7 +182,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -213,7 +213,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -222,7 +222,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 ElseIf Comerciando Then 'Comerciando
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("Ya est·s comerciando", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("Ya est√°s comerciando", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -236,7 +236,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -307,13 +307,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call WriteCentinelReport(CInt(ArgumentosRaw))
                     Else
                         'No es numerico
-                        Call ShowConsoleMsg("El cÛdigo de verificaciÛn debe ser numerico. Utilice /centinela X, siendo X el cÛdigo de verificaciÛn.")
+                        Call ShowConsoleMsg("El c√≥digo de verificaci√≥n debe ser numerico. Utilice /centinela X, siendo X el c√≥digo de verificaci√≥n.")
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /centinela X, siendo X el cÛdigo de verificaciÛn.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /centinela X, siendo X el c√≥digo de verificaci√≥n.")
 
                 End If
         
@@ -359,7 +359,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /OFERTAINICIAL CANTIDAD.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /OFERTAINICIAL CANTIDAD.")
 
                 End If
             
@@ -389,7 +389,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -400,7 +400,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If Len(ArgumentosRaw) > 50 Then
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFOIAO)
-                        Call ShowConsoleMsg("Tu descripciÛn no puede ser t·n larga (Max. 50 caracteres).", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("Tu descripci√≥n no puede ser t√°n larga (Max. 50 caracteres).", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -415,7 +415,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGuildVote(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /voto NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /voto NICKNAME.")
 
                 End If
                
@@ -424,18 +424,18 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WritePunishments(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /penas NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /penas NICKNAME.")
 
                 End If
                 
-            Case "/CONTRASE—A"
+            Case "/CONTRASE√ëA"
                 Call frmNewPassword.Show(vbModal, frmmain)
             
             Case "/APOSTAR"
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -454,7 +454,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /apostar CANTIDAD.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /apostar CANTIDAD.")
 
                 End If
                 
@@ -462,7 +462,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -490,7 +490,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -529,7 +529,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteCasamiento(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /PROPONER NICK")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /PROPONER NICK")
 
                 End If
 
@@ -560,7 +560,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGoNearby(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /ircerca NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /ircerca NICKNAME.")
 
                 End If
                 
@@ -581,7 +581,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteWhere(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /donde NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /donde NICKNAME.")
 
                 End If
                 
@@ -597,7 +597,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /nene MAPA.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /nene MAPA.")
 
                 End If
                 
@@ -631,7 +631,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Else
                     
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /telep NICKNAME MAPA X Y.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /telep NICKNAME MAPA X Y.")
 
                 End If
                 
@@ -640,7 +640,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteSilence(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /silenciar NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /silenciar NICKNAME.")
 
                 End If
                 
@@ -649,7 +649,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteCuentaRegresiva(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /CUENTAREGRESIVA TIEMPO (En segundos).")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /CUENTAREGRESIVA TIEMPO (En segundos).")
 
                 End If
             
@@ -658,7 +658,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WritePossUser(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /LOG <NICK>.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /LOG <NICK>.")
 
                 End If
                 
@@ -680,7 +680,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call WriteGoToChar(ArgumentosRaw)
                     Else
                         'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan par·metros. Utilice /ira NICKNAME.")
+                        Call ShowConsoleMsg("Faltan par√°metros. Utilice /ira NICKNAME.")
 
                     End If
 
@@ -698,7 +698,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     Else
                         'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan par·metros. Utilice /go NICKNAME o /go MAPA.")
+                        Call ShowConsoleMsg("Faltan par√°metros. Utilice /go NICKNAME o /go MAPA.")
 
                     End If
 
@@ -713,13 +713,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If EsGM Then
                     If notNullArguments Or CantidadArgumentos < 2 Then
                         If Not ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
-                            Call ShowConsoleMsg("N˙mero de llave inv·lida. Utilice /darllave NICKNAME LLAVE(ID DE OBJETO)")
+                            Call ShowConsoleMsg("N√∫mero de llave inv√°lida. Utilice /darllave NICKNAME LLAVE(ID DE OBJETO)")
                         Else
                             Call WriteDarLlaveAUsuario(ArgumentosAll(0), Val(ArgumentosAll(1)))
                         End If
                     Else
                         'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan par·metros. Utilice /darllave NICKNAME LLAVE")
+                        Call ShowConsoleMsg("Faltan par√°metros. Utilice /darllave NICKNAME LLAVE")
                     End If
                 End If
                 
@@ -729,11 +729,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
                             Call WriteSacarLlave(Val(ArgumentosAll(0)))
                         Else
-                            Call ShowConsoleMsg("Par·metro inv·lido. Utilice /sacarllave LLAVE(ID DE OBJETO)")
+                            Call ShowConsoleMsg("Par√°metro inv√°lido. Utilice /sacarllave LLAVE(ID DE OBJETO)")
                         End If
                     Else
                         'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan par·metros. Utilice /sacarllave LLAVE")
+                        Call ShowConsoleMsg("Faltan par√°metros. Utilice /sacarllave LLAVE")
                     End If
                 End If
                 
@@ -780,7 +780,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
 
                 End If
                 
@@ -806,7 +806,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
 
                 End If
                 
@@ -828,7 +828,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /advertencia NICKNAME@MOTIVO.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /advertencia NICKNAME@MOTIVO.")
 
                 End If
                 
@@ -847,7 +847,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /MENSAJEINFORMACION NICKNAME@MENSAJE.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /MENSAJEINFORMACION NICKNAME@MENSAJE.")
 
                 End If
                 
@@ -914,7 +914,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros.")
+                    Call ShowConsoleMsg("Faltan par√°metros.")
 
                 End If
                 
@@ -924,7 +924,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharInfo(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /info NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /info NICKNAME.")
 
                 End If
                 
@@ -934,7 +934,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharStats(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /stat NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /stat NICKNAME.")
 
                 End If
                 
@@ -944,7 +944,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharGold(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /bal NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /bal NICKNAME.")
 
                 End If
                 
@@ -954,7 +954,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharInventory(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /inv NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /inv NICKNAME.")
 
                 End If
                 
@@ -964,7 +964,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharBank(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /bov NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /bov NICKNAME.")
 
                 End If
                 
@@ -974,7 +974,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharSkills(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /skills NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /skills NICKNAME.")
 
                 End If
                 
@@ -984,7 +984,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteReviveChar(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /revivir NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /revivir NICKNAME.")
 
                 End If
                 
@@ -999,7 +999,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteForgive
                 '  Else
                 'Avisar que falta el parametro
-                'Call ShowConsoleMsg("Faltan par·metros. Utilice /perdon NICKNAME.")
+                'Call ShowConsoleMsg("Faltan par√°metros. Utilice /perdon NICKNAME.")
                 '  End If
                 
             Case "/ECHAR"
@@ -1008,7 +1008,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /echar NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /echar NICKNAME.")
 
                 End If
                 
@@ -1018,7 +1018,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteExecute(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /ejecutar NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /ejecutar NICKNAME.")
 
                 End If
                 
@@ -1037,7 +1037,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /ban NICKNAME@MOTIVO.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /ban NICKNAME@MOTIVO.")
 
                 End If
                 
@@ -1056,7 +1056,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /BANCUENTA NICKNAME@MOTIVO.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /BANCUENTA NICKNAME@MOTIVO.")
 
                 End If
                 
@@ -1075,7 +1075,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /SILENCIO NICKNAME@MOTIVO.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /SILENCIO NICKNAME@MOTIVO.")
 
                 End If
                 
@@ -1085,7 +1085,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteUnbanChar(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /unban NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /unban NICKNAME.")
 
                 End If
                 
@@ -1100,7 +1100,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     'Else
                     'Avisar que falta el parametro
-                    'Call ShowConsoleMsg("Faltan par·metros. Utilice /sum NICKNAME.")
+                    'Call ShowConsoleMsg("Faltan par√°metros. Utilice /sum NICKNAME.")
                     ' End If
                 End If
                 
@@ -1164,7 +1164,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteNickToIP(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /nick2ip NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /nick2ip NICKNAME.")
 
                 End If
                 
@@ -1181,7 +1181,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /ip2nick IP.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /ip2nick IP.")
 
                 End If
                 
@@ -1208,7 +1208,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /ct MAPA X Y.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /ct MAPA X Y.")
 
                 End If
                 
@@ -1271,7 +1271,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                             Call WriteForceWAVEToMap(ArgumentosAll(0), 0, 0, 0)
                         Else
                             'No es numerico
-                            Call ShowConsoleMsg("Utilice /forcewavmap WAV MAP X Y, siendo los ˙ltimos 3 opcionales.")
+                            Call ShowConsoleMsg("Utilice /forcewavmap WAV MAP X Y, siendo los √∫ltimos 3 opcionales.")
 
                         End If
 
@@ -1281,19 +1281,19 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                             Call WriteForceWAVEToMap(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3))
                         Else
                             'No es numerico
-                            Call ShowConsoleMsg("Utilice /forcewavmap WAV MAP X Y, siendo los ˙ltimos 3 opcionales.")
+                            Call ShowConsoleMsg("Utilice /forcewavmap WAV MAP X Y, siendo los √∫ltimos 3 opcionales.")
 
                         End If
 
                     Else
                         'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Utilice /forcewavmap WAV MAP X Y, siendo los ˙ltimos 3 opcionales.")
+                        Call ShowConsoleMsg("Utilice /forcewavmap WAV MAP X Y, siendo los √∫ltimos 3 opcionales.")
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Utilice /forcewavmap WAV MAP X Y, siendo los ˙ltimos 3 opcionales.")
+                    Call ShowConsoleMsg("Utilice /forcewavmap WAV MAP X Y, siendo los √∫ltimos 3 opcionales.")
 
                 End If
                 
@@ -1356,7 +1356,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteAcceptRoyalCouncilMember(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /aceptconse NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /aceptconse NICKNAME.")
 
                 End If
                 
@@ -1366,7 +1366,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteAcceptChaosCouncilMember(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /aceptconsecaos NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /aceptconsecaos NICKNAME.")
 
                 End If
                 
@@ -1379,7 +1379,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteMakeDumb(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /estupido NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /estupido NICKNAME.")
 
                 End If
                 
@@ -1389,7 +1389,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteMakeDumbNoMore(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /noestupido NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /noestupido NICKNAME.")
 
                 End If
                 
@@ -1402,7 +1402,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteCouncilKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /kickconse NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /kickconse NICKNAME.")
 
                 End If
                 
@@ -1435,7 +1435,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGuildMemberList(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /miembrosclan GUILDNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /miembrosclan GUILDNAME.")
 
                 End If
                 
@@ -1445,7 +1445,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGuildBan(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /banclan GUILDNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /banclan GUILDNAME.")
 
                 End If
                 
@@ -1462,7 +1462,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /banip IP motivo o /banip nick motivo.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /banip IP motivo o /banip nick motivo.")
 
                 End If
                 
@@ -1479,7 +1479,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /unbanip IP.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /unbanip IP.")
 
                 End If
                 
@@ -1510,7 +1510,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     Else
                         'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan par·metros. Utilice /CI OBJETO [CANTIDAD=1].")
+                        Call ShowConsoleMsg("Faltan par√°metros. Utilice /CI OBJETO [CANTIDAD=1].")
 
                     End If
 
@@ -1525,7 +1525,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteChaosLegionKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /nocaos NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /nocaos NICKNAME.")
 
                 End If
     
@@ -1535,7 +1535,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRoyalArmyKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /noreal NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /noreal NICKNAME.")
 
                 End If
     
@@ -1552,7 +1552,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /forcemidi MIDI.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /forcemidi MIDI.")
 
                 End If
     
@@ -1569,7 +1569,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /forcewav WAV.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /forcewav WAV.")
 
                 End If
                 
@@ -1588,7 +1588,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /borrarpena NICK@PENA@NuevaPena.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /borrarpena NICK@PENA@NuevaPena.")
 
                 End If
                 
@@ -1607,7 +1607,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteLastIP(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /lastip NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /lastip NICKNAME.")
 
                 End If
     
@@ -1637,7 +1637,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /acc NPC.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /acc NPC.")
 
                 End If
                 
@@ -1654,7 +1654,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /racc NPC.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /racc NPC.")
 
                 End If
         
@@ -1671,7 +1671,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /ai ARMADURA OBJETO.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /ai ARMADURA OBJETO.")
 
                 End If
                 
@@ -1688,7 +1688,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /ac ARMADURA OBJETO.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /ac ARMADURA OBJETO.")
 
                 End If
                 
@@ -1707,7 +1707,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteTurnCriminal(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /conden NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /conden NICKNAME.")
 
                 End If
                 
@@ -1717,7 +1717,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteResetFactions(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /rajar NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /rajar NICKNAME.")
 
                 End If
                 
@@ -1727,7 +1727,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRemoveCharFromGuild(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /rajarclan NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /rajarclan NICKNAME.")
 
                 End If
                 
@@ -1737,7 +1737,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharMail(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /lastemail NICKNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /lastemail NICKNAME.")
 
                 End If
                 
@@ -1756,7 +1756,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /apass PJSINPASS@PJCONPASS.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /apass PJSINPASS@PJCONPASS.")
 
                 End If
                 
@@ -1775,7 +1775,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /aemail NICKNAME-NUEVOMAIL.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /aemail NICKNAME-NUEVOMAIL.")
 
                 End If
                 
@@ -1794,7 +1794,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /aname ORIGEN@DESTINO.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /aname ORIGEN@DESTINO.")
 
                 End If
                 
@@ -1820,7 +1820,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /slot NICK@SLOT.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /slot NICK@SLOT.")
 
                 End If
                 
@@ -1839,12 +1839,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                                                       Val(ArgumentosAll(2)))
                     Else
                         'Faltan o sobran los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato inv·lido. Es /CrearPretorianos MAPA X Y.")
+                        Call ShowConsoleMsg("Formato inv√°lido. Es /CrearPretorianos MAPA X Y.")
                     End If
                     
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Formato inv·lido. Es /CrearPretorianos MAPA X Y.")
+                    Call ShowConsoleMsg("Formato inv√°lido. Es /CrearPretorianos MAPA X Y.")
                 End If
                 
             Case "/ELIMINARPRETORIANOS"
@@ -1855,12 +1855,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call WriteDeletePretorianClan(Val(ArgumentosAll(0)))
                     Else
                         'Faltan o sobran los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato inv·lido. Es /EliminarPretorianos MAPA")
+                        Call ShowConsoleMsg("Formato inv√°lido. Es /EliminarPretorianos MAPA")
                     End If
                     
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Formato inv·lido. Es /EliminarPretorianos MAPA")
+                    Call ShowConsoleMsg("Formato inv√°lido. Es /EliminarPretorianos MAPA")
                 End If
             
             Case "/DOBACKUP"
@@ -1872,7 +1872,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteShowGuildMessages(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /showcmsg GUILDNAME.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /showcmsg GUILDNAME.")
 
                 End If
                 
@@ -1975,7 +1975,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteChatColor(0, 255, 0)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan par·metros. Utilice /chatcolor R G B.")
+                    Call ShowConsoleMsg("Faltan par√°metros. Utilice /chatcolor R G B.")
 
                 End If
             
@@ -1991,7 +1991,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserEstado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("°°Est·s muerto!! No puedes comunicarte con el mundo de los vivos.", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("¬°¬°Est√°s muerto!! No puedes comunicarte con el mundo de los vivos.", .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -2000,7 +2000,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     If UserLvl < 5 Then
 
                         With FontTypes(FontTypeNames.FONTTYPE_GLOBAL)
-                            Call ShowConsoleMsg("°°Debes ser nivel 5 o superior para usar el global!!!", .red, .green, .blue, .bold, .italic)
+                            Call ShowConsoleMsg("¬°¬°Debes ser nivel 5 o superior para usar el global!!!", .red, .green, .blue, .bold, .italic)
 
                         End With
 
@@ -2032,7 +2032,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
         If UserEstado = 1 Then 'Muerto
 
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("°°Est·s muerto!!", .red, .green, .blue, .bold, .italic)
+                Call ShowConsoleMsg("¬°¬°Est√°s muerto!!", .red, .green, .blue, .bold, .italic)
 
             End With
 

@@ -279,7 +279,7 @@ Begin VB.Form frmMapaGrande
       AutoSize        =   -1  'True
       BackColor       =   &H0000FFFF&
       BackStyle       =   0  'Transparent
-      Caption         =   "La informacion del mapa esta aquí."
+      Caption         =   "La informacion del mapa esta aquÃ­."
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -715,19 +715,19 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     'lblAllies.left = X * 14 / 32
     
     If x >= llamadadeclan.Left And x <= llamadadeclan.Left + llamadadeclan.Width And y >= llamadadeclan.Top And y <= llamadadeclan.Top + llamadadeclan.Height Then
-        AddtoRichTextBox frmmain.RecTxt, "Ubicación de tu compañero de clan que solicita ayuda: (" & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmmain.RecTxt, "UbicaciÃ³n de tu compaÃ±ero de clan que solicita ayuda: (" & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
 
     End If
 
-    ' Para obtener las coordenadas (x, y) del "slot" divido la posición del cursor
-    ' por el tamaño de los tiles y me quedo solo con la parte entera
+    ' Para obtener las coordenadas (x, y) del "slot" divido la posiciÃ³n del cursor
+    ' por el tamaÃ±o de los tiles y me quedo solo con la parte entera
     PosX = Int(x / TILE_SIZE) ' PosX = Valor entero entre 0 y (MAPAS_ANCHO - 1)
     PosY = Int(y / TILE_SIZE) ' PosY = Valor entero entre 0 y (MAPAS_ALTO - 1)
     
-    ' Uso estas coordeandas para calcular el índice del mapa
+    ' Uso estas coordeandas para calcular el Ã­ndice del mapa
     Mapa = PosX + PosY * MAPAS_ANCHO + 1 ' +1 porque los mapas empiezan en 1
     
-    ' Luego multiplico por TILE_SIZE para tener la posición final en donde poner el indicador
+    ' Luego multiplico por TILE_SIZE para tener la posiciÃ³n final en donde poner el indicador
     PosX = PosX * TILE_SIZE
     PosY = PosY * TILE_SIZE
 

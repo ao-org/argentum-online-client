@@ -142,7 +142,7 @@ Public Type particle_group
     move_y2 As Integer
     rgb_list(0 To 3) As Long
     
-    'Added by Juan Martín Sotuyo Dodero
+    'Added by Juan MartÃ­n Sotuyo Dodero
     speed As Single
     life_counter As Long
     
@@ -186,8 +186,8 @@ Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Int
     'Modified by: Ryan Cain (Onezero)
     'Last Modify Date: 5/14/2003
     'Returns the particle_group_index if successful, else 0
-    'Modified by Juan Martín Sotuyo Dodero
-    'Modified by Augusto José Rando
+    'Modified by Juan MartÃ­n Sotuyo Dodero
+    'Modified by Augusto JosÃ© Rando
     '**************************************************************
     If (map_x <> -1) And (map_y <> -1) Then
         If Map_Particle_Group_Get(map_x, map_y) = 0 Then
@@ -397,7 +397,7 @@ Public Sub Particle_Group_Make(ByVal particle_group_index As Long, ByVal map_x A
     'Modified by: Ryan Cain (Onezero)
     'Last Modify Date: 5/15/2003
     'Makes a new particle effect
-    'Modified by Juan Martín Sotuyo Dodero
+    'Modified by Juan MartÃ­n Sotuyo Dodero
     '*****************************************************************
     'Update array size
     If particle_group_index > particle_group_last Then
@@ -514,7 +514,7 @@ Public Sub Char_Particle_Group_Make(ByVal particle_group_index As Long, ByVal ch
     'Modified by: Ryan Cain (Onezero)
     'Last Modify Date: 5/15/2003
     'Makes a new particle effect
-    'Modified by Juan Martín Sotuyo Dodero
+    'Modified by Juan MartÃ­n Sotuyo Dodero
     '*****************************************************************
     'Update array size
     If particle_group_index > particle_group_last Then
@@ -626,7 +626,7 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
     '*****************************************************************
     'Author: Aaron Perkins
     'Modified by: Ryan Cain (Onezero)
-    'Modified by: Juan Martín Sotuyo Dodero
+    'Modified by: Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 5/15/2003
     'Renders a particle stream at a paticular screen point
     '*****************************************************************
@@ -767,7 +767,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     '**************************************************************
     'Author: Aaron Perkins
     'Modified by: Ryan Cain (Onezero)
-    'Modified by: Juan Martín Sotuyo Dodero
+    'Modified by: Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 5/15/2003
     '**************************************************************
 
@@ -904,7 +904,7 @@ End Sub
 Public Function Particle_Type_Get(ByVal particle_Index As Long) As Long
 
     '*****************************************************************
-    'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
+    'Author: Juan MartÃ­n Sotuyo Dodero (juansotuyo@hotmail.com)
     'Last Modify Date: 8/27/2003
     'Returns the stream type of a particle stream
     '*****************************************************************
@@ -917,7 +917,7 @@ End Function
 
 Public Function Engine_Meteo_Particle_Get() As Long
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2002
     '*****************************************************************
     Engine_Meteo_Particle_Get = meteo_particle
@@ -926,7 +926,7 @@ End Function
 
 Public Function Engine_Meteo_Estado_Get() As Byte
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2002
     '*****************************************************************
     Engine_Meteo_Estado_Get = meteo_estado
@@ -951,7 +951,7 @@ End Function
 
 Public Sub Engine_Meteo_Particle_Set(ByVal meteo_part As Long)
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2002
     '*****************************************************************
     
@@ -970,7 +970,7 @@ End Sub
 
 Public Sub Engine_spell_Particle_Set(ByVal spell_part As Long)
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2002
     '*****************************************************************
     
@@ -987,7 +987,7 @@ End Sub
 
 Public Sub Engine_Select_Particle_Set(ByVal Select_particle As Long)
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Last Modify Date: 6/11/2002
     '*****************************************************************
     
@@ -1117,7 +1117,7 @@ Public Function Char_Particle_Group_Create(ByVal char_index As Integer, ByRef gr
    Optional ByVal spin_speedH As Single, Optional ByVal spin As Boolean, Optional grh_resize As Boolean, _
    Optional grh_resizex As Integer, Optional grh_resizey As Integer)
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '**************************************************************
 
     Dim char_part_free_index As Integer
@@ -1138,7 +1138,7 @@ End Function
 
 Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal stream_type As Long)
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '**************************************************************
 
     Dim char_part_index As Integer
@@ -1163,7 +1163,7 @@ End Function
 Public Function Char_Particle_Group_Remove_All(ByVal char_index As Integer)
 
     '**************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '**************************************************************
     Dim i As Integer
     
@@ -1181,7 +1181,7 @@ End Function
 Private Function Char_Particle_Group_Find(ByVal char_index As Integer, ByVal stream_type As Long) As Integer
 
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     'Modified: returns slot or -1
     '*****************************************************************
     On Error GoTo ErrorHandler:
@@ -1209,7 +1209,7 @@ End Function
 Public Function Char_Particle_Group_Next_Open(ByVal char_index As Integer) As Integer
 
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto JosÃ© Rando
     '*****************************************************************
     On Error GoTo ErrorHandler:
 
