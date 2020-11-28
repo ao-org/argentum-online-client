@@ -10,6 +10,12 @@ Codigo/*.log
 *.vbw
 *.csi
 *.OBJ
+*.ldb
+*.exp
+*.lib
+*.dca
+*.scc
+*.tmp
 bkNpcs.dat
 server.exe
 Guilds/guildsinfo.inf

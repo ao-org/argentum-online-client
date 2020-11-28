@@ -3,6 +3,7 @@
 
 # Declare file types.
 # The - is a negation symbol, so  -text it means"not" text
+*.exe binary
 *.msv binary
 *.frx binary
 *.ico binary
@@ -12,7 +13,6 @@
 *.gif binary
 *.bmp binary
 *.mcl binary
-*.dll binary
 *.ind binary
 *.con binary
 *.bin binary
@@ -20,17 +20,36 @@
 *.mp3 binary
 *.wav binary
 *.ao binary
+*.AO binary
 *.ocx binary
 *.OCX binary
 *.map binary
-*.exe binary
 *.inf binary
 *.csm binary
+*.res binary
+*.RES binary
+*.frx binary
+*.exe binary
+*.dll binary
+*.DLL binary
+*.ico binary
+*.gif binary
+*.ocx binary
+*.tlb binary
+*.ocx.bin binary
+*.ism binary
+*.bin binary
+*.aps binary
+*.ncb binary
+*.exe.compat binary
+*.ocx.compat binary
 
-# Declare encoding of all files for code.
-*.bas working-tree-encoding=windows-1252 diff=windows-1252
-*.cls working-tree-encoding=windows-1252 diff=windows-1252
-*.vbp working-tree-encoding=windows-1252 diff=windows-1252
-*.frm working-tree-encoding=windows-1252 diff=windows-1252
-*.json working-tree-encoding=windows-1252 diff=windows-1252
-*.dat working-tree-encoding=windows-1252 diff=windows-1252
+# Declare encoding and file type
+.manifest text
+.rc text
+*.bas text working-tree-encoding=windows-1252
+*.cls text working-tree-encoding=windows-1252
+*.vbp text working-tree-encoding=windows-1252
+*.frm text working-tree-encoding=windows-1252
+*.json text working-tree-encoding=windows-1252
+*.dat text working-tree-encoding=windows-1252
