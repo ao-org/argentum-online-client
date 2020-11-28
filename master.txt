@@ -45,7 +45,7 @@ ParticleViaje=186
 
 
 [HECHIZO2]
-Nombre=Flecha Mágica
+Nombre=Flecha Máññññññññgicaãããããˈ t ɪ l d ə / or / ˈ t ɪ l d i /), ˜ or ~,
 Desc=Causa 6 a 12 puntos de daño a la victima.
 PalabrasMagicas=VAX PER
 HechizeroMsg=Has lanzado Flecha Mágica sobre 
