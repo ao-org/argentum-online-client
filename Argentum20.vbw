@@ -1,6 +1,6 @@
 frmComerciar = 208, 208, 1315, 858, C, 78, 78, 1264, 414, C
 frmConnect = 130, 130, 1767, 607, C, 104, 104, 1290, 440, C
-frmMain = 156, 156, 1356, 806, C, 130, 130, 1317, 492, C
+frmmain = 52, 52, 1336, 690, Z, 78, 78, 1362, 716, C
 Carteles = 78, 78, 1338, 619, C
 Mod_Declaraciones = 182, 182, 1217, 832, C
 Mod_General = 52, 52, 1329, 388, C
@@ -112,6 +112,6 @@ TileEngine_Map = 26, 26, 1286, 567, C
 engine = 234, 234, 1519, 872, C
 FrmKeyInv = 130, 130, 1390, 671, C, 260, 260, 1545, 898, C
 clsIniManager = 52, 52, 1482, 540, C
-Recursos = 52, 52, 1337, 690, Z
+Recursos = 52, 52, 1337, 690, 
 clsBatch = 52, 52, 1312, 594, C
 TileEngine_RenderScreen = 182, 182, 1442, 723, C
