@@ -625,7 +625,7 @@ End Sub
 
 Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
-    'Call SwitchMapIAO(281)
+    'Call SwitchMap(281)
 
     'lstProfesion.ListIndex = 0
     'LstFamiliar.ListIndex = 0
@@ -746,9 +746,9 @@ Private Sub lstRaza_Click()
 
 End Sub
 
-Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-    If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
+    If X > 331 And X < 347 And Y > 412 And Y < 424 Then 'Boton izquierda cabezas
         If Cabeza.ListCount = 0 Then Exit Sub
         If Cabeza.ListIndex > 0 Then
             Cabeza.ListIndex = Cabeza.ListIndex - 1
@@ -762,7 +762,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
+    If X > 401 And X < 415 And Y > 412 And Y < 424 Then 'Boton Derecha cabezas
         If Cabeza.ListCount = 0 Then Exit Sub
         If (Cabeza.ListIndex + 1) <> Cabeza.ListCount Then
             Cabeza.ListIndex = Cabeza.ListIndex + 1
@@ -776,12 +776,12 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 348 And x < 408 And y > 511 And y < 523 Then 'Boton Equipar
+    If X > 348 And X < 408 And Y > 511 And Y < 523 Then 'Boton Equipar
         CPEquipado = Not CPEquipado
 
     End If
 
-    If x > 290 And x < 326 And y > 453 And y < 486 Then 'Boton Equipar
+    If X > 290 And X < 326 And Y > 453 And Y < 486 Then 'Boton Equipar
         If CPHeading + 1 >= 5 Then
             CPHeading = 1
         Else
@@ -791,7 +791,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 421 And x < 452 And y > 453 And y < 486 Then 'Boton Equipar
+    If X > 421 And X < 452 And Y > 453 And Y < 486 Then 'Boton Equipar
         If CPHeading - 1 <= 0 Then
             CPHeading = 4
         Else
@@ -801,7 +801,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 548 And x < 560 And y > 258 And y < 271 Then 'Boton Derecha cabezas
+    If X > 548 And X < 560 And Y > 258 And Y < 271 Then 'Boton Derecha cabezas
 
         If lstProfesion.ListIndex < lstProfesion.ListCount - 1 Then
             lstProfesion.ListIndex = lstProfesion.ListIndex + 1
@@ -812,7 +812,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 435 And x < 446 And y > 260 And y < 271 Then 'Boton Derecha cabezas
+    If X > 435 And X < 446 And Y > 260 And Y < 271 Then 'Boton Derecha cabezas
 
         If lstProfesion.ListIndex - 1 < 0 Then
             lstProfesion.ListIndex = lstProfesion.ListCount - 1
@@ -823,7 +823,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 548 And x < 560 And y > 304 And y < 323 Then 'Boton Derecha cabezas
+    If X > 548 And X < 560 And Y > 304 And Y < 323 Then 'Boton Derecha cabezas
         If lstRaza.ListIndex < lstRaza.ListCount - 1 Then
             lstRaza.ListIndex = lstRaza.ListIndex + 1
         Else
@@ -833,7 +833,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 435 And x < 446 And y > 304 And y < 323 Then 'Boton Derecha cabezas
+    If X > 435 And X < 446 And Y > 304 And Y < 323 Then 'Boton Derecha cabezas
         If lstRaza.ListIndex - 1 < 0 Then
             lstRaza.ListIndex = lstRaza.ListCount - 1
         Else
@@ -843,7 +843,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 548 And x < 560 And y > 351 And y < 367 Then 'Boton Derecha cabezas
+    If X > 548 And X < 560 And Y > 351 And Y < 367 Then 'Boton Derecha cabezas
         If lstGenero.ListIndex < lstGenero.ListCount - 1 Then
             lstGenero.ListIndex = lstGenero.ListIndex + 1
         Else
@@ -853,7 +853,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 435 And x < 446 And y > 351 And y < 367 Then 'Boton Derecha cabezas
+    If X > 435 And X < 446 And Y > 351 And Y < 367 Then 'Boton Derecha cabezas
         If lstGenero.ListIndex - 1 < 0 Then
             lstGenero.ListIndex = lstGenero.ListCount - 1
         Else
@@ -949,7 +949,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     'End If
     'End If
 
-    If x > 148 And x < 246 And y > 630 And y < 670 Then 'Boton > Volver
+    If X > 148 And X < 246 And Y > 630 And Y < 670 Then 'Boton > Volver
         Call Sound.Sound_Play(SND_CLICK)
 
         UserMap = 307
@@ -957,7 +957,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         EntradaY = 1
         EntradaX = 1
     
-        Call SwitchMapIAO(UserMap)
+        Call SwitchMap(UserMap)
        
         'FrmCuenta.Visible = True
         frmConnect.Visible = True
@@ -967,7 +967,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    If x > 731 And x < 829 And y > 630 And y < 670 Then 'Boton > Crear
+    If X > 731 And X < 829 And Y > 630 And Y < 670 Then 'Boton > Crear
         Call Sound.Sound_Play(SND_CLICK)
 
         Dim k As Object
@@ -1009,7 +1009,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             If frmmain.Socket1.Connected Then
                 EstadoLogin = E_MODO.CrearNuevoPj
                 Call Login
-                frmmain.Second.Enabled = True
+                frmmain.ShowFPS.Enabled = True
                 Exit Sub
             Else
                 EstadoLogin = E_MODO.CrearNuevoPj

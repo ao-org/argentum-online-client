@@ -63,8 +63,6 @@ Private mCantidadBuffers As Integer
 
 Private WavPath          As String
 
-Private Declare Function GetTickCount Lib "kernel32" () As Long
-
 Private Declare Sub CopyMem Lib "kernel32" Alias "RtlCopyMemory" (destination As Any, source As Any, ByVal length As Long)
 
 Private Sub Class_Initialize()
@@ -184,7 +182,7 @@ Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuf
         'Set GetBuffer = mBuffers(IndiceObtenido).buffer(i)
         
         'Ultimo acceso
-        mBuffers(IndiceObtenido).UltimoAcceso = (GetTickCount() And &H7FFFFFFF)
+        mBuffers(IndiceObtenido).UltimoAcceso = (timeGetTime() And &H7FFFFFFF)
             
     Else    'Sonido no cargado
         GoTo CrearNuevoBuffer
@@ -412,7 +410,7 @@ Private Function CrearBuffer(ByVal Archivo As Integer, Optional ByVal Index As I
         .FileName = Archivo
         
         'Ultimo acceso
-        .UltimoAcceso = (GetTickCount() And &H7FFFFFFF)
+        .UltimoAcceso = (timeGetTime() And &H7FFFFFFF)
         
         Call CreateBufferFromFile(Archivo, Index, 1, Extraido)
 
@@ -608,7 +606,7 @@ Public Sub BorraTimerProc()
 
     Dim TiempoActual As Long
     
-    TiempoActual = (GetTickCount() And &H7FFFFFFF)
+    TiempoActual = (timeGetTime() And &H7FFFFFFF)
     
     For loopc = 1 To mCantidadBuffers
 

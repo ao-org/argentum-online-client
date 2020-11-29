@@ -24,7 +24,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .particle_count = 0
         .FxCount = 0
         .CreandoCant = 0
-        .Moving = 0
+        .Moving = False
         .MUERTO = False
         .nombre = vbNullString
         .pie = False
@@ -78,7 +78,7 @@ Public Sub EraseChar(ByVal charindex As Integer)
 
     End If
     
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+    MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).charindex = 0
     
     'Remove char's dialog
     Call Dialogos.RemoveDialog(charindex)
@@ -90,7 +90,7 @@ Public Sub EraseChar(ByVal charindex As Integer)
 
 End Sub
 
-Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal X As Integer, ByVal Y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
 
     On Error Resume Next
 
@@ -120,20 +120,20 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
         .Heading = Heading
         
         'Reset moving stats
-        .Moving = 0
+        .Moving = False
         .MoveOffsetX = 0
         .MoveOffsetY = 0
         
         'Update position
-        .Pos.x = x
-        .Pos.y = y
+        .Pos.X = X
+        .Pos.Y = Y
         
         'Make active
         .active = 1
         
         .AlphaPJ = 255
         
-        If BodyData(Body).HeadOffset.y = -26 Then
+        If BodyData(Body).HeadOffset.Y = -26 Then
             .EsEnano = True
         Else
             .EsEnano = False
@@ -150,11 +150,13 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
             Call General_Char_Particle_Create(ParticulaFx, charindex, -1)
 
         End If
+        
+        .TimeCreated = FrameTime - RandomNumber(1, 10000)
       
     End With
     
     'Plot on map
-    MapData(x, y).charindex = charindex
+    MapData(X, Y).charindex = charindex
 
 End Sub
 
@@ -174,17 +176,17 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
 
     Dim addy As Integer
 
-    Dim x    As Integer
+    Dim X    As Integer
 
-    Dim y    As Integer
+    Dim Y    As Integer
 
     Dim nX   As Integer
 
     Dim nY   As Integer
     
     With charlist(charindex)
-        x = .Pos.x
-        y = .Pos.y
+        X = .Pos.X
+        Y = .Pos.Y
         
         'Figure out which way to move
         Select Case nHeading
@@ -203,29 +205,46 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
 
         End Select
         
-        nX = x + addx
-        nY = y + addy
+        nX = X + addx
+        nY = Y + addy
         
         MapData(nX, nY).charindex = charindex
-        .Pos.x = nX
-        .Pos.y = nY
-        MapData(x, y).charindex = 0
+        .Pos.X = nX
+        .Pos.Y = nY
+        MapData(X, Y).charindex = 0
         
         .MoveOffsetX = -1 * (32 * addx)
         .MoveOffsetY = -1 * (32 * addy)
-        
-        .Moving = 1
         
         'Attached to ladder ;)
         If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Then
             .Heading = E_Heading.NORTH
         Else
             .Heading = nHeading
-
         End If
         
         .scrollDirectionX = addx
         .scrollDirectionY = addy
+        
+        If Not .Moving Then
+            'Start animations
+            If .Body.Walk(.Heading).Started = 0 Then
+                If .pie Then
+                    .Body.Walk(.Heading).Started = FrameTime - (GrhData(.Body.Walk(.Heading).GrhIndex).NumFrames \ 2) * .Body.Walk(.Heading).speed
+                Else
+                    .Body.Walk(.Heading).Started = FrameTime
+                End If
+
+                .Arma.WeaponWalk(.Heading).Started = FrameTime
+                .Escudo.ShieldWalk(.Heading).Started = FrameTime
+
+                .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
+                .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
+            End If
+            
+            .MovArmaEscudo = False
+            .Moving = True
+        End If
 
     End With
     
@@ -243,9 +262,9 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
 
     On Error Resume Next
 
-    Dim x        As Integer
+    Dim X        As Integer
 
-    Dim y        As Integer
+    Dim Y        As Integer
 
     Dim addx     As Integer
 
@@ -254,13 +273,13 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
     Dim nHeading As E_Heading
     
     With charlist(charindex)
-        x = .Pos.x
-        y = .Pos.y
+        X = .Pos.X
+        Y = .Pos.Y
         
-        MapData(x, y).charindex = 0
+        MapData(X, Y).charindex = 0
         
-        addx = nX - x
-        addy = nY - y
+        addx = nX - X
+        addy = nY - Y
         
         If Sgn(addx) = 1 Then
             nHeading = E_Heading.EAST
@@ -284,35 +303,45 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         
         MapData(nX, nY).charindex = charindex
         
-        .Pos.x = nX
-        .Pos.y = nY
+        .Pos.X = nX
+        .Pos.Y = nY
         
         .MoveOffsetX = -1 * (TilePixelWidth * addx)
         .MoveOffsetY = -1 * (TilePixelHeight * addy)
-        
-        .Moving = 1
-        
+
         If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Then
             .Heading = E_Heading.NORTH
         Else
             .Heading = nHeading
-
         End If
         
         .scrollDirectionX = Sgn(addx)
         .scrollDirectionY = Sgn(addy)
+        
+        If Not .Moving Then
+            'Start animations
+            If .Body.Walk(.Heading).Started = 0 Then
+                If .pie Then
+                    .Body.Walk(.Heading).Started = FrameTime - (GrhData(.Body.Walk(.Heading).GrhIndex).NumFrames \ 2) * .Body.Walk(.Heading).speed
+                Else
+                    .Body.Walk(.Heading).Started = FrameTime
+                End If
+
+                .Arma.WeaponWalk(.Heading).Started = FrameTime
+                .Escudo.ShieldWalk(.Heading).Started = FrameTime
+
+                .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
+                .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
+            End If
+            
+            .MovArmaEscudo = False
+            .Moving = True
+        End If
 
     End With
-    
-    If Not EstaPCarea(charindex) Then
-
-        'Call Dialogos.RemoveDialog(CharIndex)
-        'Call Hits.RemoveHit(CharIndex)
-    End If
 
     If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
         Call EraseChar(charindex)
-
     End If
 
 End Sub
@@ -320,14 +349,14 @@ End Sub
 Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
 
     With charlist(charindex).Pos
-        EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
+        EstaPCarea = .X > UserPos.X - MinXBorder And .X < UserPos.X + MinXBorder And .Y > UserPos.Y - MinYBorder And .Y < UserPos.Y + MinYBorder
 
     End With
 
 End Function
 
-Public Function EstaEnArea(ByVal x As Integer, ByVal y As Integer) As Boolean
-    EstaEnArea = x > UserPos.x - MinXBorder And x < UserPos.x + MinXBorder And y > UserPos.y - MinYBorder And y < UserPos.y + MinYBorder
+Public Function EstaEnArea(ByVal X As Integer, ByVal Y As Integer) As Boolean
+    EstaEnArea = X > UserPos.X - MinXBorder And X < UserPos.X + MinXBorder And Y > UserPos.Y - MinYBorder And Y < UserPos.Y + MinYBorder
 
 End Function
 
@@ -396,24 +425,24 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
         charlist(char_index).dialog_life = char_dialog_life
         charlist(char_index).dialog_font_index = font_index
         charlist(char_index).dialog_scroll = True
-        charlist(char_index).dialog_offset_counter_y = -(IIf(BodyData(charlist(char_index).iBody).HeadOffset.y = 0, -32, BodyData(charlist(char_index).iBody).HeadOffset.y) / 2)
+        charlist(char_index).dialog_offset_counter_y = -(IIf(BodyData(charlist(char_index).iBody).HeadOffset.Y = 0, -32, BodyData(charlist(char_index).iBody).HeadOffset.Y) / 2)
         charlist(char_index).AlphaText = 255
 
     End If
 
-    Dim Slot As Integer
+    Dim slot As Integer
 
     Dim i    As Long
     
-    Slot = BinarySearch(char_index)
+    slot = BinarySearch(char_index)
     
-    If Slot < 0 Then
+    If slot < 0 Then
         If dialogCount = MAX_DIALOGS Then Exit Sub  'Out of space! Should never happen....
         
         'We need to add it. Get insertion index and move list backwards.
-        Slot = Not Slot
+        slot = Not slot
         
-        For i = dialogCount To Slot + 1 Step -1
+        For i = dialogCount To slot + 1 Step -1
             dialogs(i) = dialogs(i - 1)
         Next i
         
@@ -423,8 +452,8 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
     
     If char_dialog_life = 250 Then
 
-        With dialogs(Slot)
-            .startTime = (GetTickCount() And &H7FFFFFFF)
+        With dialogs(slot)
+            .startTime = FrameTime
             .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(char_dialog))
             .charindex = char_index
 
@@ -432,8 +461,8 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
 
     Else
 
-        With dialogs(Slot)
-            .startTime = (GetTickCount() And &H7FFFFFFF)
+        With dialogs(slot)
+            .startTime = FrameTime
             .lifeTime = (MS_PER_CHAR * Len(char_dialog))
             .charindex = char_index
 
@@ -454,15 +483,15 @@ Public Sub Char_Dialog_Remove(ByVal char_index As Integer, ByVal Index As Intege
 
     End If
 
-    Dim Slot As Integer
+    Dim slot As Integer
 
     Dim i    As Long
     
-    Slot = BinarySearch(char_index)
+    slot = BinarySearch(char_index)
     
-    If Slot < 0 Then Exit Sub
+    If slot < 0 Then Exit Sub
     
-    For i = Slot To MAX_DIALOGS - 2
+    For i = slot To MAX_DIALOGS - 2
         dialogs(i) = dialogs(i + 1)
     Next i
     
@@ -494,9 +523,7 @@ Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal
         
         .FxList(indice).FxIndex = fX
         
-        Call InitGrh(.FxList(indice), FxData(fX).Animacion)
-        
-        .FxList(indice).Loops = Loops
+        Call InitGrh(.FxList(indice), FxData(fX).Animacion, , Loops)
             
     End With
 
@@ -511,7 +538,7 @@ Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
     '*****************************************************************
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
-        Get_PixelY_Of_Char = (charlist(char_index).Pos.y - 2 - UserPos.y) * 32 + frmmain.renderer.ScaleWidth / 2
+        Get_PixelY_Of_Char = (charlist(char_index).Pos.Y - 2 - UserPos.Y) * 32 + frmmain.renderer.ScaleWidth / 2
         Get_PixelY_Of_Char = Get_PixelY_Of_Char - 16
 
     End If
@@ -525,29 +552,29 @@ Public Function Get_Pixelx_Of_Char(ByVal char_index As Integer) As Integer
     '*****************************************************************
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
-        Get_Pixelx_Of_Char = (charlist(char_index).Pos.x - UserPos.x) * 32 + frmmain.renderer.ScaleWidth / 2
+        Get_Pixelx_Of_Char = (charlist(char_index).Pos.X - UserPos.X) * 32 + frmmain.renderer.ScaleWidth / 2
         Get_Pixelx_Of_Char = Get_Pixelx_Of_Char
 
     End If
 
 End Function
 
-Public Function Get_Pixelx_Of_XY(ByVal x As Byte) As Integer
+Public Function Get_Pixelx_Of_XY(ByVal X As Byte) As Integer
     '*****************************************************************
     'Author: Pablo Mercavides
     '*****************************************************************
     'Make sure it's a legal char_index
-    Get_Pixelx_Of_XY = (x - UserPos.x) * 32 + frmmain.renderer.ScaleWidth / 2
+    Get_Pixelx_Of_XY = (X - UserPos.X) * 32 + frmmain.renderer.ScaleWidth / 2
     Get_Pixelx_Of_XY = Get_Pixelx_Of_XY
 
 End Function
 
-Public Function Get_PixelY_Of_XY(ByVal y As Byte) As Integer
+Public Function Get_PixelY_Of_XY(ByVal Y As Byte) As Integer
     '*****************************************************************
     'Author: Pablo Mercavides
     '*****************************************************************
     'Make sure it's a legal char_index
-    Get_PixelY_Of_XY = (y - 2 - UserPos.y) * 32 + frmmain.renderer.ScaleWidth / 2
+    Get_PixelY_Of_XY = (Y - 2 - UserPos.Y) * 32 + frmmain.renderer.ScaleWidth / 2
     Get_PixelY_Of_XY = Get_PixelY_Of_XY - 16
 
 End Function

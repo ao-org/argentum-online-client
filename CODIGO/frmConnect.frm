@@ -185,14 +185,14 @@ Private Sub relampago_Timer()
 
         End Select
 
-        Dim r, g, b As Byte
+        Dim R, G, B As Byte
 
-        b = (Color And 16711680) / 65536
-        g = (Color And 65280) / 256
-        r = Color And 255
-        Color = D3DColorARGB(255, r, g, b)
+        B = (Color And 16711680) / 65536
+        G = (Color And 65280) / 256
+        R = Color And 255
+        Color = D3DColorARGB(255, R, G, B)
         
-        Map_Base_Light_Set (Color)
+        SetGlobalLight (Color)
         RelampagoFin.Interval = duraciontrueno
         RelampagoFin.Enabled = True
 
@@ -201,7 +201,7 @@ Private Sub relampago_Timer()
 End Sub
 
 Private Sub RelampagoFin_Timer()
-    Call Map_Base_Light_Set(Map_light_base)
+    Call SetGlobalLight(MapDat.base_light)
     RelampagoFin.Enabled = False
 
 End Sub
@@ -232,15 +232,15 @@ Private Sub render_DblClick()
 
 End Sub
 
-Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     Select Case QueRender
 
         Case 3
         
-        Debug.Print "x: " & x & " y:" & y
+        Debug.Print "x: " & X & " y:" & Y
 
-            If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
+            If X > 331 And X < 347 And Y > 412 And Y < 424 Then 'Boton izquierda cabezas
                 If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
                 If frmCrearPersonaje.Cabeza.ListIndex > 0 Then
                     frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex - 1
@@ -254,7 +254,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
     
-            If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
+            If X > 401 And X < 415 And Y > 412 And Y < 424 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
                 If (frmCrearPersonaje.Cabeza.ListIndex + 1) <> frmCrearPersonaje.Cabeza.ListCount Then
                     frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex + 1
@@ -270,7 +270,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         
                 
                 
-            If x > 540 And x < 554 And y > 278 And y < 291 Then 'Boton izquierda clase
+            If X > 540 And X < 554 And Y > 278 And Y < 291 Then 'Boton izquierda clase
                 If frmCrearPersonaje.lstProfesion.ListIndex < frmCrearPersonaje.lstProfesion.ListCount - 1 Then
                     frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex + 1
                 Else
@@ -280,7 +280,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha cabezas
+            If X > 658 And X < 671 And Y > 278 And Y < 291 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.lstProfesion.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListCount - 1
                 Else
@@ -290,7 +290,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
                 
-            If x > 539 And x < 553 And y > 322 And y < 335 Then 'OK
+            If X > 539 And X < 553 And Y > 322 And Y < 335 Then 'OK
                 If frmCrearPersonaje.lstRaza.ListIndex < frmCrearPersonaje.lstRaza.ListCount - 1 Then
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListIndex + 1
                 Else
@@ -300,7 +300,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x > 657 And x < 672 And y > 321 And y < 338 Then 'OK
+            If X > 657 And X < 672 And Y > 321 And Y < 338 Then 'OK
                 If frmCrearPersonaje.lstRaza.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListCount - 1
                 Else
@@ -310,7 +310,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x > 298 And x < 314 And y > 276 And y < 291 Then 'ok
+            If X > 298 And X < 314 And Y > 276 And Y < 291 Then 'ok
     
                 If frmCrearPersonaje.lstGenero.ListIndex < frmCrearPersonaje.lstGenero.ListCount - 1 Then
                     frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListIndex + 1
@@ -321,7 +321,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x > 415 And x < 431 And y > 277 And y < 295 Then 'ok
+            If X > 415 And X < 431 And Y > 277 And Y < 295 Then 'ok
                 If frmCrearPersonaje.lstGenero.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListCount - 1
                 Else
@@ -335,7 +335,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         
         'ciudad
         
-            If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
+            If X > 297 And X < 314 And Y > 321 And Y < 340 Then 'ok
     
                 If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
                     frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
@@ -346,7 +346,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
+            If X > 416 And X < 433 And Y > 323 And Y < 338 Then 'ok
                 If frmCrearPersonaje.lstHogar.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
                 Else
@@ -356,14 +356,14 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
         'ciudad
-            If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
+            If X >= 289 And X < 289 + 160 And Y >= 525 And Y < 525 + 37 Then 'Boton > Volver
                 Call Sound.Sound_Play(SND_CLICK)
                 'UserMap = 323
                 AlphaNiebla = 25
                 EntradaY = 1
                 EntradaX = 1
                 
-                'Call SwitchMapIAO(UserMap)
+                'Call SwitchMap(UserMap)
                 frmConnect.txtNombre.Visible = False
                 QueRender = 2
                 
@@ -372,7 +372,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
+            If X >= 532 And X < 532 + 160 And Y >= 525 And Y < 525 + 37 Then 'Boton > Crear
                 Call Sound.Sound_Play(SND_CLICK)
 
                 Dim k As Object
@@ -400,7 +400,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     If frmmain.Socket1.Connected Then
                         EstadoLogin = E_MODO.CrearNuevoPj
                         Call Login
-                        frmmain.Second.Enabled = True
+                        frmmain.ShowFPS.Enabled = True
                         Exit Sub
                     Else
                         EstadoLogin = E_MODO.CrearNuevoPj
@@ -414,7 +414,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x >= 658 And x < 682 + 18 And y >= 365 And y < 385 Then
+            If X >= 658 And X < 682 + 18 And Y >= 365 And Y < 385 Then
                 Call Sound.Sound_Play(SND_DICE) ' Este sonido hay que ponerlo en el evento "click" o hacer q suene menos xq rompe oidos sino
                 
                 If frmmain.Socket1.Connected Then
@@ -435,27 +435,27 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Case 2
             OpcionSeleccionada = 0
 
-            If (x > 256 And x < 414) And (y > 710 And y < 747) Then 'Boton crear pj
+            If (X > 256 And X < 414) And (Y > 710 And Y < 747) Then 'Boton crear pj
                 OpcionSeleccionada = 1
 
             End If
             
-            If (x > 14 And x < 112) And (y > 675 And y < 708) Then ' Boton Borrar pj
+            If (X > 14 And X < 112) And (Y > 675 And Y < 708) Then ' Boton Borrar pj
                 OpcionSeleccionada = 2
 
             End If
             
-            If (x > 19 And x < 48) And (y > 21 And y < 45) Then ' Boton deslogear
+            If (X > 19 And X < 48) And (Y > 21 And Y < 45) Then ' Boton deslogear
                 OpcionSeleccionada = 3
 
             End If
             
-            If (x > 604 And x < 759) And (y > 711 And y < 745) Then ' Boton logear
+            If (X > 604 And X < 759) And (Y > 711 And Y < 745) Then ' Boton logear
                 OpcionSeleccionada = 4
 
             End If
             
-            If (x > 971 And x < 1001) And (y > 21 And y < 45) Then ' Boton Cerrar
+            If (X > 971 And X < 1001) And (Y > 21 And Y < 45) Then ' Boton Cerrar
                 OpcionSeleccionada = 5
 
             End If
@@ -470,11 +470,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 'Ladder: Cambie valores de posicion porque se ajusto interface (Los valores de los comentarios son los reales)
                 
                 ' Division entera
-                DivX = Int((x - 207) / 131) ' 217 = primer pj x, 131 = offset x entre cada pj
-                DivY = Int((y - 246) / 158) ' 233 = primer pj y, 158 = offset y entre cada pj
+                DivX = Int((X - 207) / 131) ' 217 = primer pj x, 131 = offset x entre cada pj
+                DivY = Int((Y - 246) / 158) ' 233 = primer pj y, 158 = offset y entre cada pj
                 ' Resto
-                ModX = (x - 207) Mod 131 ' 217 = primer pj x, 131 = offset x entre cada pj
-                ModY = (y - 246) Mod 158 ' 233 = primer pj y, 158 = offset y entre cada pj
+                ModX = (X - 207) Mod 131 ' 217 = primer pj x, 131 = offset x entre cada pj
+                ModY = (Y - 246) Mod 158 ' 233 = primer pj y, 158 = offset y entre cada pj
                 
                 ' La division no puede ser negativa (cliqueo muy a la izquierda)
                 ' ni ser mayor o igual a 5 (max. pjs por linea)
@@ -629,7 +629,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             #If DEBUGGING = 1 Then
 
                 ' Crear cuenta a manopla
-                If x >= 40 And x < 195 And y >= 330 And y < 365 Then
+                If X >= 40 And X < 195 And Y >= 330 And Y < 365 Then
                     FrmLogear.Visible = False
     
                     If frmmain.Socket1.Connected Then
@@ -647,7 +647,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             #End If
 
-            If (x > 479 And x < 501) And (y > 341 And y < 470) Then
+            If (X > 479 And X < 501) And (Y > 341 And Y < 470) Then
  
                 ClickEnAsistente = ClickEnAsistente + 1
 
@@ -728,7 +728,7 @@ Private Sub LogearPersonaje(ByVal Nick As String)
 
     If frmmain.Socket1.Connected Then
         UserName = Nick
-        frmmain.Second.Enabled = True
+        frmmain.ShowFPS.Enabled = True
         EstadoLogin = Normal
         Call Login
         Exit Sub

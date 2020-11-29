@@ -22,11 +22,8 @@ Private Type Light
     id As Long
     map_x As Integer 'Coordinates
     map_y As Integer
-    Color As Long 'Start Color
+    Color As RGBA 'Start Color
     range As Byte
-    red As Byte
-    green As Byte
-    blue As Byte
 
 End Type
 
@@ -54,7 +51,7 @@ Public Function Light_Remove(ByVal light_index As Long) As Boolean
 
 End Function
 
-Public Function Light_Color_Value_Get(ByVal light_index As Long, ByRef color_value As Long) As Boolean
+Friend Function Light_Color_Value_Get(ByVal light_index As Long, ByRef color_value As RGBA) As Boolean
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -63,14 +60,14 @@ Public Function Light_Color_Value_Get(ByVal light_index As Long, ByRef color_val
     '*****************************************************************
     'Make sure it's a legal index
     If Light_Check(light_index) Then
-        color_value = light_list(light_index).color
+        color_value = light_list(light_index).Color
         Light_Color_Value_Get = True
 
     End If
 
 End Function
 
-Public Function Light_Create(ByVal map_x As Integer, ByVal map_y As Integer, Optional ByVal color_value As Long = &HFFFFFFFF, Optional ByVal range As Byte = 1, Optional ByVal id As Long) As Long
+Friend Function Light_Create(ByVal map_x As Integer, ByVal map_y As Integer, ByRef color_value As RGBA, Optional ByVal range As Byte = 1, Optional ByVal id As Long) As Long
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -196,7 +193,7 @@ Public Function Light_Move_By_Head(ByVal light_index As Long, ByVal Heading As B
             Case E_Heading.EAST
                 addx = 1
         
-            Case E_Heading.SOUTH
+            Case E_Heading.south
                 addy = 1
             
             Case E_Heading.WEST
@@ -224,7 +221,7 @@ Public Function Light_Move_By_Head(ByVal light_index As Long, ByVal Heading As B
 
 End Function
 
-Private Sub Light_Make(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer, ByVal rgb_value As Long, ByVal range As Long, Optional ByVal id As Long)
+Private Sub Light_Make(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer, rgb_value As RGBA, ByVal range As Long, Optional ByVal id As Long)
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -242,25 +239,11 @@ Private Sub Light_Make(ByVal light_index As Long, ByVal map_x As Integer, ByVal 
     
     'Make active
     light_list(light_index).active = True
-    
-    If rgb_value = 0 Then
-        rgb_value = map_base_light
 
-    End If
-
-    Dim r, g, b As Byte
-
-    r = rgb_value And 255
-    g = (rgb_value \ 256) And 255
-    b = (rgb_value \ 65536) And 255
     light_list(light_index).map_x = map_x
     light_list(light_index).map_y = map_y
-    
-    Dim rgb_list As Long
 
-    rgb_list = D3DColorARGB(255, b, g, r)
-
-    light_list(light_index).color = rgb_list
+    light_list(light_index).Color = rgb_value
     light_list(light_index).range = range
     light_list(light_index).id = id
 
@@ -315,15 +298,15 @@ Private Sub Light_Render(ByVal light_index As Long)
 
     Dim max_y As Integer
 
-    Dim x     As Integer
+    Dim X     As Integer
 
-    Dim y     As Integer
+    Dim Y     As Integer
 
     Dim ia    As Single
 
     Dim i     As Integer
 
-    Dim color As Long
+    Dim Color As RGBA
     
     'Set up light borders
     min_x = light_list(light_index).map_x - light_list(light_index).range
@@ -332,12 +315,13 @@ Private Sub Light_Render(ByVal light_index As Long)
     max_y = light_list(light_index).map_y + light_list(light_index).range
     
     'Set color
-    color = light_list(light_index).color
+    Color = light_list(light_index).Color
+    Color.A = 255
     
-    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(0) = color
-    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(1) = color
-    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(2) = color
-    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(3) = color
+    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(0) = Color
+    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(1) = Color
+    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(2) = Color
+    MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(3) = Color
                 
     'For ia = 0 To 6.5 Step 0.05
     '    For i = 1 To light_list(light_index).range / 2
@@ -370,87 +354,87 @@ Private Sub Light_Render(ByVal light_index As Long)
     'Arrange corners
     'NE
     If InMapBounds(min_x, min_y) Then
-        MapData(min_x, min_y).light_value(2) = color
+        MapData(min_x, min_y).light_value(2) = Color
 
     End If
 
     'NW
     If InMapBounds(max_x, min_y) Then
-        MapData(max_x, min_y).light_value(0) = color
+        MapData(max_x, min_y).light_value(0) = Color
 
     End If
 
     'SW
     If InMapBounds(max_x, max_y) Then
-        MapData(max_x, max_y).light_value(1) = color
+        MapData(max_x, max_y).light_value(1) = Color
 
     End If
 
     'SE
     If InMapBounds(min_x, max_y) Then
-        MapData(min_x, max_y).light_value(3) = color
+        MapData(min_x, max_y).light_value(3) = Color
 
     End If
     
     'Arrange borders
     'Upper border
-    For x = min_x + 1 To max_x - 1
+    For X = min_x + 1 To max_x - 1
 
-        If InMapBounds(x, min_y) Then
-            MapData(x, min_y).light_value(0) = color
-            MapData(x, min_y).light_value(2) = color
+        If InMapBounds(X, min_y) Then
+            MapData(X, min_y).light_value(0) = Color
+            MapData(X, min_y).light_value(2) = Color
 
         End If
 
-    Next x
+    Next X
     
     'Lower border
-    For x = min_x + 1 To max_x - 1
+    For X = min_x + 1 To max_x - 1
 
-        If InMapBounds(x, max_y) Then
-            MapData(x, max_y).light_value(1) = color
-            MapData(x, max_y).light_value(3) = color
+        If InMapBounds(X, max_y) Then
+            MapData(X, max_y).light_value(1) = Color
+            MapData(X, max_y).light_value(3) = Color
 
         End If
 
-    Next x
+    Next X
     
     'Left border
-    For y = min_y + 1 To max_y - 1
+    For Y = min_y + 1 To max_y - 1
 
-        If InMapBounds(min_x, y) Then
-            MapData(min_x, y).light_value(2) = color
-            MapData(min_x, y).light_value(3) = color
+        If InMapBounds(min_x, Y) Then
+            MapData(min_x, Y).light_value(2) = Color
+            MapData(min_x, Y).light_value(3) = Color
 
         End If
 
-    Next y
+    Next Y
     
     'Right border
-    For y = min_y + 1 To max_y - 1
+    For Y = min_y + 1 To max_y - 1
 
-        If InMapBounds(max_x, y) Then
-            MapData(max_x, y).light_value(0) = color
-            MapData(max_x, y).light_value(1) = color
+        If InMapBounds(max_x, Y) Then
+            MapData(max_x, Y).light_value(0) = Color
+            MapData(max_x, Y).light_value(1) = Color
 
         End If
 
-    Next y
+    Next Y
     
     'Set the inner part of the light
-    For x = min_x + 1 To max_x - 1
-        For y = min_y + 1 To max_y - 1
+    For X = min_x + 1 To max_x - 1
+        For Y = min_y + 1 To max_y - 1
 
-            If InMapBounds(x, y) Then
-                MapData(x, y).light_value(0) = color
-                MapData(x, y).light_value(1) = color
-                MapData(x, y).light_value(2) = color
-                MapData(x, y).light_value(3) = color
+            If InMapBounds(X, Y) Then
+                MapData(X, Y).light_value(0) = Color
+                MapData(X, Y).light_value(1) = Color
+                MapData(X, Y).light_value(2) = Color
+                MapData(X, Y).light_value(3) = Color
 
             End If
 
-        Next y
-    Next x
+        Next Y
+    Next X
 
 End Sub
 
@@ -594,9 +578,9 @@ Private Sub Light_Erase(ByVal light_index As Long)
 
     Dim max_y As Integer
 
-    Dim x     As Integer
+    Dim X     As Integer
 
-    Dim y     As Integer
+    Dim Y     As Integer
     
     'Set up light borders
     min_x = light_list(light_index).map_x - light_list(light_index).range
@@ -607,87 +591,77 @@ Private Sub Light_Erase(ByVal light_index As Long)
     'Arrange corners
     'NE
     If InMapBounds(min_x, min_y) Then
-        MapData(min_x, min_y).light_value(2) = 0
-
+        MapData(min_x, min_y).light_value(2) = COLOR_EMPTY
     End If
 
     'NW
     If InMapBounds(max_x, min_y) Then
-        MapData(max_x, min_y).light_value(0) = 0
-
+        MapData(max_x, min_y).light_value(0) = COLOR_EMPTY
     End If
 
     'SW
     If InMapBounds(max_x, max_y) Then
-        MapData(max_x, max_y).light_value(1) = 0
-
+        MapData(max_x, max_y).light_value(1) = COLOR_EMPTY
     End If
 
     'SE
     If InMapBounds(min_x, max_y) Then
-        MapData(min_x, max_y).light_value(3) = 0
-
+        MapData(min_x, max_y).light_value(3) = COLOR_EMPTY
     End If
-    
+
     'Arrange borders
     'Upper border
-    For x = min_x + 1 To max_x - 1
+    For X = min_x + 1 To max_x - 1
 
-        If InMapBounds(x, min_y) Then
-            MapData(x, min_y).light_value(0) = 0
-            MapData(x, min_y).light_value(2) = 0
-
+        If InMapBounds(X, min_y) Then
+            MapData(X, min_y).light_value(2) = COLOR_EMPTY
         End If
 
-    Next x
+    Next X
     
     'Lower border
-    For x = min_x + 1 To max_x - 1
+    For X = min_x + 1 To max_x - 1
 
-        If InMapBounds(x, max_y) Then
-            MapData(x, max_y).light_value(1) = 0
-            MapData(x, max_y).light_value(3) = 0
-
+        If InMapBounds(X, max_y) Then
+            MapData(X, max_y).light_value(1) = COLOR_EMPTY
+            MapData(X, max_y).light_value(3) = COLOR_EMPTY
         End If
 
-    Next x
+    Next X
     
     'Left border
-    For y = min_y + 1 To max_y - 1
+    For Y = min_y + 1 To max_y - 1
 
-        If InMapBounds(min_x, y) Then
-            MapData(min_x, y).light_value(2) = 0
-            MapData(min_x, y).light_value(3) = 0
-
+        If InMapBounds(min_x, Y) Then
+            MapData(min_x, Y).light_value(2) = COLOR_EMPTY
+            MapData(min_x, Y).light_value(3) = COLOR_EMPTY
         End If
 
-    Next y
+    Next Y
     
     'Right border
-    For y = min_y + 1 To max_y - 1
+    For Y = min_y + 1 To max_y - 1
 
-        If InMapBounds(max_x, y) Then
-            MapData(max_x, y).light_value(0) = 0
-            MapData(max_x, y).light_value(1) = 0
-
+        If InMapBounds(max_x, Y) Then
+            MapData(max_x, Y).light_value(0) = COLOR_EMPTY
+            MapData(max_x, Y).light_value(1) = COLOR_EMPTY
         End If
 
-    Next y
+    Next Y
     
     'Set the inner part of the light
-    For x = min_x + 1 To max_x - 1
-        For y = min_y + 1 To max_y - 1
+    For X = min_x + 1 To max_x - 1
+        For Y = min_y + 1 To max_y - 1
 
-            If InMapBounds(x, y) Then
-                MapData(x, y).light_value(0) = 0
-                MapData(x, y).light_value(1) = 0
-                MapData(x, y).light_value(2) = 0
-                MapData(x, y).light_value(3) = 0
-
+            If InMapBounds(X, Y) Then
+                MapData(X, Y).light_value(0) = COLOR_EMPTY
+                MapData(X, Y).light_value(1) = COLOR_EMPTY
+                MapData(X, Y).light_value(2) = COLOR_EMPTY
+                MapData(X, Y).light_value(3) = COLOR_EMPTY
             End If
 
-        Next y
-    Next x
+        Next Y
+    Next X
 
 End Sub
 

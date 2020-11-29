@@ -1,0 +1,150 @@
+Attribute VB_Name = "Graficos_Color"
+' ****************************************************
+' Módulo de colores hecho por Alexis Caraballo (WyroX)
+' Para una fácil conversión entre RGBA(4 bytes) y Long
+' Nota: No uso D3DCOLORVALUE porque usa 4 singles
+' ****************************************************
+
+Option Explicit
+
+Type RGBA
+    B As Byte
+    G As Byte
+    R As Byte
+    A As Byte
+End Type
+
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
+
+Sub Long_2_RGBA(Dest As RGBA, ByVal Src As Long)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Call CopyMemory(Dest, Src, 4)
+End Sub
+
+Function RGBA_2_Long(Color As RGBA) As Long
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Call CopyMemory(RGBA_2_Long, Color, 4)
+End Function
+
+Function RGBA_From_Long(ByVal Color As Long) As RGBA
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Call CopyMemory(RGBA_From_Long, Color, 4)
+End Function
+
+Function RGBA_From_Comp(ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255) As RGBA
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    RGBA_From_Comp.R = R
+    RGBA_From_Comp.G = G
+    RGBA_From_Comp.B = B
+    RGBA_From_Comp.A = A
+End Function
+
+Sub SetRGBA(Color As RGBA, ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Color.R = R
+    Color.G = G
+    Color.B = B
+    Color.A = A
+End Sub
+
+Sub Long_2_RGBAList(Dest() As RGBA, ByVal Src As Long)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Dim i As Long
+    
+    For i = 0 To 3
+        Call Long_2_RGBA(Dest(i), Src)
+    Next
+End Sub
+
+Sub RGBAList(Dest() As RGBA, ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Dim i As Long
+    
+    For i = 0 To 3
+        Call SetRGBA(Dest(i), R, G, B, A)
+    Next
+End Sub
+
+Sub Copy_RGBAList(Dest() As RGBA, Src() As RGBA)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Dim i As Long
+    
+    For i = 0 To 3
+        Dest(i) = Src(i)
+    Next
+End Sub
+
+Sub LerpRGBA(Dest As RGBA, A As RGBA, B As RGBA, ByVal Factor As Single)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Dim InvFactor As Single: InvFactor = (1 - Factor)
+
+    Dest.R = A.R * InvFactor + B.R * Factor
+    Dest.G = A.G * InvFactor + B.G * Factor
+    Dest.B = A.B * InvFactor + B.B * Factor
+    Dest.A = A.A * InvFactor + B.A * Factor
+End Sub
+
+Sub ModulateRGBA(Dest As RGBA, A As RGBA, B As RGBA)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Dest.R = CLng(A.R) * B.R \ 255
+    Dest.G = CLng(A.G) * B.G \ 255
+    Dest.B = CLng(A.B) * B.B \ 255
+    Dest.A = CLng(A.A) * B.A \ 255
+End Sub
+
+Sub AddRGBA(Dest As RGBA, A As RGBA, B As RGBA)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Dest.R = min(CLng(A.R) + CLng(B.R), 255)
+    Dest.G = min(CLng(A.G) + CLng(B.G), 255)
+    Dest.B = min(CLng(A.B) + CLng(B.B), 255)
+    Dest.A = min(CLng(A.A) + CLng(B.A), 255)
+End Sub
+
+Function vbColor_2_Long(Color As Long) As Long
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Dim TmpColor As RGBA
+    Call Long_2_RGBA(TmpColor, Color)
+
+    TmpColor.A = TmpColor.R
+    TmpColor.R = TmpColor.B
+    TmpColor.B = TmpColor.A
+    TmpColor.A = 255
+    
+    vbColor_2_Long = RGBA_2_Long(TmpColor)
+End Function
+
+Sub Copy_RGBAList_WithAlpha(Dest() As RGBA, Src() As RGBA, ByVal Alpha As Byte)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    Dim i As Long
+    
+    For i = 0 To 3
+        Dest(i) = Src(i)
+        Dest(i).A = Alpha
+    Next
+End Sub

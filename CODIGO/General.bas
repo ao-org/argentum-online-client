@@ -7,8 +7,8 @@ Option Explicit
 
 Private Type Position
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -23,8 +23,8 @@ End Type
 Private Type tWorldPos
 
     map As Integer
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -33,9 +33,9 @@ Private Type grh
     GrhIndex As Long
     framecounter As Single
     speed As Single
-    Started As Byte
+    Started As Long
     alpha_blend As Boolean
-    angle As Single
+    Angle As Single
 
 End Type
 
@@ -189,17 +189,17 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     Dim i As Byte
  
     For i = 2 To MaxLineas
-        Con(i - 1).t = Con(i).t
+        Con(i - 1).T = Con(i).T
         'Con(i - 1).Color = Con(i).Color
-        Con(i - 1).b = Con(i).b
-        Con(i - 1).g = Con(i).g
-        Con(i - 1).r = Con(i).r
+        Con(i - 1).B = Con(i).B
+        Con(i - 1).G = Con(i).G
+        Con(i - 1).R = Con(i).R
     Next i
  
-    Con(MaxLineas).t = Text
-    Con(MaxLineas).b = blue
-    Con(MaxLineas).g = green
-    Con(MaxLineas).r = red
+    Con(MaxLineas).T = Text
+    Con(MaxLineas).B = blue
+    Con(MaxLineas).G = green
+    Con(MaxLineas).R = red
     OffSetConsola = 16
  
     UltimaLineavisible = False
@@ -219,7 +219,7 @@ Public Sub RefreshAllChars()
     For loopc = 1 To LastChar
     
         If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
+            MapData(charlist(loopc).Pos.X, charlist(loopc).Pos.Y).charindex = loopc
 
         End If
 
@@ -389,6 +389,10 @@ Sub SetConnected()
     Else
         frmmain.Timerping.Enabled = False
     End If
+    
+    frmmain.UpdateLight.Enabled = True
+    frmmain.UpdateDaytime.Enabled = True
+    light_transition = 1#
 
     COLOR_AZUL = RGB(0, 0, 0)
     
@@ -402,10 +406,8 @@ Sub SetConnected()
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(frmmain)
-   
-    frmmain.Image2(1).Tag = "0"
+
     OpcionMenu = 0
-    frmmain.Image2(1).Picture = Nothing
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
@@ -449,16 +451,16 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.X, UserPos.Y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.X + 1, UserPos.Y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.X, UserPos.Y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.X - 1, UserPos.Y, Direccion)
 
     End Select
     
@@ -497,25 +499,25 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End If
     
-    frmmain.personaje(0).Left = UserPos.x - 5
-    frmmain.personaje(0).Top = UserPos.y - 4
+    frmmain.personaje(0).Left = UserPos.X - 5
+    frmmain.personaje(0).Top = UserPos.Y - 4
     
-    frmmain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    frmmain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
 
     If frmMapaGrande.Visible Then
 
-        Dim x As Long
+        Dim X As Long
 
-        Dim y As Long
+        Dim Y As Long
             
-        x = (idmap - 1) Mod 16
-        y = Int((idmap - 1) / 16)
+        X = (idmap - 1) Mod 16
+        Y = Int((idmap - 1) / 16)
 
-        frmMapaGrande.lblAllies.Top = y * 27
-        frmMapaGrande.lblAllies.Left = x * 27
+        frmMapaGrande.lblAllies.Top = Y * 27
+        frmMapaGrande.lblAllies.Left = X * 27
 
-        frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
-        frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
+        frmMapaGrande.Shape1.Top = Y * 27 + (UserPos.Y / 4.5)
+        frmMapaGrande.Shape1.Left = X * 27 + (UserPos.X / 4.5)
 
     End If
     
@@ -642,93 +644,6 @@ Sub Check_Keys()
         End If
 
     End If
-
-End Sub
-
-'TODO : Si bien nunca estuvo allí, el mapa es algo independiente o a lo sumo dependiente del engine, no va acá!!!
-Sub SwitchMapIAO(ByVal map As Integer)
-    
-    'Cargamos el mapa.
-    Call Recursos.CargarMapa(map)
-    
-    Dim Rojo As Byte, Verde As Byte, Azul As Byte
-
-    If MapDat.base_light = 16777215 Then
-    
-        Map_light_base = D3DColorARGB(255, 255, 255, 255)
-        ColorAmbiente.r = 255
-        ColorAmbiente.b = 255
-        ColorAmbiente.g = 255
-        ColorAmbiente.a = 255
-        
-        Call Map_Base_Light_Set(D3DColorARGB(255, 255, 255, 255))
-        
-    Else
-        
-        Call Obtener_RGB(MapDat.base_light, Rojo, Verde, Azul)
-        
-        ColorAmbiente.r = Rojo
-        ColorAmbiente.b = Azul
-        ColorAmbiente.g = Verde
-        ColorAmbiente.a = 255
-        Map_light_base = D3DColorARGB(255, ColorAmbiente.r, ColorAmbiente.g, ColorAmbiente.b)
-        
-        Call Map_Base_Light_Set(Map_light_base)
-
-    End If
-
-    Map_light_baseBackup = Map_light_base
-
-    Call LucesRedondas.LightRenderAll
-    Call LucesCuadradas.Light_Render_All
-    
-    Call DibujarMiniMapa
-    
-    CurMap = map
-    
-    If Musica Then
-        
-        If MapDat.music_numberLow > 0 Then
-        
-            If Sound.MusicActual <> MapDat.music_numberLow Then
-                Sound.NextMusic = MapDat.music_numberLow
-                Sound.Fading = 200
-            End If
-
-        Else
-
-            If MapDat.music_numberHi > 0 Then
-                
-                If Sound.MusicActual <> MapDat.music_numberHi Then
-                    Sound.NextMusic = MapDat.music_numberHi
-                    Sound.Fading = 100
-                End If
-
-                Call ReproducirMp3(MapDat.music_numberHi)
-                
-                Call Sound.Music_Load(MapDat.music_numberHi, 0, 0)
-                
-                Call Sound.Music_Play
-
-            End If
-
-        End If
-
-    End If
-
-    If bRain And MapDat.LLUVIA Then
-        Call Graficos_Particulas.Engine_Meteo_Particle_Set(Particula_Lluvia)
-    
-    ElseIf bNieve And MapDat.NIEVE Then
-        Call Graficos_Particulas.Engine_Meteo_Particle_Set(Particula_Nieve)
-
-    End If
-    
-    If AmbientalActivated = 1 Then
-        Call AmbientarAudio(map)
-    End If
-
-    Call NameMapa(map)
 
 End Sub
 
@@ -886,7 +801,7 @@ Sub Main()
     EntradaY = 10
     EntradaX = 10
     
-    Call SwitchMapIAO(UserMap)
+    Call SwitchMap(UserMap)
 
     'Inicializamos el socket
     Call frmmain.Socket1.Startup
@@ -982,40 +897,6 @@ Private Function CMSValidateChar_(ByVal iAsc As Integer) As Boolean
 
 End Function
 
-'TODO : como todo lo relativo a mapas, no tiene nada que hacer acá....
-Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
-    HayAgua = ((MapData(x, y).Graphic(1).GrhIndex >= 1505 And MapData(x, y).Graphic(1).GrhIndex <= 1520) Or (MapData(x, y).Graphic(1).GrhIndex >= 24223 And MapData(x, y).Graphic(1).GrhIndex <= 24238) Or (MapData(x, y).Graphic(1).GrhIndex >= 24143 And MapData(x, y).Graphic(1).GrhIndex <= 24158) Or (MapData(x, y).Graphic(1).GrhIndex >= 468 And MapData(x, y).Graphic(1).GrhIndex <= 483) Or (MapData(x, y).Graphic(1).GrhIndex >= 44668 And MapData(x, y).Graphic(1).GrhIndex <= 44939) Or (MapData(x, y).Graphic(1).GrhIndex >= 24303 And MapData(x, y).Graphic(1).GrhIndex <= 24318))
-                
-    'If MapData(x, y).Trigger = 8 Then
-    ' HayAgua = True
-    ' End If
-                
-End Function
-
-Function EsArbol(ByVal GrhIndex As Long) As Boolean
-    EsArbol = GrhIndex = 7000 Or GrhIndex = 7001 Or GrhIndex = 7002 Or GrhIndex = 641 Or GrhIndex = 26075 Or GrhIndex = 643 Or GrhIndex = 644 Or _
-       GrhIndex = 647 Or GrhIndex = 26076 Or GrhIndex = 7222 Or GrhIndex = 7223 Or GrhIndex = 7224 Or GrhIndex = 7225 Or GrhIndex = 7226 Or _
-       GrhIndex = 26077 Or GrhIndex = 26079 Or GrhIndex = 735 Or GrhIndex = 32343 Or GrhIndex = 32344 Or GrhIndex = 26080 Or GrhIndex = 26081 Or _
-       GrhIndex = 32345 Or GrhIndex = 32346 Or GrhIndex = 32347 Or GrhIndex = 32348 Or GrhIndex = 32349 Or GrhIndex = 32350 Or GrhIndex = 32351 Or _
-       GrhIndex = 32352 Or GrhIndex = 14961 Or GrhIndex = 14950 Or GrhIndex = 14951 Or GrhIndex = 14952 Or GrhIndex = 14953 Or GrhIndex = 14954 Or _
-       GrhIndex = 14955 Or GrhIndex = 14956 Or GrhIndex = 14957 Or GrhIndex = 14958 Or GrhIndex = 14959 Or GrhIndex = 14962 Or GrhIndex = 14963 Or _
-       GrhIndex = 14964 Or GrhIndex = 14967 Or GrhIndex = 14968 Or GrhIndex = 14969 Or GrhIndex = 14970 Or GrhIndex = 14971 Or GrhIndex = 14972 Or _
-       GrhIndex = 14973 Or GrhIndex = 14974 Or GrhIndex = 14975 Or GrhIndex = 14976 Or GrhIndex = 14978 Or GrhIndex = 14980 Or GrhIndex = 14982 Or _
-       GrhIndex = 14983 Or GrhIndex = 14984 Or GrhIndex = 14985 Or GrhIndex = 14987 Or GrhIndex = 14988 Or GrhIndex = 26078 Or GrhIndex = 26192
-
-End Function
-
-Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
-    Dim OBJIndex As Integer
-    OBJIndex = MapData(x, y).OBJInfo.OBJIndex
-    
-    Dim ObjType As eObjType
-    ObjType = ObjData(OBJIndex).ObjType
-    
-    EsObjetoFijo = ObjType = eObjType.otForos Or ObjType = eObjType.otCarteles Or ObjType = eObjType.otArboles Or ObjType = eObjType.otYacimiento Or ObjType = eObjType.OtDecoraciones
-
-End Function
-
 Public Sub ShowSendTxt()
 
     If Not frmCantidad.Visible Then
@@ -1029,16 +910,16 @@ End Sub
 
 Public Sub LeerLineaComandos()
 
-    Dim t() As String
+    Dim T() As String
 
     Dim i   As Long
     
     'Parseo los comandos
-    t = Split(Command, " ")
+    T = Split(Command, " ")
 
-    For i = LBound(t) To UBound(t)
+    For i = LBound(T) To UBound(T)
 
-        Select Case UCase$(t(i))
+        Select Case UCase$(T(i))
 
             Case "/LAUNCHER" 'no cambiar la resolucion
                 Launcher = True
@@ -1327,23 +1208,23 @@ Public Function General_Get_Elapsed_Time() As Single
 End Function
 
 
-Public Function max(ByVal a As Double, ByVal b As Double) As Double
+Public Function max(ByVal A As Double, ByVal B As Double) As Double
 
-    If a > b Then
-        max = a
+    If A > B Then
+        max = A
     Else
-        max = b
+        max = B
 
     End If
 
 End Function
 
-Public Function min(ByVal a As Double, ByVal b As Double) As Double
+Public Function min(ByVal A As Double, ByVal B As Double) As Double
 
-    If a < b Then
-        min = a
+    If A < B Then
+        min = A
     Else
-        min = b
+        min = B
 
     End If
 
@@ -1396,4 +1277,31 @@ Function RunningInVB() As Boolean
 
     RunningInVB = counter
  
+End Function
+
+Function GetTimeFromString(str As String) As Long
+    If Len(str) = 0 Then Exit Function
+
+    Dim Splitted() As String
+    Splitted = Split(str, ":")
+    
+    Dim Hour As Long, min As Long
+    Hour = Val(Splitted(0))
+
+    If Hour < 0 Then Hour = 0
+    If Hour > 23 Then Hour = 23
+    
+    GetTimeFromString = Hour * 60
+    
+    If UBound(Splitted) > 0 Then
+        min = Val(Splitted(1))
+        
+        If min < 0 Then min = 0
+        If min > 59 Then min = 59
+        
+        GetTimeFromString = GetTimeFromString + min
+    End If
+
+    GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)
+
 End Function

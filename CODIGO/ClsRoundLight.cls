@@ -11,11 +11,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Option Base 0
+Option Explicit
 
 Private Type tLight
 
-    RGBcolor As D3DCOLORVALUE
+    RGBcolor As RGBA
     active As Boolean
     map_x As Long
     map_y As Long
@@ -27,18 +27,16 @@ Private light_list() As tLight
 
 Private NumLights    As Integer
 
-Public Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Optional range As Byte = 3, Optional ByVal red As Byte = 255, Optional ByVal green = 255, Optional ByVal blue As Byte = 255)
+Friend Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Color As RGBA, Optional range As Byte = 3)
     NumLights = NumLights + 1
        
     ReDim Preserve light_list(1 To NumLights) As tLight
        
     'Le damos color
-    light_list(NumLights).RGBcolor.r = red
-    light_list(NumLights).RGBcolor.g = green
-    light_list(NumLights).RGBcolor.b = blue
+    light_list(NumLights).RGBcolor = Color
        
     'Alpha (Si borras esto RE KB!!)
-    light_list(NumLights).RGBcolor.a = 255
+    light_list(NumLights).RGBcolor.A = 255
        
     'Un rango determinado
     light_list(NumLights).range = range
@@ -96,11 +94,10 @@ Public Function Delete_Light_To_Index(ByVal light_index As Byte, Optional Render
         For Xa = min_x To max_x
 
             If InMapBounds(Xa, Ya) Then
-                MapData(Xa, Ya).light_value(0) = 0
-                MapData(Xa, Ya).light_value(1) = 0
-                MapData(Xa, Ya).light_value(2) = 0
-                MapData(Xa, Ya).light_value(3) = 0
-
+                MapData(Xa, Ya).light_value(0) = COLOR_EMPTY
+                MapData(Xa, Ya).light_value(1) = COLOR_EMPTY
+                MapData(Xa, Ya).light_value(2) = COLOR_EMPTY
+                MapData(Xa, Ya).light_value(3) = COLOR_EMPTY
             End If
 
         Next Xa
@@ -113,29 +110,20 @@ Public Function Delete_Light_To_Index(ByVal light_index As Byte, Optional Render
        
 End Function
 
-Private Function LightCalculate(ByVal cRadio As Integer, ByVal LightX As Integer, ByVal LightY As Integer, ByVal XCoord As Integer, ByVal YCoord As Integer, TileLight As Long, LightColor As D3DCOLORVALUE, AmbientColor As D3DCOLORVALUE) As Long
-
+Private Function LightCalculate(ByVal Radio2 As Long, ByVal LightX As Integer, ByVal LightY As Integer, ByVal XCoord As Integer, ByVal YCoord As Integer, TileLight As RGBA, LightColor As RGBA, AmbientColor As RGBA) As RGBA
     Dim XDist        As Single
     Dim YDist        As Single
-    Dim VertexDist   As Single
-    Dim pRadio       As Integer
-       
-    Dim CurrentColor As D3DCOLORVALUE
-       
-    pRadio = cRadio * 32
-       
-    XDist = LightX + 16 - XCoord
-    YDist = LightY + 16 - YCoord
-       
-    VertexDist = Sqr(XDist * XDist + YDist * YDist)
-       
-    If VertexDist <= pRadio Then
-        Call D3DXColorLerp(CurrentColor, LightColor, AmbientColor, VertexDist / pRadio)
-        LightCalculate = D3DColorXRGB(Round(CurrentColor.r), Round(CurrentColor.g), Round(CurrentColor.b))
-        '        If TileLight > LightCalculate Then LightCalculate = TileLight
+    Dim VertexDist2  As Single
+
+    XDist = LightX - XCoord
+    YDist = LightY - YCoord
+
+    VertexDist2 = XDist * XDist + YDist * YDist
+
+    If VertexDist2 <= Radio2 Then
+        Call LerpRGBA(LightCalculate, LightColor, TileLight, Sqr(VertexDist2 / Radio2))
     Else
         LightCalculate = TileLight
-
     End If
 
 End Function
@@ -159,54 +147,56 @@ Private Sub LightRender(ByVal light_index As Integer)
 
     Dim Xa           As Long
        
-    Dim TileLight    As D3DCOLORVALUE
+    Dim TileLight    As RGBA
 
-    Dim AmbientColor As D3DCOLORVALUE
+    Dim AmbientColor As RGBA
 
-    Dim LightColor   As D3DCOLORVALUE
+    Dim LightColor   As RGBA
        
     Dim XCoord       As Integer
 
     Dim YCoord       As Integer
-       
-    AmbientColor.r = ColorAmbiente.r
-    AmbientColor.g = ColorAmbiente.g
-    AmbientColor.b = ColorAmbiente.b
-    AmbientColor.a = ColorAmbiente.a
-       
+    
+    Dim LightX       As Integer
+    
+    Dim LightY       As Integer
+    
+    Dim Radius       As Long
+
+    AmbientColor = map_light
+
     LightColor = light_list(light_index).RGBcolor
+    
+    LightX = light_list(light_index).map_x * 32 + 16
+    LightY = light_list(light_index).map_y * 32 + 16
+    
+    Radius = light_list(light_index).range * 32
+    Radius = Radius * Radius
            
     min_x = light_list(light_index).map_x - light_list(light_index).range
     max_x = light_list(light_index).map_x + light_list(light_index).range
     min_y = light_list(light_index).map_y - light_list(light_index).range
     max_y = light_list(light_index).map_y + light_list(light_index).range
-        
-    If min_x <= 0 Then min_x = 1
-    If max_x > 100 Then min_x = 100
-        
-    If min_y <= 0 Then min_y = 1
-        
-    If max_y > 100 Then max_y = 100
-           
+
     For Ya = min_y To max_y
         For Xa = min_x To max_x
 
             If InMapBounds(Xa, Ya) Then
                 XCoord = Xa * 32
-                YCoord = Ya * 32
-                MapData(Xa, Ya).light_value(1) = LightCalculate(light_list(light_index).range, light_list(light_index).map_x * 32, light_list(light_index).map_y * 32, XCoord, YCoord, MapData(Xa, Ya).light_value(1), LightColor, AmbientColor)
-     
-                XCoord = Xa * 32 + 32
-                YCoord = Ya * 32
-                MapData(Xa, Ya).light_value(3) = LightCalculate(light_list(light_index).range, light_list(light_index).map_x * 32, light_list(light_index).map_y * 32, XCoord, YCoord, MapData(Xa, Ya).light_value(3), LightColor, AmbientColor)
-                           
-                XCoord = Xa * 32
                 YCoord = Ya * 32 + 32
-                MapData(Xa, Ya).light_value(0) = LightCalculate(light_list(light_index).range, light_list(light_index).map_x * 32, light_list(light_index).map_y * 32, XCoord, YCoord, MapData(Xa, Ya).light_value(0), LightColor, AmbientColor)
+                MapData(Xa, Ya).light_value(0) = LightCalculate(Radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(0), LightColor, AmbientColor)
+     
+                XCoord = Xa * 32
+                YCoord = Ya * 32
+                MapData(Xa, Ya).light_value(1) = LightCalculate(Radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(1), LightColor, AmbientColor)
+                           
+                XCoord = Xa * 32 + 32
+                YCoord = Ya * 32 + 32
+                MapData(Xa, Ya).light_value(2) = LightCalculate(Radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(2), LightColor, AmbientColor)
        
                 XCoord = Xa * 32 + 32
-                YCoord = Ya * 32 + 32
-                MapData(Xa, Ya).light_value(2) = LightCalculate(light_list(light_index).range, light_list(light_index).map_x * 32, light_list(light_index).map_y * 32, XCoord, YCoord, MapData(Xa, Ya).light_value(2), LightColor, AmbientColor)
+                YCoord = Ya * 32
+                MapData(Xa, Ya).light_value(3) = LightCalculate(Radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(3), LightColor, AmbientColor)
                    
             End If
 

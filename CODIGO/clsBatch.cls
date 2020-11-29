@@ -37,6 +37,14 @@ Private m_Pre_Data_Full() As TYPE_VERTEX
 Private m_Pre_VBuffer_Full As Direct3DVertexBuffer8
 Private m_Pre_IBuffer_Full As Direct3DIndexBuffer8
 
+Private Const WATER_WAVE_SIZE_X = 10
+Private Const WATER_WAVE_SIZE_Y = 8
+Private Const WATER_WAVE_HEIGHT = 6
+Private Const WATER_WAVE_FACTOR_X = (2 * PI) / (WATER_WAVE_SIZE_X * TilePixelWidth)
+Private Const WATER_WAVE_FACTOR_Y = (2 * PI) / (WATER_WAVE_SIZE_Y * TilePixelHeight)
+Private Const WATER_TILE_FACTOR_X = TilePixelWidth * WATER_WAVE_FACTOR_X
+Private Const WATER_TILE_FACTOR_Y = TilePixelHeight * WATER_WAVE_FACTOR_Y
+
 Public Sub Begin()
     '
     ' Re-Initialize the states of the batch
@@ -108,27 +116,18 @@ Public Sub SetTexture(ByRef Texture As Direct3DTexture8)
  
 End Sub
  
-Public Sub Draw(ByVal x As Long, _
+Friend Sub Draw(ByVal x As Long, _
                 ByVal y As Long, _
                 ByVal Width As Long, _
                 ByVal Height As Long, _
-                ByRef color_light() As Long, _
+                ByRef Color() As RGBA, _
                 Optional ByVal Tx1 As Single = 0, _
                 Optional ByVal Ty1 As Single = 0, _
                 Optional ByVal Tx2 As Single = 1, _
                 Optional ByVal Ty2 As Single = 1, _
-                Optional ByVal angle As Single = 0, _
-                Optional ByVal z As Single = 0)
-                
-    Dim Color(3) As Long
-                
-    Dim i As Integer
-    For i = 0 To 3
-        Color(i) = color_light(i)
-        If Color(i) = 0 Then Color(i) = map_base_light
-    Next
+                Optional ByVal Angle As Single = 0)
                
-    If angle > 0 And angle <= 360 Then
+    If Angle > 0 And Angle <= 360 Then
         Dim NewX     As Single
         Dim NewY     As Single
         Dim SinRad   As Single
@@ -137,7 +136,7 @@ Public Sub Draw(ByVal x As Long, _
         Dim CenterX  As Single
         Dim CenterY  As Single
        
-        RadAngle = angle * 0.017453292519
+        RadAngle = Angle * 0.017453292519
    
         CenterX = x + (Width * 0.5)
         CenterY = y + (Height * 0.5)
@@ -149,12 +148,12 @@ Public Sub Draw(ByVal x As Long, _
    
     m_Data(m_Position).x = x
     m_Data(m_Position).y = y + Height
-    m_Data(m_Position).z = z
+    m_Data(m_Position).z = 0
     m_Data(m_Position).Color = Color(0)
-    m_Data(m_Position).TX = Tx1
-    m_Data(m_Position).TY = Ty2
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty2
  
-    If angle > 0 And angle <= 360 Then
+    If Angle > 0 And Angle <= 360 Then
    
         NewX = CenterX + (m_Data(m_Position).x - CenterX) * -CosRad - (m_Data(m_Position).y - CenterY) * -SinRad
         NewY = CenterY + (m_Data(m_Position).y - CenterY) * -CosRad + (m_Data(m_Position).x - CenterX) * -SinRad
@@ -168,12 +167,12 @@ Public Sub Draw(ByVal x As Long, _
     
     m_Data(m_Position).x = x
     m_Data(m_Position).y = y
-    m_Data(m_Position).z = z
+    m_Data(m_Position).z = 0
     m_Data(m_Position).Color = Color(1)
-    m_Data(m_Position).TX = Tx1
-    m_Data(m_Position).TY = Ty1
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty1
    
-    If angle > 0 And angle <= 360 Then
+    If Angle > 0 And Angle <= 360 Then
    
         NewX = CenterX + (m_Data(m_Position).x - CenterX) * -CosRad - (m_Data(m_Position).y - CenterY) * -SinRad
         NewY = CenterY + (m_Data(m_Position).y - CenterY) * -CosRad + (m_Data(m_Position).x - CenterX) * -SinRad
@@ -187,12 +186,12 @@ Public Sub Draw(ByVal x As Long, _
    
     m_Data(m_Position).x = x + Width
     m_Data(m_Position).y = y + Height
-    m_Data(m_Position).z = z
+    m_Data(m_Position).z = 0
     m_Data(m_Position).Color = Color(2)
-    m_Data(m_Position).TX = Tx2
-    m_Data(m_Position).TY = Ty2
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty2
  
-    If angle > 0 And angle <= 360 Then
+    If Angle > 0 And Angle <= 360 Then
    
         NewX = CenterX + (m_Data(m_Position).x - CenterX) * -CosRad - (m_Data(m_Position).y - CenterY) * -SinRad
         NewY = CenterY + (m_Data(m_Position).y - CenterY) * -CosRad + (m_Data(m_Position).x - CenterX) * -SinRad
@@ -206,12 +205,12 @@ Public Sub Draw(ByVal x As Long, _
    
     m_Data(m_Position).x = x + Width
     m_Data(m_Position).y = y
-    m_Data(m_Position).z = z
+    m_Data(m_Position).z = 0
     m_Data(m_Position).Color = Color(3)
-    m_Data(m_Position).TX = Tx2
-    m_Data(m_Position).TY = Ty1
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty1
  
-    If angle > 0 And angle <= 360 Then
+    If Angle > 0 And Angle <= 360 Then
    
         NewX = CenterX + (m_Data(m_Position).x - CenterX) * -CosRad - (m_Data(m_Position).y - CenterY) * -SinRad
         NewY = CenterY + (m_Data(m_Position).y - CenterY) * -CosRad + (m_Data(m_Position).x - CenterX) * -SinRad
@@ -229,74 +228,66 @@ Public Sub Draw(ByVal x As Long, _
    
 End Sub
 
-Public Sub DrawShadow(ByVal x As Long, _
-                ByVal y As Long, _
-                ByVal Width As Long, _
-                ByVal Height As Long, _
-                ByRef Color() As Long, _
-                Optional ByVal Tx1 As Single = 0, _
-                Optional ByVal Ty1 As Single = 0, _
-                Optional ByVal Tx2 As Single = 1, _
-                Optional ByVal Ty2 As Single = 1)
+Friend Sub DrawShadow(ByVal x As Long, _
+                    ByVal y As Long, _
+                    ByVal Width As Long, _
+                    ByVal Height As Long, _
+                    ByRef ColorLight() As RGBA, _
+                    Optional ByVal Tx1 As Single = 0, _
+                    Optional ByVal Ty1 As Single = 0, _
+                    Optional ByVal Tx2 As Single = 1, _
+                    Optional ByVal Ty2 As Single = 1)
+                
+    Dim Color(3) As RGBA
 
-    Dim ColorShadow(3) As Long
     Dim i As Integer
-
     For i = 0 To 3
-        If Color(i) = 0 Then Color(i) = map_base_light
-        
-        Dim IntensidadSombra As Single, tmpColor As D3DCOLORVALUE
-        
-        Call ARGBtoD3DCOLORVALUE(Color(0), tmpColor)
-        
-        IntensidadSombra = (0.2126 * tmpColor.r + 0.7152 * tmpColor.g + 0.0722 * tmpColor.b) ^ 2 * 0.000625
-
-        ColorShadow(i) = D3DColorARGB(IntensidadSombra, 0, 0, 0)
+        Color(i).A = (0.2126 * ColorLight(i).R + 0.7152 * ColorLight(i).G + 0.0722 * ColorLight(i).B) ^ 2 * 0.000625
     Next
-    
-    Dim dx As Single, dy As Single
-   
+
+    Dim dX As Single, dy As Single
+
     For i = 0 To 3
         Select Case i
-            Case 0: dx = x: dy = y - 1
-            Case 1: dx = x + 1: dy = y
-            Case 2: dx = x: dy = y + 1
-            Case 3: dx = x - 1: dy = y
+            Case 0: dX = x: dy = y - 1
+            Case 1: dX = x + 1: dy = y
+            Case 2: dX = x: dy = y + 1
+            Case 3: dX = x - 1: dy = y
         End Select
     
-        m_Data(m_Position).x = dx
+        m_Data(m_Position).x = dX
         m_Data(m_Position).y = dy + Height - 2
         m_Data(m_Position).z = 0
-        m_Data(m_Position).Color = ColorShadow(0)
-        m_Data(m_Position).TX = Tx1
-        m_Data(m_Position).TY = Ty2
+        m_Data(m_Position).Color = Color(0)
+        m_Data(m_Position).tX = Tx1
+        m_Data(m_Position).tY = Ty2
      
         m_Position = m_Position + 1
         
-        m_Data(m_Position).x = dx + Height * 0.25
+        m_Data(m_Position).x = dX + Height * 0.25
         m_Data(m_Position).y = dy + Height * 0.25 - 2
         m_Data(m_Position).z = 0
-        m_Data(m_Position).Color = ColorShadow(1)
-        m_Data(m_Position).TX = Tx1
-        m_Data(m_Position).TY = Ty1
+        m_Data(m_Position).Color = Color(1)
+        m_Data(m_Position).tX = Tx1
+        m_Data(m_Position).tY = Ty1
        
         m_Position = m_Position + 1
        
-        m_Data(m_Position).x = dx + Width
+        m_Data(m_Position).x = dX + Width
         m_Data(m_Position).y = dy + Height - 2
         m_Data(m_Position).z = 0
-        m_Data(m_Position).Color = ColorShadow(2)
-        m_Data(m_Position).TX = Tx2
-        m_Data(m_Position).TY = Ty2
+        m_Data(m_Position).Color = Color(2)
+        m_Data(m_Position).tX = Tx2
+        m_Data(m_Position).tY = Ty2
     
         m_Position = m_Position + 1
        
-        m_Data(m_Position).x = dx + Width + Height * 0.25
+        m_Data(m_Position).x = dX + Width + Height * 0.25
         m_Data(m_Position).y = dy + Height * 0.25 - 2
         m_Data(m_Position).z = 0
-        m_Data(m_Position).Color = ColorShadow(3)
-        m_Data(m_Position).TX = Tx2
-        m_Data(m_Position).TY = Ty1
+        m_Data(m_Position).Color = Color(3)
+        m_Data(m_Position).tX = Tx2
+        m_Data(m_Position).tY = Ty1
     
         m_Position = m_Position + 1
        
@@ -307,67 +298,186 @@ Public Sub DrawShadow(ByVal x As Long, _
    
 End Sub
 
-Public Sub DrawReflection(ByVal x As Long, _
-                ByVal y As Long, _
-                ByVal Width As Long, _
-                ByVal Height As Long, _
-                ByRef Color() As Long, _
-                Optional ByVal Tx1 As Single = 0, _
-                Optional ByVal Ty1 As Single = 0, _
-                Optional ByVal Tx2 As Single = 1, _
-                Optional ByVal Ty2 As Single = 1)
+Friend Sub DrawReflection(ByVal x As Long, _
+                        ByVal y As Long, _
+                        ByVal Width As Long, _
+                        ByVal Height As Long, _
+                        ByRef ColorLight() As RGBA, _
+                        Optional ByVal Tx1 As Single = 0, _
+                        Optional ByVal Ty1 As Single = 0, _
+                        Optional ByVal Tx2 As Single = 1, _
+                        Optional ByVal Ty2 As Single = 1)
 
-    Dim ColorReflection(3) As Long
+    Dim Color(3) As RGBA
+
     Dim i As Integer
-
     For i = 0 To 3
-        If Color(i) = 0 Then Color(i) = map_base_light
-        
-        Dim ColorReflejo As Single, tmpColor As D3DCOLORVALUE
-        
-        Call ARGBtoD3DCOLORVALUE(Color(0), tmpColor)
-
-        ColorReflection(i) = D3DColorARGB(tmpColor.a * 0.5, tmpColor.r * 0.2, tmpColor.g * 0.5, tmpColor.b)
+        Color(i).A = ColorLight(i).A * 0.5
+        Color(i).R = ColorLight(i).R * 0.2
+        Color(i).G = ColorLight(i).G * 0.5
+        Color(i).B = ColorLight(i).B
     Next
     
-    Dim dt As Single, dx As Single, dy As Single
-    dt = ((GetTickCount And &H7FFFFFFF) Mod 10000) * 0.0006283
-    dx = Sin(dt) * 8
+    Dim dt As Single, dX As Long, dy As Long
+    dt = (FrameTime Mod 10000) * 0.0006283
+    dX = Sin(dt) * 8
     dy = Sin(dt * 2 + 1) * 5
 
-    m_Data(m_Position).x = x + dx
+    m_Data(m_Position).x = x + dX
     m_Data(m_Position).y = y + Height * 1.75 - dy
     m_Data(m_Position).z = 0.5
-    m_Data(m_Position).Color = ColorReflection(0)
-    m_Data(m_Position).TX = Tx1
-    m_Data(m_Position).TY = Ty1
+    m_Data(m_Position).Color = Color(0)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty1
  
     m_Position = m_Position + 1
     
     m_Data(m_Position).x = x
     m_Data(m_Position).y = y + Height - 5
     m_Data(m_Position).z = 0.5
-    m_Data(m_Position).Color = ColorReflection(1)
-    m_Data(m_Position).TX = Tx1
-    m_Data(m_Position).TY = Ty2
+    m_Data(m_Position).Color = Color(1)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty2
    
     m_Position = m_Position + 1
    
-    m_Data(m_Position).x = x + Width + dx
+    m_Data(m_Position).x = x + Width + dX
     m_Data(m_Position).y = y + Height * 1.75 - dy
     m_Data(m_Position).z = 0.5
-    m_Data(m_Position).Color = ColorReflection(2)
-    m_Data(m_Position).TX = Tx2
-    m_Data(m_Position).TY = Ty1
+    m_Data(m_Position).Color = Color(2)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty1
 
     m_Position = m_Position + 1
    
     m_Data(m_Position).x = x + Width
     m_Data(m_Position).y = y + Height - 5
     m_Data(m_Position).z = 0.5
-    m_Data(m_Position).Color = ColorReflection(3)
-    m_Data(m_Position).TX = Tx2
-    m_Data(m_Position).TY = Ty2
+    m_Data(m_Position).Color = Color(3)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty2
+
+    m_Position = m_Position + 1
+   
+    If m_Position >= UBound(m_Data) Then
+        Call Flush
+    End If
+   
+End Sub
+
+Friend Sub DrawBreathing(ByVal x As Long, _
+                        ByVal y As Long, _
+                        ByVal Width As Long, _
+                        ByVal Height As Long, _
+                        ByVal ease As Single, _
+                        ByRef Color() As RGBA, _
+                        Optional ByVal Tx1 As Single = 0, _
+                        Optional ByVal Ty1 As Single = 0, _
+                        Optional ByVal Tx2 As Single = 1, _
+                        Optional ByVal Ty2 As Single = 1)
+
+    Dim dX As Long, dy As Long
+    dX = Fix(ease)
+    dy = Fix(3 * ease)
+
+    m_Data(m_Position).x = x
+    m_Data(m_Position).y = y + Height
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).Color = Color(0)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty2
+ 
+    m_Position = m_Position + 1
+    
+    m_Data(m_Position).x = x
+    m_Data(m_Position).y = y - dy
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).Color = Color(1)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty1
+   
+    m_Position = m_Position + 1
+   
+    m_Data(m_Position).x = x + Width
+    m_Data(m_Position).y = y + Height
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).Color = Color(2)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty2
+
+    m_Position = m_Position + 1
+   
+    m_Data(m_Position).x = x + Width + dX
+    m_Data(m_Position).y = y - dy
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).Color = Color(3)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty1
+
+    m_Position = m_Position + 1
+   
+    If m_Position >= UBound(m_Data) Then
+        Call Flush
+    End If
+   
+End Sub
+
+Friend Sub DrawWater(ByVal x As Single, _
+                    ByVal y As Single, _
+                    ByVal Width As Long, _
+                    ByVal Height As Long, _
+                    ByRef Color() As RGBA, _
+                    ByVal Tx1 As Single, _
+                    ByVal Ty1 As Single, _
+                    ByVal Tx2 As Single, _
+                    ByVal Ty2 As Single, _
+                    ByVal MapX As Integer, _
+                    ByVal MapY As Integer, _
+                    ByVal Top As Byte, _
+                    ByVal Right As Byte, _
+                    ByVal Bottom As Byte, _
+                    ByVal Left As Byte)
+
+    Dim t As Single
+    t = (FrameTime Mod 62831) * 0.001
+    
+    Dim tX As Single, tY As Single
+    tX = x * WATER_WAVE_FACTOR_X
+    tY = y * WATER_WAVE_FACTOR_Y
+
+    m_Data(m_Position).x = x + Cos(t + tX + tY + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT * Left
+    m_Data(m_Position).y = y + Height + Sin(t + tX + tY + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT * Bottom
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(0)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty2
+
+    m_Position = m_Position + 1
+    
+    m_Data(m_Position).x = x + Cos(t + tX + tY) * WATER_WAVE_HEIGHT * Left
+    m_Data(m_Position).y = y + Sin(t + tX + tY) * WATER_WAVE_HEIGHT * Top
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(1)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty1
+   
+    m_Position = m_Position + 1
+   
+    m_Data(m_Position).x = x + Width + Cos(t + tX + tY + WATER_TILE_FACTOR_X + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT * Right
+    m_Data(m_Position).y = y + Height + Sin(t + tX + tY + WATER_TILE_FACTOR_X + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT * Bottom
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(2)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty2
+
+    m_Position = m_Position + 1
+   
+    m_Data(m_Position).x = x + Width + Cos(t + tX + tY + WATER_TILE_FACTOR_X) * WATER_WAVE_HEIGHT * Right
+    m_Data(m_Position).y = y + Sin(t + tX + tY + WATER_TILE_FACTOR_X) * WATER_WAVE_HEIGHT * Top
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(3)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty1
 
     m_Position = m_Position + 1
    

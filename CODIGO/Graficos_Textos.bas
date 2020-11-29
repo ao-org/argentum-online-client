@@ -14,7 +14,7 @@ Public Fuentes(1 To 6)    As Fuente
 
 Public Sub Engine_Font_Initialize()
 
-    Dim a As Integer
+    Dim A As Integer
 
     Fuentes(1).Tamanio = 9
     Fuentes(1).Caracteres(48) = 21452
@@ -28,13 +28,13 @@ Public Sub Engine_Font_Initialize()
     Fuentes(1).Caracteres(56) = 21460
     Fuentes(1).Caracteres(57) = 21461
 
-    For a = 0 To 25
-        Fuentes(1).Caracteres(a + 97) = 21400 + a
-    Next a
+    For A = 0 To 25
+        Fuentes(1).Caracteres(A + 97) = 21400 + A
+    Next A
 
-    For a = 0 To 25
-        Fuentes(1).Caracteres(a + 65) = 21426 + a
-    Next a
+    For A = 0 To 25
+        Fuentes(1).Caracteres(A + 65) = 21426 + A
+    Next A
 
     Fuentes(1).Caracteres(33) = 21462
     Fuentes(1).Caracteres(161) = 21463
@@ -133,14 +133,14 @@ Public Sub Engine_Font_Initialize()
     Fuentes(3).Caracteres(56) = 20436 '8
     Fuentes(3).Caracteres(57) = 20437 '9
 
-    For a = 0 To 25
-        Fuentes(3).Caracteres(a + 97) = 20477 + a 'Desde la a hasta la z (sin ñ)
-    Next a
+    For A = 0 To 25
+        Fuentes(3).Caracteres(A + 97) = 20477 + A 'Desde la a hasta la z (sin ñ)
+    Next A
 
-    For a = 0 To 25
-        Fuentes(3).Caracteres(a + 65) = 20445 + a 'Desde la A hasta la Z (sin Ñ)
+    For A = 0 To 25
+        Fuentes(3).Caracteres(A + 65) = 20445 + A 'Desde la A hasta la Z (sin Ñ)
 
-    Next a
+    Next A
 
     Fuentes(3).Caracteres(33) = 20413 '!
     Fuentes(3).Caracteres(161) = 20541 '¡
@@ -222,13 +222,13 @@ Public Sub Engine_Font_Initialize()
     Fuentes(4).Caracteres(56) = 13860
     Fuentes(4).Caracteres(57) = 13861
 
-    For a = 0 To 25
-        Fuentes(4).Caracteres(a + 97) = 13800 + a
-    Next a
+    For A = 0 To 25
+        Fuentes(4).Caracteres(A + 97) = 13800 + A
+    Next A
 
-    For a = 0 To 25
-        Fuentes(4).Caracteres(a + 65) = 13826 + a
-    Next a
+    For A = 0 To 25
+        Fuentes(4).Caracteres(A + 65) = 13826 + A
+    Next A
 
     Fuentes(4).Caracteres(33) = 13862
     Fuentes(4).Caracteres(161) = 13863
@@ -319,13 +319,13 @@ Public Sub Engine_Font_Initialize()
     Fuentes(5).Caracteres(56) = 30135
     Fuentes(5).Caracteres(57) = 30136
 
-    For a = 0 To 25
-        Fuentes(5).Caracteres(a + 97) = 30176 + a
-    Next a
+    For A = 0 To 25
+        Fuentes(5).Caracteres(A + 97) = 30176 + A
+    Next A
 
-    For a = 0 To 25
-        Fuentes(5).Caracteres(a + 65) = 30144 + a
-    Next a
+    For A = 0 To 25
+        Fuentes(5).Caracteres(A + 65) = 30144 + A
+    Next A
 
     Fuentes(5).Caracteres(33) = 30112 '!
     Fuentes(5).Caracteres(161) = 20541 '¡
@@ -407,13 +407,13 @@ Public Sub Engine_Font_Initialize()
     Fuentes(6).Caracteres(56) = 45874
     Fuentes(6).Caracteres(57) = 45875
 
-    For a = 0 To 25
-        Fuentes(6).Caracteres(a + 97) = 45915 + a
-    Next a
+    For A = 0 To 25
+        Fuentes(6).Caracteres(A + 97) = 45915 + A
+    Next A
 
-    For a = 0 To 25
-        Fuentes(6).Caracteres(a + 65) = 45883 + a
-    Next a
+    For A = 0 To 25
+        Fuentes(6).Caracteres(A + 65) = 45883 + A
+    Next A
 
     Fuentes(6).Caracteres(33) = 13862
     Fuentes(6).Caracteres(161) = 13863
@@ -480,7 +480,7 @@ End Sub
 
 Public Function Engine_Text_Height(Texto As String, Optional multi As Boolean = False, Optional font As Byte = 1) As Integer
 
-    Dim a, b, c, d, e, f As Integer
+    Dim A, B, c, d, e, f As Integer
 
     Dim graf As grh
   
@@ -492,18 +492,18 @@ Public Function Engine_Text_Height(Texto As String, Optional multi As Boolean = 
 
         If font = 1 Then
 
-            For a = 1 To Len(Texto)
-                b = Asc(mid(Texto, a, 1))
-                graf.GrhIndex = Fuentes(1).Caracteres(b)
+            For A = 1 To Len(Texto)
+                B = Asc(mid(Texto, A, 1))
+                graf.GrhIndex = Fuentes(1).Caracteres(B)
 
-                If b = 32 Or b = 13 Then
+                If B = 32 Or B = 13 Then
                     If e >= 20 Then 'reemplazar por lo que os plazca
                         f = f + 1
                         e = 0
                         d = 0
                     Else
 
-                        If b = 32 Then
+                        If B = 32 Then
                             d = d + 4
 
                         End If
@@ -515,22 +515,22 @@ Public Function Engine_Text_Height(Texto As String, Optional multi As Boolean = 
                 End If
 
                 e = e + 1
-            Next a
+            Next A
 
         Else
     
-            For a = 1 To Len(Texto)
-                b = Asc(mid(Texto, a, 1))
-                graf.GrhIndex = Fuentes(font).Caracteres(b)
+            For A = 1 To Len(Texto)
+                B = Asc(mid(Texto, A, 1))
+                graf.GrhIndex = Fuentes(font).Caracteres(B)
 
-                If b = 32 Or b = 13 Then
+                If B = 32 Or B = 13 Then
                     If e >= 20 Then 'reemplazar por lo que os plazca
                         f = f + 1
                         e = 0
                         d = 0
                     Else
 
-                        If b = 32 Then
+                        If B = 32 Then
                             d = d + 4
 
                         End If
@@ -542,7 +542,7 @@ Public Function Engine_Text_Height(Texto As String, Optional multi As Boolean = 
                 End If
 
                 e = e + 1
-            Next a
+            Next A
   
         End If
 
@@ -552,41 +552,27 @@ Public Function Engine_Text_Height(Texto As String, Optional multi As Boolean = 
 
 End Function
 
-Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Sub Engine_Text_Render_LetraGrande(Texto As String, X As Integer, Y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
 
     On Error Resume Next
 
-    Dim a, b, c, d, e, f As Integer
+    Dim A, B, c, d, e, f As Integer
 
     Dim graf          As grh
 
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
+    Dim temp_array(3) As RGBA 'Si le queres dar color a la letra pasa este parametro dsp xD
 
     temp_array(0) = text_color(0)
 
     If charindex = 0 Then
-        a = 255
+        A = 255
     Else
-        a = charlist(charindex).AlphaText
-
+        A = charlist(charindex).AlphaText
     End If
 
     If Alpha <> 255 Then
-        a = Alpha
-
+        A = Alpha
     End If
-
-    Dim r, g As Byte
-
-    r = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    b = temp_array(0) And 255
-             
-    temp_array(0) = D3DColorARGB(a, r, g, b)
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
 
     Dim i              As Long
 
@@ -598,7 +584,7 @@ Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, 
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
 
-            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
+            If FrameTime - .startTime >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
                              
                 If charlist(charindex).AlphaText = 0 Then
@@ -614,13 +600,6 @@ Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, 
 
     Next i
 
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(a, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
     If (Len(Texto) = 0) Then Exit Sub
 
     d = 0
@@ -629,18 +608,18 @@ Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, 
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 35 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 30
+                    If B = 32 Then d = d + 30
 
                 End If
 
@@ -649,14 +628,14 @@ Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, 
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
                     If font_index <> 3 Then
 
                         'Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, Sombra())
                     End If
 
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -667,24 +646,24 @@ Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, 
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     Else
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 33 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 2
+                    If B = 32 Then d = d + 2
 
                 End If
 
@@ -693,9 +672,9 @@ Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, 
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
                     ' Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d), Y + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -711,47 +690,36 @@ Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, 
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     End If
 
 End Sub
 
-Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Public Sub Engine_Text_Render_LetraChica(Texto As String, X As Integer, Y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
 
     On Error Resume Next
 
-    Dim a, b, c, d, e, f As Integer
+    Dim A, B, c, d, e, f As Integer
 
     Dim graf          As grh
 
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
+    Dim temp_array(3) As RGBA 'Si le queres dar color a la letra pasa este parametro dsp xD
 
     temp_array(0) = text_color(0)
+    temp_array(1) = text_color(1)
+    temp_array(2) = text_color(2)
+    temp_array(3) = text_color(3)
 
     If charindex = 0 Then
-        a = 255
+        A = 255
     Else
-        a = charlist(charindex).AlphaText
-
+        A = charlist(charindex).AlphaText
     End If
 
     If Alpha <> 255 Then
-        a = Alpha
-
+        A = Alpha
     End If
-
-    Dim r, g As Byte
-
-    b = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    r = temp_array(0) And 255
-             
-    temp_array(0) = D3DColorARGB(a, r, g, b)
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
 
     Dim i              As Long
 
@@ -763,10 +731,10 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
 
-            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
+            If FrameTime - .startTime >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
                              
-                If a <= 0 Then
+                If A <= 0 Then
                     removedDialogs = removedDialogs + 1
 
                 End If
@@ -779,12 +747,8 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
 
     Next i
 
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(a, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
+    Dim Sombra(3) As RGBA 'Sombra
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -794,18 +758,18 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 30 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 2
+                    If B = 32 Then d = d + 2
 
                 End If
 
@@ -814,7 +778,7 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
                     If font_index <> 3 Then
 
@@ -825,7 +789,7 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
                 
                     'Call InitGrh(graf, graf.GrhIndex)
                     'Call Draw_Grh(graf, (x + d) + 1, y + 1 + f * 14, 0, 0, Sombra(), True, 0, 0, 0)
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -836,24 +800,24 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     Else
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 33 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 2
+                    If B = 32 Then d = d + 2
 
                 End If
 
@@ -862,9 +826,9 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
                     ' Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d), Y + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -880,47 +844,33 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     End If
 
 End Sub
 
-Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Public Sub Engine_Text_Render(Texto As String, X As Integer, Y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
 
     On Error Resume Next
 
-    Dim a, b, c, d, e, f As Integer
+    Dim A, B, c, d, e, f As Integer
 
     Dim graf          As grh
 
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-
-    temp_array(0) = text_color(0)
+    Dim temp_array(3) As RGBA
 
     If charindex = 0 Then
-        a = 255
+        A = 255
     Else
-        a = charlist(charindex).AlphaText
-
+        A = charlist(charindex).AlphaText
     End If
 
     If Alpha <> 255 Then
-        a = Alpha
-
+        A = Alpha
     End If
-
-    Dim r, g As Byte
-
-    b = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    r = temp_array(0) And 255
-             
-    temp_array(0) = D3DColorARGB(a, r, g, b)
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
+    
+    Call RGBAList(temp_array, text_color(0).R, text_color(0).G, text_color(0).B, A)
 
     Dim i              As Long
 
@@ -932,10 +882,10 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
 
-            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
+            If FrameTime - .startTime >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
                              
-                If a <= 0 Then
+                If A <= 0 Then
                     removedDialogs = removedDialogs + 1
 
                 End If
@@ -948,12 +898,8 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
 
     Next i
 
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(a, r / 4, g / 4, b / 4)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
+    Dim Sombra(3) As RGBA 'Sombra
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -963,18 +909,18 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 35 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 4
+                    If B = 32 Then d = d + 4
 
                 End If
 
@@ -983,14 +929,14 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
                     If font_index <> 3 Then
-                        Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, Sombra())
+                        Call Draw_GrhFont(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, Sombra())
 
                     End If
 
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d), Y + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -1001,24 +947,24 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     Else
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 20 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 4
+                    If B = 32 Then d = d + 4
 
                 End If
 
@@ -1027,9 +973,9 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, Sombra())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d), Y + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -1045,47 +991,33 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     End If
 
 End Sub
 
-Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Public Sub Engine_Text_RenderGrande(Texto As String, X As Integer, Y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
 
     On Error Resume Next
 
-    Dim a, b, c, d, e, f As Integer
+    Dim A, B, c, d, e, f As Integer
 
     Dim graf          As grh
 
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-
-    temp_array(0) = text_color(0)
+    Dim temp_array(3) As RGBA
 
     If charindex = 0 Then
-        a = 255
+        A = 255
     Else
-        a = charlist(charindex).AlphaText
-
+        A = charlist(charindex).AlphaText
     End If
 
     If Alpha <> 255 Then
-        a = Alpha
-
+        A = Alpha
     End If
 
-    Dim r, g As Byte
-
-    r = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    b = temp_array(0) And 255
-             
-    temp_array(0) = D3DColorARGB(a, r, g, b)
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
+    Call RGBAList(temp_array, text_color(0).R, text_color(0).G, text_color(0).B, A)
 
     Dim i              As Long
 
@@ -1097,10 +1029,10 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
 
-            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
+            If FrameTime - .startTime >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
                              
-                If a <= 0 Then
+                If A <= 0 Then
                     removedDialogs = removedDialogs + 1
 
                 End If
@@ -1113,12 +1045,8 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
 
     Next i
 
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(a, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
+    Dim Sombra(3) As RGBA 'Sombra
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -1128,18 +1056,18 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 35 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 12
+                    If B = 32 Then d = d + 12
 
                 End If
 
@@ -1148,14 +1076,14 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
                     If font_index <> 3 Then
-                        Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, Sombra())
+                        Call Draw_GrhFont(graf.GrhIndex, (X + d), Y + f * 14, Sombra())
 
                     End If
 
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -1166,24 +1094,24 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     Else
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 10 Then 'reemplazar por lo que os plazca
                     f = f + 3
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 12
+                    If B = 32 Then d = d + 12
 
                 End If
 
@@ -1192,9 +1120,9 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
                     'Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d), Y + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -1210,42 +1138,26 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     End If
 
 End Sub
 
-Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRef text_color As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Long = 0)
+Public Sub Engine_Text_Render2(Texto As String, X As Integer, Y As Integer, ByRef text_color As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Long = 0)
 
     On Error Resume Next
 
-    Dim a, b, c, d, e, f As Integer
+    Dim A, B, c, d, e, f As Integer
 
     Dim graf          As grh
 
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
+    Dim temp_array(3) As RGBA
 
-    temp_array(0) = text_color
+    Call RGBAList(temp_array, text_color.R, text_color.G, text_color.B, text_color.A)
 
-    Dim r, g As Byte
-
-    r = (temp_array(0) And 16711680) / 65536
-    g = (temp_array(0) And 65280) / 256
-    b = temp_array(0) And 255
-             
-    temp_array(0) = text_color
-
-    temp_array(1) = temp_array(0)
-    temp_array(2) = temp_array(0)
-    temp_array(3) = temp_array(0)
-
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(charindex, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
+    Dim Sombra(3) As RGBA 'Sombra
+    Call RGBAList(Sombra, text_color.R / 6, text_color.G / 6, text_color.B / 6)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -1255,18 +1167,18 @@ Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRe
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 35 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 4
+                    If B = 32 Then d = d + 4
 
                 End If
 
@@ -1275,14 +1187,14 @@ Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRe
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
                     If font_index <> 3 Then
-                        Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
+                        Call Draw_GrhFont(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, Sombra())
 
                     End If
 
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d), Y + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -1293,24 +1205,24 @@ Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRe
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     Else
         e = 0
         f = 0
 
-        For a = 1 To Len(Texto)
-            b = Asc(mid(Texto, a, 1))
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-            If b = 32 Or b = 13 Then
+            If B = 32 Or B = 13 Then
                 If e >= 20 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
 
-                    If b = 32 Then d = d + 4
+                    If B = 32 Then d = d + 4
 
                 End If
 
@@ -1319,9 +1231,9 @@ Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRe
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, Sombra())
+                    Call Draw_GrhFont(graf.GrhIndex, (X + d), Y + f * 14, temp_array())
                 
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -1337,15 +1249,15 @@ Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRe
             End If
 
             e = e + 1
-        Next a
+        Next A
 
     End If
 
 End Sub
 
-Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional ByVal Alpha As Byte = 255)
+Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, X As Integer, Y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional ByVal Alpha As Byte = 255)
 
-    Dim a, b, c, d, e, f As Integer
+    Dim A, B, c, d, e, f As Integer
 
     Dim graf As grh
 
@@ -1355,31 +1267,21 @@ Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As 
     e = 0
     f = 0
 
-    Dim r, g As Byte
+    Dim Sombra(3) As RGBA 'Sombra
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
 
-    r = (text_color(0) And 16711680) / 65536
-    g = (text_color(0) And 65280) / 256
-    b = text_color(0) And 255
+    For A = 1 To Len(Texto)
+        B = Asc(mid(Texto, A, 1))
+        graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(Alpha, r / 6, g / 6, b / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
-    For a = 1 To Len(Texto)
-        b = Asc(mid(Texto, a, 1))
-        graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-        If b = 32 Or b = 13 Then
+        If B = 32 Or B = 13 Then
             If e >= 20 Then 'reemplazar por lo que os plazca
                 f = f + 1
                 e = 0
                 d = 0
             Else
 
-                If b = 32 Then d = d + 4
+                If B = 32 Then d = d + 4
 
             End If
 
@@ -1388,11 +1290,11 @@ Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As 
             If graf.GrhIndex > 12 Then
 
                 'mega sombra O-matica
-                graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                graf.GrhIndex = Fuentes(font_index).Caracteres(B)
                 
-                Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
+                Call Draw_GrhFont(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, Sombra())
       
-                Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, text_color())
+                Call Draw_GrhFont(graf.GrhIndex, (X + d), Y + f * 14, text_color())
                 
                 ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                 'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
@@ -1403,25 +1305,25 @@ Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As 
         End If
 
         e = e + 1
-    Next a
+    Next A
 
 End Sub
 
-Public Sub Engine_Text_Render_Exp(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False)
+Public Sub Engine_Text_Render_Exp(charindex As Integer, Texto As String, X As Integer, Y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False)
 
-    Dim a, b, c, d, e, f As Integer
+    Dim A, B, c, d, e, f As Integer
 
     Dim graf As grh
 
-    Dim r, g As Byte
+    Dim R, G As Byte
 
-    r = (text_color(0) And 16711680) / 65536
-    g = (text_color(0) And 65280) / 256
-    b = text_color(0) And 255
+    R = (text_color(0) And 16711680) / 65536
+    G = (text_color(0) And 65280) / 256
+    B = text_color(0) And 255
 
     Dim Sombra(3) As Long 'Sombra
 
-    Sombra(0) = D3DColorARGB(200, r / 6, g / 6, b / 6)
+    Sombra(0) = D3DColorARGB(200, R / 6, G / 6, B / 6)
     Sombra(1) = Sombra(0)
     Sombra(2) = Sombra(0)
     Sombra(3) = Sombra(0)
@@ -1432,18 +1334,18 @@ Public Sub Engine_Text_Render_Exp(charindex As Integer, Texto As String, x As In
     e = 0
     f = 0
 
-    For a = 1 To Len(Texto)
-        b = Asc(mid(Texto, a, 1))
-        graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+    For A = 1 To Len(Texto)
+        B = Asc(mid(Texto, A, 1))
+        graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
-        If b = 32 Or b = 13 Then
+        If B = 32 Or B = 13 Then
             If e >= 20 Then 'reemplazar por lo que os plazca
                 f = f + 1
                 e = 0
                 d = 0
             Else
 
-                If b = 32 Then d = d + 4
+                If B = 32 Then d = d + 4
 
             End If
 
@@ -1452,7 +1354,7 @@ Public Sub Engine_Text_Render_Exp(charindex As Integer, Texto As String, x As In
             If graf.GrhIndex > 12 Then
 
                 'mega sombra O-matica
-                graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+                graf.GrhIndex = Fuentes(font_index).Caracteres(B)
       
                 'Call Draw_GrhColor(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, text_color())
                 ' Call Draw_GrhColor(graf.GrhIndex, (X + d), Y + f * 14, text_color())
@@ -1466,13 +1368,13 @@ Public Sub Engine_Text_Render_Exp(charindex As Integer, Texto As String, x As In
         End If
 
         e = e + 1
-    Next a
+    Next A
 
 End Sub
 
 Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = False, Optional Fon As Byte = 1) As Integer
 
-    Dim a, b, d, e, f As Integer
+    Dim A, B, d, e, f As Integer
 
     Dim graf As grh
 
@@ -1482,36 +1384,36 @@ Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = F
 
             If multi = False Then
 
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(1).Caracteres(b)
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(1).Caracteres(B)
 
                     If graf.GrhIndex = 0 Then graf.GrhIndex = 1
-                    If b <> 32 Then
+                    If B <> 32 Then
                         Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth '+ 1
                     Else
                         Engine_Text_Width = Engine_Text_Width + 4
 
                     End If
 
-                Next a
+                Next A
 
             Else
                 e = 0
                 f = 0
 
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(1).Caracteres(b)
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(1).Caracteres(B)
 
-                    If b = 32 Or b = 13 Then
+                    If B = 32 Or B = 13 Then
                         If e >= 20 Then 'reemplazar por lo que os plazca
                             f = f + 1
                             e = 0
                             d = 0
                         Else
 
-                            If b = 32 Then d = d + 4
+                            If B = 32 Then d = d + 4
 
                         End If
 
@@ -1527,7 +1429,7 @@ Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = F
                     End If
 
                     e = e + 1
-                Next a
+                Next A
 
             End If
 
@@ -1535,36 +1437,36 @@ Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = F
 
             If multi = False Then
 
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(Fon).Caracteres(b)
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
 
                     If graf.GrhIndex = 0 Then graf.GrhIndex = 1
-                    If b <> 20 Then
+                    If B <> 20 Then
                         Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth + 10
                     Else
                         Engine_Text_Width = Engine_Text_Width - 15
 
                     End If
 
-                Next a
+                Next A
 
             Else
                 e = 0
                 f = 0
 
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(Fon).Caracteres(b)
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
 
-                    If b = 32 Or b = 13 Then
+                    If B = 32 Or B = 13 Then
                         If e >= 20 Then 'reemplazar por lo que os plazca
                             f = f + 1
                             e = 0
                             d = 0
                         Else
 
-                            If b = 32 Then d = d + 4
+                            If B = 32 Then d = d + 4
 
                         End If
 
@@ -1580,7 +1482,7 @@ Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = F
                     End If
 
                     e = e + 1
-                Next a
+                Next A
 
             End If
 
@@ -1590,7 +1492,7 @@ End Function
 
 Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boolean = False, Optional Fon As Byte = 1) As Integer
 
-    Dim a, b, d, e, f As Integer
+    Dim A, B, d, e, f As Integer
 
     Dim graf As grh
 
@@ -1601,36 +1503,36 @@ Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boo
 
             If multi = False Then
 
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(1).Caracteres(b)
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(1).Caracteres(B)
 
                     If graf.GrhIndex = 0 Then graf.GrhIndex = 1
-                    If b <> 32 Then
+                    If B <> 32 Then
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth '+ 1
                     Else
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + 4
 
                     End If
 
-                Next a
+                Next A
 
             Else
                 e = 0
                 f = 0
 
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(1).Caracteres(b)
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(1).Caracteres(B)
 
-                    If b = 32 Or b = 13 Then
+                    If B = 32 Or B = 13 Then
                         If e >= 20 Then 'reemplazar por lo que os plazca
                             f = f + 1
                             e = 0
                             d = 0
                         Else
 
-                            If b = 32 Then d = d + 4
+                            If B = 32 Then d = d + 4
 
                         End If
 
@@ -1646,7 +1548,7 @@ Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boo
                     End If
 
                     e = e + 1
-                Next a
+                Next A
 
             End If
 
@@ -1654,36 +1556,36 @@ Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boo
 
             If multi = False Then
 
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(Fon).Caracteres(b)
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
 
                     If graf.GrhIndex = 0 Then graf.GrhIndex = 1
-                    If b <> 20 Then
+                    If B <> 20 Then
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth + 10
                     Else
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado - 15
 
                     End If
 
-                Next a
+                Next A
 
             Else
                 e = 0
                 f = 0
 
-                For a = 1 To Len(Texto)
-                    b = Asc(mid(Texto, a, 1))
-                    graf.GrhIndex = Fuentes(Fon).Caracteres(b)
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
 
-                    If b = 32 Or b = 13 Then
+                    If B = 32 Or B = 13 Then
                         If e >= 20 Then 'reemplazar por lo que os plazca
                             f = f + 1
                             e = 0
                             d = 0
                         Else
 
-                            If b = 32 Then d = d + 4
+                            If B = 32 Then d = d + 4
 
                         End If
 
@@ -1699,7 +1601,7 @@ Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boo
                     End If
 
                     e = e + 1
-                Next a
+                Next A
 
             End If
 
@@ -1707,7 +1609,7 @@ Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boo
 
 End Function
 
-Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal Color As Long, ByVal format As Long, Optional ByVal shadow As Boolean = False)
+Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal Color As Long, ByVal format As Long, Optional ByVal Shadow As Boolean = False)
 
     '*****************************************************
     '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
@@ -1721,7 +1623,7 @@ Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long
     TextRect.bottom = Top + Height
     TextRect.Right = Left + Width
     
-    If shadow Then
+    If Shadow Then
         ShadowRect.Top = Top - 1
         ShadowRect.Left = Left - 2
         ShadowRect.bottom = (Top + Height) - 1
@@ -1734,12 +1636,12 @@ Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long
 
 End Sub
 
-Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal Color As Long, Optional ByVal shadow As Boolean = False, Optional ByVal center As Boolean = False, Optional ByVal font As Long = 0)
+Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal Color As Long, Optional ByVal Shadow As Boolean = False, Optional ByVal center As Boolean = False, Optional ByVal font As Long = 0)
 
     If center = True Then
-        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, Color, DT_VCENTER & DT_CENTER, shadow)
+        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, Color, DT_VCENTER & DT_CENTER, Shadow)
     Else
-        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, Color, DT_TOP Or DT_LEFT, shadow)
+        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, Color, DT_TOP Or DT_LEFT, Shadow)
 
     End If
 

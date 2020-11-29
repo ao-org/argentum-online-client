@@ -1,13 +1,5 @@
-Account/*
-Logs/*
-Charfile/*
-Logs/*
-Foros/*
-WorldBackup/*
-Guilds/*
 Codigo/*.log
-.DS_Store
-*.vbw
+Screenshots
 *.csi
 *.OBJ
 *.ldb
@@ -16,8 +8,11 @@ Codigo/*.log
 *.dca
 *.scc
 *.tmp
-bkNpcs.dat
-server.exe
-Guilds/guildsinfo.inf
+*.dll
+*.ocx
+*.lvw
+*.aps
+Argentum.exe
+AdminLibSetup.exe
 
  

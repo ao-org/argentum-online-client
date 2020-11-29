@@ -1,19 +1,25 @@
 VERSION 5.00
 Begin VB.Form frmSpawnList 
    BorderStyle     =   4  'Fixed ToolWindow
-   Caption         =   "Invocar"
-   ClientHeight    =   3360
+   Caption         =   "Invocar NPC"
+   ClientHeight    =   4185
    ClientLeft      =   45
    ClientTop       =   210
-   ClientWidth     =   2745
-   ControlBox      =   0   'False
+   ClientWidth     =   2775
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3360
-   ScaleWidth      =   2745
+   ScaleHeight     =   4185
+   ScaleWidth      =   2775
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.TextBox Filter 
+      Height          =   285
+      Left            =   840
+      TabIndex        =   3
+      Top             =   120
+      Width           =   1815
+   End
    Begin VB.CommandButton Command1 
       Caption         =   "Spawn"
       BeginProperty Font 
@@ -25,32 +31,13 @@ Begin VB.Form frmSpawnList
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   390
+      Height          =   510
       Left            =   120
       MouseIcon       =   "frmSpawnList.frx":0000
       MousePointer    =   99  'Custom
-      TabIndex        =   2
-      Top             =   2880
-      Width           =   1650
-   End
-   Begin VB.CommandButton Command2 
-      Caption         =   "Salir"
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   390
-      Left            =   1800
-      MouseIcon       =   "frmSpawnList.frx":0152
-      MousePointer    =   99  'Custom
       TabIndex        =   1
-      Top             =   2880
-      Width           =   810
+      Top             =   3600
+      Width           =   2490
    End
    Begin VB.ListBox lstCriaturas 
       BeginProperty Font 
@@ -62,15 +49,15 @@ Begin VB.Form frmSpawnList
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2400
+      Height          =   2985
       Left            =   120
       TabIndex        =   0
-      Top             =   360
+      Top             =   480
       Width           =   2490
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
-      Caption         =   "Selecciona la criatura:"
+      Caption         =   "Filtrar:"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   9.75
@@ -81,10 +68,10 @@ Begin VB.Form frmSpawnList
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   240
-      TabIndex        =   3
-      Top             =   75
-      Width           =   2235
+      Left            =   120
+      TabIndex        =   2
+      Top             =   120
+      Width           =   660
    End
 End
 Attribute VB_Name = "frmSpawnList"
@@ -126,8 +113,11 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+
 Private Sub Command1_Click()
-    Call WriteSpawnCreature(lstCriaturas.ListIndex + 1)
+    If lstCriaturas.ListIndex < 0 Then Exit Sub
+
+    Call WriteSpawnCreature(lstCriaturas.ItemData(lstCriaturas.ListIndex))
 
 End Sub
 
@@ -136,8 +126,21 @@ Private Sub Command2_Click()
 
 End Sub
 
-Private Sub Form_Deactivate()
-
-    'Me.SetFocus
+Private Sub Filter_Change()
+    FillList
 End Sub
 
+Public Sub FillList()
+    lstCriaturas.Clear
+
+    Dim i As Long
+
+    For i = 1 To UBound(NpcData())
+        If NpcData(i).Name <> "Vacio" Then
+            If InStr(1, Tilde(NpcData(i).Name), Tilde(Filter.Text)) Then
+                Call lstCriaturas.AddItem(NpcData(i).Name)
+                lstCriaturas.ItemData(lstCriaturas.NewIndex) = i
+            End If
+        End If
+    Next i
+End Sub

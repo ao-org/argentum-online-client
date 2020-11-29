@@ -7,7 +7,7 @@ Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
 
 'Nueva seguridad
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal Length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal length As Long)
 Private Declare Function GetAdaptersInfo Lib "iphlpapi" (lpAdapterInfo As Any, lpSize As Long) As Long
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 'get mac adress
@@ -67,7 +67,6 @@ Public Effect()     As Effect_Type
 'Destruccion de items
 Public DestItemSlot As Byte
 Public DestItemCant As Integer
-Public HoraFantasia As Integer
 
 Public Enum FXSound
     Lobo_Sound = 124
@@ -78,7 +77,6 @@ Public Enum FXSound
     MP_SOUND = 150
 End Enum
 
-Public ColorCiego(0 To 3) As Long
 Public Const MAX_CORREOS_SLOTS = 60
 
 Public LastIndex2                        As Integer
@@ -413,7 +411,7 @@ Type UserCuentaPJS
     Criminal As Byte
     Clase As Byte
     NameMapa As String
-    LetraColor As Long
+    LetraColor As RGBA
     Arma As Integer
     Escudo As Integer
     Casco As Integer
@@ -640,7 +638,7 @@ Sub General_Set_Connect()
 
     If UserMap <> 1 Then
         UserMap = 1
-        Call SwitchMapIAO(UserMap)
+        Call SwitchMap(UserMap)
     End If
 
     If QueRender <> 1 Then
@@ -652,7 +650,7 @@ Sub General_Set_Connect()
     intro = 1
     frmmain.Picture = LoadInterface("main.bmp")
     frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -665,7 +663,7 @@ Sub General_Set_Connect()
     Call Graficos_Particulas.Engine_spell_Particle_Set(41)
 
     If intro = 1 Then
-        Call Graficos_Particulas.Engine_Meteo_Particle_Set(207)
+        Call Graficos_Particulas.Engine_MeteoParticle_Set(207)
 
     End If
 
@@ -703,14 +701,6 @@ Public Sub InitializeSurfaceCapture(frm As Form)
     lRegion = CreateRectRgn(0, 0, 0, 0)
     frm.Visible = False
 
-End Sub
-
-Public Sub Obtener_RGB(ByVal Color As Long, Rojo As Byte, Verde As Byte, Azul As Byte)
-    
-    Azul = (Color And 16711680) / 65536
-    Verde = (Color And 65280) / 256
-    Rojo = Color And 255
-  
 End Sub
 
 Public Sub ReleaseSurfaceCapture(frm As Form)
@@ -1128,13 +1118,9 @@ End Sub
 
 Public Function IntervaloPermiteClick(Optional ByVal Actualizar As Boolean = True) As Boolean
 
-    Dim TActual As Long
-    
-    TActual = GetTickCount() And &H7FFFFFFF
-    
-    If TActual - Intervalos.Click >= CONST_INTERVALO_CLICK Then
+    If FrameTime - Intervalos.Click >= CONST_INTERVALO_CLICK Then
         If Actualizar Then
-            Intervalos.Click = TActual
+            Intervalos.Click = FrameTime
 
         End If
 
@@ -1150,13 +1136,9 @@ End Function
 
 Public Function IntervaloPermiteHeading(Optional ByVal Actualizar As Boolean = True) As Boolean
 
-    Dim TActual As Long
-    
-    TActual = GetTickCount() And &H7FFFFFFF
-    
-    If TActual - Intervalos.Heading >= CONST_INTERVALO_HEADING Then
+    If FrameTime - Intervalos.Heading >= CONST_INTERVALO_HEADING Then
         If Actualizar Then
-            Intervalos.Heading = TActual
+            Intervalos.Heading = FrameTime
 
         End If
 
@@ -1172,14 +1154,10 @@ End Function
 
 Public Function IntervaloPermiteLLamadaClan() As Boolean
 
-    Dim TActual As Long
-    
-    TActual = GetTickCount() And &H7FFFFFFF
-    
-    If TActual - Intervalos.LLamadaClan >= CONST_INTERVALO_LLAMADACLAN Then
+    If FrameTime - Intervalos.LLamadaClan >= CONST_INTERVALO_LLAMADACLAN Then
         
         '  Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
-        Intervalos.LLamadaClan = TActual
+        Intervalos.LLamadaClan = FrameTime
         IntervaloPermiteLLamadaClan = True
     Else
         IntervaloPermiteLLamadaClan = False
@@ -1191,14 +1169,10 @@ End Function
 
 Public Function IntervaloPermiteAnim() As Boolean
 
-    Dim TActual As Long
-    
-    TActual = GetTickCount() And &H7FFFFFFF
-    
-    If TActual - Intervalos.Anim >= CONST_INTERVALO_ANIM Then
+    If FrameTime - Intervalos.Anim >= CONST_INTERVALO_ANIM Then
         
         '  Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
-        Intervalos.Anim = TActual
+        Intervalos.Anim = FrameTime
         IntervaloPermiteAnim = True
     Else
         IntervaloPermiteAnim = False
@@ -1209,14 +1183,10 @@ End Function
 
 Public Function IntervaloPermiteConectar() As Boolean
 
-    Dim TActual As Long
-    
-    TActual = GetTickCount() And &H7FFFFFFF
-    
-    If TActual - Intervalos.Conectar >= CONST_INTERVALO_Conectar Then
+    If FrameTime - Intervalos.Conectar >= CONST_INTERVALO_Conectar Then
         
         ' Call AddtoRichTextBox(frmMain.RecTxt, "Usar OK.", 255, 0, 0, True, False, False)
-        Intervalos.Conectar = TActual
+        Intervalos.Conectar = FrameTime
         IntervaloPermiteConectar = True
     Else
         IntervaloPermiteConectar = False
@@ -1392,17 +1362,17 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
         Dim i As Byte
  
         For i = 2 To MaxLineas
-            Con(i - 1).t = Con(i).t
+            Con(i - 1).T = Con(i).T
             'Con(i - 1).Color = Con(i).Color
-            Con(i - 1).b = Con(i).b
-            Con(i - 1).g = Con(i).g
-            Con(i - 1).r = Con(i).r
+            Con(i - 1).B = Con(i).B
+            Con(i - 1).G = Con(i).G
+            Con(i - 1).R = Con(i).R
         Next i
  
-        Con(MaxLineas).t = vbCrLf & "[" & Name & "] " & ChatText
-        Con(MaxLineas).b = blue
-        Con(MaxLineas).g = green
-        Con(MaxLineas).r = red
+        Con(MaxLineas).T = vbCrLf & "[" & Name & "] " & ChatText
+        Con(MaxLineas).B = blue
+        Con(MaxLineas).G = green
+        Con(MaxLineas).R = red
         OffSetConsola = 16
  
         UltimaLineavisible = False
@@ -1496,21 +1466,18 @@ Sub AmbientarAudio(ByVal UserMap As Long)
 
     Dim wav As Integer
 
-    'Call Audio.StopWave(AmbientalesBufferIndex)
-    If meteo_estado <> 3 Then
+    If EsNoche Then
    
         wav = ReadField(1, Val(MapDat.ambient), Asc("-"))
 
         If Sound.AmbienteActual <> wav Then
             Sound.LastAmbienteActual = wav
-         
         End If
          
         Sound.Ambient_Play
 
         If wav = 0 Then
             Sound.Ambient_Stop
-
         End If
 
         '  AmbientalesBufferIndex = Audio.PlayWave(Wav & ".wav", , , LoopStyle.Enabled)
@@ -1601,16 +1568,16 @@ Rem S = Cadena a encriptar
 Rem P = Password
 Function EncryptStr(ByVal s As String, ByVal p As String) As String
 
-    Dim i  As Integer, r As String
+    Dim i  As Integer, R As String
 
-    Dim c1 As Integer, C2 As Integer
+    Dim C1 As Integer, C2 As Integer
 
-    r = ""
+    R = ""
 
     If Len(p) > 0 Then
 
         For i = 1 To Len(s)
-            c1 = Asc(mid(s, i, 1))
+            C1 = Asc(mid(s, i, 1))
 
             If i > Len(p) Then
                 C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
@@ -1619,18 +1586,18 @@ Function EncryptStr(ByVal s As String, ByVal p As String) As String
 
             End If
 
-            c1 = c1 + C2 + 64
+            C1 = C1 + C2 + 64
 
-            If c1 > 255 Then c1 = c1 - 256
-            r = r + Chr(c1)
+            If C1 > 255 Then C1 = C1 - 256
+            R = R + Chr(C1)
         Next i
 
     Else
-        r = s
+        R = s
 
     End If
 
-    EncryptStr = r
+    EncryptStr = R
 
 End Function
 
@@ -1639,16 +1606,16 @@ Rem S = Cadena a desencriptar
 Rem P = Password
 Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
 
-    Dim i  As Integer, r As String
+    Dim i  As Integer, R As String
 
-    Dim c1 As Integer, C2 As Integer
+    Dim C1 As Integer, C2 As Integer
 
-    r = ""
+    R = ""
 
     If Len(p) > 0 Then
 
         For i = 1 To Len(s)
-            c1 = Asc(mid(s, i, 1))
+            C1 = Asc(mid(s, i, 1))
 
             If i > Len(p) Then
                 C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
@@ -1657,18 +1624,18 @@ Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
 
             End If
 
-            c1 = c1 - C2 - 64
+            C1 = C1 - C2 - 64
 
-            If Sgn(c1) = -1 Then c1 = 256 + c1
-            r = r + Chr(c1)
+            If Sgn(C1) = -1 Then C1 = 256 + C1
+            R = R + Chr(C1)
         Next i
 
     Else
-        r = s
+        R = s
 
     End If
 
-    UnEncryptStr = r
+    UnEncryptStr = R
 
 End Function
 
@@ -1796,11 +1763,6 @@ Public Sub CrearFantasma(ByVal charindex As Integer)
 
     If charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex = 0 Then Exit Sub
 
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Body.framecounter = 1
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Head.framecounter = 1
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Arma.framecounter = 1
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Casco.framecounter = 1
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Escudo.framecounter = 1
     MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Body.GrhIndex = charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex
     MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Head.GrhIndex = charlist(charindex).Head.Head(charlist(charindex).Heading).GrhIndex
     MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Arma.GrhIndex = charlist(charindex).Arma.WeaponWalk(charlist(charindex).Heading).GrhIndex
@@ -1852,9 +1814,6 @@ Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByV
     '2. Eliminamos objetos DX
     Call Client_UnInitialize_DirectX_Objects
 
-    '3. Cerramos el engine meteorológico
-    Set Meteo_Engine = Nothing
-
     '6. Cerramos los forms y nos vamos
     Call UnloadAllForms
 
@@ -1888,7 +1847,7 @@ Public Function GetTimeFormated(Mins As Integer) As String
 
     Dim Minutitos As Byte
 
-    Dim a         As String
+    Dim A         As String
 
     Horita = Fix(Mins / 60)
     Minutitos = Mins - 60 * Horita

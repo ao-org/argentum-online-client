@@ -25,16 +25,11 @@ Public Const YMinMapSize     As Byte = 1
 Private Const GrhFogata      As Integer = 1521
 
 ' Transparencia de techos
-Public RoofsLight()          As tRoofLight
-
-Type tRoofLight
-    Alpha As Single
-    Color As Long
-End Type
+Public RoofsLight()          As Single
 
 ''
 'Sets a Grh animation to loop indefinitely.
-Private Const INFINITE_LOOPS As Integer = -1
+Public Const INFINITE_LOOPS As Integer = -1
 
 Public MaxGrh                As Long
 
@@ -69,8 +64,8 @@ End Type
 'Posicion en un mapa
 Public Type Position
 
-    x As Long
-    y As Long
+    X As Long
+    Y As Long
 
 End Type
 
@@ -78,8 +73,8 @@ End Type
 Public Type WorldPos
 
     map As Integer
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -115,19 +110,18 @@ End Type
 Public Type grh
 
     GrhIndex As Long
-    framecounter As Single
     speed As Single
-    Started As Byte
+    Started As Long
     Loops As Integer
-    angle As Single
+    Angle As Single
     AnimacionContador As Single
     CantAnim As Long
     Alpha As Byte
     FxIndex As Integer
     
     ' Precalculated
-    x As Single
-    y As Single
+    X As Single
+    Y As Single
 
 End Type
 
@@ -229,13 +223,14 @@ Public Type Char
     scrollDirectionX As Integer
     scrollDirectionY As Integer
     
-    Moving As Byte
+    Moving As Boolean
     MoveOffsetX As Single
     MoveOffsetY As Single
     
     pie As Boolean
     MUERTO As Boolean
     invisible As Boolean
+    TimeCreated As Long
     priv As Byte
     
     dialog As String
@@ -275,7 +270,7 @@ End Type
 'Tipo de las celdas del mapa
 Public Type Light
     Rango As Integer
-    Color As Long
+    Color As RGBA
 End Type
 
 Public Type Fantasma
@@ -306,7 +301,7 @@ Public Type MapBlock
     charindex As Integer
     ObjGrh As grh
     GrhBlend As Single
-    light_value(3) As Long
+    light_value(3) As RGBA
     
     luz As Light
     particle_group As Integer
@@ -460,16 +455,16 @@ End Enum
 '       [END]
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
-Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
+Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
 Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long
 Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 
 'Added by Juan Martín Sotuyo Dodero
-Private Declare Function StretchBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
-Private Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
-Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
+Private Declare Function StretchBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
+Private Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
+Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long) As Long
 'Added by Barrin
 
 'Very percise counter 64bit system counter
@@ -500,8 +495,8 @@ Public Sub Init_TileEngine()
 
     ReDim MapData(XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
     
-    UserPos.x = 50
-    UserPos.y = 50
+    UserPos.X = 50
+    UserPos.Y = 50
     
     MinXBorder = XMinMapSize + (frmmain.renderer.ScaleWidth / 64)
     MaxXBorder = XMaxMapSize - (frmmain.renderer.ScaleWidth / 64)
@@ -519,47 +514,32 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
     If viewPortX < 0 Or viewPortX > frmmain.renderer.ScaleWidth Then Exit Sub
     If viewPortY < 0 Or viewPortY > frmmain.renderer.ScaleHeight Then Exit Sub
 
-    TX = UserPos.x + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
-    TY = UserPos.y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
+    TX = UserPos.X + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
+    TY = UserPos.Y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
 
 End Sub
 
-Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Started As Byte = 2)
+Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Started As Long = -1, Optional ByVal Loops As Integer = INFINITE_LOOPS)
     '*****************************************************************
     'Sets up a grh. MUST be done before rendering
     '*****************************************************************
     grh.GrhIndex = GrhIndex
-    
-    'Ladder Revisar
-    
-    If GrhIndex = 0 Then Exit Sub
-    If Started = 2 Then
-        If GrhData(grh.GrhIndex).NumFrames > 1 Then
-            grh.Started = 1
-            'Grh.speed = 0.9
+
+    If GrhIndex = 0 Or GrhIndex > MaxGrh Then Exit Sub
+
+    If GrhData(GrhIndex).NumFrames > 1 Then
+        If Started >= 0 Then
+            grh.Started = Started
         Else
-            grh.Started = 0
-
+            grh.Started = FrameTime
         End If
-
+        
+        grh.Loops = Loops
+        grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
     Else
-
-        'Make sure the graphic can be started
-        If grh.GrhIndex > MaxGrh Then Exit Sub
-        If GrhData(grh.GrhIndex).NumFrames = 1 Then Started = 0
-        grh.Started = Started
-
+        grh.Started = 0
     End If
-    
-    If grh.Started Then
-        grh.Loops = INFINITE_LOOPS
-    Else
-        grh.Loops = 0
-    End If
-    
-    grh.framecounter = 1
-    grh.speed = GrhData(grh.GrhIndex).speed
-    
+
     'Precalculate texture coordinates
     With GrhData(grh.GrhIndex)
         If .Tx2 = 0 And .FileNum > 0 Then
@@ -601,7 +581,7 @@ End Sub
 Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
 
     With charlist(charindex).Pos
-        EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
+        EstaPCarea = .X > UserPos.X - MinXBorder And .X < UserPos.X + MinXBorder And .Y > UserPos.Y - MinYBorder And .Y < UserPos.Y + MinYBorder
 
     End With
 
@@ -617,10 +597,10 @@ Sub DoPasosFx(ByVal charindex As Integer)
 
         With charlist(charindex)
 
-            If Not .MUERTO And EstaPCarea(charindex) And (.priv = 0 Or .priv > 5) Then
+            If Not .MUERTO And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv Then
                 If .Speeding > 1.3 Then
                    
-                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.X, .Pos.Y), Sound.Calculate_Pan(.Pos.X, .Pos.Y))
                     Exit Sub
 
                 End If
@@ -628,12 +608,12 @@ Sub DoPasosFx(ByVal charindex As Integer)
                 .pie = Not .pie
 
                 If .pie Then
-                    FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
+                    FileNum = GrhData(MapData(.Pos.X, .Pos.Y).Graphic(1).GrhIndex).FileNum
                     TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.X, .Pos.Y), Sound.Calculate_Pan(.Pos.X, .Pos.Y))
                     'Call Audio.PlayWave(SND_PASOS3, .Pos.X, .Pos.Y)
                 Else
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.X, .Pos.Y), Sound.Calculate_Pan(.Pos.X, .Pos.Y))
 
                 End If
 
@@ -674,82 +654,14 @@ Private Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
 
 End Function
 
-Sub MoveCharbyPos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
-
-    On Error Resume Next
-
-    Dim x        As Integer
-
-    Dim y        As Integer
-
-    Dim addx     As Integer
-
-    Dim addy     As Integer
-
-    Dim nHeading As E_Heading
-    
-    With charlist(charindex)
-        x = .Pos.x
-        y = .Pos.y
-        
-        MapData(x, y).charindex = 0
-        
-        addx = nX - x
-        addy = nY - y
-        
-        If Sgn(addx) = 1 Then
-            nHeading = E_Heading.EAST
-
-        End If
-        
-        If Sgn(addx) = -1 Then
-            nHeading = E_Heading.WEST
-
-        End If
-        
-        If Sgn(addy) = -1 Then
-            nHeading = E_Heading.NORTH
-
-        End If
-        
-        If Sgn(addy) = 1 Then
-            nHeading = E_Heading.south
-
-        End If
-        
-        MapData(nX, nY).charindex = charindex
-        
-        .Pos.x = nX
-        .Pos.y = nY
-        
-        .MoveOffsetX = -1 * (TilePixelWidth * addx)
-        .MoveOffsetY = -1 * (TilePixelHeight * addy)
-        
-        .Moving = 1
-        .Heading = nHeading
-        
-        .scrollDirectionX = Sgn(addx)
-        .scrollDirectionY = Sgn(addy)
-
-    End With
-    
-    If Not EstaPCarea(charindex) Then Call Dialogos.RemoveDialog(charindex)
-    
-    If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
-        Call EraseChar(charindex)
-
-    End If
-
-End Sub
-
 Sub MoveScreen(ByVal nHeading As E_Heading)
 
     '******************************************
     'Starts the screen moving in a direction
     '******************************************
-    Dim x  As Integer
+    Dim X  As Integer
 
-    Dim y  As Integer
+    Dim Y  As Integer
 
     Dim TX As Integer
 
@@ -759,43 +671,43 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
     Select Case nHeading
 
         Case E_Heading.NORTH
-            y = -1
+            Y = -1
         
         Case E_Heading.EAST
-            x = 1
+            X = 1
         
         Case E_Heading.south
-            y = 1
+            Y = 1
         
         Case E_Heading.WEST
-            x = -1
+            X = -1
 
     End Select
     
     'Fill temp pos
-    TX = UserPos.x + x
-    TY = UserPos.y + y
+    TX = UserPos.X + X
+    TY = UserPos.Y + Y
     
     'Check to see if its out of bounds
     If TX < MinXBorder Or TX > MaxXBorder Or TY < MinYBorder Or TY > MaxYBorder Then
         Exit Sub
     Else
         'Start moving... MainLoop does the rest
-        AddtoUserPos.x = x
-        UserPos.x = TX
-        AddtoUserPos.y = y
-        UserPos.y = TY
+        AddtoUserPos.X = X
+        UserPos.X = TX
+        AddtoUserPos.Y = Y
+        UserPos.Y = TY
         UserMoving = 1
         
-        bTecho = HayTecho(UserPos.x, UserPos.y)
+        bTecho = HayTecho(UserPos.X, UserPos.Y)
 
     End If
 
 End Sub
 
-Public Function HayTecho(ByVal x As Integer, ByVal y As Integer) As Boolean
+Public Function HayTecho(ByVal X As Integer, ByVal Y As Integer) As Boolean
     
-    Select Case MapData(x, y).Trigger
+    Select Case MapData(X, Y).Trigger
         
         Case 1, 2, 4, 6
             HayTecho = True
@@ -816,13 +728,13 @@ Public Function HayFogata(ByRef location As Position) As Boolean
 
     Dim k As Long
     
-    For j = UserPos.x - 13 To UserPos.x + 13
-        For k = UserPos.y - 15 To UserPos.y + 15
+    For j = UserPos.X - 13 To UserPos.X + 13
+        For k = UserPos.Y - 15 To UserPos.Y + 15
 
             If InMapBounds(j, k) Then
                 If MapData(j, k).ObjGrh.GrhIndex = GrhFogata Then
-                    location.x = j
-                    location.y = k
+                    location.X = j
+                    location.Y = k
                     
                     HayFogata = True
                     Exit Function
@@ -842,13 +754,13 @@ Public Function HayWavAmbiental(ByRef location As Position) As Boolean
 
     Dim k As Long
     
-    For j = UserPos.x - 13 To UserPos.x + 13
-        For k = UserPos.y - 15 To UserPos.y + 15
+    For j = UserPos.X - 13 To UserPos.X + 13
+        For k = UserPos.Y - 15 To UserPos.Y + 15
 
             If InMapBounds(j, k) Then
                 If MapData(j, k).Trigger = 150 Then
-                    location.x = j
-                    location.y = k
+                    location.X = j
+                    location.Y = k
                     
                     '  HayFogata = True
                     '    Exit Function
@@ -886,25 +798,25 @@ End Function
 '
 ' @return   True if the load was successfull, False otherwise.
 
-Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Heading) As Boolean
+Function LegalPos(ByVal X As Integer, ByVal Y As Integer, ByVal Heading As E_Heading) As Boolean
 
     '*****************************************************************
     'Checks to see if a tile position is legal
     '*****************************************************************
     'Limites del mapa
-    If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
+    If X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder Then
         Exit Function
     End If
     
     '¿Hay un personaje?
-    If MapData(x, y).charindex > 0 Then
-        If Not charlist(MapData(x, y).charindex).MUERTO Then
+    If MapData(X, Y).charindex > 0 Then
+        If Not charlist(MapData(X, Y).charindex).MUERTO Then
             Exit Function
         End If
     End If
     
     'Tile Bloqueado?
-    If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 Then
+    If (MapData(X, Y).Blocked And 2 ^ (Heading - 1)) <> 0 Then
         Exit Function
     End If
 
@@ -923,24 +835,24 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     ' Exit Function
     '  End If
     
-    If UserMontado And MapData(x, y).Trigger > 9 Then
+    If UserMontado And MapData(X, Y).Trigger > 9 Then
         Exit Function
 
     End If
 
     '
-    If UserNadando And MapData(x, y).Trigger = 8 Then
+    If UserNadando And MapData(X, Y).Trigger = 8 Then
         LegalPos = True
         Exit Function
 
     End If
    
-    If UserNavegando <> ((MapData(x, y).Blocked And FLAG_AGUA) <> 0 And (MapData(x, y).Blocked And FLAG_COSTA) = 0) Then
+    If UserNavegando <> ((MapData(X, Y).Blocked And FLAG_AGUA) <> 0 And (MapData(X, Y).Blocked And FLAG_COSTA) = 0) Then
         Exit Function
 
     End If
     
-    If UserNavegando And MapData(x, y).Trigger = 8 And Not UserNadando And Not UserEstado = 1 Then
+    If UserNavegando And MapData(X, Y).Trigger = 8 And Not UserNadando And Not UserEstado = 1 Then
         If Not UserAvisadoBarca Then
             Call AddtoRichTextBox(frmmain.RecTxt, "¡Atención! El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 255, 255, 255, True, False, False)
             UserAvisadoBarca = True
@@ -961,12 +873,12 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
 
 End Function
 
-Function InMapBounds(ByVal x As Integer, ByVal y As Integer) As Boolean
+Function InMapBounds(ByVal X As Integer, ByVal Y As Integer) As Boolean
 
     '*****************************************************************
     'Checks to see if a tile position is in the maps bounds
     '*****************************************************************
-    If x < XMinMapSize Or x > XMaxMapSize Or y < YMinMapSize Or y > YMaxMapSize Then
+    If X < XMinMapSize Or X > XMaxMapSize Or Y < YMinMapSize Or Y > YMaxMapSize Then
         Exit Function
 
     End If
@@ -1000,11 +912,6 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
 
     If GrhIndex = 0 Then Exit Sub
 
-    'Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, _
-     ByVal X As Integer, ByVal Y As Integer, _
-     ByVal alpha As Boolean, ByVal angle As Single, _
-     Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
-
     Static Picture As RECT
 
     With Picture
@@ -1016,31 +923,19 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
 
     End With
 
-    Dim s(3) As Long
-
-    s(0) = -1
-    s(1) = -1
-    s(2) = -1
-    s(3) = -1
-
     Call DirectDevice.BeginScene
     Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1#, 0)
     
-    Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
+    Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, COLOR_WHITE, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
 
     Call DirectDevice.EndScene
     Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
     
 End Sub
 
-Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False, Optional ByVal colorlong As Long = &H0)
+Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False, Optional ByVal ClearColor As Long = &O0)
 
     If GrhIndex = 0 Then Exit Sub
-
-    'Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, _
-     ByVal X As Integer, ByVal Y As Integer, _
-     ByVal alpha As Boolean, ByVal angle As Single, _
-     Optional ByVal ModSizeX2 As Byte = 0, Optional ByVal color As Long = -1)
 
     Static Picture As RECT
 
@@ -1053,18 +948,10 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
 
     End With
 
-    Dim s(3) As Long
-
-    s(0) = -1
-    s(1) = -1
-    s(2) = -1
-    s(3) = -1
-
-Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, colorlong, 1#, 0)
     Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
     
-    
-    Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, s, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
+    Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, COLOR_WHITE, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
                            
     Call DirectDevice.EndScene
     Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
@@ -1112,10 +999,10 @@ Public Function RenderSounds()
 
 End Function
 
-Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As Long) As Boolean
+Function HayUserAbajo(ByVal X As Integer, ByVal Y As Integer, ByVal GrhIndex As Long) As Boolean
 
     If GrhIndex > 0 Then
-        HayUserAbajo = charlist(UserCharIndex).Pos.x >= x - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.x <= x + (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.y >= y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).Pos.y <= y
+        HayUserAbajo = charlist(UserCharIndex).Pos.X >= X - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.X <= X + (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.Y >= Y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).Pos.Y <= Y
 
     End If
 
@@ -1158,9 +1045,9 @@ Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal sr
     'Last Modify Date: 8/30/2004
     'Creates a Mask hDC, and sets the source hDC to work for trans bliting.
     '**************************************************************
-    Dim x          As Integer
+    Dim X          As Integer
 
-    Dim y          As Integer
+    Dim Y          As Integer
 
     Dim TransColor As Long
 
@@ -1180,44 +1067,44 @@ Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal sr
 
     'Make it a mask (set background to black and foreground to white)
     'And set the sprite's background white
-    For y = src_y To src_height + src_y
-        For x = src_x To src_width + src_x
+    For Y = src_y To src_height + src_y
+        For X = src_x To src_width + src_x
 
-            If GetPixel(hdcsrc, x, y) = TransColor Then
-                SetPixel MaskDC, x, y, vbWhite
-                SetPixel hdcsrc, x, y, vbBlack
+            If GetPixel(hdcsrc, X, Y) = TransColor Then
+                SetPixel MaskDC, X, Y, vbWhite
+                SetPixel hdcsrc, X, Y, vbBlack
             Else
-                SetPixel MaskDC, x, y, vbBlack
+                SetPixel MaskDC, X, Y, vbBlack
 
             End If
 
-        Next x
-    Next y
+        Next X
+    Next Y
 
 End Sub
 
-Public Function Convert_Tile_To_View_X(ByVal x As Integer) As Integer
+Public Function Convert_Tile_To_View_X(ByVal X As Integer) As Integer
     '**************************************************************
     'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
     'Last Modify Date: 10/07/2002
     'Convert tile position into position in view area
     '**************************************************************
     'If engine_windowed Then
-    Convert_Tile_To_View_X = ((x - 1) * 32)
+    Convert_Tile_To_View_X = ((X - 1) * 32)
 
     ' Else
     '  Convert_Tile_To_View_X = view_screen_left + ((x - 1) * base_tile_size)
     '  End If
 End Function
 
-Public Function Convert_Tile_To_View_Y(ByVal y As Integer) As Integer
+Public Function Convert_Tile_To_View_Y(ByVal Y As Integer) As Integer
     '**************************************************************
     'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
     'Last Modify Date: 10/07/2002
     'Convert tile position into position in view area
     '**************************************************************
     ' If engine_windowed Then
-    Convert_Tile_To_View_Y = ((y - 1) * 32)
+    Convert_Tile_To_View_Y = ((Y - 1) * 32)
 
     'Else
     '   Convert_Tile_To_View_Y = view_screen_top + ((y - 1) * base_tile_size)

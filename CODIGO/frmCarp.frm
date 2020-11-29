@@ -283,7 +283,7 @@ Private Sub lstArmas_Click()
 
     desc.Caption = ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).Texto
 
-    Call Draw_Grh_Picture(ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).GrhIndex, Me.picture1, 0, 0, False, 0, 0)
+    Call Draw_Grh_Picture(ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).GrhIndex, Me.picture1, 0, 0, False, 0, COLOR_WHITE(0))
     picture1.Visible = True
     
 End Sub

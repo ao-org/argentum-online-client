@@ -306,14 +306,14 @@ Begin VB.Form frmOpciones
    End
    Begin VB.Image chko 
       Height          =   255
-      Index           =   0
+      Index           =   1
       Left            =   490
       Top             =   2160
       Width           =   255
    End
    Begin VB.Image chko 
       Height          =   255
-      Index           =   1
+      Index           =   0
       Left            =   490
       Top             =   1810
       Width           =   255
@@ -342,7 +342,7 @@ Private Subir       As Boolean
 
 Public bmoving      As Boolean
 
-Public dX           As Integer
+Public dx           As Integer
 
 Public dy           As Integer
 

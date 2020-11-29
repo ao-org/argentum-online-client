@@ -97,14 +97,6 @@ Public Enum TimersIndex
 End Enum
 
 ''
-' Window´s API Function.
-' A milisecond pricision counter.
-'
-' @return   Miliseconds since midnight.
-
-Private Declare Function GetTickCount Lib "kernel32" () As Long
-
-''
 ' Sets a new intrval for a timer.
 '
 ' @param TimerIndex Timer´s Index
@@ -182,7 +174,7 @@ Public Sub Pause(ByVal TimerIndex As TimersIndex)
     
     Timer(TimerIndex).Run = False 'Don´t allow the timer to run.
     
-    Timer(TimerIndex).CurrentTick = (GetTickCount() And &H7FFFFFFF) - Timer(TimerIndex).StartTick 'Calculates acutual tick
+    Timer(TimerIndex).CurrentTick = FrameTime - Timer(TimerIndex).StartTick 'Calculates acutual tick
 
 End Sub
 
@@ -207,13 +199,13 @@ Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boole
     
     If Not Timer(TimerIndex).Run Then Exit Function 'If we weren´t allowed to run, exit function
     
-    Timer(TimerIndex).CurrentTick = (GetTickCount() And &H7FFFFFFF) - Timer(TimerIndex).StartTick 'Calcutates CurrentTick
+    Timer(TimerIndex).CurrentTick = FrameTime - Timer(TimerIndex).StartTick 'Calcutates CurrentTick
     
     If Timer(TimerIndex).CurrentTick >= Timer(TimerIndex).Interval Then
         Check = True 'We have Ticked!
 
         If Restart Then
-            Timer(TimerIndex).StartTick = (GetTickCount() And &H7FFFFFFF) 'Restart Timer (Nicer than calling Restart() )
+            Timer(TimerIndex).StartTick = FrameTime 'Restart Timer (Nicer than calling Restart() )
 
         End If
 
@@ -235,7 +227,7 @@ Public Sub Restart(ByVal TimerIndex As TimersIndex)
     '*************************************************
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
     
-    Timer(TimerIndex).StartTick = (GetTickCount() And &H7FFFFFFF)
+    Timer(TimerIndex).StartTick = FrameTime
 
 End Sub
 

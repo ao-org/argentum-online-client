@@ -23,7 +23,7 @@ Private RVNormalFont As New StdFont
 Type RVList
 
     RenderVal      As Double  'Cantidad.
-    ColorRGB       As Long     'Color.
+    ColorRGB       As RGBA     'Color.
     RenderType     As RVType   'Tipo, se usa para saber si es apu o no.
     'RenderFont     As New StdFont  'Efecto del apu.
     TimeRendered   As Single  'Tiempo transcurrido.
@@ -32,11 +32,11 @@ Type RVList
 
 End Type
  
-Sub Create(ByVal x As Byte, ByVal y As Byte, ByVal ColorRGB As Long, ByVal rValue As Double, ByVal eMode As Byte)
+Sub Create(ByVal X As Byte, ByVal Y As Byte, ColorRGB As RGBA, ByVal rValue As Double, ByVal eMode As Byte)
      
     ' @ Agrega un nuevo valor.
      
-    With MapData(x, y).RenderValue
+    With MapData(X, Y).RenderValue
          
         .Activated = True
         .ColorRGB = ColorRGB
@@ -49,13 +49,13 @@ Sub Create(ByVal x As Byte, ByVal y As Byte, ByVal ColorRGB As Long, ByVal rValu
  
 End Sub
  
-Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY As Integer, ByVal TicksPerFrame As Single)
+Sub Draw(ByVal X As Byte, ByVal Y As Byte, ByVal PixelX As Integer, ByVal PixelY As Integer, ByVal TicksPerFrame As Single)
  
     ' @ Dibuja un valor
     
     Dim Text As String, Width As Integer
      
-    With MapData(x, y).RenderValue
+    With MapData(X, Y).RenderValue
          
         If (Not .Activated) Or (Not .RenderVal <> 0) Then Exit Sub
         If .TimeRendered < RENDER_TIME Then
@@ -68,8 +68,7 @@ Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY
 
             End If
                 
-            .ColorRGB = ModifyColor(.TimeRendered, .RenderType)
-            Call ColorToDX8(.ColorRGB)
+            Call ModifyColor(.ColorRGB, .TimeRendered, .RenderType)
                 
             Select Case .RenderType
 
@@ -94,7 +93,7 @@ Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY
                
             'Si llego al tiempo lo limpio
             If .TimeRendered <= 0 Then
-                Call Clear(x, y)
+                Call Clear(X, Y)
 
             End If
                 
@@ -104,13 +103,13 @@ Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY
  
 End Sub
  
-Private Sub Clear(ByVal x As Byte, ByVal y As Byte)
+Private Sub Clear(ByVal X As Byte, ByVal Y As Byte)
  
     ' @ Limpia todo.
      
-    With MapData(x, y).RenderValue
+    With MapData(X, Y).RenderValue
         .Activated = False
-        .ColorRGB = 0
+        .ColorRGB = COLOR_EMPTY
         .RenderVal = 0
         .TimeRendered = 0
 
@@ -118,30 +117,7 @@ Private Sub Clear(ByVal x As Byte, ByVal y As Byte)
  
 End Sub
 
-Public Function ColorToDX8(ByVal Long_Color As Long) As Long
-
-    ' DX8 engine
-    Dim temp_color As String
-
-    Dim red        As Integer, blue As Integer, green As Integer
-    
-    temp_color = Hex$(Long_Color)
-
-    If Len(temp_color) < 6 Then
-        'Give is 6 digits for easy RGB conversion.
-        temp_color = String(6 - Len(temp_color), "0") + temp_color
-
-    End If
-    
-    red = CLng("&H" + mid$(temp_color, 1, 2))
-    green = CLng("&H" + mid$(temp_color, 3, 2))
-    blue = CLng("&H" + mid$(temp_color, 5, 2))
-    
-    ColorToDX8 = D3DColorXRGB(red, green, blue)
-
-End Function
-
-Private Function ModifyColor(ByVal TimeNowRendered As Integer, ByVal RenderType As RVType) As Long
+Private Sub ModifyColor(Color As RGBA, ByVal TimeNowRendered As Integer, ByVal RenderType As RVType)
  
     ' @ Se usa para los "efectos" en el tiempo.
     
@@ -157,25 +133,24 @@ Private Function ModifyColor(ByVal TimeNowRendered As Integer, ByVal RenderType 
     Select Case RenderType
 
         Case RVType.ePuñal
-            ModifyColor = ARGB(0, 0, 0, TimeX2)
+            Call SetRGBA(Color, 0, 0, 0, TimeX2)
 
         Case RVType.eNormal
-            ModifyColor = ARGB(255, 0, 0, TimeX2)
+            Call SetRGBA(Color, 255, 0, 0, TimeX2)
 
         Case RVType.eMagic
-            ModifyColor = ARGB(0, 0, 0, TimeX2)
+            Call SetRGBA(Color, 0, 0, 0, TimeX2)
 
         Case RVType.eGold
-            ModifyColor = ARGB(204, 193, 115, TimeX2)
+            Call SetRGBA(Color, 204, 193, 115, TimeX2)
 
-            ' ModifyColor = ARGB(0, 0, 0, TimeX2)
         Case RVType.eExp
-            ModifyColor = ARGB(0, 169, 255, TimeX2)
+            Call SetRGBA(Color, 0, 169, 255, TimeX2)
 
         Case RVType.eTrabajo
-            ModifyColor = ARGB(255, 255, 255, TimeX2)
+            Call SetRGBA(Color, 255, 255, 255, TimeX2)
 
     End Select
  
-End Function
+End Sub
 
