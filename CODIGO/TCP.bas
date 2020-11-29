@@ -43,7 +43,7 @@ Sub Login()
             'EntradaX = 90
             CPHeading = 3
             CPEquipado = True
-            Call SwitchMapIAO(UserMap)
+            Call SwitchMap(UserMap)
             ' frmCrearPersonaje.Show
             QueRender = 3
             

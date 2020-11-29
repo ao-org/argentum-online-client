@@ -574,7 +574,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
             
             Case "/HORA"
-                Call Protocol.WriteServerTime
+                If notNullArguments And EsGM Then
+                    Call WriteSetTime(GetTimeFromString(ArgumentosRaw))
+                Else
+                    Call Protocol.WriteServerTime
+                End If
             
             Case "/DONDE"
                 If notNullArguments Then
@@ -702,6 +706,35 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     End If
 
+                End If
+                
+            Case "/LUZ"
+                If EsGM Then
+                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then
+                        Call LucesRedondas.Create_Light_To_Map(UserPos.X, UserPos.Y, COLOR_WHITE(0), Val(ArgumentosRaw))
+                    Else
+                        Call LucesRedondas.Create_Light_To_Map(UserPos.X, UserPos.Y, COLOR_WHITE(0), 10)
+                    End If
+                End If
+                
+            Case "/LUZMAPA"
+                If EsGM Then
+                    If notNullArguments Then
+                        If CantidadArgumentos = 3 Then
+                            If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And _
+                                ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) And _
+                                ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Integer) Then
+                                
+                                Call SetGlobalLight(D3DColorXRGB(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2)))
+                                Call MapUpdateGlobalLight
+                                Exit Sub
+
+                            End If
+                        End If
+                    End If
+
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /luzmapa R G B.")
                 End If
                 
             Case "/DESBUGGEAR"
@@ -1105,32 +1138,25 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/CC"
-
-                'Call WriteSpawnListRequest
                 If EsGM Then
-
-                    Dim i As Integer
-        
-                    For i = 1 To NumNpcs
-                        Call frmSpawnList.lstCriaturas.AddItem(NpcData(i).name)
-                    Next i
-
+                    frmSpawnList.FillList
                     frmSpawnList.Show , frmmain
-
                 End If
                 
             Case "/CO"
 
                 'Call WriteSpawnListRequest
                 If EsGM Then
+                
+                    Dim i As Long
 
                     For i = 1 To NumOBJs
 
-                        If ObjData(i).name <> "" Then
+                        If ObjData(i).Name <> "" Then
 
                             Dim subelemento As ListItem
 
-                            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).name)
+                            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
                             
                             subelemento.SubItems(1) = i
 
@@ -1935,6 +1961,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/NOCHE"
                 Call WriteNight
+                
+            Case "/DIA"
+                Call WriteDay
                 
             Case "/ECHARTODOSPJS"
                 Call WriteKickAllChars

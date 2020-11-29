@@ -75,10 +75,10 @@ Public Type TYPE_VERTEX
 
     x       As Single
     y       As Single
-    Z       As Single
- 
-    Color   As Long
-   
+    z       As Single
+
+    Color   As RGBA
+
     TX      As Single
     TY      As Single
 
@@ -117,21 +117,21 @@ Public Function General_Get_Free_Ram_Bytes() As Long
 
 End Function
 
-Public Function ARGB(ByVal r As Long, ByVal g As Long, ByVal b As Long, ByVal a As Long) As Long
+Public Function ARGB(ByVal R As Long, ByVal G As Long, ByVal B As Long, ByVal A As Long) As Long
         
     Dim c As Long
         
-    If a > 127 Then
-        a = a - 128
-        c = a * 2 ^ 24 Or &H80000000
-        c = c Or r * 2 ^ 16
-        c = c Or g * 2 ^ 8
-        c = c Or b
+    If A > 127 Then
+        A = A - 128
+        c = A * 2 ^ 24 Or &H80000000
+        c = c Or R * 2 ^ 16
+        c = c Or G * 2 ^ 8
+        c = c Or B
     Else
-        c = a * 2 ^ 24
-        c = c Or r * 2 ^ 16
-        c = c Or g * 2 ^ 8
-        c = c Or b
+        c = A * 2 ^ 24
+        c = c Or R * 2 ^ 16
+        c = c Or G * 2 ^ 8
+        c = c Or B
 
     End If
     

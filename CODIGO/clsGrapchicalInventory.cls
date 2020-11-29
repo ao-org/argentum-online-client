@@ -229,119 +229,119 @@ Public Property Get IsItemSelected() As Boolean
     IsItemSelected = (UserInventory(SelectedItem).GrhIndex > 0)
 End Property
 
-Public Property Get MaxHit(ByVal Slot As Byte) As Integer
+Public Property Get MaxHit(ByVal slot As Byte) As Integer
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the max hit of the selected item
     '***************************************************
-    MaxHit = UserInventory(Slot).MaxHit
+    MaxHit = UserInventory(slot).MaxHit
 
 End Property
 
-Public Property Get MinHit(ByVal Slot As Byte) As Integer
+Public Property Get MinHit(ByVal slot As Byte) As Integer
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the min hit of the selected item
     '***************************************************
-    MinHit = UserInventory(Slot).MinHit
+    MinHit = UserInventory(slot).MinHit
 
 End Property
 
-Public Property Get Def(ByVal Slot As Byte) As Integer
+Public Property Get Def(ByVal slot As Byte) As Integer
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the defense of the selected item
     '***************************************************
-    Def = UserInventory(Slot).Def
+    Def = UserInventory(slot).Def
 
 End Property
 
-Public Property Get GrhIndex(ByVal Slot As Byte) As Long
+Public Property Get GrhIndex(ByVal slot As Byte) As Long
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the grh index of the selected item
     '***************************************************
-    GrhIndex = UserInventory(Slot).GrhIndex
+    GrhIndex = UserInventory(slot).GrhIndex
 
 End Property
 
-Public Property Get Valor(ByVal Slot As Byte) As Single
+Public Property Get Valor(ByVal slot As Byte) As Single
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the value of the selected item
     '***************************************************
-    Valor = UserInventory(Slot).Valor
+    Valor = UserInventory(slot).Valor
 
 End Property
 
-Public Property Get Amount(ByVal Slot As Byte) As Long
+Public Property Get Amount(ByVal slot As Byte) As Long
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's amount
     '***************************************************
-    If Slot = FLAGORO Then
+    If slot = FLAGORO Then
         Amount = UserGLD
-    ElseIf Slot >= LBound(UserInventory) And Slot <= UBound(UserInventory) Then
-        Amount = UserInventory(Slot).Amount
+    ElseIf slot >= LBound(UserInventory) And slot <= UBound(UserInventory) Then
+        Amount = UserInventory(slot).Amount
 
     End If
 
 End Property
 
-Public Property Get OBJIndex(ByVal Slot As Byte) As Integer
+Public Property Get OBJIndex(ByVal slot As Byte) As Integer
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's object index
     '***************************************************
-    OBJIndex = UserInventory(Slot).OBJIndex
+    OBJIndex = UserInventory(slot).OBJIndex
 
 End Property
 
-Public Property Get ObjType(ByVal Slot As Byte) As Integer
+Public Property Get ObjType(ByVal slot As Byte) As Integer
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's object type
     '***************************************************
-    ObjType = UserInventory(Slot).ObjType
+    ObjType = UserInventory(slot).ObjType
 
 End Property
 
-Public Property Get ItemName(ByVal Slot As Byte) As String
+Public Property Get ItemName(ByVal slot As Byte) As String
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves the selected item's name
     '***************************************************
-    ItemName = UserInventory(Slot).Name
+    ItemName = UserInventory(slot).Name
 
 End Property
 
-Public Property Get Equipped(ByVal Slot As Byte) As Boolean
+Public Property Get Equipped(ByVal slot As Byte) As Boolean
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves True if the item at the given pos is eqiupped
     '***************************************************
-    Equipped = UserInventory(Slot).Equipped
+    Equipped = UserInventory(slot).Equipped
 
 End Property
 
-Public Property Get PuedeUsar(ByVal Slot As Byte) As Byte
+Public Property Get PuedeUsar(ByVal slot As Byte) As Byte
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 27/07/04
     'Retrieves True if the item at the given pos is eqiupped
     '***************************************************
-    PuedeUsar = UserInventory(Slot).PuedeUsar
+    PuedeUsar = UserInventory(slot).PuedeUsar
 
 End Property
 
@@ -371,16 +371,16 @@ Public Sub ReDraw()
 
 End Sub
 
-Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount As Integer, ByVal eEquipped As Byte, ByVal eGrhIndex As Long, ByVal eObjType As Integer, ByVal eMaxHit As Integer, ByVal eMinHit As Integer, ByVal eDef As Integer, ByVal eValor As Single, ByVal eName As String, ByVal PuedeUsar As Byte)
+Public Sub SetItem(ByVal slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount As Integer, ByVal eEquipped As Byte, ByVal eGrhIndex As Long, ByVal eObjType As Integer, ByVal eMaxHit As Integer, ByVal eMinHit As Integer, ByVal eDef As Integer, ByVal eValor As Single, ByVal eName As String, ByVal PuedeUsar As Byte)
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/04/06
     'Sets all data for a given inventory slot
     '***************************************************
 
-    If Slot < 1 Or Slot > InvMaxSlots Then Exit Sub
+    If slot < 1 Or slot > InvMaxSlots Then Exit Sub
 
-    With UserInventory(Slot)
+    With UserInventory(slot)
         .Amount = eAmount
         .Def = eDef
         .Equipped = eEquipped
@@ -472,7 +472,7 @@ Public Sub DrawInventory()
     
     Dim tmpString As String
 
-    Dim color(3)  As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
+    Dim Color(3)  As RGBA
     
     InvNeedsRedraw = False
 
@@ -500,27 +500,21 @@ Public Sub DrawInventory()
         End If
 
         If InvSelectedItem = i Then
-            Engine_Draw_Box x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, D3DColorARGB(100, 100, 100, 100)
+            Engine_Draw_Box x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(100, 100, 100, 100)
         End If
             
         If UserInventory(i).GrhIndex Then
             If UserInventory(i).PuedeUsar > 0 Then
-                color(0) = D3DColorXRGB(255, 100, 100)
-                color(1) = D3DColorXRGB(255, 100, 100)
-                color(2) = D3DColorXRGB(255, 100, 100)
-                color(3) = D3DColorXRGB(255, 100, 100)
+                Call RGBAList(Color, 255, 100, 100)
                 
-                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, color)
+                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, Color)
 
             Else
                 Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, COLOR_WHITE())
             End If
             
             If ShowQuantities Then
-                color(0) = RGB(239, 228, 176)
-                color(1) = RGB(239, 228, 176)
-                color(2) = RGB(239, 228, 176)
-                color(3) = RGB(239, 228, 176)
+                Call RGBAList(Color, 239, 228, 176)
                 
                 tmpString = UserInventory(i).Amount
     
@@ -529,9 +523,9 @@ Public Sub DrawInventory()
                 End If
                 
                 If InvSelectedItem <> i Then
-                    Engine_Text_Render_LetraChica tmpString, x + LETRA_CHICA_X, y + LETRA_CHICA_Y, color, 4, True
+                    Engine_Text_Render_LetraChica tmpString, x + LETRA_CHICA_X, y + LETRA_CHICA_Y, Color, 4, True
                 Else
-                    Engine_Text_Render tmpString, x + LETRA_GRANDE_X, y + LETRA_GRANDE_Y, color, 1, True
+                    Engine_Text_Render tmpString, x + LETRA_GRANDE_X, y + LETRA_GRANDE_Y, Color, 1, True
                 End If
             
                 If UserInventory(i).Equipped Then
@@ -547,15 +541,11 @@ End Sub
 
 Public Sub DrawDraggedItem()
 
-    Dim color(3) As Long
+    Dim Color(3) As RGBA
 
     If Dragging > 0 Then
-        color(0) = D3DColorARGB(200, 255, 255, 255)
-        color(1) = D3DColorARGB(200, 255, 255, 255)
-        color(2) = D3DColorARGB(200, 255, 255, 255)
-        color(3) = D3DColorARGB(200, 255, 255, 255)
-        Call Draw_GrhColor(UserInventory(Dragging).GrhIndex, XDrag - HALF_ITEM_SIZE, YDrag - HALF_ITEM_SIZE, color)
-
+        Call RGBAList(Color, 255, 255, 255, 200)
+        Call Draw_GrhColor(UserInventory(Dragging).GrhIndex, XDrag - HALF_ITEM_SIZE, YDrag - HALF_ITEM_SIZE, Color)
     End If
 
 End Sub
@@ -568,14 +558,14 @@ Private Sub InventoryWindow_MouseDown(Button As Integer, Shift As Integer, x As 
         If x < InvOffsetX Or y < InvOffsetY Or x >= InvOffsetX + InvWidth Or y >= InvOffsetY + InvHeight Then Exit Sub
         
         ' Obtenemos el slot
-        Dim Slot As Byte
+        Dim slot As Byte
 
-        Slot = GetSlot(x, y)
+        slot = GetSlot(x, y)
 
         ' Si hay un item, iniciamos el drag
-        If Slot > 0 Then
-            If UserInventory(Slot).GrhIndex > 0 Then
-                Dragging = Slot
+        If slot > 0 Then
+            If UserInventory(slot).GrhIndex > 0 Then
+                Dragging = slot
                 XDrag = x
                 YDrag = y
             End If
@@ -614,14 +604,14 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
     If y > InventoryWindow.ScaleHeight - HALF_ITEM_SIZE Then y = InventoryWindow.ScaleHeight - HALF_ITEM_SIZE
 
     ' Calculo el slot
-    Dim Slot As Byte
+    Dim slot As Byte
 
-    Slot = GetSlot(x, y)
+    slot = GetSlot(x, y)
 
     ' Si estamos arrastrando y soltamos el clic derecho
     If Dragging > 0 And Button = vbRightButton Then
         ' Disparo un evento para que la lógica del drag&drop sea independiente al inventario
-        RaiseEvent ItemDropped(Dragging, Slot, x, y)
+        RaiseEvent ItemDropped(Dragging, slot, x, y)
 
         ' Dejo de dibujar el item arrastrado
         Dragging = 0
@@ -630,12 +620,12 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
     End If
     
     ' Si es un slot válido
-    If Slot > 0 Then
+    If slot > 0 Then
 
         ' Si no hay un item en el slot
-        If UserInventory(Slot).GrhIndex <= 0 Then
+        If UserInventory(slot).GrhIndex <= 0 Then
             ' Deseleccionamos
-            Slot = 0
+            slot = 0
 
         End If
         
@@ -646,8 +636,8 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
     End If
 
     ' Si el slot cambio, renderizamos
-    If Slot <> InvSelectedItem Then
-        InvSelectedItem = Slot
+    If slot <> InvSelectedItem Then
+        InvSelectedItem = slot
         InvNeedsRedraw = True
 
     End If

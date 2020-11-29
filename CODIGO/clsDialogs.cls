@@ -80,7 +80,7 @@ Private Type dialog
     startTime   As Long
     lifeTime    As Long
     charindex   As Integer
-    color       As Long
+    Color       As Long
     renderable  As Boolean
     Sube        As Byte
     Alpha       As Byte
@@ -98,10 +98,6 @@ Private dialogCount              As Byte
 ''
 ' the size of the font being used to render
 Private usedFont                 As StdFont
-
-''
-' A millisecond precision timer
-Private Declare Function GetTickCount Lib "kernel32" () As Long
 
 ''
 ' Initializes the instance of the class.
@@ -179,7 +175,7 @@ End Function
 ' @remarks  If there are no more free slots, and the char didn't have a previous dialog,
 '           the chat is ignored.
 
-Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal color As Long)
+Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal Color As Long)
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -209,9 +205,9 @@ Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal 
     
     With dialogs(slot)
         .charindex = charindex
-        .color = color
+        .Color = Color
         .renderable = False
-        .startTime = (GetTickCount() And &H7FFFFFFF)
+        .startTime = FrameTime
         .textLine = FormatChat(chat)
         .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(chat))
         .Alpha = 255
@@ -367,7 +363,7 @@ Public Sub render()
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
 
-            If ((GetTickCount() And &H7FFFFFFF) - .startTime) >= .lifeTime Then
+            If FrameTime - .startTime >= .lifeTime Then
                 Call RemoveDialog(.charindex)
                 
                 removedDialogs = removedDialogs + 1
@@ -377,7 +373,7 @@ Public Sub render()
                 'Render it
                 For j = 0 To UBound(.textLine())
                 
-                    Call Text_Render_ext(.textLine(j), .y + offset, .x, 400, 15, .color, True, DT_TOP Or DT_CENTER)
+                    Call Text_Render_ext(.textLine(j), .y + offset, .x, 400, 15, .Color, True, DT_TOP Or DT_CENTER)
                     offset = offset + usedFont.size + 5
                 Next j
                 

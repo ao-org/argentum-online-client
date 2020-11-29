@@ -19,7 +19,7 @@ Private Type SURFACE_ENTRY_DYN
 
     FileName As Integer
     UltimoAcceso As Long
-    texture As Direct3DTexture8
+    Texture As Direct3DTexture8
     size As Long
     texture_width As Integer
     texture_height As Integer
@@ -45,8 +45,6 @@ Private mCantidadGraficos            As Integer
 
 Private mFreeMemoryBytes             As Long
 
-Private Declare Function GetTickCount Lib "kernel32" () As Long
-
 Private Sub Class_Terminate()
 
     '**************************************************************
@@ -64,7 +62,7 @@ Private Sub Class_Terminate()
         With TexList(i)
 
             For j = 1 To .surfaceCount
-                Set .SurfaceEntry(j).texture = Nothing
+                Set .SurfaceEntry(j).Texture = Nothing
             Next j
             
             'Destroy the arrays
@@ -92,10 +90,10 @@ Public Function GetTexture(ByVal FileName As Integer, ByRef textwidth As Long, B
         For i = 1 To .surfaceCount
 
             If .SurfaceEntry(i).FileName = FileName Then
-                .SurfaceEntry(i).UltimoAcceso = (GetTickCount() And &H7FFFFFFF)
+                .SurfaceEntry(i).UltimoAcceso = (timeGetTime() And &H7FFFFFFF)
                 textwidth = .SurfaceEntry(i).texture_width
                 textheight = .SurfaceEntry(i).texture_height
-                Set GetTexture = .SurfaceEntry(i).texture
+                Set GetTexture = .SurfaceEntry(i).Texture
                 Exit Function
 
             End If
@@ -156,7 +154,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
             .FileName = Archivo
             
             'Ultimo acceso
-            .UltimoAcceso = (GetTickCount() And &H7FFFFFFF)
+            .UltimoAcceso = (timeGetTime() And &H7FFFFFFF)
             
             '  Dim demora As Long
             '  Dim demoraok As Long
@@ -175,7 +173,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
         
                 'DirArchico = Windows_Temp_Dir & LTrim(str(Archivo)) & ".png"
         
-                Set .texture = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, texture_info, ByVal 0)
+                Set .Texture = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, texture_info, ByVal 0)
             #Else
 
                 Dim PathToFile As String
@@ -188,17 +186,17 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
 
                 End If
 
-                Set .texture = mD3D.CreateTextureFromFileEx(device, PathToFile, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, texture_info, ByVal 0)
+                Set .Texture = mD3D.CreateTextureFromFileEx(device, PathToFile, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, texture_info, ByVal 0)
             #End If
                 
-            .texture.GetLevelDesc 0, surface_desc
+            .Texture.GetLevelDesc 0, surface_desc
             .texture_width = texture_info.Width
             .texture_height = texture_info.Height
             .size = surface_desc.size
             texwidth = .texture_width
             textheight = .texture_height
             
-            Set CrearGrafico = .texture
+            Set CrearGrafico = .Texture
 
             ' mFreeMemoryBytes = mFreeMemoryBytes - surface_desc.size
         End With
@@ -240,7 +238,7 @@ Private Function RemoveLRU() As Boolean
 
     Dim surface_desc As D3DSURFACE_DESC
     
-    LRUtime = (GetTickCount() And &H7FFFFFFF)
+    LRUtime = (timeGetTime() And &H7FFFFFFF)
     
     'Check out through the whole list for the least recently used
     For i = 0 To HASH_TABLE_SIZE - 1
@@ -263,10 +261,10 @@ Private Function RemoveLRU() As Boolean
     Next i
     
     'Retrieve the surface desc
-    Call TexList(LRUi).SurfaceEntry(LRUj).texture.GetLevelDesc(0, surface_desc)
+    Call TexList(LRUi).SurfaceEntry(LRUj).Texture.GetLevelDesc(0, surface_desc)
     
     'Remove it
-    Set TexList(LRUi).SurfaceEntry(LRUj).texture = Nothing
+    Set TexList(LRUi).SurfaceEntry(LRUj).Texture = Nothing
     TexList(LRUi).SurfaceEntry(LRUj).FileName = 0
     
     'Move back the list (if necessary)
@@ -313,7 +311,7 @@ Public Sub Grh_Load(ByVal file_num As Integer)
     ' If GrhIndex = 0 Then Exit Sub
     '  Set d3dTextures.texture = SurfaceDB.GetTexture(GrhData(GrhIndex).FileNum, d3dTextures.texwidth, d3dTextures.texheight)
 
-    Set d3dTextures.texture = CrearGrafico(file_num, 0, 0)
+    Set d3dTextures.Texture = CrearGrafico(file_num, 0, 0)
     
 End Sub
 

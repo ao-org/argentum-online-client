@@ -275,7 +275,7 @@ End Property
 
 Public Property Let Fading(ByVal vNewValue As Long)
     mFadingMusicMod = vNewValue
-    TimeElapsed = (GetTickCount() And &H7FFFFFFF)
+    TimeElapsed = FrameTime
 
 End Property
 
@@ -863,7 +863,7 @@ Public Function Sound_Render()
 
     If mFadingMusicMod <> 0 And Musica <> CONST_DESHABILITADA Then
  
-        TiempoActual = (GetTickCount() And &H7FFFFFFF)
+        TiempoActual = FrameTime
         
         '¿Fade up or fade down? Primero fade down, después fade up
         If TimeElapsed + 60 < TiempoActual Then

@@ -84,57 +84,57 @@ End Type
 
 Private Type tDatosBloqueados
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
     lados As Byte
 
 End Type
 
 Private Type tDatosGrh
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
     GrhIndex As Long
 
 End Type
 
 Private Type tDatosTrigger
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
     Trigger As Integer
 
 End Type
 
 Private Type tDatosLuces
 
-    x As Integer
-    y As Integer
-    Color As Long
+    X As Integer
+    Y As Integer
+    Color As RGBA
     Rango As Byte
 
 End Type
 
 Private Type tDatosParticulas
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
     Particula As Long
 
 End Type
 
 Public Type tDatosNPC
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
     NpcIndex As Integer
 
 End Type
 
 Private Type tDatosObjs
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
     OBJIndex As Integer
     ObjAmmount As Integer
 
@@ -142,8 +142,8 @@ End Type
 
 Private Type tDatosTE
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
     DestM As Integer
     DestX As Integer
     DestY As Integer
@@ -588,8 +588,8 @@ Sub CargarDatosMapa(ByVal map As Integer)
     Dim i            As Long
     Dim j            As Long
     
-    Dim x            As Long
-    Dim y            As Long
+    Dim X            As Long
+    Dim Y            As Long
     
     #If Compresion = 1 Then
 
@@ -830,8 +830,8 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim i            As Long
     Dim j            As Long
 
-    Dim x            As Long
-    Dim y            As Long
+    Dim X            As Long
+    Dim Y            As Long
 
     Dim demora       As Long
     Dim demorafinal  As Long
@@ -866,31 +866,34 @@ Public Sub CargarMapa(ByVal map As Integer)
         Call EraseChar(i)
         ' End If
     Next i
-            
-    For x = 1 To 100
-        For y = 1 To 100
-            'Erase NPCs
-            '  If MapData(X, Y).charindex > 0 Then
-            '  Call EraseChar(MapData(X, Y).charindex)
-            ' End If
-            'Erase OBJs
-            MapData(x, y).ObjGrh.GrhIndex = 0
-        Next y
-    Next x
-
-    'BUG CLONES
 
     fh = FreeFile
     Open MapRoute For Binary As fh
     Get #fh, , MH
     Get #fh, , MapSize
     Get #fh, , MapDat
+    
+    ReDim MapData(1 To 100, 1 To 100)
+    
+    If MapDat.base_light = 0 Then
+        Call RestaurarLuz
+        
+    Else
+        Call SetGlobalLight(MapDat.base_light)
+    End If
+        
+    For X = 1 To 100
+        For Y = 1 To 100
+            With MapData(X, Y)
 
-    With MapSize
-        ReDim MapData(1 To 100, 1 To 100)
-
-        Rem      ReDim L1(1 To 100, 1 To 100)
-    End With
+                .light_value(0) = global_light
+                .light_value(1) = global_light
+                .light_value(2) = global_light
+                .light_value(3) = global_light
+                
+            End With
+        Next Y
+    Next X
     
     ' Get #fh, , L1
     With MH
@@ -902,7 +905,7 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Blqs
 
             For i = 1 To .NumeroBloqueados
-                MapData(Blqs(i).x, Blqs(i).y).Blocked = Blqs(i).lados
+                MapData(Blqs(i).X, Blqs(i).Y).Blocked = Blqs(i).lados
             Next i
         End If
     
@@ -915,21 +918,21 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(1)
             
-                x = L1(i).x
-                y = L1(i).y
+                X = L1(i).X
+                Y = L1(i).Y
                 
-                With MapData(x, y)
+                With MapData(X, Y)
             
                     .Graphic(1).GrhIndex = L1(i).GrhIndex
                     
                     ' Precalculate position
-                    .Graphic(1).x = x * TilePixelWidth
-                    .Graphic(1).y = y * TilePixelHeight
+                    .Graphic(1).X = X * TilePixelWidth
+                    .Graphic(1).Y = Y * TilePixelHeight
                     ' *********************
                 
                     InitGrh .Graphic(1), .Graphic(1).GrhIndex
                     
-                    If HayAgua(x, y) Then
+                    If HayAgua(X, Y) Then
                         .Blocked = .Blocked Or FLAG_AGUA
                     End If
                     
@@ -945,14 +948,14 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(2)
                 
-                x = L2(i).x
-                y = L2(i).y
+                X = L2(i).X
+                Y = L2(i).Y
 
-                MapData(x, y).Graphic(2).GrhIndex = L2(i).GrhIndex
+                MapData(X, Y).Graphic(2).GrhIndex = L2(i).GrhIndex
                 
-                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).GrhIndex
+                InitGrh MapData(X, Y).Graphic(2), MapData(X, Y).Graphic(2).GrhIndex
                 
-                MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_COSTA
+                MapData(X, Y).Blocked = MapData(X, Y).Blocked Or FLAG_COSTA
                 
             Next i
 
@@ -964,15 +967,15 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(3)
             
-                x = L3(i).x
-                y = L3(i).y
+                X = L3(i).X
+                Y = L3(i).Y
             
-                MapData(x, y).Graphic(3).GrhIndex = L3(i).GrhIndex
+                MapData(X, Y).Graphic(3).GrhIndex = L3(i).GrhIndex
             
-                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
+                InitGrh MapData(X, Y).Graphic(3), MapData(X, Y).Graphic(3).GrhIndex
                 
                 If EsArbol(L3(i).GrhIndex) Then
-                    MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
+                    MapData(X, Y).Blocked = MapData(X, Y).Blocked Or FLAG_ARBOL
                 End If
             Next i
 
@@ -984,8 +987,8 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , L4
 
             For i = 1 To .NumeroLayers(4)
-                MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex = L4(i).GrhIndex
-                InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex
+                MapData(L4(i).X, L4(i).Y).Graphic(4).GrhIndex = L4(i).GrhIndex
+                InitGrh MapData(L4(i).X, L4(i).Y).Graphic(4), MapData(L4(i).X, L4(i).Y).Graphic(4).GrhIndex
             Next i
 
         End If
@@ -995,7 +998,7 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Triggers
             
             For i = 1 To .NumeroTriggers
-                MapData(Triggers(i).x, Triggers(i).y).Trigger = Triggers(i).Trigger
+                MapData(Triggers(i).X, Triggers(i).Y).Trigger = Triggers(i).Trigger
                 
                 ' Transparencia de techos
                 If Triggers(i).Trigger >= PRIMER_TRIGGER_TECHO Then
@@ -1009,7 +1012,7 @@ Public Sub CargarMapa(ByVal map As Integer)
                         ReDim Preserve RoofsLight(LBoundRoof To UBoundRoof)
                     End If
                     
-                    RoofsLight(Triggers(i).Trigger).Alpha = 255
+                    RoofsLight(Triggers(i).Trigger) = 255
                 End If
             Next i
 
@@ -1021,8 +1024,8 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroParticulas
             
-                MapData(Particulas(i).x, Particulas(i).y).particle_Index = Particulas(i).Particula
-                General_Particle_Create MapData(Particulas(i).x, Particulas(i).y).particle_Index, Particulas(i).x, Particulas(i).y
+                MapData(Particulas(i).X, Particulas(i).Y).particle_Index = Particulas(i).Particula
+                General_Particle_Create MapData(Particulas(i).X, Particulas(i).Y).particle_Index, Particulas(i).X, Particulas(i).Y
 
             Next i
 
@@ -1033,21 +1036,14 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Luces
 
             For i = 1 To .NumeroLuces
-                MapData(Luces(i).x, Luces(i).y).luz.Color = Luces(i).Color
-                MapData(Luces(i).x, Luces(i).y).luz.Rango = Luces(i).Rango
+                MapData(Luces(i).X, Luces(i).Y).luz.Color = Luces(i).Color
+                MapData(Luces(i).X, Luces(i).Y).luz.Rango = Luces(i).Rango
 
-                If MapData(Luces(i).x, Luces(i).y).luz.Rango <> 0 Then
-                    If MapData(Luces(i).x, Luces(i).y).luz.Rango < 100 Then
-                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.Color, MapData(Luces(i).x, Luces(i).y).luz.Rango, Luces(i).x & Luces(i).y
+                If MapData(Luces(i).X, Luces(i).Y).luz.Rango <> 0 Then
+                    If MapData(Luces(i).X, Luces(i).Y).luz.Rango < 100 Then
+                        LucesCuadradas.Light_Create Luces(i).X, Luces(i).Y, Luces(i).Color, Luces(i).Rango, Luces(i).X & Luces(i).Y
                     Else
-
-                        Dim r, g, b As Byte
-
-                        b = (MapData(Luces(i).x, Luces(i).y).luz.Color And 16711680) / 65536
-                        g = (MapData(Luces(i).x, Luces(i).y).luz.Color And 65280) / 256
-                        r = MapData(Luces(i).x, Luces(i).y).luz.Color And 255
-                        LucesRedondas.Create_Light_To_Map Luces(i).x, Luces(i).y, MapData(Luces(i).x, Luces(i).y).luz.Rango - 99, b, g, r
-
+                        LucesRedondas.Create_Light_To_Map Luces(i).X, Luces(i).Y, Luces(i).Color, Luces(i).Rango - 99
                     End If
 
                 End If
@@ -1061,10 +1057,10 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Objetos
 
             For i = 1 To .NumeroOBJs
-                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
-                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
-                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).OBJIndex).GrhIndex
-                Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex)
+                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
+                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.Amount = Objetos(i).ObjAmmount
+                MapData(Objetos(i).X, Objetos(i).Y).ObjGrh.GrhIndex = ObjData(Objetos(i).OBJIndex).GrhIndex
+                Call InitGrh(MapData(Objetos(i).X, Objetos(i).Y).ObjGrh, MapData(Objetos(i).X, Objetos(i).Y).ObjGrh.GrhIndex)
 
             Next i
 
@@ -1122,7 +1118,7 @@ Public Sub CargarParticulas()
         StreamData(loopc).y1 = General_Var_Get(StreamFile, Val(loopc), "Y1")
         StreamData(loopc).x2 = General_Var_Get(StreamFile, Val(loopc), "X2")
         StreamData(loopc).y2 = General_Var_Get(StreamFile, Val(loopc), "Y2")
-        StreamData(loopc).angle = General_Var_Get(StreamFile, Val(loopc), "Angle")
+        StreamData(loopc).Angle = General_Var_Get(StreamFile, Val(loopc), "Angle")
         StreamData(loopc).vecx1 = General_Var_Get(StreamFile, Val(loopc), "VecX1")
         StreamData(loopc).vecx2 = General_Var_Get(StreamFile, Val(loopc), "VecX2")
         StreamData(loopc).vecy1 = General_Var_Get(StreamFile, Val(loopc), "VecY1")
@@ -1162,9 +1158,9 @@ Public Sub CargarParticulas()
         
         For ColorSet = 1 To 4
             TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).g = General_Field_Read(2, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).b = General_Field_Read(3, TempSet, ",")
+            StreamData(loopc).colortint(ColorSet - 1).R = General_Field_Read(1, TempSet, ",")
+            StreamData(loopc).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
+            StreamData(loopc).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
         Next ColorSet
         
     Next loopc
@@ -1250,9 +1246,9 @@ Public Sub CargarParticulasBinary()
         
         For ColorSet = 1 To 4
             TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).g = General_Field_Read(2, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).b = General_Field_Read(3, TempSet, ",")
+            StreamData(loopc).colortint(ColorSet - 1).R = General_Field_Read(1, TempSet, ",")
+            StreamData(loopc).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
+            StreamData(loopc).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
         Next ColorSet
         
     Next loopc
@@ -1752,8 +1748,8 @@ Sub CargarCuerpos()
             InitGrh BodyData(i).Walk(3), MisCuerpos(i).Body(3), 0
             InitGrh BodyData(i).Walk(4), MisCuerpos(i).Body(4), 0
             
-            BodyData(i).HeadOffset.x = MisCuerpos(i).HeadOffsetX
-            BodyData(i).HeadOffset.y = MisCuerpos(i).HeadOffsetY
+            BodyData(i).HeadOffset.X = MisCuerpos(i).HeadOffsetX
+            BodyData(i).HeadOffset.Y = MisCuerpos(i).HeadOffsetY
 
         End If
 
@@ -2061,22 +2057,22 @@ Sub CargarColores()
     Dim i As Long
     
     For i = 0 To 47 '49 y 50 reservados para ciudadano y criminal
-        ColoresPJ(i).r = CByte(GetVar(archivoC, CStr(i), "R"))
-        ColoresPJ(i).g = CByte(GetVar(archivoC, CStr(i), "G"))
-        ColoresPJ(i).b = CByte(GetVar(archivoC, CStr(i), "B"))
+        ColoresPJ(i).R = CByte(GetVar(archivoC, CStr(i), "R"))
+        ColoresPJ(i).G = CByte(GetVar(archivoC, CStr(i), "G"))
+        ColoresPJ(i).B = CByte(GetVar(archivoC, CStr(i), "B"))
     Next i
     
-    ColoresPJ(50).r = CByte(GetVar(archivoC, "CR", "R"))
-    ColoresPJ(50).g = CByte(GetVar(archivoC, "CR", "G"))
-    ColoresPJ(50).b = CByte(GetVar(archivoC, "CR", "B"))
+    ColoresPJ(50).R = CByte(GetVar(archivoC, "CR", "R"))
+    ColoresPJ(50).G = CByte(GetVar(archivoC, "CR", "G"))
+    ColoresPJ(50).B = CByte(GetVar(archivoC, "CR", "B"))
     
-    ColoresPJ(49).r = CByte(GetVar(archivoC, "CI", "R"))
-    ColoresPJ(49).g = CByte(GetVar(archivoC, "CI", "G"))
-    ColoresPJ(49).b = CByte(GetVar(archivoC, "CI", "B"))
+    ColoresPJ(49).R = CByte(GetVar(archivoC, "CI", "R"))
+    ColoresPJ(49).G = CByte(GetVar(archivoC, "CI", "G"))
+    ColoresPJ(49).B = CByte(GetVar(archivoC, "CI", "B"))
     
-    ColoresPJ(48).r = CByte(GetVar(archivoC, "NE", "R"))
-    ColoresPJ(48).g = CByte(GetVar(archivoC, "NE", "G"))
-    ColoresPJ(48).b = CByte(GetVar(archivoC, "NE", "B"))
+    ColoresPJ(48).R = CByte(GetVar(archivoC, "NE", "R"))
+    ColoresPJ(48).G = CByte(GetVar(archivoC, "NE", "G"))
+    ColoresPJ(48).B = CByte(GetVar(archivoC, "NE", "B"))
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "colores.dat"

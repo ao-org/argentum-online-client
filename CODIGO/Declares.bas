@@ -7,6 +7,10 @@ Public ViajarInterface                  As Byte
 
 Public FormParser                       As clsCursor
 
+Public HoraMundo                        As Long
+
+Public DuracionDia                      As Long
+
 Public EsGM                             As Boolean
 
 Public HayFormularioAbierto             As Boolean
@@ -55,9 +59,9 @@ Type TConsola
 
     T As String
     '   Color As Long
-    r As Byte
-    g As Byte
-    b As Byte
+    R As Byte
+    G As Byte
+    B As Byte
 
 End Type
  
@@ -232,7 +236,7 @@ Public EntradaX                    As Byte
 
 Public EntradaY                    As Byte
 
-Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
+Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
 
 Public MouseX                 As Long
 
@@ -255,15 +259,16 @@ Public Windows_Temp_Dir       As String
 Public spell_particle         As Long
 Public Select_part            As Long
 Public EfectoEnproceso        As Boolean
-Public ColorAmbiente          As D3DCOLORVALUE
 Public VSync_FPS              As Boolean
 Public MostrarOnline          As Boolean
 Public usersOnline            As Integer
-Public meteo_particle         As Long
-Public meteo_estado           As Byte
-Public map_base_light         As Long
-Public Map_light_base         As Long
-Public Map_light_baseBackup   As Long
+
+Public global_light           As RGBA
+Public map_light              As RGBA
+Public last_light             As RGBA
+Public next_light             As RGBA
+Public light_transition       As Single
+
 Public Const Particula_Lluvia As Long = 58
 Public Const Particula_Nieve  As Long = 57
 Public VolMusicFadding        As Integer
@@ -305,18 +310,18 @@ Public Const Mp3_Dir = "\..\Recursos\Mp3\"
 'RGB Type
 Public Type RGB
 
-    r As Long
-    g As Long
-    b As Long
+    R As Long
+    G As Long
+    B As Long
 
 End Type
 
 Public Type ARGB
 
-    a As Single
-    r As Long
-    g As Long
-    b As Long
+    A As Single
+    R As Long
+    G As Long
+    B As Long
 
 End Type
 
@@ -426,9 +431,9 @@ Public sActivated              As Boolean
 
 Public Type tColor
 
-    r As Byte
-    g As Byte
-    b As Byte
+    R As Byte
+    G As Byte
+    B As Byte
 
 End Type
 
@@ -579,6 +584,8 @@ Public Const FLAG_COSTA              As Byte = &H80
 Public Const PRIMER_TRIGGER_TECHO    As Byte = 9
 
 Public Const FOgata                  As Integer = 1521
+
+Public Const INV_FLAG_AGUA           As Single = 1 / FLAG_AGUA
 
 Public Enum eClass
 
@@ -745,9 +752,9 @@ Public Const MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO As String = "El usuario recha
 
 Public Const MENSAJE_FALLADO_GOLPE                 As String = "Has fallado el golpe."
 
-Public Const MENSAJE_SEGURO_ACTIVADO               As String = "Seguro Activado."
+Public Const MENSAJE_SEGURO_ACTIVADO               As String = "Seguro de ataque activado."
 
-Public Const MENSAJE_SEGURO_DESACTIVADO            As String = "Seguro Desactivado."
+Public Const MENSAJE_SEGURO_DESACTIVADO            As String = "Seguro de ataque desactivado."
 
 Public Const MENSAJE_USAR_MEDITANDO                As String = "¡Estás meditando! Debes dejar de meditar para usar objetos."
 
@@ -861,9 +868,9 @@ Type NpCinV
     Def As Integer
     MaxHit As Integer
     MinHit As Integer
-    C1 As String
+    c1 As String
     C2 As String
-    C3 As String
+    c3 As String
     C4 As String
     C5 As String
     C6 As String
@@ -1135,8 +1142,6 @@ Public PuertoDelServidor As String
 '
 '********** FUNCIONES API ***********
 '
-
-Public Declare Function GetTickCount Lib "kernel32" () As Long
 
 'para escribir y leer variables
 Public Declare Function writeprivateprofilestring Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpString As String, ByVal lpFileName As String) As Long
