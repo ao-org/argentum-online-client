@@ -2266,9 +2266,10 @@ Private Sub HandleUpdateMana()
     UserMinMAN = incomingData.ReadInteger()
     
     If UserMaxMAN > 0 Then
-        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
-        frmmain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
-        frmmain.MANShp.Visible = (UserMinMAN > 0)
+        frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
+        frmMain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
+        frmMain.MANShp.Visible = (UserMinMAN > 0)
+        frmMain.manabar.Visible = True
     Else
         frmmain.MANShp.Width = 0
         frmmain.manabar.Visible = False
@@ -4689,9 +4690,10 @@ Private Sub HandleUpdateUserStats()
     frmmain.Hpshp.Visible = (UserMinHp > 0)
 
     If UserMaxMAN > 0 Then
-        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
-        frmmain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
-        frmmain.MANShp.Visible = (UserMinMAN > 0)
+        frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
+        frmMain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
+        frmMain.MANShp.Visible = (UserMinMAN > 0)
+        frmMain.manabar.Visible = True
     Else
         frmmain.manabar.Visible = False
         frmmain.MANShp.Width = 0
