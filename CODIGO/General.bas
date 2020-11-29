@@ -157,7 +157,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     'Text box MUST be multiline and have a 3D
     'apperance!
     'Pablo (ToxicWaste) 01/26/2007 : Now the list refeshes properly.
-    'Juan Martín Sotuyo Dodero (Maraxus) 03/29/2007 : Replaced ToxicWaste's code for extra performance.
+    'Juan MartÃ­n Sotuyo Dodero (Maraxus) 03/29/2007 : Replaced ToxicWaste's code for extra performance.
     '******************************************r
     Dim bUrl As Boolean
 
@@ -238,7 +238,7 @@ Function AsciiValidos(ByVal cad As String) As Boolean
     For i = 1 To Len(cad)
         car = Asc(mid$(cad, i, 1))
         
-        If ((car < 97 Or car > 122) Or car = Asc("º")) And (car <> 255) And (car <> 32) Then
+        If ((car < 97 Or car > 122) Or car = Asc("Âº")) And (car <> 255) And (car <> 32) Then
             Exit Function
 
         End If
@@ -253,7 +253,7 @@ Function CheckUserDataLoged() As Boolean
     'Validamos los datos del user
     
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
-        Call TextoAlAsistente("El email es inválido.")
+        Call TextoAlAsistente("El email es invÃ¡lido.")
         Exit Function
 
     End If
@@ -267,13 +267,13 @@ Function CheckUserDataLoged() As Boolean
     '  For loopc = 1 To Len(UserCuenta)
     '   CharAscii = Asc(mid$(UserCuenta, loopc, 1))
     ' If Not LegalCharacter(CharAscii) Then
-    ' Call TextoAlAsistente("Nombre inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
+    ' Call TextoAlAsistente("Nombre invÃ¡lido. El caractÃ©r " & Chr$(CharAscii) & " no estÃ¡ permitido.")
     '    Exit Function
     '  End If
     ' Next loopc
     
     If CuentaPassword = "" Then
-        Call TextoAlAsistente("Ingrese la contraseña de la cuenta.")
+        Call TextoAlAsistente("Ingrese la contraseÃ±a de la cuenta.")
         'frmMensaje.msg.Caption = "Ingrese un password."
         ' frmMensaje.Show vbModal
         Exit Function
@@ -292,7 +292,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     Dim CharAscii As Integer
     
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
-        Call TextoAlAsistente("El email es inválido.")
+        Call TextoAlAsistente("El email es invÃ¡lido.")
         Exit Function
 
     End If
@@ -307,7 +307,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
         CharAscii = Asc(mid$(CuentaPassword, loopc, 1))
 
         If Not LegalCharacter(CharAscii) Then
-            MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
+            MsgBox ("Password invÃ¡lido. El caractÃ©r " & Chr$(CharAscii) & " no estÃ¡ permitido.")
             Exit Function
 
         End If
@@ -440,7 +440,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
     ' 06/03/2006: AlejoLp - Elimine las funciones Move[NSWE] y las converti a esta
     ' 12/08/2007: Tavo    - Si el usuario esta paralizado no se puede mover.
-    ' 06/28/2008: NicoNZ - Saqué lo que impedía que si el usuario estaba paralizado se ejecute el sub.
+    ' 06/28/2008: NicoNZ - SaquÃ© lo que impedÃ­a que si el usuario estaba paralizado se ejecute el sub.
     '***************************************************
     Dim LegalOk As Boolean
     
@@ -645,7 +645,7 @@ Sub Check_Keys()
 
 End Sub
 
-'TODO : Si bien nunca estuvo allí, el mapa es algo independiente o a lo sumo dependiente del engine, no va acá!!!
+'TODO : Si bien nunca estuvo allÃ­, el mapa es algo independiente o a lo sumo dependiente del engine, no va acÃ¡!!!
 Sub SwitchMapIAO(ByVal map As Integer)
     
     'Cargamos el mapa.
@@ -736,7 +736,7 @@ Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As
 
     '*****************************************************************
     'Gets a field from a delimited string
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 11/15/2004
     '*****************************************************************
     Dim i          As Long
@@ -767,7 +767,7 @@ Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
 
     '*****************************************************************
     'Gets the number of fields in a delimited string
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 07/29/2007
     '*****************************************************************
     Dim count     As Long
@@ -807,7 +807,7 @@ Sub Main()
         If Not RunningInVB Then
         
             If FindPreviousInstance Then
-                Call MsgBox("¡Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga clic en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
+                Call MsgBox("Â¡Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga clic en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
                 End
             End If
     
@@ -816,7 +816,7 @@ Sub Main()
     #End If
 
     'If Not Launcher Then
-    '  Call MsgBox("¡El Juego debe ser abierto desde el Launcher! El Cliente ahora se cerrara.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
+    '  Call MsgBox("Â¡El Juego debe ser abierto desde el Launcher! El Cliente ahora se cerrara.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
     ' End
     ' End If
     
@@ -840,7 +840,7 @@ Sub Main()
     Call Load(frmConnect)
     Call Load(FrmLogear)
         
-    'If MsgBox("¿Desea jugar en pantalla completa?", vbYesNo, "¡Atención!") = vbYes Then
+    'If MsgBox("Â¿Desea jugar en pantalla completa?", vbYesNo, "Â¡AtenciÃ³n!") = vbYes Then
     
     If PantallaCompleta Then
         Call Resolution.SetResolution
@@ -857,7 +857,7 @@ Sub Main()
         
         Else
 
-            Call MsgBox("¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde www.argentum20.com", vbCritical, "Saliendo")
+            Call MsgBox("Â¡No se ha logrado iniciar el engine de DirectSound! Reinstale los Ãºltimos controladores de DirectX desde www.argentum20.com", vbCritical, "Saliendo")
             
             Call CloseClient
 
@@ -934,9 +934,9 @@ End Function
 
 '[CODE 002]:MatuX
 '
-'  Función para chequear el email
+'  FunciÃ³n para chequear el email
 '
-'  Corregida por Maraxus para que reconozca como válidas casillas con puntos antes de la arroba y evitar un chequeo innecesario
+'  Corregida por Maraxus para que reconozca como vÃ¡lidas casillas con puntos antes de la arroba y evitar un chequeo innecesario
 Public Function CheckMailString(ByVal sString As String) As Boolean
 
     On Error GoTo errHnd
@@ -952,10 +952,10 @@ Public Function CheckMailString(ByVal sString As String) As Boolean
 
     If (lPos <> 0) Then
 
-        '2do test: Busca un simbolo . después de @ + 1
+        '2do test: Busca un simbolo . despuÃ©s de @ + 1
         If Not (InStr(lPos, sString, ".", vbBinaryCompare) > lPos + 1) Then Exit Function
         
-        '3er test: Recorre todos los caracteres y los valída
+        '3er test: Recorre todos los caracteres y los valÃ­da
         For lX = 0 To Len(sString) - 1
 
             If Not (lX = (lPos - 1)) Then   'No chequeamos la '@'
@@ -976,13 +976,13 @@ errHnd:
 
 End Function
 
-'  Corregida por Maraxus para que reconozca como válidas casillas con puntos antes de la arroba
+'  Corregida por Maraxus para que reconozca como vÃ¡lidas casillas con puntos antes de la arroba
 Private Function CMSValidateChar_(ByVal iAsc As Integer) As Boolean
     CMSValidateChar_ = (iAsc >= 48 And iAsc <= 57) Or (iAsc >= 65 And iAsc <= 90) Or (iAsc >= 97 And iAsc <= 122) Or (iAsc = 95) Or (iAsc = 45) Or (iAsc = 46)
 
 End Function
 
-'TODO : como todo lo relativo a mapas, no tiene nada que hacer acá....
+'TODO : como todo lo relativo a mapas, no tiene nada que hacer acÃ¡....
 Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
     HayAgua = ((MapData(x, y).Graphic(1).GrhIndex >= 1505 And MapData(x, y).Graphic(1).GrhIndex <= 1520) Or (MapData(x, y).Graphic(1).GrhIndex >= 24223 And MapData(x, y).Graphic(1).GrhIndex <= 24238) Or (MapData(x, y).Graphic(1).GrhIndex >= 24143 And MapData(x, y).Graphic(1).GrhIndex <= 24158) Or (MapData(x, y).Graphic(1).GrhIndex >= 468 And MapData(x, y).Graphic(1).GrhIndex <= 483) Or (MapData(x, y).Graphic(1).GrhIndex >= 44668 And MapData(x, y).Graphic(1).GrhIndex <= 44939) Or (MapData(x, y).Graphic(1).GrhIndex >= 24303 And MapData(x, y).Graphic(1).GrhIndex <= 24318))
                 
@@ -1054,7 +1054,7 @@ End Sub
 
 Private Sub InicializarNombres()
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 11/27/2005
     'Inicializa los nombres de razas, ciudades, clases, skills, atributos, etc.
     '**************************************************************
@@ -1073,12 +1073,12 @@ Private Sub InicializarNombres()
    ' ListaCiudades(eCiudad.cHillidan) = "Hillidan"
 
     ListaClases(eClass.Mage) = "Mago"
-    ListaClases(eClass.Cleric) = "Clérigo"
+    ListaClases(eClass.Cleric) = "ClÃ©rigo"
     ListaClases(eClass.Warrior) = "Guerrero"
     ListaClases(eClass.Assasin) = "Asesino"
     ListaClases(eClass.Bard) = "Bardo"
     ListaClases(eClass.Druid) = "Druida"
-    ListaClases(eClass.paladin) = "Paladín"
+    ListaClases(eClass.paladin) = "PaladÃ­n"
     ListaClases(eClass.Hunter) = "Cazador"
     ListaClases(eClass.Trabajador) = "Trabajador"
 
@@ -1087,7 +1087,7 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Tacticas) = "Destreza en combate"
     SkillsNames(eSkill.Armas) = "Combate con armas"
     SkillsNames(eSkill.Meditar) = "Meditar"
-    SkillsNames(eSkill.Apuñalar) = "Apuñalar"
+    SkillsNames(eSkill.ApuÃ±alar) = "ApuÃ±alar"
     SkillsNames(eSkill.Ocultarse) = "Ocultarse"
     SkillsNames(eSkill.Supervivencia) = "Supervivencia"
     SkillsNames(eSkill.Comerciar) = "Comercio"
@@ -1096,39 +1096,39 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Proyectiles) = "Armas a distancia"
     SkillsNames(eSkill.Wrestling) = "Combate sin armas"
     SkillsNames(eSkill.Navegacion) = "Navegacion"
-    SkillsNames(eSkill.equitacion) = "Equitación"
-    SkillsNames(eSkill.Resistencia) = "Resistencia Mágica"
+    SkillsNames(eSkill.equitacion) = "EquitaciÃ³n"
+    SkillsNames(eSkill.Resistencia) = "Resistencia MÃ¡gica"
     SkillsNames(eSkill.Talar) = "Tala"
     SkillsNames(eSkill.Pescar) = "Pesca"
-    SkillsNames(eSkill.Mineria) = "Minería"
-    SkillsNames(eSkill.Herreria) = "Herrería"
-    SkillsNames(eSkill.Carpinteria) = "Carpinteriía"
+    SkillsNames(eSkill.Mineria) = "MinerÃ­a"
+    SkillsNames(eSkill.Herreria) = "HerrerÃ­a"
+    SkillsNames(eSkill.Carpinteria) = "CarpinteriÃ­a"
     SkillsNames(eSkill.Alquimia) = "Alquimia"
-    SkillsNames(eSkill.Sastreria) = "Sastrería"
+    SkillsNames(eSkill.Sastreria) = "SastrerÃ­a"
     SkillsNames(eSkill.Domar) = "Domar"
 
-    SkillsDesc(eSkill.magia) = "Los hechizos requieren un cierto número de puntos mágicos para ser usados. Sube lanzando cualquier hechizo."
-    SkillsDesc(eSkill.Robar) = "Aumenta las posibilidades de conseguir objetos u oro mientras robas. Se sube robando. Solo el ladrón puede robar objetos, las otras clases solo pueden robar oro."
-    SkillsDesc(eSkill.Tacticas) = "Aumenta la posibilidad de esquivar ataques. Cuantos más puntos tengas, mejor será tu evasión. Sube mientras peleas cuerpo a cuerpo."
+    SkillsDesc(eSkill.magia) = "Los hechizos requieren un cierto nÃºmero de puntos mÃ¡gicos para ser usados. Sube lanzando cualquier hechizo."
+    SkillsDesc(eSkill.Robar) = "Aumenta las posibilidades de conseguir objetos u oro mientras robas. Se sube robando. Solo el ladrÃ³n puede robar objetos, las otras clases solo pueden robar oro."
+    SkillsDesc(eSkill.Tacticas) = "Aumenta la posibilidad de esquivar ataques. Cuantos mÃ¡s puntos tengas, mejor serÃ¡ tu evasiÃ³n. Sube mientras peleas cuerpo a cuerpo."
     SkillsDesc(eSkill.Armas) = "Aumenta las posibilidades de golpear al enemigo con un arma.Subes peleando cuerpo a cuerpo usando cualquier arma."
     SkillsDesc(eSkill.Meditar) = "Aumenta la cantidad de mana que recuperamos al meditar. Se sube meditando. Al aumentar los puntos de esta habilidad, aumenta la mana que se recupera."
-    SkillsDesc(eSkill.Apuñalar) = "Aumenta la probabilidad de apuñalar. Se sube luchando cuerpo a cuerpo con dagas. Mientras mas skill tengas, mas posibilidad de apuñalar."
+    SkillsDesc(eSkill.ApuÃ±alar) = "Aumenta la probabilidad de apuÃ±alar. Se sube luchando cuerpo a cuerpo con dagas. Mientras mas skill tengas, mas posibilidad de apuÃ±alar."
     SkillsDesc(eSkill.Ocultarse) = "Esta habilidad es responsable de aumentar las posibilidades de esconderse. Se sube tratando de esconderse. Mientras mas skills, mas tiempo oculto. "
-    SkillsDesc(eSkill.Supervivencia) = "La supervivencia nos permitirá tomar agua de ríos, comer de los árboles y ver la vida de los NPCs Hostiles. También aumenta la velocidad que recuperamos energía o sanamos. Con 30 puntos podemos beber de los rios, con 40 puntos podemos comer de los arboles, con 50 puntos vemos el estado de los demas personajes y el tiempo exacto que le queda de paralizis a una criatura, con 75 puntos vemos la vida exacta de los npcs. Se sube combatiendo con las criaturas o prendiendo fogatas."
-    SkillsDesc(eSkill.Comerciar) = "Cuanto más puntos en comerciar tengas más baratas te saldrán las cosas en las tiendas. Sube tanto al comprar como al vender items a NPCs."
-    SkillsDesc(eSkill.Defensa) = "Aumenta las chances de defenderte con un escudo, mientras más puntos tengas, hay más probabilidad de rechazar el golpe del adversario."
+    SkillsDesc(eSkill.Supervivencia) = "La supervivencia nos permitirÃ¡ tomar agua de rÃ­os, comer de los Ã¡rboles y ver la vida de los NPCs Hostiles. TambiÃ©n aumenta la velocidad que recuperamos energÃ­a o sanamos. Con 30 puntos podemos beber de los rios, con 40 puntos podemos comer de los arboles, con 50 puntos vemos el estado de los demas personajes y el tiempo exacto que le queda de paralizis a una criatura, con 75 puntos vemos la vida exacta de los npcs. Se sube combatiendo con las criaturas o prendiendo fogatas."
+    SkillsDesc(eSkill.Comerciar) = "Cuanto mÃ¡s puntos en comerciar tengas mÃ¡s baratas te saldrÃ¡n las cosas en las tiendas. Sube tanto al comprar como al vender items a NPCs."
+    SkillsDesc(eSkill.Defensa) = "Aumenta las chances de defenderte con un escudo, mientras mÃ¡s puntos tengas, hay mÃ¡s probabilidad de rechazar el golpe del adversario."
     SkillsDesc(eSkill.Liderazgo) = "Es la habilidad necesaria para crear un clan. Se sube manualmente."
     SkillsDesc(eSkill.Proyectiles) = "Aumenta las probabilidades de pegarle al enemigo con un arco."
     SkillsDesc(eSkill.Wrestling) = "Aumenta las probabilidades de impactar al enemigo en la lucha sin armas, estupidizar o paralizar."
-    SkillsDesc(eSkill.Navegacion) = "Necesaria para poder utilizar traje de baño, barcas, galeras o galeones."
+    SkillsDesc(eSkill.Navegacion) = "Necesaria para poder utilizar traje de baÃ±o, barcas, galeras o galeones."
     SkillsDesc(eSkill.equitacion) = " Necesaria para equipar una montura."
-    SkillsDesc(eSkill.Resistencia) = "Sirve para que los hechizos no te peguen tan fuerte, mientras más puntos tengas, menos es el daño mágico que recibes. Se sube cuando un NPC o una persona te ataca con hechizos."
-    SkillsDesc(eSkill.Talar) = "Aumenta la velocidad a la que recoletas madera de los árboles."
+    SkillsDesc(eSkill.Resistencia) = "Sirve para que los hechizos no te peguen tan fuerte, mientras mÃ¡s puntos tengas, menos es el daÃ±o mÃ¡gico que recibes. Se sube cuando un NPC o una persona te ataca con hechizos."
+    SkillsDesc(eSkill.Talar) = "Aumenta la velocidad a la que recoletas madera de los Ã¡rboles."
     SkillsDesc(eSkill.Pescar) = "Aumenta la velocidad a la que capturas peces."
     SkillsDesc(eSkill.Mineria) = "Aumenta la velocidad a la que extraes minerales de los yacimientos."
-    SkillsDesc(eSkill.Herreria) = "Te permite construir mejores objetos de herrería."
-    SkillsDesc(eSkill.Carpinteria) = "Te permite construir mejores objetos de carpintería."
-    SkillsDesc(eSkill.Alquimia) = "Te permite crear pociones más poderosas."
+    SkillsDesc(eSkill.Herreria) = "Te permite construir mejores objetos de herrerÃ­a."
+    SkillsDesc(eSkill.Carpinteria) = "Te permite construir mejores objetos de carpinterÃ­a."
+    SkillsDesc(eSkill.Alquimia) = "Te permite crear pociones mÃ¡s poderosas."
     SkillsDesc(eSkill.Sastreria) = "Te permite confeccionar mejores vestimentas."
     SkillsDesc(eSkill.Domar) = "Aumenta tu habilidad para domar animales."
     
@@ -1145,7 +1145,7 @@ End Sub
 
 Public Sub CleanDialogs()
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 11/27/2005
     'Removes all text from the console and dialogs
     '**************************************************************
@@ -1158,7 +1158,7 @@ End Sub
 
 Public Sub CloseClient()
     '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Author: Juan MartÃ­n Sotuyo Dodero (Maraxus)
     'Last Modify Date: 8/14/2007
     'Frees all used resources, cleans up and leaves
     '**************************************************************
@@ -1183,7 +1183,7 @@ Public Sub CloseClient()
     'Call DeinitTileEngine
     'Engine_Deinit
     
-    'Destruimos los objetos públicos creados
+    'Destruimos los objetos pÃºblicos creados
     Set CustomKeys = Nothing
     Set SurfaceDB = Nothing
     Set Dialogos = Nothing
@@ -1210,7 +1210,7 @@ End Sub
 Public Function General_Field_Read(ByVal field_pos As Long, ByVal Text As String, ByVal delimiter As String) As String
 
     '*****************************************************************
-    'Author: Juan Martín Sotuyo Dodero
+    'Author: Juan MartÃ­n Sotuyo Dodero
     'Last Modify Date: 11/15/2004
     'Gets a field from a delimited string
     '*****************************************************************
@@ -1371,11 +1371,11 @@ Public Function Tilde(ByRef Data As String) As String
 
     Tilde = UCase$(Data)
  
-    Tilde = Replace$(Tilde, "Á", "A")
-    Tilde = Replace$(Tilde, "É", "E")
-    Tilde = Replace$(Tilde, "Í", "I")
-    Tilde = Replace$(Tilde, "Ó", "O")
-    Tilde = Replace$(Tilde, "Ú", "U")
+    Tilde = Replace$(Tilde, "Ã", "A")
+    Tilde = Replace$(Tilde, "Ã‰", "E")
+    Tilde = Replace$(Tilde, "Ã", "I")
+    Tilde = Replace$(Tilde, "Ã“", "O")
+    Tilde = Replace$(Tilde, "Ãš", "U")
         
 End Function
 
