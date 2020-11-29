@@ -1345,7 +1345,7 @@ Begin VB.Form frmMain
       End
    End
 End
-Attribute VB_Name = "frmmain"
+Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -1624,41 +1624,41 @@ Private Sub Contadores_Timer()
         DrogaCounter = DrogaCounter - 1
 
         If DrogaCounter = 12 Then
-            frmmain.Fuerzalbl.ForeColor = vbWhite
-            frmmain.AgilidadLbl.ForeColor = vbWhite
+            frmMain.Fuerzalbl.ForeColor = vbWhite
+            frmMain.AgilidadLbl.ForeColor = vbWhite
         ElseIf DrogaCounter = 11 Then
-            frmmain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmmain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
+            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
+            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
         ElseIf DrogaCounter = 10 Then
-            frmmain.Fuerzalbl.ForeColor = vbWhite
-            frmmain.AgilidadLbl.ForeColor = vbWhite
+            frmMain.Fuerzalbl.ForeColor = vbWhite
+            frmMain.AgilidadLbl.ForeColor = vbWhite
         ElseIf DrogaCounter = 9 Then
-            frmmain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmmain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
+            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
+            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
         ElseIf DrogaCounter = 8 Then
-            frmmain.Fuerzalbl.ForeColor = vbWhite
-            frmmain.AgilidadLbl.ForeColor = vbWhite
+            frmMain.Fuerzalbl.ForeColor = vbWhite
+            frmMain.AgilidadLbl.ForeColor = vbWhite
         ElseIf DrogaCounter = 7 Then
-            frmmain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmmain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
+            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
+            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
         ElseIf DrogaCounter = 6 Then
-            frmmain.Fuerzalbl.ForeColor = vbWhite
-            frmmain.AgilidadLbl.ForeColor = vbWhite
+            frmMain.Fuerzalbl.ForeColor = vbWhite
+            frmMain.AgilidadLbl.ForeColor = vbWhite
         ElseIf DrogaCounter = 5 Then
-            frmmain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmmain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
+            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
+            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
         ElseIf DrogaCounter = 4 Then
-            frmmain.Fuerzalbl.ForeColor = vbWhite
-            frmmain.AgilidadLbl.ForeColor = vbWhite
+            frmMain.Fuerzalbl.ForeColor = vbWhite
+            frmMain.AgilidadLbl.ForeColor = vbWhite
         ElseIf DrogaCounter = 3 Then
-            frmmain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmmain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
+            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
+            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
         ElseIf DrogaCounter = 2 Then
-            frmmain.Fuerzalbl.ForeColor = vbWhite
-            frmmain.AgilidadLbl.ForeColor = vbWhite
+            frmMain.Fuerzalbl.ForeColor = vbWhite
+            frmMain.AgilidadLbl.ForeColor = vbWhite
         ElseIf DrogaCounter = 1 Then
-            frmmain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmmain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
+            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
+            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
 
         End If
 
@@ -1741,7 +1741,7 @@ End Sub
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
 
     If Not SendTxt.Visible Then
-        If Not pausa And frmmain.Visible And Not frmComerciar.Visible And Not frmComerciarUsu.Visible And Not frmBancoObj.Visible And Not frmGoliath.Visible Then
+        If Not pausa And frmMain.Visible And Not frmComerciar.Visible And Not frmComerciarUsu.Visible And Not frmBancoObj.Visible And Not frmGoliath.Visible Then
     
             If Accionar(KeyCode) Then
                 Exit Sub
@@ -1756,7 +1756,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                 End If
 
             ElseIf KeyCode = vbKeyEscape And Not UserSaliendo Then
-                frmCerrar.Show , frmmain
+                frmCerrar.Show , frmMain
                 ' Call WriteQuit
         
             ElseIf KeyCode = 27 And UserSaliendo Then
@@ -1818,7 +1818,7 @@ Private Sub GldLbl_Click()
     If UserGLD > 0 Then
         frmCantidad.Picture = LoadInterface("cantidad.bmp")
         HayFormularioAbierto = True
-        frmCantidad.Show , frmmain
+        frmCantidad.Show , frmMain
 
     End If
 
@@ -1999,7 +1999,7 @@ Private Sub Image6_Click()
 End Sub
 
 Private Sub imgBugReport_Click()
-    FrmGmAyuda.Show vbModeless, frmmain
+    FrmGmAyuda.Show vbModeless, frmMain
 
 End Sub
 
@@ -2017,9 +2017,9 @@ Private Sub imgHechizos_Click()
     cmdMoverHechi(0).Visible = True
     cmdMoverHechi(1).Visible = True
 
-    frmmain.imgInvLock(0).Visible = False
-    frmmain.imgInvLock(1).Visible = False
-    frmmain.imgInvLock(2).Visible = False
+    frmMain.imgInvLock(0).Visible = False
+    frmMain.imgInvLock(1).Visible = False
+    frmMain.imgInvLock(2).Visible = False
 
 End Sub
 
@@ -2053,9 +2053,9 @@ Private Sub imgInventario_Click()
     cmdMoverHechi(0).Visible = False
     cmdMoverHechi(1).Visible = False
     Call Inventario.ReDraw
-    frmmain.imgInvLock(0).Visible = True
-    frmmain.imgInvLock(1).Visible = True
-    frmmain.imgInvLock(2).Visible = True
+    frmMain.imgInvLock(0).Visible = True
+    frmMain.imgInvLock(1).Visible = True
+    frmMain.imgInvLock(2).Visible = True
 
 End Sub
 
@@ -2102,7 +2102,7 @@ Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Sing
 End Sub
 
 Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    Manual.Show , frmmain
+    Manual.Show , frmMain
 
 End Sub
 
@@ -2118,7 +2118,7 @@ Private Sub panelGM_Click()
 End Sub
 
 Private Sub PicCorreo_Click()
-    Call AddtoRichTextBox(frmmain.RecTxt, "Tenes un mensaje, ve al correo local para leerlo.", 255, 255, 255, False, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, "Tenes un mensaje, ve al correo local para leerlo.", 255, 255, 255, False, False, False)
 
 End Sub
 
@@ -2184,14 +2184,14 @@ Private Sub Label6_Click()
     If UserGLD > 0 Then
         frmCantidad.Picture = LoadInterface("cantidad.bmp")
         HayFormularioAbierto = True
-        frmCantidad.Show , frmmain
+        frmCantidad.Show , frmMain
 
     End If
 
 End Sub
 
 Private Sub Label7_Click()
-    Call AddtoRichTextBox(frmmain.RecTxt, "No tenes mensajes nuevos.", 255, 255, 255, False, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, "No tenes mensajes nuevos.", 255, 255, 255, False, False, False)
 
 End Sub
 
@@ -2256,7 +2256,7 @@ Private Sub macrotrabajo_Timer()
     
     'If Inventario.OBJType(Inventario.SelectedItem) = eObjType.otWeapon Then
     If Not (frmCarp.Visible = True) Then
-        If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+        If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
     End If
 
 End Sub
@@ -2266,7 +2266,7 @@ Public Sub ActivarMacroTrabajo()
     TargetYMacro = tY
     macrotrabajo.Interval = IntervaloTrabajo
     macrotrabajo.Enabled = True
-    Call AddtoRichTextBox(frmmain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
 
 End Sub
 
@@ -2277,7 +2277,7 @@ Public Sub DesactivarMacroTrabajo()
     MacroBltIndex = 0
     UsingSkill = 0
     MousePointer = vbDefault
-    Call AddtoRichTextBox(frmmain.RecTxt, "Macro Trabajo DESACTIVADO", 0, 200, 200, False, True, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo DESACTIVADO", 0, 200, 200, False, True, False)
 
 End Sub
 
@@ -2310,7 +2310,7 @@ Private Sub mapMundo_Click()
     Call CalcularPosicionMAPA
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
     HayFormularioAbierto = True
-    frmMapaGrande.Show , frmmain
+    frmMapaGrande.Show , frmMain
 
 End Sub
 
@@ -2337,7 +2337,7 @@ Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, 
     Call CalcularPosicionMAPA
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
     HayFormularioAbierto = True
-    frmMapaGrande.Show , frmmain
+    frmMapaGrande.Show , frmMain
   
 End Sub
 
@@ -2376,7 +2376,7 @@ End Sub
 Private Sub mnuUsar_Click()
 
     If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Sub
-    If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+    If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
 
 End Sub
 
@@ -3152,10 +3152,10 @@ Public Sub Form_Click()
                         
                         If MainTimer.Check(TimersIndex.Work) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
-                            Call FormParser.Parse_Form(frmmain)
+                            Call FormParser.Parse_Form(frmMain)
 
                             If CursoresGraficos = 0 Then
-                                frmmain.MousePointer = vbDefault
+                                frmMain.MousePointer = vbDefault
 
                             End If
 
@@ -3175,10 +3175,10 @@ Public Sub Form_Click()
 
                     End If
                     
-                    Call FormParser.Parse_Form(frmmain)
+                    Call FormParser.Parse_Form(frmMain)
 
                     If CursoresGraficos = 0 Then
-                        frmmain.MousePointer = vbDefault
+                        frmMain.MousePointer = vbDefault
 
                     End If
                     
@@ -3214,7 +3214,7 @@ Public Sub Form_Click()
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 3 Or MouseBoton = vbRightButton And ACCION2 = 3 Or MouseBoton = 4 And ACCION3 = 3 Then
 
         If MainTimer.Check(TimersIndex.UseItemWithU) Then
-            If frmmain.Inventario.IsItemSelected Then Call WriteUseItem(frmmain.Inventario.SelectedItem)
+            If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
         End If
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 4 Or MouseBoton = vbRightButton And ACCION2 = 4 Or MouseBoton = 4 And ACCION3 = 4 Then
@@ -3264,7 +3264,7 @@ Private Sub Form_Load()
 
     On Error Resume Next
 
-    Call FormParser.Parse_Form(frmmain)
+    Call FormParser.Parse_Form(frmMain)
     MenuNivel = 1
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
 
@@ -3593,13 +3593,13 @@ Private Sub Socket1_Disconnect()
 
         Next
     
-        frmmain.Visible = False
+        frmMain.Visible = False
 
-        frmmain.personaje(1).Visible = False
-        frmmain.personaje(2).Visible = False
-        frmmain.personaje(3).Visible = False
-        frmmain.personaje(4).Visible = False
-        frmmain.personaje(5).Visible = False
+        frmMain.personaje(1).Visible = False
+        frmMain.personaje(2).Visible = False
+        frmMain.personaje(3).Visible = False
+        frmMain.personaje(4).Visible = False
+        frmMain.personaje(5).Visible = False
 
         UserClase = 0
         UserSexo = 0
@@ -3618,11 +3618,11 @@ Private Sub Socket1_Disconnect()
         Next i
         
         For i = 1 To UserInvUnlocked
-            frmmain.imgInvLock(i - 1).Picture = Nothing
+            frmMain.imgInvLock(i - 1).Picture = Nothing
         Next i
         
         For i = 1 To MAX_INVENTORY_SLOTS
-            Call frmmain.Inventario.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+            Call frmMain.Inventario.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
             Call frmBancoObj.InvBankUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
             Call frmComerciar.InvComNpc.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
             Call frmComerciar.InvComUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
@@ -3647,7 +3647,7 @@ Private Sub Socket1_Disconnect()
         UserMontado = False
         bRain = False
         AlphaNiebla = 75
-        frmmain.TimerNiebla.Enabled = False
+        frmMain.TimerNiebla.Enabled = False
         bNiebla = False
         MostrarTrofeo = False
         bNieve = False
@@ -3670,10 +3670,10 @@ Private Sub Socket1_Disconnect()
         Call RefreshAllChars
     
         macrotrabajo.Enabled = False
-        frmmain.Timerping.Enabled = False
+        frmMain.Timerping.Enabled = False
         
-        frmmain.UpdateLight.Enabled = False
-        frmmain.UpdateDaytime.Enabled = False
+        frmMain.UpdateLight.Enabled = False
+        frmMain.UpdateDaytime.Enabled = False
 
         frmConnect.Visible = True
         UserMap = 1
@@ -3703,7 +3703,7 @@ Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Respo
     'Handle socket errors
     '*********************************************
     If ErrorCode = 24036 Then
-        frmmain.Socket1.Disconnect
+        frmMain.Socket1.Disconnect
         Debug.Print "ErrorCode = 24036"
         Exit Sub
 
@@ -3731,7 +3731,7 @@ Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Respo
 
         Next
         
-        frmmain.Visible = False
+        frmMain.Visible = False
         Call ComprobarEstado
         General_Set_Connect
 
@@ -3741,7 +3741,7 @@ Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Respo
     Response = 0
     ShowFPS.Enabled = False
 
-    frmmain.Socket1.Disconnect
+    frmMain.Socket1.Disconnect
     LogeoAlgunaVez = False
     
     'General_Set_Connect
@@ -3809,14 +3809,14 @@ Private Sub Winsock1_Close()
         End Select
     Next
     
-    frmmain.Visible = False
+    frmMain.Visible = False
     
 
-frmmain.personaje(1).Visible = False
-frmmain.personaje(2).Visible = False
-frmmain.personaje(3).Visible = False
-frmmain.personaje(4).Visible = False
-frmmain.personaje(5).Visible = False
+frmMain.personaje(1).Visible = False
+frmMain.personaje(2).Visible = False
+frmMain.personaje(3).Visible = False
+frmMain.personaje(4).Visible = False
+frmMain.personaje(5).Visible = False
     
  
 
