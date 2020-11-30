@@ -7,7 +7,7 @@ Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
 
 'Nueva seguridad
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal length As Long)
 Private Declare Function GetAdaptersInfo Lib "iphlpapi" (lpAdapterInfo As Any, lpSize As Long) As Long
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 'get mac adress
@@ -311,8 +311,8 @@ Type Macro
     TIPO As Byte
     cantidad As Integer
     Index As Integer
-    TX As Byte
-    TY As Byte
+    tX As Byte
+    tY As Byte
     Skill As Byte
 
 End Type
@@ -648,14 +648,14 @@ Sub General_Set_Connect()
     End If
             
     intro = 1
-    frmmain.Picture = LoadInterface("main.bmp")
-    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmmain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
-    frmmain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
-    frmmain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
-    frmmain.MANShp.Picture = LoadInterface("barrademana.bmp")
-    frmmain.STAShp.Picture = LoadInterface("barradeenergia.bmp")
-    frmmain.Hpshp.Picture = LoadInterface("barradevida.bmp")
+    frmMain.Picture = LoadInterface("main.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
+    frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
+    frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
+    frmMain.STAShp.Picture = LoadInterface("barradeenergia.bmp")
+    frmMain.Hpshp.Picture = LoadInterface("barradevida.bmp")
             
     Sound.Sound_Play CStr(SND_LLUVIAIN), True, 0, 0
     AlphaNiebla = 10
@@ -1354,22 +1354,22 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
         ChatText = Trim$(ChatText)
 
         If LenB(.nombre) <> 0 And LenB(ChatText) > 0 Then
-            Call AddtoRichTextBox2(frmmain.RecTxt, "[" & Name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
-            Call AddtoRichTextBox2(frmmain.RecTxt, ChatText, red, green, blue, False, False, False, rtfLeft)
+            Call AddtoRichTextBox2(frmMain.RecTxt, "[" & Name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
+            Call AddtoRichTextBox2(frmMain.RecTxt, ChatText, red, green, blue, False, False, False, rtfLeft)
 
         End If
 
         Dim i As Byte
  
         For i = 2 To MaxLineas
-            Con(i - 1).T = Con(i).T
+            Con(i - 1).t = Con(i).t
             'Con(i - 1).Color = Con(i).Color
             Con(i - 1).B = Con(i).B
             Con(i - 1).G = Con(i).G
             Con(i - 1).R = Con(i).R
         Next i
  
-        Con(MaxLineas).T = vbCrLf & "[" & Name & "] " & ChatText
+        Con(MaxLineas).t = vbCrLf & "[" & Name & "] " & ChatText
         Con(MaxLineas).B = blue
         Con(MaxLineas).G = green
         Con(MaxLineas).R = red
@@ -1402,25 +1402,25 @@ Public Sub CopiarDialogoToConsola(ByVal NickName As String, Dialogo As String, C
     Select Case Color
 
         Case 255255255 ' Blanco comun
-            Call AddtoRichTextBox(frmmain.RecTxt, Nick & "> " & Dialogo, 255, 255, 255, False, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 255, 255, 255, False, True, False)
 
         Case 25513015 'Gritar GMS!
-            Call AddtoRichTextBox(frmmain.RecTxt, Nick & "> " & Dialogo, 225, 225, 0, False, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 225, 225, 0, False, True, False)
 
         Case 25500 ' Gritar!
-            Call AddtoRichTextBox(frmmain.RecTxt, Nick & "> " & Dialogo, 255, 0, 0, False, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 255, 0, 0, False, True, False)
 
         Case 2000 'GM
-            Call AddtoRichTextBox(frmmain.RecTxt, Nick & "> " & Dialogo, 0, 200, , False, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 0, 200, , False, True, False)
 
         Case -14117888 ' Global
-            Call AddtoRichTextBox(frmmain.RecTxt, Nick & "> " & Dialogo, 0, 201, 197, False, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 0, 201, 197, False, True, False)
 
         Case 192192192 'Gris
-            Call AddtoRichTextBox(frmmain.RecTxt, Nick & "> " & Dialogo, 164, 164, 164, False, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 164, 164, 164, False, True, False)
 
         Case 15722620 'Privado
-            Call AddtoRichTextBox(frmmain.RecTxt, Nick & "> " & Dialogo, 157, 226, 20, False, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 157, 226, 20, False, True, False)
 
     End Select
 
@@ -1462,7 +1462,7 @@ End Function
 
 Sub AmbientarAudio(ByVal UserMap As Long)
 
-    On Error Resume Next
+    
 
     Dim wav As Integer
 
@@ -1536,30 +1536,30 @@ Public Sub DibujarMiniMapa()
 
     Dim termine As Boolean
 
-    frmmain.MiniMap.BackColor = vbBlack
+    frmMain.MiniMap.BackColor = vbBlack
 
     For map_y = 1 To 100
         For map_x = 1 To 100
 
             If MapData(map_x, map_y).Graphic(1).GrhIndex > 0 Then
-                SetPixel frmmain.MiniMap.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(1).GrhIndex).MiniMap_color
+                SetPixel frmMain.MiniMap.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(1).GrhIndex).MiniMap_color
 
             End If
 
             If MapData(map_x, map_y).Graphic(2).GrhIndex > 0 Then
-                SetPixel frmmain.MiniMap.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(2).GrhIndex).MiniMap_color
+                SetPixel frmMain.MiniMap.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(2).GrhIndex).MiniMap_color
 
             End If
 
             If MapData(map_x, map_y).Graphic(4).GrhIndex > 0 Then
-                SetPixel frmmain.MiniMap.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(4).GrhIndex).MiniMap_color
+                SetPixel frmMain.MiniMap.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(4).GrhIndex).MiniMap_color
 
             End If
             
         Next map_x
     Next map_y
      
-    frmmain.MiniMap.Refresh
+    frmMain.MiniMap.Refresh
 
 End Sub
 
@@ -1570,14 +1570,14 @@ Function EncryptStr(ByVal s As String, ByVal p As String) As String
 
     Dim i  As Integer, R As String
 
-    Dim C1 As Integer, C2 As Integer
+    Dim c1 As Integer, C2 As Integer
 
     R = ""
 
     If Len(p) > 0 Then
 
         For i = 1 To Len(s)
-            C1 = Asc(mid(s, i, 1))
+            c1 = Asc(mid(s, i, 1))
 
             If i > Len(p) Then
                 C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
@@ -1586,10 +1586,10 @@ Function EncryptStr(ByVal s As String, ByVal p As String) As String
 
             End If
 
-            C1 = C1 + C2 + 64
+            c1 = c1 + C2 + 64
 
-            If C1 > 255 Then C1 = C1 - 256
-            R = R + Chr(C1)
+            If c1 > 255 Then c1 = c1 - 256
+            R = R + Chr(c1)
         Next i
 
     Else
@@ -1608,14 +1608,14 @@ Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
 
     Dim i  As Integer, R As String
 
-    Dim C1 As Integer, C2 As Integer
+    Dim c1 As Integer, C2 As Integer
 
     R = ""
 
     If Len(p) > 0 Then
 
         For i = 1 To Len(s)
-            C1 = Asc(mid(s, i, 1))
+            c1 = Asc(mid(s, i, 1))
 
             If i > Len(p) Then
                 C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
@@ -1624,10 +1624,10 @@ Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
 
             End If
 
-            C1 = C1 - C2 - 64
+            c1 = c1 - C2 - 64
 
-            If Sgn(C1) = -1 Then C1 = 256 + C1
-            R = R + Chr(C1)
+            If Sgn(c1) = -1 Then c1 = 256 + c1
+            R = R + Chr(c1)
         Next i
 
     Else
@@ -1721,23 +1721,23 @@ Public Sub ResetearUserMacro()
     '
     '**************************************************************
     Call WriteFlagTrabajar
-    frmmain.MacroLadder.Enabled = False
+    frmMain.MacroLadder.Enabled = False
     UserMacro.Activado = False
     UserMacro.cantidad = 0
     UserMacro.Index = 0
     UserMacro.Intervalo = 0
     UserMacro.TIPO = 0
-    UserMacro.TX = 0
-    UserMacro.TY = 0
+    UserMacro.tX = 0
+    UserMacro.tY = 0
     UserMacro.Skill = 0
 
     If UsingSkill <> 0 Then
         UsingSkill = 0
-        Call FormParser.Parse_Form(frmmain)
+        Call FormParser.Parse_Form(frmMain)
 
     End If
 
-    AddtoRichTextBox frmmain.RecTxt, "Has dejado de trabajar.", 223, 51, 2, 1, 0
+    AddtoRichTextBox frmMain.RecTxt, "Has dejado de trabajar.", 223, 51, 2, 1, 0
 
 End Sub
 
@@ -1800,7 +1800,7 @@ End Function
 
 Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByVal Init_Launcher As Boolean = False)
 
-    On Error Resume Next
+    
 
     Sound.Engine_DeInitialize
     Sound.Music_Stop
@@ -1809,7 +1809,7 @@ Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByV
     prgRun = False
 
     '0. Cerramos el socket
-    If frmmain.Socket1.State <> sckClosed Then frmmain.Socket1.Disconnect
+    If frmMain.Socket1.State <> sckClosed Then frmMain.Socket1.Disconnect
 
     '2. Eliminamos objetos DX
     Call Client_UnInitialize_DirectX_Objects
@@ -1825,7 +1825,7 @@ End Sub
 
 Public Sub Client_UnInitialize_DirectX_Objects()
 
-    On Error Resume Next
+    
 
     '1. Cerramos el engine de sonido y borramos buffers
     Sound.Engine_DeInitialize
@@ -2042,7 +2042,7 @@ Public Function GetDriveSerialNumber(Optional ByVal DriveLetter As String) As Lo
     'Last Modify Date: 07/12/2009
     ' 07/12/2009: Zagen - Convertì las funciones, en formulas mas fàciles de modificar.
     '***************************************************
-    On Error Resume Next
+    
 
     Dim fso As Object, Drv As Object, DriveSerial As Long
          

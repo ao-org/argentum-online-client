@@ -34,7 +34,7 @@ Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E
 
     If CursoresGraficos = 0 Then Exit Sub
 
-    On Error Resume Next
+    
      
     Dim aControl  As Control
 

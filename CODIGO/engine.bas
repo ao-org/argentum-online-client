@@ -437,7 +437,7 @@ End Sub
 
 Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean = False, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single)
 
-    On Error Resume Next
+    
 
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
@@ -496,7 +496,7 @@ End Sub
 
 Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, ByVal ease As Single, Optional ByVal Alpha As Boolean = False)
 
-    On Error Resume Next
+    
 
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
@@ -559,7 +559,7 @@ End Sub
 
 Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single, Optional ByVal charindex As Integer)
 
-    On Error Resume Next
+    
 
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
@@ -650,7 +650,7 @@ End Sub
 
 Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single)
 
-    On Error Resume Next
+    
 
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
@@ -1774,7 +1774,7 @@ Public Sub SetMapFx(ByVal x As Byte, ByVal y As Byte, ByVal fX As Integer, ByVal
     'Sets an FX to the character.
     '***************************************************
 
-    On Error Resume Next
+    
 
     Dim indice As Byte
 
@@ -2044,7 +2044,7 @@ End Sub
 
 Public Sub DrawMapaMundo()
 
-    On Error Resume Next
+    
 
     Static re As RECT
     re.Left = 0
@@ -3336,7 +3336,7 @@ End Sub
 
 Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, ByVal EsAgua As Boolean, ByVal MapX As Integer, ByVal MapY As Integer, ByVal MinX As Integer, ByVal MaxX As Integer, ByVal MinY As Integer, ByVal MaxY As Integer)
 
-    On Error Resume Next
+    
 
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     

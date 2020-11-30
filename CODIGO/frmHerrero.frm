@@ -309,7 +309,7 @@ End Sub
 
 Private Sub Command6_Click()
 
-    On Error Resume Next
+    
 
     If Index = 1 Then
 
@@ -317,15 +317,15 @@ Private Sub Command6_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = ArmasHerrero(lstArmas.ListIndex + 1).Index
-            AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
             UserMacro.Intervalo = IntervaloTrabajo
             UserMacro.Activado = True
-            frmmain.MacroLadder.Interval = IntervaloTrabajo
-            frmmain.MacroLadder.Enabled = True
+            frmMain.MacroLadder.Interval = IntervaloTrabajo
+            frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(ArmasHerrero(lstArmas.ListIndex + 1).Index)
 
-            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = ArmasHerrero(lstArmas.ListIndex + 1).Index
+            If frmMain.macrotrabajo.Enabled Then MacroBltIndex = ArmasHerrero(lstArmas.ListIndex + 1).Index
 
         End If
 
@@ -336,15 +336,15 @@ Private Sub Command6_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = ArmadurasHerrero(lstArmas.ListIndex).Index
-            AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
             UserMacro.Intervalo = IntervaloTrabajo
             UserMacro.Activado = True
-            frmmain.MacroLadder.Interval = IntervaloTrabajo
-            frmmain.MacroLadder.Enabled = True
+            frmMain.MacroLadder.Interval = IntervaloTrabajo
+            frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(ArmadurasHerrero(lstArmas.ListIndex).Index)
 
-            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = ArmadurasHerrero(lstArmas.ListIndex).Index
+            If frmMain.macrotrabajo.Enabled Then MacroBltIndex = ArmadurasHerrero(lstArmas.ListIndex).Index
             
         End If
         
@@ -355,15 +355,15 @@ Private Sub Command6_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = CascosHerrero(lstArmas.ListIndex).Index
-            AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
             UserMacro.Intervalo = IntervaloTrabajo
             UserMacro.Activado = True
-            frmmain.MacroLadder.Interval = IntervaloTrabajo
-            frmmain.MacroLadder.Enabled = True
+            frmMain.MacroLadder.Interval = IntervaloTrabajo
+            frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(CascosHerrero(lstArmas.ListIndex).Index)
 
-            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = CascosHerrero(lstArmas.ListIndex).Index
+            If frmMain.macrotrabajo.Enabled Then MacroBltIndex = CascosHerrero(lstArmas.ListIndex).Index
             
         End If
         
@@ -374,15 +374,15 @@ Private Sub Command6_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = EscudosHerrero(lstArmas.ListIndex).Index
-            AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
             UserMacro.Intervalo = IntervaloTrabajo
             UserMacro.Activado = True
-            frmmain.MacroLadder.Interval = IntervaloTrabajo
-            frmmain.MacroLadder.Enabled = True
+            frmMain.MacroLadder.Interval = IntervaloTrabajo
+            frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(EscudosHerrero(lstArmas.ListIndex).Index)
 
-            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = EscudosHerrero(lstArmas.ListIndex).Index
+            If frmMain.macrotrabajo.Enabled Then MacroBltIndex = EscudosHerrero(lstArmas.ListIndex).Index
             
         End If
         
@@ -479,19 +479,19 @@ End Sub
 
 Private Sub List1_Click()
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
-    SR.bottom = 32
+    SR.Bottom = 32
 
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
-    DR.bottom = 32
+    DR.Bottom = 32
 
     Dim grh As Long
 
@@ -510,19 +510,19 @@ End Sub
 
 Private Sub lstArmas_Click()
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
-    SR.bottom = 32
+    SR.Bottom = 32
 
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
-    DR.bottom = 32
+    DR.Bottom = 32
 
     List1.Clear
     List2.Clear

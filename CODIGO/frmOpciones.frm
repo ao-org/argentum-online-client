@@ -342,7 +342,7 @@ Private Subir       As Boolean
 
 Public bmoving      As Boolean
 
-Public dx           As Integer
+Public dX           As Integer
 
 Public dy           As Integer
 
@@ -382,7 +382,7 @@ Private Const SWP_NOSIZE = &H1
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
-    On Error Resume Next
+    
   
     Dim msg As Long
   
@@ -407,7 +407,7 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
   
     Dim msg As Long
   
-    On Error Resume Next
+    
   
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
@@ -810,7 +810,7 @@ End Sub
 Private Sub cmdcerrar_Click()
     Call GuardarOpciones
     Me.Visible = False
-    frmmain.SetFocus
+    frmMain.SetFocus
 
 End Sub
 
@@ -911,7 +911,7 @@ Public Sub Init()
     
     scrSens.Value = SensibilidadMouse
     
-    Me.Show vbModeless, frmmain
+    Me.Show vbModeless, frmMain
 
 End Sub
 

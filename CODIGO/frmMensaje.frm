@@ -144,7 +144,7 @@ Private Const WS_EX_LAYERED = &H80000
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
-    On Error Resume Next
+    
   
     Dim msg As Long
   
@@ -169,7 +169,7 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
   
     Dim msg As Long
   
-    On Error Resume Next
+    
   
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
@@ -348,14 +348,14 @@ End Sub
 Private Sub mnuNormal_Click()
     SendingType = 1
 
-    If frmmain.SendTxt.Visible Then frmmain.SendTxt.SetFocus
+    If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
 End Sub
 
 Private Sub mnuGritar_click()
     SendingType = 2
 
-    If frmmain.SendTxt.Visible Then frmmain.SendTxt.SetFocus
+    If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
 End Sub
 
@@ -365,7 +365,7 @@ Private Sub mnuPrivado_click()
     If sndPrivateTo <> "" Then
         SendingType = 3
 
-        If frmmain.SendTxt.Visible Then frmmain.SendTxt.SetFocus
+        If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
     Else
         Call MensajeAdvertencia("Debes escribir un usuario válido")
 
@@ -376,28 +376,28 @@ End Sub
 Private Sub mnuClan_click()
     SendingType = 4
 
-    If frmmain.SendTxt.Visible Then frmmain.SendTxt.SetFocus
+    If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
 End Sub
 
 Private Sub mnuGMs_click()
     SendingType = 5
 
-    If frmmain.SendTxt.Visible Then frmmain.SendTxt.SetFocus
+    If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
 End Sub
 
 Private Sub mnuGrupo_click()
     SendingType = 6
 
-    If frmmain.SendTxt.Visible Then frmmain.SendTxt.SetFocus
+    If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
 End Sub
 
 Private Sub mnuGlobal_Click()
     SendingType = 7
 
-    If frmmain.SendTxt.Visible Then frmmain.SendTxt.SetFocus
+    If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
 End Sub
 

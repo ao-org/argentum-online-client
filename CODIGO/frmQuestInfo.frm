@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
 Begin VB.Form FrmQuestInfo 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -411,7 +411,7 @@ End Sub
 
 Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
 
-    On Error Resume Next
+    
 
     Dim grh As grh
 

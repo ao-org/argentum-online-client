@@ -6,8 +6,8 @@ Public Type Particle
     PartCountLive As Integer
     destruir  As Boolean
     friction As Single
-    X As Single
-    Y As Single
+    x As Single
+    y As Single
     vector_x As Single
     vector_y As Single
     Angle As Single
@@ -627,7 +627,7 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
     'Last Modify Date: 5/15/2003
     'Renders a particle stream at a paticular screen point
     '*****************************************************************
-    On Error Resume Next
+    
 
     Dim loopc            As Long
 
@@ -774,8 +774,8 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
             'Start new particle
             InitGrh temp_particle.grh, grh_index
             temp_particle.grh.Alpha = alpha_blend
-            temp_particle.X = RandomNumber(x1, x2) - (32 / 2)
-            temp_particle.Y = RandomNumber(y1, y2) - (32 / 2)
+            temp_particle.x = RandomNumber(x1, x2) - (32 / 2)
+            temp_particle.y = RandomNumber(y1, y2) - (32 / 2)
             temp_particle.vector_x = RandomNumber(vecx1, vecx2)
             temp_particle.vector_y = RandomNumber(vecy1, vecy2)
             temp_particle.Angle = Angle
@@ -795,7 +795,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
             If gravity = True Then
                 temp_particle.vector_y = temp_particle.vector_y + grav_strength
 
-                If temp_particle.Y > 0 Then
+                If temp_particle.y > 0 Then
                     'bounce
                     temp_particle.vector_y = bounce_strength
 
@@ -815,8 +815,8 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
         End If
         
         'Add in vector
-        temp_particle.X = temp_particle.X + (temp_particle.vector_x \ temp_particle.friction)
-        temp_particle.Y = temp_particle.Y + (temp_particle.vector_y \ temp_particle.friction)
+        temp_particle.x = temp_particle.x + (temp_particle.vector_x \ temp_particle.friction)
+        temp_particle.y = temp_particle.y + (temp_particle.vector_y \ temp_particle.friction)
     
         'decrement counter
         temp_particle.alive_counter = temp_particle.alive_counter - 1
@@ -850,7 +850,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     
         If temp_particle.grh.GrhIndex Then
     
-            Grh_Render_Advance temp_particle.grh, temp_particle.X + screen_x, temp_particle.Y + screen_y, grh_resizex, grh_resizey, rgb_list(), True, True, alpha_blend
+            Grh_Render_Advance temp_particle.grh, temp_particle.x + screen_x, temp_particle.y + screen_y, grh_resizex, grh_resizey, rgb_list(), True, True, alpha_blend
             
             Exit Sub
 
@@ -860,7 +860,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
 
     If temp_particle.grh.GrhIndex Then
 
-        Grh_Render temp_particle.grh, temp_particle.X + screen_x, temp_particle.Y + screen_y, rgb_list(), True, True, alpha_blend
+        Grh_Render temp_particle.grh, temp_particle.x + screen_x, temp_particle.y + screen_y, rgb_list(), True, True, alpha_blend
 
     End If
     
@@ -1036,7 +1036,7 @@ Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal c
 
 End Function
 
-Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal X As Integer, ByVal Y As Integer, Optional ByVal particle_life As Long = 0) As Long
+Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As Integer, ByVal y As Integer, Optional ByVal particle_life As Long = 0) As Long
 
     If ParticulaInd = 0 Then Exit Function
 
@@ -1047,7 +1047,7 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal X As I
     Call SetRGBA(rgb_list(2), StreamData(ParticulaInd).colortint(2).B, StreamData(ParticulaInd).colortint(2).G, StreamData(ParticulaInd).colortint(2).R)
     Call SetRGBA(rgb_list(3), StreamData(ParticulaInd).colortint(3).B, StreamData(ParticulaInd).colortint(3).G, StreamData(ParticulaInd).colortint(3).R)
 
-    General_Particle_Create = Graficos_Particulas.Particle_Group_Create(X, Y, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
+    General_Particle_Create = Graficos_Particulas.Particle_Group_Create(x, y, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
        StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).Angle, _
        StreamData(ParticulaInd).vecx1, StreamData(ParticulaInd).vecx2, StreamData(ParticulaInd).vecy1, StreamData(ParticulaInd).vecy2, _
        StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _

@@ -84,32 +84,32 @@ End Type
 
 Private Type tDatosBloqueados
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     lados As Byte
 
 End Type
 
 Private Type tDatosGrh
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     GrhIndex As Long
 
 End Type
 
 Private Type tDatosTrigger
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     Trigger As Integer
 
 End Type
 
 Private Type tDatosLuces
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     Color As RGBA
     Rango As Byte
 
@@ -117,24 +117,24 @@ End Type
 
 Private Type tDatosParticulas
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     Particula As Long
 
 End Type
 
 Public Type tDatosNPC
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     NpcIndex As Integer
 
 End Type
 
 Private Type tDatosObjs
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     OBJIndex As Integer
     ObjAmmount As Integer
 
@@ -142,8 +142,8 @@ End Type
 
 Private Type tDatosTE
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     DestM As Integer
     DestX As Integer
     DestY As Integer
@@ -588,8 +588,8 @@ Sub CargarDatosMapa(ByVal map As Integer)
     Dim i            As Long
     Dim j            As Long
     
-    Dim X            As Long
-    Dim Y            As Long
+    Dim x            As Long
+    Dim y            As Long
     
     #If Compresion = 1 Then
 
@@ -830,8 +830,8 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim i            As Long
     Dim j            As Long
 
-    Dim X            As Long
-    Dim Y            As Long
+    Dim x            As Long
+    Dim y            As Long
 
     Dim demora       As Long
     Dim demorafinal  As Long
@@ -882,9 +882,9 @@ Public Sub CargarMapa(ByVal map As Integer)
         Call SetGlobalLight(MapDat.base_light)
     End If
         
-    For X = 1 To 100
-        For Y = 1 To 100
-            With MapData(X, Y)
+    For x = 1 To 100
+        For y = 1 To 100
+            With MapData(x, y)
 
                 .light_value(0) = global_light
                 .light_value(1) = global_light
@@ -892,8 +892,8 @@ Public Sub CargarMapa(ByVal map As Integer)
                 .light_value(3) = global_light
                 
             End With
-        Next Y
-    Next X
+        Next y
+    Next x
     
     ' Get #fh, , L1
     With MH
@@ -905,7 +905,7 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Blqs
 
             For i = 1 To .NumeroBloqueados
-                MapData(Blqs(i).X, Blqs(i).Y).Blocked = Blqs(i).lados
+                MapData(Blqs(i).x, Blqs(i).y).Blocked = Blqs(i).lados
             Next i
         End If
     
@@ -918,21 +918,21 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(1)
             
-                X = L1(i).X
-                Y = L1(i).Y
+                x = L1(i).x
+                y = L1(i).y
                 
-                With MapData(X, Y)
+                With MapData(x, y)
             
                     .Graphic(1).GrhIndex = L1(i).GrhIndex
                     
                     ' Precalculate position
-                    .Graphic(1).X = X * TilePixelWidth
-                    .Graphic(1).Y = Y * TilePixelHeight
+                    .Graphic(1).x = x * TilePixelWidth
+                    .Graphic(1).y = y * TilePixelHeight
                     ' *********************
                 
                     InitGrh .Graphic(1), .Graphic(1).GrhIndex
                     
-                    If HayAgua(X, Y) Then
+                    If HayAgua(x, y) Then
                         .Blocked = .Blocked Or FLAG_AGUA
                     End If
                     
@@ -948,14 +948,14 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(2)
                 
-                X = L2(i).X
-                Y = L2(i).Y
+                x = L2(i).x
+                y = L2(i).y
 
-                MapData(X, Y).Graphic(2).GrhIndex = L2(i).GrhIndex
+                MapData(x, y).Graphic(2).GrhIndex = L2(i).GrhIndex
                 
-                InitGrh MapData(X, Y).Graphic(2), MapData(X, Y).Graphic(2).GrhIndex
+                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).GrhIndex
                 
-                MapData(X, Y).Blocked = MapData(X, Y).Blocked Or FLAG_COSTA
+                MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_COSTA
                 
             Next i
 
@@ -967,15 +967,15 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(3)
             
-                X = L3(i).X
-                Y = L3(i).Y
+                x = L3(i).x
+                y = L3(i).y
             
-                MapData(X, Y).Graphic(3).GrhIndex = L3(i).GrhIndex
+                MapData(x, y).Graphic(3).GrhIndex = L3(i).GrhIndex
             
-                InitGrh MapData(X, Y).Graphic(3), MapData(X, Y).Graphic(3).GrhIndex
+                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
                 
                 If EsArbol(L3(i).GrhIndex) Then
-                    MapData(X, Y).Blocked = MapData(X, Y).Blocked Or FLAG_ARBOL
+                    MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
                 End If
             Next i
 
@@ -987,8 +987,8 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , L4
 
             For i = 1 To .NumeroLayers(4)
-                MapData(L4(i).X, L4(i).Y).Graphic(4).GrhIndex = L4(i).GrhIndex
-                InitGrh MapData(L4(i).X, L4(i).Y).Graphic(4), MapData(L4(i).X, L4(i).Y).Graphic(4).GrhIndex
+                MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex = L4(i).GrhIndex
+                InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex
             Next i
 
         End If
@@ -998,7 +998,7 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Triggers
             
             For i = 1 To .NumeroTriggers
-                MapData(Triggers(i).X, Triggers(i).Y).Trigger = Triggers(i).Trigger
+                MapData(Triggers(i).x, Triggers(i).y).Trigger = Triggers(i).Trigger
                 
                 ' Transparencia de techos
                 If Triggers(i).Trigger >= PRIMER_TRIGGER_TECHO Then
@@ -1024,8 +1024,8 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroParticulas
             
-                MapData(Particulas(i).X, Particulas(i).Y).particle_Index = Particulas(i).Particula
-                General_Particle_Create MapData(Particulas(i).X, Particulas(i).Y).particle_Index, Particulas(i).X, Particulas(i).Y
+                MapData(Particulas(i).x, Particulas(i).y).particle_Index = Particulas(i).Particula
+                General_Particle_Create MapData(Particulas(i).x, Particulas(i).y).particle_Index, Particulas(i).x, Particulas(i).y
 
             Next i
 
@@ -1036,14 +1036,14 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Luces
 
             For i = 1 To .NumeroLuces
-                MapData(Luces(i).X, Luces(i).Y).luz.Color = Luces(i).Color
-                MapData(Luces(i).X, Luces(i).Y).luz.Rango = Luces(i).Rango
+                MapData(Luces(i).x, Luces(i).y).luz.Color = Luces(i).Color
+                MapData(Luces(i).x, Luces(i).y).luz.Rango = Luces(i).Rango
 
-                If MapData(Luces(i).X, Luces(i).Y).luz.Rango <> 0 Then
-                    If MapData(Luces(i).X, Luces(i).Y).luz.Rango < 100 Then
-                        LucesCuadradas.Light_Create Luces(i).X, Luces(i).Y, Luces(i).Color, Luces(i).Rango, Luces(i).X & Luces(i).Y
+                If MapData(Luces(i).x, Luces(i).y).luz.Rango <> 0 Then
+                    If MapData(Luces(i).x, Luces(i).y).luz.Rango < 100 Then
+                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, Luces(i).Color, Luces(i).Rango, Luces(i).x & Luces(i).y
                     Else
-                        LucesRedondas.Create_Light_To_Map Luces(i).X, Luces(i).Y, Luces(i).Color, Luces(i).Rango - 99
+                        LucesRedondas.Create_Light_To_Map Luces(i).x, Luces(i).y, Luces(i).Color, Luces(i).Rango - 99
                     End If
 
                 End If
@@ -1057,10 +1057,10 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Objetos
 
             For i = 1 To .NumeroOBJs
-                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
-                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.Amount = Objetos(i).ObjAmmount
-                MapData(Objetos(i).X, Objetos(i).Y).ObjGrh.GrhIndex = ObjData(Objetos(i).OBJIndex).GrhIndex
-                Call InitGrh(MapData(Objetos(i).X, Objetos(i).Y).ObjGrh, MapData(Objetos(i).X, Objetos(i).Y).ObjGrh.GrhIndex)
+                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
+                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
+                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).OBJIndex).GrhIndex
+                Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex)
 
             Next i
 
@@ -1748,8 +1748,8 @@ Sub CargarCuerpos()
             InitGrh BodyData(i).Walk(3), MisCuerpos(i).Body(3), 0
             InitGrh BodyData(i).Walk(4), MisCuerpos(i).Body(4), 0
             
-            BodyData(i).HeadOffset.X = MisCuerpos(i).HeadOffsetX
-            BodyData(i).HeadOffset.Y = MisCuerpos(i).HeadOffsetY
+            BodyData(i).HeadOffset.x = MisCuerpos(i).HeadOffsetX
+            BodyData(i).HeadOffset.y = MisCuerpos(i).HeadOffsetY
 
         End If
 
@@ -1994,7 +1994,7 @@ End Function
 
 Sub CargarAnimArmas()
 
-    On Error Resume Next
+    
 
     Dim loopc As Long
 
@@ -2032,7 +2032,7 @@ End Sub
 
 Sub CargarColores()
 
-    On Error Resume Next
+    
 
     Dim archivoC As String
 

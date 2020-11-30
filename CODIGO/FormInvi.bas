@@ -130,7 +130,7 @@ Private Declare Function SendMessageString Lib "user32" Alias "SendMessageA" (By
  
 Public Function TextoLineaRichTextBox(ByVal pControl As RichTextBox, ByVal pLinea As Long) As String
 
-    On Error Resume Next
+    
 
     Dim vLongitudLinea As Long, vNumeroLinea As Long
 
@@ -306,7 +306,7 @@ End Function
 'Diese Funktion überprüft, ob die angegebene Function von einer DLL exportiert wird.
 Private Function IsFunctionExported(ByVal sFunction As String, ByVal sModule As String) As Boolean
 
-    On Error Resume Next
+    
 
     Dim hMod As Long, lpFunc As Long, bLibLoaded As Boolean
     

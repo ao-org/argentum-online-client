@@ -158,7 +158,7 @@ End Sub
 
 Private Sub Command3_Click()
 
-    On Error Resume Next
+    
     
     If lstArmas.ListIndex < 0 Then
         MsgBox "Debes seleccionar un objeto de la lista"
@@ -170,15 +170,15 @@ Private Sub Command3_Click()
         UserMacro.cantidad = cantidad
         UserMacro.TIPO = 1
         UserMacro.Index = ObjAlquimista(lstArmas.ListIndex + 1)
-        AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
         UserMacro.Intervalo = IntervaloTrabajo
         UserMacro.Activado = True
-        frmmain.MacroLadder.Interval = IntervaloTrabajo
-        frmmain.MacroLadder.Enabled = True
+        frmMain.MacroLadder.Interval = IntervaloTrabajo
+        frmMain.MacroLadder.Enabled = True
     Else
         Call WriteCraftAlquimista(ObjAlquimista(lstArmas.ListIndex + 1))
 
-        If frmmain.macrotrabajo.Enabled Then MacroBltIndex = ObjAlquimista(lstArmas.ListIndex + 1)
+        If frmMain.macrotrabajo.Enabled Then MacroBltIndex = ObjAlquimista(lstArmas.ListIndex + 1)
     
     End If
 
@@ -215,19 +215,19 @@ End Sub
 
 Private Sub List1_Click()
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
-    SR.bottom = 32
+    SR.Bottom = 32
 
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
-    DR.bottom = 32
+    DR.Bottom = 32
     Call Grh_Render_To_Hdc(picture1, 21926, 0, 0, False)
 
 End Sub
@@ -272,19 +272,19 @@ End Sub
 
 Private Sub lstArmas_Click()
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
-    SR.bottom = 32
+    SR.Bottom = 32
 
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
-    DR.bottom = 32
+    DR.Bottom = 32
     Call frmAlqui.List1.Clear
     Call frmAlqui.List2.Clear
     frmAlqui.List1.AddItem ("Raices")

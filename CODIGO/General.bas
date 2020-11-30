@@ -7,8 +7,8 @@ Option Explicit
 
 Private Type Position
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 
 End Type
 
@@ -23,8 +23,8 @@ End Type
 Private Type tWorldPos
 
     map As Integer
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 
 End Type
 
@@ -109,7 +109,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
     'Jopi 17/08/2019 : Ahora podes especificar el alineamiento del texto.
     '****************************************************
 
-    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
 
     With RichTextBox
         
@@ -140,7 +140,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         .SelText = Text
 
         ' Esto arregla el bug de las letras superponiendose la consola del frmMain
-        If Not (RichTextBox = frmmain.RecTxt) Then
+        If Not (RichTextBox = frmMain.RecTxt) Then
             RichTextBox.Refresh
 
         End If
@@ -189,14 +189,14 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     Dim i As Byte
  
     For i = 2 To MaxLineas
-        Con(i - 1).T = Con(i).T
+        Con(i - 1).t = Con(i).t
         'Con(i - 1).Color = Con(i).Color
         Con(i - 1).B = Con(i).B
         Con(i - 1).G = Con(i).G
         Con(i - 1).R = Con(i).R
     Next i
  
-    Con(MaxLineas).T = Text
+    Con(MaxLineas).t = Text
     Con(MaxLineas).B = blue
     Con(MaxLineas).G = green
     Con(MaxLineas).R = red
@@ -219,7 +219,7 @@ Public Sub RefreshAllChars()
     For loopc = 1 To LastChar
     
         If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.X, charlist(loopc).Pos.Y).charindex = loopc
+            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
 
         End If
 
@@ -320,7 +320,7 @@ End Function
 
 Sub UnloadAllForms()
 
-    On Error Resume Next
+    
 
     Dim mifrm As Form
     
@@ -375,7 +375,7 @@ Sub SetConnected()
     'Unload the connect form
     'FrmCuenta.Visible = False
 
-    frmmain.Label8.Caption = UserName
+    frmMain.Label8.Caption = UserName
     LogeoAlgunaVez = True
     
     ' bTecho = False
@@ -385,52 +385,52 @@ Sub SetConnected()
     Call keysMovementPressedQueue.Clear
 
     If FPSFLAG Then
-        frmmain.Timerping.Enabled = True
+        frmMain.Timerping.Enabled = True
     Else
-        frmmain.Timerping.Enabled = False
+        frmMain.Timerping.Enabled = False
     End If
     
-    frmmain.UpdateLight.Enabled = True
-    frmmain.UpdateDaytime.Enabled = True
+    frmMain.UpdateLight.Enabled = True
+    frmMain.UpdateDaytime.Enabled = True
     light_transition = 1#
 
     COLOR_AZUL = RGB(0, 0, 0)
     
     ' establece el borde al listbox
-    Call Establecer_Borde(frmmain.hlst, frmmain, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmMain.hlst, frmMain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmmain.RecTxt.hwnd)
+    Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
-    Call Form_RemoveTitleBar(frmmain)
+    Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
-    frmmain.picInv.Visible = True
+    frmMain.picInv.Visible = True
      
-    frmmain.hlst.Visible = False
+    frmMain.hlst.Visible = False
 
-    frmmain.cmdlanzar.Visible = False
-    frmmain.imgSpellInfo.Visible = False
+    frmMain.cmdlanzar.Visible = False
+    frmMain.imgSpellInfo.Visible = False
 
-    frmmain.cmdMoverHechi(0).Visible = False
-    frmmain.cmdMoverHechi(1).Visible = False
+    frmMain.cmdMoverHechi(0).Visible = False
+    frmMain.cmdMoverHechi(1).Visible = False
     
-    Call frmmain.Inventario.ReDraw
+    Call frmMain.Inventario.ReDraw
     
-    frmmain.Left = 0
-    frmmain.Top = 0
-    frmmain.Width = 1024 * Screen.TwipsPerPixelX
-    frmmain.Height = 768 * Screen.TwipsPerPixelY
+    frmMain.Left = 0
+    frmMain.Top = 0
+    frmMain.Width = 1024 * Screen.TwipsPerPixelX
+    frmMain.Height = 768 * Screen.TwipsPerPixelY
 
-    frmmain.Visible = True
-    frmmain.cerrarcuenta.Enabled = True
+    frmMain.Visible = True
+    frmMain.cerrarcuenta.Enabled = True
 
 End Sub
 
@@ -451,16 +451,16 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.X, UserPos.Y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.X + 1, UserPos.Y, Direccion)
+            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.X, UserPos.Y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.X - 1, UserPos.Y, Direccion)
+            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
 
     End Select
     
@@ -499,31 +499,31 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End If
     
-    frmmain.personaje(0).Left = UserPos.X - 5
-    frmmain.personaje(0).Top = UserPos.Y - 4
+    frmMain.personaje(0).Left = UserPos.x - 5
+    frmMain.personaje(0).Top = UserPos.y - 4
     
-    frmmain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
 
     If frmMapaGrande.Visible Then
 
-        Dim X As Long
+        Dim x As Long
 
-        Dim Y As Long
+        Dim y As Long
             
-        X = (idmap - 1) Mod 16
-        Y = Int((idmap - 1) / 16)
+        x = (idmap - 1) Mod 16
+        y = Int((idmap - 1) / 16)
 
-        frmMapaGrande.lblAllies.Top = Y * 27
-        frmMapaGrande.lblAllies.Left = X * 27
+        frmMapaGrande.lblAllies.Top = y * 27
+        frmMapaGrande.lblAllies.Left = x * 27
 
-        frmMapaGrande.Shape1.Top = Y * 27 + (UserPos.Y / 4.5)
-        frmMapaGrande.Shape1.Left = X * 27 + (UserPos.X / 4.5)
+        frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
+        frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
 
     End If
     
     ' Update 3D sounds!
     ' Call Audio.MoveListener(UserPos.x, UserPos.y)
-    If frmmain.macrotrabajo.Enabled Then frmmain.DesactivarMacroTrabajo
+    If frmMain.macrotrabajo.Enabled Then frmMain.DesactivarMacroTrabajo
     
 End Sub
 
@@ -575,7 +575,7 @@ End Sub
 
 Sub Check_Keys()
 
-    On Error Resume Next
+    
 
     Static lastMovement As Long
 
@@ -586,7 +586,7 @@ Sub Check_Keys()
     If Not Application.IsAppActive() Then Exit Sub
 
     If Not pausa And _
-        frmmain.Visible And _
+        frmMain.Visible And _
         Not frmComerciarUsu.Visible And _
         Not frmBancoObj.Visible And _
         Not frmOpciones.Visible And _
@@ -604,7 +604,7 @@ Sub Check_Keys()
         Not FrmCorreo.Visible And _
         Not FrmGmAyuda.Visible Then
  
-        If frmmain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub
+        If frmMain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub
  
         If UserMoving = 0 Then
             If Not UserEstupido Then
@@ -713,7 +713,7 @@ End Function
 
 Sub Main()
 
-    On Error Resume Next
+    
 
     Call InitCommonControls
     
@@ -804,10 +804,10 @@ Sub Main()
     Call SwitchMap(UserMap)
 
     'Inicializamos el socket
-    Call frmmain.Socket1.Startup
+    Call frmMain.Socket1.Startup
     
     'Set the dialog's font
-    Dialogos.font = frmmain.font
+    Dialogos.font = frmMain.font
     
     ' Load the form for screenshots
     Call Load(frmScreenshots)
@@ -910,16 +910,16 @@ End Sub
 
 Public Sub LeerLineaComandos()
 
-    Dim T() As String
+    Dim t() As String
 
     Dim i   As Long
     
     'Parseo los comandos
-    T = Split(Command, " ")
+    t = Split(Command, " ")
 
-    For i = LBound(T) To UBound(T)
+    For i = LBound(t) To UBound(t)
 
-        Select Case UCase$(T(i))
+        Select Case UCase$(t(i))
 
             Case "/LAUNCHER" 'no cambiar la resolucion
                 Launcher = True
@@ -1076,7 +1076,7 @@ Public Sub CloseClient()
     Call EndGame(True)
     
     ' Destruyo los inventarios
-    Set frmmain.Inventario = Nothing
+    Set frmMain.Inventario = Nothing
     Set frmComerciar.InvComNpc = Nothing
     Set frmComerciar.InvComUsu = Nothing
     Set frmBancoObj.InvBankUsu = Nothing
@@ -1152,7 +1152,7 @@ End Function
 
 Public Sub InitServersList(ByVal Lst As String)
 
-    On Error Resume Next
+    
 
     Dim NumServers As Integer
 

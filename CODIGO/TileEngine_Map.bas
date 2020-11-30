@@ -58,9 +58,9 @@ Sub SwitchMap(ByVal map As Integer)
 
 End Sub
 
-Function HayAgua(ByVal X As Integer, ByVal Y As Integer) As Boolean
+Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
 
-    With MapData(X, Y).Graphic(1)
+    With MapData(x, y).Graphic(1)
         HayAgua = ((.GrhIndex >= 1505 And .GrhIndex <= 1520) Or (.GrhIndex >= 24223 And .GrhIndex <= 24238) Or _
             (.GrhIndex >= 24143 And .GrhIndex <= 24158) Or (.GrhIndex >= 468 And .GrhIndex <= 483) Or _
             (.GrhIndex >= 44668 And .GrhIndex <= 44939) Or (.GrhIndex >= 24303 And .GrhIndex <= 24318))
@@ -81,9 +81,9 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
 
 End Function
 
-Public Function EsObjetoFijo(ByVal X As Integer, ByVal Y As Integer) As Boolean
+Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
     Dim OBJIndex As Integer
-    OBJIndex = MapData(X, Y).OBJInfo.OBJIndex
+    OBJIndex = MapData(x, y).OBJInfo.OBJIndex
     
     Dim ObjType As eObjType
     ObjType = ObjData(OBJIndex).ObjType
@@ -157,7 +157,7 @@ Public Sub SetGlobalLight(ByVal base_light As Long)
     light_transition = 1#
 End Sub
 
-Public Function Map_FX_Group_Next_Open(ByVal X As Byte, ByVal Y As Byte) As Integer
+Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Integer
 
     '*****************************************************************
     'Author: Augusto José Rando
@@ -166,9 +166,9 @@ Public Function Map_FX_Group_Next_Open(ByVal X As Byte, ByVal Y As Byte) As Inte
 
     Dim loopc As Long
     
-    If MapData(X, Y).FxCount = 0 Then
-        MapData(X, Y).FxCount = 1
-        ReDim MapData(X, Y).FxList(1 To 1)
+    If MapData(x, y).FxCount = 0 Then
+        MapData(x, y).FxCount = 1
+        ReDim MapData(x, y).FxList(1 To 1)
         Map_FX_Group_Next_Open = 1
         Exit Function
 
@@ -176,12 +176,12 @@ Public Function Map_FX_Group_Next_Open(ByVal X As Byte, ByVal Y As Byte) As Inte
     
     loopc = 1
 
-    Do Until MapData(X, Y).FxList(loopc).FxIndex = 0
+    Do Until MapData(x, y).FxList(loopc).FxIndex = 0
 
-        If loopc = MapData(X, Y).FxCount Then
-            Map_FX_Group_Next_Open = MapData(X, Y).FxCount + 1
-            MapData(X, Y).FxCount = Map_FX_Group_Next_Open
-            ReDim Preserve MapData(X, Y).FxList(1 To Map_FX_Group_Next_Open)
+        If loopc = MapData(x, y).FxCount Then
+            Map_FX_Group_Next_Open = MapData(x, y).FxCount + 1
+            MapData(x, y).FxCount = Map_FX_Group_Next_Open
+            ReDim Preserve MapData(x, y).FxList(1 To Map_FX_Group_Next_Open)
             Exit Function
 
         End If
@@ -193,15 +193,15 @@ Public Function Map_FX_Group_Next_Open(ByVal X As Byte, ByVal Y As Byte) As Inte
     Exit Function
 
 ErrorHandler:
-    MapData(X, Y).FxCount = 1
-    ReDim MapData(X, Y).FxList(1 To 1)
+    MapData(x, y).FxCount = 1
+    ReDim MapData(x, y).FxList(1 To 1)
     Map_FX_Group_Next_Open = 1
 
 End Function
 
-Public Sub Draw_Sombra(ByRef grh As grh, ByVal X As Integer, ByVal Y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single)
+Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single)
 
-    On Error Resume Next
+    
 
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
@@ -229,14 +229,14 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal X As Integer, ByVal Y As Integer,
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
     If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-        X = X - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
+        x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
     End If
 
     If GrhData(grh.GrhIndex).TileHeight <> 1 Then
-        Y = Y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
+        y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
     End If
 
-    Call Batch_Textured_Box_Shadow(X, Y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value)
+    Call Batch_Textured_Box_Shadow(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value)
 End Sub
 
 Sub Engine_Weather_UpdateFog()
@@ -248,9 +248,9 @@ Sub Engine_Weather_UpdateFog()
 
     Dim i           As Long
 
-    Dim X           As Long
+    Dim x           As Long
 
-    Dim Y           As Long
+    Dim y           As Long
 
     Dim cc(3)       As RGBA
 
@@ -300,18 +300,18 @@ Sub Engine_Weather_UpdateFog()
 
     Call InitGrh(TempGrh, 32014)
 
-    X = 2
-    Y = -1
+    x = 2
+    y = -1
 
     Call RGBAList(cc, 255, 255, 255, AlphaNiebla)
 
     For i = 1 To WeatherFogCount
-        Draw_Grh TempGrh, (X * 512) + WeatherFogX2, (Y * 512) + WeatherFogY2, 0, 0, cc()
-        X = X + 1
+        Draw_Grh TempGrh, (x * 512) + WeatherFogX2, (y * 512) + WeatherFogY2, 0, 0, cc()
+        x = x + 1
 
-        If X > (1 + (ScreenWidth \ 512)) Then
-            X = 0
-            Y = Y + 1
+        If x > (1 + (ScreenWidth \ 512)) Then
+            x = 0
+            y = y + 1
 
         End If
 
@@ -319,16 +319,16 @@ Sub Engine_Weather_UpdateFog()
             
     'Render fog 1
     TempGrh.GrhIndex = 32015
-    X = 0
-    Y = 0
+    x = 0
+    y = 0
 
     For i = 1 To WeatherFogCount
-        Draw_Grh TempGrh, (X * 512) + WeatherFogX1, (Y * 512) + WeatherFogY1, 0, 0, cc()
-        X = X + 1
+        Draw_Grh TempGrh, (x * 512) + WeatherFogX1, (y * 512) + WeatherFogY1, 0, 0, cc()
+        x = x + 1
 
-        If X > (2 + (ScreenWidth \ 512)) Then
-            X = 0
-            Y = Y + 1
+        If x > (2 + (ScreenWidth \ 512)) Then
+            x = 0
+            y = y + 1
 
         End If
 
@@ -338,12 +338,12 @@ End Sub
 
 Sub MapUpdateGlobalLight()
 
-    Dim X As Integer, Y As Integer
+    Dim x As Integer, y As Integer
     
     ' Reseteamos toda la luz del mapa
-    For Y = YMinMapSize To YMaxMapSize
-        For X = XMinMapSize To XMaxMapSize
-            With MapData(X, Y)
+    For y = YMinMapSize To YMaxMapSize
+        For x = XMinMapSize To XMaxMapSize
+            With MapData(x, y)
             
                 .light_value(0) = global_light
                 .light_value(1) = global_light
@@ -351,8 +351,8 @@ Sub MapUpdateGlobalLight()
                 .light_value(3) = global_light
                 
             End With
-        Next X
-    Next Y
+        Next x
+    Next y
     
     Call LucesRedondas.LightRenderAll
     Call LucesCuadradas.Light_Render_All

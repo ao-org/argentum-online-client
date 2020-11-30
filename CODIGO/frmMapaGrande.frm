@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
 Begin VB.Form frmMapaGrande 
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
@@ -636,7 +636,7 @@ End Sub
 
 Private Sub listdrop_Click()
 
-    On Error Resume Next
+    
 
     'Picture1.Refresh
     picture1.BackColor = vbBlack
@@ -650,7 +650,7 @@ End Sub
 
 Private Sub ListView1_Click()
 
-    On Error Resume Next
+    
 
     Label8.Caption = ""
     picture1.Refresh
@@ -701,7 +701,7 @@ End Sub
 
 Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    On Error Resume Next
+    
 
     lblAllies.Visible = True
 
@@ -715,7 +715,7 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     'lblAllies.left = X * 14 / 32
     
     If x >= llamadadeclan.Left And x <= llamadadeclan.Left + llamadadeclan.Width And y >= llamadadeclan.Top And y <= llamadadeclan.Top + llamadadeclan.Height Then
-        AddtoRichTextBox frmmain.RecTxt, "Ubicación de tu compañero de clan que solicita ayuda: (" & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmMain.RecTxt, "Ubicación de tu compañero de clan que solicita ayuda: (" & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
 
     End If
 

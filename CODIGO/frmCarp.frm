@@ -245,7 +245,7 @@ End Sub
 
 Private Sub List1_Click()
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
@@ -265,7 +265,7 @@ End Sub
 
 Private Sub lstArmas_Click()
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 

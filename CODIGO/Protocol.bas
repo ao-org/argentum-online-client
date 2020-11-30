@@ -559,7 +559,7 @@ Public Sub HandleIncomingData()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    On Error Resume Next
+    
 
     Dim paquete As Long
 

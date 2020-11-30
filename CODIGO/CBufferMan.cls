@@ -82,7 +82,7 @@ Private Sub Class_Terminate()
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
-    On Error Resume Next
+    
 
     Dim i As Long
 
@@ -301,7 +301,7 @@ End Sub
 
 Public Sub DetenerTodo()
 
-    On Error Resume Next
+    
 
     '**************************************************************
     'Author: Augusto José Rando
@@ -336,7 +336,7 @@ Public Sub ModificarVolumenTodo(ByVal Volume As Long)
     'Last Modify Date: 5/04/2005
     'Detiene todos los sonidos
     '**************************************************************
-    On Error Resume Next
+    
 
     Dim i As Long
 
@@ -598,7 +598,7 @@ Public Sub BorraTimerProc()
     'Last Modify Date: 5/04/2005
     'Cada un minuto revisamos que buffers se pueden eliminar
     '**************************************************************
-    On Error Resume Next
+    
     
     Dim loopc        As Long
 

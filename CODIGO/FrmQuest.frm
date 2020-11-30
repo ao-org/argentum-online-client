@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
 Begin VB.Form FrmQuests 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -381,7 +381,7 @@ End Sub
 
 Public Sub ListView1_Click()
 
-    On Error Resume Next
+    
 
     If ListView1.SelectedItem.SubItems(2) <> "" Then
         If ListView1.SelectedItem.SubItems(3) = 0 Then
@@ -436,7 +436,7 @@ End Sub
 
 Public Sub ListView2_Click()
 
-    On Error Resume Next
+    
 
     If ListView2.SelectedItem.SubItems(2) <> "" Then
  

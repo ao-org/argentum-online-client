@@ -159,7 +159,7 @@ Private Const WS_EX_LAYERED = &H80000
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
-    On Error Resume Next
+    
   
     Dim msg As Long
   
@@ -184,7 +184,7 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
   
     Dim msg As Long
   
-    On Error Resume Next
+    
   
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
@@ -286,16 +286,16 @@ Private Sub Image2_Click()
     EstadoLogin = E_MODO.RecuperandoConstraseña
     CuentaEmail = CuentaEmail
 
-    If frmmain.Socket1.Connected Then
-        frmmain.Socket1.Disconnect
-        frmmain.Socket1.Cleanup
+    If frmMain.Socket1.Connected Then
+        frmMain.Socket1.Disconnect
+        frmMain.Socket1.Cleanup
         DoEvents
 
     End If
 
-    frmmain.Socket1.HostName = IPdelServidor
-    frmmain.Socket1.RemotePort = PuertoDelServidor
-    frmmain.Socket1.Connect
+    frmMain.Socket1.HostName = IPdelServidor
+    frmMain.Socket1.RemotePort = PuertoDelServidor
+    frmMain.Socket1.Connect
     Unload Me
         
 End Sub

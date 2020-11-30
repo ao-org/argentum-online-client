@@ -291,7 +291,7 @@ End Property
 
 Public Property Let VolumenActual(ByVal vNewValue As Long)
 
-    On Error Resume Next
+    
 
     If vNewValue > 0 Then vNewValue = 0
     If vNewValue < -4000 Then vNewValue = -4000
@@ -754,7 +754,7 @@ Public Function Sound_Render()
     '
     '**************************************************************
 
-    On Error Resume Next
+    
 
     Dim TiempoActual    As Long, x As Integer, y As Integer
 

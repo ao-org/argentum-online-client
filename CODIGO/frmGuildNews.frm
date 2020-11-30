@@ -285,10 +285,10 @@ End Sub
 
 Private Sub Command1_Click()
 
-    On Error Resume Next
+    
 
     Unload Me
-    frmmain.SetFocus
+    frmMain.SetFocus
 
 End Sub
 

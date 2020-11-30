@@ -104,7 +104,7 @@ End Sub
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
-    On Error Resume Next
+    
 
     Dim msg As Long
 
@@ -129,7 +129,7 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
 
     Dim msg As Long
 
-    On Error Resume Next
+    
 
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1

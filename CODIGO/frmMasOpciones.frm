@@ -115,7 +115,7 @@ Private Const WS_EX_LAYERED = &H80000
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
-    On Error Resume Next
+    
   
     Dim msg As Long
   
@@ -140,7 +140,7 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
   
     Dim msg As Long
   
-    On Error Resume Next
+    
   
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
@@ -205,9 +205,9 @@ Private Sub Image1_Click(Index As Integer)
             Call Sound.Sound_Play(SND_CLICK)
             Unload Me
 
-            If frmmain.Socket1.Connected Then
-                frmmain.Socket1.Disconnect
-                frmmain.Socket1.Cleanup
+            If frmMain.Socket1.Connected Then
+                frmMain.Socket1.Disconnect
+                frmMain.Socket1.Cleanup
                 DoEvents
 
             End If

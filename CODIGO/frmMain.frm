@@ -538,7 +538,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2552,7 +2551,7 @@ End Sub
 
 Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    On Error Resume Next
+    
 
     If Button = 1 Then
 
@@ -2846,7 +2845,7 @@ End Sub
 
 Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
 
-    On Error Resume Next
+    
 
     Dim str1 As String
 
@@ -3262,7 +3261,7 @@ End Sub
 
 Private Sub Form_Load()
 
-    On Error Resume Next
+    
 
     Call FormParser.Parse_Form(frmMain)
     MenuNivel = 1
@@ -3441,7 +3440,7 @@ End Sub
 Private Sub RecTxt_Change()
     Exit Sub
 
-    On Error Resume Next  'el .SetFocus causaba errores al salir y volver a entrar
+      'el .SetFocus causaba errores al salir y volver a entrar
 
     If Not Application.IsAppActive() Then Exit Sub
     
