@@ -244,6 +244,9 @@ Private m_Increment          As Integer
 Private m_Interval           As Integer
 
 Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
+    
+    On Error GoTo ParseBancoInfo_Err
+    
 
     OroDep = oro
     gold.Caption = OroDep
@@ -256,14 +259,24 @@ Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
     lblDatos.ForeColor = RGB(235, 164, 14)
     
     txtname.BackColor = RGB(17, 18, 12)
-    Me.Show vbModeless, frmmain
+    Me.Show vbModeless, frmMain
     
 
     Exit Sub
 
+    
+    Exit Sub
+
+ParseBancoInfo_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.ParseBancoInfo", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseDown_Err
+    
 
     Call Sound.Sound_Play(SND_CLICK)
 
@@ -285,9 +298,19 @@ Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As 
     tmrNumber.Interval = 30
     tmrNumber.Enabled = True
 
+    
+    Exit Sub
+
+cmdMasMenos_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.cmdMasMenos_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseMove_Err
+    
 
     Select Case Index
 
@@ -309,24 +332,64 @@ Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As 
 
     End Select
 
+    
+    Exit Sub
+
+cmdMasMenos_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.cmdMasMenos_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseUp_Err
+    
     Call Form_MouseMove(Button, Shift, x, y)
     tmrNumber.Enabled = False
 
+    
+    Exit Sub
+
+cmdMasMenos_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.cmdMasMenos_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
     If (KeyAscii = 27) Then
         Unload Me
     End If
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseDown_Err
+    
     operacion(1).Tag = "0"
     operacion(2).Tag = "0"
     operacion(3).Tag = "0"
@@ -339,9 +402,19 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y A
     cmdMasMenos(0).Visible = False
     cmdMasMenos(1).Visible = False
     
+    
+    Exit Sub
+
+Form_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Form_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     operacion(0).Tag = "0"
     operacion(1).Tag = "0"
     operacion(2).Tag = "0"
@@ -366,21 +439,51 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         cmdMasMenos(1).Tag = "0"
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image2_MouseDown_Err
+    
     Image2 = LoadInterface("boton-aceptar-ES-off.bmp")
+    
+    Exit Sub
+
+Image2_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Image2_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image2_MouseMove_Err
+    
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
         Image2.Tag = "1"
 
     End If
+    
+    Exit Sub
+
+Image2_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Image2_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_Click()
+    
+    On Error GoTo Image2_Click_Err
+    
 
     Select Case QueOperacion
 
@@ -437,9 +540,19 @@ Private Sub Image2_Click()
 
     End Select
 
+    
+    Exit Sub
+
+Image2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Image2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image3_MouseMove_Err
+    
      If cmdMasMenos(0).Tag = "1" Then
         cmdMasMenos(0).Picture = Nothing
         cmdMasMenos(0).Tag = "0"
@@ -453,9 +566,19 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
     Image2.Picture = Nothing
     Image2.Tag = "0"
+    
+    Exit Sub
+
+Image3_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Image3_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo operacion_MouseDown_Err
+    
 
     Select Case Index
 
@@ -514,9 +637,19 @@ Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As In
             Unload Me
     End Select
 
+    
+    Exit Sub
+
+operacion_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.operacion_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo operacion_MouseMove_Err
+    
     Select Case Index
 
         Case 0 ' depositar
@@ -570,9 +703,19 @@ Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As In
     
     End Select
 
+    
+    Exit Sub
+
+operacion_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.operacion_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub operacion_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo operacion_MouseUp_Err
+    
 
     Select Case Index
 
@@ -602,9 +745,19 @@ Private Sub operacion_MouseUp(Index As Integer, Button As Integer, Shift As Inte
     
     End Select
 
+    
+    Exit Sub
+
+operacion_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.operacion_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub tmrNumber_Timer()
+    
+    On Error GoTo tmrNumber_Timer_Err
+    
 
     Const MIN_NUMBER = 1
 
@@ -627,4 +780,11 @@ Private Sub tmrNumber_Timer()
 
     End If
 
+    
+    Exit Sub
+
+tmrNumber_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGoliath.tmrNumber_Timer", Erl)
+    Resume Next
+    
 End Sub

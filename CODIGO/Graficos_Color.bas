@@ -20,112 +20,225 @@ Sub Long_2_RGBA(Dest As RGBA, ByVal Src As Long)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo Long_2_RGBA_Err
+    
     Call CopyMemory(Dest, Src, 4)
+    
+    Exit Sub
+
+Long_2_RGBA_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.Long_2_RGBA", Erl)
+    Resume Next
+    
 End Sub
 
 Function RGBA_2_Long(Color As RGBA) As Long
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo RGBA_2_Long_Err
+    
     Call CopyMemory(RGBA_2_Long, Color, 4)
+    
+    Exit Function
+
+RGBA_2_Long_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_2_Long", Erl)
+    Resume Next
+    
 End Function
 
 Function RGBA_From_Long(ByVal Color As Long) As RGBA
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo RGBA_From_Long_Err
+    
     Call CopyMemory(RGBA_From_Long, Color, 4)
+    
+    Exit Function
+
+RGBA_From_Long_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_From_Long", Erl)
+    Resume Next
+    
 End Function
 
 Function RGBA_From_Comp(ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255) As RGBA
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo RGBA_From_Comp_Err
+    
     RGBA_From_Comp.R = R
     RGBA_From_Comp.G = G
     RGBA_From_Comp.B = B
     RGBA_From_Comp.A = A
+    
+    Exit Function
+
+RGBA_From_Comp_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_From_Comp", Erl)
+    Resume Next
+    
 End Function
 
 Sub SetRGBA(Color As RGBA, ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo SetRGBA_Err
+    
     Color.R = R
     Color.G = G
     Color.B = B
     Color.A = A
+    
+    Exit Sub
+
+SetRGBA_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.SetRGBA", Erl)
+    Resume Next
+    
 End Sub
 
 Sub Long_2_RGBAList(Dest() As RGBA, ByVal Src As Long)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo Long_2_RGBAList_Err
+    
     Dim i As Long
     
     For i = 0 To 3
         Call Long_2_RGBA(Dest(i), Src)
     Next
+    
+    Exit Sub
+
+Long_2_RGBAList_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.Long_2_RGBAList", Erl)
+    Resume Next
+    
 End Sub
 
 Sub RGBAList(Dest() As RGBA, ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo RGBAList_Err
+    
     Dim i As Long
     
     For i = 0 To 3
         Call SetRGBA(Dest(i), R, G, B, A)
     Next
+    
+    Exit Sub
+
+RGBAList_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBAList", Erl)
+    Resume Next
+    
 End Sub
 
 Sub Copy_RGBAList(Dest() As RGBA, Src() As RGBA)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo Copy_RGBAList_Err
+    
     Dim i As Long
     
     For i = 0 To 3
         Dest(i) = Src(i)
     Next
+    
+    Exit Sub
+
+Copy_RGBAList_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.Copy_RGBAList", Erl)
+    Resume Next
+    
 End Sub
 
 Sub LerpRGBA(Dest As RGBA, A As RGBA, B As RGBA, ByVal Factor As Single)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo LerpRGBA_Err
+    
     Dim InvFactor As Single: InvFactor = (1 - Factor)
 
     Dest.R = A.R * InvFactor + B.R * Factor
     Dest.G = A.G * InvFactor + B.G * Factor
     Dest.B = A.B * InvFactor + B.B * Factor
     Dest.A = A.A * InvFactor + B.A * Factor
+    
+    Exit Sub
+
+LerpRGBA_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.LerpRGBA", Erl)
+    Resume Next
+    
 End Sub
 
 Sub ModulateRGBA(Dest As RGBA, A As RGBA, B As RGBA)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo ModulateRGBA_Err
+    
     Dest.R = CLng(A.R) * B.R \ 255
     Dest.G = CLng(A.G) * B.G \ 255
     Dest.B = CLng(A.B) * B.B \ 255
     Dest.A = CLng(A.A) * B.A \ 255
+    
+    Exit Sub
+
+ModulateRGBA_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.ModulateRGBA", Erl)
+    Resume Next
+    
 End Sub
 
 Sub AddRGBA(Dest As RGBA, A As RGBA, B As RGBA)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo AddRGBA_Err
+    
     Dest.R = min(CLng(A.R) + CLng(B.R), 255)
     Dest.G = min(CLng(A.G) + CLng(B.G), 255)
     Dest.B = min(CLng(A.B) + CLng(B.B), 255)
     Dest.A = min(CLng(A.A) + CLng(B.A), 255)
+    
+    Exit Sub
+
+AddRGBA_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.AddRGBA", Erl)
+    Resume Next
+    
 End Sub
 
 Function vbColor_2_Long(Color As Long) As Long
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo vbColor_2_Long_Err
+    
     Dim TmpColor As RGBA
     Call Long_2_RGBA(TmpColor, Color)
 
@@ -135,16 +248,33 @@ Function vbColor_2_Long(Color As Long) As Long
     TmpColor.A = 255
     
     vbColor_2_Long = RGBA_2_Long(TmpColor)
+    
+    Exit Function
+
+vbColor_2_Long_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.vbColor_2_Long", Erl)
+    Resume Next
+    
 End Function
 
 Sub Copy_RGBAList_WithAlpha(Dest() As RGBA, Src() As RGBA, ByVal Alpha As Byte)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo Copy_RGBAList_WithAlpha_Err
+    
     Dim i As Long
     
     For i = 0 To 3
         Dest(i) = Src(i)
         Dest(i).A = Alpha
     Next
+    
+    Exit Sub
+
+Copy_RGBAList_WithAlpha_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.Copy_RGBAList_WithAlpha", Erl)
+    Resume Next
+    
 End Sub

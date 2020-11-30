@@ -29,6 +29,9 @@ Option Explicit
 Private ArrayList() As Byte
 
 Public Sub Clear()
+    
+    On Error GoTo Clear_Err
+    
 
     '***************************************************
     'Author: FrankoH298
@@ -42,9 +45,19 @@ Public Sub Clear()
         ArrayList(i) = 0
     Next i
 
+    
+    Exit Sub
+
+Clear_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsArrayList.Clear", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Initialize(ByVal min As Integer, ByVal max As Integer)
+    
+    On Error GoTo Initialize_Err
+    
 
     '***************************************************
     'Author: FrankoH298
@@ -55,9 +68,19 @@ Public Sub Initialize(ByVal min As Integer, ByVal max As Integer)
     ReDim ArrayList(min To max) As Byte
     Me.Clear
 
+    
+    Exit Sub
+
+Initialize_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsArrayList.Initialize", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function itemExist(ByVal Item As Integer) As Boolean
+    
+    On Error GoTo itemExist_Err
+    
 
     '***************************************************
     'Author: FrankoH298
@@ -79,9 +102,19 @@ Public Function itemExist(ByVal Item As Integer) As Boolean
 
     itemExist = False
 
+    
+    Exit Function
+
+itemExist_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsArrayList.itemExist", Erl)
+    Resume Next
+    
 End Function
 
 Public Function itemPos(ByVal Item As Integer) As Byte
+    
+    On Error GoTo itemPos_Err
+    
 
     '***************************************************
     'Author: FrankoH298
@@ -103,9 +136,19 @@ Public Function itemPos(ByVal Item As Integer) As Byte
 
     itemPos = 0
 
+    
+    Exit Function
+
+itemPos_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsArrayList.itemPos", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Item(ByVal Index As Integer) As Byte
+    
+    On Error GoTo Item_Err
+    
 
     '***************************************************
     'Author: FrankoH298
@@ -115,9 +158,19 @@ Public Function Item(ByVal Index As Integer) As Byte
 
     Item = ArrayList(Index)
 
+    
+    Exit Function
+
+Item_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsArrayList.Item", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub Add(ByVal Item As Integer)
+    
+    On Error GoTo Add_Err
+    
 
     '***************************************************
     'Author: FrankoH298
@@ -137,9 +190,19 @@ Public Sub Add(ByVal Item As Integer)
 
     Next i
 
+    
+    Exit Sub
+
+Add_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsArrayList.Add", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Remove(ByVal Item As Integer)
+    
+    On Error GoTo Remove_Err
+    
 
     '***************************************************
     'Author: FrankoH298
@@ -149,15 +212,15 @@ Public Sub Remove(ByVal Item As Integer)
 
     Dim i As Long
 
-    Dim a As Long
+    Dim A As Long
 
     For i = LBound(ArrayList) To (UBound(ArrayList) - 1)
 
         If ArrayList(i) = Item Then
 
-            For a = i To (UBound(ArrayList) - 1)
-                ArrayList(a) = ArrayList(a + 1)
-            Next a
+            For A = i To (UBound(ArrayList) - 1)
+                ArrayList(A) = ArrayList(A + 1)
+            Next A
 
             ArrayList(UBound(ArrayList)) = 0
             Exit Sub
@@ -168,9 +231,19 @@ Public Sub Remove(ByVal Item As Integer)
 
     If ArrayList(UBound(ArrayList)) = Item Then ArrayList(UBound(ArrayList)) = 0
 
+    
+    Exit Sub
+
+Remove_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsArrayList.Remove", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function GetLastItem() As Byte
+    
+    On Error GoTo GetLastItem_Err
+    
 
     '***************************************************
     'Author: FrankoH298
@@ -192,5 +265,12 @@ Public Function GetLastItem() As Byte
 
     GetLastItem = 0
 
+    
+    Exit Function
+
+GetLastItem_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsArrayList.GetLastItem", Erl)
+    Resume Next
+    
 End Function
 

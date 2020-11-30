@@ -92,11 +92,14 @@ Private Const OUTPUT_PATH    As String = "\Output\"
 
 Private Const MAP_PATH       As String = "\Mapas\"
 
-Private Declare Function Compress Lib "zlib.dll" Alias "compress" (dest As Any, destLen As Any, src As Any, ByVal srcLen As Long) As Long
+Private Declare Function Compress Lib "zlib.dll" Alias "compress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
 
-Private Declare Function UnCompress Lib "zlib.dll" Alias "uncompress" (dest As Any, destLen As Any, src As Any, ByVal srcLen As Long) As Long
+Private Declare Function UnCompress Lib "zlib.dll" Alias "uncompress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
 
 Public Sub Compress_Data(ByRef Data() As Byte)
+    
+    On Error GoTo Compress_Data_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Dotuyo Dodero
@@ -129,9 +132,19 @@ Public Sub Compress_Data(ByRef Data() As Byte)
     
     Erase BufTemp
 
+    
+    Exit Sub
+
+Compress_Data_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.Compress_Data", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
+    
+    On Error GoTo Decompress_Data_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Dotuyo Dodero
@@ -150,9 +163,19 @@ Public Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
     
     Erase BufTemp
 
+    
+    Exit Sub
+
+Decompress_Data_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.Decompress_Data", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function Extract_All_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
+    
+    On Error GoTo Extract_All_Files_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Dotuyo Dodero
@@ -333,9 +356,19 @@ errhandler:
     'Display an error message if it didn't work
     MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
 
+    
+    Exit Function
+
+Extract_All_Files_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.Extract_All_Files", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As String) As Boolean
+    
+    On Error GoTo Extract_Patch_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Dotuyo Dodero
@@ -680,9 +713,19 @@ errhandler:
     Erase SourceData
     Erase InfoHead
 
+    
+    Exit Function
+
+Extract_Patch_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.Extract_Patch", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Compress_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal dest_path As String) As Boolean
+    
+    On Error GoTo Compress_Files_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Dotuyo Dodero
@@ -875,9 +918,19 @@ errhandler:
     'Display an error message if it didn't work
     MsgBox "Unable to create binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
 
+    
+    Exit Function
+
+Compress_Files_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.Compress_Files", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByVal OutputFilePath As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
+    
+    On Error GoTo Extract_File_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Dotuyo Dodero
@@ -1024,9 +1077,19 @@ errhandler:
 
     'Display an error message if it didn't work
     'MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+    
+    Exit Function
+
+Extract_File_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.Extract_File", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Extract_File_EX(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef bytArr() As Byte, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
+    
+    On Error GoTo Extract_File_EX_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Dotuyo Dodero
@@ -1114,9 +1177,19 @@ errhandler:
 
     'Display an error message if it didn't work
     'MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+    
+    Exit Function
+
+Extract_File_EX_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.Extract_File_EX", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
+    
+    On Error GoTo Decompress_Data_B_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Dotuyo Dodero
@@ -1136,6 +1209,13 @@ Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
     Data = BufTemp
    
     Erase BufTemp
+    
+    
+    Exit Sub
+
+Decompress_Data_B_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.Decompress_Data_B", Erl)
+    Resume Next
     
 End Sub
 
@@ -1251,13 +1331,16 @@ errhandler:
 End Function
 
 Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Currency
+    
+    On Error GoTo General_Drive_Get_Free_Bytes_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
     'Last Modify Date: 6/07/2004
     '
     '**************************************************************
-    Dim RetVal As Long
+    Dim retval As Long
 
     Dim FB     As Currency
 
@@ -1265,13 +1348,23 @@ Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Curre
 
     Dim FBT    As Currency
     
-    RetVal = GetDiskFreeSpace(Left(DriveName, 2), FB, BT, FBT)
+    retval = GetDiskFreeSpace(Left(DriveName, 2), FB, BT, FBT)
     
     General_Drive_Get_Free_Bytes = FB * 10000 'convert result to actual size in bytes
 
+    
+    Exit Function
+
+General_Drive_Get_Free_Bytes_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.General_Drive_Get_Free_Bytes", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal First As Long, ByVal Last As Long)
+    
+    On Error GoTo General_Quick_Sort_Err
+    
 
     '**************************************************************
     'Author: juan Martín Sotuyo Dodero
@@ -1311,6 +1404,13 @@ Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal First As Long, B
     If First < High Then General_Quick_Sort SortArray, First, High
     If Low < Last Then General_Quick_Sort SortArray, Low, Last
 
+    
+    Exit Sub
+
+General_Quick_Sort_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.General_Quick_Sort", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function GAeneral_Load_Picture_From_Resource(ByVal picture_file_name As String) As IPicture
@@ -1319,6 +1419,9 @@ Public Function GAeneral_Load_Picture_From_Resource(ByVal picture_file_name As S
     'Last Modify Date: 6/11/2005
     'Loads a picture from a resource file and returns it
     '**************************************************************
+    
+    On Error GoTo GAeneral_Load_Picture_From_Resource_Err
+    
 
     'On Error GoTo ErrorHandler
 
@@ -1339,6 +1442,13 @@ ErrorHandler:
 
     End If
 
+    
+    Exit Function
+
+GAeneral_Load_Picture_From_Resource_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.GAeneral_Load_Picture_From_Resource", Erl)
+    Resume Next
+    
 End Function
 
 Public Function General_Load_Picture_From_Resource_Ex(ByVal picture_file_name As String) As IPicture

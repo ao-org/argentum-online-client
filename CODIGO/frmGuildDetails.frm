@@ -193,6 +193,9 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click(Index As Integer)
+    
+    On Error GoTo Command1_Click_Err
+    
 
     Select Case Index
 
@@ -270,6 +273,13 @@ Private Sub Command1_Click(Index As Integer)
             
     End Select
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildDetails.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Deactivate()
@@ -283,7 +293,17 @@ Private Sub Form_Deactivate()
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildDetails.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 

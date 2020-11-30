@@ -2,6 +2,9 @@ Attribute VB_Name = "TileEngine_Chars"
 Option Explicit
 
 Public Sub ResetCharInfo(ByVal charindex As Integer)
+    
+    On Error GoTo ResetCharInfo_Err
+    
 
     With charlist(charindex)
     
@@ -54,6 +57,13 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         
     End With
     
+    
+    Exit Sub
+
+ResetCharInfo_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.ResetCharInfo", Erl)
+    Resume Next
+    
 End Sub
 
 
@@ -61,6 +71,9 @@ Public Sub EraseChar(ByVal charindex As Integer)
     '*****************************************************************
     'Erases a character from CharList and map
     '*****************************************************************
+    
+    On Error GoTo EraseChar_Err
+    
     
     If charindex = 0 Then Exit Sub
     If charlist(charindex).active = 0 Then Exit Sub
@@ -78,7 +91,7 @@ Public Sub EraseChar(ByVal charindex As Integer)
 
     End If
     
-    MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).charindex = 0
+    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
     
     'Remove char's dialog
     Call Dialogos.RemoveDialog(charindex)
@@ -88,11 +101,21 @@ Public Sub EraseChar(ByVal charindex As Integer)
     'Update NumChars
     NumChars = NumChars - 1
 
+    
+    Exit Sub
+
+EraseChar_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.EraseChar", Erl)
+    Resume Next
+    
 End Sub
 
-Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal X As Integer, ByVal Y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+    
+    On Error GoTo MakeChar_Err
+    
 
-    On Error Resume Next
+    
 
     'Apuntamos al ultimo Char
     ' Debug.Print charindex
@@ -125,15 +148,15 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
         .MoveOffsetY = 0
         
         'Update position
-        .Pos.X = X
-        .Pos.Y = Y
+        .Pos.x = x
+        .Pos.y = y
         
         'Make active
         .active = 1
         
         .AlphaPJ = 255
         
-        If BodyData(Body).HeadOffset.Y = -26 Then
+        If BodyData(Body).HeadOffset.y = -26 Then
             .EsEnano = True
         Else
             .EsEnano = False
@@ -156,37 +179,47 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
     End With
     
     'Plot on map
-    MapData(X, Y).charindex = charindex
+    MapData(x, y).charindex = charindex
 
+    
+    Exit Sub
+
+MakeChar_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.MakeChar", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Heading)
     '*****************************************************************
     'Starts the movement of a character in nHeading direction
     '*****************************************************************
+    
+    On Error GoTo Char_Move_by_Head_Err
+    
 
     If nHeading = 0 Then
         Debug.Print "Heading: " & nHeading
 
     End If
 
-    On Error Resume Next
+    
 
     Dim addx As Integer
 
     Dim addy As Integer
 
-    Dim X    As Integer
+    Dim x    As Integer
 
-    Dim Y    As Integer
+    Dim y    As Integer
 
     Dim nX   As Integer
 
     Dim nY   As Integer
     
     With charlist(charindex)
-        X = .Pos.X
-        Y = .Pos.Y
+        x = .Pos.x
+        y = .Pos.y
         
         'Figure out which way to move
         Select Case nHeading
@@ -205,13 +238,13 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
 
         End Select
         
-        nX = X + addx
-        nY = Y + addy
+        nX = x + addx
+        nY = y + addy
         
         MapData(nX, nY).charindex = charindex
-        .Pos.X = nX
-        .Pos.Y = nY
-        MapData(X, Y).charindex = 0
+        .Pos.x = nX
+        .Pos.y = nY
+        MapData(x, y).charindex = 0
         
         .MoveOffsetX = -1 * (32 * addx)
         .MoveOffsetY = -1 * (32 * addy)
@@ -256,15 +289,25 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
 
     End If
     
+    
+    Exit Sub
+
+Char_Move_by_Head_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Move_by_Head", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
+    
+    On Error GoTo Char_Move_by_Pos_Err
+    
 
-    On Error Resume Next
+    
 
-    Dim X        As Integer
+    Dim x        As Integer
 
-    Dim Y        As Integer
+    Dim y        As Integer
 
     Dim addx     As Integer
 
@@ -273,13 +316,13 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
     Dim nHeading As E_Heading
     
     With charlist(charindex)
-        X = .Pos.X
-        Y = .Pos.Y
+        x = .Pos.x
+        y = .Pos.y
         
-        MapData(X, Y).charindex = 0
+        MapData(x, y).charindex = 0
         
-        addx = nX - X
-        addy = nY - Y
+        addx = nX - x
+        addy = nY - y
         
         If Sgn(addx) = 1 Then
             nHeading = E_Heading.EAST
@@ -303,8 +346,8 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         
         MapData(nX, nY).charindex = charindex
         
-        .Pos.X = nX
-        .Pos.Y = nY
+        .Pos.x = nX
+        .Pos.y = nY
         
         .MoveOffsetX = -1 * (TilePixelWidth * addx)
         .MoveOffsetY = -1 * (TilePixelHeight * addy)
@@ -344,23 +387,53 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         Call EraseChar(charindex)
     End If
 
+    
+    Exit Sub
+
+Char_Move_by_Pos_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Move_by_Pos", Erl)
+    Resume Next
+    
 End Sub
 
 Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
+    
+    On Error GoTo EstaPCarea_Err
+    
 
     With charlist(charindex).Pos
-        EstaPCarea = .X > UserPos.X - MinXBorder And .X < UserPos.X + MinXBorder And .Y > UserPos.Y - MinYBorder And .Y < UserPos.Y + MinYBorder
+        EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
 
     End With
 
+    
+    Exit Function
+
+EstaPCarea_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.EstaPCarea", Erl)
+    Resume Next
+    
 End Function
 
-Public Function EstaEnArea(ByVal X As Integer, ByVal Y As Integer) As Boolean
-    EstaEnArea = X > UserPos.X - MinXBorder And X < UserPos.X + MinXBorder And Y > UserPos.Y - MinYBorder And Y < UserPos.Y + MinYBorder
+Public Function EstaEnArea(ByVal x As Integer, ByVal y As Integer) As Boolean
+    
+    On Error GoTo EstaEnArea_Err
+    
+    EstaEnArea = x > UserPos.x - MinXBorder And x < UserPos.x + MinXBorder And y > UserPos.y - MinYBorder And y < UserPos.y + MinYBorder
 
+    
+    Exit Function
+
+EstaEnArea_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.EstaEnArea", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Char_Check(ByVal char_index As Integer) As Boolean
+    
+    On Error GoTo Char_Check_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
@@ -372,6 +445,13 @@ Public Function Char_Check(ByVal char_index As Integer) As Boolean
         Char_Check = (charlist(char_index).Heading > 0)
 
     End If
+    
+    
+    Exit Function
+
+Char_Check_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Check", Erl)
+    Resume Next
     
 End Function
 
@@ -419,30 +499,33 @@ End Function
 
 Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1)
     
+    On Error GoTo Char_Dialog_Set_Err
+    
+    
     If Char_Check(char_index) Then
         charlist(char_index).dialog = char_dialog
         charlist(char_index).dialog_color = char_dialog_color
         charlist(char_index).dialog_life = char_dialog_life
         charlist(char_index).dialog_font_index = font_index
         charlist(char_index).dialog_scroll = True
-        charlist(char_index).dialog_offset_counter_y = -(IIf(BodyData(charlist(char_index).iBody).HeadOffset.Y = 0, -32, BodyData(charlist(char_index).iBody).HeadOffset.Y) / 2)
+        charlist(char_index).dialog_offset_counter_y = -(IIf(BodyData(charlist(char_index).iBody).HeadOffset.y = 0, -32, BodyData(charlist(char_index).iBody).HeadOffset.y) / 2)
         charlist(char_index).AlphaText = 255
 
     End If
 
-    Dim slot As Integer
+    Dim Slot As Integer
 
     Dim i    As Long
     
-    slot = BinarySearch(char_index)
+    Slot = BinarySearch(char_index)
     
-    If slot < 0 Then
+    If Slot < 0 Then
         If dialogCount = MAX_DIALOGS Then Exit Sub  'Out of space! Should never happen....
         
         'We need to add it. Get insertion index and move list backwards.
-        slot = Not slot
+        Slot = Not Slot
         
-        For i = dialogCount To slot + 1 Step -1
+        For i = dialogCount To Slot + 1 Step -1
             dialogs(i) = dialogs(i - 1)
         Next i
         
@@ -452,7 +535,7 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
     
     If char_dialog_life = 250 Then
 
-        With dialogs(slot)
+        With dialogs(Slot)
             .startTime = FrameTime
             .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(char_dialog))
             .charindex = char_index
@@ -461,7 +544,7 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
 
     Else
 
-        With dialogs(slot)
+        With dialogs(Slot)
             .startTime = FrameTime
             .lifeTime = (MS_PER_CHAR * Len(char_dialog))
             .charindex = char_index
@@ -470,10 +553,20 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
 
     End If
     
+    
+    Exit Sub
+
+Char_Dialog_Set_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Dialog_Set", Erl)
+    Resume Next
+    
 End Sub
 
 
 Public Sub Char_Dialog_Remove(ByVal char_index As Integer, ByVal Index As Integer)
+    
+    On Error GoTo Char_Dialog_Remove_Err
+    
 
     If char_index = 0 Then Exit Sub
 
@@ -483,15 +576,15 @@ Public Sub Char_Dialog_Remove(ByVal char_index As Integer, ByVal Index As Intege
 
     End If
 
-    Dim slot As Integer
+    Dim Slot As Integer
 
     Dim i    As Long
     
-    slot = BinarySearch(char_index)
+    Slot = BinarySearch(char_index)
     
-    If slot < 0 Then Exit Sub
+    If Slot < 0 Then Exit Sub
     
-    For i = slot To MAX_DIALOGS - 2
+    For i = Slot To MAX_DIALOGS - 2
         dialogs(i) = dialogs(i + 1)
     Next i
     
@@ -504,9 +597,19 @@ Public Sub Char_Dialog_Remove(ByVal char_index As Integer, ByVal Index As Intege
 
     End If
 
+    
+    Exit Sub
+
+Char_Dialog_Remove_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Dialog_Remove", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
+    
+    On Error GoTo SetCharacterFx_Err
+    
 
     If fX = 0 Then Exit Sub
 
@@ -527,55 +630,102 @@ Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal
             
     End With
 
+    
+    Exit Sub
+
+SetCharacterFx_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.SetCharacterFx", Erl)
+    Resume Next
+    
 End Sub
 
 
 
 Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
+    
+    On Error GoTo Get_PixelY_Of_Char_Err
+    
 
     '*****************************************************************
     'Author: Pablo Mercavides
     '*****************************************************************
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
-        Get_PixelY_Of_Char = (charlist(char_index).Pos.Y - 2 - UserPos.Y) * 32 + frmmain.renderer.ScaleWidth / 2
+        Get_PixelY_Of_Char = (charlist(char_index).Pos.y - 2 - UserPos.y) * 32 + frmMain.renderer.ScaleWidth / 2
         Get_PixelY_Of_Char = Get_PixelY_Of_Char - 16
 
     End If
 
+    
+    Exit Function
+
+Get_PixelY_Of_Char_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Get_PixelY_Of_Char", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Get_Pixelx_Of_Char(ByVal char_index As Integer) As Integer
+    
+    On Error GoTo Get_Pixelx_Of_Char_Err
+    
 
     '*****************************************************************
     'Author: Pablo Mercavides
     '*****************************************************************
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
-        Get_Pixelx_Of_Char = (charlist(char_index).Pos.X - UserPos.X) * 32 + frmmain.renderer.ScaleWidth / 2
+        Get_Pixelx_Of_Char = (charlist(char_index).Pos.x - UserPos.x) * 32 + frmMain.renderer.ScaleWidth / 2
         Get_Pixelx_Of_Char = Get_Pixelx_Of_Char
 
     End If
 
+    
+    Exit Function
+
+Get_Pixelx_Of_Char_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Get_Pixelx_Of_Char", Erl)
+    Resume Next
+    
 End Function
 
-Public Function Get_Pixelx_Of_XY(ByVal X As Byte) As Integer
+Public Function Get_Pixelx_Of_XY(ByVal x As Byte) As Integer
     '*****************************************************************
     'Author: Pablo Mercavides
     '*****************************************************************
     'Make sure it's a legal char_index
-    Get_Pixelx_Of_XY = (X - UserPos.X) * 32 + frmmain.renderer.ScaleWidth / 2
+    
+    On Error GoTo Get_Pixelx_Of_XY_Err
+    
+    Get_Pixelx_Of_XY = (x - UserPos.x) * 32 + frmMain.renderer.ScaleWidth / 2
     Get_Pixelx_Of_XY = Get_Pixelx_Of_XY
 
+    
+    Exit Function
+
+Get_Pixelx_Of_XY_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Get_Pixelx_Of_XY", Erl)
+    Resume Next
+    
 End Function
 
-Public Function Get_PixelY_Of_XY(ByVal Y As Byte) As Integer
+Public Function Get_PixelY_Of_XY(ByVal y As Byte) As Integer
     '*****************************************************************
     'Author: Pablo Mercavides
     '*****************************************************************
     'Make sure it's a legal char_index
-    Get_PixelY_Of_XY = (Y - 2 - UserPos.Y) * 32 + frmmain.renderer.ScaleWidth / 2
+    
+    On Error GoTo Get_PixelY_Of_XY_Err
+    
+    Get_PixelY_Of_XY = (y - 2 - UserPos.y) * 32 + frmMain.renderer.ScaleWidth / 2
     Get_PixelY_Of_XY = Get_PixelY_Of_XY - 16
 
+    
+    Exit Function
+
+Get_PixelY_Of_XY_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Get_PixelY_Of_XY", Erl)
+    Resume Next
+    
 End Function
 

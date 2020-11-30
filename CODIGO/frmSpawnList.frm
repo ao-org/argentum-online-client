@@ -115,22 +115,55 @@ Option Explicit
 
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     If lstCriaturas.ListIndex < 0 Then Exit Sub
 
     Call WriteSpawnCreature(lstCriaturas.ItemData(lstCriaturas.ListIndex))
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmSpawnList.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmSpawnList.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Filter_Change()
+    
+    On Error GoTo Filter_Change_Err
+    
     FillList
+    
+    Exit Sub
+
+Filter_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmSpawnList.Filter_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub FillList()
+    
+    On Error GoTo FillList_Err
+    
     lstCriaturas.Clear
 
     Dim i As Long
@@ -143,4 +176,11 @@ Public Sub FillList()
             End If
         End If
     Next i
+    
+    Exit Sub
+
+FillList_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmSpawnList.FillList", Erl)
+    Resume Next
+    
 End Sub

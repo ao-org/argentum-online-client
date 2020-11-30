@@ -94,17 +94,30 @@ Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCerrar.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    
+    On Error GoTo Is_Transparent_Err
+    
 
-    On Error Resume Next
+    
 
     Dim msg As Long
 
@@ -122,14 +135,24 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
     End If
 
+    
+    Exit Function
+
+Is_Transparent_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCerrar.Is_Transparent", Erl)
+    Resume Next
+    
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    
+    On Error GoTo Aplicar_Transparencia_Err
+    
 
     Dim msg As Long
 
-    On Error Resume Next
+    
 
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
@@ -148,16 +171,36 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
 
     End If
 
+    
+    Exit Function
+
+Aplicar_Transparencia_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCerrar.Aplicar_Transparencia", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hwnd, 220)
     Me.Picture = LoadInterface("desconectar.bmp")
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCerrar.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     Opcion(0).Tag = "0"
     Opcion(0).Picture = Nothing
     Opcion(1).Tag = "0"
@@ -165,9 +208,19 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Opcion(2).Tag = "0"
     Opcion(2).Picture = Nothing
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCerrar.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Opcion_Click(Index As Integer)
+    
+    On Error GoTo Opcion_Click_Err
+    
 
     'Ladder 30/10/2020
     Select Case Index
@@ -184,9 +237,19 @@ Private Sub Opcion_Click(Index As Integer)
 
     End Select
 
+    
+    Exit Sub
+
+Opcion_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCerrar.Opcion_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Opcion_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Opcion_MouseDown_Err
+    
 
     'Ladder 30/10/2020
     Select Case Index
@@ -205,17 +268,37 @@ Private Sub Opcion_MouseDown(Index As Integer, Button As Integer, Shift As Integ
 
     End Select
 
+    
+    Exit Sub
+
+Opcion_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCerrar.Opcion_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCerrar.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Opcion_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Opcion_MouseMove_Err
+    
 
     'Ladder 30/10/2020
     Select Case Index
@@ -246,4 +329,11 @@ Private Sub Opcion_MouseMove(Index As Integer, Button As Integer, Shift As Integ
 
     End Select
 
+    
+    Exit Sub
+
+Opcion_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCerrar.Opcion_MouseMove", Erl)
+    Resume Next
+    
 End Sub

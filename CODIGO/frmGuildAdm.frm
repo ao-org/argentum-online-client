@@ -118,13 +118,26 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo Form_KeyDown_Err
+    
 
     If KeyCode = vbKeyEscape Then Unload Me
 
+    
+    Exit Sub
+
+Form_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Form_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
 
     Call FormParser.Parse_Form(Me)
     
@@ -133,9 +146,19 @@ Private Sub Form_Load()
     
     Combo1.ListIndex = 2
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     If Image1.Tag = "1" Then
         Image1.Picture = Nothing
         Image1.Tag = "0"
@@ -150,13 +173,33 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         Image3.Picture = Nothing
         Image3.Tag = "0"
     End If
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub GuildsList_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo GuildsList_MouseMove_Err
+    
     Call Form_MouseMove(Button, Shift, x, y)
+    
+    Exit Sub
+
+GuildsList_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.GuildsList_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
+    
+    On Error GoTo Image1_Click_Err
+    
     Dim i As Long
 
     frmGuildAdm.guildslist.Clear
@@ -195,14 +238,34 @@ Private Sub Image1_Click()
     
         Next i
     End If
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseDown_Err
+    
     Image1.Picture = LoadInterface("boton-buscar-off.bmp")
     Image1.Tag = "1"
+    
+    Exit Sub
+
+Image1_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image1_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("boton-buscar-over.bmp")
@@ -210,9 +273,19 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
     End If
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_Click()
+    
+    On Error GoTo Image2_Click_Err
+    
 
     If UserEstado = 1 Then 'Muerto
 
@@ -227,9 +300,19 @@ Private Sub Image2_Click()
                    
     Call WriteQuieroFundarClan
 
+    
+    Exit Sub
+
+Image2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image2_MouseMove_Err
+    
 
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("boton-fundar-clan-es-over.bmp")
@@ -237,9 +320,19 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image2_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image2_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_Click()
+    
+    On Error GoTo Image3_Click_Err
+    
     
     'Si nos encontramos con un guild con nombre vacío algo sospechoso está pasando, x las dudas no hacemos nada.
     If Len(guildslist.List(guildslist.ListIndex)) = 0 Then Exit Sub
@@ -248,9 +341,26 @@ Private Sub Image3_Click()
     
     Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
 
+    
+    Exit Sub
+
+Image3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 
 Private Sub lblClose_Click()
+    
+    On Error GoTo lblClose_Click_Err
+    
     Unload Me
+    
+    Exit Sub
+
+lblClose_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.lblClose_Click", Erl)
+    Resume Next
+    
 End Sub

@@ -84,32 +84,32 @@ End Type
 
 Private Type tDatosBloqueados
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     lados As Byte
 
 End Type
 
 Private Type tDatosGrh
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     GrhIndex As Long
 
 End Type
 
 Private Type tDatosTrigger
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     Trigger As Integer
 
 End Type
 
 Private Type tDatosLuces
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     Color As RGBA
     Rango As Byte
 
@@ -117,24 +117,24 @@ End Type
 
 Private Type tDatosParticulas
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     Particula As Long
 
 End Type
 
 Public Type tDatosNPC
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     NpcIndex As Integer
 
 End Type
 
 Private Type tDatosObjs
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     OBJIndex As Integer
     ObjAmmount As Integer
 
@@ -142,8 +142,8 @@ End Type
 
 Private Type tDatosTE
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
     DestM As Integer
     DestX As Integer
     DestY As Integer
@@ -190,6 +190,9 @@ Public iplst    As String
 
 Public Sub CargarRecursos()
     
+    On Error GoTo CargarRecursos_Err
+    
+    
     If UtilizarPreCarga = 1 Then
         Call PreloadGraphics
     End If
@@ -210,12 +213,22 @@ Public Sub CargarRecursos()
     Call CargarAnimEscudos
     Call CargarColores
 
+    
+    Exit Sub
+
+CargarRecursos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarRecursos", Erl)
+    Resume Next
+    
 End Sub
 
 ''
 ' Initializes the fonts array
 
 Public Sub InitFonts()
+    
+    On Error GoTo InitFonts_Err
+    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -515,9 +528,19 @@ Public Sub InitFonts()
 
     End With
 
+    
+    Exit Sub
+
+InitFonts_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.InitFonts", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarPasos()
+    
+    On Error GoTo CargarPasos_Err
+    
 
     ReDim Pasos(1 To NUM_PASOS) As tPaso
 
@@ -551,9 +574,19 @@ Public Sub CargarPasos()
     Pasos(CONST_PISO).wav(1) = 23
     Pasos(CONST_PISO).wav(2) = 24
 
+    
+    Exit Sub
+
+CargarPasos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarPasos", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarDatosMapa(ByVal map As Integer)
+    
+    On Error GoTo CargarDatosMapa_Err
+    
 
     If Len(NameMaps(map).desc) <> 0 Then
         frmMapaGrande.Label1.Caption = NameMaps(map).desc
@@ -588,8 +621,8 @@ Sub CargarDatosMapa(ByVal map As Integer)
     Dim i            As Long
     Dim j            As Long
     
-    Dim X            As Long
-    Dim Y            As Long
+    Dim x            As Long
+    Dim y            As Long
     
     #If Compresion = 1 Then
 
@@ -799,9 +832,19 @@ Sub CargarDatosMapa(ByVal map As Integer)
         Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
     #End If
 
+    
+    Exit Sub
+
+CargarDatosMapa_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarDatosMapa", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarMapa(ByVal map As Integer)
+    
+    On Error GoTo CargarMapa_Err
+    
 
     '**************************************************************
     'Formato de mapas optimizado para reducir el espacio que ocupan.
@@ -830,8 +873,8 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim i            As Long
     Dim j            As Long
 
-    Dim X            As Long
-    Dim Y            As Long
+    Dim x            As Long
+    Dim y            As Long
 
     Dim demora       As Long
     Dim demorafinal  As Long
@@ -882,9 +925,9 @@ Public Sub CargarMapa(ByVal map As Integer)
         Call SetGlobalLight(MapDat.base_light)
     End If
         
-    For X = 1 To 100
-        For Y = 1 To 100
-            With MapData(X, Y)
+    For x = 1 To 100
+        For y = 1 To 100
+            With MapData(x, y)
 
                 .light_value(0) = global_light
                 .light_value(1) = global_light
@@ -892,8 +935,8 @@ Public Sub CargarMapa(ByVal map As Integer)
                 .light_value(3) = global_light
                 
             End With
-        Next Y
-    Next X
+        Next y
+    Next x
     
     ' Get #fh, , L1
     With MH
@@ -905,7 +948,7 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Blqs
 
             For i = 1 To .NumeroBloqueados
-                MapData(Blqs(i).X, Blqs(i).Y).Blocked = Blqs(i).lados
+                MapData(Blqs(i).x, Blqs(i).y).Blocked = Blqs(i).lados
             Next i
         End If
     
@@ -918,21 +961,21 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(1)
             
-                X = L1(i).X
-                Y = L1(i).Y
+                x = L1(i).x
+                y = L1(i).y
                 
-                With MapData(X, Y)
+                With MapData(x, y)
             
                     .Graphic(1).GrhIndex = L1(i).GrhIndex
                     
                     ' Precalculate position
-                    .Graphic(1).X = X * TilePixelWidth
-                    .Graphic(1).Y = Y * TilePixelHeight
+                    .Graphic(1).x = x * TilePixelWidth
+                    .Graphic(1).y = y * TilePixelHeight
                     ' *********************
                 
                     InitGrh .Graphic(1), .Graphic(1).GrhIndex
                     
-                    If HayAgua(X, Y) Then
+                    If HayAgua(x, y) Then
                         .Blocked = .Blocked Or FLAG_AGUA
                     End If
                     
@@ -948,14 +991,14 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(2)
                 
-                X = L2(i).X
-                Y = L2(i).Y
+                x = L2(i).x
+                y = L2(i).y
 
-                MapData(X, Y).Graphic(2).GrhIndex = L2(i).GrhIndex
+                MapData(x, y).Graphic(2).GrhIndex = L2(i).GrhIndex
                 
-                InitGrh MapData(X, Y).Graphic(2), MapData(X, Y).Graphic(2).GrhIndex
+                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).GrhIndex
                 
-                MapData(X, Y).Blocked = MapData(X, Y).Blocked Or FLAG_COSTA
+                MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_COSTA
                 
             Next i
 
@@ -967,15 +1010,15 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroLayers(3)
             
-                X = L3(i).X
-                Y = L3(i).Y
+                x = L3(i).x
+                y = L3(i).y
             
-                MapData(X, Y).Graphic(3).GrhIndex = L3(i).GrhIndex
+                MapData(x, y).Graphic(3).GrhIndex = L3(i).GrhIndex
             
-                InitGrh MapData(X, Y).Graphic(3), MapData(X, Y).Graphic(3).GrhIndex
+                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
                 
                 If EsArbol(L3(i).GrhIndex) Then
-                    MapData(X, Y).Blocked = MapData(X, Y).Blocked Or FLAG_ARBOL
+                    MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
                 End If
             Next i
 
@@ -987,8 +1030,8 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , L4
 
             For i = 1 To .NumeroLayers(4)
-                MapData(L4(i).X, L4(i).Y).Graphic(4).GrhIndex = L4(i).GrhIndex
-                InitGrh MapData(L4(i).X, L4(i).Y).Graphic(4), MapData(L4(i).X, L4(i).Y).Graphic(4).GrhIndex
+                MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex = L4(i).GrhIndex
+                InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex
             Next i
 
         End If
@@ -998,7 +1041,7 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Triggers
             
             For i = 1 To .NumeroTriggers
-                MapData(Triggers(i).X, Triggers(i).Y).Trigger = Triggers(i).Trigger
+                MapData(Triggers(i).x, Triggers(i).y).Trigger = Triggers(i).Trigger
                 
                 ' Transparencia de techos
                 If Triggers(i).Trigger >= PRIMER_TRIGGER_TECHO Then
@@ -1024,8 +1067,8 @@ Public Sub CargarMapa(ByVal map As Integer)
 
             For i = 1 To .NumeroParticulas
             
-                MapData(Particulas(i).X, Particulas(i).Y).particle_Index = Particulas(i).Particula
-                General_Particle_Create MapData(Particulas(i).X, Particulas(i).Y).particle_Index, Particulas(i).X, Particulas(i).Y
+                MapData(Particulas(i).x, Particulas(i).y).particle_Index = Particulas(i).Particula
+                General_Particle_Create MapData(Particulas(i).x, Particulas(i).y).particle_Index, Particulas(i).x, Particulas(i).y
 
             Next i
 
@@ -1036,14 +1079,14 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Luces
 
             For i = 1 To .NumeroLuces
-                MapData(Luces(i).X, Luces(i).Y).luz.Color = Luces(i).Color
-                MapData(Luces(i).X, Luces(i).Y).luz.Rango = Luces(i).Rango
+                MapData(Luces(i).x, Luces(i).y).luz.Color = Luces(i).Color
+                MapData(Luces(i).x, Luces(i).y).luz.Rango = Luces(i).Rango
 
-                If MapData(Luces(i).X, Luces(i).Y).luz.Rango <> 0 Then
-                    If MapData(Luces(i).X, Luces(i).Y).luz.Rango < 100 Then
-                        LucesCuadradas.Light_Create Luces(i).X, Luces(i).Y, Luces(i).Color, Luces(i).Rango, Luces(i).X & Luces(i).Y
+                If MapData(Luces(i).x, Luces(i).y).luz.Rango <> 0 Then
+                    If MapData(Luces(i).x, Luces(i).y).luz.Rango < 100 Then
+                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, Luces(i).Color, Luces(i).Rango, Luces(i).x & Luces(i).y
                     Else
-                        LucesRedondas.Create_Light_To_Map Luces(i).X, Luces(i).Y, Luces(i).Color, Luces(i).Rango - 99
+                        LucesRedondas.Create_Light_To_Map Luces(i).x, Luces(i).y, Luces(i).Color, Luces(i).Rango - 99
                     End If
 
                 End If
@@ -1057,10 +1100,10 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Objetos
 
             For i = 1 To .NumeroOBJs
-                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
-                MapData(Objetos(i).X, Objetos(i).Y).OBJInfo.Amount = Objetos(i).ObjAmmount
-                MapData(Objetos(i).X, Objetos(i).Y).ObjGrh.GrhIndex = ObjData(Objetos(i).OBJIndex).GrhIndex
-                Call InitGrh(MapData(Objetos(i).X, Objetos(i).Y).ObjGrh, MapData(Objetos(i).X, Objetos(i).Y).ObjGrh.GrhIndex)
+                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
+                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
+                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).OBJIndex).GrhIndex
+                Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex)
 
             Next i
 
@@ -1075,9 +1118,19 @@ Public Sub CargarMapa(ByVal map As Integer)
     #End If
 
 
+    
+    Exit Sub
+
+CargarMapa_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarMapa", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarParticulas()
+    
+    On Error GoTo CargarParticulas_Err
+    
 
     '*************************************
     'Coded by OneZero (onezero_ss@hotmail.com)
@@ -1169,9 +1222,19 @@ Public Sub CargarParticulas()
         Delete_File Windows_Temp_Dir & "particles.ini"
     #End If
 
+    
+    Exit Sub
+
+CargarParticulas_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarParticulas", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarParticulasBinary()
+    
+    On Error GoTo CargarParticulasBinary_Err
+    
 
     '*************************************
     'Coded by OneZero (onezero_ss@hotmail.com)
@@ -1257,10 +1320,20 @@ Public Sub CargarParticulasBinary()
         Delete_File Windows_Temp_Dir & "particles.ini"
     #End If
 
+    
+    Exit Sub
+
+CargarParticulasBinary_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarParticulasBinary", Erl)
+    Resume Next
+    
 End Sub
 
 
 Public Sub CargarIndicesOBJBinary()
+    
+    On Error GoTo CargarIndicesOBJBinary_Err
+    
 
     Dim Obj       As Integer
     Dim Npc       As Integer
@@ -1354,9 +1427,19 @@ Public Sub CargarIndicesOBJBinary()
 
     Exit Sub
 
+    
+    Exit Sub
+
+CargarIndicesOBJBinary_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarIndicesOBJBinary", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarIndicesOBJ()
+    
+    On Error GoTo CargarIndicesOBJ_Err
+    
 
     Dim Obj     As Integer
 
@@ -1547,9 +1630,19 @@ Public Sub CargarIndicesOBJ()
         Delete_File Windows_Temp_Dir & "localindex.dat"
     #End If
 
+    
+    Exit Sub
+
+CargarIndicesOBJ_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarIndicesOBJ", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Cargarmapsworlddata()
+    
+    On Error GoTo Cargarmapsworlddata_Err
+    
 
     'Ladder
     Dim MapFile As String
@@ -1590,9 +1683,19 @@ Public Sub Cargarmapsworlddata()
         Delete_File Windows_Temp_Dir & "mapsworlddata.dat"
     #End If
 
+    
+    Exit Sub
+
+Cargarmapsworlddata_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.Cargarmapsworlddata", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarCabezas()
+    
+    On Error GoTo CargarCabezas_Err
+    
 
     Dim N            As Integer
 
@@ -1646,9 +1749,19 @@ Sub CargarCabezas()
         Delete_File Windows_Temp_Dir & "cabezas.ind"
     #End If
     
+    
+    Exit Sub
+
+CargarCabezas_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarCabezas", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarCascos()
+    
+    On Error GoTo CargarCascos_Err
+    
 
     Dim N            As Integer
 
@@ -1702,9 +1815,19 @@ Sub CargarCascos()
         Delete_File Windows_Temp_Dir & "cascos.ind"
     #End If
 
+    
+    Exit Sub
+
+CargarCascos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarCascos", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarCuerpos()
+    
+    On Error GoTo CargarCuerpos_Err
+    
 
     Dim N            As Integer
 
@@ -1748,8 +1871,8 @@ Sub CargarCuerpos()
             InitGrh BodyData(i).Walk(3), MisCuerpos(i).Body(3), 0
             InitGrh BodyData(i).Walk(4), MisCuerpos(i).Body(4), 0
             
-            BodyData(i).HeadOffset.X = MisCuerpos(i).HeadOffsetX
-            BodyData(i).HeadOffset.Y = MisCuerpos(i).HeadOffsetY
+            BodyData(i).HeadOffset.x = MisCuerpos(i).HeadOffsetX
+            BodyData(i).HeadOffset.y = MisCuerpos(i).HeadOffsetY
 
         End If
 
@@ -1760,9 +1883,19 @@ Sub CargarCuerpos()
         Delete_File Windows_Temp_Dir & "personajes.ind"
     #End If
 
+    
+    Exit Sub
+
+CargarCuerpos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarCuerpos", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarFxs()
+    
+    On Error GoTo CargarFxs_Err
+    
 
     Dim N      As Integer
 
@@ -1804,6 +1937,13 @@ Sub CargarFxs()
         Delete_File Windows_Temp_Dir & "fxs.ind"
     #End If
 
+    
+    Exit Sub
+
+CargarFxs_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarFxs", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function LoadGrhData() As Boolean
@@ -1946,6 +2086,9 @@ ErrorHandler:
 End Function
 
 Public Function CargarMiniMap()
+    
+    On Error GoTo CargarMiniMap_Err
+    
 
     Dim count  As Long
 
@@ -1989,12 +2132,22 @@ ErrorHandler:
     CargarMiniMap = False
     MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & count
 
+    
+    Exit Function
+
+CargarMiniMap_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarMiniMap", Erl)
+    Resume Next
+    
 End Function
 
 
 Sub CargarAnimArmas()
+    
+    On Error GoTo CargarAnimArmas_Err
+    
 
-    On Error Resume Next
+    
 
     Dim loopc As Long
 
@@ -2028,11 +2181,21 @@ Sub CargarAnimArmas()
         Delete_File Windows_Temp_Dir & "armas.dat"
     #End If
 
+    
+    Exit Sub
+
+CargarAnimArmas_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarAnimArmas", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarColores()
+    
+    On Error GoTo CargarColores_Err
+    
 
-    On Error Resume Next
+    
 
     Dim archivoC As String
 
@@ -2080,9 +2243,19 @@ Sub CargarColores()
         Delete_File Windows_Temp_Dir & "colores.dat"
     #End If
 
+    
+    Exit Sub
+
+CargarColores_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarColores", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarAnimEscudos()
+    
+    On Error GoTo CargarAnimEscudos_Err
+    
 
     Dim loopc As Long
 
@@ -2116,5 +2289,12 @@ Sub CargarAnimEscudos()
         Delete_File Windows_Temp_Dir & "escudos.dat"
     #End If
 
+    
+    Exit Sub
+
+CargarAnimEscudos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarAnimEscudos", Erl)
+    Resume Next
+    
 End Sub
 

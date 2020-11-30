@@ -659,6 +659,9 @@ Private MisMSG(0 To MAX_GM_MSG) As String
 Private Apunt(0 To MAX_GM_MSG)  As Integer
 
 Public Sub CrearGMmSg(Nick As String, msg As String)
+    
+    On Error GoTo CrearGMmSg_Err
+    
 
     If List1.ListCount < MAX_GM_MSG Then
         List1.AddItem Nick & "-" & List1.ListCount
@@ -667,9 +670,19 @@ Public Sub CrearGMmSg(Nick As String, msg As String)
 
     End If
 
+    
+    Exit Sub
+
+CrearGMmSg_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.CrearGMmSg", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub BanCuenta_Click()
+    
+    On Error GoTo BanCuenta_Click_Err
+    
     tmp = InputBox("¿Motivo?", "Ingrese el motivo")
     Nick = cboListaUsus.Text
 
@@ -678,23 +691,53 @@ Private Sub BanCuenta_Click()
 
     End If
 
+    
+    Exit Sub
+
+BanCuenta_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.BanCuenta_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub banMacYHD_Click()
+    
+    On Error GoTo banMacYHD_Click_Err
+    
     Call WriteBanSerial(cboListaUsus.Text)
 
+    
+    Exit Sub
+
+banMacYHD_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.banMacYHD_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub BorrarPersonaje_Click()
+    
+    On Error GoTo BorrarPersonaje_Click_Err
+    
 
     If MsgBox("¿Está seguro que desea Borrar el personaje " & cboListaUsus.Text & "?", vbYesNo + vbQuestion) = vbYes Then
 
         'Call SendData("/KILLCHAR " & cboListaUsus.Text)
     End If
 
+    
+    Exit Sub
+
+BorrarPersonaje_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.BorrarPersonaje_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub BusqedaTesoro_Click()
+    
+    On Error GoTo BusqedaTesoro_Click_Err
+    
 
     tmp = InputBox("Ingrese tipo de evento:" & vbCrLf & "0: Busqueda de tesoro en continente" & vbCrLf & "1: Busqueda de tesoro en dungeon" & vbCrLf & "2: Aparicion de criatura", "Iniciar evento")
 
@@ -707,12 +750,29 @@ Private Sub BusqedaTesoro_Click()
 
     End If
 
+    
+    Exit Sub
+
+BusqedaTesoro_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.BusqedaTesoro_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Cabeza_Click()
+    
+    On Error GoTo Cabeza_Click_Err
+    
     tmp = InputBox("Ingrese el valor de cabeza que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " Head " & tmp)
+    
+    Exit Sub
+
+Cabeza_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Cabeza_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub CentinelaEstado_Click()
@@ -721,11 +781,24 @@ Private Sub CentinelaEstado_Click()
 End Sub
 
 Private Sub CerrarleCliente_Click()
+    
+    On Error GoTo CerrarleCliente_Click_Err
+    
     Call WriteCerraCliente(cboListaUsus.Text)
 
+    
+    Exit Sub
+
+CerrarleCliente_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.CerrarleCliente_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub CerrarProceso_Click()
+    
+    On Error GoTo CerrarProceso_Click_Err
+    
     tmp = InputBox("Ingrese el nombre del proceso", "Cerrar Proceso")
 
     If tmp <> "" Then
@@ -733,21 +806,51 @@ Private Sub CerrarProceso_Click()
         'Call SendData("/CERRARPROCESO " & cboListaUsus.Text & "@" & tmp)
     End If
 
+    
+    Exit Sub
+
+CerrarProceso_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.CerrarProceso_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ciudadanos_Click()
+    
+    On Error GoTo ciudadanos_Click_Err
+    
     tmp = InputBox("Ingrese el valor de ciudadanos que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " CIU " & tmp)
+    
+    Exit Sub
+
+ciudadanos_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.ciudadanos_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Clase_Click()
+    
+    On Error GoTo Clase_Click_Err
+    
     tmp = InputBox("Ingrese el valor de clase Libres que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " CLASE " & tmp)
+    
+    Exit Sub
+
+Clase_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Clase_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdAccion_Click(Index As Integer)
+    
+    On Error GoTo cmdAccion_Click_Err
+    
     Nick = Replace(cboListaUsus.Text, " ", "+")
 
     Select Case Index
@@ -900,21 +1003,48 @@ Private Sub cmdAccion_Click(Index As Integer)
 
     Nick = ""
 
+    
+    Exit Sub
+
+cmdAccion_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.cmdAccion_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdActualiza_Click()
+    
+    On Error GoTo cmdActualiza_Click_Err
+    
     Call WriteRequestUserList
     Call FlushBuffer
 
+    
+    Exit Sub
+
+cmdActualiza_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.cmdActualiza_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdcerrar_Click()
+    
+    On Error GoTo cmdcerrar_Click_Err
+    
 
     Me.Visible = False
     List1.Clear
     List2.Clear
     txtMsg.Text = ""
 
+    
+    Exit Sub
+
+cmdcerrar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.cmdcerrar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdOnline_Click()
@@ -923,6 +1053,9 @@ End Sub
 
 Private Sub cmdTarget_Click()
     'Dim Usuaritio As String
+    
+    On Error GoTo cmdTarget_Click_Err
+    
 
     'cboListaUsus = List1.List(List1.ListIndex)
     'Call AddtoRichTextBox(frmMain.RecTxt, "Haz click sobre el personaje...", 100, 100, 120, 0, 0)
@@ -931,44 +1064,114 @@ Private Sub cmdTarget_Click()
     'Call SendData("TGUSER")
     Call WriteMarcaDeGm
 
+    
+    Exit Sub
+
+cmdTarget_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.cmdTarget_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     List1.Visible = True
     List2.Visible = False
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     List1.Visible = False
     List2.Visible = True
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub CrearTeleport_Click()
+    
+    On Error GoTo CrearTeleport_Click_Err
+    
     tmp = InputBox("Ingrese las cordenadas, por ejemplo para ulla: 1 50 50", "Ingrese Posiciones")
     Call ParseUserCommand("/CT " & tmp)
 
+    
+    Exit Sub
+
+CrearTeleport_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.CrearTeleport_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub creartoneo_Click()
+    
+    On Error GoTo creartoneo_Click_Err
+    
     FrmTorneo.Show
 
+    
+    Exit Sub
+
+creartoneo_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.creartoneo_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Criminales_Click()
+    
+    On Error GoTo Criminales_Click_Err
+    
     tmp = InputBox("Ingrese el valor de criminales que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " CRI " & tmp)
+    
+    Exit Sub
+
+Criminales_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Criminales_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Cuerpo_Click()
+    
+    On Error GoTo Cuerpo_Click_Err
+    
     tmp = InputBox("Ingrese el valor de cuerpo que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " BODY " & tmp)
+    
+    Exit Sub
+
+Cuerpo_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Cuerpo_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Desbanear_Click()
+    
+    On Error GoTo Desbanear_Click_Err
+    
     tmp = InputBox("Escriba la dirección IP a desbanear", "")
 
     If MsgBox("¿Esta seguro que desea desbanear la IP """ & tmp & """?", vbYesNo + vbQuestion) = vbYes Then
@@ -976,75 +1179,192 @@ Private Sub Desbanear_Click()
 
     End If
 
+    
+    Exit Sub
+
+Desbanear_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Desbanear_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Destrabar_Click()
+    
+    On Error GoTo Destrabar_Click_Err
+    
     Nick = Replace(cboListaUsus.Text, " ", "+")
     Call WritePossUser(Nick)
 
+    
+    Exit Sub
+
+Destrabar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Destrabar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub DestruirTeleport_Click()
+    
+    On Error GoTo DestruirTeleport_Click_Err
+    
     Call WriteTeleportDestroy '/DT 0.12.1
 
+    
+    Exit Sub
+
+DestruirTeleport_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.DestruirTeleport_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Ejecutar_Click()
+    
+    On Error GoTo Ejecutar_Click_Err
+    
     Nick = cboListaUsus.Text
     Call WriteExecute(Nick) '/EJECUTAR NICK 0.12.1
 
+    
+    Exit Sub
+
+Ejecutar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Ejecutar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Energia_Click()
+    
+    On Error GoTo Energia_Click_Err
+    
     tmp = InputBox("Ingrese el valor de energia que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " EN " & tmp)
+    
+    Exit Sub
+
+Energia_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Energia_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub evento1_Click()
+    
+    On Error GoTo evento1_Click_Err
+    
     Call WriteCrearEvento(5, 30, 2)
 
+    
+    Exit Sub
+
+evento1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.evento1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub evento2_Click()
+    
+    On Error GoTo evento2_Click_Err
+    
     Call WriteCrearEvento(5, 59, 2)
 
+    
+    Exit Sub
+
+evento2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.evento2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub evento3_Click()
+    
+    On Error GoTo evento3_Click_Err
+    
     Call WriteCrearEvento(7, 30, 2)
 
+    
+    Exit Sub
+
+evento3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.evento3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub evento4_Click()
+    
+    On Error GoTo evento4_Click_Err
+    
     Call WriteCrearEvento(2, 30, 3)
 
+    
+    Exit Sub
+
+evento4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.evento4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub finalizarevento_Click()
+    
+    On Error GoTo finalizarevento_Click_Err
+    
 
     If MsgBox("¿Esta seguro que desea finalizar el evento?", vbYesNo + vbQuestion, "¡ATENCION!") = vbYes Then
         Call WriteDenounce
 
     End If
 
+    
+    Exit Sub
+
+finalizarevento_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.finalizarevento_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     List1.Clear
     List2.Clear
     txtMsg.Text = ""
     Call WriteRequestUserList
     Call FlushBuffer
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lento_Click()
@@ -1067,35 +1387,78 @@ Private Sub Limpiarmundo_Click()
 End Sub
 
 Private Sub LimpiarVision_Click()
+    
+    On Error GoTo LimpiarVision_Click_Err
+    
     Call WriteDestroyAllItemsInArea
 
+    
+    Exit Sub
+
+LimpiarVision_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.LimpiarVision_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List1_Click()
+    
+    On Error GoTo List1_Click_Err
+    
 
     Dim ind As Integer
 
     ind = Val(ReadField(2, List1.List(List1.ListIndex), Asc("@")))
     txtMsg = List2.List(List1.ListIndex)
 
+    
+    Exit Sub
+
+List1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.List1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo List1_MouseDown_Err
+    
 
     If Button = vbRightButton Then
         PopUpMenu mnuUsuario
 
     End If
 
+    
+    Exit Sub
+
+List1_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.List1_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Mana_Click()
+    
+    On Error GoTo Mana_Click_Err
+    
     tmp = InputBox("Ingrese el valor de mana que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " MP " & tmp)
+    
+    Exit Sub
+
+Mana_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Mana_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub MensajeriaMenu_Click(Index As Integer)
+    
+    On Error GoTo MensajeriaMenu_Click_Err
+    
 
     Select Case Index
 
@@ -1117,9 +1480,19 @@ Private Sub MensajeriaMenu_Click(Index As Integer)
 
     End Select
 
+    
+    Exit Sub
+
+MensajeriaMenu_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.MensajeriaMenu_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuBorrar_Click()
+    
+    On Error GoTo mnuBorrar_Click_Err
+    
 
     Dim elitem          As String
 
@@ -1138,9 +1511,19 @@ Private Sub mnuBorrar_Click()
     List2.RemoveItem elitem
     txtMsg.Text = ""
 
+    
+    Exit Sub
+
+mnuBorrar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuBorrar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub MnuEnviar_Click(Index As Integer)
+    
+    On Error GoTo MnuEnviar_Click_Err
+    
 
     Dim Coordenadas As String
 
@@ -1175,38 +1558,98 @@ Private Sub MnuEnviar_Click(Index As Integer)
 
     End Select
 
+    
+    Exit Sub
+
+MnuEnviar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.MnuEnviar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuIRa_Click()
+    
+    On Error GoTo mnuIRa_Click_Err
+    
     Call WriteGoToChar(ReadField(1, List1.List(List1.ListIndex), Asc("(")))
 
+    
+    Exit Sub
+
+mnuIRa_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuIRa_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnutraer_Click()
+    
+    On Error GoTo mnutraer_Click_Err
+    
     Call WriteSummonChar(ReadField(1, List1.List(List1.ListIndex), Asc("(")))
 
+    
+    Exit Sub
+
+mnutraer_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnutraer_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuInvalida_Click()
+    
+    On Error GoTo mnuInvalida_Click_Err
+    
     Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
     Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta catalogada como invalida.")
 
+    
+    Exit Sub
+
+mnuInvalida_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuInvalida_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuResponder_Click()
+    
+    On Error GoTo mnuResponder_Click_Err
+    
     Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
     tmp = InputBox("Ingrese la respuesta:", "Responder consulta")
     Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & tmp)
 
+    
+    Exit Sub
+
+mnuResponder_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuResponder_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuManual_Click()
+    
+    On Error GoTo mnuManual_Click_Err
+    
     Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
     Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
 
+    
+    Exit Sub
+
+mnuManual_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuManual_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuAccion_Click(Index As Integer)
+    
+    On Error GoTo mnuAccion_Click_Err
+    
     Nick = cboListaUsus.Text
 
     If LenB(Nick) <> 0 Then
@@ -1233,24 +1676,64 @@ Private Sub mnuAccion_Click(Index As Integer)
 
     End If
 
+    
+    Exit Sub
+
+mnuAccion_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuAccion_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuAdmin_Click(Index As Integer)
+    
+    On Error GoTo mnuAdmin_Click_Err
+    
     Call cmdAccion_Click(Index)
 
+    
+    Exit Sub
+
+mnuAdmin_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuAdmin_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuAmbiente_Click(Index As Integer)
+    
+    On Error GoTo mnuAmbiente_Click_Err
+    
     Call cmdAccion_Click(Index)
 
+    
+    Exit Sub
+
+mnuAmbiente_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuAmbiente_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuBan_Click(Index As Integer)
+    
+    On Error GoTo mnuBan_Click_Err
+    
     Call cmdAccion_Click(Index)
 
+    
+    Exit Sub
+
+mnuBan_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuBan_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuCarcel_Click(Index As Integer)
+    
+    On Error GoTo mnuCarcel_Click_Err
+    
 
     If Index = 60 Then
         Call cmdAccion_Click(11)
@@ -1262,9 +1745,19 @@ Private Sub mnuCarcel_Click(Index As Integer)
 
     Call ParseUserCommand("/CARCEL " & Nick & "@encarcelado via panelgm@" & Index)
 
+    
+    Exit Sub
+
+mnuCarcel_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuCarcel_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuSilencio_Click(Index As Integer)
+    
+    On Error GoTo mnuSilencio_Click_Err
+    
 
     If Index = 60 Then
         Call cmdAccion_Click(35)
@@ -1274,19 +1767,49 @@ Private Sub mnuSilencio_Click(Index As Integer)
 
     Call ParseUserCommand("/SILENCIO " & cboListaUsus.Text & "@" & Index)
 
+    
+    Exit Sub
+
+mnuSilencio_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuSilencio_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuHerramientas_Click(Index As Integer)
+    
+    On Error GoTo mnuHerramientas_Click_Err
+    
     Call cmdAccion_Click(Index)
 
+    
+    Exit Sub
+
+mnuHerramientas_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuHerramientas_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuIP_Click(Index As Integer)
+    
+    On Error GoTo mnuIP_Click_Err
+    
     Call cmdAccion_Click(Index)
 
+    
+    Exit Sub
+
+mnuIP_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuIP_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuReload_Click(Index As Integer)
+    
+    On Error GoTo mnuReload_Click_Err
+    
 
     Select Case Index
 
@@ -1319,33 +1842,90 @@ Private Sub mnuReload_Click(Index As Integer)
         ' Call SendData("/RELOADOPCIONES")
 End Select
 
+    
+    Exit Sub
+
+mnuReload_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.mnuReload_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub MOTD_Click()
+    
+    On Error GoTo MOTD_Click_Err
+    
     Call WriteChangeMOTD 'Cambiar MOTD 0.12.1
 
+    
+    Exit Sub
+
+MOTD_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.MOTD_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub muyrapido_Click()
+    
+    On Error GoTo muyrapido_Click_Err
+    
     charlist(UserCharIndex).Speeding = 5
 
+    
+    Exit Sub
+
+muyrapido_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.muyrapido_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Normal_Click()
+    
+    On Error GoTo Normal_Click_Err
+    
     charlist(UserCharIndex).Speeding = 1#
 
+    
+    Exit Sub
+
+Normal_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Normal_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub oro_Click()
+    
+    On Error GoTo oro_Click_Err
+    
     tmp = InputBox("Ingrese el valor de oro que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " ORO " & tmp)
+    
+    Exit Sub
+
+oro_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.oro_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub personalizado_Click()
+    
+    On Error GoTo personalizado_Click_Err
+    
     tmp = InputBox("Ingrese evento  Tipo@Duracion@Multiplicacion" & vbCrLf & vbCrLf & "Tipo 1=Multiplica Oro" & vbCrLf & "Tipo 2=Multiplica Experiencia" & vbCrLf & "Tipo 3=Multiplica Recoleccion" & vbCrLf & "Tipo 4=Multiplica Dropeo" & vbCrLf & "Tipo 5=Multiplica Oro y Experiencia" & vbCrLf & "Tipo 6=Multiplica Oro, experiencia y recoleccion" & vbCrLf & "Tipo 7=Multiplica Todo" & vbCrLf & "Duracion= Maximo: 59" & vbCrLf & "Multiplicacion= Maximo 10", "Creacion de nuevo evento")
     Call ParseUserCommand("/CREAREVENTO " & tmp)
 
+    
+    Exit Sub
+
+personalizado_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.personalizado_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub quitarnpcs_Click()
@@ -1354,14 +1934,34 @@ Private Sub quitarnpcs_Click()
 End Sub
 
 Private Sub rapido_Click()
+    
+    On Error GoTo rapido_Click_Err
+    
     charlist(UserCharIndex).Speeding = 2
 
+    
+    Exit Sub
+
+rapido_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.rapido_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Raza_Click()
+    
+    On Error GoTo Raza_Click_Err
+    
     tmp = InputBox("Ingrese el valor de raza que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " RAZA " & tmp)
+    
+    Exit Sub
+
+Raza_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Raza_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ResetPozos_Click()
@@ -1375,19 +1975,49 @@ Private Sub SeguroInseguro_Click()
 End Sub
 
 Private Sub SkillLibres_Click()
+    
+    On Error GoTo SkillLibres_Click_Err
+    
     tmp = InputBox("Ingrese el valor de skills Libres que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp)
+    
+    Exit Sub
+
+SkillLibres_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.SkillLibres_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Spawn_Click()
+    
+    On Error GoTo Spawn_Click_Err
+    
     Call WriteSpawnListRequest
 
+    
+    Exit Sub
+
+Spawn_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Spawn_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub StaffOnline_Click()
+    
+    On Error GoTo StaffOnline_Click_Err
+    
     Call WriteOnlineGM '/ONLINEGM 0.12.1
 
+    
+    Exit Sub
+
+StaffOnline_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.StaffOnline_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub SubastaEstado_Click()
@@ -1396,6 +2026,9 @@ Private Sub SubastaEstado_Click()
 End Sub
 
 Private Sub Temporal_Click()
+    
+    On Error GoTo Temporal_Click_Err
+    
 
     Dim tmp  As String
 
@@ -1409,24 +2042,64 @@ Private Sub Temporal_Click()
 
     End If
 
+    
+    Exit Sub
+
+Temporal_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Temporal_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub torneo_cancelar_Click()
+    
+    On Error GoTo torneo_cancelar_Click_Err
+    
     Call WriteCancelarTorneo
 
+    
+    Exit Sub
+
+torneo_cancelar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.torneo_cancelar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub torneo_comenzar_Click()
+    
+    On Error GoTo torneo_comenzar_Click_Err
+    
     Call WriteComenzarTorneo
 
+    
+    Exit Sub
+
+torneo_comenzar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.torneo_comenzar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub UnbanCuenta_Click()
+    
+    On Error GoTo UnbanCuenta_Click_Err
+    
     Call WriteUnBanCuenta(cboListaUsus.Text)
 
+    
+    Exit Sub
+
+UnbanCuenta_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.UnbanCuenta_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub UnbanPersonaje_Click()
+    
+    On Error GoTo UnbanPersonaje_Click_Err
+    
     Nick = cboListaUsus.Text
 
     If MsgBox("¿Esta seguro que desea removerle el ban al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
@@ -1434,6 +2107,13 @@ Private Sub UnbanPersonaje_Click()
 
     End If
 
+    
+    Exit Sub
+
+UnbanPersonaje_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.UnbanPersonaje_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub usersOnline_Click()
@@ -1447,12 +2127,25 @@ Private Sub VerProcesos_Click()
 End Sub
 
 Private Sub Vida_Click()
+    
+    On Error GoTo Vida_Click_Err
+    
     tmp = InputBox("Ingrese el valor de vida que desea editar.", "Edicion de Usuarios")
 
     'Call SendData("/MOD " & cboListaUsus.Text & " HP " & tmp)
+    
+    Exit Sub
+
+Vida_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.Vida_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ReadNick()
+    
+    On Error GoTo ReadNick_Err
+    
 
     If List1.Visible Then
         Nick = General_Field_Read(1, List1.List(List1.ListIndex), "(")
@@ -1467,9 +2160,19 @@ Private Sub ReadNick()
 
     End If
 
+    
+    Exit Sub
+
+ReadNick_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.ReadNick", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub YoAcciones_Click(Index As Integer)
+    
+    On Error GoTo YoAcciones_Click_Err
+    
 
     Select Case Index
 
@@ -1483,5 +2186,12 @@ Private Sub YoAcciones_Click(Index As Integer)
         Case 2
 
     End Select
+    
+    
+    Exit Sub
+
+YoAcciones_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.YoAcciones_Click", Erl)
+    Resume Next
     
 End Sub

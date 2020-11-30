@@ -31,6 +31,9 @@ Private p_Activo     As Boolean
 Private usedFont     As StdFont
 
 Public Property Let CantidadDialogos(ByVal v As Byte)
+    
+    On Error GoTo CantidadDialogos_Err
+    
 
     If v > 0 Then
         ReDim Preserve p_Dialogos(1 To v) As t_GuildDlg
@@ -39,12 +42,22 @@ Public Property Let CantidadDialogos(ByVal v As Byte)
 
     p_CANTIDADDIALOGOS = v
 
+    
+    Exit Property
+
+CantidadDialogos_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.CantidadDialogos", Erl)
+    Resume Next
+    
 End Property
 
 ''
 ' Removes all dialogs from screen.
 
 Public Sub RemoveDialogs()
+    
+    On Error GoTo RemoveDialogs_Err
+    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -57,6 +70,13 @@ Public Sub RemoveDialogs()
         p_Dialogos(i).Texto = vbNullString
     Next i
 
+    
+    Exit Sub
+
+RemoveDialogs_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.RemoveDialogs", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -70,28 +90,71 @@ Public Property Get CantidadDialogos() As Byte
     'Last Modification: 04/01/07
     'Retrieves the number of dialogs to be displayed on screen
     '***************************************************
+    
+    On Error GoTo CantidadDialogos_Err
+    
     CantidadDialogos = p_CANTIDADDIALOGOS
 
+    
+    Exit Property
+
+CantidadDialogos_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.CantidadDialogos", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let Activo(ByVal v As Boolean)
+    
+    On Error GoTo Activo_Err
+    
     p_Activo = v
 
+    
+    Exit Property
+
+Activo_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.Activo", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get Activo() As Boolean
+    
+    On Error GoTo Activo_Err
+    
     Activo = p_Activo
 
+    
+    Exit Property
+
+Activo_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.Activo", Erl)
+    Resume Next
+    
 End Property
 
 Private Sub Class_Initialize()
+    
+    On Error GoTo Class_Initialize_Err
+    
     p_CANTIDADDIALOGOS = 5
     ReDim p_Dialogos(1 To p_CANTIDADDIALOGOS) As t_GuildDlg
     p_Activo = True
 
+    
+    Exit Sub
+
+Class_Initialize_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.Class_Initialize", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Draw()
+    
+    On Error GoTo Draw_Err
+    
 
     Dim i As Byte
 
@@ -113,9 +176,19 @@ Public Sub Draw()
 
     Next i
 
+    
+    Exit Sub
+
+Draw_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.Draw", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub PassTimer()
+    
+    On Error GoTo PassTimer_Err
+    
 
     Dim i As Byte
 
@@ -130,12 +203,22 @@ Public Sub PassTimer()
 
     Next i
     
+    
+    Exit Sub
+
+PassTimer_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.PassTimer", Erl)
+    Resume Next
+    
 End Sub
 
 ''
 ' Splits dialogs into lines fitting properly the render area and inserts them
 
 Public Sub PushBackText(ByVal s As String)
+    
+    On Error GoTo PushBackText_Err
+    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -149,7 +232,7 @@ Public Sub PushBackText(ByVal s As String)
     str = s
     
     ' If it's too long to fit, split it
-    Do While frmmain.textwidth(str) > 500
+    Do While frmMain.textwidth(str) > 500
         tmp = InStrRev(str, " ")
         
         If tmp = 0 Then Exit Do
@@ -165,9 +248,19 @@ Public Sub PushBackText(ByVal s As String)
 
     End If
 
+    
+    Exit Sub
+
+PushBackText_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.PushBackText", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub RealPushBackText(ByVal s As String)
+    
+    On Error GoTo RealPushBackText_Err
+    
 
     Dim i     As Byte
 
@@ -203,6 +296,13 @@ Private Sub RealPushBackText(ByVal s As String)
 
     End If
 
+    
+    Exit Sub
+
+RealPushBackText_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.RealPushBackText", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -216,8 +316,18 @@ Public Property Get font() As StdFont
     'Last Modify Date: 04/27/06
     'Retrieves the font being used to render dialogs.
     '**************************************************************
+    
+    On Error GoTo font_Err
+    
     font = usedFont
 
+    
+    Exit Property
+
+font_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.font", Erl)
+    Resume Next
+    
 End Property
 
 ''
@@ -231,7 +341,17 @@ Public Property Let font(ByRef nValue As StdFont)
     'Last Modify Date: 04/27/06
     'Sets the font being used to render dialogs.
     '**************************************************************
+    
+    On Error GoTo font_Err
+    
     Set usedFont = nValue
 
+    
+    Exit Property
+
+font_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.font", Erl)
+    Resume Next
+    
 End Property
 

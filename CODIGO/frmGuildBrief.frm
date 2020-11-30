@@ -175,34 +175,84 @@ Option Explicit
 Public EsLeader As Boolean
 
 Private Sub aliado_Click()
+    
+    On Error GoTo aliado_Click_Err
+    
     frmCommet.nombre = Right(nombre.Caption, Len(nombre.Caption) - 7)
-    frmCommet.T = TIPO.ALIANZA
+    frmCommet.t = TIPO.ALIANZA
     frmCommet.Caption = "Ingrese propuesta de alianza"
     Call frmCommet.Show(vbModal, frmGuildBrief)
 
+    
+    Exit Sub
+
+aliado_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.aliado_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Call frmGuildSol.RecieveSolicitud(Right$(nombre, Len(nombre) - 7))
     Call frmGuildSol.Show(vbModal, frmGuildBrief)
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_Click()
+    
+    On Error GoTo Command3_Click_Err
+    
     frmCommet.nombre = Right(nombre.Caption, Len(nombre.Caption) - 7)
-    frmCommet.T = TIPO.PAZ
+    frmCommet.t = TIPO.PAZ
     frmCommet.Caption = "Ingrese propuesta de paz"
     Call frmCommet.Show(vbModal, frmGuildBrief)
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Guerra_Click()
+    
+    On Error GoTo Guerra_Click_Err
+    
     Call WriteGuildDeclareWar(Right(nombre.Caption, Len(nombre.Caption) - 7))
     Unload Me
 
+    
+    Exit Sub
+
+Guerra_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Guerra_Click", Erl)
+    Resume Next
+    
 End Sub

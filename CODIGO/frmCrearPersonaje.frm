@@ -572,6 +572,9 @@ Dim AnimHead       As Byte
 Public SkillPoints As Byte
 
 Function CheckData() As Boolean
+    
+    On Error GoTo CheckData_Err
+    
 
     If UserRaza = 0 Then
         MsgBox "Seleccione la raza del personaje."
@@ -608,31 +611,71 @@ Function CheckData() As Boolean
 
     CheckData = True
 
+    
+    Exit Function
+
+CheckData_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.CheckData", Erl)
+    Resume Next
+    
 End Function
 
 Function RandomNumber(ByVal LowerBound As Variant, ByVal UpperBound As Variant) As Single
+    
+    On Error GoTo RandomNumber_Err
+    
     Randomize Timer
     RandomNumber = (UpperBound - LowerBound + 1) * Rnd + LowerBound
 
     If RandomNumber > UpperBound Then RandomNumber = UpperBound
 
+    
+    Exit Function
+
+RandomNumber_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.RandomNumber", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Form_Activate()
+    
+    On Error GoTo Form_Activate_Err
+    
     QueRender = 3
 
+    
+    Exit Sub
+
+Form_Activate_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.Form_Activate", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     'Call SwitchMap(281)
 
     'lstProfesion.ListIndex = 0
     'LstFamiliar.ListIndex = 0
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstProfesion_Click()
+    
+    On Error GoTo lstProfesion_Click_Err
+    
 
     'LstFamiliar.Clear
     'Dim i As Byte
@@ -724,9 +767,19 @@ Private Sub lstProfesion_Click()
  
     RazaRecomendada = RazaRecomendada
 
+    
+    Exit Sub
+
+lstProfesion_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.lstProfesion_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstRaza_Click()
+    
+    On Error GoTo lstRaza_Click_Err
+    
 
     If lstRaza.ListIndex < 0 Then Exit Sub
     
@@ -744,11 +797,21 @@ Private Sub lstRaza_Click()
     modConstitucion.Caption = IIf(Sgn(ModRaza(i).Constitucion) < 0, "-", "+") & " " & Abs(ModRaza(i).Constitucion)
     modCarisma.Caption = IIf(Sgn(ModRaza(i).Carisma) < 0, "-", "+") & " " & Abs(ModRaza(i).Carisma)
 
+    
+    Exit Sub
+
+lstRaza_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.lstRaza_Click", Erl)
+    Resume Next
+    
 End Sub
 
-Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo render_MouseUp_Err
+    
 
-    If X > 331 And X < 347 And Y > 412 And Y < 424 Then 'Boton izquierda cabezas
+    If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
         If Cabeza.ListCount = 0 Then Exit Sub
         If Cabeza.ListIndex > 0 Then
             Cabeza.ListIndex = Cabeza.ListIndex - 1
@@ -762,7 +825,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 401 And X < 415 And Y > 412 And Y < 424 Then 'Boton Derecha cabezas
+    If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
         If Cabeza.ListCount = 0 Then Exit Sub
         If (Cabeza.ListIndex + 1) <> Cabeza.ListCount Then
             Cabeza.ListIndex = Cabeza.ListIndex + 1
@@ -776,12 +839,12 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 348 And X < 408 And Y > 511 And Y < 523 Then 'Boton Equipar
+    If x > 348 And x < 408 And y > 511 And y < 523 Then 'Boton Equipar
         CPEquipado = Not CPEquipado
 
     End If
 
-    If X > 290 And X < 326 And Y > 453 And Y < 486 Then 'Boton Equipar
+    If x > 290 And x < 326 And y > 453 And y < 486 Then 'Boton Equipar
         If CPHeading + 1 >= 5 Then
             CPHeading = 1
         Else
@@ -791,7 +854,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 421 And X < 452 And Y > 453 And Y < 486 Then 'Boton Equipar
+    If x > 421 And x < 452 And y > 453 And y < 486 Then 'Boton Equipar
         If CPHeading - 1 <= 0 Then
             CPHeading = 4
         Else
@@ -801,7 +864,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 548 And X < 560 And Y > 258 And Y < 271 Then 'Boton Derecha cabezas
+    If x > 548 And x < 560 And y > 258 And y < 271 Then 'Boton Derecha cabezas
 
         If lstProfesion.ListIndex < lstProfesion.ListCount - 1 Then
             lstProfesion.ListIndex = lstProfesion.ListIndex + 1
@@ -812,7 +875,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 435 And X < 446 And Y > 260 And Y < 271 Then 'Boton Derecha cabezas
+    If x > 435 And x < 446 And y > 260 And y < 271 Then 'Boton Derecha cabezas
 
         If lstProfesion.ListIndex - 1 < 0 Then
             lstProfesion.ListIndex = lstProfesion.ListCount - 1
@@ -823,7 +886,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 548 And X < 560 And Y > 304 And Y < 323 Then 'Boton Derecha cabezas
+    If x > 548 And x < 560 And y > 304 And y < 323 Then 'Boton Derecha cabezas
         If lstRaza.ListIndex < lstRaza.ListCount - 1 Then
             lstRaza.ListIndex = lstRaza.ListIndex + 1
         Else
@@ -833,7 +896,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 435 And X < 446 And Y > 304 And Y < 323 Then 'Boton Derecha cabezas
+    If x > 435 And x < 446 And y > 304 And y < 323 Then 'Boton Derecha cabezas
         If lstRaza.ListIndex - 1 < 0 Then
             lstRaza.ListIndex = lstRaza.ListCount - 1
         Else
@@ -843,7 +906,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 548 And X < 560 And Y > 351 And Y < 367 Then 'Boton Derecha cabezas
+    If x > 548 And x < 560 And y > 351 And y < 367 Then 'Boton Derecha cabezas
         If lstGenero.ListIndex < lstGenero.ListCount - 1 Then
             lstGenero.ListIndex = lstGenero.ListIndex + 1
         Else
@@ -853,7 +916,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 435 And X < 446 And Y > 351 And Y < 367 Then 'Boton Derecha cabezas
+    If x > 435 And x < 446 And y > 351 And y < 367 Then 'Boton Derecha cabezas
         If lstGenero.ListIndex - 1 < 0 Then
             lstGenero.ListIndex = lstGenero.ListCount - 1
         Else
@@ -949,7 +1012,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
     'End If
     'End If
 
-    If X > 148 And X < 246 And Y > 630 And Y < 670 Then 'Boton > Volver
+    If x > 148 And x < 246 And y > 630 And y < 670 Then 'Boton > Volver
         Call Sound.Sound_Play(SND_CLICK)
 
         UserMap = 307
@@ -967,7 +1030,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
-    If X > 731 And X < 829 And Y > 630 And Y < 670 Then 'Boton > Crear
+    If x > 731 And x < 829 And y > 630 And y < 670 Then 'Boton > Crear
         Call Sound.Sound_Play(SND_CLICK)
 
         Dim k As Object
@@ -1006,16 +1069,16 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
             StopCreandoCuenta = True
                 
-            If frmmain.Socket1.Connected Then
+            If frmMain.Socket1.Connected Then
                 EstadoLogin = E_MODO.CrearNuevoPj
                 Call Login
-                frmmain.ShowFPS.Enabled = True
+                frmMain.ShowFPS.Enabled = True
                 Exit Sub
             Else
                 EstadoLogin = E_MODO.CrearNuevoPj
-                frmmain.Socket1.HostName = IPdelServidor
-                frmmain.Socket1.RemotePort = PuertoDelServidor
-                frmmain.Socket1.Connect
+                frmMain.Socket1.HostName = IPdelServidor
+                frmMain.Socket1.RemotePort = PuertoDelServidor
+                frmMain.Socket1.Connect
 
             End If
 
@@ -1023,20 +1086,47 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
 
     End If
 
+    
+    Exit Sub
+
+render_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.render_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Cabeza_Click()
+    
+    On Error GoTo Cabeza_Click_Err
+    
     MiCabeza = Val(Cabeza.List(Cabeza.ListIndex))
     Call DibujarCPJ(MiCabeza, 3)
 
     CPHead = MiCabeza
 
+    
+    Exit Sub
+
+Cabeza_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.Cabeza_Click", Erl)
+    Resume Next
+    
 End Sub
  
 Private Sub lstGenero_Click()
+    
+    On Error GoTo lstGenero_Click_Err
+    
     Call DameOpciones
     AnimHead = 3
 
+    
+    Exit Sub
+
+lstGenero_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.lstGenero_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Timer1_Timer()

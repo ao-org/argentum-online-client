@@ -29,6 +29,9 @@ Private mutexHID As Long
 ' @param mutexName The name of the mutex, should be universally unique for the mutex to be created.
 
 Private Function CreateNamedMutex(ByRef mutexName As String) As Boolean
+    
+    On Error GoTo CreateNamedMutex_Err
+    
 
     '***************************************************
     'Author: Fredy Horacio Treboux (liquid)
@@ -48,12 +51,22 @@ Private Function CreateNamedMutex(ByRef mutexName As String) As Boolean
     
     CreateNamedMutex = Not (Err.LastDllError = ERROR_ALREADY_EXISTS) 'check if the mutex already existed
 
+    
+    Exit Function
+
+CreateNamedMutex_Err:
+    Call RegistrarError(Err.number, Err.Description, "PrevInstance.CreateNamedMutex", Erl)
+    Resume Next
+    
 End Function
 
 ''
 ' Checks if there's another instance of the app running, returns True if there is or False otherwise.
 
 Public Function FindPreviousInstance() As Boolean
+    
+    On Error GoTo FindPreviousInstance_Err
+    
 
     '***************************************************
     'Author: Fredy Horacio Treboux (liquid)
@@ -70,6 +83,13 @@ Public Function FindPreviousInstance() As Boolean
 
     End If
 
+    
+    Exit Function
+
+FindPreviousInstance_Err:
+    Call RegistrarError(Err.number, Err.Description, "PrevInstance.FindPreviousInstance", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -81,7 +101,17 @@ Public Sub ReleaseInstance()
     'Last Modification: 01/04/07
     '
     '***************************************************
+    
+    On Error GoTo ReleaseInstance_Err
+    
     Call ReleaseMutex(mutexHID)
     Call CloseHandle(mutexHID)
 
+    
+    Exit Sub
+
+ReleaseInstance_Err:
+    Call RegistrarError(Err.number, Err.Description, "PrevInstance.ReleaseInstance", Erl)
+    Resume Next
+    
 End Sub

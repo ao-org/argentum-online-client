@@ -76,13 +76,16 @@ Private Sub Class_Initialize()
 End Sub
 
 Private Sub Class_Terminate()
+    
+    On Error GoTo Class_Terminate_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
-    On Error Resume Next
+    
 
     Dim i As Long
 
@@ -96,6 +99,13 @@ Private Sub Class_Terminate()
     
     Erase mBuffers
     
+    
+    Exit Sub
+
+Class_Terminate_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.Class_Terminate", Erl)
+    Resume Next
+    
 End Sub
 
 Public Property Let Path(ByVal inString As String)
@@ -104,8 +114,18 @@ Public Property Let Path(ByVal inString As String)
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
+    
+    On Error GoTo Path_Err
+    
     WavPath = inString
 
+    
+    Exit Property
+
+Path_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.Path", Erl)
+    Resume Next
+    
 End Property
 
 Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuffer8
@@ -115,6 +135,9 @@ Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuf
     'Last Modify Date: 9/05/2005
     '
     '**************************************************************
+    
+    On Error GoTo GetBuffer_Err
+    
 
     Dim IndiceObtenido As Integer, i As Integer
 
@@ -205,9 +228,19 @@ CrearNuevoBuffer:
 
     End If
     
+    
+    Exit Function
+
+GetBuffer_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.GetBuffer", Erl)
+    Resume Next
+    
 End Function
 
 Private Function ObtenerIndice(ByVal FileName As Integer) As Integer
+    
+    On Error GoTo ObtenerIndice_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -254,6 +287,13 @@ Private Function ObtenerIndice(ByVal FileName As Integer) As Integer
 
     Loop
 
+    
+    Exit Function
+
+ObtenerIndice_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.ObtenerIndice", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Init(ByRef DS8 As DirectSound8, ByVal MaxEntries As Integer) As Boolean
@@ -262,6 +302,9 @@ Public Function Init(ByRef DS8 As DirectSound8, ByVal MaxEntries As Integer) As 
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
+    
+    On Error GoTo Init_Err
+    
     
     mMaxEntries = MaxEntries
     
@@ -277,9 +320,19 @@ Public Function Init(ByRef DS8 As DirectSound8, ByVal MaxEntries As Integer) As 
     
     Init = True
 
+    
+    Exit Function
+
+Init_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.Init", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub BorrarTodo()
+    
+    On Error GoTo BorrarTodo_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -297,11 +350,21 @@ Public Sub BorrarTodo()
     ReDim mBuffers(0)
     mCantidadBuffers = 0
 
+    
+    Exit Sub
+
+BorrarTodo_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.BorrarTodo", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub DetenerTodo()
+    
+    On Error GoTo DetenerTodo_Err
+    
 
-    On Error Resume Next
+    
 
     '**************************************************************
     'Author: Augusto José Rando
@@ -327,16 +390,26 @@ Public Sub DetenerTodo()
         Next j
     Next i
     
+    
+    Exit Sub
+
+DetenerTodo_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.DetenerTodo", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub ModificarVolumenTodo(ByVal Volume As Long)
+    
+    On Error GoTo ModificarVolumenTodo_Err
+    
 
     '**************************************************************
     'Author: Augusto José Rando
     'Last Modify Date: 5/04/2005
     'Detiene todos los sonidos
     '**************************************************************
-    On Error Resume Next
+    
 
     Dim i As Long
 
@@ -356,9 +429,19 @@ Public Sub ModificarVolumenTodo(ByVal Volume As Long)
         Next j
     Next i
     
+    
+    Exit Sub
+
+ModificarVolumenTodo_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.ModificarVolumenTodo", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function Borrar(ByVal FileName As Integer) As Integer
+    
+    On Error GoTo Borrar_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -387,6 +470,13 @@ Public Function Borrar(ByVal FileName As Integer) As Integer
     'Redimencionamos la lista
     ReDim Preserve mBuffers(1 To mCantidadBuffers)
 
+    
+    Exit Function
+
+Borrar_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.Borrar", Erl)
+    Resume Next
+    
 End Function
 
 Private Function CrearBuffer(ByVal Archivo As Integer, Optional ByVal Index As Integer = -1, Optional ByVal Extraido As Boolean = False) As Integer
@@ -431,6 +521,9 @@ errhandler:
 End Function
 
 Private Function CreateBufferFromFile(ByVal file_name As Integer, ByVal buffer_index, ByVal buffer_sub_index As Integer, Optional ByVal Extraido As Boolean = False) As Boolean
+    
+    On Error GoTo CreateBufferFromFile_Err
+    
 
     Dim dsbd As DSBUFFERDESC
 
@@ -479,9 +572,19 @@ errhandler:
     '    Delete_File Windows_Temp_Dir & file_name & ".wav"
     'End If
 
+    
+    Exit Function
+
+CreateBufferFromFile_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.CreateBufferFromFile", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub OrdenarBuffers(ByVal primero As Integer, ByVal ultimo As Integer)
+    
+    On Error GoTo OrdenarBuffers_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -524,9 +627,19 @@ Private Sub OrdenarBuffers(ByVal primero As Integer, ByVal ultimo As Integer)
     If primero < max Then OrdenarBuffers primero, max
     If min < ultimo Then OrdenarBuffers min, ultimo
 
+    
+    Exit Sub
+
+OrdenarBuffers_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.OrdenarBuffers", Erl)
+    Resume Next
+    
 End Sub
 
 Private Function BorraMenosUsado() As Integer
+    
+    On Error GoTo BorraMenosUsado_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -559,6 +672,13 @@ Private Function BorraMenosUsado() As Integer
     'Borramos los buffers
     Erase mBuffers(BorraMenosUsado).buffer
     
+    
+    Exit Function
+
+BorraMenosUsado_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.BorraMenosUsado", Erl)
+    Resume Next
+    
 End Function
 
 Public Property Get MaxEntries() As Integer
@@ -567,8 +687,18 @@ Public Property Get MaxEntries() As Integer
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
+    
+    On Error GoTo MaxEntries_Err
+    
     MaxEntries = mMaxEntries
 
+    
+    Exit Property
+
+MaxEntries_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.MaxEntries", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let MaxEntries(ByVal vNewValue As Integer)
@@ -577,8 +707,18 @@ Public Property Let MaxEntries(ByVal vNewValue As Integer)
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
+    
+    On Error GoTo MaxEntries_Err
+    
     mMaxEntries = vNewValue
 
+    
+    Exit Property
+
+MaxEntries_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.MaxEntries", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get CantidadBuffers() As Integer
@@ -587,18 +727,31 @@ Public Property Get CantidadBuffers() As Integer
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
+    
+    On Error GoTo CantidadBuffers_Err
+    
     CantidadBuffers = mCantidadBuffers
 
+    
+    Exit Property
+
+CantidadBuffers_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.CantidadBuffers", Erl)
+    Resume Next
+    
 End Property
 
 Public Sub BorraTimerProc()
+    
+    On Error GoTo BorraTimerProc_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
     'Last Modify Date: 5/04/2005
     'Cada un minuto revisamos que buffers se pueden eliminar
     '**************************************************************
-    On Error Resume Next
+    
     
     Dim loopc        As Long
 
@@ -635,6 +788,13 @@ Public Sub BorraTimerProc()
     'Actualizar el número de sonidos
     mCantidadBuffers = mCantidadBuffers - offset
 
+    
+    Exit Sub
+
+BorraTimerProc_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.BorraTimerProc", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function CargarBuffer(ByVal FileName As Integer) As Boolean
@@ -643,6 +803,9 @@ Public Function CargarBuffer(ByVal FileName As Integer) As Boolean
     'Last Modify Date: 17/08/2005
     '
     '**************************************************************
+    
+    On Error GoTo CargarBuffer_Err
+    
 
     Dim Index As Integer
 
@@ -664,6 +827,13 @@ Public Function CargarBuffer(ByVal FileName As Integer) As Boolean
 
     End If
 
+    
+    Exit Function
+
+CargarBuffer_Err:
+    Call RegistrarError(Err.number, Err.Description, "CBufferMan.CargarBuffer", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Reproducir(ByVal file_name As Integer, play_format As CONST_DSBPLAYFLAGS, ByVal Volume As Long, ByVal pan As Long) As Boolean

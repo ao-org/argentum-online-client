@@ -164,6 +164,9 @@ Option Explicit
 
 Private Sub Command3_Click()
     
+    On Error GoTo Command3_Click_Err
+    
+    
     'Si el indice seleccionado es -1 es xq no seleccionamos un item de la lista.
     If lstArmas.ListIndex = -1 Then Exit Sub
 
@@ -191,20 +194,57 @@ Private Sub Command3_Click()
 
     Unload Me
     
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCarp.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_Click()
+    
+    On Error GoTo Command4_Click_Err
+    
     Unload Me
+    
+    Exit Sub
+
+Command4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCarp.Command4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = vbKeyEscape) Then Unload Me
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCarp.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCarp.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -213,6 +253,9 @@ Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command3_MouseMove_Err
+    
 
     If Command3.Tag = "0" Then
         Command3.Picture = LoadInterface("trabajar_construirhover.bmp")
@@ -223,6 +266,13 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Command4.Picture = Nothing
     Command4.Tag = "0"
 
+    
+    Exit Sub
+
+Command3_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCarp.Command3_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -231,6 +281,9 @@ Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command4_MouseMove_Err
+    
 
     If Command4.Tag = "0" Then
         Command4.Picture = LoadInterface("trabajar_salirhover.bmp")
@@ -241,11 +294,21 @@ Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Command3.Picture = Nothing
     Command3.Tag = "0"
 
+    
+    Exit Sub
+
+Command4_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCarp.Command4_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List1_Click()
+    
+    On Error GoTo List1_Click_Err
+    
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
@@ -261,11 +324,21 @@ Private Sub List1_Click()
     
     Call Grh_Render_To_Hdc(picture1, 550, 0, 0, False)
 
+    
+    Exit Sub
+
+List1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCarp.List1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstArmas_Click()
+    
+    On Error GoTo lstArmas_Click_Err
+    
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
@@ -290,5 +363,12 @@ Private Sub lstArmas_Click()
     Call Draw_Grh_Picture(ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).GrhIndex, Me.picture1, 0, 0, False, 0, COLOR_WHITE(0))
     
     picture1.Visible = True
+    
+    
+    Exit Sub
+
+lstArmas_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCarp.lstArmas_Click", Erl)
+    Resume Next
     
 End Sub

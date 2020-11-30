@@ -32,11 +32,14 @@ Type RVList
 
 End Type
  
-Sub Create(ByVal X As Byte, ByVal Y As Byte, ColorRGB As RGBA, ByVal rValue As Double, ByVal eMode As Byte)
+Sub Create(ByVal x As Byte, ByVal y As Byte, ColorRGB As RGBA, ByVal rValue As Double, ByVal eMode As Byte)
+    
+    On Error GoTo Create_Err
+    
      
     ' @ Agrega un nuevo valor.
      
-    With MapData(X, Y).RenderValue
+    With MapData(x, y).RenderValue
          
         .Activated = True
         .ColorRGB = ColorRGB
@@ -47,15 +50,25 @@ Sub Create(ByVal X As Byte, ByVal Y As Byte, ColorRGB As RGBA, ByVal rValue As D
          
     End With
  
+    
+    Exit Sub
+
+Create_Err:
+    Call RegistrarError(Err.number, Err.Description, "modRenderValue.Create", Erl)
+    Resume Next
+    
 End Sub
  
-Sub Draw(ByVal X As Byte, ByVal Y As Byte, ByVal PixelX As Integer, ByVal PixelY As Integer, ByVal TicksPerFrame As Single)
+Sub Draw(ByVal x As Byte, ByVal y As Byte, ByVal PixelX As Integer, ByVal PixelY As Integer, ByVal TicksPerFrame As Single)
+    
+    On Error GoTo Draw_Err
+    
  
     ' @ Dibuja un valor
     
     Dim Text As String, Width As Integer
      
-    With MapData(X, Y).RenderValue
+    With MapData(x, y).RenderValue
          
         If (Not .Activated) Or (Not .RenderVal <> 0) Then Exit Sub
         If .TimeRendered < RENDER_TIME Then
@@ -93,7 +106,7 @@ Sub Draw(ByVal X As Byte, ByVal Y As Byte, ByVal PixelX As Integer, ByVal PixelY
                
             'Si llego al tiempo lo limpio
             If .TimeRendered <= 0 Then
-                Call Clear(X, Y)
+                Call Clear(x, y)
 
             End If
                 
@@ -101,13 +114,23 @@ Sub Draw(ByVal X As Byte, ByVal Y As Byte, ByVal PixelX As Integer, ByVal PixelY
            
     End With
  
+    
+    Exit Sub
+
+Draw_Err:
+    Call RegistrarError(Err.number, Err.Description, "modRenderValue.Draw", Erl)
+    Resume Next
+    
 End Sub
  
-Private Sub Clear(ByVal X As Byte, ByVal Y As Byte)
+Private Sub Clear(ByVal x As Byte, ByVal y As Byte)
+    
+    On Error GoTo Clear_Err
+    
  
     ' @ Limpia todo.
      
-    With MapData(X, Y).RenderValue
+    With MapData(x, y).RenderValue
         .Activated = False
         .ColorRGB = COLOR_EMPTY
         .RenderVal = 0
@@ -115,9 +138,19 @@ Private Sub Clear(ByVal X As Byte, ByVal Y As Byte)
 
     End With
  
+    
+    Exit Sub
+
+Clear_Err:
+    Call RegistrarError(Err.number, Err.Description, "modRenderValue.Clear", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ModifyColor(Color As RGBA, ByVal TimeNowRendered As Integer, ByVal RenderType As RVType)
+    
+    On Error GoTo ModifyColor_Err
+    
  
     ' @ Se usa para los "efectos" en el tiempo.
     
@@ -152,5 +185,12 @@ Private Sub ModifyColor(Color As RGBA, ByVal TimeNowRendered As Integer, ByVal R
 
     End Select
  
+    
+    Exit Sub
+
+ModifyColor_Err:
+    Call RegistrarError(Err.number, Err.Description, "modRenderValue.ModifyColor", Erl)
+    Resume Next
+    
 End Sub
 

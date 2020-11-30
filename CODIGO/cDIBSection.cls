@@ -134,6 +134,9 @@ Private m_lPtr    As Long
 Private m_tBI     As BITMAPINFO
 
 Public Function CopyToClipboard(Optional ByVal bAsDIB As Boolean = True) As Boolean
+    
+    On Error GoTo CopyToClipboard_Err
+    
 
     Dim lhDCDesktop As Long
 
@@ -209,9 +212,19 @@ Public Function CopyToClipboard(Optional ByVal bAsDIB As Boolean = True) As Bool
 
     End If
 
+    
+    Exit Function
+
+CopyToClipboard_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.CopyToClipboard", Erl)
+    Resume Next
+    
 End Function
 
 Public Function CreateDIB(ByVal lhDC As Long, ByVal lWidth As Long, ByVal lHeight As Long, ByRef hDib As Long) As Boolean
+    
+    On Error GoTo CreateDIB_Err
+    
 
     With m_tBI.bmiHeader
         .biSize = Len(m_tBI.bmiHeader)
@@ -227,9 +240,19 @@ Public Function CreateDIB(ByVal lhDC As Long, ByVal lWidth As Long, ByVal lHeigh
     hDib = CreateDIBSection(lhDC, m_tBI, DIB_RGB_COLORS, m_lPtr, 0, 0)
     CreateDIB = (hDib <> 0)
 
+    
+    Exit Function
+
+CreateDIB_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.CreateDIB", Erl)
+    Resume Next
+    
 End Function
 
 Public Function CreateFromPicture(ByRef picThis As StdPicture)
+    
+    On Error GoTo CreateFromPicture_Err
+    
 
     Dim lhDC        As Long
 
@@ -263,9 +286,19 @@ Public Function CreateFromPicture(ByRef picThis As StdPicture)
 
     End If
 
+    
+    Exit Function
+
+CreateFromPicture_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.CreateFromPicture", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Create(ByVal lWidth As Long, ByVal lHeight As Long) As Boolean
+    
+    On Error GoTo Create_Err
+    
     ClearUp
     m_hDC = CreateCompatibleDC(0)
 
@@ -281,56 +314,146 @@ Public Function Create(ByVal lWidth As Long, ByVal lHeight As Long) As Boolean
 
     End If
 
+    
+    Exit Function
+
+Create_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.Create", Erl)
+    Resume Next
+    
 End Function
 
 Public Property Get BytesPerScanLine() As Long
     ' Scans must align on dword boundaries:
+    
+    On Error GoTo BytesPerScanLine_Err
+    
     BytesPerScanLine = (m_tBI.bmiHeader.biWidth * 3 + 3) And &HFFFFFFFC
 
+    
+    Exit Property
+
+BytesPerScanLine_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.BytesPerScanLine", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get Width() As Long
+    
+    On Error GoTo Width_Err
+    
     Width = m_tBI.bmiHeader.biWidth
 
+    
+    Exit Property
+
+Width_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.Width", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get Height() As Long
+    
+    On Error GoTo Height_Err
+    
     Height = m_tBI.bmiHeader.biHeight
 
+    
+    Exit Property
+
+Height_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.Height", Erl)
+    Resume Next
+    
 End Property
 
 Public Sub LoadPictureBlt(ByVal lhDC As Long, Optional ByVal lSrcLeft As Long = 0, Optional ByVal lSrcTop As Long = 0, Optional ByVal lSrcWidth As Long = -1, Optional ByVal lSrcHeight As Long = -1, Optional ByVal eRop As RasterOpConstants = vbSrcCopy)
+    
+    On Error GoTo LoadPictureBlt_Err
+    
 
     If lSrcWidth < 0 Then lSrcWidth = m_tBI.bmiHeader.biWidth
     If lSrcHeight < 0 Then lSrcHeight = m_tBI.bmiHeader.biHeight
     BitBlt m_hDC, 0, 0, lSrcWidth, lSrcHeight, lhDC, lSrcLeft, lSrcTop, eRop
 
+    
+    Exit Sub
+
+LoadPictureBlt_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.LoadPictureBlt", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub PaintPicture(ByVal lhDC As Long, Optional ByVal lDestLeft As Long = 0, Optional ByVal lDestTop As Long = 0, Optional ByVal lDestWidth As Long = -1, Optional ByVal lDestHeight As Long = -1, Optional ByVal lSrcLeft As Long = 0, Optional ByVal lSrcTop As Long = 0, Optional ByVal eRop As RasterOpConstants = vbSrcCopy)
+    
+    On Error GoTo PaintPicture_Err
+    
 
     If (lDestWidth < 0) Then lDestWidth = m_tBI.bmiHeader.biWidth
     If (lDestHeight < 0) Then lDestHeight = m_tBI.bmiHeader.biHeight
     BitBlt lhDC, lDestLeft, lDestTop, lDestWidth, lDestHeight, m_hDC, lSrcLeft, lSrcTop, eRop
 
+    
+    Exit Sub
+
+PaintPicture_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.PaintPicture", Erl)
+    Resume Next
+    
 End Sub
 
 Public Property Get hdc() As Long
+    
+    On Error GoTo hdc_Err
+    
     hdc = m_hDC
 
+    
+    Exit Property
+
+hdc_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.hdc", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get hDib() As Long
+    
+    On Error GoTo hDib_Err
+    
     hDib = m_hDIb
 
+    
+    Exit Property
+
+hDib_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.hDib", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get DIBSectionBitsPtr() As Long
+    
+    On Error GoTo DIBSectionBitsPtr_Err
+    
     DIBSectionBitsPtr = m_lPtr
 
+    
+    Exit Property
+
+DIBSectionBitsPtr_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.DIBSectionBitsPtr", Erl)
+    Resume Next
+    
 End Property
 
 Public Sub RandomiseBits(Optional ByVal bGray As Boolean = False)
+    
+    On Error GoTo RandomiseBits_Err
+    
 
     Dim bDib() As Byte
 
@@ -389,9 +512,19 @@ Public Sub RandomiseBits(Optional ByVal bGray As Boolean = False)
     ' for safety do it anyway)
     CopyMemory ByVal VarPtrArray(bDib), 0&, 4
     
+    
+    Exit Sub
+
+RandomiseBits_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.RandomiseBits", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub ClearUp()
+    
+    On Error GoTo ClearUp_Err
+    
 
     If (m_hDC <> 0) Then
         If (m_hDIb <> 0) Then
@@ -409,9 +542,19 @@ Public Sub ClearUp()
     m_hBmpOld = 0
     m_lPtr = 0
 
+    
+    Exit Sub
+
+ClearUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.ClearUp", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function Resample(ByVal lNewHeight As Long, ByVal lNewWidth As Long) As cDIBSection
+    
+    On Error GoTo Resample_Err
+    
 
     Dim cDib As cDIBSection
 
@@ -431,9 +574,19 @@ Public Function Resample(ByVal lNewHeight As Long, ByVal lNewWidth As Long) As c
 
     End If
 
+    
+    Exit Function
+
+Resample_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.Resample", Erl)
+    Resume Next
+    
 End Function
 
 Private Function ResampleDib(ByRef cDibTo As cDIBSection) As Boolean
+    
+    On Error GoTo ResampleDib_Err
+    
 
     Dim bDibFrom() As Byte
 
@@ -483,11 +636,11 @@ Private Function ResampleDib(ByRef cDibTo As cDIBSection) As Boolean
 
     Dim dX     As Single, dy As Single
 
-    Dim r      As Long, r1 As Single, r2 As Single, r3 As Single, r4 As Single
+    Dim R      As Long, r1 As Single, r2 As Single, r3 As Single, r4 As Single
 
-    Dim g      As Long, g1 As Single, g2 As Single, g3 As Single, g4 As Single
+    Dim G      As Long, g1 As Single, g2 As Single, g3 As Single, g4 As Single
 
-    Dim b      As Long, b1 As Single, b2 As Single, b3 As Single, b4 As Single
+    Dim B      As Long, b1 As Single, b2 As Single, b3 As Single, b4 As Single
 
     Dim ir1    As Long, ig1 As Long, ib1 As Long
 
@@ -532,25 +685,25 @@ Private Function ResampleDib(ByRef cDibTo As cDIBSection) As Boolean
             ig2 = g2 * (1 - dy) + g4 * dy
             ib2 = b2 * (1 - dy) + b4 * dy
             ' Interpolate in y:
-            r = ir1 * (1 - dX) + ir2 * dX
-            g = ig1 * (1 - dX) + ig2 * dX
-            b = ib1 * (1 - dX) + ib2 * dX
+            R = ir1 * (1 - dX) + ir2 * dX
+            G = ig1 * (1 - dX) + ig2 * dX
+            B = ib1 * (1 - dX) + ib2 * dX
             
             ' Set output:
-            If (r < 0) Then r = 0
-            If (r > 255) Then r = 255
-            If (g < 0) Then g = 0
-            If (g > 255) Then g = 255
-            If (b < 0) Then b = 0
-            If (b > 255) Then
-                b = 255
+            If (R < 0) Then R = 0
+            If (R > 255) Then R = 255
+            If (G < 0) Then G = 0
+            If (G > 255) Then G = 255
+            If (B < 0) Then B = 0
+            If (B > 255) Then
+                B = 255
 
             End If
 
             xOut = x * 3
-            bDibTo(xOut, y) = b
-            bDibTo(xOut + 1, y) = g
-            bDibTo(xOut + 2, y) = r
+            bDibTo(xOut, y) = B
+            bDibTo(xOut + 1, y) = G
+            bDibTo(xOut + 2, y) = R
             
         Next x
         
@@ -562,10 +715,27 @@ Private Function ResampleDib(ByRef cDibTo As cDIBSection) As Boolean
     CopyMemory ByVal VarPtrArray(bDibFrom), 0&, 4
     CopyMemory ByVal VarPtrArray(bDibTo), 0&, 4
 
+    
+    Exit Function
+
+ResampleDib_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.ResampleDib", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Class_Terminate()
+    
+    On Error GoTo Class_Terminate_Err
+    
     ClearUp
 
+    
+    Exit Sub
+
+Class_Terminate_Err:
+    Call RegistrarError(Err.number, Err.Description, "cDIBSection.Class_Terminate", Erl)
+    Resume Next
+    
 End Sub
 

@@ -339,7 +339,17 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Command1_Click()
-    Call WriteCreaerTorneo(nivelmin, nivelmax, cupos, costo, Check1.value, Check2.value, Check3.value, Check4.value, Check5.value, Check6.value, Check7.value, Check8.value, Check9.value, map, x, y, nombre, reglas)
+    
+    On Error GoTo Command1_Click_Err
+    
+    Call WriteCreaerTorneo(nivelmin, nivelmax, cupos, costo, Check1.Value, Check2.Value, Check3.Value, Check4.Value, Check5.Value, Check6.Value, Check7.Value, Check8.Value, Check9.Value, map, x, y, nombre, reglas)
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmTorneo.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 

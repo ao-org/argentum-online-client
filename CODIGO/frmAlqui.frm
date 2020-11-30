@@ -157,8 +157,11 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Command3_Click()
+    
+    On Error GoTo Command3_Click_Err
+    
 
-    On Error Resume Next
+    
     
     If lstArmas.ListIndex < 0 Then
         MsgBox "Debes seleccionar un objeto de la lista"
@@ -170,66 +173,123 @@ Private Sub Command3_Click()
         UserMacro.cantidad = cantidad
         UserMacro.TIPO = 1
         UserMacro.Index = ObjAlquimista(lstArmas.ListIndex + 1)
-        AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
         UserMacro.Intervalo = IntervaloTrabajo
         UserMacro.Activado = True
-        frmmain.MacroLadder.Interval = IntervaloTrabajo
-        frmmain.MacroLadder.Enabled = True
+        frmMain.MacroLadder.Interval = IntervaloTrabajo
+        frmMain.MacroLadder.Enabled = True
     Else
         Call WriteCraftAlquimista(ObjAlquimista(lstArmas.ListIndex + 1))
 
-        If frmmain.macrotrabajo.Enabled Then MacroBltIndex = ObjAlquimista(lstArmas.ListIndex + 1)
+        If frmMain.macrotrabajo.Enabled Then MacroBltIndex = ObjAlquimista(lstArmas.ListIndex + 1)
     
     End If
 
     Unload Me
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_Click()
+    
+    On Error GoTo Command4_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Command4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     Command4.Picture = Nothing
     Command4.Tag = "0"
     Command3.Picture = Nothing
     Command3.Tag = "0"
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List1_Click()
+    
+    On Error GoTo List1_Click_Err
+    
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
-    SR.bottom = 32
+    SR.Bottom = 32
 
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
-    DR.bottom = 32
+    DR.Bottom = 32
     Call Grh_Render_To_Hdc(picture1, 21926, 0, 0, False)
 
+    
+    Exit Sub
+
+List1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmAlqui.List1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -239,6 +299,9 @@ Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command3_MouseMove_Err
+    
 
     If Command3.Tag = "0" Then
         Command3.Picture = LoadInterface("trabajar_construirhover.bmp")
@@ -249,6 +312,13 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Command4.Picture = Nothing
     Command4.Tag = "0"
 
+    
+    Exit Sub
+
+Command3_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Command3_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -258,6 +328,9 @@ Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command4_MouseMove_Err
+    
 
     If Command4.Tag = "0" Then
         Command4.Picture = LoadInterface("trabajar_salirhover.bmp")
@@ -268,23 +341,33 @@ Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Command3.Picture = Nothing
     Command3.Tag = "0"
 
+    
+    Exit Sub
+
+Command4_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Command4_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstArmas_Click()
+    
+    On Error GoTo lstArmas_Click_Err
+    
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
-    SR.bottom = 32
+    SR.Bottom = 32
 
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
-    DR.bottom = 32
+    DR.Bottom = 32
     Call frmAlqui.List1.Clear
     Call frmAlqui.List2.Clear
     frmAlqui.List1.AddItem ("Raices")
@@ -293,6 +376,13 @@ Private Sub lstArmas_Click()
     desc.Caption = ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Texto
 
     Call Grh_Render_To_Hdc(picture1, ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).GrhIndex, 0, 0, False)
+    
+    
+    Exit Sub
+
+lstArmas_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmAlqui.lstArmas_Click", Erl)
+    Resume Next
     
 End Sub
 

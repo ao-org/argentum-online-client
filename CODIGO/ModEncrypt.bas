@@ -1,6 +1,9 @@
 Attribute VB_Name = "ModEncrypt"
 
 Public Function SEncriptar(ByVal Cadena As String) As String
+    
+    On Error GoTo SEncriptar_Err
+    
 
     ' GSZ-AO - Encripta una cadena de texto
     Dim i As Long, RandomNum As Integer
@@ -16,10 +19,20 @@ Public Function SEncriptar(ByVal Cadena As String) As String
     SEncriptar = Cadena & Chr$(Asc(Left$(RandomNum, 1)) + 10) & Chr$(Asc(Right$(RandomNum, 1)) + 10)
     DoEvents
 
+    
+    Exit Function
+
+SEncriptar_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModEncrypt.SEncriptar", Erl)
+    Resume Next
+    
 End Function
 
 ' GSZAO - Encriptación basica y rapida para Strings
 Public Function RndCrypt(ByVal str As String, ByVal Password As String) As String
+    
+    On Error GoTo RndCrypt_Err
+    
 
     '  Made by Michael Ciurescu
     ' (CVMichael from vbforums.com)
@@ -42,5 +55,12 @@ Public Function RndCrypt(ByVal str As String, ByVal Password As String) As Strin
     
     RndCrypt = str
 
+    
+    Exit Function
+
+RndCrypt_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModEncrypt.RndCrypt", Erl)
+    Resume Next
+    
 End Function
 

@@ -59,7 +59,7 @@ End Type
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 Private Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hwnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal Length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal length As Long)
 Private Declare Function ShellExecute Lib "shell32" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 
 Private Const WM_NOTIFY = &H4E
@@ -78,6 +78,9 @@ Private hWndRTB    As Long
 Private hWndParent As Long
 
 Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+    
+    On Error GoTo WndProc_Err
+    
 
     '***************************************************
     'Author: ZaMa
@@ -117,6 +120,13 @@ Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As 
     
     WndProc = CallWindowProc(lOldProc, hwnd, uMsg, wParam, lParam)
 
+    
+    Exit Function
+
+WndProc_Err:
+    Call RegistrarError(Err.number, Err.Description, "modUrlDetection.WndProc", Erl)
+    Resume Next
+    
 End Function
 
 
@@ -126,12 +136,22 @@ Public Sub EnableURLDetect(ByVal hWndRichTextbox As Long, ByVal hWndOwner As Lon
     'Last Modification: 18/11/2010
     'Enables url detection in richtexbox.
     '***************************************************
+    
+    On Error GoTo EnableURLDetect_Err
+    
     SendMessage hWndRichTextbox, EM_SETEVENTMASK, 0, ByVal ENM_LINK Or SendMessage(hWndRichTextbox, EM_GETEVENTMASK, 0, 0)
     SendMessage hWndRichTextbox, EM_AUTOURLDETECT, 1, ByVal 0
     
     hWndParent = hWndOwner
     hWndRTB = hWndRichTextbox
 
+    
+    Exit Sub
+
+EnableURLDetect_Err:
+    Call RegistrarError(Err.number, Err.Description, "modUrlDetection.EnableURLDetect", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub DisableURLDetect()
@@ -140,12 +160,25 @@ Public Sub DisableURLDetect()
     'Last Modification: 18/11/2010
     'Disables url detection in richtexbox.
     '***************************************************
+    
+    On Error GoTo DisableURLDetect_Err
+    
     SendMessage hWndRTB, EM_AUTOURLDETECT, 0, ByVal 0
     StopCheckingLinks
 
+    
+    Exit Sub
+
+DisableURLDetect_Err:
+    Call RegistrarError(Err.number, Err.Description, "modUrlDetection.DisableURLDetect", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub StartCheckingLinks()
+    
+    On Error GoTo StartCheckingLinks_Err
+    
 
     '***************************************************
     'Author: ZaMa
@@ -154,9 +187,19 @@ Public Sub StartCheckingLinks()
     '***************************************************
     If lOldProc = 0 Then lOldProc = SetWindowLong(hWndParent, GWL_WNDPROC, AddressOf WndProc)
 
+    
+    Exit Sub
+
+StartCheckingLinks_Err:
+    Call RegistrarError(Err.number, Err.Description, "modUrlDetection.StartCheckingLinks", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub StopCheckingLinks()
+    
+    On Error GoTo StopCheckingLinks_Err
+    
 
     '***************************************************
     'Author: ZaMa
@@ -168,4 +211,11 @@ Public Sub StopCheckingLinks()
         lOldProc = 0
     End If
 
+    
+    Exit Sub
+
+StopCheckingLinks_Err:
+    Call RegistrarError(Err.number, Err.Description, "modUrlDetection.StopCheckingLinks", Erl)
+    Resume Next
+    
 End Sub

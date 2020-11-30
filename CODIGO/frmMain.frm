@@ -1425,14 +1425,37 @@ Private Const EM_GETLINE = &HC4
 Private Const EM_LINELENGTH = &HC1
 
 Private Sub btnInvisible_Click()
+    
+    On Error GoTo btnInvisible_Click_Err
+    
     Call ParseUserCommand("/INVISIBLE")
+    
+    Exit Sub
+
+btnInvisible_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.btnInvisible_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub btnSpawn_Click()
+    
+    On Error GoTo btnSpawn_Click_Err
+    
     Call ParseUserCommand("/CC")
+    
+    Exit Sub
+
+btnSpawn_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.btnSpawn_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo clanimg_MouseMove_Err
+    
 
     If clanimg.Tag = "0" Then
         clanimg.Picture = LoadInterface("claniluminado.bmp")
@@ -1440,27 +1463,67 @@ Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, 
 
     End If
 
+    
+    Exit Sub
+
+clanimg_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.clanimg_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo clanimg_MouseUp_Err
+    
 
     If frmGuildLeader.Visible Then Unload frmGuildLeader
     Call WriteRequestGuildLeaderInfo
 
+    
+    Exit Sub
+
+clanimg_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.clanimg_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdlanzar_MouseDown_Err
+    
     cmdlanzar.Picture = LoadInterface("boton-lanzar-ES-off.bmp")
     cmdlanzar.Tag = "1"
 
+    
+    Exit Sub
+
+cmdlanzar_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdlanzar_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdlanzar_MouseUp_Err
+    
     Call Form_MouseMove(Button, Shift, x, y)
 
+    
+    Exit Sub
+
+cmdlanzar_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdlanzar_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdLlavero_Click()
+    
+    On Error GoTo cmdLlavero_Click_Err
+    
     If FrmKeyInv.Visible Then
         CerrarLlavero
     Else
@@ -1469,27 +1532,67 @@ Private Sub cmdLlavero_Click()
         FrmKeyInv.Top = Me.Top + 655 * Screen.TwipsPerPixelY - FrmKeyInv.Height
         cmdLlavero.Tag = "2"
     End If
+    
+    Exit Sub
+
+cmdLlavero_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdLlavero_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CerrarLlavero()
+    
+    On Error GoTo CerrarLlavero_Err
+    
     FrmKeyInv.Visible = False
     cmdLlavero.Picture = LoadInterface("boton-llavero-over.bmp")
     cmdLlavero.Tag = "1"
+    
+    Exit Sub
+
+CerrarLlavero_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.CerrarLlavero", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdLlavero_MouseDown_Err
+    
     cmdLlavero.Picture = LoadInterface("boton-llavero-off.bmp")
     cmdLlavero.Tag = "1"
+    
+    Exit Sub
+
+cmdLlavero_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdLlavero_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdLlavero_MouseMove_Err
+    
     If cmdLlavero.Tag = "0" Then
         cmdLlavero.Picture = LoadInterface("boton-llavero-over.bmp")
         cmdLlavero.Tag = "1"
     End If
+    
+    Exit Sub
+
+cmdLlavero_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdLlavero_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMoverHechi_Click(Index As Integer)
+    
+    On Error GoTo cmdMoverHechi_Click_Err
+    
 
     If hlst.ListIndex = -1 Then Exit Sub
 
@@ -1525,9 +1628,19 @@ Private Sub cmdMoverHechi_Click(Index As Integer)
 
     End Select
 
+    
+    Exit Sub
+
+cmdMoverHechi_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdMoverHechi_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub ControlSeguroParty(ByVal Mostrar As Boolean)
+    
+    On Error GoTo ControlSeguroParty_Err
+    
 
     If Mostrar Then
         If Not PicResu.Visible Then
@@ -1546,19 +1659,49 @@ Public Sub ControlSeguroParty(ByVal Mostrar As Boolean)
 
     End If
 
+    
+    Exit Sub
+
+ControlSeguroParty_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.ControlSeguroParty", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub DibujarSeguro()
+    
+    On Error GoTo DibujarSeguro_Err
+    
     PicSeg.Visible = True
 
+    
+    Exit Sub
+
+DibujarSeguro_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.DibujarSeguro", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub DesDibujarSeguro()
+    
+    On Error GoTo DesDibujarSeguro_Err
+    
     PicSeg.Visible = False
 
+    
+    Exit Sub
+
+DesDibujarSeguro_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.DesDibujarSeguro", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMoverHechi_MouseMove_Err
+    
 
     Select Case Index
 
@@ -1580,9 +1723,19 @@ Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift A
     
     End Select
     
+    
+    Exit Sub
+
+cmdMoverHechi_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdMoverHechi_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub CombateIcon_Click()
+    
+    On Error GoTo CombateIcon_Click_Err
+    
 
     If ChatCombate = 0 Then
         ChatCombate = 1
@@ -1595,9 +1748,19 @@ Private Sub CombateIcon_Click()
 
     Call WriteMacroPos
 
+    
+    Exit Sub
+
+CombateIcon_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.CombateIcon_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Contadores_Timer()
+    
+    On Error GoTo Contadores_Timer_Err
+    
 
     If UserEstado = 1 Then Exit Sub
     If InviCounter > 0 Then
@@ -1669,9 +1832,19 @@ Private Sub Contadores_Timer()
 
     End If
 
+    
+    Exit Sub
+
+Contadores_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Contadores_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub createObj_Click()
+    
+    On Error GoTo createObj_Click_Err
+    
     Dim i As Long
     For i = 1 To NumOBJs
 
@@ -1687,9 +1860,19 @@ Private Sub createObj_Click()
 
     Next i
     FrmObjetos.Show , Me
+    
+    Exit Sub
+
+createObj_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.createObj_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Efecto_Timer()
+    
+    On Error GoTo Efecto_Timer_Err
+    
     If MapDat.base_light > 0 Then
         Call SetGlobalLight(MapDat.base_light)
     Else
@@ -1699,46 +1882,106 @@ Private Sub Efecto_Timer()
     Efecto.Enabled = False
     EfectoEnproceso = False
 
+    
+    Exit Sub
+
+Efecto_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Efecto_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo EstadisticasBoton_MouseDown_Err
+    
     EstadisticasBoton.Picture = LoadInterface("boton-estadisticas-off.bmp")
     EstadisticasBoton.Tag = "1"
+    
+    Exit Sub
+
+EstadisticasBoton_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.EstadisticasBoton_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo EstadisticasBoton_MouseMove_Err
+    
 
     If EstadisticasBoton.Tag = "0" Then
         EstadisticasBoton.Picture = LoadInterface("boton-estadisticas-over.bmp")
         EstadisticasBoton.Tag = "1"
     End If
 
+    
+    Exit Sub
+
+EstadisticasBoton_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.EstadisticasBoton_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo EstadisticasBoton_MouseUp_Err
+    
     LlegaronAtrib = False
     LlegaronSkills = False
     LlegaronStats = False
     Call WriteRequestAtributes
     Call WriteRequestSkills
     Call WriteRequestMiniStats
+    
+    Exit Sub
+
+EstadisticasBoton_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.EstadisticasBoton_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub exp_Click()
+    
+    On Error GoTo exp_Click_Err
+    
     Call WriteScrollInfo
 
+    
+    Exit Sub
+
+exp_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.exp_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Activate()
+    
+    On Error GoTo Form_Activate_Err
+    
     If EsGM Then
         panelGM.Visible = True
         createObj.Visible = True
         btnInvisible.Visible = True
         btnSpawn.Visible = True
     End If
+    
+    Exit Sub
+
+Form_Activate_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_Activate", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo Form_KeyUp_Err
+    
 
     If Not SendTxt.Visible Then
         If Not pausa And frmMain.Visible And Not frmComerciar.Visible And Not frmComerciarUsu.Visible And Not frmBancoObj.Visible And Not frmGoliath.Visible Then
@@ -1772,9 +2015,19 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_KeyUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseDown_Err
+    
     MouseBoton = Button
     MouseShift = Shift
     
@@ -1788,15 +2041,35 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Form_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseUp_Err
+    
     clicX = x
     clicY = y
 
+    
+    Exit Sub
+
+Form_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    
+    On Error GoTo Form_QueryUnload_Err
+    
 
     If prgRun = True Then
         prgRun = False
@@ -1804,15 +2077,35 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
 
     End If
 
+    
+    Exit Sub
+
+Form_QueryUnload_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_QueryUnload", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    
+    On Error GoTo Form_Unload_Err
+    
 
     Call DisableURLDetect
 
+    
+    Exit Sub
+
+Form_Unload_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_Unload", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub GldLbl_Click()
+    
+    On Error GoTo GldLbl_Click_Err
+    
     Inventario.SelectGold
 
     If UserGLD > 0 Then
@@ -1822,9 +2115,19 @@ Private Sub GldLbl_Click()
 
     End If
 
+    
+    Exit Sub
+
+GldLbl_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.GldLbl_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub GlobalIcon_Click()
+    
+    On Error GoTo GlobalIcon_Click_Err
+    
 
     If ChatGlobal = 0 Then
         ChatGlobal = 1
@@ -1837,9 +2140,19 @@ Private Sub GlobalIcon_Click()
 
     Call WriteMacroPos
 
+    
+    Exit Sub
+
+GlobalIcon_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.GlobalIcon_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo hlst_MouseMove_Err
+    
 
     If cmdlanzar.Tag = "1" Then
         cmdlanzar.Picture = Nothing
@@ -1859,9 +2172,19 @@ Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+hlst_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.hlst_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image2_MouseDown_Err
+    
 
     If Index = 0 Then
         If OpcionMenu <> 0 Then
@@ -1885,15 +2208,35 @@ Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integ
 
     End If
 
+    
+    Exit Sub
+
+Image2_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Image2_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     '    Image3.Picture = LoadInterface("elegirchatapretado.bmp")
+    
+    On Error GoTo Image3_MouseDown_Err
+    
     frmMensaje.PopupMenuMensaje
 
+    
+    Exit Sub
+
+Image3_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Image3_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image3_MouseMove_Err
+    
 
     If Image3.Tag = "0" Then
         Image3.Picture = LoadInterface("elegirchatmarcado.bmp")
@@ -1901,9 +2244,19 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image3_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Image3_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image4_Click(Index As Integer)
+    
+    On Error GoTo Image4_Click_Err
+    
 
     Select Case Index
 
@@ -1921,9 +2274,19 @@ Private Sub Image4_Click(Index As Integer)
 
     End Select
 
+    
+    Exit Sub
+
+Image4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Image4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image4_MouseDown_Err
+    
 
     Select Case Index
 
@@ -1935,9 +2298,19 @@ Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integ
 
     End Select
 
+    
+    Exit Sub
+
+Image4_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Image4_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image4_MouseMove_Err
+    
 
     Select Case Index
 
@@ -1972,18 +2345,38 @@ Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integ
 
     End Select
          
+    
+    Exit Sub
+
+Image4_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Image4_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image5_Click()
+    
+    On Error GoTo Image5_Click_Err
+    
 
     If FrmGrupo.Visible = False Then
         Call WriteRequestGrupo
 
     End If
 
+    
+    Exit Sub
+
+Image5_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Image5_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image5_MouseMove_Err
+    
 
     If Image5.Tag = "0" Then
         Image5.Picture = LoadInterface("grupoover.bmp")
@@ -1991,19 +2384,49 @@ Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image5_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Image5_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image6_Click()
+    
+    On Error GoTo Image6_Click_Err
+    
     Call WriteSafeToggle
 
+    
+    Exit Sub
+
+Image6_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Image6_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgBugReport_Click()
+    
+    On Error GoTo imgBugReport_Click_Err
+    
     FrmGmAyuda.Show vbModeless, frmMain
 
+    
+    Exit Sub
+
+imgBugReport_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.imgBugReport_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgHechizos_Click()
+    
+    On Error GoTo imgHechizos_Click_Err
+    
 
     If hlst.Visible Then Exit Sub
     panel.Picture = LoadInterface("centrohechizo.bmp")
@@ -2021,15 +2444,35 @@ Private Sub imgHechizos_Click()
     frmMain.imgInvLock(1).Visible = False
     frmMain.imgInvLock(2).Visible = False
 
+    
+    Exit Sub
+
+imgHechizos_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.imgHechizos_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgHechizos_MouseDown_Err
+    
     imgHechizos.Picture = LoadInterface("boton-hechizos-ES-off.bmp")
     imgHechizos.Tag = "1"
 
+    
+    Exit Sub
+
+imgHechizos_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.imgHechizos_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgHechizos_MouseMove_Err
+    
 
     If imgHechizos.Tag = "0" Then
         imgHechizos.Picture = LoadInterface("boton-hechizos-ES-default.bmp")
@@ -2037,9 +2480,19 @@ Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Sing
 
     End If
 
+    
+    Exit Sub
+
+imgHechizos_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.imgHechizos_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgInventario_Click()
+    
+    On Error GoTo imgInventario_Click_Err
+    
 
     If picInv.Visible Then Exit Sub
 
@@ -2057,15 +2510,35 @@ Private Sub imgInventario_Click()
     frmMain.imgInvLock(1).Visible = True
     frmMain.imgInvLock(2).Visible = True
 
+    
+    Exit Sub
+
+imgInventario_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.imgInventario_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgInventario_MouseDown_Err
+    
     imgInventario.Picture = LoadInterface("boton-inventory-ES-off.bmp")
     imgInventario.Tag = "1"
 
+    
+    Exit Sub
+
+imgInventario_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.imgInventario_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgInventario_MouseMove_Err
+    
     Call Inventario.ReDraw
 
     If imgInventario.Tag = "0" Then
@@ -2074,24 +2547,64 @@ Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Si
 
     End If
 
+    
+    Exit Sub
+
+imgInventario_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.imgInventario_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgOro_Click()
+    
+    On Error GoTo imgOro_Click_Err
+    
     GldLbl_Click
+    
+    Exit Sub
+
+imgOro_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.imgOro_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub LlamaDeclan_Timer()
+    
+    On Error GoTo LlamaDeclan_Timer_Err
+    
     frmMapaGrande.llamadadeclan.Visible = False
     frmMapaGrande.Shape2.Visible = False
     LlamaDeclan.Enabled = False
 
+    
+    Exit Sub
+
+LlamaDeclan_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.LlamaDeclan_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub MANShp_Click()
+    
+    On Error GoTo MANShp_Click_Err
+    
     manabar_Click
+    
+    Exit Sub
+
+MANShp_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.MANShp_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo manualboton_MouseMove_Err
+    
 
     If manualboton.Tag = "0" Then
         manualboton.Picture = LoadInterface("manualover.bmp")
@@ -2099,30 +2612,80 @@ Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Sing
 
     End If
 
+    
+    Exit Sub
+
+manualboton_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.manualboton_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo manualboton_MouseUp_Err
+    
     Manual.Show , frmMain
 
+    
+    Exit Sub
+
+manualboton_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.manualboton_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo OpcionesBoton_MouseDown_Err
+    
     OpcionesBoton.Picture = LoadInterface("opcionesoverdown.bmp")
     OpcionesBoton.Tag = "1"
 
+    
+    Exit Sub
+
+OpcionesBoton_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.OpcionesBoton_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub panelGM_Click()
+    
+    On Error GoTo panelGM_Click_Err
+    
     Call WriteSOSShowList
     Call WriteGMPanel
+    
+    Exit Sub
+
+panelGM_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.panelGM_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub PicCorreo_Click()
+    
+    On Error GoTo PicCorreo_Click_Err
+    
     Call AddtoRichTextBox(frmMain.RecTxt, "Tenes un mensaje, ve al correo local para leerlo.", 255, 255, 255, False, False, False)
 
+    
+    Exit Sub
+
+PicCorreo_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.PicCorreo_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    
+    On Error GoTo Inventario_ItemDropped_Err
+    
 
     ' Si soltó un item en un slot válido
     
@@ -2132,23 +2695,63 @@ Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer,
 
     End If
 
+    
+    Exit Sub
+
+Inventario_ItemDropped_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Inventario_ItemDropped", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub picInv_Paint()
+    
+    On Error GoTo picInv_Paint_Err
+    
     Inventario.ReDraw
+    
+    Exit Sub
+
+picInv_Paint_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.picInv_Paint", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub PicSegClanOff_Click()
+    
+    On Error GoTo PicSegClanOff_Click_Err
+    
     Call WriteSeguroClan
 
+    
+    Exit Sub
+
+PicSegClanOff_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.PicSegClanOff_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub PicSegClanOn_Click()
+    
+    On Error GoTo PicSegClanOn_Click_Err
+    
     Call WriteSeguroClan
 
+    
+    Exit Sub
+
+PicSegClanOn_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.PicSegClanOn_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo QuestBoton_MouseMove_Err
+    
 
     If QuestBoton.Tag = "0" Then
         QuestBoton.Picture = LoadInterface("questover.bmp")
@@ -2156,14 +2759,34 @@ Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Singl
 
     End If
 
+    
+    Exit Sub
+
+QuestBoton_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.QuestBoton_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo QuestBoton_MouseUp_Err
+    
     Call WriteQuestListRequest
 
+    
+    Exit Sub
+
+QuestBoton_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.QuestBoton_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo RankingBoton_MouseMove_Err
+    
 
     If rankingBoton.Tag = "0" Then
         rankingBoton.Picture = LoadInterface("rankingover.bmp")
@@ -2171,14 +2794,34 @@ Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, x As Sin
 
     End If
 
+    
+    Exit Sub
+
+RankingBoton_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.RankingBoton_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo RankingBoton_MouseUp_Err
+    
     Call WriteTraerRanking
 
+    
+    Exit Sub
+
+RankingBoton_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.RankingBoton_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label6_Click()
+    
+    On Error GoTo Label6_Click_Err
+    
     Inventario.SelectGold
 
     If UserGLD > 0 Then
@@ -2188,19 +2831,49 @@ Private Sub Label6_Click()
 
     End If
 
+    
+    Exit Sub
+
+Label6_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Label6_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label7_Click()
+    
+    On Error GoTo Label7_Click_Err
+    
     Call AddtoRichTextBox(frmMain.RecTxt, "No tenes mensajes nuevos.", 255, 255, 255, False, False, False)
 
+    
+    Exit Sub
+
+Label7_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Label7_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lblPorcLvl_Click()
+    
+    On Error GoTo lblPorcLvl_Click_Err
+    
     Call WriteScrollInfo
 
+    
+    Exit Sub
+
+lblPorcLvl_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.lblPorcLvl_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub MacroLadder_Timer()
+    
+    On Error GoTo MacroLadder_Timer_Err
+    
 
     If MainTimer.Check(TimersIndex.Work) Then
         If UserMacro.cantidad > 0 And UserMacro.Activado And UserMinSTA > 0 Then
@@ -2233,6 +2906,13 @@ Private Sub MacroLadder_Timer()
         
     End If
 
+    
+    Exit Sub
+
+MacroLadder_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.MacroLadder_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub macrotrabajo_Timer()
@@ -2240,6 +2920,9 @@ Private Sub macrotrabajo_Timer()
     '   DesactivarMacroTrabajo
     '   Exit Sub
     'End If
+    
+    On Error GoTo macrotrabajo_Timer_Err
+    
     
     'Macros are disabled if not using Argentum!
     If Not Application.IsAppActive() Then
@@ -2259,18 +2942,38 @@ Private Sub macrotrabajo_Timer()
         If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
     End If
 
+    
+    Exit Sub
+
+macrotrabajo_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.macrotrabajo_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub ActivarMacroTrabajo()
+    
+    On Error GoTo ActivarMacroTrabajo_Err
+    
     TargetXMacro = tX
     TargetYMacro = tY
     macrotrabajo.Interval = IntervaloTrabajo
     macrotrabajo.Enabled = True
     Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
 
+    
+    Exit Sub
+
+ActivarMacroTrabajo_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.ActivarMacroTrabajo", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub DesactivarMacroTrabajo()
+    
+    On Error GoTo DesactivarMacroTrabajo_Err
+    
     TargetXMacro = 0
     TargetYMacro = 0
     macrotrabajo.Enabled = False
@@ -2279,6 +2982,13 @@ Public Sub DesactivarMacroTrabajo()
     MousePointer = vbDefault
     Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo DESACTIVADO", 0, 200, 200, False, True, False)
 
+    
+    Exit Sub
+
+DesactivarMacroTrabajo_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.DesactivarMacroTrabajo", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub MenuOpciones_Click()
@@ -2286,6 +2996,9 @@ Private Sub MenuOpciones_Click()
 End Sub
 
 Private Sub manabar_Click()
+    
+    On Error GoTo manabar_Click_Err
+    
 
     If UserMinMAN = UserMaxMAN Then Exit Sub
             
@@ -2302,9 +3015,19 @@ Private Sub manabar_Click()
     
     Call WriteMeditate
 
+    
+    Exit Sub
+
+manabar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.manabar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mapMundo_Click()
+    
+    On Error GoTo mapMundo_Click_Err
+    
     ExpMult = 1
     OroMult = 1
     Call CalcularPosicionMAPA
@@ -2312,9 +3035,19 @@ Private Sub mapMundo_Click()
     HayFormularioAbierto = True
     frmMapaGrande.Show , frmMain
 
+    
+    Exit Sub
+
+mapMundo_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.mapMundo_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo mapMundo_MouseMove_Err
+    
 
     If mapMundo.Tag = "0" Then
         mapMundo.Picture = LoadInterface("boton-mapa-over.bmp")
@@ -2322,9 +3055,19 @@ Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
+    
+    Exit Sub
+
+mapMundo_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.mapMundo_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo MiniMap_MouseDown_Err
+    
 
     If Button = vbRightButton Then
         Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
@@ -2339,9 +3082,19 @@ Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, 
     HayFormularioAbierto = True
     frmMapaGrande.Show , frmMain
   
+    
+    Exit Sub
+
+MiniMap_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.MiniMap_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo MiniMap_MouseMove_Err
+    
 
     If mapMundo.Tag = "1" Then
         mapMundo.Picture = Nothing
@@ -2349,38 +3102,98 @@ Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, 
 
     End If
 
+    
+    Exit Sub
+
+MiniMap_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.MiniMap_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuEquipar_Click()
+    
+    On Error GoTo mnuEquipar_Click_Err
+    
 
     If MainTimer.Check(TimersIndex.UseItemWithU) Then Call WriteEquipItem(Inventario.SelectedItem)
 
+    
+    Exit Sub
+
+mnuEquipar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuEquipar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuNPCComerciar_Click()
+    
+    On Error GoTo mnuNPCComerciar_Click_Err
+    
     Call WriteLeftClick(tX, tY)
     Call WriteCommerceStart
 
+    
+    Exit Sub
+
+mnuNPCComerciar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuNPCComerciar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuNpcDesc_Click()
+    
+    On Error GoTo mnuNpcDesc_Click_Err
+    
     Call WriteLeftClick(tX, tY)
 
+    
+    Exit Sub
+
+mnuNpcDesc_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuNpcDesc_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuTirar_Click()
+    
+    On Error GoTo mnuTirar_Click_Err
+    
     Call TirarItem
 
+    
+    Exit Sub
+
+mnuTirar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuTirar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuUsar_Click()
+    
+    On Error GoTo mnuUsar_Click_Err
+    
 
     If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Sub
     If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
 
+    
+    Exit Sub
+
+mnuUsar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuUsar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo NameMapa_MouseMove_Err
+    
 
     If mapMundo.Tag = "1" Then
         mapMundo.Picture = Nothing
@@ -2388,14 +3201,34 @@ Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
+    
+    Exit Sub
+
+NameMapa_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.NameMapa_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub onlines_Click()
+    
+    On Error GoTo onlines_Click_Err
+    
     Call WriteOnline
 
+    
+    Exit Sub
+
+onlines_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.onlines_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo OpcionesBoton_MouseMove_Err
+    
 
     If OpcionesBoton.Tag = "0" Then
         OpcionesBoton.Picture = LoadInterface("opcionesover.bmp")
@@ -2403,14 +3236,34 @@ Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Si
 
     End If
 
+    
+    Exit Sub
+
+OpcionesBoton_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.OpcionesBoton_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo OpcionesBoton_MouseUp_Err
+    
     Call frmOpciones.Init
 
+    
+    Exit Sub
+
+OpcionesBoton_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.OpcionesBoton_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Panel_MouseMove_Err
+    
 
     ObjLbl.Visible = False
 
@@ -2444,9 +3297,19 @@ Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y 
 
     End If
 
+    
+    Exit Sub
+
+Panel_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Panel_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo picInv_MouseMove_Err
+    
 
     Dim Slot As Byte
 
@@ -2498,24 +3361,64 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+picInv_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.picInv_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub PicResu_Click()
+    
+    On Error GoTo PicResu_Click_Err
+    
     Call WriteParyToggle
 
+    
+    Exit Sub
+
+PicResu_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.PicResu_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub PicResuOn_Click()
+    
+    On Error GoTo PicResuOn_Click_Err
+    
     Call WriteParyToggle
 
+    
+    Exit Sub
+
+PicResuOn_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.PicResuOn_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub PicSeg_Click()
+    
+    On Error GoTo PicSeg_Click_Err
+    
     Call WriteSafeToggle
 
+    
+    Exit Sub
+
+PicSeg_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.PicSeg_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub CompletarEnvioMensajes()
+    
+    On Error GoTo CompletarEnvioMensajes_Err
+    
 
     Select Case SendingType
 
@@ -2548,11 +3451,21 @@ Private Sub CompletarEnvioMensajes()
     stxtbuffer = SendTxt.Text
     SendTxt.SelStart = Len(SendTxt.Text)
 
+    
+    Exit Sub
+
+CompletarEnvioMensajes_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.CompletarEnvioMensajes", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo RecTxt_MouseUp_Err
+    
 
-    On Error Resume Next
+    
 
     If Button = 1 Then
 
@@ -2598,14 +3511,34 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+RecTxt_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.RecTxt_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub refuerzolanzar_Click()
+    
+    On Error GoTo refuerzolanzar_Click_Err
+    
     Call cmdLanzar_Click
 
+    
+    Exit Sub
+
+refuerzolanzar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.refuerzolanzar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo refuerzolanzar_MouseMove_Err
+    
     UsaMacro = False
     CnTd = 0
 
@@ -2615,9 +3548,19 @@ Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As S
 
     End If
 
+    
+    Exit Sub
+
+refuerzolanzar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.refuerzolanzar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo renderer_MouseUp_Err
+    
 
     'If DropItem Then
     '    frmMain.UsandoDrag = False
@@ -2678,9 +3621,19 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
 
     End If
     
+    
+    Exit Sub
+
+renderer_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo renderer_MouseMove_Err
+    
     MouseX = x
     MouseY = y
     
@@ -2711,9 +3664,19 @@ Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single,
     'LucesCuadradas.Light_Create tX, tY, &HFFFFFFF, 1, 10
     'LucesCuadradas.Light_Render_All
     
+    
+    Exit Sub
+
+renderer_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo renderer_MouseDown_Err
+    
 
     MouseBoton = Button
     MouseShift = Shift
@@ -2833,20 +3796,50 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
                 
     End If
 
+    
+    Exit Sub
+
+renderer_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub renderer_DblClick()
+    
+    On Error GoTo renderer_DblClick_Err
+    
     Call Form_DblClick
 
+    
+    Exit Sub
+
+renderer_DblClick_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_DblClick", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub renderer_Click()
+    
+    On Error GoTo renderer_Click_Err
+    
     Call Form_Click
+    
+    Exit Sub
+
+renderer_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo SendTxt_KeyUp_Err
+    
 
-    On Error Resume Next
+    
 
     Dim str1 As String
 
@@ -2930,18 +3923,48 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
         
     End If
 
+    
+    Exit Sub
+
+SendTxt_KeyUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.SendTxt_KeyUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ShowFPS_Timer()
+    
+    On Error GoTo ShowFPS_Timer_Err
+    
     fps.Caption = "FPS: " & engine.fps
+    
+    Exit Sub
+
+ShowFPS_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.ShowFPS_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Socket1_Timeout(status As Integer, Response As Integer)
+    
+    On Error GoTo Socket1_Timeout_Err
+    
     MsgBox "Se perdio la conexion time out"
 
+    
+    Exit Sub
+
+Socket1_Timeout_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_Timeout", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo TiendaBoton_MouseMove_Err
+    
 
     If TiendaBoton.Tag = "0" Then
         TiendaBoton.Picture = LoadInterface("tiendaover.bmp")
@@ -2949,21 +3972,51 @@ Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Sing
 
     End If
 
+    
+    Exit Sub
+
+TiendaBoton_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.TiendaBoton_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub TiendaBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo TiendaBoton_MouseUp_Err
+    
     Call WriteTraerShop
 
+    
+    Exit Sub
+
+TiendaBoton_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.TiendaBoton_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cerrarcuenta_Timer()
+    
+    On Error GoTo cerrarcuenta_Timer_Err
+    
     Unload frmConnect
     Unload frmCrearPersonaje
     cerrarcuenta.Enabled = False
 
+    
+    Exit Sub
+
+cerrarcuenta_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.cerrarcuenta_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub TimerLluvia_Timer()
+    
+    On Error GoTo TimerLluvia_Timer_Err
+    
 
     If bRain Then
 
@@ -2992,6 +4045,13 @@ Private Sub TimerLluvia_Timer()
 
     End If
 
+    
+    Exit Sub
+
+TimerLluvia_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.TimerLluvia_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub TimerMusica_Timer()
@@ -2999,6 +4059,9 @@ Private Sub TimerMusica_Timer()
 End Sub
 
 Private Sub TimerNiebla_Timer()
+    
+    On Error GoTo TimerNiebla_Timer_Err
+    
 
     If bNiebla Then
 
@@ -3023,16 +4086,36 @@ Private Sub TimerNiebla_Timer()
 
     End If
 
+    
+    Exit Sub
+
+TimerNiebla_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.TimerNiebla_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Timerping_Timer()
+    
+    On Error GoTo Timerping_Timer_Err
+    
 If Not RunningInVB Then
     Call WritePing
 End If
 
+    
+    Exit Sub
+
+Timerping_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Timerping_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdLanzar_Click()
+    
+    On Error GoTo cmdLanzar_Click_Err
+    
 
     If hlst.List(hlst.ListIndex) <> "(Vacio)" And MainTimer.Check(TimersIndex.CastSpell, False) Then
         If UserEstado = 1 Then
@@ -3052,9 +4135,19 @@ Private Sub cmdLanzar_Click()
 
     End If
 
+    
+    Exit Sub
+
+cmdLanzar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdLanzar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo CmdLanzar_MouseMove_Err
+    
     UsaMacro = False
     CnTd = 0
 
@@ -3064,9 +4157,19 @@ Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single
 
     End If
 
+    
+    Exit Sub
+
+CmdLanzar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.CmdLanzar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Form_Click()
+    
+    On Error GoTo Form_Click_Err
+    
 
     If MouseBoton = vbLeftButton And ACCION1 = 0 Or MouseBoton = vbRightButton And ACCION2 = 0 Or MouseBoton = 4 And ACCION3 = 0 Then
         If Not Comerciando Then
@@ -3241,9 +4344,19 @@ Public Sub Form_Click()
 
     End If
 
+    
+    Exit Sub
+
+Form_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_DblClick()
+    
+    On Error GoTo Form_DblClick_Err
+    
 
     '**************************************************************
     'Author: Unknown
@@ -3258,19 +4371,39 @@ Private Sub Form_DblClick()
 
     End If
 
+    
+    Exit Sub
+
+Form_DblClick_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_DblClick", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
 
-    On Error Resume Next
+    
 
     Call FormParser.Parse_Form(frmMain)
     MenuNivel = 1
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
 
     ' Disable links checking (not over consola)
     StopCheckingLinks
@@ -3375,24 +4508,64 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         cmdLlavero.Tag = "0"
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub hlst_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo hlst_KeyDown_Err
+    
     KeyCode = 0
 
+    
+    Exit Sub
+
+hlst_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.hlst_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub hlst_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo hlst_KeyPress_Err
+    
     KeyAscii = 0
 
+    
+    Exit Sub
+
+hlst_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.hlst_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub hlst_KeyUp(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo hlst_KeyUp_Err
+    
     KeyCode = 0
 
+    
+    Exit Sub
+
+hlst_KeyUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.hlst_KeyUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub picInv_DblClick()
+    
+    On Error GoTo picInv_DblClick_Err
+    
 
     If frmCarp.Visible Or frmHerrero.Visible Or frmComerciar.Visible Or frmBancoObj.Visible Then Exit Sub
     
@@ -3436,12 +4609,22 @@ Private Sub picInv_DblClick()
 
     End Select
 
+    
+    Exit Sub
+
+picInv_DblClick_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.picInv_DblClick", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub RecTxt_Change()
+    
+    On Error GoTo RecTxt_Change_Err
+    
     Exit Sub
 
-    On Error Resume Next  'el .SetFocus causaba errores al salir y volver a entrar
+      'el .SetFocus causaba errores al salir y volver a entrar
 
     If Not Application.IsAppActive() Then Exit Sub
     
@@ -3452,14 +4635,34 @@ Private Sub RecTxt_Change()
 
     End If
 
+    
+    Exit Sub
+
+RecTxt_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.RecTxt_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo RecTxt_MouseMove_Err
+    
     StartCheckingLinks
 
+    
+    Exit Sub
+
+RecTxt_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.RecTxt_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub RecTxt_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo RecTxt_KeyDown_Err
+    
 
     If picInv.Visible Then
         picInv.SetFocus
@@ -3468,9 +4671,19 @@ Private Sub RecTxt_KeyDown(KeyCode As Integer, Shift As Integer)
         'hlst.SetFocus
     End If
 
+    
+    Exit Sub
+
+RecTxt_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.RecTxt_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub SendTxt_Change()
+    
+    On Error GoTo SendTxt_Change_Err
+    
 
     '**************************************************************
     'Author: Unknown
@@ -3509,12 +4722,29 @@ Private Sub SendTxt_Change()
 
     End If
 
+    
+    Exit Sub
+
+SendTxt_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.SendTxt_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub SendTxt_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo SendTxt_KeyPress_Err
+    
 
     If Not (KeyAscii = vbKeyBack) And Not (KeyAscii >= vbKeySpace And KeyAscii <= 250) Then KeyAscii = 0
 
+    
+    Exit Sub
+
+SendTxt_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.SendTxt_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 ''''''''''''''''''''''''''''''''''''''
@@ -3522,6 +4752,9 @@ End Sub
 ''''''''''''''''''''''''''''''''''''''
 #If UsarWrench = 1 Then
     Private Sub Socket1_Connect()
+    
+    On Error GoTo Socket1_Connect_Err
+    
         Socket1.NoDelay = True
     
         'Clean input and output buffers
@@ -3560,9 +4793,19 @@ End Sub
 
         End Select
 
+    
+    Exit Sub
+
+Socket1_Connect_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_Connect", Erl)
+    Resume Next
+    
     End Sub
 
 Private Sub Socket1_Disconnect()
+    
+    On Error GoTo Socket1_Disconnect_Err
+    
 
     Dim i As Long
     
@@ -3695,9 +4938,19 @@ Private Sub Socket1_Disconnect()
         'General_Set_Connect
     End If
 
+    
+    Exit Sub
+
+Socket1_Disconnect_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_Disconnect", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Response As Integer)
+    
+    On Error GoTo Socket1_LastError_Err
+    
 
     '*********************************************
     'Handle socket errors
@@ -3751,9 +5004,19 @@ Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Respo
     '  Else
     '  frmCrearPersonaje.MousePointer = 0
     'End If
+    
+    Exit Sub
+
+Socket1_LastError_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_LastError", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
+    
+    On Error GoTo Socket1_Read_Err
+    
 
     Dim RD     As String
 
@@ -3770,6 +5033,13 @@ Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
     'Send buffer to Handle data
     Call HandleIncomingData
 
+    
+    Exit Sub
+
+Socket1_Read_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_Read", Erl)
+    Resume Next
+    
 End Sub
 
 
@@ -3909,39 +5179,82 @@ End Sub
 #End If
 
 Private Function InGameArea() As Boolean
+    
+    On Error GoTo InGameArea_Err
+    
 
     If clicX < renderer.Left Or clicX > renderer.Left + (32 * 23) Then Exit Function
     If clicY < renderer.Top Or clicY > renderer.Top + (32 * 17) Then Exit Function
     InGameArea = True
 
+    
+    Exit Function
+
+InGameArea_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.InGameArea", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgSpellInfo_Click()
+    
+    On Error GoTo imgSpellInfo_Click_Err
+    
 
     If hlst.ListIndex <> -1 Then
         Call WriteSpellInfo(hlst.ListIndex + 1)
 
     End If
 
+    
+    Exit Sub
+
+imgSpellInfo_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.imgSpellInfo_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub UpdateDaytime_Timer()
     ' Si no hay luz de mapa, usamos la luz ambiental
+    
+    On Error GoTo UpdateDaytime_Timer_Err
+    
     If MapDat.base_light = 0 Then
         Call RevisarHoraMundo
     End If
+    
+    Exit Sub
+
+UpdateDaytime_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.UpdateDaytime_Timer", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub UpdateLight_Timer()
+    
+    On Error GoTo UpdateLight_Timer_Err
+    
     
     If light_transition < 1# Then
         light_transition = light_transition + STEP_LIGHT_TRANSITION * UpdateLight.Interval
@@ -3951,5 +5264,12 @@ Private Sub UpdateLight_Timer()
         Call LerpRGBA(global_light, last_light, next_light, light_transition)
         Call MapUpdateGlobalLight
     End If
+    
+    
+    Exit Sub
+
+UpdateLight_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMain.UpdateLight_Timer", Erl)
+    Resume Next
     
 End Sub

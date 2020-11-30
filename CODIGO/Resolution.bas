@@ -57,6 +57,9 @@ Private Declare Function ChangeDisplaySettings Lib "user32" Alias "ChangeDisplay
 'TODO : Change this to not depend on any external public variable using args instead!
 
 Public Sub SetResolution()
+    
+    On Error GoTo SetResolution_Err
+    
 
     '***************************************************
     'Autor: Unknown
@@ -100,9 +103,19 @@ Public Sub SetResolution()
 
     End If
 
+    
+    Exit Sub
+
+SetResolution_Err:
+    Call RegistrarError(Err.number, Err.Description, "Resolution.SetResolution", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub ResetResolution()
+    
+    On Error GoTo ResetResolution_Err
+    
 
     '***************************************************
     'Autor: Unknown
@@ -131,4 +144,11 @@ Public Sub ResetResolution()
 
     End If
 
+    
+    Exit Sub
+
+ResetResolution_Err:
+    Call RegistrarError(Err.number, Err.Description, "Resolution.ResetResolution", Erl)
+    Resume Next
+    
 End Sub

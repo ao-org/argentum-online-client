@@ -230,13 +230,26 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     HayFormularioAbierto = True
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("admin.bmp")
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
 
     If Image1.Tag = "1" Then
         Image1.Picture = Nothing
@@ -244,15 +257,25 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
+    
+    On Error GoTo Image1_Click_Err
+    
 
     If txtMotivo.Text = "" Then
-        Call AddtoRichTextBox(frmmain.RecTxt, "Debes escribir tu mensaje.", 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, "Debes escribir tu mensaje.", 255, 255, 255, False, False, False)
         Exit Sub
     ElseIf DarIndiceElegido = -1 Then
-        Call AddtoRichTextBox(frmmain.RecTxt, "Debes elegir el motivo de tu consulta.", 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, "Debes elegir el motivo de tu consulta.", 255, 255, 255, False, False, False)
         Exit Sub
     Else
         Call WriteQuestionGM(txtMotivo.Text, optConsulta(DarIndiceElegido).Caption)
@@ -260,9 +283,19 @@ Private Sub Image1_Click()
 
     End If
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("admin_enviarmensaje.bmp")
@@ -270,9 +303,19 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub optConsult_Click(Index As Integer)
+    
+    On Error GoTo optConsult_Click_Err
+    
 
     Dim i As Integer
 
@@ -292,31 +335,41 @@ Private Sub optConsult_Click(Index As Integer)
     Select Case Index
 
         Case 0
-            Call AddtoRichTextBox(frmmain.RecTxt, "¡Por favor explique correctamente el motivo de su consulta!", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "¡Por favor explique correctamente el motivo de su consulta!", 255, 255, 255, False, False, False)
 
         Case 1
-            Call AddtoRichTextBox(frmmain.RecTxt, "Deje el nombre del personaje del que está pidiendo descargo por una medida, conjunto con el administrador que está relacionado con ella.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Deje el nombre del personaje del que está pidiendo descargo por una medida, conjunto con el administrador que está relacionado con ella.", 255, 255, 255, False, False, False)
 
         Case 2
-            Call AddtoRichTextBox(frmmain.RecTxt, "Se dará prioridad a su consulta enviando un mensaje a los administradores conectados, por favor utilize ésta opción responsablemente.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Se dará prioridad a su consulta enviando un mensaje a los administradores conectados, por favor utilize ésta opción responsablemente.", 255, 255, 255, False, False, False)
 
         Case 3
-            Call AddtoRichTextBox(frmmain.RecTxt, "Su sugerencia SERÁ leída por un miembro del staff, y será tomada en cuenta para futuros cambios.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Su sugerencia SERÁ leída por un miembro del staff, y será tomada en cuenta para futuros cambios.", 255, 255, 255, False, False, False)
 
         Case 4
-            Call AddtoRichTextBox(frmmain.RecTxt, "Explique de la forma más detallada la forma de repetir el error. El staff de programación lo resolverá lo antes posible.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Explique de la forma más detallada la forma de repetir el error. El staff de programación lo resolverá lo antes posible.", 255, 255, 255, False, False, False)
 
         Case 5
-            Call AddtoRichTextBox(frmmain.RecTxt, "Deje la mayor cantidad de datos posibles, esta opción es para consultas que no entran en otras secciónes.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Deje la mayor cantidad de datos posibles, esta opción es para consultas que no entran en otras secciónes.", 255, 255, 255, False, False, False)
 
         Case 6
-            Call AddtoRichTextBox(frmmain.RecTxt, "En caso de ser una queja hacia un miembro del staff, deje principalmente hacia quien esta referida la queja, y los motivos dejando todos los detalles posibles", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "En caso de ser una queja hacia un miembro del staff, deje principalmente hacia quien esta referida la queja, y los motivos dejando todos los detalles posibles", 255, 255, 255, False, False, False)
 
     End Select
 
+    
+    Exit Sub
+
+optConsult_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.optConsult_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Function DarIndiceElegido() As Integer
+    
+    On Error GoTo DarIndiceElegido_Err
+    
 
     Dim i As Integer
 
@@ -332,5 +385,12 @@ Private Function DarIndiceElegido() As Integer
 
     DarIndiceElegido = -1
 
+    
+    Exit Function
+
+DarIndiceElegido_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.DarIndiceElegido", Erl)
+    Resume Next
+    
 End Function
 

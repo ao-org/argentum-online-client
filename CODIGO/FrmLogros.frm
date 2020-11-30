@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
 Begin VB.Form FrmLogros 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Logros personales"
@@ -404,20 +404,23 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
 
-    On Error Resume Next
+    
 
     Dim SR As RECT, DR As RECT
 
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
-    SR.bottom = 32
+    SR.Bottom = 32
 
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
-    DR.bottom = 32
+    DR.Bottom = 32
 
     If NPcLogros.Finalizada Then
         Frame4.Caption = "Reclamar"
@@ -431,12 +434,12 @@ Private Sub Form_Load()
     FrameNpcs.Caption = NPcLogros.nombre
     labelNpcs.Caption = NPcLogros.desc
     ProgressNpcs.max = NPcLogros.cant
-    ProgressNpcs.value = NPcLogros.NpcsMatados
+    ProgressNpcs.Value = NPcLogros.NpcsMatados
     ProgressNpcs.min = 0
 
     If NPcLogros.TipoRecompensa = 1 Then
-        Label6.Caption = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
-        picture1.ToolTipText = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
+        Label6.Caption = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).Name
+        picture1.ToolTipText = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).Name
         Call Grh_Render_To_Hdc(picture1, (ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).GrhIndex), 0, 0)
         
         Label7.Caption = "Cant: " & Val(ReadField(2, NPcLogros.ObjRecompensa, 45))
@@ -478,12 +481,12 @@ Private Sub Form_Load()
     Label3.Caption = LevelLogros.desc
 
     ProgressLevel.max = LevelLogros.cant
-    ProgressLevel.value = LevelLogros.NivelUser
+    ProgressLevel.Value = LevelLogros.NivelUser
     ProgressLevel.min = 0
 
     If LevelLogros.TipoRecompensa = 1 Then
-        Label8.Caption = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
-        Picture2.ToolTipText = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
+        Label8.Caption = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).Name
+        Picture2.ToolTipText = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).Name
         'Call Grh_Render_To_Hdc(Picture2.hdc, (ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).grhindex), 0, 0)
         Picture2.Refresh
         Label9.Caption = "Cant: " & Val(ReadField(2, NPcLogros.ObjRecompensa, 45))
@@ -527,12 +530,12 @@ Private Sub Form_Load()
     Frame3.Caption = UserLogros.nombre
     Label4.Caption = UserLogros.desc
     ProgressKill.max = UserLogros.cant
-    ProgressKill.value = UserLogros.UserMatados
+    ProgressKill.Value = UserLogros.UserMatados
     ProgressKill.min = 0
 
     If UserLogros.TipoRecompensa = 1 Then
-        Label11.Caption = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
-        Picture3.ToolTipText = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).name
+        Label11.Caption = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).Name
+        Picture3.ToolTipText = ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).Name
         ' Call Grh_Render_To_Hdc(Picture3.hdc, (ObjData(Val(ReadField(1, NPcLogros.ObjRecompensa, 45))).grhindex), 0, 0)
         Picture3.Refresh
         Label10.Caption = "Cant: 1"
@@ -564,19 +567,56 @@ Private Sub Form_Load()
 
     End If
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogros.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Picture1_Click()
+    
+    On Error GoTo Picture1_Click_Err
+    
     Call WriteReclamarRecompensa(1)
 
+    
+    Exit Sub
+
+Picture1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogros.Picture1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Picture2_Click()
+    
+    On Error GoTo Picture2_Click_Err
+    
     Call WriteReclamarRecompensa(3)
 
+    
+    Exit Sub
+
+Picture2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogros.Picture2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Picture3_Click()
+    
+    On Error GoTo Picture3_Click_Err
+    
     Call WriteReclamarRecompensa(2)
 
+    
+    Exit Sub
+
+Picture3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogros.Picture3_Click", Erl)
+    Resume Next
+    
 End Sub

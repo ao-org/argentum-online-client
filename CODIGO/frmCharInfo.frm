@@ -305,41 +305,101 @@ End Enum
 Public frmType As CharInfoFrmType
 
 Private Sub Aceptar_Click()
+    
+    On Error GoTo Aceptar_Click_Err
+    
     Call WriteGuildAcceptNewMember(Trim$(Right$(nombre, Len(nombre) - 8)))
     Unload frmGuildLeader
     Call WriteRequestGuildLeaderInfo
     Unload Me
 
+    
+    Exit Sub
+
+Aceptar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Aceptar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub desc_Click()
+    
+    On Error GoTo desc_Click_Err
+    
     Call WriteGuildRequestJoinerInfo(Right$(nombre, Len(nombre) - 8))
 
+    
+    Exit Sub
+
+desc_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCharInfo.desc_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Echar_Click()
+    
+    On Error GoTo Echar_Click_Err
+    
     Call WriteGuildKickMember(Right$(nombre, Len(nombre) - 8))
     Unload frmGuildLeader
     Call WriteRequestGuildLeaderInfo
     Unload Me
 
+    
+    Exit Sub
+
+Echar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Echar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Rechazar_Click()
+    
+    On Error GoTo Rechazar_Click_Err
+    
     Load frmCommet
-    frmCommet.T = RECHAZOPJ
+    frmCommet.t = RECHAZOPJ
     frmCommet.nombre = Right$(nombre, Len(nombre) - 8)
     frmCommet.Caption = "Ingrese motivo para rechazo"
     frmCommet.Show vbModeless, frmCharInfo
 
+    
+    Exit Sub
+
+Rechazar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Rechazar_Click", Erl)
+    Resume Next
+    
 End Sub

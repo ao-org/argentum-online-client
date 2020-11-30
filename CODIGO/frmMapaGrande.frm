@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
 Begin VB.Form frmMapaGrande 
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
@@ -468,38 +468,81 @@ End Sub
 
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo Form_KeyDown_Err
+    
 
     If KeyCode = 27 Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Form_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     ListView1.BackColor = RGB(7, 7, 7)
     listdrop.BackColor = RGB(7, 7, 7)
     lblMapInfo(0).ForeColor = RGB(235, 164, 14)
 
     'Call FormParser.Parse_Form(Me)
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     moverForm
     Image1 = Nothing
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
+    
+    On Error GoTo DibujarBody_Err
+    
 
     Dim grh As grh
 
@@ -523,9 +566,19 @@ Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
         Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
     End If
 
+    
+    Exit Sub
+
+DibujarBody_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.DibujarBody", Erl)
+    Resume Next
+    
 End Sub
 
 Sub DibujarHead(ByVal MyHead As Integer, ByVal yoff As Integer, Optional ByVal Heading As Byte = 3)
+    
+    On Error GoTo DibujarHead_Err
+    
 
     Dim grh As grh
 
@@ -539,6 +592,13 @@ Sub DibujarHead(ByVal MyHead As Integer, ByVal yoff As Integer, Optional ByVal H
     y = PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight + yoff / 2
     Call Grh_Render_To_Hdc(PlayerView, grh.GrhIndex, x - 1, y, False)
 
+    
+    Exit Sub
+
+DibujarHead_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.DibujarHead", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -552,20 +612,43 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub ListView1_beforeEdit(ByVal Columna As Integer, Cancel As Boolean)
+    
+    On Error GoTo ListView1_beforeEdit_Err
+    
 
     If Columna > 5 Then
         Cancel = True
 
     End If
 
+    
+    Exit Sub
+
+ListView1_beforeEdit_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.ListView1_beforeEdit", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseUp_Err
+    
     Me.Visible = False
 
+    
+    Exit Sub
+
+Image1_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Image1_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_Click()
+    
+    On Error GoTo Image2_Click_Err
+    
 
     If Dungeon Then
         picMap.Picture = LoadInterface("mapa.bmp")
@@ -605,9 +688,19 @@ Private Sub Image2_Click()
 
     End If
 
+    
+    Exit Sub
+
+Image2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Image2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_Click()
+    
+    On Error GoTo Image3_Click_Err
+    
 
     If Dungeon Then Exit Sub
 
@@ -622,21 +715,51 @@ Private Sub Image3_Click()
 
     End If
 
+    
+    Exit Sub
+
+Image3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Image3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label6_Click()
+    
+    On Error GoTo Label6_Click_Err
+    
     Call Image2_Click
 
+    
+    Exit Sub
+
+Label6_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Label6_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label7_Click()
+    
+    On Error GoTo Label7_Click_Err
+    
     Call Image3_Click
 
+    
+    Exit Sub
+
+Label7_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Label7_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub listdrop_Click()
+    
+    On Error GoTo listdrop_Click_Err
+    
 
-    On Error Resume Next
+    
 
     'Picture1.Refresh
     picture1.BackColor = vbBlack
@@ -646,11 +769,21 @@ Private Sub listdrop_Click()
     If listdrop.ListItems.count <= 0 Then Exit Sub
     Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
 
+    
+    Exit Sub
+
+listdrop_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.listdrop_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ListView1_Click()
+    
+    On Error GoTo ListView1_Click_Err
+    
 
-    On Error Resume Next
+    
 
     Label8.Caption = ""
     picture1.Refresh
@@ -697,11 +830,21 @@ Private Sub ListView1_Click()
 
     End If
         
+    
+    Exit Sub
+
+ListView1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.ListView1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo picMap_MouseDown_Err
+    
 
-    On Error Resume Next
+    
 
     lblAllies.Visible = True
 
@@ -715,7 +858,7 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     'lblAllies.left = X * 14 / 32
     
     If x >= llamadadeclan.Left And x <= llamadadeclan.Left + llamadadeclan.Width And y >= llamadadeclan.Top And y <= llamadadeclan.Top + llamadadeclan.Height Then
-        AddtoRichTextBox frmmain.RecTxt, "Ubicación de tu compañero de clan que solicita ayuda: (" & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmMain.RecTxt, "Ubicación de tu compañero de clan que solicita ayuda: (" & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
 
     End If
 
@@ -769,9 +912,26 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     lblAllies.Top = PosY
     lblAllies.Left = PosX
 
+    
+    Exit Sub
+
+picMap_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.picMap_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo picMap_MouseMove_Err
+    
     moverForm
 
+    
+    Exit Sub
+
+picMap_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.picMap_MouseMove", Erl)
+    Resume Next
+    
 End Sub

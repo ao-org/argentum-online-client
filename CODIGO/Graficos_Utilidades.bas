@@ -14,43 +14,76 @@ Public ProjectionComposedTexture As D3DMATRIX
 
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
 
-Function MakeVector(ByVal X As Single, ByVal Y As Single, ByVal z As Single) As D3DVECTOR
+Function MakeVector(ByVal x As Single, ByVal y As Single, ByVal z As Single) As D3DVECTOR
     '*****************************************************
     '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
     '*****************************************************
-    MakeVector.X = X
-    MakeVector.Y = Y
+    
+    On Error GoTo MakeVector_Err
+    
+    MakeVector.x = x
+    MakeVector.y = y
     MakeVector.z = z
 
+    
+    Exit Function
+
+MakeVector_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.MakeVector", Erl)
+    Resume Next
+    
 End Function
 
-Private Function CreateVertex(X As Single, Y As Single, z As Single, Color As RGBA, tu As Single, tv As Single) As TYPE_VERTEX
+Private Function CreateVertex(x As Single, y As Single, z As Single, Color As RGBA, tu As Single, tv As Single) As TYPE_VERTEX
     
-    CreateVertex.X = X
-    CreateVertex.Y = Y
+    On Error GoTo CreateVertex_Err
+    
+    
+    CreateVertex.x = x
+    CreateVertex.y = y
     CreateVertex.z = z
     CreateVertex.Color = Color
-    CreateVertex.TX = tu
-    CreateVertex.TY = tv
+    CreateVertex.tX = tu
+    CreateVertex.tY = tv
 
+    
+    Exit Function
+
+CreateVertex_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.CreateVertex", Erl)
+    Resume Next
+    
 End Function
 
 
-Private Function Geometry_Create_Vertex(ByVal X As Single, ByVal Y As Single, ByVal z As Single, Color As RGBA, tu As Single, ByVal tv As Single) As TYPE_VERTEX
+Private Function Geometry_Create_Vertex(ByVal x As Single, ByVal y As Single, ByVal z As Single, Color As RGBA, tu As Single, ByVal tv As Single) As TYPE_VERTEX
     '**************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 10/07/2002
     '**************************************************************
-    Geometry_Create_Vertex.X = X
-    Geometry_Create_Vertex.Y = Y
+    
+    On Error GoTo Geometry_Create_Vertex_Err
+    
+    Geometry_Create_Vertex.x = x
+    Geometry_Create_Vertex.y = y
     Geometry_Create_Vertex.z = z
     Geometry_Create_Vertex.Color = Color
-    Geometry_Create_Vertex.TX = tu
-    Geometry_Create_Vertex.TY = tv
+    Geometry_Create_Vertex.tX = tu
+    Geometry_Create_Vertex.tY = tv
 
+    
+    Exit Function
+
+Geometry_Create_Vertex_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.Geometry_Create_Vertex", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT, ByRef Src As RECT, ByRef rgb_list() As RGBA, Optional ByVal Textures_Width As Long, Optional ByVal Textures_Height As Long, Optional ByVal Angle As Single)
+    
+    On Error GoTo Geometry_Create_Box_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -81,10 +114,10 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT,
     If Angle > 0 Then
         'Center coordinates on screen of the square
         x_center = Dest.Left + (Dest.Right - Dest.Left) / 2
-        y_center = Dest.Top + (Dest.bottom - Dest.Top) / 2
+        y_center = Dest.Top + (Dest.Bottom - Dest.Top) / 2
         
         'Calculate radius
-        radius = Sqr((Dest.Right - x_center) ^ 2 + (Dest.bottom - y_center) ^ 2)
+        radius = Sqr((Dest.Right - x_center) ^ 2 + (Dest.Bottom - y_center) ^ 2)
         
         'Calculate left and right points
         temp = (Dest.Right - x_center) / radius
@@ -96,7 +129,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT,
     'Calculate screen coordinates of sprite, and only rotate if necessary
     If Angle = 0 Then
         x_Cor = Dest.Left
-        y_Cor = Dest.bottom
+        y_Cor = Dest.Bottom
     Else
         x_Cor = x_center + Cos(-left_point - Angle) * radius
         y_Cor = y_center - Sin(-left_point - Angle) * radius
@@ -105,7 +138,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT,
     
     '0 - Bottom left vertex
     If Textures_Width And Textures_Height Then
-        verts(0) = Geometry_Create_Vertex(x_Cor, y_Cor, 0, rgb_list(0), Src.Left / Textures_Width, Src.bottom / Textures_Height)
+        verts(0) = Geometry_Create_Vertex(x_Cor, y_Cor, 0, rgb_list(0), Src.Left / Textures_Width, Src.Bottom / Textures_Height)
     Else
         verts(0) = Geometry_Create_Vertex(x_Cor, y_Cor, 0, rgb_list(0), 0, 0)
     End If
@@ -130,7 +163,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT,
     'Calculate screen coordinates of sprite, and only rotate if necessary
     If Angle = 0 Then
         x_Cor = Dest.Right
-        y_Cor = Dest.bottom
+        y_Cor = Dest.Bottom
     Else
         x_Cor = x_center + Cos(-right_point - Angle) * radius
         y_Cor = y_center - Sin(-right_point - Angle) * radius
@@ -139,7 +172,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT,
     
     '2 - Bottom right vertex
     If Textures_Width And Textures_Height Then
-        verts(2) = Geometry_Create_Vertex(x_Cor, y_Cor, 0, rgb_list(2), Src.Right / Textures_Width, Src.bottom / Textures_Height)
+        verts(2) = Geometry_Create_Vertex(x_Cor, y_Cor, 0, rgb_list(2), Src.Right / Textures_Width, Src.Bottom / Textures_Height)
     Else
         verts(2) = Geometry_Create_Vertex(x_Cor, y_Cor, 0, rgb_list(2), 1, 0)
     End If
@@ -161,9 +194,19 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT,
         verts(3) = Geometry_Create_Vertex(x_Cor, y_Cor, 0, rgb_list(3), 1, 1)
     End If
 
+    
+    Exit Sub
+
+Geometry_Create_Box_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.Geometry_Create_Box", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function BinarySearch(ByVal charindex As Integer) As Integer
+    
+    On Error GoTo BinarySearch_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -200,9 +243,19 @@ Public Function BinarySearch(ByVal charindex As Integer) As Integer
     '(all higher values are to the right of the list and lower values are to the left)
     BinarySearch = Not min
 
+    
+    Exit Function
+
+BinarySearch_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.BinarySearch", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub InitComposedTexture()
+    
+    On Error GoTo InitComposedTexture_Err
+    
 
     ComposedTextureWidth = 128
     ComposedTextureHeight = 128
@@ -222,9 +275,19 @@ Public Sub InitComposedTexture()
 
     Call D3DXMatrixOrthoOffCenterLH(ProjectionComposedTexture, 0, ComposedTextureWidth, ComposedTextureHeight, 0, -1#, 1#)
 
+    
+    Exit Sub
+
+InitComposedTexture_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.InitComposedTexture", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub BeginComposedTexture()
+    
+    On Error GoTo BeginComposedTexture_Err
+    
 
     Call SpriteBatch.Flush
     Call DirectDevice.EndScene
@@ -237,9 +300,19 @@ Public Sub BeginComposedTexture()
 
     Call Engine_BeginScene
 
+    
+    Exit Sub
+
+BeginComposedTexture_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.BeginComposedTexture", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub EndComposedTexture()
+    
+    On Error GoTo EndComposedTexture_Err
+    
 
     Call SpriteBatch.Flush
     Call DirectDevice.EndScene
@@ -254,17 +327,27 @@ Public Sub EndComposedTexture()
     Call DirectDevice.BeginScene
     Call SpriteBatch.Begin
 
+    
+    Exit Sub
+
+EndComposedTexture_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.EndComposedTexture", Erl)
+    Resume Next
+    
 End Sub
 
-Public Sub PresentComposedTexture(ByVal X As Integer, ByVal Y As Integer, ByRef light_value() As RGBA, Optional ByVal Angle As Single = 0, Optional ByVal Shadow As Boolean = False, Optional ByVal Reflection As Boolean = False)
+Public Sub PresentComposedTexture(ByVal x As Integer, ByVal y As Integer, ByRef light_value() As RGBA, Optional ByVal Angle As Single = 0, Optional ByVal Shadow As Boolean = False, Optional ByVal Reflection As Boolean = False)
+    
+    On Error GoTo PresentComposedTexture_Err
+    
 
     Static src_rect            As RECT
     Static dest_rect           As RECT
     Static vertices(3)         As TYPE_VERTEX
     Static d3dTextures         As D3D8Textures
     
-    X = X - ComposedTextureWidth \ 2 + 16
-    Y = Y - ComposedTextureHeight + 32
+    x = x - ComposedTextureWidth \ 2 + 16
+    y = y - ComposedTextureHeight + 32
 
     With SpriteBatch
 
@@ -273,35 +356,52 @@ Public Sub PresentComposedTexture(ByVal X As Integer, ByVal Y As Integer, ByRef 
         Call .SetAlpha(False)
     
         If Shadow Then
-            Call .DrawShadow(X, Y, ComposedTextureWidth, ComposedTextureHeight, light_value)
+            Call .DrawShadow(x, y, ComposedTextureWidth, ComposedTextureHeight, light_value)
             
         ElseIf Reflection Then
-            Call .DrawReflection(X, Y, ComposedTextureWidth, ComposedTextureHeight, light_value)
+            Call .DrawReflection(x, y, ComposedTextureWidth, ComposedTextureHeight, light_value)
                     
         Else
-            Call .Draw(X, Y, ComposedTextureWidth, ComposedTextureHeight, light_value, , , , , Angle)
+            Call .Draw(x, y, ComposedTextureWidth, ComposedTextureHeight, light_value, , , , , Angle)
         End If
 
     End With
  
+    
+    Exit Sub
+
+PresentComposedTexture_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.PresentComposedTexture", Erl)
+    Resume Next
+    
 End Sub
 
-Public Function EaseBreathing(ByVal T As Single) As Single
+Public Function EaseBreathing(ByVal t As Single) As Single
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
+    
+    On Error GoTo EaseBreathing_Err
+    
 
-    If T < 0.25 Then
+    If t < 0.25 Then
         Dim c1 As Single, c3 As Single
         c1 = 1.70158
         c3 = c1 + 1
         
-        T = T * 4
-        EaseBreathing = 1 + c3 * (T - 1) ^ 3 + c1 * (T - 1) ^ 2
+        t = t * 4
+        EaseBreathing = 1 + c3 * (t - 1) ^ 3 + c1 * (t - 1) ^ 2
     
-    ElseIf T < 0.5 Then
-        EaseBreathing = 2 - T * 4
+    ElseIf t < 0.5 Then
+        EaseBreathing = 2 - t * 4
 
     End If
 
+    
+    Exit Function
+
+EaseBreathing_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.EaseBreathing", Erl)
+    Resume Next
+    
 End Function

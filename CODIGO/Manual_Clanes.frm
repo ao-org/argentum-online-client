@@ -236,8 +236,18 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Unload Me
-    Manual.Show , frmmain
+    Manual.Show , frmMain
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Clanes.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 

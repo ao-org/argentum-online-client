@@ -168,16 +168,39 @@ Public Enum TIPO_PROPUESTA
 End Enum
 
 Public Property Let ProposalType(ByVal nValue As TIPO_PROPUESTA)
+    
+    On Error GoTo ProposalType_Err
+    
     tipoprop = nValue
 
+    
+    Exit Property
+
+ProposalType_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.ProposalType", Erl)
+    Resume Next
+    
 End Property
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
 
     'Me.Visible = False
     If tipoprop = PAZ Then
@@ -187,9 +210,19 @@ Private Sub Command2_Click()
 
     End If
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_Click()
+    
+    On Error GoTo Command3_Click_Err
+    
 
     'Me.Visible = False
     If tipoprop = PAZ Then
@@ -202,9 +235,19 @@ Private Sub Command3_Click()
     Me.Hide
     Unload Me
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_Click()
+    
+    On Error GoTo Command4_Click_Err
+    
 
     If tipoprop = PAZ Then
         Call WriteGuildRejectPeace(lista.List(lista.ListIndex))
@@ -216,9 +259,26 @@ Private Sub Command4_Click()
     Me.Hide
     Unload Me
 
+    
+    Exit Sub
+
+Command4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Form_Load", Erl)
+    Resume Next
+    
 End Sub

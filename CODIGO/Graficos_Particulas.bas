@@ -6,8 +6,8 @@ Public Type Particle
     PartCountLive As Integer
     destruir  As Boolean
     friction As Single
-    X As Single
-    Y As Single
+    x As Single
+    y As Single
     vector_x As Single
     vector_y As Single
     Angle As Single
@@ -180,6 +180,9 @@ Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Int
    Optional ByVal move_y1 As Integer, Optional ByVal move_y2 As Integer, Optional ByVal YMove As Boolean, _
    Optional ByVal spin_speedH As Single, Optional ByVal spin As Boolean, Optional grh_resize As Boolean, _
    Optional grh_resizex As Integer, Optional grh_resizey As Integer)
+    
+    On Error GoTo Particle_Group_Create_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -204,6 +207,13 @@ Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Int
 
     End If
 
+    
+    Exit Function
+
+Particle_Group_Create_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Create", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Particle_Group_Remove(ByVal particle_group_index As Long) As Boolean
@@ -213,6 +223,9 @@ Public Function Particle_Group_Remove(ByVal particle_group_index As Long) As Boo
     '
     '*****************************************************************
     'Make sure it's a legal index
+    
+    On Error GoTo Particle_Group_Remove_Err
+    
 
     If Particle_Group_Check(particle_group_index) Then
         particle_group_list(particle_group_index).never_die = False
@@ -225,9 +238,19 @@ Public Function Particle_Group_Remove(ByVal particle_group_index As Long) As Boo
 
     End If
 
+    
+    Exit Function
+
+Particle_Group_Remove_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Remove", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Particle_Group_Remove_All() As Boolean
+    
+    On Error GoTo Particle_Group_Remove_All_Err
+    
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -248,6 +271,13 @@ Public Function Particle_Group_Remove_All() As Boolean
     
     Particle_Group_Remove_All = True
 
+    
+    Exit Function
+
+Particle_Group_Remove_All_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Remove_All", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Particle_Group_Find(ByVal id As Long) As Long
@@ -298,6 +328,9 @@ ErrorHandler:
 End Function
 
 Public Sub Particle_Group_Destroy(ByVal particle_group_index As Long)
+    
+    On Error GoTo Particle_Group_Destroy_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -371,6 +404,13 @@ Public Sub Particle_Group_Destroy(ByVal particle_group_index As Long)
 
     particle_group_count = particle_group_count - 1
     
+    
+    Exit Sub
+
+Particle_Group_Destroy_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Destroy", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Particle_Group_Make(ByVal particle_group_index As Long, ByVal map_x As Integer, ByVal map_y As Integer, _
@@ -388,6 +428,9 @@ Public Sub Particle_Group_Make(ByVal particle_group_index As Long, ByVal map_x A
    Optional ByVal move_y1 As Integer, Optional ByVal move_y2 As Integer, Optional ByVal YMove As Boolean, _
    Optional ByVal spin_speedH As Single, Optional ByVal spin As Boolean, Optional grh_resize As Boolean, _
    Optional grh_resizex As Integer, Optional grh_resizey As Integer)
+    
+    On Error GoTo Particle_Group_Make_Err
+    
                                 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -488,6 +531,13 @@ Public Sub Particle_Group_Make(ByVal particle_group_index As Long, ByVal map_x A
 
     End If
     
+    
+    Exit Sub
+
+Particle_Group_Make_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Make", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Char_Particle_Group_Make(ByVal particle_group_index As Long, ByVal char_index As Integer, ByVal particle_char_index As Integer, _
@@ -505,6 +555,9 @@ Public Sub Char_Particle_Group_Make(ByVal particle_group_index As Long, ByVal ch
    Optional ByVal move_y1 As Integer, Optional ByVal move_y2 As Integer, Optional ByVal YMove As Boolean, _
    Optional ByVal spin_speedH As Single, Optional ByVal spin As Boolean, Optional grh_resize As Boolean, _
    Optional grh_resizex As Integer, Optional grh_resizey As Integer)
+    
+    On Error GoTo Char_Particle_Group_Make_Err
+    
                                 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -600,9 +653,19 @@ Public Sub Char_Particle_Group_Make(ByVal particle_group_index As Long, ByVal ch
     charlist(char_index).particle_group(particle_char_index) = particle_group_index
 
     'MsgBox particle_group_list(particle_group_index).stream_type
+    
+    Exit Sub
+
+Char_Particle_Group_Make_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Make", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Particle_Incrementar(ByVal id As Integer)
+    
+    On Error GoTo Particle_Incrementar_Err
+    
 
     If particle_group_list(id).Creando < particle_group_list(id).particle_count Then
         particle_group_list(id).Creando = particle_group_list(id).Creando + 1
@@ -616,9 +679,19 @@ Public Sub Particle_Incrementar(ByVal id As Integer)
 
     End If
 
+    
+    Exit Sub
+
+Particle_Incrementar_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Incrementar", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal screen_x As Integer, ByVal screen_y As Integer)
+    
+    On Error GoTo Particle_Group_Render_Err
+    
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -627,7 +700,7 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
     'Last Modify Date: 5/15/2003
     'Renders a particle stream at a paticular screen point
     '*****************************************************************
-    On Error Resume Next
+    
 
     Dim loopc            As Long
 
@@ -745,6 +818,13 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
 
     End If
 
+    
+    Exit Sub
+
+Particle_Group_Render_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Render", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As Integer, ByVal screen_y As Integer, _
@@ -767,6 +847,9 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     'Modified by: Juan Martín Sotuyo Dodero
     'Last Modify Date: 5/15/2003
     '**************************************************************
+    
+    On Error GoTo Particle_Render_Err
+    
 
     If no_move = False Then
 
@@ -774,8 +857,8 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
             'Start new particle
             InitGrh temp_particle.grh, grh_index
             temp_particle.grh.Alpha = alpha_blend
-            temp_particle.X = RandomNumber(x1, x2) - (32 / 2)
-            temp_particle.Y = RandomNumber(y1, y2) - (32 / 2)
+            temp_particle.x = RandomNumber(x1, x2) - (32 / 2)
+            temp_particle.y = RandomNumber(y1, y2) - (32 / 2)
             temp_particle.vector_x = RandomNumber(vecx1, vecx2)
             temp_particle.vector_y = RandomNumber(vecy1, vecy2)
             temp_particle.Angle = Angle
@@ -795,7 +878,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
             If gravity = True Then
                 temp_particle.vector_y = temp_particle.vector_y + grav_strength
 
-                If temp_particle.Y > 0 Then
+                If temp_particle.y > 0 Then
                     'bounce
                     temp_particle.vector_y = bounce_strength
 
@@ -815,8 +898,8 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
         End If
         
         'Add in vector
-        temp_particle.X = temp_particle.X + (temp_particle.vector_x \ temp_particle.friction)
-        temp_particle.Y = temp_particle.Y + (temp_particle.vector_y \ temp_particle.friction)
+        temp_particle.x = temp_particle.x + (temp_particle.vector_x \ temp_particle.friction)
+        temp_particle.y = temp_particle.y + (temp_particle.vector_y \ temp_particle.friction)
     
         'decrement counter
         temp_particle.alive_counter = temp_particle.alive_counter - 1
@@ -850,7 +933,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     
         If temp_particle.grh.GrhIndex Then
     
-            Grh_Render_Advance temp_particle.grh, temp_particle.X + screen_x, temp_particle.Y + screen_y, grh_resizex, grh_resizey, rgb_list(), True, True, alpha_blend
+            Grh_Render_Advance temp_particle.grh, temp_particle.x + screen_x, temp_particle.y + screen_y, grh_resizex, grh_resizey, rgb_list(), True, True, alpha_blend
             
             Exit Sub
 
@@ -860,13 +943,23 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
 
     If temp_particle.grh.GrhIndex Then
 
-        Grh_Render temp_particle.grh, temp_particle.X + screen_x, temp_particle.Y + screen_y, rgb_list(), True, True, alpha_blend
+        Grh_Render temp_particle.grh, temp_particle.x + screen_x, temp_particle.y + screen_y, rgb_list(), True, True, alpha_blend
 
     End If
+    
+    
+    Exit Sub
+
+Particle_Render_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Render", Erl)
+    Resume Next
     
 End Sub
 
 Public Function Particle_Type_Get(ByVal particle_Index As Long) As Long
+    
+    On Error GoTo Particle_Type_Get_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
@@ -878,6 +971,13 @@ Public Function Particle_Type_Get(ByVal particle_Index As Long) As Long
 
     End If
 
+    
+    Exit Function
+
+Particle_Type_Get_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Type_Get", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Engine_MeteoParticle_Get() As Long
@@ -885,11 +985,24 @@ Public Function Engine_MeteoParticle_Get() As Long
     'Author: Augusto José Rando
     'Last Modify Date: 6/11/2002
     '*****************************************************************
+    
+    On Error GoTo Engine_MeteoParticle_Get_Err
+    
     Engine_MeteoParticle_Get = MeteoParticle
 
+    
+    Exit Function
+
+Engine_MeteoParticle_Get_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Get", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Map_Particle_Group_Get(ByVal map_x As Integer, ByVal map_y As Integer) As Long
+    
+    On Error GoTo Map_Particle_Group_Get_Err
+    
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -903,6 +1016,13 @@ Public Function Map_Particle_Group_Get(ByVal map_x As Integer, ByVal map_y As In
 
     End If
 
+    
+    Exit Function
+
+Map_Particle_Group_Get_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Map_Particle_Group_Get", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long)
@@ -910,6 +1030,9 @@ Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long)
     'Author: Augusto José Rando
     'Last Modify Date: 6/11/2002
     '*****************************************************************
+    
+    On Error GoTo Engine_MeteoParticle_Set_Err
+    
     
     If (meteo_part = -1) And (MeteoParticle <> 0) Then
         Call Particle_Group_Remove(MeteoParticle)
@@ -922,6 +1045,13 @@ Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long)
 
     End If
     
+    
+    Exit Sub
+
+Engine_MeteoParticle_Set_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Set", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Engine_spell_Particle_Set(ByVal spell_part As Long)
@@ -929,6 +1059,9 @@ Public Sub Engine_spell_Particle_Set(ByVal spell_part As Long)
     'Author: Augusto José Rando
     'Last Modify Date: 6/11/2002
     '*****************************************************************
+    
+    On Error GoTo Engine_spell_Particle_Set_Err
+    
     
     If (spell_part = -1) And (spell_particle <> 0) Then
         Call Particle_Group_Remove(spell_particle)
@@ -939,6 +1072,13 @@ Public Sub Engine_spell_Particle_Set(ByVal spell_part As Long)
 
     End If
     
+    
+    Exit Sub
+
+Engine_spell_Particle_Set_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_spell_Particle_Set", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Engine_Select_Particle_Set(ByVal Select_particle As Long)
@@ -946,6 +1086,9 @@ Public Sub Engine_Select_Particle_Set(ByVal Select_particle As Long)
     'Author: Augusto José Rando
     'Last Modify Date: 6/11/2002
     '*****************************************************************
+    
+    On Error GoTo Engine_Select_Particle_Set_Err
+    
     
     If (Select_particle = -1) And (Select_part <> 0) Then
         Call Particle_Group_Remove(Select_part)
@@ -956,9 +1099,19 @@ Public Sub Engine_Select_Particle_Set(ByVal Select_particle As Long)
 
     End If
     
+    
+    Exit Sub
+
+Engine_Select_Particle_Set_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_Select_Particle_Set", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function Particle_Group_Check(ByVal particle_group_index As Long) As Boolean
+    
+    On Error GoTo Particle_Group_Check_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -974,6 +1127,13 @@ Public Function Particle_Group_Check(ByVal particle_group_index As Long) As Bool
 
     End If
 
+    
+    Exit Function
+
+Particle_Group_Check_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Check", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Particle_Group_Next_Open() As Long
@@ -1016,6 +1176,9 @@ ErrorHandler:
 End Function
 
 Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal char_index As Integer, Optional ByVal particle_life As Long = 0) As Long
+    
+    On Error GoTo General_Char_Particle_Create_Err
+    
 
     If ParticulaInd = 0 Then Exit Function
 
@@ -1034,9 +1197,19 @@ Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal c
        StreamData(ParticulaInd).y2, StreamData(ParticulaInd).XMove, StreamData(ParticulaInd).move_x1, StreamData(ParticulaInd).move_x2, StreamData(ParticulaInd).move_y1, _
        StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey)
 
+    
+    Exit Function
+
+General_Char_Particle_Create_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.General_Char_Particle_Create", Erl)
+    Resume Next
+    
 End Function
 
-Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal X As Integer, ByVal Y As Integer, Optional ByVal particle_life As Long = 0) As Long
+Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As Integer, ByVal y As Integer, Optional ByVal particle_life As Long = 0) As Long
+    
+    On Error GoTo General_Particle_Create_Err
+    
 
     If ParticulaInd = 0 Then Exit Function
 
@@ -1047,7 +1220,7 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal X As I
     Call SetRGBA(rgb_list(2), StreamData(ParticulaInd).colortint(2).B, StreamData(ParticulaInd).colortint(2).G, StreamData(ParticulaInd).colortint(2).R)
     Call SetRGBA(rgb_list(3), StreamData(ParticulaInd).colortint(3).B, StreamData(ParticulaInd).colortint(3).G, StreamData(ParticulaInd).colortint(3).R)
 
-    General_Particle_Create = Graficos_Particulas.Particle_Group_Create(X, Y, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
+    General_Particle_Create = Graficos_Particulas.Particle_Group_Create(x, y, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
        StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).Angle, _
        StreamData(ParticulaInd).vecx1, StreamData(ParticulaInd).vecx2, StreamData(ParticulaInd).vecy1, StreamData(ParticulaInd).vecy2, _
        StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
@@ -1055,6 +1228,13 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal X As I
        StreamData(ParticulaInd).y2, StreamData(ParticulaInd).XMove, StreamData(ParticulaInd).move_x1, StreamData(ParticulaInd).move_x2, StreamData(ParticulaInd).move_y1, _
        StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey)
 
+    
+    Exit Function
+
+General_Particle_Create_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.General_Particle_Create", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Char_Particle_Group_Create(ByVal char_index As Integer, ByRef grh_index_list() As Long, ByRef rgb_list() As RGBA, _
@@ -1075,6 +1255,9 @@ Public Function Char_Particle_Group_Create(ByVal char_index As Integer, ByRef gr
     '**************************************************************
     'Author: Augusto José Rando
     '**************************************************************
+    
+    On Error GoTo Char_Particle_Group_Create_Err
+    
 
     Dim char_part_free_index As Integer
     
@@ -1089,6 +1272,13 @@ Public Function Char_Particle_Group_Create(ByVal char_index As Integer, ByRef gr
 
     End If
 
+    
+    Exit Function
+
+Char_Particle_Group_Create_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Create", Erl)
+    Resume Next
+    
 End Function
 
 
@@ -1096,6 +1286,9 @@ Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal st
     '**************************************************************
     'Author: Augusto José Rando
     '**************************************************************
+    
+    On Error GoTo Char_Particle_Group_Remove_Err
+    
 
     Dim char_part_index As Integer
 
@@ -1114,9 +1307,19 @@ Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal st
         'Ladder
     End If
 
+    
+    Exit Function
+
+Char_Particle_Group_Remove_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Char_Particle_Group_Remove_All(ByVal char_index As Integer)
+    
+    On Error GoTo Char_Particle_Group_Remove_All_Err
+    
 
     '**************************************************************
     'Author: Augusto José Rando
@@ -1131,6 +1334,13 @@ Public Function Char_Particle_Group_Remove_All(ByVal char_index As Integer)
         Next i
 
     End If
+    
+    
+    Exit Function
+
+Char_Particle_Group_Remove_All_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove_All", Erl)
+    Resume Next
     
 End Function
 

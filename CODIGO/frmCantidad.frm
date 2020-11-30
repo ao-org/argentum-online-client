@@ -109,43 +109,106 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgCerrar_Click()
+    
+    On Error GoTo imgCerrar_Click_Err
+    
     Unload Me
+    
+    Exit Sub
+
+imgCerrar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgCerrar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgCerrar_MouseDown_Err
+    
     imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     imgCerrar.Tag = "1"
+    
+    Exit Sub
+
+imgCerrar_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgCerrar_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgCerrar_MouseMove_Err
+    
     If imgCerrar.Tag = "0" Then
         imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         imgCerrar.Tag = "1"
     End If
+    
+    Exit Sub
+
+imgCerrar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgCerrar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgMas_Click()
+    
+    On Error GoTo imgMas_Click_Err
+    
     If Val(Text1.Text) < MAX_INVENTORY_OBJS Then
         Text1.Text = Val(Text1.Text) + 1
     End If
+    
+    Exit Sub
+
+imgMas_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgMas_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgMenos_Click()
+    
+    On Error GoTo imgMenos_Click_Err
+    
     If Val(Text1.Text) > 0 Then
         Text1.Text = Val(Text1.Text) - 1
     End If
+    
+    Exit Sub
+
+imgMenos_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgMenos_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Text1_KeyPress_Err
+    
 
     If (KeyAscii <> 8) Then
         If (KeyAscii < 48 Or KeyAscii > 57) Then
@@ -155,21 +218,48 @@ Private Sub Text1_KeyPress(KeyAscii As Integer)
 
     End If
 
+    
+    Exit Sub
+
+Text1_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.Text1_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     Text1.SelStart = 1
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Text1_Change()
@@ -195,6 +285,9 @@ errhandler:
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     moverForm
 
     If tirar.Tag = "1" Then
@@ -214,9 +307,19 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         imgCerrar.Tag = "0"
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub tirar_click()
+    
+    On Error GoTo tirar_click_Err
+    
     
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
 
@@ -225,14 +328,14 @@ Private Sub tirar_click()
     If LenB(frmCantidad.Text1.Text) > 0 Then
         If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
         
-        If frmmain.Inventario.SelectedItem <> FLAGORO Then
+        If frmMain.Inventario.SelectedItem <> FLAGORO Then
         
-            If ObjData(frmmain.Inventario.OBJIndex(frmmain.Inventario.SelectedItem)).Destruye = 0 Then
-                Call WriteDrop(frmmain.Inventario.SelectedItem, frmCantidad.Text1.Text)
+            If ObjData(frmMain.Inventario.OBJIndex(frmMain.Inventario.SelectedItem)).Destruye = 0 Then
+                Call WriteDrop(frmMain.Inventario.SelectedItem, frmCantidad.Text1.Text)
             Else
                 PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
                 Pregunta = True
-                DestItemSlot = frmmain.Inventario.SelectedItem
+                DestItemSlot = frmMain.Inventario.SelectedItem
                 DestItemCant = frmCantidad.Text1.Text
                 
                 PreguntaLocal = True
@@ -241,7 +344,7 @@ Private Sub tirar_click()
             End If
 
         Else
-            Call WriteDrop(frmmain.Inventario.SelectedItem, frmCantidad.Text1.Text)
+            Call WriteDrop(frmMain.Inventario.SelectedItem, frmCantidad.Text1.Text)
 
         End If
         
@@ -251,14 +354,34 @@ Private Sub tirar_click()
 
     Unload Me
 
+    
+    Exit Sub
+
+tirar_click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirar_click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub tirar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo tirar_MouseDown_Err
+    
 
     tirar.Picture = LoadInterface("boton-tirar-es-off.bmp")
+    
+    Exit Sub
+
+tirar_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirar_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub tirar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo tirar_MouseMove_Err
+    
 
     If tirar.Tag = "0" Then
         tirar.Picture = LoadInterface("boton-tirar-es-over.bmp")
@@ -266,24 +389,34 @@ Private Sub tirar_MouseMove(Button As Integer, Shift As Integer, x As Single, y 
 
     End If
 
+    
+    Exit Sub
+
+tirar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub tirartodo_click()
+    
+    On Error GoTo tirartodo_click_Err
+    
 
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
 
     Call Sound.Sound_Play(SND_CLICK)
 
-    If frmmain.Inventario.SelectedItem = 0 Then Exit Sub
+    If frmMain.Inventario.SelectedItem = 0 Then Exit Sub
 
-    If frmmain.Inventario.SelectedItem <> FLAGORO Then
-        If ObjData(frmmain.Inventario.OBJIndex(frmmain.Inventario.SelectedItem)).Destruye = 0 Then
-            Call WriteDrop(frmmain.Inventario.SelectedItem, frmmain.Inventario.Amount(frmmain.Inventario.SelectedItem))
+    If frmMain.Inventario.SelectedItem <> FLAGORO Then
+        If ObjData(frmMain.Inventario.OBJIndex(frmMain.Inventario.SelectedItem)).Destruye = 0 Then
+            Call WriteDrop(frmMain.Inventario.SelectedItem, frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem))
         Else
             PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
             Pregunta = True
-            DestItemSlot = frmmain.Inventario.SelectedItem
-            DestItemCant = frmmain.Inventario.Amount(frmmain.Inventario.SelectedItem)
+            DestItemSlot = frmMain.Inventario.SelectedItem
+            DestItemCant = frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem)
             
             PreguntaLocal = True
             PreguntaNUM = 1
@@ -294,10 +427,10 @@ Private Sub tirartodo_click()
     Else
 
         If UserGLD > 100000 Then
-            Call WriteDrop(frmmain.Inventario.SelectedItem, 100000)
+            Call WriteDrop(frmMain.Inventario.SelectedItem, 100000)
             Unload Me
         Else
-            Call WriteDrop(frmmain.Inventario.SelectedItem, UserGLD)
+            Call WriteDrop(frmMain.Inventario.SelectedItem, UserGLD)
             Unload Me
 
         End If
@@ -306,13 +439,33 @@ Private Sub tirartodo_click()
 
     frmCantidad.Text1.Text = ""
 
+    
+    Exit Sub
+
+tirartodo_click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirartodo_click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub tirartodo_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo tirartodo_MouseDown_Err
+    
     tirartodo.Picture = LoadInterface("boton-tirar-todo-es-off.bmp")
+    
+    Exit Sub
+
+tirartodo_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirartodo_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub tirartodo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo tirartodo_MouseMove_Err
+    
 
     If tirartodo.Tag = "0" Then
         tirartodo.Picture = LoadInterface("boton-tirar-todo-es-over.bmp")
@@ -320,5 +473,12 @@ Private Sub tirartodo_MouseMove(Button As Integer, Shift As Integer, x As Single
 
     End If
 
+    
+    Exit Sub
+
+tirartodo_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirartodo_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 

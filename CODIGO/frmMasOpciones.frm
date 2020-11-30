@@ -114,8 +114,11 @@ Private Const WS_EX_LAYERED = &H80000
  Se le pasa el Hwnd del formulario en cuestión
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    
+    On Error GoTo Is_Transparent_Err
+    
 
-    On Error Resume Next
+    
   
     Dim msg As Long
   
@@ -133,14 +136,24 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
     End If
   
+    
+    Exit Function
+
+Is_Transparent_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Is_Transparent", Erl)
+    Resume Next
+    
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    
+    On Error GoTo Aplicar_Transparencia_Err
+    
   
     Dim msg As Long
   
-    On Error Resume Next
+    
   
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
@@ -162,6 +175,13 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
 
     End If
   
+    
+    Exit Function
+
+Aplicar_Transparencia_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Aplicar_Transparencia", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Form_Activate()
@@ -171,13 +191,26 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("opcioneslogeo.bmp")
     Call Aplicar_Transparencia(Me.hwnd, 240)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     Image1(0).Picture = Nothing
 
     Image1(1).Picture = Nothing
@@ -193,9 +226,19 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Image1(4).Tag = "0"
     Image1(5).Tag = "0"
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
+    
+    On Error GoTo Image1_Click_Err
+    
     Call Sound.Sound_Play(SND_CLICK)
     Unload Me
 
@@ -205,9 +248,9 @@ Private Sub Image1_Click(Index As Integer)
             Call Sound.Sound_Play(SND_CLICK)
             Unload Me
 
-            If frmmain.Socket1.Connected Then
-                frmmain.Socket1.Disconnect
-                frmmain.Socket1.Cleanup
+            If frmMain.Socket1.Connected Then
+                frmMain.Socket1.Disconnect
+                frmMain.Socket1.Cleanup
                 DoEvents
 
             End If
@@ -243,9 +286,19 @@ Private Sub Image1_Click(Index As Integer)
 
     End Select
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     Select Case Index
 
@@ -299,9 +352,19 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
 
     End Select
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseDown_Err
+    
     Exit Sub
 
     Select Case Index
@@ -332,8 +395,11 @@ Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integ
 
     End Select
 
-End Sub
+    
+    Exit Sub
 
-Private Sub Image4_Click(Index As Integer)
-
+Image1_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Image1_MouseDown", Erl)
+    Resume Next
+    
 End Sub

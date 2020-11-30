@@ -104,6 +104,9 @@ End Enum
 ' @remarks  Must be donde after creating the timer and before using it, otherwise, Interval will be 0
 
 Public Sub SetInterval(ByVal TimerIndex As TimersIndex, ByVal Interval As Long)
+    
+    On Error GoTo SetInterval_Err
+    
 
     '*************************************************
     'Author: Nacho (Integer)
@@ -114,6 +117,13 @@ Public Sub SetInterval(ByVal TimerIndex As TimersIndex, ByVal Interval As Long)
     
     Timer(TimerIndex).Interval = Interval
 
+    
+    Exit Sub
+
+SetInterval_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTimer.SetInterval", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -123,6 +133,9 @@ End Sub
 ' @remarks  Do this for starting the timer.
 
 Public Sub Start(ByVal TimerIndex As TimersIndex)
+    
+    On Error GoTo Start_Err
+    
 
     '*************************************************
     'Author: Nacho (Integer)
@@ -133,6 +146,13 @@ Public Sub Start(ByVal TimerIndex As TimersIndex)
     
     Timer(TimerIndex).Run = True 'We allow the Timer to run.
 
+    
+    Exit Sub
+
+Start_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTimer.Start", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -142,6 +162,9 @@ End Sub
 ' @remarks  Makes the Timer continue from where it had stoped.
 
 Public Sub Continue(ByVal TimerIndex As TimersIndex)
+    
+    On Error GoTo Continue_Err
+    
 
     '*************************************************
     'Author: Nacho (Integer)
@@ -155,6 +178,13 @@ Public Sub Continue(ByVal TimerIndex As TimersIndex)
     'We´ll set the StartTick again
     Timer(TimerIndex).StartTick = Timer(TimerIndex).StartTick + Timer(TimerIndex).CurrentTick
 
+    
+    Exit Sub
+
+Continue_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTimer.Continue", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -164,6 +194,9 @@ End Sub
 ' @remarks  Can be resumed with Continue()
 
 Public Sub Pause(ByVal TimerIndex As TimersIndex)
+    
+    On Error GoTo Pause_Err
+    
 
     '*************************************************
     'Author: Nacho (Integer)
@@ -176,6 +209,13 @@ Public Sub Pause(ByVal TimerIndex As TimersIndex)
     
     Timer(TimerIndex).CurrentTick = FrameTime - Timer(TimerIndex).StartTick 'Calculates acutual tick
 
+    
+    Exit Sub
+
+Pause_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTimer.Pause", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -187,6 +227,9 @@ End Sub
 ' @remarks  Can´t be done if the timer is stoped or if it had never been started.
 
 Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boolean = True) As Boolean
+    
+    On Error GoTo Check_Err
+    
 
     '*************************************************
     'Author: Nacho Agustin (Integer)
@@ -211,6 +254,13 @@ Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boole
 
     End If
 
+    
+    Exit Function
+
+Check_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTimer.Check", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -219,6 +269,9 @@ End Function
 ' @param TimerIndex Timer´s Index
 
 Public Sub Restart(ByVal TimerIndex As TimersIndex)
+    
+    On Error GoTo Restart_Err
+    
 
     '*************************************************
     'Author: Nacho Agustin (Integer)
@@ -229,5 +282,12 @@ Public Sub Restart(ByVal TimerIndex As TimersIndex)
     
     Timer(TimerIndex).StartTick = FrameTime
 
+    
+    Exit Sub
+
+Restart_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTimer.Restart", Erl)
+    Resume Next
+    
 End Sub
 

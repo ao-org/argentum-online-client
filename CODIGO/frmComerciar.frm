@@ -202,15 +202,28 @@ Public WithEvents InvComNpc As clsGrapchicalInventory ' Inventario con los items
 Attribute InvComNpc.VB_VarHelpID = -1
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cantidad_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo cantidad_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
@@ -225,9 +238,19 @@ Private Sub cantidad_KeyPress(KeyAscii As Integer)
 
     End If
 
+    
+    Exit Sub
+
+cantidad_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cantidad_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseDown_Err
+    
 
     Call Sound.Sound_Play(SND_CLICK)
     
@@ -249,9 +272,19 @@ Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As 
     tmrNumber.Interval = 30
     tmrNumber.Enabled = True
 
+    
+    Exit Sub
+
+cmdMasMenos_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cmdMasMenos_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseMove_Err
+    
 
     Select Case Index
 
@@ -273,24 +306,54 @@ Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As 
 
     End Select
 
+    
+    Exit Sub
+
+cmdMasMenos_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cmdMasMenos_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseUp_Err
+    
     Call Form_MouseMove(Button, Shift, x, y)
     tmrNumber.Enabled = False
 
+    
+    Exit Sub
+
+cmdMasMenos_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cmdMasMenos_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
+    
+    On Error GoTo Image1_Click_Err
+    
     Call Sound.Sound_Play(SND_CLICK)
     
     If Not IsNumeric(cantidad.Text) Then Exit Sub
@@ -307,7 +370,7 @@ Private Sub Image1_Click(Index As Integer)
             If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
                 Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
             Else
-                AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+                AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
 
             End If
        
@@ -321,15 +384,35 @@ Private Sub Image1_Click(Index As Integer)
 
     End Select
     
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     cantidad.BackColor = RGB(18, 19, 13)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     moverForm
 
     If Image1(0).Tag = "1" Then
@@ -356,9 +439,19 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub addRemove_Click(Index As Integer)
+    
+    On Error GoTo addRemove_Click_Err
+    
     Call Sound.Sound_Play(SND_CLICK)
 
     Select Case Index
@@ -371,9 +464,19 @@ Private Sub addRemove_Click(Index As Integer)
 
     End Select
 
+    
+    Exit Sub
+
+addRemove_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.addRemove_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cantidad_Change()
+    
+    On Error GoTo cantidad_Change_Err
+    
 
     If Val(cantidad.Text) < 0 Then
         cantidad.Text = 1
@@ -390,14 +493,34 @@ Private Sub cantidad_Change()
     
     InvComUsu.ReDraw
 
+    
+    Exit Sub
+
+cantidad_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cantidad_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    
+    On Error GoTo Form_Unload_Err
+    
     Call WriteCommerceEnd
 
+    
+    Exit Sub
+
+Form_Unload_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Form_Unload", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseDown_Err
+    
 
     If Index = 0 Then
         Image1(0).Picture = LoadInterface("boton-comprar-ES-off.bmp")
@@ -408,9 +531,19 @@ Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integ
 
     End If
 
+    
+    Exit Sub
+
+Image1_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Image1_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Index = 0 Then
         If Image1(0).Tag = "0" Then
@@ -429,9 +562,19 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
 
     End If
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub interface_Click()
+    
+    On Error GoTo interface_Click_Err
+    
     
     If InvComNpc.ClickedInside Then
         ' Cliqueé en la tienda, deselecciono el inventario
@@ -443,9 +586,19 @@ Private Sub interface_Click()
 
     End If
 
+    
+    Exit Sub
+
+interface_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.interface_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub interface_DblClick()
+    
+    On Error GoTo interface_DblClick_Err
+    
 
     If InvComNpc.ClickedInside Then
         
@@ -456,7 +609,7 @@ Private Sub interface_DblClick()
         If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
             Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
         Else
-            AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
 
         End If
         
@@ -502,9 +655,19 @@ Private Sub interface_DblClick()
 
     End If
 
+    
+    Exit Sub
+
+interface_DblClick_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.interface_DblClick", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub interface_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo interface_KeyDown_Err
+    
 
     ' Referencia temporal al inventario que corresponda
     Dim CurrentInventory As clsGrapchicalInventory
@@ -554,9 +717,19 @@ Private Sub interface_KeyDown(KeyCode As Integer, Shift As Integer)
     ' Limpiamos
     Set CurrentInventory = Nothing
 
+    
+    Exit Sub
+
+interface_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.interface_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub InvComUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    
+    On Error GoTo InvComUsu_ItemDropped_Err
+    
 
     ' Si soltó dentro del mismo inventario
     If Drop > 0 Then
@@ -574,9 +747,19 @@ Private Sub InvComUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
 
     End If
 
+    
+    Exit Sub
+
+InvComUsu_ItemDropped_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.InvComUsu_ItemDropped", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    
+    On Error GoTo InvComNpc_ItemDropped_Err
+    
 
     ' Si lo soltó dentro del inventario
     If InvComUsu.GetSlot(x, y) > 0 Then
@@ -587,20 +770,40 @@ Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         If UserGLD >= InvComNpc.Valor(Drag) * Val(cantidad.Text) Then
             Call WriteCommerceBuy(Drag, Val(cantidad.Text))
         Else
-            AddtoRichTextBox frmmain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
 
         End If
 
     End If
 
+    
+    Exit Sub
+
+InvComNpc_ItemDropped_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.InvComNpc_ItemDropped", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub salir_Click()
+    
+    On Error GoTo salir_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+salir_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.salir_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub tmrNumber_Timer()
+    
+    On Error GoTo tmrNumber_Timer_Err
+    
 
     Const MIN_NUMBER = 1
 
@@ -623,4 +826,11 @@ Private Sub tmrNumber_Timer()
 
     End If
 
+    
+    Exit Sub
+
+tmrNumber_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciar.tmrNumber_Timer", Erl)
+    Resume Next
+    
 End Sub

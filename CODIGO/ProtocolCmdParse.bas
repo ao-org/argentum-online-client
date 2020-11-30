@@ -20,6 +20,9 @@ End Enum
 ' @remarks  None Known.
 
 Public Sub ParseUserCommand(ByVal RawCommand As String)
+    
+    On Error GoTo ParseUserCommand_Err
+    
 
     '***************************************************
     'Author: Alejandro Santos (AlejoLp)
@@ -339,7 +342,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/GM"
-                FrmGmAyuda.Show vbModeless, frmmain
+                FrmGmAyuda.Show vbModeless, frmMain
                  
             Case "/OFERTAINICIAL"
                 If notNullArguments Then
@@ -429,7 +432,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/CONTRASEÑA"
-                Call frmNewPassword.Show(vbModal, frmmain)
+                Call frmNewPassword.Show(vbModal, frmMain)
             
             Case "/APOSTAR"
                 If UserEstado = 1 Then 'Muerto
@@ -711,9 +714,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/LUZ"
                 If EsGM Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then
-                        Call LucesRedondas.Create_Light_To_Map(UserPos.X, UserPos.Y, COLOR_WHITE(0), Val(ArgumentosRaw))
+                        Call LucesRedondas.Create_Light_To_Map(UserPos.x, UserPos.y, COLOR_WHITE(0), Val(ArgumentosRaw))
                     Else
-                        Call LucesRedondas.Create_Light_To_Map(UserPos.X, UserPos.Y, COLOR_WHITE(0), 10)
+                        Call LucesRedondas.Create_Light_To_Map(UserPos.x, UserPos.y, COLOR_WHITE(0), 10)
                     End If
                 End If
                 
@@ -1140,7 +1143,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/CC"
                 If EsGM Then
                     frmSpawnList.FillList
-                    frmSpawnList.Show , frmmain
+                    frmSpawnList.Show , frmMain
                 End If
                 
             Case "/CO"
@@ -1164,7 +1167,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     Next i
 
-                    FrmObjetos.Show , frmmain
+                    FrmObjetos.Show , frmMain
 
                 End If
                 
@@ -2078,6 +2081,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
     End If
 
+    
+    Exit Sub
+
+ParseUserCommand_Err:
+    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.ParseUserCommand", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -2096,8 +2106,18 @@ Public Sub ShowConsoleMsg(ByVal Message As String, Optional ByVal red As Integer
     'Last Modification: 01/03/07
     '
     '***************************************************
-    Call AddtoRichTextBox(frmmain.RecTxt, Message, red, green, blue, bold, italic)
+    
+    On Error GoTo ShowConsoleMsg_Err
+    
+    Call AddtoRichTextBox(frmMain.RecTxt, Message, red, green, blue, bold, italic)
 
+    
+    Exit Sub
+
+ShowConsoleMsg_Err:
+    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.ShowConsoleMsg", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -2107,6 +2127,9 @@ End Sub
 ' @param    Tipo The acceptable type of number.
 
 Public Function ValidNumber(ByVal Numero As String, ByVal TIPO As eNumber_Types) As Boolean
+    
+    On Error GoTo ValidNumber_Err
+    
 
     '***************************************************
     'Author: Nicolas Matias Gonzalez (NIGO)
@@ -2141,6 +2164,13 @@ Public Function ValidNumber(ByVal Numero As String, ByVal TIPO As eNumber_Types)
     
     If Val(Numero) >= Minimo And Val(Numero) <= Maximo Then ValidNumber = True
 
+    
+    Exit Function
+
+ValidNumber_Err:
+    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.ValidNumber", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -2149,6 +2179,9 @@ End Function
 ' @param    IP The ip to be checked.
 
 Private Function validipv4str(ByVal IP As String) As Boolean
+    
+    On Error GoTo validipv4str_Err
+    
 
     '***************************************************
     'Author: Nicolas Matias Gonzalez (NIGO)
@@ -2165,6 +2198,13 @@ Private Function validipv4str(ByVal IP As String) As Boolean
     
     validipv4str = True
 
+    
+    Exit Function
+
+validipv4str_Err:
+    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.validipv4str", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -2173,6 +2213,9 @@ End Function
 ' @param    IP The ip to be converted.
 
 Private Function str2ipv4l(ByVal IP As String) As Byte()
+    
+    On Error GoTo str2ipv4l_Err
+    
 
     '***************************************************
     'Author: Nicolas Matias Gonzalez (NIGO)
@@ -2195,6 +2238,13 @@ Private Function str2ipv4l(ByVal IP As String) As Byte()
 
     str2ipv4l = bArr
 
+    
+    Exit Function
+
+str2ipv4l_Err:
+    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.str2ipv4l", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -2204,6 +2254,9 @@ End Function
 ' @return An bidimensional array with user and mail
 
 Private Function AEMAILSplit(ByRef Text As String) As String()
+    
+    On Error GoTo AEMAILSplit_Err
+    
 
     '***************************************************
     'Author: Lucas Tavolaro Ortuz (Tavo)
@@ -2230,4 +2283,11 @@ Private Function AEMAILSplit(ByRef Text As String) As String()
     
     AEMAILSplit = tmpArr
 
+    
+    Exit Function
+
+AEMAILSplit_Err:
+    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.AEMAILSplit", Erl)
+    Resume Next
+    
 End Function

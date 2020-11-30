@@ -7,8 +7,8 @@ Option Explicit
 
 Private Type Position
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 
 End Type
 
@@ -23,8 +23,8 @@ End Type
 Private Type tWorldPos
 
     map As Integer
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 
 End Type
 
@@ -68,35 +68,88 @@ Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency A
 Private lFrameTimer              As Long
 
 Public Function DirGraficos() As String
+    
+    On Error GoTo DirGraficos_Err
+    
     DirGraficos = App.Path & "\..\Recursos\Graficos\"
 
+    
+    Exit Function
+
+DirGraficos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.DirGraficos", Erl)
+    Resume Next
+    
 End Function
 
 Public Function DirSound() As String
+    
+    On Error GoTo DirSound_Err
+    
     DirSound = App.Path & "\..\Recursos\wav\"
 
+    
+    Exit Function
+
+DirSound_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.DirSound", Erl)
+    Resume Next
+    
 End Function
 
 Public Function DirMidi() As String
+    
+    On Error GoTo DirMidi_Err
+    
     DirMidi = App.Path & "\..\Recursos\midi\"
 
+    
+    Exit Function
+
+DirMidi_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.DirMidi", Erl)
+    Resume Next
+    
 End Function
 
 Public Function DirMapas() As String
+    
+    On Error GoTo DirMapas_Err
+    
     DirMapas = App.Path & "\..\Recursos\mapas\"
 
+    
+    Exit Function
+
+DirMapas_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.DirMapas", Erl)
+    Resume Next
+    
 End Function
 
 Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long) As Long
     'Initialize randomizer
+    
+    On Error GoTo RandomNumber_Err
+    
     Randomize Timer
     
     'Generate random number
     RandomNumber = (UpperBound - LowerBound) * Rnd + LowerBound
 
+    
+    Exit Function
+
+RandomNumber_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.RandomNumber", Erl)
+    Resume Next
+    
 End Function
 
 Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = True, Optional ByVal Alignment As Byte = rtfLeft)
+    
+    On Error GoTo AddtoRichTextBox2_Err
+    
     
     '****************************************************
     'Adds text to a Richtext box at the bottom.
@@ -109,7 +162,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
     'Jopi 17/08/2019 : Ahora podes especificar el alineamiento del texto.
     '****************************************************
 
-    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
 
     With RichTextBox
         
@@ -140,16 +193,26 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         .SelText = Text
 
         ' Esto arregla el bug de las letras superponiendose la consola del frmMain
-        If Not (RichTextBox = frmmain.RecTxt) Then
+        If Not (RichTextBox = frmMain.RecTxt) Then
             RichTextBox.Refresh
 
         End If
 
     End With
     
+    
+    Exit Sub
+
+AddtoRichTextBox2_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.AddtoRichTextBox2", Erl)
+    Resume Next
+    
 End Sub
 
 Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = False, Optional ByVal FontTypeIndex As Byte = 0)
+    
+    On Error GoTo AddtoRichTextBox_Err
+    
 
     '******************************************
     'Adds text to a Richtext box at the bottom.
@@ -189,14 +252,14 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     Dim i As Byte
  
     For i = 2 To MaxLineas
-        Con(i - 1).T = Con(i).T
+        Con(i - 1).t = Con(i).t
         'Con(i - 1).Color = Con(i).Color
         Con(i - 1).B = Con(i).B
         Con(i - 1).G = Con(i).G
         Con(i - 1).R = Con(i).R
     Next i
  
-    Con(MaxLineas).T = Text
+    Con(MaxLineas).t = Text
     Con(MaxLineas).B = blue
     Con(MaxLineas).G = green
     Con(MaxLineas).R = red
@@ -204,11 +267,21 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
  
     UltimaLineavisible = False
     
+    
+    Exit Sub
+
+AddtoRichTextBox_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.AddtoRichTextBox", Erl)
+    Resume Next
+    
 End Sub
 
 'TODO : Never was sure this is really necessary....
 'TODO : 08/03/2006 - (AlejoLp) Esto hay que volarlo...
 Public Sub RefreshAllChars()
+    
+    On Error GoTo RefreshAllChars_Err
+    
 
     '*****************************************************************
     'Goes through the charlist and replots all the characters on the map
@@ -219,15 +292,25 @@ Public Sub RefreshAllChars()
     For loopc = 1 To LastChar
     
         If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.X, charlist(loopc).Pos.Y).charindex = loopc
+            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
 
         End If
 
     Next loopc
 
+    
+    Exit Sub
+
+RefreshAllChars_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.RefreshAllChars", Erl)
+    Resume Next
+    
 End Sub
 
 Function AsciiValidos(ByVal cad As String) As Boolean
+    
+    On Error GoTo AsciiValidos_Err
+    
 
     Dim car As Byte
 
@@ -247,10 +330,20 @@ Function AsciiValidos(ByVal cad As String) As Boolean
     
     AsciiValidos = True
 
+    
+    Exit Function
+
+AsciiValidos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.AsciiValidos", Erl)
+    Resume Next
+    
 End Function
 
 Function CheckUserDataLoged() As Boolean
     'Validamos los datos del user
+    
+    On Error GoTo CheckUserDataLoged_Err
+    
     
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
         Call TextoAlAsistente("El email es inválido.")
@@ -282,9 +375,19 @@ Function CheckUserDataLoged() As Boolean
     
     CheckUserDataLoged = True
 
+    
+    Exit Function
+
+CheckUserDataLoged_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.CheckUserDataLoged", Erl)
+    Resume Next
+    
 End Function
 
 Function CheckUserData(ByVal checkemail As Boolean) As Boolean
+    
+    On Error GoTo CheckUserData_Err
+    
 
     'Validamos los datos del user
     Dim loopc     As Long
@@ -316,11 +419,21 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     
     CheckUserData = True
 
+    
+    Exit Function
+
+CheckUserData_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.CheckUserData", Erl)
+    Resume Next
+    
 End Function
 
 Sub UnloadAllForms()
+    
+    On Error GoTo UnloadAllForms_Err
+    
 
-    On Error Resume Next
+    
 
     Dim mifrm As Form
     
@@ -329,9 +442,19 @@ Sub UnloadAllForms()
         Unload mifrm
     Next
     
+    
+    Exit Sub
+
+UnloadAllForms_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.UnloadAllForms", Erl)
+    Resume Next
+    
 End Sub
 
 Function LegalCharacter(ByVal KeyAscii As Integer) As Boolean
+    
+    On Error GoTo LegalCharacter_Err
+    
 
     '*****************************************************************
     'Only allow characters that are Win 95 filename compatible
@@ -363,6 +486,13 @@ Function LegalCharacter(ByVal KeyAscii As Integer) As Boolean
     'else everything is cool
     LegalCharacter = True
 
+    
+    Exit Function
+
+LegalCharacter_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.LegalCharacter", Erl)
+    Resume Next
+    
 End Function
 
 Sub SetConnected()
@@ -370,12 +500,15 @@ Sub SetConnected()
     'Sets the client to "Connect" mode
     '*****************************************************************
     'Set Connected
+    
+    On Error GoTo SetConnected_Err
+    
     Connected = True
     
     'Unload the connect form
     'FrmCuenta.Visible = False
 
-    frmmain.Label8.Caption = UserName
+    frmMain.Label8.Caption = UserName
     LogeoAlgunaVez = True
     
     ' bTecho = False
@@ -385,56 +518,66 @@ Sub SetConnected()
     Call keysMovementPressedQueue.Clear
 
     If FPSFLAG Then
-        frmmain.Timerping.Enabled = True
+        frmMain.Timerping.Enabled = True
     Else
-        frmmain.Timerping.Enabled = False
+        frmMain.Timerping.Enabled = False
     End If
     
-    frmmain.UpdateLight.Enabled = True
-    frmmain.UpdateDaytime.Enabled = True
+    frmMain.UpdateLight.Enabled = True
+    frmMain.UpdateDaytime.Enabled = True
     light_transition = 1#
 
     COLOR_AZUL = RGB(0, 0, 0)
     
     ' establece el borde al listbox
-    Call Establecer_Borde(frmmain.hlst, frmmain, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmMain.hlst, frmMain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmmain.RecTxt.hwnd)
+    Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmmain.RecTxt.hwnd, frmmain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
-    Call Form_RemoveTitleBar(frmmain)
+    Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmmain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
-    frmmain.picInv.Visible = True
+    frmMain.picInv.Visible = True
      
-    frmmain.hlst.Visible = False
+    frmMain.hlst.Visible = False
 
-    frmmain.cmdlanzar.Visible = False
-    frmmain.imgSpellInfo.Visible = False
+    frmMain.cmdlanzar.Visible = False
+    frmMain.imgSpellInfo.Visible = False
 
-    frmmain.cmdMoverHechi(0).Visible = False
-    frmmain.cmdMoverHechi(1).Visible = False
+    frmMain.cmdMoverHechi(0).Visible = False
+    frmMain.cmdMoverHechi(1).Visible = False
     
-    Call frmmain.Inventario.ReDraw
+    Call frmMain.Inventario.ReDraw
     
-    frmmain.Left = 0
-    frmmain.Top = 0
-    frmmain.Width = 1024 * Screen.TwipsPerPixelX
-    frmmain.Height = 768 * Screen.TwipsPerPixelY
+    frmMain.Left = 0
+    frmMain.Top = 0
+    frmMain.Width = 1024 * Screen.TwipsPerPixelX
+    frmMain.Height = 768 * Screen.TwipsPerPixelY
 
-    frmmain.Visible = True
-    frmmain.cerrarcuenta.Enabled = True
+    frmMain.Visible = True
+    frmMain.cerrarcuenta.Enabled = True
 
+    
+    Exit Sub
+
+SetConnected_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.SetConnected", Erl)
+    Resume Next
+    
 End Sub
 
 Sub MoveTo(ByVal Direccion As E_Heading)
+    
+    On Error GoTo MoveTo_Err
+    
 
     '***************************************************
     'Author: Alejandro Santos (AlejoLp)
@@ -451,16 +594,16 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.X, UserPos.Y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.X + 1, UserPos.Y, Direccion)
+            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.X, UserPos.Y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.X - 1, UserPos.Y, Direccion)
+            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
 
     End Select
     
@@ -499,31 +642,38 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End If
     
-    frmmain.personaje(0).Left = UserPos.X - 5
-    frmmain.personaje(0).Top = UserPos.Y - 4
+    frmMain.personaje(0).Left = UserPos.x - 5
+    frmMain.personaje(0).Top = UserPos.y - 4
     
-    frmmain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
 
     If frmMapaGrande.Visible Then
 
-        Dim X As Long
+        Dim x As Long
 
-        Dim Y As Long
+        Dim y As Long
             
-        X = (idmap - 1) Mod 16
-        Y = Int((idmap - 1) / 16)
+        x = (idmap - 1) Mod 16
+        y = Int((idmap - 1) / 16)
 
-        frmMapaGrande.lblAllies.Top = Y * 27
-        frmMapaGrande.lblAllies.Left = X * 27
+        frmMapaGrande.lblAllies.Top = y * 27
+        frmMapaGrande.lblAllies.Left = x * 27
 
-        frmMapaGrande.Shape1.Top = Y * 27 + (UserPos.Y / 4.5)
-        frmMapaGrande.Shape1.Left = X * 27 + (UserPos.X / 4.5)
+        frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
+        frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
 
     End If
     
     ' Update 3D sounds!
     ' Call Audio.MoveListener(UserPos.x, UserPos.y)
-    If frmmain.macrotrabajo.Enabled Then frmmain.DesactivarMacroTrabajo
+    If frmMain.macrotrabajo.Enabled Then frmMain.DesactivarMacroTrabajo
+    
+    
+    Exit Sub
+
+MoveTo_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.MoveTo", Erl)
+    Resume Next
     
 End Sub
 
@@ -533,11 +683,24 @@ Sub RandomMove()
     'Last Modify Date: 06/03/2006
     ' 06/03/2006: AlejoLp - Ahora utiliza la funcion MoveTo
     '***************************************************
+    
+    On Error GoTo RandomMove_Err
+    
     Call MoveTo(RandomNumber(E_Heading.NORTH, E_Heading.WEST))
 
+    
+    Exit Sub
+
+RandomMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.RandomMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub AddMovementToKeysMovementPressedQueue()
+    
+    On Error GoTo AddMovementToKeysMovementPressedQueue_Err
+    
 
     If GetKeyState(BindKeys(14).KeyCode) < 0 Then
         If keysMovementPressedQueue.itemExist(BindKeys(14).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(14).KeyCode) ' Agrega la tecla al arraylist
@@ -571,11 +734,21 @@ Private Sub AddMovementToKeysMovementPressedQueue()
 
     End If
 
+    
+    Exit Sub
+
+AddMovementToKeysMovementPressedQueue_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.AddMovementToKeysMovementPressedQueue", Erl)
+    Resume Next
+    
 End Sub
 
 Sub Check_Keys()
+    
+    On Error GoTo Check_Keys_Err
+    
 
-    On Error Resume Next
+    
 
     Static lastMovement As Long
 
@@ -586,7 +759,7 @@ Sub Check_Keys()
     If Not Application.IsAppActive() Then Exit Sub
 
     If Not pausa And _
-        frmmain.Visible And _
+        frmMain.Visible And _
         Not frmComerciarUsu.Visible And _
         Not frmBancoObj.Visible And _
         Not frmOpciones.Visible And _
@@ -604,7 +777,7 @@ Sub Check_Keys()
         Not FrmCorreo.Visible And _
         Not FrmGmAyuda.Visible Then
  
-        If frmmain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub
+        If frmMain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub
  
         If UserMoving = 0 Then
             If Not UserEstupido Then
@@ -645,9 +818,19 @@ Sub Check_Keys()
 
     End If
 
+    
+    Exit Sub
+
+Check_Keys_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.Check_Keys", Erl)
+    Resume Next
+    
 End Sub
 
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
+    
+    On Error GoTo ReadField_Err
+    
 
     '*****************************************************************
     'Gets a field from a delimited string
@@ -676,9 +859,19 @@ Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As
 
     End If
 
+    
+    Exit Function
+
+ReadField_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.ReadField", Erl)
+    Resume Next
+    
 End Function
 
 Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
+    
+    On Error GoTo FieldCount_Err
+    
 
     '*****************************************************************
     'Gets the number of fields in a delimited string
@@ -704,18 +897,38 @@ Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
     
     FieldCount = count
 
+    
+    Exit Function
+
+FieldCount_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.FieldCount", Erl)
+    Resume Next
+    
 End Function
 
 Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As Boolean
+    
+    On Error GoTo FileExist_Err
+    
     FileExist = (Dir$(File, FileType) <> "")
 
+    
+    Exit Function
+
+FileExist_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.FileExist", Erl)
+    Resume Next
+    
 End Function
 
 Sub Main()
-
-    On Error Resume Next
+    
+    On Error GoTo Main_Err
 
     Call InitCommonControls
+    
+    ' Me fijo donde esta 'Mis Documentos'
+    CARPETA_LOGS = Application.GetSpecialfolder(CSIDL_DOCUMENTS) & "\Argentum20\"
     
     #If DEBUGGING = 0 Then
     
@@ -804,10 +1017,10 @@ Sub Main()
     Call SwitchMap(UserMap)
 
     'Inicializamos el socket
-    Call frmmain.Socket1.Startup
+    Call frmMain.Socket1.Startup
     
     'Set the dialog's font
-    Dialogos.font = frmmain.font
+    Dialogos.font = frmMain.font
     
     ' Load the form for screenshots
     Call Load(frmScreenshots)
@@ -821,17 +1034,37 @@ Sub Main()
     
     Call Start
  
+    
+    Exit Sub
+
+Main_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.Main", Erl)
+    Resume Next
+    
 End Sub
 
 Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
+    
+    On Error GoTo WriteVar_Err
+    
     writeprivateprofilestring Main, Var, Value, File
 
+    
+    Exit Sub
+
+WriteVar_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.WriteVar", Erl)
+    Resume Next
+    
 End Sub
 
 Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
+    
+    On Error GoTo GetVar_Err
+    
 
     '*****************************************************************
     'Gets a Var from a text file
@@ -845,6 +1078,13 @@ Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String)
     GetVar = RTrim$(sSpaces)
     GetVar = Left$(GetVar, Len(GetVar) - 1)
 
+    
+    Exit Function
+
+GetVar_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.GetVar", Erl)
+    Resume Next
+    
 End Function
 
 '[CODE 002]:MatuX
@@ -893,11 +1133,24 @@ End Function
 
 '  Corregida por Maraxus para que reconozca como válidas casillas con puntos antes de la arroba
 Private Function CMSValidateChar_(ByVal iAsc As Integer) As Boolean
+    
+    On Error GoTo CMSValidateChar__Err
+    
     CMSValidateChar_ = (iAsc >= 48 And iAsc <= 57) Or (iAsc >= 65 And iAsc <= 90) Or (iAsc >= 97 And iAsc <= 122) Or (iAsc = 95) Or (iAsc = 45) Or (iAsc = 46)
 
+    
+    Exit Function
+
+CMSValidateChar__Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.CMSValidateChar_", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub ShowSendTxt()
+    
+    On Error GoTo ShowSendTxt_Err
+    
 
     If Not frmCantidad.Visible Then
 
@@ -906,20 +1159,30 @@ Public Sub ShowSendTxt()
         'SendTxt.SetFocus
     End If
 
+    
+    Exit Sub
+
+ShowSendTxt_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.ShowSendTxt", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub LeerLineaComandos()
+    
+    On Error GoTo LeerLineaComandos_Err
+    
 
-    Dim T() As String
+    Dim t() As String
 
     Dim i   As Long
     
     'Parseo los comandos
-    T = Split(Command, " ")
+    t = Split(Command, " ")
 
-    For i = LBound(T) To UBound(T)
+    For i = LBound(t) To UBound(t)
 
-        Select Case UCase$(T(i))
+        Select Case UCase$(t(i))
 
             Case "/LAUNCHER" 'no cambiar la resolucion
                 Launcher = True
@@ -931,6 +1194,13 @@ Public Sub LeerLineaComandos()
 
     Next i
 
+    
+    Exit Sub
+
+LeerLineaComandos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.LeerLineaComandos", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub InicializarNombres()
@@ -939,6 +1209,9 @@ Private Sub InicializarNombres()
     'Last Modify Date: 11/27/2005
     'Inicializa los nombres de razas, ciudades, clases, skills, atributos, etc.
     '**************************************************************
+    
+    On Error GoTo InicializarNombres_Err
+    
 
     ListaRazas(eRaza.Humano) = "Humano"
     ListaRazas(eRaza.Elfo) = "Elfo"
@@ -1019,6 +1292,13 @@ Private Sub InicializarNombres()
     AtributosNames(eAtributos.Constitucion) = "Constitucion"
     AtributosNames(eAtributos.Carisma) = "Carisma"
 
+    
+    Exit Sub
+
+InicializarNombres_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.InicializarNombres", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -1033,8 +1313,18 @@ Public Sub CleanDialogs()
     'Clean console and dialogs
     'frmMain.RecTxt.Text = vbNullString
     
+    On Error GoTo CleanDialogs_Err
+    
+    
     Call Dialogos.RemoveAllDialogs
 
+    
+    Exit Sub
+
+CleanDialogs_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.CleanDialogs", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CloseClient()
@@ -1044,6 +1334,9 @@ Public Sub CloseClient()
     'Frees all used resources, cleans up and leaves
     '**************************************************************
     ' Allow new instances of the client to be opened
+    
+    On Error GoTo CloseClient_Err
+    
     Call PrevInstance.ReleaseInstance
     'StopURLDetect
 
@@ -1076,7 +1369,7 @@ Public Sub CloseClient()
     Call EndGame(True)
     
     ' Destruyo los inventarios
-    Set frmmain.Inventario = Nothing
+    Set frmMain.Inventario = Nothing
     Set frmComerciar.InvComNpc = Nothing
     Set frmComerciar.InvComUsu = Nothing
     Set frmBancoObj.InvBankUsu = Nothing
@@ -1086,9 +1379,19 @@ Public Sub CloseClient()
     ' Call UnloadAllForms
     End
 
+    
+    Exit Sub
+
+CloseClient_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.CloseClient", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function General_Field_Read(ByVal field_pos As Long, ByVal Text As String, ByVal delimiter As String) As String
+    
+    On Error GoTo General_Field_Read_Err
+    
 
     '*****************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -1116,9 +1419,19 @@ Public Function General_Field_Read(ByVal field_pos As Long, ByVal Text As String
 
     End If
 
+    
+    Exit Function
+
+General_Field_Read_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.General_Field_Read", Erl)
+    Resume Next
+    
 End Function
 
 Public Function General_Field_Count(ByVal Text As String, ByVal delimiter As Byte) As Long
+    
+    On Error GoTo General_Field_Count_Err
+    
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -1148,11 +1461,21 @@ Public Function General_Field_Count(ByVal Text As String, ByVal delimiter As Byt
 
     General_Field_Count = FieldNum + 1
 
+    
+    Exit Function
+
+General_Field_Count_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.General_Field_Count", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub InitServersList(ByVal Lst As String)
+    
+    On Error GoTo InitServersList_Err
+    
 
-    On Error Resume Next
+    
 
     Dim NumServers As Integer
 
@@ -1175,9 +1498,19 @@ Public Sub InitServersList(ByVal Lst As String)
 
     CurServer = 1
 
+    
+    Exit Sub
+
+InitServersList_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.InitServersList", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function General_Get_Elapsed_Time() As Single
+    
+    On Error GoTo General_Get_Elapsed_Time_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -1205,10 +1538,20 @@ Public Function General_Get_Elapsed_Time() As Single
     'Get next end time
     QueryPerformanceCounter end_time
 
+    
+    Exit Function
+
+General_Get_Elapsed_Time_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.General_Get_Elapsed_Time", Erl)
+    Resume Next
+    
 End Function
 
 
 Public Function max(ByVal A As Double, ByVal B As Double) As Double
+    
+    On Error GoTo max_Err
+    
 
     If A > B Then
         max = A
@@ -1217,9 +1560,19 @@ Public Function max(ByVal A As Double, ByVal B As Double) As Double
 
     End If
 
+    
+    Exit Function
+
+max_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.max", Erl)
+    Resume Next
+    
 End Function
 
 Public Function min(ByVal A As Double, ByVal B As Double) As Double
+    
+    On Error GoTo min_Err
+    
 
     If A < B Then
         min = A
@@ -1228,6 +1581,13 @@ Public Function min(ByVal A As Double, ByVal B As Double) As Double
 
     End If
 
+    
+    Exit Function
+
+min_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.min", Erl)
+    Resume Next
+    
 End Function
 
 Public Function LoadInterface(FileName As String) As IPicture
@@ -1249,6 +1609,9 @@ errhandler:
 End Function
 
 Public Function Tilde(ByRef Data As String) As String
+    
+    On Error GoTo Tilde_Err
+    
 
     Tilde = UCase$(Data)
  
@@ -1258,11 +1621,21 @@ Public Function Tilde(ByRef Data As String) As String
     Tilde = Replace$(Tilde, "Ó", "O")
     Tilde = Replace$(Tilde, "Ú", "U")
         
+    
+    Exit Function
+
+Tilde_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.Tilde", Erl)
+    Resume Next
+    
 End Function
 
 ' Copiado de https://www.vbforums.com/showthread.php?231468-VB-Detect-if-you-are-running-in-the-IDE
 Function RunningInVB() As Boolean
     'Returns whether we are running in vb(true), or compiled (false)
+    
+    On Error GoTo RunningInVB_Err
+    
  
     Static counter As Variant
 
@@ -1277,9 +1650,19 @@ Function RunningInVB() As Boolean
 
     RunningInVB = counter
  
+    
+    Exit Function
+
+RunningInVB_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.RunningInVB", Erl)
+    Resume Next
+    
 End Function
 
 Function GetTimeFromString(str As String) As Long
+    
+    On Error GoTo GetTimeFromString_Err
+    
     If Len(str) = 0 Then Exit Function
 
     Dim Splitted() As String
@@ -1304,4 +1687,11 @@ Function GetTimeFromString(str As String) As Long
 
     GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)
 
+    
+    Exit Function
+
+GetTimeFromString_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_General.GetTimeFromString", Erl)
+    Resume Next
+    
 End Function

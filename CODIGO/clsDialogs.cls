@@ -108,8 +108,18 @@ Private Sub Class_Initialize()
     'Last Modification: 07/28/07
     'Initializes the dialog instance
     '***************************************************
+    
+    On Error GoTo Class_Initialize_Err
+    
     dialogCount = 0
 
+    
+    Exit Sub
+
+Class_Initialize_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.Class_Initialize", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -126,6 +136,9 @@ Private Sub Class_Terminate()
 End Sub
 
 Private Function BinarySearch(ByVal charindex As Integer) As Integer
+    
+    On Error GoTo BinarySearch_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -162,6 +175,13 @@ Private Function BinarySearch(ByVal charindex As Integer) As Integer
     '(all higher values are to the right of the list and lower values are to the left)
     BinarySearch = Not min
 
+    
+    Exit Function
+
+BinarySearch_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.BinarySearch", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -176,6 +196,9 @@ End Function
 '           the chat is ignored.
 
 Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal Color As Long)
+    
+    On Error GoTo CreateDialog_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -183,19 +206,19 @@ Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal 
     'Changed life time of the dialogs to a variable amount,
     'depending on the number of chars
     '**************************************************************
-    Dim slot As Integer
+    Dim Slot As Integer
 
     Dim i    As Long
     
-    slot = BinarySearch(charindex)
+    Slot = BinarySearch(charindex)
     
-    If slot < 0 Then
+    If Slot < 0 Then
         If dialogCount = MAX_DIALOGS Then Exit Sub  'Out of space! Should never happen....
         
         'We need to add it. Get insertion index and move list backwards.
-        slot = Not slot
+        Slot = Not Slot
         
-        For i = dialogCount To slot + 1 Step -1
+        For i = dialogCount To Slot + 1 Step -1
             dialogs(i) = dialogs(i - 1)
         Next i
         
@@ -203,7 +226,7 @@ Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal 
 
     End If
     
-    With dialogs(slot)
+    With dialogs(Slot)
         .charindex = charindex
         .Color = Color
         .renderable = False
@@ -214,6 +237,13 @@ Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal 
 
     End With
 
+    
+    Exit Sub
+
+CreateDialog_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.CreateDialog", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -226,6 +256,9 @@ End Sub
 ' @see      MAX_LENGTH
 
 Private Function FormatChat(ByRef chat As String) As String()
+    
+    On Error GoTo FormatChat_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -304,6 +337,13 @@ Private Function FormatChat(ByRef chat As String) As String()
     
     FormatChat = chatLines
 
+    
+    Exit Function
+
+FormatChat_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.FormatChat", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -314,19 +354,22 @@ End Function
 ' @param    charIndex   The character whose dialog's position is being updated.
 
 Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal charindex As Integer)
+    
+    On Error GoTo UpdateDialogPos_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
     'Last Modify Date: 07/28/07
     'Updates a dialog's position.
     '**************************************************************
-    Dim slot As Integer
+    Dim Slot As Integer
     
-    slot = BinarySearch(charindex)
+    Slot = BinarySearch(charindex)
     
-    If slot >= 0 Then
+    If Slot >= 0 Then
 
-        With dialogs(slot)
+        With dialogs(Slot)
             
             If .Alpha <> 0 Then .Alpha = .Alpha - 1
             .x = x - (MAX_LENGTH \ 2) * 3
@@ -337,12 +380,22 @@ Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal charind
 
     End If
 
+    
+    Exit Sub
+
+UpdateDialogPos_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.UpdateDialogPos", Erl)
+    Resume Next
+    
 End Sub
 
 ''
 ' Displays all renderable dialogs on screen.
 
 Public Sub render()
+    
+    On Error GoTo render_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -386,6 +439,13 @@ Public Sub render()
 
     Next i
 
+    
+    Exit Sub
+
+render_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.render", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -394,26 +454,36 @@ End Sub
 ' @param    charIndex   The character whose dialog will be removed.
 
 Public Sub RemoveDialog(ByVal charindex As Integer)
+    
+    On Error GoTo RemoveDialog_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
     'Last Modify Date: 07/28/07
     'Removes the dialog from the requested char.
     '**************************************************************
-    Dim slot As Integer
+    Dim Slot As Integer
 
     Dim i    As Long
     
-    slot = BinarySearch(charindex)
+    Slot = BinarySearch(charindex)
     
-    If slot < 0 Then Exit Sub
+    If Slot < 0 Then Exit Sub
     
-    For i = slot To MAX_DIALOGS - 2
+    For i = Slot To MAX_DIALOGS - 2
         dialogs(i) = dialogs(i + 1)
     Next i
     
     dialogCount = dialogCount - 1
 
+    
+    Exit Sub
+
+RemoveDialog_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.RemoveDialog", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -425,8 +495,18 @@ Public Sub RemoveAllDialogs()
     'Last Modify Date: 07/28/07
     'Removes all dialogs from all chars.
     '**************************************************************
+    
+    On Error GoTo RemoveAllDialogs_Err
+    
     dialogCount = 0
 
+    
+    Exit Sub
+
+RemoveAllDialogs_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.RemoveAllDialogs", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -440,8 +520,18 @@ Public Property Get font() As StdFont
     'Last Modify Date: 07/28/07
     'Retrieves the font being used to render dialogs.
     '**************************************************************
+    
+    On Error GoTo font_Err
+    
     font = usedFont
 
+    
+    Exit Property
+
+font_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.font", Erl)
+    Resume Next
+    
 End Property
 
 ''
@@ -455,7 +545,17 @@ Public Property Let font(ByRef nValue As StdFont)
     'Last Modify Date: 07/28/07
     'Sets the font being used to render dialogs.
     '**************************************************************
+    
+    On Error GoTo font_Err
+    
     Set usedFont = nValue
 
+    
+    Exit Property
+
+font_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsDialogs.font", Erl)
+    Resume Next
+    
 End Property
 

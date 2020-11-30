@@ -158,8 +158,11 @@ Private Const WS_EX_LAYERED = &H80000
  Se le pasa el Hwnd del formulario en cuestión
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    
+    On Error GoTo Is_Transparent_Err
+    
 
-    On Error Resume Next
+    
   
     Dim msg As Long
   
@@ -177,14 +180,24 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
     End If
   
+    
+    Exit Function
+
+Is_Transparent_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRecuperar.Is_Transparent", Erl)
+    Resume Next
+    
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    
+    On Error GoTo Aplicar_Transparencia_Err
+    
   
     Dim msg As Long
   
-    On Error Resume Next
+    
   
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
@@ -206,9 +219,19 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
 
     End If
   
+    
+    Exit Function
+
+Aplicar_Transparencia_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRecuperar.Aplicar_Transparencia", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hwnd, 240)
     Me.Picture = LoadInterface("recuperar.bmp")
@@ -217,9 +240,19 @@ Private Sub Form_Load()
     UserCuentatxt = CuentaEmail
     Email = CuentaEmail
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRecuperar.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
 
     If Image2.Tag = "1" Then
         Image2.Picture = Nothing
@@ -233,13 +266,30 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRecuperar.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
+    
+    On Error GoTo Image1_Click_Err
+    
     Unload Me
     frmMasOpciones.Show , frmConnect
     frmMasOpciones.Top = frmMasOpciones.Top + 3000
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRecuperar.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -248,6 +298,9 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("volverhover.bmp")
@@ -255,9 +308,19 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRecuperar.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_Click()
+    
+    On Error GoTo Image2_Click_Err
+    
 
     If UserCuentatxt = "" Then
         Call MensajeAdvertencia("El campo de nombre de la cuenta esta vacio.")
@@ -286,21 +349,31 @@ Private Sub Image2_Click()
     EstadoLogin = E_MODO.RecuperandoConstraseña
     CuentaEmail = CuentaEmail
 
-    If frmmain.Socket1.Connected Then
-        frmmain.Socket1.Disconnect
-        frmmain.Socket1.Cleanup
+    If frmMain.Socket1.Connected Then
+        frmMain.Socket1.Disconnect
+        frmMain.Socket1.Cleanup
         DoEvents
 
     End If
 
-    frmmain.Socket1.HostName = IPdelServidor
-    frmmain.Socket1.RemotePort = PuertoDelServidor
-    frmmain.Socket1.Connect
+    frmMain.Socket1.HostName = IPdelServidor
+    frmMain.Socket1.RemotePort = PuertoDelServidor
+    frmMain.Socket1.Connect
     Unload Me
         
+    
+    Exit Sub
+
+Image2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRecuperar.Image2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image2_MouseMove_Err
+    
 
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("enviarhover.bmp")
@@ -308,6 +381,13 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image2_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRecuperar.Image2_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)

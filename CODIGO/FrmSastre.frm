@@ -168,6 +168,9 @@ Attribute VB_Exposed = False
 Private indice As Byte
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
 
     Dim i As Byte
 
@@ -183,9 +186,19 @@ Private Sub Command1_Click()
     Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
     Command2.Picture = Nothing
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
 
     Dim i As Byte
 
@@ -201,11 +214,21 @@ Private Sub Command2_Click()
     Command2.Picture = LoadInterface("sastreria_gorroshover.bmp")
     Command1.Picture = Nothing
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_Click()
+    
+    On Error GoTo Command3_Click_Err
+    
 
-    On Error Resume Next
+    
 
     If indice = 1 Then
         If cantidad > 1 Then
@@ -213,14 +236,14 @@ Private Sub Command3_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 3
             UserMacro.Index = SastreRopas(lstArmas.ListIndex + 1).Index
-            AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
             UserMacro.Activado = True
-            frmmain.MacroLadder.Interval = IntervaloTrabajo
-            frmmain.MacroLadder.Enabled = True
+            frmMain.MacroLadder.Interval = IntervaloTrabajo
+            frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftSastre(SastreRopas(lstArmas.ListIndex + 1).Index)
 
-            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = SastreRopas(lstArmas.ListIndex + 1).Index
+            If frmMain.macrotrabajo.Enabled Then MacroBltIndex = SastreRopas(lstArmas.ListIndex + 1).Index
 
         End If
 
@@ -231,15 +254,15 @@ Private Sub Command3_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 3
             UserMacro.Index = SastreGorros(lstArmas.ListIndex + 1).Index
-            AddtoRichTextBox frmmain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
             UserMacro.Intervalo = IntervaloTrabajo
             UserMacro.Activado = True
-            frmmain.MacroLadder.Interval = IntervaloTrabajo
-            frmmain.MacroLadder.Enabled = True
+            frmMain.MacroLadder.Interval = IntervaloTrabajo
+            frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftSastre(SastreGorros(lstArmas.ListIndex + 1).Index)
 
-            If frmmain.macrotrabajo.Enabled Then MacroBltIndex = SastreGorros(lstArmas.ListIndex + 1).Index
+            If frmMain.macrotrabajo.Enabled Then MacroBltIndex = SastreGorros(lstArmas.ListIndex + 1).Index
 
         End If
 
@@ -247,11 +270,28 @@ Private Sub Command3_Click()
 
     Unload Me
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_Click()
+    
+    On Error GoTo Command4_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -261,6 +301,9 @@ Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command4_MouseMove_Err
+    
 
     If Command4.Tag = "0" Then
         Command4.Picture = LoadInterface("trabajar_salirhover.bmp")
@@ -271,20 +314,47 @@ Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Command3.Picture = Nothing
     Command3.Tag = "0"
 
+    
+    Exit Sub
+
+Command4_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command4_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     indice = 1
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -314,6 +384,9 @@ Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command3_MouseMove_Err
+    
 
     If Command3.Tag = "0" Then
         Command3.Picture = LoadInterface("trabajar_construirhover.bmp")
@@ -324,9 +397,19 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Command4.Picture = Nothing
     Command4.Tag = "0"
 
+    
+    Exit Sub
+
+Command3_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command3_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
 
     If indice <> 1 Then
         Command1.Picture = Nothing
@@ -345,11 +428,21 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Command4.Picture = Nothing
     Command4.Tag = "0"
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List1_Click()
+    
+    On Error GoTo List1_Click_Err
+    
 
-    On Error Resume Next
+    
 
     Dim grh As Long
 
@@ -364,11 +457,21 @@ Private Sub List1_Click()
 
     Call Grh_Render_To_Hdc(picture1, grh, 0, 0, False)
 
+    
+    Exit Sub
+
+List1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.List1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstArmas_Click()
+    
+    On Error GoTo lstArmas_Click_Err
+    
 
-    On Error Resume Next
+    
 
     List1.Clear
     List2.Clear
@@ -391,4 +494,11 @@ Private Sub lstArmas_Click()
 
     End If
 
+    
+    Exit Sub
+
+lstArmas_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmSastre.lstArmas_Click", Erl)
+    Resume Next
+    
 End Sub

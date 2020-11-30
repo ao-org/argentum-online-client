@@ -121,6 +121,9 @@ ErrorHandler:
 End Function
 
 Public Function Integer_To_String(ByVal Var As Integer) As String
+    
+    On Error GoTo Integer_To_String_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -144,6 +147,13 @@ Public Function Integer_To_String(ByVal Var As Integer) As String
 
 ErrorHandler:
 
+    
+    Exit Function
+
+Integer_To_String_Err:
+    Call RegistrarError(Err.number, Err.Description, "modLocale.Integer_To_String", Erl)
+    Resume Next
+    
 End Function
 
 Public Function String_To_Integer(ByRef str As String, ByVal Start As Integer) As Integer
@@ -184,11 +194,21 @@ Public Function Byte_To_String(ByVal Var As Byte) As String
     'Last Modify Date: 3/12/2005
     'Convierte un byte a string
     '**************************************************************
+    
+    On Error GoTo Byte_To_String_Err
+    
     Byte_To_String = Chr$(Val("&H" & Hex$(Var)))
     Exit Function
 
 ErrorHandler:
 
+    
+    Exit Function
+
+Byte_To_String_Err:
+    Call RegistrarError(Err.number, Err.Description, "modLocale.Byte_To_String", Erl)
+    Resume Next
+    
 End Function
 
 Public Function String_To_Byte(ByRef str As String, ByVal Start As Integer) As Byte
@@ -211,6 +231,9 @@ Error_Handler:
 End Function
 
 Public Function Long_To_String(ByVal Var As Long) As String
+    
+    On Error GoTo Long_To_String_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -249,6 +272,13 @@ Public Function Long_To_String(ByVal Var As Long) As String
 
 ErrorHandler:
 
+    
+    Exit Function
+
+Long_To_String_Err:
+    Call RegistrarError(Err.number, Err.Description, "modLocale.Long_To_String", Erl)
+    Resume Next
+    
 End Function
 
 Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As Long

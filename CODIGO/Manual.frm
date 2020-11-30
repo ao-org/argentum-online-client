@@ -290,55 +290,145 @@ Private Sub Picture8_Click()
 End Sub
 
 Private Sub Label10_Click()
+    
+    On Error GoTo Label10_Click_Err
+    
     Unload Me
-    manual_skill.Show , frmmain
+    manual_skill.Show , frmMain
 
+    
+    Exit Sub
+
+Label10_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual.Label10_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label11_Click()
+    
+    On Error GoTo Label11_Click_Err
+    
     Unload Me
-    Manual_Quest.Show , frmmain
+    Manual_Quest.Show , frmMain
 
+    
+    Exit Sub
+
+Label11_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual.Label11_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label12_Click()
+    
+    On Error GoTo Label12_Click_Err
+    
     Unload Me
-    Manual_Clanes.Show , frmmain
+    Manual_Clanes.Show , frmMain
 
+    
+    Exit Sub
+
+Label12_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual.Label12_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label21_Click()
+    
+    On Error GoTo Label21_Click_Err
+    
     Unload Me
-    Manual_Mineria.Show , frmmain
+    Manual_Mineria.Show , frmMain
 
+    
+    Exit Sub
+
+Label21_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual.Label21_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label4_Click()
+    
+    On Error GoTo Label4_Click_Err
+    
     Unload Me
-    Manual_Razas.Show , frmmain
+    Manual_Razas.Show , frmMain
 
+    
+    Exit Sub
+
+Label4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual.Label4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label5_Click()
+    
+    On Error GoTo Label5_Click_Err
+    
     Unload Me
-    Manual_Atributos.Show , frmmain
+    Manual_Atributos.Show , frmMain
 
+    
+    Exit Sub
+
+Label5_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual.Label5_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label6_Click()
+    
+    On Error GoTo Label6_Click_Err
+    
     Unload Me
-    Manual_Alquimia.Show , frmmain
+    Manual_Alquimia.Show , frmMain
 
+    
+    Exit Sub
+
+Label6_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual.Label6_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label7_Click()
+    
+    On Error GoTo Label7_Click_Err
+    
     Unload Me
-    Manual_Pociones.Show , frmmain
+    Manual_Pociones.Show , frmMain
 
+    
+    Exit Sub
+
+Label7_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual.Label7_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label8_Click()
+    
+    On Error GoTo Label8_Click_Err
+    
     Unload Me
-    Manual_Herreria.Show , frmmain
+    Manual_Herreria.Show , frmMain
 
+    
+    Exit Sub
+
+Label8_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual.Label8_Click", Erl)
+    Resume Next
+    
 End Sub
