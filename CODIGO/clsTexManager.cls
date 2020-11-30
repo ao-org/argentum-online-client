@@ -46,6 +46,9 @@ Private mCantidadGraficos            As Integer
 Private mFreeMemoryBytes             As Long
 
 Private Sub Class_Terminate()
+    
+    On Error GoTo Class_Terminate_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -72,9 +75,19 @@ Private Sub Class_Terminate()
 
     Next i
 
+    
+    Exit Sub
+
+Class_Terminate_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTexManager.Class_Terminate", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function GetTexture(ByVal FileName As Integer, ByRef textwidth As Long, ByRef textheight As Long) As Direct3DTexture8
+    
+    On Error GoTo GetTexture_Err
+    
 
     If FileName = 0 Then
         Debug.Print "0 GRH ATMPT TO BE LOADED"
@@ -105,6 +118,13 @@ Public Function GetTexture(ByVal FileName As Integer, ByRef textwidth As Long, B
     'Not in memory, load it!
     Set GetTexture = CrearGrafico(FileName, textwidth, textheight)
 
+    
+    Exit Function
+
+GetTexture_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTexManager.GetTexture", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Init(ByRef D3D8 As D3DX8, ByRef d3d_device As Direct3DDevice8, ByVal MaxMemory As Long) As Boolean
@@ -113,6 +133,9 @@ Public Function Init(ByRef D3D8 As D3DX8, ByRef d3d_device As Direct3DDevice8, B
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
+    
+    On Error GoTo Init_Err
+    
     mCantidadGraficos = 0
     
     'Seteamos el objeto
@@ -122,6 +145,13 @@ Public Function Init(ByRef D3D8 As D3DX8, ByRef d3d_device As Direct3DDevice8, B
     
     Init = True
 
+    
+    Exit Function
+
+Init_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTexManager.Init", Erl)
+    Resume Next
+    
 End Function
 
 Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, ByRef textheight As Long) As Direct3DTexture8
@@ -220,6 +250,9 @@ errhandler:
 End Function
 
 Private Function RemoveLRU() As Boolean
+    
+    On Error GoTo RemoveLRU_Err
+    
 
     '**************************************************************
     'Author: Juan Mart?n Sotuyo Dodero
@@ -293,9 +326,19 @@ Private Function RemoveLRU() As Boolean
     'Update the used bytes
     mFreeMemoryBytes = mFreeMemoryBytes + surface_desc.size
 
+    
+    Exit Function
+
+RemoveLRU_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTexManager.RemoveLRU", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub Grh_Load(ByVal file_num As Integer)
+    
+    On Error GoTo Grh_Load_Err
+    
 
     Static d3dTextures As D3D8Textures
 
@@ -312,6 +355,13 @@ Public Sub Grh_Load(ByVal file_num As Integer)
     '  Set d3dTextures.texture = SurfaceDB.GetTexture(GrhData(GrhIndex).FileNum, d3dTextures.texwidth, d3dTextures.texheight)
 
     Set d3dTextures.Texture = CrearGrafico(file_num, 0, 0)
+    
+    
+    Exit Sub
+
+Grh_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsTexManager.Grh_Load", Erl)
+    Resume Next
     
 End Sub
 

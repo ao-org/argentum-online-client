@@ -43,6 +43,9 @@ Enum tShapeEstilo
 End Enum
 
 Public Sub Establecer_Borde(mObject As Object, frmParent As Form, Optional COLOR_BORDE As Long = vbBlack, Optional Border_style As BorderStyleConstants = vbBSDot, Optional Size_Border As Integer = 1, Optional estilo_Shape As tShapeEstilo = eCuadrado)
+    
+    On Error GoTo Establecer_Borde_Err
+    
 
     Dim lng_Estilo As Long
     
@@ -70,7 +73,7 @@ Public Sub Establecer_Borde(mObject As Object, frmParent As Form, Optional COLOR
     ' crea un shape si no existe
     For Each ctl In frmParent.Controls
 
-        If ctl.name = CustomShapeName Then
+        If ctl.Name = CustomShapeName Then
             If TypeName(frmParent.Controls(CustomShapeName)) = "Shape" Then
                 Set obj_Shape = ctl
                 Exit For
@@ -116,4 +119,11 @@ Public Sub Establecer_Borde(mObject As Object, frmParent As Form, Optional COLOR
     
     Set obj_Shape = Nothing
 
+    
+    Exit Sub
+
+Establecer_Borde_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModBordes.Establecer_Borde", Erl)
+    Resume Next
+    
 End Sub

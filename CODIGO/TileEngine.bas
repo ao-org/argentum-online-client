@@ -64,8 +64,8 @@ End Type
 'Posicion en un mapa
 Public Type Position
 
-    X As Long
-    Y As Long
+    x As Long
+    y As Long
 
 End Type
 
@@ -73,8 +73,8 @@ End Type
 Public Type WorldPos
 
     map As Integer
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 
 End Type
 
@@ -120,8 +120,8 @@ Public Type grh
     FxIndex As Integer
     
     ' Precalculated
-    X As Single
-    Y As Single
+    x As Single
+    y As Single
 
 End Type
 
@@ -455,16 +455,16 @@ End Enum
 '       [END]
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
-Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
+Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
 Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long
 Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 
 'Added by Juan Martín Sotuyo Dodero
-Private Declare Function StretchBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
-Private Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
-Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long) As Long
+Private Declare Function StretchBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal nSrcWidth As Long, ByVal nSrcHeight As Long, ByVal dwRop As Long) As Long
+Private Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
+Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 'Added by Barrin
 
 'Very percise counter 64bit system counter
@@ -478,12 +478,15 @@ Public keysMovementPressedQueue As clsArrayList
 
 Public Sub Init_TileEngine()
     
+    On Error GoTo Init_TileEngine_Err
+    
+    
     'Esto es para el movimiento suave de pjs, para que el pj termine de hacer el movimiento antes de empezar otro
     Set keysMovementPressedQueue = New clsArrayList
     Call keysMovementPressedQueue.Initialize(1, 4)
     
-    HalfWindowTileHeight = (frmmain.renderer.ScaleHeight / 32) \ 2
-    HalfWindowTileWidth = (frmmain.renderer.ScaleWidth / 32) \ 2
+    HalfWindowTileHeight = (frmMain.renderer.ScaleHeight / 32) \ 2
+    HalfWindowTileWidth = (frmMain.renderer.ScaleWidth / 32) \ 2
     
     HalfConnectTileHeight = (frmConnect.render.ScaleHeight / 32) \ 2
     HalfConnectTileWidth = (frmConnect.render.ScaleWidth / 32) \ 2
@@ -495,34 +498,54 @@ Public Sub Init_TileEngine()
 
     ReDim MapData(XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
     
-    UserPos.X = 50
-    UserPos.Y = 50
+    UserPos.x = 50
+    UserPos.y = 50
     
-    MinXBorder = XMinMapSize + (frmmain.renderer.ScaleWidth / 64)
-    MaxXBorder = XMaxMapSize - (frmmain.renderer.ScaleWidth / 64)
-    MinYBorder = YMinMapSize + (frmmain.renderer.ScaleHeight / 64)
-    MaxYBorder = YMaxMapSize - (frmmain.renderer.ScaleHeight / 64)
+    MinXBorder = XMinMapSize + (frmMain.renderer.ScaleWidth / 64)
+    MaxXBorder = XMaxMapSize - (frmMain.renderer.ScaleWidth / 64)
+    MinYBorder = YMinMapSize + (frmMain.renderer.ScaleHeight / 64)
+    MaxYBorder = YMaxMapSize - (frmMain.renderer.ScaleHeight / 64)
     MinYBorder = MinYBorder
 
+    
+    Exit Sub
+
+Init_TileEngine_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.Init_TileEngine", Erl)
+    Resume Next
+    
 End Sub
 
-Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef TX As Byte, ByRef TY As Byte)
+Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
     '******************************************
     'Converts where the mouse is in the main window to a tile position. MUST be called eveytime the mouse moves.
     '******************************************
     
-    If viewPortX < 0 Or viewPortX > frmmain.renderer.ScaleWidth Then Exit Sub
-    If viewPortY < 0 Or viewPortY > frmmain.renderer.ScaleHeight Then Exit Sub
+    On Error GoTo ConvertCPtoTP_Err
+    
+    
+    If viewPortX < 0 Or viewPortX > frmMain.renderer.ScaleWidth Then Exit Sub
+    If viewPortY < 0 Or viewPortY > frmMain.renderer.ScaleHeight Then Exit Sub
 
-    TX = UserPos.X + viewPortX \ 32 - frmmain.renderer.ScaleWidth \ 64
-    TY = UserPos.Y + viewPortY \ 32 - frmmain.renderer.ScaleHeight \ 64
+    tX = UserPos.x + viewPortX \ 32 - frmMain.renderer.ScaleWidth \ 64
+    tY = UserPos.y + viewPortY \ 32 - frmMain.renderer.ScaleHeight \ 64
 
+    
+    Exit Sub
+
+ConvertCPtoTP_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.ConvertCPtoTP", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Started As Long = -1, Optional ByVal Loops As Integer = INFINITE_LOOPS)
     '*****************************************************************
     'Sets up a grh. MUST be done before rendering
     '*****************************************************************
+    
+    On Error GoTo InitGrh_Err
+    
     grh.GrhIndex = GrhIndex
 
     If GrhIndex = 0 Or GrhIndex > MaxGrh Then Exit Sub
@@ -555,9 +578,19 @@ Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Star
         End If
     End With
 
+    
+    Exit Sub
+
+InitGrh_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.InitGrh", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub DoFogataFx()
+    
+    On Error GoTo DoFogataFx_Err
+    
 
     Dim location As Position
     
@@ -576,18 +609,38 @@ Public Sub DoFogataFx()
         ' If bFogata And FogataBufferIndex = 0 Then FogataBufferIndex = Audio.PlayWave("fuego.wav", location.x, location.y, LoopStyle.Enabled)
     End If
 
+    
+    Exit Sub
+
+DoFogataFx_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.DoFogataFx", Erl)
+    Resume Next
+    
 End Sub
 
 Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
+    
+    On Error GoTo EstaPCarea_Err
+    
 
     With charlist(charindex).Pos
-        EstaPCarea = .X > UserPos.X - MinXBorder And .X < UserPos.X + MinXBorder And .Y > UserPos.Y - MinYBorder And .Y < UserPos.Y + MinYBorder
+        EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
 
     End With
 
+    
+    Exit Function
+
+EstaPCarea_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.EstaPCarea", Erl)
+    Resume Next
+    
 End Function
 
 Sub DoPasosFx(ByVal charindex As Integer)
+    
+    On Error GoTo DoPasosFx_Err
+    
 
     Static TerrenoDePaso As TipoPaso
 
@@ -600,7 +653,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
             If Not .MUERTO And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv Then
                 If .Speeding > 1.3 Then
                    
-                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.X, .Pos.Y), Sound.Calculate_Pan(.Pos.X, .Pos.Y))
+                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     Exit Sub
 
                 End If
@@ -608,12 +661,12 @@ Sub DoPasosFx(ByVal charindex As Integer)
                 .pie = Not .pie
 
                 If .pie Then
-                    FileNum = GrhData(MapData(.Pos.X, .Pos.Y).Graphic(1).GrhIndex).FileNum
+                    FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
                     TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.X, .Pos.Y), Sound.Calculate_Pan(.Pos.X, .Pos.Y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     'Call Audio.PlayWave(SND_PASOS3, .Pos.X, .Pos.Y)
                 Else
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.X, .Pos.Y), Sound.Calculate_Pan(.Pos.X, .Pos.Y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
 
                 End If
 
@@ -631,9 +684,19 @@ Sub DoPasosFx(ByVal charindex As Integer)
 
     End If
 
+    
+    Exit Sub
+
+DoPasosFx_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.DoPasosFx", Erl)
+    Resume Next
+    
 End Sub
 
 Private Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
+    
+    On Error GoTo GetTerrenoDePaso_Err
+    
 
     If (TerrainFileNum >= 6000 And TerrainFileNum <= 6004) Or (TerrainFileNum >= 550 And TerrainFileNum <= 552) Or (TerrainFileNum >= 6018 And TerrainFileNum <= 6020) Then
         GetTerrenoDePaso = CONST_BOSQUE
@@ -652,62 +715,82 @@ Private Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
 
     End If
 
+    
+    Exit Function
+
+GetTerrenoDePaso_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.GetTerrenoDePaso", Erl)
+    Resume Next
+    
 End Function
 
 Sub MoveScreen(ByVal nHeading As E_Heading)
+    
+    On Error GoTo MoveScreen_Err
+    
 
     '******************************************
     'Starts the screen moving in a direction
     '******************************************
-    Dim X  As Integer
+    Dim x  As Integer
 
-    Dim Y  As Integer
+    Dim y  As Integer
 
-    Dim TX As Integer
+    Dim tX As Integer
 
-    Dim TY As Integer
+    Dim tY As Integer
     
     'Figure out which way to move
     Select Case nHeading
 
         Case E_Heading.NORTH
-            Y = -1
+            y = -1
         
         Case E_Heading.EAST
-            X = 1
+            x = 1
         
         Case E_Heading.south
-            Y = 1
+            y = 1
         
         Case E_Heading.WEST
-            X = -1
+            x = -1
 
     End Select
     
     'Fill temp pos
-    TX = UserPos.X + X
-    TY = UserPos.Y + Y
+    tX = UserPos.x + x
+    tY = UserPos.y + y
     
     'Check to see if its out of bounds
-    If TX < MinXBorder Or TX > MaxXBorder Or TY < MinYBorder Or TY > MaxYBorder Then
+    If tX < MinXBorder Or tX > MaxXBorder Or tY < MinYBorder Or tY > MaxYBorder Then
         Exit Sub
     Else
         'Start moving... MainLoop does the rest
-        AddtoUserPos.X = X
-        UserPos.X = TX
-        AddtoUserPos.Y = Y
-        UserPos.Y = TY
+        AddtoUserPos.x = x
+        UserPos.x = tX
+        AddtoUserPos.y = y
+        UserPos.y = tY
         UserMoving = 1
         
-        bTecho = HayTecho(UserPos.X, UserPos.Y)
+        bTecho = HayTecho(UserPos.x, UserPos.y)
 
     End If
 
+    
+    Exit Sub
+
+MoveScreen_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.MoveScreen", Erl)
+    Resume Next
+    
 End Sub
 
-Public Function HayTecho(ByVal X As Integer, ByVal Y As Integer) As Boolean
+Public Function HayTecho(ByVal x As Integer, ByVal y As Integer) As Boolean
     
-    Select Case MapData(X, Y).Trigger
+    On Error GoTo HayTecho_Err
+    
+    
+    Select Case MapData(x, y).Trigger
         
         Case 1, 2, 4, 6
             HayTecho = True
@@ -720,21 +803,31 @@ Public Function HayTecho(ByVal X As Integer, ByVal Y As Integer) As Boolean
         
     End Select
     
+    
+    Exit Function
+
+HayTecho_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.HayTecho", Erl)
+    Resume Next
+    
 End Function
 
 Public Function HayFogata(ByRef location As Position) As Boolean
+    
+    On Error GoTo HayFogata_Err
+    
 
     Dim j As Long
 
     Dim k As Long
     
-    For j = UserPos.X - 13 To UserPos.X + 13
-        For k = UserPos.Y - 15 To UserPos.Y + 15
+    For j = UserPos.x - 13 To UserPos.x + 13
+        For k = UserPos.y - 15 To UserPos.y + 15
 
             If InMapBounds(j, k) Then
                 If MapData(j, k).ObjGrh.GrhIndex = GrhFogata Then
-                    location.X = j
-                    location.Y = k
+                    location.x = j
+                    location.y = k
                     
                     HayFogata = True
                     Exit Function
@@ -746,21 +839,31 @@ Public Function HayFogata(ByRef location As Position) As Boolean
         Next k
     Next j
 
+    
+    Exit Function
+
+HayFogata_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.HayFogata", Erl)
+    Resume Next
+    
 End Function
 
 Public Function HayWavAmbiental(ByRef location As Position) As Boolean
+    
+    On Error GoTo HayWavAmbiental_Err
+    
 
     Dim j As Long
 
     Dim k As Long
     
-    For j = UserPos.X - 13 To UserPos.X + 13
-        For k = UserPos.Y - 15 To UserPos.Y + 15
+    For j = UserPos.x - 13 To UserPos.x + 13
+        For k = UserPos.y - 15 To UserPos.y + 15
 
             If InMapBounds(j, k) Then
                 If MapData(j, k).Trigger = 150 Then
-                    location.X = j
-                    location.Y = k
+                    location.x = j
+                    location.y = k
                     
                     '  HayFogata = True
                     '    Exit Function
@@ -771,9 +874,19 @@ Public Function HayWavAmbiental(ByRef location As Position) As Boolean
         Next k
     Next j
 
+    
+    Exit Function
+
+HayWavAmbiental_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.HayWavAmbiental", Erl)
+    Resume Next
+    
 End Function
 
 Function NextOpenChar() As Integer
+    
+    On Error GoTo NextOpenChar_Err
+    
 
     '*****************************************************************
     'Finds next open char slot in CharList
@@ -791,6 +904,13 @@ Function NextOpenChar() As Integer
     
     NextOpenChar = loopc
 
+    
+    Exit Function
+
+NextOpenChar_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.NextOpenChar", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -798,25 +918,28 @@ End Function
 '
 ' @return   True if the load was successfull, False otherwise.
 
-Function LegalPos(ByVal X As Integer, ByVal Y As Integer, ByVal Heading As E_Heading) As Boolean
+Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Heading) As Boolean
+    
+    On Error GoTo LegalPos_Err
+    
 
     '*****************************************************************
     'Checks to see if a tile position is legal
     '*****************************************************************
     'Limites del mapa
-    If X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder Then
+    If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
         Exit Function
     End If
     
     '¿Hay un personaje?
-    If MapData(X, Y).charindex > 0 Then
-        If Not charlist(MapData(X, Y).charindex).MUERTO Then
+    If MapData(x, y).charindex > 0 Then
+        If Not charlist(MapData(x, y).charindex).MUERTO Then
             Exit Function
         End If
     End If
     
     'Tile Bloqueado?
-    If (MapData(X, Y).Blocked And 2 ^ (Heading - 1)) <> 0 Then
+    If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 Then
         Exit Function
     End If
 
@@ -835,26 +958,26 @@ Function LegalPos(ByVal X As Integer, ByVal Y As Integer, ByVal Heading As E_Hea
     ' Exit Function
     '  End If
     
-    If UserMontado And MapData(X, Y).Trigger > 9 Then
+    If UserMontado And MapData(x, y).Trigger > 9 Then
         Exit Function
 
     End If
 
     '
-    If UserNadando And MapData(X, Y).Trigger = 8 Then
+    If UserNadando And MapData(x, y).Trigger = 8 Then
         LegalPos = True
         Exit Function
 
     End If
    
-    If UserNavegando <> ((MapData(X, Y).Blocked And FLAG_AGUA) <> 0 And (MapData(X, Y).Blocked And FLAG_COSTA) = 0) Then
+    If UserNavegando <> ((MapData(x, y).Blocked And FLAG_AGUA) <> 0 And (MapData(x, y).Blocked And FLAG_COSTA) = 0) Then
         Exit Function
 
     End If
     
-    If UserNavegando And MapData(X, Y).Trigger = 8 And Not UserNadando And Not UserEstado = 1 Then
+    If UserNavegando And MapData(x, y).Trigger = 8 And Not UserNadando And Not UserEstado = 1 Then
         If Not UserAvisadoBarca Then
-            Call AddtoRichTextBox(frmmain.RecTxt, "¡Atención! El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 255, 255, 255, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "¡Atención! El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 255, 255, 255, True, False, False)
             UserAvisadoBarca = True
 
         End If
@@ -871,23 +994,43 @@ Function LegalPos(ByVal X As Integer, ByVal Y As Integer, ByVal Heading As E_Hea
     LegalPos = True
     UserAvisado = False
 
+    
+    Exit Function
+
+LegalPos_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.LegalPos", Erl)
+    Resume Next
+    
 End Function
 
-Function InMapBounds(ByVal X As Integer, ByVal Y As Integer) As Boolean
+Function InMapBounds(ByVal x As Integer, ByVal y As Integer) As Boolean
+    
+    On Error GoTo InMapBounds_Err
+    
 
     '*****************************************************************
     'Checks to see if a tile position is in the maps bounds
     '*****************************************************************
-    If X < XMinMapSize Or X > XMaxMapSize Or Y < YMinMapSize Or Y > YMaxMapSize Then
+    If x < XMinMapSize Or x > XMaxMapSize Or y < YMinMapSize Or y > YMaxMapSize Then
         Exit Function
 
     End If
     
     InMapBounds = True
 
+    
+    Exit Function
+
+InMapBounds_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.InMapBounds", Erl)
+    Resume Next
+    
 End Function
 
 Function GetBitmapDimensions(ByVal BmpFile As String, ByRef bmWidth As Long, ByRef bmHeight As Long)
+    
+    On Error GoTo GetBitmapDimensions_Err
+    
 
     '*****************************************************************
     'Gets the dimensions of a bmp
@@ -906,9 +1049,19 @@ Function GetBitmapDimensions(ByVal BmpFile As String, ByRef bmWidth As Long, ByR
     bmWidth = BINFOHeader.biWidth
     bmHeight = BINFOHeader.biHeight
 
+    
+    Exit Function
+
+GetBitmapDimensions_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.GetBitmapDimensions", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False)
+    
+    On Error GoTo Grh_Render_To_Hdc_Err
+    
 
     If GrhIndex = 0 Then Exit Sub
 
@@ -918,7 +1071,7 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
         .Left = 0
         .Top = 0
 
-        .bottom = pic.ScaleHeight
+        .Bottom = pic.ScaleHeight
         .Right = pic.ScaleWidth
 
     End With
@@ -931,9 +1084,19 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     Call DirectDevice.EndScene
     Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
     
+    
+    Exit Sub
+
+Grh_Render_To_Hdc_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.Grh_Render_To_Hdc", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False, Optional ByVal ClearColor As Long = &O0)
+    
+    On Error GoTo Grh_Render_To_HdcSinBorrar_Err
+    
 
     If GrhIndex = 0 Then Exit Sub
 
@@ -943,7 +1106,7 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
         .Left = 0
         .Top = 0
 
-        .bottom = pic.ScaleHeight
+        .Bottom = pic.ScaleHeight
         .Right = pic.ScaleWidth
 
     End With
@@ -956,10 +1119,20 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
     Call DirectDevice.EndScene
     Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
     
+    
+    Exit Sub
+
+Grh_Render_To_HdcSinBorrar_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.Grh_Render_To_HdcSinBorrar", Erl)
+    Resume Next
+    
 End Sub
 
 
 Public Function RenderSounds()
+    
+    On Error GoTo RenderSounds_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -970,22 +1143,22 @@ Public Function RenderSounds()
         If MapDat.LLUVIA Then
         
             If bTecho Then
-                If frmmain.IsPlaying <> PlayLoop.plLluviain Then
+                If frmMain.IsPlaying <> PlayLoop.plLluviain Then
                     '  If RainBufferIndex Then _
                     '   Call Audio.StopWave(RainBufferIndex)
                     ' RainBufferIndex = Audio.PlayWave("lluviain.wav", 0, 0, LoopStyle.Enabled)
-                    frmmain.IsPlaying = PlayLoop.plLluviain
+                    frmMain.IsPlaying = PlayLoop.plLluviain
 
                 End If
 
             Else
 
-                If frmmain.IsPlaying <> PlayLoop.plLluviaout Then
+                If frmMain.IsPlaying <> PlayLoop.plLluviaout Then
                 
                     ' If RainBufferIndex Then _
                     '   Call Audio.StopWave(RainBufferIndex)
                     '  RainBufferIndex = Audio.PlayWave("lluviaout.wav", 0, 0, LoopStyle.Enabled)
-                    frmmain.IsPlaying = PlayLoop.plLluviaout
+                    frmMain.IsPlaying = PlayLoop.plLluviaout
 
                 End If
 
@@ -997,18 +1170,38 @@ Public Function RenderSounds()
     
     DoFogataFx
 
+    
+    Exit Function
+
+RenderSounds_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.RenderSounds", Erl)
+    Resume Next
+    
 End Function
 
-Function HayUserAbajo(ByVal X As Integer, ByVal Y As Integer, ByVal GrhIndex As Long) As Boolean
+Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As Long) As Boolean
+    
+    On Error GoTo HayUserAbajo_Err
+    
 
     If GrhIndex > 0 Then
-        HayUserAbajo = charlist(UserCharIndex).Pos.X >= X - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.X <= X + (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.Y >= Y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).Pos.Y <= Y
+        HayUserAbajo = charlist(UserCharIndex).Pos.x >= x - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.x <= x + (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.y >= y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).Pos.y <= y
 
     End If
 
+    
+    Exit Function
+
+HayUserAbajo_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.HayUserAbajo", Erl)
+    Resume Next
+    
 End Function
 
 Private Function GetElapsedTime() As Single
+    
+    On Error GoTo GetElapsedTime_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -1036,18 +1229,28 @@ Private Function GetElapsedTime() As Single
     'Get next end time
     Call QueryPerformanceCounter(end_time)
 
+    
+    Exit Function
+
+GetElapsedTime_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.GetElapsedTime", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal src_x As Integer, ByVal src_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer)
+    
+    On Error GoTo Grh_Create_Mask_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
     'Last Modify Date: 8/30/2004
     'Creates a Mask hDC, and sets the source hDC to work for trans bliting.
     '**************************************************************
-    Dim X          As Integer
+    Dim x          As Integer
 
-    Dim Y          As Integer
+    Dim y          As Integer
 
     Dim TransColor As Long
 
@@ -1067,48 +1270,75 @@ Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal sr
 
     'Make it a mask (set background to black and foreground to white)
     'And set the sprite's background white
-    For Y = src_y To src_height + src_y
-        For X = src_x To src_width + src_x
+    For y = src_y To src_height + src_y
+        For x = src_x To src_width + src_x
 
-            If GetPixel(hdcsrc, X, Y) = TransColor Then
-                SetPixel MaskDC, X, Y, vbWhite
-                SetPixel hdcsrc, X, Y, vbBlack
+            If GetPixel(hdcsrc, x, y) = TransColor Then
+                SetPixel MaskDC, x, y, vbWhite
+                SetPixel hdcsrc, x, y, vbBlack
             Else
-                SetPixel MaskDC, X, Y, vbBlack
+                SetPixel MaskDC, x, y, vbBlack
 
             End If
 
-        Next X
-    Next Y
+        Next x
+    Next y
 
+    
+    Exit Sub
+
+Grh_Create_Mask_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.Grh_Create_Mask", Erl)
+    Resume Next
+    
 End Sub
 
-Public Function Convert_Tile_To_View_X(ByVal X As Integer) As Integer
+Public Function Convert_Tile_To_View_X(ByVal x As Integer) As Integer
     '**************************************************************
     'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
     'Last Modify Date: 10/07/2002
     'Convert tile position into position in view area
     '**************************************************************
     'If engine_windowed Then
-    Convert_Tile_To_View_X = ((X - 1) * 32)
+    
+    On Error GoTo Convert_Tile_To_View_X_Err
+    
+    Convert_Tile_To_View_X = ((x - 1) * 32)
 
     ' Else
     '  Convert_Tile_To_View_X = view_screen_left + ((x - 1) * base_tile_size)
     '  End If
+    
+    Exit Function
+
+Convert_Tile_To_View_X_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.Convert_Tile_To_View_X", Erl)
+    Resume Next
+    
 End Function
 
-Public Function Convert_Tile_To_View_Y(ByVal Y As Integer) As Integer
+Public Function Convert_Tile_To_View_Y(ByVal y As Integer) As Integer
     '**************************************************************
     'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
     'Last Modify Date: 10/07/2002
     'Convert tile position into position in view area
     '**************************************************************
     ' If engine_windowed Then
-    Convert_Tile_To_View_Y = ((Y - 1) * 32)
+    
+    On Error GoTo Convert_Tile_To_View_Y_Err
+    
+    Convert_Tile_To_View_Y = ((y - 1) * 32)
 
     'Else
     '   Convert_Tile_To_View_Y = view_screen_top + ((y - 1) * base_tile_size)
     'End If
+    
+    Exit Function
+
+Convert_Tile_To_View_Y_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine.Convert_Tile_To_View_Y", Erl)
+    Resume Next
+    
 End Function
 
 

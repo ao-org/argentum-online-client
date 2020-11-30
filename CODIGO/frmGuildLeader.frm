@@ -352,12 +352,25 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cmdElecciones_Click()
+    
+    On Error GoTo cmdElecciones_Click_Err
+    
     Call WriteGuildOpenElections
     Unload Me
 
+    
+    Exit Sub
+
+cmdElecciones_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.cmdElecciones_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
 
     If solicitudes.ListIndex = -1 Then Exit Sub
     
@@ -365,9 +378,19 @@ Private Sub Command1_Click()
     Call WriteGuildMemberInfo(solicitudes.List(solicitudes.ListIndex))
 
     'Unload Me
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
 
     If members.ListIndex = -1 Then Exit Sub
     
@@ -375,9 +398,19 @@ Private Sub Command2_Click()
     Call WriteGuildMemberInfo(members.List(members.ListIndex))
 
     'Unload Me
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_Click()
+    
+    On Error GoTo Command3_Click_Err
+    
 
     Dim k As String
 
@@ -385,16 +418,36 @@ Private Sub Command3_Click()
     
     Call WriteGuildUpdateNews(k)
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_Click()
+    
+    On Error GoTo Command4_Click_Err
+    
     frmGuildBrief.EsLeader = True
     Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
 
     'Unload Me
+    
+    Exit Sub
+
+Command4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command5_Click()
+    
+    On Error GoTo Command5_Click_Err
+    
 
     Dim fdesc As String
 
@@ -410,6 +463,13 @@ Private Sub Command5_Click()
 
     End If
 
+    
+    Exit Sub
+
+Command5_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command5_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command6_Click()
@@ -419,30 +479,80 @@ Private Sub Command6_Click()
 End Sub
 
 Private Sub Command7_Click()
+    
+    On Error GoTo Command7_Click_Err
+    
     Call WriteGuildPeacePropList
 
+    
+    Exit Sub
+
+Command7_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command7_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command9_Click()
+    
+    On Error GoTo Command9_Click_Err
+    
     Call WriteGuildAlliancePropList
 
+    
+    Exit Sub
+
+Command9_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command9_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub expne_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo expne_MouseMove_Err
+    
     porciento.Visible = True
     expcount.Visible = False
 
+    
+    Exit Sub
+
+expne_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.expne_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     porciento.Visible = True
     expcount.Visible = False
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -451,14 +561,34 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Frame4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Frame4_MouseMove_Err
+    
     porciento.Visible = True
     expcount.Visible = False
 
+    
+    Exit Sub
+
+Frame4_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Frame4_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo porciento_MouseMove_Err
+    
     porciento.Visible = False
     expcount.Visible = True
 
+    
+    Exit Sub
+
+porciento_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.porciento_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 

@@ -22,6 +22,9 @@ Private MorningIndex        As Integer
 Public MeteoParticle        As Integer
 
 Public Sub IniciarMeteorologia()
+    
+    On Error GoTo IniciarMeteorologia_Err
+    
     ReDim DayColors(11)
 
     ' 00:00 - 02:00
@@ -56,9 +59,19 @@ Public Sub IniciarMeteorologia()
     
     TimeIndex = -1
 
+    
+    Exit Sub
+
+IniciarMeteorologia_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModMetereologia.IniciarMeteorologia", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
+    
+    On Error GoTo RevisarHoraMundo_Err
+    
 
     Dim Elapsed As Single
     Elapsed = (FrameTime - HoraMundo) / DuracionDia
@@ -87,23 +100,60 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
         End If
     End If
 
+    
+    Exit Sub
+
+RevisarHoraMundo_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModMetereologia.RevisarHoraMundo", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub ActualizarLuz(Color As RGBA)
+    
+    On Error GoTo ActualizarLuz_Err
+    
     last_light = global_light
     next_light = Color
     light_transition = 0#
+    
+    Exit Sub
+
+ActualizarLuz_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModMetereologia.ActualizarLuz", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub RestaurarLuz()
+    
+    On Error GoTo RestaurarLuz_Err
+    
     If UserEstado = 1 Then
         global_light = DeathColor
     Else
         global_light = DayColors(TimeIndex)
     End If
     light_transition = 1#
+    
+    Exit Sub
+
+RestaurarLuz_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModMetereologia.RestaurarLuz", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function EsNoche() As Boolean
+    
+    On Error GoTo EsNoche_Err
+    
     EsNoche = (TimeIndex >= NightIndex And TimeIndex < MorningIndex)
+    
+    Exit Function
+
+EsNoche_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModMetereologia.EsNoche", Erl)
+    Resume Next
+    
 End Function

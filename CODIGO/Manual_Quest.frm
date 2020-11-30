@@ -189,12 +189,25 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Unload Me
-    Manual.Show , frmmain
+    Manual.Show , frmMain
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Quest.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
 
     Dim i As Byte
 
@@ -204,11 +217,28 @@ Private Sub Form_Load()
 
     List1.ListIndex = 0
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Quest.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List1_Click()
+    
+    On Error GoTo List1_Click_Err
+    
     ubicacion = "Ubicación: " & NameMaps(PosMap(List1.ListIndex + 1)).Name & "(" & PosMap(List1.ListIndex + 1) & ")"
     descripccion = "Descripción: " & QuestList(List1.ListIndex + 1).desc
     nivel = "Nivel requerido: " & QuestList(List1.ListIndex + 1).RequiredLevel
 
+    
+    Exit Sub
+
+List1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Quest.List1_Click", Erl)
+    Resume Next
+    
 End Sub

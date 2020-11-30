@@ -212,6 +212,9 @@ Dim Index As Byte
 Option Explicit
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Index = 1
 
     Dim i As Byte
@@ -229,6 +232,13 @@ Private Sub Command1_Click()
     Command2.Picture = Nothing
     Command4.Picture = Nothing
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -238,6 +248,9 @@ Private Sub Command1_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Index = 2
 
     Dim i As Byte
@@ -259,9 +272,19 @@ Private Sub Command2_Click()
     Command3.Picture = Nothing
     Command4.Picture = Nothing
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_Click()
+    
+    On Error GoTo Command3_Click_Err
+    
     Index = 3
 
     lstArmas.Clear
@@ -280,9 +303,19 @@ Private Sub Command3_Click()
     Command2.Picture = Nothing
     Command4.Picture = Nothing
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_Click()
+    
+    On Error GoTo Command4_Click_Err
+    
     Index = 4
 
     lstArmas.Clear
@@ -300,14 +333,34 @@ Private Sub Command4_Click()
     Command2.Picture = Nothing
     Command3.Picture = Nothing
 
+    
+    Exit Sub
+
+Command4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command5_Click()
+    
+    On Error GoTo Command5_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command5_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command5_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command6_Click()
+    
+    On Error GoTo Command6_Click_Err
+    
 
     
 
@@ -390,6 +443,13 @@ Private Sub Command6_Click()
 
     End If
 
+    
+    Exit Sub
+
+Command6_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command6_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command6_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -399,6 +459,9 @@ Private Sub Command6_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command6_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command6_MouseMove_Err
+    
 
     If Command6.Tag = "0" Then
         Command6.Picture = LoadInterface("trabajar_construirhover.bmp")
@@ -409,6 +472,13 @@ Private Sub Command6_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Command5.Picture = Nothing
     Command5.Tag = "0"
 
+    
+    Exit Sub
+
+Command6_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command6_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command5_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -418,6 +488,9 @@ Private Sub Command5_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command5_MouseMove_Err
+    
 
     If Command5.Tag = "0" Then
         Command5.Picture = LoadInterface("trabajar_salirhover.bmp")
@@ -428,6 +501,13 @@ Private Sub Command5_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Command6.Picture = Nothing
     Command6.Tag = "0"
 
+    
+    Exit Sub
+
+Command5_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command5_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -449,20 +529,43 @@ Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     Index = 3
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
 
     Command5.Picture = Nothing
     Command5.Tag = "0"
@@ -470,14 +573,34 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Command6.Picture = Nothing
     Command6.Tag = "0"
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    
+    On Error GoTo Form_Unload_Err
+    
     UsingSkill = 0
 
+    
+    Exit Sub
+
+Form_Unload_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Form_Unload", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List1_Click()
+    
+    On Error GoTo List1_Click_Err
+    
 
     
 
@@ -506,9 +629,19 @@ Private Sub List1_Click()
 
     Call Grh_Render_To_Hdc(picture1, grh, 0, 0, False)
 
+    
+    Exit Sub
+
+List1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.List1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstArmas_Click()
+    
+    On Error GoTo lstArmas_Click_Err
+    
 
     
 
@@ -560,5 +693,12 @@ Private Sub lstArmas_Click()
 
     picture1.Visible = True
 
+    
+    Exit Sub
+
+lstArmas_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmHerrero.lstArmas_Click", Erl)
+    Resume Next
+    
 End Sub
 

@@ -321,29 +321,62 @@ Attribute VB_Exposed = False
 
 Private Sub Form_Load()
     'Me.Picture = LoadInterface("mision.bmp")
+    
+    On Error GoTo Form_Load_Err
+    
 
 Text1.BackColor = RGB(11, 11, 11)
 PlayerView.BackColor = RGB(11, 11, 11)
 picture1.BackColor = RGB(19, 14, 11)
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     Image1.Picture = Nothing
     Image1.Tag = 0
     Image2.Picture = Nothing
     Image2.Tag = 0
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("boton-rechazar-es-over.bmp")
@@ -351,14 +384,34 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseUp_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Image1_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.Image1_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image2_MouseMove_Err
+    
 
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
@@ -366,22 +419,52 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image2_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.Image2_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image2_MouseUp_Err
+    
 
 
     If ListViewQuest.SelectedItem.Index > 0 Then
         Call WriteQuestAccept(ListViewQuest.SelectedItem.Index)
         Unload Me
     End If
+    
+    Exit Sub
+
+Image2_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.Image2_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_Click()
+    
+    On Error GoTo Image3_Click_Err
+    
 Unload Me
+    
+    Exit Sub
+
+Image3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.Image3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub ListView1_Click()
+    
+    On Error GoTo ListView1_Click_Err
+    
 
 
     If ListView1.SelectedItem.SubItems(2) <> "" Then
@@ -407,9 +490,19 @@ Public Sub ListView1_Click()
 
     End If
 
+    
+    Exit Sub
+
+ListView1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.ListView1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
+    
+    On Error GoTo DibujarBody_Err
+    
 
     
 
@@ -439,9 +532,19 @@ Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
 
     End If
 
+    
+    Exit Sub
+
+DibujarBody_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.DibujarBody", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub ListView2_Click()
+    
+    On Error GoTo ListView2_Click_Err
+    
 
     If ListView2.SelectedItem.SubItems(2) <> "" Then
  
@@ -451,10 +554,20 @@ Public Sub ListView2_Click()
     
     objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
 
+    
+    Exit Sub
+
+ListView2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.ListView2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 
 Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
+    
+    On Error GoTo ListViewQuest_ItemClick_Err
+    
 If Len(ListViewQuest.SelectedItem.SubItems(2)) <> 0 Then
         
         Dim QuestIndex As Byte
@@ -547,9 +660,19 @@ FrmQuestInfo.ListView1.ListItems.Clear
     Call ListView2_Click
 
     End If
+    
+    Exit Sub
+
+ListViewQuest_ItemClick_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.ListViewQuest_ItemClick", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstQuests_Click()
+    
+    On Error GoTo lstQuests_Click_Err
+    
 Dim QuestIndex As Byte
 
 QuestIndex = Val(ReadField(1, lstQuests.List(lstQuests.ListIndex), Asc("-")))
@@ -637,5 +760,12 @@ FrmQuestInfo.ListView1.ListItems.Clear
                 End If
 
 
+    
+    Exit Sub
+
+lstQuests_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmQuestInfo.lstQuests_Click", Erl)
+    Resume Next
+    
 End Sub
 

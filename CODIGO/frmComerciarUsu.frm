@@ -213,17 +213,37 @@ Public LastIndex1   As Integer
 Public LasActionBuy As Boolean
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdAceptar_Click()
+    
+    On Error GoTo cmdAceptar_Click_Err
+    
     Call WriteUserCommerceOk
 
+    
+    Exit Sub
+
+cmdAceptar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.cmdAceptar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdAceptar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -233,6 +253,9 @@ Private Sub cmdAceptar_MouseDown(Button As Integer, Shift As Integer, x As Singl
 End Sub
 
 Private Sub cmdAceptar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdAceptar_MouseMove_Err
+    
 
     If cmdAceptar.Tag = "0" Then
         cmdAceptar.Picture = LoadInterface("comercioseguro_aceptarhover.bmp")
@@ -249,9 +272,19 @@ Private Sub cmdAceptar_MouseMove(Button As Integer, Shift As Integer, x As Singl
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+cmdAceptar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.cmdAceptar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdOfrecer_Click()
+    
+    On Error GoTo cmdOfrecer_Click_Err
+    
 
     If Item = True Then
         If List1.ListIndex < 0 Then Exit Sub
@@ -277,6 +310,13 @@ Private Sub cmdOfrecer_Click()
 
     lblEstadoResp.Visible = True
 
+    
+    Exit Sub
+
+cmdOfrecer_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.cmdOfrecer_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdOfrecer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -286,6 +326,9 @@ Private Sub cmdOfrecer_MouseDown(Button As Integer, Shift As Integer, x As Singl
 End Sub
 
 Private Sub cmdOfrecer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdOfrecer_MouseMove_Err
+    
 
     If cmdOfrecer.Tag = "0" Then
         cmdOfrecer.Picture = LoadInterface("comercioseguro_ofrecerhover.bmp")
@@ -293,11 +336,28 @@ Private Sub cmdOfrecer_MouseMove(Button As Integer, Shift As Integer, x As Singl
 
     End If
 
+    
+    Exit Sub
+
+cmdOfrecer_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.cmdOfrecer_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdRechazar_Click()
+    
+    On Error GoTo cmdRechazar_Click_Err
+    
     Call WriteUserCommerceReject
 
+    
+    Exit Sub
+
+cmdRechazar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.cmdRechazar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdRechazar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -307,6 +367,9 @@ Private Sub cmdRechazar_MouseDown(Button As Integer, Shift As Integer, x As Sing
 End Sub
 
 Private Sub cmdRechazar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdRechazar_MouseMove_Err
+    
 
     If cmdRechazar.Tag = "0" Then
         cmdRechazar.Picture = LoadInterface("comercioseguro_rechazarhover.bmp")
@@ -323,11 +386,28 @@ Private Sub cmdRechazar_MouseMove(Button As Integer, Shift As Integer, x As Sing
     Command2.Picture = Nothing
     Command2.Tag = "0"
     
+    
+    Exit Sub
+
+cmdRechazar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.cmdRechazar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Call WriteUserCommerceEnd
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -337,6 +417,9 @@ Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command2_MouseMove_Err
+    
 
     If Command2.Tag = "0" Then
         Command2.Picture = LoadInterface("comercioseguro_cancelarhover.bmp")
@@ -344,6 +427,13 @@ Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
+    
+    Exit Sub
+
+Command2_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.Command2_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Deactivate()
@@ -353,28 +443,61 @@ Private Sub Form_Deactivate()
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     'Carga las imagenes...?
     lblEstadoResp.Visible = False
     Item = True
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_LostFocus()
+    
+    On Error GoTo Form_LostFocus_Err
+    
     Me.SetFocus
     picture1.SetFocus
 
+    
+    Exit Sub
+
+Form_LostFocus_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.Form_LostFocus", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     cmdAceptar.Picture = Nothing
     cmdAceptar.Tag = "0"
 
@@ -388,35 +511,85 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Command2.Tag = "0"
     moverForm
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
+    
+    On Error GoTo Image1_Click_Err
+    
     Image1.Picture = LoadInterface("comercioseguro_opbjeto.bmp")
     Image2.Picture = Nothing
     List1.Enabled = True
     Item = True
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_Click()
+    
+    On Error GoTo Image2_Click_Err
+    
     Image2.Picture = LoadInterface("comercioseguro_oro.bmp")
     Image1.Picture = Nothing
     List1.Enabled = False
     Item = False
 
+    
+    Exit Sub
+
+Image2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.Image2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List1_Click()
-    DibujaGrh frmmain.Inventario.GrhIndex(List1.ListIndex + 1)
+    
+    On Error GoTo List1_Click_Err
+    
+    DibujaGrh frmMain.Inventario.GrhIndex(List1.ListIndex + 1)
 
+    
+    Exit Sub
+
+List1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.List1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub DibujaGrh(grh As Long)
+    
+    On Error GoTo DibujaGrh_Err
+    
     Call Grh_Render_To_Hdc(picture1, (grh), 0, 0)
 
+    
+    Exit Sub
+
+DibujaGrh_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.DibujaGrh", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List2_Click()
+    
+    On Error GoTo List2_Click_Err
+    
 
     If List2.ListIndex >= 0 Then
         DibujaGrh OtroInventario(List2.ListIndex + 1).GrhIndex
@@ -429,17 +602,37 @@ Private Sub List2_Click()
 
     End If
 
+    
+    Exit Sub
+
+List2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.List2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub txtCant_Change()
+    
+    On Error GoTo txtCant_Change_Err
+    
 
     If Val(txtCant.Text) < 1 Then txtCant.Text = "1"
     
     If Val(txtCant.Text) > 2147483647 Then txtCant.Text = "2147483647"
 
+    
+    Exit Sub
+
+txtCant_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.txtCant_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub txtCant_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo txtCant_KeyDown_Err
+    
 
     If Not ((KeyCode >= 48 And KeyCode <= 57) Or KeyCode = vbKeyBack Or KeyCode = vbKeyDelete Or (KeyCode >= 37 And KeyCode <= 40)) Then
         'txtCant = KeyCode
@@ -447,9 +640,19 @@ Private Sub txtCant_KeyDown(KeyCode As Integer, Shift As Integer)
 
     End If
 
+    
+    Exit Sub
+
+txtCant_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.txtCant_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub txtCant_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo txtCant_KeyPress_Err
+    
 
     If Not ((KeyAscii >= 48 And KeyAscii <= 57) Or KeyAscii = vbKeyBack Or KeyAscii = vbKeyDelete Or (KeyAscii >= 37 And KeyAscii <= 40)) Then
         'txtCant = KeyCode
@@ -457,6 +660,13 @@ Private Sub txtCant_KeyPress(KeyAscii As Integer)
 
     End If
 
+    
+    Exit Sub
+
+txtCant_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmComerciarUsu.txtCant_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 '[/Alejo]

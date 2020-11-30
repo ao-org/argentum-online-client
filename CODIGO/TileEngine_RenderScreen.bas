@@ -10,6 +10,9 @@ Public map_letter_a          As Single
 Public map_letter_fadestatus As Byte
 
 Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
+    
+    On Error GoTo RenderScreen_Err
+    
 
     '**************************************************************
     ' Author: Aaron Perkins
@@ -522,9 +525,19 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
     Call RenderScreen_NombreMapa
 
+    
+    Exit Sub
+
+RenderScreen_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_RenderScreen.RenderScreen", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub RenderScreen_NombreMapa()
+    
+    On Error GoTo RenderScreen_NombreMapa_Err
+    
     
     If map_letter_fadestatus > 0 Then
     
@@ -571,6 +584,13 @@ Private Sub RenderScreen_NombreMapa()
 
     End If
 
+    
+    Exit Sub
+
+RenderScreen_NombreMapa_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_RenderScreen.RenderScreen_NombreMapa", Erl)
+    Resume Next
+    
 End Sub
 
 

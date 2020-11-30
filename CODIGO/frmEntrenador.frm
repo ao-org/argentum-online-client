@@ -137,13 +137,33 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Call WriteTrain(lstCriaturas.ListIndex + 1)
     Unload Me
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEntrenador.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEntrenador.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 

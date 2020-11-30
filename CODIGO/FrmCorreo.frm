@@ -397,6 +397,9 @@ Option Explicit
 Private ItemRecibido(1 To 10) As Obj
 
 Private Sub adjItem_Click()
+    
+    On Error GoTo adjItem_Click_Err
+    
     lstInv.Enabled = Not lstInv.Enabled
     txCantidad.Enabled = Not txCantidad.Enabled
     ListaAenviar.Enabled = Not ListaAenviar.Enabled
@@ -412,9 +415,19 @@ Private Sub adjItem_Click()
 
     End If
 
+    
+    Exit Sub
+
+adjItem_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.adjItem_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdClean_Click()
+    
+    On Error GoTo cmdClean_Click_Err
+    
     txTo.Text = ""
     txSndMsg.Text = ""
 
@@ -426,8 +439,8 @@ Private Sub cmdClean_Click()
     'Fill the inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
 
-        If frmmain.Inventario.OBJIndex(i) <> 0 Then
-            lstInv.AddItem frmmain.Inventario.ItemName(i) & " - " & frmmain.Inventario.Amount(i)
+        If frmMain.Inventario.OBJIndex(i) <> 0 Then
+            lstInv.AddItem frmMain.Inventario.ItemName(i) & " - " & frmMain.Inventario.Amount(i)
         Else
             lstInv.AddItem "Vacio"
 
@@ -446,14 +459,31 @@ Private Sub cmdClean_Click()
     ItemCount = 0
     Label4.Caption = "No agregaste ningun item"
 
+    
+    Exit Sub
+
+cmdClean_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdClean_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdDel_Click()
+    
+    On Error GoTo cmdDel_Click_Err
+    
 
     If lstMsg.List(lstMsg.ListIndex) = "" Then Exit Sub
 
     Call WriteBorrarCorreo(lstMsg.ListIndex + 1)
 
+    
+    Exit Sub
+
+cmdDel_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdDel_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdDel_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -463,6 +493,9 @@ Private Sub cmdDel_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub cmdDel_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdDel_MouseMove_Err
+    
 
     If cmdDel.Tag = "0" Then
         cmdDel.Picture = LoadInterface("correo_borrarhover.bmp")
@@ -470,13 +503,30 @@ Private Sub cmdDel_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+cmdDel_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdDel_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdSave_Click()
+    
+    On Error GoTo cmdSave_Click_Err
+    
 
     If lstMsg.ListIndex < 0 Then Exit Sub
     Call WriteRetirarItemCorreo(lstMsg.ListIndex + 1)
 
+    
+    Exit Sub
+
+cmdSave_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdSave_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdSave_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -486,6 +536,9 @@ Private Sub cmdSave_MouseDown(Button As Integer, Shift As Integer, x As Single, 
 End Sub
 
 Private Sub cmdSave_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdSave_MouseMove_Err
+    
 
     If cmdSave.Tag = "0" Then
         cmdSave.Picture = LoadInterface("correo_guardaritemhover.bmp")
@@ -493,9 +546,19 @@ Private Sub cmdSave_MouseMove(Button As Integer, Shift As Integer, x As Single, 
 
     End If
 
+    
+    Exit Sub
+
+cmdSave_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdSave_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdSend_Click()
+    
+    On Error GoTo cmdSend_Click_Err
+    
 
     If txTo.Text = "" Then
         MsgBox ("¡Ingrese el nick del destinatario!")
@@ -504,7 +567,7 @@ Private Sub cmdSend_Click()
     End If
 
     If adjItem Then
-        If Not IsNumeric(txCantidad.Text) Or txCantidad.Text < 1 Or txCantidad.Text > 9999 Or txCantidad.Text > frmmain.Inventario.Amount(lstInv.ListIndex + 1) Then
+        If Not IsNumeric(txCantidad.Text) Or txCantidad.Text < 1 Or txCantidad.Text > 9999 Or txCantidad.Text > frmMain.Inventario.Amount(lstInv.ListIndex + 1) Then
             MsgBox ("¡Cantidad invalida!")
             Exit Sub
 
@@ -525,15 +588,35 @@ Private Sub cmdSend_Click()
     Unload Me
     Call cmdClean_Click
 
+    
+    Exit Sub
+
+cmdSend_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdSend_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdSend_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdSend_MouseDown_Err
+    
     cmdSend.Picture = LoadInterface("correo_enviarpress.bmp")
     cmdSend.Tag = "1"
 
+    
+    Exit Sub
+
+cmdSend_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdSend_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdSend_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdSend_MouseMove_Err
+    
 
     If cmdSend.Tag = "0" Then
         cmdSend.Picture = LoadInterface("correo_enviarhover.bmp")
@@ -541,9 +624,19 @@ Private Sub cmdSend_MouseMove(Button As Integer, Shift As Integer, x As Single, 
 
     End If
 
+    
+    Exit Sub
+
+cmdSend_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdSend_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
 
     If ItemCount = 0 Then
         Label4.Caption = "No adjuntaste nada:"
@@ -591,7 +684,7 @@ Private Sub Command1_Click()
     For i = 1 To 10
 
         If ItemLista(i).OBJIndex > 0 Then
-            ListaAenviar.AddItem frmmain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
+            ListaAenviar.AddItem frmMain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
             ItemCount = i
         Else
             ListaAenviar.AddItem "Nada"
@@ -609,15 +702,35 @@ Private Sub Command1_Click()
 
     Label4.Caption = ItemCount & " items adjuntos:"
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command1_MouseDown_Err
+    
     Command1.Picture = LoadInterface("correo_quitarpress.bmp")
     Command1.Tag = "1"
 
+    
+    Exit Sub
+
+Command1_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Command1_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command1_MouseMove_Err
+    
 
     If Command1.Tag = "0" Then
         Command1.Picture = LoadInterface("correo_quitarhover.bmp")
@@ -625,9 +738,19 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
+    
+    Exit Sub
+
+Command1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Command1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
 
     Dim i               As Byte
 
@@ -637,10 +760,10 @@ Private Sub Command2_Click()
 
     Dim NoTieneCantidad As Boolean
 
-    If frmmain.Inventario.Amount(lstInv.ListIndex + 1) = 0 Then Exit Sub
+    If frmMain.Inventario.Amount(lstInv.ListIndex + 1) = 0 Then Exit Sub
 
-    If frmmain.Inventario.Amount(lstInv.ListIndex + 1) < txCantidad.Text Then
-        txCantidad.Text = frmmain.Inventario.Amount(lstInv.ListIndex + 1)
+    If frmMain.Inventario.Amount(lstInv.ListIndex + 1) < txCantidad.Text Then
+        txCantidad.Text = frmMain.Inventario.Amount(lstInv.ListIndex + 1)
 
     End If
 
@@ -652,8 +775,8 @@ Private Sub Command2_Click()
             ItemLista(i).OBJIndex = CByte(lstInv.ListIndex + 1)
             ItemLista(i).Amount = ItemLista(i).Amount + CInt(txCantidad.Text)
         
-            If ItemLista(i).Amount > frmmain.Inventario.Amount(ItemLista(i).OBJIndex) Then
-                ItemLista(i).Amount = frmmain.Inventario.Amount(ItemLista(i).OBJIndex)
+            If ItemLista(i).Amount > frmMain.Inventario.Amount(ItemLista(i).OBJIndex) Then
+                ItemLista(i).Amount = frmMain.Inventario.Amount(ItemLista(i).OBJIndex)
 
             End If
         
@@ -684,7 +807,7 @@ Private Sub Command2_Click()
     For i = 1 To 10
 
         If ItemLista(i).OBJIndex > 0 Then
-            ListaAenviar.AddItem frmmain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
+            ListaAenviar.AddItem frmMain.Inventario.ItemName(ItemLista(i).OBJIndex) & " - " & ItemLista(i).Amount
             ItemCount = i
         Else
             ListaAenviar.AddItem "Nada"
@@ -699,6 +822,13 @@ Private Sub Command2_Click()
 
     If Not Encontre Then MsgBox ("Solo podes enviar hasta 10 items.")
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -708,6 +838,9 @@ Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command2_MouseMove_Err
+    
 
     If Command2.Tag = "0" Then
         Command2.Picture = LoadInterface("correo_agregarhvoer.bmp")
@@ -715,9 +848,19 @@ Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
+    
+    Exit Sub
+
+Command2_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Command2_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_Click()
+    
+    On Error GoTo Command3_Click_Err
+    
     Me.Picture = LoadInterface("ventanacorreo.bmp")
     lstMsg.Visible = True
     txMensaje.Visible = True
@@ -743,6 +886,13 @@ Private Sub Command3_Click()
     adjItem.Visible = False
     Label4.Visible = False
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -752,6 +902,9 @@ Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command3_MouseMove_Err
+    
 
     If Command3.Tag = "0" Then
         Command3.Picture = LoadInterface("correo_atrashover.bmp")
@@ -759,9 +912,19 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
+    
+    Exit Sub
+
+Command3_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Command3_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command9_Click()
+    
+    On Error GoTo Command9_Click_Err
+    
     lstMsg.Visible = False
     txMensaje.Visible = False
     ListAdjuntos.Visible = False
@@ -786,6 +949,13 @@ Private Sub Command9_Click()
     Label4.Visible = True
     Me.Picture = LoadInterface("ventananuevocorreo.bmp")
 
+    
+    Exit Sub
+
+Command9_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Command9_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command9_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -795,6 +965,9 @@ Private Sub Command9_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command9_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command9_MouseMove_Err
+    
 
     If Command9.Tag = "0" Then
         Command9.Picture = LoadInterface("correo_nuevomensajehover.bmp")
@@ -802,18 +975,38 @@ Private Sub Command9_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
+    
+    Exit Sub
+
+Command9_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Command9_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
     Dim i As Byte
@@ -823,9 +1016,19 @@ Private Sub Form_Load()
         ItemLista(i).Amount = 0
     Next i
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     Command9.Picture = Nothing
     Command9.Tag = "0"
 
@@ -850,9 +1053,19 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    
+    On Error GoTo Form_Unload_Err
+    
 
     Dim i As Byte
 
@@ -861,9 +1074,19 @@ Private Sub Form_Unload(Cancel As Integer)
         ItemLista(i).Amount = 0
     Next i
 
+    
+    Exit Sub
+
+Form_Unload_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Form_Unload", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
+    
+    On Error GoTo Image1_Click_Err
+    
     lstInv.Enabled = Not lstInv.Enabled
     txCantidad.Enabled = Not txCantidad.Enabled
     ListaAenviar.Enabled = Not ListaAenviar.Enabled
@@ -877,21 +1100,41 @@ Private Sub Image1_Click()
 
     End If
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ListaAenviar_Click()
+    
+    On Error GoTo ListaAenviar_Click_Err
+    
 
     If ListaAenviar.ListIndex + 1 > 10 Then Exit Sub
     If ItemLista(ListaAenviar.ListIndex + 1).OBJIndex = 0 Then
         picInvT.BackColor = vbBlack
     Else
-        Call Grh_Render_To_Hdc(picInvT, frmmain.Inventario.GrhIndex(ItemLista(ListaAenviar.ListIndex + 1).OBJIndex), 0, 0)
+        Call Grh_Render_To_Hdc(picInvT, frmMain.Inventario.GrhIndex(ItemLista(ListaAenviar.ListIndex + 1).OBJIndex), 0, 0)
 
     End If
 
+    
+    Exit Sub
+
+ListaAenviar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.ListaAenviar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ListaAenviar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo ListaAenviar_MouseMove_Err
+    
     Command9.Picture = Nothing
     Command9.Tag = "0"
 
@@ -916,17 +1159,37 @@ Private Sub ListaAenviar_MouseMove(Button As Integer, Shift As Integer, x As Sin
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+ListaAenviar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.ListaAenviar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ListAdjuntos_Click()
+    
+    On Error GoTo ListAdjuntos_Click_Err
+    
     picitem.BackColor = RGB(26, 16, 8)
     FrmCorreo.picitem.Refresh
     Call Grh_Render_To_Hdc(picitem, ObjData(ItemRecibido(ListAdjuntos.ListIndex + 1).OBJIndex).GrhIndex, 0, 0)
-    lbItem.Caption = ObjData(ItemRecibido(ListAdjuntos.ListIndex + 1).OBJIndex).name & " (" & ItemRecibido(ListAdjuntos.ListIndex + 1).Amount & ")"
+    lbItem.Caption = ObjData(ItemRecibido(ListAdjuntos.ListIndex + 1).OBJIndex).Name & " (" & ItemRecibido(ListAdjuntos.ListIndex + 1).Amount & ")"
 
+    
+    Exit Sub
+
+ListAdjuntos_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.ListAdjuntos_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ListAdjuntos_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo ListAdjuntos_MouseMove_Err
+    
     Command9.Picture = Nothing
     Command9.Tag = "0"
 
@@ -951,21 +1214,41 @@ Private Sub ListAdjuntos_MouseMove(Button As Integer, Shift As Integer, x As Sin
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+ListAdjuntos_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.ListAdjuntos_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstInv_Click()
+    
+    On Error GoTo lstInv_Click_Err
+    
 
-    If frmmain.Inventario.GrhIndex(lstInv.ListIndex + 1) = 0 Then
+    If frmMain.Inventario.GrhIndex(lstInv.ListIndex + 1) = 0 Then
         picInvT.BackColor = vbBlack
     Else
 
-        Call Grh_Render_To_Hdc(picInvT, frmmain.Inventario.GrhIndex(lstInv.ListIndex + 1), 0, 0)
+        Call Grh_Render_To_Hdc(picInvT, frmMain.Inventario.GrhIndex(lstInv.ListIndex + 1), 0, 0)
 
     End If
 
+    
+    Exit Sub
+
+lstInv_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.lstInv_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo lstInv_MouseMove_Err
+    
     Command9.Picture = Nothing
     Command9.Tag = "0"
 
@@ -990,9 +1273,19 @@ Private Sub lstInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+lstInv_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.lstInv_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstMsg_Click()
+    
+    On Error GoTo lstMsg_Click_Err
+    
 
     Dim rdata    As String
 
@@ -1026,7 +1319,7 @@ Private Sub lstMsg_Click()
         
             ItemRecibido(i).OBJIndex = Index
             ItemRecibido(i).Amount = cantidad
-            ListAdjuntos.AddItem ObjData(Index).name
+            ListAdjuntos.AddItem ObjData(Index).Name
         Next i
     
         ListAdjuntos.Enabled = True
@@ -1051,9 +1344,19 @@ Private Sub lstMsg_Click()
 
     lbFecha.Caption = "Fecha de envío: " & CorreoMsj(lstMsg.ListIndex + 1).Fecha
 
+    
+    Exit Sub
+
+lstMsg_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.lstMsg_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub txMensaje_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo txMensaje_MouseMove_Err
+    
     Command9.Picture = Nothing
     Command9.Tag = "0"
 
@@ -1078,5 +1381,12 @@ Private Sub txMensaje_MouseMove(Button As Integer, Shift As Integer, x As Single
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+txMensaje_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.txMensaje_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 

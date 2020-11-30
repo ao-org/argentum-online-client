@@ -1974,7 +1974,7 @@ Option Explicit
 
 Public bmoving      As Boolean
 
-Public dx           As Integer
+Public dX           As Integer
 
 Public dy           As Integer
 
@@ -1992,15 +1992,28 @@ Private RealizoCambios                As Long
 Private PonerloEnRojo(1 To NUMSKILLS) As Boolean
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Iniciar_Labels()
+    
+    On Error GoTo Iniciar_Labels_Err
+    
 
     'Iniciamos los labels con los valores de los atributos y los skills
     Dim i As Integer
@@ -2069,9 +2082,19 @@ Public Sub Iniciar_Labels()
     
     End With
 
+    
+    Exit Sub
+
+Iniciar_Labels_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Iniciar_Labels", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_Click(Index As Integer)
+    
+    On Error GoTo Command1_Click_Err
+    
 
     Dim indice
 
@@ -2131,48 +2154,118 @@ Private Sub Command1_Click(Index As Integer)
 
     End If
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command1_MouseDown_Err
+    
     Set Command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-off.bmp", "boton-sm-flecha-der-off.bmp"))
     Command1(Index).Tag = "1"
+    
+    Exit Sub
+
+Command1_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command1_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command1_MouseMove_Err
+    
     If Command1(Index).Tag = "0" Then
         Set Command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-over.bmp", "boton-sm-flecha-der-over.bmp"))
         Command1(Index).Tag = "1"
     End If
+    
+    Exit Sub
+
+Command1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub command1_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo command1_MouseUp_Err
+    
     Set Command1(Index) = Nothing
     Command1(Index).Tag = "0"
+    
+    Exit Sub
+
+command1_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.command1_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo Form_KeyDown_Err
+    
 
     If KeyCode = 27 Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     'Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
     RealizoCambios = 0
     ReDim flags(1 To NUMSKILLS)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     moverForm
     'If Image1.Tag = "1" Then
     ' Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
@@ -2180,22 +2273,22 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     'End If
     Image1.Picture = Nothing
 
-    Dim a As Integer
+    Dim A As Integer
 
-    For a = 1 To NUMSKILLS
+    For A = 1 To NUMSKILLS
 
-        If Not PonerloEnRojo(a) Then
-            Text1(a).ForeColor = &HEA4EB
+        If Not PonerloEnRojo(A) Then
+            Text1(A).ForeColor = &HEA4EB
 
             'Skills(a).ForeColor = vbWhite
         End If
 
-        If PonerloEnRojo(a) = True Then
-            Text1(a).ForeColor = vbRed
+        If PonerloEnRojo(A) = True Then
+            Text1(A).ForeColor = vbRed
 
         End If
 
-    Next a
+    Next A
     
     If Image1.Tag = "1" Then
         Set Image1.Picture = Nothing
@@ -2207,21 +2300,41 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         imgCerrar.Tag = "0"
     End If
 
-    For a = 0 To NUMSKILLS * 2 - 1
-        If Command1(a).Tag = "1" Then
-            Set Command1(a).Picture = Nothing
-            Command1(a).Tag = "0"
+    For A = 0 To NUMSKILLS * 2 - 1
+        If Command1(A).Tag = "1" Then
+            Set Command1(A).Picture = Nothing
+            Command1(A).Tag = "0"
         End If
     Next
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    
+    On Error GoTo Form_QueryUnload_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Form_QueryUnload_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_QueryUnload", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
+    
+    On Error GoTo Image1_Click_Err
+    
 
     If RealizoCambios >= 1 Then
         If MsgBox("Realizo cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
@@ -2252,23 +2365,53 @@ Private Sub Image1_Click()
         PonerloEnRojo(i) = False
     Next i
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseDown_Err
+    
     Image1 = LoadInterface("boton-aceptar-ES-off.bmp")
     Image1.Tag = "1"
+    
+    Exit Sub
+
+Image1_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Image1_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Image1.Tag = "0" Then
         Image1 = LoadInterface("boton-aceptar-ES-over.bmp")
         Image1.Tag = "1"
     End If
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgCerrar_Click()
+    
+    On Error GoTo imgCerrar_Click_Err
+    
     If RealizoCambios >= 1 Then
         If MsgBox("Realizó cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
 
@@ -2297,41 +2440,88 @@ Private Sub imgCerrar_Click()
 
     Unload Me
 
+    
+    Exit Sub
+
+imgCerrar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.imgCerrar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgCerrar_MouseDown_Err
+    
     imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     imgCerrar.Tag = "1"
+    
+    Exit Sub
+
+imgCerrar_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.imgCerrar_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgCerrar_MouseMove_Err
+    
     If imgCerrar.Tag = "0" Then
         imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         imgCerrar.Tag = "1"
     End If
+    
+    Exit Sub
+
+imgCerrar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.imgCerrar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 
 Private Sub skills_Click(Index As Integer)
-    AddtoRichTextBox frmmain.RecTxt, "Información del skill> " & SkillsDesc(Index), 2, 51, 223, 1, 1
+    
+    On Error GoTo skills_Click_Err
+    
+    AddtoRichTextBox frmMain.RecTxt, "Información del skill> " & SkillsDesc(Index), 2, 51, 223, 1, 1
 
+    
+    Exit Sub
+
+skills_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.skills_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Skills_MouseMove_Err
+    
 
-    Dim a As Integer
+    Dim A As Integer
 
-    For a = 1 To NUMSKILLS
+    For A = 1 To NUMSKILLS
 
-        If Not PonerloEnRojo(a) Then
-            Text1(a).ForeColor = &HEA4EB
+        If Not PonerloEnRojo(A) Then
+            Text1(A).ForeColor = &HEA4EB
 
         End If
 
         'Skills(a).ForeColor = vbWhite
-    Next a
+    Next A
 
     Text1(Index).ForeColor = vbBlue
 
     'Skills(index).ForeColor = vbBlue
+    
+    Exit Sub
+
+Skills_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Skills_MouseMove", Erl)
+    Resume Next
+    
 End Sub

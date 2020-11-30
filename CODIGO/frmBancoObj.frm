@@ -201,15 +201,28 @@ Public WithEvents InvBoveda  As clsGrapchicalInventory ' Inventario de la bóved
 Attribute InvBoveda.VB_VarHelpID = -1
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cantidad_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo cantidad_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
@@ -224,9 +237,19 @@ Private Sub cantidad_KeyPress(KeyAscii As Integer)
 
     End If
 
+    
+    Exit Sub
+
+cantidad_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.cantidad_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseDown_Err
+    
 
     Call Sound.Sound_Play(SND_CLICK)
 
@@ -248,9 +271,19 @@ Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As 
     tmrNumber.Interval = 30
     tmrNumber.Enabled = True
 
+    
+    Exit Sub
+
+cmdMasMenos_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.cmdMasMenos_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseMove_Err
+    
 
     Select Case Index
 
@@ -272,30 +305,70 @@ Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As 
 
     End Select
 
+    
+    Exit Sub
+
+cmdMasMenos_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.cmdMasMenos_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseUp_Err
+    
     Call Form_MouseMove(Button, Shift, x, y)
     tmrNumber.Enabled = False
 
+    
+    Exit Sub
+
+cmdMasMenos_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.cmdMasMenos_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     cantidad.BackColor = RGB(18, 19, 13)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
+    
+    On Error GoTo Image1_Click_Err
+    
     Call Sound.Sound_Play(SND_CLICK)
 
     If Not IsNumeric(cantidad.Text) Then Exit Sub
@@ -320,9 +393,19 @@ Private Sub Image1_Click(Index As Integer)
 
     End Select
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     moverForm
 
     If Image1(0).Tag = "1" Then
@@ -349,9 +432,19 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cantidad_Change()
+    
+    On Error GoTo cantidad_Change_Err
+    
 
     If Val(cantidad.Text) < 1 Then
         cantidad.Text = 1
@@ -364,15 +457,35 @@ Private Sub cantidad_Change()
 
     End If
 
+    
+    Exit Sub
+
+cantidad_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.cantidad_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    
+    On Error GoTo Form_Unload_Err
+    
     Call Sound.Sound_Play(SND_CLICK)
     Call WriteBankEnd
 
+    
+    Exit Sub
+
+Form_Unload_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Form_Unload", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseDown_Err
+    
 
     If Index = 0 Then
         Image1(0).Picture = LoadInterface("boton-retirar-ES-off.bmp")
@@ -383,9 +496,19 @@ Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integ
 
     End If
 
+    
+    Exit Sub
+
+Image1_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Image1_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Index = 0 Then
         If Image1(0).Tag = "0" Then
@@ -404,9 +527,19 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
 
     End If
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub interface_Click()
+    
+    On Error GoTo interface_Click_Err
+    
     
     If InvBoveda.ClickedInside Then
         ' Cliqueé en la bóveda, deselecciono el inventario
@@ -418,9 +551,19 @@ Private Sub interface_Click()
 
     End If
 
+    
+    Exit Sub
+
+interface_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.interface_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub interface_DblClick()
+    
+    On Error GoTo interface_DblClick_Err
+    
 
     ' Nos aseguramos que lo último que cliqueó fue el inventario
     If Not InvBankUsu.ClickedInside Then Exit Sub
@@ -463,9 +606,19 @@ Private Sub interface_DblClick()
 
     End Select
 
+    
+    Exit Sub
+
+interface_DblClick_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.interface_DblClick", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub interface_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo interface_KeyDown_Err
+    
 
     ' Referencia temporal al inventario que corresponda
     Dim CurrentInventory As clsGrapchicalInventory
@@ -515,9 +668,19 @@ Private Sub interface_KeyDown(KeyCode As Integer, Shift As Integer)
     ' Limpiamos
     Set CurrentInventory = Nothing
 
+    
+    Exit Sub
+
+interface_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.interface_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub InvBoveda_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    
+    On Error GoTo InvBoveda_ItemDropped_Err
+    
 
     ' Si lo soltó dentro de la bóveda
     If Drop > 0 Then
@@ -535,9 +698,19 @@ Private Sub InvBoveda_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
 
     End If
 
+    
+    Exit Sub
+
+InvBoveda_ItemDropped_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.InvBoveda_ItemDropped", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub InvBankUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    
+    On Error GoTo InvBankUsu_ItemDropped_Err
+    
 
     ' Si lo soltó dentro del mismo inventario
     If Drop > 0 Then
@@ -555,14 +728,34 @@ Private Sub InvBankUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer,
 
     End If
 
+    
+    Exit Sub
+
+InvBankUsu_ItemDropped_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.InvBankUsu_ItemDropped", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub salir_Click()
+    
+    On Error GoTo salir_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+salir_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.salir_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub tmrNumber_Timer()
+    
+    On Error GoTo tmrNumber_Timer_Err
+    
 
     Const MIN_NUMBER = 1
 
@@ -585,4 +778,11 @@ Private Sub tmrNumber_Timer()
 
     End If
 
+    
+    Exit Sub
+
+tmrNumber_Timer_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.tmrNumber_Timer", Erl)
+    Resume Next
+    
 End Sub

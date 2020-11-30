@@ -2,6 +2,9 @@ Attribute VB_Name = "TileEngine_Chars"
 Option Explicit
 
 Public Sub ResetCharInfo(ByVal charindex As Integer)
+    
+    On Error GoTo ResetCharInfo_Err
+    
 
     With charlist(charindex)
     
@@ -54,6 +57,13 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         
     End With
     
+    
+    Exit Sub
+
+ResetCharInfo_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.ResetCharInfo", Erl)
+    Resume Next
+    
 End Sub
 
 
@@ -61,6 +71,9 @@ Public Sub EraseChar(ByVal charindex As Integer)
     '*****************************************************************
     'Erases a character from CharList and map
     '*****************************************************************
+    
+    On Error GoTo EraseChar_Err
+    
     
     If charindex = 0 Then Exit Sub
     If charlist(charindex).active = 0 Then Exit Sub
@@ -88,9 +101,19 @@ Public Sub EraseChar(ByVal charindex As Integer)
     'Update NumChars
     NumChars = NumChars - 1
 
+    
+    Exit Sub
+
+EraseChar_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.EraseChar", Erl)
+    Resume Next
+    
 End Sub
 
 Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+    
+    On Error GoTo MakeChar_Err
+    
 
     
 
@@ -158,12 +181,22 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
     'Plot on map
     MapData(x, y).charindex = charindex
 
+    
+    Exit Sub
+
+MakeChar_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.MakeChar", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Heading)
     '*****************************************************************
     'Starts the movement of a character in nHeading direction
     '*****************************************************************
+    
+    On Error GoTo Char_Move_by_Head_Err
+    
 
     If nHeading = 0 Then
         Debug.Print "Heading: " & nHeading
@@ -256,9 +289,19 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
 
     End If
     
+    
+    Exit Sub
+
+Char_Move_by_Head_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Move_by_Head", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
+    
+    On Error GoTo Char_Move_by_Pos_Err
+    
 
     
 
@@ -344,23 +387,53 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         Call EraseChar(charindex)
     End If
 
+    
+    Exit Sub
+
+Char_Move_by_Pos_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Move_by_Pos", Erl)
+    Resume Next
+    
 End Sub
 
 Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
+    
+    On Error GoTo EstaPCarea_Err
+    
 
     With charlist(charindex).Pos
         EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
 
     End With
 
+    
+    Exit Function
+
+EstaPCarea_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.EstaPCarea", Erl)
+    Resume Next
+    
 End Function
 
 Public Function EstaEnArea(ByVal x As Integer, ByVal y As Integer) As Boolean
+    
+    On Error GoTo EstaEnArea_Err
+    
     EstaEnArea = x > UserPos.x - MinXBorder And x < UserPos.x + MinXBorder And y > UserPos.y - MinYBorder And y < UserPos.y + MinYBorder
 
+    
+    Exit Function
+
+EstaEnArea_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.EstaEnArea", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Char_Check(ByVal char_index As Integer) As Boolean
+    
+    On Error GoTo Char_Check_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
@@ -372,6 +445,13 @@ Public Function Char_Check(ByVal char_index As Integer) As Boolean
         Char_Check = (charlist(char_index).Heading > 0)
 
     End If
+    
+    
+    Exit Function
+
+Char_Check_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Check", Erl)
+    Resume Next
     
 End Function
 
@@ -418,6 +498,9 @@ ErrorHandler:
 End Function
 
 Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1)
+    
+    On Error GoTo Char_Dialog_Set_Err
+    
     
     If Char_Check(char_index) Then
         charlist(char_index).dialog = char_dialog
@@ -470,10 +553,20 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
 
     End If
     
+    
+    Exit Sub
+
+Char_Dialog_Set_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Dialog_Set", Erl)
+    Resume Next
+    
 End Sub
 
 
 Public Sub Char_Dialog_Remove(ByVal char_index As Integer, ByVal Index As Integer)
+    
+    On Error GoTo Char_Dialog_Remove_Err
+    
 
     If char_index = 0 Then Exit Sub
 
@@ -504,9 +597,19 @@ Public Sub Char_Dialog_Remove(ByVal char_index As Integer, ByVal Index As Intege
 
     End If
 
+    
+    Exit Sub
+
+Char_Dialog_Remove_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Char_Dialog_Remove", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
+    
+    On Error GoTo SetCharacterFx_Err
+    
 
     If fX = 0 Then Exit Sub
 
@@ -527,11 +630,21 @@ Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal
             
     End With
 
+    
+    Exit Sub
+
+SetCharacterFx_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.SetCharacterFx", Erl)
+    Resume Next
+    
 End Sub
 
 
 
 Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
+    
+    On Error GoTo Get_PixelY_Of_Char_Err
+    
 
     '*****************************************************************
     'Author: Pablo Mercavides
@@ -543,9 +656,19 @@ Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
 
     End If
 
+    
+    Exit Function
+
+Get_PixelY_Of_Char_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Get_PixelY_Of_Char", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Get_Pixelx_Of_Char(ByVal char_index As Integer) As Integer
+    
+    On Error GoTo Get_Pixelx_Of_Char_Err
+    
 
     '*****************************************************************
     'Author: Pablo Mercavides
@@ -557,6 +680,13 @@ Public Function Get_Pixelx_Of_Char(ByVal char_index As Integer) As Integer
 
     End If
 
+    
+    Exit Function
+
+Get_Pixelx_Of_Char_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Get_Pixelx_Of_Char", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Get_Pixelx_Of_XY(ByVal x As Byte) As Integer
@@ -564,9 +694,19 @@ Public Function Get_Pixelx_Of_XY(ByVal x As Byte) As Integer
     'Author: Pablo Mercavides
     '*****************************************************************
     'Make sure it's a legal char_index
+    
+    On Error GoTo Get_Pixelx_Of_XY_Err
+    
     Get_Pixelx_Of_XY = (x - UserPos.x) * 32 + frmMain.renderer.ScaleWidth / 2
     Get_Pixelx_Of_XY = Get_Pixelx_Of_XY
 
+    
+    Exit Function
+
+Get_Pixelx_Of_XY_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Get_Pixelx_Of_XY", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Get_PixelY_Of_XY(ByVal y As Byte) As Integer
@@ -574,8 +714,18 @@ Public Function Get_PixelY_Of_XY(ByVal y As Byte) As Integer
     'Author: Pablo Mercavides
     '*****************************************************************
     'Make sure it's a legal char_index
+    
+    On Error GoTo Get_PixelY_Of_XY_Err
+    
     Get_PixelY_Of_XY = (y - 2 - UserPos.y) * 32 + frmMain.renderer.ScaleWidth / 2
     Get_PixelY_Of_XY = Get_PixelY_Of_XY - 16
 
+    
+    Exit Function
+
+Get_PixelY_Of_XY_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Chars.Get_PixelY_Of_XY", Erl)
+    Resume Next
+    
 End Function
 

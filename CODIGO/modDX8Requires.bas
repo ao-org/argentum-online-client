@@ -79,8 +79,8 @@ Public Type TYPE_VERTEX
 
     Color   As RGBA
 
-    TX      As Single
-    TY      As Single
+    tX      As Single
+    tY      As Single
 
 End Type
 
@@ -92,15 +92,28 @@ Public Const PI As Single = 3.14159265358979
 
 
 Public Function General_Bytes_To_Megabytes(Bytes As Double) As Double
+    
+    On Error GoTo General_Bytes_To_Megabytes_Err
+    
 
     Dim dblAns As Double
 
     dblAns = (Bytes / 1024) / 1024
     General_Bytes_To_Megabytes = format(dblAns, "###,###,##0.00")
 
+    
+    Exit Function
+
+General_Bytes_To_Megabytes_Err:
+    Call RegistrarError(Err.number, Err.Description, "modDX8Requires.General_Bytes_To_Megabytes", Erl)
+    Resume Next
+    
 End Function
 
 Public Function General_Get_Free_Ram() As Double
+    
+    On Error GoTo General_Get_Free_Ram_Err
+    
 
     'Return Value in Megabytes
     Dim dblAns As Double
@@ -109,15 +122,35 @@ Public Function General_Get_Free_Ram() As Double
     dblAns = pUdtMemStatus.dwAvailPhys
     General_Get_Free_Ram = General_Bytes_To_Megabytes(dblAns)
 
+    
+    Exit Function
+
+General_Get_Free_Ram_Err:
+    Call RegistrarError(Err.number, Err.Description, "modDX8Requires.General_Get_Free_Ram", Erl)
+    Resume Next
+    
 End Function
 
 Public Function General_Get_Free_Ram_Bytes() As Long
+    
+    On Error GoTo General_Get_Free_Ram_Bytes_Err
+    
     GlobalMemoryStatus pUdtMemStatus
     General_Get_Free_Ram_Bytes = pUdtMemStatus.dwAvailPhys
 
+    
+    Exit Function
+
+General_Get_Free_Ram_Bytes_Err:
+    Call RegistrarError(Err.number, Err.Description, "modDX8Requires.General_Get_Free_Ram_Bytes", Erl)
+    Resume Next
+    
 End Function
 
 Public Function ARGB(ByVal R As Long, ByVal G As Long, ByVal B As Long, ByVal A As Long) As Long
+    
+    On Error GoTo ARGB_Err
+    
         
     Dim c As Long
         
@@ -137,5 +170,12 @@ Public Function ARGB(ByVal R As Long, ByVal G As Long, ByVal B As Long, ByVal A 
     
     ARGB = c
 
+    
+    Exit Function
+
+ARGB_Err:
+    Call RegistrarError(Err.number, Err.Description, "modDX8Requires.ARGB", Erl)
+    Resume Next
+    
 End Function
 

@@ -6,13 +6,26 @@ Option Explicit
 Public MiCabeza As Integer
 
 Private Sub DrawGrafico(grh As grh, ByVal x As Byte, ByVal y As Byte)
+    
+    On Error GoTo DrawGrafico_Err
+    
 
     If grh.GrhIndex <= 0 Then Exit Sub
     'Call Draw_Grh_Picture(grh.GrhIndex, frmCrearPersonaje.PlayerView, -6, -13, False, 0, 1)
 
+    
+    Exit Sub
+
+DrawGrafico_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModCabezas.DrawGrafico", Erl)
+    Resume Next
+    
 End Sub
 
 Sub DibujarCPJ(ByVal MyHead As Long, Optional ByVal Heading As Byte = 3)
+    
+    On Error GoTo DibujarCPJ_Err
+    
 
     CPHead = MyHead
 
@@ -21,9 +34,19 @@ Sub DibujarCPJ(ByVal MyHead As Long, Optional ByVal Heading As Byte = 3)
     grh = HeadData(MyHead).Head(Heading)
 
     'Call DrawGrafico(grh, 0, 0)
+    
+    Exit Sub
+
+DibujarCPJ_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModCabezas.DibujarCPJ", Erl)
+    Resume Next
+    
 End Sub
 
 Sub DameOpciones()
+    
+    On Error GoTo DameOpciones_Err
+    
 
     Dim i As Integer
 
@@ -161,5 +184,12 @@ Sub DameOpciones()
 
     Rem frmCrearPersonaje.PlayerView.Cls
 
+    
+    Exit Sub
+
+DameOpciones_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModCabezas.DameOpciones", Erl)
+    Resume Next
+    
 End Sub
 

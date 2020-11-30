@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
 Begin VB.Form FrmObjetos 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Crear objeto"
@@ -245,6 +245,9 @@ Dim lRet As Long, LFI As LVFINDINFO
   
 'Procedimiento que busca: Se le envía el control ListView y el texto a buscar
 Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
+    
+    On Error GoTo Buscar_ListView_Err
+    
   
     'Esto define si la cadena debe estar completa o si encuentra una parte _
      seleccionará el primer Item del ListView que mas se le paresca
@@ -284,11 +287,21 @@ Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
 
     End If
   
+    
+    Exit Sub
+
+Buscar_ListView_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Buscar_ListView", Erl)
+    Resume Next
+    
 End Sub
     
 Private Sub Command3_Click()
     'WyroX: Cambio la lógica del buscar
     'Call Buscar_ListView(ListView1, Text1)
+    
+    On Error GoTo Command3_Click_Err
+    
     
     FrmObjetos.ListView1.ListItems.Clear
     
@@ -308,9 +321,19 @@ Private Sub Command3_Click()
 
     Next i
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
   
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
 
     If Len(ListView1.SelectedItem.SubItems(1)) <> 0 Then
         
@@ -320,19 +343,49 @@ Private Sub Command1_Click()
 
     End If
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Unload Me
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = vbKeyEscape) Then Unload Me
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
+    
+    On Error GoTo ListView1_ItemClick_Err
+    
 
     If Len(ListView1.SelectedItem.SubItems(1)) <> 0 Then
     
@@ -340,10 +393,27 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
 
     End If
 
+    
+    Exit Sub
+
+ListView1_ItemClick_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmObjetos.ListView1_ItemClick", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Text1_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo Text1_KeyDown_Err
+    
 
     If KeyCode = vbKeyReturn Then Command3_Click
 
+    
+    Exit Sub
+
+Text1_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Text1_KeyDown", Erl)
+    Resume Next
+    
 End Sub

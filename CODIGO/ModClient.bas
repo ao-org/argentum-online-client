@@ -22,27 +22,50 @@ Private Const LWA_ALPHA = &H2&
 
 Public Sub Make_Transparent_Richtext(ByVal hwnd As Long)
     'If Win2kXP Then
+    
+    On Error GoTo Make_Transparent_Richtext_Err
+    
     Call SetWindowLong(hwnd, GWL_EXSTYLE, WS_EX_TRANSPARENT)
 
+    
+    Exit Sub
+
+Make_Transparent_Richtext_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModClient.Make_Transparent_Richtext", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub NameMapa(ByVal map As Long)
     'Dim DarNombreMapa As String
+    
+    On Error GoTo NameMapa_Err
+    
 
     'DarNombreMapa = DarNameMapa(Map)
-    frmmain.NameMapa.Caption = MapDat.map_name
+    frmMain.NameMapa.Caption = MapDat.map_name
     
     Letter_Set 0, MapDat.map_name
     
     'Map_Letter_Fade_Set 1, 0
 
+    
+    Exit Sub
+
+NameMapa_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModClient.NameMapa", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean, Optional ByVal italic As Boolean, Optional ByVal bCrLf As Boolean, Optional ByVal FontTypeIndex As Byte = 0)
     
+    On Error GoTo PrintToConsole_Err
+    
+    
     Dim bUrl As Boolean
     
-    With frmmain.RecTxt
+    With frmMain.RecTxt
         
         '.SelFontName = "Tahoma"
         ' .SelFontSize = 8
@@ -53,7 +76,7 @@ Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Op
             ' EnableUrlDetect
             
             If (Len(.Text)) > 20000 Then .Text = vbNullString
-            .SelStart = Len(frmmain.RecTxt.Text)
+            .SelStart = Len(frmMain.RecTxt.Text)
             .SelLength = 0
         
             .SelBold = IIf(bold, True, False)
@@ -75,7 +98,7 @@ Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Op
                         
             'If bUrl Then EnableUrlDetect
             
-            .SelStart = Len(frmmain.RecTxt.Text)
+            .SelStart = Len(frmMain.RecTxt.Text)
             .SelLength = 0
 
             .SelBold = FontTypes(FontTypeIndex).bold
@@ -88,6 +111,13 @@ Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Op
         End If
 
     End With
+    
+    
+    Exit Sub
+
+PrintToConsole_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModClient.PrintToConsole", Erl)
+    Resume Next
     
 End Sub
 

@@ -20,7 +20,17 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Me.Picture = LoadInterface("VentanaCargando.bmp")
     MakeFormTransparent Me, vbBlack
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "Frmcarga.Form_Load", Erl)
+    Resume Next
+    
 End Sub

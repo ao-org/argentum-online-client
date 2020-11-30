@@ -69,9 +69,19 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub cmdAbandonar_Click()
+    
+    On Error GoTo cmdAbandonar_Click_Err
+    
     Call WriteAbandonarGrupo
     Unload Me
 
+    
+    Exit Sub
+
+cmdAbandonar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdAbandonar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdAbandonar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -81,6 +91,9 @@ Private Sub cmdAbandonar_MouseDown(Button As Integer, Shift As Integer, x As Sin
 End Sub
 
 Private Sub cmdAbandonar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdAbandonar_MouseMove_Err
+    
 
     If cmdAbandonar.Tag = "0" Then
         cmdAbandonar.Picture = LoadInterface("grupo_abandonarhover.bmp")
@@ -97,9 +110,19 @@ Private Sub cmdAbandonar_MouseMove(Button As Integer, Shift As Integer, x As Sin
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+cmdAbandonar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdAbandonar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdExpulsar_Click()
+    
+    On Error GoTo cmdExpulsar_Click_Err
+    
 
     If lstGrupo.ListIndex >= 0 Then
         Call WriteHecharDeGrupo(lstGrupo.ListIndex)
@@ -107,6 +130,13 @@ Private Sub cmdExpulsar_Click()
 
     End If
 
+    
+    Exit Sub
+
+cmdExpulsar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdExpulsar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdExpulsar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -116,6 +146,9 @@ Private Sub cmdExpulsar_MouseDown(Button As Integer, Shift As Integer, x As Sing
 End Sub
 
 Private Sub cmdExpulsar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdExpulsar_MouseMove_Err
+    
     
     If cmdExpulsar.Tag = "0" Then
         cmdExpulsar.Picture = LoadInterface("grupo_expulsarhover.bmp")
@@ -132,12 +165,29 @@ Private Sub cmdExpulsar_MouseMove(Button As Integer, Shift As Integer, x As Sing
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+cmdExpulsar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdExpulsar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdInvitar_Click()
+    
+    On Error GoTo cmdInvitar_Click_Err
+    
     Unload Me
     Call WriteInvitarGrupo
 
+    
+    Exit Sub
+
+cmdInvitar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdInvitar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdInvitar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -147,6 +197,9 @@ Private Sub cmdInvitar_MouseDown(Button As Integer, Shift As Integer, x As Singl
 End Sub
 
 Private Sub cmdInvitar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdInvitar_MouseMove_Err
+    
 
     If cmdInvitar.Tag = "0" Then
         cmdInvitar.Picture = LoadInterface("grupo_invitarhover.bmp")
@@ -163,11 +216,28 @@ Private Sub cmdInvitar_MouseMove(Button As Integer, Shift As Integer, x As Singl
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+cmdInvitar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdInvitar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -177,6 +247,9 @@ Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command2_MouseMove_Err
+    
 
     If Command2.Tag = "0" Then
         Command2.Picture = LoadInterface("grupo_salirhover.bmp")
@@ -193,22 +266,52 @@ Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single,
     cmdAbandonar.Picture = Nothing
     cmdAbandonar.Tag = "0"
 
+    
+    Exit Sub
+
+Command2_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Command2_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     cmdExpulsar.Picture = Nothing
     cmdExpulsar.Tag = "0"
 
@@ -221,9 +324,19 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstGrupo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo lstGrupo_MouseMove_Err
+    
     cmdExpulsar.Picture = Nothing
     cmdExpulsar.Tag = "0"
 
@@ -236,4 +349,11 @@ Private Sub lstGrupo_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Command2.Picture = Nothing
     Command2.Tag = "0"
 
+    
+    Exit Sub
+
+lstGrupo_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.lstGrupo_MouseMove", Erl)
+    Resume Next
+    
 End Sub

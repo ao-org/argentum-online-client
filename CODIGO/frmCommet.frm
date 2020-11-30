@@ -94,7 +94,7 @@ Option Explicit
 
 Public nombre As String
 
-Public T      As TIPO
+Public t      As TIPO
 
 Public Enum TIPO
 
@@ -104,9 +104,12 @@ Public Enum TIPO
 
 End Enum
 
-Public Sub SetTipo(ByVal T As TIPO)
+Public Sub SetTipo(ByVal t As TIPO)
+    
+    On Error GoTo SetTipo_Err
+    
 
-    Select Case T
+    Select Case t
 
         Case TIPO.ALIANZA
             Me.Caption = "Detalle de solicitud de alianza"
@@ -122,12 +125,22 @@ Public Sub SetTipo(ByVal T As TIPO)
 
     End Select
 
+    
+    Exit Sub
+
+SetTipo_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCommet.SetTipo", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
 
     If Text1 = "" Then
-        If T = PAZ Or T = ALIANZA Then
+        If t = PAZ Or t = ALIANZA Then
             MsgBox "Debes redactar un mensaje solicitando la paz o alianza al líder de " & nombre
         Else
             MsgBox "Debes indicar el motivo por el cual rechazas la membresía de " & nombre
@@ -138,11 +151,11 @@ Private Sub Command1_Click()
 
     End If
 
-    If T = PAZ Then
+    If t = PAZ Then
         Call WriteGuildOfferPeace(nombre, Replace(Text1, vbCrLf, "º"))
-    ElseIf T = ALIANZA Then
+    ElseIf t = ALIANZA Then
         Call WriteGuildOfferAlliance(nombre, Replace(Text1, vbCrLf, "º"))
-    ElseIf T = RECHAZOPJ Then
+    ElseIf t = RECHAZOPJ Then
         Call WriteGuildRejectNewMember(nombre, Replace(Replace(Text1.Text, ",", " "), vbCrLf, " "))
 
         'Sacamos el char de la lista de aspirantes
@@ -166,15 +179,42 @@ Private Sub Command1_Click()
 
     Unload Me
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCommet.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCommet.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmCommet.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 

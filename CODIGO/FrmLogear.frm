@@ -182,15 +182,28 @@ Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    
+    On Error GoTo Is_Transparent_Err
+    
 
     
 
@@ -210,10 +223,20 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
     End If
 
+    
+    Exit Function
+
+Is_Transparent_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Is_Transparent", Erl)
+    Resume Next
+    
 End Function
 
 'Funciï¿½n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    
+    On Error GoTo Aplicar_Transparencia_Err
+    
 
     Dim msg As Long
 
@@ -239,15 +262,35 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
 
     End If
 
+    
+    Exit Function
+
+Aplicar_Transparencia_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Aplicar_Transparencia", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub btnCuenta_Click()
+    
+    On Error GoTo btnCuenta_Click_Err
+    
     Call ShellExecute(0, "Open", "https://www.argentum20.com/", "", App.Path, 1)
 
+    
+    Exit Sub
+
+btnCuenta_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.btnCuenta_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
     'MakeFormTransparent Me, vbBlack
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     Me.Top = Me.Top + 2500
     'Call CargarLst
@@ -260,9 +303,19 @@ Private Sub Form_Load()
         lstServers.Visible = True
     #End If
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
 
     If btnCuenta.Tag = "1" Then
         btnCuenta.Picture = Nothing
@@ -282,14 +335,34 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
+    
+    On Error GoTo Image1_Click_Err
+    
     Call CloseClient
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("boton-salir-ES-over.bmp")
@@ -309,9 +382,19 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub btnCuenta_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo btnCuenta_MouseMove_Err
+    
 
     If btnCuenta.Tag = "0" Then
         btnCuenta.Picture = LoadInterface("boton-cuenta-ES-over.bmp")
@@ -331,9 +414,19 @@ Private Sub btnCuenta_MouseMove(Button As Integer, Shift As Integer, x As Single
 
     End If
 
+    
+    Exit Sub
+
+btnCuenta_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.btnCuenta_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_Click()
+    
+    On Error GoTo Image3_Click_Err
+    
     Call FormParser.Parse_Form(Me, E_WAIT)
 
     If IntervaloPermiteConectar Then
@@ -387,9 +480,19 @@ Private Sub Image3_Click()
 
     End If
 
+    
+    Exit Sub
+
+Image3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image3_MouseMove_Err
+    
 
     If Image3.Tag = "0" Then
         Image3.Picture = LoadInterface("boton-ingresar-ES-over.bmp")
@@ -409,9 +512,19 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image3_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image3_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image4_Click()
+    
+    On Error GoTo Image4_Click_Err
+    
 
     If Image4.Tag = "0" Then
         Image4.Picture = LoadInterface("check-amarillo.bmp")
@@ -424,9 +537,19 @@ Private Sub Image4_Click()
 
     End If
 
+    
+    Exit Sub
+
+Image4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label1_Click()
+    
+    On Error GoTo Label1_Click_Err
+    
 
     If Image4.Tag = "0" Then
         Image4.Picture = LoadInterface("check-amarillo.bmp")
@@ -439,14 +562,34 @@ Private Sub Label1_Click()
 
     End If
 
+    
+    Exit Sub
+
+Label1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Label1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstServers_Click()
+    
+    On Error GoTo lstServers_Click_Err
+    
     IPdelServidor = ServersLst(lstServers.ListIndex + 1).IP
     PuertoDelServidor = ServersLst(lstServers.ListIndex + 1).puerto
+    
+    Exit Sub
+
+lstServers_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.lstServers_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo NameTxt_KeyDown_Err
+    
 
     If KeyCode = 27 Then
         prgRun = False
@@ -457,9 +600,19 @@ Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
 
     End If
 
+    
+    Exit Sub
+
+NameTxt_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.NameTxt_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub PasswordTxt_KeyDown(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo PasswordTxt_KeyDown_Err
+    
 
     If KeyCode = 27 Then
         prgRun = False
@@ -470,9 +623,19 @@ Private Sub PasswordTxt_KeyDown(KeyCode As Integer, Shift As Integer)
 
     End If
 
+    
+    Exit Sub
+
+PasswordTxt_KeyDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.PasswordTxt_KeyDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub PasswordTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo PasswordTxt_MouseMove_Err
+    
 
     If btnCuenta.Tag = "1" Then
         btnCuenta.Picture = Nothing
@@ -492,4 +655,11 @@ Private Sub PasswordTxt_MouseMove(Button As Integer, Shift As Integer, x As Sing
 
     End If
 
+    
+    Exit Sub
+
+PasswordTxt_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogear.PasswordTxt_MouseMove", Erl)
+    Resume Next
+    
 End Sub

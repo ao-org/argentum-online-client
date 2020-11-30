@@ -91,42 +91,105 @@ Public WithEvents InvKeys As clsGrapchicalInventory
 Attribute InvKeys.VB_VarHelpID = -1
 
 Private Sub cmdcerrar_Click()
-    frmmain.CerrarLlavero
+    
+    On Error GoTo cmdcerrar_Click_Err
+    
+    frmMain.CerrarLlavero
+    
+    Exit Sub
+
+cmdcerrar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.cmdcerrar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdCerrar_MouseDown_Err
+    
     cmdCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     cmdCerrar.Tag = "1"
+    
+    Exit Sub
+
+cmdCerrar_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.cmdCerrar_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdCerrar_MouseMove_Err
+    
     If cmdCerrar.Tag = "0" Then
         cmdCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         cmdCerrar.Tag = "1"
     End If
+    
+    Exit Sub
+
+cmdCerrar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.cmdCerrar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Activate()
+    
+    On Error GoTo Form_Activate_Err
+    
     If InvKeys.OBJIndex(1) = 0 Then
         NombreLlave.Caption = "Aquí aparecerán las llaves que consigas"
     End If
+    
+    Exit Sub
+
+Form_Activate_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.Form_Activate", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanallavero.bmp")
     cmdCerrar.Picture = Nothing
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     If InvKeys.OBJIndex(1) <> 0 Then
         NombreLlave.Caption = vbNullString
     End If
@@ -138,17 +201,37 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         cmdCerrar.Picture = Nothing
         cmdCerrar.Tag = "0"
     End If
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub interface_DblClick()
+    
+    On Error GoTo interface_DblClick_Err
+    
     If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
 
     If InvKeys.IsItemSelected Then
         Call WriteUseKey(InvKeys.SelectedItem)
     End If
+    
+    Exit Sub
+
+interface_DblClick_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.interface_DblClick", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub interface_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo interface_MouseMove_Err
+    
     Dim Slot As Integer
     Slot = InvKeys.GetSlot(x, y)
     
@@ -162,8 +245,25 @@ Private Sub interface_MouseMove(Button As Integer, Shift As Integer, x As Single
         cmdCerrar.Picture = Nothing
         cmdCerrar.Tag = "0"
     End If
+    
+    Exit Sub
+
+interface_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.interface_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub interface_Paint()
+    
+    On Error GoTo interface_Paint_Err
+    
     InvKeys.ReDraw
+    
+    Exit Sub
+
+interface_Paint_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.interface_Paint", Erl)
+    Resume Next
+    
 End Sub

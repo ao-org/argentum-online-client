@@ -129,6 +129,9 @@ Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" (ByVa
 Private Declare Function SendMessageString Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lPara As String) As Long
  
 Public Function TextoLineaRichTextBox(ByVal pControl As RichTextBox, ByVal pLinea As Long) As String
+    
+    On Error GoTo TextoLineaRichTextBox_Err
+    
 
     
 
@@ -152,11 +155,21 @@ Public Function TextoLineaRichTextBox(ByVal pControl As RichTextBox, ByVal pLine
 
     End If
 
+    
+    Exit Function
+
+TextoLineaRichTextBox_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.TextoLineaRichTextBox", Erl)
+    Resume Next
+    
 End Function
  
 ' Sacado de https://www.vbforums.com/showthread.php?379880-RESOLVED-Remove-Title-Bar-Off-Of-Form-Using-API-s
 ' Borro algunas partes innecesarias (WyroX)
 Public Sub Form_RemoveTitleBar(f As Form)
+    
+    On Error GoTo Form_RemoveTitleBar_Err
+    
 
     Dim Style As Long
 
@@ -170,9 +183,19 @@ Public Sub Form_RemoveTitleBar(f As Form)
 
     ' Repaint the window.
     'SetWindowPos f.hwnd, 0, 0, 0, 0, 0, SWP_FRAMECHANGED Or SWP_NOMOVE Or SWP_NOZORDER Or SWP_NOSIZE
+    
+    Exit Sub
+
+Form_RemoveTitleBar_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.Form_RemoveTitleBar", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function MakeFormTransparent(frm As Form, ByVal lngTransColor As Long)
+    
+    On Error GoTo MakeFormTransparent_Err
+    
 
     Dim hRegion  As Long
 
@@ -198,9 +221,19 @@ Public Function MakeFormTransparent(frm As Form, ByVal lngTransColor As Long)
 
     End If
 
+    
+    Exit Function
+
+MakeFormTransparent_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.MakeFormTransparent", Erl)
+    Resume Next
+    
 End Function
 
 Private Function RegionFromBitmap(picSource As Object, ByVal lngTransColor As Long) As Long
+    
+    On Error GoTo RegionFromBitmap_Err
+    
 
     Dim lngRetr      As Long, lngHeight As Long, lngWidth As Long
 
@@ -300,11 +333,21 @@ Private Function RegionFromBitmap(picSource As Object, ByVal lngTransColor As Lo
     picSource.ScaleMode = OldScaleMode
     RegionFromBitmap = lngRgnFinal
 
+    
+    Exit Function
+
+RegionFromBitmap_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.RegionFromBitmap", Erl)
+    Resume Next
+    
 End Function
 
 'Code von vbVision:
 'Diese Funktion überprüft, ob die angegebene Function von einer DLL exportiert wird.
 Private Function IsFunctionExported(ByVal sFunction As String, ByVal sModule As String) As Boolean
+    
+    On Error GoTo IsFunctionExported_Err
+    
 
     
 
@@ -327,6 +370,13 @@ Private Function IsFunctionExported(ByVal sFunction As String, ByVal sModule As 
     
     If bLibLoaded Then Call FreeLibrary(hMod)
 
+    
+    Exit Function
+
+IsFunctionExported_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.IsFunctionExported", Erl)
+    Resume Next
+    
 End Function
 
 Public Function SuperMid(ByVal strMain As String, str1 As String, str2 As String, Optional reverse As Boolean) As String

@@ -190,6 +190,9 @@ Public iplst    As String
 
 Public Sub CargarRecursos()
     
+    On Error GoTo CargarRecursos_Err
+    
+    
     If UtilizarPreCarga = 1 Then
         Call PreloadGraphics
     End If
@@ -210,12 +213,22 @@ Public Sub CargarRecursos()
     Call CargarAnimEscudos
     Call CargarColores
 
+    
+    Exit Sub
+
+CargarRecursos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarRecursos", Erl)
+    Resume Next
+    
 End Sub
 
 ''
 ' Initializes the fonts array
 
 Public Sub InitFonts()
+    
+    On Error GoTo InitFonts_Err
+    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -515,9 +528,19 @@ Public Sub InitFonts()
 
     End With
 
+    
+    Exit Sub
+
+InitFonts_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.InitFonts", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarPasos()
+    
+    On Error GoTo CargarPasos_Err
+    
 
     ReDim Pasos(1 To NUM_PASOS) As tPaso
 
@@ -551,9 +574,19 @@ Public Sub CargarPasos()
     Pasos(CONST_PISO).wav(1) = 23
     Pasos(CONST_PISO).wav(2) = 24
 
+    
+    Exit Sub
+
+CargarPasos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarPasos", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarDatosMapa(ByVal map As Integer)
+    
+    On Error GoTo CargarDatosMapa_Err
+    
 
     If Len(NameMaps(map).desc) <> 0 Then
         frmMapaGrande.Label1.Caption = NameMaps(map).desc
@@ -799,9 +832,19 @@ Sub CargarDatosMapa(ByVal map As Integer)
         Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
     #End If
 
+    
+    Exit Sub
+
+CargarDatosMapa_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarDatosMapa", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarMapa(ByVal map As Integer)
+    
+    On Error GoTo CargarMapa_Err
+    
 
     '**************************************************************
     'Formato de mapas optimizado para reducir el espacio que ocupan.
@@ -1075,9 +1118,19 @@ Public Sub CargarMapa(ByVal map As Integer)
     #End If
 
 
+    
+    Exit Sub
+
+CargarMapa_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarMapa", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarParticulas()
+    
+    On Error GoTo CargarParticulas_Err
+    
 
     '*************************************
     'Coded by OneZero (onezero_ss@hotmail.com)
@@ -1169,9 +1222,19 @@ Public Sub CargarParticulas()
         Delete_File Windows_Temp_Dir & "particles.ini"
     #End If
 
+    
+    Exit Sub
+
+CargarParticulas_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarParticulas", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarParticulasBinary()
+    
+    On Error GoTo CargarParticulasBinary_Err
+    
 
     '*************************************
     'Coded by OneZero (onezero_ss@hotmail.com)
@@ -1257,10 +1320,20 @@ Public Sub CargarParticulasBinary()
         Delete_File Windows_Temp_Dir & "particles.ini"
     #End If
 
+    
+    Exit Sub
+
+CargarParticulasBinary_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarParticulasBinary", Erl)
+    Resume Next
+    
 End Sub
 
 
 Public Sub CargarIndicesOBJBinary()
+    
+    On Error GoTo CargarIndicesOBJBinary_Err
+    
 
     Dim Obj       As Integer
     Dim Npc       As Integer
@@ -1354,9 +1427,19 @@ Public Sub CargarIndicesOBJBinary()
 
     Exit Sub
 
+    
+    Exit Sub
+
+CargarIndicesOBJBinary_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarIndicesOBJBinary", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub CargarIndicesOBJ()
+    
+    On Error GoTo CargarIndicesOBJ_Err
+    
 
     Dim Obj     As Integer
 
@@ -1547,9 +1630,19 @@ Public Sub CargarIndicesOBJ()
         Delete_File Windows_Temp_Dir & "localindex.dat"
     #End If
 
+    
+    Exit Sub
+
+CargarIndicesOBJ_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarIndicesOBJ", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Cargarmapsworlddata()
+    
+    On Error GoTo Cargarmapsworlddata_Err
+    
 
     'Ladder
     Dim MapFile As String
@@ -1590,9 +1683,19 @@ Public Sub Cargarmapsworlddata()
         Delete_File Windows_Temp_Dir & "mapsworlddata.dat"
     #End If
 
+    
+    Exit Sub
+
+Cargarmapsworlddata_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.Cargarmapsworlddata", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarCabezas()
+    
+    On Error GoTo CargarCabezas_Err
+    
 
     Dim N            As Integer
 
@@ -1646,9 +1749,19 @@ Sub CargarCabezas()
         Delete_File Windows_Temp_Dir & "cabezas.ind"
     #End If
     
+    
+    Exit Sub
+
+CargarCabezas_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarCabezas", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarCascos()
+    
+    On Error GoTo CargarCascos_Err
+    
 
     Dim N            As Integer
 
@@ -1702,9 +1815,19 @@ Sub CargarCascos()
         Delete_File Windows_Temp_Dir & "cascos.ind"
     #End If
 
+    
+    Exit Sub
+
+CargarCascos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarCascos", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarCuerpos()
+    
+    On Error GoTo CargarCuerpos_Err
+    
 
     Dim N            As Integer
 
@@ -1760,9 +1883,19 @@ Sub CargarCuerpos()
         Delete_File Windows_Temp_Dir & "personajes.ind"
     #End If
 
+    
+    Exit Sub
+
+CargarCuerpos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarCuerpos", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarFxs()
+    
+    On Error GoTo CargarFxs_Err
+    
 
     Dim N      As Integer
 
@@ -1804,6 +1937,13 @@ Sub CargarFxs()
         Delete_File Windows_Temp_Dir & "fxs.ind"
     #End If
 
+    
+    Exit Sub
+
+CargarFxs_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarFxs", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function LoadGrhData() As Boolean
@@ -1946,6 +2086,9 @@ ErrorHandler:
 End Function
 
 Public Function CargarMiniMap()
+    
+    On Error GoTo CargarMiniMap_Err
+    
 
     Dim count  As Long
 
@@ -1989,10 +2132,20 @@ ErrorHandler:
     CargarMiniMap = False
     MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & count
 
+    
+    Exit Function
+
+CargarMiniMap_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarMiniMap", Erl)
+    Resume Next
+    
 End Function
 
 
 Sub CargarAnimArmas()
+    
+    On Error GoTo CargarAnimArmas_Err
+    
 
     
 
@@ -2028,9 +2181,19 @@ Sub CargarAnimArmas()
         Delete_File Windows_Temp_Dir & "armas.dat"
     #End If
 
+    
+    Exit Sub
+
+CargarAnimArmas_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarAnimArmas", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarColores()
+    
+    On Error GoTo CargarColores_Err
+    
 
     
 
@@ -2080,9 +2243,19 @@ Sub CargarColores()
         Delete_File Windows_Temp_Dir & "colores.dat"
     #End If
 
+    
+    Exit Sub
+
+CargarColores_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarColores", Erl)
+    Resume Next
+    
 End Sub
 
 Sub CargarAnimEscudos()
+    
+    On Error GoTo CargarAnimEscudos_Err
+    
 
     Dim loopc As Long
 
@@ -2116,5 +2289,12 @@ Sub CargarAnimEscudos()
         Delete_File Windows_Temp_Dir & "escudos.dat"
     #End If
 
+    
+    Exit Sub
+
+CargarAnimEscudos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarAnimEscudos", Erl)
+    Resume Next
+    
 End Sub
 

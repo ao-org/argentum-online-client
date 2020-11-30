@@ -889,31 +889,81 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Frame2.Visible = True
     Frame1.Visible = False
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Mineria.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Frame2.Visible = False
     Frame1.Visible = True
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Mineria.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_Click()
+    
+    On Error GoTo Command3_Click_Err
+    
     Manual.Show
     Unload Me
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Mineria.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label21_Click()
+    
+    On Error GoTo Label21_Click_Err
+    
     Frame3.Visible = True
     Frame1.Visible = False
 
+    
+    Exit Sub
+
+Label21_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Mineria.Label21_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Manual_Mineria_Click()
+    
+    On Error GoTo Manual_Mineria_Click_Err
+    
     Frame3.Visible = False
     Frame1.Visible = True
 
+    
+    Exit Sub
+
+Manual_Mineria_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Mineria.Manual_Mineria_Click", Erl)
+    Resume Next
+    
 End Sub

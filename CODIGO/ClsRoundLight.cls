@@ -28,6 +28,9 @@ Private light_list() As tLight
 Private NumLights    As Integer
 
 Friend Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Color As RGBA, Optional range As Byte = 3)
+    
+    On Error GoTo Create_Light_To_Map_Err
+    
     NumLights = NumLights + 1
        
     ReDim Preserve light_list(1 To NumLights) As tLight
@@ -50,9 +53,19 @@ Friend Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Co
        
     LucesRedondas.LightRenderAll
 
+    
+    Exit Function
+
+Create_Light_To_Map_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.Create_Light_To_Map", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Delete_Light_To_Map(ByVal x As Byte, ByVal y As Byte)
+    
+    On Error GoTo Delete_Light_To_Map_Err
+    
        
     Dim i As Long
        
@@ -66,9 +79,19 @@ Public Function Delete_Light_To_Map(ByVal x As Byte, ByVal y As Byte)
 
     Next i
      
+    
+    Exit Function
+
+Delete_Light_To_Map_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.Delete_Light_To_Map", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Delete_Light_To_Index(ByVal light_index As Byte, Optional RenderFinal As Boolean = True)
+    
+    On Error GoTo Delete_Light_To_Index_Err
+    
        
     Dim min_x As Integer
 
@@ -108,9 +131,19 @@ Public Function Delete_Light_To_Index(ByVal light_index As Byte, Optional Render
 
     End If
        
+    
+    Exit Function
+
+Delete_Light_To_Index_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.Delete_Light_To_Index", Erl)
+    Resume Next
+    
 End Function
 
 Private Function LightCalculate(ByVal Radio2 As Long, ByVal LightX As Integer, ByVal LightY As Integer, ByVal XCoord As Integer, ByVal YCoord As Integer, TileLight As RGBA, LightColor As RGBA, AmbientColor As RGBA) As RGBA
+    
+    On Error GoTo LightCalculate_Err
+    
     Dim XDist        As Single
     Dim YDist        As Single
     Dim VertexDist2  As Single
@@ -126,9 +159,19 @@ Private Function LightCalculate(ByVal Radio2 As Long, ByVal LightX As Integer, B
         LightCalculate = TileLight
     End If
 
+    
+    Exit Function
+
+LightCalculate_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.LightCalculate", Erl)
+    Resume Next
+    
 End Function
      
 Private Sub LightRender(ByVal light_index As Integer)
+    
+    On Error GoTo LightRender_Err
+    
      
     If light_index = 0 Then Exit Sub
     If light_list(light_index).active = False Then Exit Sub
@@ -161,7 +204,7 @@ Private Sub LightRender(ByVal light_index As Integer)
     
     Dim LightY       As Integer
     
-    Dim Radius       As Long
+    Dim radius       As Long
 
     AmbientColor = map_light
 
@@ -170,8 +213,8 @@ Private Sub LightRender(ByVal light_index As Integer)
     LightX = light_list(light_index).map_x * 32 + 16
     LightY = light_list(light_index).map_y * 32 + 16
     
-    Radius = light_list(light_index).range * 32
-    Radius = Radius * Radius
+    radius = light_list(light_index).range * 32
+    radius = radius * radius
            
     min_x = light_list(light_index).map_x - light_list(light_index).range
     max_x = light_list(light_index).map_x + light_list(light_index).range
@@ -184,28 +227,38 @@ Private Sub LightRender(ByVal light_index As Integer)
             If InMapBounds(Xa, Ya) Then
                 XCoord = Xa * 32
                 YCoord = Ya * 32 + 32
-                MapData(Xa, Ya).light_value(0) = LightCalculate(Radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(0), LightColor, AmbientColor)
+                MapData(Xa, Ya).light_value(0) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(0), LightColor, AmbientColor)
      
                 XCoord = Xa * 32
                 YCoord = Ya * 32
-                MapData(Xa, Ya).light_value(1) = LightCalculate(Radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(1), LightColor, AmbientColor)
+                MapData(Xa, Ya).light_value(1) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(1), LightColor, AmbientColor)
                            
                 XCoord = Xa * 32 + 32
                 YCoord = Ya * 32 + 32
-                MapData(Xa, Ya).light_value(2) = LightCalculate(Radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(2), LightColor, AmbientColor)
+                MapData(Xa, Ya).light_value(2) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(2), LightColor, AmbientColor)
        
                 XCoord = Xa * 32 + 32
                 YCoord = Ya * 32
-                MapData(Xa, Ya).light_value(3) = LightCalculate(Radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(3), LightColor, AmbientColor)
+                MapData(Xa, Ya).light_value(3) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(3), LightColor, AmbientColor)
                    
             End If
 
         Next Xa
     Next Ya
 
+    
+    Exit Sub
+
+LightRender_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.LightRender", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub LightRenderAll()
+    
+    On Error GoTo LightRenderAll_Err
+    
 
     Dim i As Long
        
@@ -214,9 +267,19 @@ Public Sub LightRenderAll()
                 
     Next i
 
+    
+    Exit Sub
+
+LightRenderAll_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.LightRenderAll", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function Delete_All_LigthRound(Optional RenderFinal As Boolean = True)
+    
+    On Error GoTo Delete_All_LigthRound_Err
+    
 
     Dim i As Long
        
@@ -225,4 +288,11 @@ Public Function Delete_All_LigthRound(Optional RenderFinal As Boolean = True)
                 
     Next i
 
+    
+    Exit Function
+
+Delete_All_LigthRound_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.Delete_All_LigthRound", Erl)
+    Resume Next
+    
 End Function

@@ -163,7 +163,7 @@ Private Declare Function GetDC Lib "user32" (ByVal hwnd As Long) As Long
 
 Private Declare Function ReleaseDC Lib "user32" (ByVal hwnd As Long, ByVal hdc As Long) As Long
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef dest As Any, ByRef source As Any, ByVal ByteCount As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef Dest As Any, ByRef source As Any, ByVal ByteCount As Long)
 
 '
 
@@ -223,6 +223,9 @@ Private Const SRCCOPY = &HCC0020 ' (DWORD) dest = source
 Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
 
 Public Function LoadJPG(ByRef cDib As cDIBSection, ByVal sFile As String) As Boolean
+    
+    On Error GoTo LoadJPG_Err
+    
 
     Dim tJ        As JPEG_CORE_PROPERTIES_VB
 
@@ -307,9 +310,19 @@ Public Function LoadJPG(ByRef cDib As cDIBSection, ByVal sFile As String) As Boo
 
     End If
    
+    
+    Exit Function
+
+LoadJPG_Err:
+    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.LoadJPG", Erl)
+    Resume Next
+    
 End Function
 
 Public Function LoadJPGFromPtr(ByRef cDib As cDIBSection, ByVal lPtr As Long, ByVal lSize As Long) As Boolean
+    
+    On Error GoTo LoadJPGFromPtr_Err
+    
 
     Dim tJ        As JPEG_CORE_PROPERTIES_VB
 
@@ -387,9 +400,19 @@ Public Function LoadJPGFromPtr(ByRef cDib As cDIBSection, ByVal lPtr As Long, By
 
     End If
    
+    
+    Exit Function
+
+LoadJPGFromPtr_Err:
+    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.LoadJPGFromPtr", Erl)
+    Resume Next
+    
 End Function
 
 Public Function SaveJPG(ByRef cDib As cDIBSection, ByVal sFile As String, Optional ByVal lQuality As Long = 100) As Boolean
+    
+    On Error GoTo SaveJPG_Err
+    
 
     Dim tJ           As JPEG_CORE_PROPERTIES_VB
 
@@ -490,9 +513,19 @@ Public Function SaveJPG(ByRef cDib As cDIBSection, ByVal sFile As String, Option
 
     End If
 
+    
+    Exit Function
+
+SaveJPG_Err:
+    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.SaveJPG", Erl)
+    Resume Next
+    
 End Function
 
 Public Function SaveJPGToPtr(ByRef cDib As cDIBSection, ByVal lPtr As Long, ByRef lBufSize As Long, Optional ByVal lQuality As Long = 90) As Boolean
+    
+    On Error GoTo SaveJPGToPtr_Err
+    
 
     Dim tJ    As JPEG_CORE_PROPERTIES_VB
 
@@ -553,6 +586,13 @@ Public Function SaveJPGToPtr(ByRef cDib As cDIBSection, ByVal lPtr As Long, ByRe
 
     End If
 
+    
+    Exit Function
+
+SaveJPGToPtr_Err:
+    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.SaveJPGToPtr", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub ScreenCapture()
@@ -573,7 +613,7 @@ Public Sub ScreenCapture()
 
     Dim hdcc As Long
     
-    hdcc = GetDC(frmmain.hwnd)
+    hdcc = GetDC(frmMain.hwnd)
     
     frmScreenshots.picture1.AutoRedraw = True
     frmScreenshots.picture1.Width = 15400
@@ -581,7 +621,7 @@ Public Sub ScreenCapture()
     
     Call BitBlt(frmScreenshots.picture1.hdc, 0, 0, 1024, 768, hdcc, 0, 0, SRCCOPY)
     
-    Call ReleaseDC(frmmain.hwnd, hdcc)
+    Call ReleaseDC(frmMain.hwnd, hdcc)
     
     hdcc = INVALID_HANDLE
     
@@ -596,13 +636,13 @@ Public Sub ScreenCapture()
     
     SaveJPG c, File
     
-    AddtoRichTextBox frmmain.RecTxt, "Captura guardada en " & App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg.", 100, 200, 0, False, True, False
+    AddtoRichTextBox frmMain.RecTxt, "Captura guardada en " & App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg.", 100, 200, 0, False, True, False
     Exit Sub
 
 Err:
-    AddtoRichTextBox frmmain.RecTxt, Err.number & "-" & Err.Description, 200, 200, 200, False, False, False
+    AddtoRichTextBox frmMain.RecTxt, Err.number & "-" & Err.Description, 200, 200, 200, False, False, False
 
-    If hdcc <> INVALID_HANDLE Then Call ReleaseDC(frmmain.hwnd, hdcc)
+    If hdcc <> INVALID_HANDLE Then Call ReleaseDC(frmMain.hwnd, hdcc)
 
 End Sub
 

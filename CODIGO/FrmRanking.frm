@@ -251,20 +251,43 @@ Attribute VB_Exposed = False
 Dim puntos As Boolean
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRanking.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRanking.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
 
     Dim i As Byte
 
@@ -285,15 +308,42 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRanking.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseUp_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Form_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRanking.Form_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Puesto_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Puesto_MouseMove_Err
+    
     Puesto(Index) = LRanking(Index).puntos & " puntos"
     puntos = True
 
+    
+    Exit Sub
+
+Puesto_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmRanking.Puesto_MouseMove", Erl)
+    Resume Next
+    
 End Sub

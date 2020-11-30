@@ -227,13 +227,33 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Unload Me
     Manual.Show
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Alquimia.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label6_Click()
+    
+    On Error GoTo Label6_Click_Err
+    
     Unload Me
     Manual_Pociones.Show
 
+    
+    Exit Sub
+
+Label6_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Alquimia.Label6_Click", Erl)
+    Resume Next
+    
 End Sub

@@ -205,29 +205,62 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
+    
+    On Error GoTo Form_KeyUp_Err
+    
 
     If KeyCode = 27 Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.Form_KeyUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     moverForm
 
     Image1.Picture = Nothing
@@ -238,9 +271,19 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Image3.Picture = Nothing
     Image3.Tag = "0"
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
+    
+    On Error GoTo Image1_Click_Err
+    
 
     If lstArmas.ListIndex >= 0 Then
         Call WriteComprarItem(lstArmas.ListIndex + 1)
@@ -253,6 +296,13 @@ Private Sub Image1_Click()
 
     End If
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -268,6 +318,9 @@ Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub Image2_Click()
+    
+    On Error GoTo Image2_Click_Err
+    
 
     Dim Codigo As String
 
@@ -278,9 +331,19 @@ Private Sub Image2_Click()
 
     End If
 
+    
+    Exit Sub
+
+Image2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.Image2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image2_MouseMove_Err
+    
 
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("cargarcodehover.bmp")
@@ -294,9 +357,19 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     Image3.Picture = Nothing
     Image3.Tag = "0"
 
+    
+    Exit Sub
+
+Image2_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.Image2_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("comprarhover.bmp")
@@ -310,9 +383,19 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     Image3.Picture = Nothing
     Image3.Tag = "0"
     
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image3_MouseMove_Err
+    
 
     If Image3.Tag = "0" Then
         Image3.Picture = LoadInterface("donar.bmp")
@@ -326,19 +409,46 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     Image2.Picture = Nothing
     Image2.Tag = "0"
 
+    
+    Exit Sub
+
+Image3_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.Image3_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image3_MouseUp_Err
+    
     ShellExecute Me.hwnd, "open", "https://www.argentum20.com/creditos/", "", "", 0
 
+    
+    Exit Sub
+
+Image3_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.Image3_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub lstArmas_Click()
-    Label1.Caption = ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).name
+    
+    On Error GoTo lstArmas_Click_Err
+    
+    Label1.Caption = ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).Name
     Label2.Caption = ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).Texto
     Label4.Caption = ObjDonador(lstArmas.ListIndex + 1).precio
 
     Call Grh_Render_To_Hdc(picture1, ObjData(ObjDonador(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
     picture1.Visible = True
 
+    
+    Exit Sub
+
+lstArmas_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmShop.lstArmas_Click", Erl)
+    Resume Next
+    
 End Sub

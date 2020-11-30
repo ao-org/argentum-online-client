@@ -115,6 +115,9 @@ End Sub
 '
 
 Private Sub Class_Terminate()
+    
+    On Error GoTo Class_Terminate_Err
+    
 
     '**************************************************************
     'Author: Juan Martin Sotuyo Dodero
@@ -136,6 +139,13 @@ Private Sub Class_Terminate()
     
     MainNodes = 0
 
+    
+    Exit Sub
+
+Class_Terminate_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.Class_Terminate", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -145,6 +155,9 @@ End Sub
 ' @see      GetValue
 
 Public Sub Initialize(ByVal File As String)
+    
+    On Error GoTo Initialize_Err
+    
 
     '**************************************************************
     'Author: Juan Martin Sotuyo Dodero
@@ -232,6 +245,13 @@ Public Sub Initialize(ByVal File As String)
 
     End If
 
+    
+    Exit Sub
+
+Initialize_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.Initialize", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -244,6 +264,9 @@ End Sub
 Private Sub SortChildNodes(ByRef Node As MainNode, _
                            ByVal First As Integer, _
                            ByVal Last As Integer)
+    
+    On Error GoTo SortChildNodes_Err
+    
 
     '**************************************************************
     'Author: Juan Martin Sotuyo Dodero
@@ -290,6 +313,13 @@ Private Sub SortChildNodes(ByRef Node As MainNode, _
     If First < max Then SortChildNodes Node, First, max
     If min < Last Then SortChildNodes Node, min, Last
 
+    
+    Exit Sub
+
+SortChildNodes_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.SortChildNodes", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -299,6 +329,9 @@ End Sub
 ' @param    last The last index to be considered when sorting.
 
 Private Sub SortMainNodes(ByVal First As Integer, ByVal Last As Integer)
+    
+    On Error GoTo SortMainNodes_Err
+    
 
     '**************************************************************
     'Author: Juan Martin Sotuyo Dodero
@@ -342,6 +375,13 @@ Private Sub SortMainNodes(ByVal First As Integer, ByVal Last As Integer)
     If First < max Then SortMainNodes First, max
     If min < Last Then SortMainNodes min, Last
 
+    
+    Exit Sub
+
+SortMainNodes_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.SortMainNodes", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -352,6 +392,9 @@ End Sub
 ' @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
 
 Public Function GetValue(ByVal Main As String, ByVal key As String)
+    
+    On Error GoTo GetValue_Err
+    
 
     '**************************************************************
     'Author: Juan Martin Sotuyo Dodero
@@ -390,6 +433,13 @@ Public Function GetValue(ByVal Main As String, ByVal key As String)
     
     End If
 
+    
+    Exit Function
+
+GetValue_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.GetValue", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -400,6 +450,9 @@ End Function
 ' @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
 
 Public Sub ChangeValue(ByVal Main As String, ByVal key As String, ByVal Value As String)
+    
+    On Error GoTo ChangeValue_Err
+    
 
     '**************************************************************
     'Author: ZaMa
@@ -426,6 +479,13 @@ Public Sub ChangeValue(ByVal Main As String, ByVal key As String, ByVal Value As
 
     End If
 
+    
+    Exit Sub
+
+ChangeValue_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.ChangeValue", Erl)
+    Resume Next
+    
 End Sub
 
 ''
@@ -436,6 +496,9 @@ End Sub
 ' @returns  The index in which the value with the key we are looking for is stored or the negation of the index in which it should be if not found.
 
 Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
+    
+    On Error GoTo FindKey_Err
+    
 
     '**************************************************************
     'Author: Juan Martin Sotuyo Dodero
@@ -472,6 +535,13 @@ Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
     '(all higher values are to the right of the list and lower values are to the left)
     FindKey = Not min
 
+    
+    Exit Function
+
+FindKey_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.FindKey", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -481,6 +551,9 @@ End Function
 ' @returns  The index in which the main section we are looking for is stored or the negation of the index in which it should be if not found.
 
 Private Function FindMain(ByVal Name As String) As Long
+    
+    On Error GoTo FindMain_Err
+    
 
     '**************************************************************
     'Author: Juan Martin Sotuyo Dodero
@@ -517,6 +590,13 @@ Private Function FindMain(ByVal Name As String) As Long
     '(all higher values are to the right of the list and lower values are to the left)
     FindMain = Not min
 
+    
+    Exit Function
+
+FindMain_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.FindMain", Erl)
+    Resume Next
+    
 End Function
 
 ''
@@ -531,11 +611,24 @@ Public Function KeyExists(ByVal Name As String) As Boolean
     'Last Modify Date: 04/01/2008
     'Returns true of the key exists, false otherwise.
     '**************************************************************
+    
+    On Error GoTo KeyExists_Err
+    
     KeyExists = FindMain(UCase$(Name)) >= 0
 
+    
+    Exit Function
+
+KeyExists_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.KeyExists", Erl)
+    Resume Next
+    
 End Function
 
 Private Function AddNode(ByRef Name As String) As Long
+    
+    On Error GoTo AddNode_Err
+    
 
     '**************************************************************
     'Author: Torres Patricio (Pato)
@@ -571,11 +664,21 @@ Private Function AddNode(ByRef Name As String) As Long
 
     AddNode = MainPos
 
+    
+    Exit Function
+
+AddNode_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.AddNode", Erl)
+    Resume Next
+    
 End Function
 
 Private Function AddKey(ByRef Main As String, _
                         ByRef key As String, _
                         Optional ByRef Value As String = vbNullString) As Long
+    
+    On Error GoTo AddKey_Err
+    
 
     '**************************************************************
     'Author: Torres Patricio (Pato)
@@ -619,9 +722,19 @@ Private Function AddKey(ByRef Main As String, _
 
     AddKey = KeyPos
 
+    
+    Exit Function
+
+AddKey_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.AddKey", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub DumpFile(ByRef File As String)
+    
+    On Error GoTo DumpFile_Err
+    
 
     '**************************************************************
     'Author: Torres Patricio (Pato)
@@ -655,4 +768,11 @@ Public Sub DumpFile(ByRef File As String)
     
     Close hFile
 
+    
+    Exit Sub
+
+DumpFile_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsIniManager.DumpFile", Erl)
+    Resume Next
+    
 End Sub

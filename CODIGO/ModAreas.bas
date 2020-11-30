@@ -12,14 +12,17 @@ Public MaxLimiteY      As Integer
 
 Private Const AREA_DIM As Byte = 12
 
-Public Sub CambioDeArea(ByVal X As Byte, ByVal Y As Byte)
+Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
+    
+    On Error GoTo CambioDeArea_Err
+    
 
     Dim loopX As Long, loopY As Long
     
-    MinLimiteX = (X \ AREA_DIM - 1) * AREA_DIM
+    MinLimiteX = (x \ AREA_DIM - 1) * AREA_DIM
     MaxLimiteX = MinLimiteX + (AREA_DIM * 3) - 1
     
-    MinLimiteY = (Y \ AREA_DIM - 1) * AREA_DIM
+    MinLimiteY = (y \ AREA_DIM - 1) * AREA_DIM
     MaxLimiteY = MinLimiteY + (AREA_DIM * 3) - 1
     
     For loopX = 1 To 100
@@ -47,4 +50,11 @@ Public Sub CambioDeArea(ByVal X As Byte, ByVal Y As Byte)
     
     Call RefreshAllChars
 
+    
+    Exit Sub
+
+CambioDeArea_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModAreas.CambioDeArea", Erl)
+    Resume Next
+    
 End Sub

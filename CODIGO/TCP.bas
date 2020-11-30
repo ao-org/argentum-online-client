@@ -11,6 +11,9 @@ Public LlegaronStats  As Boolean
 Public LlegaronAtrib  As Boolean
 
 Public Function PuedoQuitarFoco() As Boolean
+    
+    On Error GoTo PuedoQuitarFoco_Err
+    
     PuedoQuitarFoco = True
 
     'PuedoQuitarFoco = Not frmEstadisticas.Visible And _
@@ -25,9 +28,19 @@ Public Function PuedoQuitarFoco() As Boolean
     '                 Not frmCommet.Visible And _
     '                 Not frmPeaceProp.Visible
     '
+    
+    Exit Function
+
+PuedoQuitarFoco_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_TCP.PuedoQuitarFoco", Erl)
+    Resume Next
+    
 End Function
 
 Sub Login()
+    
+    On Error GoTo Login_Err
+    
 
     If EstadoLogin = E_MODO.Normal Then
         Call WriteLoginExistingChar
@@ -64,4 +77,11 @@ Sub Login()
     
     Call FlushBuffer
 
+    
+    Exit Sub
+
+Login_Err:
+    Call RegistrarError(Err.number, Err.Description, "Mod_TCP.Login", Erl)
+    Resume Next
+    
 End Sub

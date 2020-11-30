@@ -167,6 +167,9 @@ Private Const WS_EX_LAYERED = &H80000
  Se le pasa el Hwnd del formulario en cuestión
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    
+    On Error GoTo Is_Transparent_Err
+    
 
     
   
@@ -186,10 +189,20 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
     End If
   
+    
+    Exit Function
+
+Is_Transparent_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.Is_Transparent", Erl)
+    Resume Next
+    
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    
+    On Error GoTo Aplicar_Transparencia_Err
+    
   
     Dim msg As Long
   
@@ -215,9 +228,19 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
 
     End If
   
+    
+    Exit Function
+
+Aplicar_Transparencia_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.Aplicar_Transparencia", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hwnd, 240)
     Me.Picture = LoadInterface("validar.bmp")
@@ -231,9 +254,19 @@ Private Sub Form_Load()
     ValidacionNumber = RandomNumber(10000, 90000)
     valcar = ValidacionNumber
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
 
     If Image2.Tag = "1" Then
         Image2.Picture = Nothing
@@ -247,14 +280,31 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
+    
+    On Error GoTo Image1_Click_Err
+    
     Call Sound.Sound_Play(SND_CLICK)
     Unload Me
     frmMasOpciones.Show , frmConnect
     frmMasOpciones.Top = frmMasOpciones.Top + 3000
 
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -264,6 +314,9 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
 
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("validar_volver.bmp")
@@ -271,9 +324,19 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image2_MouseMove_Err
+    
 
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("validar_enviar.bmp")
@@ -281,6 +344,13 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     End If
 
+    
+    Exit Sub
+
+Image2_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.Image2_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -289,6 +359,9 @@ Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub Image2_Click()
+    
+    On Error GoTo Image2_Click_Err
+    
 
     Call Sound.Sound_Play(SND_CLICK)
     CuentaEmail = NombreDeCuenta.Text
@@ -333,14 +406,41 @@ Private Sub Image2_Click()
     frmMain.Socket1.Connect
     Unload Me
 
+    
+    Exit Sub
+
+Image2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.Image2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub refuerzo_Click()
+    
+    On Error GoTo refuerzo_Click_Err
+    
     texVer.SetFocus
 
+    
+    Exit Sub
+
+refuerzo_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.refuerzo_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub valcar_Click()
+    
+    On Error GoTo valcar_Click_Err
+    
     texVer.SetFocus
 
+    
+    Exit Sub
+
+valcar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmActivarCuenta.valcar_Click", Erl)
+    Resume Next
+    
 End Sub

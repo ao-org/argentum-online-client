@@ -404,6 +404,9 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
 
     
 
@@ -564,19 +567,56 @@ Private Sub Form_Load()
 
     End If
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogros.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Picture1_Click()
+    
+    On Error GoTo Picture1_Click_Err
+    
     Call WriteReclamarRecompensa(1)
 
+    
+    Exit Sub
+
+Picture1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogros.Picture1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Picture2_Click()
+    
+    On Error GoTo Picture2_Click_Err
+    
     Call WriteReclamarRecompensa(3)
 
+    
+    Exit Sub
+
+Picture2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogros.Picture2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Picture3_Click()
+    
+    On Error GoTo Picture3_Click_Err
+    
     Call WriteReclamarRecompensa(2)
 
+    
+    Exit Sub
+
+Picture3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "FrmLogros.Picture3_Click", Erl)
+    Resume Next
+    
 End Sub

@@ -274,12 +274,25 @@ Attribute VB_Exposed = False
 Private ListaPociones(1 To 13) As Integer
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Unload Me
     Manual.Show
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Pociones.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
 
     Dim i As Byte
 
@@ -298,9 +311,16 @@ Private Sub Form_Load()
     ListaPociones(13) = 1096
 
     For i = 1 To 13
-        List1.AddItem ObjData(ListaPociones(i)).name
+        List1.AddItem ObjData(ListaPociones(i)).Name
     Next i
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Pociones.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Label21_Click()
@@ -308,7 +328,10 @@ Private Sub Label21_Click()
 End Sub
 
 Private Sub List1_Click()
-    Label6.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).name
+    
+    On Error GoTo List1_Click_Err
+    
+    Label6.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Name
     Label7.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Valor
     Label8.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Raices
     Label9.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).SkPociones
@@ -322,4 +345,11 @@ Private Sub List1_Click()
     Label3.Caption = ObjData(ListaPociones(List1.ListIndex + 1)).Texto
     Call Grh_Render_To_Hdc(picture1, ObjData(ListaPociones(List1.ListIndex + 1)).GrhIndex, 0, 0, False)
 
+    
+    Exit Sub
+
+List1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Pociones.List1_Click", Erl)
+    Resume Next
+    
 End Sub

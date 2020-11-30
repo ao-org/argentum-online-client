@@ -517,12 +517,25 @@ Attribute VB_Exposed = False
 Private ListaHerreria(1 To 49) As Integer
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Unload Me
     Manual.Show
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Herreria.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
 
     Dim i As Byte
 
@@ -580,14 +593,24 @@ Private Sub Form_Load()
     ListaHerreria(49) = 1722
 
     For i = 1 To 49
-        List1.AddItem ObjData(ListaHerreria(i)).name
+        List1.AddItem ObjData(ListaHerreria(i)).Name
     Next i
 
     List1.ListIndex = 0
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Herreria.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub List1_Click()
+    
+    On Error GoTo List1_Click_Err
+    
 
     If ObjData(ListaHerreria(List1.ListIndex + 1)).ObjType = 2 Or ObjData(ListaHerreria(List1.ListIndex + 1)).ObjType = 46 Then
         Label14.Caption = "Golpe:"
@@ -598,7 +621,7 @@ Private Sub List1_Click()
 
     End If
 
-    Label6.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).name
+    Label6.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).Name
     Label7.Caption = ObjData(ListaHerreria(List1.ListIndex + 1)).Valor
 
     'Label17.Caption = traer min level
@@ -611,4 +634,11 @@ Private Sub List1_Click()
 
     Call Grh_Render_To_Hdc(picture1, ObjData(ListaHerreria(List1.ListIndex + 1)).GrhIndex, 0, 0, False)
 
+    
+    Exit Sub
+
+List1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "Manual_Herreria.List1_Click", Erl)
+    Resume Next
+    
 End Sub

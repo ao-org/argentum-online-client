@@ -278,39 +278,99 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub beneficios_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo beneficios_MouseMove_Err
+    
     porciento.Visible = True
     expcount.Visible = False
 
+    
+    Exit Sub
+
+beneficios_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.beneficios_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
 
     
 
     Unload Me
     frmMain.SetFocus
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command4_Click()
+    
+    On Error GoTo Command4_Click_Err
+    
     Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
 
+    
+    Exit Sub
+
+Command4_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Command4_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Frame5_DragDrop(source As Control, x As Single, y As Single)
+    
+    On Error GoTo Frame5_DragDrop_Err
+    
     porciento.Visible = True
     expcount.Visible = False
 
+    
+    Exit Sub
+
+Frame5_DragDrop_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Frame5_DragDrop", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo porciento_MouseMove_Err
+    
     porciento.Visible = False
     expcount.Visible = True
 
+    
+    Exit Sub
+
+porciento_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.porciento_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 

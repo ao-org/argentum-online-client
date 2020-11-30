@@ -3,6 +3,9 @@ Option Explicit
 
 Sub SwitchMap(ByVal map As Integer)
     
+    On Error GoTo SwitchMap_Err
+    
+    
     'Cargamos el mapa.
     Call Recursos.CargarMapa(map)
 
@@ -56,9 +59,19 @@ Sub SwitchMap(ByVal map As Integer)
 
     Call NameMapa(map)
 
+    
+    Exit Sub
+
+SwitchMap_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.SwitchMap", Erl)
+    Resume Next
+    
 End Sub
 
 Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
+    
+    On Error GoTo HayAgua_Err
+    
 
     With MapData(x, y).Graphic(1)
         HayAgua = ((.GrhIndex >= 1505 And .GrhIndex <= 1520) Or (.GrhIndex >= 24223 And .GrhIndex <= 24238) Or _
@@ -66,9 +79,19 @@ Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
             (.GrhIndex >= 44668 And .GrhIndex <= 44939) Or (.GrhIndex >= 24303 And .GrhIndex <= 24318))
     End With
 
+    
+    Exit Function
+
+HayAgua_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.HayAgua", Erl)
+    Resume Next
+    
 End Function
 
 Function EsArbol(ByVal GrhIndex As Long) As Boolean
+    
+    On Error GoTo EsArbol_Err
+    
     EsArbol = GrhIndex = 7000 Or GrhIndex = 7001 Or GrhIndex = 7002 Or GrhIndex = 641 Or GrhIndex = 26075 Or GrhIndex = 643 Or GrhIndex = 644 Or _
        GrhIndex = 647 Or GrhIndex = 26076 Or GrhIndex = 7222 Or GrhIndex = 7223 Or GrhIndex = 7224 Or GrhIndex = 7225 Or GrhIndex = 7226 Or _
        GrhIndex = 26077 Or GrhIndex = 26079 Or GrhIndex = 735 Or GrhIndex = 32343 Or GrhIndex = 32344 Or GrhIndex = 26080 Or GrhIndex = 26081 Or _
@@ -79,9 +102,19 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
        GrhIndex = 14973 Or GrhIndex = 14974 Or GrhIndex = 14975 Or GrhIndex = 14976 Or GrhIndex = 14978 Or GrhIndex = 14980 Or GrhIndex = 14982 Or _
        GrhIndex = 14983 Or GrhIndex = 14984 Or GrhIndex = 14985 Or GrhIndex = 14987 Or GrhIndex = 14988 Or GrhIndex = 26078 Or GrhIndex = 26192
 
+    
+    Exit Function
+
+EsArbol_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.EsArbol", Erl)
+    Resume Next
+    
 End Function
 
 Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
+    
+    On Error GoTo EsObjetoFijo_Err
+    
     Dim OBJIndex As Integer
     OBJIndex = MapData(x, y).OBJInfo.OBJIndex
     
@@ -90,20 +123,40 @@ Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
     
     EsObjetoFijo = ObjType = eObjType.otForos Or ObjType = eObjType.otCarteles Or ObjType = eObjType.otArboles Or ObjType = eObjType.otYacimiento Or ObjType = eObjType.OtDecoraciones
 
+    
+    Exit Function
+
+EsObjetoFijo_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.EsObjetoFijo", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
     '*****************************************************************
     'Author: Augusto José Rando
     '*****************************************************************
+    
+    On Error GoTo Letter_Set_Err
+    
     letter_text = text_string
     letter_grh.GrhIndex = grh_index
     Letter_Set = True
     map_letter_fadestatus = 1
 
+    
+    Exit Function
+
+Letter_Set_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.Letter_Set", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Map_Letter_Fade_Set(ByVal grh_index As Long, Optional ByVal after_grh As Long = -1) As Boolean
+    
+    On Error GoTo Map_Letter_Fade_Set_Err
+    
 
     '*****************************************************************
     'Author: Augusto José Rando
@@ -127,34 +180,71 @@ Public Function Map_Letter_Fade_Set(ByVal grh_index As Long, Optional ByVal afte
     
     Map_Letter_Fade_Set = True
 
+    
+    Exit Function
+
+Map_Letter_Fade_Set_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.Map_Letter_Fade_Set", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Map_Letter_UnSet() As Boolean
     '*****************************************************************
     'Author: Augusto José Rando
     '*****************************************************************
+    
+    On Error GoTo Map_Letter_UnSet_Err
+    
     map_letter_grh.GrhIndex = 0
     map_letter_fadestatus = 0
     map_letter_a = 0
     map_letter_grh_next = 0
     Map_Letter_UnSet = True
 
+    
+    Exit Function
+
+Map_Letter_UnSet_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.Map_Letter_UnSet", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Letter_UnSet() As Boolean
     '*****************************************************************
     'Author: Augusto José Rando
     '*****************************************************************
+    
+    On Error GoTo Letter_UnSet_Err
+    
     letter_text = vbNullString
     letter_grh.GrhIndex = 0
     Letter_UnSet = True
 
+    
+    Exit Function
+
+Letter_UnSet_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.Letter_UnSet", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub SetGlobalLight(ByVal base_light As Long)
+    
+    On Error GoTo SetGlobalLight_Err
+    
     Call Long_2_RGBA(global_light, base_light)
     global_light.A = 255
     light_transition = 1#
+    
+    Exit Sub
+
+SetGlobalLight_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.SetGlobalLight", Erl)
+    Resume Next
+    
 End Sub
 
 Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Integer
@@ -200,6 +290,9 @@ ErrorHandler:
 End Function
 
 Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single)
+    
+    On Error GoTo Draw_Sombra_Err
+    
 
     
 
@@ -237,9 +330,19 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
     End If
 
     Call Batch_Textured_Box_Shadow(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value)
+    
+    Exit Sub
+
+Draw_Sombra_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.Draw_Sombra", Erl)
+    Resume Next
+    
 End Sub
 
 Sub Engine_Weather_UpdateFog()
+    
+    On Error GoTo Engine_Weather_UpdateFog_Err
+    
 
     '*****************************************************************
     'Update the fog effects
@@ -334,9 +437,19 @@ Sub Engine_Weather_UpdateFog()
 
     Next i
 
+    
+    Exit Sub
+
+Engine_Weather_UpdateFog_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.Engine_Weather_UpdateFog", Erl)
+    Resume Next
+    
 End Sub
 
 Sub MapUpdateGlobalLight()
+    
+    On Error GoTo MapUpdateGlobalLight_Err
+    
 
     Dim x As Integer, y As Integer
     
@@ -356,5 +469,12 @@ Sub MapUpdateGlobalLight()
     
     Call LucesRedondas.LightRenderAll
     Call LucesCuadradas.Light_Render_All
+    
+    
+    Exit Sub
+
+MapUpdateGlobalLight_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.MapUpdateGlobalLight", Erl)
+    Resume Next
     
 End Sub

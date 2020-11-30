@@ -124,21 +124,54 @@ Private Const VOLUME_DISTANCE_MOD As Long = 200
 Private lastMid                   As Boolean
 
 Private Property Let SetWavPath(ByVal inString As String)
+    
+    On Error GoTo SetWavPath_Err
+    
     WavPath = inString
 
+    
+    Exit Property
+
+SetWavPath_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.SetWavPath", Erl)
+    Resume Next
+    
 End Property
 
 Private Property Let SetMP3Path(ByVal inString As String)
+    
+    On Error GoTo SetMP3Path_Err
+    
     MP3Path = inString
 
+    
+    Exit Property
+
+SetMP3Path_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.SetMP3Path", Erl)
+    Resume Next
+    
 End Property
 
 Private Property Let SetMidiPath(ByVal inString As String)
+    
+    On Error GoTo SetMidiPath_Err
+    
     MidiPath = inString
 
+    
+    Exit Property
+
+SetMidiPath_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.SetMidiPath", Erl)
+    Resume Next
+    
 End Property
 
 Public Function Engine_DeInitialize()
+    
+    On Error GoTo Engine_DeInitialize_Err
+    
 
     If Not Buffers Is Nothing Then
         Call Buffers.BorrarTodo
@@ -183,6 +216,13 @@ Public Function Engine_DeInitialize()
     Set DS = Nothing
     Set DirectX = Nothing
 
+    
+    Exit Function
+
+Engine_DeInitialize_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.Engine_DeInitialize", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Initialize_Engine(ByVal main_hwnd As String, ByVal Set_Wav_Path As String, ByVal Set_MP3_Path As String, ByVal Set_Midi_Path As String, Optional ByVal Play_only_on_focus As Boolean = True, Optional ByVal Initialize_Sounds As Boolean = True, Optional ByVal Initialize_Music As Boolean = True, Optional ByVal sound_volume As Long, Optional ByVal music_volume As Long, Optional ByVal invert_snd As Boolean) As Boolean
@@ -236,11 +276,24 @@ errhandler:
 End Function
 
 Public Property Get AmbienteActual() As Integer
+    
+    On Error GoTo AmbienteActual_Err
+    
     AmbienteActual = mAmbienteActual
 
+    
+    Exit Property
+
+AmbienteActual_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.AmbienteActual", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let AmbienteActual(ByVal vNewValue As Integer)
+    
+    On Error GoTo AmbienteActual_Err
+    
 
     'If (Not Meteo_Engine.SecondaryStatus = 2) Or (CurrentUser.MapExt = 0) Then
     mAmbienteActual = vNewValue
@@ -251,45 +304,125 @@ Public Property Let AmbienteActual(ByVal vNewValue As Integer)
     LastAmbienteActual = vNewValue
     'End If
 
+    
+    Exit Property
+
+AmbienteActual_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.AmbienteActual", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get LastAmbienteActual() As Integer
+    
+    On Error GoTo LastAmbienteActual_Err
+    
     LastAmbienteActual = mLastAmbienteActual
 
+    
+    Exit Property
+
+LastAmbienteActual_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.LastAmbienteActual", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let LastAmbienteActual(ByVal vNewValue As Integer)
+    
+    On Error GoTo LastAmbienteActual_Err
+    
     mLastAmbienteActual = vNewValue
 
+    
+    Exit Property
+
+LastAmbienteActual_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.LastAmbienteActual", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get MusicActual() As Integer
+    
+    On Error GoTo MusicActual_Err
+    
     MusicActual = mMusActual
 
+    
+    Exit Property
+
+MusicActual_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.MusicActual", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let MusicActual(ByVal vNewValue As Integer)
+    
+    On Error GoTo MusicActual_Err
+    
     mMusActual = vNewValue
 
+    
+    Exit Property
+
+MusicActual_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.MusicActual", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let Fading(ByVal vNewValue As Long)
+    
+    On Error GoTo Fading_Err
+    
     mFadingMusicMod = vNewValue
     TimeElapsed = FrameTime
 
+    
+    Exit Property
+
+Fading_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.Fading", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get Fading() As Long
+    
+    On Error GoTo Fading_Err
+    
     Fading = mFadingMusicMod
 
+    
+    Exit Property
+
+Fading_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.Fading", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get VolumenActual() As Long
+    
+    On Error GoTo VolumenActual_Err
+    
     VolumenActual = mEffectsVolumeMax
 
+    
+    Exit Property
+
+VolumenActual_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.VolumenActual", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let VolumenActual(ByVal vNewValue As Long)
+    
+    On Error GoTo VolumenActual_Err
+    
 
     
 
@@ -303,43 +436,113 @@ Public Property Let VolumenActual(ByVal vNewValue As Long)
 
     mEffectsVolumeAmbient = -4000
 
+    
+    Exit Property
+
+VolumenActual_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.VolumenActual", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get InvertirSonido() As Boolean
+    
+    On Error GoTo InvertirSonido_Err
+    
     InvertirSonido = mInvert_Sound
 
+    
+    Exit Property
+
+InvertirSonido_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.InvertirSonido", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let InvertirSonido(ByVal vNewValue As Boolean)
+    
+    On Error GoTo InvertirSonido_Err
+    
     mInvert_Sound = vNewValue
 
+    
+    Exit Property
+
+InvertirSonido_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.InvertirSonido", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let VolumenActualMusicMax(ByVal vNewValue As Long)
+    
+    On Error GoTo VolumenActualMusicMax_Err
+    
 
     If vNewValue > 0 Then vNewValue = 0
     If vNewValue < -4000 Then vNewValue = -4000
 
     mMusicVolumeMax = vNewValue
 
+    
+    Exit Property
+
+VolumenActualMusicMax_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.VolumenActualMusicMax", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get VolumenActualMusicMax() As Long
+    
+    On Error GoTo VolumenActualMusicMax_Err
+    
     VolumenActualMusicMax = mMusicVolumeMax
 
+    
+    Exit Property
+
+VolumenActualMusicMax_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.VolumenActualMusicMax", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Get VolumenActualMusic() As Long
+    
+    On Error GoTo VolumenActualMusic_Err
+    
     VolumenActualMusic = mMusicVolume
 
+    
+    Exit Property
+
+VolumenActualMusic_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.VolumenActualMusic", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let VolumenActualMusic(ByVal vNewValue As Long)
+    
+    On Error GoTo VolumenActualMusic_Err
+    
     mMusicVolume = vNewValue
 
+    
+    Exit Property
+
+VolumenActualMusic_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.VolumenActualMusic", Erl)
+    Resume Next
+    
 End Property
 
 Public Property Let NextMusic(ByVal vNewValue As Integer)
+    
+    On Error GoTo NextMusic_Err
+    
 
     If mFadingStatus <> 2 And vNewValue <> 0 Then 'Si no estamos en fade up ya...
         mNextMusic = vNewValue
@@ -349,14 +552,31 @@ Public Property Let NextMusic(ByVal vNewValue As Integer)
 
     End If
 
+    
+    Exit Property
+
+NextMusic_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.NextMusic", Erl)
+    Resume Next
+    
 End Property
 
 Public Function Sound_Stop_All() As Boolean
+    
+    On Error GoTo Sound_Stop_All_Err
+    
 
     Buffers.DetenerTodo
     mAmbienteActual = 0
     Sound_Stop_All = True
 
+    
+    Exit Function
+
+Sound_Stop_All_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.Sound_Stop_All", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Sound_Play(ByVal Sound_File As Integer, Optional ByVal Do_Loop As Boolean = False, Optional ByVal Volume As Long = 0, Optional ByVal pan As Long = 0) As Boolean
@@ -753,6 +973,9 @@ Public Function Sound_Render()
     'Last Modify Date: 17/08/2005
     '
     '**************************************************************
+    
+    On Error GoTo Sound_Render_Err
+    
 
     
 
@@ -919,6 +1142,13 @@ Public Function Sound_Render()
     If Musica <> CONST_DESHABILITADA Then Call Music_GetLoop
     'CurrentUser.moved = False
 
+    
+    Exit Function
+
+Sound_Render_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.Sound_Render", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Sound_Load(ByVal file_num As Integer) As Boolean
@@ -927,11 +1157,21 @@ Public Function Sound_Load(ByVal file_num As Integer) As Boolean
     'Last Modify Date: 7/16/2005
     '**************************************************************
     
+    On Error GoTo Sound_Load_Err
+    
+    
     If Buffers.CargarBuffer(file_num) Then
         Sound_Load = True
 
     End If
 
+    
+    Exit Function
+
+Sound_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.Sound_Load", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Calculate_Pan(ByVal map_x As Integer, ByVal map_y As Integer) As Long
@@ -939,6 +1179,9 @@ Public Function Calculate_Pan(ByVal map_x As Integer, ByVal map_y As Integer) As
     'Author: Augusto José Rando
     'Last Modify Date: 7/16/2005
     '**************************************************************
+    
+    On Error GoTo Calculate_Pan_Err
+    
     
     Dim total_distance As Integer, position_sgn As Integer, curr_x As Integer, curr_y As Integer
 
@@ -972,6 +1215,13 @@ Public Function Calculate_Pan(ByVal map_x As Integer, ByVal map_y As Integer) As
 
     End If
 
+    
+    Exit Function
+
+Calculate_Pan_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.Calculate_Pan", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Calculate_Volume(ByVal map_x As Integer, ByVal map_y As Integer) As Long
@@ -979,6 +1229,9 @@ Public Function Calculate_Volume(ByVal map_x As Integer, ByVal map_y As Integer)
     'Author: Augusto José Rando
     'Last Modify Date: 7/16/2005
     '**************************************************************
+    
+    On Error GoTo Calculate_Volume_Err
+    
     
     Dim total_distance As Integer, curr_x As Integer, curr_y As Integer
 
@@ -997,12 +1250,29 @@ Public Function Calculate_Volume(ByVal map_x As Integer, ByVal map_y As Integer)
     If total_distance > 19 Then Calculate_Volume = -4000
     If Calculate_Volume < -4000 Then Calculate_Volume = -4000
 
+    
+    Exit Function
+
+Calculate_Volume_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.Calculate_Volume", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub BorraTimer()
+    
+    On Error GoTo BorraTimer_Err
+    
 
     If Buffers Is Nothing Then Exit Sub
     Buffers.BorraTimerProc
 
+    
+    Exit Sub
+
+BorraTimer_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.BorraTimer", Erl)
+    Resume Next
+    
 End Sub
 

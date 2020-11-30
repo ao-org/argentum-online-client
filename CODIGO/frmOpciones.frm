@@ -381,6 +381,9 @@ Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    
+    On Error GoTo Is_Transparent_Err
+    
 
     
   
@@ -400,10 +403,20 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
     End If
   
+    
+    Exit Function
+
+Is_Transparent_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Is_Transparent", Erl)
+    Resume Next
+    
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    
+    On Error GoTo Aplicar_Transparencia_Err
+    
   
     Dim msg As Long
   
@@ -429,14 +442,34 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
 
     End If
   
+    
+    Exit Function
+
+Aplicar_Transparencia_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Aplicar_Transparencia", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Alpha_Change()
+    
+    On Error GoTo Alpha_Change_Err
+    
     AlphaMacro = Alpha.Value
 
+    
+    Exit Sub
+
+Alpha_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Alpha_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Check1_MouseUp_Err
+    
 
     If OcultarMacrosAlCastear = 1 Then
         OcultarMacrosAlCastear = 0
@@ -452,9 +485,19 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
         
+    
+    Exit Sub
+
+Check1_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check1_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Check4_MouseUp_Err
+    
 
     If PermitirMoverse = 1 Then
         PermitirMoverse = 0
@@ -470,9 +513,19 @@ Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Check4_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check4_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Check5_MouseUp_Err
+    
 
     If MoverVentana = 1 Then
         MoverVentana = 0
@@ -488,9 +541,19 @@ Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Check5_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check5_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Check2_MouseUp_Err
+    
 
     If CursoresGraficos = 1 Then
         Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "OPCIONES", "CursoresGraficos", 0)
@@ -509,9 +572,19 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Check2_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check2_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo chkInvertir_MouseUp_Err
+    
 
     If InvertirSonido = 1 Then
         InvertirSonido = 0
@@ -530,6 +603,13 @@ Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single
 
     End If
 
+    
+    Exit Sub
+
+chkInvertir_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.chkInvertir_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub chkInvertir2_Click()
@@ -537,6 +617,9 @@ Private Sub chkInvertir2_Click()
 End Sub
 
 Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo chkO_MouseUp_Err
+    
 
     Call Sound.Sound_Play(SND_CLICK)
 
@@ -625,14 +708,34 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
 
     End Select
 
+    
+    Exit Sub
+
+chkO_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.chkO_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdayuda_Click()
+    
+    On Error GoTo cmdayuda_Click_Err
+    
     Call FrmGmAyuda.Show
 
+    
+    Exit Sub
+
+cmdayuda_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdayuda_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdayuda_MouseMove_Err
+    
 
     If cmdayuda.Tag = "0" Then
         cmdayuda.Picture = LoadInterface("config_ayuda.bmp")
@@ -640,8 +743,18 @@ Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
+    
+    Exit Sub
+
+cmdayuda_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdayuda_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Command1_MouseMove_Err
+    
 
     If Command1.Tag = "0" Then
         Command1.Picture = LoadInterface("boton-configurar-teclas-over.bmp")
@@ -652,9 +765,19 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
     cmdCerrar = Nothing
     cmdCerrar.Tag = "0"
     
+    
+    Exit Sub
+
+Command1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdCerrar_MouseMove_Err
+    
 
     If cmdCerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
@@ -667,9 +790,19 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     Command1 = Nothing
     Command1.Tag = "0"
 
+    
+    Exit Sub
+
+cmdCerrar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdCerrar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdChangePassword_MouseMove_Err
+    
 
     If cmdChangePassword.Tag = "0" Then
         cmdChangePassword.Picture = LoadInterface("boton-cambiar-contrasena-over.bmp")
@@ -680,49 +813,126 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
     cmdCerrar = Nothing
     cmdCerrar.Tag = "0"
 
+    
+    Exit Sub
+
+cmdChangePassword_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdChangePassword_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdWeb_Click()
+    
+    On Error GoTo cmdWeb_Click_Err
+    
     ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
 
+    
+    Exit Sub
+
+cmdWeb_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdWeb_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command5_Click()
+    
+    On Error GoTo Command5_Click_Err
+    
     MsgBox ("Proximamente")
 
+    
+    Exit Sub
+
+Command5_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command5_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub discord_Click()
+    
+    On Error GoTo discord_Click_Err
+    
     ShellExecute Me.hwnd, "open", "https://discord.gg/e3juVbF", "", "", 0
 
+    
+    Exit Sub
+
+discord_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.discord_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub facebook_Click()
+    
+    On Error GoTo facebook_Click_Err
+    
     ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
 
+    
+    Exit Sub
+
+facebook_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.facebook_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call Aplicar_Transparencia(Me.hwnd, 240)
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("VentanaConfiguracion.bmp")
     
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If (KeyAscii = 27) Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -737,6 +947,9 @@ Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 End Sub
 
 Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Check6_MouseUp_Err
+    
 
     If FPSFLAG = 1 Then
         FPSFLAG = 0
@@ -752,9 +965,19 @@ Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Check6_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check6_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Check9_MouseUp_Err
+    
 
     If CopiarDialogoAConsola = 1 Then
         CopiarDialogoAConsola = 0
@@ -770,23 +993,53 @@ Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
+    
+    Exit Sub
+
+Check9_MouseUp_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check9_MouseUp", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command2_Click()
+    
+    On Error GoTo Command2_Click_Err
+    
     Bajar = True
     Subir = False
     Timer1.Enabled = True
 
+    
+    Exit Sub
+
+Command2_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command2_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command3_Click()
+    
+    On Error GoTo Command3_Click_Err
+    
     Subir = True
     Bajar = False
     Timer1.Enabled = True
 
+    
+    Exit Sub
+
+Command3_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command3_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     moverForm
     cmdayuda = Nothing
     cmdayuda.Tag = "0"
@@ -805,26 +1058,66 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdcerrar_Click()
+    
+    On Error GoTo cmdcerrar_Click_Err
+    
     Call GuardarOpciones
     Me.Visible = False
     frmMain.SetFocus
 
+    
+    Exit Sub
+
+cmdcerrar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdcerrar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub cmdChangePassword_Click()
+    
+    On Error GoTo cmdChangePassword_Click_Err
+    
     Call frmNewPassword.Show(vbModeless, Me)
 
+    
+    Exit Sub
+
+cmdChangePassword_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdChangePassword_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Call frmCustomKeys.Show(vbModeless, Me)
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub Init()
+    
+    On Error GoTo Init_Err
+    
     
     If CopiarDialogoAConsola = 0 Then
         Check9.Picture = Nothing
@@ -913,20 +1206,50 @@ Public Sub Init()
     
     Me.Show vbModeless, frmMain
 
+    
+    Exit Sub
+
+Init_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Init", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub HScroll1_Change()
+    
+    On Error GoTo HScroll1_Change_Err
+    
     Sound.Ambient_Volume_Set HScroll1.Value
     VolAmbient = HScroll1.Value
 
+    
+    Exit Sub
+
+HScroll1_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.HScroll1_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub instagram_Click()
+    
+    On Error GoTo instagram_Click_Err
+    
     ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
 
+    
+    Exit Sub
+
+instagram_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.instagram_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub scrMidi_Change()
+    
+    On Error GoTo scrMidi_Change_Err
+    
 
     If Musica <> CONST_DESHABILITADA Then
         Sound.Music_Volume_Set scrMidi.Value
@@ -935,19 +1258,46 @@ Private Sub scrMidi_Change()
 
     End If
 
+    
+    Exit Sub
+
+scrMidi_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.scrMidi_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub scrSens_Change()
+    
+    On Error GoTo scrSens_Change_Err
+    
     MouseS = scrSens.Value
     SensibilidadMouse = MouseS
     Call General_Set_Mouse_Speed(MouseS)
     txtMSens.Caption = scrSens.Value
 
+    
+    Exit Sub
+
+scrSens_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.scrSens_Change", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub scrVolume_Change()
+    
+    On Error GoTo scrVolume_Change_Err
+    
     Sound.VolumenActual = scrVolume.Value
     VolFX = Sound.VolumenActual
 
+    
+    Exit Sub
+
+scrVolume_Change_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
+    Resume Next
+    
 End Sub
 

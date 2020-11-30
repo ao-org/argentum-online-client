@@ -89,18 +89,48 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Unload Me
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmUserRequest.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub recievePeticion(ByVal p As String)
+    
+    On Error GoTo recievePeticion_Err
+    
 
     Text1 = Replace$(p, "º", vbCrLf)
-    Me.Show vbModeless, frmmain
+    Me.Show vbModeless, frmMain
 
+    
+    Exit Sub
+
+recievePeticion_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmUserRequest.recievePeticion", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmUserRequest.Form_Load", Erl)
+    Resume Next
+    
 End Sub

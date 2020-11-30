@@ -31,6 +31,9 @@ Private Const NUM_CURSORS = 7
 Private hndlList(0 To NUM_CURSORS) As IPictureDisp
  
 Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E_NORMAL)
+    
+    On Error GoTo Parse_Form_Err
+    
 
     If CursoresGraficos = 0 Then Exit Sub
 
@@ -85,9 +88,19 @@ Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E
     aFrm.MouseIcon = hndlList(cType)
     aFrm.MousePointer = vbCustom
  
+    
+    Exit Sub
+
+Parse_Form_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsCursor.Parse_Form", Erl)
+    Resume Next
+    
 End Sub
  
 Public Function GetDefaultCursor(ByRef aFrm As Form) As CursorType
+    
+    On Error GoTo GetDefaultCursor_Err
+    
  
     Dim lngHandle As Long
  
@@ -119,9 +132,19 @@ Public Function GetDefaultCursor(ByRef aFrm As Form) As CursorType
 
     End Select
  
+    
+    Exit Function
+
+GetDefaultCursor_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsCursor.GetDefaultCursor", Erl)
+    Resume Next
+    
 End Function
  
 Public Sub Init()
+    
+    On Error GoTo Init_Err
+    
  
     Set hndlList(E_NORMAL) = LoadResPicture("104", vbResCursor)
     Set hndlList(E_ATTACK) = LoadResPicture("102", vbResCursor)
@@ -132,5 +155,12 @@ Public Sub Init()
     Set hndlList(E_SHIP) = LoadResPicture("105", vbResCursor)
     Set hndlList(E_agArrar) = LoadResPicture("108", vbResCursor)
  
+    
+    Exit Sub
+
+Init_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsCursor.Init", Erl)
+    Resume Next
+    
 End Sub
  

@@ -128,11 +128,24 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Combo1_Click()
+    
+    On Error GoTo Combo1_Click_Err
+    
     Label5 = SkillsDesc(Combo1.ListIndex + 1)
 
+    
+    Exit Sub
+
+Combo1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "manual_skill.Combo1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
 
     Dim i As Byte
 
@@ -144,4 +157,11 @@ Private Sub Form_Load()
 
     Combo1.ListIndex = 0
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "manual_skill.Form_Load", Erl)
+    Resume Next
+    
 End Sub

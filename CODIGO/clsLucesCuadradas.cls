@@ -36,6 +36,9 @@ Private light_last    As Long
 '*******************************************************
 
 Public Function Light_Remove(ByVal light_index As Long) As Boolean
+    
+    On Error GoTo Light_Remove_Err
+    
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -49,9 +52,19 @@ Public Function Light_Remove(ByVal light_index As Long) As Boolean
 
     End If
 
+    
+    Exit Function
+
+Light_Remove_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Remove", Erl)
+    Resume Next
+    
 End Function
 
 Friend Function Light_Color_Value_Get(ByVal light_index As Long, ByRef color_value As RGBA) As Boolean
+    
+    On Error GoTo Light_Color_Value_Get_Err
+    
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -65,9 +78,19 @@ Friend Function Light_Color_Value_Get(ByVal light_index As Long, ByRef color_val
 
     End If
 
+    
+    Exit Function
+
+Light_Color_Value_Get_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Color_Value_Get", Erl)
+    Resume Next
+    
 End Function
 
 Friend Function Light_Create(ByVal map_x As Integer, ByVal map_y As Integer, ByRef color_value As RGBA, Optional ByVal range As Byte = 1, Optional ByVal id As Long) As Long
+    
+    On Error GoTo Light_Create_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -89,6 +112,13 @@ Friend Function Light_Create(ByVal map_x As Integer, ByVal map_y As Integer, ByR
 
     End If
 
+    
+    Exit Function
+
+Light_Create_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Create", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Map_Light_Get(ByVal map_x As Integer, ByVal map_y As Integer) As Long
@@ -128,6 +158,9 @@ ErrorHandler:
 End Function
 
 Public Function Light_Move(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer) As Boolean
+    
+    On Error GoTo Light_Move_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -151,9 +184,19 @@ Public Function Light_Move(ByVal light_index As Long, ByVal map_x As Integer, By
 
     End If
 
+    
+    Exit Function
+
+Light_Move_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Move", Erl)
+    Resume Next
+    
 End Function
 
 Public Function Light_Move_By_Head(ByVal light_index As Long, ByVal Heading As Byte) As Boolean
+    
+    On Error GoTo Light_Move_By_Head_Err
+    
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero
@@ -219,9 +262,19 @@ Public Function Light_Move_By_Head(ByVal light_index As Long, ByVal Heading As B
 
     End If
 
+    
+    Exit Function
+
+Light_Move_By_Head_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Move_By_Head", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Light_Make(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer, rgb_value As RGBA, ByVal range As Long, Optional ByVal id As Long)
+    
+    On Error GoTo Light_Make_Err
+    
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -247,9 +300,19 @@ Private Sub Light_Make(ByVal light_index As Long, ByVal map_x As Integer, ByVal 
     light_list(light_index).range = range
     light_list(light_index).id = id
 
+    
+    Exit Sub
+
+Light_Make_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Make", Erl)
+    Resume Next
+    
 End Sub
 
 Private Function Light_Check(ByVal light_index As Long) As Boolean
+    
+    On Error GoTo Light_Check_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -265,9 +328,19 @@ Private Function Light_Check(ByVal light_index As Long) As Boolean
 
     End If
 
+    
+    Exit Function
+
+Light_Check_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Check", Erl)
+    Resume Next
+    
 End Function
 
 Public Sub Light_Render_All()
+    
+    On Error GoTo Light_Render_All_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -285,9 +358,19 @@ Public Sub Light_Render_All()
     
     Next loop_counter
 
+    
+    Exit Sub
+
+Light_Render_All_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Render_All", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Light_Render(ByVal light_index As Long)
+    
+    On Error GoTo Light_Render_Err
+    
 
     'menduz
     Dim min_x As Integer
@@ -298,9 +381,9 @@ Private Sub Light_Render(ByVal light_index As Long)
 
     Dim max_y As Integer
 
-    Dim X     As Integer
+    Dim x     As Integer
 
-    Dim Y     As Integer
+    Dim y     As Integer
 
     Dim ia    As Single
 
@@ -378,64 +461,71 @@ Private Sub Light_Render(ByVal light_index As Long)
     
     'Arrange borders
     'Upper border
-    For X = min_x + 1 To max_x - 1
+    For x = min_x + 1 To max_x - 1
 
-        If InMapBounds(X, min_y) Then
-            MapData(X, min_y).light_value(0) = Color
-            MapData(X, min_y).light_value(2) = Color
+        If InMapBounds(x, min_y) Then
+            MapData(x, min_y).light_value(0) = Color
+            MapData(x, min_y).light_value(2) = Color
 
         End If
 
-    Next X
+    Next x
     
     'Lower border
-    For X = min_x + 1 To max_x - 1
+    For x = min_x + 1 To max_x - 1
 
-        If InMapBounds(X, max_y) Then
-            MapData(X, max_y).light_value(1) = Color
-            MapData(X, max_y).light_value(3) = Color
+        If InMapBounds(x, max_y) Then
+            MapData(x, max_y).light_value(1) = Color
+            MapData(x, max_y).light_value(3) = Color
 
         End If
 
-    Next X
+    Next x
     
     'Left border
-    For Y = min_y + 1 To max_y - 1
+    For y = min_y + 1 To max_y - 1
 
-        If InMapBounds(min_x, Y) Then
-            MapData(min_x, Y).light_value(2) = Color
-            MapData(min_x, Y).light_value(3) = Color
+        If InMapBounds(min_x, y) Then
+            MapData(min_x, y).light_value(2) = Color
+            MapData(min_x, y).light_value(3) = Color
 
         End If
 
-    Next Y
+    Next y
     
     'Right border
-    For Y = min_y + 1 To max_y - 1
+    For y = min_y + 1 To max_y - 1
 
-        If InMapBounds(max_x, Y) Then
-            MapData(max_x, Y).light_value(0) = Color
-            MapData(max_x, Y).light_value(1) = Color
+        If InMapBounds(max_x, y) Then
+            MapData(max_x, y).light_value(0) = Color
+            MapData(max_x, y).light_value(1) = Color
 
         End If
 
-    Next Y
+    Next y
     
     'Set the inner part of the light
-    For X = min_x + 1 To max_x - 1
-        For Y = min_y + 1 To max_y - 1
+    For x = min_x + 1 To max_x - 1
+        For y = min_y + 1 To max_y - 1
 
-            If InMapBounds(X, Y) Then
-                MapData(X, Y).light_value(0) = Color
-                MapData(X, Y).light_value(1) = Color
-                MapData(X, Y).light_value(2) = Color
-                MapData(X, Y).light_value(3) = Color
+            If InMapBounds(x, y) Then
+                MapData(x, y).light_value(0) = Color
+                MapData(x, y).light_value(1) = Color
+                MapData(x, y).light_value(2) = Color
+                MapData(x, y).light_value(3) = Color
 
             End If
 
-        Next Y
-    Next X
+        Next y
+    Next x
 
+    
+    Exit Sub
+
+Light_Render_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Render", Erl)
+    Resume Next
+    
 End Sub
 
 Private Function Light_Next_Open() As Long
@@ -507,6 +597,9 @@ ErrorHandler:
 End Function
 
 Public Function Light_Remove_All() As Boolean
+    
+    On Error GoTo Light_Remove_All_Err
+    
 
     '*****************************************************************
     'Author: Aaron Perkins
@@ -527,9 +620,19 @@ Public Function Light_Remove_All() As Boolean
     
     Light_Remove_All = True
 
+    
+    Exit Function
+
+Light_Remove_All_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Remove_All", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub Light_Destroy(ByVal light_index As Long)
+    
+    On Error GoTo Light_Destroy_Err
+    
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -561,9 +664,19 @@ Private Sub Light_Destroy(ByVal light_index As Long)
 
     light_count = light_count - 1
 
+    
+    Exit Sub
+
+Light_Destroy_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Destroy", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Light_Erase(ByVal light_index As Long)
+    
+    On Error GoTo Light_Erase_Err
+    
 
     '***************************************'
     'Author: Juan Martín Sotuyo Dodero
@@ -578,9 +691,9 @@ Private Sub Light_Erase(ByVal light_index As Long)
 
     Dim max_y As Integer
 
-    Dim X     As Integer
+    Dim x     As Integer
 
-    Dim Y     As Integer
+    Dim y     As Integer
     
     'Set up light borders
     min_x = light_list(light_index).map_x - light_list(light_index).range
@@ -611,57 +724,64 @@ Private Sub Light_Erase(ByVal light_index As Long)
 
     'Arrange borders
     'Upper border
-    For X = min_x + 1 To max_x - 1
+    For x = min_x + 1 To max_x - 1
 
-        If InMapBounds(X, min_y) Then
-            MapData(X, min_y).light_value(2) = COLOR_EMPTY
+        If InMapBounds(x, min_y) Then
+            MapData(x, min_y).light_value(2) = COLOR_EMPTY
         End If
 
-    Next X
+    Next x
     
     'Lower border
-    For X = min_x + 1 To max_x - 1
+    For x = min_x + 1 To max_x - 1
 
-        If InMapBounds(X, max_y) Then
-            MapData(X, max_y).light_value(1) = COLOR_EMPTY
-            MapData(X, max_y).light_value(3) = COLOR_EMPTY
+        If InMapBounds(x, max_y) Then
+            MapData(x, max_y).light_value(1) = COLOR_EMPTY
+            MapData(x, max_y).light_value(3) = COLOR_EMPTY
         End If
 
-    Next X
+    Next x
     
     'Left border
-    For Y = min_y + 1 To max_y - 1
+    For y = min_y + 1 To max_y - 1
 
-        If InMapBounds(min_x, Y) Then
-            MapData(min_x, Y).light_value(2) = COLOR_EMPTY
-            MapData(min_x, Y).light_value(3) = COLOR_EMPTY
+        If InMapBounds(min_x, y) Then
+            MapData(min_x, y).light_value(2) = COLOR_EMPTY
+            MapData(min_x, y).light_value(3) = COLOR_EMPTY
         End If
 
-    Next Y
+    Next y
     
     'Right border
-    For Y = min_y + 1 To max_y - 1
+    For y = min_y + 1 To max_y - 1
 
-        If InMapBounds(max_x, Y) Then
-            MapData(max_x, Y).light_value(0) = COLOR_EMPTY
-            MapData(max_x, Y).light_value(1) = COLOR_EMPTY
+        If InMapBounds(max_x, y) Then
+            MapData(max_x, y).light_value(0) = COLOR_EMPTY
+            MapData(max_x, y).light_value(1) = COLOR_EMPTY
         End If
 
-    Next Y
+    Next y
     
     'Set the inner part of the light
-    For X = min_x + 1 To max_x - 1
-        For Y = min_y + 1 To max_y - 1
+    For x = min_x + 1 To max_x - 1
+        For y = min_y + 1 To max_y - 1
 
-            If InMapBounds(X, Y) Then
-                MapData(X, Y).light_value(0) = COLOR_EMPTY
-                MapData(X, Y).light_value(1) = COLOR_EMPTY
-                MapData(X, Y).light_value(2) = COLOR_EMPTY
-                MapData(X, Y).light_value(3) = COLOR_EMPTY
+            If InMapBounds(x, y) Then
+                MapData(x, y).light_value(0) = COLOR_EMPTY
+                MapData(x, y).light_value(1) = COLOR_EMPTY
+                MapData(x, y).light_value(2) = COLOR_EMPTY
+                MapData(x, y).light_value(3) = COLOR_EMPTY
             End If
 
-        Next Y
-    Next X
+        Next y
+    Next x
 
+    
+    Exit Sub
+
+Light_Erase_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Erase", Erl)
+    Resume Next
+    
 End Sub
 

@@ -103,20 +103,50 @@ Option Explicit
 Dim CName As String
 
 Private Sub Command1_Click()
+    
+    On Error GoTo Command1_Click_Err
+    
     Call WriteGuildRequestMembership(CName, Replace(Replace(Text1.Text, ",", ";"), vbCrLf, "º"))
 
     Unload Me
 
+    
+    Exit Sub
+
+Command1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildSol.Command1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Public Sub RecieveSolicitud(ByVal GuildName As String)
+    
+    On Error GoTo RecieveSolicitud_Err
+    
 
     CName = GuildName
 
+    
+    Exit Sub
+
+RecieveSolicitud_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildSol.RecieveSolicitud", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
     Call FormParser.Parse_Form(Me)
 
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmGuildSol.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 

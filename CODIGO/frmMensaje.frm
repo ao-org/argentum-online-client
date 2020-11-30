@@ -143,6 +143,9 @@ Private Const WS_EX_LAYERED = &H80000
  no se mueva de lugar y no se redimensione
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    
+    On Error GoTo Is_Transparent_Err
+    
 
     
   
@@ -162,10 +165,20 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
     End If
   
+    
+    Exit Function
+
+Is_Transparent_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.Is_Transparent", Erl)
+    Resume Next
+    
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    
+    On Error GoTo Aplicar_Transparencia_Err
+    
   
     Dim msg As Long
   
@@ -191,32 +204,62 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
 
     End If
   
+    
+    Exit Function
+
+Aplicar_Transparencia_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.Aplicar_Transparencia", Erl)
+    Resume Next
+    
 End Function
 
 Private Sub moverForm()
+    
+    On Error GoTo moverForm_Err
+    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.moverForm", Erl)
+    Resume Next
+    
 End Sub
 
 'Ladder 21/09/2012
 'Cierra el form presionando enter.
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
 
     If KeyAscii = vbKeyReturn Then
         Unload Me
 
     End If
 
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 'Ladder 21/09/2012
 
 Private Sub Form_Load()
     'Call FormParser.Parse_Form(Me)
+    
+    On Error GoTo Form_Load_Err
+    
     SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE
     'Call Aplicar_Transparencia(Me.hwnd, 200)
     ''Call Audio.PlayWave(SND_MSG)
@@ -225,9 +268,19 @@ Private Sub Form_Load()
     Call Form_RemoveTitleBar(Me)
     Me.Height = 3190
     Me.Width = 4380
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.Form_Load", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
     moverForm
 
     If Image1.Tag = "1" Then
@@ -240,23 +293,60 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         imgCerrar.Tag = "0"
     End If
 
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.Form_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_Click()
     'Call Sound.Sound_Play(SND_CLICK)
+    
+    On Error GoTo Image1_Click_Err
+    
     Unload Me
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.Image1_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseDown_Err
+    
     Image1.Picture = LoadInterface("boton-aceptar-ES-off.bmp")
     Image1.Tag = "1"
+    
+    Exit Sub
+
+Image1_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.Image1_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Image1_MouseMove_Err
+    
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
         Image1.Tag = "1"
     End If
+    
+    Exit Sub
+
+Image1_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.Image1_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Deactivate()
@@ -264,6 +354,9 @@ Private Sub Form_Deactivate()
 End Sub
 
 Public Sub PopupMenuMensaje()
+    
+    On Error GoTo PopupMenuMensaje_Err
+    
 
     Select Case SendingType
 
@@ -327,39 +420,99 @@ Public Sub PopupMenuMensaje()
 
     PopUpMenu mnuMensaje
 
+    
+    Exit Sub
+
+PopupMenuMensaje_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.PopupMenuMensaje", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgCerrar_Click()
+    
+    On Error GoTo imgCerrar_Click_Err
+    
     Unload Me
+    
+    Exit Sub
+
+imgCerrar_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.imgCerrar_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgCerrar_MouseDown_Err
+    
     imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     imgCerrar.Tag = "1"
+    
+    Exit Sub
+
+imgCerrar_MouseDown_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.imgCerrar_MouseDown", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo imgCerrar_MouseMove_Err
+    
     If imgCerrar.Tag = "0" Then
         imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         imgCerrar.Tag = "1"
     End If
+    
+    Exit Sub
+
+imgCerrar_MouseMove_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.imgCerrar_MouseMove", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuNormal_Click()
+    
+    On Error GoTo mnuNormal_Click_Err
+    
     SendingType = 1
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
+    
+    Exit Sub
+
+mnuNormal_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuNormal_Click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuGritar_click()
+    
+    On Error GoTo mnuGritar_click_Err
+    
     SendingType = 2
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
+    
+    Exit Sub
+
+mnuGritar_click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuGritar_click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuPrivado_click()
+    
+    On Error GoTo mnuPrivado_click_Err
+    
     sndPrivateTo = InputBox("Escriba el usuario con el que desea iniciar una conversación privada", "")
 
     If sndPrivateTo <> "" Then
@@ -371,33 +524,80 @@ Private Sub mnuPrivado_click()
 
     End If
 
+    
+    Exit Sub
+
+mnuPrivado_click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuPrivado_click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuClan_click()
+    
+    On Error GoTo mnuClan_click_Err
+    
     SendingType = 4
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
+    
+    Exit Sub
+
+mnuClan_click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuClan_click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuGMs_click()
+    
+    On Error GoTo mnuGMs_click_Err
+    
     SendingType = 5
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
+    
+    Exit Sub
+
+mnuGMs_click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuGMs_click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuGrupo_click()
+    
+    On Error GoTo mnuGrupo_click_Err
+    
     SendingType = 6
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
+    
+    Exit Sub
+
+mnuGrupo_click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuGrupo_click", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub mnuGlobal_Click()
+    
+    On Error GoTo mnuGlobal_Click_Err
+    
     SendingType = 7
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
+    
+    Exit Sub
+
+mnuGlobal_Click_Err:
+    Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuGlobal_Click", Erl)
+    Resume Next
+    
 End Sub
 
