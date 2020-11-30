@@ -94,6 +94,11 @@ Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByV
 EH:
 
     Close #File
+    
+    Debug.Print "Error: " & Numero & vbNewLine & _
+                "Descripcion: " & Descripcion & vbNewLine & _
+                "Componente: " & Componente & vbNewLine & _
+                "Fecha y Hora: " & Date$ & "-" & Time$ & vbNewLine
 
 End Sub
 
