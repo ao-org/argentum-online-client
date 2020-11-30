@@ -163,8 +163,9 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command3_Click()
-
-    On Error Resume Next
+    
+    'Si el indice seleccionado es -1 es xq no seleccionamos un item de la lista.
+    If lstArmas.ListIndex = -1 Then Exit Sub
 
     If cantidad > 1 Then
         UserMacro.cantidad = cantidad
