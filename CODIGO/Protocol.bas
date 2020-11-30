@@ -1125,25 +1125,25 @@ Private Sub HandleLogged()
     Nombres = True
     Pregunta = False
 
-    frmmain.stabar.Visible = True
-    frmmain.HpBar.Visible = True
+    frmMain.stabar.Visible = True
+    frmMain.HpBar.Visible = True
 
     If UserMaxMAN <> 0 Then
-        frmmain.manabar.Visible = True
+        frmMain.manabar.Visible = True
     End If
 
-    frmmain.hambar.Visible = True
-    frmmain.AGUbar.Visible = True
-    frmmain.Hpshp.Visible = (UserMinHp > 0)
-    frmmain.MANShp.Visible = (UserMinMAN > 0)
-    frmmain.STAShp.Visible = (UserMinSTA > 0)
-    frmmain.AGUAsp.Visible = (UserMinAGU > 0)
-    frmmain.COMIDAsp.Visible = (UserMinHAM > 0)
-    frmmain.GldLbl.Visible = True
+    frmMain.hambar.Visible = True
+    frmMain.AGUbar.Visible = True
+    frmMain.Hpshp.Visible = (UserMinHp > 0)
+    frmMain.MANShp.Visible = (UserMinMAN > 0)
+    frmMain.STAShp.Visible = (UserMinSTA > 0)
+    frmMain.AGUAsp.Visible = (UserMinAGU > 0)
+    frmMain.COMIDAsp.Visible = (UserMinHAM > 0)
+    frmMain.GldLbl.Visible = True
     ' frmMain.Label6.Visible = True
-    frmmain.Fuerzalbl.Visible = True
-    frmmain.AgilidadLbl.Visible = True
-    frmmain.oxigenolbl.Visible = True
+    frmMain.Fuerzalbl.Visible = True
+    frmMain.AgilidadLbl.Visible = True
+    frmMain.oxigenolbl.Visible = True
     QueRender = 0
     'Set connected state
     
@@ -1285,16 +1285,16 @@ Private Sub HandleMacroTrabajoToggle()
     If activar = False Then
         Call ResetearUserMacro
     Else
-        AddtoRichTextBox frmmain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0
-        frmmain.MacroLadder.Interval = IntervaloTrabajo
-        frmmain.MacroLadder.Enabled = True
+        AddtoRichTextBox frmMain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0
+        frmMain.MacroLadder.Interval = IntervaloTrabajo
+        frmMain.MacroLadder.Enabled = True
         UserMacro.Intervalo = IntervaloTrabajo
         UserMacro.Activado = True
         UserMacro.cantidad = 999
         UserMacro.TIPO = 6
         
-        TargetXMacro = TX
-        TargetYMacro = TY
+        TargetXMacro = tX
+        TargetYMacro = tY
 
     End If
 
@@ -1317,10 +1317,10 @@ Private Sub HandleDisconnect()
     Call ResetearUserMacro
     'Close connection
     #If UsarWrench = 1 Then
-        frmmain.Socket1.Disconnect
+        frmMain.Socket1.Disconnect
     #Else
 
-        If frmmain.Winsock1.State <> sckClosed Then frmmain.Winsock1.Close
+        If frmMain.Winsock1.State <> sckClosed Then frmMain.Winsock1.Close
     #End If
     
     'Hide main form
@@ -1334,31 +1334,31 @@ Private Sub HandleDisconnect()
     
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
-    frmmain.hlst.Visible = False
-    frmmain.Timerping.Enabled = False
+    frmMain.hlst.Visible = False
+    frmMain.Timerping.Enabled = False
     
-    frmmain.UpdateLight.Enabled = False
-    frmmain.UpdateDaytime.Enabled = False
+    frmMain.UpdateLight.Enabled = False
+    frmMain.UpdateDaytime.Enabled = False
     
-    frmmain.Visible = False
+    frmMain.Visible = False
     
     OpcionMenu = 0
     ' Panel.Picture = LoadInterface("centroinventario.bmp")
     ' frmMain.Image2(0).Visible = False
     'frmMain.Image2(1).Visible = True
 
-    frmmain.picInv.Visible = True
-    frmmain.hlst.Visible = False
+    frmMain.picInv.Visible = True
+    frmMain.hlst.Visible = False
 
-    frmmain.cmdlanzar.Visible = False
+    frmMain.cmdlanzar.Visible = False
     'frmMain.lblrefuerzolanzar.Visible = False
-    frmmain.cmdMoverHechi(0).Visible = False
-    frmmain.cmdMoverHechi(1).Visible = False
+    frmMain.cmdMoverHechi(0).Visible = False
+    frmMain.cmdMoverHechi(1).Visible = False
     
-    frmmain.PicResu.Visible = True
-    frmmain.PicResuOn.Visible = False
+    frmMain.PicResu.Visible = True
+    frmMain.PicResuOn.Visible = False
      
-    frmmain.PicSegClanOn.Visible = True
+    frmMain.PicSegClanOn.Visible = True
     
     'Stop audio
     If Sonido Then
@@ -1380,11 +1380,11 @@ Private Sub HandleDisconnect()
 
     Call SwitchMap(UserMap)
     
-    frmmain.personaje(1).Visible = False
-    frmmain.personaje(2).Visible = False
-    frmmain.personaje(3).Visible = False
-    frmmain.personaje(4).Visible = False
-    frmmain.personaje(5).Visible = False
+    frmMain.personaje(1).Visible = False
+    frmMain.personaje(2).Visible = False
+    frmMain.personaje(3).Visible = False
+    frmMain.personaje(4).Visible = False
+    frmMain.personaje(5).Visible = False
     
     UserClase = 0
     UserSexo = 0
@@ -1401,11 +1401,11 @@ Private Sub HandleDisconnect()
     Next i
     
     For i = 1 To UserInvUnlocked
-        frmmain.imgInvLock(i - 1).Picture = Nothing
+        frmMain.imgInvLock(i - 1).Picture = Nothing
     Next i
     
     For i = 1 To MAX_INVENTORY_SLOTS
-        Call frmmain.Inventario.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmMain.Inventario.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Call frmBancoObj.InvBankUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Call frmComerciar.InvComNpc.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Call frmComerciar.InvComUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
@@ -1435,7 +1435,7 @@ Private Sub HandleDisconnect()
     UserNadando = False
     bRain = False
     AlphaNiebla = 30
-    frmmain.TimerNiebla.Enabled = False
+    frmMain.TimerNiebla.Enabled = False
     bNiebla = False
     MostrarTrofeo = False
     bNieve = False
@@ -1449,7 +1449,7 @@ Private Sub HandleDisconnect()
     DrogaCounter = 0
     OxigenoCounter = 0
      
-    frmmain.Contadores.Enabled = False
+    frmMain.Contadores.Enabled = False
      
     'Delete all kind of dialogs
     
@@ -1475,7 +1475,7 @@ Private Sub HandleDisconnect()
     
     For Each frm In Forms
 
-        If frm.Name <> frmmain.Name And frm.Name <> frmConnect.Name And frm.Name <> frmMensaje.Name Then
+        If frm.Name <> frmMain.Name And frm.Name <> frmConnect.Name And frm.Name <> frmMensaje.Name Then
             Unload frm
 
         End If
@@ -1551,7 +1551,7 @@ Private Sub HandleCommerceInit()
     'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
 
-        With frmmain.Inventario
+        With frmMain.Inventario
             Call frmComerciar.InvComUsu.SetItem(i, .OBJIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
 
         End With
@@ -1563,7 +1563,7 @@ Private Sub HandleCommerceInit()
     'Call Inventario.Initialize(frmComerciar.PicInvUser)
     frmComerciar.Picture = LoadInterface("comerciar.bmp")
     HayFormularioAbierto = True
-    frmComerciar.Show , frmmain
+    frmComerciar.Show , frmMain
     
 End Sub
 
@@ -1585,7 +1585,7 @@ Private Sub HandleBankInit()
     'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
 
-        With frmmain.Inventario
+        With frmMain.Inventario
             Call frmBancoObj.InvBankUsu.SetItem(i, .OBJIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
 
         End With
@@ -1606,7 +1606,7 @@ Private Sub HandleBankInit()
     Comerciando = True
     'Call Inventario.Initialize(frmBancoObj.PicInvUser)
     frmBancoObj.Picture = LoadInterface("banco.bmp")
-    frmBancoObj.Show , frmmain
+    frmBancoObj.Show , frmMain
     frmBancoObj.lblCosto = PonerPuntos(UserGLD)
     HayFormularioAbierto = True
 
@@ -1678,7 +1678,7 @@ Private Sub HandleShowFrmMapa()
 
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
     HayFormularioAbierto = True
-    frmMapaGrande.Show , frmmain
+    frmMapaGrande.Show , frmMain
 
 End Sub
 
@@ -1704,9 +1704,9 @@ Private Sub HandleUserCommerceInit()
     'Fill inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
 
-        If frmmain.Inventario.OBJIndex(i) <> 0 Then
-            frmComerciarUsu.List1.AddItem frmmain.Inventario.ItemName(i)
-            frmComerciarUsu.List1.ItemData(frmComerciarUsu.List1.NewIndex) = frmmain.Inventario.Amount(i)
+        If frmMain.Inventario.OBJIndex(i) <> 0 Then
+            frmComerciarUsu.List1.AddItem frmMain.Inventario.ItemName(i)
+            frmComerciarUsu.List1.ItemData(frmComerciarUsu.List1.NewIndex) = frmMain.Inventario.Amount(i)
         Else
             frmComerciarUsu.List1.AddItem ""
             frmComerciarUsu.List1.ItemData(frmComerciarUsu.List1.NewIndex) = 0
@@ -1724,7 +1724,7 @@ Private Sub HandleUserCommerceInit()
     
     frmComerciarUsu.Picture = LoadInterface("comercioseguro.bmp")
     frmComerciarUsu.Image1.Picture = LoadInterface("comercioseguro_opbjeto.bmp")
-    frmComerciarUsu.Show , frmmain
+    frmComerciarUsu.Show , frmMain
 
 End Sub
 
@@ -1762,7 +1762,7 @@ Private Sub HandleShowBlacksmithForm()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    If frmmain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
         Call WriteCraftBlacksmith(MacroBltIndex)
     Else
         
@@ -1785,7 +1785,7 @@ Private Sub HandleShowBlacksmithForm()
         Call Establecer_Borde(frmHerrero.List1, frmHerrero, COLOR_AZUL, 1, 1)
         Call Establecer_Borde(frmHerrero.List2, frmHerrero, COLOR_AZUL, 1, 1)
         HayFormularioAbierto = True
-        frmHerrero.Show , frmmain
+        frmHerrero.Show , frmMain
 
     End If
 
@@ -1803,7 +1803,7 @@ Private Sub HandleShowCarpenterForm()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    If frmmain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
         Call WriteCraftCarpenter(MacroBltIndex)
     Else
          
@@ -1814,7 +1814,7 @@ Private Sub HandleShowCarpenterForm()
         Call Establecer_Borde(frmCarp.List1, frmCarp, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(frmCarp.List2, frmCarp, COLOR_AZUL, 0, 0)
         frmCarp.Picture = LoadInterface("carpinteria.bmp")
-        frmCarp.Show , frmmain
+        frmCarp.Show , frmMain
         HayFormularioAbierto = True
 
     End If
@@ -1830,7 +1830,7 @@ Private Sub HandleShowAlquimiaForm()
     'Remove packet ID
     Call incomingData.ReadByte
 
-    If frmmain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
         Call WriteCraftAlquimista(MacroBltIndex)
     Else
         frmAlqui.Picture = LoadInterface("alquimia.bmp")
@@ -1842,7 +1842,7 @@ Private Sub HandleShowAlquimiaForm()
         Call Establecer_Borde(frmAlqui.List1, frmAlqui, COLOR_AZUL, 1, 1)
         Call Establecer_Borde(frmAlqui.List2, frmAlqui, COLOR_AZUL, 1, 1)
 
-        frmAlqui.Show , frmmain
+        frmAlqui.Show , frmMain
         HayFormularioAbierto = True
 
     End If
@@ -1858,7 +1858,7 @@ Private Sub HandleShowSastreForm()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    If frmmain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
         Call WriteCraftSastre(MacroBltIndex)
     Else
         COLOR_AZUL = RGB(0, 0, 0)
@@ -1880,7 +1880,7 @@ Private Sub HandleShowSastreForm()
         Next i
     
         FrmSastre.Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
-        FrmSastre.Show , frmmain
+        FrmSastre.Show , frmMain
         HayFormularioAbierto = True
 
     End If
@@ -1899,7 +1899,7 @@ Private Sub HandleNPCKillUser()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_CRIATURA_MATADO, 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_CRIATURA_MATADO, 255, 0, 0, True, False, False)
 
 End Sub
 
@@ -1915,7 +1915,7 @@ Private Sub HandleBlockedWithShieldUser()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
 
 End Sub
 
@@ -1931,7 +1931,7 @@ Private Sub HandleBlockedWithShieldOther()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
 
 End Sub
 
@@ -1976,7 +1976,7 @@ Private Sub HandleCharSwing()
 
         End If
         
-        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.X, .Pos.Y), Sound.Calculate_Pan(.Pos.X, .Pos.Y)) ' Swing
+        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y)) ' Swing
         
         If ShowFX Then Call SetCharacterFx(charindex, 90, 0)
 
@@ -1996,8 +1996,8 @@ Private Sub HandleSafeModeOn()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Call frmmain.DibujarSeguro
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_SEGURO_ACTIVADO, 65, 190, 156, False, False, False)
+    Call frmMain.DibujarSeguro
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_ACTIVADO, 65, 190, 156, False, False, False)
 
 End Sub
 
@@ -2013,8 +2013,8 @@ Private Sub HandleSafeModeOff()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Call frmmain.DesDibujarSeguro
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_SEGURO_DESACTIVADO, 65, 190, 156, False, False, False)
+    Call frmMain.DesDibujarSeguro
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_DESACTIVADO, 65, 190, 156, False, False, False)
 
 End Sub
 
@@ -2028,8 +2028,8 @@ Private Sub HandlePartySafeOff()
     '***************************************************
     'Remove packet ID
     Call incomingData.ReadByte
-    Call frmmain.ControlSeguroParty(False)
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_SEGURO_PARTY_OFF, 250, 250, 0, False, True, False)
+    Call frmMain.ControlSeguroParty(False)
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_PARTY_OFF, 250, 250, 0, False, True, False)
 
 End Sub
 
@@ -2055,11 +2055,11 @@ Private Sub HandleClanSeguro()
     Seguro = incomingData.ReadBoolean()
     
     If Seguro Then
-        Call AddtoRichTextBox(frmmain.RecTxt, "Seguro de clan desactivado.", 65, 190, 156, False, False, False)
-        frmmain.PicSegClanOn.Visible = False
+        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan desactivado.", 65, 190, 156, False, False, False)
+        frmMain.PicSegClanOn.Visible = False
     Else
-        Call AddtoRichTextBox(frmmain.RecTxt, "Seguro de clan activado.", 65, 190, 156, False, False, False)
-        frmmain.PicSegClanOn.Visible = True
+        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan activado.", 65, 190, 156, False, False, False)
+        frmMain.PicSegClanOn.Visible = True
     
     End If
 
@@ -2101,8 +2101,8 @@ Private Sub HandleIntervals()
     Call MainTimer.SetInterval(TimersIndex.Drop, IntervaloTirar)
     Call MainTimer.SetInterval(TimersIndex.Walk, IntervaloCaminar)
     
-    frmmain.macrotrabajo.Interval = IntervaloTrabajo
-    frmmain.macrotrabajo.Enabled = False
+    frmMain.macrotrabajo.Interval = IntervaloTrabajo
+    frmMain.macrotrabajo.Enabled = False
 
     'Init timers
     Call MainTimer.Start(TimersIndex.Attack)
@@ -2129,12 +2129,12 @@ Private Sub HandleUpdateUserKey()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim slot As Integer, Llave As Integer
+    Dim Slot As Integer, Llave As Integer
     
-    slot = incomingData.ReadInteger
+    Slot = incomingData.ReadInteger
     Llave = incomingData.ReadInteger
 
-    Call FrmKeyInv.InvKeys.SetItem(slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
+    Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
 
 End Sub
 
@@ -2151,7 +2151,7 @@ Private Sub HandleUpdateDM()
 
     Value = incomingData.ReadInteger
 
-    frmmain.lbldm = "+" & Value & "%"
+    frmMain.lbldm = "+" & Value & "%"
 
 End Sub
 
@@ -2168,7 +2168,7 @@ Private Sub HandleUpdateRM()
 
     Value = incomingData.ReadInteger
 
-    frmmain.lblResis = "+" & Value
+    frmMain.lblResis = "+" & Value
 
 End Sub
 
@@ -2180,8 +2180,8 @@ Private Sub HandlePartySafeOn()
     '***************************************************
     'Remove packet ID
     Call incomingData.ReadByte
-    Call frmmain.ControlSeguroParty(True)
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_SEGURO_PARTY_ON, 250, 250, 0, False, True, False)
+    Call frmMain.ControlSeguroParty(True)
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_PARTY_ON, 250, 250, 0, False, True, False)
 
 End Sub
 
@@ -2192,7 +2192,7 @@ Private Sub HandleCorreoPicOn()
     '***************************************************
     'Remove packet ID
     Call incomingData.ReadByte
-    frmmain.PicCorreo.Visible = True
+    frmMain.PicCorreo.Visible = True
 
     'Call AddtoRichTextBox(frmMain.RecTxt, "Tenes un nuevo correo.", 204, 193, 115, False, False, False)
     'Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_RESU_ON, 65, 190, 156, False, False, False)
@@ -2210,7 +2210,7 @@ Private Sub HandleCantUseWhileMeditating()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_USAR_MEDITANDO, 255, 0, 0, False, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_USAR_MEDITANDO, 255, 0, 0, False, False, False)
 
 End Sub
 
@@ -2236,9 +2236,9 @@ Private Sub HandleUpdateSta()
     
     'Get data and update form
     UserMinSTA = incomingData.ReadInteger()
-    frmmain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
-    frmmain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
-    frmmain.STAShp.Visible = (UserMinSTA > 0)
+    frmMain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
+    frmMain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
+    frmMain.STAShp.Visible = (UserMinSTA > 0)
 
 End Sub
 
@@ -2266,13 +2266,14 @@ Private Sub HandleUpdateMana()
     UserMinMAN = incomingData.ReadInteger()
     
     If UserMaxMAN > 0 Then
-        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
-        frmmain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
-        frmmain.MANShp.Visible = (UserMinMAN > 0)
+        frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
+        frmMain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
+        frmMain.MANShp.Visible = (UserMinMAN > 0)
+        frmMain.manabar.Visible = True
     Else
-        frmmain.MANShp.Width = 0
-        frmmain.manabar.Visible = False
-        frmmain.MANShp.Visible = False
+        frmMain.MANShp.Width = 0
+        frmMain.manabar.Visible = False
+        frmMain.MANShp.Visible = False
     End If
 
 End Sub
@@ -2298,9 +2299,9 @@ Private Sub HandleUpdateHP()
     
     'Get data and update form
     UserMinHp = incomingData.ReadInteger()
-    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 216
-    frmmain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
-    frmmain.Hpshp.Visible = (UserMinHp > 0)
+    frmMain.Hpshp.Width = UserMinHp / UserMaxHp * 216
+    frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
+    frmMain.Hpshp.Visible = (UserMinHp > 0)
     
     'Velocidad de la musica
     
@@ -2337,7 +2338,7 @@ Private Sub HandleUpdateGold()
     'Get data and update form
     UserGLD = incomingData.ReadLong()
     
-    frmmain.GldLbl.Caption = PonerPuntos(UserGLD)
+    frmMain.GldLbl.Caption = PonerPuntos(UserGLD)
 
 End Sub
 
@@ -2364,13 +2365,13 @@ Private Sub HandleUpdateExp()
     'Get data and update form
     UserExp = incomingData.ReadLong()
 
-    frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
+    frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     If UserPasarNivel > 0 Then
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
-        frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
     Else
-        frmmain.ExpBar.Width = 204
-        frmmain.lblPorcLvl.Caption = "¡Nivel máximo!"
+        frmMain.EXPBAR.Width = 204
+        frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
     End If
 
 End Sub
@@ -2404,7 +2405,7 @@ Private Sub HandleChangeMap()
         If Not MapDat.LLUVIA Then
             '  Call Audio.StopWave(RainBufferIndex)
             ' RainBufferIndex = 0
-            frmmain.IsPlaying = PlayLoop.plNone
+            frmMain.IsPlaying = PlayLoop.plNone
 
         End If
 
@@ -2540,26 +2541,26 @@ Private Sub HandlePosUpdate()
     Call incomingData.ReadByte
     
     'Remove char from old position
-    If MapData(UserPos.X, UserPos.Y).charindex = UserCharIndex Then
-        MapData(UserPos.X, UserPos.Y).charindex = 0
+    If MapData(UserPos.x, UserPos.y).charindex = UserCharIndex Then
+        MapData(UserPos.x, UserPos.y).charindex = 0
 
     End If
     
     'Set new pos
-    UserPos.X = incomingData.ReadByte()
-    UserPos.Y = incomingData.ReadByte()
+    UserPos.x = incomingData.ReadByte()
+    UserPos.y = incomingData.ReadByte()
 
     'Set char
-    MapData(UserPos.X, UserPos.Y).charindex = UserCharIndex
+    MapData(UserPos.x, UserPos.y).charindex = UserCharIndex
     charlist(UserCharIndex).Pos = UserPos
         
     'Are we under a roof?
-    bTecho = IIf(MapData(UserPos.X, UserPos.Y).Trigger = 1 Or MapData(UserPos.X, UserPos.Y).Trigger = 2 Or MapData(UserPos.X, UserPos.Y).Trigger = 6 Or MapData(UserPos.X, UserPos.Y).Trigger > 9 Or MapData(UserPos.X, UserPos.Y).Trigger = 4, True, False)
+    bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
                 
     'Update pos label and minimap
-    frmmain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
-    frmmain.personaje(0).Left = UserPos.X - 5
-    frmmain.personaje(0).Top = UserPos.Y - 4
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    frmMain.personaje(0).Left = UserPos.x - 5
+    frmMain.personaje(0).Top = UserPos.y - 4
 
 End Sub
 
@@ -2585,22 +2586,22 @@ Private Sub HandleNPCHitUser()
     Select Case incomingData.ReadByte()
 
         Case bCabeza
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_GOLPE_CABEZA & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CABEZA & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_GOLPE_BRAZO_IZQ & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_IZQ & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_GOLPE_BRAZO_DER & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_DER & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_GOLPE_PIERNA_IZQ & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_IZQ & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_GOLPE_PIERNA_DER & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_DER & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
 
         Case bTorso
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_GOLPE_TORSO & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_TORSO & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
 
     End Select
 
@@ -2625,7 +2626,7 @@ Private Sub HandleUserHitNPC()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & CStr(incomingData.ReadLong()) & MENSAJE_2, 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & CStr(incomingData.ReadLong()) & MENSAJE_2, 255, 0, 0, True, False, False)
 
 End Sub
 
@@ -2648,7 +2649,7 @@ Private Sub HandleUserAttackedSwing()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_1 & charlist(incomingData.ReadInteger()).nombre & MENSAJE_ATAQUE_FALLO, 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & charlist(incomingData.ReadInteger()).nombre & MENSAJE_ATAQUE_FALLO, 255, 0, 0, True, False, False)
 
 End Sub
 
@@ -2689,22 +2690,22 @@ Private Sub HandleUserHittedByUser()
     Select Case incomingData.ReadByte
 
         Case bCabeza
-            Call AddtoRichTextBox(frmmain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_CABEZA & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_CABEZA & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmmain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmmain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmmain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmmain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bTorso
-            Call AddtoRichTextBox(frmmain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_TORSO & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_TORSO & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
     End Select
 
@@ -2747,22 +2748,22 @@ Private Sub HandleUserHittedUser()
     Select Case incomingData.ReadByte
 
         Case bCabeza
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_CABEZA & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_CABEZA & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
         Case bTorso
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_TORSO & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_TORSO & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
 
     End Select
 
@@ -3200,12 +3201,12 @@ Private Sub HandleConsoleMessage()
 
         End If
             
-        Call AddtoRichTextBox(frmmain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
+        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
     
     Else
 
         With FontTypes(fontIndex)
-            Call AddtoRichTextBox(frmmain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
+            Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
         End With
 
     End If
@@ -3316,11 +3317,11 @@ Private Sub HandleLocaleMsg()
 
         End If
             
-        Call AddtoRichTextBox(frmmain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
+        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
     Else
 
         With FontTypes(fontIndex)
-            Call AddtoRichTextBox(frmmain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
+            Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
 
         End With
 
@@ -3415,11 +3416,11 @@ Private Sub HandleGuildChat()
 
         End If
             
-        Call AddtoRichTextBox(frmmain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
+        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
     Else
 
         With FontTypes(FontTypeNames.FONTTYPE_GUILDMSG)
-            Call AddtoRichTextBox(frmmain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
+            Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
 
         End With
 
@@ -3475,7 +3476,7 @@ Private Sub HandleShowMessageBox()
 
     If QueRender = 0 Then
         frmMensaje.msg.Caption = mensaje
-        frmMensaje.Show , frmmain
+        frmMensaje.Show , frmMain
     ElseIf QueRender = 1 Then
         Call Sound.Sound_Play(SND_EXCLAMACION)
         Call TextoAlAsistente(mensaje)
@@ -3557,7 +3558,7 @@ Private Sub HandleMostrarCuenta()
         'Unload frmConnect
     End If
     
-    If frmmain.Visible Then
+    If frmMain.Visible Then
         '  frmMain.Visible = False
         
         UserParalizado = False
@@ -3570,11 +3571,11 @@ Private Sub HandleMostrarCuenta()
             Call EraseChar(i)
         Next i
         
-        frmmain.personaje(1).Visible = False
-        frmmain.personaje(2).Visible = False
-        frmmain.personaje(3).Visible = False
-        frmmain.personaje(4).Visible = False
-        frmmain.personaje(5).Visible = False
+        frmMain.personaje(1).Visible = False
+        frmMain.personaje(2).Visible = False
+        frmMain.personaje(3).Visible = False
+        frmMain.personaje(4).Visible = False
+        frmMain.personaje(5).Visible = False
 
     End If
     
@@ -3642,10 +3643,10 @@ Private Sub HandleUserCharIndexInServer()
     UserPos = charlist(UserCharIndex).Pos
     
     'Are we under a roof?
-    bTecho = IIf(MapData(UserPos.X, UserPos.Y).Trigger = 1 Or MapData(UserPos.X, UserPos.Y).Trigger = 2 Or MapData(UserPos.X, UserPos.Y).Trigger = 6 Or MapData(UserPos.X, UserPos.Y).Trigger > 9 Or MapData(UserPos.X, UserPos.Y).Trigger = 4, True, False)
-    frmmain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
-    frmmain.personaje(0).Left = UserPos.X - 5
-    frmmain.personaje(0).Top = UserPos.Y - 4
+    bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    frmMain.personaje(0).Left = UserPos.x - 5
+    frmMain.personaje(0).Top = UserPos.y - 4
 
 End Sub
 
@@ -3683,9 +3684,9 @@ Private Sub HandleCharacterCreate()
 
     Dim Heading       As E_Heading
 
-    Dim X             As Byte
+    Dim x             As Byte
 
-    Dim Y             As Byte
+    Dim y             As Byte
 
     Dim weapon        As Integer
 
@@ -3707,8 +3708,8 @@ Private Sub HandleCharacterCreate()
     Body = buffer.ReadInteger()
     Head = buffer.ReadInteger()
     Heading = buffer.ReadByte()
-    X = buffer.ReadByte()
-    Y = buffer.ReadByte()
+    x = buffer.ReadByte()
+    y = buffer.ReadByte()
     weapon = buffer.ReadInteger()
     shield = buffer.ReadInteger()
     helmet = buffer.ReadInteger()
@@ -3747,10 +3748,10 @@ Private Sub HandleCharacterCreate()
         .UserMaxHp = buffer.ReadLong()
         .simbolo = buffer.ReadByte()
         
-        If (.Pos.X <> 0 And .Pos.Y <> 0) Then
-            If MapData(.Pos.X, .Pos.Y).charindex = charindex Then
+        If (.Pos.x <> 0 And .Pos.y <> 0) Then
+            If MapData(.Pos.x, .Pos.y).charindex = charindex Then
                 'Erase the old character from map
-                MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).charindex = 0
+                MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
 
             End If
 
@@ -3787,7 +3788,7 @@ Private Sub HandleCharacterCreate()
         
     End With
     
-    Call MakeChar(charindex, Body, Head, Heading, X, Y, weapon, shield, helmet, ParticulaFx, appear)
+    Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
 
     Call RefreshAllChars
     
@@ -3865,12 +3866,12 @@ Private Sub HandleCharacterMove()
     Call incomingData.ReadByte
     
     Dim charindex As Integer
-    Dim X         As Byte
-    Dim Y         As Byte
+    Dim x         As Byte
+    Dim y         As Byte
     
     charindex = incomingData.ReadInteger()
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     
     With charlist(charindex)
         
@@ -3882,7 +3883,7 @@ Private Sub HandleCharacterMove()
 
     End With
     
-    Call Char_Move_by_Pos(charindex, X, Y)
+    Call Char_Move_by_Pos(charindex, x, y)
     
     Call RefreshAllChars
 
@@ -3975,7 +3976,7 @@ Private Sub HandleCharacterChange()
 
         If tempint <> 0 Then .Casco = CascoAnimData(tempint)
                 
-        If .Body.HeadOffset.Y = -26 Then
+        If .Body.HeadOffset.y = -26 Then
             .EsEnano = True
         Else
             .EsEnano = False
@@ -4016,9 +4017,9 @@ Private Sub HandleObjectCreate()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim X        As Byte
+    Dim x        As Byte
 
-    Dim Y        As Byte
+    Dim y        As Byte
 
     Dim OBJIndex As Integer
 
@@ -4028,29 +4029,29 @@ Private Sub HandleObjectCreate()
 
     Dim id       As Long
     
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     
     OBJIndex = incomingData.ReadInteger()
     
-    MapData(X, Y).ObjGrh.GrhIndex = ObjData(OBJIndex).GrhIndex
+    MapData(x, y).ObjGrh.GrhIndex = ObjData(OBJIndex).GrhIndex
     
-    MapData(X, Y).OBJInfo.OBJIndex = OBJIndex
+    MapData(x, y).OBJInfo.OBJIndex = OBJIndex
     
-    Call InitGrh(MapData(X, Y).ObjGrh, MapData(X, Y).ObjGrh.GrhIndex)
+    Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
     
     If ObjData(OBJIndex).CreaLuz <> "" Then
         Call Long_2_RGBA(Color, Val(ReadField(2, ObjData(OBJIndex).CreaLuz, Asc(":"))))
         Rango = Val(ReadField(1, ObjData(OBJIndex).CreaLuz, Asc(":")))
-        MapData(X, Y).luz.Color = Color
-        MapData(X, Y).luz.Rango = Rango
+        MapData(x, y).luz.Color = Color
+        MapData(x, y).luz.Rango = Rango
         
         If Rango < 100 Then
-            id = X & Y
-            LucesCuadradas.Light_Create X, Y, Color, Rango, id
+            id = x & y
+            LucesCuadradas.Light_Create x, y, Color, Rango, id
             LucesCuadradas.Light_Render_All
         Else
-            LucesRedondas.Create_Light_To_Map X, Y, Color, Rango - 99
+            LucesRedondas.Create_Light_To_Map x, y, Color, Rango - 99
             LucesRedondas.LightRenderAll
             LucesCuadradas.Light_Render_All
         End If
@@ -4058,8 +4059,8 @@ Private Sub HandleObjectCreate()
     End If
         
     If ObjData(OBJIndex).CreaParticulaPiso <> 0 Then
-        MapData(X, Y).particle_group = 0
-        General_Particle_Create ObjData(OBJIndex).CreaParticulaPiso, X, Y, -1
+        MapData(x, y).particle_group = 0
+        General_Particle_Create ObjData(OBJIndex).CreaParticulaPiso, x, y, -1
 
     End If
     
@@ -4080,17 +4081,17 @@ Private Sub HandleFxPiso()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim X  As Byte
+    Dim x  As Byte
 
-    Dim Y  As Byte
+    Dim y  As Byte
 
     Dim fX As Byte
 
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     fX = incomingData.ReadInteger()
     
-    Call SetMapFx(X, Y, fX, 0)
+    Call SetMapFx(x, y, fX, 0)
     
 End Sub
 
@@ -4113,28 +4114,28 @@ Private Sub HandleObjectDelete()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim X  As Byte
+    Dim x  As Byte
 
-    Dim Y  As Byte
+    Dim y  As Byte
 
     Dim id As Long
     
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     
-    If ObjData(MapData(X, Y).OBJInfo.OBJIndex).CreaLuz <> "" Then
-        id = LucesCuadradas.Light_Find(X & Y)
+    If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
+        id = LucesCuadradas.Light_Find(x & y)
         LucesCuadradas.Light_Remove id
-        MapData(X, Y).luz.Color = COLOR_EMPTY
-        MapData(X, Y).luz.Rango = 0
+        MapData(x, y).luz.Color = COLOR_EMPTY
+        MapData(x, y).luz.Rango = 0
         LucesCuadradas.Light_Render_All
 
     End If
     
-    MapData(X, Y).ObjGrh.GrhIndex = 0
+    MapData(x, y).ObjGrh.GrhIndex = 0
     
-    If ObjData(MapData(X, Y).OBJInfo.OBJIndex).CreaParticulaPiso <> 0 Then
-        Graficos_Particulas.Particle_Group_Remove (MapData(X, Y).particle_group)
+    If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaParticulaPiso <> 0 Then
+        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
 
     End If
 
@@ -4159,14 +4160,14 @@ Private Sub HandleBlockPosition()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim X As Byte, Y As Byte, B As Byte
+    Dim x As Byte, y As Byte, B As Byte
     
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     B = incomingData.ReadByte()
 
-    MapData(X, Y).Blocked = MapData(X, Y).Blocked And Not eBlock.ALL_SIDES
-    MapData(X, Y).Blocked = MapData(X, Y).Blocked Or B
+    MapData(x, y).Blocked = MapData(x, y).Blocked And Not eBlock.ALL_SIDES
+    MapData(x, y).Blocked = MapData(x, y).Blocked Or B
 
 End Sub
 
@@ -4287,27 +4288,27 @@ Private Sub HandlePosLLamadaDeClan()
     LLamadaDeclanMapa = map
     idmap = ObtenerIdMapaDeLlamadaDeClan(map)
 
-    Dim X As Long
+    Dim x As Long
 
-    Dim Y As Long
+    Dim y As Long
     
-    X = (idmap - 1) Mod 14
-    Y = Int((idmap - 1) / 14)
+    x = (idmap - 1) Mod 14
+    y = Int((idmap - 1) / 14)
 
     'frmMapaGrande.lblAllies.Top = Y * 32
     'frmMapaGrande.lblAllies.Left = X * 32
 
-    frmMapaGrande.llamadadeclan.Top = Y * 32 + (srcX / 4.5)
-    frmMapaGrande.llamadadeclan.Left = X * 32 + (srcY / 4.5)
+    frmMapaGrande.llamadadeclan.Top = y * 32 + (srcX / 4.5)
+    frmMapaGrande.llamadadeclan.Left = x * 32 + (srcY / 4.5)
 
     frmMapaGrande.llamadadeclan.Visible = True
 
-    frmmain.LlamaDeclan.Enabled = True
+    frmMain.LlamaDeclan.Enabled = True
 
     frmMapaGrande.Shape2.Visible = True
 
-    frmMapaGrande.Shape2.Top = Y * 32
-    frmMapaGrande.Shape2.Left = X * 32
+    frmMapaGrande.Shape2.Top = y * 32
+    frmMapaGrande.Shape2.Left = x * 32
 
     LLamadaDeclanX = srcX
     LLamadaDeclanY = srcY
@@ -4427,7 +4428,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -4452,7 +4453,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -4460,11 +4461,11 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
-    Call frmGuildAdm.Show(vbModeless, frmmain)
+    Call frmGuildAdm.Show(vbModeless, frmMain)
     
     Exit Sub
     
@@ -4502,14 +4503,14 @@ Private Sub HandleAreaChanged()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim X As Byte
+    Dim x As Byte
 
-    Dim Y As Byte
+    Dim y As Byte
     
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
         
-    Call CambioDeArea(X, Y)
+    Call CambioDeArea(x, y)
 
 End Sub
 
@@ -4542,8 +4543,8 @@ Private Sub HandleRainToggle()
     
     Call incomingData.ReadByte
     
-    If Not InMapBounds(UserPos.X, UserPos.Y) Then Exit Sub
-    bTecho = (MapData(UserPos.X, UserPos.Y).Trigger = 1 Or MapData(UserPos.X, UserPos.Y).Trigger = 6 Or MapData(UserPos.X, UserPos.Y).Trigger = 2 Or MapData(UserPos.X, UserPos.Y).Trigger = 4)
+    If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
+    bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 4)
             
     If bRain Then
         If MapDat.LLUVIA Then
@@ -4674,36 +4675,37 @@ Private Sub HandleUpdateUserStats()
     UserExp = incomingData.ReadLong()
     
     If UserPasarNivel > 0 Then
-        frmmain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
-        frmmain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmmain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
+        frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmmain.ExpBar.Width = 204
-        frmmain.lblPorcLvl.Caption = "" 'nivel maximo
-        frmmain.exp.Caption = "¡Nivel máximo!"
+        frmMain.EXPBAR.Width = 204
+        frmMain.lblPorcLvl.Caption = "" 'nivel maximo
+        frmMain.exp.Caption = "¡Nivel máximo!"
 
     End If
     
-    frmmain.Hpshp.Width = UserMinHp / UserMaxHp * 216
-    frmmain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
-    frmmain.Hpshp.Visible = (UserMinHp > 0)
+    frmMain.Hpshp.Width = UserMinHp / UserMaxHp * 216
+    frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
+    frmMain.Hpshp.Visible = (UserMinHp > 0)
 
     If UserMaxMAN > 0 Then
-        frmmain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
-        frmmain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
-        frmmain.MANShp.Visible = (UserMinMAN > 0)
+        frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
+        frmMain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
+        frmMain.MANShp.Visible = (UserMinMAN > 0)
+        frmMain.manabar.Visible = True
     Else
-        frmmain.manabar.Visible = False
-        frmmain.MANShp.Width = 0
-        frmmain.MANShp.Visible = False
+        frmMain.manabar.Visible = False
+        frmMain.MANShp.Width = 0
+        frmMain.MANShp.Visible = False
     End If
     
-    frmmain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
-    frmmain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
-    frmmain.STAShp.Visible = (UserMinSTA > 0)
+    frmMain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
+    frmMain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
+    frmMain.STAShp.Visible = (UserMinSTA > 0)
     
-    frmmain.GldLbl.Caption = PonerPuntos(UserGLD)
-    frmmain.lblLvl.Caption = UserLvl
+    frmMain.GldLbl.Caption = PonerPuntos(UserGLD)
+    frmMain.lblLvl.Caption = UserLvl
     
     If UserMinHp = 0 Then
         UserEstado = 1
@@ -4737,8 +4739,8 @@ Private Sub HandleWorkRequestTarget()
     UsingSkillREcibido = incomingData.ReadByte()
 
     If UsingSkillREcibido = 0 Then
-        frmmain.MousePointer = 0
-        Call FormParser.Parse_Form(frmmain, E_NORMAL)
+        frmMain.MousePointer = 0
+        Call FormParser.Parse_Form(frmMain, E_NORMAL)
         UsingSkill = UsingSkillREcibido
         Exit Sub
 
@@ -4747,7 +4749,7 @@ Private Sub HandleWorkRequestTarget()
     If UsingSkillREcibido = UsingSkill Then Exit Sub
    
     UsingSkill = UsingSkillREcibido
-    frmmain.MousePointer = 2
+    frmMain.MousePointer = 2
 
     If ShowMacros = 1 Then
         If OcultarMacrosAlCastear Then
@@ -4760,36 +4762,36 @@ Private Sub HandleWorkRequestTarget()
     Select Case UsingSkill
 
         Case magia
-            Call FormParser.Parse_Form(frmmain, E_CAST)
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
+            Call FormParser.Parse_Form(frmMain, E_CAST)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
 
         Case Robar
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_TRABAJO_ROBAR, 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmmain, E_SHOOT)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_ROBAR, 100, 100, 120, 0, 0)
+            Call FormParser.Parse_Form(frmMain, E_SHOOT)
 
         Case FundirMetal
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_TRABAJO_FUNDIRMETAL, 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmmain, E_SHOOT)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_FUNDIRMETAL, 100, 100, 120, 0, 0)
+            Call FormParser.Parse_Form(frmMain, E_SHOOT)
 
         Case Proyectiles
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_TRABAJO_PROYECTILES, 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmmain, E_ARROW)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_PROYECTILES, 100, 100, 120, 0, 0)
+            Call FormParser.Parse_Form(frmMain, E_ARROW)
 
         Case eSkill.Talar, eSkill.Alquimia, eSkill.Carpinteria, eSkill.Herreria, eSkill.Mineria, eSkill.Pescar
-            Call AddtoRichTextBox(frmmain.RecTxt, "Has click donde deseas trabajar...", 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmmain, E_SHOOT)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Has click donde deseas trabajar...", 100, 100, 120, 0, 0)
+            Call FormParser.Parse_Form(frmMain, E_SHOOT)
 
         Case Grupo
-            Call AddtoRichTextBox(frmmain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmmain, E_SHOOT)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
+            Call FormParser.Parse_Form(frmMain, E_SHOOT)
 
         Case MarcaDeClan
-            Call AddtoRichTextBox(frmmain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmmain, E_SHOOT)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
+            Call FormParser.Parse_Form(frmMain, E_SHOOT)
 
         Case MarcaDeGM
-            Call AddtoRichTextBox(frmmain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmmain, E_SHOOT)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
+            Call FormParser.Parse_Form(frmMain, E_SHOOT)
 
     End Select
 
@@ -4821,7 +4823,7 @@ Private Sub HandleChangeInventorySlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim slot              As Byte
+    Dim Slot              As Byte
     Dim OBJIndex          As Integer
     Dim Name              As String
     Dim Amount            As Integer
@@ -4835,7 +4837,7 @@ Private Sub HandleChangeInventorySlot()
     Dim Value             As Single
     Dim podrausarlo       As Byte
 
-    slot = buffer.ReadByte()
+    Slot = buffer.ReadByte()
     OBJIndex = buffer.ReadInteger()
     Amount = buffer.ReadInteger()
     Equipped = buffer.ReadBoolean()
@@ -4857,56 +4859,56 @@ Private Sub HandleChangeInventorySlot()
         Select Case ObjType
 
             Case eObjType.otWeapon
-                frmmain.lblWeapon = MinHit & "/" & MaxHit
-                UserWeaponEqpSlot = slot
+                frmMain.lblWeapon = MinHit & "/" & MaxHit
+                UserWeaponEqpSlot = Slot
 
             Case eObjType.otNudillos
-                frmmain.lblWeapon = MinHit & "/" & MaxHit
-                UserWeaponEqpSlot = slot
+                frmMain.lblWeapon = MinHit & "/" & MaxHit
+                UserWeaponEqpSlot = Slot
 
             Case eObjType.otArmadura
-                frmmain.lblArmor = MinDef & "/" & MaxDef
-                UserArmourEqpSlot = slot
+                frmMain.lblArmor = MinDef & "/" & MaxDef
+                UserArmourEqpSlot = Slot
 
             Case eObjType.otESCUDO
-                frmmain.lblShielder = MinDef & "/" & MaxDef
-                UserHelmEqpSlot = slot
+                frmMain.lblShielder = MinDef & "/" & MaxDef
+                UserHelmEqpSlot = Slot
 
             Case eObjType.otCASCO
-                frmmain.lblHelm = MinDef & "/" & MaxDef
-                UserShieldEqpSlot = slot
+                frmMain.lblHelm = MinDef & "/" & MaxDef
+                UserShieldEqpSlot = Slot
 
         End Select
         
     Else
 
-        Select Case slot
+        Select Case Slot
 
             Case UserWeaponEqpSlot
-                frmmain.lblWeapon = "0/0"
+                frmMain.lblWeapon = "0/0"
                 UserWeaponEqpSlot = 0
 
             Case UserArmourEqpSlot
-                frmmain.lblArmor = "0/0"
+                frmMain.lblArmor = "0/0"
                 UserArmourEqpSlot = 0
 
             Case UserHelmEqpSlot
-                frmmain.lblShielder = "0/0"
+                frmMain.lblShielder = "0/0"
                 UserHelmEqpSlot = 0
 
             Case UserShieldEqpSlot
-                frmmain.lblHelm = "0/0"
+                frmMain.lblHelm = "0/0"
                 UserShieldEqpSlot = 0
 
         End Select
 
     End If
 
-    Call frmmain.Inventario.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmMain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
-    Call frmComerciar.InvComUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
-    Call frmBancoObj.InvBankUsu.SetItem(slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
     Exit Sub
     
@@ -4939,7 +4941,7 @@ Private Sub HandleInventoryUnlockSlots()
     
     For i = 1 To UserInvUnlocked
     
-        frmmain.imgInvLock(i - 1).Picture = LoadInterface("inventoryunlocked.bmp")
+        frmMain.imgInvLock(i - 1).Picture = LoadInterface("inventoryunlocked.bmp")
     
     Next i
     
@@ -4970,7 +4972,7 @@ Private Sub HandleRefreshAllInventorySlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim slot             As Byte
+    Dim Slot             As Byte
 
     Dim OBJIndex         As Integer
 
@@ -5015,15 +5017,15 @@ Private Sub HandleRefreshAllInventorySlot()
     For i = 1 To 20
     
         slotNum(i) = Right$(slotNum(i), Len(slotNum(i)))
-        slot = ReadField(1, slotNum(i), Asc("@"))
-        Call frmmain.Inventario.SetItem(slot, ReadField(2, slotNum(i), Asc("@")), ReadField(4, slotNum(i), Asc("@")), ReadField(5, slotNum(i), Asc("@")), ReadField(6, slotNum(i), Asc("@")), ReadField(7, slotNum(i), Asc("@")), ReadField(8, slotNum(i), Asc("@")), ReadField(9, slotNum(i), Asc("@")), ReadField(10, slotNum(i), Asc("@")), ReadField(11, slotNum(i), Asc("@")), ReadField(3, slotNum(i), Asc("@")), 0)
+        Slot = ReadField(1, slotNum(i), Asc("@"))
+        Call frmMain.Inventario.SetItem(Slot, ReadField(2, slotNum(i), Asc("@")), ReadField(4, slotNum(i), Asc("@")), ReadField(5, slotNum(i), Asc("@")), ReadField(6, slotNum(i), Asc("@")), ReadField(7, slotNum(i), Asc("@")), ReadField(8, slotNum(i), Asc("@")), ReadField(9, slotNum(i), Asc("@")), ReadField(10, slotNum(i), Asc("@")), ReadField(11, slotNum(i), Asc("@")), ReadField(3, slotNum(i), Asc("@")), 0)
     
-        With frmmain.Inventario
+        With frmMain.Inventario
 
             If frmComerciar.Visible Then
-                Call frmComerciar.InvComUsu.SetItem(slot, .OBJIndex(slot), .Amount(slot), .Equipped(slot), .GrhIndex(slot), .ObjType(slot), .MaxHit(slot), .MinHit(slot), .Def(slot), .Valor(slot), .ItemName(slot), .PuedeUsar(slot))
+                Call frmComerciar.InvComUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
             ElseIf frmBancoObj.Visible Then
-                Call frmBancoObj.InvBankUsu.SetItem(slot, .OBJIndex(slot), .Amount(slot), .Equipped(slot), .GrhIndex(slot), .ObjType(slot), .MaxHit(slot), .MinHit(slot), .Def(slot), .Valor(slot), .ItemName(slot), .PuedeUsar(slot))
+                Call frmBancoObj.InvBankUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
 
             End If
 
@@ -5116,7 +5118,7 @@ Private Sub HandleChangeBankSlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim slot As Byte: slot = buffer.ReadByte()
+    Dim Slot As Byte: Slot = buffer.ReadByte()
     
     Dim BankSlot As Inventory
     
@@ -5133,7 +5135,7 @@ Private Sub HandleChangeBankSlot()
         .Valor = buffer.ReadLong()
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmBancoObj.InvBoveda.SetItem(slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmBancoObj.InvBoveda.SetItem(Slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
 
     End With
     
@@ -5181,32 +5183,32 @@ Private Sub HandleChangeSpellSlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim slot     As Byte
+    Dim Slot     As Byte
 
     Dim Index    As Byte
 
     Dim cooldown As Integer
 
-    slot = buffer.ReadByte()
+    Slot = buffer.ReadByte()
     
-    UserHechizos(slot) = buffer.ReadInteger()
+    UserHechizos(Slot) = buffer.ReadInteger()
     Index = buffer.ReadByte()
 
     If Index < 254 Then
     
-        If slot <= frmmain.hlst.ListCount Then
-            frmmain.hlst.List(slot - 1) = HechizoData(Index).nombre
+        If Slot <= frmMain.hlst.ListCount Then
+            frmMain.hlst.List(Slot - 1) = HechizoData(Index).nombre
         Else
-            Call frmmain.hlst.AddItem(HechizoData(Index).nombre)
+            Call frmMain.hlst.AddItem(HechizoData(Index).nombre)
 
         End If
 
     Else
     
-        If slot <= frmmain.hlst.ListCount Then
-            frmmain.hlst.List(slot - 1) = "(Vacio)"
+        If Slot <= frmMain.hlst.ListCount Then
+            frmMain.hlst.List(Slot - 1) = "(Vacio)"
         Else
-            Call frmmain.hlst.AddItem("(Vacio)")
+            Call frmMain.hlst.AddItem("(Vacio)")
 
         End If
     
@@ -5280,7 +5282,7 @@ Private Sub HandleAtributes()
             frmEstadisticas.Iniciar_Labels
             frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
             HayFormularioAbierto = True
-            frmEstadisticas.Show , frmmain
+            frmEstadisticas.Show , frmMain
         Else
             LlegaronAtrib = True
         End If
@@ -5869,7 +5871,7 @@ Private Sub HandleChangeNPCInventorySlot()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim slot As Byte: slot = buffer.ReadByte()
+    Dim Slot As Byte: Slot = buffer.ReadByte()
     
     Dim SlotInv As NpCinV
     With SlotInv
@@ -5884,7 +5886,7 @@ Private Sub HandleChangeNPCInventorySlot()
         .Def = ObjData(.OBJIndex).MaxDef
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmComerciar.InvComNpc.SetItem(slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmComerciar.InvComNpc.SetItem(Slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
         
     End With
     
@@ -5931,12 +5933,12 @@ Private Sub HandleUpdateHungerAndThirst()
     UserMinAGU = incomingData.ReadByte()
     UserMaxHAM = incomingData.ReadByte()
     UserMinHAM = incomingData.ReadByte()
-    frmmain.AGUAsp.Width = UserMinAGU / UserMaxAGU * 32
-    frmmain.COMIDAsp.Width = UserMinHAM / UserMaxHAM * 32
-    frmmain.AGUbar.Caption = UserMinAGU '& " / " & UserMaxAGU
-    frmmain.hambar.Caption = UserMinHAM ' & " / " & UserMaxHAM
-    frmmain.AGUAsp.Visible = (UserMinAGU > 0)
-    frmmain.COMIDAsp.Visible = (UserMinHAM > 0)
+    frmMain.AGUAsp.Width = UserMinAGU / UserMaxAGU * 32
+    frmMain.COMIDAsp.Width = UserMinHAM / UserMaxHAM * 32
+    frmMain.AGUbar.Caption = UserMinAGU '& " / " & UserMaxAGU
+    frmMain.hambar.Caption = UserMinHAM ' & " / " & UserMaxHAM
+    frmMain.AGUAsp.Visible = (UserMinAGU > 0)
+    frmMain.COMIDAsp.Visible = (UserMinHAM > 0)
 End Sub
 
 Private Sub HandleHora()
@@ -5997,28 +5999,28 @@ Private Sub HandleFYA()
     DrogaCounter = incomingData.ReadInteger()
     
     If DrogaCounter > 0 Then
-        frmmain.Contadores.Enabled = True
+        frmMain.Contadores.Enabled = True
 
     End If
     
     If UserAtributos(eAtributos.Fuerza) >= 35 Then
-        frmmain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
+        frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
     ElseIf UserAtributos(eAtributos.Fuerza) >= 25 Then
-        frmmain.Fuerzalbl.ForeColor = RGB(204, 100, 100)
+        frmMain.Fuerzalbl.ForeColor = RGB(204, 100, 100)
     Else
-        frmmain.Fuerzalbl.ForeColor = vbWhite
+        frmMain.Fuerzalbl.ForeColor = vbWhite
     End If
     
     If UserAtributos(eAtributos.Agilidad) >= 35 Then
-        frmmain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
+        frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
     ElseIf UserAtributos(eAtributos.Agilidad) >= 25 Then
-        frmmain.AgilidadLbl.ForeColor = RGB(204, 100, 100)
+        frmMain.AgilidadLbl.ForeColor = RGB(204, 100, 100)
     Else
-        frmmain.AgilidadLbl.ForeColor = vbWhite
+        frmMain.AgilidadLbl.ForeColor = vbWhite
     End If
 
-    frmmain.Fuerzalbl.Caption = UserAtributos(eAtributos.Fuerza)
-    frmmain.AgilidadLbl.Caption = UserAtributos(eAtributos.Agilidad)
+    frmMain.Fuerzalbl.Caption = UserAtributos(eAtributos.Fuerza)
+    frmMain.AgilidadLbl.Caption = UserAtributos(eAtributos.Agilidad)
 
 End Sub
 
@@ -6093,7 +6095,7 @@ Private Sub HandleContadores()
     
     'Debug.Print ScrollExpCounter
     
-    frmmain.Contadores.Enabled = True
+    frmMain.Contadores.Enabled = True
     
 End Sub
 
@@ -6140,11 +6142,11 @@ Private Sub HandleOxigeno()
     End If
 
     If ms < 1 Then
-        frmmain.oxigenolbl = SS
-        frmmain.oxigenolbl.ForeColor = vbRed
+        frmMain.oxigenolbl = SS
+        frmMain.oxigenolbl.ForeColor = vbRed
     Else
-        frmmain.oxigenolbl = ms
-        frmmain.oxigenolbl.ForeColor = vbWhite
+        frmMain.oxigenolbl = ms
+        frmMain.oxigenolbl.ForeColor = vbWhite
 
     End If
     
@@ -6240,7 +6242,7 @@ Private Sub HandleMiniStats()
         frmEstadisticas.Iniciar_Labels
         frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
         HayFormularioAbierto = True
-        frmEstadisticas.Show , frmmain
+        frmEstadisticas.Show , frmMain
     Else
         LlegaronStats = True
     End If
@@ -6517,7 +6519,7 @@ Private Sub HandleSendSkills()
         frmEstadisticas.Iniciar_Labels
         frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
         HayFormularioAbierto = True
-        frmEstadisticas.Show , frmmain
+        frmEstadisticas.Show , frmMain
     Else
         LlegaronSkills = True
     End If
@@ -6560,7 +6562,7 @@ Private Sub HandleTrainerCreatureList()
         Call frmEntrenador.lstCriaturas.AddItem(creatures(i))
     Next i
 
-    frmEntrenador.Show , frmmain
+    frmEntrenador.Show , frmMain
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -6625,10 +6627,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.GuildsList.Clear
+    Call frmGuildNews.guildslist.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -6660,7 +6662,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -6697,7 +6699,7 @@ Private Sub HandleGuildNews()
     
     End With
     
-    frmGuildNews.Show vbModeless, frmmain
+    frmGuildNews.Show vbModeless, frmMain
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -6796,11 +6798,11 @@ Private Sub HandleAlianceProposalsList()
     guildList = Split(buffer.ReadASCIIString(), SEPARATOR)
     
     For i = 0 To UBound(guildList())
-        Call frmPeaceProp.Lista.AddItem(guildList(i))
+        Call frmPeaceProp.lista.AddItem(guildList(i))
     Next i
     
     frmPeaceProp.ProposalType = TIPO_PROPUESTA.ALIANZA
-    Call frmPeaceProp.Show(vbModeless, frmmain)
+    Call frmPeaceProp.Show(vbModeless, frmMain)
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -6853,11 +6855,11 @@ Private Sub HandlePeaceProposalsList()
     guildList = Split(buffer.ReadASCIIString(), SEPARATOR)
     
     For i = 0 To UBound(guildList())
-        Call frmPeaceProp.Lista.AddItem(guildList(i))
+        Call frmPeaceProp.lista.AddItem(guildList(i))
     Next i
     
     frmPeaceProp.ProposalType = TIPO_PROPUESTA.PAZ
-    Call frmPeaceProp.Show(vbModeless, frmmain)
+    Call frmPeaceProp.Show(vbModeless, frmMain)
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -6967,7 +6969,7 @@ Private Sub HandleCharacterInfo()
         '    .status.ForeColor = vbRed
         '  End If
         
-        Call .Show(vbModeless, frmmain)
+        Call .Show(vbModeless, frmMain)
 
     End With
     
@@ -7024,10 +7026,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -7067,7 +7069,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -7097,7 +7099,7 @@ Private Sub HandleGuildLeaderInfo()
         
         End Select
         
-        .Show , frmmain
+        .Show , frmMain
 
     End With
 
@@ -7167,7 +7169,7 @@ Private Sub HandleGuildDetails()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-    frmGuildBrief.Show vbModeless, frmmain
+    frmGuildBrief.Show vbModeless, frmMain
     
 errhandler:
 
@@ -7197,7 +7199,7 @@ Private Sub HandleShowGuildFundationForm()
     Call incomingData.ReadByte
     
     CreandoClan = True
-    frmGuildDetails.Show , frmmain
+    frmGuildDetails.Show , frmMain
 
 End Sub
 
@@ -7257,7 +7259,7 @@ Private Sub HandleShowUserRequest()
     Call buffer.ReadByte
     
     Call frmUserRequest.recievePeticion(buffer.ReadASCIIString())
-    Call frmUserRequest.Show(vbModeless, frmmain)
+    Call frmUserRequest.Show(vbModeless, frmMain)
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -7373,7 +7375,7 @@ Private Sub HandleSpawnList()
 
     Call frmSpawnList.FillList
 
-    frmSpawnList.Show , frmmain
+    frmSpawnList.Show , frmMain
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -7484,7 +7486,7 @@ Private Sub HandleShowMOTDEditionForm()
     Call buffer.ReadByte
     
     frmCambiaMotd.txtMotd.Text = buffer.ReadASCIIString()
-    frmCambiaMotd.Show , frmmain
+    frmCambiaMotd.Show , frmMain
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -7516,7 +7518,7 @@ Private Sub HandleShowGMPanelForm()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    frmPanelGm.Show vbModeless, frmmain
+    frmPanelGm.Show vbModeless, frmMain
 
 End Sub
 
@@ -7530,7 +7532,7 @@ Private Sub HandleShowFundarClanForm()
     Call incomingData.ReadByte
     
     CreandoClan = True
-    frmGuildDetails.Show vbModeless, frmmain
+    frmGuildDetails.Show vbModeless, frmMain
 
 End Sub
 
@@ -7931,7 +7933,7 @@ End Sub
 ' @param    Y           The y pos where the king is settled.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
+Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 '***************************************************
 'Author: ZaMa
 'Last Modification: 29/10/2010
@@ -7941,8 +7943,8 @@ Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal X As Byte, ByVal
         Call .WriteByte(ClientPacketID.newPacketID)
         Call .WriteByte(NewPacksID.CreatePretorianClan)
         Call .WriteInteger(map)
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
+        Call .WriteByte(x)
+        Call .WriteByte(y)
     End With
 End Sub
 
@@ -8144,7 +8146,7 @@ End Sub
 ' @param    amount Number of items to drop.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteDrop(ByVal slot As Byte, ByVal Amount As Long)
+Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8153,7 +8155,7 @@ Public Sub WriteDrop(ByVal slot As Byte, ByVal Amount As Long)
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.Drop)
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
         Call .WriteLong(Amount)
 
     End With
@@ -8166,7 +8168,7 @@ End Sub
 ' @param    slot Spell List slot where the spell to cast is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCastSpell(ByVal slot As Byte)
+Public Sub WriteCastSpell(ByVal Slot As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8176,7 +8178,7 @@ Public Sub WriteCastSpell(ByVal slot As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.CastSpell)
         
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
 
     End With
 
@@ -8263,7 +8265,7 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteLeftClick(ByVal X As Byte, ByVal Y As Byte)
+Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8273,8 +8275,8 @@ Public Sub WriteLeftClick(ByVal X As Byte, ByVal Y As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.LeftClick)
         
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
+        Call .WriteByte(x)
+        Call .WriteByte(y)
 
     End With
 
@@ -8287,7 +8289,7 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteDoubleClick(ByVal X As Byte, ByVal Y As Byte)
+Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8298,8 +8300,8 @@ Public Sub WriteDoubleClick(ByVal X As Byte, ByVal Y As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.DoubleClick)
         
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
+        Call .WriteByte(x)
+        Call .WriteByte(y)
 
     End With
 
@@ -8353,7 +8355,7 @@ End Sub
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteUseItem(ByVal slot As Byte)
+Public Sub WriteUseItem(ByVal Slot As Byte)
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
@@ -8362,7 +8364,7 @@ Public Sub WriteUseItem(ByVal slot As Byte)
 
     With outgoingData
         Call .WriteByte(ClientPacketID.UseItem)
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
 
     End With
 
@@ -8452,7 +8454,7 @@ End Sub
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteWorkLeftClick(ByVal X As Byte, ByVal Y As Byte, ByVal Skill As eSkill)
+Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill)
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
@@ -8463,8 +8465,8 @@ Public Sub WriteWorkLeftClick(ByVal X As Byte, ByVal Y As Byte, ByVal Skill As e
     With outgoingData
         Call .WriteByte(ClientPacketID.WorkLeftClick)
         
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
+        Call .WriteByte(x)
+        Call .WriteByte(y)
         
         Call .WriteByte(Skill)
 
@@ -8510,7 +8512,7 @@ End Sub
 ' @param    slot Spell List slot where the spell which's info is requested is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteSpellInfo(ByVal slot As Byte)
+Public Sub WriteSpellInfo(ByVal Slot As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8520,7 +8522,7 @@ Public Sub WriteSpellInfo(ByVal slot As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.SpellInfo)
         
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
 
     End With
 
@@ -8532,7 +8534,7 @@ End Sub
 ' @param    slot Invetory slot where the item to equip is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteEquipItem(ByVal slot As Byte)
+Public Sub WriteEquipItem(ByVal Slot As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8542,7 +8544,7 @@ Public Sub WriteEquipItem(ByVal slot As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.EquipItem)
         
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
 
     End With
 
@@ -8625,7 +8627,7 @@ End Sub
 ' @param    amount Number of items to buy.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCommerceBuy(ByVal slot As Byte, ByVal Amount As Integer)
+Public Sub WriteCommerceBuy(ByVal Slot As Byte, ByVal Amount As Integer)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8635,18 +8637,18 @@ Public Sub WriteCommerceBuy(ByVal slot As Byte, ByVal Amount As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.CommerceBuy)
         
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
         Call .WriteInteger(Amount)
 
     End With
 
 End Sub
 
-Public Sub WriteUseKey(ByVal slot As Byte)
+Public Sub WriteUseKey(ByVal Slot As Byte)
 
     With outgoingData
         Call .WriteByte(ClientPacketID.UseKey)
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
     End With
 
 End Sub
@@ -8658,7 +8660,7 @@ End Sub
 ' @param    amount Number of items to extract.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteBankExtractItem(ByVal slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
+Public Sub WriteBankExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8668,7 +8670,7 @@ Public Sub WriteBankExtractItem(ByVal slot As Byte, ByVal Amount As Integer, ByV
     With outgoingData
         Call .WriteByte(ClientPacketID.BankExtractItem)
         
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
         Call .WriteInteger(Amount)
         Call .WriteByte(slotdestino)
         
@@ -8683,7 +8685,7 @@ End Sub
 ' @param    amount Number of items to sell.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCommerceSell(ByVal slot As Byte, ByVal Amount As Integer)
+Public Sub WriteCommerceSell(ByVal Slot As Byte, ByVal Amount As Integer)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8693,7 +8695,7 @@ Public Sub WriteCommerceSell(ByVal slot As Byte, ByVal Amount As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.CommerceSell)
         
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
         Call .WriteInteger(Amount)
 
     End With
@@ -8707,7 +8709,7 @@ End Sub
 ' @param    amount Number of items to deposit.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteBankDeposit(ByVal slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
+Public Sub WriteBankDeposit(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8716,7 +8718,7 @@ Public Sub WriteBankDeposit(ByVal slot As Byte, ByVal Amount As Integer, ByVal s
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.BankDeposit)
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
         Call .WriteInteger(Amount)
         Call .WriteByte(slotdestino)
 
@@ -8755,7 +8757,7 @@ End Sub
 ' @param    slot Spell List slot where the spell which's info is requested is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal slot As Byte)
+Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal Slot As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8766,7 +8768,7 @@ Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal slot As Byte)
         Call .WriteByte(ClientPacketID.MoveSpell)
         
         Call .WriteBoolean(upwards)
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
 
     End With
 
@@ -8805,7 +8807,7 @@ End Sub
 ' @param    amount Number of items to offer.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteUserCommerceOffer(ByVal slot As Byte, ByVal Amount As Long)
+Public Sub WriteUserCommerceOffer(ByVal Slot As Byte, ByVal Amount As Long)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -8815,7 +8817,7 @@ Public Sub WriteUserCommerceOffer(ByVal slot As Byte, ByVal Amount As Long)
     With outgoingData
         Call .WriteByte(ClientPacketID.UserCommerceOffer)
         
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
         Call .WriteLong(Amount)
 
     End With
@@ -10014,7 +10016,7 @@ Public Sub WriteCasamiento(ByVal UserName As String)
 
 End Sub
 
-Public Sub WriteDropItem(ByVal Item As Byte, ByVal X As Byte, ByVal Y As Byte, ByVal DropItem As Integer)
+Public Sub WriteDropItem(ByVal Item As Byte, ByVal x As Byte, ByVal y As Byte, ByVal DropItem As Integer)
     '***************************************************
     'Ladder
     '***************************************************
@@ -10023,8 +10025,8 @@ Public Sub WriteDropItem(ByVal Item As Byte, ByVal X As Byte, ByVal Y As Byte, B
         Call .WriteByte(ClientPacketID.newPacketID)
         Call .WriteByte(NewPacksID.DropItem)
         Call .WriteByte(Item)
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
+        Call .WriteByte(x)
+        Call .WriteByte(y)
         Call .WriteInteger(DropItem)
 
     End With
@@ -10337,7 +10339,7 @@ End Sub
 ' @param    y The y position in the map to which to waro the character.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
+Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -10351,8 +10353,8 @@ Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal X
         
         Call .WriteInteger(map)
         
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
+        Call .WriteByte(x)
+        Call .WriteByte(y)
 
     End With
 
@@ -11332,7 +11334,7 @@ End Sub
 ' @param    y The position in the y axis to which the teleport will lead.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
+Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -11344,8 +11346,8 @@ Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal X As Byte, ByVal Y As
         
         Call .WriteInteger(map)
         
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
+        Call .WriteByte(x)
+        Call .WriteByte(y)
 
     End With
 
@@ -11437,7 +11439,7 @@ End Sub
 ' @param    y       The position in the y axis in which to play the given wave.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
+Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -11451,8 +11453,8 @@ Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal
         
         Call .WriteInteger(map)
         
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
+        Call .WriteByte(x)
+        Call .WriteByte(y)
 
     End With
 
@@ -12940,7 +12942,7 @@ End Sub
 ' @param    slot        The slot to be checked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCheckSlot(ByVal UserName As String, ByVal slot As Byte)
+Public Sub WriteCheckSlot(ByVal UserName As String, ByVal Slot As Byte)
 
     '***************************************************
     'Author: Pablo (ToxicWaste)
@@ -12950,7 +12952,7 @@ Public Sub WriteCheckSlot(ByVal UserName As String, ByVal slot As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.CheckSlot)
         Call .WriteASCIIString(UserName)
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
 
     End With
 
@@ -13034,17 +13036,17 @@ End Sub
 Private Sub SendData(ByRef sdData As String)
     #If UsarWrench = 1 Then
 
-        If Not frmmain.Socket1.IsWritable Then
+        If Not frmMain.Socket1.IsWritable Then
             'Put data back in the bytequeue
             Call outgoingData.WriteASCIIStringFixed(sdData)
             Exit Sub
 
         End If
    
-        If Not frmmain.Socket1.Connected Then Exit Sub
+        If Not frmMain.Socket1.Connected Then Exit Sub
     #Else
 
-        If frmmain.Winsock1.State <> sckConnected Then Exit Sub
+        If frmMain.Winsock1.State <> sckConnected Then Exit Sub
     #End If
  
     #If AntiExternos Then
@@ -13058,9 +13060,9 @@ Private Sub SendData(ByRef sdData As String)
     #End If
  
     #If UsarWrench = 1 Then
-        Call frmmain.Socket1.Write(sdData, Len(sdData))
+        Call frmMain.Socket1.Write(sdData, Len(sdData))
     #Else
-        Call frmmain.Winsock1.SendData(sdData)
+        Call frmMain.Winsock1.SendData(sdData)
     #End If
  
 End Sub
@@ -13368,7 +13370,7 @@ Private Sub HandleUserOnline()
     rdata = buffer.ReadInteger()
     
     usersOnline = rdata
-    frmmain.onlines = "Onlines: " & usersOnline
+    frmMain.onlines = "Onlines: " & usersOnline
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
@@ -13403,9 +13405,9 @@ Private Sub HandleParticleFXToFloor()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim X              As Byte
+    Dim x              As Byte
 
-    Dim Y              As Byte
+    Dim y              As Byte
 
     Dim ParticulaIndex As Byte
 
@@ -13413,8 +13415,8 @@ Private Sub HandleParticleFXToFloor()
 
     Dim Borrar         As Boolean
      
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     ParticulaIndex = incomingData.ReadInteger()
     Time = incomingData.ReadLong()
 
@@ -13429,14 +13431,14 @@ Private Sub HandleParticleFXToFloor()
     End If
 
     If Borrar Then
-        Graficos_Particulas.Particle_Group_Remove (MapData(X, Y).particle_group)
+        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
     Else
 
-        If MapData(X, Y).particle_group = 0 Then
-            MapData(X, Y).particle_group = 0
-            General_Particle_Create ParticulaIndex, X, Y, Time
+        If MapData(x, y).particle_group = 0 Then
+            MapData(x, y).particle_group = 0
+            General_Particle_Create ParticulaIndex, x, y, Time
         Else
-            Call General_Char_Particle_Create(ParticulaIndex, MapData(X, Y).charindex, Time)
+            Call General_Char_Particle_Create(ParticulaIndex, MapData(x, y).charindex, Time)
 
         End If
 
@@ -13460,9 +13462,9 @@ Private Sub HandleLightToFloor()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim X     As Byte
+    Dim x     As Byte
 
-    Dim Y     As Byte
+    Dim y     As Byte
 
     Dim Color As Long
     
@@ -13470,8 +13472,8 @@ Private Sub HandleLightToFloor()
 
     Dim Rango As Byte
      
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     Color = incomingData.ReadLong()
     Rango = incomingData.ReadByte()
     
@@ -13483,17 +13485,17 @@ Private Sub HandleLightToFloor()
 
     If Color = 0 Then
    
-        If MapData(X, Y).luz.Rango > 100 Then
-            LucesRedondas.Delete_Light_To_Map X, Y
+        If MapData(x, y).luz.Rango > 100 Then
+            LucesRedondas.Delete_Light_To_Map x, y
    
             LucesCuadradas.Light_Render_All
             LucesRedondas.LightRenderAll
             Exit Sub
         Else
-            id = LucesCuadradas.Light_Find(X & Y)
+            id = LucesCuadradas.Light_Find(x & y)
             LucesCuadradas.Light_Remove id
-            MapData(X, Y).luz.Color = COLOR_EMPTY
-            MapData(X, Y).luz.Rango = 0
+            MapData(x, y).luz.Color = COLOR_EMPTY
+            MapData(x, y).luz.Rango = 0
             LucesCuadradas.Light_Render_All
             Exit Sub
 
@@ -13501,16 +13503,16 @@ Private Sub HandleLightToFloor()
 
     End If
     
-    MapData(X, Y).luz.Color = color_value
-    MapData(X, Y).luz.Rango = Rango
+    MapData(x, y).luz.Color = color_value
+    MapData(x, y).luz.Rango = Rango
     
     If Rango < 100 Then
-        id = X & Y
-        LucesCuadradas.Light_Create X, Y, color_value, Rango, id
+        id = x & y
+        LucesCuadradas.Light_Create x, y, color_value, Rango, id
         LucesCuadradas.Light_Render_All
     Else
 
-        LucesRedondas.Create_Light_To_Map X, Y, color_value, Rango - 99
+        LucesRedondas.Create_Light_To_Map x, y, color_value, Rango - 99
 
     End If
 
@@ -13637,9 +13639,9 @@ Private Sub HandleParticleFXWithDestinoXY()
 
     Dim fX             As Integer
 
-    Dim X              As Byte
+    Dim x              As Byte
 
-    Dim Y              As Byte
+    Dim y              As Byte
      
     Emisor = incomingData.ReadInteger()
     ParticulaViaje = incomingData.ReadInteger()
@@ -13649,14 +13651,14 @@ Private Sub HandleParticleFXWithDestinoXY()
     wav = incomingData.ReadInteger()
     fX = incomingData.ReadInteger()
     
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     
     ' Debug.Print "RECIBI FX= " & fX
 
     Engine_spell_Particle_Set (ParticulaViaje)
 
-    Call Effect_BeginXY(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), X, Y, ParticulaFinal, Time, Emisor, wav, fX)
+    Call Effect_BeginXY(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), x, y, ParticulaFinal, Time, Emisor, wav, fX)
 
     ' charlist(charindex).Particula = ParticulaIndex
     ' charlist(charindex).ParticulaTime = time
@@ -13770,8 +13772,8 @@ Private Sub HandleNieveToggle()
     
     Call incomingData.ReadByte
     
-    If Not InMapBounds(UserPos.X, UserPos.Y) Then Exit Sub
-    bTecho = (MapData(UserPos.X, UserPos.Y).Trigger = 1 Or MapData(UserPos.X, UserPos.Y).Trigger = 2 Or MapData(UserPos.X, UserPos.Y).Trigger > 9 Or MapData(UserPos.X, UserPos.Y).Trigger = 6 Or MapData(UserPos.X, UserPos.Y).Trigger = 4)
+    If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
+    bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger = 4)
             
     If MapDat.NIEVE Then
         Engine_MeteoParticle_Set (Particula_Nieve)
@@ -13795,7 +13797,7 @@ Private Sub HandleNieblaToggle()
     MaxAlphaNiebla = incomingData.ReadByte()
             
     bNiebla = Not bNiebla
-    frmmain.TimerNiebla.Enabled = True
+    frmMain.TimerNiebla.Enabled = True
   
 End Sub
 
@@ -13849,16 +13851,16 @@ Private Sub HandleBindKeys()
     ChatGlobal = incomingData.ReadByte()
 
     If ChatCombate = 1 Then
-        frmmain.CombateIcon.Picture = LoadInterface("infoapretado.bmp")
+        frmMain.CombateIcon.Picture = LoadInterface("infoapretado.bmp")
     Else
-        frmmain.CombateIcon.Picture = LoadInterface("info.bmp")
+        frmMain.CombateIcon.Picture = LoadInterface("info.bmp")
 
     End If
 
     If ChatGlobal = 1 Then
-        frmmain.globalIcon.Picture = LoadInterface("globalapretado.bmp")
+        frmMain.globalIcon.Picture = LoadInterface("globalapretado.bmp")
     Else
-        frmmain.CombateIcon.Picture = LoadInterface("global.bmp")
+        frmMain.CombateIcon.Picture = LoadInterface("global.bmp")
 
     End If
 
@@ -13971,7 +13973,7 @@ Private Sub HandleLogros()
 
     End If
     
-    FrmLogros.Show , frmmain
+    FrmLogros.Show , frmMain
 
 End Sub
 
@@ -14380,7 +14382,7 @@ Private Sub HandleQuestDetails()
         Call FrmQuests.lstQuests.SetFocus
     Else
         ' frmQuestInfo.txtInfo.Text = tmpStr
-        FrmQuestInfo.Show vbModeless, frmmain
+        FrmQuestInfo.Show vbModeless, frmMain
         FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
         Call FrmQuestInfo.ListView1_Click
         Call FrmQuestInfo.ListView2_Click
@@ -14455,7 +14457,7 @@ Public Sub HandleQuestListSend()
     COLOR_AZUL = RGB(0, 0, 0)
     Call Establecer_Borde(FrmQuests.lstQuests, FrmQuests, COLOR_AZUL, 0, 0)
     FrmQuests.Picture = LoadInterface("ventanadetallemision.bmp")
-    FrmQuests.Show vbModeless, frmmain
+    FrmQuests.Show vbModeless, frmMain
     
     'Pedimos la informaciï¿½n de la primer quest (si la hay)
     If tmpByte Then Call Protocol.WriteQuestDetailsRequest(1)
@@ -14696,7 +14698,7 @@ Public Sub HandleNpcQuestListSend()
     'Determinamos que formulario se muestra, segï¿½n si recibimos la informaciï¿½n y la quest estï¿½ empezada o no.
 
         ' frmQuestInfo.txtInfo.Text = tmpStr
-        FrmQuestInfo.Show vbModeless, frmmain
+        FrmQuestInfo.Show vbModeless, frmMain
         FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
         'Call FrmQuestInfo.ListView1_Click
         'Call FrmQuestInfo.ListView2_Click
@@ -14902,8 +14904,8 @@ Private Sub HandleListaCorreo()
     'Fill the inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
 
-        If frmmain.Inventario.OBJIndex(i) <> 0 Then
-            FrmCorreo.lstInv.AddItem frmmain.Inventario.ItemName(i)
+        If frmMain.Inventario.OBJIndex(i) <> 0 Then
+            FrmCorreo.lstInv.AddItem frmMain.Inventario.ItemName(i)
             
         Else
             FrmCorreo.lstInv.AddItem "Vacio"
@@ -14926,14 +14928,14 @@ Private Sub HandleListaCorreo()
         Call Establecer_Borde(FrmCorreo.lstInv, FrmCorreo, COLOR_AZUL, 0, 0)
 
         HayFormularioAbierto = True
-        FrmCorreo.Show , frmmain
+        FrmCorreo.Show , frmMain
         
     End If
     
     'chat = Buffer.ReadASCIIString()
     'fontIndex = Buffer.ReadByte()
     
-    frmmain.PicCorreo.Visible = False
+    frmMain.PicCorreo.Visible = False
     
     Exit Sub
     
@@ -15032,7 +15034,7 @@ Private Sub HandleDatosGrupo()
     Call Establecer_Borde(FrmGrupo.lstGrupo, FrmGrupo, COLOR_AZUL, 0, 0)
 
     FrmGrupo.Picture = LoadInterface("grupo.bmp")
-    FrmGrupo.Show , frmmain
+    FrmGrupo.Show , frmMain
     HayFormularioAbierto = True
 
 End Sub
@@ -15050,28 +15052,28 @@ Private Sub HandleUbicacion()
     
     Dim miembro As Byte
 
-    Dim X       As Byte
+    Dim x       As Byte
 
-    Dim Y       As Byte
+    Dim y       As Byte
 
     Dim map     As Integer
     
     miembro = incomingData.ReadByte()
     
-    X = incomingData.ReadByte()
+    x = incomingData.ReadByte()
     
-    Y = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     
     map = incomingData.ReadInteger()
     
-    If X = 0 Then
-        frmmain.personaje(miembro).Visible = False
+    If x = 0 Then
+        frmMain.personaje(miembro).Visible = False
     Else
 
         If UserMap = map Then
-            frmmain.personaje(miembro).Visible = True
-            frmmain.personaje(miembro).Left = X - 4
-            frmmain.personaje(miembro).Top = Y - 2
+            frmMain.personaje(miembro).Visible = True
+            frmMain.personaje(miembro).Left = x - 4
+            frmMain.personaje(miembro).Top = y - 2
 
         End If
 
@@ -15130,7 +15132,7 @@ Private Sub HandleViajarForm()
 
     End If
 
-    FrmViajes.Show , frmmain
+    FrmViajes.Show , frmMain
 
 End Sub
 
@@ -15224,7 +15226,7 @@ Private Sub HandleDonadorObjects()
     
     ' establece el borde al listbox
     Call Establecer_Borde(FrmShop.lstArmas, FrmShop, COLOR_AZUL, 1, 1)
-    FrmShop.Show , frmmain
+    FrmShop.Show , frmMain
     HayFormularioAbierto = True
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -15293,7 +15295,7 @@ Private Sub HandleRanking()
     HayFormularioAbierto = True
     
     FrmRanking.Picture = LoadInterface("ranking.bmp")
-    FrmRanking.Show , frmmain
+    FrmRanking.Show , frmMain
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -15330,7 +15332,7 @@ Public Sub WriteCodigo(ByVal Codigo As String)
 
 End Sub
 
-Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal Name As String, ByVal reglas As String)
+Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal Name As String, ByVal reglas As String)
     '***************************************************
     'Author: Pablo Mercavides
     'Last Modification: 16/05/2020
@@ -15353,8 +15355,8 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byt
     
     Call outgoingData.WriteByte(Trabajador)
     Call outgoingData.WriteInteger(map)
-    Call outgoingData.WriteByte(X)
-    Call outgoingData.WriteByte(Y)
+    Call outgoingData.WriteByte(x)
+    Call outgoingData.WriteByte(y)
     Call outgoingData.WriteASCIIString(Name)
     Call outgoingData.WriteASCIIString(reglas)
      
