@@ -22,6 +22,7 @@
 - Reflejo del personaje en agua
 - Nuevo efecto respiración de chars
 - Sombras del personaje
+- Ahora se guarda un Errores.log en 'Mis Documentos'
 - Fix: "Inhabilito Musica, me saca los efectos de sonido, y si inhabilito Efectos, me quita la música"
 - Fix: "Puedo entrar al dungeon newbie siendo nivel 22. Ingresé desde el portal de Banderbill"
 - Fix: Depositar oro min (plata actual, cantidad)
