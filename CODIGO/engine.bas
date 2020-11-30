@@ -173,7 +173,7 @@ On Error GoTo ErrorHandler:
         .EnableAutoDepthStencil = 1
         .AutoDepthStencilFormat = D3DFMT_D24S8
         
-        .hDeviceWindow = frmmain.renderer.hwnd
+        .hDeviceWindow = frmMain.renderer.hwnd
         
     End With
     
@@ -211,8 +211,8 @@ Private Sub Engine_InitExtras()
     With Render_Main_Rect
         .Top = 0
         .Left = 0
-        .Right = frmmain.renderer.ScaleWidth
-        .Bottom = frmmain.renderer.ScaleHeight
+        .Right = frmMain.renderer.ScaleWidth
+        .Bottom = frmMain.renderer.ScaleHeight
     End With
     
     Call Engine_InitColors
@@ -293,7 +293,10 @@ On Error GoTo errhandler:
 
     'Set the render states
     With DirectDevice
+        Call .SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE)
+        
         Call .SetVertexShader(D3DFVF_XYZ Or D3DFVF_DIFFUSE Or D3DFVF_TEX1)
+        
         Call .SetRenderState(D3DRS_LIGHTING, False)
         Call .SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA)
         Call .SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA)
@@ -301,7 +304,6 @@ On Error GoTo errhandler:
         Call .SetRenderState(D3DRS_ZENABLE, True)
         Call .SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID)
         Call .SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE)
-        Call .SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE)
         Call .SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER)
         Call .SetRenderState(D3DRS_ALPHAREF, 0)
     End With
@@ -713,9 +715,9 @@ Public Sub render()
     
     Call ShowNextFrame
 
-    frmmain.ms.Caption = PingRender & "ms"
+    frmMain.ms.Caption = PingRender & "ms"
        
-    If frmmain.Contadores.Enabled Then
+    If frmMain.Contadores.Enabled Then
 
         Dim PosY As Integer
        
@@ -761,11 +763,11 @@ Public Sub render()
             PosY = PosY + 15
 
             If ms < 1 Then
-                frmmain.oxigenolbl = SS
-                frmmain.oxigenolbl.ForeColor = vbRed
+                frmMain.oxigenolbl = SS
+                frmMain.oxigenolbl.ForeColor = vbRed
             Else
-                frmmain.oxigenolbl = ms
-                frmmain.oxigenolbl.ForeColor = vbWhite
+                frmMain.oxigenolbl = ms
+                frmMain.oxigenolbl.ForeColor = vbWhite
 
             End If
 
@@ -1692,7 +1694,7 @@ Public Sub Start()
 
         Call FlushBuffer
 
-        If frmmain.WindowState <> vbMinimized Then
+        If frmMain.WindowState <> vbMinimized Then
             
             Select Case QueRender
 
@@ -1743,7 +1745,7 @@ Public Sub Start()
             Sound.Sound_Render
         Else
             Sleep 60&
-            Call frmmain.Inventario.ReDraw
+            Call frmMain.Inventario.ReDraw
 
         End If
 
@@ -1814,14 +1816,14 @@ End Function
 Public Sub DrawMainInventory()
 
     ' Sólo dibujamos cuando es necesario
-    If Not frmmain.Inventario.NeedsRedraw Then Exit Sub
+    If Not frmMain.Inventario.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
 
     InvRect.Left = 0
     InvRect.Top = 0
-    InvRect.Right = frmmain.picInv.ScaleWidth
-    InvRect.Bottom = frmmain.picInv.ScaleHeight
+    InvRect.Right = frmMain.picInv.ScaleWidth
+    InvRect.Bottom = frmMain.picInv.ScaleHeight
 
     ' Comenzamos la escena
     Call Engine_BeginScene
@@ -1830,13 +1832,13 @@ Public Sub DrawMainInventory()
     'Call Draw_GrhIndex(6, 0, 0)
 
     ' Dibujamos items
-    Call frmmain.Inventario.DrawInventory
+    Call frmMain.Inventario.DrawInventory
     
     ' Dibujamos item arrastrado
-    Call frmmain.Inventario.DrawDraggedItem
+    Call frmMain.Inventario.DrawDraggedItem
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmmain.picInv.hwnd)
+    Call Engine_EndScene(InvRect, frmMain.picInv.hwnd)
 
 End Sub
 
@@ -2834,8 +2836,8 @@ Public Sub RenderPjsCuenta()
 End Sub
 
 Sub EfectoEnPantalla(ByVal Color As Long, ByVal Time As Long)
-    frmmain.Efecto.Interval = Time
-    frmmain.Efecto.Enabled = True
+    frmMain.Efecto.Interval = Time
+    frmMain.Efecto.Enabled = True
     EfectoEnproceso = True
     Call SetGlobalLight(Color)
 
@@ -2922,14 +2924,14 @@ Public Sub Initialize()
     ReDim Effect(1 To 255) As Effect_Type
     
     ' Inicializo inventarios
-    Set frmmain.Inventario = New clsGrapchicalInventory
+    Set frmMain.Inventario = New clsGrapchicalInventory
     Set frmComerciar.InvComUsu = New clsGrapchicalInventory
     Set frmComerciar.InvComNpc = New clsGrapchicalInventory
     Set frmBancoObj.InvBankUsu = New clsGrapchicalInventory
     Set frmBancoObj.InvBoveda = New clsGrapchicalInventory
     Set FrmKeyInv.InvKeys = New clsGrapchicalInventory
     
-    Call frmmain.Inventario.Initialize(frmmain.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True, 9)
+    Call frmMain.Inventario.Initialize(frmMain.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True, 9)
     Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3)
    

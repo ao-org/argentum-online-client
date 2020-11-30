@@ -24,5 +24,6 @@
 - Sombras del personaje
 - Fix: "Inhabilito Musica, me saca los efectos de sonido, y si inhabilito Efectos, me quita la música"
 - Fix: "Puedo entrar al dungeon newbie siendo nivel 22. Ingresé desde el portal de Banderbill"
-- Fix:Depositar oro min (plata actual, cantidad)
+- Fix: Depositar oro min (plata actual, cantidad)
 - Fix: Comercio redondea mal el valor
+- Fix: Si no seleccionas un objeto en carpintería se buguea
