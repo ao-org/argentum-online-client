@@ -924,11 +924,11 @@ End Function
 Sub Main()
     
     On Error GoTo Main_Err
-    
-
-    
 
     Call InitCommonControls
+    
+    ' Me fijo donde esta 'Mis Documentos'
+    CARPETA_LOGS = Application.GetSpecialfolder(CSIDL_DOCUMENTS) & "\Argentum20\"
     
     #If DEBUGGING = 0 Then
     
