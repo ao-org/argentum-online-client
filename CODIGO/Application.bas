@@ -18,7 +18,7 @@ Private Const CSIDL_DESKTOP = &H0 '// The Desktop - virtual folder
 Private Const CSIDL_PROGRAMS = 2 '// Program Files
 Private Const CSIDL_CONTROLS = 3 '// Control Panel - virtual folder
 Private Const CSIDL_PRINTERS = 4 '// Printers - virtual folder
-Private Const CSIDL_DOCUMENTS = 5 '// My Documents
+Public Const CSIDL_DOCUMENTS = 5 '// My Documents
 Private Const CSIDL_FAVORITES = 6 '// Favourites
 Private Const CSIDL_STARTUP = 7 '// Startup Folder
 Private Const CSIDL_RECENT = 8 '// Recent Documents
@@ -46,7 +46,7 @@ Private Type ITEMIDLIST
     mkid As shiEMID
 End Type
 
-Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" (ByVal hwndOwner As Long, ByVal nFolder As Long, pidl As ITEMIDLIST) As Long
+Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" (ByVal hWndOwner As Long, ByVal nFolder As Long, pidl As ITEMIDLIST) As Long
 Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
 Private Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
 
@@ -75,8 +75,6 @@ IsAppActive_Err:
     Resume Next
     
 End Function
-
-Code:
 
 Public Function GetSpecialfolder(CSIDL As Long) As String
     Dim IDL     As ITEMIDLIST
