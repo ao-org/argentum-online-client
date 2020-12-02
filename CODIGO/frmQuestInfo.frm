@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
 Begin VB.Form FrmQuestInfo 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -580,9 +580,18 @@ FrmQuestInfo.ListView1.ListItems.Clear
                 FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
                
                 
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf
+        
                 'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
                 'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
+                
+                
+        
+                  If QuestList(QuestIndex).RequiredQuest <> 0 Then
+                    FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf & "Quest: " & QuestList(QuestList(QuestIndex).RequiredQuest).nombre
+                Else
+                    FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf
+                
+                End If
                
                
 

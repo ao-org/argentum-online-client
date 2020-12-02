@@ -7630,14 +7630,14 @@ Private Sub HandleGuildNews()
 
     cantidad = CStr(UBound(guildList()) + 1)
         
-    Call frmGuildNews.Miembros.Clear
+    Call frmGuildNews.miembros.Clear
         
     For i = 0 To UBound(guildList())
 
         If i = 0 Then
-            Call frmGuildNews.Miembros.AddItem(guildList(i) & "(Lider)")
+            Call frmGuildNews.miembros.AddItem(guildList(i) & "(Lider)")
         Else
-            Call frmGuildNews.Miembros.AddItem(guildList(i))
+            Call frmGuildNews.miembros.AddItem(guildList(i))
 
         End If
 
@@ -8024,7 +8024,7 @@ Private Sub HandleGuildLeaderInfo()
         
         'Get list of guild's members
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
-        .Miembros.Caption = "El clan cuenta con " & CStr(UBound(List()) + 1) & " miembros."
+        .miembros.Caption = "El clan cuenta con " & CStr(UBound(List()) + 1) & " miembros."
         
         'Empty the list
         Call .members.Clear
@@ -8147,7 +8147,7 @@ Private Sub HandleGuildDetails()
         .fundador.Caption = "Fundador:" & buffer.ReadASCIIString()
         .creacion.Caption = "Fecha de creacion:" & buffer.ReadASCIIString()
         .lider.Caption = "Líder:" & buffer.ReadASCIIString()
-        .Miembros.Caption = "Miembros:" & buffer.ReadInteger()
+        .miembros.Caption = "Miembros:" & buffer.ReadInteger()
         
         .lblAlineacion.Caption = "Alineación: " & buffer.ReadASCIIString()
         
@@ -18351,7 +18351,7 @@ Private Sub HandleQuestDetails()
     'Recibe y maneja el paquete QuestDetails del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    If incomingData.length < 13 Then
+    If incomingData.length < 15 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18379,7 +18379,13 @@ Private Sub HandleQuestDetails()
 
     Dim OBJIndex      As Integer
     
+    Dim AmountHave      As Integer
+    
     Dim QuestIndex    As Integer
+    
+    
+    Dim LevelRequerido As Byte
+    Dim QuestRequerida As Integer
     
     FrmQuests.ListView2.ListItems.Clear
     FrmQuests.ListView1.ListItems.Clear
@@ -18400,12 +18406,24 @@ Private Sub HandleQuestDetails()
             FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
            
             'tmpStr = "Mision: " & .ReadASCIIString & vbCrLf
+            
+            
+            
+            
+            
+            LevelRequerido = .ReadByte
+            QuestRequerida = .ReadInteger
            
-            FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & .ReadByte & vbCrLf
-            'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
-            'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
-           
-            tmpStr = tmpStr & vbCrLf & "OBJETIVOS" & vbCrLf
+            If QuestRequerida <> 0 Then
+                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
+            Else
+            
+                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
+            
+            
+            End If
+            
+
            
             tmpByte = .ReadByte
 
@@ -18449,9 +18467,11 @@ Private Sub HandleQuestDetails()
                
                     cantidadobj = .ReadInteger
                     OBJIndex = .ReadInteger
+                    
+                    AmountHave = .ReadInteger
                    
                     Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(OBJIndex).Name)
-                    subelemento.SubItems(1) = cantidadobj
+                    subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
                     subelemento.SubItems(2) = OBJIndex
                     subelemento.SubItems(3) = 1
                 Next i
@@ -18510,9 +18530,14 @@ Private Sub HandleQuestDetails()
         
             FrmQuests.titulo.Caption = QuestList(QuestIndex).nombre
            
-            'tmpStr = "Mision: " & .ReadASCIIString & vbCrLf
+            LevelRequerido = .ReadByte
+            QuestRequerida = .ReadInteger
            
-            FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & .ReadByte & vbCrLf
+            FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
+            If QuestRequerida <> 0 Then
+                 FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & "Quest: " & QuestList(QuestRequerida).nombre
+            End If
+            
             'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
             'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
            
@@ -18539,7 +18564,7 @@ Private Sub HandleQuestDetails()
                     If cantok = 0 Then
                         subelemento.SubItems(1) = "OK"
                     Else
-                        subelemento.SubItems(1) = cantok
+                        subelemento.SubItems(1) = matados & "/" & cantidadnpc
 
                     End If
                         
@@ -18559,9 +18584,11 @@ Private Sub HandleQuestDetails()
                
                     cantidadobj = .ReadInteger
                     OBJIndex = .ReadInteger
+                    
+                    AmountHave = .ReadInteger
                    
                     Set subelemento = FrmQuests.ListView1.ListItems.Add(, , ObjData(OBJIndex).Name)
-                    subelemento.SubItems(1) = cantidadobj
+                    subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
                     subelemento.SubItems(2) = OBJIndex
                     subelemento.SubItems(3) = 1
                 Next i
@@ -18760,6 +18787,10 @@ Public Sub HandleNpcQuestListSend()
     Dim estado    As Byte
     
     
+    Dim LevelRequerido As Byte
+    Dim QuestRequerida As Integer
+    
+    
     Dim CantidadQuest As Byte
     Dim subelemento As ListItem
     
@@ -18784,6 +18815,8 @@ Public Sub HandleNpcQuestListSend()
                 'tmpStr = "Mision: " & .ReadASCIIString & vbCrLf
                
                 QuestList(QuestIndex).RequiredLevel = .ReadByte
+                
+                QuestList(QuestIndex).RequiredQuest = .ReadInteger
                 
                ' FrmQuestInfo.Text1 = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf
                 'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf

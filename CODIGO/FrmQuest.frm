@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
 Begin VB.Form FrmQuests 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -132,13 +132,13 @@ Begin VB.Form FrmQuests
       NumItems        =   4
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Criatura"
-         Object.Width           =   2859
+         Object.Width           =   2506
       EndProperty
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
          SubItemIndex    =   1
          Text            =   "Cantidad"
-         Object.Width           =   848
+         Object.Width           =   1201
       EndProperty
       BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
