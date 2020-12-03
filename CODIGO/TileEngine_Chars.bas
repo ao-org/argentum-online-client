@@ -41,7 +41,6 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .TimerIAct = False
         .dialog = vbNullString
         .dialogExp = vbNullString
-        .dialogEfec = vbNullString
         .dialogOro = vbNullString
         .SubeExp = 0
         .group_index = 0
@@ -113,9 +112,6 @@ End Sub
 Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
     
     On Error GoTo MakeChar_Err
-    
-
-    
 
     'Apuntamos al ultimo Char
     ' Debug.Print charindex
@@ -173,6 +169,8 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
             Call General_Char_Particle_Create(ParticulaFx, charindex, -1)
 
         End If
+        
+        ReDim .dialogEffects(0)
         
         .TimeCreated = FrameTime - RandomNumber(1, 10000)
       
@@ -639,7 +637,41 @@ SetCharacterFx_Err:
     
 End Sub
 
+Public Sub SetCharacterDialogFx(ByVal charindex As Integer, ByVal Text As String, Color As RGBA)
 
+    With charlist(charindex)
+        
+        Dim Index As Integer
+        
+        If UBound(.dialogEffects) > 0 Then
+        
+            For Index = 1 To UBound(.dialogEffects)
+                If .dialogEffects(Index).Text = vbNullString Then
+                    Exit For
+                End If
+            Next
+            
+            If Index > UBound(.dialogEffects) Then
+                ReDim .dialogEffects(1 To UBound(.dialogEffects) + 1)
+            End If
+        
+        Else
+            ReDim .dialogEffects(1)
+            
+            Index = 1
+        End If
+        
+        With .dialogEffects(Index)
+        
+            .Color = Color
+            .Sube = 0
+            .Text = Text
+        
+        End With
+        
+    End With
+    
+End Sub
 
 Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
     

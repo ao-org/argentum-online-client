@@ -942,7 +942,7 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
     Next i
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -1099,7 +1099,7 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
     Next i
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * Alpha)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -1220,7 +1220,7 @@ Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRe
     Call RGBAList(temp_array, text_color.R, text_color.G, text_color.B, text_color.A)
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color.R / 6, text_color.G / 6, text_color.B / 6)
+    Call RGBAList(Sombra, text_color.R / 6, text_color.G / 6, text_color.B / 6, 0.8 * Alpha)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -1325,7 +1325,7 @@ Engine_Text_Render2_Err:
     
 End Sub
 
-Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional ByVal Alpha As Byte = 255)
+Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False)
     
     On Error GoTo Engine_Text_Render_Efect_Err
     
@@ -1341,7 +1341,7 @@ Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As 
     f = 0
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * text_color(0).A)
 
     For A = 1 To Len(Texto)
         B = Asc(mid(Texto, A, 1))
@@ -1385,79 +1385,6 @@ Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As 
 
 Engine_Text_Render_Efect_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_Render_Efect", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub Engine_Text_Render_Exp(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As Long, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False)
-    
-    On Error GoTo Engine_Text_Render_Exp_Err
-    
-
-    Dim A, B, c, d, e, f As Integer
-
-    Dim graf As grh
-
-    Dim R, G As Byte
-
-    R = (text_color(0) And 16711680) / 65536
-    G = (text_color(0) And 65280) / 256
-    B = text_color(0) And 255
-
-    Dim Sombra(3) As Long 'Sombra
-
-    Sombra(0) = D3DColorARGB(200, R / 6, G / 6, B / 6)
-    Sombra(1) = Sombra(0)
-    Sombra(2) = Sombra(0)
-    Sombra(3) = Sombra(0)
-
-    If (Len(Texto) = 0) Then Exit Sub
-
-    d = 0
-    e = 0
-    f = 0
-
-    For A = 1 To Len(Texto)
-        B = Asc(mid(Texto, A, 1))
-        graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
-        If B = 32 Or B = 13 Then
-            If e >= 20 Then 'reemplazar por lo que os plazca
-                f = f + 1
-                e = 0
-                d = 0
-            Else
-
-                If B = 32 Then d = d + 4
-
-            End If
-
-        Else
-
-            If graf.GrhIndex > 12 Then
-
-                'mega sombra O-matica
-                graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-      
-                'Call Draw_GrhColor(graf.GrhIndex, (X + d) + 1, Y + 1 + f * 14, text_color())
-                ' Call Draw_GrhColor(graf.GrhIndex, (X + d), Y + f * 14, text_color())
-                
-                ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
-                d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-            End If
-
-        End If
-
-        e = e + 1
-    Next A
-
-    
-    Exit Sub
-
-Engine_Text_Render_Exp_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_Render_Exp", Erl)
     Resume Next
     
 End Sub

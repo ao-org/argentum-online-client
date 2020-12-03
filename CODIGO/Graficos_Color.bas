@@ -87,6 +87,28 @@ RGBA_From_Comp_Err:
     
 End Function
 
+Function RGBA_From_vbColor(ByVal Color As Long) As RGBA
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    
+    On Error GoTo RGBA_From_Long_Err
+
+    Call Long_2_RGBA(RGBA_From_vbColor, Color)
+
+    RGBA_From_vbColor.A = RGBA_From_vbColor.R
+    RGBA_From_vbColor.R = RGBA_From_vbColor.B
+    RGBA_From_vbColor.B = RGBA_From_vbColor.A
+    RGBA_From_vbColor.A = 255
+    
+    Exit Function
+
+RGBA_From_Long_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_From_Long", Erl)
+    Resume Next
+    
+End Function
+
 Sub SetRGBA(Color As RGBA, ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)

@@ -154,6 +154,13 @@ Type ShieldAnimData
 
 End Type
 
+' Dialog effect
+Public Type DialogEffect
+    Text As String
+    Sube As Single
+    Color As RGBA
+End Type
+
 'Apariencia del personaje
 Public Type Char
 
@@ -242,9 +249,7 @@ Public Type Char
     dialog_life As Byte
     dialog_font_index As Integer
     
-    dialogEfec As String
-    SubeEfecto As Single
-    dialog_Efect_color As ARGB
+    dialogEffects() As DialogEffect
     
     dialogExp As String
     SubeExp As Single
