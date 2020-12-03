@@ -546,6 +546,7 @@ Private Enum NewPacksID
     SeguroClan
     CreatePretorianClan     '/CREARPRETORIANOS
     RemovePretorianClan     '/ELIMINARPRETORIANOS
+    Home
     
 End Enum
 
@@ -19846,3 +19847,17 @@ WriteBusquedaTesoro_Err:
     
 End Sub
 
+''
+' Writes the "Home" message to the outgoing data buffer.
+'
+Public Sub WriteHome()
+'***************************************************
+'Author: Budi
+'Last Modification: 01/06/10
+'Writes the "Home" message to the outgoing data buffer
+'***************************************************
+    With outgoingData
+        Call outgoingData.WriteByte(ClientPacketID.newPacketID)
+        Call outgoingData.WriteByte(NewPacksID.Home)
+    End With
+End Sub

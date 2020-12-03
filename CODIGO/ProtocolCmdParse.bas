@@ -1979,7 +1979,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/RELOADSINI"
                 Call WriteReloadServerIni
-                
+            
+            Case "/HOGAR"
+                Call WriteHome
+            
             Case "/RELOADHECHIZOS"
                 Call WriteReloadSpells
                 
