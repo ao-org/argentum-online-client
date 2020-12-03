@@ -1380,7 +1380,7 @@ Engine_MoveScreen_Err:
     
 End Sub
 
-Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
     
     On Error GoTo Char_TextRender_Err
     
@@ -1410,7 +1410,7 @@ Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVa
         'screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
 
         '*** Start Dialogs ***
-        If charlist(MapData(x, y).charindex).dialog <> "" Then
+        If .dialog <> "" Then
 
             'Figure out screen position
             Dim temp_array(3) As RGBA
@@ -1419,73 +1419,54 @@ Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVa
 
             PixelY = PixelOffsetY
             
-            Call Long_2_RGBAList(temp_array, charlist(MapData(x, y).charindex).dialog_color)
+            Call Long_2_RGBAList(temp_array, .dialog_color)
 
-            If charlist(MapData(x, y).charindex).dialog_scroll Then
-                charlist(MapData(x, y).charindex).dialog_offset_counter_y = charlist(MapData(x, y).charindex).dialog_offset_counter_y + (scroll_dialog_pixels_per_frame * timerTicksPerFrame * Sgn(-1))
+            If .dialog_scroll Then
+                .dialog_offset_counter_y = .dialog_offset_counter_y + (scroll_dialog_pixels_per_frame * timerTicksPerFrame * Sgn(-1))
 
-                If Sgn(charlist(MapData(x, y).charindex).dialog_offset_counter_y) = -1 Then
-                    charlist(MapData(x, y).charindex).dialog_offset_counter_y = 0
-                    charlist(MapData(x, y).charindex).dialog_scroll = False
+                If Sgn(.dialog_offset_counter_y) = -1 Then
+                    .dialog_offset_counter_y = 0
+                    .dialog_scroll = False
 
                 End If
 
-                Engine_Text_Render charlist(MapData(x, y).charindex).dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(charlist(MapData(x, y).charindex).dialog, True) / 2), PixelY + charlist(MapData(x, y).charindex).Body.HeadOffset.y - Engine_Text_Height(charlist(MapData(x, y).charindex).dialog, True) + charlist(MapData(x, y).charindex).dialog_offset_counter_y, temp_array, 1, True, MapData(x, y).charindex
+                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True) + .dialog_offset_counter_y, temp_array, 1, True, MapData(x, y).charindex
             Else
-                Engine_Text_Render charlist(MapData(x, y).charindex).dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(charlist(MapData(x, y).charindex).dialog, True) / 2), PixelY + charlist(MapData(x, y).charindex).Body.HeadOffset.y - Engine_Text_Height(charlist(MapData(x, y).charindex).dialog, True), temp_array, 1, True, MapData(x, y).charindex
+                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True), temp_array, 1, True, MapData(x, y).charindex
 
             End If
 
         End If
         
-        If charlist(MapData(x, y).charindex).dialogEfec <> "" Then
+        If UBound(.dialogEffects) > 0 Then
 
-            charlist(MapData(x, y).charindex).SubeEfecto = charlist(MapData(x, y).charindex).SubeEfecto - timerTicksPerFrame
-            charlist(MapData(x, y).charindex).dialog_Efect_color.A = charlist(MapData(x, y).charindex).dialog_Efect_color.A - (timerTicksPerFrame * 8.2)
-
-            If charlist(MapData(x, y).charindex).dialog_Efect_color.A < 0 Then
-                charlist(MapData(x, y).charindex).SubeEfecto = 0
-                charlist(MapData(x, y).charindex).dialogEfec = ""
-            Else
-                Call RGBAList(temp_array, .dialog_Efect_color.R, .dialog_Efect_color.G, .dialog_Efect_color.B, .dialog_Efect_color.A)
-        
-                Engine_Text_Render_Efect MapData(x, y).charindex, .dialogEfec, PixelOffsetX + 14 - Engine_Text_Width(.dialogEfec, True) / 2, PixelOffsetY - 100 + .Body.HeadOffset.y - Engine_Text_Height(.dialogEfec, True) + .SubeEfecto, temp_array, 1, True, max(CDbl(charlist(MapData(x, y).charindex).dialog_Efect_color.A), 0)
-
-            End If
-
-        End If
+            For i = 1 To UBound(.dialogEffects)
             
-        ' If charlist(MapData(X, Y).charindex).dialogExp <> "" Then
+                With .dialogEffects(i)
+                
+                    If Len(.Text) <> 0 Then
+                        .Sube = .Sube + timerTicksPerFrame
     
-        '  charlist(MapData(X, Y).charindex).SubeExp = charlist(MapData(X, Y).charindex).SubeExp + (5 * timerTicksPerFrame * Sgn(-1))
-        ' If charlist(MapData(X, Y).charindex).SubeExp <= 5 Then
-        '   charlist(MapData(X, Y).charindex).SubeExp = 0
-        '  charlist(MapData(X, Y).charindex).dialogExp = ""
-        'End If
+                        If .Sube > 35 Then
+                            .Text = vbNullString
+                        Else
+                            If .Sube > 10 Then
+                                Call RGBAList(temp_array, .Color.R, .Color.G, .Color.B, .Color.A * (1.4 - 0.04 * .Sube))
+                            Else
+                                Call RGBAList(temp_array, .Color.R, .Color.G, .Color.B, .Color.A)
+                            End If
                     
-        'temp_array(0) = D3DColorARGB(charlist(MapData(X, Y).charindex).SubeExp, 42, 169, 222)
-        ' temp_array(1) = temp_array(0)
-        ' temp_array(2) = temp_array(0)
-        ' temp_array(3) = temp_array(0)
-        'Engine_Text_Render_Exp MapData(X, Y).charindex, .dialogExp, PixelOffsetX + 14 - Engine_Text_Width(.dialogExp, True) / 2, PixelOffsetY + 14 + .Body.HeadOffset.Y - Engine_Text_Height(.dialogExp, True), temp_array, 1, True
-        ' End If
+                            Engine_Text_Render_Efect charindex, .Text, PixelOffsetX + 14 - Engine_Text_Width(.Text, True) / 2, PixelOffsetY + charlist(charindex).Body.HeadOffset.y - Engine_Text_Height(.Text, True) - .Sube, temp_array, 1, True
             
-        'If charlist(MapData(X, Y).charindex).dialogOro <> "" Then
+                        End If
+                    End If
+                    
+                End With
+                
+            Next
 
-        '  charlist(MapData(X, Y).charindex).SubeOro = charlist(MapData(X, Y).charindex).SubeOro + (5 * timerTicksPerFrame * Sgn(-1))
-                
-        'If charlist(MapData(X, Y).charindex).SubeOro <= 5 Then
-        '    charlist(MapData(X, Y).charindex).SubeOro = 0
-        '    charlist(MapData(X, Y).charindex).dialogOro = ""
-        'End If
-                
-        ' temp_array(0) = D3DColorARGB(charlist(MapData(X, Y).charindex).SubeOro, 255, 255, 115)
-        ' temp_array(1) = temp_array(0)
-        ' temp_array(2) = temp_array(0)
-        ' temp_array(3) = temp_array(0)
-        ' Engine_Text_Render_Exp MapData(X, Y).charindex, .dialogOro, PixelOffsetX + 14 - Engine_Text_Width(.dialogOro, True) / 2, PixelOffsetY + 1 + .Body.HeadOffset.Y - Engine_Text_Height(.dialogOro, True), temp_array, 1, True
-                
-        '  End If
+        End If
+            
         '*** End Dialogs ***
     End With
 
@@ -1648,7 +1629,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
 
                     If .simbolo <> 0 Then
-                        Call Draw_GrhIndex(5257 + .simbolo, PixelOffsetX + 6, PixelOffsetY + .Body.HeadOffset.y - 12 - 10 * Sin((FrameTime Mod 31415) * 0.003) ^ 2)
+                        Call Draw_GrhIndex(5257 + .simbolo, PixelOffsetX + 6, PixelOffsetY + .Body.HeadOffset.y - 12 - 10 * Sin((FrameTime Mod 31415) * 0.002) ^ 2)
                     End If
                     
                 Else

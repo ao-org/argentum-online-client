@@ -501,11 +501,39 @@ Begin VB.Form frmMain
       Left            =   5880
       Top             =   2400
    End
+   Begin RichTextLib.RichTextBox RecTxt 
+      Height          =   1230
+      Left            =   240
+      TabIndex        =   7
+      TabStop         =   0   'False
+      ToolTipText     =   "Mensajes del servidor"
+      Top             =   495
+      Width           =   9180
+      _ExtentX        =   16193
+      _ExtentY        =   2170
+      _Version        =   393217
+      BackColor       =   0
+      BorderStyle     =   0
+      HideSelection   =   0   'False
+      ReadOnly        =   -1  'True
+      ScrollBars      =   2
+      DisableNoScroll =   -1  'True
+      Appearance      =   0
+      TextRTF         =   $"frmMain.frx":411CE
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+   End
    Begin VB.PictureBox renderer 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
-      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -524,36 +552,6 @@ Begin VB.Form frmMain
       TabIndex        =   3
       Top             =   2286
       Width           =   10982
-   End
-   Begin RichTextLib.RichTextBox RecTxt 
-      Height          =   1230
-      Left            =   240
-      TabIndex        =   7
-      TabStop         =   0   'False
-      ToolTipText     =   "Mensajes del servidor"
-      Top             =   495
-      Width           =   9180
-      _ExtentX        =   16193
-      _ExtentY        =   2170
-      _Version        =   393217
-      BackColor       =   0
-      BorderStyle     =   0
-      Enabled         =   -1  'True
-      HideSelection   =   0   'False
-      ReadOnly        =   -1  'True
-      ScrollBars      =   2
-      DisableNoScroll =   -1  'True
-      Appearance      =   0
-      TextRTF         =   $"frmMain.frx":411CE
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
    End
    Begin VB.Image imgOro 
       Height          =   255
@@ -3596,10 +3594,10 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                 Pregunta = False
 
             End If
+            
+            Exit Sub
 
-        End If
-    
-        If x > 417 And x < 439 And y > 233 And y < 250 Then
+        ElseIf x > 417 And x < 439 And y > 233 And y < 250 Then
             If PreguntaLocal Then
 
                 Select Case PreguntaNUM
@@ -3616,6 +3614,8 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                 Pregunta = False
 
             End If
+            
+            Exit Sub
 
         End If
 
