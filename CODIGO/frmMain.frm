@@ -514,6 +514,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4117,7 +4118,7 @@ Private Sub cmdLanzar_Click()
     On Error GoTo cmdLanzar_Click_Err
     
 
-    If hlst.List(hlst.ListIndex) <> "(Vacio)" And MainTimer.Check(TimersIndex.CastSpell, False) Then
+    If hlst.List(hlst.ListIndex) <> "(Vacio)" Then
         If UserEstado = 1 Then
 
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -4192,10 +4193,7 @@ Public Sub Form_Click()
                                 Call MainTimer.Restart(TimersIndex.CastAttack)
                             Else
 
-                                With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                    Call ShowConsoleMsg("¡No puedes lanzar hechizos tan rápido!", .red, .green, .blue, .bold, .italic)
-
-                                End With
+                                Exit Sub
 
                             End If
 
