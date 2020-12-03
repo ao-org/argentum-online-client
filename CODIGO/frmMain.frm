@@ -514,7 +514,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1429,6 +1428,8 @@ Private Sub btnInvisible_Click()
     
     Call ParseUserCommand("/INVISIBLE")
     
+    Me.SetFocus
+    
     Exit Sub
 
 btnInvisible_Click_Err:
@@ -1440,6 +1441,8 @@ End Sub
 Private Sub btnSpawn_Click()
     
     On Error GoTo btnSpawn_Click_Err
+    
+    Me.SetFocus
     
     Call ParseUserCommand("/CC")
     
@@ -1858,6 +1861,9 @@ Private Sub createObj_Click()
         End If
 
     Next i
+    
+    Me.SetFocus
+    
     FrmObjetos.Show , Me
     
     Exit Sub
@@ -2657,6 +2663,8 @@ Private Sub panelGM_Click()
     
     Call WriteSOSShowList
     Call WriteGMPanel
+    
+    Me.SetFocus
     
     Exit Sub
 
