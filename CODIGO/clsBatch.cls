@@ -37,9 +37,9 @@ Private m_Pre_Data_Full() As TYPE_VERTEX
 Private m_Pre_VBuffer_Full As Direct3DVertexBuffer8
 Private m_Pre_IBuffer_Full As Direct3DIndexBuffer8
 
-Private Const WATER_WAVE_SIZE_X = 10
-Private Const WATER_WAVE_SIZE_Y = 8
-Private Const WATER_WAVE_HEIGHT = 6
+Private Const WATER_WAVE_SIZE_X = 4
+Private Const WATER_WAVE_SIZE_Y = 4
+Private Const WATER_WAVE_HEIGHT = 3
 Private Const WATER_WAVE_FACTOR_X = (2 * PI) / (WATER_WAVE_SIZE_X * TilePixelWidth)
 Private Const WATER_WAVE_FACTOR_Y = (2 * PI) / (WATER_WAVE_SIZE_Y * TilePixelHeight)
 Private Const WATER_TILE_FACTOR_X = TilePixelWidth * WATER_WAVE_FACTOR_X
