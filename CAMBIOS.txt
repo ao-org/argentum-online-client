@@ -28,3 +28,6 @@
 - Fix: Depositar oro min (plata actual, cantidad)
 - Fix: Comercio redondea mal el valor
 - Fix: Si no seleccionas un objeto en carpintería se buguea
+- Fix: Transparencias en árboles y textos
+- Ahora se pueden superponer daños encima de chars
+- Intervalo de hechizos ahora se bloquea al soltar
