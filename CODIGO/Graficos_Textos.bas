@@ -1204,12 +1204,9 @@ Engine_Text_RenderGrande_Err:
     
 End Sub
 
-Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRef text_color As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Long = 0)
+Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRef text_color As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Long = 0, Optional ByVal Alpha As Boolean = False)
     
     On Error GoTo Engine_Text_Render2_Err
-    
-
-    
 
     Dim A, B, c, d, e, f As Integer
 
