@@ -38,30 +38,6 @@ IsAppActive_Err:
     
 End Function
 
-Public Function GetSpecialfolder(CSIDL As Long) As String
-    Dim IDL     As ITEMIDLIST
-    Dim sPath   As String
-    Dim iReturn As Long
-    
-    iReturn = SHGetSpecialFolderLocation(100, CSIDL, IDL)
-    
-    If iReturn = NOERROR Then
-        sPath = Space(512)
-        iReturn = SHGetPathFromIDList(ByVal IDL.mkid.cb, ByVal sPath)
-        sPath = RTrim$(sPath)
-
-        If Asc(Right(sPath, 1)) = 0 Then sPath = Left$(sPath, Len(sPath) - 1)
-        
-        GetSpecialfolder = sPath
-        
-        Exit Function
-
-    End If
-
-    GetSpecialfolder = vbNullString
-
-End Function
-
 Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Componente As String, Optional ByVal Linea As Integer)
 '**********************************************************
 'Author: Jopi
