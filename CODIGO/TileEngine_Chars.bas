@@ -317,6 +317,8 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         x = .Pos.x
         y = .Pos.y
         
+        If Not InMapBounds(x, y) Then Exit Sub
+        
         MapData(x, y).charindex = 0
         
         addx = nX - x
@@ -343,6 +345,8 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         End If
         
         MapData(nX, nY).charindex = charindex
+        
+        If nHeading = 0 Then Exit Sub
         
         .Pos.x = nX
         .Pos.y = nY

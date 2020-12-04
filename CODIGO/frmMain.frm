@@ -514,6 +514,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4207,10 +4208,7 @@ Public Sub Form_Click()
 
                         Else
 
-                            With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                Call ShowConsoleMsg("¡No puedes lanzar tan rápido después de un golpe!", .red, .green, .blue, .bold, .italic)
-
-                            End With
+                            Exit Sub
 
                         End If
 

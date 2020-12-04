@@ -23,11 +23,11 @@
 - Nuevo efecto respiración de chars
 - Sombras del personaje
 - Ahora se guarda un Errores.log en 'Mis Documentos'
-- Fix: "Inhabilito Musica, me saca los efectos de sonido, y si inhabilito Efectos, me quita la música"
-- Fix: "Puedo entrar al dungeon newbie siendo nivel 22. Ingresé desde el portal de Banderbill"
-- Fix: Depositar oro min (plata actual, cantidad)
-- Fix: Comercio redondea mal el valor
+- Fix: música y efectos invertidos en opciones
+- Fix: Entrar al newbie dungeon siendo nivel alto
+- Fix: Comercio dice valor = 1 pero en realidad vale 0
 - Fix: Si no seleccionas un objeto en carpintería se buguea
 - Fix: Transparencias en árboles y textos
 - Ahora se pueden superponer daños encima de chars
 - Intervalo de hechizos ahora se bloquea al soltar
+- Bloqueo también del intervalo golpe hechizo

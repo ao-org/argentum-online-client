@@ -1217,7 +1217,7 @@ Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRe
     Call RGBAList(temp_array, text_color.R, text_color.G, text_color.B, text_color.A)
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color.R / 6, text_color.G / 6, text_color.B / 6, 0.8 * Alpha)
+    Call RGBAList(Sombra, text_color.R / 6, text_color.G / 6, text_color.B / 6, 0.8 * text_color.A)
 
     If (Len(Texto) = 0) Then Exit Sub
 
