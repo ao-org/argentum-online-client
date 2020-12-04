@@ -22,7 +22,7 @@
 - Reflejo del personaje en agua
 - Nuevo efecto respiración de chars
 - Sombras del personaje
-- Ahora se guarda un Errores.log en 'Mis Documentos'
+- Ahora se guarda un Errores.log en la carpeta del cliente
 - Fix: música y efectos invertidos en opciones
 - Fix: Entrar al newbie dungeon siendo nivel alto
 - Fix: Comercio dice valor = 1 pero en realidad vale 0
@@ -31,3 +31,5 @@
 - Ahora se pueden superponer daños encima de chars
 - Intervalo de hechizos ahora se bloquea al soltar
 - Bloqueo también del intervalo golpe hechizo
+- Habilitado el botón para domar
+- Comandos /quieto, /acompañar y /liberar para mascotas
