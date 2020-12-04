@@ -602,15 +602,10 @@ Public Sub ScreenCapture()
     On Error GoTo Err:
 
     Dim hwnd As Long
-
     Dim File As String
-
     Dim sI   As String
-
     Dim c    As New cDIBSection
-
     Dim i    As Long
-
     Dim hdcc As Long
     
     hdcc = GetDC(frmMain.hwnd)
@@ -625,7 +620,13 @@ Public Sub ScreenCapture()
     
     hdcc = INVALID_HANDLE
     
-    If Not FileExist(App.Path & "\Screenshots\" & UserName & "\", vbDirectory) Then MkDir (App.Path & "\Screenshots\" & UserName & "\")
+    If Not FileExist(App.Path & "\Screenshots\", vbDirectory) Then
+        Call MkDir(App.Path & "\Screenshots\")
+    End If
+    
+    If Not FileExist(App.Path & "\Screenshots\" & UserName & "\", vbDirectory) Then
+        Call MkDir(App.Path & "\Screenshots\" & UserName & "\")
+    End If
     
     File = App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg"
     

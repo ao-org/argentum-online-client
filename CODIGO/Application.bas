@@ -13,44 +13,6 @@ Private Type UltimoError
     ErrorCode As Long
 End Type: Private HistorialError As UltimoError
 
-' Obtener carpetas especiales de Windows
-Private Const CSIDL_DESKTOP = &H0 '// The Desktop - virtual folder
-Private Const CSIDL_PROGRAMS = 2 '// Program Files
-Private Const CSIDL_CONTROLS = 3 '// Control Panel - virtual folder
-Private Const CSIDL_PRINTERS = 4 '// Printers - virtual folder
-Public Const CSIDL_DOCUMENTS = 5 '// My Documents
-Private Const CSIDL_FAVORITES = 6 '// Favourites
-Private Const CSIDL_STARTUP = 7 '// Startup Folder
-Private Const CSIDL_RECENT = 8 '// Recent Documents
-Private Const CSIDL_SENDTO = 9 '// Send To Folder
-Private Const CSIDL_BITBUCKET = 10 '// Recycle Bin - virtual folder
-Private Const CSIDL_STARTMENU = 11 '// Start Menu
-Private Const CSIDL_DESKTOPFOLDER = 16 '// Desktop folder
-Private Const CSIDL_DRIVES = 17 '// My Computer - virtual folder
-Private Const CSIDL_NETWORK = 18 '// Network Neighbourhood - virtual folder
-Private Const CSIDL_NETHOOD = 19 '// NetHood Folder
-Private Const CSIDL_FONTS = 20 '// Fonts folder
-Private Const CSIDL_SHELLNEW = 21 '// ShellNew folder
-
-Private Const MAX_PATH = 260
-Private Const NOERROR = 0
-
-Public CARPETA_LOGS As String
-
-Private Type shiEMID
-    cb As Long
-    abID As Byte
-End Type
-
-Private Type ITEMIDLIST
-    mkid As shiEMID
-End Type
-
-Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" (ByVal hWndOwner As Long, ByVal nFolder As Long, pidl As ITEMIDLIST) As Long
-Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
-Private Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
-
-
 ''
 ' Checks if this is the active (foreground) application or not.
 '
@@ -106,10 +68,10 @@ Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByV
 'Guarda una descripcion detallada del error en Errores.log
 '**********************************************************
     
-    On Error GoTo EH:
+    On Error GoTo CloseIO:
     
     ' Si no existe la carpeta, la creamos.
-    If Not FileExist(CARPETA_LOGS, vbDirectory) Then Call MkDir(CARPETA_LOGS)
+    If Not FileExist(App.Path & "\Logs\", vbDirectory) Then Call MkDir(App.Path & "\Logs\")
     
     'Si lo del parametro Componente es ES IGUAL, al Componente del anterior error...
     If Componente = HistorialError.Componente And _
@@ -133,7 +95,7 @@ Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByV
     'Registramos el error en Errores.log
     Dim File As Integer: File = FreeFile
         
-    Open CARPETA_LOGS & "Errores.log" For Append As #File
+    Open App.Path & "\Logs\Errores.log" For Append As #File
     
         Print #File, "Error: " & Numero
         Print #File, "Descripcion: " & Descripcion
@@ -147,16 +109,11 @@ Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByV
         
         Print #File, vbNullString
         
-    Close #File
-    
-    Debug.Print "Error: " & Numero & vbNewLine & _
-                "Descripcion: " & Descripcion & vbNewLine & _
-                "Componente: " & Componente & vbNewLine & _
-                "Fecha y Hora: " & Date$ & "-" & Time$ & vbNewLine
+    GoTo CloseIO
                 
    Exit Sub
                 
-EH:
+CloseIO:
 
     Close #File
     
