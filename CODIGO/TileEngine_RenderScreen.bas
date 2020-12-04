@@ -271,20 +271,31 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 'Layer 3 **********************************
                 If .Graphic(3).GrhIndex <> 0 Then
                 
-                    If (.Blocked And FLAG_ARBOL) <> 0 Then
-                    
+                
+                    If AgregarSombra(.Graphic(3).GrhIndex) Then
+                        
                         Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
                         
-                        If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 5 And (Abs(UserPos.y) < y) Then
+                    End If
+                
+                    If (.Blocked And FLAG_ARBOL) <> 0 Then
+                    
+                    
                         
-                            Call Copy_RGBAList_WithAlpha(TempColor, .light_value, 150)
-                            Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
-                            
-                        Else
+                        Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
 
-                            Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                            If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 5 And (Abs(UserPos.y) < y) Then
                             
-                        End If
+                                
+                                    Call Copy_RGBAList_WithAlpha(TempColor, .light_value, 150)
+                                    Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
+                               
+                                
+                            Else
+    
+                                Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                                
+                            End If
                         
                     Else
                     

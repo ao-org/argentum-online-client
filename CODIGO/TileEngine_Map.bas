@@ -101,7 +101,6 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
        GrhIndex = 14964 Or GrhIndex = 14967 Or GrhIndex = 14968 Or GrhIndex = 14969 Or GrhIndex = 14970 Or GrhIndex = 14971 Or GrhIndex = 14972 Or _
        GrhIndex = 14973 Or GrhIndex = 14974 Or GrhIndex = 14975 Or GrhIndex = 14976 Or GrhIndex = 14978 Or GrhIndex = 14980 Or GrhIndex = 14982 Or _
        GrhIndex = 14983 Or GrhIndex = 14984 Or GrhIndex = 14985 Or GrhIndex = 14987 Or GrhIndex = 14988 Or GrhIndex = 26078 Or GrhIndex = 26192 Or _
-       GrhIndex = 5624 Or GrhIndex = 5625 Or GrhIndex = 5626 Or GrhIndex = 5627 Or _
        (GrhIndex >= 50985 And GrhIndex <= 50991)
 
     
@@ -109,6 +108,21 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
 
 EsArbol_Err:
     Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.EsArbol", Erl)
+    Resume Next
+    
+End Function
+
+Function AgregarSombra(ByVal GrhIndex As Long) As Boolean
+    
+    On Error GoTo AgregarSombra_Err
+    
+    AgregarSombra = GrhIndex = 5624 Or GrhIndex = 5625 Or GrhIndex = 5626 Or GrhIndex = 5627
+
+    
+    Exit Function
+
+AgregarSombra_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.AgregarSombra", Erl)
     Resume Next
     
 End Function
