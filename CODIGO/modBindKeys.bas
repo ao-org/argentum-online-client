@@ -294,10 +294,10 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(23).KeyCode
             If UserEstado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    'Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
                 End With
             Else
-                'Call WriteWork(eSkill.Domar)
+                Call WriteWork(eSkill.Domar)
             End If
     
         Case Else

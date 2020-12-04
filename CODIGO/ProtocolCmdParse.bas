@@ -136,7 +136,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
-
                     End With
 
                     Exit Sub
@@ -144,6 +143,32 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
 
                 Call WritePetStand
+
+            Case "/ACOMPAÑAR"
+                If UserEstado = 1 Then 'Muerto
+
+                    With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                    End With
+
+                    Exit Sub
+
+                End If
+
+                Call WritePetFollow
+                
+            Case "/LIBERAR"
+                If UserEstado = 1 Then 'Muerto
+
+                    With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                    End With
+
+                    Exit Sub
+
+                End If
+
+                Call WritePetLeave
                                 
             Case "/ENTRENAR"
                 If UserEstado = 1 Then 'Muerto
