@@ -2910,7 +2910,7 @@ Public Sub RenderUICrearPJ()
     Engine_Text_Render ">", 418 + OffsetX, 305 + OffsetY, ColorGray, 1, False
 
     OffsetX = 5
-    OffsetY = 10
+    OffsetY = 5
 
     Engine_Text_Render_LetraChica "Genero ", 340 + OffsetX, 255, COLOR_WHITE, 6, False
     
@@ -2939,14 +2939,14 @@ Public Sub RenderUICrearPJ()
     
     'NACIMIENTO
      Dim Offy As Long
-     Offy = -20
+     Offy = -38
 
      Dim OffX As Long
      OffX = 340
     
     'Atributos
-    Engine_Text_Render_LetraChica "Atributos ", 240 + OffX, 385 + Offy, COLOR_WHITE, 6, True
-    Engine_Draw_Box 175 + OffX, 405 + Offy, 185, 120, RGBA_From_Comp(0, 0, 0, 80)
+    Engine_Text_Render_LetraChica "Atributos ", 235 + OffX, 385 + Offy, COLOR_WHITE, 6, True
+    Engine_Draw_Box 175 + OffX, 405 + Offy, 185, 150, RGBA_From_Comp(0, 0, 0, 80)
   '  Engine_Draw_Box 610, 405, 220, 180, D3DColorARGB(120, 100, 100, 100)
     
     Engine_Text_Render_LetraChica "Fuerza ", 185 + OffX, 410 + Offy, COLOR_WHITE, 1, True
@@ -2984,11 +2984,23 @@ Public Sub RenderUICrearPJ()
     'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
    ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
     Engine_Draw_Box 280 + OffX, 500 + Offy, 20, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 503 + Offy, COLOR_WHITE, 1, True ' Atributo Carisma
+    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 503 + Offy, COLOR_WHITE, 1, True ' Atributo Constitución
     '
    ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
     Engine_Draw_Box 317 + OffX, 500 + Offy, 25, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 503 + Offy, COLOR_WHITE, 1, True ' Bonificacion Carisma
+    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 503 + Offy, COLOR_WHITE, 1, True ' Bonificacion Constitución
+    
+    
+    
+        Engine_Text_Render "Carisma ", 185 + OffX, 530 + Offy, COLOR_WHITE, , True
+    'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
+   ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
+    Engine_Draw_Box 280 + OffX, 530 + Offy, 20, 20, RGBA_From_Comp(1, 1, 1, 100)
+    Engine_Text_Render frmCrearPersonaje.lbCarisma.Caption, 283 + OffX, 533 + Offy, COLOR_WHITE, 1, True ' Atributo Carisma
+    '
+   ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
+    Engine_Draw_Box 317 + OffX, 530 + Offy, 25, 20, RGBA_From_Comp(1, 1, 1, 100)
+    Engine_Text_Render frmCrearPersonaje.modCarisma.Caption, 320 + OffX, 533 + Offy, COLOR_WHITE, 1, True ' Bonificacion Carisma
     
     
       
@@ -3017,11 +3029,11 @@ Public Sub RenderUICrearPJ()
     
     
     OffAspectoX = -5
-    OffAspectoY = -25
+    OffAspectoY = -40
      
      
          
-     Engine_Draw_Box 280 + OffAspectoX, 407 + OffAspectoY, 185, 120, RGBA_From_Comp(0, 0, 0, 80)
+     Engine_Draw_Box 280 + OffAspectoX, 407 + OffAspectoY, 185, 148, RGBA_From_Comp(0, 0, 0, 80)
      
      
      Engine_Text_Render_LetraChica "Aspecto", 345 + OffAspectoX, 385 + OffAspectoY, COLOR_WHITE, 6, False
@@ -3048,18 +3060,9 @@ Public Sub RenderUICrearPJ()
     Engine_Text_Render "<", 335 + OffAspectoX, 412 + OffAspectoY, COLOR_WHITE, 1, True
     Engine_Text_Render ">", 403 + OffAspectoX, 412 + OffAspectoY, COLOR_WHITE, 1, True
         
-    Engine_Text_Render ">", 423 + OffAspectoX, 428 + OffAspectoY, COLOR_WHITE, 3, True
-    Engine_Text_Render "<", 293 + OffAspectoX, 428 + OffAspectoY, COLOR_WHITE, 3, True
-    
-    'If CPEquipado Then
-    '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
-    '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
-    '    Engine_Text_Render_LetraChica "x", 348, 512, DefaultColor, 6, False
-    'Else
-    '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
-    '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
-    'End If
-    
+    Engine_Text_Render ">", 423 + OffAspectoX, 448 + OffAspectoY, COLOR_WHITE, 3, True
+    Engine_Text_Render "<", 293 + OffAspectoX, 448 + OffAspectoY, COLOR_WHITE, 3, True
+        
     
     
     Dim Raza As Byte
@@ -3077,12 +3080,12 @@ Public Sub RenderUICrearPJ()
 
             
             If enanooff > 0 Then
-                Draw_Grh BodyData(CPBodyE).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, COLOR_WHITE
+                Draw_Grh BodyData(CPBodyE).Walk(CPHeading), 689 + OffX, 346 - Offy, 1, 0, COLOR_WHITE
             Else
-                Draw_Grh BodyData(CPBody).Walk(CPHeading), 685 + 15 + OffX, 366 - Offy, 1, 0, COLOR_WHITE
+                Draw_Grh BodyData(CPBody).Walk(CPHeading), 689 + OffX, 346 - Offy, 1, 0, COLOR_WHITE
             End If
             
-            Draw_Grh HeadData(CPHead).Head(CPHeading), 685 + 15 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, COLOR_WHITE
+            Draw_Grh HeadData(CPHead).Head(CPHeading), 690 + OffX, 346 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, COLOR_WHITE
             
             'If CPEquipado Then
             'Draw_Grh CascoAnimData(CPGorro).Head(CPHeading), 700 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, DefaultColor()
@@ -3096,9 +3099,9 @@ Public Sub RenderUICrearPJ()
             Color(1) = Color(0)
             Color(2) = Color(0)
             Color(3) = Color(0)
-            Engine_Text_Render CPName, 372 - Engine_Text_Width(CPName, True) / 2, 495, Color, 1, True
+            Engine_Text_Render CPName, 365 - Engine_Text_Width(CPName, True) / 2, 478, Color, 1, True
     Else
-        Engine_Text_Render "X", 355, 428, COLOR_WHITE, 3, True
+        Engine_Text_Render "X", 360, 428, COLOR_WHITE, 3, True
     End If
     
     
@@ -3122,7 +3125,7 @@ Public Sub RenderUICrearPJ()
 
        
     'Engine_Text_Render "DADO", 670, 390, DefaultColor()
-    Draw_GrhIndex 1123, 660, 365
+    Draw_GrhIndex 1123, 655, 345
 
     
     Exit Sub

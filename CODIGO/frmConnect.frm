@@ -302,8 +302,28 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Case 3
         
         Debug.Print "x: " & x & " y:" & y
+        
+        
+            If x > 282 And x < 322 And y > 428 And y < 468 Then 'Boton heading
+                If CPHeading + 1 >= 5 Then
+                CPHeading = 1
+                Else
+                    CPHeading = CPHeading + 1
+                End If
+            End If
+            
+            
+            
+            If x > 412 And x < 446 And y > 427 And y < 470 Then 'Boton Equipar
+                If CPHeading - 1 <= 0 Then
+                CPHeading = 4
+            Else
+                CPHeading = CPHeading - 1
+                End If
+            End If
+                    
 
-            If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
+            If x > 325 And x < 344 And y > 371 And y < 387 Then 'Boton izquierda cabezas
                 If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
                 If frmCrearPersonaje.Cabeza.ListIndex > 0 Then
                     frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex - 1
@@ -317,7 +337,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
     
-            If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
+            If x > 394 And x < 411 And y > 373 And y < 386 Then 'Boton Derecha cabezas
                 If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
                 If (frmCrearPersonaje.Cabeza.ListIndex + 1) <> frmCrearPersonaje.Cabeza.ListCount Then
                     frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex + 1
@@ -435,6 +455,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
+            
             If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
                 Call Sound.Sound_Play(SND_CLICK)
 
@@ -477,7 +498,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            If x >= 658 And x < 682 + 18 And y >= 365 And y < 385 Then
+            If x >= 652 And x < 677 And y >= 346 And y < 365 Then  'DADO
                 Call Sound.Sound_Play(SND_DICE) ' Este sonido hay que ponerlo en el evento "click" o hacer q suene menos xq rompe oidos sino
                 
                 If frmMain.Socket1.Connected Then
