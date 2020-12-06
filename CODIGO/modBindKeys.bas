@@ -46,6 +46,75 @@ Public BotonElegido     As Integer
 
 Public MacroTipoElegido As Byte
 
+
+Public Sub LoadImpAoInit()
+    
+    On Error GoTo LoadImpAoInit_Err
+    
+
+    Windows_Temp_Dir = General_Get_Temp_Dir
+
+    Dim File As String
+
+    File = App.Path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
+
+    Dim lC As Integer, tmpStr As String
+
+    NUMBINDS = Val(GetVar(File, "INIT", "NUMBINDS"))
+
+    ACCION1 = Val(GetVar(File, "INIT", "ACCION1"))
+    ACCION2 = Val(GetVar(File, "INIT", "ACCION2"))
+    ACCION3 = Val(GetVar(File, "INIT", "ACCION3"))
+
+    ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
+
+    lC = 0
+
+    For lC = 1 To NUMBINDS
+        tmpStr = General_Var_Get(File, "USER", str(lC))
+        BindKeys(lC).KeyCode = Val(General_Field_Read(1, tmpStr, ","))
+        BindKeys(lC).Name = General_Field_Read(2, tmpStr, ",")
+    Next lC
+
+    
+    Exit Sub
+
+LoadImpAoInit_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModLadder.LoadImpAoInit", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub SaveRAOInit()
+    
+    On Error GoTo SaveRAOInit_Err
+    
+
+    Dim lC As Integer, Arch As String
+
+    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
+
+    Call General_Var_Write(Arch, "INIT", "NUMBINDS", Int(NUMBINDS))
+
+    Call General_Var_Write(Arch, "INIT", "ACCION1", ACCION1)
+    Call General_Var_Write(Arch, "INIT", "ACCION2", ACCION2)
+    Call General_Var_Write(Arch, "INIT", "ACCION3", ACCION3)
+
+    For lC = 1 To NUMBINDS
+        Call General_Var_Write(Arch, "User", str(lC), str(BindKeys(lC).KeyCode) & "," & BindKeys(lC).Name)
+    Next lC
+
+    lC = 0
+
+    
+    Exit Sub
+
+SaveRAOInit_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModLadder.SaveRAOInit", Erl)
+    Resume Next
+    
+End Sub
+
 Sub LoadDefaultBinds()
     
     On Error GoTo LoadDefaultBinds_Err
@@ -53,7 +122,7 @@ Sub LoadDefaultBinds()
 
     Dim Arch As String, lC As Integer
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
 
     NUMBINDS = Val(General_Var_Get(Arch, "INIT", "NumBinds"))
     ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
@@ -79,7 +148,7 @@ Sub LoadDefaultBinds2()
 
     Dim Arch As String, lC As Integer
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
 
     NUMBINDS = Val(General_Var_Get(Arch, "INIT", "NumBinds"))
     ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey

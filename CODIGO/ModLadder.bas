@@ -702,7 +702,7 @@ Sub General_Set_Connect()
             
     intro = 1
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
-    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
     frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
@@ -1247,77 +1247,6 @@ ResetearCuentas_Err:
     
 End Sub
 
-Public Sub LoadImpAoInit()
-    
-    On Error GoTo LoadImpAoInit_Err
-    
-
-    Windows_Temp_Dir = General_Get_Temp_Dir
-
-    Dim File As String
-
-    File = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-
-    Dim lC As Integer, tmpStr As String
-
-    ServerIndex = Val(GetVar(File, "INIT", "ServerIndex"))
-
-    NUMBINDS = Val(GetVar(File, "INIT", "NUMBINDS"))
-
-    ACCION1 = Val(GetVar(File, "INIT", "ACCION1"))
-    ACCION2 = Val(GetVar(File, "INIT", "ACCION2"))
-    ACCION3 = Val(GetVar(File, "INIT", "ACCION3"))
-
-    ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
-
-    lC = 0
-
-    For lC = 1 To NUMBINDS
-        tmpStr = General_Var_Get(File, "USER", str(lC))
-        BindKeys(lC).KeyCode = Val(General_Field_Read(1, tmpStr, ","))
-        BindKeys(lC).Name = General_Field_Read(2, tmpStr, ",")
-    Next lC
-
-    
-    Exit Sub
-
-LoadImpAoInit_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.LoadImpAoInit", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub SaveRAOInit()
-    
-    On Error GoTo SaveRAOInit_Err
-    
-
-    Dim lC As Integer, Arch As String
-
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-
-    Call General_Var_Write(Arch, "INIT", "NUMBINDS", Int(NUMBINDS))
-    Call General_Var_Write(Arch, "INIT", "ServerIndex", Int(ServerIndex))
-
-    Call General_Var_Write(Arch, "INIT", "ACCION1", ACCION1)
-    Call General_Var_Write(Arch, "INIT", "ACCION2", ACCION2)
-    Call General_Var_Write(Arch, "INIT", "ACCION3", ACCION3)
-
-    For lC = 1 To NUMBINDS
-        Call General_Var_Write(Arch, "User", str(lC), str(BindKeys(lC).KeyCode) & "," & BindKeys(lC).Name)
-    Next lC
-
-    lC = 0
-
-    
-    Exit Sub
-
-SaveRAOInit_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.SaveRAOInit", Erl)
-    Resume Next
-    
-End Sub
-
 '*****************************************************************
 'modTimer - ImperiumAO - v1.3.0
 '
@@ -1516,6 +1445,9 @@ Sub CargarOpciones()
     MoverVentana = ConfigFile.GetValue("OPCIONES", "MoverVentana")
     FPSFLAG = ConfigFile.GetValue("OPCIONES", "FPSFLAG")
     AlphaMacro = ConfigFile.GetValue("OPCIONES", "AlphaMacro")
+    
+    'Init
+    ServerIndex = Val(ConfigFile.GetValue("INIT", "ServerIndex"))
 
     SensibilidadMouse = ConfigFile.GetValue("OPCIONES", "SensibilidadMouse")
     
@@ -1545,7 +1477,9 @@ Sub GuardarOpciones()
     
 
     Dim Arch As String: Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-
+    
+    Call WriteVar(Arch, "AUDIO", "INIT", Int(ServerIndex))
+    
     Call WriteVar(Arch, "AUDIO", "Musica", Musica)
     Call WriteVar(Arch, "AUDIO", "Fx", fX)
     Call WriteVar(Arch, "AUDIO", "VolMusic", VolMusic)
