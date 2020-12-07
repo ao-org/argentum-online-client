@@ -57,7 +57,7 @@ Public Const MAX_INVENTORY_SLOTS        As Byte = 42
  
 Type TConsola
 
-    T As String
+    t As String
     '   Color As Long
     R As Byte
     G As Byte
@@ -236,15 +236,15 @@ Public EntradaX                    As Byte
 
 Public EntradaY                    As Byte
 
-Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
+Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
 
 Public MouseX                 As Long
 
 Public MouseY                 As Long
 
-Public TX                     As Byte
+Public tX                     As Byte
 
-Public TY                     As Byte
+Public tY                     As Byte
 
 Public UltimaTextura          As Long
 
@@ -414,7 +414,7 @@ Public Const INT_SENTRPU       As Integer = 2000
 
 Public MacroBltIndex           As Integer
 
-Public Const CASPER_HEAD       As Integer = 621
+Public Const CASPER_BODY       As Integer = 830
 
 Public Const NUMATRIBUTES      As Byte = 5
 

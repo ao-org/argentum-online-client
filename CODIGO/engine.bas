@@ -1566,7 +1566,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         PixelOffsetY = PixelOffsetY + .MoveOffsetY
         
         Dim ease As Single
-        ease = EaseBreathing((((FrameTime + .TimeCreated) * 0.25) Mod 1000) * 0.001)
+        ease = EaseBreathing((((FrameTime - .TimeCreated) * 0.25) Mod 1000) * 0.001)
 
         If .Body.Walk(.Heading).GrhIndex Then
 
@@ -1620,7 +1620,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 
             Else
-                Call Copy_RGBAList(Color, MapData(x, y).light_value)
+                If .MUERTO Then
+                    Call Copy_RGBAList_WithAlpha(Color, MapData(x, y).light_value, 100 + 50 * Sin(FrameTime * 0.002))
+                Else
+                    Call Copy_RGBAList(Color, MapData(x, y).light_value)
+                End If
 
                 If .EsNpc Then
                     If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
