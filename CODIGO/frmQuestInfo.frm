@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form FrmQuestInfo 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -465,7 +465,7 @@ Public Sub ListView1_Click()
     
     On Error GoTo ListView1_Click_Err
     
-
+    If ListView1.SelectedItem Is Nothing Then Exit Sub
 
     If ListView1.SelectedItem.SubItems(2) <> "" Then
         If ListView1.SelectedItem.SubItems(3) = 0 Then
@@ -482,7 +482,7 @@ Public Sub ListView1_Click()
         
             x = (PlayerView.ScaleWidth - GrhData(ListView1.SelectedItem.SubItems(2)).pixelWidth) / 2
             y = (PlayerView.ScaleHeight - GrhData(ListView1.SelectedItem.SubItems(2)).pixelHeight) / 2
-            Call Grh_Render_To_HdcSinBorrar(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
+            Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
         
             npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
     
@@ -520,14 +520,14 @@ Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
 
     x = (PlayerView.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) / 2
     y = (PlayerView.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2
-     Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
+     Call Grh_Render_To_Hdc(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
     
 
     If NpcData(MyBody).Head <> 0 Then
         x = (PlayerView.ScaleWidth - GrhData(grhH.GrhIndex).pixelWidth) / 2
         y = (PlayerView.ScaleHeight - GrhData(grhH.GrhIndex).pixelHeight) / 2 + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y
         PlayerView.BackColor = RGB(11, 11, 11)
-        Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
+        Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
 
 
     End If
@@ -548,7 +548,7 @@ Public Sub ListView2_Click()
 
     If ListView2.SelectedItem.SubItems(2) <> "" Then
  
-        Call Grh_Render_To_HdcSinBorrar(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(19, 14, 11))
+        Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(19, 14, 11))
     
     End If
     
@@ -568,16 +568,18 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
     
     On Error GoTo ListViewQuest_ItemClick_Err
     
-If Len(ListViewQuest.SelectedItem.SubItems(2)) <> 0 Then
+    If ListViewQuest.SelectedItem Is Nothing Then Exit Sub
+    
+    If Len(ListViewQuest.SelectedItem.SubItems(2)) <> 0 Then
         
         Dim QuestIndex As Byte
 
-QuestIndex = ListViewQuest.SelectedItem.SubItems(2)
-
-FrmQuestInfo.ListView2.ListItems.Clear
-FrmQuestInfo.ListView1.ListItems.Clear
+        QuestIndex = ListViewQuest.SelectedItem.SubItems(2)
+        
+        FrmQuestInfo.ListView2.ListItems.Clear
+        FrmQuestInfo.ListView1.ListItems.Clear
             
-                FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
+        FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
                
                 
         

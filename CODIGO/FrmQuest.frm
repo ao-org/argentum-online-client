@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form FrmQuests 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -480,7 +480,7 @@ Public Sub ListView1_Click()
             x = (PlayerView.ScaleWidth - GrhData(ListView1.SelectedItem.SubItems(2)).pixelWidth) / 2
             y = (PlayerView.ScaleHeight - GrhData(ListView1.SelectedItem.SubItems(2)).pixelHeight) / 2
             
-            Call Grh_Render_To_HdcSinBorrar(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
+            Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
         
             npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
     
@@ -501,7 +501,6 @@ Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
     
     On Error GoTo DibujarBody_Err
     
-
     Dim grh As grh
 
     grh = BodyData(NpcData(MyBody).Body).Walk(3)
@@ -516,12 +515,12 @@ Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
 
     x = (PlayerView.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) / 2
     y = (PlayerView.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2
-    Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
+    Call Grh_Render_To_Hdc(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
 
     If NpcData(MyBody).Head <> 0 Then
         x = (PlayerView.ScaleWidth - GrhData(grhH.GrhIndex).pixelWidth) / 2
         y = (PlayerView.ScaleHeight - GrhData(grhH.GrhIndex).pixelHeight) / 2 + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y
-        Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
+        Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
 
     End If
 
@@ -543,7 +542,7 @@ Public Sub ListView2_Click()
 
     If ListView2.SelectedItem.SubItems(2) <> "" Then
  
-        Call Grh_Render_To_HdcSinBorrar(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(11, 11, 11))
+        Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(11, 11, 11))
         picture1.Visible = True
         
         objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
