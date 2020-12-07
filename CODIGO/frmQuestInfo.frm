@@ -20,6 +20,7 @@ Begin VB.Form FrmQuestInfo
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -218,13 +219,13 @@ Begin VB.Form FrmQuestInfo
       NumItems        =   3
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Quest"
-         Object.Width           =   2824
+         Object.Width           =   4588
       EndProperty
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
          SubItemIndex    =   1
          Text            =   "estado"
-         Object.Width           =   2117
+         Object.Width           =   0
       EndProperty
       BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
@@ -242,7 +243,6 @@ Begin VB.Form FrmQuestInfo
    Begin VB.Label npclbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "adsdasda"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25

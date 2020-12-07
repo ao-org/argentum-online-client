@@ -22,6 +22,7 @@ Begin VB.Form FrmQuests
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -236,7 +237,6 @@ Begin VB.Form FrmQuests
    Begin VB.Label npclbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "asdadsada"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
