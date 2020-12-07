@@ -1621,7 +1621,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 
             Else
                 If .MUERTO Then
-                    Call Copy_RGBAList_WithAlpha(Color, MapData(x, y).light_value, 100 + 50 * Sin(FrameTime * 0.002))
+                    Call Copy_RGBAList_WithAlpha(Color, MapData(x, y).light_value, 150)
                 Else
                     Call Copy_RGBAList(Color, MapData(x, y).light_value)
                 End If
