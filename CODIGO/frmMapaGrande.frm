@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmMapaGrande 
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
@@ -141,7 +141,6 @@ Begin VB.Form frmMapaGrande
       ForeColor       =   &H80000008&
       Height          =   8910
       Left            =   480
-      Picture         =   "frmMapaGrande.frx":0000
       ScaleHeight     =   594
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   432
@@ -461,12 +460,6 @@ Private Const MAPAS_ANCHO = 16
 
 Private Const MAPAS_ALTO = 22
 
-Private Sub Form_Activate()
-
-    ' SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE Or SWP_SHOWWINDOW Or SWP_NOMOVE Or SWP_NOSIZE
-End Sub
-
-
 Private Sub moverForm()
     
     On Error GoTo moverForm_Err
@@ -512,8 +505,8 @@ Private Sub Form_Load()
     ListView1.BackColor = RGB(7, 7, 7)
     listdrop.BackColor = RGB(7, 7, 7)
     lblMapInfo(0).ForeColor = RGB(235, 164, 14)
-
-    'Call FormParser.Parse_Form(Me)
+    
+    picMap.Picture = LoadInterface("mapa.bmp")
     
     Exit Sub
 
@@ -762,12 +755,12 @@ Private Sub listdrop_Click()
     
 
     'Picture1.Refresh
-    picture1.BackColor = vbBlack
-    picture1.Refresh
+    Picture1.BackColor = vbBlack
+    Picture1.Refresh
 
     'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
     If listdrop.ListItems.count <= 0 Then Exit Sub
-    Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+    Call Grh_Render_To_Hdc(Picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
 
     
     Exit Sub
@@ -786,7 +779,7 @@ Private Sub ListView1_Click()
     
 
     Label8.Caption = ""
-    picture1.Refresh
+    Picture1.Refresh
     
     If ListView1.ListItems.count <= 0 Then Exit Sub
 

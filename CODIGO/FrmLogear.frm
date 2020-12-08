@@ -296,6 +296,8 @@ Private Sub Form_Load()
     'Call CargarLst
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hwnd, 220)
+    
+    'TODO: Me.Picture = LoadInterface("")
 
     Rem Call SetWindowPos(FrmLogear.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE)
     

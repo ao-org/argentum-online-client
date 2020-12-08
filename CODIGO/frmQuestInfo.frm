@@ -10,7 +10,6 @@ Begin VB.Form FrmQuestInfo
    ClientTop       =   0
    ClientWidth     =   12315
    LinkTopic       =   "Form1"
-   Picture         =   "frmQuestInfo.frx":0000
    ScaleHeight     =   6555
    ScaleWidth      =   12315
    ShowInTaskbar   =   0   'False
@@ -136,7 +135,7 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
-      Picture         =   "frmQuestInfo.frx":103D2C
+      Picture         =   "frmQuestInfo.frx":0000
    End
    Begin MSComctlLib.ListView ListView2 
       Height          =   2280
@@ -188,7 +187,7 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
-      Picture         =   "frmQuestInfo.frx":1045FD
+      Picture         =   "frmQuestInfo.frx":08D1
    End
    Begin MSComctlLib.ListView ListViewQuest 
       Height          =   2640
@@ -320,14 +319,14 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Form_Load()
-    'Me.Picture = LoadInterface("mision.bmp")
     
     On Error GoTo Form_Load_Err
     
+    Me.Picture = LoadInterface("ventananuevamision.bmp")
 
-Text1.BackColor = RGB(11, 11, 11)
-PlayerView.BackColor = RGB(11, 11, 11)
-picture1.BackColor = RGB(19, 14, 11)
+    Text1.BackColor = RGB(11, 11, 11)
+    PlayerView.BackColor = RGB(11, 11, 11)
+    picture1.BackColor = RGB(19, 14, 11)
     
     Exit Sub
 

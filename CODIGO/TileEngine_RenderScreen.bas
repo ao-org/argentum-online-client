@@ -283,7 +283,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
                         If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 8 And (Abs(UserPos.y) < y) Then
 
-                            Call Copy_RGBAList_WithAlpha(TempColor, .light_value, 150)
+                            Call Copy_RGBAList_WithAlpha(TempColor, .light_value, 130)
                             Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
 
                         Else
