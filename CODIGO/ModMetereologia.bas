@@ -131,8 +131,12 @@ Public Sub RestaurarLuz()
     
     If UserEstado = 1 Then
         global_light = DeathColor
-    Else
+    
+    ElseIf TimeIndex >= 0 Then
         global_light = DayColors(TimeIndex)
+        
+    Else
+        global_light = COLOR_WHITE(0)
     End If
     light_transition = 1#
     
