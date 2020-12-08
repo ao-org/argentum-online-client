@@ -28,6 +28,7 @@
 - Fix: Comercio dice valor = 1 pero en realidad vale 0
 - Fix: Si no seleccionas un objeto en carpintería se buguea
 - Fix: Transparencias en árboles y textos
+- Fix: Indicador FPS contaba el doble que en realidad había
 - Ahora se pueden superponer daños encima de chars
 - Intervalo de hechizos ahora se bloquea al soltar
 - Bloqueo también del intervalo golpe hechizo
