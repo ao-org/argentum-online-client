@@ -321,6 +321,7 @@ Public Type MapBlock
     
     Trigger As Integer
     CharFantasma As Fantasma
+    ArbolAlphaTimer As Long
 
 End Type
 
@@ -434,6 +435,7 @@ Public bRain                   As Boolean 'está raineando?
 Public bNieve                  As Boolean 'está nevando?
 Public bNiebla                 As Boolean 'Hay niebla?
 Public bTecho                  As Boolean 'hay techo?
+Public LastMove                As Long ' Tiempo de último paso
 
 Public brstTick                As Long
 Private iFrameIndex            As Byte  'Frame actual de la LL
@@ -778,6 +780,8 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
         UserMoving = 1
         
         bTecho = HayTecho(UserPos.x, UserPos.y)
+        
+        LastMove = FrameTime
 
     End If
 

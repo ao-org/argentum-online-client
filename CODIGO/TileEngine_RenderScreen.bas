@@ -47,6 +47,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
     Dim ScreenX             As Integer      ' Keeps track of where to place tile on screen
     Dim ScreenY             As Integer      ' Keeps track of where to place tile on screen
+    
+    Dim DeltaTime                   As Long
 
     Dim TempColor(3)        As RGBA
 
@@ -271,28 +273,48 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 'Layer 3 **********************************
                 If .Graphic(3).GrhIndex <> 0 Then
 
-                    If AgregarSombra(.Graphic(3).GrhIndex) Then
-
-                        Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
-
-                    End If
-
                     If (.Blocked And FLAG_ARBOL) <> 0 Then
 
                         Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
 
+                        ' Debajo del arbol
                         If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 8 And (Abs(UserPos.y) < y) Then
 
-                            Call Copy_RGBAList_WithAlpha(TempColor, .light_value, 130)
+                            If .ArbolAlphaTimer <= 0 Then
+                                .ArbolAlphaTimer = LastMove
+                            End If
+
+                            DeltaTime = FrameTime - .ArbolAlphaTimer
+
+                            Call Copy_RGBAList_WithAlpha(TempColor, .light_value, IIf(DeltaTime > ARBOL_ALPHA_TIME, ARBOL_MIN_ALPHA, 255 - DeltaTime * (255 - ARBOL_MIN_ALPHA) / ARBOL_ALPHA_TIME))
                             Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
 
-                        Else
+                        Else    ' Lejos del arbol
+                            If .ArbolAlphaTimer = 0 Then
+                                Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
 
-                            Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                            Else
+                                If .ArbolAlphaTimer > 0 Then
+                                    .ArbolAlphaTimer = -LastMove
+                                End If
+
+                                DeltaTime = FrameTime + .ArbolAlphaTimer
+
+                                If DeltaTime > ARBOL_ALPHA_TIME Then
+                                    .ArbolAlphaTimer = 0
+                                    Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                                Else
+                                    Call Copy_RGBAList_WithAlpha(TempColor, .light_value, ARBOL_MIN_ALPHA + DeltaTime * (255 - ARBOL_MIN_ALPHA) / ARBOL_ALPHA_TIME)
+                                    Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
+                                End If
+                            End If
 
                         End If
 
                     Else
+                        If AgregarSombra(.Graphic(3).GrhIndex) Then
+                            Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
+                        End If
 
                         Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
 

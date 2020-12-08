@@ -54,6 +54,10 @@ Public Const MAX_NORMAL_INVENTORY_SLOTS As Byte = 24
 
 ' Cantidad de "slots" en el inventario con slots desbloqueados
 Public Const MAX_INVENTORY_SLOTS        As Byte = 42
+
+Public Const ARBOL_ALPHA_TIME           As Long = 300
+
+Public Const ARBOL_MIN_ALPHA            As Byte = 130
  
 Type TConsola
 

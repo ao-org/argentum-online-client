@@ -4151,6 +4151,9 @@ Private Sub HandleUserCharIndexInServer()
     
     'Are we under a roof?
     bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+    
+    LastMove = FrameTime
+    
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
     frmMain.personaje(0).Left = UserPos.x - 5
     frmMain.personaje(0).Top = UserPos.y - 4

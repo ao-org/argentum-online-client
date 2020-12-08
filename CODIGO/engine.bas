@@ -1319,67 +1319,6 @@ Device_Box_Textured_Render_Err:
     
 End Sub
 
-Public Sub Engine_MoveScreen(ByVal nHeading As E_Heading)
-    
-    On Error GoTo Engine_MoveScreen_Err
-    
-
-    '******************************************
-    'Starts the screen moving in a direction
-    '******************************************
-    Dim x  As Integer
-
-    Dim y  As Integer
-
-    Dim tX As Integer
-
-    Dim tY As Integer
-    
-    'Figure out which way to move
-    Select Case nHeading
-
-        Case E_Heading.NORTH
-            y = -1
-        
-        Case E_Heading.EAST
-            x = 1
-        
-        Case E_Heading.south
-            y = 1
-        
-        Case E_Heading.WEST
-            x = -1
-
-    End Select
-    
-    'Fill temp pos
-    tX = UserPos.x + x
-    tY = UserPos.y + y
-    
-    'Check to see if its out of bounds
-    If tX < MinXBorder Or tX > MaxXBorder Or tY < MinYBorder Or tY > MaxYBorder Then
-        Exit Sub
-    Else
-        'Start moving... MainLoop does the rest
-        AddtoUserPos.x = x
-        UserPos.x = tX
-        AddtoUserPos.y = y
-        UserPos.y = tY
-        UserMoving = 1
-        
-        bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
-
-    End If
-
-    
-    Exit Sub
-
-Engine_MoveScreen_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_MoveScreen", Erl)
-    Resume Next
-    
-End Sub
-
 Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
     
     On Error GoTo Char_TextRender_Err
