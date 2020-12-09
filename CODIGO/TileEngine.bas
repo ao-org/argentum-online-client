@@ -942,9 +942,13 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     
     '¿Hay un personaje?
     If MapData(x, y).charindex > 0 Then
-        If Not charlist(MapData(x, y).charindex).MUERTO Then
-            Exit Function
-        End If
+        With charlist(MapData(x, y).charindex)
+
+            If Not (.MUERTO Or (.invisible And .priv > charlist(UserCharIndex).priv)) Then
+                Exit Function
+            End If
+
+        End With
     End If
     
     'Tile Bloqueado?
