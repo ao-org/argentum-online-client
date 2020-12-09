@@ -582,21 +582,6 @@ Form_MouseMove_Err:
     
 End Sub
 
-Private Sub Form_Unload(Cancel As Integer)
-    
-    On Error GoTo Form_Unload_Err
-    
-    UsingSkill = 0
-
-    
-    Exit Sub
-
-Form_Unload_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Form_Unload", Erl)
-    Resume Next
-    
-End Sub
-
 Private Sub List1_Click()
     
     On Error GoTo List1_Click_Err

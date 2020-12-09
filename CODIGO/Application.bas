@@ -52,13 +52,13 @@ Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByV
     'Si lo del parametro Componente es ES IGUAL, al Componente del anterior error...
     If Componente = HistorialError.Componente And _
        Numero = HistorialError.ErrorCode Then
+       
+       'Si ya recibimos error en el mismo componente 10 veces, es bastante probable que estemos en un bucle
+        'x lo que no hace falta registrar el error.
+        If HistorialError.Contador = 10 Then Exit Sub
         
         'Agregamos el error al historial.
         HistorialError.Contador = HistorialError.Contador + 1
-        
-        'Si ya recibimos error en el mismo componente 10 veces, es bastante probable que estemos en un bucle
-        'x lo que no hace falta registrar el error.
-        If HistorialError.Contador = 10 Then Exit Sub
         
     Else 'Si NO es igual, reestablecemos el contador.
 
