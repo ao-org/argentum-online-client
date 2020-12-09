@@ -4305,6 +4305,8 @@ Private Sub HandleCharacterCreate()
     End With
     
     Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
+    
+    Call AjustarVelocidad(charindex)
 
     Call RefreshAllChars
     
@@ -4540,6 +4542,8 @@ Private Sub HandleCharacterChange()
         If .FxIndex > 0 Then
             Call InitGrh(.fX, FxData(.FxIndex).Animacion)
         End If
+        
+        Call AjustarVelocidad(charindex)
 
     End With
     
