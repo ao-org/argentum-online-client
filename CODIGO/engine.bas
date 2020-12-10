@@ -1484,7 +1484,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 .Moving = False
             End If
 
-        Else
+        ElseIf Not .Idle Then
             'Stop animations
             .Body.Walk(.Heading).Started = 0
             

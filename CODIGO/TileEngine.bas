@@ -200,6 +200,7 @@ Public Type Char
     Donador As Byte
     appear As Byte
     simbolo As Byte
+    Idle As Boolean
 
     Head_Aura As String
     Body_Aura As String

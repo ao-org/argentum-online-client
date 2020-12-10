@@ -31,6 +31,8 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .MUERTO = False
         .nombre = vbNullString
         .pie = False
+        .simbolo = 0
+        .Idle = False
         ' .Pos.X = 0
         '.Pos.Y = 0
         
@@ -294,9 +296,6 @@ End Sub
 Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
     
     On Error GoTo Char_Move_by_Pos_Err
-    
-
-    
 
     Dim x        As Integer
 
