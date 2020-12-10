@@ -4300,7 +4300,7 @@ Private Sub HandleCharacterCreate()
 
         End If
 
-        .Muerto = (Body = CASPER_BODY)
+        .Muerto = (Body = CASPER_BODY_IDLE)
         '.AlphaPJ = 255
     
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
@@ -4515,7 +4515,7 @@ Private Sub HandleCharacterChange()
 
         End If
 
-        .Muerto = (.iBody = CASPER_BODY)
+        .Muerto = (.iBody = CASPER_BODY_IDLE)
         
         .Heading = incomingData.ReadByte()
         
