@@ -703,7 +703,7 @@ Sub General_Set_Connect()
     intro = 1
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -1479,7 +1479,7 @@ Sub GuardarOpciones()
 
     Dim Arch As String: Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
     
-    Call WriteVar(Arch, "AUDIO", "INIT", Int(ServerIndex))
+    Call WriteVar(Arch, "INIT", "ServerIndex", Int(ServerIndex))
     
     Call WriteVar(Arch, "AUDIO", "Musica", Musica)
     Call WriteVar(Arch, "AUDIO", "Fx", fX)

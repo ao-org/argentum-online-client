@@ -16,7 +16,7 @@ Begin VB.Form frmSpawnList
    Begin VB.TextBox Filter 
       Height          =   285
       Left            =   840
-      TabIndex        =   3
+      TabIndex        =   0
       Top             =   120
       Width           =   1815
    End
@@ -35,7 +35,7 @@ Begin VB.Form frmSpawnList
       Left            =   120
       MouseIcon       =   "frmSpawnList.frx":0000
       MousePointer    =   99  'Custom
-      TabIndex        =   1
+      TabIndex        =   2
       Top             =   3600
       Width           =   2490
    End
@@ -51,7 +51,7 @@ Begin VB.Form frmSpawnList
       EndProperty
       Height          =   2985
       Left            =   120
-      TabIndex        =   0
+      TabIndex        =   1
       Top             =   480
       Width           =   2490
    End
@@ -69,7 +69,7 @@ Begin VB.Form frmSpawnList
       EndProperty
       Height          =   240
       Left            =   120
-      TabIndex        =   2
+      TabIndex        =   3
       Top             =   120
       Width           =   660
    End
@@ -136,7 +136,6 @@ Private Sub Command2_Click()
     On Error GoTo Command2_Click_Err
     
     Unload Me
-
     
     Exit Sub
 
@@ -171,7 +170,7 @@ Public Sub FillList()
     For i = 1 To UBound(NpcData())
         If NpcData(i).Name <> "Vacio" Then
             If InStr(1, Tilde(NpcData(i).Name), Tilde(Filter.Text)) Then
-                Call lstCriaturas.AddItem(NpcData(i).Name)
+                Call lstCriaturas.AddItem(i & " - " & NpcData(i).Name)
                 lstCriaturas.ItemData(lstCriaturas.NewIndex) = i
             End If
         End If
@@ -183,4 +182,36 @@ FillList_Err:
     Call RegistrarError(Err.number, Err.Description, "frmSpawnList.FillList", Erl)
     Resume Next
     
+End Sub
+
+Private Sub Filter_KeyUp(KeyCode As Integer, Shift As Integer)
+    
+    If KeyCode = vbKeyEscape Then
+    
+        Unload Me
+    
+    ElseIf KeyCode = vbKeyReturn Then
+    
+        lstCriaturas.ListIndex = 0
+        lstCriaturas.SetFocus
+    
+    End If
+    
+End Sub
+
+
+Private Sub lstCriaturas_KeyUp(KeyCode As Integer, Shift As Integer)
+
+    If KeyCode = vbKeyEscape Then
+    
+        Unload Me
+    
+    ElseIf KeyCode = vbKeyReturn Then
+    
+        If lstCriaturas.ListIndex < 0 Then Exit Sub
+
+        Call WriteSpawnCreature(lstCriaturas.ItemData(lstCriaturas.ListIndex))
+    
+    End If
+
 End Sub

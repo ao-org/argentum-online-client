@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form FrmObjetos 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Crear objeto"
@@ -20,32 +20,13 @@ Begin VB.Form FrmObjetos
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   465
-      Left            =   3840
+      Left            =   3960
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
-      TabIndex        =   9
-      Top             =   360
-      Width           =   480
-   End
-   Begin VB.CheckBox Check1 
-      Caption         =   "Nombre Completo"
-      Enabled         =   0   'False
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   255
-      Left            =   240
       TabIndex        =   7
-      Top             =   600
-      Value           =   2  'Grayed
-      Width           =   1575
+      Top             =   120
+      Width           =   480
    End
    Begin VB.TextBox Text2 
       BeginProperty Font 
@@ -59,27 +40,10 @@ Begin VB.Form FrmObjetos
       EndProperty
       Height          =   285
       Left            =   1800
-      TabIndex        =   5
+      TabIndex        =   3
       Text            =   "1"
       Top             =   4440
       Width           =   615
-   End
-   Begin VB.CommandButton Command3 
-      Caption         =   "Buscar"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   615
-      Left            =   2760
-      TabIndex        =   4
-      Top             =   240
-      Width           =   855
    End
    Begin VB.TextBox Text1 
       BeginProperty Font 
@@ -92,8 +56,8 @@ Begin VB.Form FrmObjetos
          Strikethrough   =   0   'False
       EndProperty
       Height          =   350
-      Left            =   240
-      TabIndex        =   3
+      Left            =   1200
+      TabIndex        =   0
       Top             =   240
       Width           =   2415
    End
@@ -109,7 +73,7 @@ Begin VB.Form FrmObjetos
       EndProperty
       Height          =   1710
       Left            =   5760
-      TabIndex        =   2
+      TabIndex        =   5
       Top             =   1080
       Width           =   3090
    End
@@ -128,7 +92,7 @@ Begin VB.Form FrmObjetos
       Left            =   3000
       MouseIcon       =   "FrmObjetos.frx":0000
       MousePointer    =   99  'Custom
-      TabIndex        =   1
+      TabIndex        =   4
       Top             =   4800
       Width           =   1290
    End
@@ -147,18 +111,18 @@ Begin VB.Form FrmObjetos
       Left            =   120
       MouseIcon       =   "FrmObjetos.frx":0152
       MousePointer    =   99  'Custom
-      TabIndex        =   0
+      TabIndex        =   2
       Top             =   4800
       Width           =   2730
    End
    Begin MSComctlLib.ListView ListView1 
-      Height          =   3300
+      Height          =   3540
       Left            =   120
-      TabIndex        =   8
-      Top             =   960
+      TabIndex        =   1
+      Top             =   720
       Width           =   4215
       _ExtentX        =   7435
-      _ExtentY        =   5821
+      _ExtentY        =   6244
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
@@ -188,6 +152,23 @@ Begin VB.Form FrmObjetos
          Text            =   "Indice"
          Object.Width           =   1412
       EndProperty
+   End
+   Begin VB.Label Label2 
+      Caption         =   "Filtrar"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   480
+      TabIndex        =   8
+      Top             =   250
+      Width           =   615
    End
    Begin VB.Label Label1 
       Caption         =   "Cantidad:"
@@ -295,40 +276,6 @@ Buscar_ListView_Err:
     Resume Next
     
 End Sub
-    
-Private Sub Command3_Click()
-    'WyroX: Cambio la lógica del buscar
-    'Call Buscar_ListView(ListView1, Text1)
-    
-    On Error GoTo Command3_Click_Err
-    
-    
-    FrmObjetos.ListView1.ListItems.Clear
-    
-    Dim i As Long
-
-    For i = 1 To NumOBJs
-
-        If InStr(1, Tilde(ObjData(i).Name), Tilde(Text1), vbTextCompare) Then
-
-            Dim subelemento As ListItem
-
-            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
-            
-            subelemento.SubItems(1) = i
-
-        End If
-
-    Next i
-
-    
-    Exit Sub
-
-Command3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Command3_Click", Erl)
-    Resume Next
-    
-End Sub
   
 Private Sub Command1_Click()
     
@@ -402,13 +349,63 @@ ListView1_ItemClick_Err:
     
 End Sub
 
-Private Sub Text1_KeyDown(KeyCode As Integer, Shift As Integer)
+Private Sub ListView1_KeyUp(KeyCode As Integer, Shift As Integer)
+
+    If KeyCode = vbKeyEscape Then
+    
+        Unload Me
+    
+    ElseIf KeyCode = vbKeyReturn Then
+        If Len(ListView1.SelectedItem.SubItems(1)) <> 0 Then
+        
+            If Text2.Text > MAX_INVENTORY_OBJS Then Exit Sub
+            
+            Call WriteCreateItem(ListView1.SelectedItem.SubItems(1), Text2.Text)
+    
+        End If
+    End If
+
+End Sub
+
+Private Sub Text1_Change()
+
+On Error GoTo Handle
+
+    FrmObjetos.ListView1.ListItems.Clear
+    
+    Dim i As Long
+
+    For i = 1 To NumOBJs
+
+        If InStr(1, Tilde(ObjData(i).Name), Tilde(Text1), vbTextCompare) Then
+
+            Dim subelemento As ListItem
+
+            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
+            
+            subelemento.SubItems(1) = i
+
+        End If
+
+    Next i
+    
+    Exit Sub
+
+Handle:
+    Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Text1_Change(Buscar)")
+    Resume Next
+End Sub
+
+Private Sub Text1_KeyUp(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo Text1_KeyDown_Err
+
+    If KeyCode = vbKeyEscape Then
+        Unload Me
     
-
-    If KeyCode = vbKeyReturn Then Command3_Click
-
+    ElseIf KeyCode = vbKeyReturn Then
+        ListView1.SetFocus
+    End If
     
     Exit Sub
 

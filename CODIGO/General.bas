@@ -1334,6 +1334,8 @@ Public Sub CloseClient()
     
     On Error GoTo CloseClient_Err
     
+    Call GuardarOpciones
+    
     Call PrevInstance.ReleaseInstance
     'StopURLDetect
 
