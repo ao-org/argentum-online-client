@@ -235,9 +235,10 @@ Public Type Char
     MoveOffsetX As Single
     MoveOffsetY As Single
     
-    pie As Boolean
-    MUERTO As Boolean
-    invisible As Boolean
+    Pie As Boolean
+    LastStep As Long
+    Muerto As Boolean
+    Invisible As Boolean
     TimeCreated As Long
     priv As Byte
     
@@ -658,7 +659,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
 
         With charlist(charindex)
 
-            If Not .MUERTO And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv Then
+            If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv Then
                 If .Speeding > 1.3 Then
                    
                     Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
@@ -666,9 +667,9 @@ Sub DoPasosFx(ByVal charindex As Integer)
 
                 End If
            
-                .pie = Not .pie
+                .Pie = Not .Pie
 
-                If .pie Then
+                If .Pie Then
                     FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
                     TerrenoDePaso = GetTerrenoDePaso(FileNum)
                     Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
@@ -945,7 +946,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     If MapData(x, y).charindex > 0 Then
         With charlist(MapData(x, y).charindex)
 
-            If Not (.MUERTO Or (.invisible And .priv > charlist(UserCharIndex).priv)) Then
+            If Not (.Muerto Or (.Invisible And .priv > charlist(UserCharIndex).priv)) Then
                 Exit Function
             End If
 

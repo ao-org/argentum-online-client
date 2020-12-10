@@ -514,6 +514,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4899,7 +4900,7 @@ Private Sub Socket1_Disconnect()
         bFogata = False
     
         '  For i = 1 To LastChar + 1
-        '      charlist(i).invisible = False
+        '      charlist(i).Invisible = False
         '      charlist(i).Arma_Aura = 0
         '      charlist(i).Body_Aura = 0
         '      charlist(i).Escudo_Aura = 0

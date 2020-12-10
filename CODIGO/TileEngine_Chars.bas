@@ -13,7 +13,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .Escribiendo = False
         .appear = 0
         .status = 0
-        .invisible = False
+        .Invisible = False
         .Arma_Aura = vbNullString
         .Body_Aura = vbNullString
         .AuraAngle = 0
@@ -28,11 +28,12 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .FxCount = 0
         .CreandoCant = 0
         .Moving = False
-        .MUERTO = False
+        .Muerto = False
         .nombre = vbNullString
-        .pie = False
+        .Pie = False
         .simbolo = 0
         .Idle = False
+        .LastStep = 0
         ' .Pos.X = 0
         '.Pos.Y = 0
         
@@ -259,7 +260,14 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         .scrollDirectionX = addx
         .scrollDirectionY = addy
         
+        .Idle = False
+
         If Not .Moving Then
+
+            If .Muerto Then
+                .Body = BodyData(CASPER_BODY)
+            End If
+
             'Start animations
             If .Body.Walk(.Heading).Started = 0 Then
                 .Body.Walk(.Heading).Started = FrameTime
@@ -357,7 +365,15 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         .scrollDirectionX = Sgn(addx)
         .scrollDirectionY = Sgn(addy)
 
+        .LastStep = FrameTime
+        .Idle = False
+
         If Not .Moving Then
+        
+            If .Muerto Then
+                .Body = BodyData(CASPER_BODY)
+            End If
+        
             'Start animations
             If .Body.Walk(.Heading).Started = 0 Then
                 .Body.Walk(.Heading).Started = FrameTime

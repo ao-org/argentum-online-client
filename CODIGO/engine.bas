@@ -1485,14 +1485,32 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
 
         ElseIf Not .Idle Then
-            'Stop animations
-            .Body.Walk(.Heading).Started = 0
             
-            If Not .MovArmaEscudo Then
-                .Arma.WeaponWalk(.Heading).Started = 0
-                .Escudo.ShieldWalk(.Heading).Started = 0
-            End If
+            If .Muerto Then
+                If charindex <> UserCharIndex Then
+                    ' Si no somos nosotros, esperamos un intervalo
+                    ' antes de poner la animación idle para evitar saltos
+                    If FrameTime - .LastStep > TIME_CASPER_IDLE Then
+                        .Body = BodyData(CASPER_BODY_IDLE)
+                        .Body.Walk(.Heading).Started = FrameTime
+                        .Idle = True
+                    End If
+                    
+                Else
+                    .Body = BodyData(CASPER_BODY_IDLE)
+                    .Body.Walk(.Heading).Started = FrameTime
+                    .Idle = True
+                End If
 
+            Else
+                'Stop animations
+                .Body.Walk(.Heading).Started = 0
+                
+                If Not .MovArmaEscudo Then
+                    .Arma.WeaponWalk(.Heading).Started = 0
+                    .Escudo.ShieldWalk(.Heading).Started = 0
+                End If
+            End If
         End If
 
         PixelOffsetX = PixelOffsetX + .MoveOffsetX
@@ -1506,7 +1524,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             If UserCiego Then
                 MostrarNombre = False
                 
-            ElseIf .invisible Then
+            ElseIf .Invisible Then
                 Dim MostrarInvi As Boolean
                 
                 If charindex = UserCharIndex Then
@@ -1556,7 +1574,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 
             Else
-                If .MUERTO Then
+                If .Muerto Then
                     Call Copy_RGBAList_WithAlpha(Color, MapData(x, y).light_value, 150)
                 Else
                     Call Copy_RGBAList(Color, MapData(x, y).light_value)
@@ -1622,7 +1640,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
                         
                     If .clan_index > 0 Then
-                        If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .MUERTO = 0 Then
+                        If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
                             If .clan_nivel = 5 Then
                                 OffsetYname = 8
                                 OffsetYClan = 6
@@ -1705,7 +1723,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                 EndComposedTexture
 
-                If Not .invisible Then
+                If Not .Invisible Then
                     ' Reflejo
                     PresentComposedTexture PixelOffsetX, PixelOffsetY, Color, 0, , True
 
@@ -1799,7 +1817,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
         End If
                         
-        If .Escribiendo = True And Not .invisible Then
+        If .Escribiendo = True And Not .Invisible Then
 
             Dim TempGrh As grh
             Call InitGrh(TempGrh, 32017)
