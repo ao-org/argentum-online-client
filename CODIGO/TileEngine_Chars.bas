@@ -188,21 +188,6 @@ MakeChar_Err:
     
 End Sub
 
-Public Sub AjustarVelocidad(ByVal charindex As Integer)
-
-    With charlist(charindex)
-    
-        Dim i As Integer
-        For i = E_Heading.NORTH To E_Heading.WEST
-            .Body.Walk(i).speed = .Body.Walk(i).speed * .Speeding
-            .Arma.WeaponWalk(i).speed = .Arma.WeaponWalk(i).speed * .Speeding
-            .Escudo.ShieldWalk(i).speed = .Escudo.ShieldWalk(i).speed * .Speeding
-        Next
-    
-    End With
-
-End Sub
-
 Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Heading)
     '*****************************************************************
     'Starts the movement of a character in nHeading direction
@@ -372,7 +357,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         
         .scrollDirectionX = Sgn(addx)
         .scrollDirectionY = Sgn(addy)
-        
+
         If Not .Moving Then
             'Start animations
             If .Body.Walk(.Heading).Started = 0 Then

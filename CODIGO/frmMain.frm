@@ -514,7 +514,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1039,7 +1038,7 @@ Begin VB.Form frmMain
    Begin VB.Label onlines 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "Onlines: 1"
+      Caption         =   "Online: 1"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25

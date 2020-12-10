@@ -702,7 +702,7 @@ Sub General_Set_Connect()
             
     intro = 1
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
-    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
@@ -1445,11 +1445,7 @@ Sub CargarOpciones()
     MoverVentana = ConfigFile.GetValue("OPCIONES", "MoverVentana")
     FPSFLAG = ConfigFile.GetValue("OPCIONES", "FPSFLAG")
     AlphaMacro = ConfigFile.GetValue("OPCIONES", "AlphaMacro")
-    
-    
-    MostrarEscribiendo = ConfigFile.GetValue("OPCIONES", "MostrarEscribiendo")
-    
-    
+    MostrarEscribiendo = Val(ConfigFile.GetValue("OPCIONES", "MostrarEscribiendo"))
     
     'Init
     ServerIndex = Val(ConfigFile.GetValue("INIT", "ServerIndex"))

@@ -4305,8 +4305,6 @@ Private Sub HandleCharacterCreate()
     End With
     
     Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
-    
-    Call AjustarVelocidad(charindex)
 
     Call RefreshAllChars
     
@@ -4486,6 +4484,8 @@ Private Sub HandleCharacterChange()
 
     Dim headIndex As Integer
     
+    Dim i As Integer
+    
     charindex = incomingData.ReadInteger()
     
     With charlist(charindex)
@@ -4518,7 +4518,7 @@ Private Sub HandleCharacterChange()
         tempint = incomingData.ReadInteger()
 
         If tempint <> 0 Then .Arma = WeaponAnimData(tempint)
-        
+
         tempint = incomingData.ReadInteger()
 
         If tempint <> 0 Then .Escudo = ShieldAnimData(tempint)
@@ -4542,8 +4542,6 @@ Private Sub HandleCharacterChange()
         If .FxIndex > 0 Then
             Call InitGrh(.fX, FxData(.FxIndex).Animacion)
         End If
-        
-        Call AjustarVelocidad(charindex)
 
     End With
     
