@@ -4483,9 +4483,7 @@ Private Sub HandleCharacterChange()
     Dim tempint   As Integer
 
     Dim headIndex As Integer
-    
-    Dim i As Integer
-    
+
     charindex = incomingData.ReadInteger()
     
     With charlist(charindex)
