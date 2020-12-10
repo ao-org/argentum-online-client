@@ -192,6 +192,8 @@ End Enum
 
 Public Music                       As E_SISTEMA_MUSICA
 
+Public MostrarEscribiendo             As Byte
+
 Public PermitirMoverse             As Byte
 
 Public MoverVentana                As Byte

@@ -12514,6 +12514,8 @@ Public Sub WriteEscribiendo()
     
     On Error GoTo WriteEscribiendo_Err
     
+    If MostrarEscribiendo = 0 Then Exit Sub
+    
 
     '***************************************************
     'Ladder

@@ -1446,6 +1446,11 @@ Sub CargarOpciones()
     FPSFLAG = ConfigFile.GetValue("OPCIONES", "FPSFLAG")
     AlphaMacro = ConfigFile.GetValue("OPCIONES", "AlphaMacro")
     
+    
+    MostrarEscribiendo = ConfigFile.GetValue("OPCIONES", "MostrarEscribiendo")
+    
+    
+    
     'Init
     ServerIndex = Val(ConfigFile.GetValue("INIT", "ServerIndex"))
 
@@ -1496,6 +1501,9 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
     Call WriteVar(Arch, "OPCIONES", "AlphaMacro", AlphaMacro)
     Call WriteVar(Arch, "OPCIONES", "FxNavega", FxNavega)
+    
+    Call WriteVar(Arch, "OPCIONES", "MostrarEscribiendo", MostrarEscribiendo)
+    
 
     Call WriteVar(Arch, "OPCIONES", "OcultarMacrosAlCastear", OcultarMacrosAlCastear)
     

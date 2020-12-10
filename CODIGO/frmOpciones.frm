@@ -22,6 +22,7 @@ Begin VB.Form frmOpciones
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   Picture         =   "frmOpciones.frx":0152
    ScaleHeight     =   7575
    ScaleWidth      =   8025
    ShowInTaskbar   =   0   'False
@@ -33,7 +34,7 @@ Begin VB.Form frmOpciones
       Max             =   20
       Min             =   1
       TabIndex        =   14
-      Top             =   5280
+      Top             =   5320
       Value           =   10
       Width           =   3375
    End
@@ -166,6 +167,12 @@ Begin VB.Form frmOpciones
       Top             =   10440
       Width           =   1335
    End
+   Begin VB.Image ind_lectura 
+      Height          =   255
+      Left            =   4240
+      Top             =   4240
+      Width           =   255
+   End
    Begin VB.Image facebook 
       Height          =   375
       Left            =   4200
@@ -239,19 +246,19 @@ Begin VB.Form frmOpciones
       Height          =   255
       Left            =   4200
       TabIndex        =   15
-      Top             =   5640
+      Top             =   5680
       Width           =   3375
    End
    Begin VB.Image Check4 
       Height          =   255
       Left            =   4240
-      Top             =   3940
+      Top             =   3900
       Width           =   255
    End
    Begin VB.Image Check9 
       Height          =   255
       Left            =   4240
-      Top             =   3600
+      Top             =   3560
       Width           =   255
    End
    Begin VB.Image check1 
@@ -275,13 +282,13 @@ Begin VB.Form frmOpciones
    Begin VB.Image Check2 
       Height          =   255
       Left            =   5850
-      Top             =   5940
+      Top             =   5980
       Width           =   255
    End
    Begin VB.Image Check3 
       Height          =   255
       Left            =   4240
-      Top             =   5940
+      Top             =   5980
       Width           =   255
    End
    Begin VB.Image chkInvertir 
@@ -479,9 +486,9 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
         
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
+        check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
         
@@ -762,8 +769,8 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     
     
     Exit Sub
@@ -779,9 +786,9 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo cmdCerrar_MouseMove_Err
     
 
-    If cmdCerrar.Tag = "0" Then
+    If cmdcerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdCerrar.Tag = "1"
+        cmdcerrar.Tag = "1"
 
     End If
 
@@ -810,8 +817,8 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
 
     End If
 
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
 
     
     Exit Sub
@@ -1053,8 +1060,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     facebook.Tag = "0"
     Command1 = Nothing
     Command1.Tag = "0"
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
@@ -1161,6 +1168,14 @@ Public Sub Init()
 
     End If
     
+    
+    If MostrarEscribiendo = 0 Then
+        ind_lectura.Picture = Nothing
+    Else
+        ind_lectura.Picture = LoadInterface("check-amarillo.bmp")
+
+    End If
+    
     If AmbientalActivated = 0 Then
         chko(3).Picture = Nothing
     Else
@@ -1190,9 +1205,9 @@ Public Sub Init()
     End If
     
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
+        check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
@@ -1229,6 +1244,23 @@ HScroll1_Change_Err:
     Call RegistrarError(Err.number, Err.Description, "frmOpciones.HScroll1_Change", Erl)
     Resume Next
     
+End Sub
+
+Private Sub ind_lectura_Click()
+    If MostrarEscribiendo = 1 Then
+        MostrarEscribiendo = 0
+    Else
+        MostrarEscribiendo = 1
+
+    End If
+
+    If MostrarEscribiendo = 0 Then
+        ind_lectura.Picture = Nothing
+    Else
+        ind_lectura.Picture = LoadInterface("check-amarillo.bmp")
+
+    End If
+
 End Sub
 
 Private Sub instagram_Click()
