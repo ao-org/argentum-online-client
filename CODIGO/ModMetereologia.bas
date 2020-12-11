@@ -14,6 +14,7 @@ Private Const TORMENTA      As Byte = 4
 
 Private DayColors()         As RGBA
 Private DeathColor          As RGBA
+Private BlindColor          As RGBA
 Private TimeIndex           As Integer
 
 Private NightIndex          As Integer
@@ -56,6 +57,9 @@ Public Sub IniciarMeteorologia()
 
     ' Muerto
     Call SetRGBA(DeathColor, 120, 120, 120)
+    
+    ' Ciego
+    Call SetRGBA(BlindColor, 4, 4, 4)
     
     TimeIndex = -1
 
@@ -131,6 +135,9 @@ Public Sub RestaurarLuz()
     
     If UserEstado = 1 Then
         global_light = DeathColor
+        
+    ElseIf UserCiego Then
+        global_light = BlindColor
     
     ElseIf TimeIndex >= 0 Then
         global_light = DayColors(TimeIndex)

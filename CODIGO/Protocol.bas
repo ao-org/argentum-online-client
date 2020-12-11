@@ -6556,6 +6556,9 @@ Private Sub HandleBlind()
     
     UserCiego = True
     
+    Call SetRGBA(global_light, 4, 4, 4)
+    Call MapUpdateGlobalLight
+    
     
     Exit Sub
 
@@ -7431,6 +7434,7 @@ Private Sub HandleBlindNoMore()
     Call incomingData.ReadByte
     UserCiego = False
     
+    Call RestaurarLuz
     
     Exit Sub
 
