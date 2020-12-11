@@ -1044,7 +1044,7 @@ Public Sub CargarMapa(ByVal map As Integer)
                 MapData(Triggers(i).x, Triggers(i).y).Trigger = Triggers(i).Trigger
                 
                 ' Transparencia de techos
-                If Triggers(i).Trigger >= PRIMER_TRIGGER_TECHO Then
+                If HayTecho(Triggers(i).x, Triggers(i).y) Then
                     ' Array con todos los distintos tipos de triggers para techo
                     If Triggers(i).Trigger < LBoundRoof Then
                         LBoundRoof = Triggers(i).Trigger

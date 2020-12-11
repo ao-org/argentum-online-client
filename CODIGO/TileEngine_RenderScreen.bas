@@ -392,7 +392,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                     ' Layer 4 - roofs *******************************
                     If .Graphic(4).GrhIndex Then
 
-                        If .Trigger >= PRIMER_TRIGGER_TECHO Then
+                        If HayTecho(x, y) Then
 
                             Call SetRGBA(TempColor(0), .light_value(0).R, .light_value(0).G, .light_value(0).B, RoofsLight(.Trigger))
                             Call SetRGBA(TempColor(1), .light_value(1).R, .light_value(1).G, .light_value(1).B, RoofsLight(.Trigger))
