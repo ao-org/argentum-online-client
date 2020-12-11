@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
 Begin VB.Form FrmQuestInfo 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -579,7 +579,15 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         FrmQuestInfo.ListView1.ListItems.Clear
             
         FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
-               
+        
+        FrmQuestInfo.Text1.Text = ""
+        
+        PlayerView.BackColor = RGB(11, 11, 11)
+        picture1.BackColor = RGB(19, 14, 11)
+        PlayerView.Refresh
+        picture1.Refresh
+        npclbl.Caption = ""
+        objetolbl.Caption = ""
                 
         
                 'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
@@ -636,17 +644,20 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
                 End If
         
                
-                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
-                           
-                subelemento.SubItems(1) = QuestList(QuestIndex).RewardGLD
-                subelemento.SubItems(2) = 12
-                subelemento.SubItems(3) = 0
-               
-                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
-                           
-                subelemento.SubItems(1) = QuestList(QuestIndex).RewardEXP
-                subelemento.SubItems(2) = 608
-                subelemento.SubItems(3) = 1
+                If QuestList(QuestIndex).RewardGLD <> 0 Then
+                     Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
+                     subelemento.SubItems(1) = QuestList(QuestIndex).RewardGLD
+                     subelemento.SubItems(2) = 12
+                     subelemento.SubItems(3) = 0
+                End If
+                
+                
+                If QuestList(QuestIndex).RewardEXP <> 0 Then
+                    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
+                    subelemento.SubItems(1) = QuestList(QuestIndex).RewardEXP
+                    subelemento.SubItems(2) = 608
+                    subelemento.SubItems(3) = 1
+                End If
                
 
                 If UBound(QuestList(QuestIndex).RewardOBJ) > 0 Then

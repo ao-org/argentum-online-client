@@ -18439,6 +18439,18 @@ Private Sub HandleQuestDetails()
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
     
+    
+    
+    
+    
+        FrmQuests.PlayerView.BackColor = RGB(11, 11, 11)
+        FrmQuests.picture1.BackColor = RGB(19, 14, 11)
+        FrmQuests.PlayerView.Refresh
+        FrmQuests.picture1.Refresh
+        FrmQuests.npclbl.Caption = ""
+        FrmQuests.objetolbl.Caption = ""
+
+    
     With buffer
         'Leemos el id del paquete
         Call .ReadByte
@@ -18646,17 +18658,28 @@ Private Sub HandleQuestDetails()
             'tmpStr = tmpStr & "*) Oro: " & .ReadLong & " monedas de oro." & vbCrLf
             'tmpStr = tmpStr & "*) Experiencia: " & .ReadLong & " puntos de experiencia." & vbCrLf
            
-            Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Oro")
-                       
-            subelemento.SubItems(1) = .ReadLong
-            subelemento.SubItems(2) = 12
-            subelemento.SubItems(3) = 0
            
-            Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Experiencia")
-                       
-            subelemento.SubItems(1) = .ReadLong
-            subelemento.SubItems(2) = 608
-            subelemento.SubItems(3) = 1
+           Dim tmplong As Long
+           
+           
+           tmplong = .ReadLong
+           
+            If tmplong <> 0 Then
+                Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Oro")
+                subelemento.SubItems(1) = tmplong
+                subelemento.SubItems(2) = 12
+                subelemento.SubItems(3) = 0
+            End If
+            
+            tmplong = .ReadLong
+           
+            If tmplong <> 0 Then
+                Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Experiencia")
+                           
+                subelemento.SubItems(1) = tmplong
+                subelemento.SubItems(2) = 608
+                subelemento.SubItems(3) = 1
+            End If
            
             tmpByte = .ReadByte
 
