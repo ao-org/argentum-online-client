@@ -3043,7 +3043,7 @@ Public Sub RenderUICrearPJ()
                 Draw_Grh BodyData(CPBody).Walk(CPHeading), 689 + OffX, 346 - Offy, 1, 0, COLOR_WHITE
             End If
             
-            Draw_Grh HeadData(CPHead).Head(CPHeading), 690 + OffX, 346 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, COLOR_WHITE
+            Draw_Grh HeadData(CPHead).Head(CPHeading), 689 + OffX, 346 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, COLOR_WHITE
             
             'If CPEquipado Then
             'Draw_Grh CascoAnimData(CPGorro).Head(CPHeading), 700 + OffX, 366 - Offy + BodyData(CPBody).HeadOffset.y + enanooff, 1, 0, DefaultColor()

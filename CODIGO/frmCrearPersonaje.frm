@@ -683,8 +683,8 @@ Private Sub lstProfesion_Click()
 
         Case Is = "Mago"
             RazaRecomendada = "Gnomo / Elfo / Humano / Elfo Drow"
-            CPBody = 640
-            CPBodyE = 641
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 79
             CPGorro = 58
             CPEscudo = 0
@@ -693,8 +693,8 @@ Private Sub lstProfesion_Click()
             'CPHead=
         Case Is = "Paladin"
             RazaRecomendada = "Humano / Elfo Drow / Elfo"
-            CPBody = 524
-            CPBodyE = 525
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 41
             CPGorro = 73
             CPEscudo = 72
@@ -702,8 +702,8 @@ Private Sub lstProfesion_Click()
 
         Case Is = "Cazador"
             RazaRecomendada = "Enano / Humano"
-            CPBody = 526
-            CPBodyE = 527
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 126
             CPGorro = 78
             CPEscudo = 51
@@ -711,8 +711,8 @@ Private Sub lstProfesion_Click()
 
         Case Is = "Guerrero"
             RazaRecomendada = "Enano / Humano"
-            CPBody = 528
-            CPBodyE = 529
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 81
             CPGorro = 79
             CPEscudo = 73
@@ -720,8 +720,8 @@ Private Sub lstProfesion_Click()
 
         Case Is = "Bardo"
             RazaRecomendada = "Elfo / Humano"
-            CPBody = 636
-            CPBodyE = 637
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 76
             CPGorro = 43
             CPEscudo = 48
@@ -729,8 +729,8 @@ Private Sub lstProfesion_Click()
 
         Case Is = "Clerigo"
             RazaRecomendada = "Humano / Elfo Drow / Elfo"
-            CPBody = 520
-            CPBodyE = 521
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 72
             CPGorro = 83
             CPEscudo = 60
@@ -738,8 +738,8 @@ Private Sub lstProfesion_Click()
 
         Case Is = "Asesino"
             RazaRecomendada = "Humano / ElfoDrow"
-            CPBody = 518
-            CPBodyE = 519
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 40
             CPGorro = 74
             CPEscudo = 58
@@ -747,8 +747,8 @@ Private Sub lstProfesion_Click()
 
         Case Is = "Druida"
             RazaRecomendada = "Humano / Elfo"
-            CPBody = 632
-            CPBodyE = 633
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 100
             CPGorro = 70
             CPEscudo = 40
@@ -756,8 +756,8 @@ Private Sub lstProfesion_Click()
 
         Case Is = "Trabajador"
             RazaRecomendada = "Enano / Humano"
-            CPBody = 602
-            CPBodyE = 603
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 143
             CPGorro = 95
             CPEscudo = 0
