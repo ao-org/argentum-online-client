@@ -1103,14 +1103,13 @@ Public Sub HandleIncomingData()
     If incomingData.length > 0 And Err.number <> incomingData.NotEnoughDataErrCode Then
         Err.Clear
         Call HandleIncomingData
-
     End If
 
     
     Exit Sub
 
 HandleIncomingData_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleIncomingData", Erl)
+    Call RegistrarError(Err.number, Err.Description & vbNewLine & " Paquete: " & CStr(paquete), "Protocol.HandleIncomingData", Erl)
     Resume Next
     
 End Sub

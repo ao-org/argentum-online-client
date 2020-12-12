@@ -608,7 +608,10 @@ Public Enum eClass
     paladin     'Paladín
     Hunter      'Cazador
     Trabajador  'Trabajador
-
+    Pirat       'Pirata
+    Thief       'Ladron
+    Bandit      'Bandido
+    
 End Enum
 
 Public Enum eCiudad
@@ -1010,7 +1013,7 @@ Public Const NUMSKILLS                          As Byte = 24
 
 Public Const NUMATRIBUTOS                       As Byte = 5
 
-Public Const NUMCLASES                          As Byte = 9
+Public Const NUMCLASES                          As Byte = 12
 
 Public Const NUMRAZAS                           As Byte = 5
 
