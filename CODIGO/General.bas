@@ -1232,6 +1232,9 @@ Private Sub InicializarNombres()
     ListaClases(eClass.paladin) = "Paladín"
     ListaClases(eClass.Hunter) = "Cazador"
     ListaClases(eClass.Trabajador) = "Trabajador"
+    ListaClases(eClass.Pirat) = "Pirata"
+    ListaClases(eClass.Thief) = "Ladron"
+    ListaClases(eClass.Bandit) = "Bandido"
 
     SkillsNames(eSkill.magia) = "Magia"
     SkillsNames(eSkill.Robar) = "Robar"
