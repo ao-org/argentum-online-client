@@ -393,11 +393,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                     If .Graphic(4).GrhIndex Then
 
                         If HayTecho(x, y) Then
-
-                            Call SetRGBA(TempColor(0), .light_value(0).R, .light_value(0).G, .light_value(0).B, RoofsLight(.Trigger))
-                            Call SetRGBA(TempColor(1), .light_value(1).R, .light_value(1).G, .light_value(1).B, RoofsLight(.Trigger))
-                            Call SetRGBA(TempColor(2), .light_value(2).R, .light_value(2).G, .light_value(2).B, RoofsLight(.Trigger))
-                            Call SetRGBA(TempColor(3), .light_value(3).R, .light_value(3).G, .light_value(3).B, RoofsLight(.Trigger))
+                            Call Copy_RGBAList_WithAlpha(TempColor, .light_value, RoofsLight(.Trigger))
 
                             Call Draw_Grh(.Graphic(4), ScreenX, ScreenY, 1, 1, TempColor, , x, y)
                             

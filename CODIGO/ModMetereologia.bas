@@ -36,22 +36,22 @@ Public Sub IniciarMeteorologia()
     ' 04:00 - 06:00
     Call SetRGBA(DayColors(2), 150, 150, 180)
     ' 06:00 - 08:00
-    Call SetRGBA(DayColors(3), 200, 200, 190)
+    Call SetRGBA(DayColors(3), 200, 200, 200)
     MorningIndex = 3
     ' 08:00 - 10:00
-    Call SetRGBA(DayColors(4), 230, 200, 190)
+    Call SetRGBA(DayColors(4), 230, 200, 200)
     ' 10:00 - 12:00
-    Call SetRGBA(DayColors(5), 255, 230, 190)
+    Call SetRGBA(DayColors(5), 255, 230, 220)
     ' 12:00 - 14:00
-    Call SetRGBA(DayColors(6), 255, 240, 180)
+    Call SetRGBA(DayColors(6), 255, 240, 220)
     ' 14:00 - 16:00
-    Call SetRGBA(DayColors(7), 255, 250, 170)
+    Call SetRGBA(DayColors(7), 255, 250, 200)
     ' 16:00 - 18:00
-    Call SetRGBA(DayColors(8), 255, 230, 150)
+    Call SetRGBA(DayColors(8), 255, 200, 200)
     ' 18:00 - 20:00
-    Call SetRGBA(DayColors(9), 255, 210, 140)
+    Call SetRGBA(DayColors(9), 255, 180, 160)
     ' 20:00 - 22:00
-    Call SetRGBA(DayColors(10), 180, 150, 130)
+    Call SetRGBA(DayColors(10), 180, 150, 140)
     ' 22:00 - 00:00
     Call SetRGBA(DayColors(11), 150, 140, 130)
 
