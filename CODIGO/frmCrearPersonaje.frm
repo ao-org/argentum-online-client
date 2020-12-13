@@ -765,8 +765,8 @@ Private Sub lstProfesion_Click()
 
         Case "Bandido", "Ladrón", "Pirata"
             RazaRecomendada = "Enano / Humano"
-            CPBody = 602
-            CPBodyE = 603
+            CPBody = 1
+            CPBodyE = 52
             CPArma = 143
             CPGorro = 95
             CPEscudo = 0
