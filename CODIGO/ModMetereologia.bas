@@ -75,7 +75,6 @@ End Sub
 Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
     
     On Error GoTo RevisarHoraMundo_Err
-    
 
     Dim Elapsed As Single
     Elapsed = (FrameTime - HoraMundo) / DuracionDia
@@ -88,19 +87,21 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
     
     If CurrentIndex <> TimeIndex Then
         TimeIndex = CurrentIndex
-        
-        If Instantaneo Then
-            global_light = DayColors(TimeIndex)
-        Else
-            Call ActualizarLuz(DayColors(TimeIndex))
-        End If
-        
-        If TimeIndex = NightIndex Then
-            Call Sound.Sound_Play(FXSound.Lobo_Sound, False, 0, 0)
 
-        ElseIf TimeIndex = MorningIndex Then
-            Call Sound.Sound_Play(FXSound.Gallo_Sound, False, 0, 0)
-
+        If MapDat.base_light = 0 Then
+            If Instantaneo Then
+                global_light = DayColors(TimeIndex)
+            Else
+                Call ActualizarLuz(DayColors(TimeIndex))
+            End If
+            
+            If TimeIndex = NightIndex Then
+                Call Sound.Sound_Play(FXSound.Lobo_Sound, False, 0, 0)
+    
+            ElseIf TimeIndex = MorningIndex Then
+                Call Sound.Sound_Play(FXSound.Gallo_Sound, False, 0, 0)
+    
+            End If
         End If
     End If
 
