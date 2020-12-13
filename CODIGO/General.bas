@@ -541,7 +541,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
@@ -1212,7 +1212,7 @@ Private Sub InicializarNombres()
 
     ListaRazas(eRaza.Humano) = "Humano"
     ListaRazas(eRaza.Elfo) = "Elfo"
-    ListaRazas(eRaza.ElfoOscuro) = "Elfo Drow"
+    ListaRazas(eRaza.ElfoOscuro) = "Elfo Oscuro"
     ListaRazas(eRaza.Gnomo) = "Gnomo"
     ListaRazas(eRaza.Enano) = "Enano"
         
@@ -1233,7 +1233,7 @@ Private Sub InicializarNombres()
     ListaClases(eClass.Hunter) = "Cazador"
     ListaClases(eClass.Trabajador) = "Trabajador"
     ListaClases(eClass.Pirat) = "Pirata"
-    ListaClases(eClass.Thief) = "Ladron"
+    ListaClases(eClass.Thief) = "Ladrón"
     ListaClases(eClass.Bandit) = "Bandido"
 
     SkillsNames(eSkill.magia) = "Magia"
@@ -1245,18 +1245,18 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Ocultarse) = "Ocultarse"
     SkillsNames(eSkill.Supervivencia) = "Supervivencia"
     SkillsNames(eSkill.Comerciar) = "Comercio"
-    SkillsNames(eSkill.Defensa) = "Defensa con escudos"
+    SkillsNames(eSkill.Defensa) = "Defensa con escudo"
     SkillsNames(eSkill.Liderazgo) = "Liderazgo"
     SkillsNames(eSkill.Proyectiles) = "Armas a distancia"
     SkillsNames(eSkill.Wrestling) = "Combate sin armas"
-    SkillsNames(eSkill.Navegacion) = "Navegacion"
+    SkillsNames(eSkill.Navegacion) = "Navegación"
     SkillsNames(eSkill.equitacion) = "Equitación"
-    SkillsNames(eSkill.Resistencia) = "Resistencia Mágica"
+    SkillsNames(eSkill.Resistencia) = "Resistencia mágica"
     SkillsNames(eSkill.Talar) = "Tala"
     SkillsNames(eSkill.Pescar) = "Pesca"
     SkillsNames(eSkill.Mineria) = "Minería"
     SkillsNames(eSkill.Herreria) = "Herrería"
-    SkillsNames(eSkill.Carpinteria) = "Carpinteriía"
+    SkillsNames(eSkill.Carpinteria) = "Carpintería"
     SkillsNames(eSkill.Alquimia) = "Alquimia"
     SkillsNames(eSkill.Sastreria) = "Sastrería"
     SkillsNames(eSkill.Domar) = "Domar"
