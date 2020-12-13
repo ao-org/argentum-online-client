@@ -17337,7 +17337,7 @@ Private Sub HandlePersonajesDeCuenta()
 
             Case 4 'EsConsejero
                 Call SetRGBA(Pjs(i).LetraColor, 2, 161, 38)
-                Pjs(i).ClanName = "<Game Design>"
+                Pjs(i).ClanName = "<Game Master>"
                 Pjs(i).priv = 1
                 EsGM = True
 
@@ -17349,13 +17349,13 @@ Private Sub HandlePersonajesDeCuenta()
 
             Case 6 ' EsDios
                 Call SetRGBA(Pjs(i).LetraColor, 217, 164, 32)
-                Pjs(i).ClanName = "<Administrador>"
+                Pjs(i).ClanName = "<Game Master>"
                 Pjs(i).priv = 3
                 EsGM = True
 
             Case 7 ' EsAdmin
                 Call SetRGBA(Pjs(i).LetraColor, 217, 164, 32)
-                Pjs(i).ClanName = "<Administrador>"
+                Pjs(i).ClanName = "<Game Master>"
                 Pjs(i).priv = 4
                 EsGM = True
 

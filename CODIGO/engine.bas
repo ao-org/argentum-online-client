@@ -1760,14 +1760,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 'Clan
                 Select Case .priv
 
-                    Case 1
-                        line = "<Game Design>"
-
-                    Case 2
+                    Case 1, 2, 3, 4
                         line = "<Game Master>"
-
-                    Case 3, 4
-                        line = "<Administrador>"
 
                     Case Else
                         line = mid$(.nombre, Pos)
