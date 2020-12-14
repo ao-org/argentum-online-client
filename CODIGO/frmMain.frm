@@ -515,6 +515,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1499,6 +1500,7 @@ Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     
     On Error GoTo clanimg_MouseUp_Err
     
+    If pausa Then Exit Sub
 
     If frmGuildLeader.Visible Then Unload frmGuildLeader
     Call WriteRequestGuildLeaderInfo
@@ -1954,6 +1956,9 @@ End Sub
 Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo EstadisticasBoton_MouseUp_Err
+    
+    
+    If pausa Then Exit Sub
     
     LlegaronAtrib = False
     LlegaronSkills = False
@@ -2800,6 +2805,9 @@ Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single,
     
     On Error GoTo QuestBoton_MouseUp_Err
     
+    
+    If pausa Then Exit Sub
+    
     Call WriteQuestListRequest
 
     
@@ -2902,6 +2910,8 @@ Private Sub MacroLadder_Timer()
     
     On Error GoTo MacroLadder_Timer_Err
     
+    If pausa Then Exit Sub
+    
 
     If MainTimer.Check(TimersIndex.Work) Then
         If UserMacro.cantidad > 0 And UserMacro.Activado And UserMinSTA > 0 Then
@@ -2950,6 +2960,9 @@ Private Sub macrotrabajo_Timer()
     'End If
     
     On Error GoTo macrotrabajo_Timer_Err
+    
+    
+    If pausa Then Exit Sub
     
     
     'Macros are disabled if not using Argentum!
@@ -4129,9 +4142,11 @@ Private Sub Timerping_Timer()
     
     On Error GoTo Timerping_Timer_Err
     
-If Not RunningInVB Then
-    Call WritePing
-End If
+    If pausa Then Exit Sub
+        
+    If Not RunningInVB Then
+        Call WritePing
+    End If
 
     
     Exit Sub
@@ -4145,6 +4160,8 @@ End Sub
 Private Sub cmdLanzar_Click()
     
     On Error GoTo cmdLanzar_Click_Err
+    
+    If pausa Then Exit Sub
     
 
     If hlst.List(hlst.ListIndex) <> "(Vacio)" Then
@@ -4200,6 +4217,7 @@ Public Sub Form_Click()
     
     On Error GoTo Form_Click_Err
     
+    If pausa Then Exit Sub
 
     If MouseBoton = vbLeftButton And ACCION1 = 0 Or MouseBoton = vbRightButton And ACCION2 = 0 Or MouseBoton = 4 And ACCION3 = 0 Then
         If Not Comerciando Then
@@ -4592,6 +4610,7 @@ Private Sub picInv_DblClick()
     
 
     If frmCarp.Visible Or frmHerrero.Visible Or frmComerciar.Visible Or frmBancoObj.Visible Then Exit Sub
+    If pausa Then Exit Sub
     
     If UserMeditar Then Exit Sub
     If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub

@@ -9945,6 +9945,9 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
     
     On Error GoTo WriteWorkLeftClick_Err
     
+    
+    If pausa Then Exit Sub
+    
 
     'Call IntervaloPermiteClick(True)
     With outgoingData
@@ -9952,7 +9955,6 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
         
         Call .WriteByte(x)
         Call .WriteByte(y)
-        
         Call .WriteByte(Skill)
 
     End With
