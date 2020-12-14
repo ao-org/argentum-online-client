@@ -9,7 +9,7 @@ Begin VB.Form frmMain
    ClientHeight    =   13305
    ClientLeft      =   345
    ClientTop       =   240
-   ClientWidth     =   15330
+   ClientWidth     =   19395
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -28,9 +28,10 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    Moveable        =   0   'False
    NegotiateMenus  =   0   'False
+   Picture         =   "frmMain.frx":57E2
    ScaleHeight     =   887
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1022
+   ScaleWidth      =   1293
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin SocketWrenchCtrl.Socket Socket1 
@@ -208,7 +209,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   4875
       Left            =   11520
-      Picture         =   "frmMain.frx":57E2
+      Picture         =   "frmMain.frx":245826
       ScaleHeight     =   4875
       ScaleWidth      =   3705
       TabIndex        =   32
@@ -304,7 +305,7 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   0
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":408AC
+         MouseIcon       =   "frmMain.frx":2808F0
          MousePointer    =   99  'Custom
          Tag             =   "0"
          Top             =   4550
@@ -315,9 +316,9 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   1
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":409FE
+         MouseIcon       =   "frmMain.frx":280A42
          MousePointer    =   99  'Custom
-         Picture         =   "frmMain.frx":40B50
+         Picture         =   "frmMain.frx":280B94
          Tag             =   "0"
          Top             =   4260
          Visible         =   0   'False
@@ -514,13 +515,12 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmMain.frx":411CE
+      TextRTF         =   $"frmMain.frx":281212
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
          Size            =   8.25
@@ -553,6 +553,27 @@ Begin VB.Form frmMain
       TabIndex        =   3
       Top             =   2286
       Width           =   10982
+   End
+   Begin VB.Label lblhora 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "17 PM"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   13155
+      TabIndex        =   39
+      Top             =   1995
+      Width           =   525
    End
    Begin VB.Image imgOro 
       Height          =   255
@@ -948,14 +969,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":41245
+      Picture         =   "frmMain.frx":281289
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":417C9
+      Picture         =   "frmMain.frx":28180D
       Top             =   2008
       Width           =   555
    End
@@ -1077,7 +1098,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   13560
-      Picture         =   "frmMain.frx":41D4D
+      Picture         =   "frmMain.frx":281D91
       Top             =   10920
       Visible         =   0   'False
       Width           =   525
@@ -1085,7 +1106,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicResu 
       Height          =   510
       Left            =   11970
-      Picture         =   "frmMain.frx":429CD
+      Picture         =   "frmMain.frx":282A11
       ToolTipText     =   "Seguro de grupo"
       Top             =   10872
       Width           =   510
@@ -1093,7 +1114,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicResuOn 
       Height          =   510
       Left            =   11970
-      Picture         =   "frmMain.frx":437DF
+      Picture         =   "frmMain.frx":283823
       ToolTipText     =   "Seguro de grupo"
       Top             =   10872
       Visible         =   0   'False
@@ -1163,7 +1184,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11573
-      Picture         =   "frmMain.frx":445F1
+      Picture         =   "frmMain.frx":284635
       Top             =   1545
       Width           =   3045
    End
@@ -1190,7 +1211,7 @@ Begin VB.Form frmMain
    Begin VB.Image Hpshp 
       Height          =   240
       Left            =   11865
-      Picture         =   "frmMain.frx":4748A
+      Picture         =   "frmMain.frx":2874CE
       Top             =   8309
       Width           =   3240
    End
@@ -1237,7 +1258,7 @@ Begin VB.Form frmMain
    Begin VB.Image AGUAsp 
       Height          =   135
       Left            =   13680
-      Picture         =   "frmMain.frx":49D4E
+      Picture         =   "frmMain.frx":289D92
       Top             =   9150
       Width           =   480
    End
@@ -1245,7 +1266,7 @@ Begin VB.Form frmMain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   11446
-      Picture         =   "frmMain.frx":4A0F2
+      Picture         =   "frmMain.frx":28A136
       ToolTipText     =   "Seguro de ataque"
       Top             =   10872
       Width           =   510
@@ -1253,7 +1274,7 @@ Begin VB.Form frmMain
    Begin VB.Image Image6 
       Height          =   510
       Left            =   11446
-      Picture         =   "frmMain.frx":4AF04
+      Picture         =   "frmMain.frx":28AF48
       ToolTipText     =   "Seguro de ataque"
       Top             =   10872
       Width           =   510
@@ -1262,7 +1283,7 @@ Begin VB.Form frmMain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12494
-      Picture         =   "frmMain.frx":4BD16
+      Picture         =   "frmMain.frx":28BD5A
       ToolTipText     =   "Seguro de clan"
       Top             =   10875
       Width           =   510
@@ -1271,7 +1292,7 @@ Begin VB.Form frmMain
       Appearance      =   0  'Flat
       Height          =   510
       Left            =   12494
-      Picture         =   "frmMain.frx":4CB28
+      Picture         =   "frmMain.frx":28CB6C
       ToolTipText     =   "Seguro de ataque"
       Top             =   10875
       Width           =   510
@@ -1279,14 +1300,14 @@ Begin VB.Form frmMain
    Begin VB.Image COMIDAsp 
       Height          =   120
       Left            =   14618
-      Picture         =   "frmMain.frx":4D93A
+      Picture         =   "frmMain.frx":28D97E
       Top             =   9158
       Width           =   480
    End
    Begin VB.Image MANShp 
       Height          =   240
       Left            =   11865
-      Picture         =   "frmMain.frx":4DC7E
+      Picture         =   "frmMain.frx":28DCC2
       Top             =   8715
       Width           =   3240
    End
@@ -1314,7 +1335,7 @@ Begin VB.Form frmMain
    Begin VB.Image STAShp 
       Height          =   135
       Left            =   11850
-      Picture         =   "frmMain.frx":50542
+      Picture         =   "frmMain.frx":290586
       Top             =   9153
       Width           =   1335
    End

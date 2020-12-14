@@ -82,6 +82,13 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
     Dim HoraActual As Long
     HoraActual = Fix((Elapsed - Fix(Elapsed)) * 24)
     
+    If HoraActual > 12 Then
+        frmMain.lblhora = HoraActual & " PM"
+    Else
+        frmMain.lblhora = HoraActual & " AM"
+    End If
+    
+    
     Dim CurrentIndex As Integer
     CurrentIndex = HoraActual \ 2
     
