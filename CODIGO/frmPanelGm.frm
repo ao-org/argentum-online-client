@@ -1530,21 +1530,22 @@ Private Sub MnuEnviar_Click(Index As Integer)
     Nick = Replace(cboListaUsus.Text, " ", "+")
 
     Select Case Index
+'ReyarB modifico cordenadas
 
-        Case 0 'Ulla
-            Coordenadas = "55 57 46"
+         Case 0 'Ulla
+Coordenadas = "1 55 45" 
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 1 'Nix
-            Coordenadas = "106 30 72"
+            Coordenadas = "34 39 96"
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 2 'Bander
-            Coordenadas = "59 50 50"
+            Coordenadas = "59 49 46"
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 3 'Arghal
-            Coordenadas = "151 50 50"
+            Coordenadas = "151 34 74"
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 4 'Otro
