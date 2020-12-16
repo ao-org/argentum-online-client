@@ -81,7 +81,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
     
-                Case "Elfo Drow"
+                Case "Elfo Oscuro"
                     MiCabeza = RandomNumber(200, 229)
                     Call DibujarCPJ(MiCabeza)
 
@@ -140,7 +140,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
 
-                Case "Elfo Drow"
+                Case "Elfo Oscuro"
                     MiCabeza = RandomNumber(250, 279)
                     Call DibujarCPJ(MiCabeza)
 
