@@ -25,14 +25,6 @@ Public LLamadaDeclanY                   As Byte
 
 Public SugerenciaAMostrar               As Byte
 
-Public OffSetConsola                    As Byte
-
-Public Const ComienzoY                  As Integer = 0
-
-Public UltimaLineavisible               As Boolean
-
-Public Const MaxLineas                  As Byte = 6
-
 Public UserInvUnlocked                  As Byte
 
 'Slots de Inventarios Generales
@@ -59,18 +51,6 @@ Public Const ARBOL_ALPHA_TIME           As Long = 300
 
 Public Const ARBOL_MIN_ALPHA            As Byte = 130
  
-Type TConsola
-
-    t As String
-    '   Color As Long
-    R As Byte
-    G As Byte
-    B As Byte
-
-End Type
- 
-Public Con(1 To MaxLineas) As TConsola
-
 Type TRanking
 
     nombre As String

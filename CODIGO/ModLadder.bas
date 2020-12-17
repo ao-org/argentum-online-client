@@ -703,7 +703,7 @@ Sub General_Set_Connect()
     intro = 1
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -1591,22 +1591,6 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
         End If
 
         Dim i As Byte
- 
-        For i = 2 To MaxLineas
-            Con(i - 1).t = Con(i).t
-            'Con(i - 1).Color = Con(i).Color
-            Con(i - 1).B = Con(i).B
-            Con(i - 1).G = Con(i).G
-            Con(i - 1).R = Con(i).R
-        Next i
- 
-        Con(MaxLineas).t = vbCrLf & "[" & Name & "] " & ChatText
-        Con(MaxLineas).B = blue
-        Con(MaxLineas).G = green
-        Con(MaxLineas).R = red
-        OffSetConsola = 16
- 
-        UltimaLineavisible = False
 
     End With
     

@@ -67,6 +67,45 @@ Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency A
 
 Private lFrameTimer              As Long
 
+'Scroll de richtbox
+Private Type SCROLLINFO
+    cbSize As Long
+    fMask As Long
+    nMin As Long
+    nMax As Long
+    nPage As Long
+    nPos As Long
+    nTrackPos As Long
+End Type
+
+
+Private Const EM_GETTHUMB = &HBE
+Private Const SB_THUMBPOSITION = &H4
+Private Const WM_VSCROLL = &H115
+Private Const SB_VERT As Integer = &H1
+Private Const SIF_RANGE As Integer = &H1
+Private Const SIF_PAGE As Integer = &H2
+Private Const SIF_POS As Integer = &H4
+
+Private Const SIF_DISABLENOSCROLL = &H8
+Private Const SIF_TRACKPOS = &H10
+Private Const SIF_ALL = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
+Private tSI As SCROLLINFO
+
+Public Declare Function GetScrollInfo Lib "user32" (ByVal hwnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
+
+Public Declare Function GetScrollPos Lib "user32" (ByVal hwnd As Long, ByVal nBar As Long) As Long
+
+'Api SendMessage
+Public Declare Function SendMessage _
+    Lib "user32" _
+    Alias "SendMessageA" _
+        (ByVal hwnd As Long, _
+        ByVal wMsg As Long, _
+        ByVal wParam As Long, _
+        lParam As Any) As Long
+'Scroll de richtbox
+
 Public Function DirGraficos() As String
     
     On Error GoTo DirGraficos_Err
@@ -160,7 +199,16 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
     'Juan Martin Sotuyo Dodero (Maraxus) 03/29/2007 : Replaced ToxicWaste's code for extra performance.
     'Jopi 17/08/2019 : Consola transparente.
     'Jopi 17/08/2019 : Ahora podes especificar el alineamiento del texto.
+    'Ladder 17/12/20 : agrego que la barra no se nos baje si estamos haciedno scroll. Gracias barrin tkm
     '****************************************************
+    
+        Dim bUrl As Boolean
+        Dim sMax As Long
+        Dim sPos As Long
+        Dim Pos As Long
+        Dim ret As Long
+        
+        Dim bHoldBar As Boolean
 
     Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
 
@@ -175,6 +223,14 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
             .TextRTF = .SelRTF
 
         End If
+        
+        tSI.cbSize = Len(tSI)
+        tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
+        ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        sMax = tSI.nMax - tSI.nPage + 1
+        Pos = tSI.nTrackPos
+        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+        bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         
         .SelStart = Len(.Text)
         .SelLength = 0
@@ -195,11 +251,13 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         ' Esto arregla el bug de las letras superponiendose la consola del frmMain
         If Not (RichTextBox = frmMain.RecTxt) Then
             RichTextBox.Refresh
-
+        End If
+        
+        If bHoldBar Then
+            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
 
     End With
-    
     
     Exit Sub
 
@@ -221,19 +279,33 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     'apperance!
     'Pablo (ToxicWaste) 01/26/2007 : Now the list refeshes properly.
     'Juan Martín Sotuyo Dodero (Maraxus) 03/29/2007 : Replaced ToxicWaste's code for extra performance.
+    'Ladder 17/12/20 agrego que la barra no se nos baje si estamos haciedno scroll. Gracias barrin tkm
     '******************************************r
-    Dim bUrl As Boolean
+Dim bUrl As Boolean
+Dim sMax As Long
+Dim sPos As Long
+Dim Pos As Long
+Dim ret As Long
 
-    With RichTextBox
+Dim bHoldBar As Boolean
+        Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+
+        With RichTextBox
 
         If Len(.Text) > 20000 Then
             .Text = vbNullString
             .SelStart = InStr(1, .Text, vbCrLf) + 1
             .SelLength = Len(.Text) - .SelStart + 2
             .TextRTF = .SelRTF
-
         End If
         
+        tSI.cbSize = Len(tSI)
+        tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
+        ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        sMax = tSI.nMax - tSI.nPage + 1
+        Pos = tSI.nTrackPos
+        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+         bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         .SelStart = Len(.Text)
         .SelLength = 0
         .SelBold = bold
@@ -244,29 +316,13 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
         
         If bCrLf And Len(.Text) > 0 Then Text = vbCrLf & Text
         .SelText = Text
-
+        
+        If bHoldBar Then
+            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+        End If
     End With
     
-    ' If bUrl Then DisableUrlDetect
-
-    Dim i As Byte
- 
-    For i = 2 To MaxLineas
-        Con(i - 1).t = Con(i).t
-        'Con(i - 1).Color = Con(i).Color
-        Con(i - 1).B = Con(i).B
-        Con(i - 1).G = Con(i).G
-        Con(i - 1).R = Con(i).R
-    Next i
- 
-    Con(MaxLineas).t = Text
-    Con(MaxLineas).B = blue
-    Con(MaxLineas).G = green
-    Con(MaxLineas).R = red
-    OffSetConsola = 16
- 
-    UltimaLineavisible = False
-    
+   ' If bUrl Then DisableUrlDetect
     
     Exit Sub
 
@@ -541,7 +597,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
