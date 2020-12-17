@@ -6,10 +6,10 @@ Begin VB.Form frmMain
    AutoRedraw      =   -1  'True
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   ClientHeight    =   13305
+   ClientHeight    =   13020
    ClientLeft      =   345
    ClientTop       =   240
-   ClientWidth     =   19395
+   ClientWidth     =   15510
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -28,9 +28,9 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    Moveable        =   0   'False
    NegotiateMenus  =   0   'False
-   ScaleHeight     =   887
+   ScaleHeight     =   868
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1293
+   ScaleWidth      =   1034
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin SocketWrenchCtrl.Socket Socket1 
@@ -514,7 +514,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
