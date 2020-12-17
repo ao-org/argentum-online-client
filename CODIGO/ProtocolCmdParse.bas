@@ -1056,12 +1056,23 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteOnlineMap
                 
             Case "/PERDON"
-                'If notNullArguments Then
                 Call WriteForgive
-                '  Else
-                'Avisar que falta el parametro
-                'Call ShowConsoleMsg("Faltan parámetros. Utilice /perdon NICKNAME.")
-                '  End If
+            
+            Case "/DONAR"
+                If notNullArguments Then
+                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
+                        Call WriteDonateGold(ArgumentosRaw)
+                    Else
+                        'No es numerico
+                        Call ShowConsoleMsg("Cantidad incorecta. Utilice /donar CANTIDAD.")
+
+                    End If
+
+                Else
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /donar CANTIDAD.")
+
+                End If
                 
             Case "/ECHAR"
 

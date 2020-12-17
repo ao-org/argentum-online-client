@@ -477,6 +477,7 @@ Private Enum ClientPacketID
     UseKey
     Day
     SetTime
+    DonateGold              '/DONAR
 End Enum
 
 Private Enum NewPacksID
@@ -7924,7 +7925,7 @@ Private Sub HandleCharacterInfo()
         End If
         
         .nivel.Caption = "Nivel: " & buffer.ReadByte()
-        .oro.Caption = "Oro: " & buffer.ReadLong()
+        .Oro.Caption = "Oro: " & buffer.ReadLong()
         .Banco.Caption = "Banco: " & buffer.ReadLong()
         
         ' Dim reputation As Long
@@ -13767,6 +13768,24 @@ Public Sub WriteForgive()
 
 WriteForgive_Err:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WriteForgive", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub WriteDonateGold(ByVal Oro As Long)
+    
+    On Error GoTo WriteForgive_Err
+    '***************************************************
+    With outgoingData
+        Call .WriteByte(ClientPacketID.DonateGold)
+        Call .WriteLong(Oro)
+    End With
+
+    
+    Exit Sub
+
+WriteForgive_Err:
+    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDonateGold", Erl)
     Resume Next
     
 End Sub
