@@ -478,6 +478,7 @@ Private Enum ClientPacketID
     Day
     SetTime
     DonateGold              '/DONAR
+    Promedio                '/PROMEDIO
 End Enum
 
 Private Enum NewPacksID
@@ -2797,10 +2798,10 @@ Private Sub HandleUpdateExp()
 
     frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 204
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
     Else
-        frmMain.EXPBAR.Width = 204
+        frmMain.ExpBar.Width = 204
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
     End If
 
@@ -5100,7 +5101,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -5125,7 +5126,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -5133,7 +5134,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
@@ -5412,9 +5413,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 204
     Else
-        frmMain.EXPBAR.Width = 204
+        frmMain.ExpBar.Width = 204
         frmMain.lblPorcLvl.Caption = "" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -7623,10 +7624,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.guildslist.Clear
+    Call frmGuildNews.GuildsList.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7658,7 +7659,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8022,10 +8023,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -8065,7 +8066,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -11501,6 +11502,28 @@ Public Sub WriteRequestStats()
 
 WriteRequestStats_Err:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestStats", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Writes the "Promedio" message to the outgoing data buffer.
+'
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WritePromedio()
+    '***************************************************
+    'Writes the "Promedio" message to the outgoing data buffer
+    '***************************************************
+    
+    On Error GoTo Handle
+    
+    Call outgoingData.WriteByte(ClientPacketID.Promedio)
+
+    Exit Sub
+
+Handle:
+    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePromedio", Erl)
     Resume Next
     
 End Sub

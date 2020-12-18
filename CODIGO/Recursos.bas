@@ -53,6 +53,10 @@ Public Enum FontTypeNames
     FONTTYPE_New_DONADOR
     FONTTYPE_New_GRUPO
     FONTTYPE_New_Eventos '39
+    
+    FONTTYPE_PROMEDIO_IGUAL
+    FONTTYPE_PROMEDIO_MENOR
+    FONTTYPE_PROMEDIO_MAYOR
 
 End Enum
 
@@ -540,7 +544,27 @@ Public Sub InitFonts()
         .italic = 1
 
     End With
-
+    
+    With FontTypes(FontTypeNames.FONTTYPE_PROMEDIO_IGUAL)
+        .red = 255
+        .green = 255
+        .blue = 0
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_PROMEDIO_MENOR)
+        .red = 255
+        .green = 0
+        .blue = 0
+        .bold = 1
+    End With
+    
+    With FontTypes(FontTypeNames.FONTTYPE_PROMEDIO_MAYOR)
+        .red = 0
+        .green = 255
+        .blue = 0
+        .bold = 1
+    End With
     
     Exit Sub
 
