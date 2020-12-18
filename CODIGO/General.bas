@@ -1062,6 +1062,8 @@ Sub Main()
     'Cargamos todos los init
     Call CargarRecursos
     
+    FrameTime = timeGetTime And &H7FFFFFFF
+    
     UserMap = 1
     AlphaNiebla = 75
     EntradaY = 10

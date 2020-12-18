@@ -917,7 +917,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim demora       As Long
     Dim demorafinal  As Long
 
-    demora = timeGetTime
+    demora = timeGetTime And &H7FFFFFFF
     
     #If Compresion = 1 Then
 
