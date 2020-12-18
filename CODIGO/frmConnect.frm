@@ -266,7 +266,7 @@ Private Sub render_DblClick()
         Case 2
             
             If PJSeleccionado < 1 Then Exit Sub
-            If Pjs(PJSeleccionado).nombre = "" Then
+            If Pjs(PJSeleccionado).Nombre = "" Then
                 PJSeleccionado = 0
                 Exit Sub
 
@@ -275,7 +275,7 @@ Private Sub render_DblClick()
             Call Sound.Sound_Play(SND_CLICK)
 
             If IntervaloPermiteConectar Then
-                Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
+                Call LogearPersonaje(Pjs(PJSeleccionado).Nombre)
 
             End If
 
@@ -324,28 +324,28 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     
 
             If x > 325 And x < 344 And y > 371 And y < 387 Then 'Boton izquierda cabezas
-                If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
-                If frmCrearPersonaje.Cabeza.ListIndex > 0 Then
-                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex - 1
+                If frmCrearPersonaje.cabeza.ListCount = 0 Then Exit Sub
+                If frmCrearPersonaje.cabeza.ListIndex > 0 Then
+                    frmCrearPersonaje.cabeza.ListIndex = frmCrearPersonaje.cabeza.ListIndex - 1
 
                 End If
 
-                If frmCrearPersonaje.Cabeza.ListIndex = 0 Then
-                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListCount - 1
+                If frmCrearPersonaje.cabeza.ListIndex = 0 Then
+                    frmCrearPersonaje.cabeza.ListIndex = frmCrearPersonaje.cabeza.ListCount - 1
 
                 End If
 
             End If
     
             If x > 394 And x < 411 And y > 373 And y < 386 Then 'Boton Derecha cabezas
-                If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
-                If (frmCrearPersonaje.Cabeza.ListIndex + 1) <> frmCrearPersonaje.Cabeza.ListCount Then
-                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex + 1
+                If frmCrearPersonaje.cabeza.ListCount = 0 Then Exit Sub
+                If (frmCrearPersonaje.cabeza.ListIndex + 1) <> frmCrearPersonaje.cabeza.ListCount Then
+                    frmCrearPersonaje.cabeza.ListIndex = frmCrearPersonaje.cabeza.ListIndex + 1
 
                 End If
 
-                If (frmCrearPersonaje.Cabeza.ListIndex + 1) = frmCrearPersonaje.Cabeza.ListCount Then
-                    frmCrearPersonaje.Cabeza.ListIndex = 0
+                If (frmCrearPersonaje.cabeza.ListIndex + 1) = frmCrearPersonaje.cabeza.ListCount Then
+                    frmCrearPersonaje.cabeza.ListIndex = 0
 
                 End If
 
@@ -465,10 +465,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 
                 UserName = frmConnect.txtNombre.Text
                 
-                If Right$(UserName, 1) = " " Then
-                    UserName = RTrim$(UserName)
-
-                    'MsgBox "Nombre invalido, se han removido los espacios al final del nombre"
+                Dim Error As String
+                If Not ValidarNombre(UserName, Error) Then
+                    frmMensaje.msg.Caption = Error
+                    frmMensaje.Show , Me
+                    Exit Sub
                 End If
 
                 UserRaza = frmCrearPersonaje.lstRaza.ListIndex + 1
@@ -622,7 +623,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case 2
 
                     If Char = 0 Then Exit Sub
-                    DeleteUser = Pjs(Char).nombre
+                    DeleteUser = Pjs(Char).Nombre
 
                     Dim tmp As String
 
@@ -675,7 +676,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         Pjs(i).Head = 0
                         Pjs(i).Mapa = 0
                         Pjs(i).nivel = 0
-                        Pjs(i).nombre = ""
+                        Pjs(i).Nombre = ""
                         Pjs(i).Clase = 0
                         Pjs(i).Criminal = 0
                         Pjs(i).NameMapa = ""
@@ -688,7 +689,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case 4
 
                     If PJSeleccionado < 1 Then Exit Sub
-                    If Pjs(PJSeleccionado).nombre = "" Then
+                    If Pjs(PJSeleccionado).Nombre = "" Then
                         PJSeleccionado = 0
                         Exit Sub
 
@@ -696,7 +697,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                     If IntervaloPermiteConectar Then
                         Call Sound.Sound_Play(SND_CLICK)
-                        Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
+                        Call LogearPersonaje(Pjs(PJSeleccionado).Nombre)
 
                     End If
 
@@ -865,3 +866,42 @@ LogearPersonaje_Err:
     
 End Sub
 
+Function ValidarNombre(Nombre As String, Error As String) As Boolean
+    
+    If Len(Nombre) < 1 Then
+        Error = "Ingrese algún nombre."
+        Exit Function
+    End If
+    
+    If Len(Nombre) > 18 Then
+        Error = "Nombre demasiado largo."
+        Exit Function
+    End If
+    
+    Dim Temp As String
+    Temp = UCase$(Nombre)
+    
+    Dim i As Long, Char As Integer, LastChar As Integer
+    For i = 1 To Len(Temp)
+        Char = Asc(mid$(Temp, i, 1))
+        
+        If (Char < 65 Or Char > 90) And Char <> 32 Then
+            Error = "Sólo se permites letras y espacios."
+            Exit Function
+        
+        ElseIf Char = 32 And LastChar = 32 Then
+            Error = "No se permiten espacios consecutivos."
+            Exit Function
+        End If
+        
+        LastChar = Char
+    Next
+
+    If Asc(mid$(Temp, 1, 1)) = 32 Or Asc(mid$(Temp, Len(Temp), 1)) = 32 Then
+        Error = "No se permiten espacios al inicio o al final."
+        Exit Function
+    End If
+    
+    ValidarNombre = True
+
+End Function
