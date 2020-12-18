@@ -197,8 +197,6 @@ Private Type tMoldeCuerpo
     TotalGrhs As Long
 End Type
 
-Private MoldesArmas() As tMoldeCuerpo
-Private MoldesEscudos() As tMoldeCuerpo
 Private MoldesBodies() As tMoldeCuerpo
 Private BodiesHeading(1 To 4) As E_Heading
 
@@ -2617,6 +2615,156 @@ CargarColores_Err:
 End Sub
 
 Sub CargarAnimEscudos()
+    
+    On Error GoTo CargarAnimEscudos_Err
+    
+    Dim Loader       As clsIniManager
+
+    Dim i            As Long
+    
+    Dim j            As Byte
+    
+    Dim k            As Integer
+    
+    Dim Heading      As Byte
+    
+    Dim EscudoKey      As String
+    
+    Dim Std          As Byte
+
+    Dim NumCuerpos   As Integer
+    
+    Dim LastGrh      As Long
+    
+    Dim AnimStart    As Long
+    
+    Dim x            As Long
+    
+    Dim y            As Long
+    
+    Dim FileNum      As Long
+    
+    Set Loader = New clsIniManager
+
+    Dim loopc As Long
+
+    Dim Arch  As String
+    
+    
+    
+    #If Compresion = 1 Then
+
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, False) Then
+            Err.Description = "¡No se puede cargar el archivo de escudos.dat!"
+            MsgBox Err.Description
+
+        End If
+
+        Call Loader.Initialize(Windows_Temp_Dir & "escudos.dat")
+    #Else
+        Call Loader.Initialize(App.Path & "\..\Recursos\init\escudos.dat")
+    #End If
+    
+    
+    NumEscudosAnims = Val(Loader.GetValue("INIT", "NumEscudos"))
+    
+    ReDim ShieldAnimData(1 To NumEscudosAnims) As ShieldAnimData
+    
+    For loopc = 1 To NumEscudosAnims
+    
+        EscudoKey = "ESC" & loopc
+        Std = Val(Loader.GetValue(EscudoKey, "Std"))
+        
+        If Std = 0 Then
+            InitGrh ShieldAnimData(loopc).ShieldWalk(1), Val(Loader.GetValue(EscudoKey, "Dir1")), 0
+            InitGrh ShieldAnimData(loopc).ShieldWalk(2), Val(Loader.GetValue(EscudoKey, "Dir2")), 0
+            InitGrh ShieldAnimData(loopc).ShieldWalk(3), Val(Loader.GetValue(EscudoKey, "Dir3")), 0
+            InitGrh ShieldAnimData(loopc).ShieldWalk(4), Val(Loader.GetValue(EscudoKey, "Dir4")), 0
+        Else
+        
+        
+            FileNum = Val(Loader.GetValue(EscudoKey, "FileNum"))
+        
+            LastGrh = UBound(GrhData)
+
+            ' Agrego espacio para meter el body en GrhData
+            ReDim Preserve GrhData(1 To LastGrh + MoldesBodies(Std).TotalGrhs)
+            
+            MaxGrh = UBound(GrhData)
+            
+            LastGrh = LastGrh + 1
+            x = MoldesBodies(Std).x
+            y = MoldesBodies(Std).y
+            
+            For j = 1 To 4
+                AnimStart = LastGrh
+            
+                For k = 1 To MoldesBodies(Std).DirCount(j)
+                    With GrhData(LastGrh)
+                        .FileNum = FileNum
+                        .NumFrames = 1
+                        .sX = x
+                        .sY = y
+                        .pixelWidth = MoldesBodies(Std).Width
+                        .pixelHeight = MoldesBodies(Std).Height
+                        
+                        .TileWidth = .pixelWidth / TilePixelHeight
+                        .TileHeight = .pixelHeight / TilePixelWidth
+        
+                        ReDim .Frames(1)
+                        .Frames(1) = LastGrh
+                    End With
+                    
+                    LastGrh = LastGrh + 1
+                    x = x + MoldesBodies(Std).Width
+                Next
+                
+                x = MoldesBodies(Std).x
+                y = y + MoldesBodies(Std).Height
+                
+                Heading = BodiesHeading(j)
+                
+                With GrhData(LastGrh)
+                    .NumFrames = MoldesBodies(Std).DirCount(j)
+                    .speed = .NumFrames / 0.018
+                    
+                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
+                    
+                    For k = 1 To MoldesBodies(Std).DirCount(j)
+                        .Frames(k) = AnimStart + k - 1
+                    Next
+                    
+                    .pixelWidth = GrhData(.Frames(1)).pixelWidth
+                    .pixelHeight = GrhData(.Frames(1)).pixelHeight
+                    .TileWidth = GrhData(.Frames(1)).TileWidth
+                    .TileHeight = GrhData(.Frames(1)).TileHeight
+                End With
+                
+                InitGrh ShieldAnimData(loopc).ShieldWalk(Heading), LastGrh, 0
+                
+                
+                LastGrh = LastGrh + 1
+            Next
+        
+        
+        End If
+    Next loopc
+    
+    #If Compresion = 1 Then
+        Delete_File Windows_Temp_Dir & "escudos.dat"
+    #End If
+
+    
+    Exit Sub
+
+CargarAnimEscudos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarAnimEscudos", Erl)
+    Resume Next
+    
+End Sub
+
+
+Sub CargarAnimEscudosViejo()
     
     On Error GoTo CargarAnimEscudos_Err
     
