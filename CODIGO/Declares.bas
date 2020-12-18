@@ -1083,6 +1083,10 @@ Public Enum eEditOptions
     eo_SkillPointsLeft
     eo_Sex
     eo_Raza
+    eo_Arma
+    eo_Escudo
+    eo_Casco
+    eo_Particula
 
 End Enum
 

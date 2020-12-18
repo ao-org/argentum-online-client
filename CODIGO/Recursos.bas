@@ -197,6 +197,8 @@ Private Type tMoldeCuerpo
     TotalGrhs As Long
 End Type
 
+Private MoldesArmas() As tMoldeCuerpo
+Private MoldesEscudos() As tMoldeCuerpo
 Private MoldesBodies() As tMoldeCuerpo
 Private BodiesHeading(1 To 4) As E_Heading
 
@@ -1993,15 +1995,15 @@ Sub CargarCuerpos()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cuerpos.ini", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de cuerpos.ini!"
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cuerpos.dat", Windows_Temp_Dir, False) Then
+            Err.Description = "¡No se puede cargar el archivo de cuerpos.dat!"
             MsgBox Err.Description
 
         End If
 
-        Call Loader.Initialize(Windows_Temp_Dir & "cuerpos.ini")
+        Call Loader.Initialize(Windows_Temp_Dir & "cuerpos.dat")
     #Else
-        Call Loader.Initialize(App.Path & "\..\Recursos\init\cuerpos.ini")
+        Call Loader.Initialize(App.Path & "\..\Recursos\init\cuerpos.dat")
     #End If
     
     NumCuerpos = Val(Loader.GetValue("INIT", "NumBodies"))
@@ -2090,7 +2092,7 @@ Sub CargarCuerpos()
     Next i
 
     #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "cuerpos.ini"
+        Delete_File Windows_Temp_Dir & "cuerpos.dat"
     #End If
 
     Set Loader = Nothing
@@ -2353,9 +2355,9 @@ CargarMiniMap_Err:
 End Function
 
 
-Sub CargarAnimArmas()
+Sub CargarAnimArmasViejo()
     
-    On Error GoTo CargarAnimArmas_Err
+    On Error GoTo CargarAnimArmasViejo_Err
     
 
     
@@ -2386,6 +2388,157 @@ Sub CargarAnimArmas()
         InitGrh WeaponAnimData(loopc).WeaponWalk(2), Val(GetVar(Arch, "ARMA" & loopc, "Dir2")), 0
         InitGrh WeaponAnimData(loopc).WeaponWalk(3), Val(GetVar(Arch, "ARMA" & loopc, "Dir3")), 0
         InitGrh WeaponAnimData(loopc).WeaponWalk(4), Val(GetVar(Arch, "ARMA" & loopc, "Dir4")), 0
+    Next loopc
+    
+    #If Compresion = 1 Then
+        Delete_File Windows_Temp_Dir & "armas.dat"
+    #End If
+
+    
+    Exit Sub
+
+CargarAnimArmasViejo_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarAnimArmasViejo", Erl)
+    Resume Next
+    
+End Sub
+
+Sub CargarAnimArmas()
+    
+    On Error GoTo CargarAnimArmas_Err
+    
+    
+    Dim Loader       As clsIniManager
+
+    Dim i            As Long
+    
+    Dim j            As Byte
+    
+    Dim k            As Integer
+    
+    Dim Heading      As Byte
+    
+    Dim ArmaKey      As String
+    
+    Dim Std          As Byte
+
+    Dim NumCuerpos   As Integer
+    
+    Dim LastGrh      As Long
+    
+    Dim AnimStart    As Long
+    
+    Dim x            As Long
+    
+    Dim y            As Long
+    
+    Dim FileNum      As Long
+    
+    Set Loader = New clsIniManager
+
+    Dim loopc As Long
+
+    Dim Arch  As String
+    
+    
+    #If Compresion = 1 Then
+
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, False) Then
+            Err.Description = "¡No se puede cargar el archivo de armas.dat!"
+            MsgBox Err.Description
+
+        End If
+        
+        Call Loader.Initialize(Windows_Temp_Dir & "armas.dat")
+    #Else
+        Call Loader.Initialize(App.Path & "\..\Recursos\init\armas.dat")
+    #End If
+    
+    NumWeaponAnims = Val(Loader.GetValue("INIT", "NumArmas"))
+    
+    
+    
+    ReDim WeaponAnimData(1 To NumWeaponAnims) As WeaponAnimData
+
+    For loopc = 1 To NumWeaponAnims
+        ArmaKey = "ARMA" & loopc
+        Std = Val(Loader.GetValue(ArmaKey, "Std"))
+        
+        If Std = 0 Then
+            
+            InitGrh WeaponAnimData(loopc).WeaponWalk(1), Val(Loader.GetValue(ArmaKey, "Dir1")), 0
+            InitGrh WeaponAnimData(loopc).WeaponWalk(2), Val(Loader.GetValue(ArmaKey, "Dir2")), 0
+            InitGrh WeaponAnimData(loopc).WeaponWalk(3), Val(Loader.GetValue(ArmaKey, "Dir3")), 0
+            InitGrh WeaponAnimData(loopc).WeaponWalk(4), Val(Loader.GetValue(ArmaKey, "Dir4")), 0
+            
+        Else
+        
+        
+            FileNum = Val(Loader.GetValue(ArmaKey, "FileNum"))
+        
+            LastGrh = UBound(GrhData)
+
+            ' Agrego espacio para meter el body en GrhData
+            ReDim Preserve GrhData(1 To LastGrh + MoldesBodies(Std).TotalGrhs)
+            
+            MaxGrh = UBound(GrhData)
+            
+            LastGrh = LastGrh + 1
+            x = MoldesBodies(Std).x
+            y = MoldesBodies(Std).y
+            
+            For j = 1 To 4
+                AnimStart = LastGrh
+            
+                For k = 1 To MoldesBodies(Std).DirCount(j)
+                    With GrhData(LastGrh)
+                        .FileNum = FileNum
+                        .NumFrames = 1
+                        .sX = x
+                        .sY = y
+                        .pixelWidth = MoldesBodies(Std).Width
+                        .pixelHeight = MoldesBodies(Std).Height
+                        
+                        .TileWidth = .pixelWidth / TilePixelHeight
+                        .TileHeight = .pixelHeight / TilePixelWidth
+        
+                        ReDim .Frames(1)
+                        .Frames(1) = LastGrh
+                    End With
+                    
+                    LastGrh = LastGrh + 1
+                    x = x + MoldesBodies(Std).Width
+                Next
+                
+                x = MoldesBodies(Std).x
+                y = y + MoldesBodies(Std).Height
+                
+                Heading = BodiesHeading(j)
+                
+                With GrhData(LastGrh)
+                    .NumFrames = MoldesBodies(Std).DirCount(j)
+                    .speed = .NumFrames / 0.018
+                    
+                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
+                    
+                    For k = 1 To MoldesBodies(Std).DirCount(j)
+                        .Frames(k) = AnimStart + k - 1
+                    Next
+                    
+                    .pixelWidth = GrhData(.Frames(1)).pixelWidth
+                    .pixelHeight = GrhData(.Frames(1)).pixelHeight
+                    .TileWidth = GrhData(.Frames(1)).TileWidth
+                    .TileHeight = GrhData(.Frames(1)).TileHeight
+                End With
+                
+                InitGrh WeaponAnimData(loopc).WeaponWalk(Heading), LastGrh, 0
+                
+                
+                LastGrh = LastGrh + 1
+            Next
+        
+        
+        End If
     Next loopc
     
     #If Compresion = 1 Then

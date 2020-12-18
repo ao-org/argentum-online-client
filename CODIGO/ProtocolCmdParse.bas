@@ -920,7 +920,19 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                         Case "BODY"
                             tmpInt = eEditOptions.eo_Body
-                        
+                            
+                        Case "ARMA"
+                            tmpInt = eEditOptions.eo_Arma
+                            
+                        Case "CASCO"
+                            tmpInt = eEditOptions.eo_Casco
+                            
+                        Case "ESCUDO"
+                            tmpInt = eEditOptions.eo_Escudo
+                            
+                        Case "PARTICULA"
+                            tmpInt = eEditOptions.eo_Particula
+                            
                         Case "HEAD"
                             tmpInt = eEditOptions.eo_Head
                         
