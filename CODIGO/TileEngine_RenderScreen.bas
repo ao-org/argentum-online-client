@@ -81,8 +81,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
     If PixelOffsetY > 0 Then
         MinY = MinY - 1
-        MinBufferedY = MinBufferedY - 1
-        StartBufferedY = StartBufferedY - TilePixelHeight
     
     Else
         MaxY = MaxY + 1
@@ -116,7 +114,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         MinBufferedY = YMinMapSize
     
     ElseIf MinBufferedY < YMinMapSize Then
-        StartBufferedY = StartBufferedY - MinBufferedY * TilePixelHeight
+        StartBufferedY = StartBufferedY - (MinBufferedY - 1) * TilePixelHeight
         MinBufferedY = YMinMapSize
     
     ElseIf MaxY > YMaxMapSize Then
