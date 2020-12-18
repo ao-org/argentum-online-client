@@ -163,6 +163,7 @@ End Type
 
 'Apariencia del personaje
 Public Type Char
+    Navegando As Boolean
 
     UserMinHp As Long
     UserMaxHp As Long

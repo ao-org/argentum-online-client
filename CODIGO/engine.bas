@@ -1504,11 +1504,12 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
             Else
                 'Stop animations
-                .Body.Walk(.Heading).Started = 0
-                
-                If Not .MovArmaEscudo Then
-                    .Arma.WeaponWalk(.Heading).Started = 0
-                    .Escudo.ShieldWalk(.Heading).Started = 0
+                If .Navegando = False Then
+                    .Body.Walk(.Heading).Started = 0
+                    If Not .MovArmaEscudo Then
+                        .Arma.WeaponWalk(.Heading).Started = 0
+                        .Escudo.ShieldWalk(.Heading).Started = 0
+                    End If
                 End If
             End If
         End If

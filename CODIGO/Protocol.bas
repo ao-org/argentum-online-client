@@ -526,7 +526,7 @@ Private Enum NewPacksID
     BanTemporal
     Traershop
     ComprarItem
-    ScrollInfo
+    SCROLLINFO
     CancelarExit
     EnviarCodigo
     CrearTorneo
@@ -2797,10 +2797,10 @@ Private Sub HandleUpdateExp()
 
     frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 204
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
     Else
-        frmMain.EXPBAR.Width = 204
+        frmMain.ExpBar.Width = 204
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
     End If
 
@@ -4176,7 +4176,7 @@ Private Sub HandleCharacterCreate()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 57 Then
+    If incomingData.length < 58 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4264,6 +4264,7 @@ Private Sub HandleCharacterCreate()
         .UserMaxHp = buffer.ReadLong()
         .simbolo = buffer.ReadByte()
         .Idle = buffer.ReadBoolean()
+        .Navegando = buffer.ReadBoolean()
         
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
             If MapData(.Pos.x, .Pos.y).charindex = charindex Then
@@ -4475,7 +4476,7 @@ Private Sub HandleCharacterChange()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 18 Then
+    If incomingData.length < 19 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4553,7 +4554,8 @@ Private Sub HandleCharacterChange()
             'Start animation
             .Body.Walk(.Heading).Started = FrameTime
         End If
-
+        
+        .Navegando = incomingData.ReadBoolean
     End With
     
     Call RefreshAllChars
@@ -5097,7 +5099,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -5122,7 +5124,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -5130,7 +5132,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
@@ -5409,9 +5411,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 204
     Else
-        frmMain.EXPBAR.Width = 204
+        frmMain.ExpBar.Width = 204
         frmMain.lblPorcLvl.Caption = "" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -7620,10 +7622,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.guildslist.Clear
+    Call frmGuildNews.GuildsList.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7655,7 +7657,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7925,7 +7927,7 @@ Private Sub HandleCharacterInfo()
         End If
         
         .nivel.Caption = "Nivel: " & buffer.ReadByte()
-        .Oro.Caption = "Oro: " & buffer.ReadLong()
+        .oro.Caption = "Oro: " & buffer.ReadLong()
         .Banco.Caption = "Banco: " & buffer.ReadLong()
         
         ' Dim reputation As Long
@@ -8019,10 +8021,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -8062,7 +8064,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -12435,7 +12437,7 @@ Public Sub WriteScrollInfo()
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.ScrollInfo)
+        Call .WriteByte(NewPacksID.SCROLLINFO)
 
     End With
 
@@ -13772,13 +13774,13 @@ WriteForgive_Err:
     
 End Sub
 
-Public Sub WriteDonateGold(ByVal Oro As Long)
+Public Sub WriteDonateGold(ByVal oro As Long)
     
     On Error GoTo WriteForgive_Err
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.DonateGold)
-        Call .WriteLong(Oro)
+        Call .WriteLong(oro)
     End With
 
     

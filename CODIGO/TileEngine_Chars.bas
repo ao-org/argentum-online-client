@@ -33,6 +33,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .Pie = False
         .simbolo = 0
         .Idle = False
+        .Navegando = False
         .LastStep = 0
         ' .Pos.X = 0
         '.Pos.Y = 0
