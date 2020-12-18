@@ -1729,14 +1729,14 @@ Sub CargarMoldes()
     #End If
     
     Dim NumMoldes As Integer
-    NumMoldes = Val(Loader.GetValue("INIT", "BodyMoldes"))
+    NumMoldes = Val(Loader.GetValue("INIT", "Moldes"))
 
     ReDim MoldesBodies(1 To NumMoldes)
     
     Dim i As Integer, MoldeKey As String
     
     For i = 1 To NumMoldes
-        MoldeKey = "BodyMolde" & i
+        MoldeKey = "Molde" & i
     
         With MoldesBodies(i)
             .x = Val(Loader.GetValue(MoldeKey, "X"))
@@ -1993,15 +1993,15 @@ Sub CargarCuerpos()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cuerpos.dat", Windows_Temp_Dir, False) Then
-            Err.Description = "¡No se puede cargar el archivo de cuerpos.dat!"
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cuerpos.ini", Windows_Temp_Dir, False) Then
+            Err.Description = "¡No se puede cargar el archivo de cuerpos.ini!"
             MsgBox Err.Description
 
         End If
 
-        Call Loader.Initialize(Windows_Temp_Dir & "cuerpos.dat")
+        Call Loader.Initialize(Windows_Temp_Dir & "cuerpos.ini")
     #Else
-        Call Loader.Initialize(App.Path & "\..\Recursos\init\cuerpos.dat")
+        Call Loader.Initialize(App.Path & "\..\Recursos\init\cuerpos.ini")
     #End If
     
     NumCuerpos = Val(Loader.GetValue("INIT", "NumBodies"))
@@ -2090,7 +2090,7 @@ Sub CargarCuerpos()
     Next i
 
     #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "cuerpos.dat"
+        Delete_File Windows_Temp_Dir & "cuerpos.ini"
     #End If
 
     Set Loader = Nothing
