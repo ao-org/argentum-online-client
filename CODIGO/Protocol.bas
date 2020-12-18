@@ -4306,12 +4306,8 @@ Private Sub HandleCharacterCreate()
     
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
         
-        If .Idle Then
+        If .Idle Or .Navegando Then
             'Start animation
-            .Body.Walk(.Heading).Started = FrameTime
-        End If
-        
-        If .Navegando Then
             .Body.Walk(.Heading).Started = FrameTime
         End If
         
@@ -4554,17 +4550,13 @@ Private Sub HandleCharacterChange()
         
         .Idle = incomingData.ReadBoolean
         
-        If .Idle Then
+        .Navegando = incomingData.ReadBoolean
+        
+        If .Idle Or .Navegando Then
             'Start animation
             .Body.Walk(.Heading).Started = FrameTime
         End If
-        
-        .Navegando = incomingData.ReadBoolean
-        
-        If .Navegando Then
-            .Body.Walk(.Heading).Started = FrameTime
-        End If
-        
+
     End With
     
     Call RefreshAllChars

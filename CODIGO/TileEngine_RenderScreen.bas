@@ -61,7 +61,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     ' Buffer tiles (for layer 2, chars, big objects, etc.)
     MinBufferedX = MinX - TileBufferSizeX
     MaxBufferedX = MaxX + TileBufferSizeX
-    MinBufferedY = MinY
+    MinBufferedY = MinY - 1
     MaxBufferedY = MaxY + TileBufferSizeY
 
     ' Screen start (with movement offset)
@@ -70,7 +70,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
     ' Screen start with tiles buffered (for layer 2, chars, big objects, etc.)
     StartBufferedX = TileBufferPixelOffsetX + PixelOffsetX
-    StartBufferedY = PixelOffsetY
+    StartBufferedY = PixelOffsetY - TilePixelHeight
 
     ' Add 1 tile to the left if going left, else add it to the right
     If PixelOffsetX > 0 Then
