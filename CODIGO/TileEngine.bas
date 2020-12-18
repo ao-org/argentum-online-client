@@ -555,10 +555,10 @@ Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Star
     '*****************************************************************
     
     On Error GoTo InitGrh_Err
-    
-    grh.GrhIndex = GrhIndex
 
     If GrhIndex = 0 Or GrhIndex > MaxGrh Then Exit Sub
+    
+     grh.GrhIndex = GrhIndex
 
     If GrhData(GrhIndex).NumFrames > 1 Then
         If Started >= 0 Then

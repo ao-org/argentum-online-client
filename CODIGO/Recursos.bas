@@ -188,6 +188,18 @@ Public iplst    As String
 '   FIN - CARGA DE MAPAS
 ' *********************************************************
 
+Private Type tMoldeCuerpo
+    x As Long
+    y As Long
+    Width As Long
+    Height As Long
+    DirCount(1 To 4) As Byte
+    TotalGrhs As Long
+End Type
+
+Private MoldesBodies() As tMoldeCuerpo
+Private BodiesHeading(1 To 4) As E_Heading
+
 Public Sub CargarRecursos()
     
     On Error GoTo CargarRecursos_Err
@@ -203,6 +215,7 @@ Public Sub CargarRecursos()
     Call InitFonts
     
     Call LoadGrhData
+    Call CargarMoldes
     Call CargarCabezas
     Call CargarCascos
     Call CargarCuerpos
@@ -1692,6 +1705,60 @@ Cargarmapsworlddata_Err:
     
 End Sub
 
+Sub CargarMoldes()
+
+    BodiesHeading(1) = E_Heading.south
+    BodiesHeading(2) = E_Heading.NORTH
+    BodiesHeading(3) = E_Heading.WEST
+    BodiesHeading(4) = E_Heading.EAST
+    
+    Dim Loader As clsIniManager
+    Set Loader = New clsIniManager
+    
+    #If Compresion = 1 Then
+
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "moldes.ini", Windows_Temp_Dir, False) Then
+            Err.Description = "¡No se puede cargar el archivo de moldes.ini!"
+            MsgBox Err.Description
+
+        End If
+
+        Call Loader.Initialize(Windows_Temp_Dir & "moldes.ini")
+    #Else
+        Call Loader.Initialize(App.Path & "\..\Recursos\init\moldes.ini")
+    #End If
+    
+    Dim NumMoldes As Integer
+    NumMoldes = Val(Loader.GetValue("INIT", "Moldes"))
+
+    ReDim MoldesBodies(1 To NumMoldes)
+    
+    Dim i As Integer, MoldeKey As String
+    
+    For i = 1 To NumMoldes
+        MoldeKey = "Molde" & i
+    
+        With MoldesBodies(i)
+            .x = Val(Loader.GetValue(MoldeKey, "X"))
+            .y = Val(Loader.GetValue(MoldeKey, "Y"))
+            .Width = Val(Loader.GetValue(MoldeKey, "Width"))
+            .Height = Val(Loader.GetValue(MoldeKey, "Height"))
+            .DirCount(1) = Val(Loader.GetValue(MoldeKey, "Dir1"))
+            .DirCount(2) = Val(Loader.GetValue(MoldeKey, "Dir2"))
+            .DirCount(3) = Val(Loader.GetValue(MoldeKey, "Dir3"))
+            .DirCount(4) = Val(Loader.GetValue(MoldeKey, "Dir4"))
+            .TotalGrhs = .DirCount(1) + .DirCount(2) + .DirCount(3) + .DirCount(4) + 4
+        End With
+    Next
+    
+    Set Loader = Nothing
+    
+    #If Compresion = 1 Then
+        Delete_File Windows_Temp_Dir & "moldes.ini"
+    #End If
+
+End Sub
+
 Sub CargarCabezas()
     
     On Error GoTo CargarCabezas_Err
@@ -1824,7 +1891,7 @@ CargarCascos_Err:
     
 End Sub
 
-Sub CargarCuerpos()
+Sub CargarCuerposViejo()
     
     On Error GoTo CargarCuerpos_Err
     
@@ -1883,6 +1950,150 @@ Sub CargarCuerpos()
         Delete_File Windows_Temp_Dir & "personajes.ind"
     #End If
 
+    
+    Exit Sub
+
+CargarCuerpos_Err:
+    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarCuerpos", Erl)
+    Resume Next
+    
+End Sub
+
+Sub CargarCuerpos()
+    
+    On Error GoTo CargarCuerpos_Err
+    
+    Dim Loader       As clsIniManager
+
+    Dim i            As Long
+    
+    Dim j            As Byte
+    
+    Dim k            As Integer
+    
+    Dim Heading      As Byte
+    
+    Dim BodyKey      As String
+    
+    Dim Std          As Byte
+
+    Dim NumCuerpos   As Integer
+    
+    Dim LastGrh      As Long
+    
+    Dim AnimStart    As Long
+    
+    Dim x            As Long
+    
+    Dim y            As Long
+    
+    Dim FileNum      As Long
+    
+    Set Loader = New clsIniManager
+    
+    #If Compresion = 1 Then
+
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cuerpos.ini", Windows_Temp_Dir, False) Then
+            Err.Description = "¡No se puede cargar el archivo de cuerpos.ini!"
+            MsgBox Err.Description
+
+        End If
+
+        Call Loader.Initialize(Windows_Temp_Dir & "cuerpos.ini")
+    #Else
+        Call Loader.Initialize(App.Path & "\..\Recursos\init\cuerpos.ini")
+    #End If
+    
+    NumCuerpos = Val(Loader.GetValue("INIT", "NumBodies"))
+    
+    'Resize array
+    ReDim Preserve BodyData(0 To NumCuerpos)
+
+    For i = 1 To NumCuerpos
+        BodyKey = "BODY" & i
+    
+        Std = Val(Loader.GetValue(BodyKey, "Std"))
+        BodyData(i).HeadOffset.x = Val(Loader.GetValue(BodyKey, "HeadOffsetX"))
+        BodyData(i).HeadOffset.y = Val(Loader.GetValue(BodyKey, "HeadOffsetY"))
+
+        If Std = 0 Then
+            InitGrh BodyData(i).Walk(1), Val(Loader.GetValue(BodyKey, "Walk1")), 0
+            InitGrh BodyData(i).Walk(2), Val(Loader.GetValue(BodyKey, "Walk2")), 0
+            InitGrh BodyData(i).Walk(3), Val(Loader.GetValue(BodyKey, "Walk3")), 0
+            InitGrh BodyData(i).Walk(4), Val(Loader.GetValue(BodyKey, "Walk4")), 0
+            
+        Else
+            FileNum = Val(Loader.GetValue(BodyKey, "FileNum"))
+        
+            LastGrh = UBound(GrhData)
+
+            ' Agrego espacio para meter el body en GrhData
+            ReDim Preserve GrhData(1 To LastGrh + MoldesBodies(Std).TotalGrhs)
+            
+            MaxGrh = UBound(GrhData)
+            
+            LastGrh = LastGrh + 1
+            x = MoldesBodies(Std).x
+            y = MoldesBodies(Std).y
+            
+            For j = 1 To 4
+                AnimStart = LastGrh
+            
+                For k = 1 To MoldesBodies(Std).DirCount(j)
+                    With GrhData(LastGrh)
+                        .FileNum = FileNum
+                        .NumFrames = 1
+                        .sX = x
+                        .sY = y
+                        .pixelWidth = MoldesBodies(Std).Width
+                        .pixelHeight = MoldesBodies(Std).Height
+                        
+                        .TileWidth = .pixelWidth / TilePixelHeight
+                        .TileHeight = .pixelHeight / TilePixelWidth
+        
+                        ReDim .Frames(1)
+                        .Frames(1) = LastGrh
+                    End With
+                    
+                    LastGrh = LastGrh + 1
+                    x = x + MoldesBodies(Std).Width
+                Next
+                
+                x = MoldesBodies(Std).x
+                y = y + MoldesBodies(Std).Height
+                
+                Heading = BodiesHeading(j)
+                
+                With GrhData(LastGrh)
+                    .NumFrames = MoldesBodies(Std).DirCount(j)
+                    .speed = .NumFrames / 0.018
+                    
+                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
+                    
+                    For k = 1 To MoldesBodies(Std).DirCount(j)
+                        .Frames(k) = AnimStart + k - 1
+                    Next
+                    
+                    .pixelWidth = GrhData(.Frames(1)).pixelWidth
+                    .pixelHeight = GrhData(.Frames(1)).pixelHeight
+                    .TileWidth = GrhData(.Frames(1)).TileWidth
+                    .TileHeight = GrhData(.Frames(1)).TileHeight
+                End With
+                
+                InitGrh BodyData(i).Walk(Heading), LastGrh, 0
+                
+                LastGrh = LastGrh + 1
+            Next
+
+        End If
+
+    Next i
+
+    #If Compresion = 1 Then
+        Delete_File Windows_Temp_Dir & "cuerpos.ini"
+    #End If
+
+    Set Loader = Nothing
     
     Exit Sub
 
