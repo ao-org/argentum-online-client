@@ -227,6 +227,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                               
             Case "/EST"
                 Call WriteRequestStats
+                
+            Case "/PROMEDIO"
+                Call WritePromedio
             
             Case "/AYUDA"
                 Call WriteHelp

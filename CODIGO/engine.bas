@@ -1531,7 +1531,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If charindex = UserCharIndex Then
                     MostrarInvi = True
                 
-                ElseIf .priv <= charlist(UserCharIndex).priv Then
+                ElseIf .priv > 0 And .priv <= charlist(UserCharIndex).priv Then
                     MostrarInvi = True
                 
                 ElseIf .group_index > 0 Then
