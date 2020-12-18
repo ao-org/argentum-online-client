@@ -58,9 +58,10 @@ Public Enum FontTypeNames
     FONTTYPE_PROMEDIO_MENOR
     FONTTYPE_PROMEDIO_MAYOR
 
+    [FONTTYPE_MAX]
 End Enum
 
-Public FontTypes(39) As tFont
+Public FontTypes([FONTTYPE_MAX] - 1) As tFont
 ' *********************************************************
 ' FIN - FUENTES
 ' *********************************************************
@@ -1286,10 +1287,10 @@ Public Sub CargarParticulasBinary()
     Dim ColorSet   As Long
     Dim temp       As Integer
 
-    Dim handle     As Integer
+    Dim Handle     As Integer
 
     'Open files
-    handle = FreeFile()
+    Handle = FreeFile()
 
     #If Compresion = 1 Then
 
@@ -1394,10 +1395,10 @@ Public Sub CargarIndicesOBJBinary()
         
     #End If
 
-    Dim handle As Integer
+    Dim Handle As Integer
 
     'Open files
-    handle = FreeFile()
+    Handle = FreeFile()
 
     Dim N As Integer
     
@@ -2188,11 +2189,11 @@ Public Function LoadGrhData() As Boolean
     Dim grh         As Long
     Dim Frame       As Long
     Dim grhCount    As Long
-    Dim handle      As Integer
+    Dim Handle      As Integer
     Dim fileVersion As Long
     
     'Open files
-    handle = FreeFile()
+    Handle = FreeFile()
     
     #If Compresion = 1 Then
 
@@ -2202,16 +2203,16 @@ Public Function LoadGrhData() As Boolean
 
         End If
     
-        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #handle
+        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #Handle
     #Else
-        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #handle
+        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #Handle
     #End If
     
     'Get file version
-    Get #handle, , fileVersion
+    Get #Handle, , fileVersion
     
     'Get number of grhs
-    Get #handle, , grhCount
+    Get #Handle, , grhCount
     
     'Resize arrays
     ReDim GrhData(1 To grhCount) As GrhData
@@ -2222,15 +2223,15 @@ Public Function LoadGrhData() As Boolean
 
     Fin = False
 
-    While Not EOF(handle) And Fin = False
+    While Not EOF(Handle) And Fin = False
 
-        Get #handle, , grh
+        Get #Handle, , grh
 
         With GrhData(grh)
         
             GrhData(grh).active = True
             'Get number of frames
-            Get #handle, , .NumFrames
+            Get #Handle, , .NumFrames
 
             If .NumFrames <= 0 Then GoTo ErrorHandler
             
@@ -2240,7 +2241,7 @@ Public Function LoadGrhData() As Boolean
 
                 'Read a animation GRH set
                 For Frame = 1 To .NumFrames
-                    Get #handle, , .Frames(Frame)
+                    Get #Handle, , .Frames(Frame)
 
                     If .Frames(Frame) <= 0 Or .Frames(Frame) > grhCount Then
                         GoTo ErrorHandler
@@ -2249,7 +2250,7 @@ Public Function LoadGrhData() As Boolean
 
                 Next Frame
                 
-                Get #handle, , GrhData(grh).speed
+                Get #Handle, , GrhData(grh).speed
                 
                 If .speed <= 0 Then GoTo ErrorHandler
                 
@@ -2271,23 +2272,23 @@ Public Function LoadGrhData() As Boolean
                 If .TileHeight <= 0 Then GoTo ErrorHandler
             Else
                 'Read in normal GRH data
-                Get #handle, , .FileNum
+                Get #Handle, , .FileNum
 
                 If .FileNum <= 0 Then GoTo ErrorHandler
                                 
-                Get #handle, , GrhData(grh).sX
+                Get #Handle, , GrhData(grh).sX
 
                 If .sX < 0 Then GoTo ErrorHandler
                 
-                Get #handle, , GrhData(grh).sY
+                Get #Handle, , GrhData(grh).sY
 
                 If .sY < 0 Then GoTo ErrorHandler
                 
-                Get #handle, , GrhData(grh).pixelWidth
+                Get #Handle, , GrhData(grh).pixelWidth
 
                 If .pixelWidth <= 0 Then GoTo ErrorHandler
                 
-                Get #handle, , GrhData(grh).pixelHeight
+                Get #Handle, , GrhData(grh).pixelHeight
 
                 If .pixelHeight <= 0 Then GoTo ErrorHandler
                 
@@ -2304,7 +2305,7 @@ Public Function LoadGrhData() As Boolean
         If grh = MaxGrh Then Fin = True
     Wend
 
-    Close #handle
+    Close #Handle
     
     LoadGrhData = True
     
@@ -2327,9 +2328,9 @@ Public Function CargarMiniMap()
 
     Dim count  As Long
 
-    Dim handle As Integer
+    Dim Handle As Integer
 
-    handle = FreeFile
+    Handle = FreeFile
     
     #If Compresion = 1 Then
 
@@ -2339,23 +2340,23 @@ Public Function CargarMiniMap()
 
         End If
     
-        Open Windows_Temp_Dir & "minimap.bin" For Binary Access Read As #handle
+        Open Windows_Temp_Dir & "minimap.bin" For Binary Access Read As #Handle
     #Else
     
-        Open App.Path & "\..\Recursos\init\minimap.bin" For Binary Access Read As #handle
+        Open App.Path & "\..\Recursos\init\minimap.bin" For Binary Access Read As #Handle
         
     #End If
 
     For count = 1 To MaxGrh
 
         If GrhData(count).active Then
-            Get #handle, , GrhData(count).MiniMap_color
+            Get #Handle, , GrhData(count).MiniMap_color
 
         End If
 
     Next count
     
-    Close #handle
+    Close #Handle
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "minimap.bin"
