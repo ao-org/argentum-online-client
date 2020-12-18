@@ -514,6 +514,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2910,37 +2911,33 @@ Private Sub MacroLadder_Timer()
     
     If pausa Then Exit Sub
     
-
-    If MainTimer.Check(TimersIndex.Work) Then
-        If UserMacro.cantidad > 0 And UserMacro.Activado And UserMinSTA > 0 Then
-        
-            Select Case UserMacro.TIPO
-
-                Case 1 'Alquimia
-                    Call WriteCraftAlquimista(UserMacro.Index)
-
-                Case 2 'Carpinteria
-                    Call WriteCraftCarpenter(UserMacro.Index)
-
-                Case 3 'Sasteria
-                    Call WriteCraftSastre(UserMacro.Index)
-
-                Case 4 'Herreria
-                    Call WriteCraftBlacksmith(UserMacro.Index)
-
-                Case 6
-                    Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
-
-            End Select
-
-        Else
-            Call ResetearUserMacro
-
-        End If
+    If UserMacro.cantidad > 0 And UserMacro.Activado And UserMinSTA > 0 Then
     
-        UserMacro.cantidad = UserMacro.cantidad - 1
-        
+        Select Case UserMacro.TIPO
+
+            Case 1 'Alquimia
+                Call WriteCraftAlquimista(UserMacro.Index)
+
+            Case 2 'Carpinteria
+                Call WriteCraftCarpenter(UserMacro.Index)
+
+            Case 3 'Sasteria
+                Call WriteCraftSastre(UserMacro.Index)
+
+            Case 4 'Herreria
+                Call WriteCraftBlacksmith(UserMacro.Index)
+
+            Case 6
+                Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
+
+        End Select
+
+    Else
+        Call ResetearUserMacro
+
     End If
+
+    UserMacro.cantidad = UserMacro.cantidad - 1
 
     
     Exit Sub
@@ -2996,7 +2993,7 @@ Public Sub ActivarMacroTrabajo()
     
     TargetXMacro = tX
     TargetYMacro = tY
-    macrotrabajo.Interval = IntervaloTrabajo
+    macrotrabajo.Interval = IntervaloTrabajoConstruir
     macrotrabajo.Enabled = True
     Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
 
@@ -4269,7 +4266,7 @@ Public Sub Form_Click()
                 
                     'Splitted because VB isn't lazy!
                     If (UsingSkill = Robar Or UsingSkill = Domar Or UsingSkill = Grupo Or UsingSkill = MarcaDeClan Or UsingSkill = MarcaDeGM) Then
-                        If MainTimer.Check(TimersIndex.Work) Then
+                        If MainTimer.Check(TimersIndex.CastSpell) Then
                             If UsingSkill = MarcaDeGM Then
 
                                 Dim Pos As Integer
@@ -4293,7 +4290,7 @@ Public Sub Form_Click()
                     
                     If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or UsingSkill = FundirMetal) Then
                         
-                        If MainTimer.Check(TimersIndex.Work) Then
+                        If MainTimer.Check(TimersIndex.CastSpell) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
                             Call FormParser.Parse_Form(frmMain)
 

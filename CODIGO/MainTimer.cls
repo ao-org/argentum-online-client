@@ -44,12 +44,6 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ''
-' How many timers we are going to use-
-'
-' @see See MainTimer.CreateAll
-Private Const CANTIDADTIMERS As Byte = 12
-
-''
 ' A Timer data structure.
 '
 ' @param Interval How long, in miliseconds, a cicle lasts.
@@ -66,9 +60,6 @@ Private Type Timer
 
 End Type
 
-'Timers
-Dim Timer(1 To CANTIDADTIMERS) As Timer
-
 ''
 ' Timer´s Index.
 '
@@ -82,19 +73,26 @@ Dim Timer(1 To CANTIDADTIMERS) As Timer
 Public Enum TimersIndex
 
     Attack = 1
-    Work = 2
-    UseItemWithU = 3
-    UseItemWithDblClick = 4
-    SendRPU = 5
-    CastSpell = 6
-    Arrows = 7
-    CastAttack = 8
-    AttackSpell = 9
-    AttackUse = 10
-    Walk = 11
-    Drop = 12
+    UseItemWithU = 2
+    UseItemWithDblClick = 3
+    SendRPU = 4
+    CastSpell = 5
+    Arrows = 6
+    CastAttack = 7
+    AttackSpell = 8
+    AttackUse = 9
+    Walk = 10
+    Drop = 11
 
 End Enum
+
+''
+' How many timers we are going to use-
+'
+Private Const CANTIDADTIMERS As Byte = 11
+
+'Timers
+Dim Timer(1 To CANTIDADTIMERS) As Timer
 
 ''
 ' Sets a new intrval for a timer.

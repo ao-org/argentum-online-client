@@ -179,7 +179,7 @@ Private Sub Command3_Click()
         Call AddtoRichTextBox(frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1)
         
         UserMacro.Activado = True
-        frmMain.MacroLadder.Interval = IntervaloTrabajo
+        frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
         frmMain.MacroLadder.Enabled = True
     
     Else
@@ -360,7 +360,7 @@ Private Sub lstArmas_Click()
 
     desc.Caption = ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).Texto
 
-    Call Draw_Grh_Picture(ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).GrhIndex, Me.picture1, 0, 0, False, 0, COLOR_WHITE(0))
+    Call Grh_Render_To_Hdc(Me.picture1, ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).GrhIndex, 0, 0)
     
     picture1.Visible = True
     

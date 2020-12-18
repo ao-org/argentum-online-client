@@ -1383,9 +1383,9 @@ Private Sub HandleMacroTrabajoToggle()
         Call ResetearUserMacro
     Else
         AddtoRichTextBox frmMain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0
-        frmMain.MacroLadder.Interval = IntervaloTrabajo
+        frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
         frmMain.MacroLadder.Enabled = True
-        UserMacro.Intervalo = IntervaloTrabajo
+        UserMacro.Intervalo = IntervaloTrabajoConstruir
         UserMacro.Activado = True
         UserMacro.cantidad = 999
         UserMacro.TIPO = 6
@@ -2403,14 +2403,14 @@ Private Sub HandleIntervals()
     IntervaloMagia = incomingData.ReadLong()
     IntervaloMagiaGolpe = incomingData.ReadLong()
     IntervaloGolpeUsar = incomingData.ReadLong()
-    IntervaloTrabajo = incomingData.ReadLong()
+    IntervaloTrabajoExtraer = incomingData.ReadLong()
+    IntervaloTrabajoConstruir = incomingData.ReadLong()
     IntervaloUsarU = incomingData.ReadLong()
     IntervaloUsarClic = incomingData.ReadLong()
     IntervaloTirar = incomingData.ReadLong()
     
     'Set the intervals of timers
     Call MainTimer.SetInterval(TimersIndex.Attack, IntervaloGolpe)
-    Call MainTimer.SetInterval(TimersIndex.Work, IntervaloTrabajo)
     Call MainTimer.SetInterval(TimersIndex.UseItemWithU, IntervaloUsarU)
     Call MainTimer.SetInterval(TimersIndex.UseItemWithDblClick, IntervaloUsarClic)
     Call MainTimer.SetInterval(TimersIndex.SendRPU, INT_SENTRPU)
@@ -2421,13 +2421,9 @@ Private Sub HandleIntervals()
     Call MainTimer.SetInterval(TimersIndex.AttackUse, IntervaloGolpeUsar)
     Call MainTimer.SetInterval(TimersIndex.Drop, IntervaloTirar)
     Call MainTimer.SetInterval(TimersIndex.Walk, IntervaloCaminar)
-    
-    frmMain.macrotrabajo.Interval = IntervaloTrabajo
-    frmMain.macrotrabajo.Enabled = False
 
     'Init timers
     Call MainTimer.Start(TimersIndex.Attack)
-    Call MainTimer.Start(TimersIndex.Work)
     Call MainTimer.Start(TimersIndex.UseItemWithU)
     Call MainTimer.Start(TimersIndex.UseItemWithDblClick)
     Call MainTimer.Start(TimersIndex.SendRPU)
@@ -9992,7 +9988,7 @@ Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal Name As String, ByVal
     'Last Modification: 05/17/06
     'Writes the "CreateNewGuild" message to the outgoing data buffer
     '***************************************************
-    Dim temp As String
+    Dim Temp As String
 
     Dim i    As Long
     
@@ -10420,7 +10416,7 @@ Public Sub WriteClanCodexUpdate(ByVal desc As String)
     'Last Modification: 05/17/06
     'Writes the "ClanCodexUpdate" message to the outgoing data buffer
     '***************************************************
-    Dim temp As String
+    Dim Temp As String
 
     Dim i    As Long
     

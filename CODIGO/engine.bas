@@ -3807,60 +3807,6 @@ GetFreeIndex_Err:
     
 End Function
 
-Public Sub Draw_Grh_Picture(ByVal grh As Long, ByVal pic As PictureBox, ByVal x As Integer, ByVal y As Integer, ByVal Alpha As Boolean, ByVal Angle As Single, Color As RGBA, Optional ByVal ModSizeX2 As Byte = 0)
-    '**************************************************************
-    'Author: Mannakia
-    'Last Modify Date: 14/05/2009
-    'Modificado hoy(?) agregue funcion de agrandar y achicar para ladder :P
-    '**************************************************************
-    
-    On Error GoTo Draw_Grh_Picture_Err
-    
-
-    Static Picture As RECT
-
-    With Picture
-        .Left = 0
-        .Top = 0
-        
-        If ModSizeX2 = 1 Then
-            .Bottom = pic.ScaleHeight / 2
-            .Right = pic.ScaleWidth / 2
-        ElseIf ModSizeX2 = 2 Then
-            .Bottom = pic.ScaleHeight * 2
-            .Right = pic.ScaleWidth * 2
-        Else
-            .Bottom = pic.ScaleHeight
-            .Right = pic.ScaleWidth
-
-        End If
-        
-    End With
-
-    Dim s(3) As RGBA
-
-    s(0) = Color
-    s(1) = Color
-    s(2) = Color
-    s(3) = Color
-
-    Call DirectDevice.EndScene
-    Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
-    
-    Device_Box_Textured_Render grh, x, y, GrhData(grh).pixelWidth, GrhData(grh).pixelHeight, s, GrhData(grh).sX, GrhData(grh).sY, Alpha, Angle
-
-    Call DirectDevice.EndScene
-    Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
-
-    
-    Exit Sub
-
-Draw_Grh_Picture_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_Grh_Picture", Erl)
-    Resume Next
-    
-End Sub
-
 Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, ByVal EsAgua As Boolean, ByVal MapX As Integer, ByVal MapY As Integer, ByVal MinX As Integer, ByVal MaxX As Integer, ByVal MinY As Integer, ByVal MaxY As Integer)
     
     On Error GoTo Draw_Grh_Precalculated_Err

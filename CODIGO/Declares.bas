@@ -380,7 +380,9 @@ Public IntervaloArco           As Long
 
 Public IntervaloMagia          As Long
 
-Public IntervaloTrabajo        As Long
+Public IntervaloTrabajoExtraer As Long
+
+Public IntervaloTrabajoConstruir As Long
 
 Public IntervaloCaminar        As Long
 
