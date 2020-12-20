@@ -246,7 +246,10 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         MapData(nX, nY).charindex = charindex
         .Pos.x = nX
         .Pos.y = nY
-        MapData(x, y).charindex = 0
+        
+        If MapData(x, x).charindex = charindex Then
+            MapData(x, y).charindex = 0
+        End If
         
         .MoveOffsetX = -1 * (32 * addx)
         .MoveOffsetY = -1 * (32 * addy)

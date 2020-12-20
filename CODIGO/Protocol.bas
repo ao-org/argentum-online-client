@@ -3009,6 +3009,7 @@ Private Sub HandlePosUpdate()
     frmMain.personaje(0).Left = UserPos.x - 5
     frmMain.personaje(0).Top = UserPos.y - 4
 
+    Call RefreshAllChars
     
     Exit Sub
 
@@ -4447,7 +4448,34 @@ Private Sub HandleForceCharMove()
     
     Dim Direccion As Byte: Direccion = incomingData.ReadByte()
     
+    Moviendose = True
+    
+    Call MainTimer.Restart(TimersIndex.Walk)
+
     Call Char_Move_by_Head(UserCharIndex, Direccion)
+    Call MoveScreen(Direccion)
+    
+    frmMain.personaje(0).Left = UserPos.x - 5
+    frmMain.personaje(0).Top = UserPos.y - 4
+    
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+
+    If frmMapaGrande.Visible Then
+
+        Dim x As Long
+
+        Dim y As Long
+            
+        x = (idmap - 1) Mod 16
+        y = Int((idmap - 1) / 16)
+
+        frmMapaGrande.lblAllies.Top = y * 27
+        frmMapaGrande.lblAllies.Left = x * 27
+
+        frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
+        frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
+
+    End If
     
     Call RefreshAllChars
     
@@ -9988,7 +10016,7 @@ Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal Name As String, ByVal
     'Last Modification: 05/17/06
     'Writes the "CreateNewGuild" message to the outgoing data buffer
     '***************************************************
-    Dim Temp As String
+    Dim temp As String
 
     Dim i    As Long
     
@@ -10416,7 +10444,7 @@ Public Sub WriteClanCodexUpdate(ByVal desc As String)
     'Last Modification: 05/17/06
     'Writes the "ClanCodexUpdate" message to the outgoing data buffer
     '***************************************************
-    Dim Temp As String
+    Dim temp As String
 
     Dim i    As Long
     
@@ -11512,13 +11540,13 @@ Public Sub WritePromedio()
     'Writes the "Promedio" message to the outgoing data buffer
     '***************************************************
     
-    On Error GoTo Handle
+    On Error GoTo handle
     
     Call outgoingData.WriteByte(ClientPacketID.Promedio)
 
     Exit Sub
 
-Handle:
+handle:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WritePromedio", Erl)
     Resume Next
     
