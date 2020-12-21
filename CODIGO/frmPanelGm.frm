@@ -148,6 +148,10 @@ Begin VB.Form frmPanelGm
       Begin VB.Menu mnuTraer 
          Caption         =   "Traer el usuario"
       End
+      Begin VB.Menu mnuConsulta 
+         Caption         =   "Consulta"
+         Checked         =   -1  'True
+      End
       Begin VB.Menu mnuResponder 
          Caption         =   "Responder"
       End
@@ -1533,7 +1537,7 @@ Private Sub MnuEnviar_Click(Index As Integer)
 'ReyarB modifico cordenadas
 
          Case 0 'Ulla
-Coordenadas = "1 55 45" 
+Coordenadas = "1 55 45"
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 1 'Nix
@@ -2195,4 +2199,17 @@ YoAcciones_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmPanelGm.YoAcciones_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub mnuConsulta_Click()
+    
+    Dim Nick As String
+        Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
+    
+    If Len(Nick) <> 0 Then
+        
+        Call WriteConsulta(Nick)
+        
+    End If
+
 End Sub

@@ -550,8 +550,8 @@ Private Enum NewPacksID
     SeguroClan
     CreatePretorianClan     '/CREARPRETORIANOS
     RemovePretorianClan     '/ELIMINARPRETORIANOS
-    Home
-    
+    Home                    '/HOGAR
+    Consulta                '/CONSULTA
 End Enum
 
 ''
@@ -20004,8 +20004,32 @@ Public Sub WriteHome()
 'Last Modification: 01/06/10
 'Writes the "Home" message to the outgoing data buffer
 '***************************************************
+
     With outgoingData
-        Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-        Call outgoingData.WriteByte(NewPacksID.Home)
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.Home)
     End With
+    
+End Sub
+
+''
+' Writes the "Consulta" message to the outgoing data buffer.
+'
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteConsulta(Optional ByVal Nick As String = vbNullString)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 01/05/2010
+'Writes the "Consulta" message to the outgoing data buffer
+'***************************************************
+    
+    With outgoingData
+    
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.Consulta)
+        Call .WriteASCIIString(Nick)
+    
+    End With
+    
 End Sub
