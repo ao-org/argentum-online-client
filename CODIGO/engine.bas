@@ -1531,7 +1531,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If charindex = UserCharIndex Then
                     MostrarInvi = True
                 
-                ElseIf .priv > 0 And .priv <= charlist(UserCharIndex).priv Then
+                ElseIf charlist(UserCharIndex).priv > 0 And .priv <= charlist(UserCharIndex).priv Then
                     MostrarInvi = True
                 
                 ElseIf .group_index > 0 Then
@@ -1547,10 +1547,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
                 End If
                 
-                If .priv > charlist(UserCharIndex).priv Then
-                    Exit Sub
-                
-                ElseIf MostrarInvi Then
+                If MostrarInvi Then
                     Call RGBAList(Color, 255, 255, 255, 100)
                     Call RGBAList(NameColor, 100, 100, 200)
                     MostrarNombre = True
