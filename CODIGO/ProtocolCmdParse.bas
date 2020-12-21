@@ -1596,6 +1596,49 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
+            Case "/DAR"
+
+                If EsGM Then
+                    If notNullArguments Then
+                        tmpArr = Split(ArgumentosRaw, "@", 4)
+    
+                        If UBound(tmpArr) < 2 Then
+                            'Faltan los parametros con el formato propio
+                             Call ShowConsoleMsg("Faltan parámetros. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].")
+    
+                        Else
+                            If Len(tmpArr(0)) = 0 Then
+                                Call ShowConsoleMsg("Ingrese el nombre del usuario. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].")
+                            
+                            ElseIf Len(tmpArr(1)) = 0 Then
+                                Call ShowConsoleMsg("Ingrese el motivo para dar. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].")
+                            
+                            ElseIf ValidNumber(tmpArr(2), ent_Integer) Then
+                                Dim cantidad As String
+                                If UBound(tmpArr) = 2 Then
+                                    cantidad = 1
+                                Else
+                                    cantidad = tmpArr(3)
+                                End If
+                                
+                                If ValidNumber(cantidad, ent_Integer) Then
+                                    Call WriteGiveItem(tmpArr(0), tmpArr(2), cantidad, tmpArr(1))
+                                Else
+                                    Call ShowConsoleMsg("Cantidad inválida. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].")
+                                End If
+                            Else
+                                Call ShowConsoleMsg("Número de objeto inválido. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].")
+                            End If
+                            
+                        End If
+    
+                    Else
+                        'Avisar que falta el parametro
+                         Call ShowConsoleMsg("Faltan parámetros. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].")
+    
+                    End If
+                End If
+                
             Case "/DEST"
                 Call WriteDestroyItems
                 
@@ -1903,9 +1946,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /slot NICK@SLOT.")
 
                 End If
-                
-            Case "/CENTINELAACTIVADO"
-                Call WriteToggleCentinelActivated
             
             Case "/CREARPRETORIANOS"
             
