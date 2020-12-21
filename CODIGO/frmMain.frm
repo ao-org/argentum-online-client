@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -514,7 +514,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -558,7 +557,7 @@ Begin VB.Form frmMain
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "17 PM"
+      Caption         =   "00:00"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -570,10 +569,10 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   13155
+      Left            =   13170
       TabIndex        =   39
       Top             =   1995
-      Width           =   525
+      Width           =   495
    End
    Begin VB.Image imgOro 
       Height          =   255

@@ -78,17 +78,11 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
 
     Dim Elapsed As Single
     Elapsed = (FrameTime - HoraMundo) / DuracionDia
+    Elapsed = (Elapsed - Fix(Elapsed)) * 24
 
-    Dim HoraActual As Long
-    HoraActual = Fix((Elapsed - Fix(Elapsed)) * 24)
-    
-    If HoraActual > 12 Then
-        frmMain.lblhora = HoraActual & " PM"
-    Else
-        frmMain.lblhora = HoraActual & " AM"
-    End If
-    
-    
+    Dim HoraActual As Integer
+    HoraActual = Fix(Elapsed)
+
     Dim CurrentIndex As Integer
     CurrentIndex = HoraActual \ 2
     
@@ -111,7 +105,11 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
             End If
         End If
     End If
-
+    
+    Dim Minutos As Integer
+    Minutos = (Elapsed - HoraActual) * 60
+    
+    frmMain.lblhora = Right$("00" & HoraActual, 2) & ":" & Right$("00" & Minutos, 2)
     
     Exit Sub
 
