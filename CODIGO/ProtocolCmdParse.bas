@@ -2149,7 +2149,16 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteGlobalOnOff
                 
             Case "/CONSULTA"
-                Call WriteConsulta
+                If Not IsNumeric(ArgumentosAll(0)) Then
+                    Call WriteConsulta(ArgumentosAll(0))
+                    
+                Else
+                
+                    With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                        Call ShowConsoleMsg("Formato inválido. Es /CONSULTA [NICK]", .red, .green, .blue, .bold, .italic)
+                    End With
+                    
+                End If
                 
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")
