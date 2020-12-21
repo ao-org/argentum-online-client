@@ -2793,11 +2793,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 204
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.EXPBAR.Width = 204
+        frmMain.ExpBar.Width = 204
         frmMain.lblPorcLvl.Caption = vbNullString
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -5438,9 +5438,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 204
     Else
-        frmMain.EXPBAR.Width = 204
+        frmMain.ExpBar.Width = 204
         frmMain.lblPorcLvl.Caption = "" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -7684,7 +7684,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8091,7 +8091,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -11541,13 +11541,13 @@ Public Sub WritePromedio()
     'Writes the "Promedio" message to the outgoing data buffer
     '***************************************************
     
-    On Error GoTo handle
+    On Error GoTo Handle
     
     Call outgoingData.WriteByte(ClientPacketID.Promedio)
 
     Exit Sub
 
-handle:
+Handle:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WritePromedio", Erl)
     Resume Next
     
@@ -11563,7 +11563,7 @@ Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal ca
     'Writes the "GiveItem" message to the outgoing data buffer
     '***************************************************
     
-    On Error GoTo handle
+    On Error GoTo Handle
     
     With outgoingData
         Call .WriteByte(ClientPacketID.GiveItem)
@@ -11576,7 +11576,7 @@ Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal ca
 
     Exit Sub
 
-handle:
+Handle:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGiveItem", Erl)
     Resume Next
     
@@ -17486,7 +17486,7 @@ Private Sub HandleUserOnline()
     rdata = buffer.ReadInteger()
     
     usersOnline = rdata
-    frmMain.onlines = "Onlines: " & usersOnline
+    frmMain.onlines = "Online: " & usersOnline
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
