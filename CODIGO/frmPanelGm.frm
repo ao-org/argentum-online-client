@@ -150,7 +150,6 @@ Begin VB.Form frmPanelGm
       End
       Begin VB.Menu mnuConsulta 
          Caption         =   "Consulta"
-         Checked         =   -1  'True
       End
       Begin VB.Menu mnuResponder 
          Caption         =   "Responder"
@@ -2209,6 +2208,7 @@ Private Sub mnuConsulta_Click()
     If Len(Nick) <> 0 Then
         
         Call WriteConsulta(Nick)
+        Call WriteGoToChar(Nick)
         
     End If
 
