@@ -577,19 +577,22 @@ Function CheckData() As Boolean
     
 
     If UserRaza = 0 Then
-        MsgBox "Seleccione la raza del personaje."
+        frmMensaje.Show , frmConnect
+        frmMensaje.msg.Caption = "Seleccione la raza del personaje."
         Exit Function
 
     End If
 
     If MiCabeza = 0 Then
-        MsgBox "Seleccione una cabeza para el personaje."
+        frmMensaje.Show , frmConnect
+        frmMensaje.msg.Caption = "Seleccione una cabeza para el personaje."
         Exit Function
 
     End If
 
     If UserSexo = 0 Then
-        MsgBox "Seleccione el sexo del personaje."
+        frmMensaje.Show , frmConnect
+        frmMensaje.msg.Caption = "Seleccione el sexo del personaje."
         Exit Function
 
     End If
@@ -597,14 +600,16 @@ Function CheckData() As Boolean
     
     
     If UserHogar = 0 Then
-        MsgBox "Seleccione el hogar del personaje."
+        frmMensaje.Show , frmConnect
+        frmMensaje.msg.Caption = "Seleccione el hogar del personaje."
         Exit Function
 
     End If
     
 
     If UserClase = 0 Then
-        MsgBox "Seleccione la clase del personaje."
+        frmMensaje.Show , frmConnect
+        frmMensaje.msg.Caption = "Seleccione la clase del personaje."
         Exit Function
 
     End If
@@ -821,28 +826,28 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
 
     If x > 331 And x < 347 And y > 412 And y < 424 Then 'Boton izquierda cabezas
-        If cabeza.ListCount = 0 Then Exit Sub
-        If cabeza.ListIndex > 0 Then
-            cabeza.ListIndex = cabeza.ListIndex - 1
+        If Cabeza.ListCount = 0 Then Exit Sub
+        If Cabeza.ListIndex > 0 Then
+            Cabeza.ListIndex = Cabeza.ListIndex - 1
 
         End If
 
-        If cabeza.ListIndex = 0 Then
-            cabeza.ListIndex = cabeza.ListCount - 1
+        If Cabeza.ListIndex = 0 Then
+            Cabeza.ListIndex = Cabeza.ListCount - 1
 
         End If
 
     End If
 
     If x > 401 And x < 415 And y > 412 And y < 424 Then 'Boton Derecha cabezas
-        If cabeza.ListCount = 0 Then Exit Sub
-        If (cabeza.ListIndex + 1) <> cabeza.ListCount Then
-            cabeza.ListIndex = cabeza.ListIndex + 1
+        If Cabeza.ListCount = 0 Then Exit Sub
+        If (Cabeza.ListIndex + 1) <> Cabeza.ListCount Then
+            Cabeza.ListIndex = Cabeza.ListIndex + 1
 
         End If
 
-        If (cabeza.ListIndex + 1) = cabeza.ListCount Then
-            cabeza.ListIndex = 0
+        If (Cabeza.ListIndex + 1) = Cabeza.ListCount Then
+            Cabeza.ListIndex = 0
 
         End If
 
@@ -1108,7 +1113,7 @@ Private Sub Cabeza_Click()
     
     On Error GoTo Cabeza_Click_Err
     
-    MiCabeza = Val(cabeza.List(cabeza.ListIndex))
+    MiCabeza = Val(Cabeza.List(Cabeza.ListIndex))
     Call DibujarCPJ(MiCabeza, 3)
 
     CPHead = MiCabeza

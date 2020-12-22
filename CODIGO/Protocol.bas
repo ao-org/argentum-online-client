@@ -2793,11 +2793,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.ExpBar.Width = 204
+        frmMain.EXPBAR.Width = 204
         frmMain.lblPorcLvl.Caption = vbNullString
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -3966,19 +3966,25 @@ Private Sub HandleShowMessageBox()
 
     mensaje = buffer.ReadASCIIString()
 
-    If QueRender = 0 Then
-        frmMensaje.msg.Caption = mensaje
-        frmMensaje.Show , frmMain
-    ElseIf QueRender = 1 Then
-        Call Sound.Sound_Play(SND_EXCLAMACION)
-        Call TextoAlAsistente(mensaje)
-        Call Long_2_RGBAList(textcolorAsistente, -1)
+    Select Case QueRender
+        Case 0
+            frmMensaje.msg.Caption = mensaje
+            frmMensaje.Show , frmMain
 
-    ElseIf QueRender = 2 Then
-        frmMensaje.Show
-        frmMensaje.msg.Caption = mensaje
+        Case 1
+            Call Sound.Sound_Play(SND_EXCLAMACION)
+            Call TextoAlAsistente(mensaje)
+            Call Long_2_RGBAList(textcolorAsistente, -1)
 
-    End If
+        Case 2
+            frmMensaje.Show
+            frmMensaje.msg.Caption = mensaje
+        
+        Case 3
+            frmMensaje.Show , frmConnect
+            frmMensaje.msg.Caption = mensaje
+
+    End Select
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -5438,9 +5444,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 204
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 204
     Else
-        frmMain.ExpBar.Width = 204
+        frmMain.EXPBAR.Width = 204
         frmMain.lblPorcLvl.Caption = "" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -7684,7 +7690,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8091,7 +8097,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
