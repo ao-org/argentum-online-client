@@ -921,7 +921,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     Select Case UCase$(ArgumentosAll(1))
 
-                        Case "BODY"
+                        Case "BODY", "CUERPO"
                             tmpInt = eEditOptions.eo_Body
                             
                         Case "ARMA"
@@ -936,39 +936,72 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Case "PARTICULA"
                             tmpInt = eEditOptions.eo_Particula
                             
-                        Case "HEAD"
+                        Case "HEAD", "CABEZA"
                             tmpInt = eEditOptions.eo_Head
                         
                         Case "ORO"
                             tmpInt = eEditOptions.eo_Gold
                         
-                        Case "LEVEL"
+                        Case "LEVEL", "LVL", "ELV"
                             tmpInt = eEditOptions.eo_Level
                         
                         Case "SKILLS"
                             tmpInt = eEditOptions.eo_Skills
                         
-                        Case "SKILLSLIBRES"
+                        Case "SKILLSLIBRES", "LIBRES"
                             tmpInt = eEditOptions.eo_SkillPointsLeft
                         
-                        Case "CLASE"
+                        Case "CLASE", "CLASS"
                             tmpInt = eEditOptions.eo_Class
                         
                         Case "EXP"
                             tmpInt = eEditOptions.eo_Experience
                         
-                        Case "CRI"
+                        Case "CRI", "CRIMINALES"
                             tmpInt = eEditOptions.eo_CriminalsKilled
                         
-                        Case "CIU"
+                        Case "CIU", "CIUDADANOS"
                             tmpInt = eEditOptions.eo_CiticensKilled
                         
-                        Case "SEX"
+                        Case "SEX", "SEXO", "GENERO", "GENDER"
                             tmpInt = eEditOptions.eo_Sex
                             
-                        Case "RAZA"
+                        Case "RAZA", "RACE"
                             tmpInt = eEditOptions.eo_Raza
-                        
+                            
+                        Case "HP", "VIDA", "SALUD"
+                            tmpInt = eEditOptions.eo_Vida
+                            
+                        Case "MP", "MANA"
+                            tmpInt = eEditOptions.eo_Mana
+                            
+                        Case "STA", "STAMINA", "ENERGIA"
+                            tmpInt = eEditOptions.eo_Energia
+                            
+                        Case "MINHP", "MINVIDA"
+                            tmpInt = eEditOptions.eo_MinHP
+                            
+                        Case "MINMP", "MINMANA"
+                            tmpInt = eEditOptions.eo_MinMP
+                            
+                        Case "HIT", "GOLPE"
+                            tmpInt = eEditOptions.eo_Hit
+                            
+                        Case "MINHIT", "MINGOLPE"
+                            tmpInt = eEditOptions.eo_MinHit
+                            
+                        Case "MAXHIT", "MAXGOLPE"
+                            tmpInt = eEditOptions.eo_MaxHit
+                            
+                        Case "DESC", "DESCRIPCION"
+                            tmpInt = eEditOptions.eo_Desc
+                            
+                        Case "INT", "INTERVALO"
+                            tmpInt = eEditOptions.eo_Intervalo
+                            
+                        Case "HOGAR", "CIUDAD", "CASA"
+                            tmpInt = eEditOptions.eo_Hogar
+
                         Case Else
                             tmpInt = -1
 

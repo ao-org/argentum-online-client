@@ -1089,6 +1089,17 @@ Public Enum eEditOptions
     eo_Escudo
     eo_Casco
     eo_Particula
+    eo_Vida
+    eo_Mana
+    eo_Energia
+    eo_MinHP
+    eo_MinMP
+    eo_Hit
+    eo_MinHit
+    eo_MaxHit
+    eo_Desc
+    eo_Intervalo
+    eo_Hogar
 
 End Enum
 
