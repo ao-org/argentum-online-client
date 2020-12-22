@@ -2659,8 +2659,17 @@ Private Sub HandleUpdateMana()
     'Remove packet ID
     Call incomingData.ReadByte
     
+    Dim OldMana As Integer
+    OldMana = UserMinMAN
+    
     'Get data and update form
     UserMinMAN = incomingData.ReadInteger()
+    
+    If UserMeditar And UserMinMAN - OldMana > 0 Then
+        With FontTypes(FontTypeNames.FONTTYPE_INFO)
+            Call ShowConsoleMsg("Has ganado " & UserMinMAN - OldMana & " de maná.", .red, .green, .blue, .bold, .italic)
+        End With
+    End If
     
     If UserMaxMAN > 0 Then
         frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
@@ -7432,6 +7441,16 @@ Private Sub HandleMeditateToggle()
     
     If charindex = UserCharIndex Then
         UserMeditar = (fX <> 0)
+        
+        If UserMeditar Then
+            With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                Call ShowConsoleMsg("Comienzas a meditar.", .red, .green, .blue, .bold, .italic)
+            End With
+        Else
+            With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                Call ShowConsoleMsg("Has dejado de meditar.", .red, .green, .blue, .bold, .italic)
+            End With
+        End If
     End If
     
     With charlist(charindex)
