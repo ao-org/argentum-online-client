@@ -1748,6 +1748,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
 
                 Pos = InStr(.nombre, "<")
+                
+                If Pos = 0 Then Pos = InStr(.nombre, "[")
 
                 If Pos = 0 Then Pos = Len(.nombre) + 2
 

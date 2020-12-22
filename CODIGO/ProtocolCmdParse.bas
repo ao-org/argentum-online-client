@@ -2149,7 +2149,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteGlobalOnOff
                 
             Case "/CONSULTA"
-                Call WriteConsulta(ArgumentosAll(0))
+                Call WriteConsulta(ArgumentosRaw)
                 
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")

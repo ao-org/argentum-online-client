@@ -2208,7 +2208,6 @@ Private Sub mnuConsulta_Click()
     If Len(Nick) <> 0 Then
         
         Call WriteConsulta(Nick)
-        Call WriteGoToChar(Nick)
         
     End If
 
