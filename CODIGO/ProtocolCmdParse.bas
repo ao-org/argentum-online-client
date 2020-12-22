@@ -711,32 +711,17 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/IRA"
                 If EsGM Then
-                    If notNullArguments Then
-                        Call WriteGoToChar(ArgumentosRaw)
-                    Else
-                        'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan parámetros. Utilice /ira NICKNAME.")
-
-                    End If
-
+                    Call WriteGoToChar(ArgumentosRaw)
                 End If
                 
             Case "/GO"
                 If EsGM Then
-                    If notNullArguments Then
-                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
-                            Call WriteWarpChar("YO", ArgumentosAll(0), 50, 50)
-                        Else
-                            Call WriteGoToChar(ArgumentosRaw)
-
-                        End If
-
+                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then
+                        Call WriteWarpChar("YO", ArgumentosRaw, 50, 50)
                     Else
-                        'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan parámetros. Utilice /go NICKNAME o /go MAPA.")
+                        Call WriteGoToChar(ArgumentosRaw)
 
                     End If
-
                 End If
                 
             Case "/LUZ"
