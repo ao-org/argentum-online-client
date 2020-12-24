@@ -514,6 +514,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2244,6 +2245,14 @@ Image2_MouseDown_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMain.Image2_MouseDown", Erl)
     Resume Next
     
+End Sub
+
+Private Sub HpBar_Click()
+    Call ParseUserCommand("/PROMEDIO")
+End Sub
+
+Private Sub Hpshp_Click()
+    HpBar_Click
 End Sub
 
 Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
