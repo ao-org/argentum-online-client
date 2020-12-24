@@ -1526,51 +1526,17 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 MostrarNombre = False
                 
             ElseIf .Invisible Then
-                Dim MostrarInvi As Boolean
-                
-                If charindex = UserCharIndex Then
-                    MostrarInvi = True
-                
-                ElseIf charlist(UserCharIndex).priv > 0 And .priv <= charlist(UserCharIndex).priv Then
-                    MostrarInvi = True
-                
-                ElseIf .group_index > 0 Then
-                    If charlist(charindex).group_index = charlist(UserCharIndex).group_index Then
-                        MostrarInvi = True
-                    End If
 
-                ElseIf .clan_index > 0 Then
-                    If .clan_index = charlist(UserCharIndex).clan_index Then
-                        If .clan_nivel >= 3 Then
-                            MostrarInvi = True
-                        End If
-                    End If
-                End If
-                
-                If MostrarInvi Then
+                If IsCharVisible(charindex) Then
                     Call RGBAList(Color, 255, 255, 255, 100)
                     Call RGBAList(NameColor, 100, 100, 200)
                     MostrarNombre = True
-
-                Else
-                    If .TimerI <= 0 Then
-                        .TimerIAct = True
-                    End If
-
-                    If .TimerIAct Then
-                        .TimerI = .TimerI + (timerTicksPerFrame * 0.3)
-
-                        If .TimerI >= 40 Then .TimerIAct = False
                         
-                    Else
-                        .TimerI = .TimerI - timerTicksPerFrame
-                    End If
-                    
-                    Call RGBAList(Color, 255, 255, 255, .TimerI)
-                    Call RGBAList(NameColor, 100, 100, 200)
+                Else
+                    Call RGBAList(Color, 0, 0, 0, 0)
                     MostrarNombre = False
                 End If
-                
+
             Else
                 If .Muerto Then
                     Call Copy_RGBAList_WithAlpha(Color, MapData(x, y).light_value, 150)
@@ -1868,6 +1834,33 @@ Char_Render_Err:
     Resume Next
     
 End Sub
+
+Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
+
+    With charlist(charindex)
+    
+        If charindex = UserCharIndex Then
+            IsCharVisible = True
+            Exit Function
+        End If
+        
+        If charlist(UserCharIndex).priv > 0 And .priv <= charlist(UserCharIndex).priv Then
+            IsCharVisible = True
+            Exit Function
+        End If
+        
+        If .clan_index > 0 Then
+            If .clan_index = charlist(UserCharIndex).clan_index Then
+                If .clan_nivel >= 3 Then
+                    IsCharVisible = True
+                    Exit Function
+                End If
+            End If
+        End If
+
+    End With
+
+End Function
 
 Public Sub Start()
     
