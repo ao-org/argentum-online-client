@@ -3364,6 +3364,10 @@ Private Sub HandleChatOverHead()
             chat = QuestList(ReadField(2, chat, Asc("*"))).NextQuest
             copiar = True
             duracion = 20
+            
+            If LenB(chat) = 0 Then
+                chat = "Ya has completado esa misión para mí."
+            End If
         
     End Select
             
