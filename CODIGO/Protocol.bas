@@ -8124,7 +8124,7 @@ Private Sub HandleGuildLeaderInfo()
         
         If ExpNe > 0 Then
        
-            .porciento.Caption = Round(expacu * 100 / ExpNe, 0) & "%"
+            .porciento.Caption = Round(expacu / ExpNe * 100#, 0) & "%"
         Else
             .porciento.Caption = "¡Nivel Maximo!"
             .expcount.Caption = "¡Nivel Maximo!"
