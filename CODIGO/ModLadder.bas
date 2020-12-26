@@ -689,10 +689,8 @@ Sub General_Set_Connect()
     EntradaY = 10
     EntradaX = 10
 
-    If UserMap <> 1 Then
-        UserMap = 1
-        Call SwitchMap(UserMap)
-    End If
+    UserMap = 1
+    Call SwitchMap(UserMap)
 
     If QueRender <> 1 Then
         frmConnect.Show
