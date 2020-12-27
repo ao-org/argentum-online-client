@@ -1606,8 +1606,10 @@ Private Sub mnuInvalida_Click()
     On Error GoTo mnuInvalida_Click_Err
     
     Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta catalogada como invalida.")
+    
+    'Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta fue catalogada como invalida.")
 
+    Call WriteWarnUser(Nick, "Consulta a GM's inválida.")
     
     Exit Sub
 
