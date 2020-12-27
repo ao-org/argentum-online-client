@@ -7983,7 +7983,7 @@ Private Sub HandleCharacterInfo()
         End If
         
         .nivel.Caption = "Nivel: " & buffer.ReadByte()
-        .oro.Caption = "Oro: " & buffer.ReadLong()
+        .Oro.Caption = "Oro: " & buffer.ReadLong()
         .Banco.Caption = "Banco: " & buffer.ReadLong()
         
         ' Dim reputation As Long
@@ -8009,8 +8009,8 @@ Private Sub HandleCharacterInfo()
 
         End If
         
-        .ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(buffer.ReadLong())
-        .Criminales.Caption = "Criminales asesinados: " & CStr(buffer.ReadLong())
+        .Ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(buffer.ReadLong())
+        .criminales.Caption = "Criminales asesinados: " & CStr(buffer.ReadLong())
         
         '   If reputation > 0 Then
         '   .status.Caption = " (Ciudadano)"
@@ -13881,13 +13881,13 @@ WriteForgive_Err:
     
 End Sub
 
-Public Sub WriteDonateGold(ByVal oro As Long)
+Public Sub WriteDonateGold(ByVal Oro As Long)
     
     On Error GoTo WriteForgive_Err
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.DonateGold)
-        Call .WriteLong(oro)
+        Call .WriteLong(Oro)
     End With
 
     
