@@ -1,5 +1,5 @@
 VERSION 5.00
-Begin VB.Form frmPanelGm 
+Begin VB.Form frmPanelGM 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
    ClientHeight    =   4365
@@ -640,7 +640,7 @@ Begin VB.Form frmPanelGm
       End
    End
 End
-Attribute VB_Name = "frmPanelGm"
+Attribute VB_Name = "frmPanelgm"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -1498,21 +1498,25 @@ Private Sub mnuBorrar_Click()
     
 
     Dim elitem          As String
-
     Dim ProximamentTipo As String
-
     Dim TIPO            As String
 
     elitem = List1.ListIndex
 
     If List1.ListIndex < 0 Then Exit Sub
+    
     Call ReadNick
+    
     ProximamentTipo = General_Field_Read(2, List1.List(List1.ListIndex), "(")
+    
     TIPO = General_Field_Read(1, ProximamentTipo, ")")
+    
     Call WriteSOSRemove(Nick & "Ø" & txtMsg & "Ø" & TIPO)
-    List1.RemoveItem List1.ListIndex
-    List2.RemoveItem elitem
-    txtMsg.Text = ""
+    
+    Call List1.RemoveItem(List1.ListIndex)
+    Call List2.RemoveItem(elitem)
+    
+    txtMsg.Text = vbNullString
 
     
     Exit Sub
@@ -1533,10 +1537,10 @@ Private Sub MnuEnviar_Click(Index As Integer)
     Nick = Replace(cboListaUsus.Text, " ", "+")
 
     Select Case Index
-'ReyarB modifico cordenadas
+            'ReyarB modifico cordenadas
 
          Case 0 'Ulla
-Coordenadas = "1 55 45"
+            Coordenadas = "1 55 45"
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 1 'Nix
@@ -1609,7 +1613,11 @@ Private Sub mnuInvalida_Click()
     
     'Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta fue catalogada como invalida.")
 
+    ' Lo advertimos
     Call WriteWarnUser(Nick, "Consulta a GM's inválida.")
+    
+    ' Borramos el mensaje de la lista.
+    Call mnuBorrar_Click
     
     Exit Sub
 
