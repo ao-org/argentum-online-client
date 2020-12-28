@@ -555,12 +555,12 @@ Private Sub Label1_Click()
 
     If Image4.Tag = "0" Then
         Image4.Picture = LoadInterface("check-amarillo.bmp")
-        Call TextoAlAsistente("ï¿½Recordare la cuenta para la proxima!")
+        Call TextoAlAsistente("¡Recordaré la cuenta para la próxima!")
         Image4.Tag = "1"
     Else
         Image4.Picture = Nothing
         Image4.Tag = "0"
-        Call TextoAlAsistente("ï¿½No recordare nada!")
+        Call TextoAlAsistente("¡No recordare nada!")
 
     End If
 
