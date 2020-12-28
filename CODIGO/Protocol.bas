@@ -8626,8 +8626,8 @@ Private Sub HandleShowSOSForm()
         nombre = ReadField(1, sosList(i), Asc("Ø"))
         Consulta = ReadField(2, sosList(i), Asc("Ø"))
         TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
-        frmPanelGm.List1.AddItem nombre & "(" & TipoDeConsulta & ")"
-        frmPanelGm.List2.AddItem Consulta
+        frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ")"
+        frmPanelgm.List2.AddItem Consulta
     Next i
     
     'If we got here then packet is complete, copy data back to original queue
@@ -8714,7 +8714,7 @@ Private Sub HandleShowGMPanelForm()
     
     Call incomingData.ReadByte
     
-    frmPanelGm.Show vbModeless, frmMain
+    frmPanelgm.Show vbModeless, frmMain
 
     
     Exit Sub
@@ -8781,14 +8781,14 @@ Private Sub HandleUserNameList()
     
     userList = Split(buffer.ReadASCIIString(), SEPARATOR)
     
-    If frmPanelGm.Visible Then
-        frmPanelGm.cboListaUsus.Clear
+    If frmPanelgm.Visible Then
+        frmPanelgm.cboListaUsus.Clear
 
         For i = 0 To UBound(userList())
-            Call frmPanelGm.cboListaUsus.AddItem(userList(i))
+            Call frmPanelgm.cboListaUsus.AddItem(userList(i))
         Next i
 
-        If frmPanelGm.cboListaUsus.ListCount > 0 Then frmPanelGm.cboListaUsus.ListIndex = 0
+        If frmPanelgm.cboListaUsus.ListCount > 0 Then frmPanelgm.cboListaUsus.ListIndex = 0
 
     End If
     
