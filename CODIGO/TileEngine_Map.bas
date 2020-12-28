@@ -88,6 +88,24 @@ HayAgua_Err:
     
 End Function
 
+Function HayLava(ByVal x As Integer, ByVal y As Integer) As Boolean
+    
+    On Error GoTo HayLava_Err
+    
+
+    With MapData(x, y).Graphic(1)
+        HayLava = .GrhIndex >= 57400 And .GrhIndex <= 57415
+    End With
+
+    
+    Exit Function
+
+HayLava_Err:
+    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.HayLava", Erl)
+    Resume Next
+    
+End Function
+
 Function EsArbol(ByVal GrhIndex As Long) As Boolean
     
     On Error GoTo EsArbol_Err

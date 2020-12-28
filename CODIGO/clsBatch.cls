@@ -45,6 +45,14 @@ Private Const WATER_WAVE_FACTOR_Y = (2 * PI) / (WATER_WAVE_SIZE_Y * TilePixelHei
 Private Const WATER_TILE_FACTOR_X = TilePixelWidth * WATER_WAVE_FACTOR_X
 Private Const WATER_TILE_FACTOR_Y = TilePixelHeight * WATER_WAVE_FACTOR_Y
 
+Private Const LAVA_WAVE_SIZE_X = 4
+Private Const LAVA_WAVE_SIZE_Y = 4
+Private Const LAVA_WAVE_HEIGHT = 6
+Private Const LAVA_WAVE_FACTOR_X = (2 * PI) / (LAVA_WAVE_SIZE_X * TilePixelWidth)
+Private Const LAVA_WAVE_FACTOR_Y = (2 * PI) / (LAVA_WAVE_SIZE_Y * TilePixelHeight)
+Private Const LAVA_TILE_FACTOR_X = TilePixelWidth * LAVA_WAVE_FACTOR_X
+Private Const LAVA_TILE_FACTOR_Y = TilePixelHeight * LAVA_WAVE_FACTOR_Y
+
 Public Sub Begin()
     '
     ' Re-Initialize the states of the batch
@@ -583,6 +591,81 @@ Friend Sub DrawWater(ByVal x As Single, _
 
 DrawWater_Err:
     Call RegistrarError(Err.number, Err.Description, "clsBatch.DrawWater", Erl)
+    Resume Next
+    
+End Sub
+
+Friend Sub DrawLava(ByVal x As Single, _
+                    ByVal y As Single, _
+                    ByVal Width As Long, _
+                    ByVal Height As Long, _
+                    ByRef Color() As RGBA, _
+                    ByVal Tx1 As Single, _
+                    ByVal Ty1 As Single, _
+                    ByVal Tx2 As Single, _
+                    ByVal Ty2 As Single, _
+                    ByVal MapX As Integer, _
+                    ByVal MapY As Integer, _
+                    ByVal Top As Byte, _
+                    ByVal Right As Byte, _
+                    ByVal Bottom As Byte, _
+                    ByVal Left As Byte)
+    
+    On Error GoTo DrawLava_Err
+    
+
+    Dim t As Single
+    t = (FrameTime Mod 62831) * 0.0005
+    
+    Dim tX As Single, tY As Single
+    tX = x * LAVA_WAVE_FACTOR_X
+    tY = y * LAVA_WAVE_FACTOR_Y
+
+    m_Data(m_Position).x = x + Cos(t + tX + tY + LAVA_TILE_FACTOR_Y) * LAVA_WAVE_HEIGHT * Left
+    m_Data(m_Position).y = y + Height + Sin(t + tX + tY + LAVA_TILE_FACTOR_Y) * LAVA_WAVE_HEIGHT * Bottom
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(0)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty2
+
+    m_Position = m_Position + 1
+    
+    m_Data(m_Position).x = x + Cos(t + tX + tY) * LAVA_WAVE_HEIGHT * Left
+    m_Data(m_Position).y = y + Sin(t + tX + tY) * LAVA_WAVE_HEIGHT * Top
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(1)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty1
+   
+    m_Position = m_Position + 1
+   
+    m_Data(m_Position).x = x + Width + Cos(t + tX + tY + LAVA_TILE_FACTOR_X + LAVA_TILE_FACTOR_Y) * LAVA_WAVE_HEIGHT * Right
+    m_Data(m_Position).y = y + Height + Sin(t + tX + tY + LAVA_TILE_FACTOR_X + LAVA_TILE_FACTOR_Y) * LAVA_WAVE_HEIGHT * Bottom
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(2)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty2
+
+    m_Position = m_Position + 1
+   
+    m_Data(m_Position).x = x + Width + Cos(t + tX + tY + LAVA_TILE_FACTOR_X) * LAVA_WAVE_HEIGHT * Right
+    m_Data(m_Position).y = y + Sin(t + tX + tY + LAVA_TILE_FACTOR_X) * LAVA_WAVE_HEIGHT * Top
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(3)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty1
+
+    m_Position = m_Position + 1
+   
+    If m_Position >= UBound(m_Data) Then
+        Call Flush
+    End If
+   
+    
+    Exit Sub
+
+DrawLava_Err:
+    Call RegistrarError(Err.number, Err.Description, "clsBatch.DrawLava", Erl)
     Resume Next
     
 End Sub

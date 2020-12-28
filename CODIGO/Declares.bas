@@ -567,17 +567,21 @@ Public Const MAXSKILLPOINTS          As Byte = 100
 
 Public Const FLAGORO                 As Integer = 200
 
-Public Const FLAG_AGUA               As Byte = &H20
+Public Const FLAG_AGUA               As Integer = &H20
 
-Public Const FLAG_ARBOL              As Byte = &H40
+Public Const FLAG_ARBOL              As Integer = &H40
 
-Public Const FLAG_COSTA              As Byte = &H80
+Public Const FLAG_COSTA              As Integer = &H80
+
+Public Const FLAG_LAVA               As Integer = &H100
 
 Public Const PRIMER_TRIGGER_TECHO    As Byte = 9
 
 Public Const FOgata                  As Integer = 1521
 
 Public Const INV_FLAG_AGUA           As Single = 1 / FLAG_AGUA
+
+Public Const INV_FLAG_LAVA           As Single = 1 / FLAG_LAVA
 
 Public Enum eClass
 

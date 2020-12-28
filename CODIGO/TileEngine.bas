@@ -320,7 +320,7 @@ Public Type MapBlock
     NpcIndex As Integer
     OBJInfo As Obj
     TileExit As WorldPos
-    Blocked As Byte
+    Blocked As Integer
     
     Trigger As Integer
     CharFantasma As Fantasma

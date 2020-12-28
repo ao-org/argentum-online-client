@@ -1015,6 +1015,9 @@ Public Sub CargarMapa(ByVal map As Integer)
                     
                     If HayAgua(x, y) Then
                         .Blocked = .Blocked Or FLAG_AGUA
+                        
+                    ElseIf HayLava(x, y) Then
+                        .Blocked = .Blocked Or FLAG_LAVA
                     End If
                     
                 End With

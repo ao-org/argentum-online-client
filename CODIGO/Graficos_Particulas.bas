@@ -1211,7 +1211,7 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As I
     On Error GoTo General_Particle_Create_Err
     
 
-    If ParticulaInd = 0 Then Exit Function
+    If ParticulaInd <= 0 Or ParticulaInd > UBound(StreamData) Then Exit Function
 
     Dim rgb_list(0 To 3) As RGBA
 
