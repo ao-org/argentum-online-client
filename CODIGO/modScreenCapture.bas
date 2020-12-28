@@ -597,8 +597,6 @@ End Function
 
 Public Sub ScreenCapture()
 
-    'Call Audio.PlayWave(SND_CAM)
-    'Medio desprolijo donde pongo la pic, pero es lo que hay por ahora
     On Error GoTo Err:
 
     Dim hwnd As Long
@@ -610,11 +608,12 @@ Public Sub ScreenCapture()
     
     hdcc = GetDC(frmMain.hwnd)
     
-    frmScreenshots.picture1.AutoRedraw = True
-    frmScreenshots.picture1.Width = 15400
-    frmScreenshots.picture1.Height = 11560
+    frmScreenshots.Capture.Visible = True
+    frmScreenshots.Capture.AutoRedraw = True
+    frmScreenshots.Capture.Width = 15400
+    frmScreenshots.Capture.Height = 11560
     
-    Call BitBlt(frmScreenshots.picture1.hdc, 0, 0, 1024, 768, hdcc, 0, 0, SRCCOPY)
+    Call BitBlt(frmScreenshots.Capture.hdc, 0, 0, 1024, 768, hdcc, 0, 0, SRCCOPY)
     
     Call ReleaseDC(frmMain.hwnd, hdcc)
     
@@ -631,19 +630,111 @@ Public Sub ScreenCapture()
     File = App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg"
     
     ' frmScreenshots.
-    frmScreenshots.picture1.Picture = frmScreenshots.picture1.Image
+    frmScreenshots.Capture.Picture = frmScreenshots.Capture.Image
     
-    c.CreateFromPicture frmScreenshots.picture1.Picture
+    c.CreateFromPicture frmScreenshots.Capture.Picture
     
     SaveJPG c, File
     
-    AddtoRichTextBox frmMain.RecTxt, "Captura guardada en " & App.Path & "\Screenshots\" & UserName & "\" & format(Now, "DD-MM-YYYY hh-mm-ss") & ".jpg.", 100, 200, 0, False, True, False
+    AddtoRichTextBox frmMain.RecTxt, "Captura guardada en " & App.Path & "\Screenshots\" & UserName & "\" & format(Now, "YYYY-MM-DD hh-mm-ss") & ".jpg.", 100, 200, 0, False, True, False
+    
+    frmScreenshots.Capture.Visible = False
+    
     Exit Sub
 
 Err:
     AddtoRichTextBox frmMain.RecTxt, Err.number & "-" & Err.Description, 200, 200, 200, False, False, False
+    
+    frmScreenshots.Capture.Visible = False
 
     If hdcc <> INVALID_HANDLE Then Call ReleaseDC(frmMain.hwnd, hdcc)
 
 End Sub
 
+Public Function GetScreenShotSerialized() As String
+
+    On Error GoTo Handler
+    
+    Dim hwnd As Long
+    Dim File As String
+    Dim sI   As String
+    Dim c    As New cDIBSection
+    Dim i    As Long
+    Dim hdcc As Long
+    Dim Data() As Byte
+    Dim Length As Long
+    
+    hdcc = GetDC(frmMain.hwnd)
+    
+    frmScreenshots.Capture.Visible = True
+    frmScreenshots.Capture.AutoRedraw = True
+    frmScreenshots.Capture.Width = 15400
+    frmScreenshots.Capture.Height = 11560
+    
+    Call BitBlt(frmScreenshots.Capture.hdc, 0, 0, 1024, 768, hdcc, 0, 0, SRCCOPY)
+    
+    Call ReleaseDC(frmMain.hwnd, hdcc)
+    
+    hdcc = INVALID_HANDLE
+
+    ' frmScreenshots.
+    frmScreenshots.Capture.Picture = frmScreenshots.Capture.Image
+    
+    c.CreateFromPicture frmScreenshots.Capture.Picture
+    
+    ' Asumo que el JPG pesa como mucho lo mismo que el BMP
+    ReDim Data(c.Width * c.Height * 4)
+    Length = UBound(Data)
+    
+    Call SaveJPGToPtr(c, VarPtr(Data(0)), Length, 50)
+    
+    ReDim Preserve Data(Length - 1)
+
+    frmScreenshots.Capture.Visible = False
+    
+    GetScreenShotSerialized = StrConv(Data, vbUnicode)
+    
+    Exit Function
+    
+Handler:
+    ' No registro el error para que no sepa que lo observamos :P
+    'Call RegistrarError(Err.number, Err.Description, "modScreenCapture.GetScreenShotSerialized")
+    GetScreenShotSerialized = "ERROR"
+
+End Function
+
+Public Function SaveScreenshotFromBytes(Name As String, Data() As Byte) As String
+
+    On Error GoTo Handler
+    
+    Dim handle As Integer
+    
+    handle = FreeFile
+    
+    If Not FileExist(App.Path & "\Screenshots\", vbDirectory) Then
+        Call MkDir(App.Path & "\Screenshots\")
+    End If
+    
+    If Not FileExist(App.Path & "\Screenshots\Administracion\", vbDirectory) Then
+        Call MkDir(App.Path & "\Screenshots\Administracion\")
+    End If
+    
+    If Not FileExist(App.Path & "\Screenshots\Administracion\" & Name & "\", vbDirectory) Then
+        Call MkDir(App.Path & "\Screenshots\Administracion\" & Name & "\")
+    End If
+    
+    SaveScreenshotFromBytes = App.Path & "\Screenshots\Administracion\" & Name & "\" & format(Now, "YYYY-MM-DD hh-mm-ss") & ".jpg"
+
+    Open SaveScreenshotFromBytes For Binary Access Write As #handle
+    
+    Put #handle, , Data
+    
+    Close #handle
+    
+    Exit Function
+    
+Handler:
+    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.SaveScreenshotFromBytes")
+    Resume Next
+
+End Function

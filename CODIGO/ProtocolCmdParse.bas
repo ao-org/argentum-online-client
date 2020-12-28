@@ -2164,10 +2164,24 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
 
             Case "/GLOBAL"
-                Call WriteGlobalOnOff
+                If EsGM Then
+                    Call WriteGlobalOnOff
+                End If
                 
             Case "/CONSULTA"
-                Call WriteConsulta(ArgumentosRaw)
+                If EsGM Then
+                    Call WriteConsulta(ArgumentosRaw)
+                End If
+                
+            Case "/VERPANTALLA", "/SCREENSHOT", "/SS"
+                If EsGM Then
+                    Call WriteRequestScreenShot(ArgumentosRaw)
+                End If
+                
+            Case "/VERPROCESOS", "/PROCESOS", "/PROC"
+                If EsGM Then
+                    Call WriteRequestProcesses(ArgumentosRaw)
+                End If
                 
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")

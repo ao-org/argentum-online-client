@@ -42,6 +42,11 @@ Option Explicit
 'having too many string lengths in the queue. Yes, each string is NULL-terminated :P
 Private Const SEPARATOR As String * 1 = vbNullChar
 
+Private LastPacket As Byte
+Private IterationsHID As Integer
+
+Private Const MAX_ITERATIONS_HID = 200
+
 Private Enum ServerPacketID
 
     logged                  ' LOGGED  0
@@ -216,6 +221,11 @@ Private Enum ServerPacketID
     UpdateUserKey
     UpdateRM
     UpdateDM
+    RequestProcesses
+    RequestScreenShot
+    ShowProcesses
+    ShowScreenShot
+    ScreenShotData
 End Enum
 
 Private Enum ClientPacketID
@@ -552,6 +562,10 @@ Private Enum NewPacksID
     RemovePretorianClan     '/ELIMINARPRETORIANOS
     Home                    '/HOGAR
     Consulta                '/CONSULTA
+    RequestScreenShot       '/SS
+    RequestProcesses        '/VERPROCESOS
+    SendScreenShot
+    SendProcesses
 End Enum
 
 ''
@@ -559,7 +573,8 @@ End Enum
 
 Public Sub HandleIncomingData()
     
-    On Error GoTo HandleIncomingData_Err
+    ' WyroX: No remover
+    On Error Resume Next
     
 
     '***************************************************
@@ -579,7 +594,7 @@ Public Sub HandleIncomingData()
 
     'Call LogError("llego paquete nº" & paquete & " pesa: " & incomingData.Length & "Bytes")
 
-    InBytes = InBytes + incomingData.length
+    InBytes = InBytes + incomingData.Length
 
     Rem  Call LogError("Llego paquete" & paquete)
     Select Case paquete
@@ -790,7 +805,6 @@ Public Sub HandleIncomingData()
             
         Case ServerPacketID.QuestDetails
             Call HandleQuestDetails
-            
 
         Case ServerPacketID.QuestListSend
             Call HandleQuestListSend
@@ -1094,6 +1108,21 @@ Public Sub HandleIncomingData()
 
         Case ServerPacketID.ViajarForm
             Call HandleViajarForm
+            
+        Case ServerPacketID.RequestProcesses
+            Call HandleRequestProcesses
+            
+        Case ServerPacketID.RequestScreenShot
+            Call HandleRequestScreenShot
+            
+        Case ServerPacketID.ShowProcesses
+            Call HandleShowProcesses
+            
+        Case ServerPacketID.ShowScreenShot
+            Call HandleShowScreenShot
+            
+        Case ServerPacketID.ScreenShotData
+            Call HandleScreenShotData
 
         Case Else
         
@@ -1102,17 +1131,26 @@ Public Sub HandleIncomingData()
     End Select
     
     'Done with this packet, move on to next one
-    If incomingData.length > 0 And Err.number <> incomingData.NotEnoughDataErrCode Then
+    If incomingData.Length > 0 And Err.number <> incomingData.NotEnoughDataErrCode Then
+        If LastPacket = paquete Then
+            IterationsHID = IterationsHID + 1
+            
+            If IterationsHID > MAX_ITERATIONS_HID Then
+                Call RegistrarError(-1, "Superado el máximo de iteraciones del mismo paquete. Paquete: " & paquete, "Protocol.HandleIncomingData")
+                
+                'Empty buffer
+                Call incomingData.ReadASCIIStringFixed(incomingData.Length)
+
+                Exit Sub
+            End If
+        Else
+            IterationsHID = 0
+            LastPacket = paquete
+        End If
+        
         Err.Clear
         Call HandleIncomingData
     End If
-
-    
-    Exit Sub
-
-HandleIncomingData_Err:
-    Call RegistrarError(Err.number, Err.Description & vbNewLine & " Paquete: " & CStr(paquete), "Protocol.HandleIncomingData", Erl)
-    Resume Next
     
 End Sub
 
@@ -1216,7 +1254,7 @@ Private Sub HandleRemoveCharDialog()
     '
     '***************************************************
     'Check if the packet is complete
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1267,7 +1305,7 @@ Private Sub HandleNadarToggle()
     On Error GoTo HandleNadarToggle_Err
     
 
-    If incomingData.length < 2 Then
+    If incomingData.Length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1339,7 +1377,7 @@ Private Sub HandleVelocidadToggle()
     On Error GoTo HandleVelocidadToggle_Err
     
 
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1365,7 +1403,7 @@ Private Sub HandleMacroTrabajoToggle()
     On Error GoTo HandleMacroTrabajoToggle_Err
     
 
-    If incomingData.length < 2 Then
+    If incomingData.Length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1672,7 +1710,7 @@ Private Sub HandleCommerceInit()
     '***************************************************
     Dim i As Long
     
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1774,7 +1812,7 @@ Private Sub HandleGoliathInit()
     '***************************************************
     '
     '***************************************************
-    If incomingData.length < 6 Then
+    If incomingData.Length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1808,7 +1846,7 @@ Private Sub HandleShowFrmLogear()
     '***************************************************
     '
     '***************************************************
-    If incomingData.length < 1 Then
+    If incomingData.Length < 1 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1839,7 +1877,7 @@ Private Sub HandleShowFrmMapa()
     '***************************************************
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2218,7 +2256,7 @@ Private Sub HandleCharSwing()
     
 
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2351,7 +2389,7 @@ Private Sub HandleClanSeguro()
     'Creation date: 10/10/07
     '***************************************************
     'Check packet is complete
-    If incomingData.length < 2 Then
+    If incomingData.Length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2388,7 +2426,7 @@ Private Sub HandleIntervals()
     On Error GoTo HandleIntervals_Err
     
 
-    If incomingData.length < 45 Then
+    If incomingData.Length < 45 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2448,7 +2486,7 @@ Private Sub HandleUpdateUserKey()
     
     On Error GoTo HandleUpdateUserKey_Err
     
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2476,7 +2514,7 @@ Private Sub HandleUpdateDM()
     
     On Error GoTo HandleUpdateDM_Err
     
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2503,7 +2541,7 @@ Private Sub HandleUpdateRM()
     
     On Error GoTo HandleUpdateRM_Err
     
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2612,7 +2650,7 @@ Private Sub HandleUpdateSta()
     '
     '***************************************************
     'Check packet is complete
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2650,7 +2688,7 @@ Private Sub HandleUpdateMana()
     '
     '***************************************************
     'Check packet is complete
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2705,7 +2743,7 @@ Private Sub HandleUpdateHP()
     '
     '***************************************************
     'Check packet is complete
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2752,7 +2790,7 @@ Private Sub HandleUpdateGold()
     '- 08/14/07: Added GldLbl color variation depending on User Gold and Level
     '***************************************************
     'Check packet is complete
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2789,7 +2827,7 @@ Private Sub HandleUpdateExp()
     '
     '***************************************************
     'Check packet is complete
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2833,7 +2871,7 @@ Private Sub HandleChangeMap()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2988,7 +3026,7 @@ Private Sub HandlePosUpdate()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3042,7 +3080,7 @@ Private Sub HandleNPCHitUser()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3095,7 +3133,7 @@ Private Sub HandleUserHitNPC()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3128,7 +3166,7 @@ Private Sub HandleUserAttackedSwing()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3161,7 +3199,7 @@ Private Sub HandleUserHittedByUser()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 6 Then
+    If incomingData.Length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3229,7 +3267,7 @@ Private Sub HandleUserHittedUser()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 6 Then
+    If incomingData.Length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3294,7 +3332,7 @@ Private Sub HandleChatOverHead()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 12 Then
+    If incomingData.Length < 12 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3394,6 +3432,8 @@ Private Sub HandleChatOverHead()
 
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -3414,7 +3454,7 @@ Private Sub HandleEfectOverHead()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 9 Then
+    If incomingData.Length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3448,6 +3488,8 @@ Private Sub HandleEfectOverHead()
 
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -3468,7 +3510,7 @@ Private Sub HandleExpOverHead()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3506,6 +3548,8 @@ Private Sub HandleExpOverHead()
 
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -3526,7 +3570,7 @@ Private Sub HandleOroOverHead()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3564,6 +3608,8 @@ Private Sub HandleOroOverHead()
 
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -3587,7 +3633,7 @@ Private Sub HandleConsoleMessage()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -3720,6 +3766,8 @@ Private Sub HandleConsoleMessage()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -3740,7 +3788,7 @@ Private Sub HandleLocaleMsg()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3837,6 +3885,8 @@ Private Sub HandleLocaleMsg()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -3860,7 +3910,7 @@ Private Sub HandleGuildChat()
     'Last Modification: 04/07/08 (NicoNZ)
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3936,6 +3986,8 @@ Private Sub HandleGuildChat()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -3959,7 +4011,7 @@ Private Sub HandleShowMessageBox()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4004,6 +4056,8 @@ Private Sub HandleShowMessageBox()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -4024,7 +4078,7 @@ Private Sub HandleMostrarCuenta()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 1 Then
+    If incomingData.Length < 1 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4095,6 +4149,8 @@ Private Sub HandleMostrarCuenta()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -4121,7 +4177,7 @@ Private Sub HandleUserIndexInServer()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4154,7 +4210,7 @@ Private Sub HandleUserCharIndexInServer()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4194,7 +4250,7 @@ Private Sub HandleCharacterCreate()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 58 Then
+    If incomingData.Length < 58 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4338,6 +4394,8 @@ Private Sub HandleCharacterCreate()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -4364,7 +4422,7 @@ Private Sub HandleCharacterRemove()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4410,7 +4468,7 @@ Private Sub HandleCharacterMove()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4458,7 +4516,7 @@ Private Sub HandleForceCharMove()
     On Error GoTo HandleForceCharMove_Err
     
     
-    If incomingData.length < 2 Then
+    If incomingData.Length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -4521,7 +4579,7 @@ Private Sub HandleCharacterChange()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 19 Then
+    If incomingData.Length < 19 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4628,7 +4686,7 @@ Private Sub HandleObjectCreate()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4702,7 +4760,7 @@ Private Sub HandleFxPiso()
     'Ladder
     '30/5/10
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4745,7 +4803,7 @@ Private Sub HandleObjectDelete()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4801,7 +4859,7 @@ Private Sub HandleBlockPosition()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4841,7 +4899,7 @@ Private Sub HandlePlayMIDI()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4886,7 +4944,7 @@ Private Sub HandlePlayWave()
     'Last Modified by: Rapsodius
     'Added support for 3D Sounds.
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4944,7 +5002,7 @@ Private Sub HandlePosLLamadaDeClan()
     'Last Modified by: Rapsodius
     'Added support for 3D Sounds.
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5016,7 +5074,7 @@ Private Sub HandleCharUpdateHP()
     'Last Modified by: Rapsodius
     'Added support for 3D Sounds.
     '***************************************************
-    If incomingData.length < 7 Then
+    If incomingData.Length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5054,7 +5112,7 @@ Private Sub HandleArmaMov()
     
 
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -5089,7 +5147,7 @@ Private Sub HandleEscudoMov()
     
 
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -5128,7 +5186,7 @@ Private Sub HandleGuildList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5188,6 +5246,8 @@ Private Sub HandleGuildList()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -5214,7 +5274,7 @@ Private Sub HandleAreaChanged()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5385,7 +5445,7 @@ Private Sub HandleCreateFX()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 7 Then
+    If incomingData.Length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5434,7 +5494,7 @@ Private Sub HandleUpdateUserStats()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 26 Then
+    If incomingData.Length < 26 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5515,7 +5575,7 @@ Private Sub HandleWorkRequestTarget()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 2 Then
+    If incomingData.Length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5604,7 +5664,7 @@ Private Sub HandleChangeInventorySlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 12 Then
+    If incomingData.Length < 12 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5711,6 +5771,8 @@ Private Sub HandleChangeInventorySlot()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long: Error = Err.number
 
     On Error GoTo 0
@@ -5763,7 +5825,7 @@ Private Sub HandleRefreshAllInventorySlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5887,6 +5949,8 @@ Private Sub HandleRefreshAllInventorySlot()
      
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -5910,7 +5974,7 @@ Private Sub HandleChangeBankSlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 11 Then
+    If incomingData.Length < 11 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -5951,6 +6015,8 @@ Private Sub HandleChangeBankSlot()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -5974,7 +6040,7 @@ Private Sub HandleChangeSpellSlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 6 Then
+    If incomingData.Length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6028,6 +6094,8 @@ Private Sub HandleChangeSpellSlot()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -6054,7 +6122,7 @@ Private Sub HandleAtributes()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 1 + NUMATRIBUTES Then
+    If incomingData.Length < 1 + NUMATRIBUTES Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6117,7 +6185,7 @@ Private Sub HandleBlacksmithWeapons()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 9 Then
+    If incomingData.Length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6166,6 +6234,8 @@ Private Sub HandleBlacksmithWeapons()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -6189,7 +6259,7 @@ Private Sub HandleBlacksmithArmors()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6279,6 +6349,8 @@ Private Sub HandleBlacksmithArmors()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -6302,7 +6374,7 @@ Private Sub HandleCarpenterObjects()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 2 Then
+    If incomingData.Length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6343,6 +6415,8 @@ Private Sub HandleCarpenterObjects()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -6361,7 +6435,7 @@ Private Sub HandleSastreObjects()
     '***************************************************
     'Author: Ladder
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6436,6 +6510,8 @@ Private Sub HandleSastreObjects()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -6457,7 +6533,7 @@ Private Sub HandleAlquimiaObjects()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6502,6 +6578,8 @@ Private Sub HandleAlquimiaObjects()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -6551,7 +6629,7 @@ Private Sub HandleErrorMessage()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6574,6 +6652,8 @@ Private Sub HandleErrorMessage()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -6653,7 +6733,7 @@ Private Sub HandleShowSignal()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6682,6 +6762,8 @@ Private Sub HandleShowSignal()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -6705,7 +6787,7 @@ Private Sub HandleChangeNPCInventorySlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 11 Then
+    If incomingData.Length < 11 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6747,6 +6829,8 @@ Private Sub HandleChangeNPCInventorySlot()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -6773,7 +6857,7 @@ Private Sub HandleUpdateHungerAndThirst()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6806,7 +6890,7 @@ Private Sub HandleHora()
     
     On Error GoTo HandleHora_Err
     
-    If incomingData.length < 9 Then
+    If incomingData.Length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -6835,7 +6919,7 @@ Private Sub HandleLight()
     On Error GoTo HandleLight_Err
     
  
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6867,7 +6951,7 @@ Private Sub HandleFYA()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6924,7 +7008,7 @@ Private Sub HandleUpdateNPCSimbolo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6987,7 +7071,7 @@ Private Sub HandleContadores()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 9 Then
+    If incomingData.Length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7029,7 +7113,7 @@ Private Sub HandleOxigeno()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7096,7 +7180,7 @@ Private Sub HandleEfectToScreen()
     '***************************************************
     Dim Color As Long, duracion As Long, ignorar As Boolean
 
-    If incomingData.length < 10 Then
+    If incomingData.Length < 10 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7143,7 +7227,7 @@ Private Sub HandleMiniStats()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 34 Then
+    If incomingData.Length < 34 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -7212,7 +7296,7 @@ Private Sub HandleLevelUp()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7242,7 +7326,7 @@ Private Sub HandleAddForumMessage()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7274,6 +7358,8 @@ Private Sub HandleAddForumMessage()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -7327,7 +7413,7 @@ Private Sub HandleSetInvisible()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7361,7 +7447,7 @@ Private Sub HandleSetEscribiendo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7397,7 +7483,7 @@ Private Sub HandleDiceRoll()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7541,7 +7627,7 @@ Private Sub HandleSendSkills()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 1 + NUMSKILLS Then
+    If incomingData.Length < 1 + NUMSKILLS Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7587,7 +7673,7 @@ Private Sub HandleTrainerCreatureList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7620,6 +7706,8 @@ Private Sub HandleTrainerCreatureList()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -7643,7 +7731,7 @@ Private Sub HandleGuildNews()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 12 Then
+    If incomingData.Length < 12 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7757,6 +7845,8 @@ Private Sub HandleGuildNews()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -7780,7 +7870,7 @@ Private Sub HandleOfferDetails()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7803,6 +7893,8 @@ Private Sub HandleOfferDetails()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -7826,7 +7918,7 @@ Private Sub HandleAlianceProposalsList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7860,6 +7952,8 @@ Private Sub HandleAlianceProposalsList()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -7883,7 +7977,7 @@ Private Sub HandlePeaceProposalsList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7917,6 +8011,8 @@ Private Sub HandlePeaceProposalsList()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -7940,7 +8036,7 @@ Private Sub HandleCharacterInfo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 31 Then
+    If incomingData.Length < 31 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8029,6 +8125,8 @@ Private Sub HandleCharacterInfo()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -8052,7 +8150,7 @@ Private Sub HandleGuildLeaderInfo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 14 Then
+    If incomingData.Length < 14 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8159,6 +8257,8 @@ Private Sub HandleGuildLeaderInfo()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -8182,7 +8282,7 @@ Private Sub HandleGuildDetails()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 16 Then
+    If incomingData.Length < 16 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8224,6 +8324,8 @@ Private Sub HandleGuildDetails()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -8323,7 +8425,7 @@ Private Sub HandleShowUserRequest()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8347,6 +8449,8 @@ Private Sub HandleShowUserRequest()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -8370,7 +8474,7 @@ Private Sub HandleChangeUserTradeSlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 22 Then
+    If incomingData.Length < 22 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8411,6 +8515,8 @@ Private Sub HandleChangeUserTradeSlot()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -8434,7 +8540,7 @@ Private Sub HandleSpawnList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8463,6 +8569,8 @@ Private Sub HandleSpawnList()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -8486,7 +8594,7 @@ Private Sub HandleShowSOSForm()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8527,6 +8635,8 @@ Private Sub HandleShowSOSForm()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -8550,7 +8660,7 @@ Private Sub HandleShowMOTDEditionForm()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8574,6 +8684,8 @@ Private Sub HandleShowMOTDEditionForm()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -8647,7 +8759,7 @@ Private Sub HandleUserNameList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8685,6 +8797,8 @@ Private Sub HandleUserNameList()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -8711,7 +8825,7 @@ Private Sub HandlePong()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.Length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8748,7 +8862,7 @@ Private Sub HandleUpdateTagAndStatus()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 8 Then
+    If incomingData.Length < 8 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8789,6 +8903,8 @@ Private Sub HandleUpdateTagAndStatus()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -11570,13 +11686,13 @@ Public Sub WritePromedio()
     'Writes the "Promedio" message to the outgoing data buffer
     '***************************************************
     
-    On Error GoTo Handle
+    On Error GoTo handle
     
     Call outgoingData.WriteByte(ClientPacketID.Promedio)
 
     Exit Sub
 
-Handle:
+handle:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WritePromedio", Erl)
     Resume Next
     
@@ -11592,7 +11708,7 @@ Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal ca
     'Writes the "GiveItem" message to the outgoing data buffer
     '***************************************************
     
-    On Error GoTo Handle
+    On Error GoTo handle
     
     With outgoingData
         Call .WriteByte(ClientPacketID.GiveItem)
@@ -11605,7 +11721,7 @@ Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal ca
 
     Exit Sub
 
-Handle:
+handle:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGiveItem", Erl)
     Resume Next
     
@@ -17024,11 +17140,11 @@ Public Sub FlushBuffer()
     
     With outgoingData
 
-        If .length = 0 Then Exit Sub
+        If .Length = 0 Then Exit Sub
         '   Debug.Print "Salio paquete con peso de: " & .Length & " bytes"
-        OutBytes = OutBytes + .length
+        OutBytes = OutBytes + .Length
         ' InBytes = 0
-        sndData = .ReadASCIIStringFixed(.length)
+        sndData = .ReadASCIIStringFixed(.Length)
         
         Call SendData(sndData)
 
@@ -17362,7 +17478,7 @@ End Sub
 
 Private Sub HandlePersonajesDeCuenta()
 
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17480,6 +17596,8 @@ Private Sub HandlePersonajesDeCuenta()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -17495,7 +17613,7 @@ End Sub
 
 Private Sub HandleUserOnline()
 
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17521,6 +17639,8 @@ Private Sub HandleUserOnline()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -17544,7 +17664,7 @@ Private Sub HandleParticleFXToFloor()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 8 Then
+    If incomingData.Length < 8 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17611,7 +17731,7 @@ Private Sub HandleLightToFloor()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 8 Then
+    If incomingData.Length < 8 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17693,7 +17813,7 @@ Private Sub HandleParticleFX()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 10 Then
+    If incomingData.Length < 10 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17746,7 +17866,7 @@ Private Sub HandleParticleFXWithDestino()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 17 Then
+    If incomingData.Length < 17 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17806,7 +17926,7 @@ Private Sub HandleParticleFXWithDestinoXY()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 17 Then
+    If incomingData.Length < 17 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17872,7 +17992,7 @@ Private Sub HandleAuraToChar()
     'Last Modification: 05/17/0
     '
     '***************************************************
-    If incomingData.length < 7 Then
+    If incomingData.Length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17928,7 +18048,7 @@ Private Sub HandleSpeedToChar()
     'Last Modification: 05/17/0
     '
     '***************************************************
-    If incomingData.length < 7 Then
+    If incomingData.Length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18100,7 +18220,7 @@ Private Sub HandleFamiliar()
     On Error GoTo HandleFamiliar_Err
     
 
-    If incomingData.length < 1 Then
+    If incomingData.Length < 1 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18127,7 +18247,7 @@ Private Sub HandleBindKeys()
     'Macros
     'Pablo Mercavides
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18169,7 +18289,7 @@ Private Sub HandleLogros()
     '***************************************************
     'Pablo Mercavides
     '***************************************************
-    If incomingData.length < 40 Then
+    If incomingData.Length < 40 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18290,7 +18410,7 @@ Private Sub HandleBarFx()
     '***************************************************
     'Author: Pablo Mercavides
     '***************************************************
-    If incomingData.length < 6 Then
+    If incomingData.Length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18506,7 +18626,7 @@ Private Sub HandleQuestDetails()
     'Recibe y maneja el paquete QuestDetails del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    If incomingData.length < 15 Then
+    If incomingData.Length < 15 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18838,6 +18958,8 @@ Private Sub HandleQuestDetails()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -18857,7 +18979,7 @@ Public Sub HandleQuestListSend()
     'Recibe y maneja el paquete QuestListSend del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    If incomingData.length < 1 Then
+    If incomingData.Length < 1 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18912,6 +19034,8 @@ Public Sub HandleQuestListSend()
  
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -18930,7 +19054,7 @@ Public Sub HandleNpcQuestListSend()
     'Recibe y maneja el paquete QuestListSend del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-   If incomingData.length < 14 Then
+   If incomingData.Length < 14 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19159,6 +19283,8 @@ Public Sub HandleNpcQuestListSend()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -19385,7 +19511,7 @@ Private Sub HandleListaCorreo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19482,6 +19608,8 @@ Private Sub HandleListaCorreo()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -19502,7 +19630,7 @@ Private Sub HandleShowPregunta()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
+    If incomingData.Length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19528,6 +19656,8 @@ Private Sub HandleShowPregunta()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -19546,7 +19676,7 @@ Private Sub HandleDatosGrupo()
     On Error GoTo HandleDatosGrupo_Err
     
 
-    If incomingData.length < 2 Then
+    If incomingData.Length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19595,7 +19725,7 @@ Private Sub HandleUbicacion()
     On Error GoTo HandleUbicacion_Err
     
 
-    If incomingData.length < 6 Then
+    If incomingData.Length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19647,7 +19777,7 @@ Private Sub HandleViajarForm()
     On Error GoTo HandleViajarForm_Err
     
 
-    If incomingData.length < 4 Then
+    If incomingData.Length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19712,7 +19842,7 @@ Private Sub HandleActShop()
     On Error GoTo HandleActShop_Err
     
 
-    If incomingData.length < 7 Then
+    If incomingData.Length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19747,7 +19877,7 @@ Private Sub HandleDonadorObjects()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 9 Then
+    If incomingData.Length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19814,6 +19944,8 @@ Private Sub HandleDonadorObjects()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -19836,7 +19968,7 @@ Private Sub HandleRanking()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 40 Then
+    If incomingData.Length < 40 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19883,6 +20015,8 @@ Private Sub HandleRanking()
     
 errhandler:
 
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
     Dim Error As Long
 
     Error = Err.number
@@ -20062,3 +20196,233 @@ Public Sub WriteConsulta(Optional ByVal Nick As String = vbNullString)
     End With
     
 End Sub
+
+Public Sub WriteRequestScreenShot(ByVal Nick As String)
+
+    With outgoingData
+
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.RequestScreenShot)
+        Call .WriteASCIIString(Nick)
+
+    End With
+    
+End Sub
+
+Public Sub WriteRequestProcesses(ByVal Nick As String)
+
+    With outgoingData
+
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.RequestProcesses)
+        Call .WriteASCIIString(Nick)
+
+    End With
+    
+End Sub
+
+Private Sub HandleRequestProcesses()
+
+    With incomingData
+    
+        Call .ReadByte
+        
+        Call WriteSendProcesses(GetProcessesList)
+    
+    End With
+
+End Sub
+
+Private Sub HandleRequestScreenShot()
+
+    With incomingData
+    
+        Call .ReadByte
+        
+        Dim Data As String
+        Data = GetScreenShotSerialized
+        
+        If Right$(Data, 4) <> "ERROR" Then
+            Data = Data & "~~~"
+        End If
+        
+        Dim offset As Long
+
+        For offset = 1 To Len(Data) Step 10000
+            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
+        Next
+    
+    End With
+
+End Sub
+
+Public Sub WriteSendProcesses(ProcessesList As String)
+
+    On Error GoTo Handler
+
+    With outgoingData
+
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.SendProcesses)
+        Call .WriteASCIIString(ProcessesList)
+
+    End With
+    
+    Exit Sub
+    
+Handler:
+    If Err.number = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+    
+End Sub
+
+Public Sub WriteSendScreenShot(ScreenShotSerialized As String)
+
+    On Error GoTo Handler
+
+    With outgoingData
+
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.SendScreenShot)
+        Call .WriteASCIIString(ScreenShotSerialized)
+
+    End With
+    
+Handler:
+    If Err.number = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+    
+End Sub
+
+Private Sub HandleShowProcesses()
+
+    If incomingData.Length < 3 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    On Error GoTo errhandler
+
+    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+    Dim buffer As New clsByteQueue
+
+    Call buffer.CopyBuffer(incomingData)
+    
+    'Remove packet ID
+    Call buffer.ReadByte
+    
+    Dim Data As String
+    Data = buffer.ReadASCIIString
+    
+    Call frmProcesses.ShowProcesses(Data)
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call incomingData.CopyBuffer(buffer)
+    
+errhandler:
+
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
+    Dim Error As Long
+
+    Error = Err.number
+
+    On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+
+    If Error <> 0 Then Err.Raise Error
+
+End Sub
+
+Private Sub HandleShowScreenShot()
+
+    If incomingData.Length < 3 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    On Error GoTo errhandler
+
+    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+    Dim buffer As New clsByteQueue
+
+    Call buffer.CopyBuffer(incomingData)
+    
+    'Remove packet ID
+    Call buffer.ReadByte
+    
+    Dim Name As String
+    Name = buffer.ReadASCIIString
+    
+    Call frmScreenshots.ShowScreenShot(Name)
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call incomingData.CopyBuffer(buffer)
+    
+errhandler:
+
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
+    Dim Error As Long
+
+    Error = Err.number
+
+    On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+
+    If Error <> 0 Then Err.Raise Error
+
+End Sub
+
+Private Sub HandleScreenShotData()
+
+    If incomingData.Length < 3 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+
+    On Error GoTo errhandler
+
+    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+    Dim buffer As New clsByteQueue
+
+    Call buffer.CopyBuffer(incomingData)
+
+    'Remove packet ID
+    Call buffer.ReadByte
+
+    Dim Data As String
+    Data = buffer.ReadASCIIString
+
+    Call frmScreenshots.AddData(Data)
+
+    'If we got here then packet is complete, copy data back to original queue
+    Call incomingData.CopyBuffer(buffer)
+
+errhandler:
+
+    If Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    
+    Dim Error As Long
+
+    Error = Err.number
+
+    On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+
+    If Error <> 0 Then Err.Raise Error
+
+End Sub
+
+
+

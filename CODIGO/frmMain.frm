@@ -4804,8 +4804,8 @@ End Sub
         Socket1.NoDelay = True
     
         'Clean input and output buffers
-        Call incomingData.ReadASCIIStringFixed(incomingData.length)
-        Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
+        Call incomingData.ReadASCIIStringFixed(incomingData.Length)
+        Call outgoingData.ReadASCIIStringFixed(outgoingData.Length)
 
         'Security.Redundance = 13 'DEFAULT
     
@@ -5067,11 +5067,10 @@ Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
     Dim RD     As String
 
     Dim Data() As Byte
-    
-    Call Socket1.Read(RD, dataLength)
+
+    ' WyroX: Sólo leemos la cantidad que entre en la cola!!
+    Call Socket1.Read(RD, min(dataLength, incomingData.Capacity - incomingData.Length))
     Data = StrConv(RD, vbFromUnicode)
-    
-    If RD = vbNullString Then Exit Sub
 
     'Put data in the buffer
     Call incomingData.WriteBlock(Data)
@@ -5162,8 +5161,8 @@ Private Sub Winsock1_Connect()
     Debug.Print "Winsock Connect"
     
     'Clean input and output buffers
-    Call incomingData.ReadASCIIStringFixed(incomingData.length)
-    Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
+    Call incomingData.ReadASCIIStringFixed(incomingData.Length)
+    Call outgoingData.ReadASCIIStringFixed(outgoingData.Length)
     
 
     

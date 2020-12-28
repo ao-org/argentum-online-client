@@ -1287,10 +1287,10 @@ Public Sub CargarParticulasBinary()
     Dim ColorSet   As Long
     Dim temp       As Integer
 
-    Dim Handle     As Integer
+    Dim handle     As Integer
 
     'Open files
-    Handle = FreeFile()
+    handle = FreeFile()
 
     #If Compresion = 1 Then
 
@@ -1395,10 +1395,10 @@ Public Sub CargarIndicesOBJBinary()
         
     #End If
 
-    Dim Handle As Integer
+    Dim handle As Integer
 
     'Open files
-    Handle = FreeFile()
+    handle = FreeFile()
 
     Dim N As Integer
     
@@ -2189,11 +2189,11 @@ Public Function LoadGrhData() As Boolean
     Dim grh         As Long
     Dim Frame       As Long
     Dim grhCount    As Long
-    Dim Handle      As Integer
+    Dim handle      As Integer
     Dim fileVersion As Long
     
     'Open files
-    Handle = FreeFile()
+    handle = FreeFile()
     
     #If Compresion = 1 Then
 
@@ -2203,16 +2203,16 @@ Public Function LoadGrhData() As Boolean
 
         End If
     
-        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #Handle
+        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #handle
     #Else
-        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #Handle
+        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #handle
     #End If
     
     'Get file version
-    Get #Handle, , fileVersion
+    Get #handle, , fileVersion
     
     'Get number of grhs
-    Get #Handle, , grhCount
+    Get #handle, , grhCount
     
     'Resize arrays
     ReDim GrhData(1 To grhCount) As GrhData
@@ -2223,15 +2223,15 @@ Public Function LoadGrhData() As Boolean
 
     Fin = False
 
-    While Not EOF(Handle) And Fin = False
+    While Not EOF(handle) And Fin = False
 
-        Get #Handle, , grh
+        Get #handle, , grh
 
         With GrhData(grh)
         
             GrhData(grh).active = True
             'Get number of frames
-            Get #Handle, , .NumFrames
+            Get #handle, , .NumFrames
 
             If .NumFrames <= 0 Then GoTo ErrorHandler
             
@@ -2241,7 +2241,7 @@ Public Function LoadGrhData() As Boolean
 
                 'Read a animation GRH set
                 For Frame = 1 To .NumFrames
-                    Get #Handle, , .Frames(Frame)
+                    Get #handle, , .Frames(Frame)
 
                     If .Frames(Frame) <= 0 Or .Frames(Frame) > grhCount Then
                         GoTo ErrorHandler
@@ -2250,7 +2250,7 @@ Public Function LoadGrhData() As Boolean
 
                 Next Frame
                 
-                Get #Handle, , GrhData(grh).speed
+                Get #handle, , GrhData(grh).speed
                 
                 If .speed <= 0 Then GoTo ErrorHandler
                 
@@ -2272,23 +2272,23 @@ Public Function LoadGrhData() As Boolean
                 If .TileHeight <= 0 Then GoTo ErrorHandler
             Else
                 'Read in normal GRH data
-                Get #Handle, , .FileNum
+                Get #handle, , .FileNum
 
                 If .FileNum <= 0 Then GoTo ErrorHandler
                                 
-                Get #Handle, , GrhData(grh).sX
+                Get #handle, , GrhData(grh).sX
 
                 If .sX < 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(grh).sY
+                Get #handle, , GrhData(grh).sY
 
                 If .sY < 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(grh).pixelWidth
+                Get #handle, , GrhData(grh).pixelWidth
 
                 If .pixelWidth <= 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(grh).pixelHeight
+                Get #handle, , GrhData(grh).pixelHeight
 
                 If .pixelHeight <= 0 Then GoTo ErrorHandler
                 
@@ -2305,7 +2305,7 @@ Public Function LoadGrhData() As Boolean
         If grh = MaxGrh Then Fin = True
     Wend
 
-    Close #Handle
+    Close #handle
     
     LoadGrhData = True
     
@@ -2328,9 +2328,9 @@ Public Function CargarMiniMap()
 
     Dim count  As Long
 
-    Dim Handle As Integer
+    Dim handle As Integer
 
-    Handle = FreeFile
+    handle = FreeFile
     
     #If Compresion = 1 Then
 
@@ -2340,23 +2340,23 @@ Public Function CargarMiniMap()
 
         End If
     
-        Open Windows_Temp_Dir & "minimap.bin" For Binary Access Read As #Handle
+        Open Windows_Temp_Dir & "minimap.bin" For Binary Access Read As #handle
     #Else
     
-        Open App.Path & "\..\Recursos\init\minimap.bin" For Binary Access Read As #Handle
+        Open App.Path & "\..\Recursos\init\minimap.bin" For Binary Access Read As #handle
         
     #End If
 
     For count = 1 To MaxGrh
 
         If GrhData(count).active Then
-            Get #Handle, , GrhData(count).MiniMap_color
+            Get #handle, , GrhData(count).MiniMap_color
 
         End If
 
     Next count
     
-    Close #Handle
+    Close #handle
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "minimap.bin"

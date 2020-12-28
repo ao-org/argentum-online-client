@@ -65,7 +65,7 @@ Private Const NOT_ENOUGH_SPACE As Long = vbObjectError + 10
 ' Default size of a data buffer (10 Kbs)
 '
 ' @see Class_Initialize
-Private Const DATA_BUFFER      As Long = 10240 'Ladder TAMAÑO DEL BUFFER   REVISAR
+Private Const DATA_BUFFER      As Long = 10240
 
 ''
 ' The byte data
@@ -86,7 +86,7 @@ Dim queueLength                As Long
 ' @param source The data to be copied.
 ' @param length Number of bytes to be copied.
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal Length As Long)
 
 ''
 ' Initializes the queue with the default queueCapacity
@@ -99,20 +99,13 @@ Private Sub Class_Initialize()
     'Last Modification: 04/27/06
     'Initializes the queue with the default queueCapacity
     '***************************************************
-    
-    On Error GoTo Class_Initialize_Err
+        
     
     ReDim Data(DATA_BUFFER - 1) As Byte
     
     queueCapacity = DATA_BUFFER
 
-    
-    Exit Sub
-
-Class_Initialize_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.Class_Initialize", Erl)
-    Resume Next
-    
+  
 End Sub
 
 ''
@@ -124,18 +117,9 @@ Private Sub Class_Terminate()
     'Last Modification: 04/27/06
     'Clean up
     '***************************************************
-    
-    On Error GoTo Class_Terminate_Err
-    
+          
     Erase Data
 
-    
-    Exit Sub
-
-Class_Terminate_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.Class_Terminate", Erl)
-    Resume Next
-    
 End Sub
 
 ''
@@ -146,18 +130,15 @@ End Sub
 '           the source. All previous data on this object will be lost.
 
 Public Sub CopyBuffer(ByRef source As clsByteQueue)
-    
-    On Error GoTo CopyBuffer_Err
-    
 
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'A Visual Basic equivalent of a Copy Contructor
     '***************************************************
-    If source.length = 0 Then
+    If source.Length = 0 Then
         'Clear the list and exit
-        Call RemoveData(length)
+        Call RemoveData(Length)
         Exit Sub
 
     End If
@@ -168,24 +149,18 @@ Public Sub CopyBuffer(ByRef source As clsByteQueue)
     ReDim Data(queueCapacity - 1) As Byte
     
     ' Read buffer
-    Dim buf() As Byte
+    Dim Buf() As Byte
 
-    ReDim buf(source.length - 1) As Byte
+    ReDim Buf(source.Length - 1) As Byte
     
-    Call source.PeekBlock(buf, source.length)
+    Call source.PeekBlock(Buf, source.Length)
     
     queueLength = 0
     
     ' Write buffer
-    Call WriteBlock(buf, source.length)
+    Call WriteBlock(Buf, source.Length)
 
-    
-    Exit Sub
-
-CopyBuffer_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.CopyBuffer", Erl)
-    Resume Next
-    
+        
 End Sub
 
 ''
@@ -197,10 +172,7 @@ End Sub
 ' @remarks  This method is faster than Iif() and cleaner, therefore it's used instead of it
 
 Private Function min(ByVal val1 As Long, ByVal val2 As Long) As Long
-    
-    On Error GoTo min_Err
-    
-
+        
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
@@ -213,13 +185,6 @@ Private Function min(ByVal val1 As Long, ByVal val2 As Long) As Long
 
     End If
 
-    
-    Exit Function
-
-min_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.min", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -234,16 +199,13 @@ End Function
 ' @see ReadData
 ' @see NOT_ENOUGH_DATA
 
-Private Function WriteData(ByRef buf() As Byte, ByVal dataLength As Long) As Long
-    
-    On Error GoTo WriteData_Err
-    
-
+Private Function WriteData(ByRef Buf() As Byte, ByVal dataLength As Long) As Long
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'If the queueCapacity allows it copyes a byte buffer to the queue, if not it throws NOT_ENOUGH_DATA
     '***************************************************
+        
     'Check if there is enough free space
     If queueCapacity - queueLength - dataLength < 0 Then
         Call Err.Raise(NOT_ENOUGH_SPACE)
@@ -252,19 +214,12 @@ Private Function WriteData(ByRef buf() As Byte, ByVal dataLength As Long) As Lon
     End If
     
     'Copy data from buffer
-    Call CopyMemory(Data(queueLength), buf(0), dataLength)
+    Call CopyMemory(Data(queueLength), Buf(0), dataLength)
     
     'Update length of data
     queueLength = queueLength + dataLength
     WriteData = dataLength
-
-    
-    Exit Function
-
-WriteData_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteData", Erl)
-    Resume Next
-    
+        
 End Function
 
 ''
@@ -281,18 +236,13 @@ End Function
 ' @see RemoveData
 ' @see NOT_ENOUGH_DATA
 
-Private Function ReadData(ByRef buf() As Byte, ByVal dataLength As Long) As Long
-    
-    On Error GoTo ReadData_Err
-    
-
-    
-
+Private Function ReadData(ByRef Buf() As Byte, ByVal dataLength As Long) As Long
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'If enough memory is available, it copies the requested number of bytes to the buffer
     '***************************************************
+        
     'Check if we can read the number of bytes requested
     If dataLength > queueLength Then
         Call Err.Raise(NOT_ENOUGH_DATA)
@@ -301,21 +251,14 @@ Private Function ReadData(ByRef buf() As Byte, ByVal dataLength As Long) As Long
     End If
     
     'Copy data to buffer
-    Call CopyMemory(buf(0), Data(0), dataLength)
+    Call CopyMemory(Buf(0), Data(0), dataLength)
     ReadData = dataLength
-
-    
-    Exit Function
-
-ReadData_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadData", Erl)
-    Resume Next
     
 End Function
 
 ''
 ' Removes a given number of bytes from the beginning of the byte queue.
-' If there is less data available than the requested amount it removes all data.
+' If there is less data available than the requested Amount it removes all data.
 '
 ' @param datalength Total number of bytes to remove
 ' @return   The actual number of bytes removed
@@ -328,10 +271,8 @@ Private Function RemoveData(ByVal dataLength As Long) As Long
     'Last Modification: 04/27/06
     'Moves forward the queue overwriting the first dataLength bytes
     '***************************************************
+        
     'Figure out how many bytes we can remove
-    
-    On Error GoTo RemoveData_Err
-    
     RemoveData = min(dataLength, queueLength)
     
     'Remove data - prevent rt9 when cleaning a full queue
@@ -339,13 +280,6 @@ Private Function RemoveData(ByVal dataLength As Long) As Long
     
     'Update length
     queueLength = queueLength - RemoveData
-
-    
-    Exit Function
-
-RemoveData_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.RemoveData", Erl)
-    Resume Next
     
 End Function
 
@@ -358,28 +292,18 @@ End Function
 ' @see ReadByte
 
 Public Function WriteByte(ByVal Value As Byte) As Long
-    
-    On Error GoTo WriteByte_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a byte to the queue
     '***************************************************
-    Dim buf(0) As Byte
+        
+    Dim Buf(0) As Byte
     
-    buf(0) = Value
+    Buf(0) = Value
     
-    WriteByte = WriteData(buf, 1)
-
-    
-    Exit Function
-
-WriteByte_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteByte", Erl)
-    Resume Next
-    
+    WriteByte = WriteData(Buf, 1)
+        
 End Function
 
 ''
@@ -391,28 +315,18 @@ End Function
 ' @see ReadInteger
 
 Public Function WriteInteger(ByVal Value As Integer) As Long
-    
-    On Error GoTo WriteInteger_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes an integer to the queue
     '***************************************************
-    Dim buf(1) As Byte
+ 
+    Dim Buf(1) As Byte
     
     'Copy data to temp buffer
-    Call CopyMemory(buf(0), Value, 2)
+    Call CopyMemory(Buf(0), Value, 2)
     
-    WriteInteger = WriteData(buf, 2)
-
-    
-    Exit Function
-
-WriteInteger_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteInteger", Erl)
-    Resume Next
+    WriteInteger = WriteData(Buf, 2)
     
 End Function
 
@@ -425,29 +339,19 @@ End Function
 ' @see ReadLong
 
 Public Function WriteLong(ByVal Value As Long) As Long
-    
-    On Error GoTo WriteLong_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a long to the queue
     '***************************************************
-    Dim buf(3) As Byte
+        
+    Dim Buf(3) As Byte
     
     'Copy data to temp buffer
-    Call CopyMemory(buf(0), Value, 4)
+    Call CopyMemory(Buf(0), Value, 4)
     
-    WriteLong = WriteData(buf, 4)
-
-    
-    Exit Function
-
-WriteLong_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteLong", Erl)
-    Resume Next
-    
+    WriteLong = WriteData(Buf, 4)
+        
 End Function
 
 ''
@@ -459,29 +363,19 @@ End Function
 ' @see ReadSingle
 
 Public Function WriteSingle(ByVal Value As Single) As Long
-    
-    On Error GoTo WriteSingle_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Writes a single to the queue
     '***************************************************
-    Dim buf(3) As Byte
+ 
+    Dim Buf(3) As Byte
     
     'Copy data to temp buffer
-    Call CopyMemory(buf(0), Value, 4)
+    Call CopyMemory(Buf(0), Value, 4)
     
-    WriteSingle = WriteData(buf, 4)
+    WriteSingle = WriteData(Buf, 4)
 
-    
-    Exit Function
-
-WriteSingle_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteSingle", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -493,29 +387,19 @@ End Function
 ' @see ReadDouble
 
 Public Function WriteDouble(ByVal Value As Double) As Long
-    
-    On Error GoTo WriteDouble_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Writes a double to the queue
     '***************************************************
-    Dim buf(7) As Byte
+
+    Dim Buf(7) As Byte
     
     'Copy data to temp buffer
-    Call CopyMemory(buf(0), Value, 8)
+    Call CopyMemory(Buf(0), Value, 8)
     
-    WriteDouble = WriteData(buf, 8)
+    WriteDouble = WriteData(Buf, 8)
 
-    
-    Exit Function
-
-WriteDouble_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteDouble", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -527,28 +411,18 @@ End Function
 ' @see ReadBoolean
 
 Public Function WriteBoolean(ByVal Value As Boolean) As Long
-    
-    On Error GoTo WriteBoolean_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a byte to the queue
     '***************************************************
-    Dim buf(0) As Byte
-    
-    If Value Then buf(0) = 1
-    
-    WriteBoolean = WriteData(buf, 1)
 
+    Dim Buf(0) As Byte
     
-    Exit Function
+    If Value Then Buf(0) = 1
+    
+    WriteBoolean = WriteData(Buf, 1)
 
-WriteBoolean_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteBoolean", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -560,31 +434,21 @@ End Function
 ' @see ReadASCIIStringFixed
 
 Public Function WriteASCIIStringFixed(ByVal Value As String) As Long
-    
-    On Error GoTo WriteASCIIStringFixed_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a fixed length ASCII string to the queue
     '***************************************************
-    Dim buf() As Byte
 
-    ReDim buf(Len(Value) - 1) As Byte
+    Dim Buf() As Byte
+
+    ReDim Buf(Len(Value) - 1) As Byte
     
     'Copy data to temp buffer
-    Call CopyMemory(buf(0), ByVal StrPtr(StrConv(Value, vbFromUnicode)), Len(Value))
+    Call CopyMemory(Buf(0), ByVal StrPtr(StrConv(Value, vbFromUnicode)), Len(Value))
     
-    WriteASCIIStringFixed = WriteData(buf, Len(Value))
+    WriteASCIIStringFixed = WriteData(Buf, Len(Value))
 
-    
-    Exit Function
-
-WriteASCIIStringFixed_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteASCIIStringFixed", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -596,31 +460,21 @@ End Function
 ' @see ReadUnicodeStringFixed
 
 Public Function WriteUnicodeStringFixed(ByVal Value As String) As Long
-    
-    On Error GoTo WriteUnicodeStringFixed_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a fixed length UNICODE string to the queue
     '***************************************************
-    Dim buf() As Byte
 
-    ReDim buf(LenB(Value)) As Byte
+    Dim Buf() As Byte
+
+    ReDim Buf(LenB(Value)) As Byte
     
     'Copy data to temp buffer
-    Call CopyMemory(buf(0), ByVal StrPtr(Value), LenB(Value))
-
-    WriteUnicodeStringFixed = WriteData(buf, LenB(Value))
-
+    Call CopyMemory(Buf(0), ByVal StrPtr(Value), LenB(Value))
     
-    Exit Function
+    WriteUnicodeStringFixed = WriteData(Buf, LenB(Value))
 
-WriteUnicodeStringFixed_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteUnicodeStringFixed", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -632,37 +486,27 @@ End Function
 ' @see ReadASCIIString
 
 Public Function WriteASCIIString(ByVal Value As String) As Long
-    
-    On Error GoTo WriteASCIIString_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a variable length ASCII string to the queue
     '***************************************************
-    Dim buf() As Byte
 
-    ReDim buf(Len(Value) + 1) As Byte
+    Dim Buf() As Byte
+
+    ReDim Buf(Len(Value) + 1) As Byte
     
     'Copy length to temp buffer
-    Call CopyMemory(buf(0), CInt(Len(Value)), 2)
+    Call CopyMemory(Buf(0), CInt(Len(Value)), 2)
     
     If Len(Value) > 0 Then
         'Copy data to temp buffer
-        Call CopyMemory(buf(2), ByVal StrPtr(StrConv(Value, vbFromUnicode)), Len(Value))
+        Call CopyMemory(Buf(2), ByVal StrPtr(StrConv(Value, vbFromUnicode)), Len(Value))
 
     End If
-
-    WriteASCIIString = WriteData(buf, Len(Value) + 2)
-
     
-    Exit Function
+    WriteASCIIString = WriteData(Buf, Len(Value) + 2)
 
-WriteASCIIString_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteASCIIString", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -674,37 +518,27 @@ End Function
 ' @see ReadUnicodeString
 
 Public Function WriteUnicodeString(ByVal Value As String) As Long
-    
-    On Error GoTo WriteUnicodeString_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a variable length UNICODE string to the queue
     '***************************************************
-    Dim buf() As Byte
 
-    ReDim buf(LenB(Value) + 1) As Byte
+    Dim Buf() As Byte
+
+    ReDim Buf(LenB(Value) + 1) As Byte
     
     'Copy length to temp buffer
-    Call CopyMemory(buf(0), CInt(Len(Value)), 2)
+    Call CopyMemory(Buf(0), CInt(Len(Value)), 2)
     
     If Len(Value) > 0 Then
         'Copy data to temp buffer
-        Call CopyMemory(buf(2), ByVal StrPtr(Value), LenB(Value))
+        Call CopyMemory(Buf(2), ByVal StrPtr(Value), LenB(Value))
 
     End If
     
-    WriteUnicodeString = WriteData(buf, LenB(Value) + 2)
+    WriteUnicodeString = WriteData(Buf, LenB(Value) + 2)
 
-    
-    Exit Function
-
-WriteUnicodeString_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteUnicodeString", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -717,28 +551,18 @@ End Function
 ' @see PeekBlock
 ' @see ReadBlock
 
-Public Function WriteBlock(ByRef Value() As Byte, Optional ByVal length As Long = -1) As Long
-    
-    On Error GoTo WriteBlock_Err
-    
-
+Public Function WriteBlock(ByRef Value() As Byte, Optional ByVal Length As Long = -1) As Long
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Writes a byte array to the queue
     '***************************************************
     'Prevent from copying memory outside the array
-    If length > UBound(Value()) + 1 Or length < 0 Then length = UBound(Value()) + 1
-    
-    WriteBlock = WriteData(Value, length)
 
+    If Length > UBound(Value()) + 1 Or Length < 0 Then Length = UBound(Value()) + 1
     
-    Exit Function
+    WriteBlock = WriteData(Value, Length)
 
-WriteBlock_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.WriteBlock", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -751,29 +575,19 @@ End Function
 ' @see WriteByte
 
 Public Function ReadByte() As Byte
-    
-    On Error GoTo ReadByte_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a byte from the queue and removes it
     '***************************************************
-    Dim buf(0) As Byte
+
+    Dim Buf(0) As Byte
     
     'Read the data and remove it
-    Call RemoveData(ReadData(buf, 1))
+    Call RemoveData(ReadData(Buf, 1))
     
-    ReadByte = buf(0)
+    ReadByte = Buf(0)
 
-    
-    Exit Function
-
-ReadByte_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadByte", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -786,30 +600,20 @@ End Function
 ' @see WriteInteger
 
 Public Function ReadInteger() As Integer
-    
-    On Error GoTo ReadInteger_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads an integer from the queue and removes it
     '***************************************************
-    Dim buf(1) As Byte
+
+    Dim Buf(1) As Byte
     
     'Read the data and remove it
-    Call RemoveData(ReadData(buf, 2))
+    Call RemoveData(ReadData(Buf, 2))
     
     'Copy data to temp buffer
-    Call CopyMemory(ReadInteger, buf(0), 2)
+    Call CopyMemory(ReadInteger, Buf(0), 2)
 
-    
-    Exit Function
-
-ReadInteger_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadInteger", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -822,30 +626,20 @@ End Function
 ' @see WriteLong
 
 Public Function ReadLong() As Long
-    
-    On Error GoTo ReadLong_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a long from the queue and removes it
     '***************************************************
-    Dim buf(3) As Byte
+
+    Dim Buf(3) As Byte
     
     'Read the data and remove it
-    Call RemoveData(ReadData(buf, 4))
+    Call RemoveData(ReadData(Buf, 4))
     
     'Copy data to temp buffer
-    Call CopyMemory(ReadLong, buf(0), 4)
+    Call CopyMemory(ReadLong, Buf(0), 4)
 
-    
-    Exit Function
-
-ReadLong_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadLong", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -858,30 +652,20 @@ End Function
 ' @see WriteSingle
 
 Public Function ReadSingle() As Single
-    
-    On Error GoTo ReadSingle_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Reads a single from the queue and removes it
     '***************************************************
-    Dim buf(3) As Byte
+
+    Dim Buf(3) As Byte
     
     'Read the data and remove it
-    Call RemoveData(ReadData(buf, 4))
+    Call RemoveData(ReadData(Buf, 4))
     
     'Copy data to temp buffer
-    Call CopyMemory(ReadSingle, buf(0), 4)
+    Call CopyMemory(ReadSingle, Buf(0), 4)
 
-    
-    Exit Function
-
-ReadSingle_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadSingle", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -894,30 +678,20 @@ End Function
 ' @see WriteDouble
 
 Public Function ReadDouble() As Double
-    
-    On Error GoTo ReadDouble_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Reads a double from the queue and removes it
     '***************************************************
-    Dim buf(7) As Byte
+
+    Dim Buf(7) As Byte
     
     'Read the data and remove it
-    Call RemoveData(ReadData(buf, 8))
+    Call RemoveData(ReadData(Buf, 8))
     
     'Copy data to temp buffer
-    Call CopyMemory(ReadDouble, buf(0), 8)
+    Call CopyMemory(ReadDouble, Buf(0), 8)
 
-    
-    Exit Function
-
-ReadDouble_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadDouble", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -930,29 +704,19 @@ End Function
 ' @see WriteBoolean
 
 Public Function ReadBoolean() As Boolean
-    
-    On Error GoTo ReadBoolean_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a Boolean from the queue and removes it
     '***************************************************
-    Dim buf(0) As Byte
+
+    Dim Buf(0) As Byte
     
     'Read the data and remove it
-    Call RemoveData(ReadData(buf, 1))
+    Call RemoveData(ReadData(Buf, 1))
     
-    If buf(0) = 1 Then ReadBoolean = True
+    If Buf(0) = 1 Then ReadBoolean = True
 
-    
-    Exit Function
-
-ReadBoolean_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadBoolean", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -966,40 +730,30 @@ End Function
 ' @see PeekASCIIStringFixed
 ' @see WriteUnicodeStringFixed
 
-Public Function ReadASCIIStringFixed(ByVal length As Long) As String
-    
-    On Error GoTo ReadASCIIStringFixed_Err
-    
-
+Public Function ReadASCIIStringFixed(ByVal Length As Long) As String
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a fixed length ASCII string from the queue and removes it
     '***************************************************
-    If length <= 0 Then Exit Function
+
+    If Length <= 0 Then Exit Function
     
-    If queueLength >= length Then
+    If queueLength >= Length Then
 
-        Dim buf() As Byte
+        Dim Buf() As Byte
 
-        ReDim buf(length - 1) As Byte
+        ReDim Buf(Length - 1) As Byte
         
         'Read the data and remove it
-        Call RemoveData(ReadData(buf, length))
+        Call RemoveData(ReadData(Buf, Length))
         
-        ReadASCIIStringFixed = StrConv(buf, vbUnicode)
+        ReadASCIIStringFixed = StrConv(Buf, vbUnicode)
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
 
     End If
 
-    
-    Exit Function
-
-ReadASCIIStringFixed_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadASCIIStringFixed", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1013,40 +767,30 @@ End Function
 ' @see PeekUnicodeStringFixed
 ' @see WriteUnicodeStringFixed
 
-Public Function ReadUnicodeStringFixed(ByVal length As Long) As String
-    
-    On Error GoTo ReadUnicodeStringFixed_Err
-    
-
+Public Function ReadUnicodeStringFixed(ByVal Length As Long) As String
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a fixed length UNICODE string from the queue and removes it
     '***************************************************
-    If length <= 0 Then Exit Function
+
+    If Length <= 0 Then Exit Function
     
-    If queueLength >= length * 2 Then
+    If queueLength >= Length * 2 Then
 
-        Dim buf() As Byte
+        Dim Buf() As Byte
 
-        ReDim buf(length * 2 - 1) As Byte
+        ReDim Buf(Length * 2 - 1) As Byte
         
         'Read the data and remove it
-        Call RemoveData(ReadData(buf, length * 2))
+        Call RemoveData(ReadData(Buf, Length * 2))
         
-        ReadUnicodeStringFixed = buf
+        ReadUnicodeStringFixed = Buf
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
 
     End If
 
-    
-    Exit Function
-
-ReadUnicodeStringFixed_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadUnicodeStringFixed", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1065,40 +809,36 @@ Public Function ReadASCIIString() As String
     'Last Modification: 04/27/06
     'Reads a variable length ASCII string from the queue and removes it
     '***************************************************
-    
-    On Error GoTo ReadASCIIString_Err
-    
 
-    Dim buf(1) As Byte
+    Dim Buf(1) As Byte
 
-    Dim length As Integer
+    Dim Length As Integer
     
     'Make sure we can read a valid length
     If queueLength > 1 Then
         'Read the length
-        Call ReadData(buf, 2)
-        Call CopyMemory(length, buf(0), 2)
+        Call ReadData(Buf, 2)
+        Call CopyMemory(Length, Buf(0), 2)
         
         'Make sure there are enough bytes
-        If queueLength >= length + 2 Then
+        If queueLength >= Length + 2 Then
             'Remove the length
             Call RemoveData(2)
             
-            If length > 0 Then
+            If Length > 0 Then
 
                 Dim buf2() As Byte
 
-                ReDim buf2(length - 1) As Byte
+                ReDim buf2(Length - 1) As Byte
                 
                 'Read the data and remove it
-                Call RemoveData(ReadData(buf2, length))
+                Call RemoveData(ReadData(buf2, Length))
                 
                 ReadASCIIString = StrConv(buf2, vbUnicode)
 
             End If
 
         Else
-             
             Call Err.Raise(NOT_ENOUGH_DATA)
 
         End If
@@ -1108,56 +848,46 @@ Public Function ReadASCIIString() As String
 
     End If
 
-    
-    Exit Function
-
-ReadASCIIString_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadASCIIString", Erl)
-    Resume Next
-    
 End Function
 
 ''
 ' Reads a variable length unicode string from the begining of the queue and removes it
 '
 ' @return   The read string if enough data is available, an empty string otherwise.
-' @remarks  Read methods removes the data from the qu                          eue.
+' @remarks  Read methods removes the data from the queue.
 ' Data removed can't be recovered by the queue in any way
 ' If there is not enough data to read the complete string then nothing is removed and an empty string is returned
 ' @see PeekUnicodeString
 ' @see WriteUnicodeString
 
 Public Function ReadUnicodeString() As String
-    
-    On Error GoTo ReadUnicodeString_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a variable length UNICODE string from the queue and removes it
     '***************************************************
-    Dim buf(1) As Byte
 
-    Dim length As Integer
+    Dim Buf(1) As Byte
+
+    Dim Length As Integer
     
     'Make sure we can read a valid length
     If queueLength > 1 Then
         'Read the length
-        Call ReadData(buf, 2)
-        Call CopyMemory(length, buf(0), 2)
+        Call ReadData(Buf, 2)
+        Call CopyMemory(Length, Buf(0), 2)
         
         'Make sure there are enough bytes
-        If queueLength >= length * 2 + 2 Then
+        If queueLength >= Length * 2 + 2 Then
             'Remove the length
             Call RemoveData(2)
             
             Dim buf2() As Byte
 
-            ReDim buf2(length * 2 - 1) As Byte
+            ReDim buf2(Length * 2 - 1) As Byte
             
             'Read the data and remove it
-            Call RemoveData(ReadData(buf2, length * 2))
+            Call RemoveData(ReadData(buf2, Length * 2))
             
             ReadUnicodeString = buf2
         Else
@@ -1170,19 +900,12 @@ Public Function ReadUnicodeString() As String
 
     End If
 
-    
-    Exit Function
-
-ReadUnicodeString_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadUnicodeString", Erl)
-    Resume Next
-    
 End Function
 
 ''
 ' Reads a byte array from the begining of the queue and removes it
 '
-' @param block Byte array which will contain the read data. MUST be Base 0 and previously resized to contain the requested amount of bytes.
+' @param block Byte array which will contain the read data. MUST be Base 0 and previously resized to contain the requested Amount of bytes.
 ' @param dataLength Number of bytes to retrieve from the queue.
 ' @return   The number of read bytes.
 ' @remarks  The block() array MUST be Base 0 and previously resized to be able to contain the requested bytes.
@@ -1192,25 +915,15 @@ End Function
 ' @see WriteBlock
 
 Public Function ReadBlock(ByRef block() As Byte, ByVal dataLength As Long) As Long
-    
-    On Error GoTo ReadBlock_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a byte array from the queue and removes it
     '***************************************************
     'Read the data and remove it
+
     If dataLength > 0 Then ReadBlock = RemoveData(ReadData(block(), dataLength))
 
-    
-    Exit Function
-
-ReadBlock_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.ReadBlock", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1222,31 +935,19 @@ End Function
 ' @see WriteByte
 
 Public Function PeekByte() As Byte
-    
-    On Error GoTo PeekByte_Err
-    
-
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a byte from the queue but doesn't removes it
     '***************************************************
-    Dim buf(0) As Byte
+        
+    Dim Buf(0) As Byte
     
     'Read the data and remove it
-    Call ReadData(buf, 1)
+    Call ReadData(Buf, 1)
     
-    PeekByte = buf(0)
+    PeekByte = Buf(0)
 
-    
-    Exit Function
-
-PeekByte_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekByte", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1258,30 +959,20 @@ End Function
 ' @see WriteInteger
 
 Public Function PeekInteger() As Integer
-    
-    On Error GoTo PeekInteger_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads an integer from the queue but doesn't removes it
     '***************************************************
-    Dim buf(1) As Byte
+
+    Dim Buf(1) As Byte
     
     'Read the data and remove it
-    Call ReadData(buf, 2)
+    Call ReadData(Buf, 2)
     
     'Copy data to temp buffer
-    Call CopyMemory(PeekInteger, buf(0), 2)
-
-    
-    Exit Function
-
-PeekInteger_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekInteger", Erl)
-    Resume Next
-    
+    Call CopyMemory(PeekInteger, Buf(0), 2)
+        
 End Function
 
 ''
@@ -1293,30 +984,20 @@ End Function
 ' @see WriteLong
 
 Public Function PeekLong() As Long
-    
-    On Error GoTo PeekLong_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a long from the queue but doesn't removes it
     '***************************************************
-    Dim buf(3) As Byte
+
+    Dim Buf(3) As Byte
     
     'Read the data and remove it
-    Call ReadData(buf, 4)
+    Call ReadData(Buf, 4)
     
     'Copy data to temp buffer
-    Call CopyMemory(PeekLong, buf(0), 4)
+    Call CopyMemory(PeekLong, Buf(0), 4)
 
-    
-    Exit Function
-
-PeekLong_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekLong", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1328,30 +1009,20 @@ End Function
 ' @see WriteSingle
 
 Public Function PeekSingle() As Single
-    
-    On Error GoTo PeekSingle_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Reads a single from the queue but doesn't removes it
     '***************************************************
-    Dim buf(3) As Byte
+
+    Dim Buf(3) As Byte
     
     'Read the data and remove it
-    Call ReadData(buf, 4)
+    Call ReadData(Buf, 4)
     
     'Copy data to temp buffer
-    Call CopyMemory(PeekSingle, buf(0), 4)
+    Call CopyMemory(PeekSingle, Buf(0), 4)
 
-    
-    Exit Function
-
-PeekSingle_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekSingle", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1363,30 +1034,20 @@ End Function
 ' @see WriteDouble
 
 Public Function PeekDouble() As Double
-    
-    On Error GoTo PeekDouble_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 10/28/07
     'Reads a double from the queue but doesn't removes it
     '***************************************************
-    Dim buf(7) As Byte
+
+    Dim Buf(7) As Byte
     
     'Read the data and remove it
-    Call ReadData(buf, 8)
+    Call ReadData(Buf, 8)
     
     'Copy data to temp buffer
-    Call CopyMemory(PeekDouble, buf(0), 8)
+    Call CopyMemory(PeekDouble, Buf(0), 8)
 
-    
-    Exit Function
-
-PeekDouble_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekDouble", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1398,29 +1059,19 @@ End Function
 ' @see WriteBoolean
 
 Public Function PeekBoolean() As Boolean
-    
-    On Error GoTo PeekBoolean_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a Boolean from the queue but doesn't removes it
     '***************************************************
-    Dim buf(0) As Byte
+
+    Dim Buf(0) As Byte
     
     'Read the data and remove it
-    Call ReadData(buf, 1)
+    Call ReadData(Buf, 1)
     
-    If buf(0) = 1 Then PeekBoolean = True
+    If Buf(0) = 1 Then PeekBoolean = True
 
-    
-    Exit Function
-
-PeekBoolean_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekBoolean", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1433,40 +1084,30 @@ End Function
 ' @see ReadASCIIStringFixed
 ' @see WriteASCIIStringFixed
 
-Public Function PeekASCIIStringFixed(ByVal length As Long) As String
-    
-    On Error GoTo PeekASCIIStringFixed_Err
-    
-
+Public Function PeekASCIIStringFixed(ByVal Length As Long) As String
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a fixed length ASCII string from the queue but doesn't removes it
     '***************************************************
-    If length <= 0 Then Exit Function
+
+    If Length <= 0 Then Exit Function
     
-    If queueLength >= length Then
+    If queueLength >= Length Then
 
-        Dim buf() As Byte
+        Dim Buf() As Byte
 
-        ReDim buf(length - 1) As Byte
+        ReDim Buf(Length - 1) As Byte
         
         'Read the data and remove it
-        Call ReadData(buf, length)
+        Call ReadData(Buf, Length)
         
-        PeekASCIIStringFixed = StrConv(buf, vbUnicode)
+        PeekASCIIStringFixed = StrConv(Buf, vbUnicode)
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
 
     End If
 
-    
-    Exit Function
-
-PeekASCIIStringFixed_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekASCIIStringFixed", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1479,40 +1120,30 @@ End Function
 ' @see ReadUnicodeStringFixed
 ' @see WriteUnicodeStringFixed
 
-Public Function PeekUnicodeStringFixed(ByVal length As Long) As String
-    
-    On Error GoTo PeekUnicodeStringFixed_Err
-    
-
+Public Function PeekUnicodeStringFixed(ByVal Length As Long) As String
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a fixed length UNICODE string from the queue but doesn't removes it
     '***************************************************
-    If length <= 0 Then Exit Function
+
+    If Length <= 0 Then Exit Function
     
-    If queueLength >= length * 2 Then
+    If queueLength >= Length * 2 Then
 
-        Dim buf() As Byte
+        Dim Buf() As Byte
 
-        ReDim buf(length * 2 - 1) As Byte
+        ReDim Buf(Length * 2 - 1) As Byte
         
         'Read the data and remove it
-        Call ReadData(buf, length * 2)
+        Call ReadData(Buf, Length * 2)
         
-        PeekUnicodeStringFixed = buf
+        PeekUnicodeStringFixed = Buf
     Else
         Call Err.Raise(NOT_ENOUGH_DATA)
 
     End If
 
-    
-    Exit Function
-
-PeekUnicodeStringFixed_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekUnicodeStringFixed", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1525,42 +1156,39 @@ End Function
 ' @see WriteASCIIString
 
 Public Function PeekASCIIString() As String
-    
-    On Error GoTo PeekASCIIString_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a variable length ASCII string from the queue but doesn't removes it
     '***************************************************
-    Dim buf(1) As Byte
 
-    Dim length As Integer
+    Dim Buf(1) As Byte
+
+    Dim Length As Integer
     
     'Make sure we can read a valid length
     If queueLength > 1 Then
         'Read the length
-        Call ReadData(buf, 2)
-        Call CopyMemory(length, buf(0), 2)
+        Call ReadData(Buf, 2)
+        Call CopyMemory(Length, Buf(0), 2)
         
         'Make sure there are enough bytes
-        If queueLength >= length + 2 Then
+        If queueLength >= Length + 2 Then
 
             Dim buf2() As Byte
 
-            ReDim buf2(length + 1) As Byte
+            ReDim buf2(Length + 1) As Byte
             
             'Read the data (we have to read the length again)
-            Call ReadData(buf2, length + 2)
+            Call ReadData(buf2, Length + 2)
             
-            If length > 0 Then
+            If Length > 0 Then
 
                 'Get rid of the length
                 Dim buf3() As Byte
 
-                ReDim buf3(length - 1) As Byte
-                Call CopyMemory(buf3(0), buf2(2), length)
+                ReDim buf3(Length - 1) As Byte
+                Call CopyMemory(buf3(0), buf2(2), Length)
                 
                 PeekASCIIString = StrConv(buf3, vbUnicode)
 
@@ -1576,13 +1204,6 @@ Public Function PeekASCIIString() As String
 
     End If
 
-    
-    Exit Function
-
-PeekASCIIString_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekASCIIString", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1595,40 +1216,37 @@ End Function
 ' @see WriteUnicodeString
 
 Public Function PeekUnicodeString() As String
-    
-    On Error GoTo PeekUnicodeString_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a variable length UNICODE string from the queue but doesn't removes it
     '***************************************************
-    Dim buf(1) As Byte
 
-    Dim length As Integer
+    Dim Buf(1) As Byte
+
+    Dim Length As Integer
     
     'Make sure we can read a valid length
     If queueLength > 1 Then
         'Read the length
-        Call ReadData(buf, 2)
-        Call CopyMemory(length, buf(0), 2)
+        Call ReadData(Buf, 2)
+        Call CopyMemory(Length, Buf(0), 2)
         
         'Make sure there are enough bytes
-        If queueLength >= length * 2 + 2 Then
+        If queueLength >= Length * 2 + 2 Then
 
             Dim buf2() As Byte
 
-            ReDim buf2(length * 2 + 1) As Byte
+            ReDim buf2(Length * 2 + 1) As Byte
             
             'Read the data (we need to read the length again)
-            Call ReadData(buf2, length * 2 + 2)
+            Call ReadData(buf2, Length * 2 + 2)
             
             'Get rid of the length bytes
             Dim buf3() As Byte
 
-            ReDim buf3(length * 2 - 1) As Byte
-            Call CopyMemory(buf3(0), buf2(2), length * 2)
+            ReDim buf3(Length * 2 - 1) As Byte
+            Call CopyMemory(buf3(0), buf2(2), Length * 2)
             
             PeekUnicodeString = buf3
         Else
@@ -1641,19 +1259,12 @@ Public Function PeekUnicodeString() As String
 
     End If
 
-    
-    Exit Function
-
-PeekUnicodeString_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekUnicodeString", Erl)
-    Resume Next
-    
 End Function
 
 ''
 ' Reads a byte array from the begining of the queue but DOES NOT remove it.
 '
-' @param block() Byte array that will contain the read data. MUST be Base 0 and previously resized to contain the requested amount of bytes.
+' @param block() Byte array that will contain the read data. MUST be Base 0 and previously resized to contain the requested Amount of bytes.
 ' @param dataLength Number of bytes to be read
 ' @return   The actual number of read bytes.
 ' @remarks  Peek methods, unlike Read methods, don't remove the data from the queue.
@@ -1661,25 +1272,15 @@ End Function
 ' @see WriteBlock
 
 Public Function PeekBlock(ByRef block() As Byte, ByVal dataLength As Long) As Long
-    
-    On Error GoTo PeekBlock_Err
-    
-
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Reads a byte array from the queue but doesn't removes it
     '***************************************************
     'Read the data
+
     If dataLength > 0 Then PeekBlock = ReadData(block(), dataLength)
 
-    
-    Exit Function
-
-PeekBlock_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.PeekBlock", Erl)
-    Resume Next
-    
 End Function
 
 ''
@@ -1693,18 +1294,9 @@ Public Property Get Capacity() As Long
     'Last Modification: 04/27/06
     'Retrieves the current capacity of the queue
     '***************************************************
-    
-    On Error GoTo Capacity_Err
-    
+
     Capacity = queueCapacity
 
-    
-    Exit Property
-
-Capacity_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.Capacity", Erl)
-    Resume Next
-    
 End Property
 
 ''
@@ -1722,24 +1314,15 @@ Public Property Let Capacity(ByVal Value As Long)
     'All data in the queue exceeding the new capacity is lost
     '***************************************************
     'Upate capacity
-    
-    On Error GoTo Capacity_Err
-    
+
     queueCapacity = Value
     
     'All extra data is lost
-    If length > Value Then queueLength = Value
+    If Length > Value Then queueLength = Value
     
     'Resize the queue
     ReDim Preserve Data(queueCapacity - 1) As Byte
 
-    
-    Exit Property
-
-Capacity_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.Capacity", Erl)
-    Resume Next
-    
 End Property
 
 ''
@@ -1747,24 +1330,15 @@ End Property
 '
 ' @return   The length of the total data in the queue.
 
-Public Property Get length() As Long
+Public Property Get Length() As Long
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/27/06
     'Retrieves the current number of bytes in the queue
     '***************************************************
-    
-    On Error GoTo length_Err
-    
-    length = queueLength
+ 
+    Length = queueLength
 
-    
-    Exit Property
-
-length_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.length", Erl)
-    Resume Next
-    
 End Property
 
 ''
@@ -1778,18 +1352,9 @@ Public Property Get NotEnoughDataErrCode() As Long
     'Last Modification: 04/27/06
     'Retrieves the NOT_ENOUGH_DATA error code
     '***************************************************
-    
-    On Error GoTo NotEnoughDataErrCode_Err
-    
+
     NotEnoughDataErrCode = NOT_ENOUGH_DATA
 
-    
-    Exit Property
-
-NotEnoughDataErrCode_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.NotEnoughDataErrCode", Erl)
-    Resume Next
-    
 End Property
 
 ''
@@ -1803,17 +1368,38 @@ Public Property Get NotEnoughSpaceErrCode() As Long
     'Last Modification: 04/27/06
     'Retrieves the NOT_ENOUGH_SPACE error code
     '***************************************************
-    
-    On Error GoTo NotEnoughSpaceErrCode_Err
-    
+
     NotEnoughSpaceErrCode = NOT_ENOUGH_SPACE
 
-    
-    Exit Property
-
-NotEnoughSpaceErrCode_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsByteQueue.NotEnoughSpaceErrCode", Erl)
-    Resume Next
-    
 End Property
+
+Public Sub WriteSubBuffer(buffer As clsByteQueue, Optional ByVal offset As Long = 0, Optional ByVal size As Long = -1)
+    
+    If offset >= buffer.Length Then Exit Sub
+    If size < 0 Then size = buffer.Length - offset
+    
+    'Check if there is enough free space
+    If queueCapacity - queueLength - size - 2 < 0 Then
+        Call Err.Raise(NOT_ENOUGH_SPACE)
+        Exit Sub
+    End If
+    
+    'Copy length to temp buffer
+    Call CopyMemory(Data(queueLength), CInt(size), 2)
+    
+    queueLength = queueLength + 2
+    
+    'Copy data from buffer
+    Call buffer.CopyDataTo(Data, queueLength, offset, size)
+    
+    'Update length of data
+    queueLength = queueLength + size
+
+End Sub
+
+Public Sub CopyDataTo(Buf() As Byte, ByVal SrcOffset As Long, ByVal DstOffset As Long, ByVal size As Long)
+
+    Call CopyMemory(Buf(SrcOffset), Data(DstOffset), size)
+
+End Sub
 

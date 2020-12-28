@@ -218,12 +218,12 @@ Private Sub relampago_Timer()
 
         End Select
 
-        Dim R, G, B As Byte
+        Dim r, G, B As Byte
 
         B = (Color And 16711680) / 65536
         G = (Color And 65280) / 256
-        R = Color And 255
-        Color = D3DColorARGB(255, R, G, B)
+        r = Color And 255
+        Color = D3DColorARGB(255, r, G, B)
         
         SetGlobalLight (Color)
         RelampagoFin.Interval = duraciontrueno
@@ -266,7 +266,7 @@ Private Sub render_DblClick()
         Case 2
             
             If PJSeleccionado < 1 Then Exit Sub
-            If Pjs(PJSeleccionado).Nombre = "" Then
+            If Pjs(PJSeleccionado).nombre = "" Then
                 PJSeleccionado = 0
                 Exit Sub
 
@@ -275,7 +275,7 @@ Private Sub render_DblClick()
             Call Sound.Sound_Play(SND_CLICK)
 
             If IntervaloPermiteConectar Then
-                Call LogearPersonaje(Pjs(PJSeleccionado).Nombre)
+                Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
 
             End If
 
@@ -301,7 +301,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
         Case 3
         
-        Debug.Print "x: " & x & " y:" & y
+            'Debug.Print "x: " & x & " y:" & y
         
         
             If x > 282 And x < 322 And y > 428 And y < 468 Then 'Boton heading
@@ -324,28 +324,28 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     
 
             If x > 325 And x < 344 And y > 371 And y < 387 Then 'Boton izquierda cabezas
-                If frmCrearPersonaje.cabeza.ListCount = 0 Then Exit Sub
-                If frmCrearPersonaje.cabeza.ListIndex > 0 Then
-                    frmCrearPersonaje.cabeza.ListIndex = frmCrearPersonaje.cabeza.ListIndex - 1
+                If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
+                If frmCrearPersonaje.Cabeza.ListIndex > 0 Then
+                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex - 1
 
                 End If
 
-                If frmCrearPersonaje.cabeza.ListIndex = 0 Then
-                    frmCrearPersonaje.cabeza.ListIndex = frmCrearPersonaje.cabeza.ListCount - 1
+                If frmCrearPersonaje.Cabeza.ListIndex = 0 Then
+                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListCount - 1
 
                 End If
 
             End If
     
             If x > 394 And x < 411 And y > 373 And y < 386 Then 'Boton Derecha cabezas
-                If frmCrearPersonaje.cabeza.ListCount = 0 Then Exit Sub
-                If (frmCrearPersonaje.cabeza.ListIndex + 1) <> frmCrearPersonaje.cabeza.ListCount Then
-                    frmCrearPersonaje.cabeza.ListIndex = frmCrearPersonaje.cabeza.ListIndex + 1
+                If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
+                If (frmCrearPersonaje.Cabeza.ListIndex + 1) <> frmCrearPersonaje.Cabeza.ListCount Then
+                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex + 1
 
                 End If
 
-                If (frmCrearPersonaje.cabeza.ListIndex + 1) = frmCrearPersonaje.cabeza.ListCount Then
-                    frmCrearPersonaje.cabeza.ListIndex = 0
+                If (frmCrearPersonaje.Cabeza.ListIndex + 1) = frmCrearPersonaje.Cabeza.ListCount Then
+                    frmCrearPersonaje.Cabeza.ListIndex = 0
 
                 End If
 
@@ -623,7 +623,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case 2
 
                     If Char = 0 Then Exit Sub
-                    DeleteUser = Pjs(Char).Nombre
+                    DeleteUser = Pjs(Char).nombre
 
                     Dim tmp As String
 
@@ -676,7 +676,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         Pjs(i).Head = 0
                         Pjs(i).Mapa = 0
                         Pjs(i).nivel = 0
-                        Pjs(i).Nombre = ""
+                        Pjs(i).nombre = ""
                         Pjs(i).Clase = 0
                         Pjs(i).Criminal = 0
                         Pjs(i).NameMapa = ""
@@ -689,7 +689,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case 4
 
                     If PJSeleccionado < 1 Then Exit Sub
-                    If Pjs(PJSeleccionado).Nombre = "" Then
+                    If Pjs(PJSeleccionado).nombre = "" Then
                         PJSeleccionado = 0
                         Exit Sub
 
@@ -697,7 +697,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                     If IntervaloPermiteConectar Then
                         Call Sound.Sound_Play(SND_CLICK)
-                        Call LogearPersonaje(Pjs(PJSeleccionado).Nombre)
+                        Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
 
                     End If
 
@@ -866,24 +866,24 @@ LogearPersonaje_Err:
     
 End Sub
 
-Function ValidarNombre(Nombre As String, Error As String) As Boolean
+Function ValidarNombre(nombre As String, Error As String) As Boolean
     
-    If Len(Nombre) < 1 Then
+    If Len(nombre) < 1 Then
         Error = "Ingrese algún nombre."
         Exit Function
     End If
     
-    If Len(Nombre) > 18 Then
+    If Len(nombre) > 18 Then
         Error = "Nombre demasiado largo."
         Exit Function
     End If
     
-    Dim Temp As String
-    Temp = UCase$(Nombre)
+    Dim temp As String
+    temp = UCase$(nombre)
     
     Dim i As Long, Char As Integer, LastChar As Integer
-    For i = 1 To Len(Temp)
-        Char = Asc(mid$(Temp, i, 1))
+    For i = 1 To Len(temp)
+        Char = Asc(mid$(temp, i, 1))
         
         If (Char < 65 Or Char > 90) And Char <> 32 Then
             Error = "Sólo se permites letras y espacios."
@@ -897,7 +897,7 @@ Function ValidarNombre(Nombre As String, Error As String) As Boolean
         LastChar = Char
     Next
 
-    If Asc(mid$(Temp, 1, 1)) = 32 Or Asc(mid$(Temp, Len(Temp), 1)) = 32 Then
+    If Asc(mid$(temp, 1, 1)) = 32 Or Asc(mid$(temp, Len(temp), 1)) = 32 Then
         Error = "No se permiten espacios al inicio o al final."
         Exit Function
     End If

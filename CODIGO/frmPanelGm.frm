@@ -316,13 +316,13 @@ Begin VB.Form frmPanelGm
             Index           =   60
          End
       End
-      Begin VB.Menu Procesos 
-         Caption         =   "Procesos"
+      Begin VB.Menu Investigar 
+         Caption         =   "Investigar"
          Begin VB.Menu VerProcesos 
-            Caption         =   "Ver Procesos"
+            Caption         =   "Ver procesos"
          End
-         Begin VB.Menu CerrarProceso 
-            Caption         =   "Cerrar Proceso"
+         Begin VB.Menu VerPantalla 
+            Caption         =   "Ver pantalla cliente"
          End
       End
       Begin VB.Menu Editar 
@@ -794,26 +794,6 @@ Private Sub CerrarleCliente_Click()
 
 CerrarleCliente_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmPanelGm.CerrarleCliente_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub CerrarProceso_Click()
-    
-    On Error GoTo CerrarProceso_Click_Err
-    
-    tmp = InputBox("Ingrese el nombre del proceso", "Cerrar Proceso")
-
-    If tmp <> "" Then
-
-        'Call SendData("/CERRARPROCESO " & cboListaUsus.Text & "@" & tmp)
-    End If
-
-    
-    Exit Sub
-
-CerrarProceso_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGm.CerrarProceso_Click", Erl)
     Resume Next
     
 End Sub
@@ -2120,14 +2100,12 @@ UnbanPersonaje_Click_Err:
     
 End Sub
 
-Private Sub usersOnline_Click()
-
-    'Call SendData("/ONLINE")
+Private Sub VerPantalla_Click()
+    Call ParseUserCommand("/SS " & cboListaUsus.Text)
 End Sub
 
 Private Sub VerProcesos_Click()
-
-    'Call SendData("/VERPROCESOS " & cboListaUsus.Text)
+    Call ParseUserCommand("/VERPROCESOS " & cboListaUsus.Text)
 End Sub
 
 Private Sub Vida_Click()
