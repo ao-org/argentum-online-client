@@ -1252,7 +1252,7 @@ Public Sub CargarParticulas()
         
         For ColorSet = 1 To 4
             TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).R = General_Field_Read(1, TempSet, ",")
+            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
             StreamData(loopc).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
             StreamData(loopc).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
         Next ColorSet
@@ -1290,10 +1290,10 @@ Public Sub CargarParticulasBinary()
     Dim ColorSet   As Long
     Dim temp       As Integer
 
-    Dim handle     As Integer
+    Dim Handle     As Integer
 
     'Open files
-    handle = FreeFile()
+    Handle = FreeFile()
 
     #If Compresion = 1 Then
 
@@ -1350,7 +1350,7 @@ Public Sub CargarParticulasBinary()
         
         For ColorSet = 1 To 4
             TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).R = General_Field_Read(1, TempSet, ",")
+            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
             StreamData(loopc).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
             StreamData(loopc).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
         Next ColorSet
@@ -1398,10 +1398,10 @@ Public Sub CargarIndicesOBJBinary()
         
     #End If
 
-    Dim handle As Integer
+    Dim Handle As Integer
 
     'Open files
-    handle = FreeFile()
+    Handle = FreeFile()
 
     Dim N As Integer
     
@@ -1689,6 +1689,7 @@ Public Sub Cargarmapsworlddata()
     Dim MapFile As String
 
     Dim i       As Integer
+    Dim j       As Byte
 
     #If Compresion = 1 Then
 
@@ -1706,19 +1707,26 @@ Public Sub Cargarmapsworlddata()
     Dim Leer As New clsIniManager
     Call Leer.Initialize(MapFile)
 
-    WordMapaNum = Val(Leer.GetValue("WORLDMAP", "NumMap"))
-    DungeonDataNum = Val(Leer.GetValue("DUNGEON", "NumMap"))
-     
-    ReDim WordMapa(1 To WordMapaNum) As String
-    ReDim DungeonData(1 To DungeonDataNum) As String
     
-    For i = 1 To WordMapaNum
-        WordMapa(i) = Val(Leer.GetValue("WORLDMAP", i))
-    Next i
+    TotalWorlds = Val(Leer.GetValue("INIT", "TotalWorlds"))
+       
+    ReDim Mundo(1 To TotalWorlds) As WorldMap
+   
+    For j = 1 To TotalWorlds
+        Mundo(j).Alto = Val(Leer.GetValue("WORLDMAP" & j, "Alto"))
+        Mundo(j).Ancho = Val(Leer.GetValue("WORLDMAP" & j, "Ancho"))
+
+        ReDim Mundo(j).MapIndice(1 To Mundo(j).Alto * Mundo(j).Ancho) As Integer
+         
+         For i = 1 To Mundo(j).Alto * Mundo(j).Ancho
+             Mundo(j).MapIndice(i) = Val(Leer.GetValue("WORLDMAP" & j, i))
+         Next i
+         
+         frmMapaGrande.ComMundo.AddItem "Mapa " & j
+         
+     Next j
     
-    For i = 1 To DungeonDataNum
-        DungeonData(i) = Val(Leer.GetValue("DUNGEON", i))
-    Next i
+    
 
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "mapsworlddata.dat"
@@ -2192,11 +2200,11 @@ Public Function LoadGrhData() As Boolean
     Dim grh         As Long
     Dim Frame       As Long
     Dim grhCount    As Long
-    Dim handle      As Integer
+    Dim Handle      As Integer
     Dim fileVersion As Long
     
     'Open files
-    handle = FreeFile()
+    Handle = FreeFile()
     
     #If Compresion = 1 Then
 
@@ -2206,16 +2214,16 @@ Public Function LoadGrhData() As Boolean
 
         End If
     
-        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #handle
+        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #Handle
     #Else
-        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #handle
+        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #Handle
     #End If
     
     'Get file version
-    Get #handle, , fileVersion
+    Get #Handle, , fileVersion
     
     'Get number of grhs
-    Get #handle, , grhCount
+    Get #Handle, , grhCount
     
     'Resize arrays
     ReDim GrhData(1 To grhCount) As GrhData
@@ -2226,15 +2234,15 @@ Public Function LoadGrhData() As Boolean
 
     Fin = False
 
-    While Not EOF(handle) And Fin = False
+    While Not EOF(Handle) And Fin = False
 
-        Get #handle, , grh
+        Get #Handle, , grh
 
         With GrhData(grh)
         
             GrhData(grh).active = True
             'Get number of frames
-            Get #handle, , .NumFrames
+            Get #Handle, , .NumFrames
 
             If .NumFrames <= 0 Then GoTo ErrorHandler
             
@@ -2244,7 +2252,7 @@ Public Function LoadGrhData() As Boolean
 
                 'Read a animation GRH set
                 For Frame = 1 To .NumFrames
-                    Get #handle, , .Frames(Frame)
+                    Get #Handle, , .Frames(Frame)
 
                     If .Frames(Frame) <= 0 Or .Frames(Frame) > grhCount Then
                         GoTo ErrorHandler
@@ -2253,7 +2261,7 @@ Public Function LoadGrhData() As Boolean
 
                 Next Frame
                 
-                Get #handle, , GrhData(grh).speed
+                Get #Handle, , GrhData(grh).speed
                 
                 If .speed <= 0 Then GoTo ErrorHandler
                 
@@ -2275,23 +2283,23 @@ Public Function LoadGrhData() As Boolean
                 If .TileHeight <= 0 Then GoTo ErrorHandler
             Else
                 'Read in normal GRH data
-                Get #handle, , .FileNum
+                Get #Handle, , .FileNum
 
                 If .FileNum <= 0 Then GoTo ErrorHandler
                                 
-                Get #handle, , GrhData(grh).sX
+                Get #Handle, , GrhData(grh).sX
 
                 If .sX < 0 Then GoTo ErrorHandler
                 
-                Get #handle, , GrhData(grh).sY
+                Get #Handle, , GrhData(grh).sY
 
                 If .sY < 0 Then GoTo ErrorHandler
                 
-                Get #handle, , GrhData(grh).pixelWidth
+                Get #Handle, , GrhData(grh).pixelWidth
 
                 If .pixelWidth <= 0 Then GoTo ErrorHandler
                 
-                Get #handle, , GrhData(grh).pixelHeight
+                Get #Handle, , GrhData(grh).pixelHeight
 
                 If .pixelHeight <= 0 Then GoTo ErrorHandler
                 
@@ -2308,7 +2316,7 @@ Public Function LoadGrhData() As Boolean
         If grh = MaxGrh Then Fin = True
     Wend
 
-    Close #handle
+    Close #Handle
     
     LoadGrhData = True
     
@@ -2331,9 +2339,9 @@ Public Function CargarMiniMap()
 
     Dim count  As Long
 
-    Dim handle As Integer
+    Dim Handle As Integer
 
-    handle = FreeFile
+    Handle = FreeFile
     
     #If Compresion = 1 Then
 
@@ -2343,23 +2351,23 @@ Public Function CargarMiniMap()
 
         End If
     
-        Open Windows_Temp_Dir & "minimap.bin" For Binary Access Read As #handle
+        Open Windows_Temp_Dir & "minimap.bin" For Binary Access Read As #Handle
     #Else
     
-        Open App.Path & "\..\Recursos\init\minimap.bin" For Binary Access Read As #handle
+        Open App.Path & "\..\Recursos\init\minimap.bin" For Binary Access Read As #Handle
         
     #End If
 
     For count = 1 To MaxGrh
 
         If GrhData(count).active Then
-            Get #handle, , GrhData(count).MiniMap_color
+            Get #Handle, , GrhData(count).MiniMap_color
 
         End If
 
     Next count
     
-    Close #handle
+    Close #Handle
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "minimap.bin"
@@ -2612,20 +2620,20 @@ Sub CargarColores()
     Dim i As Long
     
     For i = 0 To 47 '49 y 50 reservados para ciudadano y criminal
-        ColoresPJ(i).R = CByte(GetVar(archivoC, CStr(i), "R"))
+        ColoresPJ(i).r = CByte(GetVar(archivoC, CStr(i), "R"))
         ColoresPJ(i).G = CByte(GetVar(archivoC, CStr(i), "G"))
         ColoresPJ(i).B = CByte(GetVar(archivoC, CStr(i), "B"))
     Next i
     
-    ColoresPJ(50).R = CByte(GetVar(archivoC, "CR", "R"))
+    ColoresPJ(50).r = CByte(GetVar(archivoC, "CR", "R"))
     ColoresPJ(50).G = CByte(GetVar(archivoC, "CR", "G"))
     ColoresPJ(50).B = CByte(GetVar(archivoC, "CR", "B"))
     
-    ColoresPJ(49).R = CByte(GetVar(archivoC, "CI", "R"))
+    ColoresPJ(49).r = CByte(GetVar(archivoC, "CI", "R"))
     ColoresPJ(49).G = CByte(GetVar(archivoC, "CI", "G"))
     ColoresPJ(49).B = CByte(GetVar(archivoC, "CI", "B"))
     
-    ColoresPJ(48).R = CByte(GetVar(archivoC, "NE", "R"))
+    ColoresPJ(48).r = CByte(GetVar(archivoC, "NE", "R"))
     ColoresPJ(48).G = CByte(GetVar(archivoC, "NE", "G"))
     ColoresPJ(48).B = CByte(GetVar(archivoC, "NE", "B"))
     

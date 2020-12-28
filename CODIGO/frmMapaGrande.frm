@@ -19,6 +19,23 @@ Begin VB.Form frmMapaGrande
    ScaleWidth      =   690
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.ComboBox ComMundo 
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Left            =   7320
+      Style           =   2  'Dropdown List
+      TabIndex        =   16
+      Top             =   2400
+      Width           =   1095
+   End
    Begin VB.PictureBox PlayerView 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -436,7 +453,7 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private RealizoCambios As String
 
@@ -452,7 +469,7 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
 Private Const TILE_SIZE = 27
 
@@ -468,7 +485,7 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub
@@ -477,6 +494,10 @@ moverForm_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.moverForm", Erl)
     Resume Next
     
+End Sub
+
+Private Sub ComMundo_Click()
+picMap.Picture = LoadInterface("mapa" & ComMundo.ListIndex + 1 & ".bmp")
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -641,46 +662,8 @@ End Sub
 Private Sub Image2_Click()
     
     On Error GoTo Image2_Click_Err
-    
 
-    If Dungeon Then
-        picMap.Picture = LoadInterface("mapa.bmp")
-
-        Dungeon = False
-    
-        Image2.Picture = Nothing
-        Image3.Picture = Nothing
-
-    Else
-        Image3.Picture = Nothing
-        picMap.Picture = LoadInterface("mapadungeon.bmp")
-        Image2.Picture = LoadInterface("check-amarillo.bmp")
-
-        Dungeon = True
-        Referencias = False
-
-    End If
-
-    If PosREAL = 0 And Dungeon Then
-        Shape1.Visible = True
-
-    End If
-
-    If PosREAL = 0 And Not Dungeon Then
-        Shape1.Visible = False
-
-    End If
-
-    If PosREAL = 1 And Dungeon Then
-        Shape1.Visible = False
-
-    End If
-
-    If PosREAL = 1 And Not Dungeon Then
-        Shape1.Visible = True
-
-    End If
-
+    picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
     
     Exit Sub
 
@@ -867,28 +850,15 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     PosX = PosX * TILE_SIZE
     PosY = PosY * TILE_SIZE
 
-    If Dungeon Then
-        If DungeonData(Mapa) <> 0 Then Exit Sub
-        Call CargarDatosMapa(DungeonData(Mapa))
-        lblMapInfo(0) = MapDat.map_name & "(" & DungeonData(Mapa) & ")"
+
+        If Mundo(WorldActual).MapIndice(Mapa) = 0 Then Exit Sub
+        Call CargarDatosMapa(Mundo(WorldActual).MapIndice(Mapa))
+        lblMapInfo(0) = MapDat.map_name & "(" & Mundo(WorldActual).MapIndice(Mapa) & ")"
         
         If Button = vbRightButton Then
-            Call ParseUserCommand("/TELEP YO " & DungeonData(Mapa) & " " & 50 & " " & 50)
+            Call ParseUserCommand("/TELEP YO " & Mundo(WorldActual).MapIndice(Mapa) & " " & 50 & " " & 50)
 
         End If
-
-    Else
-
-        If WordMapa(Mapa) = 0 Then Exit Sub
-        Call CargarDatosMapa(WordMapa(Mapa))
-        lblMapInfo(0) = MapDat.map_name & "(" & WordMapa(Mapa) & ")"
-        
-        If Button = vbRightButton Then
-            Call ParseUserCommand("/TELEP YO " & WordMapa(Mapa) & " " & 50 & " " & 50)
-
-        End If
-
-    End If
 
     Label2.Caption = ""
     Label3.Caption = ""

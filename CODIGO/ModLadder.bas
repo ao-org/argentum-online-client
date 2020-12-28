@@ -7,7 +7,7 @@ Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
 
 'Nueva seguridad
-Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal Length As Long)
+Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal length As Long)
 Private Declare Function GetAdaptersInfo Lib "iphlpapi" (lpAdapterInfo As Any, lpSize As Long) As Long
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 'get mac adress
@@ -31,11 +31,6 @@ Public ScrollExpCounter As Long
 Public ScrollOroCounter As Long
 Public OxigenoCounter   As Long
 Public DrogaCounter     As Integer
-
-'Sistema de mapas
-Public PosREAL          As Integer
-Public Dungeon          As Boolean
-Public idmap            As Integer
 
 Type Effect_Type
 
@@ -195,13 +190,29 @@ Public NpcData()          As NpcDatas
 
 Public Locale_SMG()       As String
 
-Public WordMapaNum        As Integer
 
-Public DungeonDataNum     As Integer
 
-Public WordMapa()         As String
+'Sistema de mapa del mundo
+Public TotalWorlds As Byte
 
-Public DungeonData()      As String
+Public Type WorldMap
+    MapIndice() As Integer
+    Ancho As Integer
+    Alto As Integer
+End Type
+
+Public Mundo() As WorldMap
+
+
+Public PosREAL          As Integer
+Public Dungeon          As Boolean
+Public idmap            As Integer
+
+Public WorldActual As Byte
+
+
+'Sistema de mapa del mundo
+
 
 Public HechizoData()      As HechizoDatas
 
@@ -327,7 +338,7 @@ Private Const SPI_GETMOUSESPEED = 112
 
 Public Declare Function SwapMouseButton Lib "user32" (ByVal bSwap As Long) As Long
 
-Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 
 Public Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 
@@ -343,9 +354,9 @@ End Type
 
 Public Const WM_COPYDATA = &H4A
 
-Private Declare Function SetTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
+Private Declare Function SetTimer Lib "user32" (ByVal hWnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
 
-Private Declare Function KillTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long) As Long
+Private Declare Function KillTimer Lib "user32" (ByVal hWnd As Long, ByVal nIDEvent As Long) As Long
 
 Private hBuffersTimer As Long
 
@@ -478,7 +489,7 @@ Private Declare Function CombineRgn Lib "gdi32" (ByVal hDestRgn As Long, ByVal h
 
 Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 
-Private Declare Function SetWindowRgn Lib "user32" (ByVal hwnd As Long, ByVal hRgn As Long, ByVal bRedraw As Long) As Long
+Private Declare Function SetWindowRgn Lib "user32" (ByVal hWnd As Long, ByVal hRgn As Long, ByVal bRedraw As Long) As Long
 
 Private Declare Function CreatePolygonRgn Lib "gdi32" (lpPoint As POINTAPI, ByVal nCount As Long, ByVal nPolyFillMode As Long) As Long
 
@@ -504,7 +515,7 @@ Public Const HWND_TOPMOST = -1
 
 Public Const HWND_NOTOPMOST = -2
 
-Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Declare Function CreateIconFromResourceEx Lib "user32.dll" (ByRef presbits As Any, ByVal dwResSize As Long, ByVal fIcon As Long, ByVal dwVer As Long, ByVal cxDesired As Long, ByVal cyDesired As Long, ByVal flags As Long) As Long
 
@@ -514,7 +525,7 @@ Private Declare Function DestroyIcon Lib "user32.dll" (ByVal hIcon As Long) As L
 
 Public Declare Function DrawIconEx Lib "user32.dll" (ByVal hdc As Long, ByVal xLeft As Long, ByVal yTop As Long, ByVal hIcon As Long, ByVal cxWidth As Long, ByVal cyWidth As Long, ByVal istepIfAniCur As Long, ByVal hbrFlickerFreeDraw As Long, ByVal diFlags As Long) As Long
   
-Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Long) As Long
+Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Long) As Long
                            
 Private m_ASC As Long
 
@@ -525,7 +536,7 @@ Sub inputbox_Password(El_Form As Form, Caracter As String)
       
     m_ASC = Asc(Caracter)
       
-    Call SetTimer(El_Form.hwnd, &H5000&, 100, AddressOf TimerProc)
+    Call SetTimer(El_Form.hWnd, &H5000&, 100, AddressOf TimerProc)
   
     
     Exit Sub
@@ -536,7 +547,7 @@ inputbox_Password_Err:
     
 End Sub
   
-Private Sub TimerProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idEvent As Long, ByVal dwTime As Long)
+Private Sub TimerProc(ByVal hWnd As Long, ByVal uMsg As Long, ByVal idEvent As Long, ByVal dwTime As Long)
     
     On Error GoTo TimerProc_Err
     
@@ -549,7 +560,7 @@ Private Sub TimerProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idEvent As L
     'Le establece el PasswordChar
     Call SendMessageLongRef(Handle_InputBox, &HCC&, m_ASC, 0)
     'Finaliza el Timer
-    Call KillTimer(hwnd, idEvent)
+    Call KillTimer(hWnd, idEvent)
   
     
     Exit Sub
@@ -598,15 +609,15 @@ LoadPNGtoICO_Err:
     
 End Function
 
-Public Function SetTopMostWindow(hwnd As Long, Topmost As Boolean) As Long
+Public Function SetTopMostWindow(hWnd As Long, Topmost As Boolean) As Long
     
     On Error GoTo SetTopMostWindow_Err
     
 
     If Topmost = True Then 'Make the window topmost
-        SetTopMostWindow = SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, FLAGSz)
+        SetTopMostWindow = SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, FLAGSz)
     Else
-        SetTopMostWindow = SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, FLAGSz)
+        SetTopMostWindow = SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, FLAGSz)
         SetTopMostWindow = False
 
     End If
@@ -701,7 +712,7 @@ Sub General_Set_Connect()
     intro = 1
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -792,7 +803,7 @@ Public Sub ApplySurfaceTo(frm As Form)
     
     On Error GoTo ApplySurfaceTo_Err
     
-    Call SetWindowRgn(frm.hwnd, lRegion, True)
+    Call SetWindowRgn(frm.hWnd, lRegion, True)
 
     
     Exit Sub
@@ -1839,11 +1850,11 @@ Function EncryptStr(ByVal s As String, ByVal p As String) As String
     On Error GoTo EncryptStr_Err
     
 
-    Dim i  As Integer, R As String
+    Dim i  As Integer, r As String
 
     Dim c1 As Integer, C2 As Integer
 
-    R = ""
+    r = ""
 
     If Len(p) > 0 Then
 
@@ -1860,15 +1871,15 @@ Function EncryptStr(ByVal s As String, ByVal p As String) As String
             c1 = c1 + C2 + 64
 
             If c1 > 255 Then c1 = c1 - 256
-            R = R + Chr(c1)
+            r = r + Chr(c1)
         Next i
 
     Else
-        R = s
+        r = s
 
     End If
 
-    EncryptStr = R
+    EncryptStr = r
 
     
     Exit Function
@@ -1887,11 +1898,11 @@ Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
     On Error GoTo UnEncryptStr_Err
     
 
-    Dim i  As Integer, R As String
+    Dim i  As Integer, r As String
 
     Dim c1 As Integer, C2 As Integer
 
-    R = ""
+    r = ""
 
     If Len(p) > 0 Then
 
@@ -1908,15 +1919,15 @@ Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
             c1 = c1 - C2 - 64
 
             If Sgn(c1) = -1 Then c1 = 256 + c1
-            R = R + Chr(c1)
+            r = r + Chr(c1)
         Next i
 
     Else
-        R = s
+        r = s
 
     End If
 
-    UnEncryptStr = R
+    UnEncryptStr = r
 
     
     Exit Function
@@ -2422,59 +2433,35 @@ Public Sub CalcularPosicionMAPA()
 
     End If
 
-    Dim i        As Integer
+    Dim i       As Integer
+    Dim j       As Byte
 
     Dim Encontre As Boolean
-
-    For i = 1 To WordMapaNum
-
-        If WordMapa(i) = UserMap Then
-            idmap = i
-            Encontre = True
-
-            If frmMapaGrande.Visible = False Then
-                frmMapaGrande.picMap.Picture = LoadInterface("mapa.bmp")
-
-            End If
-
-            frmMapaGrande.Image2.Picture = Nothing
-            Dungeon = False
-            PosREAL = 1
-            Exit For
-
-        End If
-
-    Next i
     
-    If Encontre = False Then
     
-        For i = 1 To DungeonDataNum
-
-            If DungeonData(i) = UserMap Then
+    For j = 1 To TotalWorlds
+        For i = 1 To Mundo(j).Ancho * Mundo(j).Alto
+    
+            If Mundo(j).MapIndice(i) = UserMap Then
                 idmap = i
                 Encontre = True
-
-                If frmMapaGrande.Visible = False Then
-                    frmMapaGrande.Image2.Picture = LoadInterface("check-amarillo.bmp")
-                    frmMapaGrande.picMap.Picture = LoadInterface("mapadungeon.bmp")
-
-                End If
-
-                PosREAL = 0
-                Dungeon = True
+                frmMapaGrande.picMap.Picture = LoadInterface("mapa" & j & ".bmp")
+                frmMapaGrande.Image2.Picture = Nothing
+                WorldActual = j
+                frmMapaGrande.ComMundo.ListIndex = j - 1
                 Exit For
-
             End If
-
         Next i
-
-    End If
+        
+        If Encontre Then
+            Exit For
+        End If
+    Next j
     
     If Encontre = False Then
         If frmMapaGrande.Visible = False Then
-            frmMapaGrande.picMap.Picture = LoadInterface("mapa.bmp")
+            frmMapaGrande.picMap.Picture = LoadInterface("mapa1.bmp")
             frmMapaGrande.Image2.Picture = Nothing
-
         End If
 
     End If
@@ -2646,12 +2633,12 @@ ObtenerIdMapaDeLlamadaDeClan_Err:
     
 End Function
 
-Public Sub Auto_Drag(ByVal hwnd As Long)
+Public Sub Auto_Drag(ByVal hWnd As Long)
     
     On Error GoTo Auto_Drag_Err
     
     Call ReleaseCapture
-    Call SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, ByVal 0&)
+    Call SendMessage(hWnd, WM_NCLBUTTONDOWN, HTCAPTION, ByVal 0&)
 
     
     Exit Sub
