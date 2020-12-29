@@ -2586,42 +2586,21 @@ Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal Mapa As Integer) As Integer
     
 
     Dim i        As Integer
+    Dim j       As Byte
 
     Dim Encontre As Boolean
 
-    For i = 1 To WordMapaNum
-
-        If WordMapa(i) = Mapa Then
-            ObtenerIdMapaDeLlamadaDeClan = i
-            frmMapaGrande.llamadadeclan.Tag = 0
-            Exit Function
-            Encontre = True
-
-            PosREAL = 1
-            Exit For
-
-        End If
-
-    Next i
-    
-    If Encontre = False Then
-    
-        For i = 1 To DungeonDataNum
-
-            If DungeonData(i) = Mapa Then
-                frmMapaGrande.llamadadeclan.Tag = 1
+    For j = 1 To TotalWorlds
+        For i = 1 To Mundo(j).Ancho * Mundo(j).Alto
+            If Mundo(j).MapIndice(i) = Mapa Then
                 ObtenerIdMapaDeLlamadaDeClan = i
+                frmMapaGrande.llamadadeclan.Tag = 0
                 Exit Function
-                Encontre = True
-                PosREAL = 0
-                Dungeon = True
                 Exit For
-
             End If
-
+    
         Next i
-
-    End If
+    Next j
 
     ObtenerIdMapaDeLlamadaDeClan = 0
 
