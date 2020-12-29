@@ -356,7 +356,9 @@ Private Sub lstArmas_Click()
     Call frmCarp.List2.Clear
     
     Call frmCarp.List1.AddItem("Leña")
+    Call frmCarp.List1.AddItem("Leña elfica")
     Call frmCarp.List2.AddItem(ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).Madera)
+    Call frmCarp.List2.AddItem(ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).MaderaElfica)
 
     desc.Caption = ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).Texto
 

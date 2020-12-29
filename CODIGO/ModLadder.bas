@@ -243,6 +243,7 @@ Public Type ObjDatas
     proyectil As Byte
     Raices As Integer
     Madera As Integer
+    MaderaElfica As Integer
     PielLobo As Integer
     PielOsoPardo As Integer
     PielOsoPolar As Integer
@@ -713,7 +714,7 @@ Sub General_Set_Connect()
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
