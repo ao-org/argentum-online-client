@@ -711,6 +711,7 @@ Sub General_Set_Connect()
             
     intro = 1
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
+    frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")

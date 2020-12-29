@@ -1,15 +1,15 @@
 VERSION 5.00
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   ClientHeight    =   13020
+   ClientHeight    =   13920
    ClientLeft      =   345
    ClientTop       =   240
-   ClientWidth     =   15510
+   ClientWidth     =   19980
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -28,9 +28,10 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    Moveable        =   0   'False
    NegotiateMenus  =   0   'False
-   ScaleHeight     =   868
+   Picture         =   "frmMain.frx":57E2
+   ScaleHeight     =   928
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1034
+   ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin SocketWrenchCtrl.Socket Socket1 
@@ -78,7 +79,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   375
       Left            =   5400
-      TabIndex        =   38
+      TabIndex        =   23
       TabStop         =   0   'False
       Top             =   0
       Visible         =   0   'False
@@ -156,7 +157,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   375
       Left            =   6840
-      TabIndex        =   37
+      TabIndex        =   22
       TabStop         =   0   'False
       Top             =   0
       Visible         =   0   'False
@@ -175,7 +176,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   375
       Left            =   3960
-      TabIndex        =   36
+      TabIndex        =   21
       TabStop         =   0   'False
       Top             =   0
       Visible         =   0   'False
@@ -194,7 +195,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   375
       Left            =   2520
-      TabIndex        =   35
+      TabIndex        =   20
       TabStop         =   0   'False
       Top             =   0
       Visible         =   0   'False
@@ -208,10 +209,10 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   4875
       Left            =   11520
-      Picture         =   "frmMain.frx":57E2
+      Picture         =   "frmMain.frx":245826
       ScaleHeight     =   4875
       ScaleWidth      =   3705
-      TabIndex        =   32
+      TabIndex        =   17
       Top             =   2400
       Width           =   3705
       Begin VB.ListBox hlst 
@@ -229,7 +230,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   3390
          Left            =   255
-         TabIndex        =   33
+         TabIndex        =   18
          TabStop         =   0   'False
          Top             =   630
          Visible         =   0   'False
@@ -254,7 +255,7 @@ Begin VB.Form frmMain
          ScaleHeight     =   256
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   210
-         TabIndex        =   34
+         TabIndex        =   19
          Top             =   740
          Width           =   3150
       End
@@ -304,7 +305,7 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   0
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":408AC
+         MouseIcon       =   "frmMain.frx":2808F0
          MousePointer    =   99  'Custom
          Tag             =   "0"
          Top             =   4550
@@ -315,9 +316,9 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   1
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":409FE
+         MouseIcon       =   "frmMain.frx":280A42
          MousePointer    =   99  'Custom
-         Picture         =   "frmMain.frx":40B50
+         Picture         =   "frmMain.frx":280B94
          Tag             =   "0"
          Top             =   4260
          Visible         =   0   'False
@@ -349,43 +350,12 @@ Begin VB.Form frmMain
       Left            =   600
       MaxLength       =   160
       MultiLine       =   -1  'True
-      TabIndex        =   23
+      TabIndex        =   8
       TabStop         =   0   'False
       ToolTipText     =   "Chat"
       Top             =   1800
       Visible         =   0   'False
       Width           =   8184
-   End
-   Begin VB.PictureBox panelInf 
-      Appearance      =   0  'Flat
-      AutoSize        =   -1  'True
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      ForeColor       =   &H80000008&
-      Height          =   3000
-      Left            =   15840
-      ScaleHeight     =   200
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   304
-      TabIndex        =   9
-      Top             =   3120
-      Width           =   4560
-      Begin VB.Image manualboton 
-         Height          =   390
-         Left            =   2565
-         Tag             =   "0"
-         Top             =   1230
-         Visible         =   0   'False
-         Width           =   1185
-      End
-      Begin VB.Image rankingBoton 
-         Height          =   375
-         Left            =   2565
-         Tag             =   "0"
-         Top             =   675
-         Visible         =   0   'False
-         Width           =   1230
-      End
    End
    Begin VB.PictureBox MiniMap 
       AutoRedraw      =   -1  'True
@@ -504,7 +474,7 @@ Begin VB.Form frmMain
    Begin RichTextLib.RichTextBox RecTxt 
       Height          =   1230
       Left            =   240
-      TabIndex        =   7
+      TabIndex        =   5
       TabStop         =   0   'False
       ToolTipText     =   "Mensajes del servidor"
       Top             =   495
@@ -514,12 +484,13 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmMain.frx":411CE
+      TextRTF         =   $"frmMain.frx":281212
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
          Size            =   8.25
@@ -553,6 +524,500 @@ Begin VB.Form frmMain
       Top             =   2286
       Width           =   10982
    End
+   Begin VB.PictureBox panelInf 
+      Appearance      =   0  'Flat
+      AutoSize        =   -1  'True
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H80000008&
+      Height          =   3675
+      Left            =   11340
+      Picture         =   "frmMain.frx":281289
+      ScaleHeight     =   245
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   266
+      TabIndex        =   7
+      Top             =   7815
+      Width           =   3990
+      Begin VB.Image imgBugReport 
+         Height          =   495
+         Left            =   2880
+         Top             =   3120
+         Width           =   1020
+      End
+      Begin VB.Image mapMundo 
+         Height          =   495
+         Left            =   135
+         Tag             =   "0"
+         ToolTipText     =   "Mapa del mundo"
+         Top             =   585
+         Visible         =   0   'False
+         Width           =   540
+      End
+      Begin VB.Image clanimg 
+         Height          =   495
+         Left            =   135
+         Tag             =   "0"
+         ToolTipText     =   "Clanes"
+         Top             =   1725
+         Visible         =   0   'False
+         Width           =   540
+      End
+      Begin VB.Image Image5 
+         Height          =   495
+         Left            =   135
+         Tag             =   "0"
+         ToolTipText     =   "Grupo"
+         Top             =   1155
+         Visible         =   0   'False
+         Width           =   540
+      End
+      Begin VB.Image cmdLlavero 
+         Height          =   495
+         Left            =   2025
+         Tag             =   "0"
+         ToolTipText     =   "Llavero"
+         Top             =   585
+         Visible         =   0   'False
+         Width           =   540
+      End
+      Begin VB.Image QuestBoton 
+         Height          =   495
+         Left            =   2025
+         Tag             =   "0"
+         ToolTipText     =   "Quest"
+         Top             =   1155
+         Visible         =   0   'False
+         Width           =   540
+      End
+      Begin VB.Image panelinferior 
+         Height          =   420
+         Index           =   1
+         Left            =   1980
+         Tag             =   "0"
+         Top             =   0
+         Width           =   1995
+      End
+      Begin VB.Image panelinferior 
+         Height          =   420
+         Index           =   0
+         Left            =   0
+         Tag             =   "0"
+         Top             =   0
+         Width           =   1995
+      End
+      Begin VB.Label stabar 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackColor       =   &H0000FFFF&
+         BackStyle       =   0  'Transparent
+         Caption         =   "999/999"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   165
+         Left            =   510
+         TabIndex        =   39
+         Top             =   2070
+         Width           =   1335
+      End
+      Begin VB.Label hambar 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "100"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   165
+         Left            =   3270
+         TabIndex        =   38
+         Top             =   2070
+         Width           =   495
+      End
+      Begin VB.Label AGUbar 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "100"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   165
+         Left            =   2325
+         TabIndex        =   37
+         Top             =   2070
+         Width           =   495
+      End
+      Begin VB.Label HpBar 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "999/999"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   480
+         TabIndex        =   36
+         Top             =   1200
+         Width           =   3255
+      End
+      Begin VB.Label lbldm 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "+0%"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00E0E0E0&
+         Height          =   255
+         Left            =   3045
+         TabIndex        =   35
+         ToolTipText     =   "Tu defensa magica"
+         Top             =   3165
+         Width           =   630
+      End
+      Begin VB.Label lblResis 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "+0%"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00E0E0E0&
+         Height          =   195
+         Left            =   1785
+         TabIndex        =   34
+         ToolTipText     =   "Tu daño magico"
+         Top             =   3165
+         Width           =   630
+      End
+      Begin VB.Label oxigenolbl 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "15"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   240
+         Left            =   2370
+         TabIndex        =   33
+         ToolTipText     =   "Oxigeno acumulado"
+         Top             =   570
+         Width           =   255
+      End
+      Begin VB.Label GldLbl 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "100.000"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H0080FFFF&
+         Height          =   240
+         Left            =   600
+         TabIndex        =   32
+         Top             =   585
+         Width           =   780
+      End
+      Begin VB.Label Fuerzalbl 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "40"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Left            =   3585
+         TabIndex        =   31
+         Top             =   570
+         Width           =   330
+      End
+      Begin VB.Label AgilidadLbl 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "40"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   240
+         Left            =   2985
+         TabIndex        =   30
+         Top             =   570
+         Width           =   240
+      End
+      Begin VB.Label lblWeapon 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "30/30"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   585
+         TabIndex        =   29
+         Top             =   2715
+         Width           =   510
+      End
+      Begin VB.Label lblShielder 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "30/30"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   1785
+         TabIndex        =   28
+         Top             =   2715
+         Width           =   630
+      End
+      Begin VB.Label lblHelm 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "10/10"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   3045
+         TabIndex        =   27
+         Top             =   2715
+         Width           =   630
+      End
+      Begin VB.Label lblArmor 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "30/30"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   585
+         TabIndex        =   26
+         Top             =   3165
+         Width           =   510
+      End
+      Begin VB.Label manabar 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackColor       =   &H80000006&
+         BackStyle       =   0  'Transparent
+         Caption         =   "999/999"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   285
+         Left            =   1320
+         TabIndex        =   25
+         Top             =   1620
+         Width           =   1575
+      End
+      Begin VB.Image imgOro 
+         Height          =   255
+         Left            =   120
+         Top             =   600
+         Width           =   375
+      End
+      Begin VB.Image Hpshp 
+         Height          =   240
+         Left            =   525
+         Picture         =   "frmMain.frx":2B106D
+         Top             =   1215
+         Width           =   3240
+      End
+      Begin VB.Image MANShp 
+         Height          =   240
+         Left            =   525
+         Picture         =   "frmMain.frx":2B3931
+         Top             =   1635
+         Width           =   3240
+      End
+      Begin VB.Image STAShp 
+         Height          =   135
+         Left            =   510
+         Picture         =   "frmMain.frx":2B61F5
+         Top             =   2085
+         Width           =   1335
+      End
+      Begin VB.Image AGUAsp 
+         Height          =   135
+         Left            =   2340
+         Picture         =   "frmMain.frx":2B6BA3
+         Top             =   2085
+         Width           =   480
+      End
+      Begin VB.Image COMIDAsp 
+         Height          =   120
+         Left            =   3285
+         Picture         =   "frmMain.frx":2B6F47
+         Top             =   2100
+         Width           =   480
+      End
+      Begin VB.Image ImgSegClan 
+         Appearance      =   0  'Flat
+         Height          =   510
+         Left            =   630
+         Picture         =   "frmMain.frx":2B728B
+         ToolTipText     =   "Seguro de ataque"
+         Top             =   3060
+         Visible         =   0   'False
+         Width           =   510
+      End
+      Begin VB.Image ImgSegParty 
+         Height          =   510
+         Left            =   105
+         Picture         =   "frmMain.frx":2B809D
+         ToolTipText     =   "Seguro de grupo"
+         Top             =   3060
+         Visible         =   0   'False
+         Width           =   510
+      End
+      Begin VB.Image ImgSeg 
+         Appearance      =   0  'Flat
+         Height          =   510
+         Left            =   1155
+         Picture         =   "frmMain.frx":2B8EAF
+         ToolTipText     =   "Seguro de ataque"
+         Top             =   3060
+         Visible         =   0   'False
+         Width           =   510
+      End
+   End
+   Begin VB.Image temp2 
+      Height          =   495
+      Left            =   17040
+      Tag             =   "0"
+      Top             =   3840
+      Visible         =   0   'False
+      Width           =   540
+   End
+   Begin VB.Image rankingBoton 
+      Height          =   375
+      Left            =   16560
+      Tag             =   "0"
+      Top             =   1440
+      Visible         =   0   'False
+      Width           =   1230
+   End
+   Begin VB.Image manualboton 
+      Height          =   390
+      Left            =   16560
+      Tag             =   "0"
+      Top             =   1995
+      Visible         =   0   'False
+      Width           =   1185
+   End
    Begin VB.Label lblhora 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
@@ -570,58 +1035,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   195
       Left            =   13170
-      TabIndex        =   39
+      TabIndex        =   24
       Top             =   1995
       Width           =   495
-   End
-   Begin VB.Image imgOro 
-      Height          =   255
-      Left            =   11520
-      Top             =   7920
-      Width           =   255
-   End
-   Begin VB.Label manabar 
-      Alignment       =   2  'Center
-      BackColor       =   &H80000006&
-      BackStyle       =   0  'Transparent
-      Caption         =   "999/999"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   285
-      Left            =   12720
-      TabIndex        =   13
-      Top             =   8715
-      Width           =   1575
-   End
-   Begin VB.Image QuestBoton 
-      Height          =   495
-      Left            =   13965
-      Tag             =   "0"
-      ToolTipText     =   "Quest"
-      Top             =   10122
-      Width           =   540
-   End
-   Begin VB.Image cmdLlavero 
-      Height          =   495
-      Left            =   13365
-      Tag             =   "0"
-      ToolTipText     =   "Llavero"
-      Top             =   10122
-      Width           =   540
-   End
-   Begin VB.Image imgBugReport 
-      Height          =   495
-      Left            =   14220
-      Top             =   10872
-      Width           =   1020
    End
    Begin VB.Label ObjLbl 
       Alignment       =   2  'Center
@@ -639,8 +1055,8 @@ Begin VB.Form frmMain
       ForeColor       =   &H00E0E0E0&
       Height          =   495
       Left            =   11400
-      TabIndex        =   31
-      Top             =   7260
+      TabIndex        =   16
+      Top             =   7320
       Visible         =   0   'False
       Width           =   3900
    End
@@ -660,7 +1076,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00E0E0E0&
       Height          =   255
       Left            =   8280
-      TabIndex        =   30
+      TabIndex        =   15
       Top             =   240
       Width           =   1065
    End
@@ -680,7 +1096,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00E0E0E0&
       Height          =   255
       Left            =   8280
-      TabIndex        =   29
+      TabIndex        =   14
       ToolTipText     =   "Numero de usuarios online"
       Top             =   65
       Width           =   1065
@@ -689,32 +1105,8 @@ Begin VB.Form frmMain
       Height          =   420
       Left            =   14738
       Tag             =   "0"
-      Top             =   1453
+      Top             =   990
       Width           =   465
-   End
-   Begin VB.Image Image5 
-      Height          =   495
-      Left            =   12165
-      Tag             =   "0"
-      ToolTipText     =   "Grupo"
-      Top             =   10122
-      Width           =   540
-   End
-   Begin VB.Image clanimg 
-      Height          =   495
-      Left            =   12765
-      Tag             =   "0"
-      ToolTipText     =   "Clanes"
-      Top             =   10122
-      Width           =   540
-   End
-   Begin VB.Image temp2 
-      Height          =   495
-      Left            =   14610
-      Tag             =   "0"
-      Top             =   10122
-      Visible         =   0   'False
-      Width           =   540
    End
    Begin VB.Label Coord 
       Alignment       =   2  'Center
@@ -732,7 +1124,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H0000FFFF&
       Height          =   255
       Left            =   9480
-      TabIndex        =   28
+      TabIndex        =   13
       Top             =   240
       Width           =   1695
    End
@@ -742,19 +1134,19 @@ Begin VB.Form frmMain
       Caption         =   "Nombre del pj"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   15.75
+         Size            =   18
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFC0C0&
+      ForeColor       =   &H00FFFFFF&
       Height          =   495
       Left            =   11400
-      TabIndex        =   27
+      TabIndex        =   12
       Top             =   600
-      Width           =   3825
+      Width           =   3945
    End
    Begin VB.Label lblPorcLvl 
       Alignment       =   2  'Center
@@ -762,110 +1154,6 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Caption         =   "33.33%"
       BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFF00&
-      Height          =   225
-      Left            =   12987
-      TabIndex        =   25
-      Top             =   1224
-      Width           =   675
-   End
-   Begin VB.Label lblArmor 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "0/0"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   14715
-      TabIndex        =   22
-      Top             =   9510
-      Width           =   315
-   End
-   Begin VB.Label lblHelm 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "0/0"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   13800
-      TabIndex        =   21
-      Top             =   9510
-      Width           =   315
-   End
-   Begin VB.Label lblShielder 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "0/0"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   12840
-      TabIndex        =   20
-      Top             =   9510
-      Width           =   315
-   End
-   Begin VB.Label lblWeapon 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "0/0"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   11910
-      TabIndex        =   19
-      Top             =   9510
-      Width           =   315
-   End
-   Begin VB.Label AgilidadLbl 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "40"
-      BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9.75
          Charset         =   0
@@ -876,55 +1164,16 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   240
-      Left            =   14340
-      TabIndex        =   18
-      Top             =   7890
-      Width           =   240
-   End
-   Begin VB.Label Fuerzalbl 
-      BackStyle       =   0  'Transparent
-      Caption         =   "40"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   210
-      Left            =   14925
-      TabIndex        =   17
-      Top             =   7890
-      Width           =   330
-   End
-   Begin VB.Label GldLbl 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "100.000"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H0080FFFF&
-      Height          =   240
-      Left            =   11820
-      TabIndex        =   16
-      Top             =   7890
-      Width           =   780
+      Left            =   12960
+      TabIndex        =   10
+      Top             =   1530
+      Width           =   765
    End
    Begin VB.Image TiendaBoton 
       Height          =   405
-      Left            =   17040
+      Left            =   18600
       Tag             =   "0"
-      Top             =   8895
+      Top             =   5040
       Visible         =   0   'False
       Width           =   1335
    End
@@ -935,47 +1184,17 @@ Begin VB.Form frmMain
       Top             =   65
       Width           =   315
    End
-   Begin VB.Label oxigenolbl 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "15"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   240
-      Left            =   13725
-      TabIndex        =   10
-      ToolTipText     =   "Oxigeno acumulado"
-      Top             =   7890
-      Width           =   255
-   End
-   Begin VB.Image mapMundo 
-      Height          =   495
-      Left            =   11550
-      Tag             =   "0"
-      ToolTipText     =   "Mapa del mundo"
-      Top             =   10122
-      Width           =   540
-   End
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":41245
+      Picture         =   "frmMain.frx":2B9CC1
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":417C9
+      Picture         =   "frmMain.frx":2BA245
       Top             =   2008
       Width           =   555
    End
@@ -983,54 +1202,10 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Height          =   255
       Left            =   10320
-      TabIndex        =   8
+      TabIndex        =   6
       ToolTipText     =   "Activar / desactivar chat globales"
       Top             =   1800
       Width           =   855
-   End
-   Begin VB.Label lblResis 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "+0"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00E0E0E0&
-      Height          =   255
-      Left            =   12480
-      TabIndex        =   6
-      ToolTipText     =   "Tu daño magico"
-      Top             =   9840
-      Visible         =   0   'False
-      Width           =   420
-   End
-   Begin VB.Label lbldm 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "+0%"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00E0E0E0&
-      Height          =   255
-      Left            =   13800
-      TabIndex        =   5
-      ToolTipText     =   "Tu defensa magica"
-      Top             =   9840
-      Visible         =   0   'False
-      Width           =   420
    End
    Begin VB.Image Image3 
       Height          =   210
@@ -1096,28 +1271,11 @@ Begin VB.Form frmMain
    End
    Begin VB.Image PicCorreo 
       Height          =   435
-      Left            =   13560
-      Picture         =   "frmMain.frx":41D4D
-      Top             =   10920
+      Left            =   11520
+      Picture         =   "frmMain.frx":2BA7C9
+      Top             =   480
       Visible         =   0   'False
       Width           =   525
-   End
-   Begin VB.Image PicResu 
-      Height          =   510
-      Left            =   11970
-      Picture         =   "frmMain.frx":429CD
-      ToolTipText     =   "Seguro de grupo"
-      Top             =   10872
-      Width           =   510
-   End
-   Begin VB.Image PicResuOn 
-      Height          =   510
-      Left            =   11970
-      Picture         =   "frmMain.frx":437DF
-      ToolTipText     =   "Seguro de grupo"
-      Top             =   10872
-      Visible         =   0   'False
-      Width           =   510
    End
    Begin VB.Label NameMapa 
       Alignment       =   2  'Center
@@ -1143,10 +1301,10 @@ Begin VB.Form frmMain
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "255"
+      Caption         =   "Guerrero - Nivel 50"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1154,11 +1312,11 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   285
-      Left            =   11520
-      TabIndex        =   26
-      Top             =   960
-      Width           =   3525
+      Height          =   240
+      Left            =   12405
+      TabIndex        =   11
+      Top             =   1080
+      Width           =   1815
    End
    Begin VB.Label exp 
       Alignment       =   2  'Center
@@ -1175,168 +1333,18 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   11573
-      TabIndex        =   24
-      Top             =   1535
-      Width           =   3045
+      Left            =   11580
+      TabIndex        =   9
+      Top             =   1530
+      Visible         =   0   'False
+      Width           =   3525
    End
    Begin VB.Image ExpBar 
       Height          =   240
-      Left            =   11573
-      Picture         =   "frmMain.frx":445F1
+      Left            =   11580
+      Picture         =   "frmMain.frx":2BB449
       Top             =   1545
-      Width           =   3045
-   End
-   Begin VB.Label HpBar 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "999/999"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   195
-      Left            =   11880
-      TabIndex        =   14
-      Top             =   8301
-      Width           =   3255
-   End
-   Begin VB.Image Hpshp 
-      Height          =   240
-      Left            =   11865
-      Picture         =   "frmMain.frx":4748A
-      Top             =   8309
-      Width           =   3240
-   End
-   Begin VB.Label AGUbar 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "100"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   6.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   165
-      Left            =   13680
-      TabIndex        =   11
-      Top             =   9134
-      Width           =   495
-   End
-   Begin VB.Label hambar 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "100"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   6.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   165
-      Left            =   14618
-      TabIndex        =   12
-      Top             =   9142
-      Width           =   495
-   End
-   Begin VB.Image AGUAsp 
-      Height          =   135
-      Left            =   13680
-      Picture         =   "frmMain.frx":49D4E
-      Top             =   9150
-      Width           =   480
-   End
-   Begin VB.Image PicSeg 
-      Appearance      =   0  'Flat
-      Height          =   510
-      Left            =   11446
-      Picture         =   "frmMain.frx":4A0F2
-      ToolTipText     =   "Seguro de ataque"
-      Top             =   10872
-      Width           =   510
-   End
-   Begin VB.Image Image6 
-      Height          =   510
-      Left            =   11446
-      Picture         =   "frmMain.frx":4AF04
-      ToolTipText     =   "Seguro de ataque"
-      Top             =   10872
-      Width           =   510
-   End
-   Begin VB.Image PicSegClanOn 
-      Appearance      =   0  'Flat
-      Height          =   510
-      Left            =   12494
-      Picture         =   "frmMain.frx":4BD16
-      ToolTipText     =   "Seguro de clan"
-      Top             =   10875
-      Width           =   510
-   End
-   Begin VB.Image PicSegClanOff 
-      Appearance      =   0  'Flat
-      Height          =   510
-      Left            =   12494
-      Picture         =   "frmMain.frx":4CB28
-      ToolTipText     =   "Seguro de ataque"
-      Top             =   10875
-      Width           =   510
-   End
-   Begin VB.Image COMIDAsp 
-      Height          =   120
-      Left            =   14618
-      Picture         =   "frmMain.frx":4D93A
-      Top             =   9158
-      Width           =   480
-   End
-   Begin VB.Image MANShp 
-      Height          =   240
-      Left            =   11865
-      Picture         =   "frmMain.frx":4DC7E
-      Top             =   8715
-      Width           =   3240
-   End
-   Begin VB.Label stabar 
-      Alignment       =   2  'Center
-      BackColor       =   &H0000FFFF&
-      BackStyle       =   0  'Transparent
-      Caption         =   "999/999"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   6.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   165
-      Left            =   11850
-      TabIndex        =   15
-      Top             =   9142
-      Width           =   1335
-   End
-   Begin VB.Image STAShp 
-      Height          =   135
-      Left            =   11850
-      Picture         =   "frmMain.frx":50542
-      Top             =   9153
-      Width           =   1335
+      Width           =   3540
    End
    Begin VB.Menu mnuObj 
       Caption         =   "Objeto"
@@ -1386,7 +1394,7 @@ Private Const WS_EX_TRANSPARENT = &H20&
 
 Private Const GWL_EXSTYLE = (-20)
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
@@ -1399,8 +1407,8 @@ Private MenuNivel As Byte
 
 Private Type POINTAPI
 
-    x As Long
-    y As Long
+    X As Long
+    Y As Long
 
 End Type
 
@@ -1434,9 +1442,9 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
 
 Private Const EM_GETLINE = &HC4
 
@@ -1474,7 +1482,7 @@ btnSpawn_Click_Err:
     
 End Sub
 
-Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo clanimg_MouseMove_Err
     
@@ -1494,7 +1502,7 @@ clanimg_MouseMove_Err:
     
 End Sub
 
-Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo clanimg_MouseUp_Err
     
@@ -1512,7 +1520,7 @@ clanimg_MouseUp_Err:
     
 End Sub
 
-Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdlanzar_MouseDown_Err
     
@@ -1528,11 +1536,11 @@ cmdlanzar_MouseDown_Err:
     
 End Sub
 
-Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdlanzar_MouseUp_Err
     
-    Call Form_MouseMove(Button, Shift, x, y)
+    Call Form_MouseMove(Button, Shift, X, Y)
 
     
     Exit Sub
@@ -1580,7 +1588,7 @@ CerrarLlavero_Err:
     
 End Sub
 
-Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdLlavero_MouseDown_Err
     
@@ -1595,7 +1603,7 @@ cmdLlavero_MouseDown_Err:
     
 End Sub
 
-Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdLlavero_MouseMove_Err
     
@@ -1664,22 +1672,13 @@ Public Sub ControlSeguroParty(ByVal Mostrar As Boolean)
     
     On Error GoTo ControlSeguroParty_Err
     
-
+    Debug.Print "LLEGO SEGURO PARTY"
     If Mostrar Then
-        If Not PicResu.Visible Then
-            PicResu.Visible = True
-            PicResuOn.Visible = False
-
-        End If
-
+            ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")
+            SeguroParty = True
     Else
-
-        If PicResu.Visible Then
-            PicResu.Visible = False
-            PicResuOn.Visible = True
-
-        End If
-
+            ImgSegParty = LoadInterface("boton-seguro-party-off.bmp")
+            SeguroParty = False
     End If
 
     
@@ -1695,7 +1694,9 @@ Public Sub DibujarSeguro()
     
     On Error GoTo DibujarSeguro_Err
     
-    PicSeg.Visible = True
+    ImgSeg = LoadInterface("boton-seguro-ciudadano-on.bmp")
+    
+    SeguroGame = True
 
     
     Exit Sub
@@ -1710,7 +1711,9 @@ Public Sub DesDibujarSeguro()
     
     On Error GoTo DesDibujarSeguro_Err
     
-    PicSeg.Visible = False
+    ImgSeg = LoadInterface("boton-seguro-ciudadano-off.bmp")
+    
+    SeguroGame = False
 
     
     Exit Sub
@@ -1721,7 +1724,7 @@ DesDibujarSeguro_Err:
     
 End Sub
 
-Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdMoverHechi_MouseMove_Err
     
@@ -1917,7 +1920,7 @@ Efecto_Timer_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo EstadisticasBoton_MouseDown_Err
     
@@ -1932,7 +1935,7 @@ EstadisticasBoton_MouseDown_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo EstadisticasBoton_MouseMove_Err
     
@@ -1951,7 +1954,7 @@ EstadisticasBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo EstadisticasBoton_MouseUp_Err
     
@@ -2053,7 +2056,7 @@ Form_KeyUp_Err:
     
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Form_MouseDown_Err
     
@@ -2079,12 +2082,12 @@ Form_MouseDown_Err:
     
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Form_MouseUp_Err
     
-    clicX = x
-    clicY = y
+    clicX = X
+    clicY = Y
 
     
     Exit Sub
@@ -2178,7 +2181,7 @@ GlobalIcon_Click_Err:
     
 End Sub
 
-Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo hlst_MouseMove_Err
     
@@ -2210,7 +2213,7 @@ hlst_MouseMove_Err:
     
 End Sub
 
-Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image2_MouseDown_Err
     
@@ -2254,7 +2257,7 @@ Private Sub Hpshp_Click()
     HpBar_Click
 End Sub
 
-Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '    Image3.Picture = LoadInterface("elegirchatapretado.bmp")
     
     On Error GoTo Image3_MouseDown_Err
@@ -2270,7 +2273,7 @@ Image3_MouseDown_Err:
     
 End Sub
 
-Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image3_MouseMove_Err
     
@@ -2304,7 +2307,7 @@ Private Sub Image4_Click(Index As Integer)
             If frmCerrar.Visible Then Exit Sub
             Dim mForm As Form
             For Each mForm In Forms
-                If mForm.hwnd <> Me.hwnd Then Unload mForm
+                If mForm.hWnd <> Me.hWnd Then Unload mForm
                 Set mForm = Nothing
             Next
             frmCerrar.Show , Me
@@ -2320,7 +2323,7 @@ Image4_Click_Err:
     
 End Sub
 
-Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image4_MouseDown_Err
     
@@ -2344,7 +2347,7 @@ Image4_MouseDown_Err:
     
 End Sub
 
-Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image4_MouseMove_Err
     
@@ -2410,7 +2413,7 @@ Image5_Click_Err:
     
 End Sub
 
-Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image5_MouseMove_Err
     
@@ -2490,7 +2493,7 @@ imgHechizos_Click_Err:
     
 End Sub
 
-Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo imgHechizos_MouseDown_Err
     
@@ -2506,7 +2509,7 @@ imgHechizos_MouseDown_Err:
     
 End Sub
 
-Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo imgHechizos_MouseMove_Err
     
@@ -2556,7 +2559,7 @@ imgInventario_Click_Err:
     
 End Sub
 
-Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo imgInventario_MouseDown_Err
     
@@ -2572,7 +2575,7 @@ imgInventario_MouseDown_Err:
     
 End Sub
 
-Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo imgInventario_MouseMove_Err
     
@@ -2607,6 +2610,27 @@ imgOro_Click_Err:
     
 End Sub
 
+
+
+Private Sub ImgSeg_Click()
+    Call WriteSafeToggle
+End Sub
+
+Private Sub ImgSegClan_Click()
+    Call WriteSeguroClan
+End Sub
+
+Private Sub ImgSegParty_Click()
+    Call WriteParyToggle
+End Sub
+
+
+
+Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+lblPorcLvl.Visible = False
+exp.Visible = True
+End Sub
+
 Private Sub LlamaDeclan_Timer()
     
     On Error GoTo LlamaDeclan_Timer_Err
@@ -2638,7 +2662,7 @@ MANShp_Click_Err:
     
 End Sub
 
-Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo manualboton_MouseMove_Err
     
@@ -2658,7 +2682,7 @@ manualboton_MouseMove_Err:
     
 End Sub
 
-Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo manualboton_MouseUp_Err
     
@@ -2673,7 +2697,7 @@ manualboton_MouseUp_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo OpcionesBoton_MouseDown_Err
     
@@ -2706,6 +2730,152 @@ panelGM_Click_Err:
     
 End Sub
 
+Private Sub panelInf_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Image5.Tag = "1" Then
+        Image5.Picture = Nothing
+        Image5.Tag = "0"
+
+    End If
+
+    If clanimg.Tag = "1" Then
+        clanimg.Picture = Nothing
+        clanimg.Tag = "0"
+
+    End If
+
+    If mapMundo.Tag = "1" Then
+        mapMundo.Picture = Nothing
+        mapMundo.Tag = "0"
+
+    End If
+
+    If QuestBoton.Tag = "1" Then
+        QuestBoton.Picture = Nothing
+        QuestBoton.Tag = "0"
+
+    End If
+    
+    If cmdLlavero.Tag = "1" Then
+        cmdLlavero.Picture = Nothing
+        cmdLlavero.Tag = "0"
+    End If
+End Sub
+
+Private Sub panelinferior_Click(Index As Integer)
+Select Case Index
+    Case 1
+        QuePestañaInferior = 1
+        GldLbl.Visible = False
+        'Label6.Visible = False
+        stabar.Visible = False
+        HpBar.Visible = False
+        manabar.Visible = False
+        hambar.Visible = False
+        AGUbar.Visible = False
+        Hpshp.Visible = False
+        MANShp.Visible = False
+        STAShp.Visible = False
+        AGUAsp.Visible = False
+        COMIDAsp.Visible = False
+        Fuerzalbl.Visible = False
+        AgilidadLbl.Visible = False
+        oxigenolbl.Visible = False
+        OpcionesBoton.Visible = True
+        EstadisticasBoton.Visible = True
+        TiendaBoton.Visible = True
+        rankingBoton.Visible = True
+        manualboton.Visible = True
+        QuestBoton.Visible = True
+        lblWeapon.Visible = False
+        lblShielder.Visible = False
+        lblHelm.Visible = False
+        lblArmor.Visible = False
+        lblResis.Visible = False
+        lbldm.Visible = False
+        imgBugReport.Visible = True
+        panelinferior(0).Picture = Nothing
+        panelinferior(1).Picture = Nothing
+        mapMundo.Visible = True
+        Image5.Visible = True
+        clanimg.Visible = True
+        cmdLlavero.Visible = True
+        QuestBoton.Visible = True
+        
+        
+        
+        
+        If SeguroGame Then
+            ImgSeg = LoadInterface("boton-seguro-ciudadano-on.bmp")
+        Else
+            ImgSeg = LoadInterface("boton-seguro-ciudadano-off.bmp")
+        End If
+        
+        If SeguroParty Then
+            ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")
+        Else
+            ImgSegParty = LoadInterface("boton-seguro-party-off.bmp")
+        End If
+        
+        If SeguroClanX Then
+            ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
+        Else
+            ImgSegClan = LoadInterface("boton-seguro-clan-off.bmp")
+        
+        End If
+        
+        ImgSeg.Visible = True
+        ImgSegParty.Visible = True
+        ImgSegClan.Visible = True
+        
+        
+        panelInf.Picture = LoadInterface("ventanaprincipal_info.bmp")
+    Case 0
+        QuePestañaInferior = 0
+        panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
+        stabar.Visible = True
+        HpBar.Visible = True
+        If UserMaxMAN <> 0 Then
+        manabar.Visible = True
+        End If
+        hambar.Visible = True
+        AGUbar.Visible = True
+        Hpshp.Visible = True
+        MANShp.Visible = True
+        STAShp.Visible = True
+        AGUAsp.Visible = True
+        COMIDAsp.Visible = True
+        GldLbl.Visible = True
+       ' Label6.Visible = True
+        Fuerzalbl.Visible = True
+        AgilidadLbl.Visible = True
+        oxigenolbl.Visible = True
+        OpcionesBoton.Visible = False
+        EstadisticasBoton.Visible = False
+        TiendaBoton.Visible = False
+        rankingBoton.Visible = False
+        manualboton.Visible = False
+        QuestBoton.Visible = False
+        lblWeapon.Visible = True
+        lblShielder.Visible = True
+        lblHelm.Visible = True
+        lblArmor.Visible = True
+        lblResis.Visible = True
+        lbldm.Visible = True
+        imgBugReport.Visible = False
+        panelinferior(0).Picture = Nothing
+        panelinferior(1).Picture = Nothing
+        mapMundo.Visible = False
+        Image5.Visible = False
+        clanimg.Visible = False
+        cmdLlavero.Visible = False
+        QuestBoton.Visible = False
+        
+        ImgSeg.Visible = False
+        ImgSegParty.Visible = False
+        ImgSegClan.Visible = False
+End Select
+End Sub
+
 Private Sub PicCorreo_Click()
     
     On Error GoTo PicCorreo_Click_Err
@@ -2721,7 +2891,7 @@ PicCorreo_Click_Err:
     
 End Sub
 
-Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal X As Integer, ByVal Y As Integer)
     
     On Error GoTo Inventario_ItemDropped_Err
     
@@ -2756,38 +2926,7 @@ picInv_Paint_Err:
     Resume Next
     
 End Sub
-
-Private Sub PicSegClanOff_Click()
-    
-    On Error GoTo PicSegClanOff_Click_Err
-    
-    Call WriteSeguroClan
-
-    
-    Exit Sub
-
-PicSegClanOff_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.PicSegClanOff_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub PicSegClanOn_Click()
-    
-    On Error GoTo PicSegClanOn_Click_Err
-    
-    Call WriteSeguroClan
-
-    
-    Exit Sub
-
-PicSegClanOn_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.PicSegClanOn_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo QuestBoton_MouseMove_Err
     
@@ -2807,7 +2946,7 @@ QuestBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo QuestBoton_MouseUp_Err
     
@@ -2825,7 +2964,7 @@ QuestBoton_MouseUp_Err:
     
 End Sub
 
-Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo RankingBoton_MouseMove_Err
     
@@ -2845,7 +2984,7 @@ RankingBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo RankingBoton_MouseUp_Err
     
@@ -3087,7 +3226,7 @@ mapMundo_Click_Err:
     
 End Sub
 
-Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo mapMundo_MouseMove_Err
     
@@ -3107,13 +3246,13 @@ mapMundo_MouseMove_Err:
     
 End Sub
 
-Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo MiniMap_MouseDown_Err
     
 
     If Button = vbRightButton Then
-        Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
+        Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(X) & " " & CByte(Y))
         Exit Sub
 
     End If
@@ -3134,7 +3273,7 @@ MiniMap_MouseDown_Err:
     
 End Sub
 
-Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo MiniMap_MouseMove_Err
     
@@ -3233,7 +3372,7 @@ mnuUsar_Click_Err:
     
 End Sub
 
-Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo NameMapa_MouseMove_Err
     
@@ -3268,7 +3407,7 @@ onlines_Click_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo OpcionesBoton_MouseMove_Err
     
@@ -3288,7 +3427,7 @@ OpcionesBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo OpcionesBoton_MouseUp_Err
     
@@ -3303,7 +3442,7 @@ OpcionesBoton_MouseUp_Err:
     
 End Sub
 
-Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Panel_MouseMove_Err
     
@@ -3349,7 +3488,7 @@ Panel_MouseMove_Err:
     
 End Sub
 
-Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo picInv_MouseMove_Err
     
@@ -3358,7 +3497,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     UsaMacro = False
     
-    Slot = Inventario.GetSlot(x, y)
+    Slot = Inventario.GetSlot(X, Y)
     
     If Slot <= 0 Then
         ObjLbl.Visible = False
@@ -3412,52 +3551,6 @@ picInv_MouseMove_Err:
     Resume Next
     
 End Sub
-
-Private Sub PicResu_Click()
-    
-    On Error GoTo PicResu_Click_Err
-    
-    Call WriteParyToggle
-
-    
-    Exit Sub
-
-PicResu_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.PicResu_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub PicResuOn_Click()
-    
-    On Error GoTo PicResuOn_Click_Err
-    
-    Call WriteParyToggle
-
-    
-    Exit Sub
-
-PicResuOn_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.PicResuOn_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub PicSeg_Click()
-    
-    On Error GoTo PicSeg_Click_Err
-    
-    Call WriteSafeToggle
-
-    
-    Exit Sub
-
-PicSeg_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.PicSeg_Click", Erl)
-    Resume Next
-    
-End Sub
-
 Private Sub CompletarEnvioMensajes()
     
     On Error GoTo CompletarEnvioMensajes_Err
@@ -3503,7 +3596,7 @@ CompletarEnvioMensajes_Err:
     
 End Sub
 
-Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo RecTxt_MouseUp_Err
     
@@ -3520,11 +3613,11 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
         intCurrentLine = RecTxt.GetLineFromChar(RecTxt.SelStart)
         'get line length
-        lngLength = SendMessage(RecTxt.hwnd, EM_LINELENGTH, intCurrentLine, 0)
+        lngLength = SendMessage(RecTxt.hWnd, EM_LINELENGTH, intCurrentLine, 0)
         'resize buffer
         strBuffer = Space(lngLength)
         'get line text
-        Call SendMessage(RecTxt.hwnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
+        Call SendMessage(RecTxt.hWnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
 
         Dim partea       As String
 
@@ -3578,7 +3671,7 @@ refuerzolanzar_Click_Err:
     
 End Sub
 
-Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo refuerzolanzar_MouseMove_Err
     
@@ -3600,7 +3693,7 @@ refuerzolanzar_MouseMove_Err:
     
 End Sub
 
-Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo renderer_MouseUp_Err
     
@@ -3613,15 +3706,15 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     '    Call FormParser.Parse_Form(Me)
     'End If
 
-    clicX = x
-    clicY = y
+    clicX = X
+    clicY = Y
     
     Dim PosX As Integer
 
     Dim PosY As Integer
 
     If Pregunta Then
-        If x > 395 And x < 410 And y > 233 And y < 250 Then
+        If X > 395 And X < 410 And Y > 233 And Y < 250 Then
             If PreguntaLocal Then
 
                 Select Case PreguntaNUM
@@ -3642,7 +3735,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
             
             Exit Sub
 
-        ElseIf x > 417 And x < 439 And y > 233 And y < 250 Then
+        ElseIf X > 417 And X < 439 And Y > 233 And Y < 250 Then
             If PreguntaLocal Then
 
                 Select Case PreguntaNUM
@@ -3675,12 +3768,12 @@ renderer_MouseUp_Err:
     
 End Sub
 
-Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo renderer_MouseMove_Err
     
-    MouseX = x
-    MouseY = y
+    MouseX = X
+    MouseY = Y
     
     DisableURLDetect
 
@@ -3718,7 +3811,7 @@ renderer_MouseMove_Err:
     
 End Sub
 
-Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo renderer_MouseDown_Err
     
@@ -4006,7 +4099,7 @@ Socket1_Timeout_Err:
     
 End Sub
 
-Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo TiendaBoton_MouseMove_Err
     
@@ -4026,7 +4119,7 @@ TiendaBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub TiendaBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub TiendaBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo TiendaBoton_MouseUp_Err
     
@@ -4193,7 +4286,7 @@ cmdLanzar_Click_Err:
     
 End Sub
 
-Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo CmdLanzar_MouseMove_Err
     
@@ -4367,7 +4460,7 @@ Public Sub Form_Click()
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 4 Or MouseBoton = vbRightButton And ACCION2 = 4 Or MouseBoton = 4 And ACCION3 = 4 Then
 
         If MapData(tX, tY).charindex <> 0 Then
-            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
+            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.X, UserPos.Y).charindex).nombre Then
                 If charlist(MapData(tX, tY).charindex).EsNpc = False Then
                     SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
 
@@ -4444,9 +4537,12 @@ Form_Load_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Form_MouseMove_Err
+    
+    lblPorcLvl.Visible = True
+    exp.Visible = False
     
 
     ' Disable links checking (not over consola)
@@ -4456,7 +4552,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         If MoverVentana = 1 Then
             If UserMoving = 0 Then
                 ' Mover form sólo en la parte superior
-                If y < 30 Then moverForm
+                If Y < 30 Then moverForm
 
                 'Call Auto_Drag(Me.hwnd)
             End If
@@ -4465,8 +4561,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    MouseX = x - renderer.Left
-    MouseY = y - renderer.Top
+    MouseX = X - renderer.Left
+    MouseY = Y - renderer.Top
     ObjLbl.Visible = False
     
     If EstadisticasBoton.Tag = "1" Then
@@ -4689,7 +4785,7 @@ RecTxt_Change_Err:
     
 End Sub
 
-Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo RecTxt_MouseMove_Err
     
@@ -4803,8 +4899,8 @@ End Sub
         Socket1.NoDelay = True
     
         'Clean input and output buffers
-        Call incomingData.ReadASCIIStringFixed(incomingData.Length)
-        Call outgoingData.ReadASCIIStringFixed(outgoingData.Length)
+        Call incomingData.ReadASCIIStringFixed(incomingData.length)
+        Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
 
         'Security.Redundance = 13 'DEFAULT
     
@@ -5068,7 +5164,7 @@ Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
     Dim Data() As Byte
 
     ' WyroX: Sólo leemos la cantidad que entre en la cola!!
-    Call Socket1.Read(RD, min(dataLength, incomingData.Capacity - incomingData.Length))
+    Call Socket1.Read(RD, min(dataLength, incomingData.Capacity - incomingData.length))
     Data = StrConv(RD, vbFromUnicode)
 
     'Put data in the buffer
@@ -5160,8 +5256,8 @@ Private Sub Winsock1_Connect()
     Debug.Print "Winsock Connect"
     
     'Clean input and output buffers
-    Call incomingData.ReadASCIIStringFixed(incomingData.Length)
-    Call outgoingData.ReadASCIIStringFixed(outgoingData.Length)
+    Call incomingData.ReadASCIIStringFixed(incomingData.length)
+    Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
     
 
     
@@ -5248,7 +5344,7 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub

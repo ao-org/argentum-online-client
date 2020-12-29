@@ -3,6 +3,14 @@ Attribute VB_Name = "Mod_Declaraciones"
 'Pablo Mercavides
 Option Explicit
 
+
+Public SeguroGame As Boolean
+Public SeguroParty As Boolean
+Public SeguroClanX As Boolean
+
+Public QuePestañaInferior As Byte
+
+
 Public ViajarInterface                  As Byte
 
 Public FormParser                       As clsCursor
