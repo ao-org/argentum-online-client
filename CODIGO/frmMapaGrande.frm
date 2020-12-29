@@ -498,6 +498,10 @@ End Sub
 
 Private Sub ComMundo_Click()
 picMap.Picture = LoadInterface("mapa" & ComMundo.ListIndex + 1 & ".bmp")
+
+WorldActual = ComMundo.ListIndex + 1
+
+
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -527,7 +531,7 @@ Private Sub Form_Load()
     listdrop.BackColor = RGB(7, 7, 7)
     lblMapInfo(0).ForeColor = RGB(235, 164, 14)
     
-    picMap.Picture = LoadInterface("mapa.bmp")
+   ' picMap.Picture = LoadInterface("mapa.bmp")
     
     Exit Sub
 
@@ -738,12 +742,12 @@ Private Sub listdrop_Click()
     
 
     'Picture1.Refresh
-    Picture1.BackColor = vbBlack
-    Picture1.Refresh
+    picture1.BackColor = vbBlack
+    picture1.Refresh
 
     'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
     If listdrop.ListItems.count <= 0 Then Exit Sub
-    Call Grh_Render_To_Hdc(Picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+    Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
 
     
     Exit Sub
@@ -762,7 +766,7 @@ Private Sub ListView1_Click()
     
 
     Label8.Caption = ""
-    Picture1.Refresh
+    picture1.Refresh
     
     If ListView1.ListItems.count <= 0 Then Exit Sub
 
