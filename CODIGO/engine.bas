@@ -183,7 +183,7 @@ On Error GoTo ErrorHandler:
         .EnableAutoDepthStencil = 1
         .AutoDepthStencilFormat = D3DFMT_D24S8
         
-        .hDeviceWindow = frmMain.renderer.hwnd
+        .hDeviceWindow = frmMain.renderer.hWnd
         
     End With
     
@@ -394,7 +394,7 @@ Engine_BeginScene_Err:
     
 End Sub
 
-Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hwnd As Long = 0)
+Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
 
 On Error GoTo ErrorHandler:
     
@@ -402,7 +402,7 @@ On Error GoTo ErrorHandler:
     
     Call DirectDevice.EndScene
         
-    Call DirectDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
+    Call DirectDevice.Present(DestRect, ByVal 0, hWnd, ByVal 0)
     
     Exit Sub
     
@@ -1384,9 +1384,9 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
                             .Text = vbNullString
                         Else
                             If .Sube > 10 Then
-                                Call RGBAList(temp_array, .Color.R, .Color.G, .Color.B, .Color.A * (1.4 - 0.04 * .Sube))
+                                Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A * (1.4 - 0.04 * .Sube))
                             Else
-                                Call RGBAList(temp_array, .Color.R, .Color.G, .Color.B, .Color.A)
+                                Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A)
                             End If
                     
                             Engine_Text_Render_Efect charindex, .Text, PixelOffsetX + 14 - Engine_Text_Width(.Text, True) / 2, PixelOffsetY + charlist(charindex).Body.HeadOffset.y - Engine_Text_Height(.Text, True) - .Sube, temp_array, 1, True
@@ -1555,42 +1555,42 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
                     
                 Else
-                    If HayTecho(.Pos.x, .Pos.y) Then
-                        If MapData(.Pos.x, .Pos.y).Trigger = MapData(UserPos.x, UserPos.y).Trigger Then
-                            If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
-                                MostrarNombre = True
-                            End If
-                        End If
+                    'If HayTecho(.Pos.x, .Pos.y) Then
+                       ' If MapData(.Pos.x, .Pos.y).Trigger = MapData(UserPos.x, UserPos.y).Trigger Then
+                            'If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
+                              '  MostrarNombre = True
+                           ' End If
+                       ' End If
                         
-                    Else
+                   ' Else
                         MostrarNombre = True
-                    End If
+                   ' End If
                     
                     If .priv = 0 Then
                         
                         Select Case .status
     
                             Case 0
-                                Call RGBAList(NameColor, ColoresPJ(50).R, ColoresPJ(50).G, ColoresPJ(50).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(50).R, ColoresPJ(50).G, ColoresPJ(50).B)
+                                Call RGBAList(NameColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
     
                             Case 1
-                                Call RGBAList(NameColor, ColoresPJ(49).R, ColoresPJ(49).G, ColoresPJ(49).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(49).R, ColoresPJ(49).G, ColoresPJ(49).B)
+                                Call RGBAList(NameColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
     
                             Case 2
-                                Call RGBAList(NameColor, ColoresPJ(6).R, ColoresPJ(6).G, ColoresPJ(6).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(6).R, ColoresPJ(6).G, ColoresPJ(6).B)
+                                Call RGBAList(NameColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
     
                             Case 3
-                                Call RGBAList(NameColor, ColoresPJ(7).R, ColoresPJ(7).G, ColoresPJ(7).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(7).R, ColoresPJ(7).G, ColoresPJ(7).B)
+                                Call RGBAList(NameColor, ColoresPJ(7).r, ColoresPJ(7).G, ColoresPJ(7).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(7).r, ColoresPJ(7).G, ColoresPJ(7).B)
     
                         End Select
                                 
                     Else
-                        Call RGBAList(NameColor, ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
-                        Call RGBAList(colorCorazon, ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
                     End If
                                         
                     If .group_index > 0 Then
@@ -1986,17 +1986,17 @@ SetMapFx_Err:
     
 End Sub
 
-Private Function Engine_FToDW(f As Single) As Long
+Private Function Engine_FToDW(F As Single) As Long
     
     On Error GoTo Engine_FToDW_Err
     
 
     ' single > long
-    Dim buf As D3DXBuffer
+    Dim Buf As D3DXBuffer
 
-    Set buf = DirectD3D8.CreateBuffer(4)
-    DirectD3D8.BufferSetData buf, 0, 4, 1, f
-    DirectD3D8.BufferGetData buf, 0, 4, 1, Engine_FToDW
+    Set Buf = DirectD3D8.CreateBuffer(4)
+    DirectD3D8.BufferSetData Buf, 0, 4, 1, F
+    DirectD3D8.BufferGetData Buf, 0, 4, 1, Engine_FToDW
 
     
     Exit Function
@@ -2012,13 +2012,13 @@ Private Function VectorToRGBA(Vec As D3DVECTOR, fHeight As Single) As Long
     On Error GoTo VectorToRGBA_Err
     
 
-    Dim R As Integer, G As Integer, B As Integer, A As Integer
+    Dim r As Integer, G As Integer, B As Integer, A As Integer
 
-    R = 127 * Vec.x + 128
+    r = 127 * Vec.x + 128
     G = 127 * Vec.y + 128
     B = 127 * Vec.z + 128
     A = 255 * fHeight
-    VectorToRGBA = D3DColorARGB(A, R, G, B)
+    VectorToRGBA = D3DColorARGB(A, r, G, B)
 
     
     Exit Function
@@ -2057,7 +2057,7 @@ Public Sub DrawMainInventory()
     Call frmMain.Inventario.DrawDraggedItem
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmMain.picInv.hwnd)
+    Call Engine_EndScene(InvRect, frmMain.picInv.hWnd)
 
     
     Exit Sub
@@ -2159,7 +2159,7 @@ Public Sub DrawInterfaceComerciar()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmComerciar.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmComerciar.interface.hWnd)
 
     
     Exit Sub
@@ -2252,7 +2252,7 @@ Public Sub DrawInterfaceBoveda()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoObj.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmBancoObj.interface.hWnd)
 
     
     Exit Sub
@@ -2287,7 +2287,7 @@ Public Sub DrawInterfaceKeys()
     Call FrmKeyInv.InvKeys.DrawInventory
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hwnd)
+    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hWnd)
 
     
     Exit Sub
@@ -2352,7 +2352,7 @@ Public Sub DrawMapaMundo()
         Call Draw_Grh(Head, x, y, 0, 1, COLOR_WHITE, False, 0, 0, 0)
     End If
     
-    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
+    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hWnd)
 
     
     Exit Sub
@@ -2724,7 +2724,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     ' cc(3) = cc(0)
 
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     'FramesPerSecCounter = FramesPerSecCounter + 1
@@ -2764,7 +2764,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
 
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
@@ -2798,7 +2798,7 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
     
     Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     
     Exit Sub
 
@@ -3882,7 +3882,7 @@ Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width A
     On Error GoTo Engine_Draw_Box_Err
     
 
-    Call RGBAList(temp_rgb, Color.R, Color.G, Color.B, Color.A)
+    Call RGBAList(temp_rgb, Color.r, Color.G, Color.B, Color.A)
 
     Call SpriteBatch.SetTexture(Nothing)
     Call SpriteBatch.Draw(x, y, Width, Height, temp_rgb())

@@ -92,15 +92,15 @@ Private Const SIF_TRACKPOS = &H10
 Private Const SIF_ALL = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
 Private tSI As SCROLLINFO
 
-Public Declare Function GetScrollInfo Lib "user32" (ByVal hwnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
+Public Declare Function GetScrollInfo Lib "user32" (ByVal hWnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
 
-Public Declare Function GetScrollPos Lib "user32" (ByVal hwnd As Long, ByVal nBar As Long) As Long
+Public Declare Function GetScrollPos Lib "user32" (ByVal hWnd As Long, ByVal nBar As Long) As Long
 
 'Api SendMessage
 Public Declare Function SendMessage _
     Lib "user32" _
     Alias "SendMessageA" _
-        (ByVal hwnd As Long, _
+        (ByVal hWnd As Long, _
         ByVal wMsg As Long, _
         ByVal wParam As Long, _
         lParam As Any) As Long
@@ -206,11 +206,11 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         Dim sMax As Long
         Dim sPos As Long
         Dim Pos As Long
-        Dim ret As Long
+        Dim Ret As Long
         
         Dim bHoldBar As Boolean
 
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
 
     With RichTextBox
         
@@ -226,10 +226,10 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
         bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         
         .SelStart = Len(.Text)
@@ -254,7 +254,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         End If
         
         If bHoldBar Then
-            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
 
     End With
@@ -285,10 +285,10 @@ Dim bUrl As Boolean
 Dim sMax As Long
 Dim sPos As Long
 Dim Pos As Long
-Dim ret As Long
+Dim Ret As Long
 
 Dim bHoldBar As Boolean
-        Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+        Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
 
         With RichTextBox
 
@@ -301,10 +301,10 @@ Dim bHoldBar As Boolean
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
          bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         .SelStart = Len(.Text)
         .SelLength = 0
@@ -318,7 +318,7 @@ Dim bHoldBar As Boolean
         .SelText = Text
         
         If bHoldBar Then
-            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
     End With
     
@@ -588,10 +588,10 @@ Sub SetConnected()
     ' establece el borde al listbox
     Call Establecer_Borde(frmMain.hlst, frmMain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
+    Call Make_Transparent_Richtext(frmMain.RecTxt.hWnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(frmMain)
@@ -1033,7 +1033,7 @@ Sub Main()
     
     If Sonido Then
     
-        If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+        If Sound.Initialize_Engine(frmConnect.hWnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
             Call Sound.Ambient_Volume_Set(VolAmbient)
         
         Else
@@ -1046,7 +1046,7 @@ Sub Main()
 
     End If
 
-    RawServersList = "190.245.145.3:7667:Horacio;190.210.83.155:7667:Iplan;186.139.103.88:7667:ReyarB;45.235.99.105:7500:Pablo;127.0.0.1:7667:Localhost"
+    RawServersList = "190.245.145.3:7667:Horacio;190.210.83.155:7667:Iplan;190.195.146.166:7667:ReyarB;45.235.99.105:7500:Pablo;127.0.0.1:7667:Localhost"
 
     Call ComprobarEstado
     Call CargarLst

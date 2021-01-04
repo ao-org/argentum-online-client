@@ -2779,8 +2779,6 @@ Select Case Index
         Fuerzalbl.Visible = False
         AgilidadLbl.Visible = False
         oxigenolbl.Visible = False
-        OpcionesBoton.Visible = True
-        EstadisticasBoton.Visible = True
         TiendaBoton.Visible = True
         rankingBoton.Visible = True
         manualboton.Visible = True
@@ -2848,8 +2846,6 @@ Select Case Index
         Fuerzalbl.Visible = True
         AgilidadLbl.Visible = True
         oxigenolbl.Visible = True
-        OpcionesBoton.Visible = False
-        EstadisticasBoton.Visible = False
         TiendaBoton.Visible = False
         rankingBoton.Visible = False
         manualboton.Visible = False
@@ -5009,8 +5005,6 @@ Private Sub Socket1_Disconnect()
         frmMain.Fuerzalbl.Visible = True
         frmMain.AgilidadLbl.Visible = True
         frmMain.oxigenolbl.Visible = True
-        frmMain.OpcionesBoton.Visible = False
-        frmMain.EstadisticasBoton.Visible = False
         frmMain.TiendaBoton.Visible = False
         frmMain.rankingBoton.Visible = False
         frmMain.manualboton.Visible = False
