@@ -74,7 +74,7 @@ Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
     
 
     With MapData(x, y).Graphic(1)
-        HayAgua = ((.GrhIndex >= 1505 And .GrhIndex <= 1520) Or (.GrhIndex >= 24223 And .GrhIndex <= 24238) Or _
+        HayAgua = ((.GrhIndex >= 1505 And .GrhIndex <= 1520) Or (.GrhIndex >= 124 And .GrhIndex <= 139) Or (.GrhIndex >= 24223 And .GrhIndex <= 24238) Or _
             (.GrhIndex >= 24143 And .GrhIndex <= 24158) Or (.GrhIndex >= 468 And .GrhIndex <= 483) Or _
             (.GrhIndex >= 44668 And .GrhIndex <= 44939) Or (.GrhIndex >= 24303 And .GrhIndex <= 24318))
     End With
