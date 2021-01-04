@@ -1526,8 +1526,6 @@ Private Sub HandleDisconnect()
     frmMain.Fuerzalbl.Visible = True
     frmMain.AgilidadLbl.Visible = True
     frmMain.oxigenolbl.Visible = True
-    frmMain.OpcionesBoton.Visible = False
-    frmMain.EstadisticasBoton.Visible = False
     frmMain.TiendaBoton.Visible = False
     frmMain.rankingBoton.Visible = False
     frmMain.manualboton.Visible = False
@@ -2709,7 +2707,9 @@ Private Sub HandleUpdateSta()
     UserMinSTA = incomingData.ReadInteger()
     frmMain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
     frmMain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
-    frmMain.STAShp.Visible = (UserMinSTA > 0)
+    If QuePestañaInferior = 0 Then
+        frmMain.STAShp.Visible = (UserMinSTA > 0)
+    End If
 
     
     Exit Sub
