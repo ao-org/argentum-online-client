@@ -6932,9 +6932,11 @@ Private Sub HandleUpdateHungerAndThirst()
     frmMain.COMIDAsp.Width = UserMinHAM / UserMaxHAM * 32
     frmMain.AGUbar.Caption = UserMinAGU '& " / " & UserMaxAGU
     frmMain.hambar.Caption = UserMinHAM ' & " / " & UserMaxHAM
-    frmMain.AGUAsp.Visible = (UserMinAGU > 0)
-    frmMain.COMIDAsp.Visible = (UserMinHAM > 0)
     
+        If QuePestañaInferior = 0 Then
+            frmMain.AGUAsp.Visible = (UserMinAGU > 0)
+            frmMain.COMIDAsp.Visible = (UserMinHAM > 0)
+        End If
     Exit Sub
 
 HandleUpdateHungerAndThirst_Err:
