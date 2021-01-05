@@ -1,5 +1,7 @@
 Codigo/*.log
 Screenshots
+Argentum.exe
+AdminLibSetup.exe
 *.csi
 *.OBJ
 *.ldb
@@ -13,6 +15,4 @@ Screenshots
 *.lvw
 *.aps
 *.vbw
-Argentum.exe
-AdminLibSetup.exe
 *.log
