@@ -1756,11 +1756,20 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Next i
 
         End If
-
+        Dim TempGrh As grh
+        
+        
         'Barra de tiempo
         If .BarTime < .MaxBarTime Then
-            Engine_Draw_Box_Border PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, RGBA_From_Comp(0, 0, 0, 100), RGBA_From_Comp(0, 0, 0, 100)
-            Engine_Draw_Box_Border PixelOffsetX - 17, PixelOffsetY - 40, (((.BarTime / 100) / (.MaxBarTime / 100))) * 69, 7, RGBA_From_Comp(200, 0, 0, 100), RGBA_From_Comp(200, 200, 200, 1)
+            'Engine_Draw_Box PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, RGBA_From_Comp(0, 0, 0, 255)
+                        Call InitGrh(TempGrh, 839)
+            Call RGBAList(Color, 255, 255, 255, 200)
+
+            Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY - 55, 1, 0, Color, False, 0, 0, 0)
+            
+            
+            Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY - 29, (((.BarTime / 100) / (.MaxBarTime / 100))) * 24, 3, RGBA_From_Comp(0, 128, 128, 255), RGBA_From_Comp(0, 0, 0, 255)
+
             .BarTime = .BarTime + (4 * timerTicksPerFrame * Sgn(1))
                              
             If .BarTime >= .MaxBarTime Then
@@ -1779,7 +1788,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         
         If .Escribiendo = True And Not .Invisible Then
 
-            Dim TempGrh As grh
+            
             Call InitGrh(TempGrh, 32017)
             Call RGBAList(Color, 255, 255, 255, 200)
 
