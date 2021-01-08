@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
+Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -484,6 +484,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -820,7 +821,7 @@ Begin VB.Form frmMain
          Alignment       =   2  'Center
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "30/30"
+         Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -830,18 +831,18 @@ Begin VB.Form frmMain
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         ForeColor       =   &H00FFFFFF&
+         ForeColor       =   &H00E0E0E0&
          Height          =   195
-         Left            =   585
+         Left            =   690
          TabIndex        =   29
          Top             =   2715
-         Width           =   510
+         Width           =   300
       End
       Begin VB.Label lblShielder 
          Alignment       =   2  'Center
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "30/30"
+         Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -851,18 +852,18 @@ Begin VB.Form frmMain
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         ForeColor       =   &H00FFFFFF&
+         ForeColor       =   &H00E0E0E0&
          Height          =   195
-         Left            =   1785
+         Left            =   1950
          TabIndex        =   28
          Top             =   2715
-         Width           =   630
+         Width           =   300
       End
       Begin VB.Label lblHelm 
          Alignment       =   2  'Center
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "10/10"
+         Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -872,18 +873,18 @@ Begin VB.Form frmMain
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         ForeColor       =   &H00FFFFFF&
+         ForeColor       =   &H00E0E0E0&
          Height          =   195
-         Left            =   3045
+         Left            =   3210
          TabIndex        =   27
          Top             =   2715
-         Width           =   630
+         Width           =   300
       End
       Begin VB.Label lblArmor 
          Alignment       =   2  'Center
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "30/30"
+         Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -893,12 +894,12 @@ Begin VB.Form frmMain
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         ForeColor       =   &H00FFFFFF&
+         ForeColor       =   &H00E0E0E0&
          Height          =   195
-         Left            =   585
+         Left            =   690
          TabIndex        =   26
          Top             =   3165
-         Width           =   510
+         Width           =   300
       End
       Begin VB.Label manabar 
          Alignment       =   2  'Center
