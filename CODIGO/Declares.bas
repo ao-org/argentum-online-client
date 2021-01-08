@@ -304,7 +304,7 @@ Public Const Mp3_Dir = "\..\Recursos\Mp3\"
 'RGB Type
 Public Type RGB
 
-    R As Long
+    r As Long
     G As Long
     B As Long
 
@@ -313,7 +313,7 @@ End Type
 Public Type ARGB
 
     A As Single
-    R As Long
+    r As Long
     G As Long
     B As Long
 
@@ -431,7 +431,7 @@ Public sActivated              As Boolean
 
 Public Type tColor
 
-    R As Byte
+    r As Byte
     G As Byte
     B As Byte
 
@@ -1136,6 +1136,8 @@ Public Enum eTrigger
     ANTIPIQUETE = 5
     ZONAPELEA = 6
     CURA = 7
+    DETALLEAGUA = 8
+    CARCEL = 9
 
 End Enum
 
@@ -1178,7 +1180,7 @@ Public Declare Function GetAsyncKeyState Lib "user32" (ByVal nVirtKey As Long) A
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 'Para ejecutar el Internet Explorer para el manual
-Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
+Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hWnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 
 'Lista de cabezas
 Public Type tIndiceCabeza
