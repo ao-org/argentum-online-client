@@ -21,7 +21,8 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .Speeding = 0
         .Otra_Aura = vbNullString
         .Escudo_Aura = vbNullString
-        .Anillo_Aura = vbNullString
+        .DM_Aura = vbNullString
+        .RM_Aura = vbNullString
         .Particula = 0
         .ParticulaTime = 0
         .particle_count = 0

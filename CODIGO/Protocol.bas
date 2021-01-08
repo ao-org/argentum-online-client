@@ -1647,7 +1647,8 @@ Private Sub HandleDisconnect()
         charlist(i).Arma_Aura = ""
         charlist(i).Body_Aura = ""
         charlist(i).Escudo_Aura = ""
-        charlist(i).Anillo_Aura = ""
+        charlist(i).DM_Aura = ""
+        charlist(i).RM_Aura = ""
         charlist(i).Otra_Aura = ""
         charlist(i).Head_Aura = ""
         charlist(i).Speeding = 0
@@ -2891,11 +2892,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -4301,10 +4302,9 @@ Private Sub HandleCharacterCreate()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 58 Then
+    If incomingData.length < 62 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
-
     End If
     
     On Error GoTo errhandler
@@ -4373,7 +4373,8 @@ Private Sub HandleCharacterCreate()
         .Head_Aura = buffer.ReadASCIIString()
         .Arma_Aura = buffer.ReadASCIIString()
         .Body_Aura = buffer.ReadASCIIString()
-        .Anillo_Aura = buffer.ReadASCIIString()
+        .DM_Aura = buffer.ReadASCIIString()
+        .RM_Aura = buffer.ReadASCIIString()
         .Otra_Aura = buffer.ReadASCIIString()
         .Escudo_Aura = buffer.ReadASCIIString()
         .Speeding = buffer.ReadSingle()
@@ -5569,9 +5570,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -7861,7 +7862,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8278,7 +8279,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -18086,7 +18087,9 @@ Private Sub HandleAuraToChar()
     ElseIf TIPO = 5 Then
         charlist(charindex).Otra_Aura = ParticulaIndex
     ElseIf TIPO = 6 Then
-        charlist(charindex).Anillo_Aura = ParticulaIndex
+        charlist(charindex).DM_Aura = ParticulaIndex
+    Else
+        charlist(charindex).RM_Aura = ParticulaIndex
     End If
 
     
