@@ -2800,8 +2800,16 @@ Private Sub HandleUpdateHP()
     'Remove packet ID
     Call incomingData.ReadByte
     
+    Dim NuevoValor As Long
+    NuevoValor = incomingData.ReadInteger()
+    
+    ' Si perdió vida, mostramos los stats en el frmMain
+    If NuevoValor < UserMinHp Then
+        Call frmMain.ShowStats
+    End If
+    
     'Get data and update form
-    UserMinHp = incomingData.ReadInteger()
+    UserMinHp = NuevoValor
     frmMain.Hpshp.Width = UserMinHp / UserMaxHp * 216
     frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
     
