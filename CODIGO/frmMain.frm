@@ -4236,9 +4236,9 @@ Private Sub Timerping_Timer()
     
     If pausa Then Exit Sub
         
-    If Not RunningInVB Then
+    #If DEBUGGING = 0 Then
         Call WritePing
-    End If
+    #End If
 
     
     Exit Sub
