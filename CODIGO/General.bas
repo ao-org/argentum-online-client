@@ -1007,7 +1007,6 @@ Sub Main()
         Call Sleep(2)
         Delete_File App.Path & "\..\LauncherAO20.exe"
         Name App.Path & "\..\LauncherAO20.ex_" As App.Path & "\..\LauncherAO20.exe"
-
     End If
 
     'Cursores******
@@ -1017,7 +1016,8 @@ Sub Main()
 
     MacAdress = GetMacAddress
     HDserial = GetDriveSerialNumber
-    
+    CheckMD5 = GetMd5
+
     Call Load(frmConnect)
     Call Load(FrmLogear)
         
@@ -1668,12 +1668,12 @@ errhandler:
 
 End Function
 
-Public Function Tilde(ByRef Data As String) As String
+Public Function Tilde(ByRef data As String) As String
     
     On Error GoTo Tilde_Err
     
 
-    Tilde = UCase$(Data)
+    Tilde = UCase$(data)
  
     Tilde = Replace$(Tilde, "Á", "A")
     Tilde = Replace$(Tilde, "É", "E")
@@ -1754,4 +1754,18 @@ GetTimeFromString_Err:
     Call RegistrarError(Err.number, Err.Description, "Mod_General.GetTimeFromString", Erl)
     Resume Next
     
+End Function
+
+Public Function GetMd5() As String
+
+On Error GoTo Handler
+
+    GetMd5 = MD5File(App.Path & "\Argentum.exe")
+    
+    Exit Function
+    
+Handler:
+    Call MsgBox("Error al comprobar el cliente del juego, por favor reinstale y vuelva a intentar.", vbOKOnly, "Cliente corrompido")
+    End
+
 End Function

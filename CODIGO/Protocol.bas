@@ -9014,6 +9014,7 @@ Public Sub WriteLoginExistingChar()
         Call .WriteASCIIString(UserName)
         Call .WriteASCIIString(MacAdress)  'Seguridad
         Call .WriteLong(HDserial)  'SeguridadHDserial
+        Call .WriteASCIIString(CheckMD5)
         
     End With
 
@@ -9056,6 +9057,7 @@ Public Sub WriteLoginNewChar()
         Call .WriteByte(UserHogar)
         Call .WriteASCIIString(MacAdress)  'Seguridad
         Call .WriteLong(HDserial)  'SeguridadHDserial
+        Call .WriteASCIIString(CheckMD5)
 
     End With
 
@@ -17254,11 +17256,11 @@ Private Sub SendData(ByRef sdData As String)
  
     #If AntiExternos Then
 
-        Dim Data() As Byte
+        Dim data() As Byte
 
-        Data = StrConv(sdData, vbFromUnicode)
-        Security.NAC_E_Byte Data, Security.Redundance
-        sdData = StrConv(Data, vbUnicode)
+        data = StrConv(sdData, vbFromUnicode)
+        Security.NAC_E_Byte data, Security.Redundance
+        sdData = StrConv(data, vbUnicode)
         'sdData = Security.NAC_E_String(sdData, Security.Redundance)
     #End If
  
@@ -17480,6 +17482,7 @@ Public Sub WriteBorrandoCuenta()
         Call .WriteByte(ClientPacketID.BorrandoCuenta)
         Call .WriteASCIIString(CuentaEmail)
         Call .WriteASCIIString(SEncriptar(CuentaPassword))
+        Call .WriteASCIIString(CheckMD5)
 
     End With
 
@@ -17507,6 +17510,7 @@ Public Sub WriteBorrandoPJ()
         Call .WriteByte(App.Revision)
         Call .WriteASCIIString(MacAdress)  'Seguridad
         Call .WriteLong(HDserial)  'SeguridadHDserial
+        Call .WriteASCIIString(CheckMD5)
 
     End With
 
@@ -17533,6 +17537,7 @@ Public Sub WriteIngresandoConCuenta()
         Call .WriteByte(App.Revision)
         Call .WriteASCIIString(MacAdress)  'Seguridad
         Call .WriteLong(HDserial)  'SeguridadHDserial
+        Call .WriteASCIIString(CheckMD5)
         
     End With
 
@@ -20310,17 +20315,17 @@ Private Sub HandleRequestScreenShot()
     
         Call .ReadByte
         
-        Dim Data As String
-        Data = GetScreenShotSerialized
+        Dim data As String
+        data = GetScreenShotSerialized
         
-        If Right$(Data, 4) <> "ERROR" Then
-            Data = Data & "~~~"
+        If Right$(data, 4) <> "ERROR" Then
+            data = data & "~~~"
         End If
         
         Dim offset As Long
 
-        For offset = 1 To Len(Data) Step 10000
-            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
+        For offset = 1 To Len(data) Step 10000
+            Call WriteSendScreenShot(mid$(data, offset, min(Len(data) - offset + 1, 10000)))
         Next
     
     End With
@@ -20386,10 +20391,10 @@ Private Sub HandleShowProcesses()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim Data As String
-    Data = buffer.ReadASCIIString
+    Dim data As String
+    data = buffer.ReadASCIIString
     
-    Call frmProcesses.ShowProcesses(Data)
+    Call frmProcesses.ShowProcesses(data)
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -20470,10 +20475,10 @@ Private Sub HandleScreenShotData()
     'Remove packet ID
     Call buffer.ReadByte
 
-    Dim Data As String
-    Data = buffer.ReadASCIIString
+    Dim data As String
+    data = buffer.ReadASCIIString
 
-    Call frmScreenshots.AddData(Data)
+    Call frmScreenshots.AddData(data)
 
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)

@@ -23,6 +23,7 @@ Public ClanesList()     As Tclan
 
 Public MacAdress        As String
 Public HDserial         As Long
+Public CheckMD5         As String
 
 Public intro            As Byte
 
@@ -2566,7 +2567,7 @@ Public Function GetMacAddress() As String
         Call CopyMemory(lSize, baBuffer(OFFSET_LENGTH), 4)
 
         For lIdx = OFFSET_LENGTH + 4 To OFFSET_LENGTH + 4 + lSize - 1
-            sRetVal = IIf(LenB(sRetVal) <> 0, sRetVal & ":", vbNullString) & Right$("0" & Hex$(baBuffer(lIdx)), 2)
+            sRetVal = IIf(LenB(sRetVal) <> 0, sRetVal & ":", vbNullString) & Right$("0" & hex$(baBuffer(lIdx)), 2)
         Next
 
     End If
@@ -2581,6 +2582,7 @@ GetMacAddress_Err:
     Resume Next
     
 End Function
+
 Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal Mapa As Integer) As Integer
     
     On Error GoTo ObtenerIdMapaDeLlamadaDeClan_Err
