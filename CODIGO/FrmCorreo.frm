@@ -601,8 +601,8 @@ Private Sub cmdSend_MouseDown(Button As Integer, Shift As Integer, x As Single, 
     
     On Error GoTo cmdSend_MouseDown_Err
     
-    cmdSend.Picture = LoadInterface("correo_enviarpress.bmp")
-    cmdSend.Tag = "1"
+    'cmdSend.Picture = LoadInterface("correo_enviarpress.bmp")
+    'cmdSend.Tag = "1"
 
     
     Exit Sub
