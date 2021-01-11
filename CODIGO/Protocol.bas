@@ -227,6 +227,8 @@ Private Enum ServerPacketID
     ShowScreenShot
     ScreenShotData
     Tolerancia0
+    Redundancia
+
 End Enum
 
 Private Enum ClientPacketID
@@ -1128,6 +1130,9 @@ Public Sub HandleIncomingData()
             
         Case ServerPacketID.Tolerancia0
             Call HandleTolerancia0
+
+        Case ServerPacketID.Redundancia
+            Call HandleRedundancia
 
         Case Else
         
@@ -2905,11 +2910,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -5268,7 +5273,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -5293,7 +5298,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -5301,7 +5306,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
@@ -5583,9 +5588,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -7840,10 +7845,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.GuildsList.Clear
+    Call frmGuildNews.guildslist.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7875,7 +7880,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8249,10 +8254,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -8292,7 +8297,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -17260,13 +17265,15 @@ Private Sub SendData(ByRef sdData As String)
     #End If
  
     #If AntiExternos Then
+    
+        Security.Redundance = CLng(Security.Redundance * 3) Mod 255
 
         Dim Data() As Byte
 
         Data = StrConv(sdData, vbFromUnicode)
         Security.NAC_E_Byte Data, Security.Redundance
         sdData = StrConv(Data, vbUnicode)
-        'sdData = Security.NAC_E_String(sdData, Security.Redundance)
+
     #End If
  
     #If UsarWrench = 1 Then
@@ -20533,4 +20540,12 @@ Private Sub HandleTolerancia0()
     
     End
 
+End Sub
+
+Private Sub HandleRedundancia()
+
+    incomingData.ReadByte
+
+    Security.Redundance = incomingData.ReadByte
+    
 End Sub

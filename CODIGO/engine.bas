@@ -1996,7 +1996,7 @@ SetMapFx_Err:
     
 End Sub
 
-Private Function Engine_FToDW(F As Single) As Long
+Private Function Engine_FToDW(f As Single) As Long
     
     On Error GoTo Engine_FToDW_Err
     
@@ -2005,7 +2005,7 @@ Private Function Engine_FToDW(F As Single) As Long
     Dim Buf As D3DXBuffer
 
     Set Buf = DirectD3D8.CreateBuffer(4)
-    DirectD3D8.BufferSetData Buf, 0, 4, 1, F
+    DirectD3D8.BufferSetData Buf, 0, 4, 1, f
     DirectD3D8.BufferGetData Buf, 0, 4, 1, Engine_FToDW
 
     

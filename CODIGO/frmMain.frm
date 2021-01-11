@@ -1672,16 +1672,14 @@ End Sub
 Public Sub ControlSeguroParty(ByVal Mostrar As Boolean)
     
     On Error GoTo ControlSeguroParty_Err
-    
-    Debug.Print "LLEGO SEGURO PARTY"
-    If Mostrar Then
-            ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")
-            SeguroParty = True
-    Else
-            ImgSegParty = LoadInterface("boton-seguro-party-off.bmp")
-            SeguroParty = False
-    End If
 
+    If Mostrar Then
+        ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")
+        SeguroParty = True
+    Else
+        ImgSegParty = LoadInterface("boton-seguro-party-off.bmp")
+        SeguroParty = False
+    End If
     
     Exit Sub
 
@@ -4899,7 +4897,7 @@ End Sub
         Call incomingData.ReadASCIIStringFixed(incomingData.length)
         Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
 
-        'Security.Redundance = 13 'DEFAULT
+        Security.Redundance = 13 'DEFAULT
     
         ShowFPS.Enabled = True
 
