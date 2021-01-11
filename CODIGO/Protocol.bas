@@ -1178,11 +1178,7 @@ Private Sub HandleLogged()
     On Error GoTo HandleLogged_Err
     
     Call incomingData.ReadByte
-    
-    '#If AntiExternos Then
-    'Security.Redundance = incomingData.ReadByte()
-    '#End If
-    
+
     ' Variable initialization
     UserCiego = False
     EngineRun = True
@@ -17265,13 +17261,11 @@ Private Sub SendData(ByRef sdData As String)
     #End If
  
     #If AntiExternos Then
-    
-        Security.Redundance = CLng(Security.Redundance * 3) Mod 255
+        Security.Redundance = CLng(Security.Redundance * Security.MultiplicationFactor) Mod 255
 
-        Dim Data() As Byte
-
-        Data = StrConv(sdData, vbFromUnicode)
-        Security.NAC_E_Byte Data, Security.Redundance
+        Dim Data() As Byte: Data = StrConv(sdData, vbFromUnicode)
+        Call Security.NAC_E_Byte(Data, Security.Redundance)
+        
         sdData = StrConv(Data, vbUnicode)
 
     #End If
@@ -20544,7 +20538,7 @@ End Sub
 
 Private Sub HandleRedundancia()
 
-    incomingData.ReadByte
+    Call incomingData.ReadByte
 
     Security.Redundance = incomingData.ReadByte
     

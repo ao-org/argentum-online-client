@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.Ocx"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -532,7 +532,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   3675
       Left            =   11340
-      Picture         =   "frmMain.frx":281289
+      Picture         =   "frmMain.frx":28128A
       ScaleHeight     =   245
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   266
@@ -933,35 +933,35 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":2B106D
+         Picture         =   "frmMain.frx":2B106E
          Top             =   1215
          Width           =   3240
       End
       Begin VB.Image MANShp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":2B3931
+         Picture         =   "frmMain.frx":2B3932
          Top             =   1635
          Width           =   3240
       End
       Begin VB.Image STAShp 
          Height          =   135
          Left            =   510
-         Picture         =   "frmMain.frx":2B61F5
+         Picture         =   "frmMain.frx":2B61F6
          Top             =   2085
          Width           =   1335
       End
       Begin VB.Image AGUAsp 
          Height          =   135
          Left            =   2340
-         Picture         =   "frmMain.frx":2B6BA3
+         Picture         =   "frmMain.frx":2B6BA4
          Top             =   2085
          Width           =   480
       End
       Begin VB.Image COMIDAsp 
          Height          =   120
          Left            =   3285
-         Picture         =   "frmMain.frx":2B6F47
+         Picture         =   "frmMain.frx":2B6F48
          Top             =   2100
          Width           =   480
       End
@@ -969,7 +969,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   630
-         Picture         =   "frmMain.frx":2B728B
+         Picture         =   "frmMain.frx":2B728C
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -978,7 +978,7 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   510
          Left            =   105
-         Picture         =   "frmMain.frx":2B809D
+         Picture         =   "frmMain.frx":2B809E
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -988,7 +988,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1155
-         Picture         =   "frmMain.frx":2B8EAF
+         Picture         =   "frmMain.frx":2B8EB0
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -1188,14 +1188,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":2B9CC1
+      Picture         =   "frmMain.frx":2B9CC2
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":2BA245
+      Picture         =   "frmMain.frx":2BA246
       Top             =   2008
       Width           =   555
    End
@@ -1273,7 +1273,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":2BA7C9
+      Picture         =   "frmMain.frx":2BA7CA
       Top             =   480
       Visible         =   0   'False
       Width           =   525
@@ -1343,7 +1343,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":2BB449
+      Picture         =   "frmMain.frx":2BB44A
       Top             =   1545
       Width           =   3540
    End
@@ -4896,9 +4896,11 @@ End Sub
         'Clean input and output buffers
         Call incomingData.ReadASCIIStringFixed(incomingData.length)
         Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
-
-        Security.Redundance = 13 'DEFAULT
-    
+        
+        #If AntiExternos = 1 Then
+            Security.Redundance = Security.DefaultRedundance
+        #End If
+        
         ShowFPS.Enabled = True
 
         Select Case EstadoLogin

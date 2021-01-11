@@ -1214,7 +1214,6 @@ Public Type tIndiceFx
 End Type
 
 #If AntiExternos Then
-
     Public Security As New clsSecurity
 #End If
 
