@@ -226,6 +226,7 @@ Private Enum ServerPacketID
     ShowProcesses
     ShowScreenShot
     ScreenShotData
+    Tolerancia0
 End Enum
 
 Private Enum ClientPacketID
@@ -566,6 +567,7 @@ Private Enum NewPacksID
     RequestProcesses        '/VERPROCESOS
     SendScreenShot
     SendProcesses
+    Tolerancia0
 End Enum
 
 ''
@@ -1123,6 +1125,9 @@ Public Sub HandleIncomingData()
             
         Case ServerPacketID.ScreenShotData
             Call HandleScreenShotData
+            
+        Case ServerPacketID.Tolerancia0
+            Call HandleTolerancia0
 
         Case Else
         
@@ -2900,11 +2905,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -5263,7 +5268,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -5288,7 +5293,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -5296,7 +5301,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
@@ -5578,9 +5583,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 0) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -7835,10 +7840,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.guildslist.Clear
+    Call frmGuildNews.GuildsList.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7870,7 +7875,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8244,10 +8249,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -8287,7 +8292,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -17256,11 +17261,11 @@ Private Sub SendData(ByRef sdData As String)
  
     #If AntiExternos Then
 
-        Dim data() As Byte
+        Dim Data() As Byte
 
-        data = StrConv(sdData, vbFromUnicode)
-        Security.NAC_E_Byte data, Security.Redundance
-        sdData = StrConv(data, vbUnicode)
+        Data = StrConv(sdData, vbFromUnicode)
+        Security.NAC_E_Byte Data, Security.Redundance
+        sdData = StrConv(Data, vbUnicode)
         'sdData = Security.NAC_E_String(sdData, Security.Redundance)
     #End If
  
@@ -20315,17 +20320,17 @@ Private Sub HandleRequestScreenShot()
     
         Call .ReadByte
         
-        Dim data As String
-        data = GetScreenShotSerialized
+        Dim Data As String
+        Data = GetScreenShotSerialized
         
-        If Right$(data, 4) <> "ERROR" Then
-            data = data & "~~~"
+        If Right$(Data, 4) <> "ERROR" Then
+            Data = Data & "~~~"
         End If
         
         Dim offset As Long
 
-        For offset = 1 To Len(data) Step 10000
-            Call WriteSendScreenShot(mid$(data, offset, min(Len(data) - offset + 1, 10000)))
+        For offset = 1 To Len(Data) Step 10000
+            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
         Next
     
     End With
@@ -20391,10 +20396,10 @@ Private Sub HandleShowProcesses()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim data As String
-    data = buffer.ReadASCIIString
+    Dim Data As String
+    Data = buffer.ReadASCIIString
     
-    Call frmProcesses.ShowProcesses(data)
+    Call frmProcesses.ShowProcesses(Data)
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -20475,10 +20480,10 @@ Private Sub HandleScreenShotData()
     'Remove packet ID
     Call buffer.ReadByte
 
-    Dim data As String
-    data = buffer.ReadASCIIString
+    Dim Data As String
+    Data = buffer.ReadASCIIString
 
-    Call frmScreenshots.AddData(data)
+    Call frmScreenshots.AddData(Data)
 
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
@@ -20497,5 +20502,35 @@ errhandler:
     Set buffer = Nothing
 
     If Error <> 0 Then Err.Raise Error
+
+End Sub
+
+Public Sub WriteTolerancia0(Nick As String)
+    On Error GoTo Handler
+
+    With outgoingData
+
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.Tolerancia0)
+        Call .WriteASCIIString(Nick)
+
+    End With
+    
+Handler:
+    If Err.number = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+End Sub
+
+Private Sub HandleTolerancia0()
+
+    incomingData.ReadByte
+
+    If Not WriteStringToRegistry(&H80000002, "Software\Temp", "e14a3ff5b5e67ede599cac94358e1028", "rekcahnuyos") Then
+        Debug.Print "Error en WriteStringToRegistry"
+    End If
+    
+    End
 
 End Sub

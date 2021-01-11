@@ -2183,6 +2183,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestProcesses(ArgumentosRaw)
                 End If
                 
+            Case "/TOLERANCIA0", "/T0"
+                If EsGM Then
+                    Call WriteTolerancia0(ArgumentosRaw)
+                End If
+                
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")
 

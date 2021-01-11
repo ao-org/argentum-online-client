@@ -1013,7 +1013,11 @@ Sub Main()
     Set FormParser = New clsCursor
     Call FormParser.Init
     'Cursores******
+    
+    ' Tolerancia 0
+    If ComprobarTolerancia0 Then End
 
+    ' Security
     MacAdress = GetMacAddress
     HDserial = GetDriveSerialNumber
     CheckMD5 = GetMd5
@@ -1668,12 +1672,12 @@ errhandler:
 
 End Function
 
-Public Function Tilde(ByRef data As String) As String
+Public Function Tilde(ByRef Data As String) As String
     
     On Error GoTo Tilde_Err
     
 
-    Tilde = UCase$(data)
+    Tilde = UCase$(Data)
  
     Tilde = Replace$(Tilde, "Á", "A")
     Tilde = Replace$(Tilde, "É", "E")
@@ -1767,5 +1771,67 @@ On Error GoTo Handler
 Handler:
     Call MsgBox("Error al comprobar el cliente del juego, por favor reinstale y vuelva a intentar.", vbOKOnly, "Cliente corrompido")
     End
+
+End Function
+
+Public Function WriteStringToRegistry(Hkey As Long, strPath As String, strValue As String, strdata As String) As Boolean
+    
+    Dim bAns As Boolean
+    
+    On Error GoTo ErrorHandler
+    
+       Dim keyhand As Long
+       Dim r As Long
+       r = RegCreateKey(Hkey, strPath, keyhand)
+       If r = 0 Then
+            r = RegSetValueEx(keyhand, strValue, 0, _
+               1, ByVal strdata, Len(strdata))
+            r = RegCloseKey(keyhand)
+        End If
+        
+       WriteStringToRegistry = (r = 0)
+    
+    Exit Function
+ErrorHandler:
+    WriteStringToRegistry = False
+    Exit Function
+    
+End Function
+
+Public Function ReadRegistryKey(Hkey As Long, strPath As String, strValue As String) As String
+
+    Dim bAns As Boolean
+    
+    On Error GoTo ErrorHandler
+    
+    Dim keyhand As Long
+    Dim r As Long
+    Dim Data As String
+    Dim LenValue As Long
+       
+    r = RegOpenKey(Hkey, strPath, keyhand)
+    If r = 0 Then
+        r = RegQueryValueEx(keyhand, strValue, 0, 1, vbNullString, LenValue)
+        
+        Data = Space(LenValue)
+        
+        r = RegQueryValueEx(keyhand, strValue, 0, 1, ByVal Data, Len(Data))
+        r = RegCloseKey(keyhand)
+        
+        ReadRegistryKey = Left$(Data, Len(Data) - 1)
+    End If
+    
+    Exit Function
+ErrorHandler:
+    ReadRegistryKey = vbNullString
+    Exit Function
+
+End Function
+
+Public Function ComprobarTolerancia0() As Boolean
+
+    If ReadRegistryKey(&H80000002, "Software\Temp", "e14a3ff5b5e67ede599cac94358e1028") = "rekcahnuyos" Then
+        ComprobarTolerancia0 = True
+    End If
 
 End Function
