@@ -114,7 +114,6 @@ Begin VB.Form frmGoliath
    Begin VB.Label lblDatos 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "¡Cantidad invalida!"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   6.75
