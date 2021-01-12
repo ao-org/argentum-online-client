@@ -20539,7 +20539,11 @@ End Sub
 Private Sub HandleRedundancia()
 
     Call incomingData.ReadByte
-
-    Security.Redundance = incomingData.ReadByte
+    
+    #If AntiExternos = 1 Then
+        Security.Redundance = incomingData.ReadByte
+    #Else
+        Call incomingData.ReadByte
+    #End If
     
 End Sub
