@@ -142,14 +142,14 @@ HelpContextID="0"
 CompatibleMode="0"
 MajorVer=1
 MinorVer=0
-RevisionVer=16
+RevisionVer=17
 AutoIncrementVer=0
 ServerSupportFiles=0
 VersionComments="www.argentum20.com"
 VersionCompanyName="Argentum20"
 VersionLegalCopyright="Argentum20 Staff"
 VersionProductName="Argentum20 by Noland Studios"
-CondComp="UsarWrench = 1 : AntiExternos = 1 : Compresion = 0 : DEBUGGING = 1"
+CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : DEBUGGING = 1"
 CompilationType=-1
 OptimizationType=0
 FavorPentiumPro(tm)=0
