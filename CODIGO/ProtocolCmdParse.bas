@@ -451,13 +451,8 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                
             Case "/PENAS"
-                If notNullArguments Then
-                    Call WritePunishments(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /penas NICKNAME.")
+                Call WritePunishments(ArgumentosRaw)
 
-                End If
                 
             Case "/CONTRASEÑA"
                 Call frmNewPassword.Show(vbModal, frmMain)
