@@ -26,6 +26,14 @@ Begin VB.Form frmOpciones
    ScaleWidth      =   8025
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.ComboBox cbBloqueoHechizos 
+      Height          =   315
+      Left            =   5760
+      Style           =   2  'Dropdown List
+      TabIndex        =   16
+      Top             =   2520
+      Width           =   1815
+   End
    Begin VB.HScrollBar scrSens 
       Height          =   315
       LargeChange     =   5
@@ -165,6 +173,25 @@ Begin VB.Form frmOpciones
       TabIndex        =   0
       Top             =   10440
       Width           =   1335
+   End
+   Begin VB.Label Label2 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Modo de Hechizos"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   4200
+      TabIndex        =   17
+      Top             =   2560
+      Width           =   1815
    End
    Begin VB.Image ind_lectura 
       Height          =   255
@@ -472,6 +499,12 @@ Alpha_Change_Err:
     
 End Sub
 
+Private Sub cbBloqueoHechizos_Click()
+
+    ModoHechizos = cbBloqueoHechizos.ListIndex
+
+End Sub
+
 Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Check1_MouseUp_Err
@@ -481,14 +514,12 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         OcultarMacrosAlCastear = 0
     Else
         OcultarMacrosAlCastear = 1
-
     End If
         
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
-
+        check1.Picture = LoadInterface("check-amarillo.bmp")
     End If
         
     
@@ -516,7 +547,6 @@ Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Check4.Picture = Nothing
     Else
         Check4.Picture = LoadInterface("check-amarillo.bmp")
-
     End If
 
     
@@ -757,6 +787,7 @@ cmdayuda_MouseMove_Err:
     Resume Next
     
 End Sub
+
 Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Command1_MouseMove_Err
@@ -768,8 +799,8 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     
     
     Exit Sub
@@ -785,9 +816,9 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo cmdCerrar_MouseMove_Err
     
 
-    If cmdCerrar.Tag = "0" Then
+    If cmdcerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdCerrar.Tag = "1"
+        cmdcerrar.Tag = "1"
 
     End If
 
@@ -816,8 +847,8 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
 
     End If
 
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
 
     
     Exit Sub
@@ -1059,8 +1090,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     facebook.Tag = "0"
     Command1 = Nothing
     Command1.Tag = "0"
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
@@ -1204,9 +1235,9 @@ Public Sub Init()
     End If
     
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
+        check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
@@ -1215,6 +1246,12 @@ Public Sub Init()
     scrMidi.Value = VolMusic
     
     Alpha.Value = AlphaMacro
+    
+    Call cbBloqueoHechizos.Clear
+    Call cbBloqueoHechizos.AddItem("Bloqueo en soltar")
+    Call cbBloqueoHechizos.AddItem("Bloqueo al lanzar")
+    Call cbBloqueoHechizos.AddItem("Sin bloqueo")
+    cbBloqueoHechizos.ListIndex = ModoHechizos
     
     scrSens.Value = SensibilidadMouse
     

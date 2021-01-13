@@ -906,6 +906,12 @@ Type tEstadisticasUsu
 
 End Type
 
+Enum eModoHechizos
+    BloqueoSoltar
+    BloqueoLanzar
+    SinBloqueo
+End Enum
+
 Public Nombres                                  As Boolean
 
 'User status vars
@@ -968,6 +974,8 @@ Public FPSFLAG                                  As Byte
 Public VSync                                    As Byte
 
 Public AlphaMacro                               As Byte
+
+Public ModoHechizos                             As eModoHechizos
 
 Public pausa                                    As Boolean
 
@@ -1218,8 +1226,3 @@ End Type
 #If AntiExternos Then
     Public Security As New clsSecurity
 #End If
-
-Public Declare Function ShowScrollBar Lib "user32" (ByVal hwnd As Long, ByVal wBar As Long, ByVal bShow As Long) As Long
-Public Const SB_HORZ = 0
-Public Const SB_VERT = 1
-Public Const SB_BOTH = 3

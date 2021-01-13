@@ -28,7 +28,6 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    Moveable        =   0   'False
    NegotiateMenus  =   0   'False
-   Picture         =   "frmMain.frx":57E2
    ScaleHeight     =   928
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   1332
@@ -209,7 +208,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   4875
       Left            =   11520
-      Picture         =   "frmMain.frx":245826
+      Picture         =   "frmMain.frx":57E2
       ScaleHeight     =   4875
       ScaleWidth      =   3705
       TabIndex        =   17
@@ -305,7 +304,7 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   0
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":2808F0
+         MouseIcon       =   "frmMain.frx":408AC
          MousePointer    =   99  'Custom
          Tag             =   "0"
          Top             =   4550
@@ -316,9 +315,9 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   1
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":280A42
+         MouseIcon       =   "frmMain.frx":409FE
          MousePointer    =   99  'Custom
-         Picture         =   "frmMain.frx":280B94
+         Picture         =   "frmMain.frx":40B50
          Tag             =   "0"
          Top             =   4260
          Visible         =   0   'False
@@ -489,7 +488,7 @@ Begin VB.Form frmMain
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmMain.frx":281212
+      TextRTF         =   $"frmMain.frx":411CE
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
          Size            =   8.25
@@ -531,7 +530,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   3675
       Left            =   11340
-      Picture         =   "frmMain.frx":281289
+      Picture         =   "frmMain.frx":41245
       ScaleHeight     =   245
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   266
@@ -932,35 +931,35 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":2B106D
+         Picture         =   "frmMain.frx":71029
          Top             =   1215
          Width           =   3240
       End
       Begin VB.Image MANShp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":2B3931
+         Picture         =   "frmMain.frx":738ED
          Top             =   1635
          Width           =   3240
       End
       Begin VB.Image STAShp 
          Height          =   135
          Left            =   510
-         Picture         =   "frmMain.frx":2B61F5
+         Picture         =   "frmMain.frx":761B1
          Top             =   2085
          Width           =   1335
       End
       Begin VB.Image AGUAsp 
          Height          =   135
          Left            =   2340
-         Picture         =   "frmMain.frx":2B6BA3
+         Picture         =   "frmMain.frx":76B5F
          Top             =   2085
          Width           =   480
       End
       Begin VB.Image COMIDAsp 
          Height          =   120
          Left            =   3285
-         Picture         =   "frmMain.frx":2B6F47
+         Picture         =   "frmMain.frx":76F03
          Top             =   2100
          Width           =   480
       End
@@ -968,7 +967,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   630
-         Picture         =   "frmMain.frx":2B728B
+         Picture         =   "frmMain.frx":77247
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -977,7 +976,7 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   510
          Left            =   105
-         Picture         =   "frmMain.frx":2B809D
+         Picture         =   "frmMain.frx":78059
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -987,7 +986,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1155
-         Picture         =   "frmMain.frx":2B8EAF
+         Picture         =   "frmMain.frx":78E6B
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -1187,14 +1186,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":2B9CC1
+      Picture         =   "frmMain.frx":79C7D
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":2BA245
+      Picture         =   "frmMain.frx":7A201
       Top             =   2008
       Width           =   555
    End
@@ -1272,7 +1271,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":2BA7C9
+      Picture         =   "frmMain.frx":7A785
       Top             =   480
       Visible         =   0   'False
       Width           =   525
@@ -1341,7 +1340,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":2BB449
+      Picture         =   "frmMain.frx":7B405
       Top             =   1545
       Width           =   3540
    End
@@ -4021,7 +4020,6 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
                     SendingType = 8
                 Else
                     SendingType = 1
-
                 End If
             
                 If stxtbuffer <> "" Then Call ParseUserCommand(stxtbuffer)
@@ -4276,7 +4274,6 @@ Private Sub cmdLanzar_Click()
     On Error GoTo cmdLanzar_Click_Err
     
     If pausa Then Exit Sub
-    
 
     If hlst.List(hlst.ListIndex) <> "(Vacio)" Then
         If UserEstado = 1 Then
@@ -4287,6 +4284,16 @@ Private Sub cmdLanzar_Click()
             End With
 
         Else
+        
+            If ModoHechizos = BloqueoLanzar Then
+                If Not MainTimer.Check(TimersIndex.AttackSpell, False) Then
+                    Exit Sub
+
+                ElseIf Not MainTimer.Check(TimersIndex.CastSpell) Then
+                    Exit Sub
+                End If
+            End If
+
             Call WriteCastSpell(hlst.ListIndex + 1)
             'Call WriteWork(eSkill.Magia)
             UsaMacro = True
@@ -4348,20 +4355,31 @@ Public Sub Form_Click()
                     Dim SendSkill As Boolean
                     
                     If UsingSkill = magia Then
-                        If MainTimer.Check(TimersIndex.AttackSpell, False) Then
-                            If MainTimer.Check(TimersIndex.CastSpell) Then
-                                SendSkill = True
-                                Call MainTimer.Restart(TimersIndex.CastAttack)
-                            Else
-
-                                Exit Sub
-
-                            End If
-
+                        
+                        If ModoHechizos = BloqueoLanzar Then
+                            SendSkill = True
+                            Call MainTimer.Restart(TimersIndex.CastAttack)
                         Else
-
-                            Exit Sub
-
+                            If MainTimer.Check(TimersIndex.AttackSpell, False) Then
+                                If MainTimer.Check(TimersIndex.CastSpell) Then
+                                    SendSkill = True
+                                    Call MainTimer.Restart(TimersIndex.CastAttack)
+                                
+                                ElseIf ModoHechizos = SinBloqueo Then
+                                    With FontTypes(FontTypeNames.FONTTYPE_TALK)
+                                        Call ShowConsoleMsg("No puedes lanzar hechizos tan rápido.", .red, .green, .blue, .bold, .italic)
+                                    End With
+                                Else
+                                    Exit Sub
+                                End If
+                                
+                            ElseIf ModoHechizos = SinBloqueo Then
+                                With FontTypes(FontTypeNames.FONTTYPE_TALK)
+                                    Call ShowConsoleMsg("No puedes lanzar tan rápido después de un golpe.", .red, .green, .blue, .bold, .italic)
+                                End With
+                            Else
+                                Exit Sub
+                            End If
                         End If
 
                     End If
