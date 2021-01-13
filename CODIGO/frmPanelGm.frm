@@ -1334,8 +1334,7 @@ Private Sub finalizarevento_Click()
     
 
     If MsgBox("¿Estás seguro que deseas finalizar el evento?", vbYesNo + vbQuestion, "¡ATENCIÓN!") = vbYes Then
-        Call WriteDenounce
-
+        Call WriteFinEvento
     End If
 
     

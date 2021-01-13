@@ -535,20 +535,24 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan paramtetros. Utilice /depositar CANTIDAD.")
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /depositar CANTIDAD.")
 
                 End If
                 
             Case "/DENUNCIAR"
-                'If notNullArguments Then
-                '  Call WriteDenounce(ArgumentosRaw)
-                'Else
-                'Avisar que falta el parametro
-                Call ShowConsoleMsg("Este comando fue desactivado. Utilice /GM para contactar a un administrador del juego.")
-                'End If
-                
+                If notNullArguments Then
+                    PreguntaScreen = "¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
+                    Pregunta = True
+                    TargetName = ArgumentosRaw
+    
+                    PreguntaLocal = True
+                    PreguntaNUM = 2
+                Else
+                    Call ShowConsoleMsg("Utilice /denunciar NICK, para reportar los mensajes de un usuario.")
+                End If
+
             Case "/FINALIZAREVENTO"
-                Call WriteDenounce
+                Call WriteFinEvento
 
             Case "/PROPONER"
                 If notNullArguments Then
@@ -722,9 +726,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/LUZ"
                 If EsGM Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then
-                        Call LucesRedondas.Create_Light_To_Map(UserPos.X, UserPos.Y, COLOR_WHITE(0), Val(ArgumentosRaw))
+                        Call LucesRedondas.Create_Light_To_Map(UserPos.x, UserPos.y, COLOR_WHITE(0), Val(ArgumentosRaw))
                     Else
-                        Call LucesRedondas.Create_Light_To_Map(UserPos.X, UserPos.Y, COLOR_WHITE(0), 10)
+                        Call LucesRedondas.Create_Light_To_Map(UserPos.x, UserPos.y, COLOR_WHITE(0), 10)
                     End If
                 End If
                 

@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form Frmcarga 
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   Caption         =   "Form1"
+   Caption         =   "Cargando..."
    ClientHeight    =   1590
    ClientLeft      =   0
    ClientTop       =   0

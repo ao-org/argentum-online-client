@@ -461,6 +461,8 @@ Public RainBufferIndex        As Long
 
 Public FogataBufferIndex      As Long
 
+Public TargetName             As String
+
 Public Const bCabeza = 1
 
 Public Const bPiernaIzquierda = 2
