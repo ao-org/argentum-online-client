@@ -66,16 +66,6 @@ Begin VB.Form frmMain
       Type            =   1
       Urgent          =   0   'False
    End
-   Begin VB.ComboBox Combo1 
-      Height          =   360
-      ItemData        =   "frmMain.frx":245826
-      Left            =   11400
-      List            =   "frmMain.frx":245833
-      TabIndex        =   40
-      Text            =   "Combo1"
-      Top             =   7320
-      Width           =   1575
-   End
    Begin VB.CommandButton btnSpawn 
       Caption         =   "Spawn NPC"
       BeginProperty Font 
@@ -219,7 +209,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   4875
       Left            =   11520
-      Picture         =   "frmMain.frx":24586A
+      Picture         =   "frmMain.frx":245826
       ScaleHeight     =   4875
       ScaleWidth      =   3705
       TabIndex        =   17
@@ -315,7 +305,7 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   0
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":280934
+         MouseIcon       =   "frmMain.frx":2808F0
          MousePointer    =   99  'Custom
          Tag             =   "0"
          Top             =   4550
@@ -326,9 +316,9 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   1
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":280A86
+         MouseIcon       =   "frmMain.frx":280A42
          MousePointer    =   99  'Custom
-         Picture         =   "frmMain.frx":280BD8
+         Picture         =   "frmMain.frx":280B94
          Tag             =   "0"
          Top             =   4260
          Visible         =   0   'False
@@ -499,7 +489,7 @@ Begin VB.Form frmMain
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmMain.frx":281256
+      TextRTF         =   $"frmMain.frx":281212
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
          Size            =   8.25
@@ -541,7 +531,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   3675
       Left            =   11340
-      Picture         =   "frmMain.frx":2812CD
+      Picture         =   "frmMain.frx":281289
       ScaleHeight     =   245
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   266
@@ -942,35 +932,35 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":2B10B1
+         Picture         =   "frmMain.frx":2B106D
          Top             =   1215
          Width           =   3240
       End
       Begin VB.Image MANShp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":2B3975
+         Picture         =   "frmMain.frx":2B3931
          Top             =   1635
          Width           =   3240
       End
       Begin VB.Image STAShp 
          Height          =   135
          Left            =   510
-         Picture         =   "frmMain.frx":2B6239
+         Picture         =   "frmMain.frx":2B61F5
          Top             =   2085
          Width           =   1335
       End
       Begin VB.Image AGUAsp 
          Height          =   135
          Left            =   2340
-         Picture         =   "frmMain.frx":2B6BE7
+         Picture         =   "frmMain.frx":2B6BA3
          Top             =   2085
          Width           =   480
       End
       Begin VB.Image COMIDAsp 
          Height          =   120
          Left            =   3285
-         Picture         =   "frmMain.frx":2B6F8B
+         Picture         =   "frmMain.frx":2B6F47
          Top             =   2100
          Width           =   480
       End
@@ -978,7 +968,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   630
-         Picture         =   "frmMain.frx":2B72CF
+         Picture         =   "frmMain.frx":2B728B
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -987,7 +977,7 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   510
          Left            =   105
-         Picture         =   "frmMain.frx":2B80E1
+         Picture         =   "frmMain.frx":2B809D
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -997,7 +987,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1155
-         Picture         =   "frmMain.frx":2B8EF3
+         Picture         =   "frmMain.frx":2B8EAF
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -1197,14 +1187,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":2B9D05
+      Picture         =   "frmMain.frx":2B9CC1
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":2BA289
+      Picture         =   "frmMain.frx":2BA245
       Top             =   2008
       Width           =   555
    End
@@ -1282,7 +1272,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":2BA80D
+      Picture         =   "frmMain.frx":2BA7C9
       Top             =   480
       Visible         =   0   'False
       Width           =   525
@@ -1351,7 +1341,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":2BB48D
+      Picture         =   "frmMain.frx":2BB449
       Top             =   1545
       Width           =   3540
    End
