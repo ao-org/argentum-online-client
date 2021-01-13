@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmMapaGrande 
    Appearance      =   0  'Flat
-   BackColor       =   &H80000005&
+   BackColor       =   &H80000006&
    BorderStyle     =   0  'None
    ClientHeight    =   10785
    ClientLeft      =   0
@@ -20,6 +20,7 @@ Begin VB.Form frmMapaGrande
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.ComboBox ComMundo 
+      Appearance      =   0  'Flat
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -78,8 +79,7 @@ Begin VB.Form frmMapaGrande
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True
       HideColumnHeaders=   -1  'True
-      FlatScrollBar   =   -1  'True
-      TextBackground  =   -1  'True
+      FullRowSelect   =   -1  'True
       _Version        =   393217
       ForeColor       =   16777215
       BackColor       =   0
@@ -257,7 +257,6 @@ Begin VB.Form frmMapaGrande
    Begin VB.Label Label8 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "asdasdsa"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -453,7 +452,7 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private RealizoCambios As String
 
@@ -469,7 +468,7 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
 Private Const TILE_SIZE = 27
 
@@ -485,7 +484,7 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub
@@ -504,16 +503,20 @@ WorldActual = ComMundo.ListIndex + 1
 
 End Sub
 
+Private Sub Form_Activate()
+    Call CargarDatosMapa(UserMap)
+    If ListView1.ListItems.count > 0 Then
+        Call ListView1_ItemClick(ListView1.ListItems.Item(1))
+    End If
+End Sub
+
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo Form_KeyDown_Err
     
-
     If KeyCode = 27 Then
         Unload Me
-
     End If
-
     
     Exit Sub
 
@@ -530,6 +533,8 @@ Private Sub Form_Load()
     ListView1.BackColor = RGB(7, 7, 7)
     listdrop.BackColor = RGB(7, 7, 7)
     lblMapInfo(0).ForeColor = RGB(235, 164, 14)
+    
+    Call Cargarmapsworlddata
     
    ' picMap.Picture = LoadInterface("mapa.bmp")
     
@@ -685,7 +690,7 @@ Private Sub Image3_Click()
     If Dungeon Then Exit Sub
 
     If Referencias Then
-        picMap.Picture = LoadInterface("mapa.bmp")
+        picMap.Picture = LoadInterface("mapa1.bmp")
         Image3.Picture = Nothing
         Referencias = False
     Else
@@ -758,12 +763,9 @@ listdrop_Click_Err:
     
 End Sub
 
-Private Sub ListView1_Click()
+Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
     
     On Error GoTo ListView1_Click_Err
-    
-
-    
 
     Label8.Caption = ""
     picture1.Refresh
@@ -782,7 +784,7 @@ Private Sub ListView1_Click()
     listdrop.ListItems.Clear
     
     ListView1.ToolTipText = NpcData(ListView1.SelectedItem.SubItems(2)).Name
-    
+
     If ListView1.SelectedItem.SubItems(2) <> "" Then
     
         If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza <> 0 Then
@@ -873,7 +875,9 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     
     ListView1.SetFocus
     'listdrop.SetFocus
-    Call ListView1_Click
+    If ListView1.ListItems.count > 0 Then
+        Call ListView1_ItemClick(ListView1.ListItems.Item(1))
+    End If
     Call listdrop_Click
 
     lblAllies.Top = PosY

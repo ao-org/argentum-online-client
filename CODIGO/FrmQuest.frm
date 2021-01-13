@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form FrmQuests 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -115,6 +115,7 @@ Begin VB.Form FrmQuests
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True
       HideColumnHeaders=   -1  'True
+      FullRowSelect   =   -1  'True
       TextBackground  =   -1  'True
       _Version        =   393217
       ForeColor       =   14737632
@@ -168,6 +169,7 @@ Begin VB.Form FrmQuests
       HideSelection   =   -1  'True
       HideColumnHeaders=   -1  'True
       FlatScrollBar   =   -1  'True
+      FullRowSelect   =   -1  'True
       _Version        =   393217
       ForeColor       =   14737632
       BackColor       =   0

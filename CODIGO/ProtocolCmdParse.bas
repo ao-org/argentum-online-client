@@ -2018,7 +2018,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     Select Case UCase$(ArgumentosAll(0))
 
-                        Case "PK" ' "/MODMAPINFO PK"
+                        Case "SEGURO" ' "/MODMAPINFO SEGURO"
                             Call WriteChangeMapInfoPK(ArgumentosAll(1) = "1")
                         
                         Case "BACKUP" ' "/MODMAPINFO BACKUP"
@@ -2046,7 +2046,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parametros. Opciones: PK, BACKUP, RESTRINGIR, MAGIASINEFECTO, INVISINEFECTO, RESUSINEFECTO, TERRENO, ZONA")
+                    Call ShowConsoleMsg("Faltan parametros. Opciones: SEGURO, BACKUP, RESTRINGIR, MAGIASINEFECTO, INVISINEFECTO, RESUSINEFECTO, TERRENO, ZONA")
 
                 End If
                 

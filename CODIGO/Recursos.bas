@@ -630,7 +630,6 @@ Sub CargarDatosMapa(ByVal map As Integer)
         frmMapaGrande.Label1.Caption = NameMaps(map).desc
     Else
         frmMapaGrande.Label1.Caption = "Sin información relevante."
-
     End If
 
     '**************************************************************
@@ -828,7 +827,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
                 Dim c As Long
                 
-                For c = 1 To 1000
+                For c = 1 To UBound(NpcWorlds)
                     NpcWorlds(c) = 0
                 Next c
 
@@ -839,7 +838,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
                 Next i
                
-                For c = 1 To 1000
+                For c = 1 To UBound(NpcWorlds)
 
                     If NpcWorlds(c) > 0 Then
 
@@ -851,6 +850,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
                             subelemento.SubItems(1) = NpcWorlds(c)
                             subelemento.SubItems(2) = c
+                            subelemento.EnsureVisible
 
                         End If
 
@@ -870,6 +870,18 @@ Sub CargarDatosMapa(ByVal map As Integer)
         Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
     #End If
 
+    frmMapaGrande.ListView1.ColumnHeaders(2).Alignment = lvwColumnRight
+    frmMapaGrande.ListView1.ColumnHeaders(2).Width = 30
+    
+    If frmMapaGrande.ListView1.ListItems.count <= 4 Then
+        frmMapaGrande.ListView1.ColumnHeaders(1).Width = frmMapaGrande.ListView1.Width - 30
+    Else
+        frmMapaGrande.ListView1.ColumnHeaders(1).Width = frmMapaGrande.ListView1.Width - 50
+    End If
+    
+    If frmMapaGrande.ListView1.ListItems.count > 0 Then
+        Call frmMapaGrande.ListView1.ListItems.Item(1).EnsureVisible
+    End If
     
     Exit Sub
 
