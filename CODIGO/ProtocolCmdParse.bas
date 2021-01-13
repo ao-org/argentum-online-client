@@ -722,9 +722,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/LUZ"
                 If EsGM Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then
-                        Call LucesRedondas.Create_Light_To_Map(UserPos.x, UserPos.y, COLOR_WHITE(0), Val(ArgumentosRaw))
+                        Call LucesRedondas.Create_Light_To_Map(UserPos.X, UserPos.Y, COLOR_WHITE(0), Val(ArgumentosRaw))
                     Else
-                        Call LucesRedondas.Create_Light_To_Map(UserPos.x, UserPos.y, COLOR_WHITE(0), 10)
+                        Call LucesRedondas.Create_Light_To_Map(UserPos.X, UserPos.Y, COLOR_WHITE(0), 10)
                     End If
                 End If
                 
@@ -2048,6 +2048,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parametros. Opciones: SEGURO, BACKUP, RESTRINGIR, MAGIASINEFECTO, INVISINEFECTO, RESUSINEFECTO, TERRENO, ZONA")
 
+                End If
+                
+            Case "/MAPINFO"
+                If EsGM Then
+                    Call WriteGetMapInfo
                 End If
                 
             Case "/GRABAR"

@@ -570,6 +570,7 @@ Private Enum NewPacksID
     SendScreenShot
     SendProcesses
     Tolerancia0
+    GetMapInfo
 End Enum
 
 ''
@@ -20543,4 +20544,21 @@ Private Sub HandleRedundancia()
         Call incomingData.ReadByte
     #End If
     
+End Sub
+
+Public Sub WriteGetMapInfo()
+    On Error GoTo Handler
+
+    With outgoingData
+
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.GetMapInfo)
+
+    End With
+    
+Handler:
+    If Err.number = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
 End Sub
