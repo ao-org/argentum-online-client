@@ -1545,6 +1545,7 @@ Private Sub HandleDisconnect()
     frmMain.rankingBoton.Visible = False
     frmMain.manualboton.Visible = False
     frmMain.QuestBoton.Visible = False
+    frmMain.ImgHogar.Visible = False
     frmMain.lblWeapon.Visible = True
     frmMain.lblShielder.Visible = True
     frmMain.lblHelm.Visible = True
@@ -2345,7 +2346,7 @@ Private Sub HandleCharSwing()
             Call SetCharacterDialogFx(charindex, IIf(charindex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
         End If
         
-        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y)) ' Swing
+        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.X, .Pos.Y), Sound.Calculate_Pan(.Pos.X, .Pos.Y)) ' Swing
         
         If ShowFX Then Call SetCharacterFx(charindex, 90, 0)
 
@@ -3112,26 +3113,26 @@ Private Sub HandlePosUpdate()
     Call incomingData.ReadByte
     
     'Remove char from old position
-    If MapData(UserPos.x, UserPos.y).charindex = UserCharIndex Then
-        MapData(UserPos.x, UserPos.y).charindex = 0
+    If MapData(UserPos.X, UserPos.Y).charindex = UserCharIndex Then
+        MapData(UserPos.X, UserPos.Y).charindex = 0
 
     End If
     
     'Set new pos
-    UserPos.x = incomingData.ReadByte()
-    UserPos.y = incomingData.ReadByte()
+    UserPos.X = incomingData.ReadByte()
+    UserPos.Y = incomingData.ReadByte()
 
     'Set char
-    MapData(UserPos.x, UserPos.y).charindex = UserCharIndex
+    MapData(UserPos.X, UserPos.Y).charindex = UserCharIndex
     charlist(UserCharIndex).Pos = UserPos
         
     'Are we under a roof?
-    bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+    bTecho = IIf(MapData(UserPos.X, UserPos.Y).Trigger = 1 Or MapData(UserPos.X, UserPos.Y).Trigger = 2 Or MapData(UserPos.X, UserPos.Y).Trigger = 6 Or MapData(UserPos.X, UserPos.Y).Trigger > 9 Or MapData(UserPos.X, UserPos.Y).Trigger = 4, True, False)
                 
     'Update pos label and minimap
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
-    frmMain.personaje(0).Left = UserPos.x - 5
-    frmMain.personaje(0).Top = UserPos.y - 4
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
+    frmMain.personaje(0).Left = UserPos.X - 5
+    frmMain.personaje(0).Top = UserPos.Y - 4
 
     Call RefreshAllChars
     
@@ -4299,13 +4300,13 @@ Private Sub HandleUserCharIndexInServer()
     UserPos = charlist(UserCharIndex).Pos
     
     'Are we under a roof?
-    bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+    bTecho = IIf(MapData(UserPos.X, UserPos.Y).Trigger = 1 Or MapData(UserPos.X, UserPos.Y).Trigger = 2 Or MapData(UserPos.X, UserPos.Y).Trigger = 6 Or MapData(UserPos.X, UserPos.Y).Trigger > 9 Or MapData(UserPos.X, UserPos.Y).Trigger = 4, True, False)
     
     LastMove = FrameTime
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
-    frmMain.personaje(0).Left = UserPos.x - 5
-    frmMain.personaje(0).Top = UserPos.y - 4
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
+    frmMain.personaje(0).Left = UserPos.X - 5
+    frmMain.personaje(0).Top = UserPos.Y - 4
 
     
     Exit Sub
@@ -4349,9 +4350,9 @@ Private Sub HandleCharacterCreate()
 
     Dim Heading       As E_Heading
 
-    Dim x             As Byte
+    Dim X             As Byte
 
-    Dim y             As Byte
+    Dim Y             As Byte
 
     Dim weapon        As Integer
 
@@ -4373,8 +4374,8 @@ Private Sub HandleCharacterCreate()
     Body = buffer.ReadInteger()
     Head = buffer.ReadInteger()
     Heading = buffer.ReadByte()
-    x = buffer.ReadByte()
-    y = buffer.ReadByte()
+    X = buffer.ReadByte()
+    Y = buffer.ReadByte()
     weapon = buffer.ReadInteger()
     shield = buffer.ReadInteger()
     helmet = buffer.ReadInteger()
@@ -4416,10 +4417,10 @@ Private Sub HandleCharacterCreate()
         .Idle = buffer.ReadBoolean()
         .Navegando = buffer.ReadBoolean()
         
-        If (.Pos.x <> 0 And .Pos.y <> 0) Then
-            If MapData(.Pos.x, .Pos.y).charindex = charindex Then
+        If (.Pos.X <> 0 And .Pos.Y <> 0) Then
+            If MapData(.Pos.X, .Pos.Y).charindex = charindex Then
                 'Erase the old character from map
-                MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+                MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).charindex = 0
 
             End If
 
@@ -4454,7 +4455,7 @@ Private Sub HandleCharacterCreate()
         .Muerto = (Body = CASPER_BODY_IDLE)
         '.AlphaPJ = 255
     
-        Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
+        Call MakeChar(charindex, Body, Head, Heading, X, Y, weapon, shield, helmet, ParticulaFx, appear)
         
         If .Idle Or .Navegando Then
             'Start animation
@@ -4554,12 +4555,12 @@ Private Sub HandleCharacterMove()
     Call incomingData.ReadByte
     
     Dim charindex As Integer
-    Dim x         As Byte
-    Dim y         As Byte
+    Dim X         As Byte
+    Dim Y         As Byte
     
     charindex = incomingData.ReadInteger()
-    x = incomingData.ReadByte()
-    y = incomingData.ReadByte()
+    X = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
     
     With charlist(charindex)
         
@@ -4571,7 +4572,7 @@ Private Sub HandleCharacterMove()
 
     End With
     
-    Call Char_Move_by_Pos(charindex, x, y)
+    Call Char_Move_by_Pos(charindex, X, Y)
     
     Call RefreshAllChars
 
@@ -4609,25 +4610,25 @@ Private Sub HandleForceCharMove()
     Call Char_Move_by_Head(UserCharIndex, Direccion)
     Call MoveScreen(Direccion)
     
-    frmMain.personaje(0).Left = UserPos.x - 5
-    frmMain.personaje(0).Top = UserPos.y - 4
+    frmMain.personaje(0).Left = UserPos.X - 5
+    frmMain.personaje(0).Top = UserPos.Y - 4
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
 
     If frmMapaGrande.Visible Then
 
-        Dim x As Long
+        Dim X As Long
 
-        Dim y As Long
+        Dim Y As Long
             
-        x = (idmap - 1) Mod 16
-        y = Int((idmap - 1) / 16)
+        X = (idmap - 1) Mod 16
+        Y = Int((idmap - 1) / 16)
 
-        frmMapaGrande.lblAllies.Top = y * 27
-        frmMapaGrande.lblAllies.Left = x * 27
+        frmMapaGrande.lblAllies.Top = Y * 27
+        frmMapaGrande.lblAllies.Left = X * 27
 
-        frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
-        frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
+        frmMapaGrande.Shape1.Top = Y * 27 + (UserPos.Y / 4.5)
+        frmMapaGrande.Shape1.Left = X * 27 + (UserPos.X / 4.5)
 
     End If
     
@@ -4711,7 +4712,7 @@ Private Sub HandleCharacterChange()
 
         If tempint <> 0 Then .Casco = CascoAnimData(tempint)
                 
-        If .Body.HeadOffset.y = -26 Then
+        If .Body.HeadOffset.Y = -26 Then
             .EsEnano = True
         Else
             .EsEnano = False
@@ -4771,9 +4772,9 @@ Private Sub HandleObjectCreate()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim x        As Byte
+    Dim X        As Byte
 
-    Dim y        As Byte
+    Dim Y        As Byte
 
     Dim OBJIndex As Integer
 
@@ -4783,29 +4784,29 @@ Private Sub HandleObjectCreate()
 
     Dim id       As Long
     
-    x = incomingData.ReadByte()
-    y = incomingData.ReadByte()
+    X = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
     
     OBJIndex = incomingData.ReadInteger()
     
-    MapData(x, y).ObjGrh.GrhIndex = ObjData(OBJIndex).GrhIndex
+    MapData(X, Y).ObjGrh.GrhIndex = ObjData(OBJIndex).GrhIndex
     
-    MapData(x, y).OBJInfo.OBJIndex = OBJIndex
+    MapData(X, Y).OBJInfo.OBJIndex = OBJIndex
     
-    Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
+    Call InitGrh(MapData(X, Y).ObjGrh, MapData(X, Y).ObjGrh.GrhIndex)
     
     If ObjData(OBJIndex).CreaLuz <> "" Then
         Call Long_2_RGBA(Color, Val(ReadField(2, ObjData(OBJIndex).CreaLuz, Asc(":"))))
         Rango = Val(ReadField(1, ObjData(OBJIndex).CreaLuz, Asc(":")))
-        MapData(x, y).luz.Color = Color
-        MapData(x, y).luz.Rango = Rango
+        MapData(X, Y).luz.Color = Color
+        MapData(X, Y).luz.Rango = Rango
         
         If Rango < 100 Then
-            id = x & y
-            LucesCuadradas.Light_Create x, y, Color, Rango, id
+            id = X & Y
+            LucesCuadradas.Light_Create X, Y, Color, Rango, id
             LucesCuadradas.Light_Render_All
         Else
-            LucesRedondas.Create_Light_To_Map x, y, Color, Rango - 99
+            LucesRedondas.Create_Light_To_Map X, Y, Color, Rango - 99
             LucesRedondas.LightRenderAll
             LucesCuadradas.Light_Render_All
         End If
@@ -4813,8 +4814,8 @@ Private Sub HandleObjectCreate()
     End If
         
     If ObjData(OBJIndex).CreaParticulaPiso <> 0 Then
-        MapData(x, y).particle_group = 0
-        General_Particle_Create ObjData(OBJIndex).CreaParticulaPiso, x, y, -1
+        MapData(X, Y).particle_group = 0
+        General_Particle_Create ObjData(OBJIndex).CreaParticulaPiso, X, Y, -1
 
     End If
     
@@ -4845,17 +4846,17 @@ Private Sub HandleFxPiso()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim x  As Byte
+    Dim X  As Byte
 
-    Dim y  As Byte
+    Dim Y  As Byte
 
     Dim fX As Byte
 
-    x = incomingData.ReadByte()
-    y = incomingData.ReadByte()
+    X = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
     fX = incomingData.ReadInteger()
     
-    Call SetMapFx(x, y, fX, 0)
+    Call SetMapFx(X, Y, fX, 0)
     
     
     Exit Sub
@@ -4888,28 +4889,28 @@ Private Sub HandleObjectDelete()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim x  As Byte
+    Dim X  As Byte
 
-    Dim y  As Byte
+    Dim Y  As Byte
 
     Dim id As Long
     
-    x = incomingData.ReadByte()
-    y = incomingData.ReadByte()
+    X = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
     
-    If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
-        id = LucesCuadradas.Light_Find(x & y)
+    If ObjData(MapData(X, Y).OBJInfo.OBJIndex).CreaLuz <> "" Then
+        id = LucesCuadradas.Light_Find(X & Y)
         LucesCuadradas.Light_Remove id
-        MapData(x, y).luz.Color = COLOR_EMPTY
-        MapData(x, y).luz.Rango = 0
+        MapData(X, Y).luz.Color = COLOR_EMPTY
+        MapData(X, Y).luz.Rango = 0
         LucesCuadradas.Light_Render_All
 
     End If
     
-    MapData(x, y).ObjGrh.GrhIndex = 0
+    MapData(X, Y).ObjGrh.GrhIndex = 0
     
-    If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaParticulaPiso <> 0 Then
-        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
+    If ObjData(MapData(X, Y).OBJInfo.OBJIndex).CreaParticulaPiso <> 0 Then
+        Graficos_Particulas.Particle_Group_Remove (MapData(X, Y).particle_group)
 
     End If
 
@@ -4944,14 +4945,14 @@ Private Sub HandleBlockPosition()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim x As Byte, y As Byte, B As Byte
+    Dim X As Byte, Y As Byte, B As Byte
     
-    x = incomingData.ReadByte()
-    y = incomingData.ReadByte()
+    X = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
     B = incomingData.ReadByte()
 
-    MapData(x, y).Blocked = MapData(x, y).Blocked And Not eBlock.ALL_SIDES
-    MapData(x, y).Blocked = MapData(x, y).Blocked Or B
+    MapData(X, Y).Blocked = MapData(X, Y).Blocked And Not eBlock.ALL_SIDES
+    MapData(X, Y).Blocked = MapData(X, Y).Blocked Or B
 
     
     Exit Sub
@@ -5102,18 +5103,18 @@ Private Sub HandlePosLLamadaDeClan()
     LLamadaDeclanMapa = map
     idmap = ObtenerIdMapaDeLlamadaDeClan(map)
 
-    Dim x As Long
+    Dim X As Long
 
-    Dim y As Long
+    Dim Y As Long
     
-    x = (idmap - 1) Mod 14
-    y = Int((idmap - 1) / 14)
+    X = (idmap - 1) Mod 14
+    Y = Int((idmap - 1) / 14)
 
     'frmMapaGrande.lblAllies.Top = Y * 32
     'frmMapaGrande.lblAllies.Left = X * 32
 
-    frmMapaGrande.llamadadeclan.Top = y * 32 + (srcX / 4.5)
-    frmMapaGrande.llamadadeclan.Left = x * 32 + (srcY / 4.5)
+    frmMapaGrande.llamadadeclan.Top = Y * 32 + (srcX / 4.5)
+    frmMapaGrande.llamadadeclan.Left = X * 32 + (srcY / 4.5)
 
     frmMapaGrande.llamadadeclan.Visible = True
 
@@ -5121,8 +5122,8 @@ Private Sub HandlePosLLamadaDeClan()
 
     frmMapaGrande.Shape2.Visible = True
 
-    frmMapaGrande.Shape2.Top = y * 32
-    frmMapaGrande.Shape2.Left = x * 32
+    frmMapaGrande.Shape2.Top = Y * 32
+    frmMapaGrande.Shape2.Left = X * 32
 
     LLamadaDeclanX = srcX
     LLamadaDeclanY = srcY
@@ -5359,14 +5360,14 @@ Private Sub HandleAreaChanged()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim x As Byte
+    Dim X As Byte
 
-    Dim y As Byte
+    Dim Y As Byte
     
-    x = incomingData.ReadByte()
-    y = incomingData.ReadByte()
+    X = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
         
-    Call CambioDeArea(x, y)
+    Call CambioDeArea(X, Y)
 
     
     Exit Sub
@@ -5419,8 +5420,8 @@ Private Sub HandleRainToggle()
     
     Call incomingData.ReadByte
     
-    If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
-    bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 4)
+    If Not InMapBounds(UserPos.X, UserPos.Y) Then Exit Sub
+    bTecho = (MapData(UserPos.X, UserPos.Y).Trigger = 1 Or MapData(UserPos.X, UserPos.Y).Trigger = 6 Or MapData(UserPos.X, UserPos.Y).Trigger = 2 Or MapData(UserPos.X, UserPos.Y).Trigger = 4)
             
     If bRain Then
         If MapDat.LLUVIA Then
@@ -9364,7 +9365,7 @@ End Sub
 ' @param    Y           The y pos where the king is settled.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
 '***************************************************
 'Author: ZaMa
 'Last Modification: 29/10/2010
@@ -9377,8 +9378,8 @@ Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal x As Byte, ByVal
         Call .WriteByte(ClientPacketID.newPacketID)
         Call .WriteByte(NewPacksID.CreatePretorianClan)
         Call .WriteInteger(map)
-        Call .WriteByte(x)
-        Call .WriteByte(y)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
     End With
     
     Exit Sub
@@ -9932,7 +9933,7 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteLeftClick(ByVal X As Byte, ByVal Y As Byte)
     
     On Error GoTo WriteLeftClick_Err
     
@@ -9945,8 +9946,8 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.LeftClick)
         
-        Call .WriteByte(x)
-        Call .WriteByte(y)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
 
     End With
 
@@ -9966,7 +9967,7 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteDoubleClick(ByVal X As Byte, ByVal Y As Byte)
     
     On Error GoTo WriteDoubleClick_Err
     
@@ -9980,8 +9981,8 @@ Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
     With outgoingData
         Call .WriteByte(ClientPacketID.DoubleClick)
         
-        Call .WriteByte(x)
-        Call .WriteByte(y)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
 
     End With
 
@@ -10221,7 +10222,7 @@ End Sub
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill)
+Public Sub WriteWorkLeftClick(ByVal X As Byte, ByVal Y As Byte, ByVal Skill As eSkill)
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
@@ -10238,8 +10239,8 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
     With outgoingData
         Call .WriteByte(ClientPacketID.WorkLeftClick)
         
-        Call .WriteByte(x)
-        Call .WriteByte(y)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
         Call .WriteByte(Skill)
 
     End With
@@ -12712,7 +12713,7 @@ WriteCasamiento_Err:
     
 End Sub
 
-Public Sub WriteDropItem(ByVal Item As Byte, ByVal x As Byte, ByVal y As Byte, ByVal DropItem As Integer)
+Public Sub WriteDropItem(ByVal Item As Byte, ByVal X As Byte, ByVal Y As Byte, ByVal DropItem As Integer)
     '***************************************************
     'Ladder
     '***************************************************
@@ -12724,8 +12725,8 @@ Public Sub WriteDropItem(ByVal Item As Byte, ByVal x As Byte, ByVal y As Byte, B
         Call .WriteByte(ClientPacketID.newPacketID)
         Call .WriteByte(NewPacksID.DropItem)
         Call .WriteByte(Item)
-        Call .WriteByte(x)
-        Call .WriteByte(y)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
         Call .WriteInteger(DropItem)
 
     End With
@@ -13227,7 +13228,7 @@ End Sub
 ' @param    y The y position in the map to which to waro the character.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
     
     On Error GoTo WriteWarpChar_Err
     
@@ -13244,8 +13245,8 @@ Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal x
         
         Call .WriteInteger(map)
         
-        Call .WriteByte(x)
-        Call .WriteByte(y)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
 
     End With
 
@@ -14770,7 +14771,7 @@ End Sub
 ' @param    y The position in the y axis to which the teleport will lead.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
     
     On Error GoTo WriteTeleportCreate_Err
     
@@ -14785,8 +14786,8 @@ Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As
         
         Call .WriteInteger(map)
         
-        Call .WriteByte(x)
-        Call .WriteByte(y)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
 
     End With
 
@@ -14925,7 +14926,7 @@ End Sub
 ' @param    y       The position in the y axis in which to play the given wave.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
     
     On Error GoTo WriteForceWAVEToMap_Err
     
@@ -14942,8 +14943,8 @@ Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal
         
         Call .WriteInteger(map)
         
-        Call .WriteByte(x)
-        Call .WriteByte(y)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
 
     End With
 
@@ -17816,9 +17817,9 @@ Private Sub HandleParticleFXToFloor()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim x              As Byte
+    Dim X              As Byte
 
-    Dim y              As Byte
+    Dim Y              As Byte
 
     Dim ParticulaIndex As Byte
 
@@ -17826,8 +17827,8 @@ Private Sub HandleParticleFXToFloor()
 
     Dim Borrar         As Boolean
      
-    x = incomingData.ReadByte()
-    y = incomingData.ReadByte()
+    X = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
     ParticulaIndex = incomingData.ReadInteger()
     Time = incomingData.ReadLong()
 
@@ -17842,14 +17843,14 @@ Private Sub HandleParticleFXToFloor()
     End If
 
     If Borrar Then
-        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
+        Graficos_Particulas.Particle_Group_Remove (MapData(X, Y).particle_group)
     Else
 
-        If MapData(x, y).particle_group = 0 Then
-            MapData(x, y).particle_group = 0
-            General_Particle_Create ParticulaIndex, x, y, Time
+        If MapData(X, Y).particle_group = 0 Then
+            MapData(X, Y).particle_group = 0
+            General_Particle_Create ParticulaIndex, X, Y, Time
         Else
-            Call General_Char_Particle_Create(ParticulaIndex, MapData(x, y).charindex, Time)
+            Call General_Char_Particle_Create(ParticulaIndex, MapData(X, Y).charindex, Time)
 
         End If
 
@@ -17883,9 +17884,9 @@ Private Sub HandleLightToFloor()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Dim x     As Byte
+    Dim X     As Byte
 
-    Dim y     As Byte
+    Dim Y     As Byte
 
     Dim Color As Long
     
@@ -17893,8 +17894,8 @@ Private Sub HandleLightToFloor()
 
     Dim Rango As Byte
      
-    x = incomingData.ReadByte()
-    y = incomingData.ReadByte()
+    X = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
     Color = incomingData.ReadLong()
     Rango = incomingData.ReadByte()
     
@@ -17906,17 +17907,17 @@ Private Sub HandleLightToFloor()
 
     If Color = 0 Then
    
-        If MapData(x, y).luz.Rango > 100 Then
-            LucesRedondas.Delete_Light_To_Map x, y
+        If MapData(X, Y).luz.Rango > 100 Then
+            LucesRedondas.Delete_Light_To_Map X, Y
    
             LucesCuadradas.Light_Render_All
             LucesRedondas.LightRenderAll
             Exit Sub
         Else
-            id = LucesCuadradas.Light_Find(x & y)
+            id = LucesCuadradas.Light_Find(X & Y)
             LucesCuadradas.Light_Remove id
-            MapData(x, y).luz.Color = COLOR_EMPTY
-            MapData(x, y).luz.Rango = 0
+            MapData(X, Y).luz.Color = COLOR_EMPTY
+            MapData(X, Y).luz.Rango = 0
             LucesCuadradas.Light_Render_All
             Exit Sub
 
@@ -17924,16 +17925,16 @@ Private Sub HandleLightToFloor()
 
     End If
     
-    MapData(x, y).luz.Color = color_value
-    MapData(x, y).luz.Rango = Rango
+    MapData(X, Y).luz.Color = color_value
+    MapData(X, Y).luz.Rango = Rango
     
     If Rango < 100 Then
-        id = x & y
-        LucesCuadradas.Light_Create x, y, color_value, Rango, id
+        id = X & Y
+        LucesCuadradas.Light_Create X, Y, color_value, Rango, id
         LucesCuadradas.Light_Render_All
     Else
 
-        LucesRedondas.Create_Light_To_Map x, y, color_value, Rango - 99
+        LucesRedondas.Create_Light_To_Map X, Y, color_value, Rango - 99
 
     End If
 
@@ -18090,9 +18091,9 @@ Private Sub HandleParticleFXWithDestinoXY()
 
     Dim fX             As Integer
 
-    Dim x              As Byte
+    Dim X              As Byte
 
-    Dim y              As Byte
+    Dim Y              As Byte
      
     Emisor = incomingData.ReadInteger()
     ParticulaViaje = incomingData.ReadInteger()
@@ -18102,14 +18103,14 @@ Private Sub HandleParticleFXWithDestinoXY()
     wav = incomingData.ReadInteger()
     fX = incomingData.ReadInteger()
     
-    x = incomingData.ReadByte()
-    y = incomingData.ReadByte()
+    X = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
     
     ' Debug.Print "RECIBI FX= " & fX
 
     Engine_spell_Particle_Set (ParticulaViaje)
 
-    Call Effect_BeginXY(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), x, y, ParticulaFinal, Time, Emisor, wav, fX)
+    Call Effect_BeginXY(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), X, Y, ParticulaFinal, Time, Emisor, wav, fX)
 
     ' charlist(charindex).Particula = ParticulaIndex
     ' charlist(charindex).ParticulaTime = time
@@ -18275,8 +18276,8 @@ Private Sub HandleNieveToggle()
     
     Call incomingData.ReadByte
     
-    If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
-    bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger = 4)
+    If Not InMapBounds(UserPos.X, UserPos.Y) Then Exit Sub
+    bTecho = (MapData(UserPos.X, UserPos.Y).Trigger = 1 Or MapData(UserPos.X, UserPos.Y).Trigger = 2 Or MapData(UserPos.X, UserPos.Y).Trigger > 9 Or MapData(UserPos.X, UserPos.Y).Trigger = 6 Or MapData(UserPos.X, UserPos.Y).Trigger = 4)
             
     If MapDat.NIEVE Then
         Engine_MeteoParticle_Set (Particula_Nieve)
@@ -18817,9 +18818,9 @@ Private Sub HandleQuestDetails()
     
     
         FrmQuests.PlayerView.BackColor = RGB(11, 11, 11)
-        FrmQuests.picture1.BackColor = RGB(19, 14, 11)
+        FrmQuests.Picture1.BackColor = RGB(19, 14, 11)
         FrmQuests.PlayerView.Refresh
-        FrmQuests.picture1.Refresh
+        FrmQuests.Picture1.Refresh
         FrmQuests.npclbl.Caption = ""
         FrmQuests.objetolbl.Caption = ""
 
@@ -19231,7 +19232,7 @@ Public Sub HandleNpcQuestListSend()
     
     Dim QuestIndex    As Integer
     
-    Dim estado    As Byte
+    Dim Estado    As Byte
     
     
     Dim LevelRequerido As Byte
@@ -19367,9 +19368,9 @@ Public Sub HandleNpcQuestListSend()
     
                 End If
                 
-                estado = .ReadByte
+                Estado = .ReadByte
                 
-                Select Case estado
+                Select Case Estado
                 
                     Case 0
                         Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
@@ -19881,28 +19882,28 @@ Private Sub HandleUbicacion()
     
     Dim miembro As Byte
 
-    Dim x       As Byte
+    Dim X       As Byte
 
-    Dim y       As Byte
+    Dim Y       As Byte
 
     Dim map     As Integer
     
     miembro = incomingData.ReadByte()
     
-    x = incomingData.ReadByte()
+    X = incomingData.ReadByte()
     
-    y = incomingData.ReadByte()
+    Y = incomingData.ReadByte()
     
     map = incomingData.ReadInteger()
     
-    If x = 0 Then
+    If X = 0 Then
         frmMain.personaje(miembro).Visible = False
     Else
 
         If UserMap = map Then
             frmMain.personaje(miembro).Visible = True
-            frmMain.personaje(miembro).Left = x - 4
-            frmMain.personaje(miembro).Top = y - 2
+            frmMain.personaje(miembro).Left = X - 4
+            frmMain.personaje(miembro).Top = Y - 2
 
         End If
 
@@ -20202,7 +20203,7 @@ WriteCodigo_Err:
     
 End Sub
 
-Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal Name As String, ByVal reglas As String)
+Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal Name As String, ByVal reglas As String)
     '***************************************************
     'Author: Pablo Mercavides
     'Last Modification: 16/05/2020
@@ -20228,8 +20229,8 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byt
     
     Call outgoingData.WriteByte(Trabajador)
     Call outgoingData.WriteInteger(map)
-    Call outgoingData.WriteByte(x)
-    Call outgoingData.WriteByte(y)
+    Call outgoingData.WriteByte(X)
+    Call outgoingData.WriteByte(Y)
     Call outgoingData.WriteASCIIString(Name)
     Call outgoingData.WriteASCIIString(reglas)
      
