@@ -26,68 +26,16 @@ Begin VB.Form frmOpciones
    ScaleWidth      =   8025
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.ComboBox cbBloqueoHechizos 
-      Height          =   315
-      Left            =   5760
-      Style           =   2  'Dropdown List
-      TabIndex        =   16
-      Top             =   2520
-      Width           =   1815
-   End
-   Begin VB.HScrollBar scrSens 
-      Height          =   315
-      LargeChange     =   5
-      Left            =   4200
-      Max             =   20
-      Min             =   1
-      TabIndex        =   14
-      Top             =   5320
-      Value           =   10
-      Width           =   3375
-   End
    Begin VB.HScrollBar Alpha 
       Height          =   315
       LargeChange     =   60
       Left            =   9240
       Max             =   255
       SmallChange     =   2
-      TabIndex        =   13
+      TabIndex        =   10
       Top             =   2880
       Value           =   120
       Width           =   2775
-   End
-   Begin VB.HScrollBar HScroll1 
-      Height          =   315
-      LargeChange     =   1000
-      Left            =   460
-      Max             =   0
-      Min             =   -4000
-      SmallChange     =   2
-      TabIndex        =   12
-      Top             =   5920
-      Width           =   3375
-   End
-   Begin VB.HScrollBar scrVolume 
-      Height          =   315
-      LargeChange     =   1000
-      Left            =   460
-      Max             =   0
-      Min             =   -4000
-      SmallChange     =   2
-      TabIndex        =   11
-      Top             =   4750
-      Width           =   3375
-   End
-   Begin VB.HScrollBar scrMidi 
-      Height          =   315
-      LargeChange     =   1000
-      Left            =   460
-      Max             =   0
-      Min             =   -4000
-      SmallChange     =   2
-      TabIndex        =   10
-      Top             =   3600
-      Width           =   3375
    End
    Begin VB.CheckBox Macro 
       Caption         =   "Arriba"
@@ -174,51 +122,213 @@ Begin VB.Form frmOpciones
       Top             =   10440
       Width           =   1335
    End
-   Begin VB.Label Label2 
-      BackStyle       =   0  'Transparent
-      Caption         =   "Modo de Hechizos"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Left            =   4200
-      TabIndex        =   17
-      Top             =   2560
-      Width           =   1815
+   Begin VB.PictureBox PanelJugabilidad 
+      BorderStyle     =   0  'None
+      Height          =   4845
+      Left            =   240
+      ScaleHeight     =   323
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   504
+      TabIndex        =   12
+      Top             =   1800
+      Width           =   7560
+      Begin VB.HScrollBar scrSens 
+         Height          =   315
+         LargeChange     =   5
+         Left            =   240
+         Max             =   20
+         Min             =   1
+         TabIndex        =   19
+         Top             =   2520
+         Value           =   10
+         Width           =   3375
+      End
+      Begin VB.ComboBox cbBloqueoHechizos 
+         Height          =   315
+         Left            =   3960
+         Style           =   2  'Dropdown List
+         TabIndex        =   13
+         Top             =   1080
+         Width           =   3375
+      End
+      Begin VB.Image Check2 
+         Height          =   255
+         Left            =   1875
+         Top             =   3195
+         Width           =   255
+      End
+      Begin VB.Image Check3 
+         Height          =   255
+         Left            =   270
+         Top             =   3195
+         Width           =   255
+      End
+      Begin VB.Image Check4 
+         Height          =   255
+         Left            =   270
+         Top             =   1050
+         Width           =   255
+      End
+      Begin VB.Image Check9 
+         Height          =   255
+         Left            =   270
+         Top             =   645
+         Width           =   255
+      End
+      Begin VB.Image ind_lectura 
+         Height          =   255
+         Left            =   270
+         Top             =   1455
+         Width           =   255
+      End
    End
-   Begin VB.Image ind_lectura 
-      Height          =   255
-      Left            =   4240
-      Top             =   4240
-      Width           =   255
+   Begin VB.PictureBox PanelAudio 
+      BorderStyle     =   0  'None
+      Height          =   4845
+      Left            =   240
+      ScaleHeight     =   323
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   504
+      TabIndex        =   15
+      Top             =   1680
+      Visible         =   0   'False
+      Width           =   7560
+      Begin VB.HScrollBar HScroll1 
+         Height          =   315
+         LargeChange     =   1000
+         Left            =   3960
+         Max             =   0
+         Min             =   -4000
+         SmallChange     =   2
+         TabIndex        =   18
+         Top             =   3000
+         Width           =   3375
+      End
+      Begin VB.HScrollBar scrVolume 
+         Height          =   315
+         LargeChange     =   1000
+         Left            =   3960
+         Max             =   0
+         Min             =   -4000
+         SmallChange     =   2
+         TabIndex        =   17
+         Top             =   1800
+         Width           =   3375
+      End
+      Begin VB.HScrollBar scrMidi 
+         Height          =   315
+         LargeChange     =   1000
+         Left            =   3960
+         Max             =   0
+         Min             =   -4000
+         SmallChange     =   2
+         TabIndex        =   16
+         Top             =   600
+         Width           =   3375
+      End
+      Begin VB.Image chko 
+         Height          =   255
+         Index           =   2
+         Left            =   255
+         Top             =   1905
+         Width           =   255
+      End
+      Begin VB.Image chko 
+         Height          =   255
+         Index           =   0
+         Left            =   255
+         Top             =   690
+         Width           =   255
+      End
+      Begin VB.Image chkInvertir 
+         Height          =   255
+         Left            =   255
+         Top             =   2310
+         Width           =   255
+      End
+      Begin VB.Image chko 
+         Height          =   255
+         Index           =   3
+         Left            =   255
+         Top             =   1500
+         Width           =   255
+      End
+      Begin VB.Image chko 
+         Height          =   255
+         Index           =   1
+         Left            =   255
+         Top             =   1095
+         Width           =   255
+      End
+   End
+   Begin VB.PictureBox PanelVideo 
+      BorderStyle     =   0  'None
+      Height          =   4845
+      Left            =   240
+      ScaleHeight     =   323
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   504
+      TabIndex        =   14
+      Top             =   1800
+      Visible         =   0   'False
+      Width           =   7560
+      Begin VB.Image Check5 
+         Height          =   255
+         Left            =   270
+         Top             =   1095
+         Width           =   255
+      End
+      Begin VB.Image Check6 
+         Height          =   255
+         Left            =   270
+         Top             =   690
+         Width           =   255
+      End
+   End
+   Begin VB.Image BtnSolapa 
+      Height          =   420
+      Index           =   2
+      Left            =   5280
+      Tag             =   "0"
+      Top             =   1200
+      Width           =   2460
+   End
+   Begin VB.Image BtnSolapa 
+      Height          =   420
+      Index           =   1
+      Left            =   2790
+      Tag             =   "0"
+      Top             =   1200
+      Width           =   2460
+   End
+   Begin VB.Image BtnSolapa 
+      Height          =   420
+      Index           =   0
+      Left            =   300
+      Tag             =   "2"
+      Top             =   1200
+      Width           =   2460
    End
    Begin VB.Image facebook 
-      Height          =   375
-      Left            =   4200
+      Height          =   300
+      Left            =   4270
       Tag             =   "0"
       Top             =   6840
-      Width           =   435
+      Width           =   300
    End
    Begin VB.Image instagram 
-      Height          =   390
-      Left            =   4560
+      Height          =   300
+      Left            =   4650
       Tag             =   "0"
       Top             =   6840
-      Width           =   435
+      Width           =   300
    End
    Begin VB.Image discord 
-      Height          =   375
-      Left            =   3480
+      Height          =   300
+      Left            =   3520
       Tag             =   "0"
       Top             =   6840
-      Width           =   315
+      Width           =   300
    End
    Begin VB.Image cmdChangePassword 
       Height          =   420
@@ -242,11 +352,11 @@ Begin VB.Form frmOpciones
       Width           =   435
    End
    Begin VB.Image cmdweb 
-      Height          =   375
-      Left            =   3120
+      Height          =   300
+      Left            =   3100
       Tag             =   "0"
       Top             =   6840
-      Width           =   315
+      Width           =   300
    End
    Begin VB.Image cmdayuda 
       Height          =   435
@@ -271,85 +381,15 @@ Begin VB.Form frmOpciones
       ForeColor       =   &H00FFFFFF&
       Height          =   255
       Left            =   4200
-      TabIndex        =   15
+      TabIndex        =   11
       Top             =   5680
       Width           =   3375
-   End
-   Begin VB.Image Check4 
-      Height          =   255
-      Left            =   4240
-      Top             =   3900
-      Width           =   255
-   End
-   Begin VB.Image Check9 
-      Height          =   255
-      Left            =   4240
-      Top             =   3560
-      Width           =   255
    End
    Begin VB.Image check1 
       Height          =   210
       Left            =   8760
       Top             =   3840
       Width           =   180
-   End
-   Begin VB.Image Check5 
-      Height          =   255
-      Left            =   4240
-      Top             =   2160
-      Width           =   255
-   End
-   Begin VB.Image Check6 
-      Height          =   255
-      Left            =   4240
-      Top             =   1810
-      Width           =   255
-   End
-   Begin VB.Image Check2 
-      Height          =   255
-      Left            =   5850
-      Top             =   5980
-      Width           =   255
-   End
-   Begin VB.Image Check3 
-      Height          =   255
-      Left            =   4240
-      Top             =   5980
-      Width           =   255
-   End
-   Begin VB.Image chkInvertir 
-      Height          =   255
-      Left            =   2130
-      Top             =   2360
-      Width           =   255
-   End
-   Begin VB.Image chko 
-      Height          =   255
-      Index           =   2
-      Left            =   2130
-      Top             =   1810
-      Width           =   255
-   End
-   Begin VB.Image chko 
-      Height          =   255
-      Index           =   3
-      Left            =   490
-      Top             =   2500
-      Width           =   255
-   End
-   Begin VB.Image chko 
-      Height          =   255
-      Index           =   1
-      Left            =   490
-      Top             =   2160
-      Width           =   255
-   End
-   Begin VB.Image chko 
-      Height          =   255
-      Index           =   0
-      Left            =   490
-      Top             =   1810
-      Width           =   255
    End
    Begin VB.Label Label1 
       Caption         =   "Label1"
@@ -386,15 +426,15 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 ' función Api para aplicar la transparencia a la ventana
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 'constantes
 Private Const GWL_EXSTYLE = (-20)
@@ -403,7 +443,7 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
 
-Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Const HWND_TOPMOST = -1
 
@@ -413,7 +453,7 @@ Private Const SWP_NOMOVE = &H2
 
 Private Const SWP_NOSIZE = &H1
 
-Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
     
     On Error GoTo Is_Transparent_Err
     
@@ -422,7 +462,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
   
     Dim msg As Long
   
-    msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+    msg = GetWindowLong(hWnd, GWL_EXSTYLE)
          
     If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
         Is_Transparent = True
@@ -446,7 +486,7 @@ Is_Transparent_Err:
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
     
     On Error GoTo Aplicar_Transparencia_Err
     
@@ -458,13 +498,13 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
     Else
-        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+        msg = GetWindowLong(hWnd, GWL_EXSTYLE)
         msg = msg Or WS_EX_LAYERED
      
-        SetWindowLong hwnd, GWL_EXSTYLE, msg
+        SetWindowLong hWnd, GWL_EXSTYLE, msg
      
         'Establece la transparencia
-        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
+        SetLayeredWindowAttributes hWnd, 0, Valor, LWA_ALPHA
   
         Aplicar_Transparencia = 0
   
@@ -499,13 +539,79 @@ Alpha_Change_Err:
     
 End Sub
 
+Private Sub BtnSolapa_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+    
+    Dim Name As String
+
+    Select Case Index
+    
+        Case 0
+            Name = "jugabilidad"
+            PanelJugabilidad.Visible = True
+            PanelVideo.Visible = False
+            PanelAudio.Visible = False
+            Call SetSolapa(0, 2)
+            Call SetSolapa(1, 0)
+            Call SetSolapa(2, 0)
+            
+        Case 1
+            Name = "video"
+            PanelJugabilidad.Visible = False
+            PanelVideo.Visible = True
+            PanelAudio.Visible = False
+            Call SetSolapa(0, 0)
+            Call SetSolapa(1, 2)
+            Call SetSolapa(2, 0)
+            
+        Case 2
+            Name = "audio"
+            PanelJugabilidad.Visible = False
+            PanelVideo.Visible = False
+            PanelAudio.Visible = True
+            Call SetSolapa(0, 0)
+            Call SetSolapa(1, 0)
+            Call SetSolapa(2, 2)
+    
+    End Select
+    
+End Sub
+
+Private Sub BtnSolapa_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+    If BtnSolapa(Index).Tag = "0" Then
+        Call SetSolapa(Index, 1)
+    End If
+
+End Sub
+
+Private Sub SetSolapa(Index As Integer, ByVal Tag As String)
+
+    Dim Name As String, Estado As String
+    
+    Select Case Index
+        Case 0: Name = "jugabilidad"
+        Case 1: Name = "video"
+        Case 2: Name = "audio"
+    End Select
+    
+    Select Case Tag
+        Case "0": Estado = "off"
+        Case "1": Estado = "over"
+        Case "2": Estado = "default"
+    End Select
+    
+    BtnSolapa(Index).Picture = LoadInterface("boton-" & Name & "-es-" & Estado & ".bmp")
+    BtnSolapa(Index).Tag = Tag
+
+End Sub
+
 Private Sub cbBloqueoHechizos_Click()
 
     ModoHechizos = cbBloqueoHechizos.ListIndex
 
 End Sub
 
-Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Check1_MouseUp_Err
     
@@ -531,7 +637,7 @@ Check1_MouseUp_Err:
     
 End Sub
 
-Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Check4_MouseUp_Err
     
@@ -558,7 +664,7 @@ Check4_MouseUp_Err:
     
 End Sub
 
-Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Check5_MouseUp_Err
     
@@ -586,7 +692,7 @@ Check5_MouseUp_Err:
     
 End Sub
 
-Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Check2_MouseUp_Err
     
@@ -617,7 +723,7 @@ Check2_MouseUp_Err:
     
 End Sub
 
-Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo chkInvertir_MouseUp_Err
     
@@ -648,11 +754,7 @@ chkInvertir_MouseUp_Err:
     
 End Sub
 
-Private Sub chkInvertir2_Click()
-
-End Sub
-
-Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo chkO_MouseUp_Err
     
@@ -768,7 +870,7 @@ cmdayuda_Click_Err:
     
 End Sub
 
-Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdayuda_MouseMove_Err
     
@@ -788,7 +890,7 @@ cmdayuda_MouseMove_Err:
     
 End Sub
 
-Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Command1_MouseMove_Err
     
@@ -811,7 +913,7 @@ Command1_MouseMove_Err:
     
 End Sub
 
-Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdCerrar_MouseMove_Err
     
@@ -836,7 +938,7 @@ cmdCerrar_MouseMove_Err:
     
 End Sub
 
-Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdChangePassword_MouseMove_Err
     
@@ -863,7 +965,7 @@ Private Sub cmdWeb_Click()
     
     On Error GoTo cmdWeb_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
 
     
     Exit Sub
@@ -893,7 +995,7 @@ Private Sub discord_Click()
     
     On Error GoTo discord_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://discord.gg/e3juVbF", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://discord.gg/e3juVbF", "", "", 0
 
     
     Exit Sub
@@ -908,7 +1010,7 @@ Private Sub facebook_Click()
     
     On Error GoTo facebook_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
 
     
     Exit Sub
@@ -923,11 +1025,18 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
-    Me.Picture = LoadInterface("VentanaConfiguracion.bmp")
+    Me.Picture = LoadInterface("ventanaconfiguracion-vacio.bmp")
     
-    
+    PanelJugabilidad.Picture = LoadInterface("ventanaconfiguracion-jugabilidad.bmp")
+    PanelVideo.Picture = LoadInterface("ventanaconfiguracion-video.bmp")
+    PanelAudio.Picture = LoadInterface("ventanaconfiguracion-audio.bmp")
+
+    BtnSolapa(0).Picture = LoadInterface("boton-jugabilidad-es-default.bmp")
+    BtnSolapa(1).Picture = LoadInterface("boton-video-es-off.bmp")
+    BtnSolapa(2).Picture = LoadInterface("boton-audio-es-off.bmp")
+
     Exit Sub
 
 Form_Load_Err:
@@ -935,6 +1044,7 @@ Form_Load_Err:
     Resume Next
     
 End Sub
+
 Private Sub Form_KeyPress(KeyAscii As Integer)
     
     On Error GoTo Form_KeyPress_Err
@@ -953,6 +1063,7 @@ Form_KeyPress_Err:
     Resume Next
     
 End Sub
+
 Private Sub moverForm()
     
     On Error GoTo moverForm_Err
@@ -961,7 +1072,7 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub
@@ -972,7 +1083,7 @@ moverForm_Err:
     
 End Sub
 
-Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
    ' If Check3 Then
       '  SwapMouseButton 1
@@ -983,7 +1094,7 @@ Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
   '  End If
 End Sub
 
-Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Check6_MouseUp_Err
     
@@ -1011,7 +1122,7 @@ Check6_MouseUp_Err:
     
 End Sub
 
-Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Check9_MouseUp_Err
     
@@ -1073,7 +1184,7 @@ Command3_Click_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Form_MouseMove_Err
     
@@ -1095,6 +1206,17 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
+    If BtnSolapa(0).Tag = "1" Then
+        Call SetSolapa(0, 0)
+    End If
+    
+    If BtnSolapa(1).Tag = "1" Then
+        Call SetSolapa(1, 0)
+    End If
+    
+    If BtnSolapa(2).Tag = "1" Then
+        Call SetSolapa(2, 0)
+    End If
     
     Exit Sub
 
@@ -1303,7 +1425,7 @@ Private Sub instagram_Click()
     
     On Error GoTo instagram_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
 
     
     Exit Sub
