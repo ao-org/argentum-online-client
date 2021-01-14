@@ -7,6 +7,7 @@ Option Explicit
 Public SeguroGame As Boolean
 Public SeguroParty As Boolean
 Public SeguroClanX As Boolean
+Public SeguroResu As Boolean
 
 Public QuePestañaInferior As Byte
 
@@ -1190,7 +1191,7 @@ Public Declare Function GetAsyncKeyState Lib "user32" (ByVal nVirtKey As Long) A
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 'Para ejecutar el Internet Explorer para el manual
-Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
+Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hWnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 
 'Para tolerancia 0
 Public Declare Function RegCreateKey Lib "advapi32.dll" Alias "RegCreateKeyA" (ByVal Hkey As Long, ByVal lpSubKey As String, phkResult As Long) As Long

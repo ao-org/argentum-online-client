@@ -228,6 +228,7 @@ Private Enum ServerPacketID
     ScreenShotData
     Tolerancia0
     Redundancia
+    SeguroResu
 
 End Enum
 
@@ -572,6 +573,7 @@ Private Enum NewPacksID
     Tolerancia0
     GetMapInfo
     FinEvento
+    SeguroResu
 End Enum
 
 ''
@@ -1135,6 +1137,9 @@ Public Sub HandleIncomingData()
 
         Case ServerPacketID.Redundancia
             Call HandleRedundancia
+            
+        Case ServerPacketID.SeguroResu
+            Call HandleSeguroResu
 
         Case Else
         
@@ -2908,11 +2913,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -5585,9 +5590,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -7875,7 +7880,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8292,7 +8297,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -9431,6 +9436,32 @@ Public Sub WriteParyToggle()
 
 WriteParyToggle_Err:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WriteParyToggle", Erl)
+    Resume Next
+    
+End Sub
+
+''
+' Writes the "SeguroResu" message to the outgoing data buffer.
+'
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteSeguroResu()
+    '**************************************************************
+    'Author: Rapsodius
+    'Creation Date: 10/10/07
+    'Writes the Resuscitation safe toggle packet to the outgoing data buffer.
+    '**************************************************************
+    
+    On Error GoTo WriteSeguroResu_Err
+    
+    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
+    Call outgoingData.WriteByte(NewPacksID.SeguroResu)
+
+    
+    Exit Sub
+
+WriteSeguroResu_Err:
+    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSeguroResu", Erl)
     Resume Next
     
 End Sub
@@ -20592,4 +20623,27 @@ Handler:
         Call FlushBuffer
         Resume
     End If
+End Sub
+
+Private Sub HandleSeguroResu()
+
+    If incomingData.length < 2 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+
+    'Remove packet ID
+    Call incomingData.ReadByte
+    
+    'Get data and update form
+    SeguroResu = incomingData.ReadBoolean()
+    
+    If SeguroResu Then
+        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección activado.", 65, 190, 156, False, False, False)
+        frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
+    Else
+        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección desactivado.", 65, 190, 156, False, False, False)
+        frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
+    End If
+    
 End Sub

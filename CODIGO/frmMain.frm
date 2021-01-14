@@ -483,7 +483,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -538,6 +537,16 @@ Begin VB.Form frmMain
       TabIndex        =   7
       Top             =   7815
       Width           =   3990
+      Begin VB.Image ImgSegResu 
+         Appearance      =   0  'Flat
+         Height          =   510
+         Left            =   1680
+         Picture         =   "frmMain.frx":71029
+         ToolTipText     =   "Seguro de ataque"
+         Top             =   3060
+         Visible         =   0   'False
+         Width           =   510
+      End
       Begin VB.Image imgBugReport 
          Height          =   495
          Left            =   2880
@@ -932,35 +941,35 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":71029
+         Picture         =   "frmMain.frx":71E3B
          Top             =   1215
          Width           =   3240
       End
       Begin VB.Image MANShp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":738ED
+         Picture         =   "frmMain.frx":746FF
          Top             =   1635
          Width           =   3240
       End
       Begin VB.Image STAShp 
          Height          =   135
          Left            =   510
-         Picture         =   "frmMain.frx":761B1
+         Picture         =   "frmMain.frx":76FC3
          Top             =   2085
          Width           =   1335
       End
       Begin VB.Image AGUAsp 
          Height          =   135
          Left            =   2340
-         Picture         =   "frmMain.frx":76B5F
+         Picture         =   "frmMain.frx":77971
          Top             =   2085
          Width           =   480
       End
       Begin VB.Image COMIDAsp 
          Height          =   120
          Left            =   3285
-         Picture         =   "frmMain.frx":76F03
+         Picture         =   "frmMain.frx":77D15
          Top             =   2100
          Width           =   480
       End
@@ -968,7 +977,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   630
-         Picture         =   "frmMain.frx":77247
+         Picture         =   "frmMain.frx":78059
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -977,7 +986,7 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   510
          Left            =   105
-         Picture         =   "frmMain.frx":78059
+         Picture         =   "frmMain.frx":78E6B
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -987,7 +996,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1155
-         Picture         =   "frmMain.frx":78E6B
+         Picture         =   "frmMain.frx":79C7D
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -1187,14 +1196,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":79C7D
+      Picture         =   "frmMain.frx":7AA8F
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":7A201
+      Picture         =   "frmMain.frx":7B013
       Top             =   2008
       Width           =   555
    End
@@ -1272,7 +1281,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":7A785
+      Picture         =   "frmMain.frx":7B597
       Top             =   480
       Visible         =   0   'False
       Width           =   525
@@ -1341,7 +1350,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":7B405
+      Picture         =   "frmMain.frx":7C217
       Top             =   1545
       Width           =   3540
    End
@@ -2645,7 +2654,9 @@ Private Sub ImgSegParty_Click()
     Call WriteParyToggle
 End Sub
 
-
+Private Sub ImgSegResu_Click()
+    Call WriteSeguroResu
+End Sub
 
 Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
