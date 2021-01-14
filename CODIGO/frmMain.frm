@@ -2854,12 +2854,18 @@ Select Case Index
             ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
         Else
             ImgSegClan = LoadInterface("boton-seguro-clan-off.bmp")
+        End If
         
+        If SeguroResuX Then
+            ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
+        Else
+            ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
         End If
         
         ImgSeg.Visible = True
         ImgSegParty.Visible = True
         ImgSegClan.Visible = True
+        ImgSegResu.Visible = True
         
         
         panelInf.Picture = LoadInterface("ventanaprincipal_info.bmp")
@@ -2905,6 +2911,7 @@ Select Case Index
         ImgSeg.Visible = False
         ImgSegParty.Visible = False
         ImgSegClan.Visible = False
+        ImgSegResu.Visible = False
 End Select
 End Sub
 
@@ -5095,6 +5102,7 @@ Private Sub Socket1_Disconnect()
         frmMain.ImgSeg.Visible = False
         frmMain.ImgSegParty.Visible = False
         frmMain.ImgSegClan.Visible = False
+        frmMain.ImgSegResu.Visible = False
         
     
         For i = 1 To NUMSKILLS

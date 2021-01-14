@@ -1219,8 +1219,10 @@ Private Sub HandleLogged()
     
     frmMain.ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")
     frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
+    frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
     SeguroParty = True
     SeguroClanX = True
+    SeguroResuX = True
     
     
     'Set connected state
@@ -1560,6 +1562,7 @@ Private Sub HandleDisconnect()
     frmMain.ImgSeg.Visible = False
     frmMain.ImgSegParty.Visible = False
     frmMain.ImgSegClan.Visible = False
+    frmMain.ImgSegResu.Visible = False
     
     'Stop audio
     If Sonido Then
@@ -18844,10 +18847,10 @@ Private Sub HandleQuestDetails()
             QuestRequerida = .ReadInteger
            
             If QuestRequerida <> 0 Then
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
+                FrmQuestInfo.text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
             Else
             
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
+                FrmQuestInfo.text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
             
             
             End If
@@ -20636,9 +20639,9 @@ Private Sub HandleSeguroResu()
     Call incomingData.ReadByte
     
     'Get data and update form
-    SeguroResu = incomingData.ReadBoolean()
+    SeguroResuX = incomingData.ReadBoolean()
     
-    If SeguroResu Then
+    If SeguroResuX Then
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección activado.", 65, 190, 156, False, False, False)
         frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
     Else

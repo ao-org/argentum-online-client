@@ -7,7 +7,7 @@ Option Explicit
 Public SeguroGame As Boolean
 Public SeguroParty As Boolean
 Public SeguroClanX As Boolean
-Public SeguroResu As Boolean
+Public SeguroResuX As Boolean
 
 Public QuePestañaInferior As Byte
 
