@@ -7,8 +7,8 @@ Option Explicit
 
 Private Type Position
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -23,8 +23,8 @@ End Type
 Private Type tWorldPos
 
     map As Integer
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -92,15 +92,15 @@ Private Const SIF_TRACKPOS = &H10
 Private Const SIF_ALL = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
 Private tSI As SCROLLINFO
 
-Public Declare Function GetScrollInfo Lib "user32" (ByVal hwnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
+Public Declare Function GetScrollInfo Lib "user32" (ByVal hWnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
 
-Public Declare Function GetScrollPos Lib "user32" (ByVal hwnd As Long, ByVal nBar As Long) As Long
+Public Declare Function GetScrollPos Lib "user32" (ByVal hWnd As Long, ByVal nBar As Long) As Long
 
 'Api SendMessage
 Public Declare Function SendMessage _
     Lib "user32" _
     Alias "SendMessageA" _
-        (ByVal hwnd As Long, _
+        (ByVal hWnd As Long, _
         ByVal wMsg As Long, _
         ByVal wParam As Long, _
         lParam As Any) As Long
@@ -210,7 +210,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         
         Dim bHoldBar As Boolean
 
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
 
     With RichTextBox
         
@@ -226,10 +226,10 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
         bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         
         .SelStart = Len(.Text)
@@ -254,7 +254,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         End If
         
         If bHoldBar Then
-            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
 
     End With
@@ -288,7 +288,7 @@ Dim Pos As Long
 Dim Ret As Long
 
 Dim bHoldBar As Boolean
-        Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+        Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
 
         With RichTextBox
 
@@ -301,10 +301,10 @@ Dim bHoldBar As Boolean
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
          bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         .SelStart = Len(.Text)
         .SelLength = 0
@@ -318,7 +318,7 @@ Dim bHoldBar As Boolean
         .SelText = Text
         
         If bHoldBar Then
-            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
     End With
     
@@ -348,7 +348,7 @@ Public Sub RefreshAllChars()
     For loopc = 1 To LastChar
     
         If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
+            MapData(charlist(loopc).Pos.X, charlist(loopc).Pos.Y).charindex = loopc
 
         End If
 
@@ -588,10 +588,10 @@ Sub SetConnected()
     ' establece el borde al listbox
     Call Establecer_Borde(frmMain.hlst, frmMain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
+    Call Make_Transparent_Richtext(frmMain.RecTxt.hWnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(frmMain)
@@ -650,16 +650,16 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.X, UserPos.Y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.X + 1, UserPos.Y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.X, UserPos.Y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.X - 1, UserPos.Y, Direccion)
 
     End Select
     
@@ -698,25 +698,25 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End If
     
-    frmMain.personaje(0).Left = UserPos.x - 5
-    frmMain.personaje(0).Top = UserPos.y - 4
+    frmMain.personaje(0).Left = UserPos.X - 5
+    frmMain.personaje(0).Top = UserPos.Y - 4
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
 
     If frmMapaGrande.Visible Then
 
-        Dim x As Long
+        Dim X As Long
 
-        Dim y As Long
+        Dim Y As Long
             
-        x = (idmap - 1) Mod 16
-        y = Int((idmap - 1) / 16)
+        X = (idmap - 1) Mod 16
+        Y = Int((idmap - 1) / 16)
 
-        frmMapaGrande.lblAllies.Top = y * 27
-        frmMapaGrande.lblAllies.Left = x * 27
+        frmMapaGrande.lblAllies.Top = Y * 27
+        frmMapaGrande.lblAllies.Left = X * 27
 
-        frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
-        frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
+        frmMapaGrande.Shape1.Top = Y * 27 + (UserPos.Y / 4.5)
+        frmMapaGrande.Shape1.Left = X * 27 + (UserPos.X / 4.5)
 
     End If
     
@@ -978,7 +978,6 @@ FileExist_Err:
 End Function
 
 Sub Main()
-    
     On Error GoTo Main_Err
 
     Call InitCommonControls
@@ -1037,7 +1036,7 @@ Sub Main()
     
     If Sonido Then
     
-        If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+        If Sound.Initialize_Engine(frmConnect.hWnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
             Call Sound.Ambient_Volume_Set(VolAmbient)
         
         Else

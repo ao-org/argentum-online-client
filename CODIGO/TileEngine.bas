@@ -197,6 +197,7 @@ Public Type Char
     
     Speeding As Single
     EsNpc As Boolean
+    EsMascota As Boolean
     
     Donador As Byte
     appear As Byte
@@ -229,6 +230,7 @@ Public Type Char
     status As Byte
     
     nombre As String
+    clan As String
     
     scrollDirectionX As Integer
     scrollDirectionY As Integer

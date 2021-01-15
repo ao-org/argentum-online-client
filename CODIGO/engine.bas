@@ -1724,19 +1724,12 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, False, x, y)
                 Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, Color, False, x, y)
             End If
-    
+
             'Draw name over head
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
-
-                Pos = InStr(.nombre, "<")
-                
-                If Pos = 0 Then Pos = InStr(.nombre, "[")
-
-                If Pos = 0 Then Pos = Len(.nombre) + 2
-
+            
                 'Nick
-                line = Left$(.nombre, Pos - 2)
-                Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1
+                Engine_Text_Render .nombre, PixelOffsetX + 15 - CInt(Engine_Text_Width(.nombre, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(.nombre, True), NameColor, 1
                 
                 'Clan
                 Select Case .priv
@@ -1745,15 +1738,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         line = "<Game Master>"
 
                     Case Else
-                        line = mid$(.nombre, Pos)
+                        line = .clan
 
                 End Select
                     
                 Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1
 
                 If .Donador = 1 Then
-                    line = Left$(.nombre, Pos - 2)
-                    Grh_Render Estrella, PixelOffsetX + 7 + CInt(Engine_Text_Width(line, 1) / 2), PixelOffsetY + 10 + OffsetYname, colorCorazon, True, True, False
+                    Grh_Render Estrella, PixelOffsetX + 7 + CInt(Engine_Text_Width(.nombre, 1) / 2), PixelOffsetY + 10 + OffsetYname, colorCorazon, True, True, False
                 End If
             
             End If
@@ -1771,25 +1763,24 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Next i
 
         End If
-    
-        
+
         'Barra de tiempo
         If .BarTime < .MaxBarTime Then
-            'Engine_Draw_Box PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, RGBA_From_Comp(0, 0, 0, 255)
-                        Call InitGrh(TempGrh, 839)
-            Call RGBAList(Color, 255, 255, 255, 200)
+            Engine_Draw_Box PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, RGBA_From_Comp(0, 0, 0, 255)
 
-            Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY - 55, 1, 0, Color, False, 0, 0, 0)
+            'Call InitGrh(TempGrh, 839)
+            'Call RGBAList(Color, 255, 255, 255, 200)
+
+            'Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY - 55, 1, 0, Color, False, 0, 0, 0)
             
             
             Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY - 29, (((.BarTime / 100) / (.MaxBarTime / 100))) * 24, 3, RGBA_From_Comp(0, 128, 128, 255), RGBA_From_Comp(0, 0, 0, 255)
 
-            .BarTime = .BarTime + (4 * timerTicksPerFrame * Sgn(1))
+            .BarTime = .BarTime + 4 * timerTicksPerFrame
                              
             If .BarTime >= .MaxBarTime Then
                 If charindex = UserCharIndex Then
                     Call CompletarAccionBarra(.BarAccion)
-
                 End If
 
                 charlist(charindex).BarTime = 0
@@ -1797,7 +1788,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 charlist(charindex).MaxBarTime = 0
 
             End If
-
         End If
                         
         If .Escribiendo = True And Not .Invisible Then
@@ -2009,7 +1999,7 @@ SetMapFx_Err:
     
 End Sub
 
-Private Function Engine_FToDW(f As Single) As Long
+Private Function Engine_FToDW(F As Single) As Long
     
     On Error GoTo Engine_FToDW_Err
     
@@ -2018,7 +2008,7 @@ Private Function Engine_FToDW(f As Single) As Long
     Dim Buf As D3DXBuffer
 
     Set Buf = DirectD3D8.CreateBuffer(4)
-    DirectD3D8.BufferSetData Buf, 0, 4, 1, f
+    DirectD3D8.BufferSetData Buf, 0, 4, 1, F
     DirectD3D8.BufferGetData Buf, 0, 4, 1, Engine_FToDW
 
     
@@ -3908,6 +3898,7 @@ Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width A
     Call RGBAList(temp_rgb, Color.r, Color.G, Color.B, Color.A)
 
     Call SpriteBatch.SetTexture(Nothing)
+    Call SpriteBatch.SetAlpha(False)
     Call SpriteBatch.Draw(x, y, Width, Height, temp_rgb())
 
     
