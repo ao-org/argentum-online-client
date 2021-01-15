@@ -1551,21 +1551,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
                         MostrarNombre = True
                         Call RGBAList(NameColor, 0, 129, 195)
-                        
- 
-                        'Engine_Draw_Box PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, RGBA_From_Comp(0, 0, 0, 255)
-                        Call InitGrh(TempGrh, 839)
-                        Call RGBAList(Color, 255, 255, 255, 200)
-            
-                        Call Draw_Grh(TempGrh, PixelOffsetX, PixelOffsetY + 10, 1, 0, Color, False, 0, 0, 0)
-                        
-                        
-                        Engine_Draw_Box PixelOffsetX + 3, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
-                        
                     End If
 
                     If .simbolo <> 0 Then
-                        Call Draw_GrhIndex(5257 + .simbolo, PixelOffsetX + 6, PixelOffsetY + .Body.HeadOffset.y - 12 - 10 * Sin((FrameTime Mod 31415) * 0.002) ^ 2)
+                        Call Draw_GrhIndex(5257 + .simbolo, PixelOffsetX + 8, PixelOffsetY + .Body.HeadOffset.y - 12 - 10 * Sin((FrameTime Mod 31415) * 0.002) ^ 2)
                     End If
                     
                 Else
@@ -1748,6 +1737,13 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Grh_Render Estrella, PixelOffsetX + 7 + CInt(Engine_Text_Width(.nombre, 1) / 2), PixelOffsetY + 10 + OffsetYname, colorCorazon, True, True, False
                 End If
             
+            ElseIf .EsNpc And Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
+                Call InitGrh(TempGrh, 839)
+                Call RGBAList(Color, 255, 255, 255, 200)
+    
+                Call Draw_Grh(TempGrh, PixelOffsetX + 2, PixelOffsetY + 10, 1, 0, Color, False, 0, 0, 0)
+                
+                Engine_Draw_Box PixelOffsetX + 5, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
             End If
 
         End If
