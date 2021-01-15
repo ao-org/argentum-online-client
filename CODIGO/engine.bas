@@ -1450,6 +1450,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     
     Dim MostrarNombre       As Boolean
     
+    
+    Dim TempGrh As grh
+    
     With charlist(charindex)
 
         If .Heading = 0 Then Exit Sub
@@ -1548,6 +1551,17 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
                         MostrarNombre = True
                         Call RGBAList(NameColor, 0, 129, 195)
+                        
+ 
+                        'Engine_Draw_Box PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, RGBA_From_Comp(0, 0, 0, 255)
+                        Call InitGrh(TempGrh, 839)
+                        Call RGBAList(Color, 255, 255, 255, 200)
+            
+                        Call Draw_Grh(TempGrh, PixelOffsetX, PixelOffsetY + 10, 1, 0, Color, False, 0, 0, 0)
+                        
+                        
+                        Engine_Draw_Box PixelOffsetX + 3, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
+                        
                     End If
 
                     If .simbolo <> 0 Then
@@ -1757,8 +1771,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Next i
 
         End If
-        Dim TempGrh As grh
-        
+    
         
         'Barra de tiempo
         If .BarTime < .MaxBarTime Then
