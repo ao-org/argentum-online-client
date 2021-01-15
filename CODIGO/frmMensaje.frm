@@ -99,7 +99,7 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private RealizoCambios As String
 
@@ -115,16 +115,16 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 'Argentum Online 0.11.6
 
 ' función Api para aplicar la transparencia a la ventana
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 'constantes
 Private Const GWL_EXSTYLE = (-20)
@@ -142,7 +142,7 @@ Private Const WS_EX_LAYERED = &H80000
 'El último parámetro es para que al establecer el OnTop la ventana _
  no se mueva de lugar y no se redimensione
 
-Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
     
     On Error GoTo Is_Transparent_Err
     
@@ -151,7 +151,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
   
     Dim msg As Long
   
-    msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+    msg = GetWindowLong(hWnd, GWL_EXSTYLE)
          
     If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
         Is_Transparent = True
@@ -173,64 +173,6 @@ Is_Transparent_Err:
     Resume Next
     
 End Function
-  
-'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
-    
-    On Error GoTo Aplicar_Transparencia_Err
-    
-  
-    Dim msg As Long
-  
-    
-  
-    If Valor < 0 Or Valor > 255 Then
-        Aplicar_Transparencia = 1
-    Else
-        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
-        msg = msg Or WS_EX_LAYERED
-     
-        SetWindowLong hwnd, GWL_EXSTYLE, msg
-     
-        'Establece la transparencia
-        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
-  
-        Aplicar_Transparencia = 0
-  
-    End If
-  
-    If Err Then
-        Aplicar_Transparencia = 2
-
-    End If
-  
-    
-    Exit Function
-
-Aplicar_Transparencia_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMensaje.Aplicar_Transparencia", Erl)
-    Resume Next
-    
-End Function
-
-Private Sub moverForm()
-    
-    On Error GoTo moverForm_Err
-    
-
-    Dim res As Long
-
-    ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
-
-    
-    Exit Sub
-
-moverForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMensaje.moverForm", Erl)
-    Resume Next
-    
-End Sub
 
 'Ladder 21/09/2012
 'Cierra el form presionando enter.
@@ -260,7 +202,7 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-    SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE
+    SetWindowPos Me.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE
     'Call Aplicar_Transparencia(Me.hwnd, 200)
     ''Call Audio.PlayWave(SND_MSG)
     frmMensaje.Picture = LoadInterface("mensaje.bmp")
@@ -281,7 +223,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    moverForm
+    Call MoverForm(Me.hWnd)
 
     If Image1.Tag = "1" Then
         Image1.Picture = Nothing

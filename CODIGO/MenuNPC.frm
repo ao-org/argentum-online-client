@@ -1,0 +1,156 @@
+VERSION 5.00
+Begin VB.Form MenuNPC 
+   BackColor       =   &H00000000&
+   BorderStyle     =   0  'None
+   Caption         =   "Form1"
+   ClientHeight    =   1080
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   1950
+   LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
+   ScaleHeight     =   72
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   130
+   ShowInTaskbar   =   0   'False
+   StartUpPosition =   3  'Windows Default
+   Begin VB.Image OpcionImg 
+      Height          =   360
+      Index           =   2
+      Left            =   0
+      Top             =   720
+      Width           =   1950
+   End
+   Begin VB.Label OpcionLbl 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "LIBERAR"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   2
+      Left            =   0
+      TabIndex        =   2
+      Top             =   795
+      Width           =   1950
+   End
+   Begin VB.Image OpcionImg 
+      Height          =   360
+      Index           =   1
+      Left            =   0
+      Top             =   360
+      Width           =   1950
+   End
+   Begin VB.Label OpcionLbl 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "ACOMPAÑAR"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   1
+      Left            =   0
+      TabIndex        =   1
+      Top             =   435
+      Width           =   1950
+   End
+   Begin VB.Image OpcionImg 
+      Height          =   360
+      Index           =   0
+      Left            =   0
+      Top             =   0
+      Width           =   1950
+   End
+   Begin VB.Label OpcionLbl 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "QUIETO"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   0
+      Left            =   0
+      TabIndex        =   0
+      Top             =   75
+      Width           =   1950
+   End
+End
+Attribute VB_Name = "MenuNPC"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+
+Private Over As Integer
+
+Private Sub Form_Load()
+    Call Aplicar_Transparencia(Me.hWnd, 180)
+    
+    Over = -1
+End Sub
+
+Private Sub OpcionImg_Click(Index As Integer)
+    
+    Select Case Index
+        Case 0
+            Call ParseUserCommand("/QUIETO")
+        Case 1
+            Call ParseUserCommand("/ACOMPAÑAR")
+        Case 2
+            Call ParseUserCommand("/LIBERAR")
+    End Select
+
+    Unload Me
+    
+End Sub
+
+Private Sub OpcionImg_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    If Over <> Index Then
+        If Over >= 0 Then
+            OpcionLbl(Over).ForeColor = vbWhite
+        End If
+        OpcionLbl(Index).ForeColor = vbYellow
+        Over = Index
+    End If
+End Sub
+
+Private Sub OpcionLbl_Click(Index As Integer)
+    Call OpcionImg_Click(Index)
+End Sub
+
+Private Sub OpcionLbl_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    Call OpcionImg_MouseMove(Index, Button, Shift, x, y)
+End Sub
+
+Public Sub LostFocus()
+    If Over >= 0 Then
+        OpcionLbl(Over).ForeColor = vbWhite
+        Over = -1
+    End If
+End Sub

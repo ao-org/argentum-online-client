@@ -20,7 +20,7 @@ Private Declare Function CombineRgn Lib "gdi32" (ByVal hDestRgn As Long, ByVal h
 
 Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 
-Private Declare Function SetWindowRgn Lib "user32" (ByVal hwnd As Long, ByVal hRgn As Long, ByVal bRedraw As Boolean) As Long
+Private Declare Function SetWindowRgn Lib "user32" (ByVal hWnd As Long, ByVal hRgn As Long, ByVal bRedraw As Boolean) As Long
 
 Private Const RGN_OR As Long = 2&
 
@@ -60,7 +60,7 @@ End Type
 
 Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As Long
 
-Private Declare Function CreateDIBSection Lib "gdi32" (ByVal hdc As Long, pBitmapInfo As BITMAPINFO, ByVal un As Long, ByVal lplpVoid As Long, ByVal handle As Long, ByVal dw As Long) As Long
+Private Declare Function CreateDIBSection Lib "gdi32" (ByVal hdc As Long, pBitmapInfo As BITMAPINFO, ByVal un As Long, ByVal lplpVoid As Long, ByVal Handle As Long, ByVal dw As Long) As Long
 
 Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long
 
@@ -88,23 +88,23 @@ Private Const GWL_EXSTYLE   As Long = (-20&)
 
 Private Const WS_EX_LAYERED As Long = &H80000
 
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 Public Const WM_NCLBUTTONDOWN As Long = &HA1&
 
 Public Const HTCAPTION        As Long = 2&
 
-Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
 
 Public Declare Function ReleaseCapture Lib "user32" () As Long
 
 'Remove Title Bar
 
-Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Public Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Const GWL_STYLE = (-16)
 
@@ -124,9 +124,16 @@ Private Const EM_LINELENGTH = &HC1
 
 Private Const EM_GETLINE = &HC4
  
-Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lPara As Long) As Long
+Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lPara As Long) As Long
 
-Private Declare Function SendMessageString Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lPara As String) As Long
+Private Declare Function SendMessageString Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lPara As String) As Long
+
+Private Const LWA_ALPHA = &H2
+
+' Constantes para SendMessage
+Const WM_SYSCOMMAND As Long = &H112&
+
+Const MOUSE_MOVE    As Long = &HF012&
  
 Public Function TextoLineaRichTextBox(ByVal pControl As RichTextBox, ByVal pLinea As Long) As String
     
@@ -141,14 +148,14 @@ Public Function TextoLineaRichTextBox(ByVal pControl As RichTextBox, ByVal pLine
    
     TextoLineaRichTextBox = ""
    
-    vNumeroLinea = SendMessageLong(pControl.hwnd, EM_LINEINDEX, pLinea, 0&)
-    vLongitudLinea = SendMessageLong(pControl.hwnd, EM_LINELENGTH, vNumeroLinea, 0&) + 1
+    vNumeroLinea = SendMessageLong(pControl.hWnd, EM_LINEINDEX, pLinea, 0&)
+    vLongitudLinea = SendMessageLong(pControl.hWnd, EM_LINELENGTH, vNumeroLinea, 0&) + 1
     vTemporal = String$((vLongitudLinea + 2), 0)
    
     Mid$(vTemporal, 1, 1) = Chr$(vLongitudLinea And &HFF)
     Mid$(vTemporal, 2, 1) = Chr$(vLongitudLinea \ &H100)
    
-    vLongitudLinea = SendMessageString(pControl.hwnd, EM_GETLINE, pLinea, vTemporal)
+    vLongitudLinea = SendMessageString(pControl.hWnd, EM_GETLINE, pLinea, vTemporal)
    
     If (vLongitudLinea > 0) Then
         TextoLineaRichTextBox = Left$(vTemporal, vLongitudLinea)
@@ -166,7 +173,7 @@ End Function
  
 ' Sacado de https://www.vbforums.com/showthread.php?379880-RESOLVED-Remove-Title-Bar-Off-Of-Form-Using-API-s
 ' Borro algunas partes innecesarias (WyroX)
-Public Sub Form_RemoveTitleBar(f As Form)
+Public Sub Form_RemoveTitleBar(F As Form)
     
     On Error GoTo Form_RemoveTitleBar_Err
     
@@ -174,12 +181,12 @@ Public Sub Form_RemoveTitleBar(f As Form)
     Dim Style As Long
 
     ' Get window's current style bits.
-    Style = GetWindowLong(f.hwnd, GWL_STYLE)
+    Style = GetWindowLong(F.hWnd, GWL_STYLE)
     ' Set the style bit for the title off.
     Style = Style And Not WS_CAPTION
 
     ' Send the new style to the window.
-    SetWindowLong f.hwnd, GWL_STYLE, Style
+    SetWindowLong F.hWnd, GWL_STYLE, Style
 
     ' Repaint the window.
     'SetWindowPos f.hwnd, 0, 0, 0, 0, 0, SWP_FRAMECHANGED Or SWP_NOMOVE Or SWP_NOZORDER Or SWP_NOSIZE
@@ -192,7 +199,7 @@ Form_RemoveTitleBar_Err:
     
 End Sub
 
-Public Function MakeFormTransparent(frm As Form, ByVal lngTransColor As Long)
+Public Function MakeFormTransparent(Frm As Form, ByVal lngTransColor As Long)
     
     On Error GoTo MakeFormTransparent_Err
     
@@ -209,14 +216,14 @@ Public Function MakeFormTransparent(frm As Form, ByVal lngTransColor As Long)
     'SetLayeredWindowAttributes unter diesem Betriebsystem unterstützt wird.
     If IsFunctionExported("SetLayeredWindowAttributes", "user32") Then
         'Den Fenster-Stil auf "Layered" setzen
-        WinStyle = GetWindowLong(frm.hwnd, GWL_EXSTYLE)
+        WinStyle = GetWindowLong(Frm.hWnd, GWL_EXSTYLE)
         WinStyle = WinStyle Or WS_EX_LAYERED
-        SetWindowLong frm.hwnd, GWL_EXSTYLE, WinStyle
-        SetLayeredWindowAttributes frm.hwnd, lngTransColor, 0&, LWA_COLORKEY
+        SetWindowLong Frm.hWnd, GWL_EXSTYLE, WinStyle
+        SetLayeredWindowAttributes Frm.hWnd, lngTransColor, 0&, LWA_COLORKEY
         
     Else 'Manuell die Region erstellen und übernehmen
-        hRegion = RegionFromBitmap(frm, lngTransColor)
-        SetWindowRgn frm.hwnd, hRegion, True
+        hRegion = RegionFromBitmap(Frm, lngTransColor)
+        SetWindowRgn Frm.hWnd, hRegion, True
         DeleteObject hRegion
 
     End If
@@ -436,3 +443,60 @@ errhandler:
     'MsgBox "Error extracting strings. Check your input" & vbNewLine & vbNewLine & "Aborting", , "Strings not found"
 End Function
 
+'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
+    
+    On Error GoTo Aplicar_Transparencia_Err
+    
+  
+    Dim msg As Long
+  
+    
+  
+    If Valor < 0 Or Valor > 255 Then
+        Aplicar_Transparencia = 1
+    Else
+        msg = GetWindowLong(hWnd, GWL_EXSTYLE)
+        msg = msg Or WS_EX_LAYERED
+     
+        SetWindowLong hWnd, GWL_EXSTYLE, msg
+     
+        'Establece la transparencia
+        SetLayeredWindowAttributes hWnd, 0, Valor, LWA_ALPHA
+  
+        Aplicar_Transparencia = 0
+  
+    End If
+  
+    If Err Then
+        Aplicar_Transparencia = 2
+
+    End If
+  
+    
+    Exit Function
+
+Aplicar_Transparencia_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.Aplicar_Transparencia", Erl)
+    Resume Next
+    
+End Function
+
+Public Sub MoverForm(ByVal hWnd As Long)
+    
+    On Error GoTo moverForm_Err
+    
+
+    Dim res As Long
+
+    ReleaseCapture
+    res = SendMessage(hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+
+    
+    Exit Sub
+
+moverForm_Err:
+    Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.MoverForm", Erl)
+    Resume Next
+    
+End Sub

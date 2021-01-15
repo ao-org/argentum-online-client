@@ -464,6 +464,10 @@ Public FogataBufferIndex      As Long
 
 Public TargetName             As String
 
+Public TargetX                As Integer
+
+Public TargetY                As Integer
+
 Public Const bCabeza = 1
 
 Public Const bPiernaIzquierda = 2
