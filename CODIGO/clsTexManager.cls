@@ -117,7 +117,6 @@ Public Function GetTexture(ByVal FileName As Integer, ByRef textwidth As Long, B
 
     'Not in memory, load it!
     Set GetTexture = CrearGrafico(FileName, textwidth, textheight)
-
     
     Exit Function
 
@@ -165,8 +164,6 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
 
     Dim surface_desc As D3DSURFACE_DESC
 
-    Dim texture_info As D3DXIMAGE_INFO
-
     Dim Index        As Integer
 
     Dim DirArchico   As String
@@ -203,7 +200,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
         
                 'DirArchico = Windows_Temp_Dir & LTrim(str(Archivo)) & ".png"
         
-                Set .Texture = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, texture_info, ByVal 0)
+                Set .Texture = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, ByVal 0, ByVal 0)
             #Else
 
                 Dim PathToFile As String
@@ -216,31 +213,22 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
 
                 End If
 
-                Set .Texture = mD3D.CreateTextureFromFileEx(device, PathToFile, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, texture_info, ByVal 0)
+                Set .Texture = mD3D.CreateTextureFromFileEx(device, PathToFile, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, ByVal 0, ByVal 0)
             #End If
                 
             .Texture.GetLevelDesc 0, surface_desc
-            .texture_width = texture_info.Width
-            .texture_height = texture_info.Height
+            .texture_width = surface_desc.Width
+            .texture_height = surface_desc.Height
             .size = surface_desc.size
             texwidth = .texture_width
             textheight = .texture_height
             
-            Set CrearGrafico = .Texture
+            Set CrearGrafico = TexList(Index).SurfaceEntry(TexList(Index).surfaceCount).Texture
 
             ' mFreeMemoryBytes = mFreeMemoryBytes - surface_desc.size
         End With
 
     End With
-
-    'Debug.Print mFreeMemoryBytes / 1024 / 1024; " MB LIBRES"
-    
-    'REVISAR Sacamos todo lo que es borrar de la memoria, total ya las pcs evolucionaron..
-    '  Do While mFreeMemoryBytes < 0
-    '    If Not RemoveLRU() Then
-    '        Exit Do
-    '     End If
-    '  Loop
 
     Exit Function
 
