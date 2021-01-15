@@ -483,6 +483,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -530,7 +531,6 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   3675
       Left            =   11340
-      Picture         =   "frmMain.frx":41245
       ScaleHeight     =   245
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   266
@@ -539,7 +539,7 @@ Begin VB.Form frmMain
       Width           =   3990
       Begin VB.Image ImgHogar 
          Height          =   495
-         Left            =   2040
+         Left            =   2025
          Tag             =   "0"
          ToolTipText     =   "Quest"
          Top             =   1725
@@ -550,7 +550,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1680
-         Picture         =   "frmMain.frx":71029
+         Picture         =   "frmMain.frx":41245
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -950,35 +950,35 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":71E3B
+         Picture         =   "frmMain.frx":42057
          Top             =   1215
          Width           =   3240
       End
       Begin VB.Image MANShp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":746FF
+         Picture         =   "frmMain.frx":4491B
          Top             =   1635
          Width           =   3240
       End
       Begin VB.Image STAShp 
          Height          =   135
          Left            =   510
-         Picture         =   "frmMain.frx":76FC3
+         Picture         =   "frmMain.frx":471DF
          Top             =   2085
          Width           =   1335
       End
       Begin VB.Image AGUAsp 
          Height          =   135
          Left            =   2340
-         Picture         =   "frmMain.frx":77971
+         Picture         =   "frmMain.frx":47B8D
          Top             =   2085
          Width           =   480
       End
       Begin VB.Image COMIDAsp 
          Height          =   120
          Left            =   3285
-         Picture         =   "frmMain.frx":77D15
+         Picture         =   "frmMain.frx":47F31
          Top             =   2100
          Width           =   480
       End
@@ -986,7 +986,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   630
-         Picture         =   "frmMain.frx":78059
+         Picture         =   "frmMain.frx":48275
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -995,7 +995,7 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   510
          Left            =   105
-         Picture         =   "frmMain.frx":78E6B
+         Picture         =   "frmMain.frx":49087
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -1005,7 +1005,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1155
-         Picture         =   "frmMain.frx":79C7D
+         Picture         =   "frmMain.frx":49E99
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -1205,14 +1205,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":7AA8F
+      Picture         =   "frmMain.frx":4ACAB
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":7B013
+      Picture         =   "frmMain.frx":4B22F
       Top             =   2008
       Width           =   555
    End
@@ -1290,7 +1290,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":7B597
+      Picture         =   "frmMain.frx":4B7B3
       Top             =   480
       Visible         =   0   'False
       Width           =   525
@@ -1359,7 +1359,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":7C217
+      Picture         =   "frmMain.frx":4C433
       Top             =   1545
       Width           =   3540
    End
@@ -2573,13 +2573,13 @@ Private Sub ImgHogar_Click()
 End Sub
 
 Private Sub ImgHogar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    ImgHogar.Picture = LoadInterface("questover.bmp")
+    ImgHogar.Picture = LoadInterface("boton-home-off.bmp")
     ImgHogar.Tag = "1"
 End Sub
 
 Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If ImgHogar.Tag = "0" Then
-        ImgHogar.Picture = LoadInterface("questover.bmp")
+        ImgHogar.Picture = LoadInterface("boton-home-over.bmp")
         ImgHogar.Tag = "1"
     End If
 End Sub
