@@ -1550,18 +1550,15 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If .EsNpc Then
                     If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
                         MostrarNombre = True
-                        Call RGBAList(NameColor, 0, 129, 195)
                         
- 
-                        'Engine_Draw_Box PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, RGBA_From_Comp(0, 0, 0, 255)
-                        Call InitGrh(TempGrh, 839)
-                        Call RGBAList(Color, 255, 255, 255, 200)
-            
-                        Call Draw_Grh(TempGrh, PixelOffsetX, PixelOffsetY + 10, 1, 0, Color, False, 0, 0, 0)
-                        
-                        
-                        Engine_Draw_Box PixelOffsetX + 3, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
-                        
+                        If .UserMinHp > 0 Then
+                           Call RGBAList(NameColor, 0, 129, 195)
+                           Call InitGrh(TempGrh, 839)
+                           Call RGBAList(Color, 255, 255, 255, 200)
+                           Call Draw_Grh(TempGrh, PixelOffsetX, PixelOffsetY + 10, 1, 0, Color, False, 0, 0, 0)
+                           
+                           Engine_Draw_Box PixelOffsetX + 3, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
+                        End If
                     End If
 
                     If .simbolo <> 0 Then
@@ -3908,6 +3905,7 @@ Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width A
     Call RGBAList(temp_rgb, Color.r, Color.G, Color.B, Color.A)
 
     Call SpriteBatch.SetTexture(Nothing)
+    Call SpriteBatch.SetAlpha(False)
     Call SpriteBatch.Draw(x, y, Width, Height, temp_rgb())
 
     
