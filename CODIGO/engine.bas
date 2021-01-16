@@ -1550,14 +1550,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If .EsNpc Then
                     If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
                         MostrarNombre = True
+                        Call RGBAList(NameColor, 0, 129, 195)
+                        Call InitGrh(TempGrh, 839)
                         
                         If .UserMinHp > 0 Then
-                           Call RGBAList(NameColor, 0, 129, 195)
-                           Call InitGrh(TempGrh, 839)
                            Call RGBAList(Color, 255, 255, 255, 200)
-                           Call Draw_Grh(TempGrh, PixelOffsetX, PixelOffsetY + 10, 1, 0, Color, False, 0, 0, 0)
+                           Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY + 10, 1, 0, Color, False, 0, 0, 0)
                            
-                           Engine_Draw_Box PixelOffsetX + 3, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
+                           Engine_Draw_Box PixelOffsetX + 4, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
                         End If
                     End If
 
@@ -1623,7 +1623,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 31, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 200, 0, 0), RGBA_From_Comp(0, 200, 200, 200)
                             End If
                         End If
-    
                     End If
                 End If
             End If
@@ -2006,7 +2005,7 @@ SetMapFx_Err:
     
 End Sub
 
-Private Function Engine_FToDW(f As Single) As Long
+Private Function Engine_FToDW(F As Single) As Long
     
     On Error GoTo Engine_FToDW_Err
     
@@ -2015,7 +2014,7 @@ Private Function Engine_FToDW(f As Single) As Long
     Dim Buf As D3DXBuffer
 
     Set Buf = DirectD3D8.CreateBuffer(4)
-    DirectD3D8.BufferSetData Buf, 0, 4, 1, f
+    DirectD3D8.BufferSetData Buf, 0, 4, 1, F
     DirectD3D8.BufferGetData Buf, 0, 4, 1, Engine_FToDW
 
     
