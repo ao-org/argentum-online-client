@@ -17,72 +17,26 @@ Public Destinos() As Tdestino
 Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional ByVal strExtra As String = vbNullString) As String
 
     On Error GoTo ErrorHandler
+    
+    Dim Fields() As String
 
     Dim strLocale As String
 
-    Dim lngPos    As Long
-
-    If LenB(strExtra) = 0 Then
-        Locale_Parse_ServerMessage = Locale_SMG(bytHeader)
-        Exit Function
-
-    End If
-
+    Dim i As Long
+    
     strLocale = Locale_SMG(bytHeader)
 
-    lngPos = InStr(1, strLocale, "%N")
-
-    If lngPos > 0 Then
-        Locale_Parse_ServerMessage = Replace$(strLocale, "%N", strExtra)
+    If LenB(strExtra) = 0 Then
+        Locale_Parse_ServerMessage = strLocale
         Exit Function
-
     End If
+    
+    Fields = Split(strExtra, "¬")
 
-    lngPos = InStr(1, strLocale, "#1")
-
-    If lngPos > 0 Then
-        Locale_Parse_ServerMessage = Replace$(strLocale, "#1", strExtra)
-        Exit Function
-
-    End If
-
-    lngPos = InStr(1, strLocale, "%5")
-
-    If lngPos > 0 Then
-        Locale_Parse_ServerMessage = Replace$(strLocale, "%", strExtra)
-        Exit Function
-
-    End If
-
-    lngPos = InStr(1, strLocale, "¬")
-
-    Do While lngPos > 0
-        strLocale = Replace$(strLocale, mid$(strLocale, lngPos, 2), String_To_Integer(strExtra, CInt(mid$(strLocale, lngPos + 1, 1))))
-        lngPos = InStr(lngPos + 1, strLocale, "¬")
-    Loop
-
-    lngPos = InStr(1, strLocale, "#")
-
-    Do While lngPos > 0
-
-        strLocale = Replace$(strLocale, mid$(strLocale, lngPos, 2), String_To_Long(strExtra, CInt(mid$(strLocale, lngPos + 1, 1))))
-        lngPos = InStr(lngPos + 1, strLocale, "#")
-    Loop
-
-    lngPos = InStr(1, strLocale, "&")
-
-    Do While lngPos > 0
-        'nombre del objeto debe ser
-        ' strLocale = Replace$(strLocale, mid$(strLocale, lngPos, 2), Locale_UserItem(String_To_Integer(strExtra, CByte(mid$(strLocale, lngPos + 1, 1)))))
-        'lngPos = InStr(lngPos + 1, strLocale, "&")
-    Loop
-
-    lngPos = InStr(1, strLocale, "%")
-
-    If lngPos > 0 Then
-        strLocale = Replace$(strLocale, mid$(strLocale, lngPos, 2), mid$(strExtra, CInt(mid$(strLocale, lngPos + 1, 1))))
-
-    End If
+    ' En reversa para evitar pisar campos mayores a 10
+    For i = UBound(Fields) To 0 Step -1
+        strLocale = Replace(strLocale, "¬" & (i + 1), Fields(i))
+    Next
 
 ErrorHandler:
     Locale_Parse_ServerMessage = strLocale
@@ -133,7 +87,7 @@ Public Function Integer_To_String(ByVal Var As Integer) As String
     Dim temp As String
         
     'Convertimos a hexa
-    temp = Hex$(Var)
+    temp = hex$(Var)
     
     'Nos aseguramos tenga 4 bytes de largo
     While Len(temp) < 4
@@ -171,7 +125,7 @@ Public Function String_To_Integer(ByRef str As String, ByVal Start As Integer) A
     If Len(str) < Start - 1 Or Len(str) = 0 Then Exit Function
     
     'Convertimos a hexa el valor ascii del segundo byte
-    temp_str = Hex$(Asc(mid$(str, Start + 1, 1)))
+    temp_str = hex$(Asc(mid$(str, Start + 1, 1)))
     
     'Nos aseguramos tenga 2 bytes (los ceros a la izquierda cuentan por ser el segundo byte)
     While Len(temp_str) < 2
@@ -180,7 +134,7 @@ Public Function String_To_Integer(ByRef str As String, ByVal Start As Integer) A
     Wend
     
     'Convertimos a integer
-    String_To_Integer = Val("&H" & Hex$(Asc(mid$(str, Start, 1))) & temp_str)
+    String_To_Integer = Val("&H" & hex$(Asc(mid$(str, Start, 1))) & temp_str)
             
     Exit Function
         
@@ -197,7 +151,7 @@ Public Function Byte_To_String(ByVal Var As Byte) As String
     
     On Error GoTo Byte_To_String_Err
     
-    Byte_To_String = Chr$(Val("&H" & Hex$(Var)))
+    Byte_To_String = Chr$(Val("&H" & hex$(Var)))
     Exit Function
 
 ErrorHandler:
@@ -258,7 +212,7 @@ Public Function Long_To_String(ByVal Var As Long) As String
     If Var < &H1000000 Then Var = Var Or &H10000000
     
     'Convertimos a hexa
-    temp = Hex$(Var)
+    temp = hex$(Var)
     
     'Nos aseguramos tenga 8 bytes de largo
     While Len(temp) < 8
@@ -299,9 +253,9 @@ Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As L
     Dim temp_str3 As String
     
     'Tomamos los últimos 3 bytes y convertimos sus valroes ASCII a hexa
-    temp_str = Hex$(Asc(mid$(str, Start + 1, 1)))
-    temp_str2 = Hex$(Asc(mid$(str, Start + 2, 1)))
-    temp_str3 = Hex$(Asc(mid$(str, Start + 3, 1)))
+    temp_str = hex$(Asc(mid$(str, Start + 1, 1)))
+    temp_str2 = hex$(Asc(mid$(str, Start + 2, 1)))
+    temp_str3 = hex$(Asc(mid$(str, Start + 3, 1)))
     
     'Nos aseguramos todos midan 2 bytes (los ceros a la izquierda cuentan por ser bytes 2, 3 y 4)
     While Len(temp_str) < 2
@@ -320,7 +274,7 @@ Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As L
     Wend
     
     'Convertimos a una única cadena hexa
-    String_To_Long = Val("&H" & Hex$(Asc(mid$(str, Start, 1))) & temp_str & temp_str2 & temp_str3)
+    String_To_Long = Val("&H" & hex$(Asc(mid$(str, Start, 1))) & temp_str & temp_str2 & temp_str3)
     
     'Si el cuarto byte era cero
     If String_To_Long And &H80000000 Then String_To_Long = String_To_Long Xor &H80000001

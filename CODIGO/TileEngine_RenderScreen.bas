@@ -415,7 +415,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
     
     ' *********************************
-    ' FXs, dialogs, rendered values loop
+    ' FXs and dialogs loop
     ScreenY = StartBufferedY
 
     For y = MinBufferedY To MaxBufferedY
@@ -424,6 +424,9 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         For x = MinBufferedX To MaxBufferedX
             
             With MapData(x, y)
+
+                Dim i As Long
+
                 ' Dialogs *******************************
                 If MapData(x, y).charindex <> 0 Then
                 
@@ -437,12 +440,33 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 '******************************************
 
                 ' Render text value *******************************
-                Call modRenderValue.Draw(x, y, ScreenX + 16, ScreenY, timerTicksPerFrame)
+                If UBound(.DialogEffects) > 0 Then
+                    For i = 1 To UBound(.DialogEffects)
+                        With .DialogEffects(i)
+                            If LenB(.Text) <> 0 Then
+                                Dim DialogTime As Long
+                                DialogTime = FrameTime - .Start
+            
+                                If DialogTime > 1300 Then
+                                    .Text = vbNullString
+                                Else
+                                    If DialogTime > 900 Then
+                                        Call RGBAList(TempColor, .Color.r, .Color.G, .Color.B, .Color.A * (1300 - DialogTime) * 0.0025)
+                                    Else
+                                        Call RGBAList(TempColor, .Color.r, .Color.G, .Color.B, .Color.A)
+                                    End If
+                            
+                                    Engine_Text_Render_Efect 0, .Text, ScreenX + 16 - Int(Engine_Text_Width(.Text, False) * 0.5) + .Offset.x, ScreenY - Engine_Text_Height(.Text, False) + .Offset.y - DialogTime * 0.025, TempColor, 1, False
+                    
+                                End If
+                            End If
+                        End With
+                    Next
+                End If
                 '******************************************
 
                 ' FXs *******************************
                 If .FxCount > 0 Then
-                    Dim i As Long
                     For i = 1 To .FxCount
 
                         If .FxList(i).FxIndex > 0 And .FxList(i).Started <> 0 Then
@@ -451,10 +475,10 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
                             If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
                             
-                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).OffsetX, ScreenY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, TempColor(), False)
+                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).offsetX, ScreenY + FxData(.FxList(i).FxIndex).offsetY + 20, 1, 1, TempColor(), False)
 
                             Else
-                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).OffsetX, ScreenY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, TempColor(), True)
+                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).offsetX, ScreenY + FxData(.FxList(i).FxIndex).offsetY + 20, 1, 1, TempColor(), True)
 
                             End If
 

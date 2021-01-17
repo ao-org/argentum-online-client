@@ -54,7 +54,6 @@ Private Enum ServerPacketID
     RemoveCharDialog        ' QDL
     NavigateToggle          ' NAVEG
     EquiteToggle
-    CreateRenderText
     Disconnect              ' FINOK
     CommerceEnd             ' FINCOMOK
     BankEnd                 ' FINBANOK
@@ -174,8 +173,10 @@ Private Enum ServerPacketID
     NieveToggle
     NieblaToggle
     Goliath
-    EfectOverHEad '120
-    EfectToScreen
+    TextOverChar
+    TextOverTile
+    TextCharDrop
+    FlashScreen
     AlquimistaObj
     ShowAlquimiaForm
     familiar
@@ -200,8 +201,6 @@ Private Enum ServerPacketID
     ubicacion
     CorreoPicOn
     DonadorObj
-    ExpOverHEad
-    OroOverHEad
     ArmaMov
     EscudoMov
     ActShop
@@ -633,10 +632,7 @@ Public Sub HandleIncomingData()
         
         Case ServerPacketID.EquiteToggle         ' NAVEG
             Call HandleEquiteToggle
-            
-        Case ServerPacketID.CreateRenderText       ' CDMG ' GSZAO
-            Call HandleCreateRenderValue
-            
+
         Case ServerPacketID.VelocidadToggle        ' NAVEG
             Call HandleVelocidadToggle
             
@@ -1054,18 +1050,18 @@ Public Sub HandleIncomingData()
         Case ServerPacketID.ShowFrmMapa           '
             Call HandleShowFrmMapa
             
-        Case ServerPacketID.EfectOverHEad
-            Call HandleEfectOverHead
+        Case ServerPacketID.TextOverChar
+            Call HandleTextOverChar
             
-        Case ServerPacketID.ExpOverHEad
-            Call HandleExpOverHead
+        Case ServerPacketID.TextOverTile
+            Call HandleTextOverTile
             
-        Case ServerPacketID.OroOverHEad
-            Call HandleOroOverHead
-        
-        Case ServerPacketID.EfectToScreen
-            Call HandleEfectToScreen
+        Case ServerPacketID.TextCharDrop
+            Call HandleTextCharDrop
             
+        Case ServerPacketID.FlashScreen
+            Call HandleFlashScreen
+
         Case ServerPacketID.ShowAlquimiaForm    ' SFC
             Call HandleShowAlquimiaForm
             
@@ -1346,31 +1342,6 @@ Private Sub HandleNadarToggle()
 
 HandleNadarToggle_Err:
     Call RegistrarError(Err.number, Err.Description, "Protocol.HandleNadarToggle", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub HandleCreateRenderValue()
-    
-    On Error GoTo HandleCreateRenderValue_Err
-    
-
-    '***************************************************
-    'Author: maTih.-
-    'Last Modification: 09/06/2012 - ^[GS]^
-    '
-    '***************************************************
-    With incomingData
-        .ReadByte
-        Call modRenderValue.Create(.ReadByte(), .ReadByte(), COLOR_WHITE(0), .ReadDouble(), .ReadByte())
-
-    End With
-
-    
-    Exit Sub
-
-HandleCreateRenderValue_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCreateRenderValue", Erl)
     Resume Next
     
 End Sub
@@ -3166,25 +3137,31 @@ Private Sub HandleNPCHitUser()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Select Case incomingData.ReadByte()
+    Dim Lugar As Byte, DañoStr As String
+    
+    Lugar = incomingData.ReadByte()
+
+    DañoStr = PonerPuntos(incomingData.ReadInteger)
+
+    Select Case Lugar
 
         Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CABEZA & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CABEZA & DañoStr, 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_IZQ & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_IZQ & DañoStr, 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_DER & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_DER & DañoStr, 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_IZQ & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_IZQ & DañoStr, 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_DER & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_DER & DañoStr, 255, 0, 0, True, False, False)
 
         Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_TORSO & CStr(incomingData.ReadInteger()), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_TORSO & DañoStr, 255, 0, 0, True, False, False)
 
     End Select
 
@@ -3219,7 +3196,7 @@ Private Sub HandleUserHitNPC()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & CStr(incomingData.ReadLong()) & MENSAJE_2, 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & PonerPuntos(incomingData.ReadLong()) & MENSAJE_2, 255, 0, 0, True, False, False)
 
     
     Exit Sub
@@ -3300,25 +3277,31 @@ Private Sub HandleUserHittedByUser()
     
     attacker = Left$(charlist(intt).nombre, Pos - 2)
     
-    Select Case incomingData.ReadByte
+    Dim Lugar As Byte
+    Lugar = incomingData.ReadByte
+    
+    Dim DañoStr As String
+    DañoStr = PonerPuntos(incomingData.ReadInteger())
+    
+    Select Case Lugar
 
         Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_CABEZA & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_CABEZA & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_DER & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_DER & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_TORSO & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_TORSO & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
     End Select
 
@@ -3368,25 +3351,31 @@ Private Sub HandleUserHittedUser()
     
     victim = Left$(charlist(intt).nombre, Pos - 2)
     
-    Select Case incomingData.ReadByte
+    Dim Lugar As Byte
+    Lugar = incomingData.ReadByte()
+    
+    Dim DañoStr As String
+    DañoStr = PonerPuntos(incomingData.ReadInteger())
+    
+    Select Case Lugar
 
         Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_CABEZA & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_CABEZA & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_DER & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_DER & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_DER & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
         Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_TORSO & CStr(incomingData.ReadInteger() & MENSAJE_2), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_TORSO & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
     End Select
 
@@ -3524,19 +3513,13 @@ errhandler:
 
 End Sub
 
-Private Sub HandleEfectOverHead()
+Private Sub HandleTextOverChar()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     If incomingData.length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
-
     End If
-    
+
     On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3580,19 +3563,13 @@ errhandler:
 
 End Sub
 
-Private Sub HandleExpOverHead()
+Private Sub HandleTextOverTile()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.length < 11 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
-
     End If
-    
+
     On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3603,25 +3580,53 @@ Private Sub HandleExpOverHead()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim chat      As String
+    Dim Text      As String
 
-    Dim charindex As Integer
+    Dim x As Integer, y As Integer
 
-    chat = buffer.ReadASCIIString()
-    charindex = buffer.ReadInteger()
-
-    If charlist(charindex).active Then
-
-        charlist(charindex).dialogExp = "+" & chat
-        charlist(charindex).SubeExp = 255
-        charlist(charindex).dialog_Exp_color.r = 42
-        charlist(charindex).dialog_Exp_color.G = 169
-        charlist(charindex).dialog_Exp_color.B = 222
-            
-    End If
+    Dim Color     As Long
+    
+    Text = buffer.ReadASCIIString()
+    x = buffer.ReadInteger()
+    y = buffer.ReadInteger()
+    Color = buffer.ReadLong()
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
+    
+    If InMapBounds(x, y) Then
+    
+        With MapData(x, y)
+            Dim Index As Integer
+            
+            If UBound(.DialogEffects) = 0 Then
+                ReDim .DialogEffects(1 To 1)
+                
+                Index = 1
+            Else
+                For Index = 1 To UBound(.DialogEffects)
+                    If .DialogEffects(Index).Text = vbNullString Then
+                        Exit For
+                    End If
+                Next
+                
+                If Index > UBound(.DialogEffects) Then
+                    ReDim .DialogEffects(1 To UBound(.DialogEffects) + 1)
+                End If
+            End If
+            
+            With .DialogEffects(Index)
+            
+                .Color = RGBA_From_vbColor(Color)
+                .Start = FrameTime
+                .Text = Text
+                .Offset.x = 0
+                .Offset.y = 0
+            
+            End With
+        End With
+        
+    End If
 
 errhandler:
 
@@ -3640,19 +3645,13 @@ errhandler:
 
 End Sub
 
-Private Sub HandleOroOverHead()
+Private Sub HandleTextCharDrop()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    If incomingData.length < 5 Then
+    If incomingData.length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
-
     End If
-    
+
     On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3663,25 +3662,64 @@ Private Sub HandleOroOverHead()
     'Remove packet ID
     Call buffer.ReadByte
     
-    Dim chat      As String
+    Dim Text      As String
 
     Dim charindex As Integer
 
-    chat = buffer.ReadASCIIString()
+    Dim Color     As Long
+    
+    Text = buffer.ReadASCIIString()
     charindex = buffer.ReadInteger()
-
-    If charlist(charindex).active Then
-
-        charlist(charindex).dialogOro = "+" & chat
-        charlist(charindex).SubeOro = 255
-        charlist(charindex).dialog_Oro_color.r = 204
-        charlist(charindex).dialog_Oro_color.G = 193
-        charlist(charindex).dialog_Oro_color.B = 115
-            
-    End If
+    Color = buffer.ReadLong()
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
+    
+    If charindex = 0 Then Exit Sub
+
+    Dim x As Integer, y As Integer, offsetX As Integer, offsetY As Integer
+    
+    With charlist(charindex)
+        x = .Pos.x
+        y = .Pos.y
+        
+        offsetX = .MoveOffsetX + .Body.HeadOffset.x
+        offsetY = .MoveOffsetY + .Body.HeadOffset.y
+    End With
+    
+    If InMapBounds(x, y) Then
+    
+        With MapData(x, y)
+            Dim Index As Integer
+            
+            If UBound(.DialogEffects) = 0 Then
+                ReDim .DialogEffects(1 To 1)
+                
+                Index = 1
+            Else
+                For Index = 1 To UBound(.DialogEffects)
+                    If .DialogEffects(Index).Text = vbNullString Then
+                        Exit For
+                    End If
+                Next
+                
+                If Index > UBound(.DialogEffects) Then
+                    ReDim .DialogEffects(1 To UBound(.DialogEffects) + 1)
+                End If
+            End If
+            
+            With .DialogEffects(Index)
+            
+                .Color = RGBA_From_vbColor(Color)
+                .Start = FrameTime
+                .Text = Text
+                .Offset.x = offsetX
+                .Offset.y = offsetY
+            
+            End With
+        End With
+        
+    End If
 
 errhandler:
 
@@ -7266,7 +7304,7 @@ End Sub
 
 ''
 ' Handles the MiniStats message.
-Private Sub HandleEfectToScreen()
+Private Sub HandleFlashScreen()
     
     On Error GoTo HandleEfectToScreen_Err
     
@@ -18870,10 +18908,10 @@ Private Sub HandleQuestDetails()
             QuestRequerida = .ReadInteger
            
             If QuestRequerida <> 0 Then
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
+                FrmQuestInfo.text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
             Else
             
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
+                FrmQuestInfo.text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
             
             
             End If
@@ -20414,10 +20452,10 @@ Private Sub HandleRequestScreenShot()
             Data = Data & "~~~"
         End If
         
-        Dim offset As Long
+        Dim Offset As Long
 
-        For offset = 1 To Len(Data) Step 10000
-            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
+        For Offset = 1 To Len(Data) Step 10000
+            Call WriteSendScreenShot(mid$(Data, Offset, min(Len(Data) - Offset + 1, 10000)))
         Next
     
     End With

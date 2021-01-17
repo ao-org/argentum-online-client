@@ -157,8 +157,9 @@ End Type
 ' Dialog effect
 Public Type DialogEffect
     Text As String
-    Sube As Single
+    Start As Long
     Color As RGBA
+    Offset As Position
 End Type
 
 'Apariencia del personaje
@@ -255,15 +256,7 @@ Public Type Char
     dialog_life As Byte
     dialog_font_index As Integer
     
-    dialogEffects() As DialogEffect
-    
-    dialogExp As String
-    SubeExp As Single
-    dialog_Exp_color As RGB
-    
-    dialogOro As String
-    SubeOro As Single
-    dialog_Oro_color As RGB
+    DialogEffects() As DialogEffect
     
     group_index As Integer
     
@@ -318,7 +311,7 @@ Public Type MapBlock
     particle_group As Integer
     particle_Index As Integer
     
-    RenderValue As RVList
+    DialogEffects() As DialogEffect
     
     NpcIndex As Integer
     OBJInfo As Obj

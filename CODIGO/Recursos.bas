@@ -983,7 +983,9 @@ Public Sub CargarMapa(ByVal map As Integer)
                 .light_value(1) = global_light
                 .light_value(2) = global_light
                 .light_value(3) = global_light
-                
+
+                ReDim .DialogEffects(0)
+
             End With
         Next y
     Next x

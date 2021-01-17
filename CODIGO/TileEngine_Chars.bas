@@ -45,9 +45,6 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .TimerI = 128
         .TimerIAct = False
         .dialog = vbNullString
-        .dialogExp = vbNullString
-        .dialogOro = vbNullString
-        .SubeExp = 0
         .group_index = 0
         .clan_index = 0
         .clan_nivel = 0
@@ -175,7 +172,7 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
 
         End If
         
-        ReDim .dialogEffects(0)
+        ReDim .DialogEffects(0)
         
         .TimeCreated = FrameTime - RandomNumber(1, 10000)
       
@@ -657,28 +654,28 @@ Public Sub SetCharacterDialogFx(ByVal charindex As Integer, ByVal Text As String
         
         Dim Index As Integer
         
-        If UBound(.dialogEffects) > 0 Then
+        If UBound(.DialogEffects) > 0 Then
         
-            For Index = 1 To UBound(.dialogEffects)
-                If .dialogEffects(Index).Text = vbNullString Then
+            For Index = 1 To UBound(.DialogEffects)
+                If .DialogEffects(Index).Text = vbNullString Then
                     Exit For
                 End If
             Next
             
-            If Index > UBound(.dialogEffects) Then
-                ReDim .dialogEffects(1 To UBound(.dialogEffects) + 1)
+            If Index > UBound(.DialogEffects) Then
+                ReDim .DialogEffects(1 To UBound(.DialogEffects) + 1)
             End If
         
         Else
-            ReDim .dialogEffects(1)
+            ReDim .DialogEffects(1)
             
             Index = 1
         End If
         
-        With .dialogEffects(Index)
+        With .DialogEffects(Index)
         
             .Color = Color
-            .Sube = 0
+            .Start = FrameTime
             .Text = Text
         
         End With

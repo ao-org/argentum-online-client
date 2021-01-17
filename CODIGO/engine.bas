@@ -1371,25 +1371,26 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
 
         End If
         
-        If UBound(.dialogEffects) > 0 Then
+        If UBound(.DialogEffects) > 0 Then
 
-            For i = 1 To UBound(.dialogEffects)
+            For i = 1 To UBound(.DialogEffects)
             
-                With .dialogEffects(i)
+                With .DialogEffects(i)
                 
-                    If Len(.Text) <> 0 Then
-                        .Sube = .Sube + timerTicksPerFrame
+                    If LenB(.Text) <> 0 Then
+                        Dim DeltaTime As Long
+                        DeltaTime = FrameTime - .Start
     
-                        If .Sube > 35 Then
+                        If DeltaTime > 1300 Then
                             .Text = vbNullString
                         Else
-                            If .Sube > 10 Then
-                                Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A * (1.4 - 0.04 * .Sube))
+                            If DeltaTime > 900 Then
+                                Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A * (1300 - DeltaTime) * 0.0025)
                             Else
                                 Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A)
                             End If
                     
-                            Engine_Text_Render_Efect charindex, .Text, PixelOffsetX + 14 - Engine_Text_Width(.Text, True) / 2, PixelOffsetY + charlist(charindex).Body.HeadOffset.y - Engine_Text_Height(.Text, True) - .Sube, temp_array, 1, True
+                            Engine_Text_Render_Efect charindex, .Text, PixelOffsetX + 14 - Int(Engine_Text_Width(.Text, True) * 0.5), PixelOffsetY + charlist(charindex).Body.HeadOffset.y - Engine_Text_Height(.Text, True) - DeltaTime * 0.025, temp_array, 1, True
             
                         End If
                     End If
@@ -1554,10 +1555,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         Call InitGrh(TempGrh, 839)
                         
                         If .UserMinHp > 0 Then
-                           Call RGBAList(Color, 255, 255, 255, 200)
-                           Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY + 10, 1, 0, Color, False, 0, 0, 0)
+                            Dim TempColor(3) As RGBA
+                            Call RGBAList(TempColor, 255, 255, 255, 200)
+                            Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY + 10, 1, 0, TempColor, False, 0, 0, 0)
                            
-                           Engine_Draw_Box PixelOffsetX + 4, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
+                            Engine_Draw_Box PixelOffsetX + 4, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
                         End If
                     End If
 
@@ -1809,7 +1811,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         If .FxIndex <> 0 And .fX.Started <> 0 Then
             Call RGBAList(Color, 255, 255, 255, 180)
 
-            Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 4, 1, 1, Color, False, , , , charindex)
+            Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).offsetX, PixelOffsetY + FxData(.FxIndex).offsetY + 4, 1, 1, Color, False, , , , charindex)
        
         End If
 
@@ -1821,9 +1823,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(Color, 255, 255, 255, 220)
 
                     If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
-                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, False, , , , charindex)
+                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).offsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).offsetY + 20, 1, 1, Color, False, , , , charindex)
                     Else
-                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, True, , , , charindex)
+                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).offsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).offsetY + 20, 1, 1, Color, True, , , , charindex)
                     End If
 
                 End If
@@ -2845,59 +2847,59 @@ Public Sub RenderUICrearPJ()
 
     Engine_Text_Render "Creacion de Personaje", 280, 125, ColorGray, 5, False
 
-    Dim OffsetX As Integer
-    Dim OffsetY As Integer
+    Dim offsetX As Integer
+    Dim offsetY As Integer
 
     Engine_Text_Render_LetraChica "Nombre ", 460, 205, COLOR_WHITE, 6, False
 
-    OffsetX = 240
-    OffsetY = 15
-    Engine_Text_Render_LetraChica "Clase ", 345 + OffsetX, 240 + OffsetY, COLOR_WHITE, 6, False
+    offsetX = 240
+    offsetY = 15
+    Engine_Text_Render_LetraChica "Clase ", 345 + offsetX, 240 + offsetY, COLOR_WHITE, 6, False
 
-    Engine_Draw_Box 317 + OffsetX, 260 + OffsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render "<", 300 + OffsetX, 260 + OffsetY, COLOR_WHITE, 1, False
+    Engine_Draw_Box 317 + offsetX, 260 + offsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
+    Engine_Text_Render "<", 300 + offsetX, 260 + offsetY, COLOR_WHITE, 1, False
         
-    Engine_Text_Render ">", 418 + OffsetX, 261 + OffsetY, COLOR_WHITE, 1, False
+    Engine_Text_Render ">", 418 + offsetX, 261 + offsetY, COLOR_WHITE, 1, False
 
-    Engine_Text_Render frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), 365 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), True, 1) / 2, 262 + OffsetY, ColorGray, 1, True
+    Engine_Text_Render frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), 365 + offsetX - Engine_Text_Width(frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), True, 1) / 2, 262 + offsetY, ColorGray, 1, True
 
-    Engine_Text_Render_LetraChica "Raza ", 347 + OffsetX, 290 + OffsetY, COLOR_WHITE, 6, False
-    Engine_Draw_Box 317 + OffsetX, 305 + OffsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
+    Engine_Text_Render_LetraChica "Raza ", 347 + offsetX, 290 + offsetY, COLOR_WHITE, 6, False
+    Engine_Draw_Box 317 + offsetX, 305 + offsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
 
     'Engine_Text_Render "Humano", 470 - Engine_Text_Height("Humano", False), 304, DefaultColor, 1, False
-    Engine_Text_Render frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex), 360 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex), True, 1) / 2, 308 + OffsetY, ColorGray, 1, True
+    Engine_Text_Render frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex), 360 + offsetX - Engine_Text_Width(frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex), True, 1) / 2, 308 + offsetY, ColorGray, 1, True
     
     
     
-    Engine_Text_Render "<", 300 + OffsetX, 305 + OffsetY, ColorGray, 1, False
-    Engine_Text_Render ">", 418 + OffsetX, 305 + OffsetY, ColorGray, 1, False
+    Engine_Text_Render "<", 300 + offsetX, 305 + offsetY, ColorGray, 1, False
+    Engine_Text_Render ">", 418 + offsetX, 305 + offsetY, ColorGray, 1, False
 
-    OffsetX = 5
-    OffsetY = 5
+    offsetX = 5
+    offsetY = 5
 
-    Engine_Text_Render_LetraChica "Genero ", 340 + OffsetX, 255, COLOR_WHITE, 6, False
+    Engine_Text_Render_LetraChica "Genero ", 340 + offsetX, 255, COLOR_WHITE, 6, False
     
     
-    Engine_Draw_Box 317 + OffsetX, 275, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
+    Engine_Draw_Box 317 + offsetX, 275, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
 
-    Engine_Text_Render frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex), 360 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex), True, 1) / 2, 277, ColorGray, 1, True
+    Engine_Text_Render frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex), 360 + offsetX - Engine_Text_Width(frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex), True, 1) / 2, 277, ColorGray, 1, True
     
-    Engine_Text_Render "<", 300 + OffsetX, 275, ColorGray, 1, False
+    Engine_Text_Render "<", 300 + offsetX, 275, ColorGray, 1, False
     
-    Engine_Text_Render ">", 418 + OffsetX, 275, ColorGray, 1, False
+    Engine_Text_Render ">", 418 + offsetX, 275, ColorGray, 1, False
     
     'NACIMIENTO
     
 
-    OffsetY = 30
-    Engine_Text_Render_LetraChica "Hogar ", 340 + OffsetX, 305, ColorGray, 6, False
-    Engine_Draw_Box 317 + OffsetX, 320, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
+    offsetY = 30
+    Engine_Text_Render_LetraChica "Hogar ", 340 + offsetX, 305, ColorGray, 6, False
+    Engine_Draw_Box 317 + offsetX, 320, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
     
-    Engine_Text_Render frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), 360 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), True, 1) / 2, 322, ColorGray, 1, True
+    Engine_Text_Render frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), 360 + offsetX - Engine_Text_Width(frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), True, 1) / 2, 322, ColorGray, 1, True
 
-    Engine_Text_Render "<", 300 + OffsetX, 320, ColorGray, 1, False
+    Engine_Text_Render "<", 300 + offsetX, 320, ColorGray, 1, False
     
-    Engine_Text_Render ">", 418 + OffsetX, 320, ColorGray, 1, False
+    Engine_Text_Render ">", 418 + offsetX, 320, ColorGray, 1, False
 
     
     'NACIMIENTO
