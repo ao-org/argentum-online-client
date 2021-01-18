@@ -509,7 +509,6 @@ Private Enum NewPacksID
     Genio                 '/GENIO
     Casarse
     CraftAlquimista
-    DropItem
     RequestFamiliar
     FlagTrabajar
     CraftSastre
@@ -2888,11 +2887,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -3620,8 +3619,8 @@ Private Sub HandleTextOverTile()
                 .Color = RGBA_From_vbColor(Color)
                 .Start = FrameTime
                 .Text = Text
-                .Offset.x = 0
-                .Offset.y = 0
+                .offset.x = 0
+                .offset.y = 0
             
             End With
         End With
@@ -3677,14 +3676,14 @@ Private Sub HandleTextCharDrop()
     
     If charindex = 0 Then Exit Sub
 
-    Dim x As Integer, y As Integer, offsetX As Integer, offsetY As Integer
+    Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
     
     With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
         
-        offsetX = .MoveOffsetX + .Body.HeadOffset.x
-        offsetY = .MoveOffsetY + .Body.HeadOffset.y
+        OffsetX = .MoveOffsetX + .Body.HeadOffset.x
+        OffsetY = .MoveOffsetY + .Body.HeadOffset.y
     End With
     
     If InMapBounds(x, y) Then
@@ -3713,8 +3712,8 @@ Private Sub HandleTextCharDrop()
                 .Color = RGBA_From_vbColor(Color)
                 .Start = FrameTime
                 .Text = Text
-                .Offset.x = offsetX
-                .Offset.y = offsetY
+                .offset.x = OffsetX
+                .offset.y = OffsetY
             
             End With
         End With
@@ -5647,9 +5646,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -7937,7 +7936,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8354,7 +8353,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -12769,33 +12768,6 @@ Public Sub WriteCasamiento(ByVal UserName As String)
 
 WriteCasamiento_Err:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCasamiento", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteDropItem(ByVal Item As Byte, ByVal x As Byte, ByVal y As Byte, ByVal DropItem As Integer)
-    '***************************************************
-    'Ladder
-    '***************************************************
-    
-    On Error GoTo WriteDropItem_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.DropItem)
-        Call .WriteByte(Item)
-        Call .WriteByte(x)
-        Call .WriteByte(y)
-        Call .WriteInteger(DropItem)
-
-    End With
-
-    
-    Exit Sub
-
-WriteDropItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDropItem", Erl)
     Resume Next
     
 End Sub
@@ -18908,10 +18880,10 @@ Private Sub HandleQuestDetails()
             QuestRequerida = .ReadInteger
            
             If QuestRequerida <> 0 Then
-                FrmQuestInfo.text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
+                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
             Else
             
-                FrmQuestInfo.text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
+                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
             
             
             End If
@@ -20452,10 +20424,10 @@ Private Sub HandleRequestScreenShot()
             Data = Data & "~~~"
         End If
         
-        Dim Offset As Long
+        Dim offset As Long
 
-        For Offset = 1 To Len(Data) Step 10000
-            Call WriteSendScreenShot(mid$(Data, Offset, min(Len(Data) - Offset + 1, 10000)))
+        For offset = 1 To Len(Data) Step 10000
+            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
         Next
     
     End With
