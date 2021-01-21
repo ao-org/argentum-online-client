@@ -1551,7 +1551,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If .EsNpc Then
                     If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
                         MostrarNombre = True
-                        Call RGBAList(NameColor, 255, 0, 255)
+                        Call RGBAList(NameColor, 210, 105, 30)
                         Call InitGrh(TempGrh, 839)
                         
                         If .UserMinHp > 0 Then
