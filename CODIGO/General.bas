@@ -7,8 +7,8 @@ Option Explicit
 
 Private Type Position
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 
 End Type
 
@@ -23,8 +23,8 @@ End Type
 Private Type tWorldPos
 
     map As Integer
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 
 End Type
 
@@ -348,7 +348,7 @@ Public Sub RefreshAllChars()
     For loopc = 1 To LastChar
     
         If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.X, charlist(loopc).Pos.Y).charindex = loopc
+            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
 
         End If
 
@@ -650,16 +650,16 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.X, UserPos.Y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.X + 1, UserPos.Y, Direccion)
+            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.X, UserPos.Y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.X - 1, UserPos.Y, Direccion)
+            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
 
     End Select
     
@@ -698,25 +698,25 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End If
     
-    frmMain.personaje(0).Left = UserPos.X - 5
-    frmMain.personaje(0).Top = UserPos.Y - 4
+    frmMain.personaje(0).Left = UserPos.x - 5
+    frmMain.personaje(0).Top = UserPos.y - 4
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
 
     If frmMapaGrande.Visible Then
 
-        Dim X As Long
+        Dim x As Long
 
-        Dim Y As Long
+        Dim y As Long
             
-        X = (idmap - 1) Mod 16
-        Y = Int((idmap - 1) / 16)
+        x = (idmap - 1) Mod 16
+        y = Int((idmap - 1) / 16)
 
-        frmMapaGrande.lblAllies.Top = Y * 27
-        frmMapaGrande.lblAllies.Left = X * 27
+        frmMapaGrande.lblAllies.Top = y * 27
+        frmMapaGrande.lblAllies.Left = x * 27
 
-        frmMapaGrande.Shape1.Top = Y * 27 + (UserPos.Y / 4.5)
-        frmMapaGrande.Shape1.Left = X * 27 + (UserPos.X / 4.5)
+        frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
+        frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
 
     End If
     
@@ -1437,6 +1437,11 @@ Public Sub CloseClient()
     Set frmComerciar.InvComUsu = Nothing
     Set frmBancoObj.InvBankUsu = Nothing
     Set frmBancoObj.InvBoveda = Nothing
+    
+    
+    Set frmBancoCuenta.InvBankUsuCuenta = Nothing
+    Set frmBancoCuenta.InvBovedaCuenta = Nothing
+    
     Set FrmKeyInv.InvKeys = Nothing
     
     ' Call UnloadAllForms

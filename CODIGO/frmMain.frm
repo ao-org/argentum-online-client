@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "Cswsk32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -1011,6 +1011,17 @@ Begin VB.Form frmMain
          Visible         =   0   'False
          Width           =   510
       End
+   End
+   Begin VB.Label Label1 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Label1"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Left            =   11880
+      TabIndex        =   40
+      Top             =   0
+      Width           =   555
    End
    Begin VB.Image temp2 
       Height          =   495
@@ -2681,6 +2692,12 @@ End Sub
 
 Private Sub ImgSegResu_Click()
     Call WriteSeguroResu
+End Sub
+
+Private Sub Label1_Click()
+frmBancoCuenta.Picture = LoadInterface("banco.bmp")
+frmBancoCuenta.Show , frmMain
+HayFormularioAbierto = True
 End Sub
 
 Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -5112,8 +5129,12 @@ Private Sub Socket1_Disconnect()
         For i = 1 To MAX_INVENTORY_SLOTS
             Call frmMain.Inventario.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
             Call frmBancoObj.InvBankUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+            Call frmBancoObj.InvBoveda.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
             Call frmComerciar.InvComNpc.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
             Call frmComerciar.InvComUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+            
+            Call frmBancoCuenta.InvBankUsuCuenta.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+            Call frmBancoCuenta.InvBovedaCuenta.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Next i
         
         For i = 1 To MAX_BANCOINVENTORY_SLOTS

@@ -1907,15 +1907,16 @@ Public Sub Start()
                     If HayFormularioAbierto Then
                         If frmComerciar.Visible Then
                             DrawInterfaceComerciar
-                    
                         ElseIf frmBancoObj.Visible Then
                             DrawInterfaceBoveda
-
                         End If
-
+                        
+                        If frmBancoCuenta.Visible Then
+                            DrawInterfaceBovedaCuenta
+                        End If
+                        
                         If frmMapaGrande.Visible Then
                             DrawMapaMundo
-
                         End If
                         
                         If FrmKeyInv.Visible Then
@@ -2006,7 +2007,7 @@ SetMapFx_Err:
     
 End Sub
 
-Private Function Engine_FToDW(F As Single) As Long
+Private Function Engine_FToDW(f As Single) As Long
     
     On Error GoTo Engine_FToDW_Err
     
@@ -2015,7 +2016,7 @@ Private Function Engine_FToDW(F As Single) As Long
     Dim Buf As D3DXBuffer
 
     Set Buf = DirectD3D8.CreateBuffer(4)
-    DirectD3D8.BufferSetData Buf, 0, 4, 1, F
+    DirectD3D8.BufferSetData Buf, 0, 4, 1, f
     DirectD3D8.BufferGetData Buf, 0, 4, 1, Engine_FToDW
 
     
@@ -2172,7 +2173,7 @@ Public Sub DrawInterfaceComerciar()
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
         frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
-        frmComerciar.lblCosto = PonerPuntos(Fix(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
+        frmComerciar.lblcosto = PonerPuntos(Fix(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
         
         Set CurrentInventory = Nothing
 
@@ -2189,7 +2190,98 @@ DrawInterfaceComerciar_Err:
     Resume Next
     
 End Sub
+Public Sub DrawInterfaceBovedaCuenta()
+    
+    On Error GoTo DrawInterfaceBoveda_Err
+    
 
+    ' Sólo dibujamos cuando es necesario
+    If Not frmBancoCuenta.InvBovedaCuenta.NeedsRedraw And Not frmBancoCuenta.InvBankUsuCuenta.NeedsRedraw Then Exit Sub
+
+    Dim InvRect As RECT
+
+    InvRect.Left = 0
+    InvRect.Top = 0
+    InvRect.Right = frmBancoCuenta.interface.ScaleWidth
+    InvRect.Bottom = frmBancoCuenta.interface.ScaleHeight
+
+    ' Comenzamos la escena
+    Call Engine_BeginScene
+
+    ' Dibujamos el fondo de la bóveda
+    Call Draw_GrhIndex(838, 0, 0)
+
+    ' Dibujamos items de la bóveda
+    Call frmBancoCuenta.InvBovedaCuenta.DrawInventory
+    
+    ' Dibujamos items del usuario
+    Call frmBancoCuenta.InvBankUsuCuenta.DrawInventory
+
+    ' Dibujamos "ambos" items arrastrados (aunque sólo puede estar uno activo a la vez)
+    Call frmBancoCuenta.InvBovedaCuenta.DrawDraggedItem
+    Call frmBancoCuenta.InvBankUsuCuenta.DrawDraggedItem
+    
+    ' Me fijo qué inventario está seleccionado
+    Dim CurrentInventory As clsGrapchicalInventory
+    
+    If frmBancoCuenta.InvBovedaCuenta.SelectedItem > 0 Then
+        Set CurrentInventory = frmBancoCuenta.InvBovedaCuenta
+    ElseIf frmBancoCuenta.InvBankUsuCuenta.SelectedItem > 0 Then
+        Set CurrentInventory = frmBancoCuenta.InvBankUsuCuenta
+
+    End If
+    
+    ' Si hay alguno seleccionado
+    If Not CurrentInventory Is Nothing Then
+
+        ' Muestro info del item
+        Dim str As String
+
+        str = " (No usa: "
+        
+        Select Case CurrentInventory.PuedeUsar(CurrentInventory.SelectedItem)
+
+            Case 1
+                str = str & "Genero)"
+
+            Case 2
+                str = str & "Clase)"
+
+            Case 3
+                str = str & "Facción)"
+
+            Case 4
+                str = str & "Skill)"
+
+            Case 5
+                str = str & "Raza)"
+
+            Case 6
+                str = str & "Nivel)"
+
+            Case 0
+                str = " (Usable)"
+
+        End Select
+        
+        frmBancoCuenta.lblnombre.Caption = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
+        frmBancoCuenta.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
+        
+        Set CurrentInventory = Nothing
+
+    End If
+
+    ' Presentamos la escena
+    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
+
+    
+    Exit Sub
+
+DrawInterfaceBoveda_Err:
+    Call RegistrarError(Err.number, Err.Description, "engine.DrawInterfaceBoveda", Erl)
+    Resume Next
+    
+End Sub
 Public Sub DrawInterfaceBoveda()
     
     On Error GoTo DrawInterfaceBoveda_Err
@@ -3391,6 +3483,10 @@ Public Sub Initialize()
     Set frmComerciar.InvComNpc = New clsGrapchicalInventory
     Set frmBancoObj.InvBankUsu = New clsGrapchicalInventory
     Set frmBancoObj.InvBoveda = New clsGrapchicalInventory
+    
+    Set frmBancoCuenta.InvBankUsuCuenta = New clsGrapchicalInventory
+    Set frmBancoCuenta.InvBovedaCuenta = New clsGrapchicalInventory
+    
     Set FrmKeyInv.InvKeys = New clsGrapchicalInventory
     
     Call frmMain.Inventario.Initialize(frmMain.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True, 9)
@@ -3399,6 +3495,9 @@ Public Sub Initialize()
    
     Call frmBancoObj.InvBankUsu.Initialize(frmBancoObj.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmBancoObj.InvBoveda.Initialize(frmBancoObj.interface, MAX_BANCOINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3)
+    
+    Call frmBancoCuenta.InvBankUsuCuenta.Initialize(frmBancoCuenta.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
+    Call frmBancoCuenta.InvBovedaCuenta.Initialize(frmBancoCuenta.interface, MAX_BANCOINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3)
     
     
     'Ladder

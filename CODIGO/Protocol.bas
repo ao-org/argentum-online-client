@@ -1584,6 +1584,7 @@ Private Sub HandleDisconnect()
         Call frmBancoObj.InvBankUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Call frmComerciar.InvComNpc.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Call frmComerciar.InvComUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmBancoCuenta.InvBankUsuCuenta.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
     Next i
     
     For i = 1 To MAX_BANCOINVENTORY_SLOTS
@@ -1823,7 +1824,7 @@ Private Sub HandleBankInit()
     'Call Inventario.Initialize(frmBancoObj.PicInvUser)
     frmBancoObj.Picture = LoadInterface("banco.bmp")
     frmBancoObj.Show , frmMain
-    frmBancoObj.lblCosto = PonerPuntos(UserGLD)
+    frmBancoObj.lblcosto = PonerPuntos(UserGLD)
     HayFormularioAbierto = True
 
     
@@ -2887,11 +2888,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -3676,14 +3677,14 @@ Private Sub HandleTextCharDrop()
     
     If charindex = 0 Then Exit Sub
 
-    Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
+    Dim x As Integer, y As Integer, offsetX As Integer, offsetY As Integer
     
     With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
         
-        OffsetX = .MoveOffsetX + .Body.HeadOffset.x
-        OffsetY = .MoveOffsetY + .Body.HeadOffset.y
+        offsetX = .MoveOffsetX + .Body.HeadOffset.x
+        offsetY = .MoveOffsetY + .Body.HeadOffset.y
     End With
     
     If InMapBounds(x, y) Then
@@ -3712,8 +3713,8 @@ Private Sub HandleTextCharDrop()
                 .Color = RGBA_From_vbColor(Color)
                 .Start = FrameTime
                 .Text = Text
-                .offset.x = OffsetX
-                .offset.y = OffsetY
+                .offset.x = offsetX
+                .offset.y = offsetY
             
             End With
         End With
@@ -5646,9 +5647,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -5899,6 +5900,9 @@ Private Sub HandleChangeInventorySlot()
     Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
     Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    
+    
+    Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
     Exit Sub
     
@@ -6028,7 +6032,8 @@ Private Sub HandleRefreshAllInventorySlot()
                 Call frmComerciar.InvComUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
             ElseIf frmBancoObj.Visible Then
                 Call frmBancoObj.InvBankUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
-
+            ElseIf frmBancoCuenta.Visible Then
+                Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
             End If
 
         End With
@@ -7936,7 +7941,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8353,7 +8358,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
