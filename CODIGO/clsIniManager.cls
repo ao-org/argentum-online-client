@@ -164,7 +164,7 @@ Public Sub Initialize(ByVal File As String)
     'Last Modify Date: 27/07/2006
     'Opens the requested file and loads it's data into memory
     '**************************************************************
-    Dim handle As Integer
+    Dim Handle As Integer
 
     Dim Text   As String
 
@@ -174,12 +174,12 @@ Public Sub Initialize(ByVal File As String)
     Call Class_Terminate
     
     'Get a free handle and start reading line by line until the end
-    handle = FreeFile
+    Handle = FreeFile
     
-    Open File For Input As handle
+    Open File For Input As Handle
     
-    Do Until EOF(handle)
-        Line Input #handle, Text
+    Do Until EOF(Handle)
+        Line Input #Handle, Text
         
         'Is it null??
         If Len(Text) Then
@@ -229,7 +229,7 @@ Public Sub Initialize(ByVal File As String)
 
     Loop
     
-    Close handle
+    Close Handle
     
     Dim i As Long
     
@@ -415,22 +415,9 @@ Public Function GetValue(ByVal Main As String, ByVal key As String)
         
         'If we found it we return it
         If j >= 0 Then retval = fileData(i).values(j).Value
-        
-        'Smart-cast de el valor encontrado
-        If IsNumeric(retval) Then
-            GetValue = Val(retval)
-        
-        ElseIf InStr(1, retval, "True", vbTextCompare) Or _
-               InStr(1, retval, "False", vbTextCompare) Then
-            
-            GetValue = CBool(retval)
-        
-        Else
-            
-            GetValue = retval
-            
-        End If
-    
+
+        GetValue = retval
+
     End If
 
     

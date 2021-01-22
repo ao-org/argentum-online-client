@@ -2045,6 +2045,8 @@ Sub CargarCuerpos()
     
     Dim FileNum      As Long
     
+    Dim AnimSpeed    As Single
+    
     Set Loader = New clsIniManager
     
     #If Compresion = 1 Then
@@ -2080,7 +2082,15 @@ Sub CargarCuerpos()
             
         Else
             FileNum = Val(Loader.GetValue(BodyKey, "FileNum"))
-        
+            
+            AnimSpeed = Val(Loader.GetValue(BodyKey, "Speed"))
+            
+            If AnimSpeed = 0 Then
+                AnimSpeed = 1
+            End If
+
+            AnimSpeed = 1 / AnimSpeed / 0.018
+
             LastGrh = UBound(GrhData)
 
             ' Agrego espacio para meter el body en GrhData
@@ -2122,7 +2132,7 @@ Sub CargarCuerpos()
                 
                 With GrhData(LastGrh)
                     .NumFrames = MoldesBodies(Std).DirCount(j)
-                    .speed = .NumFrames / 0.018
+                    .speed = .NumFrames * AnimSpeed
                     
                     ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
                     
