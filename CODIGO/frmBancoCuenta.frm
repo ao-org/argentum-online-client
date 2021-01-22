@@ -392,13 +392,13 @@ Private Sub Image1_Click(Index As Integer)
             'Call WriteBankExtractItem(InvBovedaCuenta.SelectedItem, cantidad.Text, 1)
         
             If InvBovedaCuenta.SelectedItem <= 0 Then Exit Sub
-            Call WriteBankExtractItem(InvBovedaCuenta.SelectedItem, min(Val(cantidad.Text), InvBovedaCuenta.Amount(InvBovedaCuenta.SelectedItem)), 0)
+            Call WriteCuentaExtractItem(InvBovedaCuenta.SelectedItem, min(Val(cantidad.Text), InvBovedaCuenta.Amount(InvBovedaCuenta.SelectedItem)), 0)
 
         Case 1
             LasActionBuy = False
 
             If InvBankUsuCuenta.SelectedItem <= 0 Then Exit Sub
-            Call WriteBankDeposit(InvBankUsuCuenta.SelectedItem, min(Val(cantidad.Text), InvBankUsuCuenta.Amount(InvBankUsuCuenta.SelectedItem)), 0)
+            Call WriteCuentaDeposit(InvBankUsuCuenta.SelectedItem, min(Val(cantidad.Text), InvBankUsuCuenta.Amount(InvBankUsuCuenta.SelectedItem)), 0)
 
     End Select
 
@@ -694,14 +694,14 @@ Private Sub InvBovedaCuenta_ItemDropped(ByVal Drag As Integer, ByVal Drop As Int
     ' Si lo soltó dentro de la bóveda
     If Drop > 0 Then
         ' Movemos el item dentro de la bóveda
-        Call WriteBovedaItemMove(Drag, Drop)
+        'Call WriteBovedaItemMove(Drag, Drop)
     Else
         Drop = InvBankUsuCuenta.GetSlot(x, y)
 
         ' Si lo soltó dentro del inventario
         If Drop > 0 Then
             ' Retiramos el item
-            Call WriteBankExtractItem(Drag, min(Val(cantidad.Text), InvBovedaCuenta.Amount(InvBovedaCuenta.SelectedItem)), Drop)
+            Call WriteCuentaExtractItem(Drag, min(Val(cantidad.Text), InvBovedaCuenta.Amount(InvBovedaCuenta.SelectedItem)), Drop)
 
         End If
 
@@ -731,7 +731,7 @@ Private Sub InvBankUsuCuenta_ItemDropped(ByVal Drag As Integer, ByVal Drop As In
         ' Si lo soltó dentro de la bóveda
         If Drop > 0 Then
             ' Depositamos el item
-            Call WriteBankDeposit(Drag, min(Val(cantidad.Text), InvBankUsuCuenta.Amount(InvBankUsuCuenta.SelectedItem)), Drop)
+            Call WriteCuentaDeposit(Drag, min(Val(cantidad.Text), InvBankUsuCuenta.Amount(InvBankUsuCuenta.SelectedItem)), Drop)
 
         End If
 

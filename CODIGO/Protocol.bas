@@ -495,7 +495,6 @@ Private Enum ClientPacketID
 End Enum
 
 Private Enum NewPacksID
-
     OfertaInicial
     OfertaDeSubasta
     QuestionGM
@@ -572,6 +571,8 @@ Private Enum NewPacksID
     GetMapInfo
     FinEvento
     SeguroResu
+    CuentaExtractItem
+    CuentaDeposit
 End Enum
 
 ''
@@ -20686,5 +20687,53 @@ Private Sub HandleSeguroResu()
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección desactivado.", 65, 190, 156, False, False, False)
         frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
     End If
+    
+End Sub
+Public Sub WriteCuentaExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
+    
+    On Error GoTo WriteCuentaExtractItem_Err
+    '***************************************************
+    'Author: Ladder
+    'Last Modification: 22/11/21
+    'Retirar item de cuenta
+    '***************************************************
+    With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.CuentaExtractItem)
+        Call .WriteByte(Slot)
+        Call .WriteInteger(Amount)
+        Call .WriteByte(slotdestino)
+        
+    End With
+
+    
+    Exit Sub
+
+WriteCuentaExtractItem_Err:
+    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCuentaExtractItem", Erl)
+    Resume Next
+    
+End Sub
+Public Sub WriteCuentaDeposit(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
+    
+    On Error GoTo WriteCuentaDeposit_Err
+    '***************************************************
+    'Author: Ladder
+    'Last Modification: 22/11/21
+    'Depositar item en cuenta
+    '***************************************************
+    With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.CuentaDeposit)
+        Call .WriteByte(Slot)
+        Call .WriteInteger(Amount)
+        Call .WriteByte(slotdestino)
+
+    End With
+    
+    Exit Sub
+WriteCuentaDeposit_Err:
+    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCuentaDeposit", Erl)
+    Resume Next
     
 End Sub
