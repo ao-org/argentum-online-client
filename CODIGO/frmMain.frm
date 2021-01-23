@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "Cswsk32.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
+Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -483,7 +483,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3879,7 +3878,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                 
                 TargetName = charlist(charindex).nombre
                 
-                If charlist(UserCharIndex).priv > 0 Then
+                If charlist(UserCharIndex).priv > 0 And Shift = 0 Then
                     Set Frm = MenuGM
                 Else
                     Set Frm = MenuUser
