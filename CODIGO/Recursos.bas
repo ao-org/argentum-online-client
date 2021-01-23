@@ -1177,7 +1177,8 @@ Public Sub CargarMapa(ByVal map As Integer)
         Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
     #End If
 
-
+    Call LucesRedondas.LightRenderAll
+    Call LucesCuadradas.Light_Render_All
     
     Exit Sub
 

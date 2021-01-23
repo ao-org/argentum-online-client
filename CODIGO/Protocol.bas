@@ -3678,14 +3678,14 @@ Private Sub HandleTextCharDrop()
     
     If charindex = 0 Then Exit Sub
 
-    Dim x As Integer, y As Integer, offsetX As Integer, offsetY As Integer
+    Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
     
     With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
         
-        offsetX = .MoveOffsetX + .Body.HeadOffset.x
-        offsetY = .MoveOffsetY + .Body.HeadOffset.y
+        OffsetX = .MoveOffsetX + .Body.HeadOffset.x
+        OffsetY = .MoveOffsetY + .Body.HeadOffset.y
     End With
     
     If InMapBounds(x, y) Then
@@ -3714,8 +3714,8 @@ Private Sub HandleTextCharDrop()
                 .Color = RGBA_From_vbColor(Color)
                 .Start = FrameTime
                 .Text = Text
-                .offset.x = offsetX
-                .offset.y = offsetY
+                .offset.x = OffsetX
+                .offset.y = OffsetY
             
             End With
         End With
@@ -5334,7 +5334,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -5359,7 +5359,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -5367,7 +5367,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
     
     HayFormularioAbierto = True
     
@@ -7907,10 +7907,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.guildslist.Clear
+    Call frmGuildNews.GuildsList.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -8316,10 +8316,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -17969,10 +17969,13 @@ Private Sub HandleLightToFloor()
     If Rango < 100 Then
         id = x & y
         LucesCuadradas.Light_Create x, y, color_value, Rango, id
+        LucesRedondas.LightRenderAll
         LucesCuadradas.Light_Render_All
     Else
 
         LucesRedondas.Create_Light_To_Map x, y, color_value, Rango - 99
+        LucesRedondas.LightRenderAll
+        LucesCuadradas.Light_Render_All
 
     End If
 
@@ -18886,10 +18889,10 @@ Private Sub HandleQuestDetails()
             QuestRequerida = .ReadInteger
            
             If QuestRequerida <> 0 Then
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
+                FrmQuestInfo.text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
             Else
             
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
+                FrmQuestInfo.text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
             
             
             End If

@@ -10,7 +10,7 @@ Option Explicit
 Type RGBA
     B As Byte
     G As Byte
-    R As Byte
+    r As Byte
     A As Byte
 End Type
 
@@ -67,14 +67,14 @@ RGBA_From_Long_Err:
     
 End Function
 
-Function RGBA_From_Comp(ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255) As RGBA
+Function RGBA_From_Comp(ByVal r As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255) As RGBA
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
     
     On Error GoTo RGBA_From_Comp_Err
     
-    RGBA_From_Comp.R = R
+    RGBA_From_Comp.r = r
     RGBA_From_Comp.G = G
     RGBA_From_Comp.B = B
     RGBA_From_Comp.A = A
@@ -96,8 +96,8 @@ Function RGBA_From_vbColor(ByVal Color As Long) As RGBA
 
     Call Long_2_RGBA(RGBA_From_vbColor, Color)
 
-    RGBA_From_vbColor.A = RGBA_From_vbColor.R
-    RGBA_From_vbColor.R = RGBA_From_vbColor.B
+    RGBA_From_vbColor.A = RGBA_From_vbColor.r
+    RGBA_From_vbColor.r = RGBA_From_vbColor.B
     RGBA_From_vbColor.B = RGBA_From_vbColor.A
     RGBA_From_vbColor.A = 255
     
@@ -109,14 +109,14 @@ RGBA_From_Long_Err:
     
 End Function
 
-Sub SetRGBA(Color As RGBA, ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
+Sub SetRGBA(Color As RGBA, ByVal r As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
     
     On Error GoTo SetRGBA_Err
     
-    Color.R = R
+    Color.r = r
     Color.G = G
     Color.B = B
     Color.A = A
@@ -150,7 +150,7 @@ Long_2_RGBAList_Err:
     
 End Sub
 
-Sub RGBAList(Dest() As RGBA, ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
+Sub RGBAList(Dest() As RGBA, ByVal r As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
     '***************************************************
@@ -160,7 +160,7 @@ Sub RGBAList(Dest() As RGBA, ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, 
     Dim i As Long
     
     For i = 0 To 3
-        Call SetRGBA(Dest(i), R, G, B, A)
+        Call SetRGBA(Dest(i), r, G, B, A)
     Next
     
     Exit Sub
@@ -201,7 +201,7 @@ Sub LerpRGBA(Dest As RGBA, A As RGBA, B As RGBA, ByVal Factor As Single)
     
     Dim InvFactor As Single: InvFactor = (1 - Factor)
 
-    Dest.R = A.R * InvFactor + B.R * Factor
+    Dest.r = A.r * InvFactor + B.r * Factor
     Dest.G = A.G * InvFactor + B.G * Factor
     Dest.B = A.B * InvFactor + B.B * Factor
     Dest.A = A.A * InvFactor + B.A * Factor
@@ -221,7 +221,7 @@ Sub ModulateRGBA(Dest As RGBA, A As RGBA, B As RGBA)
     
     On Error GoTo ModulateRGBA_Err
     
-    Dest.R = CLng(A.R) * B.R \ 255
+    Dest.r = CLng(A.r) * B.r \ 255
     Dest.G = CLng(A.G) * B.G \ 255
     Dest.B = CLng(A.B) * B.B \ 255
     Dest.A = CLng(A.A) * B.A \ 255
@@ -241,7 +241,7 @@ Sub AddRGBA(Dest As RGBA, A As RGBA, B As RGBA)
     
     On Error GoTo AddRGBA_Err
     
-    Dest.R = min(CLng(A.R) + CLng(B.R), 255)
+    Dest.r = min(CLng(A.r) + CLng(B.r), 255)
     Dest.G = min(CLng(A.G) + CLng(B.G), 255)
     Dest.B = min(CLng(A.B) + CLng(B.B), 255)
     Dest.A = min(CLng(A.A) + CLng(B.A), 255)
@@ -264,8 +264,8 @@ Function vbColor_2_Long(Color As Long) As Long
     Dim TmpColor As RGBA
     Call Long_2_RGBA(TmpColor, Color)
 
-    TmpColor.A = TmpColor.R
-    TmpColor.R = TmpColor.B
+    TmpColor.A = TmpColor.r
+    TmpColor.r = TmpColor.B
     TmpColor.B = TmpColor.A
     TmpColor.A = 255
     
@@ -300,3 +300,21 @@ Copy_RGBAList_WithAlpha_Err:
     Resume Next
     
 End Sub
+
+Function RGBA_ToString(Color As RGBA) As String
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    
+    On Error GoTo RGBA_ToString_Err
+    
+    RGBA_ToString = "RGBA(" & Color.r & ", " & Color.G & ", " & Color.B & ", " & Color.A & ")"
+    
+    Exit Function
+
+RGBA_ToString_Err:
+    Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_ToString", Erl)
+    Resume Next
+    
+End Function
+

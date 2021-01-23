@@ -51,7 +51,7 @@ Friend Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Co
     light_list(NumLights).map_x = map_x
     light_list(NumLights).map_y = map_y
        
-    LucesRedondas.LightRenderAll
+    'LucesRedondas.LightRenderAll
 
     
     Exit Function
@@ -140,7 +140,7 @@ Delete_Light_To_Index_Err:
     
 End Function
 
-Private Function LightCalculate(ByVal Radio2 As Long, ByVal LightX As Integer, ByVal LightY As Integer, ByVal XCoord As Integer, ByVal YCoord As Integer, TileLight As RGBA, LightColor As RGBA, AmbientColor As RGBA) As RGBA
+Private Function LightCalculate(ByVal Radio2 As Long, ByVal LightX As Integer, ByVal LightY As Integer, ByVal XCoord As Integer, ByVal YCoord As Integer, TileLight As RGBA, LightColor As RGBA) As RGBA
     
     On Error GoTo LightCalculate_Err
     
@@ -154,7 +154,7 @@ Private Function LightCalculate(ByVal Radio2 As Long, ByVal LightX As Integer, B
     VertexDist2 = XDist * XDist + YDist * YDist
 
     If VertexDist2 <= Radio2 Then
-        Call LerpRGBA(LightCalculate, LightColor, TileLight, Sqr(VertexDist2 / Radio2))
+        Call LerpRGBA(LightCalculate, LightColor, TileLight, VertexDist2 / Radio2)
     Else
         LightCalculate = TileLight
     End If
@@ -192,8 +192,6 @@ Private Sub LightRender(ByVal light_index As Integer)
        
     Dim TileLight    As RGBA
 
-    Dim AmbientColor As RGBA
-
     Dim LightColor   As RGBA
        
     Dim XCoord       As Integer
@@ -205,21 +203,23 @@ Private Sub LightRender(ByVal light_index As Integer)
     Dim LightY       As Integer
     
     Dim radius       As Long
-
-    AmbientColor = map_light
+    
+    Dim range        As Integer
 
     LightColor = light_list(light_index).RGBcolor
     
     LightX = light_list(light_index).map_x * 32 + 16
     LightY = light_list(light_index).map_y * 32 + 16
+
+    range = light_list(light_index).range
     
-    radius = light_list(light_index).range * 32
+    radius = range * 32 + 16
     radius = radius * radius
            
-    min_x = light_list(light_index).map_x - light_list(light_index).range
-    max_x = light_list(light_index).map_x + light_list(light_index).range
-    min_y = light_list(light_index).map_y - light_list(light_index).range
-    max_y = light_list(light_index).map_y + light_list(light_index).range
+    min_x = light_list(light_index).map_x - range
+    max_x = light_list(light_index).map_x + range
+    min_y = light_list(light_index).map_y - range
+    max_y = light_list(light_index).map_y + range
 
     For Ya = min_y To max_y
         For Xa = min_x To max_x
@@ -227,19 +227,19 @@ Private Sub LightRender(ByVal light_index As Integer)
             If InMapBounds(Xa, Ya) Then
                 XCoord = Xa * 32
                 YCoord = Ya * 32 + 32
-                MapData(Xa, Ya).light_value(0) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(0), LightColor, AmbientColor)
+                MapData(Xa, Ya).light_value(0) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(0), LightColor)
      
                 XCoord = Xa * 32
                 YCoord = Ya * 32
-                MapData(Xa, Ya).light_value(1) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(1), LightColor, AmbientColor)
+                MapData(Xa, Ya).light_value(1) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(1), LightColor)
                            
                 XCoord = Xa * 32 + 32
                 YCoord = Ya * 32 + 32
-                MapData(Xa, Ya).light_value(2) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(2), LightColor, AmbientColor)
+                MapData(Xa, Ya).light_value(2) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(2), LightColor)
        
                 XCoord = Xa * 32 + 32
                 YCoord = Ya * 32
-                MapData(Xa, Ya).light_value(3) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(3), LightColor, AmbientColor)
+                MapData(Xa, Ya).light_value(3) = LightCalculate(radius, LightX, LightY, XCoord, YCoord, MapData(Xa, Ya).light_value(3), LightColor)
                    
             End If
 

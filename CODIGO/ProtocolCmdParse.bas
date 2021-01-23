@@ -730,6 +730,8 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Else
                         Call LucesRedondas.Create_Light_To_Map(UserPos.x, UserPos.y, COLOR_WHITE(0), 10)
                     End If
+                    LucesRedondas.LightRenderAll
+                    LucesCuadradas.Light_Render_All
                 End If
                 
             Case "/LUZMAPA"
