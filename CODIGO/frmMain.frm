@@ -483,6 +483,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1020,6 +1021,7 @@ Begin VB.Form frmMain
       Left            =   11880
       TabIndex        =   40
       Top             =   0
+      Visible         =   0   'False
       Width           =   555
    End
    Begin VB.Image temp2 

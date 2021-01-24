@@ -443,7 +443,7 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
 
-Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Const HWND_TOPMOST = -1
 
@@ -539,7 +539,7 @@ Alpha_Change_Err:
     
 End Sub
 
-Private Sub BtnSolapa_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub BtnSolapa_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
     
     Dim Name As String
 
@@ -576,7 +576,7 @@ Private Sub BtnSolapa_MouseDown(Index As Integer, Button As Integer, Shift As In
     
 End Sub
 
-Private Sub BtnSolapa_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub BtnSolapa_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
 
     If BtnSolapa(Index).Tag = "0" Then
         Call SetSolapa(Index, 1)
@@ -586,7 +586,7 @@ End Sub
 
 Private Sub SetSolapa(Index As Integer, ByVal Tag As String)
 
-    Dim Name As String, Estado As String
+    Dim Name As String, estado As String
     
     Select Case Index
         Case 0: Name = "jugabilidad"
@@ -595,12 +595,12 @@ Private Sub SetSolapa(Index As Integer, ByVal Tag As String)
     End Select
     
     Select Case Tag
-        Case "0": Estado = "off"
-        Case "1": Estado = "over"
-        Case "2": Estado = "default"
+        Case "0": estado = "off"
+        Case "1": estado = "over"
+        Case "2": estado = "default"
     End Select
     
-    BtnSolapa(Index).Picture = LoadInterface("boton-" & Name & "-es-" & Estado & ".bmp")
+    BtnSolapa(Index).Picture = LoadInterface("boton-" & Name & "-es-" & estado & ".bmp")
     BtnSolapa(Index).Tag = Tag
 
 End Sub
@@ -611,7 +611,7 @@ Private Sub cbBloqueoHechizos_Click()
 
 End Sub
 
-Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Check1_MouseUp_Err
     
@@ -623,9 +623,9 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
     End If
         
     If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
+        Check1.Picture = Nothing
     Else
-        check1.Picture = LoadInterface("check-amarillo.bmp")
+        Check1.Picture = LoadInterface("check-amarillo.bmp")
     End If
         
     
@@ -637,7 +637,7 @@ Check1_MouseUp_Err:
     
 End Sub
 
-Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Check4_MouseUp_Err
     
@@ -664,7 +664,7 @@ Check4_MouseUp_Err:
     
 End Sub
 
-Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Check5_MouseUp_Err
     
@@ -692,7 +692,7 @@ Check5_MouseUp_Err:
     
 End Sub
 
-Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Check2_MouseUp_Err
     
@@ -723,7 +723,7 @@ Check2_MouseUp_Err:
     
 End Sub
 
-Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo chkInvertir_MouseUp_Err
     
@@ -754,7 +754,7 @@ chkInvertir_MouseUp_Err:
     
 End Sub
 
-Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo chkO_MouseUp_Err
     
@@ -870,7 +870,7 @@ cmdayuda_Click_Err:
     
 End Sub
 
-Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdayuda_MouseMove_Err
     
@@ -890,19 +890,19 @@ cmdayuda_MouseMove_Err:
     
 End Sub
 
-Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Command1_MouseMove_Err
     
 
     If Command1.Tag = "0" Then
-        Command1.Picture = LoadInterface("boton-configurar-teclas-over.bmp")
+        Command1.Picture = LoadInterface("boton-config-teclas-over.bmp")
         Command1.Tag = "1"
 
     End If
 
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
     
     
     Exit Sub
@@ -913,14 +913,14 @@ Command1_MouseMove_Err:
     
 End Sub
 
-Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdCerrar_MouseMove_Err
     
 
-    If cmdcerrar.Tag = "0" Then
+    If cmdCerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdcerrar.Tag = "1"
+        cmdCerrar.Tag = "1"
 
     End If
 
@@ -938,19 +938,19 @@ cmdCerrar_MouseMove_Err:
     
 End Sub
 
-Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdChangePassword_MouseMove_Err
     
 
     If cmdChangePassword.Tag = "0" Then
-        cmdChangePassword.Picture = LoadInterface("boton-cambiar-contrasena-over.bmp")
+        cmdChangePassword.Picture = LoadInterface("boton-cambiar-pass-over.bmp")
         cmdChangePassword.Tag = "1"
 
     End If
 
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
 
     
     Exit Sub
@@ -1027,11 +1027,11 @@ Private Sub Form_Load()
     
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
-    Me.Picture = LoadInterface("ventanaconfiguracion-vacio.bmp")
+    Me.Picture = LoadInterface("configuracion-vacio.bmp")
     
-    PanelJugabilidad.Picture = LoadInterface("ventanaconfiguracion-jugabilidad.bmp")
-    PanelVideo.Picture = LoadInterface("ventanaconfiguracion-video.bmp")
-    PanelAudio.Picture = LoadInterface("ventanaconfiguracion-audio.bmp")
+    PanelJugabilidad.Picture = LoadInterface("configuracion-jugabilidad.bmp")
+    PanelVideo.Picture = LoadInterface("configuracion-video.bmp")
+    PanelAudio.Picture = LoadInterface("configuracion-audio.bmp")
 
     BtnSolapa(0).Picture = LoadInterface("boton-jugabilidad-es-default.bmp")
     BtnSolapa(1).Picture = LoadInterface("boton-video-es-off.bmp")
@@ -1052,7 +1052,6 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
 
     
@@ -1064,7 +1063,7 @@ Form_KeyPress_Err:
     
 End Sub
 
-Private Sub moverForm()
+Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
     
@@ -1083,7 +1082,7 @@ moverForm_Err:
     
 End Sub
 
-Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
    ' If Check3 Then
       '  SwapMouseButton 1
@@ -1094,7 +1093,7 @@ Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
   '  End If
 End Sub
 
-Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Check6_MouseUp_Err
     
@@ -1122,7 +1121,7 @@ Check6_MouseUp_Err:
     
 End Sub
 
-Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Check9_MouseUp_Err
     
@@ -1184,11 +1183,11 @@ Command3_Click_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Form_MouseMove_Err
     
-    moverForm
+    MoverForm
     cmdayuda = Nothing
     cmdayuda.Tag = "0"
     discord = Nothing
@@ -1201,8 +1200,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
     facebook.Tag = "0"
     Command1 = Nothing
     Command1.Tag = "0"
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
@@ -1357,9 +1356,9 @@ Public Sub Init()
     End If
     
     If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
+        Check1.Picture = Nothing
     Else
-        check1.Picture = LoadInterface("check-amarillo.bmp")
+        Check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     

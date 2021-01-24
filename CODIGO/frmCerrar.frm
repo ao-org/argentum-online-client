@@ -130,7 +130,7 @@ Private Sub Opcion_MouseDown(Index As Integer, Button As Integer, Shift As Integ
     Select Case Index
 
         Case 0 ' Menu principal
-            Opcion(Index).Picture = LoadInterface("boton-menu-principal-ES-off.bmp")
+            Opcion(Index).Picture = LoadInterface("boton-mainmenu-ES-off.bmp")
             Opcion(Index).Tag = "1"
 
         Case 1  'Cerrar juego
@@ -181,7 +181,7 @@ Private Sub Opcion_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 0 ' Menu principal
 
             If Opcion(Index).Tag = "0" Then
-                Opcion(Index).Picture = LoadInterface("boton-menu-principal-ES-over.bmp")
+                Opcion(Index).Picture = LoadInterface("boton-mainmenu-ES-over.bmp")
                 Opcion(Index).Tag = "1"
 
             End If
