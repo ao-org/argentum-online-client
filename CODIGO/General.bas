@@ -92,19 +92,51 @@ Private Const SIF_TRACKPOS = &H10
 Private Const SIF_ALL = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
 Private tSI As SCROLLINFO
 
-Public Declare Function GetScrollInfo Lib "user32" (ByVal hWnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
+Public Declare Function GetScrollInfo Lib "user32" (ByVal hwnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
 
-Public Declare Function GetScrollPos Lib "user32" (ByVal hWnd As Long, ByVal nBar As Long) As Long
+Public Declare Function GetScrollPos Lib "user32" (ByVal hwnd As Long, ByVal nBar As Long) As Long
 
 'Api SendMessage
-Public Declare Function SendMessage _
-    Lib "user32" _
-    Alias "SendMessageA" _
-        (ByVal hWnd As Long, _
-        ByVal wMsg As Long, _
-        ByVal wParam As Long, _
-        lParam As Any) As Long
-'Scroll de richtbox
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
+
+Public Const MAX_TAB_STOPS = 32&
+
+Public Type PARAFORMAT2
+    'Los primeros campos coinciden con PARAFORMAT y se usan igual
+    cbSize As Integer
+    wPad1 As Integer
+    dwMask As Long
+    wNumbering As Integer
+    wEffects As Integer 'No usado en PARAFORMAT
+    dxStartIndent As Long
+    dxRightIndent As Long
+    dxOffset As Long
+    wAlignment As Integer
+    cTabCount As Integer
+    lTabStops(0 To MAX_TAB_STOPS - 1) As Long
+    ' Desde aquí lo añadido por PARAFORMAT2
+    dySpaceBefore As Long '/* Vertical spacing before para */
+    dySpaceAfter As Long '/* Vertical spacing after para */
+    dyLineSpacing As Long '/* Line spacing depending on Rule */
+    sStyle As Integer ' /* Style handle */
+    bLineSpacingRule As Byte '/* Rule for line spacing (see tom.doc) */
+    bOutlineLevel As Byte '/* Outline Level*/'antes bCRC As Byte
+    wShadingWeight As Integer '/* Shading in hundredths of a per cent */
+    wShadingStyle As Integer '/* Byte 0: style, nib 2: cfpat, 3: cbpat*/
+    wNumberingStart As Integer '/* Starting value for numbering */
+    wNumberingStyle As Integer ' /* Alignment, Roman/Arabic, (), ), ., etc.*/
+    wNumberingTab As Integer '/* Space bet 1st indent and 1st-line text*/
+    wBorderSpace As Integer ' /* Border-text spaces (nbl/bdr in pts) */
+    wBorderWidth As Integer '/* Pen widths (nbl/bdr in half twips) */
+    wBorders As Integer '/* Border styles (nibble/border) */
+End Type
+
+Public Const EM_LINEFROMCHAR = &HC9
+Public Const EM_LINEINDEX = &HBB
+
+Public Const EM_SETPARAFORMAT = &H447
+Public Const PFM_LINESPACING = &H100&
+
 
 Public Function DirGraficos() As String
     
@@ -210,7 +242,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         
         Dim bHoldBar As Boolean
 
-    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
+    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
 
     With RichTextBox
         
@@ -226,10 +258,10 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
+        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
         bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         
         .SelStart = Len(.Text)
@@ -254,7 +286,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         End If
         
         If bHoldBar Then
-            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
 
     End With
@@ -281,16 +313,16 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     'Juan Martín Sotuyo Dodero (Maraxus) 03/29/2007 : Replaced ToxicWaste's code for extra performance.
     'Ladder 17/12/20 agrego que la barra no se nos baje si estamos haciedno scroll. Gracias barrin tkm
     '******************************************r
-Dim bUrl As Boolean
-Dim sMax As Long
-Dim sPos As Long
-Dim Pos As Long
-Dim Ret As Long
+    Dim bUrl As Boolean
+    Dim sMax As Long
+    Dim sPos As Long
+    Dim Pos As Long
+    Dim Ret As Long
+    
+    Dim bHoldBar As Boolean
+    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
 
-Dim bHoldBar As Boolean
-        Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
-
-        With RichTextBox
+    With RichTextBox
 
         If Len(.Text) > 20000 Then
             .Text = vbNullString
@@ -301,10 +333,10 @@ Dim bHoldBar As Boolean
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
+        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
          bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         .SelStart = Len(.Text)
         .SelLength = 0
@@ -318,7 +350,7 @@ Dim bHoldBar As Boolean
         .SelText = Text
         
         If bHoldBar Then
-            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
     End With
     
@@ -330,6 +362,32 @@ AddtoRichTextBox_Err:
     Call RegistrarError(Err.number, Err.Description, "Mod_General.AddtoRichTextBox", Erl)
     Resume Next
     
+End Sub
+
+' WyroX: Copiado desde https://www.vbforums.com/showthread.php?727119-RESOLVED-VB2010-richtextbox-paragraph-space-width-seleted-and-RichTextBoxStreamType
+Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, Optional ByVal LineSpacing As Long = 20)
+    ' SpacingRule
+    ' Type of line spacing. To use this member, set the PFM_SPACEAFTER flag in the dwMask member. This member can be one of the following values.
+    ' 0 - Single spacing. The dyLineSpacing member is ignored.
+    ' 1 - One-and-a-half spacing. The dyLineSpacing member is ignored.
+    ' 2 - Double spacing. The dyLineSpacing member is ignored.
+    ' 3 - The dyLineSpacing member specifies the spacingfrom one line to the next, in twips. However, if dyLineSpacing specifies a value that is less than single spacing, the control displays single-spaced text.
+    ' 4 - The dyLineSpacing member specifies the spacing from one line to the next, in twips. The control uses the exact spacing specified, even if dyLineSpacing specifies a value that is less than single spacing.
+    ' 5 - The value of dyLineSpacing / 20 is the spacing, in lines, from one line to the next. Thus, setting dyLineSpacing to 20 produces single-spaced text, 40 is double spaced, 60 is triple spaced, and so on.
+
+    Dim Para As PARAFORMAT2
+
+    With Para
+        .cbSize = Len(Para)
+        .dwMask = PFM_LINESPACING
+        .bLineSpacingRule = SpacingRule
+        .dyLineSpacing = LineSpacing
+    End With
+
+    Dim Ret As Long
+    Ret = SendMessage(rtbTarget.hwnd, EM_SETPARAFORMAT, 0&, Para)
+    
+    If Ret = 0 Then Debug.Print "Error al setear el espaciado entre líneas del RichTextBox."
 End Sub
 
 'TODO : Never was sure this is really necessary....
@@ -564,7 +622,7 @@ Sub SetConnected()
     'Unload the connect form
     'FrmCuenta.Visible = False
 
-    frmMain.Label8.Caption = UserName
+    frmMain.NombrePJ.Caption = UserName
     LogeoAlgunaVez = True
     
     ' bTecho = False
@@ -588,10 +646,10 @@ Sub SetConnected()
     ' establece el borde al listbox
     Call Establecer_Borde(frmMain.hlst, frmMain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmMain.RecTxt.hWnd)
+    Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
+    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(frmMain)
@@ -1036,7 +1094,7 @@ Sub Main()
     
     If Sonido Then
     
-        If Sound.Initialize_Engine(frmConnect.hWnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+        If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
             Call Sound.Ambient_Volume_Set(VolAmbient)
         
         Else
@@ -1064,6 +1122,9 @@ Sub Main()
     
     'Cargamos todos los init
     Call CargarRecursos
+    
+    'Cargar fuentes
+    Call LoadFonts
     
     FrameTime = timeGetTime And &H7FFFFFFF
     

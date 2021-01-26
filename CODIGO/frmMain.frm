@@ -219,7 +219,7 @@ Begin VB.Form frmMain
          BackColor       =   &H00000000&
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   9.75
+            Size            =   9
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -531,6 +531,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   3675
       Left            =   11340
+      Picture         =   "frmMain.frx":41245
       ScaleHeight     =   245
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   266
@@ -550,7 +551,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1680
-         Picture         =   "frmMain.frx":41245
+         Picture         =   "frmMain.frx":71029
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -626,12 +627,11 @@ Begin VB.Form frmMain
       End
       Begin VB.Label stabar 
          Alignment       =   2  'Center
-         AutoSize        =   -1  'True
          BackColor       =   &H0000FFFF&
          BackStyle       =   0  'Transparent
          Caption         =   "999/999"
          BeginProperty Font 
-            Name            =   "Tahoma"
+            Name            =   "Times New Roman"
             Size            =   6.75
             Charset         =   0
             Weight          =   700
@@ -640,19 +640,18 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   165
-         Left            =   510
+         Height          =   225
+         Left            =   915
          TabIndex        =   39
-         Top             =   2070
-         Width           =   1335
+         Top             =   2055
+         Width           =   525
       End
       Begin VB.Label hambar 
          Alignment       =   2  'Center
-         AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "100"
          BeginProperty Font 
-            Name            =   "Tahoma"
+            Name            =   "Times New Roman"
             Size            =   6.75
             Charset         =   0
             Weight          =   700
@@ -661,19 +660,18 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   165
-         Left            =   3270
+         Height          =   225
+         Left            =   3390
          TabIndex        =   38
-         Top             =   2070
-         Width           =   495
+         Top             =   2055
+         Width           =   255
       End
       Begin VB.Label AGUbar 
          Alignment       =   2  'Center
-         AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "100"
          BeginProperty Font 
-            Name            =   "Tahoma"
+            Name            =   "Times New Roman"
             Size            =   6.75
             Charset         =   0
             Weight          =   700
@@ -682,20 +680,19 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   165
-         Left            =   2325
+         Height          =   225
+         Left            =   2445
          TabIndex        =   37
-         Top             =   2070
-         Width           =   495
+         Top             =   2055
+         Width           =   255
       End
       Begin VB.Label HpBar 
          Alignment       =   2  'Center
-         AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "999/999"
          BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   9.75
+            Name            =   "Times New Roman"
+            Size            =   9
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -703,19 +700,18 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   195
-         Left            =   480
+         Height          =   240
+         Left            =   1755
          TabIndex        =   36
-         Top             =   1200
-         Width           =   3255
+         Top             =   1215
+         Width           =   705
       End
       Begin VB.Label lbldm 
          Alignment       =   2  'Center
-         AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "+0%"
          BeginProperty Font 
-            Name            =   "Tahoma"
+            Name            =   "Times New Roman"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
@@ -724,20 +720,19 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00E0E0E0&
-         Height          =   255
-         Left            =   3045
+         Height          =   240
+         Left            =   3195
          TabIndex        =   35
          ToolTipText     =   "Tu defensa magica"
-         Top             =   3165
-         Width           =   630
+         Top             =   3150
+         Width           =   330
       End
       Begin VB.Label lblResis 
          Alignment       =   2  'Center
-         AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "+0%"
          BeginProperty Font 
-            Name            =   "Tahoma"
+            Name            =   "Times New Roman"
             Size            =   8.25
             Charset         =   0
             Weight          =   700
@@ -746,12 +741,12 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00E0E0E0&
-         Height          =   195
-         Left            =   1785
+         Height          =   240
+         Left            =   1935
          TabIndex        =   34
          ToolTipText     =   "Tu daño magico"
-         Top             =   3165
-         Width           =   630
+         Top             =   3150
+         Width           =   330
       End
       Begin VB.Label oxigenolbl 
          Alignment       =   2  'Center
@@ -759,8 +754,8 @@ Begin VB.Form frmMain
          BackStyle       =   0  'Transparent
          Caption         =   "15"
          BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   9.75
+            Name            =   "Times New Roman"
+            Size            =   9
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -768,20 +763,20 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   240
-         Left            =   2370
+         Height          =   225
+         Left            =   2400
          TabIndex        =   33
          ToolTipText     =   "Oxigeno acumulado"
          Top             =   570
-         Width           =   255
+         Width           =   195
       End
       Begin VB.Label GldLbl 
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "100.000"
          BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   9.75
+            Name            =   "Times New Roman"
+            Size            =   9
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -789,19 +784,19 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H0080FFFF&
-         Height          =   240
-         Left            =   600
+         Height          =   225
+         Left            =   480
          TabIndex        =   32
          Top             =   585
-         Width           =   780
+         Width           =   585
       End
       Begin VB.Label Fuerzalbl 
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "40"
          BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   9.75
+            Name            =   "Times New Roman"
+            Size            =   9
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -809,19 +804,120 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   210
+         Height          =   225
          Left            =   3585
          TabIndex        =   31
          Top             =   570
-         Width           =   330
+         Width           =   180
       End
       Begin VB.Label AgilidadLbl 
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "40"
          BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   9.75
+            Name            =   "Times New Roman"
+            Size            =   9
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   225
+         Left            =   2985
+         TabIndex        =   30
+         Top             =   570
+         Width           =   180
+      End
+      Begin VB.Label lblWeapon 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "0/0"
+         BeginProperty Font 
+            Name            =   "Times New Roman"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00E0E0E0&
+         Height          =   240
+         Left            =   720
+         TabIndex        =   29
+         Top             =   2700
+         Width           =   240
+      End
+      Begin VB.Label lblShielder 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "0/0"
+         BeginProperty Font 
+            Name            =   "Times New Roman"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00E0E0E0&
+         Height          =   240
+         Left            =   1980
+         TabIndex        =   28
+         Top             =   2700
+         Width           =   240
+      End
+      Begin VB.Label lblHelm 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "0/0"
+         BeginProperty Font 
+            Name            =   "Times New Roman"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00E0E0E0&
+         Height          =   240
+         Left            =   3240
+         TabIndex        =   27
+         Top             =   2700
+         Width           =   240
+      End
+      Begin VB.Label lblArmor 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "0/0"
+         BeginProperty Font 
+            Name            =   "Times New Roman"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00E0E0E0&
+         Height          =   240
+         Left            =   720
+         TabIndex        =   26
+         Top             =   3150
+         Width           =   240
+      End
+      Begin VB.Label manabar 
+         Alignment       =   2  'Center
+         BackColor       =   &H80000006&
+         BackStyle       =   0  'Transparent
+         Caption         =   "999/999"
+         BeginProperty Font 
+            Name            =   "Times New Roman"
+            Size            =   9
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -830,116 +926,10 @@ Begin VB.Form frmMain
          EndProperty
          ForeColor       =   &H00FFFFFF&
          Height          =   240
-         Left            =   2985
-         TabIndex        =   30
-         Top             =   570
-         Width           =   240
-      End
-      Begin VB.Label lblWeapon 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0/0"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00E0E0E0&
-         Height          =   195
-         Left            =   690
-         TabIndex        =   29
-         Top             =   2715
-         Width           =   300
-      End
-      Begin VB.Label lblShielder 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0/0"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00E0E0E0&
-         Height          =   195
-         Left            =   1950
-         TabIndex        =   28
-         Top             =   2715
-         Width           =   300
-      End
-      Begin VB.Label lblHelm 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0/0"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00E0E0E0&
-         Height          =   195
-         Left            =   3210
-         TabIndex        =   27
-         Top             =   2715
-         Width           =   300
-      End
-      Begin VB.Label lblArmor 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0/0"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00E0E0E0&
-         Height          =   195
-         Left            =   690
-         TabIndex        =   26
-         Top             =   3165
-         Width           =   300
-      End
-      Begin VB.Label manabar 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackColor       =   &H80000006&
-         BackStyle       =   0  'Transparent
-         Caption         =   "999/999"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   285
-         Left            =   1320
+         Left            =   1755
          TabIndex        =   25
-         Top             =   1620
-         Width           =   1575
+         Top             =   1635
+         Width           =   705
       End
       Begin VB.Image imgOro 
          Height          =   255
@@ -950,35 +940,35 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":42057
+         Picture         =   "frmMain.frx":71E3B
          Top             =   1215
          Width           =   3240
       End
       Begin VB.Image MANShp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":4491B
+         Picture         =   "frmMain.frx":746FF
          Top             =   1635
          Width           =   3240
       End
       Begin VB.Image STAShp 
          Height          =   135
          Left            =   510
-         Picture         =   "frmMain.frx":471DF
+         Picture         =   "frmMain.frx":76FC3
          Top             =   2085
          Width           =   1335
       End
       Begin VB.Image AGUAsp 
          Height          =   135
          Left            =   2340
-         Picture         =   "frmMain.frx":47B8D
+         Picture         =   "frmMain.frx":77971
          Top             =   2085
          Width           =   480
       End
       Begin VB.Image COMIDAsp 
          Height          =   120
          Left            =   3285
-         Picture         =   "frmMain.frx":47F31
+         Picture         =   "frmMain.frx":77D15
          Top             =   2100
          Width           =   480
       End
@@ -986,7 +976,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   630
-         Picture         =   "frmMain.frx":48275
+         Picture         =   "frmMain.frx":78059
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -995,7 +985,7 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   510
          Left            =   105
-         Picture         =   "frmMain.frx":49087
+         Picture         =   "frmMain.frx":78E6B
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -1005,7 +995,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1155
-         Picture         =   "frmMain.frx":49E99
+         Picture         =   "frmMain.frx":79C7D
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -1054,7 +1044,7 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Caption         =   "00:00"
       BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "Times New Roman"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -1064,10 +1054,10 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   195
-      Left            =   13170
+      Left            =   13200
       TabIndex        =   24
-      Top             =   1995
-      Width           =   495
+      Top             =   1965
+      Width           =   435
    End
    Begin VB.Label ObjLbl 
       Alignment       =   2  'Center
@@ -1092,10 +1082,11 @@ Begin VB.Form frmMain
    End
    Begin VB.Label ms 
       Alignment       =   2  'Center
+      AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "30 ms"
       BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "Times New Roman"
          Size            =   6.75
          Charset         =   0
          Weight          =   700
@@ -1104,18 +1095,19 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00E0E0E0&
-      Height          =   255
-      Left            =   8280
+      Height          =   180
+      Left            =   8625
       TabIndex        =   15
-      Top             =   240
-      Width           =   1065
+      Top             =   210
+      Width           =   375
    End
    Begin VB.Label fps 
       Alignment       =   2  'Center
+      AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Fps: 200"
       BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "Times New Roman"
          Size            =   6.75
          Charset         =   0
          Weight          =   700
@@ -1124,12 +1116,12 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00E0E0E0&
-      Height          =   255
-      Left            =   8280
+      Height          =   180
+      Left            =   8550
       TabIndex        =   14
       ToolTipText     =   "Numero de usuarios online"
-      Top             =   65
-      Width           =   1065
+      Top             =   30
+      Width           =   525
    End
    Begin VB.Image EstadisticasBoton 
       Height          =   420
@@ -1140,10 +1132,11 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Coord 
       Alignment       =   2  'Center
+      AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "000 X:00 Y: 00"
       BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "Times New Roman"
          Size            =   6.75
          Charset         =   0
          Weight          =   700
@@ -1152,13 +1145,13 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H0000FFFF&
-      Height          =   255
-      Left            =   9480
+      Height          =   180
+      Left            =   9870
       TabIndex        =   13
-      Top             =   240
-      Width           =   1695
+      Top             =   210
+      Width           =   915
    End
-   Begin VB.Label Label8 
+   Begin VB.Label NombrePJ 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
       Caption         =   "Nombre del pj"
@@ -1183,8 +1176,8 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Caption         =   "33.33%"
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
+         Name            =   "Times New Roman"
+         Size            =   9
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1195,9 +1188,9 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   11580
       TabIndex        =   10
-      Top             =   1530
+      Top             =   1545
       Visible         =   0   'False
-      Width           =   3525
+      Width           =   3540
    End
    Begin VB.Image TiendaBoton 
       Height          =   405
@@ -1217,14 +1210,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":4ACAB
+      Picture         =   "frmMain.frx":7AA8F
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":4B22F
+      Picture         =   "frmMain.frx":7B013
       Top             =   2008
       Width           =   555
    End
@@ -1266,7 +1259,7 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Caption         =   "Online: 1"
       BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "Times New Roman"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -1302,17 +1295,18 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":4B7B3
+      Picture         =   "frmMain.frx":7B597
       Top             =   480
       Visible         =   0   'False
       Width           =   525
    End
    Begin VB.Label NameMapa 
       Alignment       =   2  'Center
+      AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Mapa Desconocido"
       BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "Times New Roman"
          Size            =   6
          Charset         =   0
          Weight          =   700
@@ -1322,10 +1316,10 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00E0E0E0&
       Height          =   165
-      Left            =   9210
+      Left            =   9825
       TabIndex        =   0
-      Top             =   30
-      Width           =   2205
+      Top             =   45
+      Width           =   1005
    End
    Begin VB.Label lblLvl 
       Alignment       =   2  'Center
@@ -1333,7 +1327,7 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Caption         =   "Guerrero - Nivel 50"
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Times New Roman"
          Size            =   9.75
          Charset         =   0
          Weight          =   700
@@ -1342,19 +1336,19 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   240
-      Left            =   12405
+      Height          =   225
+      Left            =   12495
       TabIndex        =   11
       Top             =   1080
-      Width           =   1815
+      Width           =   1635
    End
    Begin VB.Label exp 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
       Caption         =   "99999/99999"
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
+         Name            =   "Times New Roman"
+         Size            =   9
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1365,13 +1359,13 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   11580
       TabIndex        =   9
-      Top             =   1530
-      Width           =   3525
+      Top             =   1545
+      Width           =   3540
    End
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":4C433
+      Picture         =   "frmMain.frx":7C217
       Top             =   1545
       Width           =   3540
    End
@@ -1423,7 +1417,7 @@ Private Const WS_EX_TRANSPARENT = &H20&
 
 Private Const GWL_EXSTYLE = (-20)
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
@@ -1473,9 +1467,9 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
 
 Private Const EM_GETLINE = &HC4
 
@@ -2358,7 +2352,7 @@ Private Sub Image4_Click(Index As Integer)
             If frmCerrar.Visible Then Exit Sub
             Dim mForm As Form
             For Each mForm In Forms
-                If mForm.hWnd <> Me.hWnd Then Unload mForm
+                If mForm.hwnd <> Me.hwnd Then Unload mForm
                 Set mForm = Nothing
             Next
             frmCerrar.Show , Me
@@ -2696,9 +2690,9 @@ Private Sub ImgSegResu_Click()
 End Sub
 
 Private Sub Label1_Click()
-frmBancoCuenta.Picture = LoadInterface("banco.bmp")
-frmBancoCuenta.Show , frmMain
-HayFormularioAbierto = True
+    frmBancoCuenta.Picture = LoadInterface("banco.bmp")
+    frmBancoCuenta.Show , frmMain
+    HayFormularioAbierto = True
 End Sub
 
 Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -3704,11 +3698,11 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
         intCurrentLine = RecTxt.GetLineFromChar(RecTxt.SelStart)
         'get line length
-        lngLength = SendMessage(RecTxt.hWnd, EM_LINELENGTH, intCurrentLine, 0)
+        lngLength = SendMessage(RecTxt.hwnd, EM_LINELENGTH, intCurrentLine, 0)
         'resize buffer
         strBuffer = Space(lngLength)
         'get line text
-        Call SendMessage(RecTxt.hWnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
+        Call SendMessage(RecTxt.hwnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
 
         Dim partea       As String
 
@@ -5470,7 +5464,7 @@ Private Sub MoverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub

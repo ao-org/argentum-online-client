@@ -217,7 +217,7 @@ Public Sub CargarRecursos()
     Call CargarParticulasBinary
     Call CargarIndicesOBJ
     Call Cargarmapsworlddata
-    Call InitFonts
+    Call InitFontTypes
     
     Call LoadGrhData
     Call CargarMoldes
@@ -243,7 +243,7 @@ End Sub
 ''
 ' Initializes the fonts array
 
-Public Sub InitFonts()
+Public Sub InitFontTypes()
     
     On Error GoTo InitFonts_Err
     
@@ -2877,3 +2877,44 @@ CargarAnimEscudos_Err:
     
 End Sub
 
+Sub LoadFonts()
+    If LoadFont("Cardo.ttf") Then
+        frmMain.NombrePJ.font.Name = "Cardo"
+    End If
+
+    If LoadFont("Livvic.ttf") Then
+        Dim CurControl As Control
+        Dim Middle As Integer
+    
+        For Each CurControl In frmMain.Controls
+            If CurControl.Name <> "NombrePJ" Then
+                Select Case TypeName(CurControl)
+                    Case "Label"
+                        CurControl.font.Name = "Livvic"
+
+                        ' Centrar texto verticalmente
+                        If Not CurControl.AutoSize Then
+                            Middle = Fix(CurControl.Top + CurControl.Height * 0.5)
+                            CurControl.AutoSize = True
+                            CurControl.Top = Fix(Middle - CurControl.Height * 0.5) - 1
+                        End If
+                        
+                    Case "RichTextBox", "ListBox"
+                        CurControl.font.Name = "Livvic"
+                End Select
+            End If
+        Next
+
+        Call SelLineSpacing(frmMain.RecTxt, 5, 22)
+    End If
+End Sub
+
+Function LoadFont(Name As String) As Boolean
+    Static YaMostreError As Boolean
+    LoadFont = AddFontResourceEx(App.Path & "\..\Recursos\OUTPUT\" & Name, FR_PRIVATE, 0&) <> 0
+
+    If Not YaMostreError And Not LoadFont Then
+        Call MsgBox("No se pudieron cargar algunas fuentes, reinstale el juego para repararlas.", vbOKOnly, "Error al cargar - Argentum20")
+        YaMostreError = True
+    End If
+End Function
