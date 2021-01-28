@@ -594,7 +594,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
-            Case "/REM"
+            Case "/REM", "/LOG", "/ANOTAR"
                 If notNullArguments Then
                     Call WriteComment(ArgumentosRaw)
                 Else
