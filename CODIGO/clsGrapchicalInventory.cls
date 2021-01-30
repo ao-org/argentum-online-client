@@ -741,15 +741,17 @@ Public Sub DrawInventory()
             End If
             
             If ShowQuantities Then
-                Call RGBAList(Color, 239, 228, 176)
+                If UserInventory(i).Amount > 1 Then
+                    Call RGBAList(Color, 239, 228, 176)
+        
+                    If UserInventory(i).Amount > 1000 And InvSelectedItem <> i Then
+                        tmpString = Round(UserInventory(i).Amount * 0.001, 1) & "K"
+                    Else
+                        tmpString = UserInventory(i).Amount
+                    End If
     
-                If UserInventory(i).Amount > 1000 And InvSelectedItem <> i Then
-                    tmpString = Round(UserInventory(i).Amount * 0.001, 1) & "K"
-                Else
-                    tmpString = UserInventory(i).Amount
+                    Engine_Text_Render tmpString, x + HALF_ITEM_SIZE - Engine_Text_Width(tmpString, True) * 0.5, y + LETRA_GRANDE_Y, Color, 1
                 End If
-
-                Engine_Text_Render tmpString, x + HALF_ITEM_SIZE - Engine_Text_Width(tmpString, True) * 0.5, y + LETRA_GRANDE_Y, Color, 1
 
                 If UserInventory(i).Equipped Then
                     Call RGBAList(Color, 255, 0, 0)
