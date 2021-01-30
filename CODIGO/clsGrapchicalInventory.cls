@@ -89,17 +89,11 @@ Public Event ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x A
 ' Valores constantes que no ameritan que los reciba como parámetro
 Const ITEM_SIZE = 32 ' El ancho de los items (nunca debería cambiar
 
-Const LETRA_CHICA_X = 3 ' Offset X de cantidad de items (letra chica)
-
-Const LETRA_CHICA_Y = 23 ' Offset Y de cantidad de items (letra chica)
-
-Const LETRA_GRANDE_X = 4 ' Offset X de cantidad de items (letra grande)
-
 Const LETRA_GRANDE_Y = 20 ' Offset Y de cantidad de items (letra grande)
 
-Const EQUIPPED_X = 30 ' Offset X del caracter de equipado
+Const EQUIPPED_X = 22 ' Offset X del caracter de equipado
 
-Const EQUIPPED_Y = 0 ' Offset Y del caracter de equipado
+Const EQUIPPED_Y = -2 ' Offset Y del caracter de equipado
 
 Const EQUIPPED_CHARACTER = "+" ' Caracter de item equipado
 
@@ -748,22 +742,19 @@ Public Sub DrawInventory()
             
             If ShowQuantities Then
                 Call RGBAList(Color, 239, 228, 176)
-                
-                tmpString = UserInventory(i).Amount
     
-                If tmpString = 10000 Then
-                    tmpString = "Max"
-                End If
-                
-                If InvSelectedItem <> i Then
-                    Engine_Text_Render_LetraChica tmpString, x + LETRA_CHICA_X, y + LETRA_CHICA_Y, Color, 4, True
+                If UserInventory(i).Amount > 1000 And InvSelectedItem <> i Then
+                    tmpString = Round(UserInventory(i).Amount * 0.001, 1) & "K"
                 Else
-                    Engine_Text_Render tmpString, x + LETRA_GRANDE_X, y + LETRA_GRANDE_Y, Color, 1, True
+                    tmpString = UserInventory(i).Amount
                 End If
-            
+
+                Engine_Text_Render tmpString, x + HALF_ITEM_SIZE - Engine_Text_Width(tmpString, True) * 0.5, y + LETRA_GRANDE_Y, Color, 1
+
                 If UserInventory(i).Equipped Then
+                    Call RGBAList(Color, 255, 0, 0)
                     tmpString = EQUIPPED_CHARACTER
-                    Engine_Text_Render tmpString, x + EQUIPPED_X - Engine_Text_Width(tmpString, True) \ 2, y + EQUIPPED_Y - Engine_Text_Height(tmpString, True), COLOR_WHITE, 1, True
+                    Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, Color, 1
                 End If
             End If
         End If
