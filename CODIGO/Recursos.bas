@@ -2882,7 +2882,7 @@ Sub LoadFonts()
         frmMain.NombrePJ.font.Name = "Cardo"
     End If
 
-    If LoadFont("Livvic.ttf") Then
+    If LoadFont("Alegreya Sans AO.ttf") Then
         Dim CurControl As Control
         Dim Middle As Integer
     
@@ -2890,17 +2890,17 @@ Sub LoadFonts()
             If CurControl.Name <> "NombrePJ" Then
                 Select Case TypeName(CurControl)
                     Case "Label"
-                        CurControl.font.Name = "Livvic"
+                        CurControl.font.Name = "Alegreya Sans AO"
 
                         ' Centrar texto verticalmente
                         If Not CurControl.AutoSize Then
                             Middle = Fix(CurControl.Top + CurControl.Height * 0.5)
                             CurControl.AutoSize = True
-                            CurControl.Top = Fix(Middle - CurControl.Height * 0.5) - 1
+                            CurControl.Top = Fix(Middle - CurControl.Height * 0.5)
                         End If
                         
                     Case "RichTextBox", "ListBox"
-                        CurControl.font.Name = "Livvic"
+                        CurControl.font.Name = "Alegreya Sans AO"
                 End Select
             End If
         Next
