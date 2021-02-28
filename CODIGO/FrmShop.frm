@@ -422,7 +422,7 @@ Private Sub Image3_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Image3_MouseUp_Err
     
-    ShellExecute Me.hwnd, "open", "https://www.argentum20.com/creditos/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://ao20.com.ar/creditos/", "", "", 0
 
     
     Exit Sub

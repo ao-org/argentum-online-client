@@ -965,7 +965,7 @@ Private Sub cmdWeb_Click()
     
     On Error GoTo cmdWeb_Click_Err
     
-    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://ao20.com.ar/", "", "", 0
 
     
     Exit Sub
@@ -1010,7 +1010,7 @@ Private Sub facebook_Click()
     
     On Error GoTo facebook_Click_Err
     
-    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://ao20.com.ar/", "", "", 0
 
     
     Exit Sub
@@ -1424,7 +1424,7 @@ Private Sub instagram_Click()
     
     On Error GoTo instagram_Click_Err
     
-    ShellExecute Me.hWnd, "open", "https://www.argentum20.com/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://ao20.com.ar/", "", "", 0
 
     
     Exit Sub

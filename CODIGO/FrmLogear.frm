@@ -275,7 +275,7 @@ Private Sub btnCuenta_Click()
     
     On Error GoTo btnCuenta_Click_Err
     
-    Call ShellExecute(0, "Open", "https://www.argentum20.com/", "", App.Path, 1)
+    Call ShellExecute(0, "Open", "https://ao20.com.ar/", "", App.Path, 1)
 
     
     Exit Sub
