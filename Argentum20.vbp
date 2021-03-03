@@ -1,6 +1,6 @@
 Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#c:\windows\SysWow64\DX8VB.DLL#DirectX 8 for Visual Basic Type Library
+Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#C:\WINDOWS\SysWow64\dx8vb.dll#DirectX 8 for Visual Basic Type Library
 Reference=*\G{56A868B0-0AD4-11CE-B03A-0020AF0BA770}#1.0#0#C:\Windows\System32\quartz.dll#ActiveMovie control type library
 Object={EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}#1.1#0; ieframe.dll
 Reference=*\G{6B263850-900B-11D0-9484-00A0C91110ED}#1.0#0#c:\windows\SysWow64\MSSTDFMT.DLL#Microsoft Data Formatting Object Library 6.0 (SP4)
@@ -134,6 +134,7 @@ Form=CODIGO\MenuNPC.frm
 Form=CODIGO\MenuGM.frm
 Form=CODIGO\frmBancoCuenta.frm
 ResFile32="AO20.res"
+Form=CODIGO\frmRetos.frm
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

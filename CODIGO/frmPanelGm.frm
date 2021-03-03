@@ -1662,7 +1662,7 @@ Private Sub mnuManual_Click()
     On Error GoTo mnuManual_Click_Err
     
     Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: ao20.com.ar.ar.")
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: ao20.com.ar")
 
     
     Exit Sub

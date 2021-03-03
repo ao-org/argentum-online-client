@@ -988,6 +988,8 @@ Public UserParalizado                           As Boolean
 
 Public UserInmovilizado                         As Boolean
 
+Public UserStopped                              As Boolean
+
 Public UserNavegando                            As Boolean
 
 Public UserMontado                              As Boolean

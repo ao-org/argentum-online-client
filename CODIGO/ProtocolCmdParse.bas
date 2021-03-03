@@ -283,9 +283,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/INFORMACION"
                 Call WriteInformation
                 
-            Case "/DUELO"
-                Call WriteDuelo
-                
             Case "/RECOMPENSA"
                 Call WriteReward
                 
@@ -2194,6 +2191,20 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteTolerancia0(ArgumentosRaw)
                 End If
                 
+            Case "/RETAR", "/RETO"
+                frmRetos.Show , frmMain
+                
+            Case "/ACEPTAR"
+                If notNullArguments Then
+                    Call WriteAcceptDuel(ArgumentosRaw)
+                End If
+                
+            Case "/CANCELAR"
+                Call WriteCancelDuel
+                
+            Case "/ABANDONAR"
+                Call WriteQuitDuel
+
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")
 

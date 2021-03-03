@@ -228,6 +228,7 @@ Private Enum ServerPacketID
     Tolerancia0
     Redundancia
     SeguroResu
+    Stopped
 
 End Enum
 
@@ -500,7 +501,10 @@ Private Enum NewPacksID
     QuestionGM
     CuentaRegresiva
     PossUser
-    Duelo
+    Duel
+    AcceptDuel
+    CancelDuel
+    QuitDuel
     NieveToggle
     NieblaToggle
     TransFerGold
@@ -1136,6 +1140,9 @@ Public Sub HandleIncomingData()
             
         Case ServerPacketID.SeguroResu
             Call HandleSeguroResu
+            
+        Case ServerPacketID.Stopped
+            Call HandleStopped
 
         Case Else
         
@@ -1603,6 +1610,7 @@ Private Sub HandleDisconnect()
     'Reset global vars
     UserParalizado = False
     UserSaliendo = False
+    UserStopped = False
     UserInmovilizado = False
     pausa = False
     UserMeditar = False
@@ -4244,6 +4252,7 @@ Private Sub HandleMostrarCuenta()
         
         UserParalizado = False
         UserInmovilizado = False
+        UserStopped = False
      
         'BUG CLONES
         Dim i As Integer
@@ -18262,28 +18271,6 @@ HandleSpeedToChar_Err:
     
 End Sub
 
-Public Sub WriteDuelo()
-    '***************************************************
-    '***************************************************
-    
-    On Error GoTo WriteDuelo_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.Duelo)
-
-    End With
-    
-    
-    Exit Sub
-
-WriteDuelo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDuelo", Erl)
-    Resume Next
-    
-End Sub
-
 Public Sub WriteNieveToggle()
     
     On Error GoTo WriteNieveToggle_Err
@@ -20692,6 +20679,21 @@ Private Sub HandleSeguroResu()
     End If
     
 End Sub
+
+Private Sub HandleStopped()
+
+    If incomingData.length < 2 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    'Remove packet ID
+    Call incomingData.ReadByte
+
+    UserStopped = incomingData.ReadBoolean()
+
+End Sub
+
 Public Sub WriteCuentaExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
     
     On Error GoTo WriteCuentaExtractItem_Err
@@ -20739,4 +20741,35 @@ WriteCuentaDeposit_Err:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCuentaDeposit", Erl)
     Resume Next
     
+End Sub
+
+Public Sub WriteDuel(Players As String, ByVal Apuesta As Long)
+    With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.Duel)
+        Call .WriteASCIIString(Players)
+        Call .WriteLong(Apuesta)
+    End With
+End Sub
+
+Public Sub WriteAcceptDuel(Offerer As String)
+    With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.AcceptDuel)
+        Call .WriteASCIIString(Offerer)
+    End With
+End Sub
+
+Public Sub WriteCancelDuel()
+    With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.CancelDuel)
+    End With
+End Sub
+
+Public Sub WriteQuitDuel()
+    With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.QuitDuel)
+    End With
 End Sub
