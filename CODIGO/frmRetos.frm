@@ -89,6 +89,15 @@ Begin VB.Form frmRetos
    End
    Begin VB.Label Error 
       Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       ForeColor       =   &H000000FF&
       Height          =   255
       Left            =   120
@@ -122,8 +131,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim JugadoresPorTeam As Integer
-
 Private Sub Apuesta_Change()
     Dim Sel As Integer
     Sel = Apuesta.SelStart
@@ -141,8 +148,6 @@ End Sub
 
 Private Sub Form_Load()
     Jugador(0) = UserName
-
-    JugadoresPorTeam = 1
 End Sub
 
 Private Sub Jugador_Change(Index As Integer)
@@ -154,9 +159,9 @@ Private Sub Retar_Click()
     If Not Validar Then Exit Sub
     
     Dim Players As String, i As Integer
-        
+    
     ' No incluímos el jugador que crea el reto
-    For i = 1 To JugadoresPorTeam * 2 - 1
+    For i = 1 To txtPPT.Text * 2 - 1
         Players = Players & Jugador(i).Text & ";"
     Next
         
@@ -168,28 +173,13 @@ Private Sub Retar_Click()
 
 End Sub
 
-Private Sub TipoReto_Click(Index As Integer)
-    JugadoresPorTeam = Index + 1
-
-    Dim i As Integer
-    For i = 0 To 2
-        If i <= Index Then
-            Jugador(2 * i).Visible = True
-            Jugador(2 * i + 1).Visible = True
-        Else
-            Jugador(2 * i).Visible = False
-            Jugador(2 * i + 1).Visible = False
-        End If
-    Next
-
-    Error.Caption = vbNullString
-End Sub
-
 Private Function Validar() As Boolean
     Dim ErrorStr As String
 
-    Dim i As Integer
-    For i = 0 To JugadoresPorTeam * 2 - 1
+    Dim i        As Integer
+
+    For i = 0 To txtPPT.Text * 2 - 1
+
         If LenB(Jugador(i).Text) = 0 Then
             Error.Caption = "Complete todos los jugadores."
             Exit Function
@@ -197,21 +187,28 @@ Private Function Validar() As Boolean
         ElseIf Not ValidarNombre(Jugador(i).Text, ErrorStr) Then
             Error.Caption = "Nombre inválido: """ & Jugador(i).Text & """"
             Exit Function
+
         End If
+
     Next
     
     Dim j As Integer
-    For i = 0 To JugadoresPorTeam * 2 - 2
-        For j = i + 1 To JugadoresPorTeam * 2 - 1
+
+    For i = 0 To txtPPT.Text * 2 - 2
+        For j = i + 1 To txtPPT.Text * 2 - 1
+
             If Jugador(i).Text = Jugador(j).Text Then
                 Error.Caption = "¡No puede haber jugadores repetidos!"
                 Exit Function
+
             End If
+
         Next
     Next
     
     Error.Caption = vbNullString
     Validar = True
+
 End Function
 
 Private Sub txtPPT_Change()
