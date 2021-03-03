@@ -267,10 +267,10 @@ Public Sub InitFontTypes()
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_WARNING)
-        .red = 32
-        .green = 51
-        .blue = 223
-        .bold = 1
+        .red = 255
+        .green = 0
+        .blue = 0
+        .bold = 0
         .italic = 1
 
     End With

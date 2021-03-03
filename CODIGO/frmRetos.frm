@@ -17,8 +17,8 @@ Begin VB.Form frmRetos
       Alignment       =   2  'Center
       Height          =   285
       Left            =   1560
-      TabIndex        =   13
-      Text            =   "25000"
+      TabIndex        =   5
+      Text            =   "20000"
       Top             =   2040
       Width           =   1335
    End
@@ -26,7 +26,7 @@ Begin VB.Form frmRetos
       Caption         =   "Retar"
       Height          =   375
       Left            =   1080
-      TabIndex        =   11
+      TabIndex        =   6
       Top             =   2520
       Width           =   1575
    End
@@ -35,7 +35,7 @@ Begin VB.Form frmRetos
       Height          =   285
       Index           =   5
       Left            =   2040
-      TabIndex        =   10
+      TabIndex        =   4
       Top             =   1560
       Visible         =   0   'False
       Width           =   1455
@@ -45,7 +45,7 @@ Begin VB.Form frmRetos
       Height          =   285
       Index           =   3
       Left            =   2040
-      TabIndex        =   9
+      TabIndex        =   2
       Top             =   1200
       Visible         =   0   'False
       Width           =   1455
@@ -55,7 +55,7 @@ Begin VB.Form frmRetos
       Height          =   285
       Index           =   1
       Left            =   2040
-      TabIndex        =   6
+      TabIndex        =   0
       Top             =   840
       Width           =   1455
    End
@@ -64,7 +64,7 @@ Begin VB.Form frmRetos
       Height          =   285
       Index           =   4
       Left            =   120
-      TabIndex        =   5
+      TabIndex        =   3
       Top             =   1560
       Visible         =   0   'False
       Width           =   1455
@@ -74,7 +74,7 @@ Begin VB.Form frmRetos
       Height          =   285
       Index           =   2
       Left            =   120
-      TabIndex        =   4
+      TabIndex        =   1
       Top             =   1200
       Visible         =   0   'False
       Width           =   1455
@@ -86,7 +86,7 @@ Begin VB.Form frmRetos
       Height          =   285
       Index           =   0
       Left            =   120
-      TabIndex        =   3
+      TabIndex        =   10
       Top             =   840
       Width           =   1455
    End
@@ -95,7 +95,8 @@ Begin VB.Form frmRetos
       Height          =   375
       Index           =   2
       Left            =   2280
-      TabIndex        =   2
+      TabIndex        =   9
+      TabStop         =   0   'False
       Top             =   120
       Width           =   735
    End
@@ -104,7 +105,8 @@ Begin VB.Form frmRetos
       Height          =   375
       Index           =   1
       Left            =   1440
-      TabIndex        =   1
+      TabIndex        =   8
+      TabStop         =   0   'False
       Top             =   120
       Width           =   735
    End
@@ -113,7 +115,8 @@ Begin VB.Form frmRetos
       Height          =   375
       Index           =   0
       Left            =   720
-      TabIndex        =   0
+      TabIndex        =   7
+      TabStop         =   0   'False
       Top             =   120
       Value           =   -1  'True
       Width           =   735
@@ -132,7 +135,7 @@ Begin VB.Form frmRetos
       ForeColor       =   &H000000FF&
       Height          =   255
       Left            =   120
-      TabIndex        =   12
+      TabIndex        =   13
       Top             =   3000
       Width           =   3375
    End
@@ -141,7 +144,7 @@ Begin VB.Form frmRetos
       Caption         =   "Equipo 2"
       Height          =   255
       Left            =   2040
-      TabIndex        =   8
+      TabIndex        =   12
       Top             =   600
       Width           =   1455
    End
@@ -150,7 +153,7 @@ Begin VB.Form frmRetos
       Caption         =   "Equipo 1"
       Height          =   255
       Left            =   120
-      TabIndex        =   7
+      TabIndex        =   11
       Top             =   600
       Width           =   1455
    End

@@ -2193,10 +2193,26 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/RETAR", "/RETO"
                 frmRetos.Show , frmMain
+
+                If notNullArguments Then
+                    Dim Names() As String
+                    Names = Split(ArgumentosRaw, "@", frmRetos.Jugador.count - 1)
+
+                    For i = 0 To UBound(Names)
+                        frmRetos.Jugador(i + 1).Text = Names(i)
+                        frmRetos.Jugador(i + 1).Visible = True
+                    Next
+                    
+                    If UBound(Names) Mod 2 = 1 Then
+                        frmRetos.Jugador(UBound(Names) + 2).Visible = True
+                    End If
+                End If
                 
             Case "/ACEPTAR"
                 If notNullArguments Then
                     Call WriteAcceptDuel(ArgumentosRaw)
+                Else
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /aceptar nick.")
                 End If
                 
             Case "/CANCELAR"
