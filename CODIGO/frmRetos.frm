@@ -15,7 +15,6 @@ Begin VB.Form frmRetos
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox Jugador 
       Alignment       =   2  'Center
-      Enabled         =   0   'False
       Height          =   285
       Index           =   1
       Left            =   1920
