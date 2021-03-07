@@ -191,8 +191,6 @@ Public NpcData()          As NpcDatas
 
 Public Locale_SMG()       As String
 
-
-
 'Sistema de mapa del mundo
 Public TotalWorlds As Byte
 
@@ -1181,82 +1179,39 @@ ForzarMp3_Err:
 End Sub
 
 Public Sub CargarCuentasGuardadas()
-    
-    On Error GoTo CargarCuentasGuardadas_Err
-    
 
     Dim Arch As String
-
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+        Arch = App.Path & "\..\Recursos\OUTPUT\Cuenta.ini"
+    
     CuentaRecordada.nombre = GetVar(Arch, "CUENTA", "Nombre")
     CuentaRecordada.Password = UnEncryptStr(GetVar(Arch, "CUENTA", "Password"), 9256)
+    
     FrmLogear.Image4.Tag = "0"
  
-    If CuentaRecordada.nombre <> "" Then
+    If LenB(CuentaRecordada.nombre) <> 0 Then
         FrmLogear.NameTxt = CuentaRecordada.nombre
         FrmLogear.PasswordTxt = CuentaRecordada.Password
         FrmLogear.Image4.Picture = LoadInterface("check-amarillo.bmp")
         FrmLogear.Image4.Tag = "1"
-        'FrmLogear.Check1.value = 1
-         
         FrmLogear.PasswordTxt.TabIndex = 0
-        
         FrmLogear.PasswordTxt.SelStart = Len(FrmLogear.PasswordTxt)
-
-        'FrmLogear.lstServers.TabIndex = 1
-        'FrmLogear.cmdConnect.TabIndex = 2
     End If
 
-    Rem FrmLogear.PasswordTxt = CuentaRecordada(1).Password
-    
-    Exit Sub
-
-CargarCuentasGuardadas_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CargarCuentasGuardadas", Erl)
-    Resume Next
-    
 End Sub
 
-Public Sub GrabarNuevaCuenta(ByVal Name As String, ByVal Password As String)
-    
-    On Error GoTo GrabarNuevaCuenta_Err
-    
+Public Sub RecordarCuenta(ByVal Name As String, ByVal Password As String)
 
-    Dim Arch As String
-
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-    Call WriteVar(Arch, "CUENTA", "Nombre", Name)
-    Call WriteVar(Arch, "CUENTA", "Password", EncryptStr(Password, 9256))
+    Dim Archivo As String
+        Archivo = App.Path & "\..\Recursos\OUTPUT\Cuenta.ini"
+    
+    ' Si el parametro Password no es vbNullString, encriptamos el string
+    If LenB(Password) Then Password = EncryptStr(Password, 9256)
+    
+    Call WriteVar(Archivo, "CUENTA", "Nombre", Name)
+    Call WriteVar(Archivo, "CUENTA", "Password", Password)
+    
     Call CargarCuentasGuardadas
 
-    
-    Exit Sub
-
-GrabarNuevaCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.GrabarNuevaCuenta", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub ResetearCuentas()
-    
-    On Error GoTo ResetearCuentas_Err
-    
-
-    Dim Arch As String
-
-    Arch = App.Path & "\..\Recursos\OUTPUT\Configuracion.ini"
-    Call WriteVar(Arch, "CUENTA", "Nombre", "")
-    Call WriteVar(Arch, "CUENTA", "Password", "")
-    Call CargarCuentasGuardadas
-
-    
-    Exit Sub
-
-ResetearCuentas_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.ResetearCuentas", Erl)
-    Resume Next
-    
 End Sub
 
 '*****************************************************************

@@ -448,26 +448,17 @@ Private Sub Image3_Click()
         CuentaPassword = aux
 
         If Image4.Tag = "1" Then
-            '       If ExisteCuenta(UserCuenta) Then
-            '            Call MensajeAdvertencia("La cuenta ya se encuentra almacenada, no ha sido guardada.")
-            ' '            RecordarCheck.value = 0
-            '      Else
 
             CuentaRecordada.nombre = CuentaEmail
             CuentaRecordada.Password = aux
-            Call GrabarNuevaCuenta(CuentaEmail, aux)
-            '      End If
+            Call RecordarCuenta(CuentaEmail, aux)
+
         Else
-            Call ResetearCuentas
+            
+            ' Reseteamos los datos de cuenta guardados
+            Call RecordarCuenta(vbNullString, vbNullString)
 
         End If
-
-        ' If CuentaRecordada(1).Password <> "" And Val(CuentaRecordada(1).Password) <> Val(PasswordTxt.Text) Then
-        '          CuentaRecordada(1).Nombre = UserCuenta
-        '           CuentaRecordada(1).Password = aux
-        '            Call GrabarNuevaCuenta(UserCuenta, aux)
-        '            Call MensajeAdvertencia("Se a almacenado la nueva password.")
-        '  End If
 
         If CheckUserDataLoged() = True Then
             EstadoLogin = E_MODO.IngresandoConCuenta
