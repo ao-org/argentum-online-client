@@ -1545,8 +1545,7 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
     End If
     
     With charlist(charindex)
-        'Todo: Hacer que los colores se usen de Colores.dat
-        'Haciendo uso de ColoresPj ya que el mismo en algun momento lo hace para DX
+
         Select Case .priv
             ' Usuario normal
             Case 0
@@ -1610,60 +1609,6 @@ WriteChatOverHeadInConsole_Err:
     
 End Sub
 
-Public Sub CopiarDialogoToConsola(ByVal NickName As String, Dialogo As String, Color As Long)
-    
-    On Error GoTo CopiarDialogoToConsola_Err
-    
-
-    If NickName = "" Then Exit Sub
-    If Right$(Dialogo, 1) = " " Or Left(Dialogo, 1) = " " Then
-        Dialogo = Trim(Dialogo)
-
-    End If
-
-    Dim Pos  As Long
-
-    Dim Nick As String
-
-    Pos = InStr(NickName, "<")
-
-    If Pos = 0 Then Pos = Len(NickName) + 2
-    'Nick
-    Nick = Left$(NickName, Pos - 2)
-
-    Select Case Color
-
-        Case 255255255 ' Blanco comun
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 255, 255, 255, False, True, False)
-
-        Case 25513015 'Gritar GMS!
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 225, 225, 0, False, True, False)
-
-        Case 25500 ' Gritar!
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 255, 0, 0, False, True, False)
-
-        Case 2000 'GM
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 0, 200, , False, True, False)
-
-        Case -14117888 ' Global
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 0, 201, 197, False, True, False)
-
-        Case 192192192 'Gris
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 164, 164, 164, False, True, False)
-
-        Case 15722620 'Privado
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 157, 226, 20, False, True, False)
-
-    End Select
-
-    
-    Exit Sub
-
-CopiarDialogoToConsola_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CopiarDialogoToConsola", Erl)
-    Resume Next
-    
-End Sub
 
 Public Function PonerPuntos(Numero As Long) As String
     
