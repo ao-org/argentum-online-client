@@ -432,6 +432,7 @@ Private Sub Image3_Click()
     Call FormParser.Parse_Form(Me, E_WAIT)
 
     If IntervaloPermiteConectar Then
+    
         If frmMain.Socket1.Connected Then
             frmMain.Socket1.Disconnect
             frmMain.Socket1.Cleanup
@@ -440,23 +441,19 @@ Private Sub Image3_Click()
         End If
 
         CuentaEmail = NameTxt.Text
-
-        Dim aux As String
-
-        aux = PasswordTxt.Text
-
-        CuentaPassword = aux
+        CuentaPassword = PasswordTxt.Text
 
         If Image4.Tag = "1" Then
 
             CuentaRecordada.nombre = CuentaEmail
-            CuentaRecordada.Password = aux
-            Call RecordarCuenta(CuentaEmail, aux)
+            CuentaRecordada.Password = CuentaPassword
+            
+            Call GuardarCuenta(CuentaEmail, CuentaPassword)
 
         Else
             
             ' Reseteamos los datos de cuenta guardados
-            Call RecordarCuenta(vbNullString, vbNullString)
+            Call GuardarCuenta(vbNullString, vbNullString)
 
         End If
 
@@ -469,6 +466,7 @@ Private Sub Image3_Click()
         End If
 
         ServerIndex = lstServers.ListIndex
+        
         Call SaveRAOInit
 
     End If

@@ -1199,7 +1199,7 @@ Public Sub CargarCuentasGuardadas()
 
 End Sub
 
-Public Sub RecordarCuenta(ByVal Name As String, ByVal Password As String)
+Public Sub GuardarCuenta(ByVal Name As String, ByVal Password As String)
 
     Dim Archivo As String
         Archivo = App.Path & "\..\Recursos\OUTPUT\Cuenta.ini"
