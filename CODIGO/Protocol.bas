@@ -229,7 +229,7 @@ Private Enum ServerPacketID
     Redundancia
     SeguroResu
     Stopped
-
+    InvasionInfo
 End Enum
 
 Private Enum ClientPacketID
@@ -577,6 +577,7 @@ Private Enum NewPacksID
     SeguroResu
     CuentaExtractItem
     CuentaDeposit
+    CreateEvent
 End Enum
 
 ''
@@ -1143,6 +1144,9 @@ Public Sub HandleIncomingData()
             
         Case ServerPacketID.Stopped
             Call HandleStopped
+            
+        Case ServerPacketID.InvasionInfo
+            Call HandleInvasionInfo
 
         Case Else
         
@@ -1635,6 +1639,9 @@ Private Sub HandleDisconnect()
     OxigenoCounter = 0
      
     frmMain.Contadores.Enabled = False
+    
+    InvasionActual = 0
+    frmMain.Evento.Enabled = False
      
     'Delete all kind of dialogs
     
@@ -4253,6 +4260,9 @@ Private Sub HandleMostrarCuenta()
         UserParalizado = False
         UserInmovilizado = False
         UserStopped = False
+        
+        InvasionActual = 0
+        frmMain.Evento.Enabled = False
      
         'BUG CLONES
         Dim i As Integer
@@ -20694,6 +20704,27 @@ Private Sub HandleStopped()
 
 End Sub
 
+Private Sub HandleInvasionInfo()
+    
+    If incomingData.length < 4 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    'Remove packet ID
+    Call incomingData.ReadByte
+
+    InvasionActual = incomingData.ReadByte
+    InvasionPorcentajeVida = incomingData.ReadByte
+    InvasionPorcentajeTiempo = incomingData.ReadByte
+    
+    frmMain.Evento.Enabled = False
+    frmMain.Evento.Interval = 0
+    frmMain.Evento.Interval = 10000
+    frmMain.Evento.Enabled = True
+
+End Sub
+
 Public Sub WriteCuentaExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
     
     On Error GoTo WriteCuentaExtractItem_Err
@@ -20771,5 +20802,13 @@ Public Sub WriteQuitDuel()
     With outgoingData
         Call .WriteByte(ClientPacketID.newPacketID)
         Call .WriteByte(NewPacksID.QuitDuel)
+    End With
+End Sub
+
+Public Sub WriteCreateEvent(EventName As String)
+    With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.CreateEvent)
+        Call .WriteASCIIString(EventName)
     End With
 End Sub

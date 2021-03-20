@@ -456,7 +456,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                                         Call RGBAList(TempColor, .Color.r, .Color.G, .Color.B, .Color.A)
                                     End If
                             
-                                    Engine_Text_Render_Efect 0, .Text, ScreenX + 16 - Int(Engine_Text_Width(.Text, False) * 0.5) + .Offset.x, ScreenY - Engine_Text_Height(.Text, False) + .Offset.y - DialogTime * 0.025, TempColor, 1, False
+                                    Engine_Text_Render_Efect 0, .Text, ScreenX + 16 - Int(Engine_Text_Width(.Text, False) * 0.5) + .offset.x, ScreenY - Engine_Text_Height(.Text, False) + .offset.y - DialogTime * 0.025, TempColor, 1, False
                     
                                 End If
                             End If
@@ -475,10 +475,10 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
                             If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
                             
-                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).offsetX, ScreenY + FxData(.FxList(i).FxIndex).offsetY + 20, 1, 1, TempColor(), False)
+                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).OffsetX, ScreenY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, TempColor(), False)
 
                             Else
-                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).offsetX, ScreenY + FxData(.FxList(i).FxIndex).offsetY + 20, 1, 1, TempColor(), True)
+                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).OffsetX, ScreenY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, TempColor(), True)
 
                             End If
 
@@ -542,6 +542,16 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     End If
     
     Call Effect_Render_All
+    
+    If InvasionActual Then
+        
+        Call Engine_Draw_Box(190, 550, 356, 36, RGBA_From_Comp(0, 0, 0, 200))
+        Call Engine_Draw_Box(193, 553, 3.5 * InvasionPorcentajeVida, 30, RGBA_From_Comp(20, 196, 255, 200))
+        
+        Call Engine_Draw_Box(340, 586, 54, 9, RGBA_From_Comp(0, 0, 0, 200))
+        Call Engine_Draw_Box(342, 588, 0.5 * InvasionPorcentajeTiempo, 5, RGBA_From_Comp(220, 200, 0, 200))
+        
+    End If
 
     If Pregunta Then
         

@@ -33,8 +33,14 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin SocketWrenchCtrl.Socket Socket1 
+   Begin VB.Timer Evento 
+      Enabled         =   0   'False
+      Interval        =   10000
       Left            =   6360
+      Top             =   2400
+   End
+   Begin SocketWrenchCtrl.Socket Socket1 
+      Left            =   6840
       Top             =   2400
       _Version        =   65536
       _ExtentX        =   741
@@ -483,7 +489,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2008,6 +2013,14 @@ EstadisticasBoton_MouseUp_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMain.EstadisticasBoton_MouseUp", Erl)
     Resume Next
     
+End Sub
+
+Private Sub Evento_Timer()
+
+    InvasionActual = 0
+    
+    Evento.Enabled = False
+
 End Sub
 
 Private Sub exp_Click()
@@ -5156,6 +5169,8 @@ Private Sub Socket1_Disconnect()
         MostrarTrofeo = False
         bNieve = False
         bFogata = False
+        InvasionActual = 0
+        frmMain.Evento.Enabled = False
     
         '  For i = 1 To LastChar + 1
         '      charlist(i).Invisible = False

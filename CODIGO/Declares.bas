@@ -1072,6 +1072,12 @@ Public UsingSkill                        As Integer
 
 Public pingTime                          As Long
 
+Public InvasionActual                    As Byte
+
+Public InvasionPorcentajeVida            As Byte
+
+Public InvasionPorcentajeTiempo          As Byte
+
 Public Enum E_MODO
 
     Normal = 1

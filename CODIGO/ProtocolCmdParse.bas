@@ -2220,6 +2220,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/ABANDONAR"
                 Call WriteQuitDuel
+                
+            Case "/CE"
+                If EsGM Then
+                    Call WriteCreateEvent(ArgumentosRaw)
+                End If
 
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")
