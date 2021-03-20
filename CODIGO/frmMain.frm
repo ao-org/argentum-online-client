@@ -33,12 +33,6 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin VB.Timer Evento 
-      Enabled         =   0   'False
-      Interval        =   10000
-      Left            =   6360
-      Top             =   2400
-   End
    Begin SocketWrenchCtrl.Socket Socket1 
       Left            =   6840
       Top             =   2400
@@ -70,6 +64,12 @@ Begin VB.Form frmMain
       Timeout         =   1000
       Type            =   1
       Urgent          =   0   'False
+   End
+   Begin VB.Timer Evento 
+      Enabled         =   0   'False
+      Interval        =   10000
+      Left            =   6360
+      Top             =   2400
    End
    Begin VB.CommandButton btnSpawn 
       Caption         =   "Spawn NPC"
@@ -489,6 +489,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -728,14 +729,14 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   3075
          TabIndex        =   35
-         ToolTipText     =   "Tu defensa magica"
+         ToolTipText     =   "Aumento de daño mágico"
          Top             =   3150
          Width           =   570
       End
       Begin VB.Label lblResis 
          Alignment       =   2  'Center
          BackStyle       =   0  'Transparent
-         Caption         =   "+0%"
+         Caption         =   "+0"
          BeginProperty Font 
             Name            =   "Calibri"
             Size            =   9.75
@@ -749,7 +750,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   1935
          TabIndex        =   34
-         ToolTipText     =   "Tu daño magico"
+         ToolTipText     =   "Resistencia mágica"
          Top             =   3150
          Width           =   330
       End
@@ -771,7 +772,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   2385
          TabIndex        =   33
-         ToolTipText     =   "Oxigeno acumulado"
+         ToolTipText     =   "Oxígeno acumulado"
          Top             =   570
          Width           =   225
       End
@@ -792,6 +793,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   480
          TabIndex        =   32
+         ToolTipText     =   "Monedas de oro"
          Top             =   585
          Width           =   690
       End
@@ -812,6 +814,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   3585
          TabIndex        =   31
+         ToolTipText     =   "Fuerza"
          Top             =   570
          Width           =   210
       End
@@ -832,6 +835,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   2985
          TabIndex        =   30
+         ToolTipText     =   "Agilidad"
          Top             =   570
          Width           =   210
       End
@@ -852,6 +856,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   600
          TabIndex        =   29
+         ToolTipText     =   "Daño físico arma"
          Top             =   2700
          Width           =   480
       End
@@ -872,6 +877,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   1860
          TabIndex        =   28
+         ToolTipText     =   "Defensa escudo"
          Top             =   2700
          Width           =   480
       End
@@ -892,6 +898,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   3120
          TabIndex        =   27
+         ToolTipText     =   "Defensa casco"
          Top             =   2700
          Width           =   480
       End
@@ -912,6 +919,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   600
          TabIndex        =   26
+         ToolTipText     =   "Defensa armadura"
          Top             =   3150
          Width           =   480
       End
