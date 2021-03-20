@@ -232,8 +232,7 @@ Attribute VB_Exposed = False
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
-    
-    HayFormularioAbierto = True
+
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("admin.bmp")
 

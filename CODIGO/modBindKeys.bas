@@ -410,7 +410,6 @@ Public Sub TirarItem()
 
             If frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem) > 1 Then
                 frmCantidad.Picture = LoadInterface("cantidad.bmp")
-                HayFormularioAbierto = True
                 frmCantidad.Show , frmMain
 
             End If

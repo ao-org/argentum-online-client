@@ -1907,25 +1907,23 @@ Public Sub Start()
                     Moviendose = False
                     DrawMainInventory
 
-                    If HayFormularioAbierto Then
-                        If frmComerciar.Visible Then
-                            DrawInterfaceComerciar
-                        ElseIf frmBancoObj.Visible Then
-                            DrawInterfaceBoveda
-                        End If
-                        
-                        If frmBancoCuenta.Visible Then
-                            DrawInterfaceBovedaCuenta
-                        End If
-                        
-                        If frmMapaGrande.Visible Then
-                            DrawMapaMundo
-                        End If
-                        
-                        If FrmKeyInv.Visible Then
-                            DrawInterfaceKeys
-                        End If
+                    If frmComerciar.Visible Then
+                        DrawInterfaceComerciar
 
+                    ElseIf frmBancoObj.Visible Then
+                        DrawInterfaceBoveda
+                    End If
+                    
+                    If frmBancoCuenta.Visible Then
+                        DrawInterfaceBovedaCuenta
+                    End If
+                    
+                    If frmMapaGrande.Visible Then
+                        DrawMapaMundo
+                    End If
+                    
+                    If FrmKeyInv.Visible Then
+                        DrawInterfaceKeys
                     End If
 
                 Case 1

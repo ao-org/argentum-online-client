@@ -2207,7 +2207,6 @@ Private Sub GldLbl_Click()
 
     If UserGLD > 0 Then
         frmCantidad.Picture = LoadInterface("cantidad.bmp")
-        HayFormularioAbierto = True
         frmCantidad.Show , frmMain
 
     End If
@@ -2712,7 +2711,6 @@ End Sub
 Private Sub Label1_Click()
     frmBancoCuenta.Picture = LoadInterface("banco.bmp")
     frmBancoCuenta.Show , frmMain
-    HayFormularioAbierto = True
 End Sub
 
 Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -3111,7 +3109,6 @@ Private Sub Label6_Click()
 
     If UserGLD > 0 Then
         frmCantidad.Picture = LoadInterface("cantidad.bmp")
-        HayFormularioAbierto = True
         frmCantidad.Show , frmMain
 
     End If
@@ -3319,7 +3316,6 @@ Private Sub mapMundo_Click()
     OroMult = 1
     Call CalcularPosicionMAPA
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
-    HayFormularioAbierto = True
     frmMapaGrande.Show , frmMain
 
     
@@ -3366,7 +3362,6 @@ Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, 
     OroMult = 1
     Call CalcularPosicionMAPA
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
-    HayFormularioAbierto = True
     frmMapaGrande.Show , frmMain
   
     
@@ -3970,32 +3965,26 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
 
     MouseBoton = Button
     MouseShift = Shift
-    
-    If HayFormularioAbierto Then
-        If frmComerciar.Visible Then Unload frmComerciar
-        If frmBancoObj.Visible Then Unload frmBancoObj
-        If frmEstadisticas.Visible Then Unload frmEstadisticas
-        If frmGoliath.Visible Then Unload frmGoliath
-        If frmMapaGrande.Visible Then Unload frmMapaGrande
-        If FrmViajes.Visible Then Unload FrmViajes
-        If frmCantidad.Visible Then Unload frmCantidad
-        If FrmGrupo.Visible Then Unload FrmGrupo
-        If FrmGmAyuda.Visible Then Unload FrmGmAyuda
-        If frmGuildAdm.Visible Then Unload frmGuildAdm
-        If FrmShop.Visible Then Unload FrmShop
-        If frmHerrero.Visible Then Unload frmHerrero
-        If FrmSastre.Visible Then Unload FrmSastre
-        If frmAlqui.Visible Then Unload frmAlqui
-        If frmCarp.Visible Then Unload frmCarp
-        If FrmCorreo.Visible Then Unload FrmCorreo
-        If MenuUser.Visible Then Unload MenuUser
-        If MenuGM.Visible Then Unload MenuGM
-        If MenuNPC.Visible Then Unload MenuNPC
 
-        HayFormularioAbierto = False
-                
-    End If
-
+    If frmComerciar.Visible Then Unload frmComerciar
+    If frmBancoObj.Visible Then Unload frmBancoObj
+    If frmEstadisticas.Visible Then Unload frmEstadisticas
+    If frmGoliath.Visible Then Unload frmGoliath
+    If frmMapaGrande.Visible Then Unload frmMapaGrande
+    If FrmViajes.Visible Then Unload FrmViajes
+    If frmCantidad.Visible Then Unload frmCantidad
+    If FrmGrupo.Visible Then Unload FrmGrupo
+    If FrmGmAyuda.Visible Then Unload FrmGmAyuda
+    If frmGuildAdm.Visible Then Unload frmGuildAdm
+    If FrmShop.Visible Then Unload FrmShop
+    If frmHerrero.Visible Then Unload frmHerrero
+    If FrmSastre.Visible Then Unload FrmSastre
+    If frmAlqui.Visible Then Unload frmAlqui
+    If frmCarp.Visible Then Unload frmCarp
+    If FrmCorreo.Visible Then Unload FrmCorreo
+    If MenuUser.Visible Then Unload MenuUser
+    If MenuGM.Visible Then Unload MenuGM
+    If MenuNPC.Visible Then Unload MenuNPC
     
     Exit Sub
 

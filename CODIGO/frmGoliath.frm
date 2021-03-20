@@ -251,7 +251,6 @@ Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
     gold.Caption = OroDep
 
     Me.Picture = LoadInterface("ventanabanco.bmp")
-    HayFormularioAbierto = True
     
     txtDatos.BackColor = RGB(17, 18, 12)
     gold.ForeColor = RGB(235, 164, 14)

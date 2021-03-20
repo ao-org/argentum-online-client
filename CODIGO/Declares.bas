@@ -22,8 +22,6 @@ Public DuracionDia                      As Long
 
 Public EsGM                             As Boolean
 
-Public HayFormularioAbierto             As Boolean
-
 Public HayLLamadaDeclan                 As Boolean
 
 Public LLamadaDeclanMapa                As Byte

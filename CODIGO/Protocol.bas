@@ -1785,7 +1785,6 @@ Private Sub HandleCommerceInit()
     Comerciando = True
     'Call Inventario.Initialize(frmComerciar.PicInvUser)
     frmComerciar.Picture = LoadInterface("comerciar.bmp")
-    HayFormularioAbierto = True
     frmComerciar.Show , frmMain
     
     
@@ -1841,8 +1840,6 @@ Private Sub HandleBankInit()
     frmBancoObj.Picture = LoadInterface("banco.bmp")
     frmBancoObj.Show , frmMain
     frmBancoObj.lblcosto = PonerPuntos(UserGLD)
-    HayFormularioAbierto = True
-
     
     Exit Sub
 
@@ -1940,7 +1937,6 @@ Private Sub HandleShowFrmMapa()
     Call CalcularPosicionMAPA
 
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
-    HayFormularioAbierto = True
     frmMapaGrande.Show , frmMain
 
     
@@ -2077,7 +2073,6 @@ Private Sub HandleShowBlacksmithForm()
         Call Establecer_Borde(frmHerrero.lstArmas, frmHerrero, COLOR_AZUL, 1, 1)
         Call Establecer_Borde(frmHerrero.List1, frmHerrero, COLOR_AZUL, 1, 1)
         Call Establecer_Borde(frmHerrero.List2, frmHerrero, COLOR_AZUL, 1, 1)
-        HayFormularioAbierto = True
         frmHerrero.Show , frmMain
 
     End If
@@ -2118,7 +2113,6 @@ Private Sub HandleShowCarpenterForm()
         Call Establecer_Borde(frmCarp.List2, frmCarp, COLOR_AZUL, 0, 0)
         frmCarp.Picture = LoadInterface("carpinteria.bmp")
         frmCarp.Show , frmMain
-        HayFormularioAbierto = True
 
     End If
 
@@ -2156,7 +2150,6 @@ Private Sub HandleShowAlquimiaForm()
         Call Establecer_Borde(frmAlqui.List2, frmAlqui, COLOR_AZUL, 1, 1)
 
         frmAlqui.Show , frmMain
-        HayFormularioAbierto = True
 
     End If
 
@@ -2204,7 +2197,6 @@ Private Sub HandleShowSastreForm()
     
         FrmSastre.Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
         FrmSastre.Show , frmMain
-        HayFormularioAbierto = True
 
     End If
 
@@ -2904,11 +2896,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -2959,111 +2951,65 @@ Private Sub HandleChangeMap()
         End If
 
     End If
+
+    If frmComerciar.Visible Then
+        Unload frmComerciar
+    End If
+    
+    If frmBancoObj.Visible Then
+        Unload frmBancoObj
+    End If
+    
+    If FrmShop.Visible Then
+        Unload FrmShop
+    End If
         
-    If HayFormularioAbierto Then
-        If frmComerciar.Visible Then
-            Unload frmComerciar
-            HayFormularioAbierto = False
+    If frmEstadisticas.Visible Then
+        Unload frmEstadisticas
+    End If
+    
+    If frmHerrero.Visible Then
+        Unload frmHerrero
+    End If
+    
+    If FrmSastre.Visible Then
+        Unload FrmSastre
+    End If
 
-            ' Exit Sub
-        End If
-        
-        If frmBancoObj.Visible Then
-            Unload frmBancoObj
-            HayFormularioAbierto = False
+    If frmAlqui.Visible Then
+        Unload frmAlqui
+    End If
 
-            ' Exit Sub
-        End If
-        
-        If FrmShop.Visible Then
-            Unload FrmShop
-            HayFormularioAbierto = False
-
-            'Exit Sub
-        End If
-            
-        If frmEstadisticas.Visible Then
-            Unload frmEstadisticas
-            HayFormularioAbierto = False
-
-            ' Exit Sub
-        End If
-        
-        If frmHerrero.Visible Then
-            Unload frmHerrero
-            HayFormularioAbierto = False
-
-            ' Exit Sub
-        End If
-        
-        If FrmSastre.Visible Then
-            Unload FrmSastre
-            HayFormularioAbierto = False
-
-            '  Exit Sub
-        End If
-
-        If frmAlqui.Visible Then
-            Unload frmAlqui
-            HayFormularioAbierto = False
-
-            ' Exit Sub
-        End If
-
-        If frmCarp.Visible Then
-            Unload frmCarp
-            HayFormularioAbierto = False
-
-            ' Exit Sub
-        End If
-        
-        If FrmGrupo.Visible Then
-            Unload FrmGrupo
-            HayFormularioAbierto = False
-
-            ' Exit Sub
-        End If
-        
-        If FrmCorreo.Visible Then
-            Unload FrmCorreo
-            HayFormularioAbierto = False
-
-            ' Exit Sub
-        End If
-        
-        If frmGoliath.Visible Then
-            Unload frmGoliath
-            HayFormularioAbierto = False
-
-            'Exit Sub
-        End If
-           
-        If FrmViajes.Visible Then
-            Unload FrmViajes
-            HayFormularioAbierto = False
-
-            ' Exit Sub
-        End If
-        
-        If frmCantidad.Visible Then
-            Unload frmCantidad
-            HayFormularioAbierto = False
-
-            ' Exit Sub
-        End If
-        
-        If FrmRanking.Visible Then
-            Unload FrmRanking
-            HayFormularioAbierto = False
-
-            ' Exit Sub
-        End If
-        
-        If frmMapaGrande.Visible Then
-            Call CalcularPosicionMAPA
-
-        End If
-
+    If frmCarp.Visible Then
+        Unload frmCarp
+    End If
+    
+    If FrmGrupo.Visible Then
+        Unload FrmGrupo
+    End If
+    
+    If FrmCorreo.Visible Then
+        Unload FrmCorreo
+    End If
+    
+    If frmGoliath.Visible Then
+        Unload frmGoliath
+    End If
+       
+    If FrmViajes.Visible Then
+        Unload FrmViajes
+    End If
+    
+    If frmCantidad.Visible Then
+        Unload frmCantidad
+    End If
+    
+    If FrmRanking.Visible Then
+        Unload FrmRanking
+    End If
+    
+    If frmMapaGrande.Visible Then
+        Call CalcularPosicionMAPA
     End If
 
     Call SwitchMap(UserMap)
@@ -5388,9 +5334,7 @@ Private Sub HandleGuildList()
     COLOR_AZUL = RGB(0, 0, 0)
     
     Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
-    
-    HayFormularioAbierto = True
-    
+
     Call frmGuildAdm.Show(vbModeless, frmMain)
     
     Exit Sub
@@ -5668,9 +5612,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -6318,7 +6262,6 @@ Private Sub HandleAtributes()
             frmEstadisticas.puntos.Caption = SkillPoints
             frmEstadisticas.Iniciar_Labels
             frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
-            HayFormularioAbierto = True
             frmEstadisticas.Show , frmMain
         Else
             LlegaronAtrib = True
@@ -7429,7 +7372,6 @@ Private Sub HandleMiniStats()
         frmEstadisticas.puntos.Caption = SkillPoints
         frmEstadisticas.Iniciar_Labels
         frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
-        HayFormularioAbierto = True
         frmEstadisticas.Show , frmMain
     Else
         LlegaronStats = True
@@ -7809,7 +7751,6 @@ Private Sub HandleSendSkills()
         frmEstadisticas.puntos.Caption = SkillPoints
         frmEstadisticas.Iniciar_Labels
         frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
-        HayFormularioAbierto = True
         frmEstadisticas.Show , frmMain
     Else
         LlegaronSkills = True
@@ -7962,7 +7903,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8379,7 +8320,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -19779,7 +19720,6 @@ Private Sub HandleListaCorreo()
         Call Establecer_Borde(FrmCorreo.ListaAenviar, FrmCorreo, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(FrmCorreo.lstInv, FrmCorreo, COLOR_AZUL, 0, 0)
 
-        HayFormularioAbierto = True
         FrmCorreo.Show , frmMain
         
     End If
@@ -19894,8 +19834,6 @@ Private Sub HandleDatosGrupo()
 
     FrmGrupo.Picture = LoadInterface("grupo.bmp")
     FrmGrupo.Show , frmMain
-    HayFormularioAbierto = True
-
     
     Exit Sub
 
@@ -20000,7 +19938,6 @@ Private Sub HandleViajarForm()
     ViajarInterface = incomingData.ReadByte()
         
     FrmViajes.Picture = LoadInterface("viajes" & ViajarInterface & ".bmp")
-    HayFormularioAbierto = True
         
     If ViajarInterface = 1 Then
         FrmViajes.Image1.Top = 4690
@@ -20123,7 +20060,6 @@ Private Sub HandleDonadorObjects()
     ' establece el borde al listbox
     Call Establecer_Borde(FrmShop.lstArmas, FrmShop, COLOR_AZUL, 1, 1)
     FrmShop.Show , frmMain
-    HayFormularioAbierto = True
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
@@ -20189,8 +20125,6 @@ Private Sub HandleRanking()
         End If
 
     Next i
-    
-    HayFormularioAbierto = True
     
     FrmRanking.Picture = LoadInterface("ranking.bmp")
     FrmRanking.Show , frmMain
