@@ -432,6 +432,7 @@ Private Sub Image3_Click()
     Call FormParser.Parse_Form(Me, E_WAIT)
 
     If IntervaloPermiteConectar Then
+    
         If frmMain.Socket1.Connected Then
             frmMain.Socket1.Disconnect
             frmMain.Socket1.Cleanup
@@ -440,34 +441,21 @@ Private Sub Image3_Click()
         End If
 
         CuentaEmail = NameTxt.Text
-
-        Dim aux As String
-
-        aux = PasswordTxt.Text
-
-        CuentaPassword = aux
+        CuentaPassword = PasswordTxt.Text
 
         If Image4.Tag = "1" Then
-            '       If ExisteCuenta(UserCuenta) Then
-            '            Call MensajeAdvertencia("La cuenta ya se encuentra almacenada, no ha sido guardada.")
-            ' '            RecordarCheck.value = 0
-            '      Else
 
             CuentaRecordada.nombre = CuentaEmail
-            CuentaRecordada.Password = aux
-            Call GrabarNuevaCuenta(CuentaEmail, aux)
-            '      End If
+            CuentaRecordada.Password = CuentaPassword
+            
+            Call GuardarCuenta(CuentaEmail, CuentaPassword)
+
         Else
-            Call ResetearCuentas
+            
+            ' Reseteamos los datos de cuenta guardados
+            Call GuardarCuenta(vbNullString, vbNullString)
 
         End If
-
-        ' If CuentaRecordada(1).Password <> "" And Val(CuentaRecordada(1).Password) <> Val(PasswordTxt.Text) Then
-        '          CuentaRecordada(1).Nombre = UserCuenta
-        '           CuentaRecordada(1).Password = aux
-        '            Call GrabarNuevaCuenta(UserCuenta, aux)
-        '            Call MensajeAdvertencia("Se a almacenado la nueva password.")
-        '  End If
 
         If CheckUserDataLoged() = True Then
             EstadoLogin = E_MODO.IngresandoConCuenta
@@ -478,6 +466,7 @@ Private Sub Image3_Click()
         End If
 
         ServerIndex = lstServers.ListIndex
+        
         Call SaveRAOInit
 
     End If

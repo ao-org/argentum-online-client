@@ -191,8 +191,6 @@ Public NpcData()          As NpcDatas
 
 Public Locale_SMG()       As String
 
-
-
 'Sistema de mapa del mundo
 Public TotalWorlds As Byte
 
@@ -1181,82 +1179,39 @@ ForzarMp3_Err:
 End Sub
 
 Public Sub CargarCuentasGuardadas()
-    
-    On Error GoTo CargarCuentasGuardadas_Err
-    
 
     Dim Arch As String
-
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+        Arch = App.Path & "\..\Recursos\OUTPUT\Cuenta.ini"
+    
     CuentaRecordada.nombre = GetVar(Arch, "CUENTA", "Nombre")
     CuentaRecordada.Password = UnEncryptStr(GetVar(Arch, "CUENTA", "Password"), 9256)
+    
     FrmLogear.Image4.Tag = "0"
  
-    If CuentaRecordada.nombre <> "" Then
+    If LenB(CuentaRecordada.nombre) <> 0 Then
         FrmLogear.NameTxt = CuentaRecordada.nombre
         FrmLogear.PasswordTxt = CuentaRecordada.Password
         FrmLogear.Image4.Picture = LoadInterface("check-amarillo.bmp")
         FrmLogear.Image4.Tag = "1"
-        'FrmLogear.Check1.value = 1
-         
         FrmLogear.PasswordTxt.TabIndex = 0
-        
         FrmLogear.PasswordTxt.SelStart = Len(FrmLogear.PasswordTxt)
-
-        'FrmLogear.lstServers.TabIndex = 1
-        'FrmLogear.cmdConnect.TabIndex = 2
     End If
 
-    Rem FrmLogear.PasswordTxt = CuentaRecordada(1).Password
-    
-    Exit Sub
-
-CargarCuentasGuardadas_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CargarCuentasGuardadas", Erl)
-    Resume Next
-    
 End Sub
 
-Public Sub GrabarNuevaCuenta(ByVal Name As String, ByVal Password As String)
-    
-    On Error GoTo GrabarNuevaCuenta_Err
-    
+Public Sub GuardarCuenta(ByVal Name As String, ByVal Password As String)
 
-    Dim Arch As String
-
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-    Call WriteVar(Arch, "CUENTA", "Nombre", Name)
-    Call WriteVar(Arch, "CUENTA", "Password", EncryptStr(Password, 9256))
+    Dim Archivo As String
+        Archivo = App.Path & "\..\Recursos\OUTPUT\Cuenta.ini"
+    
+    ' Si el parametro Password no es vbNullString, encriptamos el string
+    If LenB(Password) Then Password = EncryptStr(Password, 9256)
+    
+    Call WriteVar(Archivo, "CUENTA", "Nombre", Name)
+    Call WriteVar(Archivo, "CUENTA", "Password", Password)
+    
     Call CargarCuentasGuardadas
 
-    
-    Exit Sub
-
-GrabarNuevaCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.GrabarNuevaCuenta", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub ResetearCuentas()
-    
-    On Error GoTo ResetearCuentas_Err
-    
-
-    Dim Arch As String
-
-    Arch = App.Path & "\..\Recursos\OUTPUT\Configuracion.ini"
-    Call WriteVar(Arch, "CUENTA", "Nombre", "")
-    Call WriteVar(Arch, "CUENTA", "Password", "")
-    Call CargarCuentasGuardadas
-
-    
-    Exit Sub
-
-ResetearCuentas_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.ResetearCuentas", Erl)
-    Resume Next
-    
 End Sub
 
 '*****************************************************************
@@ -1545,41 +1500,35 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
     End If
     
     With charlist(charindex)
-        'Todo: Hacer que los colores se usen de Colores.dat
-        'Haciendo uso de ColoresPj ya que el mismo en algun momento lo hace para DX
-        Select Case .priv
 
+        Select Case .priv
+            ' Usuario normal
             Case 0
 
-                If .status = 0 Then
-                    NameRed = 128
-                    NameGreen = 128
-                    NameBlue = 128
-                ElseIf .status = 1 Then
-                    NameRed = 0
-                    NameGreen = 128
-                    NameBlue = 190
-                ElseIf .status = 2 Then
-                    NameRed = 179
-                    NameGreen = 0
-                    NameBlue = 4
-                ElseIf .status = 3 Then
-                    NameRed = 31
-                    NameGreen = 139
-                    NameBlue = 139
+                If .status = 0 Then ' Criminal
+                    NameRed = ColoresPJ(50).r
+                    NameGreen = ColoresPJ(50).G
+                    NameBlue = ColoresPJ(50).B
+                ElseIf .status = 1 Then ' Ciudadano
+                    NameRed = ColoresPJ(49).r
+                    NameGreen = ColoresPJ(49).G
+                    NameBlue = ColoresPJ(49).B
+                ElseIf .status = 2 Then ' Caos
+                    NameRed = ColoresPJ(6).r
+                    NameGreen = ColoresPJ(6).G
+                    NameBlue = ColoresPJ(6).B
+                ElseIf .status = 3 Then ' Armada
+                    NameRed = ColoresPJ(8).r
+                    NameGreen = ColoresPJ(8).G
+                    NameBlue = ColoresPJ(8).B
 
                 End If
 
-            Case 1, 2
-
-                NameRed = 2
-                NameGreen = 161
-                NameBlue = 38
-
-            Case 3, 4
-                NameRed = 217
-                NameGreen = 164
-                NameBlue = 32
+            ' Consejeros, SemiDioses, Dioses y Admin (GM)
+            Case Else
+                NameRed = ColoresPJ(.priv).r
+                NameGreen = ColoresPJ(.priv).G
+                NameBlue = ColoresPJ(.priv).B
             
         End Select
 
@@ -1615,60 +1564,6 @@ WriteChatOverHeadInConsole_Err:
     
 End Sub
 
-Public Sub CopiarDialogoToConsola(ByVal NickName As String, Dialogo As String, Color As Long)
-    
-    On Error GoTo CopiarDialogoToConsola_Err
-    
-
-    If NickName = "" Then Exit Sub
-    If Right$(Dialogo, 1) = " " Or Left(Dialogo, 1) = " " Then
-        Dialogo = Trim(Dialogo)
-
-    End If
-
-    Dim Pos  As Long
-
-    Dim Nick As String
-
-    Pos = InStr(NickName, "<")
-
-    If Pos = 0 Then Pos = Len(NickName) + 2
-    'Nick
-    Nick = Left$(NickName, Pos - 2)
-
-    Select Case Color
-
-        Case 255255255 ' Blanco comun
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 255, 255, 255, False, True, False)
-
-        Case 25513015 'Gritar GMS!
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 225, 225, 0, False, True, False)
-
-        Case 25500 ' Gritar!
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 255, 0, 0, False, True, False)
-
-        Case 2000 'GM
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 0, 200, , False, True, False)
-
-        Case -14117888 ' Global
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 0, 201, 197, False, True, False)
-
-        Case 192192192 'Gris
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 164, 164, 164, False, True, False)
-
-        Case 15722620 'Privado
-            Call AddtoRichTextBox(frmMain.RecTxt, Nick & "> " & Dialogo, 157, 226, 20, False, True, False)
-
-    End Select
-
-    
-    Exit Sub
-
-CopiarDialogoToConsola_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CopiarDialogoToConsola", Erl)
-    Resume Next
-    
-End Sub
 
 Public Function PonerPuntos(Numero As Long) As String
     
