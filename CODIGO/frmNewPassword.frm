@@ -100,7 +100,7 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    Me.Picture = LoadInterface("password.bmp")
+    Me.Picture = LoadInterface(Language + "password.bmp")
 
     
     Exit Sub
@@ -179,7 +179,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("password_aceptar.bmp")
+        Image1.Picture = LoadInterface(Language + "password_aceptar.bmp")
         Image1.Tag = "1"
 
     End If

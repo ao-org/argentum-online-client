@@ -251,7 +251,7 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hwnd, 240)
-    Me.Picture = LoadInterface("crearcuenta.bmp")
+    Me.Picture = LoadInterface(Language + "crearcuenta.bmp")
     ValidacionNumber = RandomNumber(10000, 90000)
 
     valcar = ValidacionNumber
@@ -354,7 +354,7 @@ Image1_Click_Err:
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    'Image1.Picture = LoadInterface("volverpress.bmp")
+    'Image1.Picture = LoadInterface(Language + "volverpress.bmp")
     
     On Error GoTo Image1_MouseDown_Err
     
@@ -375,7 +375,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("crearcuenta_volver.bmp")
+        Image1.Picture = LoadInterface(Language + "crearcuenta_volver.bmp")
         Image1.Tag = "1"
 
     End If
@@ -442,7 +442,7 @@ Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        ' Image2.Picture = LoadInterface("crearcuentapress.bmp")
+        ' Image2.Picture = LoadInterface(Language + "crearcuentapress.bmp")
         Image2.Tag = "1"
 
     End If
@@ -462,7 +462,7 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface("crearcuentahover.bmp")
+        Image2.Picture = LoadInterface(Language + "crearcuentahover.bmp")
         Image2.Tag = "1"
 
     End If

@@ -23,7 +23,7 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-    Me.Picture = LoadInterface("VentanaCargando.bmp")
+    Me.Picture = LoadInterface(Language + "VentanaCargando.bmp")
     MakeFormTransparent Me, vbBlack
 
     

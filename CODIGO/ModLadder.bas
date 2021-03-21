@@ -710,15 +710,15 @@ Sub General_Set_Connect()
     End If
             
     intro = 1
-    frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
-    frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
-    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
-    frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
-    frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
-    frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
-    frmMain.STAShp.Picture = LoadInterface("barradeenergia.bmp")
-    frmMain.Hpshp.Picture = LoadInterface("barradevida.bmp")
+    frmMain.Picture = LoadInterface(Language + "ventanaprincipal.bmp")
+    frmMain.panelInf.Picture = LoadInterface(Language + "ventanaprincipal_stats.bmp")
+    frmMain.panel.Picture = LoadInterface(Language + "centroinventario.bmp")
+    frmMain.ExpBar.Picture = LoadInterface(Language + "barraexperiencia.bmp")
+    frmMain.COMIDAsp.Picture = LoadInterface(Language + "barradehambre.bmp")
+    frmMain.AGUAsp.Picture = LoadInterface(Language + "barradesed.bmp")
+    frmMain.MANShp.Picture = LoadInterface(Language + "barrademana.bmp")
+    frmMain.STAShp.Picture = LoadInterface(Language + "barradeenergia.bmp")
+    frmMain.Hpshp.Picture = LoadInterface(Language + "barradevida.bmp")
             
     Sound.Sound_Play CStr(SND_LLUVIAIN), True, 0, 0
     AlphaNiebla = 10
@@ -1191,7 +1191,7 @@ Public Sub CargarCuentasGuardadas()
     If LenB(CuentaRecordada.nombre) <> 0 Then
         FrmLogear.NameTxt = CuentaRecordada.nombre
         FrmLogear.PasswordTxt = CuentaRecordada.Password
-        FrmLogear.Image4.Picture = LoadInterface("check-amarillo.bmp")
+        FrmLogear.Image4.Picture = LoadInterface(Language + "check-amarillo.bmp")
         FrmLogear.Image4.Tag = "1"
         FrmLogear.PasswordTxt.TabIndex = 0
         FrmLogear.PasswordTxt.SelStart = Len(FrmLogear.PasswordTxt)
@@ -2345,7 +2345,7 @@ Public Sub CalcularPosicionMAPA()
             If Mundo(j).MapIndice(i) = UserMap Then
                 idmap = i
                 Encontre = True
-                frmMapaGrande.picMap.Picture = LoadInterface("mapa" & j & ".bmp")
+                frmMapaGrande.picMap.Picture = LoadInterface(Language + "mapa" & j & ".bmp")
                 frmMapaGrande.Image2.Picture = Nothing
                 WorldActual = j
                 frmMapaGrande.ComMundo.ListIndex = j - 1
@@ -2360,7 +2360,7 @@ Public Sub CalcularPosicionMAPA()
     
     If Encontre = False Then
         If frmMapaGrande.Visible = False Then
-            frmMapaGrande.picMap.Picture = LoadInterface("mapa1.bmp")
+            frmMapaGrande.picMap.Picture = LoadInterface(Language + "mapa1.bmp")
             frmMapaGrande.Image2.Picture = Nothing
         End If
 

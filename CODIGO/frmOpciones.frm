@@ -600,7 +600,7 @@ Private Sub SetSolapa(Index As Integer, ByVal Tag As String)
         Case "2": estado = "default"
     End Select
     
-    BtnSolapa(Index).Picture = LoadInterface("boton-" & Name & "-es-" & estado & ".bmp")
+    BtnSolapa(Index).Picture = LoadInterface(Language + "boton-" & Name & "-es-" & estado & ".bmp")
     BtnSolapa(Index).Tag = Tag
 
 End Sub
@@ -625,7 +625,7 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If OcultarMacrosAlCastear = 0 Then
         Check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
+        Check1.Picture = LoadInterface(Language + "check-amarillo.bmp")
     End If
         
     
@@ -652,7 +652,7 @@ Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If PermitirMoverse = 0 Then
         Check4.Picture = Nothing
     Else
-        Check4.Picture = LoadInterface("check-amarillo.bmp")
+        Check4.Picture = LoadInterface(Language + "check-amarillo.bmp")
     End If
 
     
@@ -679,7 +679,7 @@ Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If MoverVentana = 0 Then
         Check5.Picture = Nothing
     Else
-        Check5.Picture = LoadInterface("check-amarillo.bmp")
+        Check5.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
 
@@ -710,7 +710,7 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If CursoresGraficos = 0 Then
         Check2.Picture = Nothing
     Else
-        Check2.Picture = LoadInterface("check-amarillo.bmp")
+        Check2.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
 
@@ -741,7 +741,7 @@ Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single
     If InvertirSonido = 0 Then
         chkInvertir.Picture = Nothing
     Else
-        chkInvertir.Picture = LoadInterface("check-amarillo.bmp")
+        chkInvertir.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
 
@@ -780,7 +780,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If Musica = 0 Then
                 chko(0).Picture = Nothing
             Else
-                chko(0).Picture = LoadInterface("check-amarillo.bmp")
+                chko(0).Picture = LoadInterface(Language + "check-amarillo.bmp")
 
             End If
 
@@ -802,7 +802,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If fX = 0 Then
                 chko(1).Picture = Nothing
             Else
-                chko(1).Picture = LoadInterface("check-amarillo.bmp")
+                chko(1).Picture = LoadInterface(Language + "check-amarillo.bmp")
 
             End If
 
@@ -818,7 +818,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If FxNavega = 0 Then
                 chko(2).Picture = Nothing
             Else
-                chko(2).Picture = LoadInterface("check-amarillo.bmp")
+                chko(2).Picture = LoadInterface(Language + "check-amarillo.bmp")
 
             End If
 
@@ -840,7 +840,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If AmbientalActivated = 0 Then
                 chko(3).Picture = Nothing
             Else
-                chko(3).Picture = LoadInterface("check-amarillo.bmp")
+                chko(3).Picture = LoadInterface(Language + "check-amarillo.bmp")
 
             End If
 
@@ -876,7 +876,7 @@ Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If cmdayuda.Tag = "0" Then
-        cmdayuda.Picture = LoadInterface("config_ayuda.bmp")
+        cmdayuda.Picture = LoadInterface(Language + "config_ayuda.bmp")
         cmdayuda.Tag = "1"
 
     End If
@@ -896,7 +896,7 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command1.Tag = "0" Then
-        Command1.Picture = LoadInterface("boton-config-teclas-over.bmp")
+        Command1.Picture = LoadInterface(Language + "boton-config-teclas-over.bmp")
         Command1.Tag = "1"
 
     End If
@@ -919,7 +919,7 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     
 
     If cmdCerrar.Tag = "0" Then
-        'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
+        'cmdCerrar.Picture = LoadInterface(Language + "config_cerrar.bmp")
         cmdCerrar.Tag = "1"
 
     End If
@@ -944,7 +944,7 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
     
 
     If cmdChangePassword.Tag = "0" Then
-        cmdChangePassword.Picture = LoadInterface("boton-cambiar-pass-over.bmp")
+        cmdChangePassword.Picture = LoadInterface(Language + "boton-cambiar-pass-over.bmp")
         cmdChangePassword.Tag = "1"
 
     End If
@@ -1027,15 +1027,15 @@ Private Sub Form_Load()
     
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
-    Me.Picture = LoadInterface("configuracion-vacio.bmp")
+    Me.Picture = LoadInterface(Language + "configuracion-vacio.bmp")
     
-    PanelJugabilidad.Picture = LoadInterface("configuracion-jugabilidad.bmp")
-    PanelVideo.Picture = LoadInterface("configuracion-video.bmp")
-    PanelAudio.Picture = LoadInterface("configuracion-audio.bmp")
+    PanelJugabilidad.Picture = LoadInterface(Language + "configuracion-jugabilidad.bmp")
+    PanelVideo.Picture = LoadInterface(Language + "configuracion-video.bmp")
+    PanelAudio.Picture = LoadInterface(Language + "configuracion-audio.bmp")
 
-    BtnSolapa(0).Picture = LoadInterface("boton-jugabilidad-es-default.bmp")
-    BtnSolapa(1).Picture = LoadInterface("boton-video-es-off.bmp")
-    BtnSolapa(2).Picture = LoadInterface("boton-audio-es-off.bmp")
+    BtnSolapa(0).Picture = LoadInterface(Language + "boton-jugabilidad-es-default.bmp")
+    BtnSolapa(1).Picture = LoadInterface(Language + "boton-video-es-off.bmp")
+    BtnSolapa(2).Picture = LoadInterface(Language + "boton-audio-es-off.bmp")
 
     Exit Sub
 
@@ -1086,7 +1086,7 @@ Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
    ' If Check3 Then
       '  SwapMouseButton 1
-       ' Check3.Picture = LoadInterface("check-amarillo.bmp")
+       ' Check3.Picture = LoadInterface(Language + "check-amarillo.bmp")
   '   Else
       ' SwapMouseButton 0
       ' Check3.Picture = Nothing
@@ -1108,7 +1108,7 @@ Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If FPSFLAG = 0 Then
         Check6.Picture = Nothing
     Else
-        Check6.Picture = LoadInterface("check-amarillo.bmp")
+        Check6.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
 
@@ -1136,7 +1136,7 @@ Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If CopiarDialogoAConsola = 0 Then
         Check9.Picture = Nothing
     Else
-        Check9.Picture = LoadInterface("check-amarillo.bmp")
+        Check9.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
 
@@ -1280,42 +1280,42 @@ Public Sub Init()
     If CopiarDialogoAConsola = 0 Then
         Check9.Picture = Nothing
     Else
-        Check9.Picture = LoadInterface("check-amarillo.bmp")
+        Check9.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
     If MoverVentana = 0 Then
         Check5.Picture = Nothing
     Else
-        Check5.Picture = LoadInterface("check-amarillo.bmp")
+        Check5.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
 
     If CursoresGraficos = 0 Then
         Check2.Picture = Nothing
     Else
-        Check2.Picture = LoadInterface("check-amarillo.bmp")
+        Check2.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
 
     If PermitirMoverse = 0 Then
         Check4.Picture = Nothing
     Else
-        Check4.Picture = LoadInterface("check-amarillo.bmp")
+        Check4.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
     If Musica = 0 Then
         chko(0).Picture = Nothing
     Else
-        chko(0).Picture = LoadInterface("check-amarillo.bmp")
+        chko(0).Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
     If FxNavega = 0 Then
         chko(2).Picture = Nothing
     Else
-        chko(2).Picture = LoadInterface("check-amarillo.bmp")
+        chko(2).Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
@@ -1323,42 +1323,42 @@ Public Sub Init()
     If MostrarEscribiendo = 0 Then
         ind_lectura.Picture = Nothing
     Else
-        ind_lectura.Picture = LoadInterface("check-amarillo.bmp")
+        ind_lectura.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
     If AmbientalActivated = 0 Then
         chko(3).Picture = Nothing
     Else
-        chko(3).Picture = LoadInterface("check-amarillo.bmp")
+        chko(3).Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
     If fX = 0 Then
         chko(1).Picture = Nothing
     Else
-        chko(1).Picture = LoadInterface("check-amarillo.bmp")
+        chko(1).Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
     If InvertirSonido = 0 Then
         chkInvertir.Picture = Nothing
     Else
-        chkInvertir.Picture = LoadInterface("check-amarillo.bmp")
+        chkInvertir.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
     If FPSFLAG = 0 Then
         Check6.Picture = Nothing
     Else
-        Check6.Picture = LoadInterface("check-amarillo.bmp")
+        Check6.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
     If OcultarMacrosAlCastear = 0 Then
         Check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
+        Check1.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
     
@@ -1414,7 +1414,7 @@ Private Sub ind_lectura_Click()
     If MostrarEscribiendo = 0 Then
         ind_lectura.Picture = Nothing
     Else
-        ind_lectura.Picture = LoadInterface("check-amarillo.bmp")
+        ind_lectura.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
 

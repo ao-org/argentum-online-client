@@ -227,7 +227,7 @@ Private Sub Command1_Click()
         Call frmHerrero.lstArmas.AddItem(ObjData(ArmasHerrero(i).Index).Name)
     Next i
     
-    Command1.Picture = LoadInterface("herreria_armashover.bmp")
+    Command1.Picture = LoadInterface(Language + "herreria_armashover.bmp")
     Command3.Picture = Nothing
     Command2.Picture = Nothing
     Command4.Picture = Nothing
@@ -243,7 +243,7 @@ End Sub
 
 Private Sub Command1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    ' Command1.Picture = LoadInterface("herreria_armaspress.bmp")
+    ' Command1.Picture = LoadInterface(Language + "herreria_armaspress.bmp")
     ' Command1.Tag = "1"
 End Sub
 
@@ -267,7 +267,7 @@ Private Sub Command2_Click()
 
     Next i
 
-    Command2.Picture = LoadInterface("herreria_armadurashover.bmp")
+    Command2.Picture = LoadInterface(Language + "herreria_armadurashover.bmp")
     Command1.Picture = Nothing
     Command3.Picture = Nothing
     Command4.Picture = Nothing
@@ -297,7 +297,7 @@ Private Sub Command3_Click()
         Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).Name)
     Next i
 
-    Command3.Picture = LoadInterface("herreria_cascoshover.bmp")
+    Command3.Picture = LoadInterface(Language + "herreria_cascoshover.bmp")
 
     Command1.Picture = Nothing
     Command2.Picture = Nothing
@@ -328,7 +328,7 @@ Private Sub Command4_Click()
         Call frmHerrero.lstArmas.AddItem(ObjData(EscudosHerrero(i).Index).Name)
     Next i
 
-    Command4.Picture = LoadInterface("herreria_escudoshover.bmp")
+    Command4.Picture = LoadInterface(Language + "herreria_escudoshover.bmp")
     Command1.Picture = Nothing
     Command2.Picture = Nothing
     Command3.Picture = Nothing
@@ -454,7 +454,7 @@ End Sub
 
 Private Sub Command6_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Command6.Picture = LoadInterface("trabajar_construirpress.bmp")
+    'Command6.Picture = LoadInterface(Language + "trabajar_construirpress.bmp")
     ' Command6.Tag = "1"
 End Sub
 
@@ -464,7 +464,7 @@ Private Sub Command6_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command6.Tag = "0" Then
-        Command6.Picture = LoadInterface("trabajar_construirhover.bmp")
+        Command6.Picture = LoadInterface(Language + "trabajar_construirhover.bmp")
         Command6.Tag = "1"
 
     End If
@@ -483,7 +483,7 @@ End Sub
 
 Private Sub Command5_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Command5.Picture = LoadInterface("trabajar_salirpress.bmp")
+    'Command5.Picture = LoadInterface(Language + "trabajar_salirpress.bmp")
     'Command5.Tag = "1"
 End Sub
 
@@ -493,7 +493,7 @@ Private Sub Command5_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command5.Tag = "0" Then
-        Command5.Picture = LoadInterface("trabajar_salirhover.bmp")
+        Command5.Picture = LoadInterface(Language + "trabajar_salirhover.bmp")
         Command5.Tag = "1"
 
     End If
@@ -512,19 +512,19 @@ End Sub
 
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Command4.Picture = LoadInterface("herreria_escudospress.bmp")
+    'Command4.Picture = LoadInterface(Language + "herreria_escudospress.bmp")
     'Command4.Tag = "1"
 End Sub
 
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    ' 'Command3.Picture = LoadInterface("herreria_cascospress.bmp")
+    ' 'Command3.Picture = LoadInterface(Language + "herreria_cascospress.bmp")
     ' Command3.Tag = "1"
 End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Command2.Picture = LoadInterface("herreria_armaduraspress.bmp")
+    'Command2.Picture = LoadInterface(Language + "herreria_armaduraspress.bmp")
     ' Command2.Tag = "1"
 End Sub
 

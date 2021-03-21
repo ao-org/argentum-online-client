@@ -496,7 +496,7 @@ moverForm_Err:
 End Sub
 
 Private Sub ComMundo_Click()
-picMap.Picture = LoadInterface("mapa" & ComMundo.ListIndex + 1 & ".bmp")
+picMap.Picture = LoadInterface(Language + "mapa" & ComMundo.ListIndex + 1 & ".bmp")
 
 WorldActual = ComMundo.ListIndex + 1
 
@@ -536,7 +536,7 @@ Private Sub Form_Load()
     
     Call Cargarmapsworlddata
     
-   ' picMap.Picture = LoadInterface("mapa.bmp")
+   ' picMap.Picture = LoadInterface(Language + "mapa.bmp")
     
     Exit Sub
 
@@ -625,13 +625,13 @@ DibujarHead_Err:
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    'Image1 = LoadInterface("cerrardown.bmp")
+    'Image1 = LoadInterface(Language + "cerrardown.bmp")
 
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image1 = LoadInterface("cerrarhover.bmp")
+    'Image1 = LoadInterface(Language + "cerrarhover.bmp")
 End Sub
 
 Private Sub ListView1_beforeEdit(ByVal Columna As Integer, Cancel As Boolean)
@@ -672,7 +672,7 @@ Private Sub Image2_Click()
     
     On Error GoTo Image2_Click_Err
 
-    picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
+    picMap.Picture = LoadInterface(Language + "mapa" & WorldActual & ".bmp")
     
     Exit Sub
 
@@ -690,13 +690,13 @@ Private Sub Image3_Click()
     If Dungeon Then Exit Sub
 
     If Referencias Then
-        picMap.Picture = LoadInterface("mapa1.bmp")
+        picMap.Picture = LoadInterface(Language + "mapa1.bmp")
         Image3.Picture = Nothing
         Referencias = False
     Else
         Referencias = True
-        picMap.Picture = LoadInterface("mapa_referencias.bmp")
-        Image3.Picture = LoadInterface("check-amarillo.bmp")
+        picMap.Picture = LoadInterface(Language + "mapa_referencias.bmp")
+        Image3.Picture = LoadInterface(Language + "check-amarillo.bmp")
 
     End If
 

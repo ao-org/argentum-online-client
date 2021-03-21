@@ -655,7 +655,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface(Language + "centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 

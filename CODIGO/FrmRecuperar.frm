@@ -234,7 +234,7 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hwnd, 240)
-    Me.Picture = LoadInterface("recuperar.bmp")
+    Me.Picture = LoadInterface(Language + "recuperar.bmp")
     ValidacionNumber = RandomNumber(10000, 90000)
     valcar = ValidacionNumber
     UserCuentatxt = CuentaEmail
@@ -294,7 +294,7 @@ End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image1.Picture = LoadInterface("volverpress.bmp")
+    'Image1.Picture = LoadInterface(Language + "volverpress.bmp")
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -303,7 +303,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("volverhover.bmp")
+        Image1.Picture = LoadInterface(Language + "volverhover.bmp")
         Image1.Tag = "1"
 
     End If
@@ -376,7 +376,7 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface("enviarhover.bmp")
+        Image2.Picture = LoadInterface(Language + "enviarhover.bmp")
         Image2.Tag = "1"
 
     End If
@@ -392,6 +392,6 @@ End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image2.Picture = LoadInterface("enviarpress.bmp")
+    'Image2.Picture = LoadInterface(Language + "enviarpress.bmp")
 End Sub
 

@@ -145,7 +145,7 @@ Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single
     
     On Error GoTo imgCerrar_MouseDown_Err
     
-    imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
+    imgCerrar.Picture = LoadInterface(Language + "boton-cerrar-off.bmp")
     imgCerrar.Tag = "1"
     
     Exit Sub
@@ -161,7 +161,7 @@ Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo imgCerrar_MouseMove_Err
     
     If imgCerrar.Tag = "0" Then
-        imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
+        imgCerrar.Picture = LoadInterface(Language + "boton-cerrar-over.bmp")
         imgCerrar.Tag = "1"
     End If
     
@@ -368,7 +368,7 @@ Private Sub tirar_MouseDown(Button As Integer, Shift As Integer, x As Single, y 
     On Error GoTo tirar_MouseDown_Err
     
 
-    tirar.Picture = LoadInterface("boton-tirar-es-off.bmp")
+    tirar.Picture = LoadInterface(Language + "boton-tirar-es-off.bmp")
     
     Exit Sub
 
@@ -384,7 +384,7 @@ Private Sub tirar_MouseMove(Button As Integer, Shift As Integer, x As Single, y 
     
 
     If tirar.Tag = "0" Then
-        tirar.Picture = LoadInterface("boton-tirar-es-over.bmp")
+        tirar.Picture = LoadInterface(Language + "boton-tirar-es-over.bmp")
         tirar.Tag = "1"
 
     End If
@@ -452,7 +452,7 @@ Private Sub tirartodo_MouseDown(Button As Integer, Shift As Integer, x As Single
     
     On Error GoTo tirartodo_MouseDown_Err
     
-    tirartodo.Picture = LoadInterface("boton-tirar-todo-es-off.bmp")
+    tirartodo.Picture = LoadInterface(Language + "boton-tirar-todo-es-off.bmp")
     
     Exit Sub
 
@@ -468,7 +468,7 @@ Private Sub tirartodo_MouseMove(Button As Integer, Shift As Integer, x As Single
     
 
     If tirartodo.Tag = "0" Then
-        tirartodo.Picture = LoadInterface("boton-tirar-todo-es-over.bmp")
+        tirartodo.Picture = LoadInterface(Language + "boton-tirar-todo-es-over.bmp")
         tirartodo.Tag = "1"
 
     End If

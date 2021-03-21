@@ -409,7 +409,7 @@ Public Sub TirarItem()
         Else
 
             If frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem) > 1 Then
-                frmCantidad.Picture = LoadInterface("cantidad.bmp")
+                frmCantidad.Picture = LoadInterface(Language + "cantidad.bmp")
                 frmCantidad.Show , frmMain
 
             End If

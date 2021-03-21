@@ -61,7 +61,7 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hWnd, 220)
-    Me.Picture = LoadInterface("desconectar.bmp")
+    Me.Picture = LoadInterface(Language + "desconectar.bmp")
 
     
     Exit Sub
@@ -130,15 +130,15 @@ Private Sub Opcion_MouseDown(Index As Integer, Button As Integer, Shift As Integ
     Select Case Index
 
         Case 0 ' Menu principal
-            Opcion(Index).Picture = LoadInterface("boton-mainmenu-ES-off.bmp")
+            Opcion(Index).Picture = LoadInterface(Language + "boton-mainmenu-ES-off.bmp")
             Opcion(Index).Tag = "1"
 
         Case 1  'Cerrar juego
-            Opcion(Index).Picture = LoadInterface("boton-salir-ES-off.bmp")
+            Opcion(Index).Picture = LoadInterface(Language + "boton-salir-ES-off.bmp")
             Opcion(Index).Tag = "1"
 
         Case 2 'Cancelar
-            Opcion(Index).Picture = LoadInterface("boton-cancelar-ES-off.bmp")
+            Opcion(Index).Picture = LoadInterface(Language + "boton-cancelar-ES-off.bmp")
             Opcion(Index).Tag = "1"
 
     End Select
@@ -181,7 +181,7 @@ Private Sub Opcion_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 0 ' Menu principal
 
             If Opcion(Index).Tag = "0" Then
-                Opcion(Index).Picture = LoadInterface("boton-mainmenu-ES-over.bmp")
+                Opcion(Index).Picture = LoadInterface(Language + "boton-mainmenu-ES-over.bmp")
                 Opcion(Index).Tag = "1"
 
             End If
@@ -189,7 +189,7 @@ Private Sub Opcion_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 1  'Cerrar juego
 
             If Opcion(Index).Tag = "0" Then
-                Opcion(Index).Picture = LoadInterface("boton-salir-ES-over.bmp")
+                Opcion(Index).Picture = LoadInterface(Language + "boton-salir-ES-over.bmp")
                 Opcion(Index).Tag = "1"
 
             End If
@@ -197,7 +197,7 @@ Private Sub Opcion_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 2 'Cancelar
 
             If Opcion(Index).Tag = "0" Then
-                Opcion(Index).Picture = LoadInterface("boton-cancelar-ES-over.bmp")
+                Opcion(Index).Picture = LoadInterface(Language + "boton-cancelar-ES-over.bmp")
                 Opcion(Index).Tag = "1"
 
             End If

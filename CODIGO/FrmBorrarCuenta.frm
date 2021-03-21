@@ -220,7 +220,7 @@ End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image1.Picture = LoadInterface("volverpress.bmp")
+    'Image1.Picture = LoadInterface(Language + "volverpress.bmp")
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -302,7 +302,7 @@ End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image2.Picture = LoadInterface("borrarpress.bmp")
+    'Image2.Picture = LoadInterface(Language + "borrarpress.bmp")
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)

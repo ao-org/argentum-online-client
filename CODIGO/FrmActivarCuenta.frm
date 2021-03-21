@@ -243,7 +243,7 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hwnd, 240)
-    Me.Picture = LoadInterface("validar.bmp")
+    Me.Picture = LoadInterface(Language + "validar.bmp")
 
     'Cargamos Interface
     If CuentaEmail <> "" Then
@@ -309,7 +309,7 @@ End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image1.Picture = LoadInterface("validar_volver.bmp")
+    'Image1.Picture = LoadInterface(Language + "validar_volver.bmp")
     ' Image1.Tag = "1"
 End Sub
 
@@ -319,7 +319,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("validar_volver.bmp")
+        Image1.Picture = LoadInterface(Language + "validar_volver.bmp")
         Image1.Tag = "1"
 
     End If
@@ -339,7 +339,7 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface("validar_enviar.bmp")
+        Image2.Picture = LoadInterface(Language + "validar_enviar.bmp")
         Image2.Tag = "1"
 
     End If
@@ -355,7 +355,7 @@ End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    ' Image2.Picture = LoadInterface("validar_enviar.bmp")
+    ' Image2.Picture = LoadInterface(Language + "validar_enviar.bmp")
 End Sub
 
 Private Sub Image2_Click()

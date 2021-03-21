@@ -407,7 +407,7 @@ Private Sub adjItem_Click()
     Command2.Enabled = Not Command2.Enabled
 
     If lstInv.Enabled Then
-        adjItem.Picture = LoadInterface("check-amarillo.bmp")
+        adjItem.Picture = LoadInterface(Language + "check-amarillo.bmp")
         lblCosto.Caption = "Gratis"
     Else
         lblCosto.Caption = "Gratis"
@@ -488,7 +488,7 @@ End Sub
 
 Private Sub cmdDel_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'cmdDel.Picture = LoadInterface("correo_borrarpress.bmp")
+    'cmdDel.Picture = LoadInterface(Language + "correo_borrarpress.bmp")
     'cmdDel.Tag = "1"
 End Sub
 
@@ -531,7 +531,7 @@ End Sub
 
 Private Sub cmdSave_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'cmdSave.Picture = LoadInterface("correo_guardaritempress.bmp")
+    'cmdSave.Picture = LoadInterface(Language + "correo_guardaritempress.bmp")
     'cmdSave.Tag = "1"
 End Sub
 
@@ -541,7 +541,7 @@ Private Sub cmdSave_MouseMove(Button As Integer, Shift As Integer, x As Single, 
     
 
     If cmdSave.Tag = "0" Then
-        cmdSave.Picture = LoadInterface("correo_guardaritemhover.bmp")
+        cmdSave.Picture = LoadInterface(Language + "correo_guardaritemhover.bmp")
         cmdSave.Tag = "1"
 
     End If
@@ -601,7 +601,7 @@ Private Sub cmdSend_MouseDown(Button As Integer, Shift As Integer, x As Single, 
     
     On Error GoTo cmdSend_MouseDown_Err
     
-    'cmdSend.Picture = LoadInterface("correo_enviarpress.bmp")
+    'cmdSend.Picture = LoadInterface(Language + "correo_enviarpress.bmp")
     'cmdSend.Tag = "1"
 
     
@@ -619,7 +619,7 @@ Private Sub cmdSend_MouseMove(Button As Integer, Shift As Integer, x As Single, 
     
 
     If cmdSend.Tag = "0" Then
-        cmdSend.Picture = LoadInterface("correo_enviarhover.bmp")
+        cmdSend.Picture = LoadInterface(Language + "correo_enviarhover.bmp")
         cmdSend.Tag = "1"
 
     End If
@@ -715,7 +715,7 @@ Private Sub Command1_MouseDown(Button As Integer, Shift As Integer, x As Single,
     
     On Error GoTo Command1_MouseDown_Err
     
-    Command1.Picture = LoadInterface("correo_quitarpress.bmp")
+    Command1.Picture = LoadInterface(Language + "correo_quitarpress.bmp")
     Command1.Tag = "1"
 
     
@@ -733,7 +733,7 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command1.Tag = "0" Then
-        Command1.Picture = LoadInterface("correo_quitarhover.bmp")
+        Command1.Picture = LoadInterface(Language + "correo_quitarhover.bmp")
         Command1.Tag = "1"
 
     End If
@@ -833,7 +833,7 @@ End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Command2.Picture = LoadInterface("correo_agregarpress.bmp")
+    'Command2.Picture = LoadInterface(Language + "correo_agregarpress.bmp")
     'Command2.Tag = "1"
 End Sub
 
@@ -843,7 +843,7 @@ Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command2.Tag = "0" Then
-        Command2.Picture = LoadInterface("correo_agregarhvoer.bmp")
+        Command2.Picture = LoadInterface(Language + "correo_agregarhvoer.bmp")
         Command2.Tag = "1"
 
     End If
@@ -861,7 +861,7 @@ Private Sub Command3_Click()
     
     On Error GoTo Command3_Click_Err
     
-    Me.Picture = LoadInterface("ventanacorreo.bmp")
+    Me.Picture = LoadInterface(Language + "ventanacorreo.bmp")
     lstMsg.Visible = True
     txMensaje.Visible = True
     ListAdjuntos.Visible = True
@@ -897,7 +897,7 @@ End Sub
 
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    ' Command3.Picture = LoadInterface("correo_atraspress.bmp")
+    ' Command3.Picture = LoadInterface(Language + "correo_atraspress.bmp")
     ' Command3.Tag = "1"
 End Sub
 
@@ -907,7 +907,7 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command3.Tag = "0" Then
-        Command3.Picture = LoadInterface("correo_atrashover.bmp")
+        Command3.Picture = LoadInterface(Language + "correo_atrashover.bmp")
         Command3.Tag = "1"
 
     End If
@@ -947,7 +947,7 @@ Private Sub Command9_Click()
     Command3.Visible = True
     adjItem.Visible = True
     Label4.Visible = True
-    Me.Picture = LoadInterface("ventananuevocorreo.bmp")
+    Me.Picture = LoadInterface(Language + "ventananuevocorreo.bmp")
 
     
     Exit Sub
@@ -960,7 +960,7 @@ End Sub
 
 Private Sub Command9_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Command9.Picture = LoadInterface("correo_nuevomensajepress.bmp")
+    'Command9.Picture = LoadInterface(Language + "correo_nuevomensajepress.bmp")
     'command9.Tag = "1"
 End Sub
 
@@ -970,7 +970,7 @@ Private Sub Command9_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command9.Tag = "0" Then
-        Command9.Picture = LoadInterface("correo_nuevomensajehover.bmp")
+        Command9.Picture = LoadInterface(Language + "correo_nuevomensajehover.bmp")
         Command9.Tag = "1"
 
     End If

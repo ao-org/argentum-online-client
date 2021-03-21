@@ -324,7 +324,7 @@ Private Sub optConsult_Click(Index As Integer)
             optConsult(i).Picture = Nothing
             optConsult(i).Tag = 0
         Else
-            optConsult(i).Picture = LoadInterface("admin_stick.bmp")
+            optConsult(i).Picture = LoadInterface(Language + "admin_stick.bmp")
             optConsult(i).Tag = 1
 
         End If

@@ -257,13 +257,13 @@ Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As 
     Select Case Index
 
         Case 0
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
+            cmdMasMenos(Index).Picture = LoadInterface(Language + "boton-sm-menos-off.bmp")
             cmdMasMenos(Index).Tag = "1"
             cantidad.Text = str((Val(cantidad.Text) - 1))
             m_Increment = -1
 
         Case 1
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
+            cmdMasMenos(Index).Picture = LoadInterface(Language + "boton-sm-mas-off.bmp")
             cmdMasMenos(Index).Tag = "1"
             m_Increment = 1
 
@@ -291,7 +291,7 @@ Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As 
         Case 0
 
             If cmdMasMenos(Index).Tag = "0" Then
-                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-over.bmp")
+                cmdMasMenos(Index).Picture = LoadInterface(Language + "boton-sm-menos-over.bmp")
                 cmdMasMenos(Index).Tag = "1"
 
             End If
@@ -299,7 +299,7 @@ Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As 
         Case 1
 
             If cmdMasMenos(Index).Tag = "0" Then
-                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-over.bmp")
+                cmdMasMenos(Index).Picture = LoadInterface(Language + "boton-sm-mas-over.bmp")
                 cmdMasMenos(Index).Tag = "1"
 
             End If
@@ -523,10 +523,10 @@ Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integ
     
 
     If Index = 0 Then
-        Image1(0).Picture = LoadInterface("boton-comprar-ES-off.bmp")
+        Image1(0).Picture = LoadInterface(Language + "boton-comprar-ES-off.bmp")
         Image1(0).Tag = "0"
     Else
-        Image1(1).Picture = LoadInterface("boton-vender-ES-off.bmp")
+        Image1(1).Picture = LoadInterface(Language + "boton-vender-ES-off.bmp")
         Image1(1).Tag = "0"
 
     End If
@@ -547,7 +547,7 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
 
     If Index = 0 Then
         If Image1(0).Tag = "0" Then
-            Image1(0).Picture = LoadInterface("boton-comprar-ES-over.bmp")
+            Image1(0).Picture = LoadInterface(Language + "boton-comprar-ES-over.bmp")
             Image1(0).Tag = "1"
 
         End If
@@ -555,7 +555,7 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
     Else
         
         If Image1(1).Tag = "0" Then
-            Image1(1).Picture = LoadInterface("boton-vender-over.bmp")
+            Image1(1).Picture = LoadInterface(Language + "boton-vender-over.bmp")
             Image1(1).Tag = "1"
 
         End If

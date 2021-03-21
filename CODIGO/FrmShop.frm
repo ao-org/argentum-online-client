@@ -307,13 +307,13 @@ End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image1.Picture = LoadInterface("comprarpress.bmp")
+    'Image1.Picture = LoadInterface(Language + "comprarpress.bmp")
     'Image1.Tag = "0"
 End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image2.Picture = LoadInterface("cargarcodepress.bmp")
+    'Image2.Picture = LoadInterface(Language + "cargarcodepress.bmp")
     'Image2.Tag = "0"
 End Sub
 
@@ -346,7 +346,7 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface("cargarcodehover.bmp")
+        Image2.Picture = LoadInterface(Language + "cargarcodehover.bmp")
         Image2.Tag = "1"
 
     End If
@@ -372,7 +372,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("comprarhover.bmp")
+        Image1.Picture = LoadInterface(Language + "comprarhover.bmp")
         Image1.Tag = "1"
 
     End If
@@ -398,7 +398,7 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image3.Tag = "0" Then
-        Image3.Picture = LoadInterface("donar.bmp")
+        Image3.Picture = LoadInterface(Language + "donar.bmp")
         Image3.Tag = "1"
 
     End If
