@@ -1525,7 +1525,7 @@ Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, 
     
 
     If clanimg.Tag = "0" Then
-        clanimg.Picture = LoadInterface(Language + "claniluminado.bmp")
+        clanimg.Picture = LoadInterface(Language + "\claniluminado.bmp")
         clanimg.Tag = "1"
 
     End If
@@ -1567,7 +1567,7 @@ Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single
         End If
     End If
     
-    cmdlanzar.Picture = LoadInterface(Language + "boton-lanzar-ES-off.bmp")
+    cmdlanzar.Picture = LoadInterface(Language + "\boton-lanzar-ES-off.bmp")
     cmdlanzar.Tag = "1"
 
     
@@ -1589,7 +1589,7 @@ Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, 
         End If
     End If
     
-    cmdlanzar.Picture = LoadInterface(Language + "boton-lanzar-ES-over.bmp")
+    cmdlanzar.Picture = LoadInterface(Language + "\boton-lanzar-ES-over.bmp")
     cmdlanzar.Tag = "1"
     
     Exit Sub
@@ -1626,7 +1626,7 @@ Public Sub CerrarLlavero()
     On Error GoTo CerrarLlavero_Err
     
     FrmKeyInv.Visible = False
-    cmdLlavero.Picture = LoadInterface(Language + "boton-llavero-over.bmp")
+    cmdLlavero.Picture = LoadInterface(Language + "\boton-llavero-over.bmp")
     cmdLlavero.Tag = "1"
     
     Exit Sub
@@ -1641,7 +1641,7 @@ Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, x As Singl
     
     On Error GoTo cmdLlavero_MouseDown_Err
     
-    cmdLlavero.Picture = LoadInterface(Language + "boton-llavero-off.bmp")
+    cmdLlavero.Picture = LoadInterface(Language + "\boton-llavero-off.bmp")
     cmdLlavero.Tag = "1"
     
     Exit Sub
@@ -1657,7 +1657,7 @@ Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, x As Singl
     On Error GoTo cmdLlavero_MouseMove_Err
     
     If cmdLlavero.Tag = "0" Then
-        cmdLlavero.Picture = LoadInterface(Language + "boton-llavero-over.bmp")
+        cmdLlavero.Picture = LoadInterface(Language + "\boton-llavero-over.bmp")
         cmdLlavero.Tag = "1"
     End If
     
@@ -1722,10 +1722,10 @@ Public Sub ControlSeguroParty(ByVal Mostrar As Boolean)
     On Error GoTo ControlSeguroParty_Err
 
     If Mostrar Then
-        ImgSegParty = LoadInterface(Language + "boton-seguro-party-on.bmp")
+        ImgSegParty = LoadInterface(Language + "\boton-seguro-party-on.bmp")
         SeguroParty = True
     Else
-        ImgSegParty = LoadInterface(Language + "boton-seguro-party-off.bmp")
+        ImgSegParty = LoadInterface(Language + "\boton-seguro-party-off.bmp")
         SeguroParty = False
     End If
     
@@ -1741,7 +1741,7 @@ Public Sub DibujarSeguro()
     
     On Error GoTo DibujarSeguro_Err
     
-    ImgSeg = LoadInterface(Language + "boton-seguro-ciudadano-on.bmp")
+    ImgSeg = LoadInterface(Language + "\boton-seguro-ciudadano-on.bmp")
     
     SeguroGame = True
 
@@ -1758,7 +1758,7 @@ Public Sub DesDibujarSeguro()
     
     On Error GoTo DesDibujarSeguro_Err
     
-    ImgSeg = LoadInterface(Language + "boton-seguro-ciudadano-off.bmp")
+    ImgSeg = LoadInterface(Language + "\boton-seguro-ciudadano-off.bmp")
     
     SeguroGame = False
 
@@ -1781,7 +1781,7 @@ Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift A
         Case 0
 
             If cmdMoverHechi(Index).Tag = "0" Then
-                cmdMoverHechi(Index).Picture = LoadInterface(Language + "boton-sm-flecha-aba-over.bmp")
+                cmdMoverHechi(Index).Picture = LoadInterface(Language + "\boton-sm-flecha-aba-over.bmp")
                 cmdMoverHechi(Index).Tag = "1"
 
             End If
@@ -1789,7 +1789,7 @@ Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift A
         Case 1
 
             If cmdMoverHechi(Index).Tag = "0" Then
-                cmdMoverHechi(Index).Picture = LoadInterface(Language + "boton-sm-flecha-arr-over.bmp")
+                cmdMoverHechi(Index).Picture = LoadInterface(Language + "\boton-sm-flecha-arr-over.bmp")
                 cmdMoverHechi(Index).Tag = "1"
 
             End If
@@ -1812,10 +1812,10 @@ Private Sub CombateIcon_Click()
 
     If ChatCombate = 0 Then
         ChatCombate = 1
-        CombateIcon.Picture = LoadInterface(Language + "infoapretado.bmp")
+        CombateIcon.Picture = LoadInterface(Language + "\infoapretado.bmp")
     Else
         ChatCombate = 0
-        CombateIcon.Picture = LoadInterface(Language + "info.bmp")
+        CombateIcon.Picture = LoadInterface(Language + "\info.bmp")
 
     End If
 
@@ -1971,7 +1971,7 @@ Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x A
     
     On Error GoTo EstadisticasBoton_MouseDown_Err
     
-    EstadisticasBoton.Picture = LoadInterface(Language + "boton-estadisticas-off.bmp")
+    EstadisticasBoton.Picture = LoadInterface(Language + "\boton-estadisticas-off.bmp")
     EstadisticasBoton.Tag = "1"
     
     Exit Sub
@@ -1988,7 +1988,7 @@ Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x A
     
 
     If EstadisticasBoton.Tag = "0" Then
-        EstadisticasBoton.Picture = LoadInterface(Language + "boton-estadisticas-over.bmp")
+        EstadisticasBoton.Picture = LoadInterface(Language + "\boton-estadisticas-over.bmp")
         EstadisticasBoton.Tag = "1"
     End If
 
@@ -2206,7 +2206,7 @@ Private Sub GldLbl_Click()
     Inventario.SelectGold
 
     If UserGLD > 0 Then
-        frmCantidad.Picture = LoadInterface(Language + "cantidad.bmp")
+        frmCantidad.Picture = LoadInterface(Language + "\cantidad.bmp")
         frmCantidad.Show , frmMain
 
     End If
@@ -2227,10 +2227,10 @@ Private Sub GlobalIcon_Click()
 
     If ChatGlobal = 0 Then
         ChatGlobal = 1
-        globalIcon.Picture = LoadInterface(Language + "globalapretado.bmp")
+        globalIcon.Picture = LoadInterface(Language + "\globalapretado.bmp")
     Else
         ChatGlobal = 0
-        globalIcon.Picture = LoadInterface(Language + "global.bmp")
+        globalIcon.Picture = LoadInterface(Language + "\global.bmp")
 
     End If
 
@@ -2286,9 +2286,9 @@ Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integ
         If OpcionMenu <> 0 Then
 
             ' Image2(Index).Tag = "1"
-            ' Image2(Index).Picture = LoadInterface(Language + "botoninventarioapretado.bmp")
-            Rem    Image2(1).Picture = LoadInterface(Language + "botonconjuros.bmp")
-            Rem   Image2(2).Picture = LoadInterface(Language + "botonmenu.bmp")
+            ' Image2(Index).Picture = LoadInterface(Language + "\botoninventarioapretado.bmp")
+            Rem    Image2(1).Picture = LoadInterface(Language + "\botonconjuros.bmp")
+            Rem   Image2(2).Picture = LoadInterface(Language + "\botonmenu.bmp")
         End If
 
     End If
@@ -2297,9 +2297,9 @@ Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integ
         If OpcionMenu <> 1 Then
 
             ' Image2(Index).Tag = "1"
-            '  Image2(1).Picture = LoadInterface(Language + "botonconjurosapretado.bmp")
-            Rem   Image2(2).Picture = LoadInterface(Language + "botonmenu.bmp")
-            Rem    Image2(0).Picture = LoadInterface(Language + "botoninventario.bmp")
+            '  Image2(1).Picture = LoadInterface(Language + "\botonconjurosapretado.bmp")
+            Rem   Image2(2).Picture = LoadInterface(Language + "\botonmenu.bmp")
+            Rem    Image2(0).Picture = LoadInterface(Language + "\botoninventario.bmp")
         End If
 
     End If
@@ -2322,7 +2322,7 @@ Private Sub Hpshp_Click()
 End Sub
 
 Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    '    Image3.Picture = LoadInterface(Language + "elegirchatapretado.bmp")
+    '    Image3.Picture = LoadInterface(Language + "\elegirchatapretado.bmp")
     
     On Error GoTo Image3_MouseDown_Err
     
@@ -2343,7 +2343,7 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image3.Tag = "0" Then
-        Image3.Picture = LoadInterface(Language + "elegirchatmarcado.bmp")
+        Image3.Picture = LoadInterface(Language + "\elegirchatmarcado.bmp")
         Image3.Tag = "1"
 
     End If
@@ -2395,10 +2395,10 @@ Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integ
     Select Case Index
 
         Case 0
-            Image4(0).Picture = LoadInterface(Language + "boton-sm-minimizar-off.bmp")
+            Image4(0).Picture = LoadInterface(Language + "\boton-sm-minimizar-off.bmp")
 
         Case 1
-            Image4(1).Picture = LoadInterface(Language + "boton-sm-cerrar-off.bmp")
+            Image4(1).Picture = LoadInterface(Language + "\boton-sm-cerrar-off.bmp")
 
     End Select
 
@@ -2421,7 +2421,7 @@ Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 0
 
             If Image4(Index).Tag = "0" Then
-                Image4(Index).Picture = LoadInterface(Language + "boton-sm-minimizar-over.bmp")
+                Image4(Index).Picture = LoadInterface(Language + "\boton-sm-minimizar-over.bmp")
                 Image4(Index).Tag = "1"
                 Image4(1).Picture = Nothing
 
@@ -2436,7 +2436,7 @@ Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 1
 
             If Image4(Index).Tag = "0" Then
-                Image4(Index).Picture = LoadInterface(Language + "boton-sm-cerrar-over.bmp")
+                Image4(Index).Picture = LoadInterface(Language + "\boton-sm-cerrar-over.bmp")
                 Image4(Index).Tag = "1"
 
             End If
@@ -2483,7 +2483,7 @@ Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image5.Tag = "0" Then
-        Image5.Picture = LoadInterface(Language + "grupoover.bmp")
+        Image5.Picture = LoadInterface(Language + "\grupoover.bmp")
         Image5.Tag = "1"
 
     End If
@@ -2533,7 +2533,7 @@ Private Sub imgHechizos_Click()
     
 
     If hlst.Visible Then Exit Sub
-    panel.Picture = LoadInterface(Language + "centrohechizo.bmp")
+    panel.Picture = LoadInterface(Language + "\centrohechizo.bmp")
     picInv.Visible = False
     hlst.Visible = True
 
@@ -2561,7 +2561,7 @@ Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Sing
     
     On Error GoTo imgHechizos_MouseDown_Err
     
-    imgHechizos.Picture = LoadInterface(Language + "boton-hechizos-ES-off.bmp")
+    imgHechizos.Picture = LoadInterface(Language + "\boton-hechizos-ES-off.bmp")
     imgHechizos.Tag = "1"
 
     
@@ -2579,7 +2579,7 @@ Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Sing
     
 
     If imgHechizos.Tag = "0" Then
-        imgHechizos.Picture = LoadInterface(Language + "boton-hechizos-ES-default.bmp")
+        imgHechizos.Picture = LoadInterface(Language + "\boton-hechizos-ES-default.bmp")
         imgHechizos.Tag = "1"
 
     End If
@@ -2598,13 +2598,13 @@ Private Sub ImgHogar_Click()
 End Sub
 
 Private Sub ImgHogar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    ImgHogar.Picture = LoadInterface(Language + "boton-home-off.bmp")
+    ImgHogar.Picture = LoadInterface(Language + "\boton-home-off.bmp")
     ImgHogar.Tag = "1"
 End Sub
 
 Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If ImgHogar.Tag = "0" Then
-        ImgHogar.Picture = LoadInterface(Language + "boton-home-over.bmp")
+        ImgHogar.Picture = LoadInterface(Language + "\boton-home-over.bmp")
         ImgHogar.Tag = "1"
     End If
 End Sub
@@ -2616,7 +2616,7 @@ Private Sub imgInventario_Click()
 
     If picInv.Visible Then Exit Sub
 
-    panel.Picture = LoadInterface(Language + "centroinventario.bmp")
+    panel.Picture = LoadInterface(Language + "\centroinventario.bmp")
     'Call Audio.PlayWave(SND_CLICK)
     picInv.Visible = True
     hlst.Visible = False
@@ -2643,7 +2643,7 @@ Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Si
     
     On Error GoTo imgInventario_MouseDown_Err
     
-    imgInventario.Picture = LoadInterface(Language + "boton-inventory-ES-off.bmp")
+    imgInventario.Picture = LoadInterface(Language + "\boton-inventory-ES-off.bmp")
     imgInventario.Tag = "1"
 
     
@@ -2662,7 +2662,7 @@ Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Si
     Call Inventario.ReDraw
 
     If imgInventario.Tag = "0" Then
-        imgInventario.Picture = LoadInterface(Language + "boton-inventory-ES-over.bmp")
+        imgInventario.Picture = LoadInterface(Language + "\boton-inventory-ES-over.bmp")
         imgInventario.Tag = "1"
 
     End If
@@ -2710,9 +2710,9 @@ End Sub
 
 Private Sub Label1_Click()
     If Language = "spanish" Then
-        frmBancoCuenta.Picture = LoadInterface(Language + "spanish/banco.bmp")
+        frmBancoCuenta.Picture = LoadInterface(Language + "\spanish/banco.bmp")
     Else
-        frmBancoCuenta.Picture = LoadInterface(Language + "english/banco.bmp")
+        frmBancoCuenta.Picture = LoadInterface(Language + "\english/banco.bmp")
     End If
 
     frmBancoCuenta.Show , frmMain
@@ -2764,7 +2764,7 @@ Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Sing
     
 
     If manualboton.Tag = "0" Then
-        manualboton.Picture = LoadInterface(Language + "manualover.bmp")
+        manualboton.Picture = LoadInterface(Language + "\manualover.bmp")
         manualboton.Tag = "1"
 
     End If
@@ -2797,7 +2797,7 @@ Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Si
     
     On Error GoTo OpcionesBoton_MouseDown_Err
     
-    OpcionesBoton.Picture = LoadInterface(Language + "opcionesoverdown.bmp")
+    OpcionesBoton.Picture = LoadInterface(Language + "\opcionesoverdown.bmp")
     OpcionesBoton.Tag = "1"
 
     
@@ -2906,27 +2906,27 @@ Select Case Index
         
         
         If SeguroGame Then
-            ImgSeg = LoadInterface(Language + "boton-seguro-ciudadano-on.bmp")
+            ImgSeg = LoadInterface(Language + "\boton-seguro-ciudadano-on.bmp")
         Else
-            ImgSeg = LoadInterface(Language + "boton-seguro-ciudadano-off.bmp")
+            ImgSeg = LoadInterface(Language + "\boton-seguro-ciudadano-off.bmp")
         End If
         
         If SeguroParty Then
-            ImgSegParty = LoadInterface(Language + "boton-seguro-party-on.bmp")
+            ImgSegParty = LoadInterface(Language + "\boton-seguro-party-on.bmp")
         Else
-            ImgSegParty = LoadInterface(Language + "boton-seguro-party-off.bmp")
+            ImgSegParty = LoadInterface(Language + "\boton-seguro-party-off.bmp")
         End If
         
         If SeguroClanX Then
-            ImgSegClan = LoadInterface(Language + "boton-seguro-clan-on.bmp")
+            ImgSegClan = LoadInterface(Language + "\boton-seguro-clan-on.bmp")
         Else
-            ImgSegClan = LoadInterface(Language + "boton-seguro-clan-off.bmp")
+            ImgSegClan = LoadInterface(Language + "\boton-seguro-clan-off.bmp")
         End If
         
         If SeguroResuX Then
-            ImgSegResu = LoadInterface(Language + "boton-fantasma-on.bmp")
+            ImgSegResu = LoadInterface(Language + "\boton-fantasma-on.bmp")
         Else
-            ImgSegResu = LoadInterface(Language + "boton-fantasma-off.bmp")
+            ImgSegResu = LoadInterface(Language + "\boton-fantasma-off.bmp")
         End If
         
         ImgSeg.Visible = True
@@ -2935,10 +2935,10 @@ Select Case Index
         ImgSegResu.Visible = True
         
         
-        panelInf.Picture = LoadInterface(Language + "ventanaprincipal_info.bmp")
+        panelInf.Picture = LoadInterface(Language + "\ventanaprincipal_info.bmp")
     Case 0
         QuePestañaInferior = 0
-        panelInf.Picture = LoadInterface(Language + "ventanaprincipal_stats.bmp")
+        panelInf.Picture = LoadInterface(Language + "\ventanaprincipal_stats.bmp")
         stabar.Visible = True
         HpBar.Visible = True
         If UserMaxMAN <> 0 Then
@@ -3039,7 +3039,7 @@ Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Singl
     
 
     If QuestBoton.Tag = "0" Then
-        QuestBoton.Picture = LoadInterface(Language + "questover.bmp")
+        QuestBoton.Picture = LoadInterface(Language + "\questover.bmp")
         QuestBoton.Tag = "1"
 
     End If
@@ -3077,7 +3077,7 @@ Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, x As Sin
     
 
     If rankingBoton.Tag = "0" Then
-        rankingBoton.Picture = LoadInterface(Language + "rankingover.bmp")
+        rankingBoton.Picture = LoadInterface(Language + "\rankingover.bmp")
         rankingBoton.Tag = "1"
 
     End If
@@ -3113,7 +3113,7 @@ Private Sub Label6_Click()
     Inventario.SelectGold
 
     If UserGLD > 0 Then
-        frmCantidad.Picture = LoadInterface(Language + "cantidad.bmp")
+        frmCantidad.Picture = LoadInterface(Language + "\cantidad.bmp")
         frmCantidad.Show , frmMain
 
     End If
@@ -3320,7 +3320,7 @@ Private Sub mapMundo_Click()
     ExpMult = 1
     OroMult = 1
     Call CalcularPosicionMAPA
-    frmMapaGrande.Picture = LoadInterface(Language + "ventanamapa.bmp")
+    frmMapaGrande.Picture = LoadInterface(Language + "\ventanamapa.bmp")
     frmMapaGrande.Show , frmMain
 
     
@@ -3338,7 +3338,7 @@ Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If mapMundo.Tag = "0" Then
-        mapMundo.Picture = LoadInterface(Language + "boton-mapa-over.bmp")
+        mapMundo.Picture = LoadInterface(Language + "\boton-mapa-over.bmp")
         mapMundo.Tag = "1"
 
     End If
@@ -3366,7 +3366,7 @@ Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, 
     ExpMult = 1
     OroMult = 1
     Call CalcularPosicionMAPA
-    frmMapaGrande.Picture = LoadInterface(Language + "ventanamapa.bmp")
+    frmMapaGrande.Picture = LoadInterface(Language + "\ventanamapa.bmp")
     frmMapaGrande.Show , frmMain
   
     
@@ -3518,7 +3518,7 @@ Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Si
     
 
     If OpcionesBoton.Tag = "0" Then
-        OpcionesBoton.Picture = LoadInterface(Language + "opcionesover.bmp")
+        OpcionesBoton.Picture = LoadInterface(Language + "\opcionesover.bmp")
         OpcionesBoton.Tag = "1"
 
     End If
@@ -3784,7 +3784,7 @@ Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As S
     CnTd = 0
 
     If cmdlanzar.Tag = "0" Then
-        cmdlanzar.Picture = LoadInterface(Language + "lanzarmarcado.bmp")
+        cmdlanzar.Picture = LoadInterface(Language + "\lanzarmarcado.bmp")
         cmdlanzar.Tag = "1"
 
     End If
@@ -4160,7 +4160,7 @@ Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Sing
     
 
     If TiendaBoton.Tag = "0" Then
-        TiendaBoton.Picture = LoadInterface(Language + "tiendaover.bmp")
+        TiendaBoton.Picture = LoadInterface(Language + "\tiendaover.bmp")
         TiendaBoton.Tag = "1"
 
     End If
@@ -4355,7 +4355,7 @@ Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single
     CnTd = 0
 
     If cmdlanzar.Tag = "0" Then
-        cmdlanzar.Picture = LoadInterface(Language + "boton-lanzar-ES-over.bmp")
+        cmdlanzar.Picture = LoadInterface(Language + "\boton-lanzar-ES-over.bmp")
         cmdlanzar.Tag = "1"
 
     End If

@@ -655,7 +655,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.panel.Picture = LoadInterface(Language + "centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface(Language + "\centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
@@ -1037,7 +1037,10 @@ End Function
 
 Sub Main()
     On Error GoTo Main_Err
-
+	
+    ' Detecta el idioma del sistema y carga las traducciones
+    Call SetLanguageApplication
+	
     Call InitCommonControls
 
     #If DEBUGGING = 0 Then

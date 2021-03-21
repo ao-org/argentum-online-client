@@ -1202,7 +1202,7 @@ Private Sub HandleLogged()
 
     frmMain.stabar.Visible = True
     
-    frmMain.panelInf.Picture = LoadInterface(Language + "ventanaprincipal_stats.bmp")
+    frmMain.panelInf.Picture = LoadInterface(Language + "\ventanaprincipal_stats.bmp")
     frmMain.HpBar.Visible = True
 
     If UserMaxMAN <> 0 Then
@@ -1224,9 +1224,9 @@ Private Sub HandleLogged()
     QueRender = 0
     
     
-    frmMain.ImgSegParty = LoadInterface(Language + "boton-seguro-party-on.bmp")
-    frmMain.ImgSegClan = LoadInterface(Language + "boton-seguro-clan-on.bmp")
-    frmMain.ImgSegResu = LoadInterface(Language + "boton-fantasma-on.bmp")
+    frmMain.ImgSegParty = LoadInterface(Language + "\boton-seguro-party-on.bmp")
+    frmMain.ImgSegClan = LoadInterface(Language + "\boton-seguro-clan-on.bmp")
+    frmMain.ImgSegResu = LoadInterface(Language + "\boton-fantasma-on.bmp")
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
@@ -1495,7 +1495,7 @@ Private Sub HandleDisconnect()
     frmMain.Visible = False
     
     OpcionMenu = 0
-    ' Panel.Picture = LoadInterface(Language + "centroinventario.bmp")
+    ' Panel.Picture = LoadInterface(Language + "\centroinventario.bmp")
     ' frmMain.Image2(0).Visible = False
     'frmMain.Image2(1).Visible = True
 
@@ -1784,7 +1784,7 @@ Private Sub HandleCommerceInit()
     'Set state and show form
     Comerciando = True
     'Call Inventario.Initialize(frmComerciar.PicInvUser)
-    frmComerciar.Picture = LoadInterface(Language + "comerciar.bmp")
+    frmComerciar.Picture = LoadInterface(Language + "\comerciar.bmp")
     frmComerciar.Show , frmMain
     
     
@@ -1837,7 +1837,7 @@ Private Sub HandleBankInit()
     'Set state and show form
     Comerciando = True
     'Call Inventario.Initialize(frmBancoObj.PicInvUser)
-    frmBancoObj.Picture = LoadInterface(Language + "banco.bmp")
+    frmBancoObj.Picture = LoadInterface(Language + "\banco.bmp")
     frmBancoObj.Show , frmMain
     frmBancoObj.lblcosto = PonerPuntos(UserGLD)
     
@@ -1936,7 +1936,7 @@ Private Sub HandleShowFrmMapa()
     
     Call CalcularPosicionMAPA
 
-    frmMapaGrande.Picture = LoadInterface(Language + "ventanamapa.bmp")
+    frmMapaGrande.Picture = LoadInterface(Language + "\ventanamapa.bmp")
     frmMapaGrande.Show , frmMain
 
     
@@ -1991,8 +1991,8 @@ Private Sub HandleUserCommerceInit()
     Call Establecer_Borde(frmComerciarUsu.List1, frmComerciarUsu, COLOR_AZUL, 0, 0)
     Call Establecer_Borde(frmComerciarUsu.List2, frmComerciarUsu, COLOR_AZUL, 0, 0)
     
-    frmComerciarUsu.Picture = LoadInterface(Language + "comercioseguro.bmp")
-    frmComerciarUsu.Image1.Picture = LoadInterface(Language + "comercioseguro_opbjeto.bmp")
+    frmComerciarUsu.Picture = LoadInterface(Language + "\comercioseguro.bmp")
+    frmComerciarUsu.Image1.Picture = LoadInterface(Language + "\comercioseguro_opbjeto.bmp")
     frmComerciarUsu.Show , frmMain
 
     
@@ -2055,7 +2055,7 @@ Private Sub HandleShowBlacksmithForm()
         Call WriteCraftBlacksmith(MacroBltIndex)
     Else
         
-        frmHerrero.Picture = LoadInterface(Language + "herreria.bmp")
+        frmHerrero.Picture = LoadInterface(Language + "\herreria.bmp")
     
         frmHerrero.lstArmas.Clear
 
@@ -2067,7 +2067,7 @@ Private Sub HandleShowBlacksmithForm()
             Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).Name)
         Next i
 
-        frmHerrero.Command3.Picture = LoadInterface(Language + "herreria_cascoshover.bmp")
+        frmHerrero.Command3.Picture = LoadInterface(Language + "\herreria_cascoshover.bmp")
     
         COLOR_AZUL = RGB(0, 0, 0)
         Call Establecer_Borde(frmHerrero.lstArmas, frmHerrero, COLOR_AZUL, 1, 1)
@@ -2111,7 +2111,7 @@ Private Sub HandleShowCarpenterForm()
         Call Establecer_Borde(frmCarp.lstArmas, frmCarp, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(frmCarp.List1, frmCarp, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(frmCarp.List2, frmCarp, COLOR_AZUL, 0, 0)
-        frmCarp.Picture = LoadInterface(Language + "carpinteria.bmp")
+        frmCarp.Picture = LoadInterface(Language + "\carpinteria.bmp")
         frmCarp.Show , frmMain
 
     End If
@@ -2183,7 +2183,7 @@ Private Sub HandleShowSastreForm()
         Call Establecer_Borde(FrmSastre.lstArmas, FrmSastre, COLOR_AZUL, 1, 1)
         Call Establecer_Borde(FrmSastre.List1, FrmSastre, COLOR_AZUL, 1, 1)
         Call Establecer_Borde(FrmSastre.List2, FrmSastre, COLOR_AZUL, 1, 1)
-        FrmSastre.Picture = LoadInterface(Language + "sastreria.bmp")
+        FrmSastre.Picture = LoadInterface(Language + "\sastreria.bmp")
 
         Dim i As Byte
 
@@ -2195,7 +2195,7 @@ Private Sub HandleShowSastreForm()
             FrmSastre.lstArmas.AddItem (ObjData(SastreRopas(i).Index).Name)
         Next i
     
-        FrmSastre.Command1.Picture = LoadInterface(Language + "sastreria_vestimentahover.bmp")
+        FrmSastre.Command1.Picture = LoadInterface(Language + "\sastreria_vestimentahover.bmp")
         FrmSastre.Show , frmMain
 
     End If
@@ -2445,11 +2445,11 @@ Private Sub HandleClanSeguro()
     
     If SeguroClanX Then
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan desactivado.", 65, 190, 156, False, False, False)
-        frmMain.ImgSegClan = LoadInterface(Language + "boton-seguro-clan-off.bmp")
+        frmMain.ImgSegClan = LoadInterface(Language + "\boton-seguro-clan-off.bmp")
         SeguroClanX = False
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan activado.", 65, 190, 156, False, False, False)
-        frmMain.ImgSegClan = LoadInterface(Language + "boton-seguro-clan-on.bmp")
+        frmMain.ImgSegClan = LoadInterface(Language + "\boton-seguro-clan-on.bmp")
         SeguroClanX = True
     End If
 
@@ -5905,7 +5905,7 @@ Private Sub HandleInventoryUnlockSlots()
     
     For i = 1 To UserInvUnlocked
     
-        frmMain.imgInvLock(i - 1).Picture = LoadInterface(Language + "inventoryunlocked.bmp")
+        frmMain.imgInvLock(i - 1).Picture = LoadInterface(Language + "\inventoryunlocked.bmp")
     
     Next i
     
@@ -6261,7 +6261,7 @@ Private Sub HandleAtributes()
             Alocados = SkillPoints
             frmEstadisticas.puntos.Caption = SkillPoints
             frmEstadisticas.Iniciar_Labels
-            frmEstadisticas.Picture = LoadInterface(Language + "ventanaestadisticas.bmp")
+            frmEstadisticas.Picture = LoadInterface(Language + "\ventanaestadisticas.bmp")
             frmEstadisticas.Show , frmMain
         Else
             LlegaronAtrib = True
@@ -7371,7 +7371,7 @@ Private Sub HandleMiniStats()
         Alocados = SkillPoints
         frmEstadisticas.puntos.Caption = SkillPoints
         frmEstadisticas.Iniciar_Labels
-        frmEstadisticas.Picture = LoadInterface(Language + "ventanaestadisticas.bmp")
+        frmEstadisticas.Picture = LoadInterface(Language + "\ventanaestadisticas.bmp")
         frmEstadisticas.Show , frmMain
     Else
         LlegaronStats = True
@@ -7750,7 +7750,7 @@ Private Sub HandleSendSkills()
         Alocados = SkillPoints
         frmEstadisticas.puntos.Caption = SkillPoints
         frmEstadisticas.Iniciar_Labels
-        frmEstadisticas.Picture = LoadInterface(Language + "VentanaEstadisticas.bmp")
+        frmEstadisticas.Picture = LoadInterface(Language + "\VentanaEstadisticas.bmp")
         frmEstadisticas.Show , frmMain
     Else
         LlegaronSkills = True
@@ -18385,16 +18385,16 @@ Private Sub HandleBindKeys()
     ChatGlobal = incomingData.ReadByte()
 
     If ChatCombate = 1 Then
-        frmMain.CombateIcon.Picture = LoadInterface(Language + "infoapretado.bmp")
+        frmMain.CombateIcon.Picture = LoadInterface(Language + "\infoapretado.bmp")
     Else
-        frmMain.CombateIcon.Picture = LoadInterface(Language + "info.bmp")
+        frmMain.CombateIcon.Picture = LoadInterface(Language + "\info.bmp")
 
     End If
 
     If ChatGlobal = 1 Then
-        frmMain.globalIcon.Picture = LoadInterface(Language + "globalapretado.bmp")
+        frmMain.globalIcon.Picture = LoadInterface(Language + "\globalapretado.bmp")
     Else
-        frmMain.CombateIcon.Picture = LoadInterface(Language + "global.bmp")
+        frmMain.CombateIcon.Picture = LoadInterface(Language + "\global.bmp")
 
     End If
 
@@ -19074,7 +19074,7 @@ Private Sub HandleQuestDetails()
     Else
         ' frmQuestInfo.txtInfo.Text = tmpStr
         FrmQuestInfo.Show vbModeless, frmMain
-        FrmQuestInfo.Picture = LoadInterface(Language + "ventananuevamision.bmp")
+        FrmQuestInfo.Picture = LoadInterface(Language + "\ventananuevamision.bmp")
         Call FrmQuestInfo.ListView1_Click
         Call FrmQuestInfo.ListView2_Click
 
@@ -19149,7 +19149,7 @@ Public Sub HandleQuestListSend()
     
     COLOR_AZUL = RGB(0, 0, 0)
     Call Establecer_Borde(FrmQuests.lstQuests, FrmQuests, COLOR_AZUL, 0, 0)
-    FrmQuests.Picture = LoadInterface(Language + "ventanadetallemision.bmp")
+    FrmQuests.Picture = LoadInterface(Language + "\ventanadetallemision.bmp")
     FrmQuests.Show vbModeless, frmMain
     
     'Pedimos la informaciï¿½n de la primer quest (si la hay)
@@ -19400,7 +19400,7 @@ Public Sub HandleNpcQuestListSend()
 
         ' frmQuestInfo.txtInfo.Text = tmpStr
         FrmQuestInfo.Show vbModeless, frmMain
-        FrmQuestInfo.Picture = LoadInterface(Language + "ventananuevamision.bmp")
+        FrmQuestInfo.Picture = LoadInterface(Language + "\ventananuevamision.bmp")
         'Call FrmQuestInfo.ListView1_Click
         'Call FrmQuestInfo.ListView2_Click
 
@@ -19711,7 +19711,7 @@ Private Sub HandleListaCorreo()
 
     ' FrmCorreo.lstMsg.AddItem
     If Not Actualizar Then
-        FrmCorreo.Picture = LoadInterface(Language + "ventanacorreo.bmp")
+        FrmCorreo.Picture = LoadInterface(Language + "\ventanacorreo.bmp")
         COLOR_AZUL = RGB(0, 0, 0)
         
         ' establece el borde al listbox
@@ -19832,7 +19832,7 @@ Private Sub HandleDatosGrupo()
     ' establece el borde al listbox
     Call Establecer_Borde(FrmGrupo.lstGrupo, FrmGrupo, COLOR_AZUL, 0, 0)
 
-    FrmGrupo.Picture = LoadInterface(Language + "grupo.bmp")
+    FrmGrupo.Picture = LoadInterface(Language + "\grupo.bmp")
     FrmGrupo.Show , frmMain
     
     Exit Sub
@@ -19937,7 +19937,7 @@ Private Sub HandleViajarForm()
          
     ViajarInterface = incomingData.ReadByte()
         
-    FrmViajes.Picture = LoadInterface(Language + "viajes" & ViajarInterface & ".bmp")
+    FrmViajes.Picture = LoadInterface(Language + "\viajes" & ViajarInterface & ".bmp")
         
     If ViajarInterface = 1 Then
         FrmViajes.Image1.Top = 4690
@@ -20053,7 +20053,7 @@ Private Sub HandleDonadorObjects()
     FrmShop.Label3.Caption = creditos & " creditos"
     
     FrmShop.Label7.Caption = dias & " dias"
-    FrmShop.Picture = LoadInterface(Language + "shop.bmp")
+    FrmShop.Picture = LoadInterface(Language + "\shop.bmp")
     
     COLOR_AZUL = RGB(0, 0, 0)
     
@@ -20126,7 +20126,7 @@ Private Sub HandleRanking()
 
     Next i
     
-    FrmRanking.Picture = LoadInterface(Language + "ranking.bmp")
+    FrmRanking.Picture = LoadInterface(Language + "\ranking.bmp")
     FrmRanking.Show , frmMain
     
     'If we got here then packet is complete, copy data back to original queue
@@ -20617,10 +20617,10 @@ Private Sub HandleSeguroResu()
     
     If SeguroResuX Then
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección activado.", 65, 190, 156, False, False, False)
-        frmMain.ImgSegResu = LoadInterface(Language + "boton-fantasma-on.bmp")
+        frmMain.ImgSegResu = LoadInterface(Language + "\boton-fantasma-on.bmp")
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección desactivado.", 65, 190, 156, False, False, False)
-        frmMain.ImgSegResu = LoadInterface(Language + "boton-fantasma-off.bmp")
+        frmMain.ImgSegResu = LoadInterface(Language + "\boton-fantasma-off.bmp")
     End If
     
 End Sub

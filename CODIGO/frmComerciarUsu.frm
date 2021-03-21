@@ -248,7 +248,7 @@ End Sub
 
 Private Sub cmdAceptar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    ' cmdAceptar.Picture = LoadInterface(Language + "comercioseguro_aceptarpress.bmp")
+    ' cmdAceptar.Picture = LoadInterface(Language + "\comercioseguro_aceptarpress.bmp")
     'cmdAceptar.Tag = "1"
 End Sub
 
@@ -258,7 +258,7 @@ Private Sub cmdAceptar_MouseMove(Button As Integer, Shift As Integer, x As Singl
     
 
     If cmdAceptar.Tag = "0" Then
-        cmdAceptar.Picture = LoadInterface(Language + "comercioseguro_aceptarhover.bmp")
+        cmdAceptar.Picture = LoadInterface(Language + "\comercioseguro_aceptarhover.bmp")
         cmdAceptar.Tag = "1"
 
     End If
@@ -321,7 +321,7 @@ End Sub
 
 Private Sub cmdOfrecer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'cmdOfrecer.Picture = LoadInterface(Language + "comercioseguro_ofrecerpress.bmp")
+    'cmdOfrecer.Picture = LoadInterface(Language + "\comercioseguro_ofrecerpress.bmp")
     'cmdOfrecer.Tag = "1"
 End Sub
 
@@ -331,7 +331,7 @@ Private Sub cmdOfrecer_MouseMove(Button As Integer, Shift As Integer, x As Singl
     
 
     If cmdOfrecer.Tag = "0" Then
-        cmdOfrecer.Picture = LoadInterface(Language + "comercioseguro_ofrecerhover.bmp")
+        cmdOfrecer.Picture = LoadInterface(Language + "\comercioseguro_ofrecerhover.bmp")
         cmdOfrecer.Tag = "1"
 
     End If
@@ -362,7 +362,7 @@ End Sub
 
 Private Sub cmdRechazar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    '  cmdRechazar.Picture = LoadInterface(Language + "comercioseguro_rechazarpress.bmp")
+    '  cmdRechazar.Picture = LoadInterface(Language + "\comercioseguro_rechazarpress.bmp")
     ' cmdRechazar.Tag = "1"
 End Sub
 
@@ -372,7 +372,7 @@ Private Sub cmdRechazar_MouseMove(Button As Integer, Shift As Integer, x As Sing
     
 
     If cmdRechazar.Tag = "0" Then
-        cmdRechazar.Picture = LoadInterface(Language + "comercioseguro_rechazarhover.bmp")
+        cmdRechazar.Picture = LoadInterface(Language + "\comercioseguro_rechazarhover.bmp")
         cmdRechazar.Tag = "1"
 
     End If
@@ -412,7 +412,7 @@ End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    '  Command2.Picture = LoadInterface(Language + "comercioseguro_cancelarpress.bmp")
+    '  Command2.Picture = LoadInterface(Language + "\comercioseguro_cancelarpress.bmp")
     '  Command2.Tag = "1"
 End Sub
 
@@ -422,7 +422,7 @@ Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command2.Tag = "0" Then
-        Command2.Picture = LoadInterface(Language + "comercioseguro_cancelarhover.bmp")
+        Command2.Picture = LoadInterface(Language + "\comercioseguro_cancelarhover.bmp")
         Command2.Tag = "1"
 
     End If
@@ -524,7 +524,7 @@ Private Sub Image1_Click()
     
     On Error GoTo Image1_Click_Err
     
-    Image1.Picture = LoadInterface(Language + "comercioseguro_opbjeto.bmp")
+    Image1.Picture = LoadInterface(Language + "\comercioseguro_opbjeto.bmp")
     Image2.Picture = Nothing
     List1.Enabled = True
     Item = True
@@ -542,7 +542,7 @@ Private Sub Image2_Click()
     
     On Error GoTo Image2_Click_Err
     
-    Image2.Picture = LoadInterface(Language + "comercioseguro_oro.bmp")
+    Image2.Picture = LoadInterface(Language + "\comercioseguro_oro.bmp")
     Image1.Picture = Nothing
     List1.Enabled = False
     Item = False

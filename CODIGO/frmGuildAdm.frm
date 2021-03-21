@@ -140,7 +140,7 @@ Private Sub Form_Load()
 
     Call FormParser.Parse_Form(Me)
     
-    Me.Picture = LoadInterface(Language + "ventanaclanes.bmp")
+    Me.Picture = LoadInterface(Language + "\ventanaclanes.bmp")
     
     
     Combo1.ListIndex = 2
@@ -250,7 +250,7 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     
     On Error GoTo Image1_MouseDown_Err
     
-    Image1.Picture = LoadInterface(Language + "boton-buscar-off.bmp")
+    Image1.Picture = LoadInterface(Language + "\boton-buscar-off.bmp")
     Image1.Tag = "1"
     
     Exit Sub
@@ -267,7 +267,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface(Language + "boton-buscar-over.bmp")
+        Image1.Picture = LoadInterface(Language + "\boton-buscar-over.bmp")
         Image1.Tag = "1"
     
     End If
@@ -314,7 +314,7 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface(Language + "boton-fundar-clan-es-over.bmp")
+        Image2.Picture = LoadInterface(Language + "\boton-fundar-clan-es-over.bmp")
         Image2.Tag = "1"
 
     End If

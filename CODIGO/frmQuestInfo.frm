@@ -324,7 +324,7 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-    Me.Picture = LoadInterface(Language + "ventananuevamision.bmp")
+    Me.Picture = LoadInterface(Language + "\ventananuevamision.bmp")
 
     Text1.BackColor = RGB(11, 11, 11)
     PlayerView.BackColor = RGB(11, 11, 11)
@@ -380,7 +380,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface(Language + "boton-rechazar-es-over.bmp")
+        Image1.Picture = LoadInterface(Language + "\boton-rechazar-es-over.bmp")
         Image1.Tag = "1"
 
     End If
@@ -415,7 +415,7 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface(Language + "boton-aceptar-ES-over.bmp")
+        Image2.Picture = LoadInterface(Language + "\boton-aceptar-ES-over.bmp")
         Image2.Tag = "1"
 
     End If

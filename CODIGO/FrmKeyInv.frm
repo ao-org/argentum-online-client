@@ -108,7 +108,7 @@ Private Sub cmdCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single
     
     On Error GoTo cmdCerrar_MouseDown_Err
     
-    cmdCerrar.Picture = LoadInterface(Language + "boton-cerrar-off.bmp")
+    cmdCerrar.Picture = LoadInterface(Language + "\boton-cerrar-off.bmp")
     cmdCerrar.Tag = "1"
     
     Exit Sub
@@ -124,7 +124,7 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo cmdCerrar_MouseMove_Err
     
     If cmdCerrar.Tag = "0" Then
-        cmdCerrar.Picture = LoadInterface(Language + "boton-cerrar-over.bmp")
+        cmdCerrar.Picture = LoadInterface(Language + "\boton-cerrar-over.bmp")
         cmdCerrar.Tag = "1"
     End If
     
@@ -175,7 +175,7 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    Me.Picture = LoadInterface(Language + "ventanallavero.bmp")
+    Me.Picture = LoadInterface(Language + "\ventanallavero.bmp")
     cmdCerrar.Picture = Nothing
     
     Exit Sub

@@ -294,7 +294,7 @@ End Sub
 
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    ' Command3.Picture = LoadInterface(Language + "trabajar_construirpress.bmp")
+    ' Command3.Picture = LoadInterface(Language + "\trabajar_construirpress.bmp")
     '  Command3.Tag = "1"
 End Sub
 
@@ -304,7 +304,7 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command3.Tag = "0" Then
-        Command3.Picture = LoadInterface(Language + "trabajar_construirhover.bmp")
+        Command3.Picture = LoadInterface(Language + "\trabajar_construirhover.bmp")
         Command3.Tag = "1"
 
     End If
@@ -323,7 +323,7 @@ End Sub
 
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    '                Command4.Picture = LoadInterface(Language + "trabajar_salirpress.bmp")
+    '                Command4.Picture = LoadInterface(Language + "\trabajar_salirpress.bmp")
     '                Command4.Tag = "1"
 End Sub
 
@@ -333,7 +333,7 @@ Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command4.Tag = "0" Then
-        Command4.Picture = LoadInterface(Language + "trabajar_salirhover.bmp")
+        Command4.Picture = LoadInterface(Language + "\trabajar_salirhover.bmp")
         Command4.Tag = "1"
 
     End If

@@ -163,7 +163,7 @@ Private Sub Form_Load()
     Call Aplicar_Transparencia(Me.hWnd, 240)
     ValidacionNumber = RandomNumber(10000, 90000)
     valcar = ValidacionNumber
-    Me.Picture = LoadInterface(Language + "/borrarcuenta.bmp")
+    Me.Picture = LoadInterface(Language + "\borrarcuenta.bmp")
 
     Call MensajeAdvertencia("Use esta opcion con responsabilidad, una vez borrada la cuenta no se podra volver a recuperar.")
     
@@ -220,7 +220,7 @@ End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image1.Picture = LoadInterface(Language + "volverpress.bmp")
+    'Image1.Picture = LoadInterface(Language + "\volverpress.bmp")
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -229,7 +229,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface(Language + "/borrarcuenta_volverhover.bmp")
+        Image1.Picture = LoadInterface(Language + "\borrarcuenta_volverhover.bmp")
         Image1.Tag = "1"
 
     End If
@@ -302,7 +302,7 @@ End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Image2.Picture = LoadInterface(Language + "borrarpress.bmp")
+    'Image2.Picture = LoadInterface(Language + "\borrarpress.bmp")
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)

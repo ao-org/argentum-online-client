@@ -297,7 +297,7 @@ Private Sub Form_Load()
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hwnd, 220)
     
-    'TODO: Me.Picture = LoadInterface(Language + "")
+    'TODO: Me.Picture = LoadInterface(Language + "\")
 
     Rem Call SetWindowPos(FrmLogear.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE)
     
@@ -367,7 +367,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface(Language + "boton-salir-ES-over.bmp")
+        Image1.Picture = LoadInterface(Language + "\boton-salir-ES-over.bmp")
         Image1.Tag = "1"
 
     End If
@@ -399,7 +399,7 @@ Private Sub btnCuenta_MouseMove(Button As Integer, Shift As Integer, x As Single
     
 
     If btnCuenta.Tag = "0" Then
-        btnCuenta.Picture = LoadInterface(Language + "boton-cuenta-ES-over.bmp")
+        btnCuenta.Picture = LoadInterface(Language + "\boton-cuenta-ES-over.bmp")
         btnCuenta.Tag = "1"
 
     End If
@@ -486,7 +486,7 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image3.Tag = "0" Then
-        Image3.Picture = LoadInterface(Language + "boton-ingresar-ES-over.bmp")
+        Image3.Picture = LoadInterface(Language + "\boton-ingresar-ES-over.bmp")
         Image3.Tag = "1"
 
     End If
@@ -518,7 +518,7 @@ Private Sub Image4_Click()
     
 
     If Image4.Tag = "0" Then
-        Image4.Picture = LoadInterface(Language + "check-amarillo.bmp")
+        Image4.Picture = LoadInterface(Language + "\check-amarillo.bmp")
         Call TextoAlAsistente("¡Recordare la cuenta para la proxima!")
         Image4.Tag = "1"
     Else
@@ -543,7 +543,7 @@ Private Sub Label1_Click()
     
 
     If Image4.Tag = "0" Then
-        Image4.Picture = LoadInterface(Language + "check-amarillo.bmp")
+        Image4.Picture = LoadInterface(Language + "\check-amarillo.bmp")
         Call TextoAlAsistente("¡Recordaré la cuenta para la próxima!")
         Image4.Tag = "1"
     Else

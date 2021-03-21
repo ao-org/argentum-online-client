@@ -234,7 +234,7 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
 
     Call FormParser.Parse_Form(Me)
-    Me.Picture = LoadInterface(Language + "/admin.bmp")
+    Me.Picture = LoadInterface(Language + "\admin.bmp")
 
     
     Exit Sub
@@ -324,7 +324,7 @@ Private Sub optConsult_Click(Index As Integer)
             optConsult(i).Picture = Nothing
             optConsult(i).Tag = 0
         Else
-            optConsult(i).Picture = LoadInterface(Language + "admin_stick.bmp")
+            optConsult(i).Picture = LoadInterface(Language + "\admin_stick.bmp")
             optConsult(i).Tag = 1
 
         End If

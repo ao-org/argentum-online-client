@@ -138,8 +138,8 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface(Language + "viajarhover" & ViajarInterface & ".bmp")
-        Image2.Picture = LoadInterface(Language + "viaje" & ViajarInterface & "ok.bmp")
+        Image1.Picture = LoadInterface(Language + "\viajarhover" & ViajarInterface & ".bmp")
+        Image2.Picture = LoadInterface(Language + "\viaje" & ViajarInterface & "ok.bmp")
         Image1.Tag = "1"
 
     End If

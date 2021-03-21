@@ -86,7 +86,7 @@ End Sub
 
 Private Sub cmdAbandonar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    ' cmdAbandonar.Picture = LoadInterface(Language + "grupo_abandonarpress.bmp")
+    ' cmdAbandonar.Picture = LoadInterface(Language + "\grupo_abandonarpress.bmp")
     ' cmdAbandonar.Tag = "1"
 End Sub
 
@@ -96,7 +96,7 @@ Private Sub cmdAbandonar_MouseMove(Button As Integer, Shift As Integer, x As Sin
     
 
     If cmdAbandonar.Tag = "0" Then
-        cmdAbandonar.Picture = LoadInterface(Language + "grupo_abandonarhover.bmp")
+        cmdAbandonar.Picture = LoadInterface(Language + "\grupo_abandonarhover.bmp")
         cmdAbandonar.Tag = "1"
 
     End If
@@ -141,7 +141,7 @@ End Sub
 
 Private Sub cmdExpulsar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    ' cmdExpulsar.Picture = LoadInterface(Language + "grupo_expulsarpress.bmp")
+    ' cmdExpulsar.Picture = LoadInterface(Language + "\grupo_expulsarpress.bmp")
     '  cmdExpulsar.Tag = "1"
 End Sub
 
@@ -151,7 +151,7 @@ Private Sub cmdExpulsar_MouseMove(Button As Integer, Shift As Integer, x As Sing
     
     
     If cmdExpulsar.Tag = "0" Then
-        cmdExpulsar.Picture = LoadInterface(Language + "grupo_expulsarhover.bmp")
+        cmdExpulsar.Picture = LoadInterface(Language + "\grupo_expulsarhover.bmp")
         cmdExpulsar.Tag = "1"
 
     End If
@@ -192,7 +192,7 @@ End Sub
 
 Private Sub cmdInvitar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'cmdInvitar.Picture = LoadInterface(Language + "grupo_invitarpress.bmp")
+    'cmdInvitar.Picture = LoadInterface(Language + "\grupo_invitarpress.bmp")
     'cmdInvitar.Tag = "1"
 End Sub
 
@@ -202,7 +202,7 @@ Private Sub cmdInvitar_MouseMove(Button As Integer, Shift As Integer, x As Singl
     
 
     If cmdInvitar.Tag = "0" Then
-        cmdInvitar.Picture = LoadInterface(Language + "grupo_invitarhover.bmp")
+        cmdInvitar.Picture = LoadInterface(Language + "\grupo_invitarhover.bmp")
         cmdInvitar.Tag = "1"
 
     End If
@@ -242,7 +242,7 @@ End Sub
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    '  Command2.Picture = LoadInterface(Language + "grupo_salirpress.bmp")
+    '  Command2.Picture = LoadInterface(Language + "\grupo_salirpress.bmp")
     ' Command2.Tag = "1"
 End Sub
 
@@ -252,7 +252,7 @@ Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command2.Tag = "0" Then
-        Command2.Picture = LoadInterface(Language + "grupo_salirhover.bmp")
+        Command2.Picture = LoadInterface(Language + "\grupo_salirhover.bmp")
         Command2.Tag = "1"
 
     End If

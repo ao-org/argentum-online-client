@@ -303,7 +303,7 @@ Private Sub Form_Load()
     PlayerView.BackColor = RGB(11, 11, 11)
     picture1.BackColor = RGB(19, 14, 11)
     
-    Me.Picture = LoadInterface(Language + "ventanadetallemision.bmp")
+    Me.Picture = LoadInterface(Language + "\ventanadetallemision.bmp")
     
     Exit Sub
 
@@ -389,7 +389,7 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface(Language + "boton-aceptar-ES-over.bmp")
+        Image2.Picture = LoadInterface(Language + "\boton-aceptar-ES-over.bmp")
         Image2.Tag = "1"
 
     End If
