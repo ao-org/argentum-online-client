@@ -250,7 +250,7 @@ Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
     OroDep = oro
     gold.Caption = OroDep
 
-    Me.Picture = LoadInterface("ventanabanco.bmp")
+    Me.Picture = LoadInterface(Language + "\ventanabanco.bmp")
     
     txtDatos.BackColor = RGB(17, 18, 12)
     gold.ForeColor = RGB(235, 164, 14)
@@ -281,13 +281,13 @@ Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As 
     Select Case Index
 
         Case 0
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
+            cmdMasMenos(Index).Picture = LoadInterface(Language + "\boton-sm-menos-off.bmp")
             cmdMasMenos(Index).Tag = "1"
             txtDatos.Text = str((Val(txtDatos.Text) - 1))
             m_Increment = -1
 
         Case 1
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
+            cmdMasMenos(Index).Picture = LoadInterface(Language + "\boton-sm-mas-off.bmp")
             cmdMasMenos(Index).Tag = "1"
             m_Increment = 1
 
@@ -315,7 +315,7 @@ Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As 
         Case 0
 
             If cmdMasMenos(Index).Tag = "0" Then
-                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-over.bmp")
+                cmdMasMenos(Index).Picture = LoadInterface(Language + "\boton-sm-menos-over.bmp")
                 cmdMasMenos(Index).Tag = "1"
 
             End If
@@ -323,7 +323,7 @@ Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As 
         Case 1
 
             If cmdMasMenos(Index).Tag = "0" Then
-                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-over.bmp")
+                cmdMasMenos(Index).Picture = LoadInterface(Language + "\boton-sm-mas-over.bmp")
                 cmdMasMenos(Index).Tag = "1"
 
             End If
@@ -450,7 +450,7 @@ Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     
     On Error GoTo Image2_MouseDown_Err
     
-    Image2 = LoadInterface("boton-aceptar-ES-off.bmp")
+    Image2 = LoadInterface(Language + "\boton-aceptar-ES-off.bmp")
     
     Exit Sub
 
@@ -465,7 +465,7 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     On Error GoTo Image2_MouseMove_Err
     
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
+        Image2.Picture = LoadInterface(Language + "\boton-aceptar-ES-over.bmp")
         Image2.Tag = "1"
 
     End If
@@ -582,8 +582,8 @@ Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As In
 
         Case 0 ' depositar
             lblDatos.Caption = ""
-            Image3.Picture = LoadInterface("ventanabanco-depositar.bmp")
-            operacion(Index) = LoadInterface("boton-depositar-ES-off.bmp")
+            Image3.Picture = LoadInterface(Language + "\ventanabanco-depositar.bmp")
+            operacion(Index) = LoadInterface(Language + "\boton-depositar-ES-off.bmp")
             operacion(1).Tag = "0"
             operacion(2).Tag = "0"
             operacion(3).Tag = "0"
@@ -596,8 +596,8 @@ Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As In
             
         Case 1 ' retirar
             lblDatos.Caption = ""
-            Image3.Picture = LoadInterface("ventanabanco-retirar.bmp")
-            operacion(Index) = LoadInterface("boton-retirar-ES-off.bmp")
+            Image3.Picture = LoadInterface(Language + "\ventanabanco-retirar.bmp")
+            operacion(Index) = LoadInterface(Language + "\boton-retirar-ES-off.bmp")
             operacion(0).Tag = "0"
             operacion(2).Tag = "0"
             operacion(3).Tag = "0"
@@ -610,8 +610,8 @@ Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As In
 
         Case 2 ' boveda
             lblDatos.Caption = ""
-            'Image3.Picture = LoadInterface("ventanabanco.bmp")
-            operacion(Index) = LoadInterface("boton-ver-boveda-es-off.bmp")
+            'Image3.Picture = LoadInterface(Language + "\ventanabanco.bmp")
+            operacion(Index) = LoadInterface(Language + "\boton-ver-boveda-es-off.bmp")
             operacion(1).Tag = "0"
             operacion(0).Tag = "0"
             operacion(3).Tag = "0"
@@ -620,8 +620,8 @@ Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As In
         
         Case 3 ' transfer
 
-            Image3.Picture = LoadInterface("ventanabanco-transferir.bmp")
-            operacion(Index) = LoadInterface("boton-transferir-es-off.bmp")
+            Image3.Picture = LoadInterface(Language + "\ventanabanco-transferir.bmp")
+            operacion(Index) = LoadInterface(Language + "\boton-transferir-es-off.bmp")
             operacion(1).Tag = "0"
             operacion(2).Tag = "0"
             operacion(0).Tag = "0"
@@ -653,7 +653,7 @@ Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As In
         Case 0 ' depositar
 
             If operacion(Index).Tag = "0" Then
-                operacion(Index).Picture = LoadInterface("boton-depositar-ES-over.bmp")
+                operacion(Index).Picture = LoadInterface(Language + "\boton-depositar-ES-over.bmp")
                 operacion(Index).Tag = "1"
 
             End If
@@ -666,7 +666,7 @@ Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As In
         Case 1 ' retirar
 
             If operacion(Index).Tag = "0" Then
-                operacion(Index).Picture = LoadInterface("boton-retirar-ES-over.bmp")
+                operacion(Index).Picture = LoadInterface(Language + "\boton-retirar-ES-over.bmp")
                 operacion(Index).Tag = "1"
 
             End If
@@ -678,7 +678,7 @@ Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As In
         Case 2 ' boveda
 
             If operacion(Index).Tag = "0" Then
-                operacion(Index).Picture = LoadInterface("boton-ver-boveda-es-over.bmp")
+                operacion(Index).Picture = LoadInterface(Language + "\boton-ver-boveda-es-over.bmp")
                 operacion(Index).Tag = "1"
 
             End If
@@ -690,7 +690,7 @@ Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As In
         Case 3 ' transfer
 
             If operacion(Index).Tag = "0" Then
-                operacion(Index).Picture = LoadInterface("boton-transferir-es-over.bmp")
+                operacion(Index).Picture = LoadInterface(Language + "\boton-transferir-es-over.bmp")
                 operacion(Index).Tag = "1"
 
             End If
@@ -719,7 +719,7 @@ Private Sub operacion_MouseUp(Index As Integer, Button As Integer, Shift As Inte
 
         Case 0 ' depositar
             QueOperacion = 5
-            'Me.Picture = LoadInterface("goliathdepositar.bmp")
+            'Me.Picture = LoadInterface(Language + "\goliathdepositar.bmp")
             operacion(1).Tag = "0"
             operacion(2).Tag = "0"
             operacion(3).Tag = "0"
@@ -727,7 +727,7 @@ Private Sub operacion_MouseUp(Index As Integer, Button As Integer, Shift As Inte
 
         Case 1 ' retirar
             QueOperacion = 1
-           ' Me.Picture = LoadInterface("goliathretiro.bmp")
+           ' Me.Picture = LoadInterface(Language + "\goliathretiro.bmp")
             operacion(0).Tag = "0"
             operacion(2).Tag = "0"
             operacion(3).Tag = "0"

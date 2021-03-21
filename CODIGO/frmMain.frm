@@ -2709,7 +2709,12 @@ Private Sub ImgSegResu_Click()
 End Sub
 
 Private Sub Label1_Click()
-    frmBancoCuenta.Picture = LoadInterface("banco.bmp")
+    If Language = "spanish" Then
+        frmBancoCuenta.Picture = LoadInterface("spanish/banco.bmp")
+    Else
+        frmBancoCuenta.Picture = LoadInterface("english/banco.bmp")
+    End If
+
     frmBancoCuenta.Show , frmMain
 End Sub
 

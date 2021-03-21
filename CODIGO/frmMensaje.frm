@@ -205,7 +205,7 @@ Private Sub Form_Load()
     SetWindowPos Me.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE
     'Call Aplicar_Transparencia(Me.hwnd, 200)
     ''Call Audio.PlayWave(SND_MSG)
-    frmMensaje.Picture = LoadInterface("mensaje.bmp")
+    frmMensaje.Picture = LoadInterface(Language + "\mensaje.bmp")
     Me.Caption = "A"
     Call Form_RemoveTitleBar(Me)
     Me.Height = 3190
@@ -263,7 +263,7 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     
     On Error GoTo Image1_MouseDown_Err
     
-    Image1.Picture = LoadInterface("boton-aceptar-ES-off.bmp")
+    Image1.Picture = LoadInterface(Language + "\boton-aceptar-ES-off.bmp")
     Image1.Tag = "1"
     
     Exit Sub
@@ -279,7 +279,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     On Error GoTo Image1_MouseMove_Err
     
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
+        Image1.Picture = LoadInterface(Language + "\boton-aceptar-ES-over.bmp")
         Image1.Tag = "1"
     End If
     
@@ -389,7 +389,7 @@ Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single
     
     On Error GoTo imgCerrar_MouseDown_Err
     
-    imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
+    imgCerrar.Picture = LoadInterface(Language + "\boton-cerrar-off.bmp")
     imgCerrar.Tag = "1"
     
     Exit Sub
@@ -405,7 +405,7 @@ Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo imgCerrar_MouseMove_Err
     
     If imgCerrar.Tag = "0" Then
-        imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
+        imgCerrar.Picture = LoadInterface(Language + "\boton-cerrar-over.bmp")
         imgCerrar.Tag = "1"
     End If
     

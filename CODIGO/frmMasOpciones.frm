@@ -195,7 +195,7 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    Me.Picture = LoadInterface("opcioneslogeo.bmp")
+    Me.Picture = LoadInterface(Language + "\opcioneslogeo.bmp")
     Call Aplicar_Transparencia(Me.hwnd, 240)
 
     
@@ -305,7 +305,7 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 0
 
             If Image1(Index).Tag = "0" Then
-                Image1(Index).Picture = LoadInterface("crearcuentawidehover.bmp")
+                Image1(Index).Picture = LoadInterface(Language + "\crearcuentawidehover.bmp")
                 Image1(Index).Tag = "1"
 
             End If
@@ -313,7 +313,7 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 1
 
             If Image1(Index).Tag = "0" Then
-                Image1(Index).Picture = LoadInterface("validarcuentahover.bmp")
+                Image1(Index).Picture = LoadInterface(Language + "\validarcuentahover.bmp")
                 Image1(Index).Tag = "1"
 
             End If
@@ -321,7 +321,7 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 2
 
             If Image1(Index).Tag = "0" Then
-                Image1(Index).Picture = LoadInterface("reenviarvalidaciónhover.bmp")
+                Image1(Index).Picture = LoadInterface(Language + "\reenviarvalidaciónhover.bmp")
                 Image1(Index).Tag = "1"
 
             End If
@@ -329,7 +329,7 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 3
 
             If Image1(Index).Tag = "0" Then
-                Image1(Index).Picture = LoadInterface("recuperarcontraseñahover.bmp")
+                Image1(Index).Picture = LoadInterface(Language + "\recuperarcontraseñahover.bmp")
                 Image1(Index).Tag = "1"
 
             End If
@@ -337,7 +337,7 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 4
 
             If Image1(Index).Tag = "0" Then
-                Image1(Index).Picture = LoadInterface("borrarcuentawidehover.bmp")
+                Image1(Index).Picture = LoadInterface(Language + "\borrarcuentawidehover.bmp")
                 Image1(Index).Tag = "1"
 
             End If
@@ -345,7 +345,7 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
         Case 5
 
             If Image1(Index).Tag = "0" Then
-                Image1(Index).Picture = LoadInterface("volverwidehover.bmp")
+                Image1(Index).Picture = LoadInterface(Language + "\volverwidehover.bmp")
                 Image1(Index).Tag = "1"
 
             End If
@@ -370,27 +370,27 @@ Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integ
     Select Case Index
 
         Case 0
-            Image1(Index).Picture = LoadInterface("crearcuentawidepress.bmp")
+            Image1(Index).Picture = LoadInterface(Language + "\crearcuentawidepress.bmp")
             Image1(Index).Tag = "1"
 
         Case 1
-            Image1(Index).Picture = LoadInterface("validarcuenta.bmp")
+            Image1(Index).Picture = LoadInterface(Language + "\validarcuenta.bmp")
             Image1(Index).Tag = "1"
 
         Case 2
-            Image1(Index).Picture = LoadInterface("reenviarvalidaciónpress.bmp")
+            Image1(Index).Picture = LoadInterface(Language + "\reenviarvalidaciónpress.bmp")
             Image1(Index).Tag = "1"
 
         Case 3
-            Image1(Index).Picture = LoadInterface("recuperarcontraseñapress.bmp")
+            Image1(Index).Picture = LoadInterface(Language + "\recuperarcontraseñapress.bmp")
             Image1(Index).Tag = "1"
 
         Case 4
-            Image1(Index).Picture = LoadInterface("borrarcuentapress.bmp")
+            Image1(Index).Picture = LoadInterface(Language + "\borrarcuentapress.bmp")
             Image1(Index).Tag = "1"
 
         Case 5
-            Image1(Index).Picture = LoadInterface("volverwidepress.bmp")
+            Image1(Index).Picture = LoadInterface(Language + "\volverwidepress.bmp")
             Image1(Index).Tag = "1"
 
     End Select

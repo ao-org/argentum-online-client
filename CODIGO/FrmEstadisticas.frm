@@ -2051,10 +2051,10 @@ Public Sub Iniciar_Labels()
 
     End Select
 
-    'estado = LoadInterface("estadisticascriminal.bmp")
+    'estado = LoadInterface(Language +"\estadisticascriminal.bmp")
     'Else
     '   Label6(9).Caption = "Ciudadano"
-    'estado = LoadInterface("estadisticasciudadano.bmp")
+    'estado = LoadInterface(Language +"\estadisticasciudadano.bmp")
     'End If
 
     With UserEstadisticas
@@ -2249,7 +2249,7 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    'Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
+    'Image1.Picture = LoadInterface(Language +"\botonlargoaceptar.bmp")
     RealizoCambios = 0
     ReDim flags(1 To NUMSKILLS)
 
@@ -2268,7 +2268,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     moverForm
     'If Image1.Tag = "1" Then
-    ' Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
+    ' Image1.Picture = LoadInterface(Language +"\botonlargoaceptar.bmp")
     '    Image1.Tag = "0"
     'End If
     Image1.Picture = Nothing
@@ -2378,7 +2378,7 @@ Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     
     On Error GoTo Image1_MouseDown_Err
     
-    Image1 = LoadInterface("boton-aceptar-ES-off.bmp")
+    Image1 = LoadInterface(Language + "\boton-aceptar-ES-off.bmp")
     Image1.Tag = "1"
     
     Exit Sub
@@ -2395,7 +2395,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1 = LoadInterface("boton-aceptar-ES-over.bmp")
+        Image1 = LoadInterface(Language +"\boton-aceptar-ES-over.bmp")
         Image1.Tag = "1"
     End If
 
@@ -2453,7 +2453,7 @@ Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single
     
     On Error GoTo imgCerrar_MouseDown_Err
     
-    imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
+    imgCerrar.Picture = LoadInterface(Language +"\boton-cerrar-off.bmp")
     imgCerrar.Tag = "1"
     
     Exit Sub
@@ -2469,7 +2469,7 @@ Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo imgCerrar_MouseMove_Err
     
     If imgCerrar.Tag = "0" Then
-        imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
+        imgCerrar.Picture = LoadInterface(Language +"\boton-cerrar-over.bmp")
         imgCerrar.Tag = "1"
     End If
     

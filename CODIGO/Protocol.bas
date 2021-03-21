@@ -2140,7 +2140,7 @@ Private Sub HandleShowAlquimiaForm()
     If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
         Call WriteCraftAlquimista(MacroBltIndex)
     Else
-        frmAlqui.Picture = LoadInterface("alquimia.bmp")
+        frmAlqui.Picture = LoadInterface(Language + "\alquimia.bmp")
     
         COLOR_AZUL = RGB(0, 0, 0)
         

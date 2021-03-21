@@ -498,7 +498,7 @@ Private Sub cmdDel_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If cmdDel.Tag = "0" Then
-        cmdDel.Picture = LoadInterface("correo_borrarhover.bmp")
+        cmdDel.Picture = LoadInterface(Language + "\correo_borrarhover.bmp")
         cmdDel.Tag = "1"
 
     End If
