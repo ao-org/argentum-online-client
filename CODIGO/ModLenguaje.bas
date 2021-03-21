@@ -57,7 +57,7 @@ Public Sub SetLanguageApplication()
 
     Dim LangFile As String
     
-    Language = GetVar(Game.path(INIT) & "Config.ini", "Parameters", "Language")
+    Language = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Language")
     
     ' Si no se especifica el idioma en el archivo de configuracion, se le pregunta si quiere usar castellano
     ' y escribimos el archivo de configuracion con el idioma seleccionado
@@ -68,10 +68,10 @@ Public Sub SetLanguageApplication()
             Language = "english"
         End If
 
-        Call WriteVar(App.path & "\INIT\Config.ini", "Parameters", "Language", Language)
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Language", Language)
         'Language = LCase$(ObtainOperativeSystemLanguage(LOCALE_SENGLANGUAGE))
     End If
     
-    LangFile = FileToString(Game.path(Lenguajes) & Language & ".json")
-    Set JsonLanguage = JSON.parse(LangFile)
+    ' LangFile = FileToString(Game.path(Lenguajes) & Language & ".json")
+    ' Set JsonLanguage = JSON.parse(LangFile)
 End Sub
