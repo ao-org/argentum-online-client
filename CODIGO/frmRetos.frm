@@ -18,7 +18,7 @@ Begin VB.Form frmRetos
       Height          =   285
       Index           =   1
       Left            =   1920
-      TabIndex        =   9
+      TabIndex        =   1
       Top             =   840
       Width           =   1455
    End
@@ -26,7 +26,7 @@ Begin VB.Form frmRetos
       Alignment       =   2  'Center
       Height          =   375
       Left            =   2760
-      TabIndex        =   8
+      TabIndex        =   3
       Text            =   "1"
       Top             =   105
       Width           =   615
@@ -39,14 +39,6 @@ Begin VB.Form frmRetos
       Text            =   "20000"
       Top             =   1560
       Width           =   1335
-   End
-   Begin VB.CommandButton Retar 
-      Caption         =   "Retar"
-      Height          =   375
-      Left            =   960
-      TabIndex        =   1
-      Top             =   2040
-      Width           =   1575
    End
    Begin VB.TextBox Jugador 
       Alignment       =   2  'Center
@@ -74,18 +66,9 @@ Begin VB.Form frmRetos
       EndProperty
       Height          =   240
       Left            =   240
-      TabIndex        =   7
+      TabIndex        =   4
       Top             =   120
       Width           =   2445
-   End
-   Begin VB.Label Label3 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Apuesta"
-      Height          =   255
-      Left            =   600
-      TabIndex        =   6
-      Top             =   1560
-      Width           =   855
    End
    Begin VB.Label Error 
       Alignment       =   2  'Center
@@ -104,24 +87,6 @@ Begin VB.Form frmRetos
       TabIndex        =   5
       Top             =   2760
       Width           =   3375
-   End
-   Begin VB.Label Label2 
-      Alignment       =   2  'Center
-      Caption         =   "Equipo 2"
-      Height          =   255
-      Left            =   1920
-      TabIndex        =   4
-      Top             =   600
-      Width           =   1455
-   End
-   Begin VB.Label Label1 
-      Alignment       =   2  'Center
-      Caption         =   "Equipo 1"
-      Height          =   255
-      Left            =   240
-      TabIndex        =   3
-      Top             =   600
-      Width           =   1455
    End
 End
 Attribute VB_Name = "frmRetos"
@@ -268,9 +233,8 @@ Private Sub txtPPT_Change()
     Next
         
     ' Reordenamos los elementos que estan por debajo del nombre de los jugadores
-    Label3.Top = Jugador(Jugador.UBound).Top + 700
     Apuesta.Top = Jugador(Jugador.UBound).Top + 700
-    Retar.Top = Jugador(Jugador.UBound).Top + 1180
+    'Retar.Top = Jugador(Jugador.UBound).Top + 1180
     Error.Top = Jugador(Jugador.UBound).Top + 1900
     Me.Height = Jugador(Jugador.UBound).Top + 2700
     

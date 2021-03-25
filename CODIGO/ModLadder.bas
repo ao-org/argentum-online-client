@@ -7,7 +7,7 @@ Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
 
 'Nueva seguridad
-Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal length As Long)
+Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal Length As Long)
 Private Declare Function GetAdaptersInfo Lib "iphlpapi" (lpAdapterInfo As Any, lpSize As Long) As Long
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 'get mac adress
@@ -338,7 +338,7 @@ Private Const SPI_GETMOUSESPEED = 112
 
 Public Declare Function SwapMouseButton Lib "user32" (ByVal bSwap As Long) As Long
 
-Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 
 Public Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 
@@ -354,9 +354,9 @@ End Type
 
 Public Const WM_COPYDATA = &H4A
 
-Private Declare Function SetTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
+Private Declare Function SetTimer Lib "user32" (ByVal hWnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
 
-Private Declare Function KillTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long) As Long
+Private Declare Function KillTimer Lib "user32" (ByVal hWnd As Long, ByVal nIDEvent As Long) As Long
 
 Private hBuffersTimer As Long
 
@@ -489,7 +489,7 @@ Private Declare Function CombineRgn Lib "gdi32" (ByVal hDestRgn As Long, ByVal h
 
 Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 
-Private Declare Function SetWindowRgn Lib "user32" (ByVal hwnd As Long, ByVal hRgn As Long, ByVal bRedraw As Long) As Long
+Private Declare Function SetWindowRgn Lib "user32" (ByVal hWnd As Long, ByVal hRgn As Long, ByVal bRedraw As Long) As Long
 
 Private Declare Function CreatePolygonRgn Lib "gdi32" (lpPoint As POINTAPI, ByVal nCount As Long, ByVal nPolyFillMode As Long) As Long
 
@@ -515,7 +515,7 @@ Public Const HWND_TOPMOST = -1
 
 Public Const HWND_NOTOPMOST = -2
 
-Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Declare Function CreateIconFromResourceEx Lib "user32.dll" (ByRef presbits As Any, ByVal dwResSize As Long, ByVal fIcon As Long, ByVal dwVer As Long, ByVal cxDesired As Long, ByVal cyDesired As Long, ByVal flags As Long) As Long
 
@@ -525,7 +525,7 @@ Private Declare Function DestroyIcon Lib "user32.dll" (ByVal hIcon As Long) As L
 
 Public Declare Function DrawIconEx Lib "user32.dll" (ByVal hdc As Long, ByVal xLeft As Long, ByVal yTop As Long, ByVal hIcon As Long, ByVal cxWidth As Long, ByVal cyWidth As Long, ByVal istepIfAniCur As Long, ByVal hbrFlickerFreeDraw As Long, ByVal diFlags As Long) As Long
   
-Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Long) As Long
+Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Long) As Long
                            
 Private m_ASC As Long
 
@@ -536,7 +536,7 @@ Sub inputbox_Password(El_Form As Form, Caracter As String)
       
     m_ASC = Asc(Caracter)
       
-    Call SetTimer(El_Form.hwnd, &H5000&, 100, AddressOf TimerProc)
+    Call SetTimer(El_Form.hWnd, &H5000&, 100, AddressOf TimerProc)
   
     
     Exit Sub
@@ -547,7 +547,7 @@ inputbox_Password_Err:
     
 End Sub
   
-Private Sub TimerProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idEvent As Long, ByVal dwTime As Long)
+Private Sub TimerProc(ByVal hWnd As Long, ByVal uMsg As Long, ByVal idEvent As Long, ByVal dwTime As Long)
     
     On Error GoTo TimerProc_Err
     
@@ -560,7 +560,7 @@ Private Sub TimerProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idEvent As L
     'Le establece el PasswordChar
     Call SendMessageLongRef(Handle_InputBox, &HCC&, m_ASC, 0)
     'Finaliza el Timer
-    Call KillTimer(hwnd, idEvent)
+    Call KillTimer(hWnd, idEvent)
   
     
     Exit Sub
@@ -609,15 +609,15 @@ LoadPNGtoICO_Err:
     
 End Function
 
-Public Function SetTopMostWindow(hwnd As Long, Topmost As Boolean) As Long
+Public Function SetTopMostWindow(hWnd As Long, Topmost As Boolean) As Long
     
     On Error GoTo SetTopMostWindow_Err
     
 
     If Topmost = True Then 'Make the window topmost
-        SetTopMostWindow = SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, FLAGSz)
+        SetTopMostWindow = SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, FLAGSz)
     Else
-        SetTopMostWindow = SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, FLAGSz)
+        SetTopMostWindow = SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, FLAGSz)
         SetTopMostWindow = False
 
     End If
@@ -633,7 +633,7 @@ End Function
 
 Public Sub LogError(desc As String)
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -644,7 +644,7 @@ Public Sub LogError(desc As String)
 
     Exit Sub
 
-errhandler:
+ErrHandler:
 
 End Sub
 
@@ -767,12 +767,12 @@ General_Set_Connect_Err:
     
 End Sub
  
-Public Sub InitializeSurfaceCapture(frm As Form)
+Public Sub InitializeSurfaceCapture(Frm As Form)
     
     On Error GoTo InitializeSurfaceCapture_Err
     
     lRegion = CreateRectRgn(0, 0, 0, 0)
-    frm.Visible = False
+    Frm.Visible = False
 
     
     Exit Sub
@@ -783,12 +783,12 @@ InitializeSurfaceCapture_Err:
     
 End Sub
 
-Public Sub ReleaseSurfaceCapture(frm As Form)
+Public Sub ReleaseSurfaceCapture(Frm As Form)
     
     On Error GoTo ReleaseSurfaceCapture_Err
     
-    ApplySurfaceTo frm
-    frm.Visible = True
+    ApplySurfaceTo Frm
+    Frm.Visible = True
     Call DeleteObject(lRegion)
 
     
@@ -800,11 +800,11 @@ ReleaseSurfaceCapture_Err:
     
 End Sub
  
-Public Sub ApplySurfaceTo(frm As Form)
+Public Sub ApplySurfaceTo(Frm As Form)
     
     On Error GoTo ApplySurfaceTo_Err
     
-    Call SetWindowRgn(frm.hwnd, lRegion, True)
+    Call SetWindowRgn(Frm.hWnd, lRegion, True)
 
     
     Exit Sub
@@ -1745,7 +1745,7 @@ End Sub
 Rem Encripta una cadena de caracteres.
 Rem S = Cadena a encriptar
 Rem P = Password
-Function EncryptStr(ByVal s As String, ByVal p As String) As String
+Function EncryptStr(ByVal s As String, ByVal P As String) As String
     
     On Error GoTo EncryptStr_Err
     
@@ -1756,15 +1756,15 @@ Function EncryptStr(ByVal s As String, ByVal p As String) As String
 
     r = ""
 
-    If Len(p) > 0 Then
+    If Len(P) > 0 Then
 
         For i = 1 To Len(s)
             c1 = Asc(mid(s, i, 1))
 
-            If i > Len(p) Then
-                C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
+            If i > Len(P) Then
+                C2 = Asc(mid(P, i Mod Len(P) + 1, 1))
             Else
-                C2 = Asc(mid(p, i, 1))
+                C2 = Asc(mid(P, i, 1))
 
             End If
 
@@ -1793,7 +1793,7 @@ End Function
 Rem Desencripta una cadena de caracteres.
 Rem S = Cadena a desencriptar
 Rem P = Password
-Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
+Function UnEncryptStr(ByVal s As String, ByVal P As String) As String
     
     On Error GoTo UnEncryptStr_Err
     
@@ -1804,15 +1804,15 @@ Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
 
     r = ""
 
-    If Len(p) > 0 Then
+    If Len(P) > 0 Then
 
         For i = 1 To Len(s)
             c1 = Asc(mid(s, i, 1))
 
-            If i > Len(p) Then
-                C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
+            If i > Len(P) Then
+                C2 = Asc(mid(P, i Mod Len(P) + 1, 1))
             Else
-                C2 = Asc(mid(p, i, 1))
+                C2 = Asc(mid(P, i, 1))
 
             End If
 
@@ -2268,7 +2268,7 @@ Public Sub PreloadGraphics()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "preload.ind", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "preload.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "No se ha logrado extraer el archivo de recurso."
             GoTo ErrorHandler
 
@@ -2513,12 +2513,12 @@ ObtenerIdMapaDeLlamadaDeClan_Err:
     
 End Function
 
-Public Sub Auto_Drag(ByVal hwnd As Long)
+Public Sub Auto_Drag(ByVal hWnd As Long)
     
     On Error GoTo Auto_Drag_Err
     
     Call ReleaseCapture
-    Call SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, ByVal 0&)
+    Call SendMessage(hWnd, WM_NCLBUTTONDOWN, HTCAPTION, ByVal 0&)
 
     
     Exit Sub

@@ -72,7 +72,7 @@ Public FontTypes([FONTTYPE_MAX] - 1) As tFont
 ' *********************************************************
 'The only current map
 
-
+Public ResourcesPassword As String
 
 Private Type tMapHeader
 
@@ -663,7 +663,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
             MsgBox Err.Description
             End
@@ -933,7 +933,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
             Call MsgBox(Err.Description)
             End
@@ -1199,7 +1199,7 @@ Public Sub CargarParticulas()
     'Loads the Particles.ini file to the ComboBox
     'Edited by Juan Martín Sotuyo Dodero to add speed and life
     '*************************************
-    Dim loopc      As Long
+    Dim LoopC      As Long
     Dim i          As Long
     Dim GrhListing As String
     Dim TempSet    As String
@@ -1208,7 +1208,7 @@ Public Sub CargarParticulas()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ini", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de particles.ini!"
             MsgBox Err.Description
 
@@ -1225,59 +1225,59 @@ Public Sub CargarParticulas()
     ReDim StreamData(1 To ParticulasTotales) As Stream
     
     'fill StreamData array with info from Particles.ini
-    For loopc = 1 To ParticulasTotales
-        StreamData(loopc).Name = General_Var_Get(StreamFile, Val(loopc), "Name")
-        StreamData(loopc).NumOfParticles = General_Var_Get(StreamFile, Val(loopc), "NumOfParticles")
-        StreamData(loopc).x1 = General_Var_Get(StreamFile, Val(loopc), "X1")
-        StreamData(loopc).y1 = General_Var_Get(StreamFile, Val(loopc), "Y1")
-        StreamData(loopc).x2 = General_Var_Get(StreamFile, Val(loopc), "X2")
-        StreamData(loopc).y2 = General_Var_Get(StreamFile, Val(loopc), "Y2")
-        StreamData(loopc).Angle = General_Var_Get(StreamFile, Val(loopc), "Angle")
-        StreamData(loopc).vecx1 = General_Var_Get(StreamFile, Val(loopc), "VecX1")
-        StreamData(loopc).vecx2 = General_Var_Get(StreamFile, Val(loopc), "VecX2")
-        StreamData(loopc).vecy1 = General_Var_Get(StreamFile, Val(loopc), "VecY1")
-        StreamData(loopc).vecy2 = General_Var_Get(StreamFile, Val(loopc), "VecY2")
-        StreamData(loopc).life1 = General_Var_Get(StreamFile, Val(loopc), "Life1")
-        StreamData(loopc).life2 = General_Var_Get(StreamFile, Val(loopc), "Life2")
-        StreamData(loopc).friction = General_Var_Get(StreamFile, Val(loopc), "Friction")
-        StreamData(loopc).spin = General_Var_Get(StreamFile, Val(loopc), "Spin")
-        StreamData(loopc).spin_speedL = General_Var_Get(StreamFile, Val(loopc), "Spin_SpeedL")
-        StreamData(loopc).spin_speedH = General_Var_Get(StreamFile, Val(loopc), "Spin_SpeedH")
-        StreamData(loopc).AlphaBlend = General_Var_Get(StreamFile, Val(loopc), "AlphaBlend")
-        StreamData(loopc).gravity = General_Var_Get(StreamFile, Val(loopc), "Gravity")
-        StreamData(loopc).grav_strength = General_Var_Get(StreamFile, Val(loopc), "Grav_Strength")
-        StreamData(loopc).bounce_strength = General_Var_Get(StreamFile, Val(loopc), "Bounce_Strength")
-        StreamData(loopc).XMove = General_Var_Get(StreamFile, Val(loopc), "XMove")
-        StreamData(loopc).YMove = General_Var_Get(StreamFile, Val(loopc), "YMove")
-        StreamData(loopc).move_x1 = General_Var_Get(StreamFile, Val(loopc), "move_x1")
-        StreamData(loopc).move_x2 = General_Var_Get(StreamFile, Val(loopc), "move_x2")
-        StreamData(loopc).move_y1 = General_Var_Get(StreamFile, Val(loopc), "move_y1")
-        StreamData(loopc).move_y2 = General_Var_Get(StreamFile, Val(loopc), "move_y2")
-        StreamData(loopc).life_counter = General_Var_Get(StreamFile, Val(loopc), "life_counter")
-        StreamData(loopc).speed = Val(General_Var_Get(StreamFile, Val(loopc), "Speed"))
-        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
-        StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
-        StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
+    For LoopC = 1 To ParticulasTotales
+        StreamData(LoopC).Name = General_Var_Get(StreamFile, Val(LoopC), "Name")
+        StreamData(LoopC).NumOfParticles = General_Var_Get(StreamFile, Val(LoopC), "NumOfParticles")
+        StreamData(LoopC).x1 = General_Var_Get(StreamFile, Val(LoopC), "X1")
+        StreamData(LoopC).y1 = General_Var_Get(StreamFile, Val(LoopC), "Y1")
+        StreamData(LoopC).x2 = General_Var_Get(StreamFile, Val(LoopC), "X2")
+        StreamData(LoopC).y2 = General_Var_Get(StreamFile, Val(LoopC), "Y2")
+        StreamData(LoopC).Angle = General_Var_Get(StreamFile, Val(LoopC), "Angle")
+        StreamData(LoopC).vecx1 = General_Var_Get(StreamFile, Val(LoopC), "VecX1")
+        StreamData(LoopC).vecx2 = General_Var_Get(StreamFile, Val(LoopC), "VecX2")
+        StreamData(LoopC).vecy1 = General_Var_Get(StreamFile, Val(LoopC), "VecY1")
+        StreamData(LoopC).vecy2 = General_Var_Get(StreamFile, Val(LoopC), "VecY2")
+        StreamData(LoopC).life1 = General_Var_Get(StreamFile, Val(LoopC), "Life1")
+        StreamData(LoopC).life2 = General_Var_Get(StreamFile, Val(LoopC), "Life2")
+        StreamData(LoopC).friction = General_Var_Get(StreamFile, Val(LoopC), "Friction")
+        StreamData(LoopC).spin = General_Var_Get(StreamFile, Val(LoopC), "Spin")
+        StreamData(LoopC).spin_speedL = General_Var_Get(StreamFile, Val(LoopC), "Spin_SpeedL")
+        StreamData(LoopC).spin_speedH = General_Var_Get(StreamFile, Val(LoopC), "Spin_SpeedH")
+        StreamData(LoopC).AlphaBlend = General_Var_Get(StreamFile, Val(LoopC), "AlphaBlend")
+        StreamData(LoopC).gravity = General_Var_Get(StreamFile, Val(LoopC), "Gravity")
+        StreamData(LoopC).grav_strength = General_Var_Get(StreamFile, Val(LoopC), "Grav_Strength")
+        StreamData(LoopC).bounce_strength = General_Var_Get(StreamFile, Val(LoopC), "Bounce_Strength")
+        StreamData(LoopC).XMove = General_Var_Get(StreamFile, Val(LoopC), "XMove")
+        StreamData(LoopC).YMove = General_Var_Get(StreamFile, Val(LoopC), "YMove")
+        StreamData(LoopC).move_x1 = General_Var_Get(StreamFile, Val(LoopC), "move_x1")
+        StreamData(LoopC).move_x2 = General_Var_Get(StreamFile, Val(LoopC), "move_x2")
+        StreamData(LoopC).move_y1 = General_Var_Get(StreamFile, Val(LoopC), "move_y1")
+        StreamData(LoopC).move_y2 = General_Var_Get(StreamFile, Val(LoopC), "move_y2")
+        StreamData(LoopC).life_counter = General_Var_Get(StreamFile, Val(LoopC), "life_counter")
+        StreamData(LoopC).speed = Val(General_Var_Get(StreamFile, Val(LoopC), "Speed"))
+        temp = General_Var_Get(StreamFile, Val(LoopC), "resize")
+        StreamData(LoopC).grh_resize = IIf((temp = -1), True, False)
+        StreamData(LoopC).grh_resizex = General_Var_Get(StreamFile, Val(LoopC), "rx")
+        StreamData(LoopC).grh_resizey = General_Var_Get(StreamFile, Val(LoopC), "ry")
         
-        StreamData(loopc).NumGrhs = General_Var_Get(StreamFile, Val(loopc), "NumGrhs")
-        ReDim StreamData(loopc).grh_list(1 To StreamData(loopc).NumGrhs)
-        GrhListing = General_Var_Get(StreamFile, Val(loopc), "Grh_List")
+        StreamData(LoopC).NumGrhs = General_Var_Get(StreamFile, Val(LoopC), "NumGrhs")
+        ReDim StreamData(LoopC).grh_list(1 To StreamData(LoopC).NumGrhs)
+        GrhListing = General_Var_Get(StreamFile, Val(LoopC), "Grh_List")
         
-        For i = 1 To StreamData(loopc).NumGrhs
-            StreamData(loopc).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
+        For i = 1 To StreamData(LoopC).NumGrhs
+            StreamData(LoopC).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
         Next i
 
-        StreamData(loopc).grh_list(i - 1) = StreamData(loopc).grh_list(i - 1)
+        StreamData(LoopC).grh_list(i - 1) = StreamData(LoopC).grh_list(i - 1)
         
         For ColorSet = 1 To 4
-            TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
+            TempSet = General_Var_Get(StreamFile, Val(LoopC), "ColorSet" & ColorSet)
+            StreamData(LoopC).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
+            StreamData(LoopC).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
+            StreamData(LoopC).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
         Next ColorSet
         
-    Next loopc
+    Next LoopC
         
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "particles.ini"
@@ -1303,7 +1303,7 @@ Public Sub CargarParticulasBinary()
     'Loads the Particles.ini file to the ComboBox
     'Edited by Juan Martín Sotuyo Dodero to add speed and life
     '*************************************
-    Dim loopc      As Long
+    Dim LoopC      As Long
     Dim i          As Long
     Dim GrhListing As String
     Dim TempSet    As String
@@ -1317,7 +1317,7 @@ Public Sub CargarParticulasBinary()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ind", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de particles.ind!"
             MsgBox Err.Description
 
@@ -1339,9 +1339,9 @@ Public Sub CargarParticulasBinary()
     ReDim StreamData(1 To ParticulasTotales) As Stream
 
     'fill StreamData array with info from Particles.ini
-    For loopc = 1 To ParticulasTotales
-        Get #N, , StreamData(loopc)
-    Next loopc
+    For LoopC = 1 To ParticulasTotales
+        Get #N, , StreamData(LoopC)
+    Next LoopC
     
     Close #N
 
@@ -1351,31 +1351,31 @@ Public Sub CargarParticulasBinary()
     'resize StreamData array
     
     'fill StreamData array with info from Particles.ini
-    For loopc = 1 To ParticulasTotales
+    For LoopC = 1 To ParticulasTotales
 
-        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
-        StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
-        StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
+        temp = General_Var_Get(StreamFile, Val(LoopC), "resize")
+        StreamData(LoopC).grh_resize = IIf((temp = -1), True, False)
+        StreamData(LoopC).grh_resizex = General_Var_Get(StreamFile, Val(LoopC), "rx")
+        StreamData(LoopC).grh_resizey = General_Var_Get(StreamFile, Val(LoopC), "ry")
         
-        StreamData(loopc).NumGrhs = General_Var_Get(StreamFile, Val(loopc), "NumGrhs")
-        ReDim StreamData(loopc).grh_list(1 To StreamData(loopc).NumGrhs)
-        GrhListing = General_Var_Get(StreamFile, Val(loopc), "Grh_List")
+        StreamData(LoopC).NumGrhs = General_Var_Get(StreamFile, Val(LoopC), "NumGrhs")
+        ReDim StreamData(LoopC).grh_list(1 To StreamData(LoopC).NumGrhs)
+        GrhListing = General_Var_Get(StreamFile, Val(LoopC), "Grh_List")
         
-        For i = 1 To StreamData(loopc).NumGrhs
-            StreamData(loopc).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
+        For i = 1 To StreamData(LoopC).NumGrhs
+            StreamData(LoopC).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
         Next i
 
-        StreamData(loopc).grh_list(i - 1) = StreamData(loopc).grh_list(i - 1)
+        StreamData(LoopC).grh_list(i - 1) = StreamData(LoopC).grh_list(i - 1)
         
         For ColorSet = 1 To 4
-            TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
+            TempSet = General_Var_Get(StreamFile, Val(LoopC), "ColorSet" & ColorSet)
+            StreamData(LoopC).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
+            StreamData(LoopC).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
+            StreamData(LoopC).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
         Next ColorSet
         
-    Next loopc
+    Next LoopC
         
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "particles.ini"
@@ -1404,7 +1404,7 @@ Public Sub CargarIndicesOBJBinary()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.ind", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de localindex.ind!"
             MsgBox Err.Description
 
@@ -1512,7 +1512,7 @@ Public Sub CargarIndicesOBJ()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.dat", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de localindex.dat!"
             MsgBox Err.Description
 
@@ -1584,7 +1584,7 @@ Public Sub CargarIndicesOBJ()
     
     Dim aux   As String
 
-    Dim loopc As Byte
+    Dim LoopC As Byte
     
     For Npc = 1 To NumNpcs
         DoEvents
@@ -1615,11 +1615,11 @@ Public Sub CargarIndicesOBJ()
             NpcData(Npc).NumQuiza = Val(aux)
             ReDim NpcData(Npc).QuizaDropea(1 To NpcData(Npc).NumQuiza) As Integer
 
-            For loopc = 1 To NpcData(Npc).NumQuiza
+            For LoopC = 1 To NpcData(Npc).NumQuiza
                
-                NpcData(Npc).QuizaDropea(loopc) = Val(Leer.GetValue("npc" & Npc, "QuizaDropea" & loopc))
+                NpcData(Npc).QuizaDropea(LoopC) = Val(Leer.GetValue("npc" & Npc, "QuizaDropea" & LoopC))
                 ' Debug.Print NpcData(Npc).QuizaDropea(loopc)
-            Next loopc
+            Next LoopC
 
         End If
 
@@ -1714,7 +1714,7 @@ Public Sub Cargarmapsworlddata()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "mapsworlddata.dat", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "mapsworlddata.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de mapsworlddata.dat!"
             MsgBox Err.Description
 
@@ -1774,7 +1774,7 @@ Sub CargarMoldes()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "moldes.ini", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "moldes.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de moldes.ini!"
             MsgBox Err.Description
 
@@ -1833,7 +1833,7 @@ Sub CargarCabezas()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cabezas.ind", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cabezas.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
 
@@ -1899,7 +1899,7 @@ Sub CargarCascos()
   
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cascos.ind", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cascos.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
 
@@ -1965,7 +1965,7 @@ Sub CargarCuerposViejo()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "personajes.ind", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "personajes.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de personajes.ind!"
             MsgBox Err.Description
 
@@ -2052,7 +2052,7 @@ Sub CargarCuerpos()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cuerpos.dat", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cuerpos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de cuerpos.dat!"
             MsgBox Err.Description
 
@@ -2185,7 +2185,7 @@ Sub CargarFxs()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "fxs.ind", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "fxs.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de fxs.ind!"
             MsgBox Err.Description
 
@@ -2239,7 +2239,7 @@ Public Function LoadGrhData() As Boolean
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "graficos.ind", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "graficos.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de recurso!"
             GoTo ErrorHandler
 
@@ -2376,7 +2376,7 @@ Public Function CargarMiniMap()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "minimap.bin", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "minimap.bin", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de recurso!"
             GoTo ErrorHandler
 
@@ -2427,13 +2427,13 @@ Sub CargarAnimArmasViejo()
 
     
 
-    Dim loopc As Long
+    Dim LoopC As Long
 
     Dim Arch  As String
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de armas.dat!"
             MsgBox Err.Description
 
@@ -2448,12 +2448,12 @@ Sub CargarAnimArmasViejo()
     
     ReDim WeaponAnimData(1 To NumWeaponAnims) As WeaponAnimData
 
-    For loopc = 1 To NumWeaponAnims
-        InitGrh WeaponAnimData(loopc).WeaponWalk(1), Val(GetVar(Arch, "ARMA" & loopc, "Dir1")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(2), Val(GetVar(Arch, "ARMA" & loopc, "Dir2")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(3), Val(GetVar(Arch, "ARMA" & loopc, "Dir3")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(4), Val(GetVar(Arch, "ARMA" & loopc, "Dir4")), 0
-    Next loopc
+    For LoopC = 1 To NumWeaponAnims
+        InitGrh WeaponAnimData(LoopC).WeaponWalk(1), Val(GetVar(Arch, "ARMA" & LoopC, "Dir1")), 0
+        InitGrh WeaponAnimData(LoopC).WeaponWalk(2), Val(GetVar(Arch, "ARMA" & LoopC, "Dir2")), 0
+        InitGrh WeaponAnimData(LoopC).WeaponWalk(3), Val(GetVar(Arch, "ARMA" & LoopC, "Dir3")), 0
+        InitGrh WeaponAnimData(LoopC).WeaponWalk(4), Val(GetVar(Arch, "ARMA" & LoopC, "Dir4")), 0
+    Next LoopC
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "armas.dat"
@@ -2501,14 +2501,14 @@ Sub CargarAnimArmas()
     
     Set Loader = New clsIniManager
 
-    Dim loopc As Long
+    Dim LoopC As Long
 
     Dim Arch  As String
     
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de armas.dat!"
             MsgBox Err.Description
 
@@ -2525,16 +2525,16 @@ Sub CargarAnimArmas()
     
     ReDim WeaponAnimData(1 To NumWeaponAnims) As WeaponAnimData
 
-    For loopc = 1 To NumWeaponAnims
-        ArmaKey = "ARMA" & loopc
+    For LoopC = 1 To NumWeaponAnims
+        ArmaKey = "ARMA" & LoopC
         Std = Val(Loader.GetValue(ArmaKey, "Std"))
         
         If Std = 0 Then
             
-            InitGrh WeaponAnimData(loopc).WeaponWalk(1), Val(Loader.GetValue(ArmaKey, "Dir1")), 0
-            InitGrh WeaponAnimData(loopc).WeaponWalk(2), Val(Loader.GetValue(ArmaKey, "Dir2")), 0
-            InitGrh WeaponAnimData(loopc).WeaponWalk(3), Val(Loader.GetValue(ArmaKey, "Dir3")), 0
-            InitGrh WeaponAnimData(loopc).WeaponWalk(4), Val(Loader.GetValue(ArmaKey, "Dir4")), 0
+            InitGrh WeaponAnimData(LoopC).WeaponWalk(1), Val(Loader.GetValue(ArmaKey, "Dir1")), 0
+            InitGrh WeaponAnimData(LoopC).WeaponWalk(2), Val(Loader.GetValue(ArmaKey, "Dir2")), 0
+            InitGrh WeaponAnimData(LoopC).WeaponWalk(3), Val(Loader.GetValue(ArmaKey, "Dir3")), 0
+            InitGrh WeaponAnimData(LoopC).WeaponWalk(4), Val(Loader.GetValue(ArmaKey, "Dir4")), 0
             
         Else
         
@@ -2596,7 +2596,7 @@ Sub CargarAnimArmas()
                     .TileHeight = GrhData(.Frames(1)).TileHeight
                 End With
                 
-                InitGrh WeaponAnimData(loopc).WeaponWalk(Heading), LastGrh, 0
+                InitGrh WeaponAnimData(LoopC).WeaponWalk(Heading), LastGrh, 0
                 
                 
                 LastGrh = LastGrh + 1
@@ -2604,7 +2604,7 @@ Sub CargarAnimArmas()
         
         
         End If
-    Next loopc
+    Next LoopC
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "armas.dat"
@@ -2630,7 +2630,7 @@ Sub CargarColores()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "colores.dat", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "colores.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de colores.dat!"
             MsgBox Err.Description
 
@@ -2713,7 +2713,7 @@ Sub CargarAnimEscudos()
     
     Set Loader = New clsIniManager
 
-    Dim loopc As Long
+    Dim LoopC As Long
 
     Dim Arch  As String
     
@@ -2721,7 +2721,7 @@ Sub CargarAnimEscudos()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de escudos.dat!"
             MsgBox Err.Description
 
@@ -2737,16 +2737,16 @@ Sub CargarAnimEscudos()
     
     ReDim ShieldAnimData(1 To NumEscudosAnims) As ShieldAnimData
     
-    For loopc = 1 To NumEscudosAnims
+    For LoopC = 1 To NumEscudosAnims
     
-        EscudoKey = "ESC" & loopc
+        EscudoKey = "ESC" & LoopC
         Std = Val(Loader.GetValue(EscudoKey, "Std"))
         
         If Std = 0 Then
-            InitGrh ShieldAnimData(loopc).ShieldWalk(1), Val(Loader.GetValue(EscudoKey, "Dir1")), 0
-            InitGrh ShieldAnimData(loopc).ShieldWalk(2), Val(Loader.GetValue(EscudoKey, "Dir2")), 0
-            InitGrh ShieldAnimData(loopc).ShieldWalk(3), Val(Loader.GetValue(EscudoKey, "Dir3")), 0
-            InitGrh ShieldAnimData(loopc).ShieldWalk(4), Val(Loader.GetValue(EscudoKey, "Dir4")), 0
+            InitGrh ShieldAnimData(LoopC).ShieldWalk(1), Val(Loader.GetValue(EscudoKey, "Dir1")), 0
+            InitGrh ShieldAnimData(LoopC).ShieldWalk(2), Val(Loader.GetValue(EscudoKey, "Dir2")), 0
+            InitGrh ShieldAnimData(LoopC).ShieldWalk(3), Val(Loader.GetValue(EscudoKey, "Dir3")), 0
+            InitGrh ShieldAnimData(LoopC).ShieldWalk(4), Val(Loader.GetValue(EscudoKey, "Dir4")), 0
         Else
         
         
@@ -2807,7 +2807,7 @@ Sub CargarAnimEscudos()
                     .TileHeight = GrhData(.Frames(1)).TileHeight
                 End With
                 
-                InitGrh ShieldAnimData(loopc).ShieldWalk(Heading), LastGrh, 0
+                InitGrh ShieldAnimData(LoopC).ShieldWalk(Heading), LastGrh, 0
                 
                 
                 LastGrh = LastGrh + 1
@@ -2815,7 +2815,7 @@ Sub CargarAnimEscudos()
         
         
         End If
-    Next loopc
+    Next LoopC
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "escudos.dat"
@@ -2836,13 +2836,13 @@ Sub CargarAnimEscudosViejo()
     On Error GoTo CargarAnimEscudos_Err
     
 
-    Dim loopc As Long
+    Dim LoopC As Long
 
     Dim Arch  As String
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, False) Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de escudos.dat!"
             MsgBox Err.Description
 
@@ -2857,12 +2857,12 @@ Sub CargarAnimEscudosViejo()
     
     ReDim ShieldAnimData(1 To NumEscudosAnims) As ShieldAnimData
     
-    For loopc = 1 To NumEscudosAnims
-        InitGrh ShieldAnimData(loopc).ShieldWalk(1), Val(GetVar(Arch, "ESC" & loopc, "Dir1")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(2), Val(GetVar(Arch, "ESC" & loopc, "Dir2")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(3), Val(GetVar(Arch, "ESC" & loopc, "Dir3")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(4), Val(GetVar(Arch, "ESC" & loopc, "Dir4")), 0
-    Next loopc
+    For LoopC = 1 To NumEscudosAnims
+        InitGrh ShieldAnimData(LoopC).ShieldWalk(1), Val(GetVar(Arch, "ESC" & LoopC, "Dir1")), 0
+        InitGrh ShieldAnimData(LoopC).ShieldWalk(2), Val(GetVar(Arch, "ESC" & LoopC, "Dir2")), 0
+        InitGrh ShieldAnimData(LoopC).ShieldWalk(3), Val(GetVar(Arch, "ESC" & LoopC, "Dir3")), 0
+        InitGrh ShieldAnimData(LoopC).ShieldWalk(4), Val(GetVar(Arch, "ESC" & LoopC, "Dir4")), 0
+    Next LoopC
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "escudos.dat"

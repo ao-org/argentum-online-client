@@ -160,7 +160,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
     'menduz was here
     '
     '**************************************************************
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim surface_desc As D3DSURFACE_DESC
 
@@ -189,7 +189,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
     
             #If Compresion = 1 Then
 
-                If Not Extract_File_EX(graphics, App.Path & "\..\Recursos\OUTPUT\", LTrim(str(Archivo)) & ".png", bytArr) Then
+                If Not Extract_File_EX(Graphics, App.Path & "\..\Recursos\OUTPUT\", LTrim(str(Archivo)) & ".png", bytArr, ResourcesPassword) Then
                     Debug.Print "¡No se puede cargar el grafico numero " & Archivo & "!"
                     Exit Function
 
@@ -232,7 +232,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
 
     Exit Function
 
-errhandler:
+ErrHandler:
     Debug.Print "ERROR EN GRHLOAD>" & Archivo & ".png"
 
 End Function

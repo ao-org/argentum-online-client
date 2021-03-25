@@ -227,7 +227,7 @@ End Function
 
 Public Function Initialize_Engine(ByVal main_hwnd As String, ByVal Set_Wav_Path As String, ByVal Set_MP3_Path As String, ByVal Set_Midi_Path As String, Optional ByVal Play_only_on_focus As Boolean = True, Optional ByVal Initialize_Sounds As Boolean = True, Optional ByVal Initialize_Music As Boolean = True, Optional ByVal sound_volume As Long, Optional ByVal music_volume As Long, Optional ByVal invert_snd As Boolean) As Boolean
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim dmA As DMUS_AUDIOPARAMS
 
@@ -270,7 +270,7 @@ Public Function Initialize_Engine(ByVal main_hwnd As String, ByVal Set_Wav_Path 
 
     Exit Function
 
-errhandler:
+ErrHandler:
     Initialize_Engine = False
 
 End Function
@@ -655,20 +655,20 @@ Public Function Music_Load(ByVal file_str As String, Optional ByVal Volume As Lo
 
     On Error GoTo Error_Handl
     
-    Dim ret As Long
+    Dim Ret As Long
     
     If (LenB(file_str) <= 0) Or (Musica = CONST_DESHABILITADA) Then Exit Function
  
     #If Compresion = 1 Then
 
         If Music = CONST_MP3 Then
-            If Extract_File(mp3, App.Path & "\..\Recursos\OUTPUT\", file_str & ".mp3", Windows_Temp_Dir, False) Then
+            If Extract_File(mp3, App.Path & "\..\Recursos\OUTPUT\", file_str & ".mp3", Windows_Temp_Dir, ResourcesPassword, False) Then
                 If Not Music_Empty() = True Then GoTo Error_Handl
                 Set IMC = New FilgraphManager
                 IMC.RenderFile Windows_Temp_Dir & file_str & ".mp3"
                 Kill Windows_Temp_Dir & file_str & ".mp3"
                 lastMid = False
-            ElseIf Extract_File(midi, MidiPath, file_str & ".mid", Windows_Temp_Dir, False) Then
+            ElseIf Extract_File(Midi, MidiPath, file_str & ".mid", Windows_Temp_Dir, ResourcesPassword, False) Then
 
                 If Not Music_Empty() = True Then GoTo Error_Handl
                 Set dmSeg = dmLoader.LoadSegment(Windows_Temp_Dir & file_str & ".mid")
@@ -682,7 +682,7 @@ Public Function Music_Load(ByVal file_str As String, Optional ByVal Volume As Lo
 
         ElseIf Music = CONST_MIDI Then
 
-            If Extract_File(midi, App.Path & "\..\Recursos\OUTPUT\", file_str & ".mid", Windows_Temp_Dir, False) Then
+            If Extract_File(Midi, App.Path & "\..\Recursos\OUTPUT\", file_str & ".mid", Windows_Temp_Dir, ResourcesPassword, False) Then
                 If Not Music_Empty() = True Then GoTo Error_Handl
                 Set dmSeg = dmLoader.LoadSegment(Windows_Temp_Dir & file_str & ".mid")
                 dmSeg.SetStandardMidiFile
@@ -768,7 +768,7 @@ Public Function Music_Play() As Boolean
     
     On Error GoTo Error_Handl
     
-    Dim ret As Long
+    Dim Ret As Long
     
     If (Musica = CONST_DESHABILITADA) Then Exit Function
     
@@ -882,7 +882,7 @@ Public Function Ambient_Load(ByVal file_name As Integer, Optional ByVal Volume A
     
     #If Compresion = 1 Then
 
-        If Extract_File(wav, App.Path & "\..\Recursos\OUTPUT\", file_name & ".wav", Windows_Temp_Dir, False) Then
+        If Extract_File(wav, App.Path & "\..\Recursos\OUTPUT\", file_name & ".wav", Windows_Temp_Dir, ResourcesPassword, False) Then
             Set ambient_buffer = DS.CreateSoundBufferFromFile(Windows_Temp_Dir & file_name & ".wav", dsbd)
             'Delete_File Windows_Temp_Dir & file_name & ".wav"
         Else

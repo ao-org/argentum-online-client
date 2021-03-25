@@ -63,7 +63,7 @@ Private mCantidadBuffers As Integer
 
 Private WavPath          As String
 
-Private Declare Sub CopyMem Lib "kernel32" Alias "RtlCopyMemory" (destination As Any, source As Any, ByVal length As Long)
+Private Declare Sub CopyMem Lib "kernel32" Alias "RtlCopyMemory" (destination As Any, source As Any, ByVal Length As Long)
 
 Private Sub Class_Initialize()
     '**************************************************************
@@ -486,7 +486,7 @@ Private Function CrearBuffer(ByVal Archivo As Integer, Optional ByVal Index As I
     'Last Modify Date: 5/04/2005
     '
     '**************************************************************
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     If Index = -1 Then
         'Agregamos al final de la lista
@@ -516,7 +516,7 @@ Private Function CrearBuffer(ByVal Archivo As Integer, Optional ByVal Index As I
     CrearBuffer = ObtenerIndice(Archivo)
     Exit Function
 
-errhandler:
+ErrHandler:
     
 End Function
 
@@ -538,7 +538,7 @@ Private Function CreateBufferFromFile(ByVal file_name As Integer, ByVal buffer_i
     #If Compresion Then
 
         If Extraido = False Then
-            If Extract_File(wav, App.Path & "\..\Recursos\OUTPUT\", file_name & ".wav", Windows_Temp_Dir, False) Then
+            If Extract_File(wav, App.Path & "\..\Recursos\OUTPUT\", file_name & ".wav", Windows_Temp_Dir, ResourcesPassword, False) Then
                 Set mBuffers(buffer_index).buffer(buffer_sub_index) = mDS.CreateSoundBufferFromFile(Windows_Temp_Dir & file_name & ".wav", dsbd)
                 Delete_File Windows_Temp_Dir & file_name & ".wav"
                 CreateBufferFromFile = True
@@ -566,7 +566,7 @@ Private Function CreateBufferFromFile(ByVal file_name As Integer, ByVal buffer_i
 
     #End If
 
-errhandler:
+ErrHandler:
     'Ocurrió un error, la causa más probable es que el archivo no exista
     ' If General_File_Exists(Windows_Temp_Dir & file_name & ".wav", vbNormal) Then
     '    Delete_File Windows_Temp_Dir & file_name & ".wav"
@@ -753,7 +753,7 @@ Public Sub BorraTimerProc()
     '**************************************************************
     
     
-    Dim loopc        As Long
+    Dim LoopC        As Long
 
     Dim offset       As Integer
 
@@ -761,29 +761,29 @@ Public Sub BorraTimerProc()
     
     TiempoActual = (timeGetTime() And &H7FFFFFFF)
     
-    For loopc = 1 To mCantidadBuffers
+    For LoopC = 1 To mCantidadBuffers
 
         'Revisar cuales usamos
-        If mBuffers(loopc).UltimoAcceso > TiempoActual - 60000 Then
+        If mBuffers(LoopC).UltimoAcceso > TiempoActual - 60000 Then
 
             'Si el offset está seteado, movemos para atrás la lista
             If offset Then
-                mBuffers(loopc - offset) = mBuffers(loopc)
+                mBuffers(LoopC - offset) = mBuffers(LoopC)
 
             End If
 
         Else
 
-            If PlayingCheck(0, loopc) = False Then
+            If PlayingCheck(0, LoopC) = False Then
                 'Eliminar de memoria
-                Erase mBuffers(loopc).buffer
+                Erase mBuffers(LoopC).buffer
                 offset = offset + 1
 
             End If
 
         End If
 
-    Next loopc
+    Next LoopC
     
     'Actualizar el número de sonidos
     mCantidadBuffers = mCantidadBuffers - offset
