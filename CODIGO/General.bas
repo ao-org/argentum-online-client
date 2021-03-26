@@ -401,16 +401,16 @@ Public Sub RefreshAllChars()
     'Goes through the charlist and replots all the characters on the map
     'Used to make sure everyone is visible
     '*****************************************************************
-    Dim LoopC As Long
+    Dim loopc As Long
     
-    For LoopC = 1 To LastChar
+    For loopc = 1 To LastChar
     
-        If charlist(LoopC).active = 1 Then
-            MapData(charlist(LoopC).Pos.x, charlist(LoopC).Pos.y).charindex = LoopC
+        If charlist(loopc).active = 1 Then
+            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
 
         End If
 
-    Next LoopC
+    Next loopc
 
     
     Exit Sub
@@ -504,7 +504,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     
 
     'Validamos los datos del user
-    Dim LoopC     As Long
+    Dim loopc     As Long
 
     Dim CharAscii As Integer
     
@@ -520,8 +520,8 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
     End If
     
-    For LoopC = 1 To Len(CuentaPassword)
-        CharAscii = Asc(mid$(CuentaPassword, LoopC, 1))
+    For loopc = 1 To Len(CuentaPassword)
+        CharAscii = Asc(mid$(CuentaPassword, loopc, 1))
 
         If Not LegalCharacter(CharAscii) Then
             MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
@@ -529,7 +529,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
         End If
 
-    Next LoopC
+    Next loopc
     
     CheckUserData = True
 
@@ -893,7 +893,7 @@ Sub Check_Keys()
  
         If frmMain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub
  
-        If UserMoving = 0 Then
+        If Not UserMoving Then
             If Not UserEstupido Then
                 If Not MainTimer.Check(TimersIndex.Walk, False) Then Exit Sub
 
@@ -1724,7 +1724,7 @@ End Function
 
 Public Function LoadInterface(FileName As String) As IPicture
 
-On Error GoTo ErrHandler
+On Error GoTo errhandler
 
     #If Compresion = 1 Then
         Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
@@ -1735,7 +1735,7 @@ On Error GoTo ErrHandler
     
 Exit Function
 
-ErrHandler:
+errhandler:
     MsgBox "Error al cargar la interface: " & FileName
 
 End Function
@@ -1917,12 +1917,12 @@ Public Sub CheckResources()
     
     Close #Handle
     
-    Dim Length As Integer
-    Length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
+    Dim length As Integer
+    length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
 
     Dim i As Integer
     
-    For i = 1 To Length
+    For i = 1 To length
         ResourcesPassword = ResourcesPassword & Chr(Data(i * 3 - 1) Xor 37)
     Next
 

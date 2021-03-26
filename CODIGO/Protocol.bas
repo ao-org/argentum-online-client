@@ -606,7 +606,7 @@ Public Sub HandleIncomingData()
 
     'Call LogError("llego paquete nº" & paquete & " pesa: " & incomingData.Length & "Bytes")
 
-    InBytes = InBytes + incomingData.Length
+    InBytes = InBytes + incomingData.length
 
     Rem  Call LogError("Llego paquete" & paquete)
     Select Case paquete
@@ -1155,7 +1155,7 @@ Public Sub HandleIncomingData()
     End Select
     
     'Done with this packet, move on to next one
-    If incomingData.Length > 0 And Err.number <> incomingData.NotEnoughDataErrCode Then
+    If incomingData.length > 0 And Err.number <> incomingData.NotEnoughDataErrCode Then
         If LastPacket = paquete Then
             IterationsHID = IterationsHID + 1
             
@@ -1163,7 +1163,7 @@ Public Sub HandleIncomingData()
                 Call RegistrarError(-1, "Superado el máximo de iteraciones del mismo paquete. Paquete: " & paquete, "Protocol.HandleIncomingData")
                 
                 'Empty buffer
-                Call incomingData.ReadASCIIStringFixed(incomingData.Length)
+                Call incomingData.ReadASCIIStringFixed(incomingData.length)
 
                 Exit Sub
             End If
@@ -1286,7 +1286,7 @@ Private Sub HandleRemoveCharDialog()
     '
     '***************************************************
     'Check if the packet is complete
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1337,7 +1337,7 @@ Private Sub HandleNadarToggle()
     On Error GoTo HandleNadarToggle_Err
     
 
-    If incomingData.Length < 2 Then
+    If incomingData.length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1384,7 +1384,7 @@ Private Sub HandleVelocidadToggle()
     On Error GoTo HandleVelocidadToggle_Err
     
 
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1412,7 +1412,7 @@ Private Sub HandleMacroTrabajoToggle()
     On Error GoTo HandleMacroTrabajoToggle_Err
     
 
-    If incomingData.Length < 2 Then
+    If incomingData.length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1760,7 +1760,7 @@ Private Sub HandleCommerceInit()
     '***************************************************
     Dim i As Long
     
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1859,7 +1859,7 @@ Private Sub HandleGoliathInit()
     '***************************************************
     '
     '***************************************************
-    If incomingData.Length < 6 Then
+    If incomingData.length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1893,7 +1893,7 @@ Private Sub HandleShowFrmLogear()
     '***************************************************
     '
     '***************************************************
-    If incomingData.Length < 1 Then
+    If incomingData.length < 1 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -1924,7 +1924,7 @@ Private Sub HandleShowFrmMapa()
     '***************************************************
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2298,7 +2298,7 @@ Private Sub HandleCharSwing()
     
 
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2431,7 +2431,7 @@ Private Sub HandleClanSeguro()
     'Creation date: 10/10/07
     '***************************************************
     'Check packet is complete
-    If incomingData.Length < 2 Then
+    If incomingData.length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2469,7 +2469,7 @@ Private Sub HandleIntervals()
     On Error GoTo HandleIntervals_Err
     
 
-    If incomingData.Length < 45 Then
+    If incomingData.length < 45 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2529,7 +2529,7 @@ Private Sub HandleUpdateUserKey()
     
     On Error GoTo HandleUpdateUserKey_Err
     
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2557,7 +2557,7 @@ Private Sub HandleUpdateDM()
     
     On Error GoTo HandleUpdateDM_Err
     
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2584,7 +2584,7 @@ Private Sub HandleUpdateRM()
     
     On Error GoTo HandleUpdateRM_Err
     
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2693,7 +2693,7 @@ Private Sub HandleUpdateSta()
     '
     '***************************************************
     'Check packet is complete
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2733,7 +2733,7 @@ Private Sub HandleUpdateMana()
     '
     '***************************************************
     'Check packet is complete
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2790,7 +2790,7 @@ Private Sub HandleUpdateHP()
     '
     '***************************************************
     'Check packet is complete
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -2848,7 +2848,7 @@ Private Sub HandleUpdateGold()
     '- 08/14/07: Added GldLbl color variation depending on User Gold and Level
     '***************************************************
     'Check packet is complete
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2885,7 +2885,7 @@ Private Sub HandleUpdateExp()
     '
     '***************************************************
     'Check packet is complete
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -2898,11 +2898,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -2929,7 +2929,7 @@ Private Sub HandleChangeMap()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3038,7 +3038,7 @@ Private Sub HandlePosUpdate()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3092,7 +3092,7 @@ Private Sub HandleNPCHitUser()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3151,7 +3151,7 @@ Private Sub HandleUserHitNPC()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3184,7 +3184,7 @@ Private Sub HandleUserAttackedSwing()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3217,7 +3217,7 @@ Private Sub HandleUserHittedByUser()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 6 Then
+    If incomingData.length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3291,7 +3291,7 @@ Private Sub HandleUserHittedUser()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 6 Then
+    If incomingData.length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -3362,13 +3362,13 @@ Private Sub HandleChatOverHead()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 12 Then
+    If incomingData.length < 12 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3461,7 +3461,7 @@ Private Sub HandleChatOverHead()
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3480,12 +3480,12 @@ End Sub
 
 Private Sub HandleTextOverChar()
 
-    If incomingData.Length < 9 Then
+    If incomingData.length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3511,7 +3511,7 @@ Private Sub HandleTextOverChar()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
 
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3530,12 +3530,12 @@ End Sub
 
 Private Sub HandleTextOverTile()
 
-    If incomingData.Length < 11 Then
+    If incomingData.length < 11 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3593,7 +3593,7 @@ Private Sub HandleTextOverTile()
         
     End If
 
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3612,12 +3612,12 @@ End Sub
 
 Private Sub HandleTextCharDrop()
 
-    If incomingData.Length < 9 Then
+    If incomingData.length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3686,7 +3686,7 @@ Private Sub HandleTextCharDrop()
         
     End If
 
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3713,12 +3713,12 @@ Private Sub HandleConsoleMessage()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -3844,7 +3844,7 @@ Private Sub HandleConsoleMessage()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3868,13 +3868,13 @@ Private Sub HandleLocaleMsg()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3963,7 +3963,7 @@ Private Sub HandleLocaleMsg()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3990,13 +3990,13 @@ Private Sub HandleGuildChat()
     'Last Modification: 04/07/08 (NicoNZ)
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -4064,7 +4064,7 @@ Private Sub HandleGuildChat()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -4091,13 +4091,13 @@ Private Sub HandleShowMessageBox()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -4134,7 +4134,7 @@ Private Sub HandleShowMessageBox()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -4158,13 +4158,13 @@ Private Sub HandleMostrarCuenta()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 1 Then
+    If incomingData.length < 1 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -4231,7 +4231,7 @@ Private Sub HandleMostrarCuenta()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -4261,7 +4261,7 @@ Private Sub HandleUserIndexInServer()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4294,7 +4294,7 @@ Private Sub HandleUserCharIndexInServer()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4334,12 +4334,12 @@ Private Sub HandleCharacterCreate()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 62 Then
+    If incomingData.length < 62 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -4491,7 +4491,7 @@ Private Sub HandleCharacterCreate()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -4521,7 +4521,7 @@ Private Sub HandleCharacterRemove()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4567,7 +4567,7 @@ Private Sub HandleCharacterMove()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4615,7 +4615,7 @@ Private Sub HandleForceCharMove()
     On Error GoTo HandleForceCharMove_Err
     
     
-    If incomingData.Length < 2 Then
+    If incomingData.length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -4678,7 +4678,7 @@ Private Sub HandleCharacterChange()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 19 Then
+    If incomingData.length < 19 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4785,7 +4785,7 @@ Private Sub HandleObjectCreate()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4859,7 +4859,7 @@ Private Sub HandleFxPiso()
     'Ladder
     '30/5/10
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4902,7 +4902,7 @@ Private Sub HandleObjectDelete()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4958,7 +4958,7 @@ Private Sub HandleBlockPosition()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -4998,7 +4998,7 @@ Private Sub HandlePlayMIDI()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5043,7 +5043,7 @@ Private Sub HandlePlayWave()
     'Last Modified by: Rapsodius
     'Added support for 3D Sounds.
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5101,7 +5101,7 @@ Private Sub HandlePosLLamadaDeClan()
     'Last Modified by: Rapsodius
     'Added support for 3D Sounds.
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5173,7 +5173,7 @@ Private Sub HandleCharUpdateHP()
     'Last Modified by: Rapsodius
     'Added support for 3D Sounds.
     '***************************************************
-    If incomingData.Length < 7 Then
+    If incomingData.length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5211,7 +5211,7 @@ Private Sub HandleArmaMov()
     
 
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -5246,7 +5246,7 @@ Private Sub HandleEscudoMov()
     
 
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -5285,13 +5285,13 @@ Private Sub HandleGuildList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -5341,7 +5341,7 @@ Private Sub HandleGuildList()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -5371,7 +5371,7 @@ Private Sub HandleAreaChanged()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5542,7 +5542,7 @@ Private Sub HandleCreateFX()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 7 Then
+    If incomingData.length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5591,7 +5591,7 @@ Private Sub HandleUpdateUserStats()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 27 Then
+    If incomingData.length < 27 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -5614,9 +5614,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -5676,7 +5676,7 @@ Private Sub HandleWorkRequestTarget()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 2 Then
+    If incomingData.length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -5765,13 +5765,13 @@ Private Sub HandleChangeInventorySlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 12 Then
+    If incomingData.length < 12 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -5873,7 +5873,7 @@ Private Sub HandleChangeInventorySlot()
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -5929,13 +5929,13 @@ Private Sub HandleRefreshAllInventorySlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6052,7 +6052,7 @@ Private Sub HandleRefreshAllInventorySlot()
      
     Exit Sub
      
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6079,12 +6079,12 @@ Private Sub HandleChangeBankSlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 11 Then
+    If incomingData.length < 11 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -6118,7 +6118,7 @@ Private Sub HandleChangeBankSlot()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6145,13 +6145,13 @@ Private Sub HandleChangeSpellSlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 6 Then
+    If incomingData.length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6197,7 +6197,7 @@ Private Sub HandleChangeSpellSlot()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6227,7 +6227,7 @@ Private Sub HandleAtributes()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 1 + NUMATRIBUTES Then
+    If incomingData.length < 1 + NUMATRIBUTES Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6289,13 +6289,13 @@ Private Sub HandleBlacksmithWeapons()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 9 Then
+    If incomingData.length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6336,7 +6336,7 @@ Private Sub HandleBlacksmithWeapons()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6363,13 +6363,13 @@ Private Sub HandleBlacksmithArmors()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6451,7 +6451,7 @@ Private Sub HandleBlacksmithArmors()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6478,13 +6478,13 @@ Private Sub HandleCarpenterObjects()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 2 Then
+    If incomingData.length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6517,7 +6517,7 @@ Private Sub HandleCarpenterObjects()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6539,13 +6539,13 @@ Private Sub HandleSastreObjects()
     '***************************************************
     'Author: Ladder
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6612,7 +6612,7 @@ Private Sub HandleSastreObjects()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6637,13 +6637,13 @@ Private Sub HandleAlquimiaObjects()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6680,7 +6680,7 @@ Private Sub HandleAlquimiaObjects()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6733,13 +6733,13 @@ Private Sub HandleErrorMessage()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6754,7 +6754,7 @@ Private Sub HandleErrorMessage()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6837,13 +6837,13 @@ Private Sub HandleShowSignal()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6864,7 +6864,7 @@ Private Sub HandleShowSignal()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6891,13 +6891,13 @@ Private Sub HandleChangeNPCInventorySlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 11 Then
+    If incomingData.length < 11 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -6931,7 +6931,7 @@ Private Sub HandleChangeNPCInventorySlot()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6961,7 +6961,7 @@ Private Sub HandleUpdateHungerAndThirst()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -6996,7 +6996,7 @@ Private Sub HandleHora()
     
     On Error GoTo HandleHora_Err
     
-    If incomingData.Length < 9 Then
+    If incomingData.length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -7025,7 +7025,7 @@ Private Sub HandleLight()
     On Error GoTo HandleLight_Err
     
  
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7057,7 +7057,7 @@ Private Sub HandleFYA()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7114,7 +7114,7 @@ Private Sub HandleUpdateNPCSimbolo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7177,7 +7177,7 @@ Private Sub HandleContadores()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 9 Then
+    If incomingData.length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7219,7 +7219,7 @@ Private Sub HandleOxigeno()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7286,7 +7286,7 @@ Private Sub HandleFlashScreen()
     '***************************************************
     Dim Color As Long, duracion As Long, ignorar As Boolean
 
-    If incomingData.Length < 10 Then
+    If incomingData.length < 10 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7333,7 +7333,7 @@ Private Sub HandleMiniStats()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 34 Then
+    If incomingData.length < 34 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -7401,7 +7401,7 @@ Private Sub HandleLevelUp()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7431,13 +7431,13 @@ Private Sub HandleAddForumMessage()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -7461,7 +7461,7 @@ Private Sub HandleAddForumMessage()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -7518,7 +7518,7 @@ Private Sub HandleSetInvisible()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7552,7 +7552,7 @@ Private Sub HandleSetEscribiendo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7588,7 +7588,7 @@ Private Sub HandleDiceRoll()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7732,7 +7732,7 @@ Private Sub HandleSendSkills()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 1 + NUMSKILLS Then
+    If incomingData.length < 1 + NUMSKILLS Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -7777,13 +7777,13 @@ Private Sub HandleTrainerCreatureList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -7808,7 +7808,7 @@ Private Sub HandleTrainerCreatureList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -7835,13 +7835,13 @@ Private Sub HandleGuildNews()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 12 Then
+    If incomingData.length < 12 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -7905,7 +7905,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7947,7 +7947,7 @@ Private Sub HandleGuildNews()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -7974,13 +7974,13 @@ Private Sub HandleOfferDetails()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -7995,7 +7995,7 @@ Private Sub HandleOfferDetails()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8022,13 +8022,13 @@ Private Sub HandleAlianceProposalsList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8054,7 +8054,7 @@ Private Sub HandleAlianceProposalsList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8081,13 +8081,13 @@ Private Sub HandlePeaceProposalsList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8113,7 +8113,7 @@ Private Sub HandlePeaceProposalsList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8140,13 +8140,13 @@ Private Sub HandleCharacterInfo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 31 Then
+    If incomingData.length < 31 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8227,7 +8227,7 @@ Private Sub HandleCharacterInfo()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8254,13 +8254,13 @@ Private Sub HandleGuildLeaderInfo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 14 Then
+    If incomingData.length < 14 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8322,7 +8322,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -8359,7 +8359,7 @@ Private Sub HandleGuildLeaderInfo()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8386,13 +8386,13 @@ Private Sub HandleGuildDetails()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 16 Then
+    If incomingData.length < 16 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8426,7 +8426,7 @@ Private Sub HandleGuildDetails()
     
     frmGuildBrief.Show vbModeless, frmMain
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8529,13 +8529,13 @@ Private Sub HandleShowUserRequest()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8551,7 +8551,7 @@ Private Sub HandleShowUserRequest()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8578,13 +8578,13 @@ Private Sub HandleChangeUserTradeSlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 22 Then
+    If incomingData.length < 22 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8617,7 +8617,7 @@ Private Sub HandleChangeUserTradeSlot()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8644,13 +8644,13 @@ Private Sub HandleSpawnList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8671,7 +8671,7 @@ Private Sub HandleSpawnList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8698,13 +8698,13 @@ Private Sub HandleShowSOSForm()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8737,7 +8737,7 @@ Private Sub HandleShowSOSForm()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8764,13 +8764,13 @@ Private Sub HandleShowMOTDEditionForm()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8786,7 +8786,7 @@ Private Sub HandleShowMOTDEditionForm()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8863,13 +8863,13 @@ Private Sub HandleUserNameList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8899,7 +8899,7 @@ Private Sub HandleUserNameList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8929,7 +8929,7 @@ Private Sub HandlePong()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 5 Then
+    If incomingData.length < 5 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -8966,13 +8966,13 @@ Private Sub HandleUpdateTagAndStatus()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 8 Then
+    If incomingData.length < 8 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -9012,7 +9012,7 @@ Private Sub HandleUpdateTagAndStatus()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -17282,11 +17282,11 @@ Public Sub FlushBuffer()
     
     With outgoingData
 
-        If .Length = 0 Then Exit Sub
+        If .length = 0 Then Exit Sub
         '   Debug.Print "Salio paquete con peso de: " & .Length & " bytes"
-        OutBytes = OutBytes + .Length
+        OutBytes = OutBytes + .length
         ' InBytes = 0
-        sndData = .ReadASCIIStringFixed(.Length)
+        sndData = .ReadASCIIStringFixed(.length)
         
         Call SendData(sndData)
 
@@ -17623,13 +17623,13 @@ End Sub
 
 Private Sub HandlePersonajesDeCuenta()
 
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -17739,7 +17739,7 @@ Private Sub HandlePersonajesDeCuenta()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -17758,13 +17758,13 @@ End Sub
 
 Private Sub HandleUserOnline()
 
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -17782,7 +17782,7 @@ Private Sub HandleUserOnline()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -17809,7 +17809,7 @@ Private Sub HandleParticleFXToFloor()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 8 Then
+    If incomingData.length < 8 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17876,7 +17876,7 @@ Private Sub HandleLightToFloor()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 8 Then
+    If incomingData.length < 8 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -17961,7 +17961,7 @@ Private Sub HandleParticleFX()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 10 Then
+    If incomingData.length < 10 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18014,7 +18014,7 @@ Private Sub HandleParticleFXWithDestino()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 17 Then
+    If incomingData.length < 17 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18074,7 +18074,7 @@ Private Sub HandleParticleFXWithDestinoXY()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 17 Then
+    If incomingData.length < 17 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18140,7 +18140,7 @@ Private Sub HandleAuraToChar()
     'Last Modification: 05/17/0
     '
     '***************************************************
-    If incomingData.Length < 7 Then
+    If incomingData.length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18198,7 +18198,7 @@ Private Sub HandleSpeedToChar()
     'Last Modification: 05/17/0
     '
     '***************************************************
-    If incomingData.Length < 7 Then
+    If incomingData.length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18348,7 +18348,7 @@ Private Sub HandleFamiliar()
     On Error GoTo HandleFamiliar_Err
     
 
-    If incomingData.Length < 1 Then
+    If incomingData.length < 1 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18375,7 +18375,7 @@ Private Sub HandleBindKeys()
     'Macros
     'Pablo Mercavides
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18417,7 +18417,7 @@ Private Sub HandleLogros()
     '***************************************************
     'Pablo Mercavides
     '***************************************************
-    If incomingData.Length < 40 Then
+    If incomingData.length < 40 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18538,7 +18538,7 @@ Private Sub HandleBarFx()
     '***************************************************
     'Author: Pablo Mercavides
     '***************************************************
-    If incomingData.Length < 6 Then
+    If incomingData.length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -18754,13 +18754,13 @@ Private Sub HandleQuestDetails()
     'Recibe y maneja el paquete QuestDetails del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    If incomingData.Length < 15 Then
+    If incomingData.length < 15 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim buffer As New clsByteQueue
 
@@ -19084,7 +19084,7 @@ Private Sub HandleQuestDetails()
     
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19107,13 +19107,13 @@ Public Sub HandleQuestListSend()
     'Recibe y maneja el paquete QuestListSend del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    If incomingData.Length < 1 Then
+    If incomingData.length < 1 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim buffer As New clsByteQueue
 
@@ -19160,7 +19160,7 @@ Public Sub HandleQuestListSend()
     'Copiamos de vuelta el buffer
     Call incomingData.CopyBuffer(buffer)
  
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19182,13 +19182,13 @@ Public Sub HandleNpcQuestListSend()
     'Recibe y maneja el paquete QuestListSend del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-   If incomingData.Length < 14 Then
+   If incomingData.length < 14 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim buffer As New clsByteQueue
 
@@ -19409,7 +19409,7 @@ Public Sub HandleNpcQuestListSend()
     
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19639,13 +19639,13 @@ Private Sub HandleListaCorreo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -19733,7 +19733,7 @@ Private Sub HandleListaCorreo()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19757,13 +19757,13 @@ Private Sub HandleShowPregunta()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -19781,7 +19781,7 @@ Private Sub HandleShowPregunta()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19803,7 +19803,7 @@ Private Sub HandleDatosGrupo()
     On Error GoTo HandleDatosGrupo_Err
     
 
-    If incomingData.Length < 2 Then
+    If incomingData.length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19850,7 +19850,7 @@ Private Sub HandleUbicacion()
     On Error GoTo HandleUbicacion_Err
     
 
-    If incomingData.Length < 6 Then
+    If incomingData.length < 6 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19902,7 +19902,7 @@ Private Sub HandleViajarForm()
     On Error GoTo HandleViajarForm_Err
     
 
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -19911,7 +19911,7 @@ Private Sub HandleViajarForm()
     'Remove packet ID
     Call incomingData.ReadByte
             
-    Dim dest     As String
+    Dim Dest     As String
 
     Dim DestCant As Byte
 
@@ -19966,7 +19966,7 @@ Private Sub HandleActShop()
     On Error GoTo HandleActShop_Err
     
 
-    If incomingData.Length < 7 Then
+    If incomingData.length < 7 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
@@ -20001,13 +20001,13 @@ Private Sub HandleDonadorObjects()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 9 Then
+    If incomingData.length < 9 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20065,7 +20065,7 @@ Private Sub HandleDonadorObjects()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -20091,13 +20091,13 @@ Private Sub HandleRanking()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.Length < 40 Then
+    If incomingData.length < 40 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20134,7 +20134,7 @@ Private Sub HandleRanking()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -20421,12 +20421,12 @@ End Sub
 
 Private Sub HandleShowProcesses()
 
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20444,7 +20444,7 @@ Private Sub HandleShowProcesses()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -20463,12 +20463,12 @@ End Sub
 
 Private Sub HandleShowScreenShot()
 
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20486,7 +20486,7 @@ Private Sub HandleShowScreenShot()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -20505,12 +20505,12 @@ End Sub
 
 Private Sub HandleScreenShotData()
 
-    If incomingData.Length < 3 Then
+    If incomingData.length < 3 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20528,7 +20528,7 @@ Private Sub HandleScreenShotData()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
 
-ErrHandler:
+errhandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -20606,7 +20606,7 @@ End Sub
 
 Private Sub HandleSeguroResu()
 
-    If incomingData.Length < 2 Then
+    If incomingData.length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -20629,7 +20629,7 @@ End Sub
 
 Private Sub HandleStopped()
 
-    If incomingData.Length < 2 Then
+    If incomingData.length < 2 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -20643,7 +20643,7 @@ End Sub
 
 Private Sub HandleInvasionInfo()
     
-    If incomingData.Length < 4 Then
+    If incomingData.length < 4 Then
         Err.Raise incomingData.NotEnoughDataErrCode
         Exit Sub
     End If

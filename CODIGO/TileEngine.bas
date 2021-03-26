@@ -159,7 +159,7 @@ Public Type DialogEffect
     Text As String
     Start As Long
     Color As RGBA
-    Offset As Position
+    offset As Position
 End Type
 
 'Apariencia del personaje
@@ -177,7 +177,7 @@ Public Type Char
     NowPosX As Integer
     NowPosY As Integer
     
-    iHead As Integer
+    IHead As Integer
     iBody As Integer
     Body As BodyData
     Head As HeadData
@@ -348,7 +348,7 @@ Public CurMap                  As Integer 'Mapa actual
 
 Public userindex               As Integer
 
-Public UserMoving              As Byte
+Public UserMoving              As Boolean
 Public UserBody                As Integer
 Public UserHead                As Integer
 Public UserPos                 As Position 'Posicion
@@ -776,7 +776,7 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
         UserPos.x = tX
         AddtoUserPos.y = y
         UserPos.y = tY
-        UserMoving = 1
+        UserMoving = True
         
         bTecho = HayTecho(UserPos.x, UserPos.y)
         

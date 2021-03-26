@@ -489,7 +489,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4614,7 +4613,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     If PantallaCompleta = 0 And Button = vbLeftButton Then
         If MoverVentana = 1 Then
-            If UserMoving = 0 Then
+            If Not UserMoving Then
                 ' Mover form sólo en la parte superior
                 If y < 30 Then MoverForm
 
