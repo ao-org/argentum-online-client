@@ -1,22 +1,23 @@
 VERSION 5.00
 Begin VB.Form frmNewPassword 
+   BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Cambiar Contraseña de cuenta"
-   ClientHeight    =   2685
+   ClientHeight    =   4425
    ClientLeft      =   0
    ClientTop       =   -180
-   ClientWidth     =   3375
+   ClientWidth     =   4365
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   179
+   ScaleHeight     =   295
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   225
+   ScaleWidth      =   291
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.TextBox Text3 
+   Begin VB.TextBox txtNueva 
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H0012130D&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Verdana"
@@ -30,15 +31,15 @@ Begin VB.Form frmNewPassword
       ForeColor       =   &H80000005&
       Height          =   240
       IMEMode         =   3  'DISABLE
-      Left            =   360
+      Left            =   990
       PasswordChar    =   "*"
       TabIndex        =   2
-      Top             =   1920
-      Width           =   2535
+      Top             =   2460
+      Width           =   2415
    End
-   Begin VB.TextBox Text2 
+   Begin VB.TextBox txtNueva2 
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H0012130D&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Verdana"
@@ -52,15 +53,15 @@ Begin VB.Form frmNewPassword
       ForeColor       =   &H80000005&
       Height          =   240
       IMEMode         =   3  'DISABLE
-      Left            =   360
+      Left            =   990
       PasswordChar    =   "*"
       TabIndex        =   1
-      Top             =   1440
-      Width           =   2535
+      Top             =   3255
+      Width           =   2415
    End
-   Begin VB.TextBox Text1 
+   Begin VB.TextBox txtAnterior 
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H0012130D&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Verdana"
@@ -74,18 +75,25 @@ Begin VB.Form frmNewPassword
       ForeColor       =   &H00FFFFFF&
       Height          =   240
       IMEMode         =   3  'DISABLE
-      Left            =   360
+      Left            =   990
       PasswordChar    =   "*"
       TabIndex        =   0
-      Top             =   930
-      Width           =   2535
+      Top             =   1650
+      Width           =   2415
    End
-   Begin VB.Image Image1 
-      Height          =   435
-      Left            =   930
+   Begin VB.Image btnCerrar 
+      Height          =   420
+      Left            =   3900
       Tag             =   "0"
-      Top             =   2190
-      Width           =   1560
+      Top             =   15
+      Width           =   465
+   End
+   Begin VB.Image Aceptar 
+      Height          =   420
+      Left            =   1200
+      Tag             =   "0"
+      Top             =   3735
+      Width           =   1980
    End
 End
 Attribute VB_Name = "frmNewPassword"
@@ -95,13 +103,36 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private Sub Aceptar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Aceptar.Picture = LoadInterface("boton-aceptar-ES-off.bmp")
+    Aceptar.Tag = "1"
+End Sub
+
+Private Sub btnCerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub btnCerrar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    btnCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
+    btnCerrar.Tag = "1"
+End Sub
+
+Private Sub btnCerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If btnCerrar.Tag = "0" Then
+        btnCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
+        btnCerrar.Tag = "1"
+    End If
+End Sub
+
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    Me.Picture = LoadInterface("password.bmp")
-
+    
+    Call Aplicar_Transparencia(Me.hWnd, 240)
+    
+    Me.Picture = LoadInterface("ventanacambiarcontrasena.bmp")
     
     Exit Sub
 
@@ -117,7 +148,6 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
 
     
@@ -129,13 +159,21 @@ Form_KeyPress_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Form_MouseMove_Err
     
-    Image1.Picture = Nothing
-    Image1.Tag = "0"
-
+    Call moverForm(Me.hWnd)
+    
+    If Aceptar.Tag = "1" Then
+        Aceptar.Picture = Nothing
+        Aceptar.Tag = "0"
+    End If
+    
+    If btnCerrar.Tag = "1" Then
+        btnCerrar.Picture = Nothing
+        btnCerrar.Tag = "0"
+    End If
     
     Exit Sub
 
@@ -145,23 +183,20 @@ Form_MouseMove_Err:
     
 End Sub
 
-Private Sub Image1_Click()
+Private Sub Aceptar_Click()
     
     On Error GoTo Image1_Click_Err
-    
 
-    If Text2.Text = "" Then
+    If txtNueva.Text = "" Then
         Unload Me
-
     End If
 
-    If Text2.Text <> Text3.Text Then
+    If txtNueva.Text <> txtNueva2.Text Then
         Call MsgBox("Las contraseñas no coinciden", vbCritical Or vbOKOnly Or vbApplicationModal Or vbDefaultButton1, "Cambiar Contraseña")
         Exit Sub
-
     End If
-    
-    Call WriteChangePassword(Text1.Text, Text2.Text)
+
+    Call WriteChangePassword(txtAnterior.Text, txtNueva.Text)
     Unload Me
 
     
@@ -173,15 +208,14 @@ Image1_Click_Err:
     
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Aceptar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image1_MouseMove_Err
     
 
-    If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("password_aceptar.bmp")
-        Image1.Tag = "1"
-
+    If Aceptar.Tag = "0" Then
+        Aceptar.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
+        Aceptar.Tag = "1"
     End If
 
     

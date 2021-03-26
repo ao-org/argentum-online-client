@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmMapaGrande 
    Appearance      =   0  'Flat
    BackColor       =   &H80000006&
@@ -7,7 +7,7 @@ Begin VB.Form frmMapaGrande
    ClientHeight    =   10785
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   10350
+   ClientWidth     =   11565
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    KeyPreview      =   -1  'True
@@ -16,9 +16,9 @@ Begin VB.Form frmMapaGrande
    MinButton       =   0   'False
    ScaleHeight     =   719
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   690
+   ScaleWidth      =   771
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
+   StartUpPosition =   1  'CenterOwner
    Begin VB.ComboBox ComMundo 
       Appearance      =   0  'Flat
       BeginProperty Font 
@@ -31,7 +31,7 @@ Begin VB.Form frmMapaGrande
          Strikethrough   =   0   'False
       EndProperty
       Height          =   315
-      Left            =   7320
+      Left            =   8490
       Style           =   2  'Dropdown List
       TabIndex        =   16
       Top             =   2400
@@ -39,17 +39,17 @@ Begin VB.Form frmMapaGrande
    End
    Begin VB.PictureBox PlayerView 
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H000A0A0A&
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
       Height          =   1335
-      Left            =   7350
+      Left            =   8520
       ScaleHeight     =   89
       ScaleMode       =   0  'User
       ScaleWidth      =   177
       TabIndex        =   10
-      Top             =   9030
+      Top             =   8760
       Width           =   2655
    End
    Begin VB.PictureBox Picture1 
@@ -57,9 +57,9 @@ Begin VB.Form frmMapaGrande
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
-      Height          =   465
-      Left            =   7470
-      ScaleHeight     =   32
+      Height          =   480
+      Left            =   8685
+      ScaleHeight     =   33.032
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   9
@@ -68,7 +68,7 @@ Begin VB.Form frmMapaGrande
    End
    Begin MSComctlLib.ListView ListView1 
       Height          =   960
-      Left            =   7320
+      Left            =   8520
       TabIndex        =   3
       Top             =   3900
       Width           =   2595
@@ -82,10 +82,10 @@ Begin VB.Form frmMapaGrande
       FullRowSelect   =   -1  'True
       _Version        =   393217
       ForeColor       =   16777215
-      BackColor       =   0
+      BackColor       =   657930
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
+         Name            =   "Arial"
          Size            =   9
          Charset         =   0
          Weight          =   400
@@ -113,24 +113,25 @@ Begin VB.Form frmMapaGrande
    End
    Begin MSComctlLib.ListView listdrop 
       Height          =   780
-      Left            =   8040
+      Left            =   9405
       TabIndex        =   8
       Top             =   7380
-      Width           =   1935
-      _ExtentX        =   3413
+      Width           =   1800
+      _ExtentX        =   3175
       _ExtentY        =   1376
       View            =   3
       LabelEdit       =   1
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True
       HideColumnHeaders=   -1  'True
-      TextBackground  =   -1  'True
+      FlatScrollBar   =   -1  'True
+      FullRowSelect   =   -1  'True
       _Version        =   393217
       ForeColor       =   16777215
-      BackColor       =   0
+      BackColor       =   657930
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Tahoma"
+         Name            =   "Arial"
          Size            =   9
          Charset         =   0
          Weight          =   400
@@ -160,10 +161,10 @@ Begin VB.Form frmMapaGrande
       Left            =   480
       ScaleHeight     =   594
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   432
+      ScaleWidth      =   512
       TabIndex        =   0
       Top             =   1410
-      Width           =   6480
+      Width           =   7680
       Begin VB.Shape Shape2 
          BackColor       =   &H00FF0000&
          BorderColor     =   &H00C00000&
@@ -239,8 +240,8 @@ Begin VB.Form frmMapaGrande
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
+         Name            =   "Arial"
+         Size            =   9
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -249,7 +250,7 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7440
+      Left            =   8760
       TabIndex        =   15
       Top             =   6480
       Width           =   2250
@@ -268,9 +269,9 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7320
+      Left            =   8550
       TabIndex        =   14
-      Top             =   8805
+      Top             =   10080
       Width           =   2655
    End
    Begin VB.Label Label7 
@@ -284,7 +285,7 @@ Begin VB.Form frmMapaGrande
    Begin VB.Label Label6 
       BackStyle       =   0  'Transparent
       Height          =   255
-      Left            =   7560
+      Left            =   8760
       TabIndex        =   12
       Top             =   2160
       Width           =   975
@@ -296,7 +297,7 @@ Begin VB.Form frmMapaGrande
       BackStyle       =   0  'Transparent
       Caption         =   "La informacion del mapa esta aquí."
       BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "Arial"
          Size            =   8.25
          Charset         =   0
          Weight          =   400
@@ -305,8 +306,8 @@ Begin VB.Form frmMapaGrande
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   435
-      Left            =   7350
+      Height          =   210
+      Left            =   8520
       TabIndex        =   11
       Top             =   1770
       Width           =   2670
@@ -314,28 +315,29 @@ Begin VB.Form frmMapaGrande
    End
    Begin VB.Image Image3 
       Height          =   255
-      Left            =   8580
+      Left            =   9795
       Top             =   2385
       Width           =   255
    End
    Begin VB.Image Image2 
       Height          =   255
-      Left            =   7350
+      Left            =   8520
       Top             =   2385
       Width           =   255
    End
    Begin VB.Image Image1 
-      Height          =   345
-      Left            =   9960
+      Height          =   420
+      Left            =   11100
+      Tag             =   "0"
       Top             =   0
-      Width           =   525
+      Width           =   465
    End
    Begin VB.Label Label3 
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
+         Name            =   "Arial"
+         Size            =   9
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -344,7 +346,7 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7440
+      Left            =   8760
       TabIndex        =   7
       Top             =   5685
       Width           =   2250
@@ -353,8 +355,8 @@ Begin VB.Form frmMapaGrande
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
+         Name            =   "Arial"
+         Size            =   9
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -363,7 +365,7 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7440
+      Left            =   8760
       TabIndex        =   6
       Top             =   5955
       UseMnemonic     =   0   'False
@@ -373,8 +375,8 @@ Begin VB.Form frmMapaGrande
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
+         Name            =   "Arial"
+         Size            =   9
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -383,7 +385,7 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   7440
+      Left            =   8760
       TabIndex        =   5
       Top             =   6210
       Width           =   2250
@@ -392,8 +394,8 @@ Begin VB.Form frmMapaGrande
       BackColor       =   &H0000FFFF&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
+         Name            =   "Arial"
+         Size            =   9
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -402,7 +404,7 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   225
-      Left            =   7440
+      Left            =   8760
       TabIndex        =   4
       Top             =   5430
       Width           =   2250
@@ -413,8 +415,8 @@ Begin VB.Form frmMapaGrande
       BackStyle       =   0  'Transparent
       Caption         =   "Mapa Desconocido"
       BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   6.75
+         Name            =   "Arial"
+         Size            =   9
          Charset         =   0
          Weight          =   700
          Underline       =   -1  'True
@@ -424,7 +426,7 @@ Begin VB.Form frmMapaGrande
       ForeColor       =   &H000040C0&
       Height          =   315
       Index           =   0
-      Left            =   7320
+      Left            =   8490
       TabIndex        =   2
       Top             =   1320
       Width           =   2715
@@ -452,7 +454,7 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private RealizoCambios As String
 
@@ -468,7 +470,7 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
 Private Const TILE_SIZE = 27
 
@@ -476,7 +478,7 @@ Private Const MAPAS_ANCHO = 19
 
 Private Const MAPAS_ALTO = 22
 
-Private Sub MoverForm()
+Private Sub moverForm()
     
     On Error GoTo moverForm_Err
     
@@ -484,7 +486,7 @@ Private Sub MoverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub
@@ -536,6 +538,9 @@ Private Sub Form_Load()
     
     Call Cargarmapsworlddata
     
+    Call FormParser.Parse_Form(Me)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
+    
    ' picMap.Picture = LoadInterface("mapa.bmp")
     
     Exit Sub
@@ -550,9 +555,13 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    MoverForm
+    moverForm
     Image1 = Nothing
-
+    
+    If Image1.Tag = "1" Then
+        Image1.Picture = Nothing
+        Image1.Tag = "0"
+    End If
     
     Exit Sub
 
@@ -625,13 +634,15 @@ DibujarHead_Err:
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    'Image1 = LoadInterface("cerrardown.bmp")
-
+    Image1.Picture = LoadInterface("boton-cerrar-off.bmp")
+    Image1.Tag = "1"
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    'Image1 = LoadInterface("cerrarhover.bmp")
+    If Image1.Tag = "0" Then
+        Image1.Picture = LoadInterface("boton-cerrar-over.bmp")
+        Image1.Tag = "1"
+    End If
 End Sub
 
 Private Sub ListView1_beforeEdit(ByVal Columna As Integer, Cancel As Boolean)
@@ -747,12 +758,12 @@ Private Sub listdrop_Click()
     
 
     'Picture1.Refresh
-    picture1.BackColor = vbBlack
-    picture1.Refresh
+    Picture1.BackColor = vbBlack
+    Picture1.Refresh
 
     'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
     If listdrop.ListItems.count <= 0 Then Exit Sub
-    Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+    Call Grh_Render_To_Hdc(Picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
 
     
     Exit Sub
@@ -768,7 +779,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
     On Error GoTo ListView1_Click_Err
 
     Label8.Caption = ""
-    picture1.Refresh
+    Picture1.Refresh
     
     If ListView1.ListItems.count <= 0 Then Exit Sub
 
@@ -896,7 +907,7 @@ Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
     On Error GoTo picMap_MouseMove_Err
     
-    MoverForm
+    moverForm
 
     
     Exit Sub
