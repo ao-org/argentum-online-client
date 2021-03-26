@@ -133,8 +133,8 @@ Form=CODIGO\MenuUser.frm
 Form=CODIGO\MenuNPC.frm
 Form=CODIGO\MenuGM.frm
 Form=CODIGO\frmBancoCuenta.frm
-ResFile32="AO20.res"
 Form=CODIGO\frmRetos.frm
+ResFile32="AO20.res"
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
@@ -145,7 +145,7 @@ Name="Argentum20"
 HelpContextID="0"
 CompatibleMode="0"
 MajorVer=0
-MinorVer=18
+MinorVer=20
 RevisionVer=0
 AutoIncrementVer=0
 ServerSupportFiles=0
@@ -153,7 +153,7 @@ VersionComments="www.argentum20.com"
 VersionCompanyName="Argentum20"
 VersionLegalCopyright="Argentum20 Staff"
 VersionProductName="Argentum20 by Noland Studios"
-CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : DEBUGGING = 1"
+CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 1 : DEBUGGING = 0"
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0
