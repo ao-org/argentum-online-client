@@ -443,12 +443,12 @@ Private Sub Cerrar_Click()
     Unload Me
 End Sub
 
-Private Sub Cerrar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Cerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     Cerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     Cerrar.Tag = "1"
 End Sub
 
-Private Sub Cerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Cerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Cerrar.Tag = "0" Then
         Cerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         Cerrar.Tag = "1"
@@ -459,11 +459,14 @@ Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanaretos.bmp")
 
     Jugador(0) = UserName
+    
+    Call Aplicar_Transparencia(Me.hWnd, 240)
+    Call FormParser.Parse_Form(Me)
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
-    Call MoverForm(Me.hWnd)
+    Call moverForm(Me.hWnd)
 
     If Cerrar.Tag = "1" Then
         Set Cerrar.Picture = Nothing
@@ -490,19 +493,19 @@ Private Sub Jugador_Change(Index As Integer)
     Error.Caption = vbNullString
 End Sub
 
-Private Sub RestarJugadores_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub RestarJugadores_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     RestarJugadores.Picture = LoadInterface("boton-sm-menos-off.bmp")
     RestarJugadores.Tag = "1"
 End Sub
 
-Private Sub RestarJugadores_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub RestarJugadores_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If RestarJugadores.Tag = "0" Then
         RestarJugadores.Picture = LoadInterface("boton-sm-menos-over.bmp")
         RestarJugadores.Tag = "1"
     End If
 End Sub
 
-Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim CantidadJugadores As Byte
     CantidadJugadores = Val(txtPPT.Text)
     
@@ -516,29 +519,29 @@ Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Si
     Call ActualizarCampos
 End Sub
 
-Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     Retar.Picture = LoadInterface("boton-retar-ES-off.bmp")
     Retar.Tag = "1"
 End Sub
 
-Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Retar.Tag = "0" Then
         Retar.Picture = LoadInterface("boton-retar-ES-over.bmp")
         Retar.Tag = "1"
     End If
 End Sub
 
-Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Retar.Picture = LoadInterface("boton-retar-ES-over.bmp")
     Retar.Tag = "1"
 End Sub
 
-Private Sub SumarJugadores_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SumarJugadores_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     SumarJugadores.Picture = LoadInterface("boton-sm-mas-off.bmp")
     SumarJugadores.Tag = "1"
 End Sub
 
-Private Sub SumarJugadores_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SumarJugadores_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If SumarJugadores.Tag = "0" Then
         SumarJugadores.Picture = LoadInterface("boton-sm-mas-over.bmp")
         SumarJugadores.Tag = "1"
@@ -602,7 +605,7 @@ Private Function Validar() As Boolean
 
 End Function
 
-Private Sub SumarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub SumarJugadores_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim CantidadJugadores As Byte
     CantidadJugadores = Val(txtPPT.Text)
     
