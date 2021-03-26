@@ -122,6 +122,42 @@ Begin VB.Form frmOpciones
       Top             =   10440
       Width           =   1335
    End
+   Begin VB.PictureBox PanelVideo 
+      BorderStyle     =   0  'None
+      Height          =   4845
+      Left            =   240
+      ScaleHeight     =   323
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   504
+      TabIndex        =   14
+      Top             =   1800
+      Visible         =   0   'False
+      Width           =   7560
+      Begin VB.Image Respiracion 
+         Height          =   255
+         Left            =   270
+         Top             =   1905
+         Width           =   255
+      End
+      Begin VB.Image VSync 
+         Height          =   255
+         Left            =   270
+         Top             =   1500
+         Width           =   255
+      End
+      Begin VB.Image Check5 
+         Height          =   255
+         Left            =   270
+         Top             =   1095
+         Width           =   255
+      End
+      Begin VB.Image Check6 
+         Height          =   255
+         Left            =   270
+         Top             =   690
+         Width           =   255
+      End
+   End
    Begin VB.PictureBox PanelJugabilidad 
       BorderStyle     =   0  'None
       Height          =   4845
@@ -258,30 +294,6 @@ Begin VB.Form frmOpciones
          Index           =   1
          Left            =   255
          Top             =   1095
-         Width           =   255
-      End
-   End
-   Begin VB.PictureBox PanelVideo 
-      BorderStyle     =   0  'None
-      Height          =   4845
-      Left            =   240
-      ScaleHeight     =   323
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   504
-      TabIndex        =   14
-      Top             =   1800
-      Visible         =   0   'False
-      Width           =   7560
-      Begin VB.Image Check5 
-         Height          =   255
-         Left            =   270
-         Top             =   1095
-         Width           =   255
-      End
-      Begin VB.Image Check6 
-         Height          =   255
-         Left            =   270
-         Top             =   690
          Width           =   255
       End
    End
@@ -623,9 +635,9 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
         
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
+        check1.Picture = LoadInterface("check-amarillo.bmp")
     End If
         
     
@@ -1063,7 +1075,7 @@ Form_KeyPress_Err:
     
 End Sub
 
-Private Sub MoverForm()
+Private Sub moverForm()
     
     On Error GoTo moverForm_Err
     
@@ -1187,7 +1199,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    MoverForm
+    moverForm
     cmdayuda = Nothing
     cmdayuda.Tag = "0"
     discord = Nothing
@@ -1327,6 +1339,12 @@ Public Sub Init()
 
     End If
     
+    If MostrarRespiracion Then
+        Respiracion.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        Respiracion.Picture = Nothing
+    End If
+    
     If AmbientalActivated = 0 Then
         chko(3).Picture = Nothing
     Else
@@ -1356,9 +1374,9 @@ Public Sub Init()
     End If
     
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
+        check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
@@ -1433,6 +1451,16 @@ instagram_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmOpciones.instagram_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub Respiracion_Click()
+    MostrarRespiracion = Not MostrarRespiracion
+
+    If MostrarRespiracion Then
+        Respiracion.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        Respiracion.Picture = Nothing
+    End If
 End Sub
 
 Private Sub scrMidi_Change()

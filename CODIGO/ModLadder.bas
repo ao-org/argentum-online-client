@@ -7,7 +7,7 @@ Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
 
 'Nueva seguridad
-Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal Length As Long)
+Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal length As Long)
 Private Declare Function GetAdaptersInfo Lib "iphlpapi" (lpAdapterInfo As Any, lpSize As Long) As Long
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 'get mac adress
@@ -633,7 +633,7 @@ End Function
 
 Public Sub LogError(desc As String)
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim nfile As Integer
 
@@ -644,7 +644,7 @@ Public Sub LogError(desc As String)
 
     Exit Sub
 
-ErrHandler:
+errhandler:
 
 End Sub
 
@@ -1404,6 +1404,10 @@ Sub CargarOpciones()
     CursoresGraficos = IIf(RunningInVB, 0, ConfigFile.GetValue("VIDEO", "CursoresGraficos"))
     UtilizarPreCarga = ConfigFile.GetValue("VIDEO", "UtilizarPreCarga")
     
+    Dim Value As String
+    Value = ConfigFile.GetValue("VIDEO", "MostrarRespiracion")
+    MostrarRespiracion = IIf(LenB(Value) > 0, Val(Value), True)
+    
     FxNavega = ConfigFile.GetValue("OPCIONES", "FxNavega")
     OcultarMacrosAlCastear = ConfigFile.GetValue("OPCIONES", "OcultarMacrosAlCastear")
     MostrarIconosMeteorologicos = ConfigFile.GetValue("OPCIONES", "MostrarIconosMeteorologicos")
@@ -1468,6 +1472,8 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "OPCIONES", "FxNavega", FxNavega)
     
     Call WriteVar(Arch, "OPCIONES", "MostrarEscribiendo", MostrarEscribiendo)
+
+    Call WriteVar(Arch, "VIDEO", "MostrarRespiracion", IIf(MostrarRespiracion, 1, 0))
     
 
     Call WriteVar(Arch, "OPCIONES", "OcultarMacrosAlCastear", OcultarMacrosAlCastear)
@@ -1745,7 +1751,7 @@ End Sub
 Rem Encripta una cadena de caracteres.
 Rem S = Cadena a encriptar
 Rem P = Password
-Function EncryptStr(ByVal s As String, ByVal P As String) As String
+Function EncryptStr(ByVal s As String, ByVal p As String) As String
     
     On Error GoTo EncryptStr_Err
     
@@ -1756,15 +1762,15 @@ Function EncryptStr(ByVal s As String, ByVal P As String) As String
 
     r = ""
 
-    If Len(P) > 0 Then
+    If Len(p) > 0 Then
 
         For i = 1 To Len(s)
             c1 = Asc(mid(s, i, 1))
 
-            If i > Len(P) Then
-                C2 = Asc(mid(P, i Mod Len(P) + 1, 1))
+            If i > Len(p) Then
+                C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
             Else
-                C2 = Asc(mid(P, i, 1))
+                C2 = Asc(mid(p, i, 1))
 
             End If
 
@@ -1793,7 +1799,7 @@ End Function
 Rem Desencripta una cadena de caracteres.
 Rem S = Cadena a desencriptar
 Rem P = Password
-Function UnEncryptStr(ByVal s As String, ByVal P As String) As String
+Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
     
     On Error GoTo UnEncryptStr_Err
     
@@ -1804,15 +1810,15 @@ Function UnEncryptStr(ByVal s As String, ByVal P As String) As String
 
     r = ""
 
-    If Len(P) > 0 Then
+    If Len(p) > 0 Then
 
         For i = 1 To Len(s)
             c1 = Asc(mid(s, i, 1))
 
-            If i > Len(P) Then
-                C2 = Asc(mid(P, i Mod Len(P) + 1, 1))
+            If i > Len(p) Then
+                C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
             Else
-                C2 = Asc(mid(P, i, 1))
+                C2 = Asc(mid(p, i, 1))
 
             End If
 

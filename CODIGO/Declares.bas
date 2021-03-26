@@ -179,7 +179,9 @@ End Enum
 
 Public Music                       As E_SISTEMA_MUSICA
 
-Public MostrarEscribiendo             As Byte
+Public MostrarEscribiendo          As Byte
+
+Public MostrarRespiracion          As Boolean
 
 Public PermitirMoverse             As Byte
 
@@ -229,7 +231,7 @@ Public EntradaX                    As Byte
 
 Public EntradaY                    As Byte
 
-Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
+Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
 
 Public MouseX                 As Long
 

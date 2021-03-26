@@ -1522,7 +1522,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         PixelOffsetY = PixelOffsetY + .MoveOffsetY
         
         Dim ease As Single
-        ease = EaseBreathing((((FrameTime - .TimeCreated) * 0.25) Mod 1000) * 0.001)
+        If MostrarRespiracion Then
+            ease = EaseBreathing((((FrameTime - .TimeCreated) * 0.25) Mod 1000) * 0.001)
+        Else
+            ease = 0
+        End If
 
         If .Body.Walk(.Heading).GrhIndex Then
 
@@ -2008,7 +2012,7 @@ SetMapFx_Err:
     
 End Sub
 
-Private Function Engine_FToDW(f As Single) As Long
+Private Function Engine_FToDW(F As Single) As Long
     
     On Error GoTo Engine_FToDW_Err
     
@@ -2017,7 +2021,7 @@ Private Function Engine_FToDW(f As Single) As Long
     Dim Buf As D3DXBuffer
 
     Set Buf = DirectD3D8.CreateBuffer(4)
-    DirectD3D8.BufferSetData Buf, 0, 4, 1, f
+    DirectD3D8.BufferSetData Buf, 0, 4, 1, F
     DirectD3D8.BufferGetData Buf, 0, 4, 1, Engine_FToDW
 
     
