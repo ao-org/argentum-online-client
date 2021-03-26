@@ -1,62 +1,222 @@
 VERSION 5.00
 Begin VB.Form frmRetos 
-   BorderStyle     =   1  'Fixed Single
+   BorderStyle     =   0  'None
    Caption         =   "Retos"
-   ClientHeight    =   3300
-   ClientLeft      =   45
-   ClientTop       =   390
-   ClientWidth     =   3615
+   ClientHeight    =   6120
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   4365
    Icon            =   "frmRetos.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3300
-   ScaleWidth      =   3615
+   ScaleHeight     =   408
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   291
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox Jugador 
       Alignment       =   2  'Center
-      Height          =   285
-      Index           =   1
-      Left            =   1920
-      TabIndex        =   1
-      Top             =   840
-      Width           =   1455
-   End
-   Begin VB.TextBox txtPPT 
-      Alignment       =   2  'Center
-      Height          =   375
-      Left            =   2760
-      TabIndex        =   3
-      Text            =   "1"
-      Top             =   105
-      Width           =   615
-   End
-   Begin VB.TextBox Apuesta 
-      Alignment       =   2  'Center
-      Height          =   285
-      Left            =   1560
-      TabIndex        =   0
-      Text            =   "20000"
-      Top             =   1560
-      Width           =   1335
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Index           =   9
+      Left            =   2310
+      TabIndex        =   10
+      Top             =   4230
+      Visible         =   0   'False
+      Width           =   1575
    End
    Begin VB.TextBox Jugador 
       Alignment       =   2  'Center
-      BackColor       =   &H80000000&
-      Enabled         =   0   'False
-      Height          =   285
-      Index           =   0
-      Left            =   240
-      TabIndex        =   2
-      Top             =   840
-      Width           =   1455
-   End
-   Begin VB.Label lblPPT 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "Jugadores por Equipo: "
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Index           =   8
+      Left            =   480
+      TabIndex        =   9
+      Top             =   4230
+      Visible         =   0   'False
+      Width           =   1575
+   End
+   Begin VB.TextBox Jugador 
+      Alignment       =   2  'Center
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Index           =   7
+      Left            =   2310
+      TabIndex        =   8
+      Top             =   3750
+      Visible         =   0   'False
+      Width           =   1575
+   End
+   Begin VB.TextBox Jugador 
+      Alignment       =   2  'Center
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Index           =   6
+      Left            =   480
+      TabIndex        =   7
+      Top             =   3750
+      Visible         =   0   'False
+      Width           =   1575
+   End
+   Begin VB.TextBox Jugador 
+      Alignment       =   2  'Center
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Index           =   5
+      Left            =   2310
+      TabIndex        =   6
+      Top             =   3270
+      Visible         =   0   'False
+      Width           =   1575
+   End
+   Begin VB.TextBox Jugador 
+      Alignment       =   2  'Center
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Index           =   4
+      Left            =   480
+      TabIndex        =   5
+      Top             =   3270
+      Visible         =   0   'False
+      Width           =   1575
+   End
+   Begin VB.TextBox Jugador 
+      Alignment       =   2  'Center
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Index           =   3
+      Left            =   2310
+      TabIndex        =   4
+      Top             =   2790
+      Visible         =   0   'False
+      Width           =   1575
+   End
+   Begin VB.TextBox Jugador 
+      Alignment       =   2  'Center
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Index           =   2
+      Left            =   480
+      TabIndex        =   3
+      Top             =   2790
+      Visible         =   0   'False
+      Width           =   1575
+   End
+   Begin VB.TextBox Jugador 
+      Alignment       =   2  'Center
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Index           =   1
+      Left            =   2310
+      TabIndex        =   2
+      Top             =   2310
+      Width           =   1575
+   End
+   Begin VB.TextBox txtPPT 
+      Alignment       =   2  'Center
+      BackColor       =   &H0014140F&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
          Size            =   9.75
          Charset         =   0
          Weight          =   700
@@ -64,16 +224,179 @@ Begin VB.Form frmRetos
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   2895
+      TabIndex        =   0
+      Text            =   "1"
+      Top             =   1365
+      Width           =   375
+   End
+   Begin VB.TextBox Apuesta 
+      Alignment       =   2  'Center
+      BackColor       =   &H0014140F&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   1920
+      TabIndex        =   11
+      Text            =   "20000"
+      Top             =   4845
+      Width           =   1455
+   End
+   Begin VB.TextBox Jugador 
+      Alignment       =   2  'Center
+      BackColor       =   &H000A0A0A&
+      BorderStyle     =   0  'None
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00808080&
       Height          =   240
-      Left            =   240
-      TabIndex        =   4
-      Top             =   120
-      Width           =   2445
+      Index           =   0
+      Left            =   480
+      TabIndex        =   1
+      Text            =   "Nombre"
+      Top             =   2310
+      Width           =   1575
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   9
+      Left            =   2265
+      Picture         =   "frmRetos.frx":57E2
+      Top             =   4140
+      Visible         =   0   'False
+      Width           =   1680
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   8
+      Left            =   435
+      Picture         =   "frmRetos.frx":7B96
+      Top             =   4140
+      Visible         =   0   'False
+      Width           =   1680
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   7
+      Left            =   2265
+      Picture         =   "frmRetos.frx":9F4A
+      Top             =   3660
+      Visible         =   0   'False
+      Width           =   1680
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   6
+      Left            =   435
+      Picture         =   "frmRetos.frx":C2FE
+      Top             =   3660
+      Visible         =   0   'False
+      Width           =   1680
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   5
+      Left            =   2265
+      Picture         =   "frmRetos.frx":E6B2
+      Top             =   3180
+      Visible         =   0   'False
+      Width           =   1680
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   4
+      Left            =   435
+      Picture         =   "frmRetos.frx":10A66
+      Top             =   3180
+      Visible         =   0   'False
+      Width           =   1680
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   3
+      Left            =   2265
+      Picture         =   "frmRetos.frx":12E1A
+      Top             =   2700
+      Visible         =   0   'False
+      Width           =   1680
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   2
+      Left            =   435
+      Picture         =   "frmRetos.frx":151CE
+      Top             =   2700
+      Visible         =   0   'False
+      Width           =   1680
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   1
+      Left            =   2265
+      Picture         =   "frmRetos.frx":17582
+      Top             =   2220
+      Width           =   1680
+   End
+   Begin VB.Image Campo 
+      Height          =   405
+      Index           =   0
+      Left            =   435
+      Picture         =   "frmRetos.frx":19936
+      Top             =   2220
+      Width           =   1680
+   End
+   Begin VB.Image Cerrar 
+      Height          =   420
+      Left            =   3900
+      Tag             =   "0"
+      Top             =   15
+      Width           =   465
+   End
+   Begin VB.Image SumarJugadores 
+      Height          =   315
+      Left            =   3465
+      Tag             =   "0"
+      Top             =   1335
+      Width           =   315
+   End
+   Begin VB.Image RestarJugadores 
+      Height          =   315
+      Left            =   2385
+      Tag             =   "0"
+      Top             =   1350
+      Width           =   315
+   End
+   Begin VB.Image Retar 
+      Height          =   405
+      Left            =   1350
+      Tag             =   "0"
+      Top             =   5415
+      Width           =   1650
    End
    Begin VB.Label Error 
       Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Arial"
          Size            =   8.25
          Charset         =   0
          Weight          =   700
@@ -82,10 +405,10 @@ Begin VB.Form frmRetos
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H000000FF&
-      Height          =   255
-      Left            =   120
-      TabIndex        =   5
-      Top             =   2760
+      Height          =   225
+      Left            =   480
+      TabIndex        =   12
+      Top             =   5190
       Width           =   3375
    End
 End
@@ -96,6 +419,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private Const MAX_JUGADORES = 5
+
 Private Sub Apuesta_Change()
     Dim Sel As Integer
     Sel = Apuesta.SelStart
@@ -105,18 +430,119 @@ Private Sub Apuesta_Change()
     
     If NewVal > 100000000 Then
         NewVal = 10000000
+        
+    ElseIf NewVal < 0 Then
+        NewVal = 0
     End If
 
     Apuesta.Text = NewVal
     Apuesta.SelStart = Sel
 End Sub
 
+Private Sub Cerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub Cerrar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Cerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
+    Cerrar.Tag = "1"
+End Sub
+
+Private Sub Cerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Cerrar.Tag = "0" Then
+        Cerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
+        Cerrar.Tag = "1"
+    End If
+End Sub
+
 Private Sub Form_Load()
+    Me.Picture = LoadInterface("ventanaretos.bmp")
+
     Jugador(0) = UserName
+End Sub
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    
+    Call MoverForm(Me.hWnd)
+
+    If Cerrar.Tag = "1" Then
+        Set Cerrar.Picture = Nothing
+        Cerrar.Tag = "0"
+    End If
+    
+    If RestarJugadores.Tag = "1" Then
+        Set RestarJugadores.Picture = Nothing
+        RestarJugadores.Tag = "0"
+    End If
+    
+    If SumarJugadores.Tag = "1" Then
+        Set SumarJugadores.Picture = Nothing
+        SumarJugadores.Tag = "0"
+    End If
+    
+    If Retar.Tag = "1" Then
+        Set Retar.Picture = Nothing
+        Retar.Tag = "0"
+    End If
 End Sub
 
 Private Sub Jugador_Change(Index As Integer)
     Error.Caption = vbNullString
+End Sub
+
+Private Sub RestarJugadores_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    RestarJugadores.Picture = LoadInterface("boton-sm-menos-off.bmp")
+    RestarJugadores.Tag = "1"
+End Sub
+
+Private Sub RestarJugadores_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If RestarJugadores.Tag = "0" Then
+        RestarJugadores.Picture = LoadInterface("boton-sm-menos-over.bmp")
+        RestarJugadores.Tag = "1"
+    End If
+End Sub
+
+Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Dim CantidadJugadores As Byte
+    CantidadJugadores = Val(txtPPT.Text)
+    
+    If CantidadJugadores > 1 Then
+        txtPPT.Text = CantidadJugadores - 1
+    End If
+    
+    RestarJugadores.Picture = LoadInterface("boton-sm-menos-over.bmp")
+    RestarJugadores.Tag = "1"
+
+    Call ActualizarCampos
+End Sub
+
+Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Retar.Picture = LoadInterface("boton-retar-ES-off.bmp")
+    Retar.Tag = "1"
+End Sub
+
+Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Retar.Tag = "0" Then
+        Retar.Picture = LoadInterface("boton-retar-ES-over.bmp")
+        Retar.Tag = "1"
+    End If
+End Sub
+
+Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Retar.Picture = LoadInterface("boton-retar-ES-over.bmp")
+    Retar.Tag = "1"
+End Sub
+
+Private Sub SumarJugadores_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    SumarJugadores.Picture = LoadInterface("boton-sm-mas-off.bmp")
+    SumarJugadores.Tag = "1"
+End Sub
+
+Private Sub SumarJugadores_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If SumarJugadores.Tag = "0" Then
+        SumarJugadores.Picture = LoadInterface("boton-sm-mas-over.bmp")
+        SumarJugadores.Tag = "1"
+    End If
 End Sub
 
 Private Sub Retar_Click()
@@ -176,71 +602,49 @@ Private Function Validar() As Boolean
 
 End Function
 
-Private Sub txtPPT_Change()
-    
-    On Error GoTo ErrorHandler:
-
-    If Not IsNumeric(txtPPT.Text) Or txtPPT.Text <= 0 Then
-        txtPPT.Text = 1
-    End If
-        
-    If txtPPT.Text > 5 Then txtPPT.Text = 5
-        
+Private Sub SumarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Dim CantidadJugadores As Byte
-        CantidadJugadores = txtPPT.Text * 2 - 1
-        
+    CantidadJugadores = Val(txtPPT.Text)
+    
+    If CantidadJugadores < MAX_JUGADORES Then
+        txtPPT.Text = CantidadJugadores + 1
+    End If
+    
+    RestarJugadores.Picture = LoadInterface("boton-sm-menos-over.bmp")
+    RestarJugadores.Tag = "1"
+    
+    Call ActualizarCampos
+End Sub
+
+Private Sub txtPPT_Change()
+
+    Dim CantidadJugadores As Byte
+    CantidadJugadores = Val(txtPPT.Text)
+    
+    If CantidadJugadores < 1 Then
+        txtPPT.Text = 1
+    
+    ElseIf CantidadJugadores > MAX_JUGADORES Then
+        txtPPT.Text = MAX_JUGADORES
+    End If
+    
+    Call ActualizarCampos
+    
+End Sub
+
+Private Sub ActualizarCampos()
+    Dim CantidadJugadores As Byte
+    CantidadJugadores = Val(txtPPT.Text)
+    
     Dim i As Byte
-    For i = 2 To max(CantidadJugadores, Jugador.UBound)
-            
-        If i < CantidadJugadores + 1 Then
-            
-            ' Creamos un nuevo TextBox
-            Call Load(Jugador(i))
-            
-            ' Le asignamos sus propiedades
-            With Jugador(i)
     
-                .Visible = True
-                .Enabled = True
-                .Text = vbNullString
-                .Width = Jugador(0).Width
-                .Height = Jugador(0).Height
-                .BackColor = vbWhite
-                    
-                If (i Mod 2) = 1 Then
-                
-                    ' Derecha
-                    .Left = 1920
-                    .Top = Jugador(i - 2).Top + 360
-                    
-                Else
-                
-                    ' Izquierda
-                    .Left = 240
-                    .Top = Jugador(i - 1).Top + 360
-
-                End If
-                    
-            End With
-               
+    For i = 0 To Jugador.UBound
+        If i \ 2 < CantidadJugadores Then
+            Jugador(i).Visible = True
+            Campo(i).Visible = True
         Else
-                  
-            ' Destruimos el TextBox
-            Call Unload(Jugador(i))
-               
+            Jugador(i).Visible = False
+            Campo(i).Visible = False
         End If
-
     Next
-        
-    ' Reordenamos los elementos que estan por debajo del nombre de los jugadores
-    Apuesta.Top = Jugador(Jugador.UBound).Top + 700
-    'Retar.Top = Jugador(Jugador.UBound).Top + 1180
-    Error.Top = Jugador(Jugador.UBound).Top + 1900
-    Me.Height = Jugador(Jugador.UBound).Top + 2700
-    
-ErrorHandler:
-    
-    ' Si el TextBox ya existe, nos saltamos el Load()
-    If Err.number = 360 Then Resume Next
-    
 End Sub
