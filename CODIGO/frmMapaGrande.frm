@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "mscomctl.ocx"
 Begin VB.Form frmMapaGrande 
    Appearance      =   0  'Flat
    BackColor       =   &H80000006&
@@ -472,11 +472,11 @@ Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndIns
 
 Private Const TILE_SIZE = 27
 
-Private Const MAPAS_ANCHO = 16
+Private Const MAPAS_ANCHO = 19
 
 Private Const MAPAS_ALTO = 22
 
-Private Sub moverForm()
+Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
     
@@ -550,7 +550,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    moverForm
+    MoverForm
     Image1 = Nothing
 
     
@@ -896,7 +896,7 @@ Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
     On Error GoTo picMap_MouseMove_Err
     
-    moverForm
+    MoverForm
 
     
     Exit Sub
