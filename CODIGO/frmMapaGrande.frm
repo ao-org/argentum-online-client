@@ -536,8 +536,6 @@ Private Sub Form_Load()
     listdrop.BackColor = RGB(7, 7, 7)
     lblMapInfo(0).ForeColor = RGB(235, 164, 14)
     
-    Call Cargarmapsworlddata
-    
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hWnd, 240)
     
@@ -758,12 +756,12 @@ Private Sub listdrop_Click()
     
 
     'Picture1.Refresh
-    Picture1.BackColor = vbBlack
-    Picture1.Refresh
+    picture1.BackColor = vbBlack
+    picture1.Refresh
 
     'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
     If listdrop.ListItems.count <= 0 Then Exit Sub
-    Call Grh_Render_To_Hdc(Picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+    Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
 
     
     Exit Sub
@@ -779,7 +777,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
     On Error GoTo ListView1_Click_Err
 
     Label8.Caption = ""
-    Picture1.Refresh
+    picture1.Refresh
     
     If ListView1.ListItems.count <= 0 Then Exit Sub
 
@@ -811,7 +809,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
 
                 Dim subelemento As ListItem
 
-                Set subelemento = frmMapaGrande.listdrop.ListItems.Add(, , ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).Name)
+                Set subelemento = listdrop.ListItems.Add(, , ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).Name)
 
                 subelemento.SubItems(1) = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).GrhIndex
 
@@ -916,4 +914,17 @@ picMap_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.picMap_MouseMove", Erl)
     Resume Next
     
+End Sub
+
+Public Sub ActualizarPosicion(ByVal map As Integer)
+    Dim x As Long, y As Long
+
+    x = (map - 1) Mod MAPAS_ANCHO
+    y = Int((map - 1) / MAPAS_ANCHO)
+    
+    lblAllies.Top = y * TILE_SIZE
+    lblAllies.Left = x * TILE_SIZE
+
+    Shape1.Top = y * TILE_SIZE + (UserPos.y * TILE_SIZE / 100)
+    Shape1.Left = x * TILE_SIZE + (UserPos.x * TILE_SIZE / 100)
 End Sub

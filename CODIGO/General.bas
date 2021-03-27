@@ -762,20 +762,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
 
     If frmMapaGrande.Visible Then
-
-        Dim x As Long
-
-        Dim y As Long
-            
-        x = (idmap - 1) Mod 16
-        y = Int((idmap - 1) / 16)
-
-        frmMapaGrande.lblAllies.Top = y * 27
-        frmMapaGrande.lblAllies.Left = x * 27
-
-        frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
-        frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
-
+        Call CalcularPosicionMAPA
     End If
     
     ' Update 3D sounds!

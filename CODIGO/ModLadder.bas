@@ -713,7 +713,7 @@ Sub General_Set_Connect()
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -2374,18 +2374,7 @@ Public Sub CalcularPosicionMAPA()
     
     Call CargarDatosMapa(UserMap)
 
-    Dim x As Long
-
-    Dim y As Long
-
-    x = (idmap - 1) Mod 16
-    y = Int((idmap - 1) / 16)
-
-    frmMapaGrande.lblAllies.Top = y * 27
-    frmMapaGrande.lblAllies.Left = x * 27
-
-    frmMapaGrande.Shape1.Top = y * 27 + (UserPos.y / 4.5)
-    frmMapaGrande.Shape1.Left = x * 27 + (UserPos.x / 4.5)
+    Call frmMapaGrande.ActualizarPosicion(idmap)
 
     
     Exit Sub
