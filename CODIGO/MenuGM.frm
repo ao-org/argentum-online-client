@@ -305,7 +305,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "MANDAR CIUDAD*no anda"
+      Caption         =   "NICK2IP"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -403,7 +403,7 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 1
             Call ParseUserCommand("/DEVOLVER")
         Case 2
-            Call ParseUserCommand("/hogar & TargetName")
+            Call ParseUserCommand("/NICK2IP " & TargetName)
         Case 3
             Call ParseUserCommand("/INFO " & TargetName)
         Case 4
