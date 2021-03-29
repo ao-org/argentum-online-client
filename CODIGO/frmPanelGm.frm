@@ -1364,12 +1364,10 @@ Call ParseUserCommand("/MATA")
 End Sub
 
 Private Sub cmdModIntervalo_Click()
-
-    tmpUser = cboListaUsus.Text
       
     tmp = 1
 
-Call ParseUserCommand("/MOD " & tmpUser & " INTERVALO GOLPE " & tmp)
+Call ParseUserCommand("/MOD " & "yo" & " INTERVALO GOLPE " & tmp)
 
 End Sub
 
