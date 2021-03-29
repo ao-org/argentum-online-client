@@ -2,9 +2,9 @@ VERSION 5.00
 Begin VB.Form frmPanelgm 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
-   ClientHeight    =   4365
-   ClientLeft      =   45
-   ClientTop       =   -75
+   ClientHeight    =   8175
+   ClientLeft      =   17580
+   ClientTop       =   3030
    ClientWidth     =   4815
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -18,10 +18,147 @@ Begin VB.Form frmPanelgm
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4365
+   ScaleHeight     =   8175
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   1  'CenterOwner
+   Begin VB.CommandButton cmdIrCerca 
+      Caption         =   "Ir Cerca"
+      Height          =   360
+      Left            =   2160
+      TabIndex        =   26
+      Top             =   4680
+      Width           =   990
+   End
+   Begin VB.CommandButton cmdInformación 
+      Caption         =   "Información General"
+      Height          =   360
+      Left            =   2280
+      TabIndex        =   25
+      Top             =   5160
+      Width           =   1695
+   End
+   Begin VB.CommandButton cmdInvisible 
+      Caption         =   "Invisible"
+      Height          =   360
+      Left            =   3480
+      TabIndex        =   24
+      Top             =   7680
+      Width           =   1215
+   End
+   Begin VB.CommandButton cmdGuardarMapa 
+      Caption         =   "Guardar Mapa"
+      Height          =   360
+      Left            =   2040
+      TabIndex        =   23
+      Top             =   7680
+      Width           =   1215
+   End
+   Begin VB.CommandButton cmdMatarNPC 
+      Caption         =   "Matar NPC"
+      Height          =   360
+      Left            =   120
+      TabIndex        =   21
+      Top             =   5640
+      Width           =   975
+   End
+   Begin VB.CommandButton cmdHeadMas 
+      Caption         =   "Head +"
+      Height          =   360
+      Left            =   1920
+      TabIndex        =   20
+      Top             =   6720
+      Width           =   990
+   End
+   Begin VB.CommandButton cmdHeadMenos 
+      Caption         =   "Head -"
+      Height          =   360
+      Left            =   3720
+      TabIndex        =   19
+      Top             =   6720
+      Width           =   990
+   End
+   Begin VB.CommandButton cmdHead0 
+      Caption         =   "Head 0"
+      Height          =   360
+      Left            =   120
+      TabIndex        =   18
+      Top             =   6720
+      Width           =   990
+   End
+   Begin VB.TextBox txtHeadNumero 
+      Alignment       =   2  'Center
+      Height          =   375
+      Left            =   3000
+      TabIndex        =   17
+      Text            =   "0"
+      Top             =   6720
+      Width           =   615
+   End
+   Begin VB.CommandButton cmdBody0 
+      Caption         =   "Body 0"
+      Height          =   360
+      Index           =   2
+      Left            =   120
+      TabIndex        =   16
+      Top             =   7200
+      Width           =   990
+   End
+   Begin VB.CommandButton cmdBodyMas 
+      Caption         =   "Body +"
+      Height          =   360
+      Left            =   1920
+      TabIndex        =   15
+      Top             =   7200
+      Width           =   990
+   End
+   Begin VB.CommandButton cmdBodyMenos 
+      Caption         =   "Body -"
+      Height          =   360
+      Left            =   3720
+      TabIndex        =   14
+      Top             =   7200
+      Width           =   990
+   End
+   Begin VB.TextBox txtBodyYo 
+      Alignment       =   2  'Center
+      Height          =   375
+      Left            =   3000
+      TabIndex        =   13
+      Text            =   "0"
+      Top             =   7200
+      Width           =   615
+   End
+   Begin VB.CommandButton cmdConsulta 
+      Caption         =   "/Consulta"
+      Height          =   360
+      Left            =   120
+      TabIndex        =   12
+      Top             =   5160
+      Width           =   990
+   End
+   Begin VB.CommandButton cmdModIntervalo 
+      Caption         =   "/mod intervalo golpe"
+      Height          =   360
+      Left            =   120
+      TabIndex        =   11
+      Top             =   7680
+      Width           =   1695
+   End
+   Begin VB.TextBox txtMod 
+      Height          =   285
+      Left            =   120
+      TabIndex        =   1
+      Top             =   4320
+      Width           =   4575
+   End
+   Begin VB.CommandButton cmdRevivir 
+      Caption         =   "/Revivir"
+      Height          =   360
+      Left            =   1200
+      TabIndex        =   10
+      Top             =   5160
+      Width           =   990
+   End
    Begin VB.CommandButton Command2 
       Caption         =   "Lista 2 (Consultas)"
       BeginProperty Font 
@@ -35,7 +172,7 @@ Begin VB.Form frmPanelgm
       EndProperty
       Height          =   255
       Left            =   8280
-      TabIndex        =   8
+      TabIndex        =   9
       Top             =   840
       Width           =   2175
    End
@@ -52,7 +189,7 @@ Begin VB.Form frmPanelgm
       EndProperty
       Height          =   255
       Left            =   5640
-      TabIndex        =   7
+      TabIndex        =   8
       Top             =   720
       Width           =   2175
    End
@@ -60,22 +197,23 @@ Begin VB.Form frmPanelgm
       Caption         =   "Cerrar"
       Height          =   375
       Left            =   3480
-      TabIndex        =   5
+      TabIndex        =   6
       Top             =   3840
       Width           =   1215
    End
-   Begin VB.CommandButton cmdTarget 
+   Begin VB.CommandButton cmdSeleccionarPersonaje 
       Caption         =   "Seleccionar personaje"
       Height          =   375
+      Index           =   0
       Left            =   120
-      TabIndex        =   4
-      Top             =   3840
+      TabIndex        =   5
+      Top             =   4680
       Width           =   1815
    End
    Begin VB.ListBox List1 
       Height          =   2010
       Left            =   120
-      TabIndex        =   3
+      TabIndex        =   4
       Top             =   600
       Width           =   4560
    End
@@ -86,7 +224,7 @@ Begin VB.Form frmPanelgm
       Locked          =   -1  'True
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   2
+      TabIndex        =   3
       Top             =   2640
       Width           =   4575
    End
@@ -94,7 +232,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "&Actualiza"
       Height          =   315
       Left            =   3840
-      TabIndex        =   1
+      TabIndex        =   2
       Top             =   120
       Width           =   855
    End
@@ -118,9 +256,19 @@ Begin VB.Form frmPanelgm
    Begin VB.ListBox List2 
       Height          =   2010
       Left            =   120
-      TabIndex        =   6
+      TabIndex        =   7
       Top             =   600
       Width           =   4575
+   End
+   Begin VB.Label lblDialogo 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Dialogo del GM + Enter"
+      Height          =   195
+      Left            =   120
+      TabIndex        =   22
+      Top             =   3960
+      Width           =   1650
    End
    Begin VB.Line Line1 
       Index           =   2
@@ -651,6 +799,8 @@ Dim Nick       As String
 
 Dim tmp        As String
 
+Dim tmpUser        As String
+
 Public LastStr As String
 
 Private Const MAX_GM_MSG = 300
@@ -725,7 +875,7 @@ Private Sub BorrarPersonaje_Click()
 
     If MsgBox("¿Estás seguro que desea Borrar el personaje " & cboListaUsus.Text & "?", vbYesNo + vbQuestion) = vbYes Then
 
-        'Call SendData("/KILLCHAR " & cboListaUsus.Text)
+        Call ParseUserCommand("/KILLCHAR " & cboListaUsus.Text) ' ver ReyarB
     End If
 
     
@@ -768,7 +918,7 @@ Private Sub Cabeza_Click()
     
     tmp = InputBox("Ingrese el valor de cabeza que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " Head " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " Head " & tmp) 'ver ReyarB
     
     Exit Sub
 
@@ -780,7 +930,7 @@ End Sub
 
 Private Sub CentinelaEstado_Click()
 
-    'Call SendData("/CENTINELAACTIVADO")
+    Call ParseUserCommand("/CENTINELAACTIVADO") ' ver ReyarB
 End Sub
 
 Private Sub CerrarleCliente_Click()
@@ -806,7 +956,7 @@ Private Sub CerrarProceso_Click()
 
     If tmp <> "" Then
 
-        'Call SendData("/CERRARPROCESO " & cboListaUsus.Text & "@" & tmp)
+        Call ParseUserCommand("/CERRARPROCESO " & cboListaUsus.Text & "@" & tmp)
     End If
 
     
@@ -824,7 +974,7 @@ Private Sub ciudadanos_Click()
     
     tmp = InputBox("Ingrese el valor de ciudadanos que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " CIU " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CIU " & tmp) ' ver ReyarB
     
     Exit Sub
 
@@ -840,7 +990,7 @@ Private Sub Clase_Click()
     
     tmp = InputBox("Ingrese el valor de clase Libres que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " CLASE " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CLASE " & tmp) 'ver ReyarB
     
     Exit Sub
 
@@ -893,13 +1043,13 @@ Private Sub cmdAccion_Click(Index As Integer)
             Call ParseUserCommand("/NENE " & tmp)
 
         Case 8 '/info nick
-            ' Call SendData("/INFO " & Nick)
+            Call ParseUserCommand("/INFO " & Nick)
    
         Case 9 '/inv nick
-            ' Call SendData("/INV " & Nick)
+            Call ParseUserCommand("/INV " & Nick)
    
         Case 10 '/skills nick
-            ' Call SendData("/SKILLS " & Nick)
+            Call ParseUserCommand("/SKILLS " & Nick)
    
         Case 11 '/CARCEL NICK @ MOTIVO  0.12.1
             tmp = InputBox("¿Minutos a encarcelar? (hasta 60)", "")
@@ -1002,7 +1152,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
         Case 33
 
-            'Call SendData("/PAUSAR")
+            Call ParseUserCommand("/PAUSAR") ' ver ReyarB
         Case 34 '/LIMPIARMUNDO 0.12.1
             Call WriteCleanWorld
 
@@ -1043,6 +1193,44 @@ cmdActualiza_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmPanelGM.cmdActualiza_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub cmdBody0_Click(Index As Integer)
+
+    tmpUser = "yo"
+
+    Call ParseUserCommand("/MOD " & tmpUser & " Body 0")
+    
+    Exit Sub
+End Sub
+
+Private Sub cmdBodyMas_Click()
+
+    tmpUser = "yo"
+    
+    txtBodyYo.Text = txtBodyYo.Text + 1
+    
+    tmp = txtBodyYo.Text
+    
+
+    Call ParseUserCommand("/MOD " & tmpUser & " Body " & tmp)
+    
+    Exit Sub
+    
+End Sub
+
+Private Sub cmdBodyMenos_Click()
+
+    tmpUser = "yo"
+    
+    txtBodyYo.Text = txtBodyYo.Text - 1
+    
+    tmp = txtBodyYo.Text
+    
+
+    Call ParseUserCommand("/MOD " & tmpUser & " Body " & tmp)
+    
+    Exit Sub
 End Sub
 
 Private Sub cmdcerrar_Click()
@@ -1087,6 +1275,120 @@ Private Sub cmdTarget_Click()
 cmdTarget_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmPanelGM.cmdTarget_Click", Erl)
     Resume Next
+    
+End Sub
+
+Private Sub cmdComandoGM_Click()
+Call ParseUserCommand(txtMod.Text)
+End Sub
+
+Private Sub cmdConsulta_Click()
+
+    tmpUser = cboListaUsus.Text
+         
+    Call ParseUserCommand("/CONSULTA " & tmpUser)
+ 
+End Sub
+
+Private Sub cmdGuardarMapa_Click()
+    Call ParseUserCommand("/GUARDAMAPA")
+End Sub
+
+Private Sub cmdHeadMenos_Click()
+
+    tmpUser = "yo"
+       
+    txtHeadNumero.Text = txtHeadNumero.Text - 1
+    
+    tmp = txtHeadNumero.Text
+    
+
+    Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
+    
+End Sub
+
+Private Sub cmdHeadMas_Click()
+
+    tmpUser = "yo"
+       
+    txtHeadNumero.Text = txtHeadNumero.Text + 1
+    
+    tmp = txtHeadNumero.Text
+    
+
+    Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
+    
+    Exit Sub
+End Sub
+
+Private Sub cmdHead0_Click()
+
+    tmpUser = "yo"
+    tmp = 0
+
+    Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
+    
+    Exit Sub
+    
+End Sub
+
+Private Sub cmdInformación_Click()
+    
+    tmpUser = cboListaUsus.Text
+    
+    Call WriteRequestCharStats(tmpUser)
+
+End Sub
+
+Private Sub cmdInvisible_Click()
+    
+    Call ParseUserCommand("/INVISIBLE")
+    
+    Me.SetFocus
+    
+    Exit Sub
+    
+End Sub
+
+Private Sub cmdIrCerca_Click()
+
+    tmpUser = cboListaUsus.Text
+    Call WriteGoNearby(tmpUser)
+
+End Sub
+
+Private Sub cmdMatarNPC_Click()
+
+Call ParseUserCommand("/MATA")
+
+End Sub
+
+Private Sub cmdModIntervalo_Click()
+
+    tmpUser = cboListaUsus.Text
+      
+    tmp = 1
+
+Call ParseUserCommand("/MOD " & tmpUser & " INTERVALO GOLPE " & tmp)
+
+End Sub
+
+Private Sub cmdRevivir_Click()
+
+    tmpUser = cboListaUsus.Text
+    
+    Call WriteReviveChar(tmpUser)
+End Sub
+
+Private Sub cmdSeleccionarPersonaje_Click(Index As Integer)
+    'cboListaUsus = List1.List(List1.ListIndex)
+    'Call AddtoRichTextBox(frmMain.RecTxt, "Haz click sobre el personaje...", 100, 100, 120, 0, 0)
+    'frmMain.MousePointer = 2
+    'frmMain.PanelSelect = True
+    'Call SendData("TGUSER")
+    Call WriteMarcaDeGm
+    cboListaUsus = List1.List(List1.ListIndex)
+    'txtHeadUser.Text = cboListaUsus.Text
     
 End Sub
 
@@ -1159,7 +1461,7 @@ Private Sub Criminales_Click()
     
     tmp = InputBox("Ingrese el valor de criminales que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " CRI " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CRI " & tmp)
     
     Exit Sub
 
@@ -1175,7 +1477,7 @@ Private Sub Cuerpo_Click()
     
     tmp = InputBox("Ingrese el valor de cuerpo que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " BODY " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " BODY " & tmp)
     
     Exit Sub
 
@@ -1258,7 +1560,7 @@ Private Sub Energia_Click()
     
     tmp = InputBox("Ingrese el valor de energia que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " EN " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " EN " & tmp)
     
     Exit Sub
 
@@ -1389,17 +1691,17 @@ End Sub
 
 Private Sub GlobalEstado_Click()
 
-    'Call SendData("/ACTIVAR")
+    Call ParseUserCommand("/ACTIVAR")
 End Sub
 
 Private Sub GuardarMapa_Click()
 
-    'Call SendData("/BACK")
+    Call ParseUserCommand("/BACK")
 End Sub
 
 Private Sub Limpiarmundo_Click()
 
-    'Call SendData("/LIMPIARMUNDO")
+    Call ParseUserCommand("/LIMPIARMUNDO")
 End Sub
 
 Private Sub LimpiarVision_Click()
@@ -1461,7 +1763,7 @@ Private Sub Mana_Click()
     
     tmp = InputBox("Ingrese el valor de mana que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " MP " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " MP " & tmp)
     
     Exit Sub
 
@@ -1624,7 +1926,7 @@ Private Sub mnuInvalida_Click()
     
     Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
     
-    'Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta fue catalogada como invalida.")
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta fue catalogada como invalida.")
 
     ' Lo advertimos
     Call WriteWarnUser(Nick, "Consulta a GM's inválida.")
@@ -1662,7 +1964,7 @@ Private Sub mnuManual_Click()
     On Error GoTo mnuManual_Click_Err
     
     Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: ao20.com.ar")
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
 
     
     Exit Sub
@@ -1848,13 +2150,14 @@ Private Sub mnuReload_Click(Index As Integer)
 
         Case 3 'Reload mapas
 
-            ' Call SendData("/RELOAD MAP")
+            Call ParseUserCommand("/RELOAD MAP") 'Ver ReyarB
+            
         Case 4 'Reload hechizos
             Call WriteReloadSpells
 
         Case 5 'Reload motd
 
-            '  Call SendData("/RELOADMOTD")
+            Call ParseUserCommand("/RELOADMOTD") ' ver ReyarB
         Case 6 'Reload npcs
             Call WriteReloadNPCs
 
@@ -1866,7 +2169,7 @@ Private Sub mnuReload_Click(Index As Integer)
 
     Case 8 'Reload otros
 
-        ' Call SendData("/RELOADOPCIONES")
+        Call ParseUserCommand("/RELOADOPCIONES") 'ver ReyarB
 End Select
 
     
@@ -1929,7 +2232,7 @@ Private Sub oro_Click()
     
     tmp = InputBox("Ingrese el valor de oro que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " ORO " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " ORO " & tmp) ' ver ReyarB
     
     Exit Sub
 
@@ -1957,14 +2260,14 @@ End Sub
 
 Private Sub quitarnpcs_Click()
 
-    'Call SendData("/LIMPIAR")
+    Call ParseUserCommand("/LIMPIAR") ' Ver ReyarB
 End Sub
 
 Private Sub rapido_Click()
     
     On Error GoTo rapido_Click_Err
     
-    charlist(UserCharIndex).Speeding = 2
+    charlist(UserCharIndex).Speeding = 2 ' ver ReyarB
 
     
     Exit Sub
@@ -1981,7 +2284,7 @@ Private Sub Raza_Click()
     
     tmp = InputBox("Ingrese el valor de raza que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " RAZA " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " RAZA " & tmp) 'Ver ReyarB
     
     Exit Sub
 
@@ -1993,12 +2296,13 @@ End Sub
 
 Private Sub ResetPozos_Click()
 
-    'Call SendData("/RESETPOZOS")
+    Call ParseUserCommand("/RESETPOZOS") 'ver ReyarB
+    
 End Sub
 
 Private Sub SeguroInseguro_Click()
 
-    'Call SendData("/SEGURO")
+    Call ParseUserCommand("/MODMAPINFO SEGURO 1")
 End Sub
 
 Private Sub SkillLibres_Click()
@@ -2007,7 +2311,7 @@ Private Sub SkillLibres_Click()
     
     tmp = InputBox("Ingrese el valor de skills Libres que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp) ' ver ReyarB
     
     Exit Sub
 
@@ -2049,7 +2353,7 @@ End Sub
 
 Private Sub SubastaEstado_Click()
 
-    'Call SendData("/SUBASTAACTIVADA")
+    Call ParseUserCommand("/SUBASTAACTIVADA") ' ver ReyarB
 End Sub
 
 Private Sub Temporal_Click()
@@ -2108,6 +2412,16 @@ torneo_comenzar_Click_Err:
     
 End Sub
 
+
+Private Sub txtMod_KeyPress(KeyAscii As Integer)
+
+    If KeyAscii = vbKeyReturn Then
+        Call ParseUserCommand(txtMod.Text)
+        txtMod = ""
+    End If
+
+End Sub
+
 Private Sub UnbanCuenta_Click()
     
     On Error GoTo UnbanCuenta_Click_Err
@@ -2157,7 +2471,7 @@ Private Sub Vida_Click()
     
     tmp = InputBox("Ingrese el valor de vida que desea editar.", "Edicion de Usuarios")
 
-    'Call SendData("/MOD " & cboListaUsus.Text & " HP " & tmp)
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " HP " & tmp) 'ver ReyarB
     
     Exit Sub
 

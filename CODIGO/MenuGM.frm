@@ -130,7 +130,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "BANEAR*no anda"
+      Caption         =   "BANEAR"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -158,7 +158,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "CARCEL*no anda"
+      Caption         =   "CARCEL 5 min"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -390,7 +390,7 @@ Option Explicit
 Private Over As Integer
 
 Private Sub Form_Load()
-    Call Aplicar_Transparencia(Me.hWnd, 180)
+    Call Aplicar_Transparencia(Me.hwnd, 180)
     
     Over = -1
 End Sub
@@ -403,7 +403,7 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 1
             Call ParseUserCommand("/DEVOLVER")
         Case 2
-            Call ParseUserCommand("/CIUDAD")
+            Call ParseUserCommand("/hogar & TargetName")
         Case 3
             Call ParseUserCommand("/INFO " & TargetName)
         Case 4
@@ -413,9 +413,11 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 6
             Call ParseUserCommand("/ADVERTIR")
         Case 7
-            Call ParseUserCommand("/CARCEL")
+            'Call ParseUserCommand("/CARCEL")' ver ReyarB
+            Call WriteJail(TargetName, "Prevencion u ofensa", "5")
         Case 8
-            Call ParseUserCommand("/BAN")
+            'Call ParseUserCommand("/BAN")' ver ReyarB
+            Call WriteBanChar(TargetName, "Incumplimiento de reglas")
         Case 9
             Call ParseUserCommand("/PENAS " & TargetName)
         Case 10
