@@ -401,16 +401,16 @@ Public Sub RefreshAllChars()
     'Goes through the charlist and replots all the characters on the map
     'Used to make sure everyone is visible
     '*****************************************************************
-    Dim loopc As Long
+    Dim LoopC As Long
     
-    For loopc = 1 To LastChar
+    For LoopC = 1 To LastChar
     
-        If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
+        If charlist(LoopC).active = 1 Then
+            MapData(charlist(LoopC).Pos.x, charlist(LoopC).Pos.y).charindex = LoopC
 
         End If
 
-    Next loopc
+    Next LoopC
 
     
     Exit Sub
@@ -504,7 +504,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     
 
     'Validamos los datos del user
-    Dim loopc     As Long
+    Dim LoopC     As Long
 
     Dim CharAscii As Integer
     
@@ -520,8 +520,8 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
     End If
     
-    For loopc = 1 To Len(CuentaPassword)
-        CharAscii = Asc(mid$(CuentaPassword, loopc, 1))
+    For LoopC = 1 To Len(CuentaPassword)
+        CharAscii = Asc(mid$(CuentaPassword, LoopC, 1))
 
         If Not LegalCharacter(CharAscii) Then
             MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
@@ -529,7 +529,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
         End If
 
-    Next loopc
+    Next LoopC
     
     CheckUserData = True
 
@@ -1107,6 +1107,9 @@ Sub Main()
     'Inicializamos el motor grafico.
     Call Engine_Init
     
+    
+    'Inicializamos el inventario
+    Call Initialize
     'Iniciamos el motor de tiles
     Call Init_TileEngine
     

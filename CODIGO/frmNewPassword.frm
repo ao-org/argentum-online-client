@@ -32,6 +32,7 @@ Begin VB.Form frmNewPassword
       Height          =   240
       IMEMode         =   3  'DISABLE
       Left            =   990
+      MaxLength       =   30
       PasswordChar    =   "*"
       TabIndex        =   2
       Top             =   2460
@@ -54,6 +55,7 @@ Begin VB.Form frmNewPassword
       Height          =   240
       IMEMode         =   3  'DISABLE
       Left            =   990
+      MaxLength       =   30
       PasswordChar    =   "*"
       TabIndex        =   1
       Top             =   3255
@@ -103,7 +105,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Sub Aceptar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Aceptar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     Aceptar.Picture = LoadInterface("boton-aceptar-ES-off.bmp")
     Aceptar.Tag = "1"
 End Sub
@@ -112,12 +114,12 @@ Private Sub btnCerrar_Click()
     Unload Me
 End Sub
 
-Private Sub btnCerrar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub btnCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     btnCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     btnCerrar.Tag = "1"
 End Sub
 
-Private Sub btnCerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub btnCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If btnCerrar.Tag = "0" Then
         btnCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         btnCerrar.Tag = "1"
@@ -159,11 +161,11 @@ Form_KeyPress_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Form_MouseMove_Err
     
-    Call moverForm(Me.hWnd)
+    Call MoverForm(Me.hWnd)
     
     If Aceptar.Tag = "1" Then
         Aceptar.Picture = Nothing
@@ -208,7 +210,7 @@ Image1_Click_Err:
     
 End Sub
 
-Private Sub Aceptar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Aceptar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Image1_MouseMove_Err
     
