@@ -37,7 +37,7 @@ Begin VB.Form FrmLogear
       Height          =   285
       IMEMode         =   3  'DISABLE
       Left            =   2820
-      MaxLength       =   20
+      MaxLength       =   30
       PasswordChar    =   "*"
       TabIndex        =   1
       Tag             =   "1"
@@ -84,7 +84,7 @@ Begin VB.Form FrmLogear
       Left            =   720
       List            =   "FrmLogear.frx":451D0
       Style           =   2  'Dropdown List
-      TabIndex        =   2
+      TabIndex        =   3
       Top             =   2520
       Visible         =   0   'False
       Width           =   1380
@@ -93,7 +93,7 @@ Begin VB.Form FrmLogear
       BackStyle       =   0  'Transparent
       Height          =   255
       Left            =   600
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   1800
       Width           =   1095
    End
@@ -135,15 +135,15 @@ Option Explicit
 'Declaraciï¿½n del Api SetLayeredWindowAttributes que establece _
  la transparencia al form
 
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 'Recupera el estilo de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 
 'Declaraciï¿½n del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 Private Const GWL_EXSTYLE = (-20)
 
@@ -167,11 +167,11 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private RealizoCambios As String
 
-Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Const HWND_TOPMOST = -1
 
@@ -181,7 +181,7 @@ Private Const SWP_NOMOVE = &H2
 
 Private Const SWP_NOSIZE = &H1
 
-Private Sub moverForm()
+Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
     
@@ -189,7 +189,7 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub
@@ -200,7 +200,7 @@ moverForm_Err:
     
 End Sub
 
-Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
     
     On Error GoTo Is_Transparent_Err
     
@@ -209,7 +209,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
 
     Dim msg As Long
 
-    msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+    msg = GetWindowLong(hWnd, GWL_EXSTYLE)
 
     If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
         Is_Transparent = True
@@ -233,7 +233,7 @@ Is_Transparent_Err:
 End Function
 
 'Funciï¿½n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
     
     On Error GoTo Aplicar_Transparencia_Err
     
@@ -245,13 +245,13 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
     Else
-        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+        msg = GetWindowLong(hWnd, GWL_EXSTYLE)
         msg = msg Or WS_EX_LAYERED
 
-        SetWindowLong hwnd, GWL_EXSTYLE, msg
+        SetWindowLong hWnd, GWL_EXSTYLE, msg
 
         'Establece la transparencia
-        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
+        SetLayeredWindowAttributes hWnd, 0, Valor, LWA_ALPHA
 
         Aplicar_Transparencia = 0
 
@@ -295,7 +295,7 @@ Private Sub Form_Load()
     Me.Top = Me.Top + 2500
     'Call CargarLst
     Call CargarCuentasGuardadas
-    Call Aplicar_Transparencia(Me.hwnd, 220)
+    Call Aplicar_Transparencia(Me.hWnd, 220)
     
     'TODO: Me.Picture = LoadInterface("")
 

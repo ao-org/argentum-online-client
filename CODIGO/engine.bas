@@ -242,10 +242,7 @@ Private Sub Engine_InitExtras()
     'Call Font_Create("Tahoma", 8, True, 0)
     'Call Font_Create("Verdana", 8, False, 0)
     'Call Font_Create("Verdana", 11, True, False)
-    
-    ' Inventario
-    Call Initialize
-    
+        
     ' Inicializar textura compuesta
     Call InitComposedTexture
     
@@ -2012,7 +2009,7 @@ SetMapFx_Err:
     
 End Sub
 
-Private Function Engine_FToDW(F As Single) As Long
+Private Function Engine_FToDW(f As Single) As Long
     
     On Error GoTo Engine_FToDW_Err
     
@@ -2021,7 +2018,7 @@ Private Function Engine_FToDW(F As Single) As Long
     Dim Buf As D3DXBuffer
 
     Set Buf = DirectD3D8.CreateBuffer(4)
-    DirectD3D8.BufferSetData Buf, 0, 4, 1, F
+    DirectD3D8.BufferSetData Buf, 0, 4, 1, f
     DirectD3D8.BufferGetData Buf, 0, 4, 1, Engine_FToDW
 
     
