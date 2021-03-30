@@ -489,6 +489,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -565,7 +566,7 @@ Begin VB.Form frmMain
          Height          =   510
          Left            =   1680
          Picture         =   "frmMain.frx":4124A
-         ToolTipText     =   "Seguro de ataque"
+         ToolTipText     =   "Seguro de resurrección"
          Top             =   3060
          Visible         =   0   'False
          Width           =   510
@@ -997,7 +998,7 @@ Begin VB.Form frmMain
          Height          =   510
          Left            =   630
          Picture         =   "frmMain.frx":4827A
-         ToolTipText     =   "Seguro de ataque"
+         ToolTipText     =   "Seguro de clan"
          Top             =   3060
          Visible         =   0   'False
          Width           =   510
