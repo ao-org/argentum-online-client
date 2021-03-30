@@ -713,7 +713,7 @@ Sub General_Set_Connect()
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -1407,7 +1407,6 @@ Sub CargarOpciones()
     Dim Value As String
     Value = ConfigFile.GetValue("VIDEO", "MostrarRespiracion")
     MostrarRespiracion = IIf(LenB(Value) > 0, Val(Value), True)
-    
     FxNavega = ConfigFile.GetValue("OPCIONES", "FxNavega")
     OcultarMacrosAlCastear = ConfigFile.GetValue("OPCIONES", "OcultarMacrosAlCastear")
     MostrarIconosMeteorologicos = ConfigFile.GetValue("OPCIONES", "MostrarIconosMeteorologicos")
@@ -1418,6 +1417,7 @@ Sub CargarOpciones()
     AlphaMacro = ConfigFile.GetValue("OPCIONES", "AlphaMacro")
     ModoHechizos = Val(ConfigFile.GetValue("OPCIONES", "ModoHechizos"))
     MostrarEscribiendo = Val(ConfigFile.GetValue("OPCIONES", "MostrarEscribiendo"))
+    CursoresGraficos = ConfigFile.GetValue("OPCIONES", "CursoresGraficos")
     
     'Init
     ServerIndex = Val(ConfigFile.GetValue("INIT", "ServerIndex"))
@@ -1751,7 +1751,7 @@ End Sub
 Rem Encripta una cadena de caracteres.
 Rem S = Cadena a encriptar
 Rem P = Password
-Function EncryptStr(ByVal s As String, ByVal p As String) As String
+Function EncryptStr(ByVal s As String, ByVal P As String) As String
     
     On Error GoTo EncryptStr_Err
     
@@ -1762,15 +1762,15 @@ Function EncryptStr(ByVal s As String, ByVal p As String) As String
 
     r = ""
 
-    If Len(p) > 0 Then
+    If Len(P) > 0 Then
 
         For i = 1 To Len(s)
             c1 = Asc(mid(s, i, 1))
 
-            If i > Len(p) Then
-                C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
+            If i > Len(P) Then
+                C2 = Asc(mid(P, i Mod Len(P) + 1, 1))
             Else
-                C2 = Asc(mid(p, i, 1))
+                C2 = Asc(mid(P, i, 1))
 
             End If
 
@@ -1799,7 +1799,7 @@ End Function
 Rem Desencripta una cadena de caracteres.
 Rem S = Cadena a desencriptar
 Rem P = Password
-Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
+Function UnEncryptStr(ByVal s As String, ByVal P As String) As String
     
     On Error GoTo UnEncryptStr_Err
     
@@ -1810,15 +1810,15 @@ Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
 
     r = ""
 
-    If Len(p) > 0 Then
+    If Len(P) > 0 Then
 
         For i = 1 To Len(s)
             c1 = Asc(mid(s, i, 1))
 
-            If i > Len(p) Then
-                C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
+            If i > Len(P) Then
+                C2 = Asc(mid(P, i Mod Len(P) + 1, 1))
             Else
-                C2 = Asc(mid(p, i, 1))
+                C2 = Asc(mid(P, i, 1))
 
             End If
 

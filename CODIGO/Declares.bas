@@ -217,7 +217,7 @@ Public ChatCombate                 As Byte
 
 Public ChatGlobal                  As Byte
 
-Public PantallaCompleta            As Byte
+Public PantallaCompleta            As Boolean
 
 Public Sonido                      As Byte
 
@@ -231,7 +231,7 @@ Public EntradaX                    As Byte
 
 Public EntradaY                    As Byte
 
-Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal crColor As Long) As Long
+Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
 
 Public MouseX                 As Long
 

@@ -133,6 +133,12 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
+      Begin VB.Image Fullscreen 
+         Height          =   255
+         Left            =   270
+         Top             =   2310
+         Width           =   255
+      End
       Begin VB.Image Respiracion 
          Height          =   255
          Left            =   270
@@ -913,8 +919,8 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     
     
     Exit Sub
@@ -930,9 +936,9 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo cmdCerrar_MouseMove_Err
     
 
-    If cmdCerrar.Tag = "0" Then
+    If cmdcerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdCerrar.Tag = "1"
+        cmdcerrar.Tag = "1"
 
     End If
 
@@ -961,8 +967,8 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
 
     End If
 
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
 
     
     Exit Sub
@@ -1075,7 +1081,7 @@ Form_KeyPress_Err:
     
 End Sub
 
-Private Sub moverForm()
+Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
     
@@ -1199,7 +1205,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    moverForm
+    MoverForm
     cmdayuda = Nothing
     cmdayuda.Tag = "0"
     discord = Nothing
@@ -1212,8 +1218,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     facebook.Tag = "0"
     Command1 = Nothing
     Command1.Tag = "0"
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
@@ -1308,6 +1314,12 @@ Public Sub Init()
     Else
         Check2.Picture = LoadInterface("check-amarillo.bmp")
 
+    End If
+    
+    If PantallaCompleta = 0 Then
+        Fullscreen.Picture = Nothing
+    Else
+        Fullscreen.Picture = LoadInterface("check-amarillo.bmp")
     End If
 
     If PermitirMoverse = 0 Then
@@ -1405,6 +1417,23 @@ Init_Err:
     
 End Sub
 
+ 
+
+
+Private Sub Fullscreen_Click()
+   PantallaCompleta = Not PantallaCompleta
+
+    If PantallaCompleta Then
+        Fullscreen.Picture = LoadInterface("check-amarillo.bmp")
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "VIDEO", "PantallaCompleta", 1)
+        MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia"
+    Else
+        Fullscreen.Picture = Nothing
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "VIDEO", "PantallaCompleta", 0)
+        MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia"
+    End If
+End Sub
+
 Private Sub HScroll1_Change()
     
     On Error GoTo HScroll1_Change_Err
@@ -1452,6 +1481,7 @@ instagram_Click_Err:
     Resume Next
     
 End Sub
+
 
 Private Sub Respiracion_Click()
     MostrarRespiracion = Not MostrarRespiracion
