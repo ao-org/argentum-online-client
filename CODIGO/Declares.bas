@@ -187,7 +187,7 @@ Public PermitirMoverse             As Byte
 
 Public MoverVentana                As Byte
 
-Public CursoresGraficos            As Byte
+Public CursoresGraficos            As Boolean
 
 Public UtilizarPreCarga            As Byte
 

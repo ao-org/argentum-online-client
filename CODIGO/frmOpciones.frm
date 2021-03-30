@@ -641,9 +641,9 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
         
     If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
+        Check1.Picture = Nothing
     Else
-        check1.Picture = LoadInterface("check-amarillo.bmp")
+        Check1.Picture = LoadInterface("check-amarillo.bmp")
     End If
         
     
@@ -713,26 +713,18 @@ End Sub
 Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Check2_MouseUp_Err
-    
+    CursoresGraficos = Not CursoresGraficos
 
-    If CursoresGraficos = 1 Then
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "OPCIONES", "CursoresGraficos", 0)
-        MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
-    Else
-        CursoresGraficos = 1
-        Call FormParser.Parse_Form(Me)
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "OPCIONES", "CursoresGraficos", 1)
-    
-    End If
-
-    If CursoresGraficos = 0 Then
-        Check2.Picture = Nothing
-    Else
+    If CursoresGraficos Then
         Check2.Picture = LoadInterface("check-amarillo.bmp")
-
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "VIDEO", "CursoresGraficos", 1)
+    Else
+        Check2.Picture = Nothing
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "VIDEO", "CursoresGraficos", 0)
     End If
-
     
+    MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
+
     Exit Sub
 
 Check2_MouseUp_Err:
@@ -919,8 +911,8 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
     
     
     Exit Sub
@@ -936,9 +928,9 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo cmdCerrar_MouseMove_Err
     
 
-    If cmdcerrar.Tag = "0" Then
+    If cmdCerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdcerrar.Tag = "1"
+        cmdCerrar.Tag = "1"
 
     End If
 
@@ -967,8 +959,8 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
 
     End If
 
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
 
     
     Exit Sub
@@ -1218,8 +1210,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     facebook.Tag = "0"
     Command1 = Nothing
     Command1.Tag = "0"
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
@@ -1386,9 +1378,9 @@ Public Sub Init()
     End If
     
     If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
+        Check1.Picture = Nothing
     Else
-        check1.Picture = LoadInterface("check-amarillo.bmp")
+        Check1.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
     
