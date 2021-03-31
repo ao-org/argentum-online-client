@@ -61,8 +61,7 @@ Private Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Lon
 Public Type FILEHEADER
     lngFileSize As Long                 'How big is this file? (Used to check integrity)
     intNumFiles As Integer              'How many files are inside?
-    'md5checksum As String * 32          'Integrity check (TODO)
-    lngPassword As Long
+    lngPassword As String * 32          'Integrity check
 End Type
 
 'This structure will describe each file contained
@@ -95,10 +94,10 @@ Private Const PATCH_PATH As String = "\Patches\"
 Private Const OUTPUT_PATH As String = "\Output\"
 Private Const MAP_PATH As String = "\Mapas\"
 
-Private Declare Function Compress Lib "zlib.dll" Alias "compress" (dest As Any, destLen As Any, src As Any, ByVal srcLen As Long) As Long
-Private Declare Function UnCompress Lib "zlib.dll" Alias "uncompress" (dest As Any, destLen As Any, src As Any, ByVal srcLen As Long) As Long
+Private Declare Function Compress Lib "zlib.dll" Alias "compress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
+Private Declare Function UnCompress Lib "zlib.dll" Alias "uncompress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal Length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
 
 Private Sub Compress_Data(ByRef Data() As Byte)
 '*****************************************************************
@@ -166,7 +165,7 @@ Public Function Extract_All_Files(ByVal file_type As resource_file_type, ByVal r
     Dim Handle As Integer
     
 'Set up the error handler
-On Local Error GoTo ErrHandler
+On Local Error GoTo errhandler
     
     Select Case file_type
         Case Graphics
@@ -246,8 +245,8 @@ On Local Error GoTo ErrHandler
     ' Check password
     If LenB(Passwd) = 0 Then Passwd = "Contraseña"
     
-    Dim PasswordHash As Long
-    PasswordHash = HashPassword(Passwd)
+    Dim PasswordHash As String * 32
+    PasswordHash = MD5String(Passwd)
     
     If PasswordHash <> FileHead.lngPassword Then
         MsgBox "Invalid password to decrypt the file.", , "Error"
@@ -264,6 +263,7 @@ On Local Error GoTo ErrHandler
 
     'Extract all of the files from the binary file
     For LoopC = 0 To UBound(InfoHead)
+        
         'Check if there is enough memory
         If InfoHead(LoopC).lngFileSizeUncompressed > General_Drive_Get_Free_Bytes(Left(App.Path, 3)) Then
             MsgBox "There is not enough free memory to continue extracting files."
@@ -305,7 +305,7 @@ On Local Error GoTo ErrHandler
     Extract_All_Files = True
 Exit Function
 
-ErrHandler:
+errhandler:
     Close SourceFile
     Erase SourceData
     Erase InfoHead
@@ -351,7 +351,7 @@ Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As 
     'This is similar to Extract, but has some small differences to make sure what is being updated
     '************************************************************************************************
 'Set up the error handler
-On Local Error GoTo ErrHandler
+On Local Error GoTo errhandler
 
     'Open the binary file
     SourceFile = FreeFile
@@ -369,8 +369,8 @@ On Local Error GoTo ErrHandler
     ' Check password
     If LenB(Passwd) = 0 Then Passwd = "Contraseña"
 
-    Dim PasswordHash As Long
-    PasswordHash = HashPassword(Passwd)
+    Dim PasswordHash As String * 32
+    PasswordHash = MD5String(Passwd)
 
     If PasswordHash <> FileHead.lngPassword Then
         Exit Function
@@ -595,7 +595,7 @@ EndMainLoop:
     Extract_Patch = True
 Exit Function
 
-ErrHandler:
+errhandler:
     Erase SourceData
     Erase InfoHead
 
@@ -622,7 +622,7 @@ Public Function Compress_Files(ByVal file_type As resource_file_type, ByVal reso
     Dim LoopC As Long
     
 'Set up the error handler
-On Local Error GoTo ErrHandler
+On Local Error GoTo errhandler
     
     Select Case file_type
         Case Graphics
@@ -710,6 +710,7 @@ On Local Error GoTo ErrHandler
     Dim IHead As Long
 
     For LoopC = 0 To FileHead.intNumFiles - 1
+    
         'Find a free file number to use and open the file
         SourceFile = FreeFile
         Open SourceFilePath & FileNames(LoopC) For Binary Access Read Lock Write As SourceFile
@@ -763,7 +764,7 @@ On Local Error GoTo ErrHandler
     FileHead.lngFileSize = FileHead.lngFileSize + CLng(FileHead.intNumFiles) * Len(InfoHead(0)) + Len(FileHead)
     
     'Password hash
-    FileHead.lngPassword = HashPassword(Passwd)
+    FileHead.lngPassword = MD5String(Passwd)
 
     'Set InfoHead data
     lngFileStart = Len(FileHead) + CLng(FileHead.intNumFiles) * Len(InfoHead(0)) + 1
@@ -793,7 +794,7 @@ On Local Error GoTo ErrHandler
     Erase SourceData
 Exit Function
 
-ErrHandler:
+errhandler:
     Erase SourceData
     Erase InfoHead
     'Display an error message if it didn't work
@@ -813,7 +814,7 @@ Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resour
     Dim Handle As Integer
     
 'Set up the error handler
-On Local Error GoTo ErrHandler
+On Local Error GoTo errhandler
     
     Select Case file_type
         Case Graphics
@@ -916,7 +917,7 @@ On Local Error GoTo ErrHandler
     Extract_File = True
 Exit Function
 
-ErrHandler:
+errhandler:
     Close Handle
     Erase SourceData
     'Display an error message if it didn't work
@@ -938,13 +939,9 @@ Public Sub Delete_File(ByVal file_path As String)
     Handle = FreeFile
     Open file_path For Binary Access Write Lock Read As Handle
     
-    If LOF(Handle) > 0 Then
-
-        'We replace all the bytes in it with 0s
-        ReDim Data(LOF(Handle) - 1)
-        Put Handle, 1, Data
-
-    End If
+    'We replace all the bytes in it with 0s
+    ReDim Data(LOF(Handle) - 1)
+    Put Handle, 1, Data
     
     'We close the file
     Close Handle
@@ -965,7 +962,7 @@ Private Function File_Find(ByVal resource_file_path As String, ByVal file_name A
 'Last Modify Date: 5/04/2005
 'Looks for a compressed file in a resource file. Uses binary search ;)
 '**************************************************************
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     Dim max As Integer  'Max index
     Dim min As Integer  'Min index
     Dim mid As Integer  'Middle index
@@ -987,8 +984,8 @@ On Error GoTo ErrHandler
     ' Check password
     If LenB(Passwd) = 0 Then Passwd = "Contraseña"
     
-    Dim PasswordHash As Long
-    PasswordHash = HashPassword(Passwd)
+    Dim PasswordHash As String * 32
+    PasswordHash = MD5String(Passwd)
     
     If PasswordHash <> file_head.lngPassword Then Exit Function
     
@@ -1023,7 +1020,7 @@ On Error GoTo ErrHandler
         End If
     Loop
     
-ErrHandler:
+errhandler:
     'Close file
     Close file_handler
     File_Find.strFileName = ""
@@ -1099,160 +1096,10 @@ Private Sub DoCrypt_Data(Data() As Byte, ByVal Password As String)
     
 End Sub
 
-' WyroX: Extraído de http://www.partow.net/programming/hashfunctions/index.html
-Private Function HashPassword(ByVal Password As String) As Long
 
-    Dim InternalState As Long
-    InternalState = &HA5A5A5A5 ' Magic Number
+Public Function Extract_File_To_Memory(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef bytArr() As Byte, ByVal Passwd As String) As Boolean
     
-    Dim MessageBlock As Long
-    
-    Do While Len(Password) >= 4
-        Call CopyMemory(MessageBlock, ByVal StrPtr(StrConv(Password, vbFromUnicode)), 4)
-        Password = Right$(Password, Len(Password) - 4)
-
-        InternalState = Mix(MessageBlock, InternalState)
-    Loop
-    
-    If Len(Password) Then
-        MessageBlock = 0
-        Call CopyMemory(MessageBlock, ByVal StrPtr(StrConv(Password, vbFromUnicode)), Len(Password))
-        InternalState = Mix(MessageBlock, InternalState)
-    End If
-
-    HashPassword = InternalState
-
-End Function
-
-' WyroX: Utilitarias para el hash
-Private Function Mix(ByVal MessageBlock As Long, ByVal InternalState As Long) As Long
-    Mix = UnsignedMult(MessageBlock, InternalState) Xor UnsignedAdd(LShift(InternalState, 3), RShift(MessageBlock, 2))
-End Function
-
-Private Function UnsignedAdd(ByVal A As Long, ByVal B As Long) As Long
-    Dim lOr As Long, lAnd As Long, P As Long
-    
-    lOr = (A Or B) And &HC0000000
-    
-    If lOr Then 'it might overflow
-    lAnd = (A And B) And &HC0000000
-    P = (A And &H3FFFFFFF) + (B And &H3FFFFFFF)
-    
-    Select Case lAnd 'the last two bits common to both numbers
-        Case 0&
-            If (P And lOr) Then
-                If lOr < 0 Then UnsignedAdd = (P And &H3FFFFFFF) Else UnsignedAdd = (P And &H3FFFFFFF) Or &H80000000
-            Else
-                UnsignedAdd = P Or lOr
-            End If
-        Case &H80000000: If (P And lOr) Then UnsignedAdd = (P And &H3FFFFFFF) Or &H80000000 Else UnsignedAdd = P Or (lOr And &H40000000)
-        Case &H40000000: If (lOr < 0) Then UnsignedAdd = P Else UnsignedAdd = P Or &H80000000
-        Case Else: UnsignedAdd = P Or &H80000000
-    End Select
-    
-    Else 'it won't overflow
-        UnsignedAdd = A + B
-    End If
-End Function
-
-Private Function UnsignedMult(ByVal A As Long, ByVal B As Long) As Long
-    Dim A1 As Long, A2 As Long
-    Dim B1 As Long, B2 As Long
-    Dim P As Long, P2 As Long
-    
-    A1 = A And &H7FFF&
-    B1 = B And &H7FFF&
-    A2 = (A And &H3FFF8000) \ &H8000& 'quicker than... (A \ &h8000&) And &H7FFF&
-    B2 = (B And &H3FFF8000) \ &H8000& 'quicker than... (A \ &h8000&) And &H7FFF&
-    
-    'multiply first 2 bits of A by last 2 bits of B
-    Select Case B And &HC0000000
-        Case 0&
-        Case &H40000000
-            Select Case A And 3&
-                Case 0&:
-                Case 1&: P = &H40000000
-                Case 2&: P = &H80000000
-                Case 3&: P = &HC0000000
-                End Select
-                Case &H80000000
-                If A And 1& Then P = &H80000000
-                Case Else
-            Select Case A And 3&
-                Case 0&:
-                Case 1&: P = &HC0000000
-                Case 2&: P = &H80000000
-                Case 3&: P = &H40000000
-            End Select
-    End Select
-    
-    'multiply first 2 bits of B by last 2 bits of A
-    Select Case A And &HC0000000
-        Case 0&
-        Case &H40000000
-            Select Case B And 3&
-                Case 0& 'P+0
-                Case 1&: If P And &H40000000 Then P = P Xor &HC0000000 Else P = P Or &H40000000 'P+&H40000000
-                Case 2&: P = P Xor &H80000000 'P+&H80000000
-                Case 3&: If P And &H40000000 Then P = P Xor &H40000000 Else P = P Xor &HC0000000 'P+&H40000000+&H80000000
-            End Select
-        Case &H80000000
-            If B And 1& Then P = P Xor &H80000000 'P+&H80000000
-        Case Else
-            Select Case B And 3&
-                Case 0& 'P+0
-                Case 1&: If P And &H40000000 Then P = P Xor &H40000000 Else P = P Xor &HC0000000 'P+&H40000000+&H80000000
-                Case 2&: P = P Xor &H80000000 'P+&H80000000
-                Case 3&: If P And &H40000000 Then P = P Xor &HC0000000 Else P = P Or &H40000000 'P+&H40000000
-            End Select
-    End Select
-    
-    'multiply bits 16 and 17 of A and B
-    Select Case (A2 * B2) And &H3&
-        Case 0& 'P+0
-        Case 1&: If P And &H40000000 Then P = P Xor &HC0000000 Else P = P Or &H40000000 'P+&H40000000
-        Case 2&: P = P Xor &H80000000 'P+&H80000000
-        Case Else: If P And &H40000000 Then P = P Xor &H40000000 Else P = P Xor &HC0000000 'P+&H40000000+&H80000000
-    End Select
-    
-    'multiply first 15 bits of A and B
-    P = (A1 * B1) Or P
-    
-    'multiply first 15 bits of A with bits 16 to 30 of B
-    P2 = A1 * &H2&
-    If P2 And &H10000 Then P2 = ((P2 And &HFFFF&) * &H8000&) Or &H80000000 Else P2 = (P2 And &HFFFF&) * &H8000&
-    P = UnsignedAdd(P, P2)
-    
-    'multiply first 15 bits of B with bits 16 to 30 of A
-    P2 = A2 * &H1&
-    If P2 And &H10000 Then P2 = ((P2 And &HFFFF&) * &H8000&) Or &H80000000 Else P2 = (P2 And &HFFFF&) * &H8000&
-    UnsignedMult = UnsignedAdd(P, P2)
-End Function
-
-Private Function RShift(ByVal lNum As Long, ByVal lBits As Long) As Long
-    If lBits <= 0 Then RShift = lNum
-    If (lBits <= 0) Or (lBits > 31) Then Exit Function
-    
-    RShift = (lNum And (2 ^ (31 - lBits) - 1)) * _
-        IIf(lBits = 31, &H80000000, 2 ^ lBits) Or _
-        IIf((lNum And 2 ^ (31 - lBits)) = 2 ^ (31 - lBits), _
-        &H80000000, 0)
-End Function
-
-Private Function LShift(ByVal lNum As Long, ByVal lBits As Long) As Long
-    If lBits <= 0 Then LShift = lNum
-    If (lBits <= 0) Or (lBits > 31) Then Exit Function
-    
-    If lNum < 0 Then
-        LShift = (lNum And &H7FFFFFFF) \ (2 ^ lBits) Or 2 ^ (31 - lBits)
-    Else
-        LShift = lNum \ (2 ^ lBits)
-    End If
-End Function
-
-Public Function Extract_File_EX(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef bytArr() As Byte, ByVal Passwd As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
-    
-    On Error GoTo Extract_File_EX_Err
+    On Error GoTo Extract_File_To_Memory_Err
     
 
     '*****************************************************************
@@ -1268,7 +1115,7 @@ Public Function Extract_File_EX(ByVal file_type As resource_file_type, ByVal res
 
     Dim Handle         As Integer
 
-    On Local Error GoTo ErrHandler
+    On Local Error GoTo errhandler
     
     Select Case file_type
 
@@ -1332,10 +1179,10 @@ Public Function Extract_File_EX(ByVal file_type As resource_file_type, ByVal res
     'Close the binary file
     Close Handle
 
-    Extract_File_EX = True
+    Extract_File_To_Memory = True
     Exit Function
 
-ErrHandler:
+errhandler:
     Close Handle
     ' Erase SourceData
     Erase bytArr
@@ -1345,9 +1192,21 @@ ErrHandler:
     
     Exit Function
 
-Extract_File_EX_Err:
-    Call RegistrarError(Err.number, Err.Description, "modCompression.Extract_File_EX", Erl)
+Extract_File_To_Memory_Err:
+    Call RegistrarError(Err.number, Err.Description, "modCompression.Extract_File_To_Memory", Erl)
     Resume Next
+    
+End Function
+
+Public Function Extract_File_To_String(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef file_str As String, ByVal Passwd As String) As Boolean
+
+    Dim Data() As Byte
+    
+    Extract_File_To_String = Extract_File_To_Memory(file_type, resource_path, file_name, Data, Passwd)
+    
+    If Not Extract_File_To_String Then Exit Function
+    
+    file_str = StrConv(Data, vbUnicode)
     
 End Function
 
@@ -1433,7 +1292,7 @@ Public Function General_Load_Picture_From_Resource_Ex(ByVal picture_file_name As
 
     Dim bytArr() As Byte
 
-    If Extract_File_EX(interface, App.Path & "\..\Recursos\OUTPUT\", picture_file_name, bytArr(), Passwd) Then
+    If Extract_File_To_Memory(interface, App.Path & "\..\Recursos\OUTPUT\", picture_file_name, bytArr(), Passwd) Then
         Set General_Load_Picture_From_Resource_Ex = General_Load_Picture_From_BArray(bytArr())
     Else
         Set General_Load_Picture_From_Resource_Ex = Nothing

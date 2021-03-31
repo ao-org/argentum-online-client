@@ -3368,7 +3368,7 @@ Private Sub HandleChatOverHead()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3461,7 +3461,7 @@ Private Sub HandleChatOverHead()
 
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3485,7 +3485,7 @@ Private Sub HandleTextOverChar()
         Exit Sub
     End If
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3511,7 +3511,7 @@ Private Sub HandleTextOverChar()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
 
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3535,7 +3535,7 @@ Private Sub HandleTextOverTile()
         Exit Sub
     End If
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3593,7 +3593,7 @@ Private Sub HandleTextOverTile()
         
     End If
 
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3617,7 +3617,7 @@ Private Sub HandleTextCharDrop()
         Exit Sub
     End If
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3686,7 +3686,7 @@ Private Sub HandleTextCharDrop()
         
     End If
 
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3718,7 +3718,7 @@ Private Sub HandleConsoleMessage()
         Exit Sub
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -3844,7 +3844,7 @@ Private Sub HandleConsoleMessage()
     
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3874,7 +3874,7 @@ Private Sub HandleLocaleMsg()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -3963,7 +3963,7 @@ Private Sub HandleLocaleMsg()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -3996,7 +3996,7 @@ Private Sub HandleGuildChat()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -4064,7 +4064,7 @@ Private Sub HandleGuildChat()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -4097,7 +4097,7 @@ Private Sub HandleShowMessageBox()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -4134,7 +4134,7 @@ Private Sub HandleShowMessageBox()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -4164,7 +4164,7 @@ Private Sub HandleMostrarCuenta()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -4231,7 +4231,7 @@ Private Sub HandleMostrarCuenta()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -4342,7 +4342,7 @@ Private Sub HandleCharacterCreate()
         Exit Sub
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -4494,7 +4494,7 @@ Private Sub HandleCharacterCreate()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -5281,7 +5281,7 @@ Private Sub HandleGuildList()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -5331,7 +5331,7 @@ Private Sub HandleGuildList()
     
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -5602,7 +5602,7 @@ Private Sub HandleUpdateUserStats()
     UserClase = incomingData.ReadByte()
     
     If UserPasarNivel > 0 Then
-        frmMain.lblPorcLvl.Caption = Round(UserExp * 100 / UserPasarNivel, 2) & "%"
+        frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
         frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
     Else
@@ -5761,7 +5761,7 @@ Private Sub HandleChangeInventorySlot()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -5863,7 +5863,7 @@ Private Sub HandleChangeInventorySlot()
 
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -5925,7 +5925,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6042,7 +6042,7 @@ Private Sub HandleRefreshAllInventorySlot()
      
     Exit Sub
      
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6074,7 +6074,7 @@ Private Sub HandleChangeBankSlot()
         Exit Sub
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -6108,7 +6108,7 @@ Private Sub HandleChangeBankSlot()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6141,7 +6141,7 @@ Private Sub HandleChangeSpellSlot()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6187,7 +6187,7 @@ Private Sub HandleChangeSpellSlot()
     
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6285,7 +6285,7 @@ Private Sub HandleBlacksmithWeapons()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6326,7 +6326,7 @@ Private Sub HandleBlacksmithWeapons()
     
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6359,7 +6359,7 @@ Private Sub HandleBlacksmithArmors()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6441,7 +6441,7 @@ Private Sub HandleBlacksmithArmors()
     
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6474,7 +6474,7 @@ Private Sub HandleCarpenterObjects()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6507,7 +6507,7 @@ Private Sub HandleCarpenterObjects()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6535,7 +6535,7 @@ Private Sub HandleSastreObjects()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6602,7 +6602,7 @@ Private Sub HandleSastreObjects()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6633,7 +6633,7 @@ Private Sub HandleAlquimiaObjects()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6670,7 +6670,7 @@ Private Sub HandleAlquimiaObjects()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6729,7 +6729,7 @@ Private Sub HandleErrorMessage()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6744,7 +6744,7 @@ Private Sub HandleErrorMessage()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6833,7 +6833,7 @@ Private Sub HandleShowSignal()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -6854,7 +6854,7 @@ Private Sub HandleShowSignal()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -6887,7 +6887,7 @@ Private Sub HandleChangeNPCInventorySlot()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
@@ -6921,7 +6921,7 @@ Private Sub HandleChangeNPCInventorySlot()
     
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -7426,7 +7426,7 @@ Private Sub HandleAddForumMessage()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -7450,7 +7450,7 @@ Private Sub HandleAddForumMessage()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -7772,7 +7772,7 @@ Private Sub HandleTrainerCreatureList()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -7797,7 +7797,7 @@ Private Sub HandleTrainerCreatureList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -7830,7 +7830,7 @@ Private Sub HandleGuildNews()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -7936,7 +7936,7 @@ Private Sub HandleGuildNews()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -7969,7 +7969,7 @@ Private Sub HandleOfferDetails()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -7984,7 +7984,7 @@ Private Sub HandleOfferDetails()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8017,7 +8017,7 @@ Private Sub HandleAlianceProposalsList()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8043,7 +8043,7 @@ Private Sub HandleAlianceProposalsList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8076,7 +8076,7 @@ Private Sub HandlePeaceProposalsList()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8102,7 +8102,7 @@ Private Sub HandlePeaceProposalsList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8135,7 +8135,7 @@ Private Sub HandleCharacterInfo()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8216,7 +8216,7 @@ Private Sub HandleCharacterInfo()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8249,7 +8249,7 @@ Private Sub HandleGuildLeaderInfo()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8348,7 +8348,7 @@ Private Sub HandleGuildLeaderInfo()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8381,7 +8381,7 @@ Private Sub HandleGuildDetails()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8415,7 +8415,7 @@ Private Sub HandleGuildDetails()
     
     frmGuildBrief.Show vbModeless, frmMain
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8524,7 +8524,7 @@ Private Sub HandleShowUserRequest()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8540,7 +8540,7 @@ Private Sub HandleShowUserRequest()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8573,7 +8573,7 @@ Private Sub HandleChangeUserTradeSlot()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8606,7 +8606,7 @@ Private Sub HandleChangeUserTradeSlot()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8639,7 +8639,7 @@ Private Sub HandleSpawnList()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8660,7 +8660,7 @@ Private Sub HandleSpawnList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8693,7 +8693,7 @@ Private Sub HandleShowSOSForm()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8726,7 +8726,7 @@ Private Sub HandleShowSOSForm()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8759,7 +8759,7 @@ Private Sub HandleShowMOTDEditionForm()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8775,7 +8775,7 @@ Private Sub HandleShowMOTDEditionForm()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8858,7 +8858,7 @@ Private Sub HandleUserNameList()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -8888,7 +8888,7 @@ Private Sub HandleUserNameList()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -8961,7 +8961,7 @@ Private Sub HandleUpdateTagAndStatus()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -9001,7 +9001,7 @@ Private Sub HandleUpdateTagAndStatus()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -11814,13 +11814,13 @@ Public Sub WritePromedio()
     'Writes the "Promedio" message to the outgoing data buffer
     '***************************************************
     
-    On Error GoTo Handle
+    On Error GoTo handle
     
     Call outgoingData.WriteByte(ClientPacketID.Promedio)
 
     Exit Sub
 
-Handle:
+handle:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WritePromedio", Erl)
     Resume Next
     
@@ -11836,7 +11836,7 @@ Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal ca
     'Writes the "GiveItem" message to the outgoing data buffer
     '***************************************************
     
-    On Error GoTo Handle
+    On Error GoTo handle
     
     With outgoingData
         Call .WriteByte(ClientPacketID.GiveItem)
@@ -11849,7 +11849,7 @@ Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal ca
 
     Exit Sub
 
-Handle:
+handle:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGiveItem", Erl)
     Resume Next
     
@@ -17618,7 +17618,7 @@ Private Sub HandlePersonajesDeCuenta()
 
     End If
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -17728,7 +17728,7 @@ Private Sub HandlePersonajesDeCuenta()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -17753,7 +17753,7 @@ Private Sub HandleUserOnline()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -17771,7 +17771,7 @@ Private Sub HandleUserOnline()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -18749,7 +18749,7 @@ Private Sub HandleQuestDetails()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim buffer As New clsByteQueue
 
@@ -19073,7 +19073,7 @@ Private Sub HandleQuestDetails()
     
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19102,7 +19102,7 @@ Public Sub HandleQuestListSend()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim buffer As New clsByteQueue
 
@@ -19149,7 +19149,7 @@ Public Sub HandleQuestListSend()
     'Copiamos de vuelta el buffer
     Call incomingData.CopyBuffer(buffer)
  
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19177,7 +19177,7 @@ Public Sub HandleNpcQuestListSend()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim buffer As New clsByteQueue
 
@@ -19398,7 +19398,7 @@ Public Sub HandleNpcQuestListSend()
     
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19634,7 +19634,7 @@ Private Sub HandleListaCorreo()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -19722,7 +19722,7 @@ Private Sub HandleListaCorreo()
     
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19752,7 +19752,7 @@ Private Sub HandleShowPregunta()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -19770,7 +19770,7 @@ Private Sub HandleShowPregunta()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -19899,7 +19899,7 @@ Private Sub HandleViajarForm()
     'Remove packet ID
     Call incomingData.ReadByte
             
-    Dim Dest     As String
+    Dim dest     As String
 
     Dim DestCant As Byte
 
@@ -19995,7 +19995,7 @@ Private Sub HandleDonadorObjects()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20053,7 +20053,7 @@ Private Sub HandleDonadorObjects()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -20085,7 +20085,7 @@ Private Sub HandleRanking()
 
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20122,7 +20122,7 @@ Private Sub HandleRanking()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -20414,7 +20414,7 @@ Private Sub HandleShowProcesses()
         Exit Sub
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20432,7 +20432,7 @@ Private Sub HandleShowProcesses()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -20456,7 +20456,7 @@ Private Sub HandleShowScreenShot()
         Exit Sub
     End If
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20474,7 +20474,7 @@ Private Sub HandleShowScreenShot()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
     
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
@@ -20498,7 +20498,7 @@ Private Sub HandleScreenShotData()
         Exit Sub
     End If
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -20516,7 +20516,7 @@ Private Sub HandleScreenShotData()
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)
 
-errhandler:
+ErrHandler:
 
     If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
