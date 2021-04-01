@@ -160,7 +160,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
     'menduz was here
     '
     '**************************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim surface_desc As D3DSURFACE_DESC
 
@@ -189,14 +189,14 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
     
             #If Compresion = 1 Then
 
-                If Not Extract_File_EX(Graphics, App.Path & "\..\Recursos\OUTPUT\", LTrim(str(Archivo)) & ".png", bytArr, ResourcesPassword) Then
+                If Not Extract_File_To_Memory(Graphics, App.Path & "\..\Recursos\OUTPUT\", LTrim(str(Archivo)) & ".png", bytArr, ResourcesPassword) Then
                     Debug.Print "¡No se puede cargar el grafico numero " & Archivo & "!"
                     Exit Function
 
                 End If
         
                 'demoraok = GetTickCount - demora
-                'Debug.Print "Extract_File_EX Demoro: " & demoraok
+                'Debug.Print "Extract_File_To_Memory Demoro: " & demoraok
         
                 'DirArchico = Windows_Temp_Dir & LTrim(str(Archivo)) & ".png"
         
@@ -232,7 +232,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
 
     Exit Function
 
-ErrHandler:
+errhandler:
     Debug.Print "ERROR EN GRHLOAD>" & Archivo & ".png"
 
 End Function

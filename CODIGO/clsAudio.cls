@@ -40,7 +40,7 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private DirectX                        As DirectX8
+Private DirectX                   As DirectX8
 
 '**** Direct Sound ********
 Private DS                        As DirectSound8
@@ -227,7 +227,7 @@ End Function
 
 Public Function Initialize_Engine(ByVal main_hwnd As String, ByVal Set_Wav_Path As String, ByVal Set_MP3_Path As String, ByVal Set_Midi_Path As String, Optional ByVal Play_only_on_focus As Boolean = True, Optional ByVal Initialize_Sounds As Boolean = True, Optional ByVal Initialize_Music As Boolean = True, Optional ByVal sound_volume As Long, Optional ByVal music_volume As Long, Optional ByVal invert_snd As Boolean) As Boolean
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim dmA As DMUS_AUDIOPARAMS
 
@@ -270,7 +270,7 @@ Public Function Initialize_Engine(ByVal main_hwnd As String, ByVal Set_Wav_Path 
 
     Exit Function
 
-ErrHandler:
+errhandler:
     Initialize_Engine = False
 
 End Function
@@ -668,8 +668,8 @@ Public Function Music_Load(ByVal file_str As String, Optional ByVal Volume As Lo
                 IMC.RenderFile Windows_Temp_Dir & file_str & ".mp3"
                 Kill Windows_Temp_Dir & file_str & ".mp3"
                 lastMid = False
+            
             ElseIf Extract_File(Midi, MidiPath, file_str & ".mid", Windows_Temp_Dir, ResourcesPassword, False) Then
-
                 If Not Music_Empty() = True Then GoTo Error_Handl
                 Set dmSeg = dmLoader.LoadSegment(Windows_Temp_Dir & file_str & ".mid")
                 dmSeg.SetStandardMidiFile
@@ -975,9 +975,6 @@ Public Function Sound_Render()
     '**************************************************************
     
     On Error GoTo Sound_Render_Err
-    
-
-    
 
     Dim TiempoActual    As Long, x As Integer, y As Integer
 

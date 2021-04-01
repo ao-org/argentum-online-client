@@ -164,7 +164,7 @@ Public Sub Initialize(ByVal File As String)
     'Last Modify Date: 27/07/2006
     'Opens the requested file and loads it's data into memory
     '**************************************************************
-    Dim Handle As Integer
+    Dim handle As Integer
 
     Dim Text   As String
 
@@ -174,12 +174,12 @@ Public Sub Initialize(ByVal File As String)
     Call Class_Terminate
     
     'Get a free handle and start reading line by line until the end
-    Handle = FreeFile
+    handle = FreeFile
     
-    Open File For Input As Handle
+    Open File For Input As handle
     
-    Do Until EOF(Handle)
-        Line Input #Handle, Text
+    Do Until EOF(handle)
+        Line Input #handle, Text
         
         'Is it null??
         If Len(Text) Then
@@ -229,7 +229,7 @@ Public Sub Initialize(ByVal File As String)
 
     Loop
     
-    Close Handle
+    Close handle
     
     Dim i As Long
     
@@ -262,8 +262,8 @@ End Sub
 ' @param    last The last index to be considered when sorting.
 
 Private Sub SortChildNodes(ByRef Node As MainNode, _
-                           ByVal First As Integer, _
-                           ByVal Last As Integer)
+                           ByVal first As Integer, _
+                           ByVal last As Integer)
     
     On Error GoTo SortChildNodes_Err
     
@@ -282,18 +282,18 @@ Private Sub SortChildNodes(ByRef Node As MainNode, _
 
     Dim temp As ChildNode
     
-    min = First
-    max = Last
+    min = first
+    max = last
     
     With Node
         comp = .values((min + max) \ 2).key
     
         Do While min <= max
-            Do While .values(min).key < comp And min < Last
+            Do While .values(min).key < comp And min < last
                 min = min + 1
             Loop
 
-            Do While .values(max).key > comp And max > First
+            Do While .values(max).key > comp And max > first
                 max = max - 1
             Loop
 
@@ -310,8 +310,8 @@ Private Sub SortChildNodes(ByRef Node As MainNode, _
 
     End With
     
-    If First < max Then SortChildNodes Node, First, max
-    If min < Last Then SortChildNodes Node, min, Last
+    If first < max Then SortChildNodes Node, first, max
+    If min < last Then SortChildNodes Node, min, last
 
     
     Exit Sub
@@ -328,7 +328,7 @@ End Sub
 ' @param    first The first index to consider when sorting.
 ' @param    last The last index to be considered when sorting.
 
-Private Sub SortMainNodes(ByVal First As Integer, ByVal Last As Integer)
+Private Sub SortMainNodes(ByVal first As Integer, ByVal last As Integer)
     
     On Error GoTo SortMainNodes_Err
     
@@ -347,17 +347,17 @@ Private Sub SortMainNodes(ByVal First As Integer, ByVal Last As Integer)
 
     Dim temp As MainNode
     
-    min = First
-    max = Last
+    min = first
+    max = last
     
     comp = fileData((min + max) \ 2).Name
     
     Do While min <= max
-        Do While fileData(min).Name < comp And min < Last
+        Do While fileData(min).Name < comp And min < last
             min = min + 1
         Loop
 
-        Do While fileData(max).Name > comp And max > First
+        Do While fileData(max).Name > comp And max > first
             max = max - 1
         Loop
 
@@ -372,8 +372,8 @@ Private Sub SortMainNodes(ByVal First As Integer, ByVal Last As Integer)
 
     Loop
     
-    If First < max Then SortMainNodes First, max
-    If min < Last Then SortMainNodes min, Last
+    If first < max Then SortMainNodes first, max
+    If min < last Then SortMainNodes min, last
 
     
     Exit Sub
