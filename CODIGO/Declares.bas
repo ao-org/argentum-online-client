@@ -135,6 +135,8 @@ Public TextAsistente         As String
 Public TextEfectAsistente    As Single
 
 Public ClickEnAsistente      As Long
+Public ClickEnAsistenteRandom      As Long
+Public LastClickAsistente    As Long
 
 Public PJSeleccionado        As Byte
 

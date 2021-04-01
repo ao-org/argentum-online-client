@@ -1934,7 +1934,7 @@ Public Sub Start()
                         FrmLogear.Top = FrmLogear.Top + 3500
                     End If
                     
-                    RenderConnect 51, 49, 0, 0
+                    RenderConnect 57, 45, 0, 0
 
                 Case 2
                     rendercuenta 42, 43, 0, 0
@@ -2275,6 +2275,7 @@ Public Sub DrawInterfaceBovedaCuenta()
 
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
 
     
     Exit Sub
@@ -2756,16 +2757,22 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Dim DefaultColor(3) As Long
 
     Dim Color           As Long
-
+    Dim ColorGM(3) As RGBA
+    ColorGM(0) = RGBA_From_Comp(248, 107, 3)
+    ColorGM(1) = ColorGM(0)
+    ColorGM(2) = ColorGM(0)
+    ColorGM(3) = ColorGM(0)
     intro = 1
 
     If intro = 1 Then
-        Draw_Grh BodyData(640).Walk(3), 470 + 15, 366, 1, 0, COLOR_WHITE
+        Draw_Grh BodyData(773).Walk(3), 470 + 15, 366, 1, 0, COLOR_WHITE
         Draw_Grh HeadData(602).Head(3), 470 + 15, 327 + 2, 1, 0, COLOR_WHITE
             
-        Draw_Grh CascoAnimData(48).Head(3), 470 + 15, 327, 1, 0, COLOR_WHITE
-        Draw_Grh WeaponAnimData(82).WeaponWalk(3), 470 + 15, 366, 1, 0, COLOR_WHITE
-            
+        Draw_Grh CascoAnimData(13).Head(3), 470 + 15, 327, 1, 0, COLOR_WHITE
+        Draw_Grh WeaponAnimData(6).WeaponWalk(3), 470 + 15, 366, 1, 0, COLOR_WHITE
+        Engine_Text_Render "Gulfas Morgolock", 449, 400, ColorGM, 1
+        Engine_Text_Render "<Creador del Mundo>", 438, 415, ColorGM, 1
+
         Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 870, 750, COLOR_WHITE, 4, False
 
         Dim ItemName As String
@@ -2776,7 +2783,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         Engine_Text_Render_LetraChica ItemName, 100, 730, COLOR_WHITE, 4, False
 
         If ClickEnAsistente < 30 Then
-            Call Particle_Group_Render(spell_particle, 500, 365)
+          '  Call Particle_Group_Render(spell_particle, 500, 365)
         End If
 
     End If
