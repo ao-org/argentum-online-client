@@ -225,7 +225,6 @@ Public Sub CargarRecursos()
     Call CargarCascos
     Call CargarCuerpos
     Call CargarFxs
-    Call CargarMiniMap
     Call CargarPasos
     Call CargarAnimArmas
     Call CargarAnimEscudos
@@ -1254,7 +1253,7 @@ Public Sub CargarParticulas()
         StreamData(LoopC).move_y1 = General_Var_Get(StreamFile, Val(LoopC), "move_y1")
         StreamData(LoopC).move_y2 = General_Var_Get(StreamFile, Val(LoopC), "move_y2")
         StreamData(LoopC).life_counter = General_Var_Get(StreamFile, Val(LoopC), "life_counter")
-        StreamData(LoopC).speed = Val(General_Var_Get(StreamFile, Val(LoopC), "Speed"))
+        StreamData(LoopC).Speed = Val(General_Var_Get(StreamFile, Val(LoopC), "Speed"))
         temp = General_Var_Get(StreamFile, Val(LoopC), "resize")
         StreamData(LoopC).grh_resize = IIf((temp = -1), True, False)
         StreamData(LoopC).grh_resizex = General_Var_Get(StreamFile, Val(LoopC), "rx")
@@ -2133,7 +2132,7 @@ Sub CargarCuerpos()
                 
                 With GrhData(LastGrh)
                     .NumFrames = MoldesBodies(Std).DirCount(j)
-                    .speed = .NumFrames * AnimSpeed
+                    .Speed = .NumFrames * AnimSpeed
                     
                     ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
                     
@@ -2271,7 +2270,7 @@ Public Function LoadGrhData() As Boolean
 
         With GrhData(grh)
         
-            GrhData(grh).active = True
+            GrhData(grh).Active = True
             'Get number of frames
             Get #Handle, , .NumFrames
 
@@ -2292,9 +2291,9 @@ Public Function LoadGrhData() As Boolean
 
                 Next Frame
                 
-                Get #Handle, , GrhData(grh).speed
+                Get #Handle, , GrhData(grh).Speed
                 
-                If .speed <= 0 Then GoTo ErrorHandler
+                If .Speed <= 0 Then GoTo ErrorHandler
                 
                 'Compute width and height
                 .pixelWidth = GrhData(.Frames(1)).pixelWidth
@@ -2362,63 +2361,6 @@ ErrorHandler:
     MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & grh
     
 End Function
-
-Public Function CargarMiniMap()
-    
-    On Error GoTo CargarMiniMap_Err
-    
-
-    Dim count  As Long
-
-    Dim Handle As Integer
-
-    Handle = FreeFile
-    
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "minimap.bin", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de recurso!"
-            GoTo ErrorHandler
-
-        End If
-    
-        Open Windows_Temp_Dir & "minimap.bin" For Binary Access Read As #Handle
-    #Else
-    
-        Open App.Path & "\..\Recursos\init\minimap.bin" For Binary Access Read As #Handle
-        
-    #End If
-
-    For count = 1 To MaxGrh
-
-        If GrhData(count).active Then
-            Get #Handle, , GrhData(count).MiniMap_color
-
-        End If
-
-    Next count
-    
-    Close #Handle
-    
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "minimap.bin"
-    #End If
-    
-    Exit Function
-
-ErrorHandler:
-    CargarMiniMap = False
-    MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & count
-
-    
-    Exit Function
-
-CargarMiniMap_Err:
-    Call RegistrarError(Err.number, Err.Description, "Recursos.CargarMiniMap", Erl)
-    Resume Next
-    
-End Function
-
 
 Sub CargarAnimArmasViejo()
     
@@ -2582,7 +2524,7 @@ Sub CargarAnimArmas()
                 
                 With GrhData(LastGrh)
                     .NumFrames = MoldesBodies(Std).DirCount(j)
-                    .speed = .NumFrames / 0.018
+                    .Speed = .NumFrames / 0.018
                     
                     ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
                     
@@ -2793,7 +2735,7 @@ Sub CargarAnimEscudos()
                 
                 With GrhData(LastGrh)
                     .NumFrames = MoldesBodies(Std).DirCount(j)
-                    .speed = .NumFrames / 0.018
+                    .Speed = .NumFrames / 0.018
                     
                     ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
                     

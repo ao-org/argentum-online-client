@@ -79,9 +79,10 @@ Public Enum resource_file_type
     mp3
     wav
     Scripts
-    Patch
+    MiniMaps
     interface
     Maps
+    Patch
 End Enum
 
 Private Const GRAPHIC_PATH As String = "\Graficos\"
@@ -93,6 +94,7 @@ Private Const SCRIPT_PATH As String = "\Init\"
 Private Const PATCH_PATH As String = "\Patches\"
 Private Const OUTPUT_PATH As String = "\Output\"
 Private Const MAP_PATH As String = "\Mapas\"
+Private Const MINIMAP_PATH As String = "\MiniMapas\"
 
 Private Declare Function Compress Lib "zlib.dll" Alias "compress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
 Private Declare Function UnCompress Lib "zlib.dll" Alias "uncompress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
@@ -218,11 +220,20 @@ On Local Error GoTo errhandler
         
         Case Maps
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "mapas.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Mapas.rao"
             Else
-                SourceFilePath = resource_path & "\mapas.rao"
+                SourceFilePath = resource_path & "\Mapas.rao"
             End If
             OutputFilePath = resource_path & MAP_PATH
+            
+        Case MiniMaps
+            If UseOutputFolder Then
+                SourceFilePath = resource_path & OUTPUT_PATH & "MiniMapas.rao"
+            Else
+                SourceFilePath = resource_path & "\MiniMapas.rao"
+            End If
+            OutputFilePath = resource_path & MINIMAP_PATH
+        
         Case Else
             Exit Function
     End Select
@@ -663,7 +674,12 @@ On Local Error GoTo errhandler
         Case Maps
             SourceFilePath = resource_path & MAP_PATH
             SourceFileExtension = ".csm"
-            OutputFilePath = dest_path & "mapas.rao"
+            OutputFilePath = dest_path & "Mapas.rao"
+            
+        Case MiniMaps
+            SourceFilePath = resource_path & MINIMAP_PATH
+            SourceFileExtension = ".bmp"
+            OutputFilePath = dest_path & "MiniMapas.rao"
     
     End Select
     
@@ -861,9 +877,16 @@ On Local Error GoTo errhandler
             
         Case Maps
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "mapas.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Mapas.rao"
             Else
-                SourceFilePath = resource_path & "\mapas.rao"
+                SourceFilePath = resource_path & "\Mapas.rao"
+            End If
+            
+        Case MiniMaps
+            If UseOutputFolder Then
+                SourceFilePath = resource_path & OUTPUT_PATH & "MiniMapas.rao"
+            Else
+                SourceFilePath = resource_path & "\MiniMapas.rao"
             End If
         
         Case Else
@@ -1138,7 +1161,10 @@ Public Function Extract_File_To_Memory(ByVal file_type As resource_file_type, By
             SourceFilePath = resource_path & "\Interface.rao"
 
         Case Maps
-            SourceFilePath = resource_path & "\mapas.rao"
+            SourceFilePath = resource_path & "\Mapas.rao"
+            
+        Case MiniMaps
+            SourceFilePath = resource_path & "\MiniMapas.rao"
         
         Case Else
             Exit Function
@@ -1255,7 +1281,7 @@ Public Function GAeneral_Load_Picture_From_Resource(ByVal picture_file_name As S
 
     'On Error GoTo ErrorHandler
 
-    If Extract_File(interface, App.Path & "\..\Recursos\OUTPUT\", picture_file_name, Windows_Temp_Dir, Passwd, False) Then
+    If Extract_File(interface, App.Path & "\..\Recursos\OUTPUT", picture_file_name, Windows_Temp_Dir, Passwd, False) Then
         Set GAeneral_Load_Picture_From_Resource = LoadPicture(Windows_Temp_Dir & picture_file_name)
         Call Delete_File(Windows_Temp_Dir & picture_file_name)
     Else
@@ -1292,11 +1318,27 @@ Public Function General_Load_Picture_From_Resource_Ex(ByVal picture_file_name As
 
     Dim bytArr() As Byte
 
-    If Extract_File_To_Memory(interface, App.Path & "\..\Recursos\OUTPUT\", picture_file_name, bytArr(), Passwd) Then
+    If Extract_File_To_Memory(interface, App.Path & "\..\Recursos\OUTPUT", picture_file_name, bytArr(), Passwd) Then
         Set General_Load_Picture_From_Resource_Ex = General_Load_Picture_From_BArray(bytArr())
     Else
         Set General_Load_Picture_From_Resource_Ex = Nothing
+    End If
 
+    Exit Function
+
+ErrorHandler:
+
+End Function
+
+Public Function General_Load_Minimap_From_Resource_Ex(ByVal picture_file_name As String, ByVal Passwd As String) As IPicture
+    On Error GoTo ErrorHandler
+
+    Dim bytArr() As Byte
+
+    If Extract_File_To_Memory(MiniMaps, App.Path & "\..\Recursos\OUTPUT", picture_file_name, bytArr(), Passwd) Then
+        Set General_Load_Minimap_From_Resource_Ex = General_Load_Picture_From_BArray(bytArr())
+    Else
+        Set General_Load_Minimap_From_Resource_Ex = Nothing
     End If
 
     Exit Function

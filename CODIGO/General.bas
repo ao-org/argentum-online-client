@@ -7,8 +7,8 @@ Option Explicit
 
 Private Type Position
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -23,8 +23,8 @@ End Type
 Private Type tWorldPos
 
     map As Integer
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -32,7 +32,7 @@ Private Type grh
 
     GrhIndex As Long
     framecounter As Single
-    speed As Single
+    Speed As Single
     Started As Long
     alpha_blend As Boolean
     Angle As Single
@@ -50,7 +50,7 @@ Private Type GrhData
     TileHeight As Single
     NumFrames As Integer
     Frames() As Integer
-    speed As Integer
+    Speed As Integer
     mini_map_color As Long
 
 End Type
@@ -405,8 +405,8 @@ Public Sub RefreshAllChars()
     
     For LoopC = 1 To LastChar
     
-        If charlist(LoopC).active = 1 Then
-            MapData(charlist(LoopC).Pos.x, charlist(LoopC).Pos.y).charindex = LoopC
+        If charlist(LoopC).Active = 1 Then
+            MapData(charlist(LoopC).Pos.X, charlist(LoopC).Pos.Y).charindex = LoopC
 
         End If
 
@@ -655,7 +655,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
@@ -708,16 +708,16 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.X, UserPos.Y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.X + 1, UserPos.Y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.X, UserPos.Y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.X - 1, UserPos.Y, Direccion)
 
     End Select
     
@@ -756,10 +756,9 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End If
     
-    frmMain.personaje(0).Left = UserPos.x - 5
-    frmMain.personaje(0).Top = UserPos.y - 4
+    Call frmMain.SetMinimapPosition(0, UserPos.X, UserPos.Y)
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
 
     If frmMapaGrande.Visible Then
         Call CalcularPosicionMAPA
@@ -1718,7 +1717,6 @@ On Error GoTo errhandler
 
     #If Compresion = 1 Then
         Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
-    
     #Else
         Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & LCase$(FileName))
     #End If
@@ -1727,6 +1725,23 @@ Exit Function
 
 errhandler:
     MsgBox "Error al cargar la interface: " & FileName
+
+End Function
+
+Public Function LoadMinimap(ByVal map As Integer) As IPicture
+
+On Error GoTo errhandler
+
+    #If Compresion = 1 Then
+        Set LoadMinimap = General_Load_Minimap_From_Resource_Ex("mapa" & map & ".bmp", ResourcesPassword)
+    #Else
+        Set LoadMinimap = LoadPicture(App.Path & "/../Recursos/Minimapas/Mapa" & map & ".bmp")
+    #End If
+    
+Exit Function
+
+errhandler:
+    MsgBox "Error al cargar minimapa: Mapa" & map & ".bmp"
 
 End Function
 
