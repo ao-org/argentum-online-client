@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
+Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -457,12 +457,12 @@ Begin VB.Form frmMain
          BackStyle       =   1  'Opaque
          BorderColor     =   &H00FFFFFF&
          FillColor       =   &H0000FFFF&
-         Height          =   90
+         Height          =   75
          Index           =   0
          Left            =   450
-         Shape           =   5  'Rounded Square
+         Shape           =   3  'Circle
          Top             =   750
-         Width           =   150
+         Width           =   75
       End
    End
    Begin VB.Timer macrotrabajo 
@@ -489,7 +489,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1450,8 +1449,8 @@ Private MenuNivel As Byte
 
 Private Type POINTAPI
 
-    x As Long
-    y As Long
+    X As Long
+    Y As Long
 
 End Type
 
@@ -1487,7 +1486,7 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
 
@@ -1527,7 +1526,7 @@ btnSpawn_Click_Err:
     
 End Sub
 
-Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo clanimg_MouseMove_Err
     
@@ -1547,7 +1546,7 @@ clanimg_MouseMove_Err:
     
 End Sub
 
-Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo clanimg_MouseUp_Err
     
@@ -1565,7 +1564,7 @@ clanimg_MouseUp_Err:
     
 End Sub
 
-Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdlanzar_MouseDown_Err
     
@@ -1587,7 +1586,7 @@ cmdlanzar_MouseDown_Err:
     
 End Sub
 
-Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdlanzar_MouseUp_Err
     
@@ -1645,7 +1644,7 @@ CerrarLlavero_Err:
     
 End Sub
 
-Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdLlavero_MouseDown_Err
     
@@ -1660,7 +1659,7 @@ cmdLlavero_MouseDown_Err:
     
 End Sub
 
-Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdLlavero_MouseMove_Err
     
@@ -1779,7 +1778,7 @@ DesDibujarSeguro_Err:
     
 End Sub
 
-Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdMoverHechi_MouseMove_Err
     
@@ -1975,7 +1974,7 @@ Efecto_Timer_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo EstadisticasBoton_MouseDown_Err
     
@@ -1990,7 +1989,7 @@ EstadisticasBoton_MouseDown_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo EstadisticasBoton_MouseMove_Err
     
@@ -2009,7 +2008,7 @@ EstadisticasBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo EstadisticasBoton_MouseUp_Err
     
@@ -2055,7 +2054,7 @@ exp_Click_Err:
     
 End Sub
 
-Private Sub exp_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub exp_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If Not ShowPercentage Then
         lblPorcLvl.Visible = True
@@ -2129,7 +2128,7 @@ Form_KeyUp_Err:
     
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Form_MouseDown_Err
     
@@ -2155,12 +2154,12 @@ Form_MouseDown_Err:
     
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Form_MouseUp_Err
     
-    clicX = x
-    clicY = y
+    clicX = X
+    clicY = Y
 
     
     Exit Sub
@@ -2253,7 +2252,7 @@ GlobalIcon_Click_Err:
     
 End Sub
 
-Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo hlst_MouseMove_Err
     
@@ -2285,7 +2284,7 @@ hlst_MouseMove_Err:
     
 End Sub
 
-Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image2_MouseDown_Err
     
@@ -2329,7 +2328,7 @@ Private Sub Hpshp_Click()
     HpBar_Click
 End Sub
 
-Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     '    Image3.Picture = LoadInterface("elegirchatapretado.bmp")
     
     On Error GoTo Image3_MouseDown_Err
@@ -2345,7 +2344,7 @@ Image3_MouseDown_Err:
     
 End Sub
 
-Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image3_MouseMove_Err
     
@@ -2395,7 +2394,7 @@ Image4_Click_Err:
     
 End Sub
 
-Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image4_MouseDown_Err
     
@@ -2419,7 +2418,7 @@ Image4_MouseDown_Err:
     
 End Sub
 
-Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image4_MouseMove_Err
     
@@ -2485,7 +2484,7 @@ Image5_Click_Err:
     
 End Sub
 
-Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Image5_MouseMove_Err
     
@@ -2565,7 +2564,7 @@ imgHechizos_Click_Err:
     
 End Sub
 
-Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo imgHechizos_MouseDown_Err
     
@@ -2581,7 +2580,7 @@ imgHechizos_MouseDown_Err:
     
 End Sub
 
-Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo imgHechizos_MouseMove_Err
     
@@ -2605,12 +2604,12 @@ Private Sub ImgHogar_Click()
     Call ParseUserCommand("/HOGAR")
 End Sub
 
-Private Sub ImgHogar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgHogar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     ImgHogar.Picture = LoadInterface("boton-home-off.bmp")
     ImgHogar.Tag = "1"
 End Sub
 
-Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If ImgHogar.Tag = "0" Then
         ImgHogar.Picture = LoadInterface("boton-home-over.bmp")
         ImgHogar.Tag = "1"
@@ -2647,7 +2646,7 @@ imgInventario_Click_Err:
     
 End Sub
 
-Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo imgInventario_MouseDown_Err
     
@@ -2663,7 +2662,7 @@ imgInventario_MouseDown_Err:
     
 End Sub
 
-Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo imgInventario_MouseMove_Err
     
@@ -2721,7 +2720,7 @@ Private Sub Label1_Click()
     frmBancoCuenta.Show , frmMain
 End Sub
 
-Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     If ShowPercentage Then
         lblPorcLvl.Visible = False
@@ -2761,7 +2760,7 @@ MANShp_Click_Err:
     
 End Sub
 
-Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo manualboton_MouseMove_Err
     
@@ -2781,7 +2780,7 @@ manualboton_MouseMove_Err:
     
 End Sub
 
-Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo manualboton_MouseUp_Err
     
@@ -2796,7 +2795,7 @@ manualboton_MouseUp_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo OpcionesBoton_MouseDown_Err
     
@@ -2829,7 +2828,7 @@ panelGM_Click_Err:
     
 End Sub
 
-Private Sub panelInf_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub panelInf_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Image5.Tag = "1" Then
         Image5.Picture = Nothing
         Image5.Tag = "0"
@@ -3009,7 +3008,7 @@ PicCorreo_Click_Err:
     
 End Sub
 
-Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal X As Integer, ByVal Y As Integer)
     
     On Error GoTo Inventario_ItemDropped_Err
     
@@ -3044,7 +3043,7 @@ picInv_Paint_Err:
     Resume Next
     
 End Sub
-Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo QuestBoton_MouseMove_Err
     
@@ -3064,7 +3063,7 @@ QuestBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo QuestBoton_MouseUp_Err
     
@@ -3082,7 +3081,7 @@ QuestBoton_MouseUp_Err:
     
 End Sub
 
-Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo RankingBoton_MouseMove_Err
     
@@ -3102,7 +3101,7 @@ RankingBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo RankingBoton_MouseUp_Err
     
@@ -3343,7 +3342,7 @@ mapMundo_Click_Err:
     
 End Sub
 
-Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo mapMundo_MouseMove_Err
     
@@ -3363,13 +3362,13 @@ mapMundo_MouseMove_Err:
     
 End Sub
 
-Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo MiniMap_MouseDown_Err
     
 
     If Button = vbRightButton Then
-        Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
+        Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(X) & " " & CByte(Y))
         Exit Sub
 
     End If
@@ -3389,7 +3388,7 @@ MiniMap_MouseDown_Err:
     
 End Sub
 
-Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo MiniMap_MouseMove_Err
     
@@ -3488,7 +3487,7 @@ mnuUsar_Click_Err:
     
 End Sub
 
-Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo NameMapa_MouseMove_Err
     
@@ -3523,7 +3522,7 @@ onlines_Click_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo OpcionesBoton_MouseMove_Err
     
@@ -3543,7 +3542,7 @@ OpcionesBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo OpcionesBoton_MouseUp_Err
     
@@ -3558,7 +3557,7 @@ OpcionesBoton_MouseUp_Err:
     
 End Sub
 
-Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Panel_MouseMove_Err
     
@@ -3604,7 +3603,7 @@ Panel_MouseMove_Err:
     
 End Sub
 
-Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo picInv_MouseMove_Err
     
@@ -3613,7 +3612,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     UsaMacro = False
     
-    Slot = Inventario.GetSlot(x, y)
+    Slot = Inventario.GetSlot(X, Y)
     
     If Slot <= 0 Then
         ObjLbl.Visible = False
@@ -3712,7 +3711,7 @@ CompletarEnvioMensajes_Err:
     
 End Sub
 
-Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo RecTxt_MouseUp_Err
     
@@ -3787,7 +3786,7 @@ refuerzolanzar_Click_Err:
     
 End Sub
 
-Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo refuerzolanzar_MouseMove_Err
     
@@ -3809,7 +3808,7 @@ refuerzolanzar_MouseMove_Err:
     
 End Sub
 
-Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo renderer_MouseUp_Err
     
@@ -3822,12 +3821,12 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     '    Call FormParser.Parse_Form(Me)
     'End If
 
-    clicX = x
-    clicY = y
+    clicX = X
+    clicY = Y
 
     If Button = vbLeftButton Then
         If Pregunta Then
-            If x >= 395 And x <= 412 And y >= 243 And y <= 260 Then
+            If X >= 395 And X <= 412 And Y >= 243 And Y <= 260 Then
                 If PreguntaLocal Then
     
                     Select Case PreguntaNUM
@@ -3852,7 +3851,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                 
                 Exit Sub
     
-            ElseIf x >= 420 And x <= 436 And y >= 243 And y <= 260 Then
+            ElseIf X >= 420 And X <= 436 And Y >= 243 And Y <= 260 Then
                 If PreguntaLocal Then
     
                     Select Case PreguntaNUM
@@ -3915,12 +3914,12 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
             If Not Frm Is Nothing Then
                 Call Frm.Show
             
-                Frm.Left = Me.Left + (renderer.Left + x + 1) * Screen.TwipsPerPixelX
+                Frm.Left = Me.Left + (renderer.Left + X + 1) * Screen.TwipsPerPixelX
                     
-                If (renderer.Top + y) * Screen.TwipsPerPixelY + Frm.Height > Me.Height Then
-                    Frm.Top = Me.Top + (renderer.Top + y) * Screen.TwipsPerPixelY - Frm.Height
+                If (renderer.Top + Y) * Screen.TwipsPerPixelY + Frm.Height > Me.Height Then
+                    Frm.Top = Me.Top + (renderer.Top + Y) * Screen.TwipsPerPixelY - Frm.Height
                 Else
-                    Frm.Top = Me.Top + (renderer.Top + y) * Screen.TwipsPerPixelY
+                    Frm.Top = Me.Top + (renderer.Top + Y) * Screen.TwipsPerPixelY
                 End If
                 
                 Set Frm = Nothing
@@ -3938,13 +3937,13 @@ renderer_MouseUp_Err:
     
 End Sub
 
-Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo renderer_MouseMove_Err
 
     DisableURLDetect
 
-    Call Form_MouseMove(Button, Shift, renderer.Left + x, renderer.Top + y)
+    Call Form_MouseMove(Button, Shift, renderer.Left + X, renderer.Top + Y)
 
     'If DropItem Then
 
@@ -3974,7 +3973,7 @@ renderer_MouseMove_Err:
     
 End Sub
 
-Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo renderer_MouseDown_Err
     
@@ -4043,19 +4042,19 @@ Private Sub Retar_Click()
     Call ParseUserCommand("/RETAR")
 End Sub
 
-Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Retar.Picture = LoadInterface("boton-retos-off.bmp")
     Retar.Tag = "1"
 End Sub
 
-Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Retar.Tag = "0" Then
         Retar.Picture = LoadInterface("boton-retos-over.bmp")
         Retar.Tag = "1"
     End If
 End Sub
 
-Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Retar.Picture = Nothing
     Retar.Tag = "0"
 End Sub
@@ -4063,9 +4062,6 @@ End Sub
 Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo SendTxt_KeyUp_Err
-    
-
-    
 
     Dim str1 As String
 
@@ -4148,7 +4144,6 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
         
     End If
 
-    
     Exit Sub
 
 SendTxt_KeyUp_Err:
@@ -4186,7 +4181,7 @@ Socket1_Timeout_Err:
     
 End Sub
 
-Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo TiendaBoton_MouseMove_Err
     
@@ -4206,7 +4201,7 @@ TiendaBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub TiendaBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub TiendaBoton_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo TiendaBoton_MouseUp_Err
     
@@ -4379,7 +4374,7 @@ cmdLanzar_Click_Err:
     
 End Sub
 
-Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo CmdLanzar_MouseMove_Err
     
@@ -4565,7 +4560,7 @@ Public Sub Form_Click()
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 4 Or MouseBoton = vbRightButton And ACCION2 = 4 Or MouseBoton = 4 And ACCION3 = 4 Then
 
         If MapData(tX, tY).charindex <> 0 Then
-            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
+            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.X, UserPos.Y).charindex).nombre Then
                 If charlist(MapData(tX, tY).charindex).EsNpc = False Then
                     SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
 
@@ -4642,7 +4637,7 @@ Form_Load_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Form_MouseMove_Err
 
@@ -4653,7 +4648,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         If MoverVentana = 1 Then
             If Not UserMoving Then
                 ' Mover form sólo en la parte superior
-                If y < 30 Then MoverForm
+                If Y < 30 Then MoverForm
 
                 'Call Auto_Drag(Me.hwnd)
             End If
@@ -4662,8 +4657,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     End If
 
-    MouseX = x - renderer.Left
-    MouseY = y - renderer.Top
+    MouseX = X - renderer.Left
+    MouseY = Y - renderer.Top
     ObjLbl.Visible = False
     
     If EstadisticasBoton.Tag = "1" Then
@@ -4908,7 +4903,7 @@ RecTxt_Change_Err:
     
 End Sub
 
-Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo RecTxt_MouseMove_Err
     
@@ -5589,4 +5584,9 @@ End Sub
 
 Public Sub ShowStats()
     panelinferior_Click 0
+End Sub
+
+Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal X As Integer, ByVal Y As Integer)
+    personaje(Jugador).Left = (X - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
+    personaje(Jugador).Top = (Y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
 End Sub

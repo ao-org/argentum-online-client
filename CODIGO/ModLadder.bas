@@ -713,7 +713,7 @@ Sub General_Set_Connect()
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -1705,38 +1705,9 @@ End Function
 Public Sub DibujarMiniMapa()
     
     On Error GoTo DibujarMiniMapa_Err
-    
 
-    Dim map_x   As Long, map_y As Long
+    frmMain.MiniMap.Picture = LoadMinimap(UserMap)
 
-    Dim termine As Boolean
-
-    frmMain.MiniMap.BackColor = vbBlack
-
-    For map_y = 1 To 100
-        For map_x = 1 To 100
-
-            If MapData(map_x, map_y).Graphic(1).GrhIndex > 0 Then
-                SetPixel frmMain.MiniMap.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(1).GrhIndex).MiniMap_color
-
-            End If
-
-            If MapData(map_x, map_y).Graphic(2).GrhIndex > 0 Then
-                SetPixel frmMain.MiniMap.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(2).GrhIndex).MiniMap_color
-
-            End If
-
-            If MapData(map_x, map_y).Graphic(4).GrhIndex > 0 Then
-                SetPixel frmMain.MiniMap.hdc, map_x - 1, map_y - 1, GrhData(MapData(map_x, map_y).Graphic(4).GrhIndex).MiniMap_color
-
-            End If
-            
-        Next map_x
-    Next map_y
-     
-    frmMain.MiniMap.Refresh
-
-    
     Exit Sub
 
 DibujarMiniMapa_Err:

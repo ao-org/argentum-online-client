@@ -94,9 +94,8 @@ Public Type GrhData
     
     NumFrames As Integer
     Frames() As Long 'gs-long
-    speed As Single
-    active As Boolean
-    MiniMap_color As Long
+    Speed As Single
+    Active As Boolean
     
     ' Precalculated
     Tx1 As Single
@@ -110,7 +109,7 @@ End Type
 Public Type grh
 
     GrhIndex As Long
-    speed As Single
+    Speed As Single
     Started As Long
     Loops As Integer
     Angle As Single
@@ -170,7 +169,7 @@ Public Type Char
     UserMaxHp As Long
     
     EsEnano As Boolean
-    active As Byte
+    Active As Byte
     Heading As E_Heading
     Pos As Position
     
@@ -564,7 +563,7 @@ Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Star
         End If
         
         grh.Loops = Loops
-        grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
+        grh.Speed = GrhData(GrhIndex).Speed / GrhData(GrhIndex).NumFrames
     Else
         grh.Started = 0
     End If
@@ -899,18 +898,18 @@ Function NextOpenChar() As Integer
     '*****************************************************************
     'Finds next open char slot in CharList
     '*****************************************************************
-    Dim loopc As Long
+    Dim LoopC As Long
 
     Dim Dale  As Boolean
     
-    loopc = 1
+    LoopC = 1
 
-    Do While charlist(loopc).active And Dale
-        loopc = loopc + 1
-        Dale = (loopc <= UBound(charlist))
+    Do While charlist(LoopC).Active And Dale
+        LoopC = LoopC + 1
+        Dale = (LoopC <= UBound(charlist))
     Loop
     
-    NextOpenChar = loopc
+    NextOpenChar = LoopC
 
     
     Exit Function

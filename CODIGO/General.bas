@@ -7,8 +7,8 @@ Option Explicit
 
 Private Type Position
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -23,8 +23,8 @@ End Type
 Private Type tWorldPos
 
     map As Integer
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -32,7 +32,7 @@ Private Type grh
 
     GrhIndex As Long
     framecounter As Single
-    speed As Single
+    Speed As Single
     Started As Long
     alpha_blend As Boolean
     Angle As Single
@@ -50,7 +50,7 @@ Private Type GrhData
     TileHeight As Single
     NumFrames As Integer
     Frames() As Integer
-    speed As Integer
+    Speed As Integer
     mini_map_color As Long
 
 End Type
@@ -92,12 +92,12 @@ Private Const SIF_TRACKPOS = &H10
 Private Const SIF_ALL = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
 Private tSI As SCROLLINFO
 
-Public Declare Function GetScrollInfo Lib "user32" (ByVal hwnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
+Public Declare Function GetScrollInfo Lib "user32" (ByVal hWnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
 
-Public Declare Function GetScrollPos Lib "user32" (ByVal hwnd As Long, ByVal nBar As Long) As Long
+Public Declare Function GetScrollPos Lib "user32" (ByVal hWnd As Long, ByVal nBar As Long) As Long
 
 'Api SendMessage
-Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
 
 Public Const MAX_TAB_STOPS = 32&
 
@@ -242,7 +242,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         
         Dim bHoldBar As Boolean
 
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
 
     With RichTextBox
         
@@ -258,10 +258,10 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
         bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         
         .SelStart = Len(.Text)
@@ -286,7 +286,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         End If
         
         If bHoldBar Then
-            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
 
     End With
@@ -320,7 +320,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     Dim Ret As Long
     
     Dim bHoldBar As Boolean
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
 
     With RichTextBox
 
@@ -333,10 +333,10 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
          bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         .SelStart = Len(.Text)
         .SelLength = 0
@@ -350,7 +350,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
         .SelText = Text
         
         If bHoldBar Then
-            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
     End With
     
@@ -385,7 +385,7 @@ Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, O
     End With
 
     Dim Ret As Long
-    Ret = SendMessage(rtbTarget.hwnd, EM_SETPARAFORMAT, 0&, Para)
+    Ret = SendMessage(rtbTarget.hWnd, EM_SETPARAFORMAT, 0&, Para)
     
     If Ret = 0 Then Debug.Print "Error al setear el espaciado entre líneas del RichTextBox."
 End Sub
@@ -405,8 +405,8 @@ Public Sub RefreshAllChars()
     
     For LoopC = 1 To LastChar
     
-        If charlist(LoopC).active = 1 Then
-            MapData(charlist(LoopC).Pos.x, charlist(LoopC).Pos.y).charindex = LoopC
+        If charlist(LoopC).Active = 1 Then
+            MapData(charlist(LoopC).Pos.X, charlist(LoopC).Pos.Y).charindex = LoopC
 
         End If
 
@@ -646,10 +646,10 @@ Sub SetConnected()
     ' establece el borde al listbox
     Call Establecer_Borde(frmMain.hlst, frmMain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
+    Call Make_Transparent_Richtext(frmMain.RecTxt.hWnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(frmMain)
@@ -708,16 +708,16 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.X, UserPos.Y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.X + 1, UserPos.Y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.X, UserPos.Y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.X - 1, UserPos.Y, Direccion)
 
     End Select
     
@@ -756,10 +756,9 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End If
     
-    frmMain.personaje(0).Left = UserPos.x - 5
-    frmMain.personaje(0).Top = UserPos.y - 4
+    Call frmMain.SetMinimapPosition(0, UserPos.X, UserPos.Y)
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
 
     If frmMapaGrande.Visible Then
         Call CalcularPosicionMAPA
@@ -1084,7 +1083,7 @@ Sub Main()
     
     If Sonido Then
     
-        If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+        If Sound.Initialize_Engine(frmConnect.hWnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
             Call Sound.Ambient_Volume_Set(VolAmbient)
         
         Else
@@ -1097,7 +1096,7 @@ Sub Main()
 
     End If
 
-    RawServersList = "190.245.145.3:7667:Horacio;190.210.83.156:7667:Iplan;186.139.27.206:7667:ReyarB;191.97.254.154:7667:Martin;127.0.0.1:7667:Localhost"
+    RawServersList = "190.245.160.106:7667:Horacio;45.235.98.165:7667:InetG;186.139.27.206:7667:ReyarB;191.97.254.154:7667:Martin;127.0.0.1:7667:Localhost"
 
     Call ComprobarEstado
     Call CargarLst
@@ -1718,7 +1717,6 @@ On Error GoTo errhandler
 
     #If Compresion = 1 Then
         Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
-    
     #Else
         Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & LCase$(FileName))
     #End If
@@ -1727,6 +1725,23 @@ Exit Function
 
 errhandler:
     MsgBox "Error al cargar la interface: " & FileName
+
+End Function
+
+Public Function LoadMinimap(ByVal map As Integer) As IPicture
+
+On Error GoTo errhandler
+
+    #If Compresion = 1 Then
+        Set LoadMinimap = General_Load_Minimap_From_Resource_Ex("mapa" & map & ".bmp", ResourcesPassword)
+    #Else
+        Set LoadMinimap = LoadPicture(App.Path & "/../Recursos/Minimapas/Mapa" & map & ".bmp")
+    #End If
+    
+Exit Function
+
+errhandler:
+    MsgBox "Error al cargar minimapa: Mapa" & map & ".bmp"
 
 End Function
 
