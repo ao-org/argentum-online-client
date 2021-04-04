@@ -39,7 +39,7 @@ Begin VB.Form FrmLogear
       Left            =   2820
       MaxLength       =   30
       PasswordChar    =   "*"
-      TabIndex        =   1
+      TabIndex        =   2
       Tag             =   "1"
       Top             =   1580
       Width           =   1840
@@ -61,6 +61,7 @@ Begin VB.Form FrmLogear
       Height          =   285
       Left            =   710
       MaxLength       =   100
+      ScrollBars      =   1  'Horizontal
       TabIndex        =   0
       Tag             =   "0"
       Top             =   1580
@@ -85,6 +86,7 @@ Begin VB.Form FrmLogear
       List            =   "FrmLogear.frx":451D0
       Style           =   2  'Dropdown List
       TabIndex        =   3
+      TabStop         =   0   'False
       Top             =   2520
       Visible         =   0   'False
       Width           =   1380
@@ -93,7 +95,7 @@ Begin VB.Form FrmLogear
       BackStyle       =   0  'Transparent
       Height          =   255
       Left            =   600
-      TabIndex        =   2
+      TabIndex        =   1
       Top             =   1800
       Width           =   1095
    End

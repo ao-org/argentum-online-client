@@ -731,63 +731,34 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             #End If
-
-            If (x > 479 And x < 501) And (y > 341 And y < 470) Then
- 
-                ClickEnAsistente = ClickEnAsistente + 1
-
-                If ClickEnAsistente = 1 Then
-                    Call TextoAlAsistente("¿En que te puedo ayudar?")
-
-                End If
-
-                If ClickEnAsistente = 2 Then
-                    Call TextoAlAsistente("¿Ya tenes una cuenta? Logea por acá abajo.")
-
-                End If
-
-                If ClickEnAsistente = 4 Then
-                    Call TextoAlAsistente("Si necesita ayuda dentro del juego podes usar el comando /GM y un compañero mio se acercara hacia tí.")
+            
+            
+            While LastClickAsistente = ClickEnAsistenteRandom
+                ClickEnAsistenteRandom = RandomNumber(1, 4)
+            Wend
+            
+            LastClickAsistente = ClickEnAsistenteRandom
+            
+            
+             If (x > 479 And x < 501) And (y > 341 And y < 470) Then
+             
+                If ClickEnAsistenteRandom = 1 Then
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/")
 
                 End If
 
-                If ClickEnAsistente = 5 Then
-                    Call TextoAlAsistente("¡Espero tengas un bello dia.")
+                If ClickEnAsistenteRandom = 2 Then
+                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!")
 
                 End If
 
-                If ClickEnAsistente = 20 Then
-                    Call TextoAlAsistente("Bueno... listo.")
+                If ClickEnAsistenteRandom = 3 Then
+                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta")
 
                 End If
 
-                If ClickEnAsistente = 12 Then
-                    Call TextoAlAsistente("¡Auch! ¡Me haces cosquillas!")
-
-                End If
-
-                If ClickEnAsistente = 20 Then
-                    Call TextoAlAsistente("En cualquier momento se larga....")
-
-                End If
-
-                If ClickEnAsistente = 25 Then
-                    Call TextoAlAsistente("A Ladder le falto ponerme un paragua...")
-
-                End If
-
-                If ClickEnAsistente = 28 Then
-                    Call TextoAlAsistente("¡Para! ¡Por favor!")
-
-                End If
-
-                If ClickEnAsistente = 30 Then
-                    Call TextoAlAsistente("¡Me estas desconcentrando!")
-
-                End If
-
-                If ClickEnAsistente > 35 Then
-                    Call TextoAlAsistente("")
+                If ClickEnAsistenteRandom = 4 Then
+                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?")
 
                 End If
 
