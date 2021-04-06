@@ -36,7 +36,7 @@ Public Enum FontTypeNames
     FONTTYPE_CITIZEN
     FONTTYPE_CRIMINAL
     FONTTYPE_EXP
-    FONTTYPE_SUBASTA
+
     FONTTYPE_GLOBAL
     FONTTYPE_MP
     FONTTYPE_ROSA
@@ -340,16 +340,17 @@ Public Sub InitFontTypes()
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_CONSEJOVesA)
-        .red = 31
-        .green = 139
-        .blue = 139
+        .red = 0
+        .green = 128
+        .blue = 255
         .bold = 1
 
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_CONSEJOCAOSVesA)
-        .red = 189
-        .green = 0
+        .red = 255
+        .green = 50
+        .blue = 0
         .bold = 1
 
     End With
@@ -393,7 +394,8 @@ Public Sub InitFontTypes()
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_CRIMINAL)
-        .red = 255
+        .red = 233
+        .green = 50
         .bold = 1
     End With
     
@@ -402,14 +404,6 @@ Public Sub InitFontTypes()
         .green = 169
         .blue = 222
         .bold = 1
-
-    End With
-        
-    With FontTypes(FontTypeNames.FONTTYPE_SUBASTA)
-        .red = 188
-        .green = 192
-        .blue = 103
-        .bold = 0
 
     End With
     

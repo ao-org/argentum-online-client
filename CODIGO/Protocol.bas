@@ -195,11 +195,9 @@ Private Enum ServerPacketID
     TrofeoToggleOn
     TrofeoToggleOff
     LocaleMsg
-    ListaCorreo
     ShowPregunta
     DatosGrupo
     ubicacion
-    CorreoPicOn
     DonadorObj
     ArmaMov
     EscudoMov
@@ -496,8 +494,6 @@ Private Enum ClientPacketID
 End Enum
 
 Private Enum NewPacksID
-    OfertaInicial
-    OfertaDeSubasta
     QuestionGM
     CuentaRegresiva
     PossUser
@@ -521,17 +517,12 @@ Private Enum NewPacksID
     Escribiendo
     TraerRecompensas
     ReclamarRecompensa
-    Correo
-    SendCorreo
-    RetirarItemCorreo
-    BorrarCorreo
     InvitarGrupo
     ResponderPregunta
     RequestGrupo
     AbandonarGrupo
     HecharDeGrupo
     MacroPosSent
-    SubastaInfo
     BanCuenta
     UnbanCuenta
     BanSerial
@@ -757,10 +748,7 @@ Public Sub HandleIncomingData()
         
         Case ServerPacketID.LocaleMsg              ' || - Beware!! its the same as above, but it was properly splitted
             Call HandleLocaleMsg
-        
-        Case ServerPacketID.ListaCorreo              ' || - Beware!! its the same as above, but it was properly splitted
-            Call HandleListaCorreo
-        
+                
         Case ServerPacketID.ShowPregunta
             Call HandleShowPregunta
             
@@ -1096,9 +1084,6 @@ Public Sub HandleIncomingData()
             
         Case ServerPacketID.ubicacion
             Call HandleUbicacion
-            
-        Case ServerPacketID.CorreoPicOn
-            Call HandleCorreoPicOn
             
         Case ServerPacketID.Ranking      ' OBR
             Call HandleRanking
@@ -2630,29 +2615,6 @@ HandlePartySafeOn_Err:
     
 End Sub
 
-Private Sub HandleCorreoPicOn()
-    '***************************************************
-    'Author: Rapsodius
-    'Creation date: 10/10/07
-    '***************************************************
-    'Remove packet ID
-    
-    On Error GoTo HandleCorreoPicOn_Err
-    
-    Call incomingData.ReadByte
-    frmMain.PicCorreo.Visible = True
-
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Tenes un nuevo correo.", 204, 193, 115, False, False, False)
-    'Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_RESU_ON, 65, 190, 156, False, False, False)
-    
-    Exit Sub
-
-HandleCorreoPicOn_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCorreoPicOn", Erl)
-    Resume Next
-    
-End Sub
-
 ''
 ' Handles the CantUseWhileMeditating message.
 
@@ -2989,11 +2951,7 @@ Private Sub HandleChangeMap()
     If FrmGrupo.Visible Then
         Unload FrmGrupo
     End If
-    
-    If FrmCorreo.Visible Then
-        Unload FrmCorreo
-    End If
-    
+        
     If frmGoliath.Visible Then
         Unload frmGoliath
     End If
@@ -12753,30 +12711,6 @@ WriteMacroPos_Err:
     
 End Sub
 
-Public Sub WriteSubastaInfo()
-    
-    On Error GoTo WriteSubastaInfo_Err
-    
-
-    '***************************************************
-    'Ladder
-    'Macros
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.SubastaInfo)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSubastaInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSubastaInfo", Erl)
-    Resume Next
-    
-End Sub
-
 Public Sub WriteScrollInfo()
     
     On Error GoTo WriteScrollInfo_Err
@@ -17363,48 +17297,6 @@ WriteQuestionGM_Err:
     
 End Sub
 
-Public Sub WriteOfertaInicial(ByVal Oferta As Long)
-    
-    On Error GoTo WriteOfertaInicial_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.OfertaInicial)
-        Call .WriteLong(Oferta)
-
-    End With
-
-    
-    Exit Sub
-
-WriteOfertaInicial_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteOfertaInicial", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteOferta(ByVal OfertaDeSubasta As Long)
-    
-    On Error GoTo WriteOferta_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.OfertaDeSubasta)
-        Call .WriteLong(OfertaDeSubasta)
-
-    End With
-
-    
-    Exit Sub
-
-WriteOferta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteOferta", Erl)
-    Resume Next
-    
-End Sub
-
 Public Sub WriteGlobalMessage(ByVal Message As String)
     
     On Error GoTo WriteGlobalMessage_Err
@@ -19477,62 +19369,6 @@ WriteResponderPregunta_Err:
     
 End Sub
 
-Public Sub WriteCorreo()
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 22/11/2017
-    '***************************************************
-    
-    On Error GoTo WriteCorreo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.Correo)
-
-    
-    Exit Sub
-
-WriteCorreo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCorreo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteSendCorreo(ByVal UserNick As String, ByVal msg As String, ByVal ItemCount As Byte)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 4/5/2020
-    '***************************************************
-    
-    On Error GoTo WriteSendCorreo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.SendCorreo)
-    
-    Call outgoingData.WriteASCIIString(UserNick)
-    Call outgoingData.WriteASCIIString(msg)
-    
-    Call outgoingData.WriteByte(ItemCount)
-
-    If ItemCount > 0 Then
-
-        Dim i As Byte
-
-        For i = 1 To ItemCount
-            Call outgoingData.WriteByte(ItemLista(i).OBJIndex) ' Slot
-            Call outgoingData.WriteInteger(ItemLista(i).Amount) 'Cantidad
-        Next i
-
-    End If
-    
-    
-    Exit Sub
-
-WriteSendCorreo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSendCorreo", Erl)
-    Resume Next
-    
-End Sub
-
 Public Sub WriteComprarItem(ByVal ItemIndex As Byte)
     '***************************************************
     'Author: Pablo Mercavides
@@ -19574,166 +19410,6 @@ WriteCompletarViaje_Err:
     Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCompletarViaje", Erl)
     Resume Next
     
-End Sub
-
-Public Sub WriteRetirarItemCorreo(ByVal IndexMsg As Integer)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 22/11/2017
-    '***************************************************
-    
-    On Error GoTo WriteRetirarItemCorreo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.RetirarItemCorreo)
-    Call outgoingData.WriteInteger(IndexMsg)
-
-    
-    Exit Sub
-
-WriteRetirarItemCorreo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRetirarItemCorreo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteBorrarCorreo(ByVal IndexMsg As Integer)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 22/11/2017
-    '***************************************************
-    
-    On Error GoTo WriteBorrarCorreo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.BorrarCorreo)
-    Call outgoingData.WriteInteger(IndexMsg)
-
-    
-    Exit Sub
-
-WriteBorrarCorreo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBorrarCorreo", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub HandleListaCorreo()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
-    
-    Dim cant       As Byte
-    Dim i          As Byte
-    Dim Actualizar As Boolean
-
-    cant = buffer.ReadByte()
-    
-    FrmCorreo.lstMsg.Clear
-    FrmCorreo.ListAdjuntos.Clear
-    FrmCorreo.txMensaje.Text = vbNullString
-    FrmCorreo.lbFecha.Caption = vbNullString
-    FrmCorreo.lbItem.Caption = vbNullString
-
-    If cant > 0 Then
-
-        For i = 1 To cant
-        
-            CorreoMsj(i).Remitente = buffer.ReadASCIIString()
-            CorreoMsj(i).mensaje = buffer.ReadASCIIString()
-            CorreoMsj(i).ItemCount = buffer.ReadByte()
-            CorreoMsj(i).ItemArray = buffer.ReadASCIIString()
-            CorreoMsj(i).Leido = buffer.ReadByte()
-            CorreoMsj(i).Fecha = buffer.ReadASCIIString()
-            
-            FrmCorreo.lstMsg.AddItem CorreoMsj(i).Remitente
-            FrmCorreo.lstMsg.Enabled = True
-            
-            FrmCorreo.txMensaje.Enabled = True
-        Next i
-
-    Else
-    
-        FrmCorreo.lstMsg.AddItem ("Sin mensajes")
-        FrmCorreo.txMensaje.Enabled = False
-
-    End If
-        
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-        
-    Call FrmCorreo.lstInv.Clear
-
-    'Fill the inventory list
-    For i = 1 To MAX_INVENTORY_SLOTS
-
-        If frmMain.Inventario.OBJIndex(i) <> 0 Then
-            FrmCorreo.lstInv.AddItem frmMain.Inventario.ItemName(i)
-            
-        Else
-            FrmCorreo.lstInv.AddItem "Vacio"
-
-        End If
-
-    Next i
-    
-    Actualizar = buffer.ReadBoolean()
-
-    ' FrmCorreo.lstMsg.AddItem
-    If Not Actualizar Then
-        FrmCorreo.Picture = LoadInterface("ventanacorreo.bmp")
-        COLOR_AZUL = RGB(0, 0, 0)
-        
-        ' establece el borde al listbox
-        Call Establecer_Borde(FrmCorreo.lstMsg, FrmCorreo, COLOR_AZUL, 0, 0)
-        Call Establecer_Borde(FrmCorreo.ListAdjuntos, FrmCorreo, COLOR_AZUL, 0, 0)
-        Call Establecer_Borde(FrmCorreo.ListaAenviar, FrmCorreo, COLOR_AZUL, 0, 0)
-        Call Establecer_Borde(FrmCorreo.lstInv, FrmCorreo, COLOR_AZUL, 0, 0)
-
-        FrmCorreo.Show , frmMain
-        
-    End If
-    
-    'chat = Buffer.ReadASCIIString()
-    'fontIndex = Buffer.ReadByte()
-    
-    frmMain.PicCorreo.Visible = False
-    
-    Exit Sub
-    
-errhandler:
-
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
-
 End Sub
 
 Private Sub HandleShowPregunta()

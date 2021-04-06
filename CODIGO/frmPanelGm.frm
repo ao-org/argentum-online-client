@@ -2349,11 +2349,6 @@ StaffOnline_Click_Err:
     
 End Sub
 
-Private Sub SubastaEstado_Click()
-
-    Call ParseUserCommand("/SUBASTAACTIVADA") ' ver ReyarB
-End Sub
-
 Private Sub Temporal_Click()
     
     On Error GoTo Temporal_Click_Err

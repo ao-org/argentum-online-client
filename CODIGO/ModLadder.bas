@@ -73,23 +73,10 @@ Public Enum FXSound
     MP_SOUND = 150
 End Enum
 
-Public Const MAX_CORREOS_SLOTS = 60
-
 Public LastIndex2                        As Integer
-
-Public CorreoMsj(1 To MAX_CORREOS_SLOTS) As CorreoMsj
 
 Public ItemLista(1 To 10)                As Obj
 Public ItemCount                         As Byte
-
-Public Type CorreoMsj
-    Remitente As String
-    mensaje As String
-    ItemCount As Byte
-    ItemArray As String
-    Leido As Byte
-    Fecha As String
-End Type
 
 Public TieneFamiliar As Long
 

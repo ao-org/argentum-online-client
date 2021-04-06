@@ -866,7 +866,6 @@ Sub Check_Keys()
         Not frmComerciar.Visible And _
         Not frmCantidad.Visible And _
         Not frmGoliath.Visible And _
-        Not FrmCorreo.Visible And _
         Not frmEstadisticas.Visible And _
         Not frmAlqui.Visible And _
         Not frmCarp.Visible And _
@@ -874,7 +873,6 @@ Sub Check_Keys()
         Not FrmGrupo.Visible And _
         Not FrmShop.Visible And _
         Not FrmSastre.Visible And _
-        Not FrmCorreo.Visible And _
         Not FrmGmAyuda.Visible Then
  
         If frmMain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub

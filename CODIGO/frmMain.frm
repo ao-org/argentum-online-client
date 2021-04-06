@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.OCX"
+Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
@@ -489,7 +489,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2994,21 +2993,6 @@ Select Case Index
 End Select
 End Sub
 
-Private Sub PicCorreo_Click()
-    
-    On Error GoTo PicCorreo_Click_Err
-    
-    Call AddtoRichTextBox(frmMain.RecTxt, "Tenes un mensaje, ve al correo local para leerlo.", 255, 255, 255, False, False, False)
-
-    
-    Exit Sub
-
-PicCorreo_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.PicCorreo_Click", Erl)
-    Resume Next
-    
-End Sub
-
 Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
     
     On Error GoTo Inventario_ItemDropped_Err
@@ -3999,7 +3983,6 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     If FrmSastre.Visible Then Unload FrmSastre
     If frmAlqui.Visible Then Unload frmAlqui
     If frmCarp.Visible Then Unload frmCarp
-    If FrmCorreo.Visible Then Unload FrmCorreo
     If MenuUser.Visible Then Unload MenuUser
     If MenuGM.Visible Then Unload MenuGM
     If MenuNPC.Visible Then Unload MenuNPC

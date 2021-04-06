@@ -168,7 +168,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 If .ObjGrh.GrhIndex <> 0 Then
                     Select Case ObjData(.OBJInfo.OBJIndex).ObjType
                     
-                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
+                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento
 
                         Case Else
                             ' Objetos en el suelo (items, decorativos, etc)
@@ -260,7 +260,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 If .ObjGrh.GrhIndex <> 0 Then
                     Select Case ObjData(.OBJInfo.OBJIndex).ObjType
                     
-                        Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
+                        Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento
                             ' Objetos grandes (menos árboles)
                             Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, , x, y)
                     

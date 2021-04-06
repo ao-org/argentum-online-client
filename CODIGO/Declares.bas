@@ -743,7 +743,6 @@ Public Enum eObjType
     otMonturas = 44
     otRunas = 45
     otNudillos = 46
-    OtCorreo = 47
     OtCofre = 48
     OtDonador = 50
     otCualquiera = 1000

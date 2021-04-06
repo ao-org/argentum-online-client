@@ -468,30 +468,6 @@ cmdClean_Click_Err:
     
 End Sub
 
-Private Sub cmdDel_Click()
-    
-    On Error GoTo cmdDel_Click_Err
-    
-
-    If lstMsg.List(lstMsg.ListIndex) = "" Then Exit Sub
-
-    Call WriteBorrarCorreo(lstMsg.ListIndex + 1)
-
-    
-    Exit Sub
-
-cmdDel_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdDel_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub cmdDel_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    'cmdDel.Picture = LoadInterface("correo_borrarpress.bmp")
-    'cmdDel.Tag = "1"
-End Sub
-
 Private Sub cmdDel_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdDel_MouseMove_Err
@@ -512,48 +488,6 @@ cmdDel_MouseMove_Err:
     
 End Sub
 
-Private Sub cmdSave_Click()
-    
-    On Error GoTo cmdSave_Click_Err
-    
-
-    If lstMsg.ListIndex < 0 Then Exit Sub
-    Call WriteRetirarItemCorreo(lstMsg.ListIndex + 1)
-
-    
-    Exit Sub
-
-cmdSave_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdSave_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub cmdSave_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    'cmdSave.Picture = LoadInterface("correo_guardaritempress.bmp")
-    'cmdSave.Tag = "1"
-End Sub
-
-Private Sub cmdSave_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo cmdSave_MouseMove_Err
-    
-
-    If cmdSave.Tag = "0" Then
-        cmdSave.Picture = LoadInterface("correo_guardaritemhover.bmp")
-        cmdSave.Tag = "1"
-
-    End If
-
-    
-    Exit Sub
-
-cmdSave_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmCorreo.cmdSave_MouseMove", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub cmdSend_Click()
     

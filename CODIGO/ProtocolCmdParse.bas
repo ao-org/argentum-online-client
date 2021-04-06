@@ -233,9 +233,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             
             Case "/AYUDA"
                 Call WriteHelp
-
-            Case "/SUBASTA"
-                Call WriteSubastaInfo
                 
             Case "/EVENTO"
                 Call WriteEventoInfo
