@@ -288,23 +288,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/UPTIME"
                 Call WriteUpTime
-                
-            Case "/ENCUESTA"
-                If CantidadArgumentos = 0 Then
-                    ' Version sin argumentos: Inquiry
-                    Call WriteInquiry
-                Else
-
-                    ' Version con argumentos: InquiryVote
-                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Byte) Then
-                        Call WriteInquiryVote(ArgumentosRaw)
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg("Para votar una opcion, escribe /encuesta NUMERODEOPCION, por ejemplo para votar la opcion 1, escribe /encuesta 1.")
-
-                    End If
-
-                End If
         
             Case "/CMSG"
                 'Ojo, no usar notNullArguments porque se usa el string vacio para borrar cartel.
@@ -365,50 +348,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/GM"
                 FrmGmAyuda.Show vbModeless, frmMain
-                 
-            Case "/OFERTAINICIAL"
-                If notNullArguments Then
-                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
-                        If ArgumentosRaw > 0 Then
-                            Call WriteOfertaInicial(ArgumentosRaw)
-                        Else
-                            Call ShowConsoleMsg("Cantidad incorrecta. Utilice /OFERTAINICIAL CANTIDAD.")
-
-                        End If
-
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg("Cantidad incorrecta. Utilice /OFERTAINICIAL CANTIDAD.")
-
-                    End If
-
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /OFERTAINICIAL CANTIDAD.")
-
-                End If
-            
-            Case "/OFERTAR"
-                If notNullArguments Then
-                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
-                        If ArgumentosRaw > 0 Then
-                            Call WriteOferta(ArgumentosRaw)
-                        Else
-                            Call ShowConsoleMsg("Ingrese una oferta correcta.")
-
-                        End If
-
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg("Ingrese una oferta correcta.")
-
-                    End If
-
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Ingrese una oferta correcta.")
-
-                End If
                         
             Case "/DESC"
                 If UserEstado = 1 Then 'Muerto
@@ -435,15 +374,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
                 Call WriteChangeDescription(ArgumentosRaw)
             
-            Case "/VOTO"
-                If notNullArguments Then
-                    Call WriteGuildVote(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /voto NICKNAME.")
-
-                End If
-               
             Case "/PENAS"
                 Call WritePunishments(ArgumentosRaw)
 

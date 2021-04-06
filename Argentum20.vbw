@@ -71,7 +71,6 @@ FrmSastre = 0, 0, 0, 0, C, 78, 78, 1126, 732, C
 FrmLogear = 351, 424, 1442, 1084, , 104, 104, 1152, 758, C
 FrmLogros = 0, 0, 0, 0, C, 130, 130, 1178, 784, C
 modLocale = 0, 0, 0, 0, C
-FrmCorreo = 26, 26, 1229, 538, , 156, 156, 1204, 810, C
 ModWorldMap = 0, 0, 0, 0, C
 CBufferMan = 0, 0, 0, 0, C
 FrmGrupo = 0, 0, 0, 0, C, 182, 182, 1230, 836, C

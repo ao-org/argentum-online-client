@@ -83,7 +83,6 @@ Form=CODIGO\FrmSastre.frm
 Form=CODIGO\FrmLogear.frm
 Form=CODIGO\FrmLogros.frm
 Module=modLocale; CODIGO\modLocale.bas
-Form=CODIGO\FrmCorreo.frm
 Module=ModWorldMap; CODIGO\ModWorldMap.bas
 Class=CBufferMan; CODIGO\CBufferMan.cls
 Form=CODIGO\FrmGrupo.frm
