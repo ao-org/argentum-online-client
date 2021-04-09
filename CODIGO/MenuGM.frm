@@ -186,7 +186,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "ADVERTIR*no anda"
+      Caption         =   "CONSULTA"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -333,7 +333,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "DEVOLVER*no anda"
+      Caption         =   "SILENCIAR"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -401,7 +401,7 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 0
             Call ParseUserCommand("/SUM")
         Case 1
-            Call ParseUserCommand("/DEVOLVER")
+            Call ParseUserCommand("/SILENCIO " & TargetName & "@" & "15")
         Case 2
             Call ParseUserCommand("/NICK2IP " & TargetName)
         Case 3
@@ -411,7 +411,7 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 5
             Call ParseUserCommand("/ECHAR " & TargetName)
         Case 6
-            Call ParseUserCommand("/ADVERTIR")
+            Call ParseUserCommand("/CONSULTA " & TargetName)
         Case 7
             'Call ParseUserCommand("/CARCEL")' ver ReyarB
             Call WriteJail(TargetName, "Prevencion u ofensa", "5")
