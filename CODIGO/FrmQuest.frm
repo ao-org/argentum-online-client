@@ -248,7 +248,7 @@ Begin VB.Form FrmQuests
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   375
+      Height          =   280
       Left            =   7320
       TabIndex        =   7
       Top             =   3840
