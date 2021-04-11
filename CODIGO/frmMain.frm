@@ -1506,7 +1506,7 @@ Private Sub btnInvisible_Click()
     Exit Sub
 
 btnInvisible_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.btnInvisible_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnInvisible_Click", Erl)
     Resume Next
     
 End Sub
@@ -1522,7 +1522,7 @@ Private Sub btnSpawn_Click()
     Exit Sub
 
 btnSpawn_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.btnSpawn_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnSpawn_Click", Erl)
     Resume Next
     
 End Sub
@@ -1542,7 +1542,7 @@ Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, 
     Exit Sub
 
 clanimg_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.clanimg_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.clanimg_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -1560,7 +1560,7 @@ Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
     Exit Sub
 
 clanimg_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.clanimg_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.clanimg_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -1582,7 +1582,7 @@ Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single
     Exit Sub
 
 cmdlanzar_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdlanzar_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdlanzar_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -1603,7 +1603,7 @@ Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, 
     Exit Sub
 
 cmdlanzar_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdlanzar_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdlanzar_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -1617,14 +1617,14 @@ Private Sub cmdLlavero_Click()
     Else
         FrmKeyInv.Show , Me
         FrmKeyInv.Left = Me.Left + 890 * Screen.TwipsPerPixelX - FrmKeyInv.Width \ 2
-        FrmKeyInv.Top = Me.Top + 655 * Screen.TwipsPerPixelY - FrmKeyInv.Height
+        FrmKeyInv.Top = Me.Top + 555 * Screen.TwipsPerPixelY - FrmKeyInv.Height
         cmdLlavero.Tag = "2"
     End If
     
     Exit Sub
 
 cmdLlavero_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdLlavero_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdLlavero_Click", Erl)
     Resume Next
     
 End Sub
@@ -1640,7 +1640,7 @@ Public Sub CerrarLlavero()
     Exit Sub
 
 CerrarLlavero_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.CerrarLlavero", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.CerrarLlavero", Erl)
     Resume Next
     
 End Sub
@@ -1655,7 +1655,7 @@ Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, x As Singl
     Exit Sub
 
 cmdLlavero_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdLlavero_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdLlavero_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -1672,7 +1672,7 @@ Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, x As Singl
     Exit Sub
 
 cmdLlavero_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdLlavero_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdLlavero_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -1720,7 +1720,7 @@ Private Sub cmdMoverHechi_Click(Index As Integer)
     Exit Sub
 
 cmdMoverHechi_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdMoverHechi_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdMoverHechi_Click", Erl)
     Resume Next
     
 End Sub
@@ -1740,7 +1740,7 @@ Public Sub ControlSeguroParty(ByVal Mostrar As Boolean)
     Exit Sub
 
 ControlSeguroParty_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.ControlSeguroParty", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.ControlSeguroParty", Erl)
     Resume Next
     
 End Sub
@@ -1757,7 +1757,7 @@ Public Sub DibujarSeguro()
     Exit Sub
 
 DibujarSeguro_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.DibujarSeguro", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.DibujarSeguro", Erl)
     Resume Next
     
 End Sub
@@ -1774,7 +1774,7 @@ Public Sub DesDibujarSeguro()
     Exit Sub
 
 DesDibujarSeguro_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.DesDibujarSeguro", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.DesDibujarSeguro", Erl)
     Resume Next
     
 End Sub
@@ -1808,7 +1808,7 @@ Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift A
     Exit Sub
 
 cmdMoverHechi_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdMoverHechi_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdMoverHechi_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -1833,7 +1833,7 @@ Private Sub CombateIcon_Click()
     Exit Sub
 
 CombateIcon_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.CombateIcon_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.CombateIcon_Click", Erl)
     Resume Next
     
 End Sub
@@ -1917,7 +1917,7 @@ Private Sub Contadores_Timer()
     Exit Sub
 
 Contadores_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Contadores_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Contadores_Timer", Erl)
     Resume Next
     
 End Sub
@@ -1948,7 +1948,7 @@ Private Sub createObj_Click()
     Exit Sub
 
 createObj_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.createObj_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.createObj_Click", Erl)
     Resume Next
     
 End Sub
@@ -1970,7 +1970,7 @@ Private Sub Efecto_Timer()
     Exit Sub
 
 Efecto_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Efecto_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Efecto_Timer", Erl)
     Resume Next
     
 End Sub
@@ -1985,7 +1985,7 @@ Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x A
     Exit Sub
 
 EstadisticasBoton_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.EstadisticasBoton_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.EstadisticasBoton_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -2004,7 +2004,7 @@ Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x A
     Exit Sub
 
 EstadisticasBoton_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.EstadisticasBoton_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.EstadisticasBoton_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -2026,7 +2026,7 @@ Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As 
     Exit Sub
 
 EstadisticasBoton_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.EstadisticasBoton_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.EstadisticasBoton_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -2050,7 +2050,7 @@ Private Sub exp_Click()
     Exit Sub
 
 exp_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.exp_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.exp_Click", Erl)
     Resume Next
     
 End Sub
@@ -2078,7 +2078,7 @@ Private Sub Form_Activate()
     Exit Sub
 
 Form_Activate_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_Activate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Activate", Erl)
     Resume Next
     
 End Sub
@@ -2124,7 +2124,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 Form_KeyUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_KeyUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_KeyUp", Erl)
     Resume Next
     
 End Sub
@@ -2145,12 +2145,16 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y A
         Unload frmBancoObj
 
     End If
+    
+    If FrmQuestInfo.Visible Then
+        Unload FrmQuestInfo
+    End If
 
     
     Exit Sub
 
 Form_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -2166,7 +2170,7 @@ Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
     Exit Sub
 
 Form_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -2186,7 +2190,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Exit Sub
 
 Form_QueryUnload_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_QueryUnload", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_QueryUnload", Erl)
     Resume Next
     
 End Sub
@@ -2202,7 +2206,7 @@ Private Sub Form_Unload(Cancel As Integer)
     Exit Sub
 
 Form_Unload_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_Unload", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Unload", Erl)
     Resume Next
     
 End Sub
@@ -2223,7 +2227,7 @@ Private Sub GldLbl_Click()
     Exit Sub
 
 GldLbl_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.GldLbl_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.GldLbl_Click", Erl)
     Resume Next
     
 End Sub
@@ -2248,7 +2252,7 @@ Private Sub GlobalIcon_Click()
     Exit Sub
 
 GlobalIcon_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.GlobalIcon_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.GlobalIcon_Click", Erl)
     Resume Next
     
 End Sub
@@ -2280,7 +2284,7 @@ Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 hlst_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.hlst_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.hlst_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -2316,7 +2320,7 @@ Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integ
     Exit Sub
 
 Image2_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Image2_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Image2_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -2340,7 +2344,7 @@ Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     Exit Sub
 
 Image3_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Image3_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Image3_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -2360,7 +2364,7 @@ Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     Exit Sub
 
 Image3_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Image3_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Image3_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -2390,7 +2394,7 @@ Private Sub Image4_Click(Index As Integer)
     Exit Sub
 
 Image4_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Image4_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Image4_Click", Erl)
     Resume Next
     
 End Sub
@@ -2414,7 +2418,7 @@ Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integ
     Exit Sub
 
 Image4_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Image4_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Image4_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -2461,7 +2465,7 @@ Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integ
     Exit Sub
 
 Image4_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Image4_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Image4_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -2480,7 +2484,7 @@ Private Sub Image5_Click()
     Exit Sub
 
 Image5_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Image5_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Image5_Click", Erl)
     Resume Next
     
 End Sub
@@ -2500,7 +2504,7 @@ Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     Exit Sub
 
 Image5_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Image5_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Image5_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -2515,7 +2519,7 @@ Private Sub Image6_Click()
     Exit Sub
 
 Image6_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Image6_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Image6_Click", Erl)
     Resume Next
     
 End Sub
@@ -2530,7 +2534,7 @@ Private Sub imgBugReport_Click()
     Exit Sub
 
 imgBugReport_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.imgBugReport_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgBugReport_Click", Erl)
     Resume Next
     
 End Sub
@@ -2560,7 +2564,7 @@ Private Sub imgHechizos_Click()
     Exit Sub
 
 imgHechizos_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.imgHechizos_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgHechizos_Click", Erl)
     Resume Next
     
 End Sub
@@ -2576,7 +2580,7 @@ Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Sing
     Exit Sub
 
 imgHechizos_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.imgHechizos_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgHechizos_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -2596,7 +2600,7 @@ Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Sing
     Exit Sub
 
 imgHechizos_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.imgHechizos_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgHechizos_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -2642,7 +2646,7 @@ Private Sub imgInventario_Click()
     Exit Sub
 
 imgInventario_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.imgInventario_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgInventario_Click", Erl)
     Resume Next
     
 End Sub
@@ -2658,7 +2662,7 @@ Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Si
     Exit Sub
 
 imgInventario_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.imgInventario_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgInventario_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -2679,7 +2683,7 @@ Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Si
     Exit Sub
 
 imgInventario_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.imgInventario_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgInventario_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -2693,7 +2697,7 @@ Private Sub imgOro_Click()
     Exit Sub
 
 imgOro_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.imgOro_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgOro_Click", Erl)
     Resume Next
     
 End Sub
@@ -2742,7 +2746,7 @@ Private Sub LlamaDeclan_Timer()
     Exit Sub
 
 LlamaDeclan_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.LlamaDeclan_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.LlamaDeclan_Timer", Erl)
     Resume Next
     
 End Sub
@@ -2756,7 +2760,7 @@ Private Sub MANShp_Click()
     Exit Sub
 
 MANShp_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.MANShp_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.MANShp_Click", Erl)
     Resume Next
     
 End Sub
@@ -2776,7 +2780,7 @@ Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Sing
     Exit Sub
 
 manualboton_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.manualboton_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.manualboton_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -2791,7 +2795,7 @@ Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, x As Single
     Exit Sub
 
 manualboton_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.manualboton_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.manualboton_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -2807,7 +2811,7 @@ Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Si
     Exit Sub
 
 OpcionesBoton_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.OpcionesBoton_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.OpcionesBoton_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -2824,7 +2828,7 @@ Private Sub panelGM_Click()
     Exit Sub
 
 panelGM_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.panelGM_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.panelGM_Click", Erl)
     Resume Next
     
 End Sub
@@ -3004,7 +3008,7 @@ Private Sub PicCorreo_Click()
     Exit Sub
 
 PicCorreo_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.PicCorreo_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.PicCorreo_Click", Erl)
     Resume Next
     
 End Sub
@@ -3026,7 +3030,7 @@ Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer,
     Exit Sub
 
 Inventario_ItemDropped_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Inventario_ItemDropped", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Inventario_ItemDropped", Erl)
     Resume Next
     
 End Sub
@@ -3040,7 +3044,7 @@ Private Sub picInv_Paint()
     Exit Sub
 
 picInv_Paint_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.picInv_Paint", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.picInv_Paint", Erl)
     Resume Next
     
 End Sub
@@ -3059,7 +3063,7 @@ Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Singl
     Exit Sub
 
 QuestBoton_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.QuestBoton_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.QuestBoton_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3077,7 +3081,7 @@ Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 
 QuestBoton_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.QuestBoton_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.QuestBoton_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -3097,7 +3101,7 @@ Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, x As Sin
     Exit Sub
 
 RankingBoton_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.RankingBoton_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.RankingBoton_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3112,7 +3116,7 @@ Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, x As Singl
     Exit Sub
 
 RankingBoton_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.RankingBoton_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.RankingBoton_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -3133,7 +3137,7 @@ Private Sub Label6_Click()
     Exit Sub
 
 Label6_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Label6_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Label6_Click", Erl)
     Resume Next
     
 End Sub
@@ -3148,7 +3152,7 @@ Private Sub Label7_Click()
     Exit Sub
 
 Label7_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Label7_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Label7_Click", Erl)
     Resume Next
     
 End Sub
@@ -3164,7 +3168,7 @@ Private Sub lblPorcLvl_Click()
     Exit Sub
 
 lblPorcLvl_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.lblPorcLvl_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.lblPorcLvl_Click", Erl)
     Resume Next
     
 End Sub
@@ -3207,7 +3211,7 @@ Private Sub MacroLadder_Timer()
     Exit Sub
 
 MacroLadder_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.MacroLadder_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.MacroLadder_Timer", Erl)
     Resume Next
     
 End Sub
@@ -3246,7 +3250,7 @@ Private Sub macrotrabajo_Timer()
     Exit Sub
 
 macrotrabajo_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.macrotrabajo_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.macrotrabajo_Timer", Erl)
     Resume Next
     
 End Sub
@@ -3265,7 +3269,7 @@ Public Sub ActivarMacroTrabajo()
     Exit Sub
 
 ActivarMacroTrabajo_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.ActivarMacroTrabajo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.ActivarMacroTrabajo", Erl)
     Resume Next
     
 End Sub
@@ -3286,7 +3290,7 @@ Public Sub DesactivarMacroTrabajo()
     Exit Sub
 
 DesactivarMacroTrabajo_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.DesactivarMacroTrabajo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.DesactivarMacroTrabajo", Erl)
     Resume Next
     
 End Sub
@@ -3319,7 +3323,7 @@ Private Sub manabar_Click()
     Exit Sub
 
 manabar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.manabar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.manabar_Click", Erl)
     Resume Next
     
 End Sub
@@ -3338,7 +3342,7 @@ Private Sub mapMundo_Click()
     Exit Sub
 
 mapMundo_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.mapMundo_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.mapMundo_Click", Erl)
     Resume Next
     
 End Sub
@@ -3358,7 +3362,7 @@ Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 
 mapMundo_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.mapMundo_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.mapMundo_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3386,7 +3390,7 @@ Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, 
     Exit Sub
 
 MiniMap_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.MiniMap_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.MiniMap_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -3406,7 +3410,7 @@ Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, 
     Exit Sub
 
 MiniMap_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.MiniMap_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.MiniMap_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3422,7 +3426,7 @@ Private Sub mnuEquipar_Click()
     Exit Sub
 
 mnuEquipar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuEquipar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.mnuEquipar_Click", Erl)
     Resume Next
     
 End Sub
@@ -3438,7 +3442,7 @@ Private Sub mnuNPCComerciar_Click()
     Exit Sub
 
 mnuNPCComerciar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuNPCComerciar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.mnuNPCComerciar_Click", Erl)
     Resume Next
     
 End Sub
@@ -3453,7 +3457,7 @@ Private Sub mnuNpcDesc_Click()
     Exit Sub
 
 mnuNpcDesc_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuNpcDesc_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.mnuNpcDesc_Click", Erl)
     Resume Next
     
 End Sub
@@ -3468,7 +3472,7 @@ Private Sub mnuTirar_Click()
     Exit Sub
 
 mnuTirar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuTirar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.mnuTirar_Click", Erl)
     Resume Next
     
 End Sub
@@ -3485,7 +3489,7 @@ Private Sub mnuUsar_Click()
     Exit Sub
 
 mnuUsar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.mnuUsar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.mnuUsar_Click", Erl)
     Resume Next
     
 End Sub
@@ -3505,7 +3509,7 @@ Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 
 NameMapa_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.NameMapa_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.NameMapa_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3520,7 +3524,7 @@ Private Sub onlines_Click()
     Exit Sub
 
 onlines_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.onlines_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.onlines_Click", Erl)
     Resume Next
     
 End Sub
@@ -3540,7 +3544,7 @@ Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Si
     Exit Sub
 
 OpcionesBoton_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.OpcionesBoton_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.OpcionesBoton_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3555,7 +3559,7 @@ Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, x As Sing
     Exit Sub
 
 OpcionesBoton_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.OpcionesBoton_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.OpcionesBoton_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -3601,7 +3605,7 @@ Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y 
     Exit Sub
 
 Panel_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Panel_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Panel_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3665,7 +3669,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     Exit Sub
 
 picInv_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.picInv_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.picInv_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3709,7 +3713,7 @@ Private Sub CompletarEnvioMensajes()
     Exit Sub
 
 CompletarEnvioMensajes_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.CompletarEnvioMensajes", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.CompletarEnvioMensajes", Erl)
     Resume Next
     
 End Sub
@@ -3769,7 +3773,7 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 RecTxt_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.RecTxt_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.RecTxt_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -3784,7 +3788,7 @@ Private Sub refuerzolanzar_Click()
     Exit Sub
 
 refuerzolanzar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.refuerzolanzar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.refuerzolanzar_Click", Erl)
     Resume Next
     
 End Sub
@@ -3806,7 +3810,7 @@ Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As S
     Exit Sub
 
 refuerzolanzar_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.refuerzolanzar_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.refuerzolanzar_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3935,7 +3939,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     Exit Sub
 
 renderer_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.renderer_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -3971,7 +3975,7 @@ Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 
 renderer_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.renderer_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -4007,7 +4011,7 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 
 renderer_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.renderer_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -4022,7 +4026,7 @@ Private Sub renderer_DblClick()
     Exit Sub
 
 renderer_DblClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_DblClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.renderer_DblClick", Erl)
     Resume Next
     
 End Sub
@@ -4036,7 +4040,7 @@ Private Sub renderer_Click()
     Exit Sub
 
 renderer_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.renderer_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.renderer_Click", Erl)
     Resume Next
     
 End Sub
@@ -4150,7 +4154,7 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 SendTxt_KeyUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.SendTxt_KeyUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.SendTxt_KeyUp", Erl)
     Resume Next
     
 End Sub
@@ -4164,7 +4168,7 @@ Private Sub ShowFPS_Timer()
     Exit Sub
 
 ShowFPS_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.ShowFPS_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.ShowFPS_Timer", Erl)
     Resume Next
     
 End Sub
@@ -4179,7 +4183,7 @@ Private Sub Socket1_Timeout(status As Integer, Response As Integer)
     Exit Sub
 
 Socket1_Timeout_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_Timeout", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Timeout", Erl)
     Resume Next
     
 End Sub
@@ -4199,7 +4203,7 @@ Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Sing
     Exit Sub
 
 TiendaBoton_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.TiendaBoton_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.TiendaBoton_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -4214,7 +4218,7 @@ Private Sub TiendaBoton_MouseUp(Button As Integer, Shift As Integer, x As Single
     Exit Sub
 
 TiendaBoton_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.TiendaBoton_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.TiendaBoton_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -4231,7 +4235,7 @@ Private Sub cerrarcuenta_Timer()
     Exit Sub
 
 cerrarcuenta_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.cerrarcuenta_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.cerrarcuenta_Timer", Erl)
     Resume Next
     
 End Sub
@@ -4272,7 +4276,7 @@ Private Sub TimerLluvia_Timer()
     Exit Sub
 
 TimerLluvia_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.TimerLluvia_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.TimerLluvia_Timer", Erl)
     Resume Next
     
 End Sub
@@ -4313,7 +4317,7 @@ Private Sub TimerNiebla_Timer()
     Exit Sub
 
 TimerNiebla_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.TimerNiebla_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.TimerNiebla_Timer", Erl)
     Resume Next
     
 End Sub
@@ -4332,7 +4336,7 @@ Private Sub Timerping_Timer()
     Exit Sub
 
 Timerping_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Timerping_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Timerping_Timer", Erl)
     Resume Next
     
 End Sub
@@ -4372,7 +4376,7 @@ Private Sub cmdLanzar_Click()
     Exit Sub
 
 cmdLanzar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.cmdLanzar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdLanzar_Click", Erl)
     Resume Next
     
 End Sub
@@ -4394,7 +4398,7 @@ Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single
     Exit Sub
 
 CmdLanzar_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.CmdLanzar_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.CmdLanzar_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -4588,7 +4592,7 @@ Public Sub Form_Click()
     Exit Sub
 
 Form_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Click", Erl)
     Resume Next
     
 End Sub
@@ -4615,7 +4619,7 @@ Private Sub Form_DblClick()
     Exit Sub
 
 Form_DblClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_DblClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_DblClick", Erl)
     Resume Next
     
 End Sub
@@ -4635,7 +4639,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -4773,7 +4777,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Form_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -4788,7 +4792,7 @@ Private Sub hlst_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 hlst_KeyDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.hlst_KeyDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.hlst_KeyDown", Erl)
     Resume Next
     
 End Sub
@@ -4803,7 +4807,7 @@ Private Sub hlst_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 hlst_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.hlst_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.hlst_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -4818,7 +4822,7 @@ Private Sub hlst_KeyUp(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 hlst_KeyUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.hlst_KeyUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.hlst_KeyUp", Erl)
     Resume Next
     
 End Sub
@@ -4875,7 +4879,7 @@ Private Sub picInv_DblClick()
     Exit Sub
 
 picInv_DblClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.picInv_DblClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.picInv_DblClick", Erl)
     Resume Next
     
 End Sub
@@ -4901,7 +4905,7 @@ Private Sub RecTxt_Change()
     Exit Sub
 
 RecTxt_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.RecTxt_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.RecTxt_Change", Erl)
     Resume Next
     
 End Sub
@@ -4916,7 +4920,7 @@ Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     Exit Sub
 
 RecTxt_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.RecTxt_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.RecTxt_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -4937,7 +4941,7 @@ Private Sub RecTxt_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 RecTxt_KeyDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.RecTxt_KeyDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.RecTxt_KeyDown", Erl)
     Resume Next
     
 End Sub
@@ -4988,7 +4992,7 @@ Private Sub SendTxt_Change()
     Exit Sub
 
 SendTxt_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.SendTxt_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.SendTxt_Change", Erl)
     Resume Next
     
 End Sub
@@ -5004,7 +5008,7 @@ Private Sub SendTxt_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 SendTxt_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.SendTxt_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.SendTxt_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -5061,7 +5065,7 @@ End Sub
     Exit Sub
 
 Socket1_Connect_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_Connect", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Connect", Erl)
     Resume Next
     
     End Sub
@@ -5256,7 +5260,7 @@ Private Sub Socket1_Disconnect()
     Exit Sub
 
 Socket1_Disconnect_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_Disconnect", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Disconnect", Erl)
     Resume Next
     
 End Sub
@@ -5322,7 +5326,7 @@ Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Respo
     Exit Sub
 
 Socket1_LastError_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_LastError", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_LastError", Erl)
     Resume Next
     
 End Sub
@@ -5337,7 +5341,7 @@ Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
     Dim Data() As Byte
 
     ' WyroX: Sólo leemos la cantidad que entre en la cola!!
-    Call Socket1.Read(RD, min(dataLength, incomingData.Capacity - incomingData.length))
+    Call Socket1.Read(RD, Min(dataLength, incomingData.Capacity - incomingData.length))
     Data = StrConv(RD, vbFromUnicode)
 
     'Put data in the buffer
@@ -5350,7 +5354,7 @@ Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
     Exit Sub
 
 Socket1_Read_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.Socket1_Read", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Read", Erl)
     Resume Next
     
 End Sub
@@ -5469,7 +5473,7 @@ Private Sub Winsock1_DataArrival(ByVal BytesTotal As Long)
     Call HandleIncomingData
 End Sub
 
-Private Sub Winsock1_Error(ByVal number As Integer, Description As String, ByVal Scode As Long, ByVal source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+Private Sub Winsock1_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     '*********************************************
     'Handle socket errors
     '*********************************************
@@ -5504,7 +5508,7 @@ Private Function InGameArea() As Boolean
     Exit Function
 
 InGameArea_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.InGameArea", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.InGameArea", Erl)
     Resume Next
     
 End Function
@@ -5523,7 +5527,7 @@ Private Sub MoverForm()
     Exit Sub
 
 moverForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.moverForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.moverForm", Erl)
     Resume Next
     
 End Sub
@@ -5542,7 +5546,7 @@ Private Sub imgSpellInfo_Click()
     Exit Sub
 
 imgSpellInfo_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.imgSpellInfo_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgSpellInfo_Click", Erl)
     Resume Next
     
 End Sub
@@ -5557,7 +5561,7 @@ Private Sub UpdateDaytime_Timer()
     Exit Sub
 
 UpdateDaytime_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.UpdateDaytime_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.UpdateDaytime_Timer", Erl)
     Resume Next
     
 End Sub
@@ -5580,7 +5584,7 @@ Private Sub UpdateLight_Timer()
     Exit Sub
 
 UpdateLight_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMain.UpdateLight_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.UpdateLight_Timer", Erl)
     Resume Next
     
 End Sub

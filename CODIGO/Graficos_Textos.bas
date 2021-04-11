@@ -781,7 +781,7 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
     Next i
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
+    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -906,14 +906,14 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
     If charindex = 0 Then
         A = 255
     Else
-        A = charlist(charindex).AlphaText
+        A = Clamp(charlist(charindex).AlphaText, 0, 255)
     End If
 
     If Alpha <> 255 Then
         A = Alpha
     End If
     
-    Call RGBAList(temp_array, text_color(0).R, text_color(0).G, text_color(0).B, A)
+    Call RGBAList(temp_array, text_color(0).r, text_color(0).G, text_color(0).B, A)
 
     Dim i              As Long
 
@@ -942,7 +942,7 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
     Next i
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
+    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -1070,7 +1070,7 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
         A = Alpha
     End If
 
-    Call RGBAList(temp_array, text_color(0).R, text_color(0).G, text_color(0).B, A)
+    Call RGBAList(temp_array, text_color(0).r, text_color(0).G, text_color(0).B, A)
 
     Dim i              As Long
 
@@ -1099,7 +1099,7 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
     Next i
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * Alpha)
+    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * Alpha)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -1214,10 +1214,10 @@ Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRe
 
     Dim temp_array(3) As RGBA
 
-    Call RGBAList(temp_array, text_color.R, text_color.G, text_color.B, text_color.A)
+    Call RGBAList(temp_array, text_color.r, text_color.G, text_color.B, text_color.A)
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color.R / 6, text_color.G / 6, text_color.B / 6, 0.8 * text_color.A)
+    Call RGBAList(Sombra, text_color.r / 6, text_color.G / 6, text_color.B / 6, 0.8 * text_color.A)
 
     If (Len(Texto) = 0) Then Exit Sub
 
@@ -1338,7 +1338,7 @@ Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As 
     f = 0
 
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * text_color(0).A)
+    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * text_color(0).A)
 
     For A = 1 To Len(Texto)
         B = Asc(mid(Texto, A, 1))

@@ -213,7 +213,7 @@ Public Sub SelectGold()
     Exit Sub
 
 SelectGold_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.SelectGold", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.SelectGold", Erl)
     Resume Next
     
 End Sub
@@ -233,7 +233,7 @@ Public Property Get SelectedItem() As Long
     Exit Property
 
 SelectedItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.SelectedItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.SelectedItem", Erl)
     Resume Next
     
 End Property
@@ -248,7 +248,7 @@ Public Property Get IsItemSelected() As Boolean
     Exit Property
 
 IsItemSelected_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.IsItemSelected", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.IsItemSelected", Erl)
     Resume Next
     
 End Property
@@ -268,7 +268,7 @@ Public Property Get MaxHit(ByVal Slot As Byte) As Integer
     Exit Property
 
 MaxHit_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.MaxHit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.MaxHit", Erl)
     Resume Next
     
 End Property
@@ -288,7 +288,7 @@ Public Property Get MinHit(ByVal Slot As Byte) As Integer
     Exit Property
 
 MinHit_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.MinHit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.MinHit", Erl)
     Resume Next
     
 End Property
@@ -308,7 +308,7 @@ Public Property Get Def(ByVal Slot As Byte) As Integer
     Exit Property
 
 Def_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.Def", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.Def", Erl)
     Resume Next
     
 End Property
@@ -328,7 +328,7 @@ Public Property Get GrhIndex(ByVal Slot As Byte) As Long
     Exit Property
 
 GrhIndex_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.GrhIndex", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.GrhIndex", Erl)
     Resume Next
     
 End Property
@@ -348,7 +348,7 @@ Public Property Get Valor(ByVal Slot As Byte) As Single
     Exit Property
 
 Valor_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.Valor", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.Valor", Erl)
     Resume Next
     
 End Property
@@ -374,7 +374,7 @@ Public Property Get Amount(ByVal Slot As Byte) As Long
     Exit Property
 
 Amount_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.Amount", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.Amount", Erl)
     Resume Next
     
 End Property
@@ -394,7 +394,7 @@ Public Property Get OBJIndex(ByVal Slot As Byte) As Integer
     Exit Property
 
 OBJIndex_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.OBJIndex", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.OBJIndex", Erl)
     Resume Next
     
 End Property
@@ -414,7 +414,7 @@ Public Property Get ObjType(ByVal Slot As Byte) As Integer
     Exit Property
 
 ObjType_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.ObjType", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.ObjType", Erl)
     Resume Next
     
 End Property
@@ -434,7 +434,7 @@ Public Property Get ItemName(ByVal Slot As Byte) As String
     Exit Property
 
 ItemName_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.ItemName", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.ItemName", Erl)
     Resume Next
     
 End Property
@@ -454,7 +454,7 @@ Public Property Get Equipped(ByVal Slot As Byte) As Boolean
     Exit Property
 
 Equipped_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.Equipped", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.Equipped", Erl)
     Resume Next
     
 End Property
@@ -474,7 +474,7 @@ Public Property Get PuedeUsar(ByVal Slot As Byte) As Byte
     Exit Property
 
 PuedeUsar_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.PuedeUsar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.PuedeUsar", Erl)
     Resume Next
     
 End Property
@@ -489,7 +489,7 @@ Public Property Get MaxSlots() As Integer
     Exit Property
 
 MaxSlots_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.MaxSlots", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.MaxSlots", Erl)
     Resume Next
     
 End Property
@@ -504,7 +504,7 @@ Public Property Get Columns() As Integer
     Exit Property
 
 Columns_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.Columns", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.Columns", Erl)
     Resume Next
     
 End Property
@@ -519,7 +519,7 @@ Public Property Get SlotDrag() As Byte
     Exit Property
 
 SlotDrag_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.SlotDrag", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.SlotDrag", Erl)
     Resume Next
     
 End Property
@@ -534,7 +534,7 @@ Public Property Get NeedsRedraw() As Boolean
     Exit Property
 
 NeedsRedraw_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.NeedsRedraw", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.NeedsRedraw", Erl)
     Resume Next
     
 End Property
@@ -550,7 +550,7 @@ Public Sub ReDraw()
     Exit Sub
 
 ReDraw_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.ReDraw", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.ReDraw", Erl)
     Resume Next
     
 End Sub
@@ -588,7 +588,7 @@ Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount
     Exit Sub
 
 SetItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.SetItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.SetItem", Erl)
     Resume Next
     
 End Sub
@@ -609,7 +609,7 @@ Public Sub SeleccionarItem(ByVal SelectedItem As Byte)
     Exit Sub
 
 SeleccionarItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.SeleccionarItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.SeleccionarItem", Erl)
     Resume Next
     
 End Sub
@@ -624,7 +624,7 @@ Public Property Get ClickedInside() As Boolean
     Exit Property
 
 ClickedInside_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.ClickedInside", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.ClickedInside", Erl)
     Resume Next
     
 End Property
@@ -681,7 +681,7 @@ Public Function GetSlot(ByVal x As Integer, ByVal y As Integer) As Byte
     Exit Function
 
 GetSlot_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.GetSlot", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.GetSlot", Erl)
     Resume Next
     
 End Function
@@ -744,7 +744,7 @@ Public Sub DrawInventory()
                 If UserInventory(i).Amount > 1 Then
                     Call RGBAList(Color, 239, 228, 176)
         
-                    If UserInventory(i).Amount > 1000 And InvSelectedItem <> i Then
+                    If InvSelectedItem <> i And UserInventory(i).Amount > 1000 Then
                         tmpString = Round(UserInventory(i).Amount * 0.001, 1) & "K"
                     Else
                         tmpString = UserInventory(i).Amount
@@ -767,7 +767,7 @@ Public Sub DrawInventory()
     Exit Sub
 
 DrawInventory_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.DrawInventory", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.DrawInventory", Erl)
     Resume Next
     
 End Sub
@@ -788,7 +788,7 @@ Public Sub DrawDraggedItem()
     Exit Sub
 
 DrawDraggedItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.DrawDraggedItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.DrawDraggedItem", Erl)
     Resume Next
     
 End Sub
@@ -823,7 +823,7 @@ Private Sub InventoryWindow_MouseDown(Button As Integer, Shift As Integer, x As 
     Exit Sub
 
 InventoryWindow_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.InventoryWindow_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.InventoryWindow_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -853,7 +853,7 @@ Private Sub InventoryWindow_MouseMove(Button As Integer, Shift As Integer, x As 
     Exit Sub
 
 InventoryWindow_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.InventoryWindow_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.InventoryWindow_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -912,7 +912,7 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
     Exit Sub
 
 InventoryWindow_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.InventoryWindow_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.InventoryWindow_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -945,7 +945,7 @@ Public Function GetInfo(ByVal Item As Integer) As String
     Exit Function
 
 GetInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.GetInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.GetInfo", Erl)
     Resume Next
     
 End Function
@@ -959,7 +959,7 @@ Property Let MostrarCantidades(ByVal Mostrar As Boolean)
     Exit Property
 
 MostrarCantidades_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGrapchicalInventory.MostrarCantidades", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.MostrarCantidades", Erl)
     Resume Next
     
 End Property

@@ -478,7 +478,7 @@ Private Const MAPAS_ANCHO = 19
 
 Private Const MAPAS_ALTO = 22
 
-Private Sub moverForm()
+Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
     
@@ -492,7 +492,7 @@ Private Sub moverForm()
     Exit Sub
 
 moverForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.moverForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.moverForm", Erl)
     Resume Next
     
 End Sub
@@ -523,7 +523,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 Form_KeyDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Form_KeyDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Form_KeyDown", Erl)
     Resume Next
     
 End Sub
@@ -544,7 +544,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -553,7 +553,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    moverForm
+    MoverForm
     Image1 = Nothing
     
     If Image1.Tag = "1" Then
@@ -564,43 +564,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Form_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Sub DibujarBody(ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
-    
-    On Error GoTo DibujarBody_Err
-    
-
-    Dim grh As grh
-
-    grh = BodyData(MyBody).Walk(3)
-
-    Dim x As Long
-
-    Dim y As Long
-
-    Dim grhH As grh
-
-    grhH = HeadData(NpcData(MyBody).Head).Head(3)
-
-    x = (PlayerView.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) / 2
-    y = (PlayerView.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2
-    Call Grh_Render_To_Hdc(PlayerView, GrhData(grh.GrhIndex).Frames(1), x, y, False)
-
-    If NpcData(MyBody).Head <> 0 Then
-        x = (PlayerView.ScaleWidth - GrhData(grhH.GrhIndex).pixelWidth) / 2
-        y = (PlayerView.ScaleHeight - GrhData(grhH.GrhIndex).pixelHeight) / 2 + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y
-        Call Grh_Render_To_HdcSinBorrar(PlayerView, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
-    End If
-
-    
-    Exit Sub
-
-DibujarBody_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.DibujarBody", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Form_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -626,7 +590,7 @@ Sub DibujarHead(ByVal MyHead As Integer, ByVal yoff As Integer, Optional ByVal H
     Exit Sub
 
 DibujarHead_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.DibujarHead", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.DibujarHead", Erl)
     Resume Next
     
 End Sub
@@ -657,7 +621,7 @@ Private Sub ListView1_beforeEdit(ByVal Columna As Integer, Cancel As Boolean)
     Exit Sub
 
 ListView1_beforeEdit_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.ListView1_beforeEdit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.ListView1_beforeEdit", Erl)
     Resume Next
     
 End Sub
@@ -672,7 +636,7 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Image1_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Image1_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image1_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -686,7 +650,7 @@ Private Sub Image2_Click()
     Exit Sub
 
 Image2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Image2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image2_Click", Erl)
     Resume Next
     
 End Sub
@@ -713,7 +677,7 @@ Private Sub Image3_Click()
     Exit Sub
 
 Image3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Image3_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image3_Click", Erl)
     Resume Next
     
 End Sub
@@ -728,7 +692,7 @@ Private Sub Label6_Click()
     Exit Sub
 
 Label6_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Label6_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Label6_Click", Erl)
     Resume Next
     
 End Sub
@@ -743,7 +707,7 @@ Private Sub Label7_Click()
     Exit Sub
 
 Label7_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.Label7_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Label7_Click", Erl)
     Resume Next
     
 End Sub
@@ -756,18 +720,18 @@ Private Sub listdrop_Click()
     
 
     'Picture1.Refresh
-    picture1.BackColor = vbBlack
-    picture1.Refresh
+    Picture1.BackColor = vbBlack
+    Picture1.Refresh
 
     'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
     If listdrop.ListItems.count <= 0 Then Exit Sub
-    Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+    Call Grh_Render_To_Hdc(Picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
 
     
     Exit Sub
 
 listdrop_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.listdrop_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.listdrop_Click", Erl)
     Resume Next
     
 End Sub
@@ -777,7 +741,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
     On Error GoTo ListView1_Click_Err
 
     Label8.Caption = ""
-    picture1.Refresh
+    Picture1.Refresh
     
     If ListView1.ListItems.count <= 0 Then Exit Sub
 
@@ -825,7 +789,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
     Exit Sub
 
 ListView1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.ListView1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.ListView1_Click", Erl)
     Resume Next
     
 End Sub
@@ -896,7 +860,7 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     Exit Sub
 
 picMap_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.picMap_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.picMap_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -905,13 +869,13 @@ Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
     On Error GoTo picMap_MouseMove_Err
     
-    moverForm
+    MoverForm
 
     
     Exit Sub
 
 picMap_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmMapaGrande.picMap_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.picMap_MouseMove", Erl)
     Resume Next
     
 End Sub

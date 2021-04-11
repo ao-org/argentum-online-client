@@ -151,7 +151,7 @@ Private Function GetElapsedTime() As Single
     Exit Function
 
 GetElapsedTime_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.GetElapsedTime", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.GetElapsedTime", Erl)
     Resume Next
     
 End Function
@@ -183,7 +183,7 @@ On Error GoTo ErrorHandler:
         .EnableAutoDepthStencil = 1
         .AutoDepthStencilFormat = D3DFMT_D24S8
         
-        .hDeviceWindow = frmMain.renderer.hwnd
+        .hDeviceWindow = frmMain.renderer.hWnd
         
     End With
     
@@ -250,7 +250,7 @@ Private Sub Engine_InitExtras()
     Exit Sub
 
 Engine_InitExtras_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_InitExtras", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_InitExtras", Erl)
     Resume Next
     
 End Sub
@@ -269,7 +269,7 @@ Public Sub Engine_InitColors()
     Exit Sub
 
 Engine_InitColors_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_InitColors", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_InitColors", Erl)
     Resume Next
     
 End Sub
@@ -365,7 +365,7 @@ errhandler:
     Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
                 "Asegúrate de tener los drivers gráficos actualizados y la librería DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
     
-    Debug.Print "Error Number Returned: " & Err.number
+    Debug.Print "Error Number Returned: " & Err.Number
 
     End
 
@@ -386,12 +386,12 @@ Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
     Exit Sub
 
 Engine_BeginScene_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_BeginScene", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_BeginScene", Erl)
     Resume Next
     
 End Sub
 
-Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hwnd As Long = 0)
+Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
 
 On Error GoTo ErrorHandler:
     
@@ -399,7 +399,7 @@ On Error GoTo ErrorHandler:
     
     Call DirectDevice.EndScene
         
-    Call DirectDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
+    Call DirectDevice.Present(DestRect, ByVal 0, hWnd, ByVal 0)
     
     Exit Sub
     
@@ -434,7 +434,7 @@ Public Sub Engine_Deinit()
     Exit Sub
 
 Engine_Deinit_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_Deinit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_Deinit", Erl)
     Resume Next
     
 End Sub
@@ -454,7 +454,7 @@ Public Sub Engine_ActFPS()
     Exit Sub
 
 Engine_ActFPS_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_ActFPS", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_ActFPS", Erl)
     Resume Next
     
 End Sub
@@ -472,7 +472,7 @@ Public Sub Draw_GrhIndex(ByVal grh_index As Long, ByVal x As Integer, ByVal y As
     Exit Sub
 
 Draw_GrhIndex_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_GrhIndex", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhIndex", Erl)
     Resume Next
     
 End Sub
@@ -491,7 +491,7 @@ Public Sub Draw_GrhColor(ByVal grh_index As Long, ByVal x As Integer, ByVal y As
     Exit Sub
 
 Draw_GrhColor_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_GrhColor", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhColor", Erl)
     Resume Next
     
 End Sub
@@ -509,7 +509,7 @@ Public Sub Draw_GrhFont(ByVal grh_index As Long, ByVal x As Integer, ByVal y As 
     Exit Sub
 
 Draw_GrhFont_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_GrhFont", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhFont", Erl)
     Resume Next
     
 End Sub
@@ -527,7 +527,7 @@ Public Sub Draw_GrhIndexColor(ByVal grh_index As Long, ByVal x As Integer, ByVal
     Exit Sub
 
 Draw_GrhIndexColor_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_GrhIndexColor", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhIndexColor", Erl)
     Resume Next
     
 End Sub
@@ -593,7 +593,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     Exit Sub
 
 Draw_Grh_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_Grh", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh", Erl)
     Resume Next
     
 End Sub
@@ -663,7 +663,7 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
     Exit Sub
 
 Draw_Grh_Breathing_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_Grh_Breathing", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh_Breathing", Erl)
     Resume Next
     
 End Sub
@@ -764,7 +764,7 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
     Exit Sub
 
 Draw_GrhFX_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_GrhFX", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhFX", Erl)
     Resume Next
     
 End Sub
@@ -829,7 +829,7 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
     Exit Sub
 
 Draw_GrhSinLuz_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_GrhSinLuz", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhSinLuz", Erl)
     Resume Next
     
 End Sub
@@ -926,7 +926,7 @@ Public Sub render()
     Exit Sub
 
 render_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.render", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.render", Erl)
     Resume Next
     
 End Sub
@@ -978,7 +978,7 @@ Sub ShowNextFrame()
     Exit Sub
 
 ShowNextFrame_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.ShowNextFrame", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.ShowNextFrame", Erl)
     Resume Next
     
 End Sub
@@ -1070,7 +1070,7 @@ Private Sub Device_Box_Textured_Render_Advance(ByVal GrhIndex As Long, ByVal des
     Exit Sub
 
 Device_Box_Textured_Render_Advance_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Device_Box_Textured_Render_Advance", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Device_Box_Textured_Render_Advance", Erl)
     Resume Next
     
 End Sub
@@ -1111,7 +1111,7 @@ Public Sub Batch_Textured_Box(ByVal x As Long, ByVal y As Long, _
     Exit Sub
 
 Batch_Textured_Box_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Batch_Textured_Box", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Batch_Textured_Box", Erl)
     Resume Next
     
 End Sub
@@ -1154,7 +1154,7 @@ Public Sub Batch_Textured_Box_Advance(ByVal x As Long, ByVal y As Long, _
     Exit Sub
 
 Batch_Textured_Box_Advance_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Batch_Textured_Box_Advance", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Batch_Textured_Box_Advance", Erl)
     Resume Next
     
 End Sub
@@ -1192,7 +1192,7 @@ Public Sub Batch_Textured_Box_Pre(ByVal x As Long, ByVal y As Long, _
     Exit Sub
 
 Batch_Textured_Box_Pre_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Batch_Textured_Box_Pre", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Batch_Textured_Box_Pre", Erl)
     Resume Next
     
 End Sub
@@ -1229,7 +1229,7 @@ Public Sub Batch_Textured_Box_Shadow(ByVal x As Long, ByVal y As Long, _
     Exit Sub
 
 Batch_Textured_Box_Shadow_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Batch_Textured_Box_Shadow", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Batch_Textured_Box_Shadow", Erl)
     Resume Next
     
 End Sub
@@ -1305,7 +1305,7 @@ Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As In
     Exit Sub
 
 Device_Box_Textured_Render_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Device_Box_Textured_Render", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Device_Box_Textured_Render", Erl)
     Resume Next
     
 End Sub
@@ -1405,7 +1405,7 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
     Exit Sub
 
 Char_TextRender_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Char_TextRender", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Char_TextRender", Erl)
     Resume Next
     
 End Sub
@@ -1854,7 +1854,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     Exit Sub
 
 Char_Render_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Char_Render", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Char_Render", Erl)
     Resume Next
     
 End Sub
@@ -1971,7 +1971,7 @@ Public Sub Start()
     Exit Sub
 
 Start_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Start", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Start", Erl)
     Resume Next
     
 End Sub
@@ -2004,7 +2004,7 @@ Public Sub SetMapFx(ByVal x As Byte, ByVal y As Byte, ByVal fX As Integer, ByVal
     Exit Sub
 
 SetMapFx_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.SetMapFx", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.SetMapFx", Erl)
     Resume Next
     
 End Sub
@@ -2025,7 +2025,7 @@ Private Function Engine_FToDW(f As Single) As Long
     Exit Function
 
 Engine_FToDW_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_FToDW", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_FToDW", Erl)
     Resume Next
     
 End Function
@@ -2047,7 +2047,7 @@ Private Function VectorToRGBA(Vec As D3DVECTOR, fHeight As Single) As Long
     Exit Function
 
 VectorToRGBA_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.VectorToRGBA", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.VectorToRGBA", Erl)
     Resume Next
     
 End Function
@@ -2080,13 +2080,13 @@ Public Sub DrawMainInventory()
     Call frmMain.Inventario.DrawDraggedItem
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmMain.picInv.hwnd)
+    Call Engine_EndScene(InvRect, frmMain.picInv.hWnd)
 
     
     Exit Sub
 
 DrawMainInventory_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.DrawMainInventory", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawMainInventory", Erl)
     Resume Next
     
 End Sub
@@ -2134,7 +2134,7 @@ Public Sub DrawInterfaceComerciar()
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
         ' Al vender, calculamos el valor según el min(cantidad_ingresada, cantidad_items)
-        cantidad = min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
+        cantidad = Min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
 
     End If
     
@@ -2182,13 +2182,13 @@ Public Sub DrawInterfaceComerciar()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmComerciar.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmComerciar.interface.hWnd)
 
     
     Exit Sub
 
 DrawInterfaceComerciar_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.DrawInterfaceComerciar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInterfaceComerciar", Erl)
     Resume Next
     
 End Sub
@@ -2274,14 +2274,14 @@ Public Sub DrawInterfaceBovedaCuenta()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
     Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
 
     
     Exit Sub
 
 DrawInterfaceBoveda_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.DrawInterfaceBoveda", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInterfaceBoveda", Erl)
     Resume Next
     
 End Sub
@@ -2367,13 +2367,13 @@ Public Sub DrawInterfaceBoveda()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoObj.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmBancoObj.interface.hWnd)
 
     
     Exit Sub
 
 DrawInterfaceBoveda_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.DrawInterfaceBoveda", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInterfaceBoveda", Erl)
     Resume Next
     
 End Sub
@@ -2402,13 +2402,13 @@ Public Sub DrawInterfaceKeys()
     Call FrmKeyInv.InvKeys.DrawInventory
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hwnd)
+    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hWnd)
 
     
     Exit Sub
 
 DrawInterfaceKeys_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.DrawInterfaceKeys", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInterfaceKeys", Erl)
     Resume Next
     
 End Sub
@@ -2467,13 +2467,13 @@ Public Sub DrawMapaMundo()
         Call Draw_Grh(Head, x, y, 0, 1, COLOR_WHITE, False, 0, 0, 0)
     End If
     
-    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
+    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hWnd)
 
     
     Exit Sub
 
 DrawMapaMundo_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.DrawMapaMundo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawMapaMundo", Erl)
     Resume Next
     
 End Sub
@@ -2534,7 +2534,7 @@ Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal
     Exit Sub
 
 Grh_Render_Advance_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Grh_Render_Advance", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Grh_Render_Advance", Erl)
     Resume Next
     
 End Sub
@@ -2596,7 +2596,7 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
     Exit Sub
 
 Grh_Render_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Grh_Render", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Grh_Render", Erl)
     Resume Next
     
 End Sub
@@ -2621,7 +2621,7 @@ Private Function Grh_Check(ByVal grh_index As Long) As Boolean
     Exit Function
 
 Grh_Check_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Grh_Check", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Grh_Check", Erl)
     Resume Next
     
 End Function
@@ -2639,7 +2639,7 @@ Function Engine_PixelPosX(ByVal x As Integer) As Integer
     Exit Function
 
 Engine_PixelPosX_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_PixelPosX", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_PixelPosX", Erl)
     Resume Next
     
 End Function
@@ -2657,7 +2657,7 @@ Function Engine_PixelPosY(ByVal y As Integer) As Integer
     Exit Function
 
 Engine_PixelPosY_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_PixelPosY", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_PixelPosY", Erl)
     Resume Next
     
 End Function
@@ -2682,7 +2682,7 @@ Function Engine_ElapsedTime() As Long
     Exit Function
 
 Engine_ElapsedTime_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_ElapsedTime", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_ElapsedTime", Erl)
     Resume Next
     
 End Function
@@ -2740,7 +2740,7 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
     Exit Sub
 
 Renderizar_Aura_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Renderizar_Aura", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Renderizar_Aura", Erl)
     Resume Next
     
 End Sub
@@ -2845,7 +2845,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     ' cc(3) = cc(0)
 
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     'FramesPerSecCounter = FramesPerSecCounter + 1
@@ -2858,7 +2858,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Exit Sub
 
 RenderConnect_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.RenderConnect", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderConnect", Erl)
     Resume Next
     
 End Sub
@@ -2885,7 +2885,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
 
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
@@ -2898,7 +2898,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Exit Sub
 
 RenderCrearPJ_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.RenderCrearPJ", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderCrearPJ", Erl)
     Resume Next
     
 End Sub
@@ -2919,7 +2919,7 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
     
     Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     
     Exit Sub
 
@@ -2927,7 +2927,7 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
     Exit Sub
 
 rendercuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.rendercuenta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.rendercuenta", Erl)
     Resume Next
     
 End Sub
@@ -3197,7 +3197,7 @@ Public Sub RenderUICrearPJ()
     Exit Sub
 
 RenderUICrearPJ_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.RenderUICrearPJ", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderUICrearPJ", Erl)
     Resume Next
     
 End Sub
@@ -3340,7 +3340,7 @@ Public Sub RenderPjsCuenta()
     Exit Sub
 
 RenderPjsCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.RenderPjsCuenta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderPjsCuenta", Erl)
     Resume Next
     
 End Sub
@@ -3358,7 +3358,7 @@ Sub EfectoEnPantalla(ByVal Color As Long, ByVal Time As Long)
     Exit Sub
 
 EfectoEnPantalla_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.EfectoEnPantalla", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.EfectoEnPantalla", Erl)
     Resume Next
     
 End Sub
@@ -3382,7 +3382,7 @@ Public Sub SetBarFx(ByVal charindex As Integer, ByVal BarTime As Integer)
     Exit Sub
 
 SetBarFx_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.SetBarFx", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.SetBarFx", Erl)
     Resume Next
     
 End Sub
@@ -3402,7 +3402,7 @@ Public Function Engine_Get_2_Points_Angle(ByVal x1 As Long, ByVal y1 As Long, By
     Exit Function
 
 Engine_Get_2_Points_Angle_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_Get_2_Points_Angle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_Get_2_Points_Angle", Erl)
     Resume Next
     
 End Function
@@ -3449,7 +3449,7 @@ Public Function Engine_Get_X_Y_Angle(ByVal x As Double, ByVal y As Double) As Do
     Exit Function
 
 Engine_Get_X_Y_Angle_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_Get_X_Y_Angle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_Get_X_Y_Angle", Erl)
     Resume Next
     
 End Function
@@ -3470,7 +3470,7 @@ Public Function Engine_Convert_Radians_To_Degrees(ByVal s_radians As Double) As 
     Exit Function
 
 Engine_Convert_Radians_To_Degrees_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_Convert_Radians_To_Degrees", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_Convert_Radians_To_Degrees", Erl)
     Resume Next
     
 End Function
@@ -3517,7 +3517,7 @@ Public Sub InitializeInventory()
     Exit Sub
 
 Initialize_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Initialize", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Initialize", Erl)
     Resume Next
     
 End Sub
@@ -3542,7 +3542,7 @@ Public Sub Terminate_Index(ByVal effect_Index As Integer)
     Exit Sub
 
 Terminate_Index_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Terminate_Index", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Terminate_Index", Erl)
     Resume Next
     
 End Sub
@@ -3598,7 +3598,7 @@ Public Function Effect_Begin(ByVal Fx_Index As Integer, ByVal Bind_Speed As Sing
     Exit Function
 
 Effect_Begin_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Effect_Begin", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Effect_Begin", Erl)
     Resume Next
     
 End Function
@@ -3655,7 +3655,7 @@ Public Function Effect_BeginXY(ByVal Fx_Index As Integer, ByVal Bind_Speed As Si
     Exit Function
 
 Effect_BeginXY_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Effect_BeginXY", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Effect_BeginXY", Erl)
     Resume Next
     
 End Function
@@ -3688,7 +3688,7 @@ Public Sub Effect_Render_All()
     Exit Sub
 
 Effect_Render_All_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Effect_Render_All", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Effect_Render_All", Erl)
     Resume Next
     
 End Sub
@@ -3813,7 +3813,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
     Exit Sub
 
 Effect_Render_Slot_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Effect_Render_Slot", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Effect_Render_Slot", Erl)
     Resume Next
     
 End Sub
@@ -3922,7 +3922,7 @@ Public Function GetFreeIndex() As Integer
     Exit Function
 
 GetFreeIndex_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.GetFreeIndex", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.GetFreeIndex", Erl)
     Resume Next
     
 End Function
@@ -4000,7 +4000,7 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
     Exit Sub
 
 Draw_Grh_Precalculated_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Draw_Grh_Precalculated", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh_Precalculated", Erl)
     Resume Next
     
 End Sub
@@ -4020,7 +4020,7 @@ Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width A
     Exit Sub
 
 Engine_Draw_Box_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_Draw_Box", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_Draw_Box", Erl)
     Resume Next
     
 End Sub
@@ -4041,7 +4041,44 @@ Public Sub Engine_Draw_Box_Border(ByVal x As Integer, ByVal y As Integer, ByVal 
     Exit Sub
 
 Engine_Draw_Box_Border_Err:
-    Call RegistrarError(Err.number, Err.Description, "engine.Engine_Draw_Box_Border", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_Draw_Box_Border", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub DibujarBody(PicBox As PictureBox, ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
+    
+    On Error GoTo DibujarBody_Err
+
+    Dim grh As grh
+
+    grh = BodyData(NpcData(MyBody).Body).Walk(3)
+
+    Dim x    As Long
+
+    Dim y    As Long
+
+    Dim grhH As grh
+
+    grhH = HeadData(NpcData(MyBody).Head).Head(3)
+
+    x = (PicBox.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) / 2
+    y = Max((PicBox.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2, BodyData(NpcData(MyBody).Body).HeadOffset.y)
+     Call Grh_Render_To_Hdc(PicBox, GrhData(grh.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
+    
+
+    If NpcData(MyBody).Head <> 0 Then
+        x = (PicBox.ScaleWidth - GrhData(grhH.GrhIndex).pixelWidth) / 2
+        y = y + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y
+        PicBox.BackColor = RGB(11, 11, 11)
+        Call Grh_Render_To_HdcSinBorrar(PicBox, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
+    End If
+
+    
+    Exit Sub
+
+DibujarBody_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.DibujarBody", Erl)
     Resume Next
     
 End Sub

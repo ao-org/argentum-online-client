@@ -1155,7 +1155,7 @@ Public Sub HandleIncomingData()
     End Select
     
     'Done with this packet, move on to next one
-    If incomingData.length > 0 And Err.number <> incomingData.NotEnoughDataErrCode Then
+    If incomingData.length > 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then
         If LastPacket = paquete Then
             IterationsHID = IterationsHID + 1
             
@@ -1241,7 +1241,7 @@ Private Sub HandleLogged()
     Exit Sub
 
 HandleLogged_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleLogged", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLogged", Erl)
     Resume Next
     
 End Sub
@@ -1267,7 +1267,7 @@ Private Sub HandleRemoveDialogs()
     Exit Sub
 
 HandleRemoveDialogs_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleRemoveDialogs", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRemoveDialogs", Erl)
     Resume Next
     
 End Sub
@@ -1301,7 +1301,7 @@ Private Sub HandleRemoveCharDialog()
     Exit Sub
 
 HandleRemoveCharDialog_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleRemoveCharDialog", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRemoveCharDialog", Erl)
     Resume Next
     
 End Sub
@@ -1327,7 +1327,7 @@ Private Sub HandleNavigateToggle()
     Exit Sub
 
 HandleNavigateToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleNavigateToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNavigateToggle", Erl)
     Resume Next
     
 End Sub
@@ -1352,7 +1352,7 @@ Private Sub HandleNadarToggle()
     Exit Sub
 
 HandleNadarToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleNadarToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNadarToggle", Erl)
     Resume Next
     
 End Sub
@@ -1374,7 +1374,7 @@ Private Sub HandleEquiteToggle()
     Exit Sub
 
 HandleEquiteToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleEquiteToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleEquiteToggle", Erl)
     Resume Next
     
 End Sub
@@ -1401,7 +1401,7 @@ Private Sub HandleVelocidadToggle()
     Exit Sub
 
 HandleVelocidadToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleVelocidadToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleVelocidadToggle", Erl)
     Resume Next
     
 End Sub
@@ -1446,7 +1446,7 @@ Private Sub HandleMacroTrabajoToggle()
     Exit Sub
 
 HandleMacroTrabajoToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleMacroTrabajoToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMacroTrabajoToggle", Erl)
     Resume Next
     
 End Sub
@@ -1681,7 +1681,7 @@ Private Sub HandleDisconnect()
     Exit Sub
 
 HandleDisconnect_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleDisconnect", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDisconnect", Erl)
     Resume Next
     
 End Sub
@@ -1710,7 +1710,7 @@ Private Sub HandleCommerceEnd()
     Exit Sub
 
 HandleCommerceEnd_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCommerceEnd", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCommerceEnd", Erl)
     Resume Next
     
 End Sub
@@ -1740,7 +1740,7 @@ Private Sub HandleBankEnd()
     Exit Sub
 
 HandleBankEnd_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleBankEnd", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBankEnd", Erl)
     Resume Next
     
 End Sub
@@ -1793,7 +1793,7 @@ Private Sub HandleCommerceInit()
     Exit Sub
 
 HandleCommerceInit_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCommerceInit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCommerceInit", Erl)
     Resume Next
     
 End Sub
@@ -1846,7 +1846,7 @@ Private Sub HandleBankInit()
     Exit Sub
 
 HandleBankInit_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleBankInit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBankInit", Erl)
     Resume Next
     
 End Sub
@@ -1880,7 +1880,7 @@ Private Sub HandleGoliathInit()
     Exit Sub
 
 HandleGoliathInit_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleGoliathInit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGoliathInit", Erl)
     Resume Next
     
 End Sub
@@ -1911,7 +1911,7 @@ Private Sub HandleShowFrmLogear()
     Exit Sub
 
 HandleShowFrmLogear_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowFrmLogear", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowFrmLogear", Erl)
     Resume Next
     
 End Sub
@@ -1945,7 +1945,7 @@ Private Sub HandleShowFrmMapa()
     Exit Sub
 
 HandleShowFrmMapa_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowFrmMapa", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowFrmMapa", Erl)
     Resume Next
     
 End Sub
@@ -2001,7 +2001,7 @@ Private Sub HandleUserCommerceInit()
     Exit Sub
 
 HandleUserCommerceInit_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUserCommerceInit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCommerceInit", Erl)
     Resume Next
     
 End Sub
@@ -2033,7 +2033,7 @@ Private Sub HandleUserCommerceEnd()
     Exit Sub
 
 HandleUserCommerceEnd_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUserCommerceEnd", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCommerceEnd", Erl)
     Resume Next
     
 End Sub
@@ -2083,7 +2083,7 @@ Private Sub HandleShowBlacksmithForm()
     Exit Sub
 
 HandleShowBlacksmithForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowBlacksmithForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowBlacksmithForm", Erl)
     Resume Next
     
 End Sub
@@ -2122,7 +2122,7 @@ Private Sub HandleShowCarpenterForm()
     Exit Sub
 
 HandleShowCarpenterForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowCarpenterForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowCarpenterForm", Erl)
     Resume Next
     
 End Sub
@@ -2159,7 +2159,7 @@ Private Sub HandleShowAlquimiaForm()
     Exit Sub
 
 HandleShowAlquimiaForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowAlquimiaForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowAlquimiaForm", Erl)
     Resume Next
     
 End Sub
@@ -2206,7 +2206,7 @@ Private Sub HandleShowSastreForm()
     Exit Sub
 
 HandleShowSastreForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowSastreForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSastreForm", Erl)
     Resume Next
     
 End Sub
@@ -2232,7 +2232,7 @@ Private Sub HandleNPCKillUser()
     Exit Sub
 
 HandleNPCKillUser_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleNPCKillUser", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNPCKillUser", Erl)
     Resume Next
     
 End Sub
@@ -2258,7 +2258,7 @@ Private Sub HandleBlockedWithShieldUser()
     Exit Sub
 
 HandleBlockedWithShieldUser_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleBlockedWithShieldUser", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlockedWithShieldUser", Erl)
     Resume Next
     
 End Sub
@@ -2284,7 +2284,7 @@ Private Sub HandleBlockedWithShieldOther()
     Exit Sub
 
 HandleBlockedWithShieldOther_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleBlockedWithShieldOther", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlockedWithShieldOther", Erl)
     Resume Next
     
 End Sub
@@ -2337,7 +2337,7 @@ Private Sub HandleCharSwing()
     Exit Sub
 
 HandleCharSwing_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCharSwing", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharSwing", Erl)
     Resume Next
     
 End Sub
@@ -2364,7 +2364,7 @@ Private Sub HandleSafeModeOn()
     Exit Sub
 
 HandleSafeModeOn_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleSafeModeOn", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSafeModeOn", Erl)
     Resume Next
     
 End Sub
@@ -2391,7 +2391,7 @@ Private Sub HandleSafeModeOff()
     Exit Sub
 
 HandleSafeModeOff_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleSafeModeOff", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSafeModeOff", Erl)
     Resume Next
     
 End Sub
@@ -2416,7 +2416,7 @@ Private Sub HandlePartySafeOff()
     Exit Sub
 
 HandlePartySafeOff_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandlePartySafeOff", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePartySafeOff", Erl)
     Resume Next
     
 End Sub
@@ -2459,7 +2459,7 @@ Private Sub HandleClanSeguro()
     Exit Sub
 
 HandleClanSeguro_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleClanSeguro", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleClanSeguro", Erl)
     Resume Next
     
 End Sub
@@ -2520,7 +2520,7 @@ Private Sub HandleIntervals()
     Exit Sub
 
 HandleIntervals_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleIntervals", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleIntervals", Erl)
     Resume Next
     
 End Sub
@@ -2548,7 +2548,7 @@ Private Sub HandleUpdateUserKey()
     Exit Sub
 
 HandleUpdateUserKey_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateUserKey", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateUserKey", Erl)
     Resume Next
     
 End Sub
@@ -2575,7 +2575,7 @@ Private Sub HandleUpdateDM()
     Exit Sub
 
 HandleUpdateDM_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateDM", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateDM", Erl)
     Resume Next
     
 End Sub
@@ -2602,7 +2602,7 @@ Private Sub HandleUpdateRM()
     Exit Sub
 
 HandleUpdateRM_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateRM", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateRM", Erl)
     Resume Next
     
 End Sub
@@ -2625,7 +2625,7 @@ Private Sub HandlePartySafeOn()
     Exit Sub
 
 HandlePartySafeOn_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandlePartySafeOn", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePartySafeOn", Erl)
     Resume Next
     
 End Sub
@@ -2648,7 +2648,7 @@ Private Sub HandleCorreoPicOn()
     Exit Sub
 
 HandleCorreoPicOn_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCorreoPicOn", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCorreoPicOn", Erl)
     Resume Next
     
 End Sub
@@ -2674,7 +2674,7 @@ Private Sub HandleCantUseWhileMeditating()
     Exit Sub
 
 HandleCantUseWhileMeditating_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCantUseWhileMeditating", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCantUseWhileMeditating", Erl)
     Resume Next
     
 End Sub
@@ -2714,7 +2714,7 @@ Private Sub HandleUpdateSta()
     Exit Sub
 
 HandleUpdateSta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateSta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateSta", Erl)
     Resume Next
     
 End Sub
@@ -2771,7 +2771,7 @@ Private Sub HandleUpdateMana()
     Exit Sub
 
 HandleUpdateMana_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateMana", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateMana", Erl)
     Resume Next
     
 End Sub
@@ -2828,7 +2828,7 @@ Private Sub HandleUpdateHP()
     Exit Sub
 
 HandleUpdateHP_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateHP", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateHP", Erl)
     Resume Next
     
 End Sub
@@ -2866,7 +2866,7 @@ Private Sub HandleUpdateGold()
     Exit Sub
 
 HandleUpdateGold_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateGold", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGold", Erl)
     Resume Next
     
 End Sub
@@ -2898,11 +2898,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -2911,7 +2911,7 @@ Private Sub HandleUpdateExp()
     Exit Sub
 
 HandleUpdateExp_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateExp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateExp", Erl)
     Resume Next
     
 End Sub
@@ -3020,7 +3020,7 @@ Private Sub HandleChangeMap()
     Exit Sub
 
 HandleChangeMap_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleChangeMap", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeMap", Erl)
     Resume Next
     
 End Sub
@@ -3073,7 +3073,7 @@ Private Sub HandlePosUpdate()
     Exit Sub
 
 HandlePosUpdate_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandlePosUpdate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosUpdate", Erl)
     Resume Next
     
 End Sub
@@ -3132,7 +3132,7 @@ Private Sub HandleNPCHitUser()
     Exit Sub
 
 HandleNPCHitUser_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleNPCHitUser", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNPCHitUser", Erl)
     Resume Next
     
 End Sub
@@ -3165,7 +3165,7 @@ Private Sub HandleUserHitNPC()
     Exit Sub
 
 HandleUserHitNPC_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUserHitNPC", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHitNPC", Erl)
     Resume Next
     
 End Sub
@@ -3198,7 +3198,7 @@ Private Sub HandleUserAttackedSwing()
     Exit Sub
 
 HandleUserAttackedSwing_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUserAttackedSwing", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserAttackedSwing", Erl)
     Resume Next
     
 End Sub
@@ -3272,7 +3272,7 @@ Private Sub HandleUserHittedByUser()
     Exit Sub
 
 HandleUserHittedByUser_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUserHittedByUser", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHittedByUser", Erl)
     Resume Next
     
 End Sub
@@ -3346,7 +3346,7 @@ Private Sub HandleUserHittedUser()
     Exit Sub
 
 HandleUserHittedUser_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUserHittedUser", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHittedUser", Erl)
     Resume Next
     
 End Sub
@@ -3462,11 +3462,11 @@ Private Sub HandleChatOverHead()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -3512,11 +3512,11 @@ Private Sub HandleTextOverChar()
 
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -3594,11 +3594,11 @@ Private Sub HandleTextOverTile()
 
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -3687,11 +3687,11 @@ Private Sub HandleTextCharDrop()
 
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -3845,11 +3845,11 @@ Private Sub HandleConsoleMessage()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -3964,11 +3964,11 @@ Private Sub HandleLocaleMsg()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -4065,11 +4065,11 @@ Private Sub HandleGuildChat()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -4135,11 +4135,11 @@ Private Sub HandleShowMessageBox()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -4232,11 +4232,11 @@ Private Sub HandleMostrarCuenta()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -4275,7 +4275,7 @@ Private Sub HandleUserIndexInServer()
     Exit Sub
 
 HandleUserIndexInServer_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUserIndexInServer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserIndexInServer", Erl)
     Resume Next
     
 End Sub
@@ -4320,7 +4320,7 @@ Private Sub HandleUserCharIndexInServer()
     Exit Sub
 
 HandleUserCharIndexInServer_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUserCharIndexInServer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCharIndexInServer", Erl)
     Resume Next
     
 End Sub
@@ -4494,11 +4494,11 @@ Private Sub HandleCharacterCreate()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -4550,7 +4550,7 @@ Private Sub HandleCharacterRemove()
     Exit Sub
 
 HandleCharacterRemove_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCharacterRemove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterRemove", Erl)
     Resume Next
     
 End Sub
@@ -4603,7 +4603,7 @@ Private Sub HandleCharacterMove()
     Exit Sub
 
 HandleCharacterMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCharacterMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterMove", Erl)
     Resume Next
     
 End Sub
@@ -4647,7 +4647,7 @@ Private Sub HandleForceCharMove()
     Exit Sub
 
 HandleForceCharMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleForceCharMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMove", Erl)
     Resume Next
     
 End Sub
@@ -4754,7 +4754,7 @@ Private Sub HandleCharacterChange()
     Exit Sub
 
 HandleCharacterChange_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCharacterChange", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterChange", Erl)
     Resume Next
     
 End Sub
@@ -4832,7 +4832,7 @@ Private Sub HandleObjectCreate()
     Exit Sub
 
 HandleObjectCreate_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleObjectCreate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleObjectCreate", Erl)
     Resume Next
     
 End Sub
@@ -4871,7 +4871,7 @@ Private Sub HandleFxPiso()
     Exit Sub
 
 HandleFxPiso_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleFxPiso", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleFxPiso", Erl)
     Resume Next
     
 End Sub
@@ -4927,7 +4927,7 @@ Private Sub HandleObjectDelete()
     Exit Sub
 
 HandleObjectDelete_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleObjectDelete", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleObjectDelete", Erl)
     Resume Next
     
 End Sub
@@ -4967,7 +4967,7 @@ Private Sub HandleBlockPosition()
     Exit Sub
 
 HandleBlockPosition_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleBlockPosition", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlockPosition", Erl)
     Resume Next
     
 End Sub
@@ -5011,7 +5011,7 @@ Private Sub HandlePlayMIDI()
     Exit Sub
 
 HandlePlayMIDI_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandlePlayMIDI", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayMIDI", Erl)
     Resume Next
     
 End Sub
@@ -5072,7 +5072,7 @@ Private Sub HandlePlayWave()
     Exit Sub
 
 HandlePlayWave_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandlePlayWave", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayWave", Erl)
     Resume Next
     
 End Sub
@@ -5144,7 +5144,7 @@ Private Sub HandlePosLLamadaDeClan()
     Exit Sub
 
 HandlePosLLamadaDeClan_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandlePosLLamadaDeClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosLLamadaDeClan", Erl)
     Resume Next
     
 End Sub
@@ -5187,7 +5187,7 @@ Private Sub HandleCharUpdateHP()
     Exit Sub
 
 HandleCharUpdateHP_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCharUpdateHP", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharUpdateHP", Erl)
     Resume Next
     
 End Sub
@@ -5222,7 +5222,7 @@ Private Sub HandleArmaMov()
     Exit Sub
 
 HandleArmaMov_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleArmaMov", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleArmaMov", Erl)
     Resume Next
     
 End Sub
@@ -5257,7 +5257,7 @@ Private Sub HandleEscudoMov()
     Exit Sub
 
 HandleEscudoMov_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleEscudoMov", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleEscudoMov", Erl)
     Resume Next
     
 End Sub
@@ -5289,7 +5289,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -5314,7 +5314,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -5322,7 +5322,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
 
     Call frmGuildAdm.Show(vbModeless, frmMain)
     
@@ -5330,11 +5330,11 @@ Private Sub HandleGuildList()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -5380,7 +5380,7 @@ Private Sub HandleAreaChanged()
     Exit Sub
 
 HandleAreaChanged_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleAreaChanged", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAreaChanged", Erl)
     Resume Next
     
 End Sub
@@ -5406,7 +5406,7 @@ Private Sub HandlePauseToggle()
     Exit Sub
 
 HandlePauseToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandlePauseToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePauseToggle", Erl)
     Resume Next
     
 End Sub
@@ -5463,7 +5463,7 @@ Private Sub HandleRainToggle()
     Exit Sub
 
 HandleRainToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleRainToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRainToggle", Erl)
     Resume Next
     
 End Sub
@@ -5487,7 +5487,7 @@ Private Sub HandleTrofeoToggleOn()
     Exit Sub
 
 HandleTrofeoToggleOn_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleTrofeoToggleOn", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrofeoToggleOn", Erl)
     Resume Next
     
 End Sub
@@ -5511,7 +5511,7 @@ Private Sub HandleTrofeoToggleOff()
     Exit Sub
 
 HandleTrofeoToggleOff_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleTrofeoToggleOff", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrofeoToggleOff", Erl)
     Resume Next
     
 End Sub
@@ -5560,7 +5560,7 @@ Private Sub HandleCreateFX()
     Exit Sub
 
 HandleCreateFX_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCreateFX", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCreateFX", Erl)
     Resume Next
     
 End Sub
@@ -5601,9 +5601,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -5645,7 +5645,7 @@ Private Sub HandleUpdateUserStats()
     Exit Sub
 
 HandleUpdateUserStats_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateUserStats", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateUserStats", Erl)
     Resume Next
     
 End Sub
@@ -5737,7 +5737,7 @@ Private Sub HandleWorkRequestTarget()
     Exit Sub
 
 HandleWorkRequestTarget_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleWorkRequestTarget", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleWorkRequestTarget", Erl)
     Resume Next
     
 End Sub
@@ -5862,9 +5862,9 @@ Private Sub HandleChangeInventorySlot()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
-    Dim Error As Long: Error = Err.number
+    Dim Error As Long: Error = Err.Number
 
     On Error GoTo 0
     
@@ -5904,7 +5904,7 @@ Private Sub HandleInventoryUnlockSlots()
     Exit Sub
 
 HandleInventoryUnlockSlots_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleInventoryUnlockSlots", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleInventoryUnlockSlots", Erl)
     Resume Next
     
 End Sub
@@ -6041,11 +6041,11 @@ Private Sub HandleRefreshAllInventorySlot()
      
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6107,11 +6107,11 @@ Private Sub HandleChangeBankSlot()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6186,11 +6186,11 @@ Private Sub HandleChangeSpellSlot()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6261,7 +6261,7 @@ Private Sub HandleAtributes()
     Exit Sub
 
 HandleAtributes_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleAtributes", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAtributes", Erl)
     Resume Next
     
 End Sub
@@ -6325,11 +6325,11 @@ Private Sub HandleBlacksmithWeapons()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6440,11 +6440,11 @@ Private Sub HandleBlacksmithArmors()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6506,11 +6506,11 @@ Private Sub HandleCarpenterObjects()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6601,11 +6601,11 @@ Private Sub HandleSastreObjects()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6669,11 +6669,11 @@ Private Sub HandleAlquimiaObjects()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6705,7 +6705,7 @@ Private Sub HandleRestOK()
     Exit Sub
 
 HandleRestOK_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleRestOK", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRestOK", Erl)
     Resume Next
     
 End Sub
@@ -6743,11 +6743,11 @@ Private Sub HandleErrorMessage()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6782,7 +6782,7 @@ Private Sub HandleBlind()
     Exit Sub
 
 HandleBlind_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleBlind", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlind", Erl)
     Resume Next
     
 End Sub
@@ -6808,7 +6808,7 @@ Private Sub HandleDumb()
     Exit Sub
 
 HandleDumb_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleDumb", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDumb", Erl)
     Resume Next
     
 End Sub
@@ -6853,11 +6853,11 @@ Private Sub HandleShowSignal()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6920,11 +6920,11 @@ Private Sub HandleChangeNPCInventorySlot()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -6973,7 +6973,7 @@ Private Sub HandleUpdateHungerAndThirst()
     Exit Sub
 
 HandleUpdateHungerAndThirst_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateHungerAndThirst", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateHungerAndThirst", Erl)
     Resume Next
     
 End Sub
@@ -7002,7 +7002,7 @@ Private Sub HandleHora()
     Exit Sub
 
 HandleHora_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleHora", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleHora", Erl)
     Resume Next
     
 End Sub
@@ -7029,7 +7029,7 @@ Private Sub HandleLight()
     Exit Sub
 
 HandleLight_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleLight", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLight", Erl)
     Resume Next
     
 End Sub
@@ -7086,7 +7086,7 @@ Private Sub HandleFYA()
     Exit Sub
 
 HandleFYA_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleFYA", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleFYA", Erl)
     Resume Next
     
 End Sub
@@ -7124,7 +7124,7 @@ Private Sub HandleUpdateNPCSimbolo()
     Exit Sub
 
 HandleUpdateNPCSimbolo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUpdateNPCSimbolo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateNPCSimbolo", Erl)
     Resume Next
     
 End Sub
@@ -7149,7 +7149,7 @@ Private Sub HandleCerrarleCliente()
     Exit Sub
 
 HandleCerrarleCliente_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
     Resume Next
     
 End Sub
@@ -7191,7 +7191,7 @@ Private Sub HandleContadores()
     Exit Sub
 
 HandleContadores_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleContadores", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleContadores", Erl)
     Resume Next
     
 End Sub
@@ -7254,7 +7254,7 @@ Private Sub HandleOxigeno()
     Exit Sub
 
 HandleOxigeno_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleOxigeno", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleOxigeno", Erl)
     Resume Next
     
 End Sub
@@ -7305,7 +7305,7 @@ Private Sub HandleFlashScreen()
     Exit Sub
 
 HandleEfectToScreen_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleEfectToScreen", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleEfectToScreen", Erl)
     Resume Next
     
 End Sub
@@ -7369,7 +7369,7 @@ Private Sub HandleMiniStats()
     Exit Sub
 
 HandleMiniStats_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleMiniStats", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMiniStats", Erl)
     Resume Next
     
 End Sub
@@ -7402,7 +7402,7 @@ Private Sub HandleLevelUp()
     Exit Sub
 
 HandleLevelUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleLevelUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLevelUp", Erl)
     Resume Next
     
 End Sub
@@ -7449,11 +7449,11 @@ Private Sub HandleAddForumMessage()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -7486,7 +7486,7 @@ Private Sub HandleShowForumForm()
     Exit Sub
 
 HandleShowForumForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowForumForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowForumForm", Erl)
     Resume Next
     
 End Sub
@@ -7523,7 +7523,7 @@ Private Sub HandleSetInvisible()
     Exit Sub
 
 HandleSetInvisible_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleSetInvisible", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSetInvisible", Erl)
     Resume Next
     
 End Sub
@@ -7556,7 +7556,7 @@ Private Sub HandleSetEscribiendo()
     Exit Sub
 
 HandleSetEscribiendo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleSetEscribiendo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSetEscribiendo", Erl)
     Resume Next
     
 End Sub
@@ -7599,7 +7599,7 @@ Private Sub HandleDiceRoll()
     Exit Sub
 
 HandleDiceRoll_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleDiceRoll", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDiceRoll", Erl)
     Resume Next
     
 End Sub
@@ -7648,7 +7648,7 @@ Private Sub HandleMeditateToggle()
     Exit Sub
 
 HandleMeditateToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleMeditateToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMeditateToggle", Erl)
     Resume Next
     
 End Sub
@@ -7674,7 +7674,7 @@ Private Sub HandleBlindNoMore()
     Exit Sub
 
 HandleBlindNoMore_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleBlindNoMore", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlindNoMore", Erl)
     Resume Next
     
 End Sub
@@ -7700,7 +7700,7 @@ Private Sub HandleDumbNoMore()
     Exit Sub
 
 HandleDumbNoMore_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleDumbNoMore", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDumbNoMore", Erl)
     Resume Next
     
 End Sub
@@ -7748,7 +7748,7 @@ Private Sub HandleSendSkills()
     Exit Sub
 
 HandleSendSkills_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleSendSkills", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendSkills", Erl)
     Resume Next
     
 End Sub
@@ -7796,11 +7796,11 @@ Private Sub HandleTrainerCreatureList()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -7856,10 +7856,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.guildslist.Clear
+    Call frmGuildNews.GuildsList.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7891,7 +7891,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -7935,11 +7935,11 @@ Private Sub HandleGuildNews()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -7983,11 +7983,11 @@ Private Sub HandleOfferDetails()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8042,11 +8042,11 @@ Private Sub HandleAlianceProposalsList()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8101,11 +8101,11 @@ Private Sub HandlePeaceProposalsList()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8215,11 +8215,11 @@ Private Sub HandleCharacterInfo()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8265,10 +8265,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
         
         For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -8308,7 +8308,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .ExpBar.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -8347,11 +8347,11 @@ Private Sub HandleGuildLeaderInfo()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8414,11 +8414,11 @@ Private Sub HandleGuildDetails()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8451,7 +8451,7 @@ Private Sub HandleShowGuildFundationForm()
     Exit Sub
 
 HandleShowGuildFundationForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowGuildFundationForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowGuildFundationForm", Erl)
     Resume Next
     
 End Sub
@@ -8477,7 +8477,7 @@ Private Sub HandleParalizeOK()
     Exit Sub
 
 HandleParalizeOK_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleParalizeOK", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParalizeOK", Erl)
     Resume Next
     
 End Sub
@@ -8500,7 +8500,7 @@ Private Sub HandleInmovilizadoOK()
     Exit Sub
 
 HandleInmovilizadoOK_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleInmovilizadoOK", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleInmovilizadoOK", Erl)
     Resume Next
     
 End Sub
@@ -8539,11 +8539,11 @@ Private Sub HandleShowUserRequest()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8605,11 +8605,11 @@ Private Sub HandleChangeUserTradeSlot()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8659,11 +8659,11 @@ Private Sub HandleSpawnList()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8725,11 +8725,11 @@ Private Sub HandleShowSOSForm()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8774,11 +8774,11 @@ Private Sub HandleShowMOTDEditionForm()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8810,7 +8810,7 @@ Private Sub HandleShowGMPanelForm()
     Exit Sub
 
 HandleShowGMPanelForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowGMPanelForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowGMPanelForm", Erl)
     Resume Next
     
 End Sub
@@ -8834,7 +8834,7 @@ Private Sub HandleShowFundarClanForm()
     Exit Sub
 
 HandleShowFundarClanForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleShowFundarClanForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowFundarClanForm", Erl)
     Resume Next
     
 End Sub
@@ -8887,11 +8887,11 @@ Private Sub HandleUserNameList()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -8937,7 +8937,7 @@ Private Sub HandlePong()
     Exit Sub
 
 HandlePong_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandlePong", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePong", Erl)
     Resume Next
     
 End Sub
@@ -9000,11 +9000,11 @@ Private Sub HandleUpdateTagAndStatus()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -9050,7 +9050,7 @@ Public Sub WriteLoginExistingChar()
     Exit Sub
 
 WriteLoginExistingChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteLoginExistingChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLoginExistingChar", Erl)
     Resume Next
     
 End Sub
@@ -9093,7 +9093,7 @@ Public Sub WriteLoginNewChar()
     Exit Sub
 
 WriteLoginNewChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteLoginNewChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLoginNewChar", Erl)
     Resume Next
     
 End Sub
@@ -9125,7 +9125,7 @@ Public Sub WriteTalk(ByVal chat As String)
     Exit Sub
 
 WriteTalk_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTalk", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTalk", Erl)
     Resume Next
     
 End Sub
@@ -9157,7 +9157,7 @@ Public Sub WriteYell(ByVal chat As String)
     Exit Sub
 
 WriteYell_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteYell", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteYell", Erl)
     Resume Next
     
 End Sub
@@ -9192,7 +9192,7 @@ Public Sub WriteWhisper(ByVal nombre As String, ByVal chat As String)
     Exit Sub
 
 WriteWhisper_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteWhisper", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWhisper", Erl)
     Resume Next
     
 End Sub
@@ -9224,7 +9224,7 @@ Public Sub WriteWalk(ByVal Heading As E_Heading)
     Exit Sub
 
 WriteWalk_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteWalk", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWalk", Erl)
     Resume Next
     
 End Sub
@@ -9249,7 +9249,7 @@ Public Sub WriteRequestPositionUpdate()
     Exit Sub
 
 WriteRequestPositionUpdate_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestPositionUpdate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestPositionUpdate", Erl)
     Resume Next
     
 End Sub
@@ -9274,7 +9274,7 @@ Public Sub WriteAttack()
     Exit Sub
 
 WriteAttack_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteAttack", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAttack", Erl)
     Resume Next
     
 End Sub
@@ -9299,7 +9299,7 @@ Public Sub WritePickUp()
     Exit Sub
 
 WritePickUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePickUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePickUp", Erl)
     Resume Next
     
 End Sub
@@ -9324,7 +9324,7 @@ Public Sub WriteSafeToggle()
     Exit Sub
 
 WriteSafeToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSafeToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSafeToggle", Erl)
     Resume Next
     
 End Sub
@@ -9345,7 +9345,7 @@ Public Sub WriteSeguroClan()
     Exit Sub
 
 WriteSeguroClan_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSeguroClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSeguroClan", Erl)
     Resume Next
     
 End Sub
@@ -9366,7 +9366,7 @@ Public Sub WriteTraerBoveda()
     Exit Sub
 
 WriteTraerBoveda_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTraerBoveda", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTraerBoveda", Erl)
     Resume Next
     
 End Sub
@@ -9399,7 +9399,7 @@ Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal x As Byte, ByVal
     Exit Sub
 
 WriteCreatePretorianClan_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCreatePretorianClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreatePretorianClan", Erl)
     Resume Next
     
 End Sub
@@ -9428,7 +9428,7 @@ Public Sub WriteDeletePretorianClan(ByVal map As Integer)
     Exit Sub
 
 WriteDeletePretorianClan_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDeletePretorianClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDeletePretorianClan", Erl)
     Resume Next
     
 End Sub
@@ -9453,7 +9453,7 @@ Public Sub WriteParyToggle()
     Exit Sub
 
 WriteParyToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteParyToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteParyToggle", Erl)
     Resume Next
     
 End Sub
@@ -9479,7 +9479,7 @@ Public Sub WriteSeguroResu()
     Exit Sub
 
 WriteSeguroResu_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSeguroResu", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSeguroResu", Erl)
     Resume Next
     
 End Sub
@@ -9504,7 +9504,7 @@ Public Sub WriteRequestGuildLeaderInfo()
     Exit Sub
 
 WriteRequestGuildLeaderInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestGuildLeaderInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestGuildLeaderInfo", Erl)
     Resume Next
     
 End Sub
@@ -9529,7 +9529,7 @@ Public Sub WriteRequestAtributes()
     Exit Sub
 
 WriteRequestAtributes_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestAtributes", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestAtributes", Erl)
     Resume Next
     
 End Sub
@@ -9550,7 +9550,7 @@ Public Sub WriteRequestFamiliar()
     Exit Sub
 
 WriteRequestFamiliar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestFamiliar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestFamiliar", Erl)
     Resume Next
     
 End Sub
@@ -9571,7 +9571,7 @@ Public Sub WriteRequestGrupo()
     Exit Sub
 
 WriteRequestGrupo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestGrupo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestGrupo", Erl)
     Resume Next
     
 End Sub
@@ -9596,7 +9596,7 @@ Public Sub WriteRequestSkills()
     Exit Sub
 
 WriteRequestSkills_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestSkills", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestSkills", Erl)
     Resume Next
     
 End Sub
@@ -9621,7 +9621,7 @@ Public Sub WriteRequestMiniStats()
     Exit Sub
 
 WriteRequestMiniStats_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestMiniStats", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestMiniStats", Erl)
     Resume Next
     
 End Sub
@@ -9646,7 +9646,7 @@ Public Sub WriteCommerceEnd()
     Exit Sub
 
 WriteCommerceEnd_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCommerceEnd", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCommerceEnd", Erl)
     Resume Next
     
 End Sub
@@ -9671,7 +9671,7 @@ Public Sub WriteUserCommerceEnd()
     Exit Sub
 
 WriteUserCommerceEnd_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUserCommerceEnd", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUserCommerceEnd", Erl)
     Resume Next
     
 End Sub
@@ -9696,7 +9696,7 @@ Public Sub WriteBankEnd()
     Exit Sub
 
 WriteBankEnd_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBankEnd", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankEnd", Erl)
     Resume Next
     
 End Sub
@@ -9721,7 +9721,7 @@ Public Sub WriteUserCommerceOk()
     Exit Sub
 
 WriteUserCommerceOk_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUserCommerceOk", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUserCommerceOk", Erl)
     Resume Next
     
 End Sub
@@ -9746,7 +9746,7 @@ Public Sub WriteUserCommerceReject()
     Exit Sub
 
 WriteUserCommerceReject_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUserCommerceReject", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUserCommerceReject", Erl)
     Resume Next
     
 End Sub
@@ -9779,7 +9779,7 @@ Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
     Exit Sub
 
 WriteDrop_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDrop", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDrop", Erl)
     Resume Next
     
 End Sub
@@ -9811,7 +9811,7 @@ Public Sub WriteCastSpell(ByVal Slot As Byte)
     Exit Sub
 
 WriteCastSpell_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCastSpell", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCastSpell", Erl)
     Resume Next
     
 End Sub
@@ -9836,7 +9836,7 @@ Public Sub WriteInvitarGrupo()
     Exit Sub
 
 WriteInvitarGrupo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteInvitarGrupo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInvitarGrupo", Erl)
     Resume Next
     
 End Sub
@@ -9860,7 +9860,7 @@ Public Sub WriteMarcaDeClan()
     Exit Sub
 
 WriteMarcaDeClan_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteMarcaDeClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMarcaDeClan", Erl)
     Resume Next
     
 End Sub
@@ -9884,7 +9884,7 @@ Public Sub WriteMarcaDeGm()
     Exit Sub
 
 WriteMarcaDeGm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteMarcaDeGm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMarcaDeGm", Erl)
     Resume Next
     
 End Sub
@@ -9909,7 +9909,7 @@ Public Sub WriteAbandonarGrupo()
     Exit Sub
 
 WriteAbandonarGrupo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteAbandonarGrupo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAbandonarGrupo", Erl)
     Resume Next
     
 End Sub
@@ -9935,7 +9935,7 @@ Public Sub WriteHecharDeGrupo(ByVal indice As Byte)
     Exit Sub
 
 WriteHecharDeGrupo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteHecharDeGrupo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteHecharDeGrupo", Erl)
     Resume Next
     
 End Sub
@@ -9969,7 +9969,7 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
     Exit Sub
 
 WriteLeftClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteLeftClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLeftClick", Erl)
     Resume Next
     
 End Sub
@@ -10004,7 +10004,7 @@ Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
     Exit Sub
 
 WriteDoubleClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDoubleClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDoubleClick", Erl)
     Resume Next
     
 End Sub
@@ -10036,7 +10036,7 @@ Public Sub WriteWork(ByVal Skill As eSkill)
     Exit Sub
 
 WriteWork_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteWork", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWork", Erl)
     Resume Next
     
 End Sub
@@ -10051,7 +10051,7 @@ Public Sub WriteThrowDice()
     Exit Sub
 
 WriteThrowDice_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteThrowDice", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteThrowDice", Erl)
     Resume Next
     
 End Sub
@@ -10076,7 +10076,7 @@ Public Sub WriteUseSpellMacro()
     Exit Sub
 
 WriteUseSpellMacro_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUseSpellMacro", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUseSpellMacro", Erl)
     Resume Next
     
 End Sub
@@ -10107,7 +10107,7 @@ Public Sub WriteUseItem(ByVal Slot As Byte)
     Exit Sub
 
 WriteUseItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUseItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUseItem", Erl)
     Resume Next
     
 End Sub
@@ -10139,7 +10139,7 @@ Public Sub WriteCraftBlacksmith(ByVal Item As Integer)
     Exit Sub
 
 WriteCraftBlacksmith_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCraftBlacksmith", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCraftBlacksmith", Erl)
     Resume Next
     
 End Sub
@@ -10171,7 +10171,7 @@ Public Sub WriteCraftCarpenter(ByVal Item As Integer)
     Exit Sub
 
 WriteCraftCarpenter_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCraftCarpenter", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCraftCarpenter", Erl)
     Resume Next
     
 End Sub
@@ -10197,7 +10197,7 @@ Public Sub WriteCraftAlquimista(ByVal Item As Integer)
     Exit Sub
 
 WriteCraftAlquimista_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCraftAlquimista", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCraftAlquimista", Erl)
     Resume Next
     
 End Sub
@@ -10223,7 +10223,7 @@ Public Sub WriteCraftSastre(ByVal Item As Integer)
     Exit Sub
 
 WriteCraftSastre_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCraftSastre", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCraftSastre", Erl)
     Resume Next
     
 End Sub
@@ -10263,7 +10263,7 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
     Exit Sub
 
 WriteWorkLeftClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteWorkLeftClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWorkLeftClick", Erl)
     Resume Next
     
 End Sub
@@ -10305,7 +10305,7 @@ Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal Name As String, ByVal
     Exit Sub
 
 WriteCreateNewGuild_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCreateNewGuild", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreateNewGuild", Erl)
     Resume Next
     
 End Sub
@@ -10337,7 +10337,7 @@ Public Sub WriteSpellInfo(ByVal Slot As Byte)
     Exit Sub
 
 WriteSpellInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSpellInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSpellInfo", Erl)
     Resume Next
     
 End Sub
@@ -10369,7 +10369,7 @@ Public Sub WriteEquipItem(ByVal Slot As Byte)
     Exit Sub
 
 WriteEquipItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteEquipItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEquipItem", Erl)
     Resume Next
     
 End Sub
@@ -10401,7 +10401,7 @@ Public Sub WriteChangeHeading(ByVal Heading As E_Heading)
     Exit Sub
 
 WriteChangeHeading_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeHeading", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeHeading", Erl)
     Resume Next
     
 End Sub
@@ -10437,7 +10437,7 @@ Public Sub WriteModifySkills(ByRef skillEdt() As Byte)
     Exit Sub
 
 WriteModifySkills_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteModifySkills", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteModifySkills", Erl)
     Resume Next
     
 End Sub
@@ -10469,7 +10469,7 @@ Public Sub WriteTrain(ByVal creature As Byte)
     Exit Sub
 
 WriteTrain_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTrain", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTrain", Erl)
     Resume Next
     
 End Sub
@@ -10503,7 +10503,7 @@ Public Sub WriteCommerceBuy(ByVal Slot As Byte, ByVal Amount As Integer)
     Exit Sub
 
 WriteCommerceBuy_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCommerceBuy", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCommerceBuy", Erl)
     Resume Next
     
 End Sub
@@ -10522,7 +10522,7 @@ Public Sub WriteUseKey(ByVal Slot As Byte)
     Exit Sub
 
 WriteUseKey_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUseKey", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUseKey", Erl)
     Resume Next
     
 End Sub
@@ -10557,7 +10557,7 @@ Public Sub WriteBankExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, ByV
     Exit Sub
 
 WriteBankExtractItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBankExtractItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankExtractItem", Erl)
     Resume Next
     
 End Sub
@@ -10591,7 +10591,7 @@ Public Sub WriteCommerceSell(ByVal Slot As Byte, ByVal Amount As Integer)
     Exit Sub
 
 WriteCommerceSell_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCommerceSell", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCommerceSell", Erl)
     Resume Next
     
 End Sub
@@ -10625,7 +10625,7 @@ Public Sub WriteBankDeposit(ByVal Slot As Byte, ByVal Amount As Integer, ByVal s
     Exit Sub
 
 WriteBankDeposit_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBankDeposit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankDeposit", Erl)
     Resume Next
     
 End Sub
@@ -10659,7 +10659,7 @@ Public Sub WriteForumPost(ByVal title As String, ByVal Message As String)
     Exit Sub
 
 WriteForumPost_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteForumPost", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForumPost", Erl)
     Resume Next
     
 End Sub
@@ -10693,7 +10693,7 @@ Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal Slot As Byte)
     Exit Sub
 
 WriteMoveSpell_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteMoveSpell", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMoveSpell", Erl)
     Resume Next
     
 End Sub
@@ -10729,7 +10729,7 @@ Public Sub WriteClanCodexUpdate(ByVal desc As String)
     Exit Sub
 
 WriteClanCodexUpdate_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteClanCodexUpdate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteClanCodexUpdate", Erl)
     Resume Next
     
 End Sub
@@ -10763,7 +10763,7 @@ Public Sub WriteUserCommerceOffer(ByVal Slot As Byte, ByVal Amount As Long)
     Exit Sub
 
 WriteUserCommerceOffer_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUserCommerceOffer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUserCommerceOffer", Erl)
     Resume Next
     
 End Sub
@@ -10795,7 +10795,7 @@ Public Sub WriteGuildAcceptPeace(ByVal guild As String)
     Exit Sub
 
 WriteGuildAcceptPeace_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildAcceptPeace", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAcceptPeace", Erl)
     Resume Next
     
 End Sub
@@ -10827,7 +10827,7 @@ Public Sub WriteGuildRejectAlliance(ByVal guild As String)
     Exit Sub
 
 WriteGuildRejectAlliance_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildRejectAlliance", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRejectAlliance", Erl)
     Resume Next
     
 End Sub
@@ -10859,7 +10859,7 @@ Public Sub WriteGuildRejectPeace(ByVal guild As String)
     Exit Sub
 
 WriteGuildRejectPeace_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildRejectPeace", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRejectPeace", Erl)
     Resume Next
     
 End Sub
@@ -10891,7 +10891,7 @@ Public Sub WriteGuildAcceptAlliance(ByVal guild As String)
     Exit Sub
 
 WriteGuildAcceptAlliance_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildAcceptAlliance", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAcceptAlliance", Erl)
     Resume Next
     
 End Sub
@@ -10925,7 +10925,7 @@ Public Sub WriteGuildOfferPeace(ByVal guild As String, ByVal proposal As String)
     Exit Sub
 
 WriteGuildOfferPeace_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildOfferPeace", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOfferPeace", Erl)
     Resume Next
     
 End Sub
@@ -10959,7 +10959,7 @@ Public Sub WriteGuildOfferAlliance(ByVal guild As String, ByVal proposal As Stri
     Exit Sub
 
 WriteGuildOfferAlliance_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildOfferAlliance", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOfferAlliance", Erl)
     Resume Next
     
 End Sub
@@ -10991,7 +10991,7 @@ Public Sub WriteGuildAllianceDetails(ByVal guild As String)
     Exit Sub
 
 WriteGuildAllianceDetails_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildAllianceDetails", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAllianceDetails", Erl)
     Resume Next
     
 End Sub
@@ -11023,7 +11023,7 @@ Public Sub WriteGuildPeaceDetails(ByVal guild As String)
     Exit Sub
 
 WriteGuildPeaceDetails_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildPeaceDetails", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildPeaceDetails", Erl)
     Resume Next
     
 End Sub
@@ -11055,7 +11055,7 @@ Public Sub WriteGuildRequestJoinerInfo(ByVal UserName As String)
     Exit Sub
 
 WriteGuildRequestJoinerInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildRequestJoinerInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRequestJoinerInfo", Erl)
     Resume Next
     
 End Sub
@@ -11080,7 +11080,7 @@ Public Sub WriteGuildAlliancePropList()
     Exit Sub
 
 WriteGuildAlliancePropList_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildAlliancePropList", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAlliancePropList", Erl)
     Resume Next
     
 End Sub
@@ -11105,7 +11105,7 @@ Public Sub WriteGuildPeacePropList()
     Exit Sub
 
 WriteGuildPeacePropList_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildPeacePropList", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildPeacePropList", Erl)
     Resume Next
     
 End Sub
@@ -11137,7 +11137,7 @@ Public Sub WriteGuildDeclareWar(ByVal guild As String)
     Exit Sub
 
 WriteGuildDeclareWar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildDeclareWar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildDeclareWar", Erl)
     Resume Next
     
 End Sub
@@ -11169,7 +11169,7 @@ Public Sub WriteGuildNewWebsite(ByVal url As String)
     Exit Sub
 
 WriteGuildNewWebsite_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildNewWebsite", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildNewWebsite", Erl)
     Resume Next
     
 End Sub
@@ -11201,7 +11201,7 @@ Public Sub WriteGuildAcceptNewMember(ByVal UserName As String)
     Exit Sub
 
 WriteGuildAcceptNewMember_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildAcceptNewMember", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAcceptNewMember", Erl)
     Resume Next
     
 End Sub
@@ -11235,7 +11235,7 @@ Public Sub WriteGuildRejectNewMember(ByVal UserName As String, ByVal reason As S
     Exit Sub
 
 WriteGuildRejectNewMember_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildRejectNewMember", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRejectNewMember", Erl)
     Resume Next
     
 End Sub
@@ -11267,7 +11267,7 @@ Public Sub WriteGuildKickMember(ByVal UserName As String)
     Exit Sub
 
 WriteGuildKickMember_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildKickMember", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildKickMember", Erl)
     Resume Next
     
 End Sub
@@ -11299,7 +11299,7 @@ Public Sub WriteGuildUpdateNews(ByVal news As String)
     Exit Sub
 
 WriteGuildUpdateNews_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildUpdateNews", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildUpdateNews", Erl)
     Resume Next
     
 End Sub
@@ -11331,7 +11331,7 @@ Public Sub WriteGuildMemberInfo(ByVal UserName As String)
     Exit Sub
 
 WriteGuildMemberInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildMemberInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildMemberInfo", Erl)
     Resume Next
     
 End Sub
@@ -11356,7 +11356,7 @@ Public Sub WriteGuildOpenElections()
     Exit Sub
 
 WriteGuildOpenElections_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildOpenElections", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOpenElections", Erl)
     Resume Next
     
 End Sub
@@ -11390,7 +11390,7 @@ Public Sub WriteGuildRequestMembership(ByVal guild As String, ByVal Application 
     Exit Sub
 
 WriteGuildRequestMembership_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildRequestMembership", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRequestMembership", Erl)
     Resume Next
     
 End Sub
@@ -11422,7 +11422,7 @@ Public Sub WriteGuildRequestDetails(ByVal guild As String)
     Exit Sub
 
 WriteGuildRequestDetails_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildRequestDetails", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRequestDetails", Erl)
     Resume Next
     
 End Sub
@@ -11447,7 +11447,7 @@ Public Sub WriteOnline()
     Exit Sub
 
 WriteOnline_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteOnline", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnline", Erl)
     Resume Next
     
 End Sub
@@ -11474,7 +11474,7 @@ Public Sub WriteQuit()
     Exit Sub
 
 WriteQuit_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteQuit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuit", Erl)
     Resume Next
     
 End Sub
@@ -11499,7 +11499,7 @@ Public Sub WriteGuildLeave()
     Exit Sub
 
 WriteGuildLeave_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildLeave", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildLeave", Erl)
     Resume Next
     
 End Sub
@@ -11524,7 +11524,7 @@ Public Sub WriteRequestAccountState()
     Exit Sub
 
 WriteRequestAccountState_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestAccountState", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestAccountState", Erl)
     Resume Next
     
 End Sub
@@ -11549,7 +11549,7 @@ Public Sub WritePetStand()
     Exit Sub
 
 WritePetStand_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePetStand", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePetStand", Erl)
     Resume Next
     
 End Sub
@@ -11572,7 +11572,7 @@ Public Sub WritePetFollow()
     Exit Sub
 
 WritePetStand_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePetFollow", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePetFollow", Erl)
     Resume Next
     
 End Sub
@@ -11595,7 +11595,7 @@ Public Sub WritePetLeave()
     Exit Sub
 
 WritePetStand_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePetLeave", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePetLeave", Erl)
     Resume Next
     
 End Sub
@@ -11621,7 +11621,7 @@ Public Sub WriteGrupoMsg(ByVal Message As String)
     Exit Sub
 
 WriteGrupoMsg_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGrupoMsg", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGrupoMsg", Erl)
     Resume Next
     
 End Sub
@@ -11646,7 +11646,7 @@ Public Sub WriteTrainList()
     Exit Sub
 
 WriteTrainList_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTrainList", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTrainList", Erl)
     Resume Next
     
 End Sub
@@ -11671,7 +11671,7 @@ Public Sub WriteRest()
     Exit Sub
 
 WriteRest_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRest", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRest", Erl)
     Resume Next
     
 End Sub
@@ -11696,7 +11696,7 @@ Public Sub WriteMeditate()
     Exit Sub
 
 WriteMeditate_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteMeditate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMeditate", Erl)
     Resume Next
     
 End Sub
@@ -11721,7 +11721,7 @@ Public Sub WriteResucitate()
     Exit Sub
 
 WriteResucitate_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteResucitate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResucitate", Erl)
     Resume Next
     
 End Sub
@@ -11746,7 +11746,7 @@ Public Sub WriteHeal()
     Exit Sub
 
 WriteHeal_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteHeal", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteHeal", Erl)
     Resume Next
     
 End Sub
@@ -11771,7 +11771,7 @@ Public Sub WriteHelp()
     Exit Sub
 
 WriteHelp_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteHelp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteHelp", Erl)
     Resume Next
     
 End Sub
@@ -11796,7 +11796,7 @@ Public Sub WriteRequestStats()
     Exit Sub
 
 WriteRequestStats_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestStats", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestStats", Erl)
     Resume Next
     
 End Sub
@@ -11818,7 +11818,7 @@ Public Sub WritePromedio()
     Exit Sub
 
 Handle:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePromedio", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePromedio", Erl)
     Resume Next
     
 End Sub
@@ -11847,7 +11847,7 @@ Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal ca
     Exit Sub
 
 Handle:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGiveItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGiveItem", Erl)
     Resume Next
     
 End Sub
@@ -11872,7 +11872,7 @@ Public Sub WriteCommerceStart()
     Exit Sub
 
 WriteCommerceStart_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCommerceStart", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCommerceStart", Erl)
     Resume Next
     
 End Sub
@@ -11897,7 +11897,7 @@ Public Sub WriteBankStart()
     Exit Sub
 
 WriteBankStart_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBankStart", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankStart", Erl)
     Resume Next
     
 End Sub
@@ -11922,7 +11922,7 @@ Public Sub WriteEnlist()
     Exit Sub
 
 WriteEnlist_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteEnlist", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEnlist", Erl)
     Resume Next
     
 End Sub
@@ -11947,7 +11947,7 @@ Public Sub WriteInformation()
     Exit Sub
 
 WriteInformation_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteInformation", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInformation", Erl)
     Resume Next
     
 End Sub
@@ -11972,7 +11972,7 @@ Public Sub WriteReward()
     Exit Sub
 
 WriteReward_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteReward", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReward", Erl)
     Resume Next
     
 End Sub
@@ -11997,7 +11997,7 @@ Public Sub WriteRequestMOTD()
     Exit Sub
 
 WriteRequestMOTD_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestMOTD", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestMOTD", Erl)
     Resume Next
     
 End Sub
@@ -12022,7 +12022,7 @@ Public Sub WriteUpTime()
     Exit Sub
 
 WriteUpTime_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUpTime", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUpTime", Erl)
     Resume Next
     
 End Sub
@@ -12047,7 +12047,7 @@ Public Sub WriteInquiry()
     Exit Sub
 
 WriteInquiry_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteInquiry", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInquiry", Erl)
     Resume Next
     
 End Sub
@@ -12079,7 +12079,7 @@ Public Sub WriteGuildMessage(ByVal Message As String)
     Exit Sub
 
 WriteGuildMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildMessage", Erl)
     Resume Next
     
 End Sub
@@ -12090,7 +12090,7 @@ End Sub
 ' @param    number The number to report to the centinel.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCentinelReport(ByVal number As Integer)
+Public Sub WriteCentinelReport(ByVal Number As Integer)
     
     On Error GoTo WriteCentinelReport_Err
     
@@ -12103,7 +12103,7 @@ Public Sub WriteCentinelReport(ByVal number As Integer)
     With outgoingData
         Call .WriteByte(ClientPacketID.CentinelReport)
         
-        Call .WriteInteger(number)
+        Call .WriteInteger(Number)
 
     End With
 
@@ -12111,7 +12111,7 @@ Public Sub WriteCentinelReport(ByVal number As Integer)
     Exit Sub
 
 WriteCentinelReport_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCentinelReport", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCentinelReport", Erl)
     Resume Next
     
 End Sub
@@ -12136,7 +12136,7 @@ Public Sub WriteGuildOnline()
     Exit Sub
 
 WriteGuildOnline_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildOnline", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOnline", Erl)
     Resume Next
     
 End Sub
@@ -12168,7 +12168,7 @@ Public Sub WriteCouncilMessage(ByVal Message As String)
     Exit Sub
 
 WriteCouncilMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCouncilMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCouncilMessage", Erl)
     Resume Next
     
 End Sub
@@ -12200,7 +12200,7 @@ Public Sub WriteRoleMasterRequest(ByVal Message As String)
     Exit Sub
 
 WriteRoleMasterRequest_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRoleMasterRequest", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRoleMasterRequest", Erl)
     Resume Next
     
 End Sub
@@ -12225,7 +12225,7 @@ Public Sub WriteGMRequest()
     Exit Sub
 
 WriteGMRequest_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGMRequest", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGMRequest", Erl)
     Resume Next
     
 End Sub
@@ -12257,7 +12257,7 @@ Public Sub WriteChangeDescription(ByVal desc As String)
     Exit Sub
 
 WriteChangeDescription_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeDescription", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeDescription", Erl)
     Resume Next
     
 End Sub
@@ -12289,7 +12289,7 @@ Public Sub WriteGuildVote(ByVal UserName As String)
     Exit Sub
 
 WriteGuildVote_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildVote", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildVote", Erl)
     Resume Next
     
 End Sub
@@ -12321,7 +12321,7 @@ Public Sub WritePunishments(ByVal UserName As String)
     Exit Sub
 
 WritePunishments_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePunishments", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePunishments", Erl)
     Resume Next
     
 End Sub
@@ -12356,7 +12356,7 @@ Public Sub WriteChangePassword(ByRef oldPass As String, ByRef newPass As String)
     Exit Sub
 
 WriteChangePassword_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangePassword", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangePassword", Erl)
     Resume Next
     
 End Sub
@@ -12388,7 +12388,7 @@ Public Sub WriteGamble(ByVal Amount As Integer)
     Exit Sub
 
 WriteGamble_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGamble", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGamble", Erl)
     Resume Next
     
 End Sub
@@ -12420,7 +12420,7 @@ Public Sub WriteInquiryVote(ByVal opt As Byte)
     Exit Sub
 
 WriteInquiryVote_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteInquiryVote", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInquiryVote", Erl)
     Resume Next
     
 End Sub
@@ -12445,7 +12445,7 @@ Public Sub WriteLeaveFaction()
     Exit Sub
 
 WriteLeaveFaction_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteLeaveFaction", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLeaveFaction", Erl)
     Resume Next
     
 End Sub
@@ -12477,7 +12477,7 @@ Public Sub WriteBankExtractGold(ByVal Amount As Long)
     Exit Sub
 
 WriteBankExtractGold_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBankExtractGold", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankExtractGold", Erl)
     Resume Next
     
 End Sub
@@ -12509,7 +12509,7 @@ Public Sub WriteBankDepositGold(ByVal Amount As Long)
     Exit Sub
 
 WriteBankDepositGold_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBankDepositGold", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankDepositGold", Erl)
     Resume Next
     
 End Sub
@@ -12536,7 +12536,7 @@ Public Sub WriteTransFerGold(ByVal Amount As Long, ByVal destino As String)
     Exit Sub
 
 WriteTransFerGold_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTransFerGold", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTransFerGold", Erl)
     Resume Next
     
 End Sub
@@ -12558,7 +12558,7 @@ Public Sub WriteItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte)
     Exit Sub
 
 WriteItemMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteItemMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteItemMove", Erl)
     Resume Next
     
 End Sub
@@ -12580,7 +12580,7 @@ Public Sub WriteBovedaItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte
     Exit Sub
 
 WriteBovedaItemMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBovedaItemMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBovedaItemMove", Erl)
     Resume Next
     
 End Sub
@@ -12610,7 +12610,7 @@ Public Sub WriteFinEvento()
     Exit Sub
 
 WriteFinEvento_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteFinEvento", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteFinEvento", Erl)
     Resume Next
     
 End Sub
@@ -12640,7 +12640,7 @@ Public Sub WriteDenounce(Name As String)
     Exit Sub
 
 WriteDenounce_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDenounce", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDenounce", Erl)
     Resume Next
     
 End Sub
@@ -12665,7 +12665,7 @@ Public Sub WriteQuieroFundarClan()
     Exit Sub
 
 WriteQuieroFundarClan_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteQuieroFundarClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuieroFundarClan", Erl)
     Resume Next
     
 End Sub
@@ -12697,7 +12697,7 @@ Public Sub WriteGuildMemberList(ByVal guild As String)
     Exit Sub
 
 WriteGuildMemberList_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildMemberList", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildMemberList", Erl)
     Resume Next
     
 End Sub
@@ -12722,7 +12722,7 @@ Public Sub WriteCasamiento(ByVal UserName As String)
     Exit Sub
 
 WriteCasamiento_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCasamiento", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCasamiento", Erl)
     Resume Next
     
 End Sub
@@ -12748,7 +12748,7 @@ Public Sub WriteMacroPos()
     Exit Sub
 
 WriteMacroPos_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteMacroPos", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMacroPos", Erl)
     Resume Next
     
 End Sub
@@ -12772,7 +12772,7 @@ Public Sub WriteSubastaInfo()
     Exit Sub
 
 WriteSubastaInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSubastaInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSubastaInfo", Erl)
     Resume Next
     
 End Sub
@@ -12796,7 +12796,7 @@ Public Sub WriteScrollInfo()
     Exit Sub
 
 WriteScrollInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteScrollInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteScrollInfo", Erl)
     Resume Next
     
 End Sub
@@ -12821,7 +12821,7 @@ Public Sub WriteCancelarExit()
     Exit Sub
 
 WriteCancelarExit_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCancelarExit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCancelarExit", Erl)
     Resume Next
     
 End Sub
@@ -12845,7 +12845,7 @@ Public Sub WriteEventoInfo()
     Exit Sub
 
 WriteEventoInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteEventoInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEventoInfo", Erl)
     Resume Next
     
 End Sub
@@ -12868,7 +12868,7 @@ Public Sub WriteFlagTrabajar()
     Exit Sub
 
 WriteFlagTrabajar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteFlagTrabajar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteFlagTrabajar", Erl)
     Resume Next
     
 End Sub
@@ -12898,7 +12898,7 @@ Public Sub WriteEscribiendo()
     Exit Sub
 
 WriteEscribiendo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteEscribiendo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEscribiendo", Erl)
     Resume Next
     
 End Sub
@@ -12922,7 +12922,7 @@ Public Sub WriteReclamarRecompensa(ByVal Index As Byte)
     Exit Sub
 
 WriteReclamarRecompensa_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteReclamarRecompensa", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReclamarRecompensa", Erl)
     Resume Next
     
 End Sub
@@ -12948,7 +12948,7 @@ Public Sub WriteGMMessage(ByVal Message As String)
     Exit Sub
 
 WriteGMMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGMMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGMMessage", Erl)
     Resume Next
     
 End Sub
@@ -12973,7 +12973,7 @@ Public Sub WriteShowName()
     Exit Sub
 
 WriteShowName_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteShowName", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteShowName", Erl)
     Resume Next
     
 End Sub
@@ -12998,7 +12998,7 @@ Public Sub WriteOnlineRoyalArmy()
     Exit Sub
 
 WriteOnlineRoyalArmy_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteOnlineRoyalArmy", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnlineRoyalArmy", Erl)
     Resume Next
     
 End Sub
@@ -13023,7 +13023,7 @@ Public Sub WriteOnlineChaosLegion()
     Exit Sub
 
 WriteOnlineChaosLegion_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteOnlineChaosLegion", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnlineChaosLegion", Erl)
     Resume Next
     
 End Sub
@@ -13055,7 +13055,7 @@ Public Sub WriteGoNearby(ByVal UserName As String)
     Exit Sub
 
 WriteGoNearby_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGoNearby", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGoNearby", Erl)
     Resume Next
     
 End Sub
@@ -13087,7 +13087,7 @@ Public Sub WriteComment(ByVal Message As String)
     Exit Sub
 
 WriteComment_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteComment", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteComment", Erl)
     Resume Next
     
 End Sub
@@ -13112,7 +13112,7 @@ Public Sub WriteServerTime()
     Exit Sub
 
 WriteServerTime_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteServerTime", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteServerTime", Erl)
     Resume Next
     
 End Sub
@@ -13144,7 +13144,7 @@ Public Sub WriteWhere(ByVal UserName As String)
     Exit Sub
 
 WriteWhere_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteWhere", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWhere", Erl)
     Resume Next
     
 End Sub
@@ -13176,7 +13176,7 @@ Public Sub WriteCreaturesInMap(ByVal map As Integer)
     Exit Sub
 
 WriteCreaturesInMap_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCreaturesInMap", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreaturesInMap", Erl)
     Resume Next
     
 End Sub
@@ -13201,7 +13201,7 @@ Public Sub WriteWarpMeToTarget()
     Exit Sub
 
 WriteWarpMeToTarget_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteWarpMeToTarget", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWarpMeToTarget", Erl)
     Resume Next
     
 End Sub
@@ -13241,7 +13241,7 @@ Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal x
     Exit Sub
 
 WriteWarpChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteWarpChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWarpChar", Erl)
     Resume Next
     
 End Sub
@@ -13273,7 +13273,7 @@ Public Sub WriteSilence(ByVal UserName As String)
     Exit Sub
 
 WriteSilence_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSilence", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSilence", Erl)
     Resume Next
     
 End Sub
@@ -13299,7 +13299,7 @@ Public Sub WriteCuentaRegresiva(ByVal Second As Byte)
     Exit Sub
 
 WriteCuentaRegresiva_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCuentaRegresiva", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCuentaRegresiva", Erl)
     Resume Next
     
 End Sub
@@ -13326,7 +13326,7 @@ Public Sub WritePossUser(ByVal UserName As String)
     Exit Sub
 
 WritePossUser_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePossUser", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePossUser", Erl)
     Resume Next
     
 End Sub
@@ -13351,7 +13351,7 @@ Public Sub WriteSOSShowList()
     Exit Sub
 
 WriteSOSShowList_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSOSShowList", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSOSShowList", Erl)
     Resume Next
     
 End Sub
@@ -13383,7 +13383,7 @@ Public Sub WriteSOSRemove(ByVal UserName As String)
     Exit Sub
 
 WriteSOSRemove_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSOSRemove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSOSRemove", Erl)
     Resume Next
     
 End Sub
@@ -13415,7 +13415,7 @@ Public Sub WriteGoToChar(ByVal UserName As String)
     Exit Sub
 
 WriteGoToChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGoToChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGoToChar", Erl)
     Resume Next
     
 End Sub
@@ -13436,7 +13436,7 @@ Public Sub WriteDesbuggear(ByVal Params As String)
     Exit Sub
 
 WriteDesbuggear_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDesbuggear", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDesbuggear", Erl)
     Resume Next
     
 End Sub
@@ -13457,7 +13457,7 @@ Public Sub WriteDarLlaveAUsuario(ByVal User As String, ByVal Llave As Integer)
     Exit Sub
 
 WriteDarLlaveAUsuario_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDarLlaveAUsuario", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDarLlaveAUsuario", Erl)
     Resume Next
     
 End Sub
@@ -13477,7 +13477,7 @@ Public Sub WriteSacarLlave(ByVal Llave As Integer)
     Exit Sub
 
 WriteSacarLlave_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSacarLlave", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSacarLlave", Erl)
     Resume Next
     
 End Sub
@@ -13496,7 +13496,7 @@ Public Sub WriteVerLlaves()
     Exit Sub
 
 WriteVerLlaves_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteVerLlaves", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteVerLlaves", Erl)
     Resume Next
     
 End Sub
@@ -13521,7 +13521,7 @@ Public Sub WriteInvisible()
     Exit Sub
 
 WriteInvisible_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteInvisible", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInvisible", Erl)
     Resume Next
     
 End Sub
@@ -13546,7 +13546,7 @@ Public Sub WriteGMPanel()
     Exit Sub
 
 WriteGMPanel_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGMPanel", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGMPanel", Erl)
     Resume Next
     
 End Sub
@@ -13571,7 +13571,7 @@ Public Sub WriteRequestUserList()
     Exit Sub
 
 WriteRequestUserList_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestUserList", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestUserList", Erl)
     Resume Next
     
 End Sub
@@ -13596,7 +13596,7 @@ Public Sub WriteWorking()
     Exit Sub
 
 WriteWorking_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteWorking", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWorking", Erl)
     Resume Next
     
 End Sub
@@ -13621,7 +13621,7 @@ Public Sub WriteHiding()
     Exit Sub
 
 WriteHiding_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteHiding", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteHiding", Erl)
     Resume Next
     
 End Sub
@@ -13658,7 +13658,7 @@ Public Sub WriteJail(ByVal UserName As String, ByVal reason As String, ByVal Tim
     Exit Sub
 
 WriteJail_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteJail", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteJail", Erl)
     Resume Next
     
 End Sub
@@ -13688,7 +13688,7 @@ Public Sub WriteCrearEvento(ByVal TIPO As Byte, ByVal duracion As Byte, ByVal mu
     Exit Sub
 
 WriteCrearEvento_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCrearEvento", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCrearEvento", Erl)
     Resume Next
     
 End Sub
@@ -13713,7 +13713,7 @@ Public Sub WriteKillNPC()
     Exit Sub
 
 WriteKillNPC_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteKillNPC", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKillNPC", Erl)
     Resume Next
     
 End Sub
@@ -13747,7 +13747,7 @@ Public Sub WriteWarnUser(ByVal UserName As String, ByVal reason As String)
     Exit Sub
 
 WriteWarnUser_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteWarnUser", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWarnUser", Erl)
     Resume Next
     
 End Sub
@@ -13775,7 +13775,7 @@ Public Sub WriteMensajeUser(ByVal UserName As String, ByVal mensaje As String)
     Exit Sub
 
 WriteMensajeUser_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteMensajeUser", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMensajeUser", Erl)
     Resume Next
     
 End Sub
@@ -13815,7 +13815,7 @@ Public Sub WriteEditChar(ByVal UserName As String, ByVal editOption As eEditOpti
     Exit Sub
 
 WriteEditChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteEditChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEditChar", Erl)
     Resume Next
     
 End Sub
@@ -13847,7 +13847,7 @@ Public Sub WriteRequestCharInfo(ByVal UserName As String)
     Exit Sub
 
 WriteRequestCharInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestCharInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharInfo", Erl)
     Resume Next
     
 End Sub
@@ -13879,7 +13879,7 @@ Public Sub WriteRequestCharStats(ByVal UserName As String)
     Exit Sub
 
 WriteRequestCharStats_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestCharStats", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharStats", Erl)
     Resume Next
     
 End Sub
@@ -13911,7 +13911,7 @@ Public Sub WriteRequestCharGold(ByVal UserName As String)
     Exit Sub
 
 WriteRequestCharGold_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestCharGold", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharGold", Erl)
     Resume Next
     
 End Sub
@@ -13943,7 +13943,7 @@ Public Sub WriteRequestCharInventory(ByVal UserName As String)
     Exit Sub
 
 WriteRequestCharInventory_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestCharInventory", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharInventory", Erl)
     Resume Next
     
 End Sub
@@ -13975,7 +13975,7 @@ Public Sub WriteRequestCharBank(ByVal UserName As String)
     Exit Sub
 
 WriteRequestCharBank_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestCharBank", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharBank", Erl)
     Resume Next
     
 End Sub
@@ -14007,7 +14007,7 @@ Public Sub WriteRequestCharSkills(ByVal UserName As String)
     Exit Sub
 
 WriteRequestCharSkills_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestCharSkills", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharSkills", Erl)
     Resume Next
     
 End Sub
@@ -14039,7 +14039,7 @@ Public Sub WriteReviveChar(ByVal UserName As String)
     Exit Sub
 
 WriteReviveChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteReviveChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReviveChar", Erl)
     Resume Next
     
 End Sub
@@ -14064,7 +14064,7 @@ Public Sub WriteOnlineGM()
     Exit Sub
 
 WriteOnlineGM_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteOnlineGM", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnlineGM", Erl)
     Resume Next
     
 End Sub
@@ -14089,7 +14089,7 @@ Public Sub WriteOnlineMap()
     Exit Sub
 
 WriteOnlineMap_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteOnlineMap", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnlineMap", Erl)
     Resume Next
     
 End Sub
@@ -14120,7 +14120,7 @@ Public Sub WriteForgive()
     Exit Sub
 
 WriteForgive_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteForgive", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForgive", Erl)
     Resume Next
     
 End Sub
@@ -14138,7 +14138,7 @@ Public Sub WriteDonateGold(ByVal oro As Long)
     Exit Sub
 
 WriteForgive_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDonateGold", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDonateGold", Erl)
     Resume Next
     
 End Sub
@@ -14170,7 +14170,7 @@ Public Sub WriteKick(ByVal UserName As String)
     Exit Sub
 
 WriteKick_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteKick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKick", Erl)
     Resume Next
     
 End Sub
@@ -14202,7 +14202,7 @@ Public Sub WriteExecute(ByVal UserName As String)
     Exit Sub
 
 WriteExecute_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteExecute", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteExecute", Erl)
     Resume Next
     
 End Sub
@@ -14237,7 +14237,7 @@ Public Sub WriteBanChar(ByVal UserName As String, ByVal reason As String)
     Exit Sub
 
 WriteBanChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBanChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanChar", Erl)
     Resume Next
     
 End Sub
@@ -14265,7 +14265,7 @@ Public Sub WriteBanCuenta(ByVal UserName As String, ByVal reason As String)
     Exit Sub
 
 WriteBanCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBanCuenta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanCuenta", Erl)
     Resume Next
     
 End Sub
@@ -14288,7 +14288,7 @@ Public Sub WriteUnBanCuenta(ByVal UserName As String)
     Exit Sub
 
 WriteUnBanCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUnBanCuenta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUnBanCuenta", Erl)
     Resume Next
     
 End Sub
@@ -14314,7 +14314,7 @@ Public Sub WriteBanSerial(ByVal UserName As String)
     Exit Sub
 
 WriteBanSerial_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBanSerial", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanSerial", Erl)
     Resume Next
     
 End Sub
@@ -14337,7 +14337,7 @@ Public Sub WriteUnBanSerial(ByVal UserName As String, ByVal reason As String)
     Exit Sub
 
 WriteUnBanSerial_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUnBanSerial", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUnBanSerial", Erl)
     Resume Next
     
 End Sub
@@ -14360,7 +14360,7 @@ Public Sub WriteCerraCliente(ByVal UserName As String)
     Exit Sub
 
 WriteCerraCliente_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCerraCliente", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCerraCliente", Erl)
     Resume Next
     
 End Sub
@@ -14387,7 +14387,7 @@ Public Sub WriteBanTemporal(ByVal UserName As String, ByVal reason As String, By
     Exit Sub
 
 WriteBanTemporal_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBanTemporal", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanTemporal", Erl)
     Resume Next
     
 End Sub
@@ -14415,7 +14415,7 @@ Public Sub WriteSilenciarUser(ByVal UserName As String, ByVal Time As Byte)
     Exit Sub
 
 WriteSilenciarUser_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSilenciarUser", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSilenciarUser", Erl)
     Resume Next
     
 End Sub
@@ -14447,7 +14447,7 @@ Public Sub WriteUnbanChar(ByVal UserName As String)
     Exit Sub
 
 WriteUnbanChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUnbanChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUnbanChar", Erl)
     Resume Next
     
 End Sub
@@ -14472,7 +14472,7 @@ Public Sub WriteNPCFollow()
     Exit Sub
 
 WriteNPCFollow_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteNPCFollow", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNPCFollow", Erl)
     Resume Next
     
 End Sub
@@ -14504,7 +14504,7 @@ Public Sub WriteSummonChar(ByVal UserName As String)
     Exit Sub
 
 WriteSummonChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSummonChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSummonChar", Erl)
     Resume Next
     
 End Sub
@@ -14529,7 +14529,7 @@ Public Sub WriteSpawnListRequest()
     Exit Sub
 
 WriteSpawnListRequest_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSpawnListRequest", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSpawnListRequest", Erl)
     Resume Next
     
 End Sub
@@ -14561,7 +14561,7 @@ Public Sub WriteSpawnCreature(ByVal creatureIndex As Integer)
     Exit Sub
 
 WriteSpawnCreature_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSpawnCreature", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSpawnCreature", Erl)
     Resume Next
     
 End Sub
@@ -14586,7 +14586,7 @@ Public Sub WriteResetNPCInventory()
     Exit Sub
 
 WriteResetNPCInventory_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteResetNPCInventory", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResetNPCInventory", Erl)
     Resume Next
     
 End Sub
@@ -14611,7 +14611,7 @@ Public Sub WriteCleanWorld()
     Exit Sub
 
 WriteCleanWorld_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCleanWorld", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCleanWorld", Erl)
     Resume Next
     
 End Sub
@@ -14643,7 +14643,7 @@ Public Sub WriteServerMessage(ByVal Message As String)
     Exit Sub
 
 WriteServerMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteServerMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteServerMessage", Erl)
     Resume Next
     
 End Sub
@@ -14675,7 +14675,7 @@ Public Sub WriteNickToIP(ByVal UserName As String)
     Exit Sub
 
 WriteNickToIP_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteNickToIP", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNickToIP", Erl)
     Resume Next
     
 End Sub
@@ -14713,7 +14713,7 @@ Public Sub WriteIPToNick(ByRef IP() As Byte)
     Exit Sub
 
 WriteIPToNick_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteIPToNick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteIPToNick", Erl)
     Resume Next
     
 End Sub
@@ -14745,7 +14745,7 @@ Public Sub WriteGuildOnlineMembers(ByVal guild As String)
     Exit Sub
 
 WriteGuildOnlineMembers_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildOnlineMembers", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOnlineMembers", Erl)
     Resume Next
     
 End Sub
@@ -14782,7 +14782,7 @@ Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As
     Exit Sub
 
 WriteTeleportCreate_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTeleportCreate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTeleportCreate", Erl)
     Resume Next
     
 End Sub
@@ -14807,7 +14807,7 @@ Public Sub WriteTeleportDestroy()
     Exit Sub
 
 WriteTeleportDestroy_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTeleportDestroy", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTeleportDestroy", Erl)
     Resume Next
     
 End Sub
@@ -14832,7 +14832,7 @@ Public Sub WriteRainToggle()
     Exit Sub
 
 WriteRainToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRainToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRainToggle", Erl)
     Resume Next
     
 End Sub
@@ -14864,7 +14864,7 @@ Public Sub WriteSetCharDescription(ByVal desc As String)
     Exit Sub
 
 WriteSetCharDescription_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSetCharDescription", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSetCharDescription", Erl)
     Resume Next
     
 End Sub
@@ -14899,7 +14899,7 @@ Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal map As Integer)
     Exit Sub
 
 WriteForceMIDIToMap_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteForceMIDIToMap", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForceMIDIToMap", Erl)
     Resume Next
     
 End Sub
@@ -14939,7 +14939,7 @@ Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal
     Exit Sub
 
 WriteForceWAVEToMap_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteForceWAVEToMap", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForceWAVEToMap", Erl)
     Resume Next
     
 End Sub
@@ -14971,7 +14971,7 @@ Public Sub WriteRoyalArmyMessage(ByVal Message As String)
     Exit Sub
 
 WriteRoyalArmyMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRoyalArmyMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRoyalArmyMessage", Erl)
     Resume Next
     
 End Sub
@@ -15003,7 +15003,7 @@ Public Sub WriteChaosLegionMessage(ByVal Message As String)
     Exit Sub
 
 WriteChaosLegionMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChaosLegionMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChaosLegionMessage", Erl)
     Resume Next
     
 End Sub
@@ -15035,7 +15035,7 @@ Public Sub WriteCitizenMessage(ByVal Message As String)
     Exit Sub
 
 WriteCitizenMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCitizenMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCitizenMessage", Erl)
     Resume Next
     
 End Sub
@@ -15067,7 +15067,7 @@ Public Sub WriteCriminalMessage(ByVal Message As String)
     Exit Sub
 
 WriteCriminalMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCriminalMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCriminalMessage", Erl)
     Resume Next
     
 End Sub
@@ -15099,7 +15099,7 @@ Public Sub WriteTalkAsNPC(ByVal Message As String)
     Exit Sub
 
 WriteTalkAsNPC_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTalkAsNPC", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTalkAsNPC", Erl)
     Resume Next
     
 End Sub
@@ -15124,7 +15124,7 @@ Public Sub WriteDestroyAllItemsInArea()
     Exit Sub
 
 WriteDestroyAllItemsInArea_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDestroyAllItemsInArea", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDestroyAllItemsInArea", Erl)
     Resume Next
     
 End Sub
@@ -15156,7 +15156,7 @@ Public Sub WriteAcceptRoyalCouncilMember(ByVal UserName As String)
     Exit Sub
 
 WriteAcceptRoyalCouncilMember_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteAcceptRoyalCouncilMember", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAcceptRoyalCouncilMember", Erl)
     Resume Next
     
 End Sub
@@ -15188,7 +15188,7 @@ Public Sub WriteAcceptChaosCouncilMember(ByVal UserName As String)
     Exit Sub
 
 WriteAcceptChaosCouncilMember_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteAcceptChaosCouncilMember", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAcceptChaosCouncilMember", Erl)
     Resume Next
     
 End Sub
@@ -15213,7 +15213,7 @@ Public Sub WriteItemsInTheFloor()
     Exit Sub
 
 WriteItemsInTheFloor_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteItemsInTheFloor", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteItemsInTheFloor", Erl)
     Resume Next
     
 End Sub
@@ -15245,7 +15245,7 @@ Public Sub WriteMakeDumb(ByVal UserName As String)
     Exit Sub
 
 WriteMakeDumb_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteMakeDumb", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMakeDumb", Erl)
     Resume Next
     
 End Sub
@@ -15277,7 +15277,7 @@ Public Sub WriteMakeDumbNoMore(ByVal UserName As String)
     Exit Sub
 
 WriteMakeDumbNoMore_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteMakeDumbNoMore", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMakeDumbNoMore", Erl)
     Resume Next
     
 End Sub
@@ -15302,7 +15302,7 @@ Public Sub WriteDumpIPTables()
     Exit Sub
 
 WriteDumpIPTables_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDumpIPTables", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDumpIPTables", Erl)
     Resume Next
     
 End Sub
@@ -15334,7 +15334,7 @@ Public Sub WriteCouncilKick(ByVal UserName As String)
     Exit Sub
 
 WriteCouncilKick_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCouncilKick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCouncilKick", Erl)
     Resume Next
     
 End Sub
@@ -15366,7 +15366,7 @@ Public Sub WriteSetTrigger(ByVal Trigger As eTrigger)
     Exit Sub
 
 WriteSetTrigger_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSetTrigger", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSetTrigger", Erl)
     Resume Next
     
 End Sub
@@ -15391,7 +15391,7 @@ Public Sub WriteAskTrigger()
     Exit Sub
 
 WriteAskTrigger_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteAskTrigger", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAskTrigger", Erl)
     Resume Next
     
 End Sub
@@ -15416,7 +15416,7 @@ Public Sub WriteBannedIPList()
     Exit Sub
 
 WriteBannedIPList_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBannedIPList", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBannedIPList", Erl)
     Resume Next
     
 End Sub
@@ -15441,7 +15441,7 @@ Public Sub WriteBannedIPReload()
     Exit Sub
 
 WriteBannedIPReload_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBannedIPReload", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBannedIPReload", Erl)
     Resume Next
     
 End Sub
@@ -15473,7 +15473,7 @@ Public Sub WriteGuildBan(ByVal guild As String)
     Exit Sub
 
 WriteGuildBan_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGuildBan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildBan", Erl)
     Resume Next
     
 End Sub
@@ -15526,7 +15526,7 @@ Public Sub WriteBanIP(ByVal byIp As Boolean, ByRef IP() As Byte, ByVal Nick As S
     Exit Sub
 
 WriteBanIP_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBanIP", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanIP", Erl)
     Resume Next
     
 End Sub
@@ -15564,7 +15564,7 @@ Public Sub WriteUnbanIP(ByRef IP() As Byte)
     Exit Sub
 
 WriteUnbanIP_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteUnbanIP", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUnbanIP", Erl)
     Resume Next
     
 End Sub
@@ -15597,7 +15597,7 @@ Public Sub WriteCreateItem(ByVal ItemIndex As Long, ByVal cantidad As Integer)
     Exit Sub
 
 WriteCreateItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCreateItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreateItem", Erl)
     Resume Next
     
 End Sub
@@ -15622,7 +15622,7 @@ Public Sub WriteDestroyItems()
     Exit Sub
 
 WriteDestroyItems_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDestroyItems", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDestroyItems", Erl)
     Resume Next
     
 End Sub
@@ -15654,7 +15654,7 @@ Public Sub WriteChaosLegionKick(ByVal UserName As String)
     Exit Sub
 
 WriteChaosLegionKick_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChaosLegionKick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChaosLegionKick", Erl)
     Resume Next
     
 End Sub
@@ -15686,7 +15686,7 @@ Public Sub WriteRoyalArmyKick(ByVal UserName As String)
     Exit Sub
 
 WriteRoyalArmyKick_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRoyalArmyKick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRoyalArmyKick", Erl)
     Resume Next
     
 End Sub
@@ -15718,7 +15718,7 @@ Public Sub WriteForceMIDIAll(ByVal midiID As Byte)
     Exit Sub
 
 WriteForceMIDIAll_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteForceMIDIAll", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForceMIDIAll", Erl)
     Resume Next
     
 End Sub
@@ -15750,7 +15750,7 @@ Public Sub WriteForceWAVEAll(ByVal waveID As Byte)
     Exit Sub
 
 WriteForceWAVEAll_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteForceWAVEAll", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForceWAVEAll", Erl)
     Resume Next
     
 End Sub
@@ -15785,7 +15785,7 @@ Public Sub WriteRemovePunishment(ByVal UserName As String, ByVal punishment As B
     Exit Sub
 
 WriteRemovePunishment_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRemovePunishment", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRemovePunishment", Erl)
     Resume Next
     
 End Sub
@@ -15810,7 +15810,7 @@ Public Sub WriteTileBlockedToggle()
     Exit Sub
 
 WriteTileBlockedToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTileBlockedToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTileBlockedToggle", Erl)
     Resume Next
     
 End Sub
@@ -15835,7 +15835,7 @@ Public Sub WriteKillNPCNoRespawn()
     Exit Sub
 
 WriteKillNPCNoRespawn_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteKillNPCNoRespawn", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKillNPCNoRespawn", Erl)
     Resume Next
     
 End Sub
@@ -15860,7 +15860,7 @@ Public Sub WriteKillAllNearbyNPCs()
     Exit Sub
 
 WriteKillAllNearbyNPCs_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteKillAllNearbyNPCs", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKillAllNearbyNPCs", Erl)
     Resume Next
     
 End Sub
@@ -15892,7 +15892,7 @@ Public Sub WriteLastIP(ByVal UserName As String)
     Exit Sub
 
 WriteLastIP_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteLastIP", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLastIP", Erl)
     Resume Next
     
 End Sub
@@ -15917,7 +15917,7 @@ Public Sub WriteChangeMOTD()
     Exit Sub
 
 WriteChangeMOTD_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeMOTD", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMOTD", Erl)
     Resume Next
     
 End Sub
@@ -15949,7 +15949,7 @@ Public Sub WriteSetMOTD(ByVal Message As String)
     Exit Sub
 
 WriteSetMOTD_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSetMOTD", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSetMOTD", Erl)
     Resume Next
     
 End Sub
@@ -15981,7 +15981,7 @@ Public Sub WriteSystemMessage(ByVal Message As String)
     Exit Sub
 
 WriteSystemMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSystemMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSystemMessage", Erl)
     Resume Next
     
 End Sub
@@ -16013,7 +16013,7 @@ Public Sub WriteCreateNPC(ByVal NpcIndex As Integer)
     Exit Sub
 
 WriteCreateNPC_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCreateNPC", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreateNPC", Erl)
     Resume Next
     
 End Sub
@@ -16045,7 +16045,7 @@ Public Sub WriteCreateNPCWithRespawn(ByVal NpcIndex As Integer)
     Exit Sub
 
 WriteCreateNPCWithRespawn_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCreateNPCWithRespawn", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreateNPCWithRespawn", Erl)
     Resume Next
     
 End Sub
@@ -16080,7 +16080,7 @@ Public Sub WriteImperialArmour(ByVal armourIndex As Byte, ByVal objectIndex As I
     Exit Sub
 
 WriteImperialArmour_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteImperialArmour", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteImperialArmour", Erl)
     Resume Next
     
 End Sub
@@ -16115,7 +16115,7 @@ Public Sub WriteChaosArmour(ByVal armourIndex As Byte, ByVal objectIndex As Inte
     Exit Sub
 
 WriteChaosArmour_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChaosArmour", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChaosArmour", Erl)
     Resume Next
     
 End Sub
@@ -16140,7 +16140,7 @@ Public Sub WriteNavigateToggle()
     Exit Sub
 
 WriteNavigateToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteNavigateToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNavigateToggle", Erl)
     Resume Next
     
 End Sub
@@ -16164,7 +16164,7 @@ Public Sub WriteServerOpenToUsersToggle()
     Exit Sub
 
 WriteServerOpenToUsersToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteServerOpenToUsersToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteServerOpenToUsersToggle", Erl)
     Resume Next
     
 End Sub
@@ -16189,7 +16189,7 @@ Public Sub WriteParticipar()
     Exit Sub
 
 WriteParticipar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteParticipar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteParticipar", Erl)
     Resume Next
     
 End Sub
@@ -16221,7 +16221,7 @@ Public Sub WriteTurnCriminal(ByVal UserName As String)
     Exit Sub
 
 WriteTurnCriminal_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTurnCriminal", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTurnCriminal", Erl)
     Resume Next
     
 End Sub
@@ -16253,7 +16253,7 @@ Public Sub WriteResetFactions(ByVal UserName As String)
     Exit Sub
 
 WriteResetFactions_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteResetFactions", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResetFactions", Erl)
     Resume Next
     
 End Sub
@@ -16285,7 +16285,7 @@ Public Sub WriteRemoveCharFromGuild(ByVal UserName As String)
     Exit Sub
 
 WriteRemoveCharFromGuild_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRemoveCharFromGuild", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRemoveCharFromGuild", Erl)
     Resume Next
     
 End Sub
@@ -16317,7 +16317,7 @@ Public Sub WriteRequestCharMail(ByVal UserName As String)
     Exit Sub
 
 WriteRequestCharMail_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestCharMail", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharMail", Erl)
     Resume Next
     
 End Sub
@@ -16351,7 +16351,7 @@ Public Sub WriteAlterPassword(ByVal UserName As String, ByVal CopyFrom As String
     Exit Sub
 
 WriteAlterPassword_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteAlterPassword", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAlterPassword", Erl)
     Resume Next
     
 End Sub
@@ -16385,7 +16385,7 @@ Public Sub WriteAlterMail(ByVal UserName As String, ByVal newMail As String)
     Exit Sub
 
 WriteAlterMail_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteAlterMail", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAlterMail", Erl)
     Resume Next
     
 End Sub
@@ -16419,7 +16419,7 @@ Public Sub WriteAlterName(ByVal UserName As String, ByVal newName As String)
     Exit Sub
 
 WriteAlterName_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteAlterName", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAlterName", Erl)
     Resume Next
     
 End Sub
@@ -16444,7 +16444,7 @@ Public Sub WriteDoBackup()
     Exit Sub
 
 WriteDoBackup_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDoBackup", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDoBackup", Erl)
     Resume Next
     
 End Sub
@@ -16476,7 +16476,7 @@ Public Sub WriteShowGuildMessages(ByVal guild As String)
     Exit Sub
 
 WriteShowGuildMessages_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteShowGuildMessages", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteShowGuildMessages", Erl)
     Resume Next
     
 End Sub
@@ -16501,7 +16501,7 @@ Public Sub WriteSaveMap()
     Exit Sub
 
 WriteSaveMap_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSaveMap", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSaveMap", Erl)
     Resume Next
     
 End Sub
@@ -16533,7 +16533,7 @@ Public Sub WriteChangeMapInfoPK(ByVal isPK As Boolean)
     Exit Sub
 
 WriteChangeMapInfoPK_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeMapInfoPK", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoPK", Erl)
     Resume Next
     
 End Sub
@@ -16565,7 +16565,7 @@ Public Sub WriteChangeMapInfoBackup(ByVal backup As Boolean)
     Exit Sub
 
 WriteChangeMapInfoBackup_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeMapInfoBackup", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoBackup", Erl)
     Resume Next
     
 End Sub
@@ -16597,7 +16597,7 @@ Public Sub WriteChangeMapInfoRestricted(ByVal restrict As String)
     Exit Sub
 
 WriteChangeMapInfoRestricted_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeMapInfoRestricted", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoRestricted", Erl)
     Resume Next
     
 End Sub
@@ -16629,7 +16629,7 @@ Public Sub WriteChangeMapInfoNoMagic(ByVal nomagic As Boolean)
     Exit Sub
 
 WriteChangeMapInfoNoMagic_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeMapInfoNoMagic", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoNoMagic", Erl)
     Resume Next
     
 End Sub
@@ -16661,7 +16661,7 @@ Public Sub WriteChangeMapInfoNoInvi(ByVal noinvi As Boolean)
     Exit Sub
 
 WriteChangeMapInfoNoInvi_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeMapInfoNoInvi", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoNoInvi", Erl)
     Resume Next
     
 End Sub
@@ -16693,7 +16693,7 @@ Public Sub WriteChangeMapInfoNoResu(ByVal noresu As Boolean)
     Exit Sub
 
 WriteChangeMapInfoNoResu_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeMapInfoNoResu", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoNoResu", Erl)
     Resume Next
     
 End Sub
@@ -16725,7 +16725,7 @@ Public Sub WriteChangeMapInfoLand(ByVal lAnd As String)
     Exit Sub
 
 WriteChangeMapInfoLand_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeMapInfoLand", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoLand", Erl)
     Resume Next
     
 End Sub
@@ -16757,7 +16757,7 @@ Public Sub WriteChangeMapInfoZone(ByVal zone As String)
     Exit Sub
 
 WriteChangeMapInfoZone_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChangeMapInfoZone", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoZone", Erl)
     Resume Next
     
 End Sub
@@ -16782,7 +16782,7 @@ Public Sub WriteSaveChars()
     Exit Sub
 
 WriteSaveChars_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSaveChars", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSaveChars", Erl)
     Resume Next
     
 End Sub
@@ -16807,7 +16807,7 @@ Public Sub WriteCleanSOS()
     Exit Sub
 
 WriteCleanSOS_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCleanSOS", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCleanSOS", Erl)
     Resume Next
     
 End Sub
@@ -16832,7 +16832,7 @@ Public Sub WriteShowServerForm()
     Exit Sub
 
 WriteShowServerForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteShowServerForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteShowServerForm", Erl)
     Resume Next
     
 End Sub
@@ -16857,7 +16857,7 @@ Public Sub WriteNight()
     Exit Sub
 
 WriteNight_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteNight", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNight", Erl)
     Resume Next
     
 End Sub
@@ -16871,7 +16871,7 @@ Public Sub WriteDay()
     Exit Sub
 
 WriteDay_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteDay", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDay", Erl)
     Resume Next
     
 End Sub
@@ -16888,7 +16888,7 @@ Public Sub WriteSetTime(ByVal Time As Long)
     Exit Sub
 
 WriteSetTime_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSetTime", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSetTime", Erl)
     Resume Next
     
 End Sub
@@ -16913,7 +16913,7 @@ Public Sub WriteKickAllChars()
     Exit Sub
 
 WriteKickAllChars_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteKickAllChars", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKickAllChars", Erl)
     Resume Next
     
 End Sub
@@ -16938,7 +16938,7 @@ Public Sub WriteRequestTCPStats()
     Exit Sub
 
 WriteRequestTCPStats_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRequestTCPStats", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestTCPStats", Erl)
     Resume Next
     
 End Sub
@@ -16963,7 +16963,7 @@ Public Sub WriteReloadNPCs()
     Exit Sub
 
 WriteReloadNPCs_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteReloadNPCs", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReloadNPCs", Erl)
     Resume Next
     
 End Sub
@@ -16988,7 +16988,7 @@ Public Sub WriteReloadServerIni()
     Exit Sub
 
 WriteReloadServerIni_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteReloadServerIni", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReloadServerIni", Erl)
     Resume Next
     
 End Sub
@@ -17013,7 +17013,7 @@ Public Sub WriteReloadSpells()
     Exit Sub
 
 WriteReloadSpells_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteReloadSpells", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReloadSpells", Erl)
     Resume Next
     
 End Sub
@@ -17038,7 +17038,7 @@ Public Sub WriteReloadObjects()
     Exit Sub
 
 WriteReloadObjects_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteReloadObjects", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReloadObjects", Erl)
     Resume Next
     
 End Sub
@@ -17063,7 +17063,7 @@ Public Sub WriteRestart()
     Exit Sub
 
 WriteRestart_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRestart", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRestart", Erl)
     Resume Next
     
 End Sub
@@ -17088,7 +17088,7 @@ Public Sub WriteResetAutoUpdate()
     Exit Sub
 
 WriteResetAutoUpdate_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteResetAutoUpdate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResetAutoUpdate", Erl)
     Resume Next
     
 End Sub
@@ -17124,7 +17124,7 @@ Public Sub WriteChatColor(ByVal r As Byte, ByVal G As Byte, ByVal B As Byte)
     Exit Sub
 
 WriteChatColor_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteChatColor", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChatColor", Erl)
     Resume Next
     
 End Sub
@@ -17149,7 +17149,7 @@ Public Sub WriteIgnored()
     Exit Sub
 
 WriteIgnored_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteIgnored", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteIgnored", Erl)
     Resume Next
     
 End Sub
@@ -17182,7 +17182,7 @@ Public Sub WriteCheckSlot(ByVal UserName As String, ByVal Slot As Byte)
     Exit Sub
 
 WriteCheckSlot_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCheckSlot", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCheckSlot", Erl)
     Resume Next
     
 End Sub
@@ -17216,7 +17216,7 @@ Public Sub WritePing()
     Exit Sub
 
 WritePing_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePing", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePing", Erl)
     Resume Next
     
 End Sub
@@ -17244,7 +17244,7 @@ Public Sub WriteLlamadadeClan()
     Exit Sub
 
 WriteLlamadadeClan_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteLlamadadeClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLlamadadeClan", Erl)
     Resume Next
     
 End Sub
@@ -17282,7 +17282,7 @@ Public Sub FlushBuffer()
     Exit Sub
 
 FlushBuffer_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.FlushBuffer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.FlushBuffer", Erl)
     Resume Next
     
 End Sub
@@ -17331,7 +17331,7 @@ Private Sub SendData(ByRef sdData As String)
     Exit Sub
 
 SendData_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.SendData", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.SendData", Erl)
     Resume Next
     
 End Sub
@@ -17358,7 +17358,7 @@ Public Sub WriteQuestionGM(ByVal Consulta As String, ByVal TipoDeConsulta As Str
     Exit Sub
 
 WriteQuestionGM_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteQuestionGM", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestionGM", Erl)
     Resume Next
     
 End Sub
@@ -17379,7 +17379,7 @@ Public Sub WriteOfertaInicial(ByVal Oferta As Long)
     Exit Sub
 
 WriteOfertaInicial_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteOfertaInicial", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOfertaInicial", Erl)
     Resume Next
     
 End Sub
@@ -17400,7 +17400,7 @@ Public Sub WriteOferta(ByVal OfertaDeSubasta As Long)
     Exit Sub
 
 WriteOferta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteOferta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOferta", Erl)
     Resume Next
     
 End Sub
@@ -17426,7 +17426,7 @@ Public Sub WriteGlobalMessage(ByVal Message As String)
     Exit Sub
 
 WriteGlobalMessage_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGlobalMessage", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGlobalMessage", Erl)
     Resume Next
     
 End Sub
@@ -17441,7 +17441,7 @@ Public Sub WriteGlobalOnOff()
     Exit Sub
 
 WriteGlobalOnOff_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGlobalOnOff", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGlobalOnOff", Erl)
     Resume Next
     
 End Sub
@@ -17464,7 +17464,7 @@ Public Sub WriteNuevaCuenta()
     Exit Sub
 
 WriteNuevaCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteNuevaCuenta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNuevaCuenta", Erl)
     Resume Next
     
 End Sub
@@ -17485,7 +17485,7 @@ Public Sub WriteValidarCuenta()
     Exit Sub
 
 WriteValidarCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteValidarCuenta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteValidarCuenta", Erl)
     Resume Next
     
 End Sub
@@ -17505,7 +17505,7 @@ Public Sub WriteReValidarCuenta()
     Exit Sub
 
 WriteReValidarCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteReValidarCuenta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReValidarCuenta", Erl)
     Resume Next
     
 End Sub
@@ -17525,7 +17525,7 @@ Public Sub WriteRecuperandoConstraseña()
     Exit Sub
 
 WriteRecuperandoConstraseña_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRecuperandoConstraseña", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRecuperandoConstraseña", Erl)
     Resume Next
     
 End Sub
@@ -17547,7 +17547,7 @@ Public Sub WriteBorrandoCuenta()
     Exit Sub
 
 WriteBorrandoCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBorrandoCuenta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBorrandoCuenta", Erl)
     Resume Next
     
 End Sub
@@ -17575,7 +17575,7 @@ Public Sub WriteBorrandoPJ()
     Exit Sub
 
 WriteBorrandoPJ_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBorrandoPJ", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBorrandoPJ", Erl)
     Resume Next
     
 End Sub
@@ -17602,7 +17602,7 @@ Public Sub WriteIngresandoConCuenta()
     Exit Sub
 
 WriteIngresandoConCuenta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteIngresandoConCuenta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteIngresandoConCuenta", Erl)
     Resume Next
     
 End Sub
@@ -17727,11 +17727,11 @@ Private Sub HandlePersonajesDeCuenta()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -17770,11 +17770,11 @@ Private Sub HandleUserOnline()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -17847,7 +17847,7 @@ Private Sub HandleParticleFXToFloor()
     Exit Sub
 
 HandleParticleFXToFloor_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleParticleFXToFloor", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFXToFloor", Erl)
     Resume Next
     
 End Sub
@@ -17932,7 +17932,7 @@ Private Sub HandleLightToFloor()
     Exit Sub
 
 HandleLightToFloor_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleLightToFloor", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLightToFloor", Erl)
     Resume Next
     
 End Sub
@@ -17985,7 +17985,7 @@ Private Sub HandleParticleFX()
     Exit Sub
 
 HandleParticleFX_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleParticleFX", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFX", Erl)
     Resume Next
     
 End Sub
@@ -18045,7 +18045,7 @@ Private Sub HandleParticleFXWithDestino()
     Exit Sub
 
 HandleParticleFXWithDestino_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleParticleFXWithDestino", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFXWithDestino", Erl)
     Resume Next
     
 End Sub
@@ -18111,7 +18111,7 @@ Private Sub HandleParticleFXWithDestinoXY()
     Exit Sub
 
 HandleParticleFXWithDestinoXY_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleParticleFXWithDestinoXY", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFXWithDestinoXY", Erl)
     Resume Next
     
 End Sub
@@ -18169,7 +18169,7 @@ Private Sub HandleAuraToChar()
     Exit Sub
 
 HandleAuraToChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleAuraToChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAuraToChar", Erl)
     Resume Next
     
 End Sub
@@ -18206,7 +18206,7 @@ Private Sub HandleSpeedToChar()
     Exit Sub
 
 HandleSpeedToChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleSpeedToChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpeedToChar", Erl)
     Resume Next
     
 End Sub
@@ -18226,7 +18226,7 @@ Public Sub WriteNieveToggle()
     Exit Sub
 
 WriteNieveToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteNieveToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNieveToggle", Erl)
     Resume Next
     
 End Sub
@@ -18258,7 +18258,7 @@ Private Sub HandleNieveToggle()
     Exit Sub
 
 HandleNieveToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleNieveToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNieveToggle", Erl)
     Resume Next
     
 End Sub
@@ -18285,7 +18285,7 @@ Private Sub HandleNieblaToggle()
     Exit Sub
 
 HandleNieblaToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleNieblaToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNieblaToggle", Erl)
     Resume Next
     
 End Sub
@@ -18304,7 +18304,7 @@ Public Sub WriteNieblaToggle()
     Exit Sub
 
 WriteNieblaToggle_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteNieblaToggle", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNieblaToggle", Erl)
     Resume Next
     
 End Sub
@@ -18324,7 +18324,7 @@ Public Sub WriteGenio()
     Exit Sub
 
 WriteGenio_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteGenio", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGenio", Erl)
     Resume Next
     
 End Sub
@@ -18347,7 +18347,7 @@ Private Sub HandleFamiliar()
     Exit Sub
 
 HandleFamiliar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleFamiliar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleFamiliar", Erl)
     Resume Next
     
 End Sub
@@ -18390,7 +18390,7 @@ Private Sub HandleBindKeys()
     Exit Sub
 
 HandleBindKeys_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleBindKeys", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBindKeys", Erl)
     Resume Next
     
 End Sub
@@ -18511,7 +18511,7 @@ Private Sub HandleLogros()
     Exit Sub
 
 HandleLogros_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleLogros", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLogros", Erl)
     Resume Next
     
 End Sub
@@ -18551,7 +18551,7 @@ Private Sub HandleBarFx()
     Exit Sub
 
 HandleBarFx_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleBarFx", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBarFx", Erl)
     Resume Next
     
 End Sub
@@ -18575,7 +18575,7 @@ Public Sub WriteCompletarAccion(ByVal Accion As Byte)
     Exit Sub
 
 WriteCompletarAccion_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCompletarAccion", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCompletarAccion", Erl)
     Resume Next
     
 End Sub
@@ -18598,7 +18598,7 @@ Public Sub WriteTraerRecompensas()
     Exit Sub
 
 WriteTraerRecompensas_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTraerRecompensas", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTraerRecompensas", Erl)
     Resume Next
     
 End Sub
@@ -18621,7 +18621,7 @@ Public Sub WriteTraerShop()
     Exit Sub
 
 WriteTraerShop_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTraerShop", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTraerShop", Erl)
     Resume Next
     
 End Sub
@@ -18644,7 +18644,7 @@ Public Sub WriteTraerRanking()
     Exit Sub
 
 WriteTraerRanking_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteTraerRanking", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTraerRanking", Erl)
     Resume Next
     
 End Sub
@@ -18667,7 +18667,7 @@ Public Sub WritePareja()
     Exit Sub
 
 WritePareja_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WritePareja", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePareja", Erl)
     Resume Next
     
 End Sub
@@ -18687,7 +18687,7 @@ Public Sub WriteQuest()
     Exit Sub
 
 WriteQuest_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteQuest", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuest", Erl)
     Resume Next
     
 End Sub
@@ -18708,7 +18708,7 @@ Public Sub WriteQuestDetailsRequest(ByVal QuestSlot As Byte)
     Exit Sub
 
 WriteQuestDetailsRequest_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteQuestDetailsRequest", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestDetailsRequest", Erl)
     Resume Next
     
 End Sub
@@ -18729,7 +18729,7 @@ Public Sub WriteQuestAccept(ByVal ListInd As Byte)
     Exit Sub
 
 WriteQuestAccept_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteQuestAccept", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestAccept", Erl)
     Resume Next
     
 End Sub
@@ -18786,9 +18786,9 @@ Private Sub HandleQuestDetails()
     
     
         FrmQuests.PlayerView.BackColor = RGB(11, 11, 11)
-        FrmQuests.picture1.BackColor = RGB(19, 14, 11)
+        FrmQuests.Picture1.BackColor = RGB(19, 14, 11)
         FrmQuests.PlayerView.Refresh
-        FrmQuests.picture1.Refresh
+        FrmQuests.Picture1.Refresh
         FrmQuests.npclbl.Caption = ""
         FrmQuests.objetolbl.Caption = ""
 
@@ -18884,14 +18884,14 @@ Private Sub HandleQuestDetails()
             'tmpStr = tmpStr & "*) Experiencia: " & .ReadLong & " puntos de experiencia." & vbCrLf
            
             Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
-                       
-            subelemento.SubItems(1) = .ReadLong
+
+            subelemento.SubItems(1) = BeautifyBigNumber(.ReadLong)
             subelemento.SubItems(2) = 12
             subelemento.SubItems(3) = 0
-           
+
             Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
-                       
-            subelemento.SubItems(1) = .ReadLong
+
+            subelemento.SubItems(1) = BeautifyBigNumber(.ReadLong)
             subelemento.SubItems(2) = 608
             subelemento.SubItems(3) = 1
            
@@ -19008,7 +19008,7 @@ Private Sub HandleQuestDetails()
            
             If tmplong <> 0 Then
                 Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Oro")
-                subelemento.SubItems(1) = tmplong
+                subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
                 subelemento.SubItems(2) = 12
                 subelemento.SubItems(3) = 0
             End If
@@ -19018,7 +19018,7 @@ Private Sub HandleQuestDetails()
             If tmplong <> 0 Then
                 Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Experiencia")
                            
-                subelemento.SubItems(1) = tmplong
+                subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
                 subelemento.SubItems(2) = 608
                 subelemento.SubItems(3) = 1
             End If
@@ -19072,11 +19072,11 @@ Private Sub HandleQuestDetails()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -19148,11 +19148,11 @@ Public Sub HandleQuestListSend()
  
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -19387,21 +19387,20 @@ Public Sub HandleNpcQuestListSend()
     'Determinamos que formulario se muestra, segï¿½n si recibimos la informaciï¿½n y la quest estï¿½ empezada o no.
 
         ' frmQuestInfo.txtInfo.Text = tmpStr
-        FrmQuestInfo.Show vbModeless, frmMain
-        FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
-        'Call FrmQuestInfo.ListView1_Click
-        'Call FrmQuestInfo.ListView2_Click
+    FrmQuestInfo.Show vbModeless, frmMain
+    FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
+    Call FrmQuestInfo.ShowQuest(1)
 
     
     Call incomingData.CopyBuffer(buffer)
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -19427,7 +19426,7 @@ Public Sub WriteQuestListRequest()
     Exit Sub
 
 WriteQuestListRequest_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteQuestListRequest", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestListRequest", Erl)
     Resume Next
     
 End Sub
@@ -19451,7 +19450,7 @@ Public Sub WriteQuestAbandon(ByVal QuestSlot As Byte)
     Exit Sub
 
 WriteQuestAbandon_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteQuestAbandon", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestAbandon", Erl)
     Resume Next
     
 End Sub
@@ -19472,7 +19471,7 @@ Public Sub WriteResponderPregunta(ByVal Respuesta As Boolean)
     Exit Sub
 
 WriteResponderPregunta_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteResponderPregunta", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResponderPregunta", Erl)
     Resume Next
     
 End Sub
@@ -19492,7 +19491,7 @@ Public Sub WriteCorreo()
     Exit Sub
 
 WriteCorreo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCorreo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCorreo", Erl)
     Resume Next
     
 End Sub
@@ -19528,7 +19527,7 @@ Public Sub WriteSendCorreo(ByVal UserNick As String, ByVal msg As String, ByVal 
     Exit Sub
 
 WriteSendCorreo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteSendCorreo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSendCorreo", Erl)
     Resume Next
     
 End Sub
@@ -19549,7 +19548,7 @@ Public Sub WriteComprarItem(ByVal ItemIndex As Byte)
     Exit Sub
 
 WriteComprarItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteComprarItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteComprarItem", Erl)
     Resume Next
     
 End Sub
@@ -19571,7 +19570,7 @@ Public Sub WriteCompletarViaje(ByVal destino As Byte, ByVal costo As Long)
     Exit Sub
 
 WriteCompletarViaje_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCompletarViaje", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCompletarViaje", Erl)
     Resume Next
     
 End Sub
@@ -19592,7 +19591,7 @@ Public Sub WriteRetirarItemCorreo(ByVal IndexMsg As Integer)
     Exit Sub
 
 WriteRetirarItemCorreo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteRetirarItemCorreo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRetirarItemCorreo", Erl)
     Resume Next
     
 End Sub
@@ -19613,7 +19612,7 @@ Public Sub WriteBorrarCorreo(ByVal IndexMsg As Integer)
     Exit Sub
 
 WriteBorrarCorreo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBorrarCorreo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBorrarCorreo", Erl)
     Resume Next
     
 End Sub
@@ -19721,11 +19720,11 @@ Private Sub HandleListaCorreo()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -19769,11 +19768,11 @@ Private Sub HandleShowPregunta()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -19825,7 +19824,7 @@ Private Sub HandleDatosGrupo()
     Exit Sub
 
 HandleDatosGrupo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleDatosGrupo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDatosGrupo", Erl)
     Resume Next
     
 End Sub
@@ -19875,7 +19874,7 @@ Private Sub HandleUbicacion()
     Exit Sub
 
 HandleUbicacion_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleUbicacion", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUbicacion", Erl)
     Resume Next
     
 End Sub
@@ -19939,7 +19938,7 @@ Private Sub HandleViajarForm()
     Exit Sub
 
 HandleViajarForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleViajarForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleViajarForm", Erl)
     Resume Next
     
 End Sub
@@ -19972,7 +19971,7 @@ Private Sub HandleActShop()
     Exit Sub
 
 HandleActShop_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.HandleActShop", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleActShop", Erl)
     Resume Next
     
 End Sub
@@ -20050,11 +20049,11 @@ Private Sub HandleDonadorObjects()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -20119,11 +20118,11 @@ Private Sub HandleRanking()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -20156,7 +20155,7 @@ Public Sub WriteCodigo(ByVal Codigo As String)
     Exit Sub
 
 WriteCodigo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCodigo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCodigo", Erl)
     Resume Next
     
 End Sub
@@ -20196,7 +20195,7 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byt
     Exit Sub
 
 WriteCreaerTorneo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCreaerTorneo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreaerTorneo", Erl)
     Resume Next
     
 End Sub
@@ -20216,7 +20215,7 @@ Public Sub WriteComenzarTorneo()
     Exit Sub
 
 WriteComenzarTorneo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteComenzarTorneo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteComenzarTorneo", Erl)
     Resume Next
     
 End Sub
@@ -20236,7 +20235,7 @@ Public Sub WriteCancelarTorneo()
     Exit Sub
 
 WriteCancelarTorneo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCancelarTorneo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCancelarTorneo", Erl)
     Resume Next
     
 End Sub
@@ -20257,7 +20256,7 @@ Public Sub WriteBusquedaTesoro(ByVal TIPO As Byte)
     Exit Sub
 
 WriteBusquedaTesoro_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteBusquedaTesoro", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBusquedaTesoro", Erl)
     Resume Next
     
 End Sub
@@ -20353,7 +20352,7 @@ Private Sub HandleRequestScreenShot()
         Dim offset As Long
 
         For offset = 1 To Len(Data) Step 10000
-            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
+            Call WriteSendScreenShot(mid$(Data, offset, Min(Len(Data) - offset + 1, 10000)))
         Next
     
     End With
@@ -20375,7 +20374,7 @@ Public Sub WriteSendProcesses(ProcessesList As String)
     Exit Sub
     
 Handler:
-    If Err.number = outgoingData.NotEnoughSpaceErrCode Then
+    If Err.Number = outgoingData.NotEnoughSpaceErrCode Then
         Call FlushBuffer
         Resume
     End If
@@ -20395,7 +20394,7 @@ Public Sub WriteSendScreenShot(ScreenShotSerialized As String)
     End With
     
 Handler:
-    If Err.number = outgoingData.NotEnoughSpaceErrCode Then
+    If Err.Number = outgoingData.NotEnoughSpaceErrCode Then
         Call FlushBuffer
         Resume
     End If
@@ -20429,11 +20428,11 @@ Private Sub HandleShowProcesses()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -20471,11 +20470,11 @@ Private Sub HandleShowScreenShot()
     
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -20513,11 +20512,11 @@ Private Sub HandleScreenShotData()
 
 errhandler:
 
-    If Err.number <> 0 And Err.number <> incomingData.NotEnoughDataErrCode Then Resume Next
+    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
     Dim Error As Long
 
-    Error = Err.number
+    Error = Err.Number
 
     On Error GoTo 0
     
@@ -20540,7 +20539,7 @@ Public Sub WriteTolerancia0(Nick As String)
     End With
     
 Handler:
-    If Err.number = outgoingData.NotEnoughSpaceErrCode Then
+    If Err.Number = outgoingData.NotEnoughSpaceErrCode Then
         Call FlushBuffer
         Resume
     End If
@@ -20581,7 +20580,7 @@ Public Sub WriteGetMapInfo()
     End With
     
 Handler:
-    If Err.number = outgoingData.NotEnoughSpaceErrCode Then
+    If Err.Number = outgoingData.NotEnoughSpaceErrCode Then
         Call FlushBuffer
         Resume
     End If
@@ -20666,7 +20665,7 @@ Public Sub WriteCuentaExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, B
     Exit Sub
 
 WriteCuentaExtractItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCuentaExtractItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCuentaExtractItem", Erl)
     Resume Next
     
 End Sub
@@ -20689,7 +20688,7 @@ Public Sub WriteCuentaDeposit(ByVal Slot As Byte, ByVal Amount As Integer, ByVal
     
     Exit Sub
 WriteCuentaDeposit_Err:
-    Call RegistrarError(Err.number, Err.Description, "Protocol.WriteCuentaDeposit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCuentaDeposit", Erl)
     Resume Next
     
 End Sub

@@ -7,8 +7,8 @@ Option Explicit
 
 Private Type Position
 
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 
 End Type
 
@@ -23,8 +23,8 @@ End Type
 Private Type tWorldPos
 
     map As Integer
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 
 End Type
 
@@ -32,7 +32,7 @@ Private Type grh
 
     GrhIndex As Long
     framecounter As Single
-    Speed As Single
+    speed As Single
     Started As Long
     alpha_blend As Boolean
     Angle As Single
@@ -50,7 +50,7 @@ Private Type GrhData
     TileHeight As Single
     NumFrames As Integer
     Frames() As Integer
-    Speed As Integer
+    speed As Integer
     mini_map_color As Long
 
 End Type
@@ -148,7 +148,7 @@ Public Function DirGraficos() As String
     Exit Function
 
 DirGraficos_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.DirGraficos", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirGraficos", Erl)
     Resume Next
     
 End Function
@@ -163,7 +163,7 @@ Public Function DirSound() As String
     Exit Function
 
 DirSound_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.DirSound", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirSound", Erl)
     Resume Next
     
 End Function
@@ -178,7 +178,7 @@ Public Function DirMidi() As String
     Exit Function
 
 DirMidi_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.DirMidi", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirMidi", Erl)
     Resume Next
     
 End Function
@@ -193,7 +193,7 @@ Public Function DirMapas() As String
     Exit Function
 
 DirMapas_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.DirMapas", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirMapas", Erl)
     Resume Next
     
 End Function
@@ -212,7 +212,7 @@ Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long)
     Exit Function
 
 RandomNumber_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.RandomNumber", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.RandomNumber", Erl)
     Resume Next
     
 End Function
@@ -294,7 +294,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
     Exit Sub
 
 AddtoRichTextBox2_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.AddtoRichTextBox2", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.AddtoRichTextBox2", Erl)
     Resume Next
     
 End Sub
@@ -359,7 +359,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     Exit Sub
 
 AddtoRichTextBox_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.AddtoRichTextBox", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.AddtoRichTextBox", Erl)
     Resume Next
     
 End Sub
@@ -401,22 +401,22 @@ Public Sub RefreshAllChars()
     'Goes through the charlist and replots all the characters on the map
     'Used to make sure everyone is visible
     '*****************************************************************
-    Dim LoopC As Long
+    Dim loopc As Long
     
-    For LoopC = 1 To LastChar
+    For loopc = 1 To LastChar
     
-        If charlist(LoopC).Active = 1 Then
-            MapData(charlist(LoopC).Pos.X, charlist(LoopC).Pos.Y).charindex = LoopC
+        If charlist(loopc).active = 1 Then
+            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
 
         End If
 
-    Next LoopC
+    Next loopc
 
     
     Exit Sub
 
 RefreshAllChars_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.RefreshAllChars", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.RefreshAllChars", Erl)
     Resume Next
     
 End Sub
@@ -448,7 +448,7 @@ Function AsciiValidos(ByVal cad As String) As Boolean
     Exit Function
 
 AsciiValidos_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.AsciiValidos", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.AsciiValidos", Erl)
     Resume Next
     
 End Function
@@ -493,7 +493,7 @@ Function CheckUserDataLoged() As Boolean
     Exit Function
 
 CheckUserDataLoged_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.CheckUserDataLoged", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.CheckUserDataLoged", Erl)
     Resume Next
     
 End Function
@@ -504,7 +504,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     
 
     'Validamos los datos del user
-    Dim LoopC     As Long
+    Dim loopc     As Long
 
     Dim CharAscii As Integer
     
@@ -520,8 +520,8 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
     End If
     
-    For LoopC = 1 To Len(CuentaPassword)
-        CharAscii = Asc(mid$(CuentaPassword, LoopC, 1))
+    For loopc = 1 To Len(CuentaPassword)
+        CharAscii = Asc(mid$(CuentaPassword, loopc, 1))
 
         If Not LegalCharacter(CharAscii) Then
             MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
@@ -529,7 +529,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
         End If
 
-    Next LoopC
+    Next loopc
     
     CheckUserData = True
 
@@ -537,7 +537,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     Exit Function
 
 CheckUserData_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.CheckUserData", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.CheckUserData", Erl)
     Resume Next
     
 End Function
@@ -560,7 +560,7 @@ Sub UnloadAllForms()
     Exit Sub
 
 UnloadAllForms_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.UnloadAllForms", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.UnloadAllForms", Erl)
     Resume Next
     
 End Sub
@@ -604,7 +604,7 @@ Function LegalCharacter(ByVal KeyAscii As Integer) As Boolean
     Exit Function
 
 LegalCharacter_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.LegalCharacter", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.LegalCharacter", Erl)
     Resume Next
     
 End Function
@@ -683,7 +683,7 @@ Sub SetConnected()
     Exit Sub
 
 SetConnected_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.SetConnected", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.SetConnected", Erl)
     Resume Next
     
 End Sub
@@ -708,16 +708,16 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.X, UserPos.Y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.X + 1, UserPos.Y, Direccion)
+            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.X, UserPos.Y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.X - 1, UserPos.Y, Direccion)
+            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
 
     End Select
     
@@ -756,9 +756,9 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End If
     
-    Call frmMain.SetMinimapPosition(0, UserPos.X, UserPos.Y)
+    Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
 
     If frmMapaGrande.Visible Then
         Call CalcularPosicionMAPA
@@ -772,7 +772,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Exit Sub
 
 MoveTo_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.MoveTo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.MoveTo", Erl)
     Resume Next
     
 End Sub
@@ -792,7 +792,7 @@ Sub RandomMove()
     Exit Sub
 
 RandomMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.RandomMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.RandomMove", Erl)
     Resume Next
     
 End Sub
@@ -838,7 +838,7 @@ Private Sub AddMovementToKeysMovementPressedQueue()
     Exit Sub
 
 AddMovementToKeysMovementPressedQueue_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.AddMovementToKeysMovementPressedQueue", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.AddMovementToKeysMovementPressedQueue", Erl)
     Resume Next
     
 End Sub
@@ -922,7 +922,7 @@ Sub Check_Keys()
     Exit Sub
 
 Check_Keys_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.Check_Keys", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.Check_Keys", Erl)
     Resume Next
     
 End Sub
@@ -963,7 +963,7 @@ Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As
     Exit Function
 
 ReadField_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.ReadField", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.ReadField", Erl)
     Resume Next
     
 End Function
@@ -1001,7 +1001,7 @@ Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
     Exit Function
 
 FieldCount_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.FieldCount", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.FieldCount", Erl)
     Resume Next
     
 End Function
@@ -1016,7 +1016,7 @@ Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As B
     Exit Function
 
 FileExist_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.FileExist", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.FileExist", Erl)
     Resume Next
     
 End Function
@@ -1149,7 +1149,7 @@ Sub Main()
     Exit Sub
 
 Main_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.Main", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.Main", Erl)
     Resume Next
     
 End Sub
@@ -1167,7 +1167,7 @@ Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, By
     Exit Sub
 
 WriteVar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.WriteVar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.WriteVar", Erl)
     Resume Next
     
 End Sub
@@ -1193,7 +1193,7 @@ Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String)
     Exit Function
 
 GetVar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.GetVar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.GetVar", Erl)
     Resume Next
     
 End Function
@@ -1253,7 +1253,7 @@ Private Function CMSValidateChar_(ByVal iAsc As Integer) As Boolean
     Exit Function
 
 CMSValidateChar__Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.CMSValidateChar_", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.CMSValidateChar_", Erl)
     Resume Next
     
 End Function
@@ -1274,7 +1274,7 @@ Public Sub ShowSendTxt()
     Exit Sub
 
 ShowSendTxt_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.ShowSendTxt", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.ShowSendTxt", Erl)
     Resume Next
     
 End Sub
@@ -1309,7 +1309,7 @@ Public Sub LeerLineaComandos()
     Exit Sub
 
 LeerLineaComandos_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.LeerLineaComandos", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.LeerLineaComandos", Erl)
     Resume Next
     
 End Sub
@@ -1410,7 +1410,7 @@ Private Sub InicializarNombres()
     Exit Sub
 
 InicializarNombres_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.InicializarNombres", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.InicializarNombres", Erl)
     Resume Next
     
 End Sub
@@ -1436,7 +1436,7 @@ Public Sub CleanDialogs()
     Exit Sub
 
 CleanDialogs_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.CleanDialogs", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.CleanDialogs", Erl)
     Resume Next
     
 End Sub
@@ -1504,7 +1504,7 @@ Public Sub CloseClient()
     Exit Sub
 
 CloseClient_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.CloseClient", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.CloseClient", Erl)
     Resume Next
     
 End Sub
@@ -1544,7 +1544,7 @@ Public Function General_Field_Read(ByVal field_pos As Long, ByVal Text As String
     Exit Function
 
 General_Field_Read_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.General_Field_Read", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.General_Field_Read", Erl)
     Resume Next
     
 End Function
@@ -1586,7 +1586,7 @@ Public Function General_Field_Count(ByVal Text As String, ByVal delimiter As Byt
     Exit Function
 
 General_Field_Count_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.General_Field_Count", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.General_Field_Count", Erl)
     Resume Next
     
 End Function
@@ -1623,7 +1623,7 @@ Public Sub InitServersList(ByVal Lst As String)
     Exit Sub
 
 InitServersList_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.InitServersList", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.InitServersList", Erl)
     Resume Next
     
 End Sub
@@ -1663,21 +1663,21 @@ Public Function General_Get_Elapsed_Time() As Single
     Exit Function
 
 General_Get_Elapsed_Time_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.General_Get_Elapsed_Time", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.General_Get_Elapsed_Time", Erl)
     Resume Next
     
 End Function
 
 
-Public Function max(ByVal A As Double, ByVal B As Double) As Double
+Public Function Max(ByVal A As Variant, ByVal B As Variant) As Variant
     
     On Error GoTo max_Err
     
 
     If A > B Then
-        max = A
+        Max = A
     Else
-        max = B
+        Max = B
 
     End If
 
@@ -1685,20 +1685,20 @@ Public Function max(ByVal A As Double, ByVal B As Double) As Double
     Exit Function
 
 max_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.max", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.max", Erl)
     Resume Next
     
 End Function
 
-Public Function min(ByVal A As Double, ByVal B As Double) As Double
+Public Function Min(ByVal A As Double, ByVal B As Double) As Variant
     
     On Error GoTo min_Err
     
 
     If A < B Then
-        min = A
+        Min = A
     Else
-        min = B
+        Min = B
 
     End If
 
@@ -1706,10 +1706,35 @@ Public Function min(ByVal A As Double, ByVal B As Double) As Double
     Exit Function
 
 min_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.min", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.min", Erl)
     Resume Next
     
 End Function
+
+Public Function Clamp(ByVal A As Variant, ByVal Min As Variant, ByVal Max As Variant) As Variant
+    
+    On Error GoTo min_Err
+    
+
+    If A < Min Then
+        Clamp = Min
+    
+    ElseIf A > Max Then
+        Clamp = Max
+
+    Else
+        Clamp = A
+    End If
+
+    
+    Exit Function
+
+min_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.min", Erl)
+    Resume Next
+    
+End Function
+
 
 Public Function LoadInterface(FileName As String) As IPicture
 
@@ -1762,7 +1787,7 @@ Public Function Tilde(ByRef Data As String) As String
     Exit Function
 
 Tilde_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.Tilde", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.Tilde", Erl)
     Resume Next
     
 End Function
@@ -1791,7 +1816,7 @@ Function RunningInVB() As Boolean
     Exit Function
 
 RunningInVB_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.RunningInVB", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.RunningInVB", Erl)
     Resume Next
     
 End Function
@@ -1805,7 +1830,7 @@ Function GetTimeFromString(str As String) As Long
     Dim Splitted() As String
     Splitted = Split(str, ":")
     
-    Dim Hour As Long, min As Long
+    Dim Hour As Long, Min As Long
     Hour = Val(Splitted(0))
 
     If Hour < 0 Then Hour = 0
@@ -1814,12 +1839,12 @@ Function GetTimeFromString(str As String) As Long
     GetTimeFromString = Hour * 60
     
     If UBound(Splitted) > 0 Then
-        min = Val(Splitted(1))
+        Min = Val(Splitted(1))
         
-        If min < 0 Then min = 0
-        If min > 59 Then min = 59
+        If Min < 0 Then Min = 0
+        If Min > 59 Then Min = 59
         
-        GetTimeFromString = GetTimeFromString + min
+        GetTimeFromString = GetTimeFromString + Min
     End If
 
     GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)
@@ -1828,7 +1853,7 @@ Function GetTimeFromString(str As String) As Long
     Exit Function
 
 GetTimeFromString_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_General.GetTimeFromString", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.GetTimeFromString", Erl)
     Resume Next
     
 End Function
@@ -1970,5 +1995,19 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
     End If
     
     ValidarNombre = True
+
+End Function
+
+Function BeautifyBigNumber(ByVal Number As Long) As String
+
+    If Number > 1000000000 Then
+        BeautifyBigNumber = Round(Number * 0.000000001, 3) & "KKK"
+    ElseIf Number > 10000000 Then
+        BeautifyBigNumber = Round(Number * 0.000001, 2) & "KK"
+    ElseIf Number > 10000& Then
+        BeautifyBigNumber = Round(Number * 0.001, 1) & "K"
+    Else
+        BeautifyBigNumber = Number
+    End If
 
 End Function
