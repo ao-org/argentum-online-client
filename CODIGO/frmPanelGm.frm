@@ -21,6 +21,14 @@ Begin VB.Form frmPanelgm
    ScaleHeight     =   8175
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
+   Begin VB.CommandButton cmdEventos 
+      Caption         =   "Eventos"
+      Height          =   360
+      Left            =   120
+      TabIndex        =   27
+      Top             =   6120
+      Width           =   990
+   End
    Begin VB.CommandButton cmdIrCerca 
       Caption         =   "Ir Cerca"
       Height          =   360
@@ -827,7 +835,7 @@ Public Sub CrearGMmSg(Nick As String, msg As String)
     Exit Sub
 
 CrearGMmSg_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.CrearGMmSg", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CrearGMmSg", Erl)
     Resume Next
     
 End Sub
@@ -848,7 +856,7 @@ Private Sub BanCuenta_Click()
     Exit Sub
 
 BanCuenta_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.BanCuenta_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.BanCuenta_Click", Erl)
     Resume Next
     
 End Sub
@@ -863,7 +871,7 @@ Private Sub banMacYHD_Click()
     Exit Sub
 
 banMacYHD_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.banMacYHD_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.banMacYHD_Click", Erl)
     Resume Next
     
 End Sub
@@ -882,7 +890,7 @@ Private Sub BorrarPersonaje_Click()
     Exit Sub
 
 BorrarPersonaje_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.BorrarPersonaje_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.BorrarPersonaje_Click", Erl)
     Resume Next
     
 End Sub
@@ -894,7 +902,10 @@ Private Sub BusqedaTesoro_Click()
 
     tmp = InputBox("Ingrese tipo de evento:" & vbCrLf & "0: Busqueda de tesoro en continente" & vbCrLf & "1: Busqueda de tesoro en dungeon" & vbCrLf & "2: Aparicion de criatura", "Iniciar evento")
 
-    If tmp > 255 Then Exit Sub
+    If tmp >= 3 Or tmp = "" Then
+        Exit Sub
+    End If
+    
     If IsNumeric(tmp) Then
 
         Call WriteBusquedaTesoro(CByte(tmp))
@@ -907,7 +918,7 @@ Private Sub BusqedaTesoro_Click()
     Exit Sub
 
 BusqedaTesoro_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.BusqedaTesoro_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.BusqedaTesoro_Click", Erl)
     Resume Next
     
 End Sub
@@ -923,7 +934,7 @@ Private Sub Cabeza_Click()
     Exit Sub
 
 Cabeza_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Cabeza_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Cabeza_Click", Erl)
     Resume Next
     
 End Sub
@@ -943,7 +954,7 @@ Private Sub CerrarleCliente_Click()
     Exit Sub
 
 CerrarleCliente_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.CerrarleCliente_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CerrarleCliente_Click", Erl)
     Resume Next
     
 End Sub
@@ -963,7 +974,7 @@ Private Sub CerrarProceso_Click()
     Exit Sub
 
 CerrarProceso_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.CerrarProceso_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CerrarProceso_Click", Erl)
     Resume Next
     
 End Sub
@@ -979,7 +990,7 @@ Private Sub ciudadanos_Click()
     Exit Sub
 
 ciudadanos_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.ciudadanos_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.ciudadanos_Click", Erl)
     Resume Next
     
 End Sub
@@ -995,7 +1006,7 @@ Private Sub Clase_Click()
     Exit Sub
 
 Clase_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Clase_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Clase_Click", Erl)
     Resume Next
     
 End Sub
@@ -1145,7 +1156,7 @@ Private Sub cmdAccion_Click(Index As Integer)
             If HoraActual >= 0 And HoraActual <= 6 Then
                 ' Hacemos de dia
                 Call WriteDay
-            ' Viceversa
+                ' Viceversa
             Else
                 Call WriteNight
             End If
@@ -1153,6 +1164,7 @@ Private Sub cmdAccion_Click(Index As Integer)
         Case 33
 
             Call ParseUserCommand("/PAUSAR") ' ver ReyarB
+
         Case 34 '/LIMPIARMUNDO 0.12.1
             Call WriteCleanWorld
 
@@ -1169,12 +1181,11 @@ Private Sub cmdAccion_Click(Index As Integer)
     End Select
 
     Nick = ""
-
     
     Exit Sub
 
 cmdAccion_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.cmdAccion_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdAccion_Click", Erl)
     Resume Next
     
 End Sub
@@ -1190,7 +1201,7 @@ Private Sub cmdActualiza_Click()
     Exit Sub
 
 cmdActualiza_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.cmdActualiza_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdActualiza_Click", Erl)
     Resume Next
     
 End Sub
@@ -1247,7 +1258,7 @@ Private Sub cmdcerrar_Click()
     Exit Sub
 
 cmdcerrar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.cmdcerrar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdcerrar_Click", Erl)
     Resume Next
     
 End Sub
@@ -1273,7 +1284,7 @@ Private Sub cmdTarget_Click()
     Exit Sub
 
 cmdTarget_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.cmdTarget_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdTarget_Click", Erl)
     Resume Next
     
 End Sub
@@ -1288,6 +1299,24 @@ Private Sub cmdConsulta_Click()
          
     Call ParseUserCommand("/CONSULTA " & tmpUser)
  
+End Sub
+
+Private Sub cmdEventos_Click()
+    tmp = InputBox("Ingrese tipo de evento:" & vbCrLf & "0: Busqueda de tesoro en continente" & vbCrLf & "1: Busqueda de tesoro en dungeon" & vbCrLf & "2: Aparicion de criatura", "Iniciar evento")
+    
+    If tmp = "" Or tmp >= 3 Then
+        Exit Sub
+    End If
+    
+    If IsNumeric(tmp) Then
+
+        Call WriteBusquedaTesoro(CByte(tmp))
+    Else
+        MsgBox ("Tipo invalido")
+
+    End If
+    
+    Exit Sub
 End Sub
 
 Private Sub cmdGuardarMapa_Click()
@@ -1401,7 +1430,7 @@ Private Sub Command1_Click()
     Exit Sub
 
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Command1_Click", Erl)
     Resume Next
     
 End Sub
@@ -1417,7 +1446,7 @@ Private Sub Command2_Click()
     Exit Sub
 
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Command2_Click", Erl)
     Resume Next
     
 End Sub
@@ -1433,7 +1462,7 @@ Private Sub CrearTeleport_Click()
     Exit Sub
 
 CrearTeleport_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.CrearTeleport_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CrearTeleport_Click", Erl)
     Resume Next
     
 End Sub
@@ -1448,7 +1477,7 @@ Private Sub creartoneo_Click()
     Exit Sub
 
 creartoneo_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.creartoneo_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.creartoneo_Click", Erl)
     Resume Next
     
 End Sub
@@ -1464,7 +1493,7 @@ Private Sub Criminales_Click()
     Exit Sub
 
 Criminales_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Criminales_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Criminales_Click", Erl)
     Resume Next
     
 End Sub
@@ -1480,7 +1509,7 @@ Private Sub Cuerpo_Click()
     Exit Sub
 
 Cuerpo_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Cuerpo_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Cuerpo_Click", Erl)
     Resume Next
     
 End Sub
@@ -1500,7 +1529,7 @@ Private Sub Desbanear_Click()
     Exit Sub
 
 Desbanear_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Desbanear_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Desbanear_Click", Erl)
     Resume Next
     
 End Sub
@@ -1516,7 +1545,7 @@ Private Sub Destrabar_Click()
     Exit Sub
 
 Destrabar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Destrabar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Destrabar_Click", Erl)
     Resume Next
     
 End Sub
@@ -1531,7 +1560,7 @@ Private Sub DestruirTeleport_Click()
     Exit Sub
 
 DestruirTeleport_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.DestruirTeleport_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.DestruirTeleport_Click", Erl)
     Resume Next
     
 End Sub
@@ -1547,7 +1576,7 @@ Private Sub Ejecutar_Click()
     Exit Sub
 
 Ejecutar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Ejecutar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Ejecutar_Click", Erl)
     Resume Next
     
 End Sub
@@ -1563,7 +1592,7 @@ Private Sub Energia_Click()
     Exit Sub
 
 Energia_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Energia_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Energia_Click", Erl)
     Resume Next
     
 End Sub
@@ -1578,7 +1607,7 @@ Private Sub evento1_Click()
     Exit Sub
 
 evento1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.evento1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento1_Click", Erl)
     Resume Next
     
 End Sub
@@ -1593,7 +1622,7 @@ Private Sub evento2_Click()
     Exit Sub
 
 evento2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.evento2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento2_Click", Erl)
     Resume Next
     
 End Sub
@@ -1608,7 +1637,7 @@ Private Sub evento3_Click()
     Exit Sub
 
 evento3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.evento3_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento3_Click", Erl)
     Resume Next
     
 End Sub
@@ -1623,7 +1652,7 @@ Private Sub evento4_Click()
     Exit Sub
 
 evento4_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.evento4_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento4_Click", Erl)
     Resume Next
     
 End Sub
@@ -1641,7 +1670,7 @@ Private Sub finalizarevento_Click()
     Exit Sub
 
 finalizarevento_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.finalizarevento_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.finalizarevento_Click", Erl)
     Resume Next
     
 End Sub
@@ -1660,7 +1689,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -1678,7 +1707,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Form_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -1712,7 +1741,7 @@ Private Sub LimpiarVision_Click()
     Exit Sub
 
 LimpiarVision_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.LimpiarVision_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.LimpiarVision_Click", Erl)
     Resume Next
     
 End Sub
@@ -1731,7 +1760,7 @@ Private Sub List1_Click()
     Exit Sub
 
 List1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.List1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.List1_Click", Erl)
     Resume Next
     
 End Sub
@@ -1750,7 +1779,7 @@ Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y 
     Exit Sub
 
 List1_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.List1_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.List1_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -1766,7 +1795,7 @@ Private Sub Mana_Click()
     Exit Sub
 
 Mana_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Mana_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Mana_Click", Erl)
     Resume Next
     
 End Sub
@@ -1800,7 +1829,7 @@ Private Sub MensajeriaMenu_Click(Index As Integer)
     Exit Sub
 
 MensajeriaMenu_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.MensajeriaMenu_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.MensajeriaMenu_Click", Erl)
     Resume Next
     
 End Sub
@@ -1835,7 +1864,7 @@ Private Sub mnuBorrar_Click()
     Exit Sub
 
 mnuBorrar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuBorrar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuBorrar_Click", Erl)
     Resume Next
     
 End Sub
@@ -1883,7 +1912,7 @@ Private Sub MnuEnviar_Click(Index As Integer)
     Exit Sub
 
 MnuEnviar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.MnuEnviar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.MnuEnviar_Click", Erl)
     Resume Next
     
 End Sub
@@ -1898,7 +1927,7 @@ Private Sub mnuIRa_Click()
     Exit Sub
 
 mnuIRa_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuIRa_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuIRa_Click", Erl)
     Resume Next
     
 End Sub
@@ -1913,7 +1942,7 @@ Private Sub mnutraer_Click()
     Exit Sub
 
 mnutraer_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnutraer_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnutraer_Click", Erl)
     Resume Next
     
 End Sub
@@ -1935,7 +1964,7 @@ Private Sub mnuInvalida_Click()
     Exit Sub
 
 mnuInvalida_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuInvalida_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuInvalida_Click", Erl)
     Resume Next
     
 End Sub
@@ -1952,7 +1981,7 @@ Private Sub mnuResponder_Click()
     Exit Sub
 
 mnuResponder_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuResponder_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuResponder_Click", Erl)
     Resume Next
     
 End Sub
@@ -1968,7 +1997,7 @@ Private Sub mnuManual_Click()
     Exit Sub
 
 mnuManual_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuManual_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuManual_Click", Erl)
     Resume Next
     
 End Sub
@@ -2007,7 +2036,7 @@ Private Sub mnuAccion_Click(Index As Integer)
     Exit Sub
 
 mnuAccion_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuAccion_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuAccion_Click", Erl)
     Resume Next
     
 End Sub
@@ -2022,7 +2051,7 @@ Private Sub mnuAdmin_Click(Index As Integer)
     Exit Sub
 
 mnuAdmin_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuAdmin_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuAdmin_Click", Erl)
     Resume Next
     
 End Sub
@@ -2037,7 +2066,7 @@ Private Sub mnuAmbiente_Click(Index As Integer)
     Exit Sub
 
 mnuAmbiente_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuAmbiente_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuAmbiente_Click", Erl)
     Resume Next
     
 End Sub
@@ -2052,7 +2081,7 @@ Private Sub mnuBan_Click(Index As Integer)
     Exit Sub
 
 mnuBan_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuBan_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuBan_Click", Erl)
     Resume Next
     
 End Sub
@@ -2076,7 +2105,7 @@ Private Sub mnuCarcel_Click(Index As Integer)
     Exit Sub
 
 mnuCarcel_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuCarcel_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuCarcel_Click", Erl)
     Resume Next
     
 End Sub
@@ -2098,7 +2127,7 @@ Private Sub mnuSilencio_Click(Index As Integer)
     Exit Sub
 
 mnuSilencio_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuSilencio_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuSilencio_Click", Erl)
     Resume Next
     
 End Sub
@@ -2113,7 +2142,7 @@ Private Sub mnuHerramientas_Click(Index As Integer)
     Exit Sub
 
 mnuHerramientas_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuHerramientas_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuHerramientas_Click", Erl)
     Resume Next
     
 End Sub
@@ -2128,7 +2157,7 @@ Private Sub mnuIP_Click(Index As Integer)
     Exit Sub
 
 mnuIP_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuIP_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuIP_Click", Erl)
     Resume Next
     
 End Sub
@@ -2174,7 +2203,7 @@ End Select
     Exit Sub
 
 mnuReload_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.mnuReload_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuReload_Click", Erl)
     Resume Next
     
 End Sub
@@ -2189,7 +2218,7 @@ Private Sub MOTD_Click()
     Exit Sub
 
 MOTD_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.MOTD_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.MOTD_Click", Erl)
     Resume Next
     
 End Sub
@@ -2204,7 +2233,7 @@ Private Sub muyrapido_Click()
     Exit Sub
 
 muyrapido_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.muyrapido_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.muyrapido_Click", Erl)
     Resume Next
     
 End Sub
@@ -2219,7 +2248,7 @@ Private Sub Normal_Click()
     Exit Sub
 
 Normal_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Normal_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Normal_Click", Erl)
     Resume Next
     
 End Sub
@@ -2235,7 +2264,7 @@ Private Sub oro_Click()
     Exit Sub
 
 oro_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.oro_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.oro_Click", Erl)
     Resume Next
     
 End Sub
@@ -2251,7 +2280,7 @@ Private Sub personalizado_Click()
     Exit Sub
 
 personalizado_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.personalizado_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.personalizado_Click", Erl)
     Resume Next
     
 End Sub
@@ -2271,7 +2300,7 @@ Private Sub rapido_Click()
     Exit Sub
 
 rapido_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.rapido_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.rapido_Click", Erl)
     Resume Next
     
 End Sub
@@ -2287,7 +2316,7 @@ Private Sub Raza_Click()
     Exit Sub
 
 Raza_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Raza_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Raza_Click", Erl)
     Resume Next
     
 End Sub
@@ -2314,7 +2343,7 @@ Private Sub SkillLibres_Click()
     Exit Sub
 
 SkillLibres_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.SkillLibres_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.SkillLibres_Click", Erl)
     Resume Next
     
 End Sub
@@ -2329,7 +2358,7 @@ Private Sub Spawn_Click()
     Exit Sub
 
 Spawn_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Spawn_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Spawn_Click", Erl)
     Resume Next
     
 End Sub
@@ -2344,7 +2373,7 @@ Private Sub StaffOnline_Click()
     Exit Sub
 
 StaffOnline_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.StaffOnline_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.StaffOnline_Click", Erl)
     Resume Next
     
 End Sub
@@ -2375,7 +2404,7 @@ Private Sub Temporal_Click()
     Exit Sub
 
 Temporal_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Temporal_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Temporal_Click", Erl)
     Resume Next
     
 End Sub
@@ -2390,7 +2419,7 @@ Private Sub torneo_cancelar_Click()
     Exit Sub
 
 torneo_cancelar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.torneo_cancelar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.torneo_cancelar_Click", Erl)
     Resume Next
     
 End Sub
@@ -2405,7 +2434,7 @@ Private Sub torneo_comenzar_Click()
     Exit Sub
 
 torneo_comenzar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.torneo_comenzar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.torneo_comenzar_Click", Erl)
     Resume Next
     
 End Sub
@@ -2430,7 +2459,7 @@ Private Sub UnbanCuenta_Click()
     Exit Sub
 
 UnbanCuenta_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.UnbanCuenta_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.UnbanCuenta_Click", Erl)
     Resume Next
     
 End Sub
@@ -2450,7 +2479,7 @@ Private Sub UnbanPersonaje_Click()
     Exit Sub
 
 UnbanPersonaje_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.UnbanPersonaje_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.UnbanPersonaje_Click", Erl)
     Resume Next
     
 End Sub
@@ -2474,7 +2503,7 @@ Private Sub Vida_Click()
     Exit Sub
 
 Vida_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.Vida_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Vida_Click", Erl)
     Resume Next
     
 End Sub
@@ -2501,7 +2530,7 @@ Private Sub ReadNick()
     Exit Sub
 
 ReadNick_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.ReadNick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.ReadNick", Erl)
     Resume Next
     
 End Sub
@@ -2528,7 +2557,7 @@ Private Sub YoAcciones_Click(Index As Integer)
     Exit Sub
 
 YoAcciones_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPanelGM.YoAcciones_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.YoAcciones_Click", Erl)
     Resume Next
     
 End Sub
