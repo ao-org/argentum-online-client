@@ -111,8 +111,16 @@ Private TileBufferPixelOffsetY As Integer
 Private Const GrhFogata        As Integer = 1521
 
 ' Colores estaticos
+
+Public FLASH(3)        As RGBA
+Public sumarR As Boolean
+Public sumarG As Boolean
+Public sumarB As Boolean
 Public COLOR_EMPTY              As RGBA
 Public COLOR_WHITE(3)           As RGBA
+Public R As Byte
+Public G As Byte
+Public B As Byte
 Public textcolorAsistente(3)    As RGBA
 
 'Sets a Grh animation to loop indefinitely.
@@ -1382,9 +1390,9 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
                             .Text = vbNullString
                         Else
                             If DeltaTime > 900 Then
-                                Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A * (1300 - DeltaTime) * 0.0025)
+                                Call RGBAList(temp_array, .Color.R, .Color.G, .Color.B, .Color.A * (1300 - DeltaTime) * 0.0025)
                             Else
-                                Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A)
+                                Call RGBAList(temp_array, .Color.R, .Color.G, .Color.B, .Color.A)
                             End If
                     
                             Engine_Text_Render_Efect charindex, .Text, PixelOffsetX + 14 - Int(Engine_Text_Width(.Text, True) * 0.5), PixelOffsetY + charlist(charindex).Body.HeadOffset.y - Engine_Text_Height(.Text, True) - DeltaTime * 0.025, temp_array, 1, True
@@ -1585,29 +1593,32 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         Select Case .status
                             ' Criminal
                             Case 0
-                                Call RGBAList(NameColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                                Call RGBAList(NameColor, ColoresPJ(50).R, ColoresPJ(50).G, ColoresPJ(50).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(50).R, ColoresPJ(50).G, ColoresPJ(50).B)
                             
                             ' Ciudadano
                             Case 1
-                                Call RGBAList(NameColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                                Call RGBAList(NameColor, ColoresPJ(49).R, ColoresPJ(49).G, ColoresPJ(49).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(49).R, ColoresPJ(49).G, ColoresPJ(49).B)
                             
                             ' Caos
                             Case 2
-                                Call RGBAList(NameColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
+                                Call RGBAList(NameColor, ColoresPJ(6).R, ColoresPJ(6).G, ColoresPJ(6).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(6).R, ColoresPJ(6).G, ColoresPJ(6).B)
     
                             ' Armada
                             Case 3
-                                Call RGBAList(NameColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+                                Call RGBAList(NameColor, ColoresPJ(8).R, ColoresPJ(8).G, ColoresPJ(8).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(8).R, ColoresPJ(8).G, ColoresPJ(8).B)
     
                         End Select
                                 
                     Else
-                        Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
-                        Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        Call RGBAList(NameColor, ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        Call RGBAList(colorCorazon, ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        If .nombre = "harthaos" Then
+                            Call RGBAList(NameColor, 255, 174, 50)
+                        End If
                     End If
                                         
                     If .group_index > 0 Then
@@ -1737,8 +1748,26 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If Pos = 0 Then Pos = Len(.nombre) + 2
 
                 'Nick
-                line = Left$(.nombre, Pos - 2)
-                Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1
+                If (.nombre <> "harthaos") Then
+                    line = Left$(.nombre, Pos - 2)
+                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1
+                
+                Else
+                    ColoresLocos "HarThaoS", PixelOffsetX, PixelOffsetY, x, y
+                    'Call RGBAList(colorHarthaosCeleste, 97, 228, 228)
+                    'Call RGBAList(colorHarthaosBlanco, 255, 255, 255)
+                    'Call RGBAList(colorHarthaosAmarillo, 234, 234, 0)
+                    'line = "H"
+                    'Engine_Text_Render line, PixelOffsetX - 7 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosCeleste, 1
+                    'line = "ar"
+                    'Engine_Text_Render line, PixelOffsetX + 4 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosBlanco, 1
+                    'line = "T"
+                    'Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosAmarillo, 1
+                    'line = "hao"
+                    'Engine_Text_Render line, PixelOffsetX + 29 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosBlanco, 1
+                    'line = "S"
+                    'Engine_Text_Render line, PixelOffsetX + 45 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosCeleste, 1
+                End If
                 
                 'Clan
                 Select Case .priv
@@ -1858,6 +1887,63 @@ Char_Render_Err:
     Resume Next
     
 End Sub
+Private Function ColoresLocos(ByVal line As String, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+    line = "HarThaoS"
+    'SUMAR R
+    If R = 0 Then
+        R = RandomNumber(0, 255)
+        sumarR = True
+    End If
+    
+    If R = 255 Then
+        R = RandomNumber(0, 255)
+        sumarR = False
+    End If
+    
+    If sumarR Then
+        R = R + 1
+    Else
+        R = R - 1
+    End If
+    
+    'SUMAR G
+    If G = 0 Then
+        G = RandomNumber(0, 255)
+        sumarG = True
+    End If
+    
+    If G = 255 Then
+        G = RandomNumber(0, 255)
+        sumarG = False
+    End If
+    
+    If sumarG Then
+        G = G + 1
+    Else
+        G = G - 1
+    End If
+    
+    'SUMAR B
+    
+    If B = 0 Then
+        B = RandomNumber(0, 255)
+        sumarB = True
+    End If
+    
+    If B = 255 Then
+        B = RandomNumber(0, 255)
+        sumarB = False
+    End If
+    
+    If sumarB Then
+        B = B + 1
+    Else
+        B = B - 1
+    End If
+    
+    Call RGBAList(FLASH, R, G, B)
+    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + 0 - Engine_Text_Height(line, True), FLASH, 1
+End Function
 
 Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
 
@@ -2035,13 +2121,13 @@ Private Function VectorToRGBA(Vec As D3DVECTOR, fHeight As Single) As Long
     On Error GoTo VectorToRGBA_Err
     
 
-    Dim r As Integer, G As Integer, B As Integer, A As Integer
+    Dim R As Integer, G As Integer, B As Integer, A As Integer
 
-    r = 127 * Vec.x + 128
+    R = 127 * Vec.x + 128
     G = 127 * Vec.y + 128
     B = 127 * Vec.z + 128
     A = 255 * fHeight
-    VectorToRGBA = D3DColorARGB(A, r, G, B)
+    VectorToRGBA = D3DColorARGB(A, R, G, B)
 
     
     Exit Function
@@ -2134,7 +2220,7 @@ Public Sub DrawInterfaceComerciar()
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
         ' Al vender, calculamos el valor según el min(cantidad_ingresada, cantidad_items)
-        cantidad = Min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
+        cantidad = min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
 
     End If
     
@@ -4010,7 +4096,7 @@ Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width A
     On Error GoTo Engine_Draw_Box_Err
     
 
-    Call RGBAList(temp_rgb, Color.r, Color.G, Color.B, Color.A)
+    Call RGBAList(temp_rgb, Color.R, Color.G, Color.B, Color.A)
 
     Call SpriteBatch.SetTexture(Nothing)
     Call SpriteBatch.SetAlpha(False)
@@ -4063,7 +4149,7 @@ Public Sub DibujarBody(PicBox As PictureBox, ByVal MyBody As Integer, Optional B
     grhH = HeadData(NpcData(MyBody).Head).Head(3)
 
     x = (PicBox.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) / 2
-    y = Max((PicBox.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2, BodyData(NpcData(MyBody).Body).HeadOffset.y)
+    y = max((PicBox.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2, BodyData(NpcData(MyBody).Body).HeadOffset.y)
      Call Grh_Render_To_Hdc(PicBox, GrhData(grh.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
     
 
