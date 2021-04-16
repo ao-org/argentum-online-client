@@ -1,5 +1,6 @@
 VERSION 5.00
 Begin VB.Form frmPanelgm 
+   BackColor       =   &H00000000&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
    ClientHeight    =   8175
@@ -21,82 +22,110 @@ Begin VB.Form frmPanelgm
    ScaleHeight     =   8175
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
+   Begin VB.CommandButton Command3 
+      BackColor       =   &H8000000A&
+      Caption         =   "Destrabar"
+      Height          =   375
+      Left            =   3360
+      Style           =   1  'Graphical
+      TabIndex        =   30
+      Top             =   4680
+      Width           =   1095
+   End
    Begin VB.CommandButton cmdEventos 
+      BackColor       =   &H8000000A&
       Caption         =   "Eventos"
       Height          =   360
       Left            =   120
+      Style           =   1  'Graphical
       TabIndex        =   27
       TabStop         =   0   'False
       Top             =   6120
       Width           =   990
    End
    Begin VB.CommandButton cmdIrCerca 
+      BackColor       =   &H8000000A&
       Caption         =   "Ir Cerca"
       Height          =   360
       Left            =   2160
+      Style           =   1  'Graphical
       TabIndex        =   26
       TabStop         =   0   'False
       Top             =   4680
       Width           =   990
    End
    Begin VB.CommandButton cmdInformación 
+      BackColor       =   &H8000000A&
       Caption         =   "Información General"
       Height          =   360
       Left            =   2280
+      Style           =   1  'Graphical
       TabIndex        =   25
       TabStop         =   0   'False
       Top             =   5160
       Width           =   1695
    End
    Begin VB.CommandButton cmdInvisible 
+      BackColor       =   &H8000000A&
       Caption         =   "Invisible"
       Height          =   360
       Left            =   3480
+      Style           =   1  'Graphical
       TabIndex        =   24
       TabStop         =   0   'False
       Top             =   7680
       Width           =   1215
    End
    Begin VB.CommandButton cmdGuardarMapa 
+      BackColor       =   &H8000000A&
       Caption         =   "Guardar Mapa"
       Height          =   360
       Left            =   2040
+      Style           =   1  'Graphical
       TabIndex        =   23
       TabStop         =   0   'False
       Top             =   7680
       Width           =   1215
    End
    Begin VB.CommandButton cmdMatarNPC 
+      BackColor       =   &H8000000A&
       Caption         =   "Matar NPC"
       Height          =   360
       Left            =   120
+      Style           =   1  'Graphical
       TabIndex        =   21
       TabStop         =   0   'False
       Top             =   5640
       Width           =   975
    End
    Begin VB.CommandButton cmdHeadMas 
-      Caption         =   "Head +"
-      Height          =   360
-      Left            =   1920
+      BackColor       =   &H8000000A&
+      Caption         =   "+"
+      Height          =   240
+      Left            =   4080
+      Style           =   1  'Graphical
       TabIndex        =   20
       TabStop         =   0   'False
-      Top             =   6720
-      Width           =   990
+      Top             =   6120
+      Width           =   375
    End
    Begin VB.CommandButton cmdHeadMenos 
-      Caption         =   "Head -"
-      Height          =   360
-      Left            =   3720
+      BackColor       =   &H8000000A&
+      Caption         =   "-"
+      Height          =   240
+      Left            =   4080
+      Style           =   1  'Graphical
       TabIndex        =   19
       TabStop         =   0   'False
-      Top             =   6720
-      Width           =   990
+      Top             =   6360
+      Width           =   375
    End
    Begin VB.CommandButton cmdHead0 
+      BackColor       =   &H8000000A&
       Caption         =   "Head 0"
       Height          =   360
       Left            =   120
+      Style           =   1  'Graphical
       TabIndex        =   18
       TabStop         =   0   'False
       Top             =   6720
@@ -104,69 +133,108 @@ Begin VB.Form frmPanelgm
    End
    Begin VB.TextBox txtHeadNumero 
       Alignment       =   2  'Center
-      Height          =   375
-      Left            =   3000
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   405
+      Left            =   3480
       TabIndex        =   17
       Text            =   "0"
-      Top             =   6720
+      Top             =   6150
       Width           =   615
    End
    Begin VB.CommandButton cmdBody0 
+      BackColor       =   &H8000000A&
       Caption         =   "Body 0"
       Height          =   360
       Index           =   2
       Left            =   120
+      Style           =   1  'Graphical
       TabIndex        =   16
       TabStop         =   0   'False
       Top             =   7200
       Width           =   990
    End
    Begin VB.CommandButton cmdBodyMas 
-      Caption         =   "Body +"
-      Height          =   360
-      Left            =   1920
+      BackColor       =   &H8000000A&
+      Caption         =   "+"
+      Height          =   240
+      Left            =   4080
+      Style           =   1  'Graphical
       TabIndex        =   15
       TabStop         =   0   'False
-      Top             =   7200
-      Width           =   990
+      Top             =   7080
+      Width           =   390
    End
    Begin VB.CommandButton cmdBodyMenos 
-      Caption         =   "Body -"
-      Height          =   360
-      Left            =   3720
+      BackColor       =   &H8000000A&
+      Caption         =   "-"
+      Height          =   240
+      Left            =   4080
+      Style           =   1  'Graphical
       TabIndex        =   14
       TabStop         =   0   'False
-      Top             =   7200
-      Width           =   990
+      Top             =   7320
+      Width           =   390
    End
    Begin VB.TextBox txtBodyYo 
       Alignment       =   2  'Center
-      Height          =   375
-      Left            =   3000
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   405
+      Left            =   3480
       TabIndex        =   13
       Text            =   "0"
-      Top             =   7200
+      Top             =   7130
       Width           =   615
    End
    Begin VB.CommandButton cmdConsulta 
+      BackColor       =   &H8000000A&
       Caption         =   "/Consulta"
       Height          =   360
       Left            =   120
+      Style           =   1  'Graphical
       TabIndex        =   12
       TabStop         =   0   'False
       Top             =   5160
       Width           =   990
    End
    Begin VB.CommandButton cmdModIntervalo 
+      BackColor       =   &H8000000A&
       Caption         =   "/mod intervalo golpe"
       Height          =   360
       Left            =   120
+      Style           =   1  'Graphical
       TabIndex        =   11
       TabStop         =   0   'False
       Top             =   7680
       Width           =   1695
    End
    Begin VB.TextBox txtMod 
+      BackColor       =   &H0080FF80&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   285
       Left            =   120
       TabIndex        =   0
@@ -174,9 +242,11 @@ Begin VB.Form frmPanelgm
       Width           =   4575
    End
    Begin VB.CommandButton cmdRevivir 
+      BackColor       =   &H8000000A&
       Caption         =   "/Revivir"
       Height          =   360
       Left            =   1200
+      Style           =   1  'Graphical
       TabIndex        =   10
       TabStop         =   0   'False
       Top             =   5160
@@ -217,24 +287,29 @@ Begin VB.Form frmPanelgm
       Width           =   2175
    End
    Begin VB.CommandButton cmdCerrar 
+      BackColor       =   &H8000000A&
       Caption         =   "Cerrar"
       Height          =   375
       Left            =   3480
+      Style           =   1  'Graphical
       TabIndex        =   5
       Top             =   3840
       Width           =   1215
    End
    Begin VB.CommandButton cmdSeleccionarPersonaje 
+      BackColor       =   &H8000000A&
       Caption         =   "Seleccionar personaje"
       Height          =   375
       Index           =   0
       Left            =   120
+      Style           =   1  'Graphical
       TabIndex        =   6
       TabStop         =   0   'False
       Top             =   4680
       Width           =   1815
    End
    Begin VB.ListBox List1 
+      BackColor       =   &H8000000A&
       Height          =   2010
       Left            =   120
       TabIndex        =   3
@@ -243,6 +318,7 @@ Begin VB.Form frmPanelgm
    End
    Begin VB.TextBox txtMsg 
       Alignment       =   2  'Center
+      BackColor       =   &H8000000A&
       Height          =   1035
       Left            =   120
       Locked          =   -1  'True
@@ -253,15 +329,18 @@ Begin VB.Form frmPanelgm
       Width           =   4575
    End
    Begin VB.CommandButton cmdActualiza 
+      BackColor       =   &H8000000A&
       Caption         =   "&Actualiza"
       Height          =   315
       Left            =   3840
+      Style           =   1  'Graphical
       TabIndex        =   2
       TabStop         =   0   'False
       Top             =   120
       Width           =   855
    End
    Begin VB.ComboBox cboListaUsus 
+      BackColor       =   &H8000000A&
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -285,10 +364,55 @@ Begin VB.Form frmPanelgm
       Top             =   600
       Width           =   4575
    End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackColor       =   &H80000009&
+      Caption         =   "Body"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000A&
+      Height          =   285
+      Index           =   1
+      Left            =   3480
+      TabIndex        =   29
+      Top             =   6720
+      Width           =   975
+   End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackColor       =   &H80000009&
+      Caption         =   "Head"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000A&
+      Height          =   285
+      Index           =   0
+      Left            =   3600
+      TabIndex        =   28
+      Top             =   5760
+      Width           =   645
+   End
    Begin VB.Label lblDialogo 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Dialogo del GM + Enter"
+      ForeColor       =   &H80000010&
       Height          =   195
       Left            =   120
       TabIndex        =   22
@@ -1213,7 +1337,8 @@ Private Sub cmdActualiza_Click()
     
     Call WriteRequestUserList
     Call FlushBuffer
-
+    
+    Call frmPanelgm.txtMod.SetFocus
     
     Exit Sub
 
@@ -1229,6 +1354,7 @@ Private Sub cmdBody0_Click(Index As Integer)
 
     Call ParseUserCommand("/MOD " & tmpUser & " Body 0")
     
+    Call frmPanelgm.txtMod.SetFocus
     Exit Sub
 End Sub
 
@@ -1243,6 +1369,7 @@ Private Sub cmdBodyMas_Click()
 
     Call ParseUserCommand("/MOD " & tmpUser & " Body " & tmp)
     
+    Call frmPanelgm.txtMod.SetFocus
     Exit Sub
     
 End Sub
@@ -1258,6 +1385,7 @@ Private Sub cmdBodyMenos_Click()
 
     Call ParseUserCommand("/MOD " & tmpUser & " Body " & tmp)
     
+    Call frmPanelgm.txtMod.SetFocus
     Exit Sub
 End Sub
 
@@ -1315,6 +1443,7 @@ Private Sub cmdConsulta_Click()
     tmpUser = cboListaUsus.Text
          
     Call ParseUserCommand("/CONSULTA " & tmpUser)
+    Call frmPanelgm.txtMod.SetFocus
  
 End Sub
 
@@ -1329,11 +1458,13 @@ Private Sub cmdEventos_Click()
 
     End If
     
+    Call frmPanelgm.txtMod.SetFocus
     Exit Sub
 End Sub
 
 Private Sub cmdGuardarMapa_Click()
     Call ParseUserCommand("/GUARDAMAPA")
+    Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdHeadMenos_Click()
@@ -1347,6 +1478,7 @@ Private Sub cmdHeadMenos_Click()
 
     Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
     
+    Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdHeadMas_Click()
@@ -1360,6 +1492,7 @@ Private Sub cmdHeadMas_Click()
 
     Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
     
+    Call frmPanelgm.txtMod.SetFocus
     Exit Sub
 End Sub
 
@@ -1370,6 +1503,7 @@ Private Sub cmdHead0_Click()
 
     Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
     
+    Call frmPanelgm.txtMod.SetFocus
     Exit Sub
     
 End Sub
@@ -1379,15 +1513,15 @@ Private Sub cmdInformación_Click()
     tmpUser = cboListaUsus.Text
     
     Call WriteRequestCharStats(tmpUser)
+    Call frmPanelgm.txtMod.SetFocus
 
 End Sub
 
 Private Sub cmdInvisible_Click()
     
     Call ParseUserCommand("/INVISIBLE")
-    
-    Me.SetFocus
-    
+        
+    Call frmPanelgm.txtMod.SetFocus
     Exit Sub
     
 End Sub
@@ -1402,6 +1536,7 @@ End Sub
 Private Sub cmdMatarNPC_Click()
 
 Call ParseUserCommand("/MATA")
+    Call frmPanelgm.txtMod.SetFocus
 
 End Sub
 
@@ -1411,6 +1546,7 @@ Private Sub cmdModIntervalo_Click()
 
 Call ParseUserCommand("/MOD " & "yo" & " INTERVALO GOLPE " & tmp)
 
+    Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdRevivir_Click()
@@ -1418,6 +1554,8 @@ Private Sub cmdRevivir_Click()
     tmpUser = cboListaUsus.Text
     
     Call WriteReviveChar(tmpUser)
+    Call frmPanelgm.txtMod.SetFocus
+    
 End Sub
 
 Private Sub cmdSeleccionarPersonaje_Click(Index As Integer)
@@ -1428,8 +1566,8 @@ Private Sub cmdSeleccionarPersonaje_Click(Index As Integer)
     'Call SendData("TGUSER")
     Call WriteMarcaDeGm
     cboListaUsus = List1.List(List1.ListIndex)
+    Call frmPanelgm.txtMod.SetFocus
     'txtHeadUser.Text = cboListaUsus.Text
-    
 End Sub
 
 Private Sub Command1_Click()
@@ -1462,6 +1600,11 @@ Command2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Command2_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub Command3_Click()
+    Call Destrabar_Click
+    Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub CrearTeleport_Click()

@@ -8803,6 +8803,8 @@ Private Sub HandleShowGMPanelForm()
     On Error GoTo HandleShowGMPanelForm_Err
     
     Call incomingData.ReadByte
+    frmPanelgm.txtHeadNumero = incomingData.ReadInteger
+    frmPanelgm.txtBodyYo = incomingData.ReadInteger
     
     frmPanelgm.Show vbModeless, frmMain
 
