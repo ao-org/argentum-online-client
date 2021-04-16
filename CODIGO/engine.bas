@@ -191,7 +191,7 @@ On Error GoTo ErrorHandler:
         .EnableAutoDepthStencil = 1
         .AutoDepthStencilFormat = D3DFMT_D24S8
         
-        .hDeviceWindow = frmMain.renderer.hWnd
+        .hDeviceWindow = frmMain.renderer.hwnd
         
     End With
     
@@ -399,7 +399,7 @@ Engine_BeginScene_Err:
     
 End Sub
 
-Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
+Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hwnd As Long = 0)
 
 On Error GoTo ErrorHandler:
     
@@ -407,7 +407,7 @@ On Error GoTo ErrorHandler:
     
     Call DirectDevice.EndScene
         
-    Call DirectDevice.Present(DestRect, ByVal 0, hWnd, ByVal 0)
+    Call DirectDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
     
     Exit Sub
     
@@ -1746,7 +1746,7 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If Pos = 0 Then Pos = Len(.nombre) + 2
 
                 'Nick
-                If LCase(.nombre) <> "harthaos" And LCase(.nombre) <> "wyrox" And LCase(.nombre) <> "reyarb" Then
+                If LCase(.nombre) <> "harthaos" And LCase(.nombre) <> "wyrox" And LCase(.nombre) <> "reyarb" And LCase(.nombre) <> "odin" Then
                     line = Left$(.nombre, Pos - 2)
                     Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1
                 
@@ -1899,6 +1899,10 @@ Private Function ColoresLocos(ByVal charIndex As Integer, ByVal PixelOffsetX As 
     
     If LCase(charlist(charIndex).nombre) = "reyarb" Then
         line = "ReyarB"
+    End If
+    
+    If LCase(charlist(charIndex).nombre) = "odin" Then
+        line = "Odin"
     End If
     
     'SUMAR R
@@ -2186,7 +2190,7 @@ Public Sub DrawMainInventory()
     Call frmMain.Inventario.DrawDraggedItem
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmMain.picInv.hWnd)
+    Call Engine_EndScene(InvRect, frmMain.picInv.hwnd)
 
     
     Exit Sub
@@ -2281,14 +2285,14 @@ Public Sub DrawInterfaceComerciar()
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
         frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
-        frmComerciar.lblcosto = PonerPuntos(Fix(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
+        frmComerciar.lblCosto = PonerPuntos(Fix(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
         
         Set CurrentInventory = Nothing
 
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmComerciar.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmComerciar.interface.hwnd)
 
     
     Exit Sub
@@ -2380,8 +2384,8 @@ Public Sub DrawInterfaceBovedaCuenta()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
-    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
 
     
     Exit Sub
@@ -2473,7 +2477,7 @@ Public Sub DrawInterfaceBoveda()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoObj.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmBancoObj.interface.hwnd)
 
     
     Exit Sub
@@ -2508,7 +2512,7 @@ Public Sub DrawInterfaceKeys()
     Call FrmKeyInv.InvKeys.DrawInventory
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hWnd)
+    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hwnd)
 
     
     Exit Sub
@@ -2573,7 +2577,7 @@ Public Sub DrawMapaMundo()
         Call Draw_Grh(Head, x, y, 0, 1, COLOR_WHITE, False, 0, 0, 0)
     End If
     
-    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hWnd)
+    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
 
     
     Exit Sub
@@ -2951,7 +2955,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     ' cc(3) = cc(0)
 
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
     
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     'FramesPerSecCounter = FramesPerSecCounter + 1
@@ -2991,7 +2995,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
 
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
@@ -3025,7 +3029,7 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
     
     Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
     
     Exit Sub
 
