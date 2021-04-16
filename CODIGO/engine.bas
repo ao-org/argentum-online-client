@@ -49,7 +49,7 @@ Private Type dialog
     y           As Integer
     startTime   As Long
     lifeTime    As Long
-    charindex   As Integer
+    charIndex   As Integer
     Color       As Long
     renderable  As Boolean
     Sube As Byte
@@ -118,7 +118,7 @@ Public sumarG As Boolean
 Public sumarB As Boolean
 Public COLOR_EMPTY              As RGBA
 Public COLOR_WHITE(3)           As RGBA
-Public R As Byte
+Public r As Byte
 Public G As Byte
 Public B As Byte
 Public textcolorAsistente(3)    As RGBA
@@ -676,7 +676,7 @@ Draw_Grh_Breathing_Err:
     
 End Sub
 
-Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single, Optional ByVal charindex As Integer)
+Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single, Optional ByVal charIndex As Integer)
     
     On Error GoTo Draw_GrhFX_Err
     
@@ -718,8 +718,8 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
 
         Call RGBAList(rgb_list, 255, 255, 255, grh.Alpha)
 
-        If grh.Alpha = 0 And charindex > 0 Then
-            charlist(charindex).fX.Started = 0
+        If grh.Alpha = 0 And charIndex > 0 Then
+            charlist(charIndex).fX.Started = 0
             Exit Sub
 
         End If
@@ -1318,7 +1318,7 @@ Device_Box_Textured_Render_Err:
     
 End Sub
 
-Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_TextRender(ByVal charIndex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
     
     On Error GoTo Char_TextRender_Err
     
@@ -1340,7 +1340,7 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
     ' screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
     ' screen_y = Convert_Tile_To_View_Y(PixelOffsetY) +
 
-    With charlist(charindex)
+    With charlist(charIndex)
 
         PixelOffsetX = PixelOffsetX + .MoveOffsetX
         PixelOffsetY = PixelOffsetY + .MoveOffsetY
@@ -1368,9 +1368,9 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
 
                 End If
 
-                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True) + .dialog_offset_counter_y, temp_array, 1, True, MapData(x, y).charindex
+                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True) + .dialog_offset_counter_y, temp_array, 1, True, MapData(x, y).charIndex
             Else
-                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True), temp_array, 1, True, MapData(x, y).charindex
+                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True), temp_array, 1, True, MapData(x, y).charIndex
 
             End If
 
@@ -1390,12 +1390,12 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
                             .Text = vbNullString
                         Else
                             If DeltaTime > 900 Then
-                                Call RGBAList(temp_array, .Color.R, .Color.G, .Color.B, .Color.A * (1300 - DeltaTime) * 0.0025)
+                                Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A * (1300 - DeltaTime) * 0.0025)
                             Else
-                                Call RGBAList(temp_array, .Color.R, .Color.G, .Color.B, .Color.A)
+                                Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A)
                             End If
                     
-                            Engine_Text_Render_Efect charindex, .Text, PixelOffsetX + 14 - Int(Engine_Text_Width(.Text, True) * 0.5), PixelOffsetY + charlist(charindex).Body.HeadOffset.y - Engine_Text_Height(.Text, True) - DeltaTime * 0.025, temp_array, 1, True
+                            Engine_Text_Render_Efect charIndex, .Text, PixelOffsetX + 14 - Int(Engine_Text_Width(.Text, True) * 0.5), PixelOffsetY + charlist(charIndex).Body.HeadOffset.y - Engine_Text_Height(.Text, True) - DeltaTime * 0.025, temp_array, 1, True
             
                         End If
                     End If
@@ -1418,7 +1418,7 @@ Char_TextRender_Err:
     
 End Sub
 
-Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
     
     On Error GoTo Char_Render_Err
     
@@ -1459,7 +1459,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     
     Dim TempGrh As grh
     
-    With charlist(charindex)
+    With charlist(charIndex)
 
         If .Heading = 0 Then Exit Sub
     
@@ -1496,7 +1496,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         ElseIf Not .Idle Then
             
             If .Muerto Then
-                If charindex <> UserCharIndex Then
+                If charIndex <> UserCharIndex Then
                     ' Si no somos nosotros, esperamos un intervalo
                     ' antes de poner la animación idle para evitar saltos
                     If FrameTime - .LastStep > TIME_CASPER_IDLE Then
@@ -1540,7 +1540,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 
             ElseIf .Invisible Then
 
-                If IsCharVisible(charindex) Then
+                If IsCharVisible(charIndex) Then
                     Call RGBAList(Color, 255, 255, 255, 100)
                     Call RGBAList(NameColor, 100, 100, 200)
                     MostrarNombre = True
@@ -1593,36 +1593,34 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         Select Case .status
                             ' Criminal
                             Case 0
-                                Call RGBAList(NameColor, ColoresPJ(50).R, ColoresPJ(50).G, ColoresPJ(50).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(50).R, ColoresPJ(50).G, ColoresPJ(50).B)
+                                Call RGBAList(NameColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
                             
                             ' Ciudadano
                             Case 1
-                                Call RGBAList(NameColor, ColoresPJ(49).R, ColoresPJ(49).G, ColoresPJ(49).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(49).R, ColoresPJ(49).G, ColoresPJ(49).B)
+                                Call RGBAList(NameColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
                             
                             ' Caos
                             Case 2
-                                Call RGBAList(NameColor, ColoresPJ(6).R, ColoresPJ(6).G, ColoresPJ(6).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(6).R, ColoresPJ(6).G, ColoresPJ(6).B)
+                                Call RGBAList(NameColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
     
                             ' Armada
                             Case 3
-                                Call RGBAList(NameColor, ColoresPJ(8).R, ColoresPJ(8).G, ColoresPJ(8).B)
-                                Call RGBAList(colorCorazon, ColoresPJ(8).R, ColoresPJ(8).G, ColoresPJ(8).B)
+                                Call RGBAList(NameColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
     
                         End Select
                                 
                     Else
-                        Call RGBAList(NameColor, ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
-                        Call RGBAList(colorCorazon, ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
-                        If .nombre = "harthaos" Then
-                            Call RGBAList(NameColor, 255, 174, 50)
-                        End If
+                        Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        
                     End If
                                         
                     If .group_index > 0 Then
-                        If charlist(charindex).group_index = charlist(UserCharIndex).group_index Then
+                        If charlist(charIndex).group_index = charlist(UserCharIndex).group_index Then
                             Call Copy_RGBAList(Color, COLOR_WHITE)
                             Call SetRGBA(colorCorazon(0), 255, 255, 0)
                             Call SetRGBA(colorCorazon(1), 0, 255, 255)
@@ -1632,7 +1630,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
                         
                     If .clan_index > 0 Then
-                        If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
+                        If .clan_index = charlist(UserCharIndex).clan_index And charIndex <> UserCharIndex And .Muerto = 0 Then
                             If .clan_nivel = 5 Then
                                 OffsetYname = 8
                                 OffsetYClan = 6
@@ -1721,12 +1719,12 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     ' Sombra
                     PresentComposedTexture PixelOffsetX, PixelOffsetY, Color, 0, True
 
-                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
+                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
+                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
+                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
+                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
+                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
                 End If
 
                 ' Char
@@ -1748,12 +1746,12 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If Pos = 0 Then Pos = Len(.nombre) + 2
 
                 'Nick
-                If (.nombre <> "harthaos") Then
+                If LCase(.nombre) <> "harthaos" And LCase(.nombre) <> "wyrox" And LCase(.nombre) <> "reyarb" Then
                     line = Left$(.nombre, Pos - 2)
                     Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1
                 
                 Else
-                    ColoresLocos "HarThaoS", PixelOffsetX, PixelOffsetY, x, y
+                    ColoresLocos charIndex, PixelOffsetX, PixelOffsetY, x, y
                     'Call RGBAList(colorHarthaosCeleste, 97, 228, 228)
                     'Call RGBAList(colorHarthaosBlanco, 255, 255, 255)
                     'Call RGBAList(colorHarthaosAmarillo, 234, 234, 0)
@@ -1817,14 +1815,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             .BarTime = .BarTime + (4 * timerTicksPerFrame * Sgn(1))
                              
             If .BarTime >= .MaxBarTime Then
-                If charindex = UserCharIndex Then
+                If charIndex = UserCharIndex Then
                     Call CompletarAccionBarra(.BarAccion)
 
                 End If
 
-                charlist(charindex).BarTime = 0
-                charlist(charindex).BarAccion = 99
-                charlist(charindex).MaxBarTime = 0
+                charlist(charIndex).BarTime = 0
+                charlist(charIndex).BarAccion = 99
+                charlist(charIndex).MaxBarTime = 0
 
             End If
 
@@ -1844,7 +1842,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         If .FxIndex <> 0 And .fX.Started <> 0 Then
             Call RGBAList(Color, 255, 255, 255, 180)
 
-            Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 4, 1, 1, Color, False, , , , charindex)
+            Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 4, 1, 1, Color, False, , , , charIndex)
        
         End If
 
@@ -1856,9 +1854,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(Color, 255, 255, 255, 220)
 
                     If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
-                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, False, , , , charindex)
+                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, False, , , , charIndex)
                     Else
-                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, True, , , , charindex)
+                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, True, , , , charIndex)
                     End If
 
                 End If
@@ -1887,23 +1885,37 @@ Char_Render_Err:
     Resume Next
     
 End Sub
-Private Function ColoresLocos(ByVal line As String, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
-    line = "HarThaoS"
+Private Function ColoresLocos(ByVal charIndex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+
+    Dim line As String
+    If LCase(charlist(charIndex).nombre) = "harthaos" Then
+        line = "HarThaoS"
+    End If
+    
+    If LCase(charlist(charIndex).nombre) = "wyrox" Then
+        line = "WyroX"
+    End If
+    
+    
+    If LCase(charlist(charIndex).nombre) = "reyarb" Then
+        line = "ReyarB"
+    End If
+    
     'SUMAR R
-    If R = 0 Then
-        R = RandomNumber(0, 255)
+    If r = 0 Then
+        r = RandomNumber(0, 255)
         sumarR = True
     End If
     
-    If R = 255 Then
-        R = RandomNumber(0, 255)
+    If r = 255 Then
+        r = RandomNumber(0, 255)
         sumarR = False
     End If
     
     If sumarR Then
-        R = R + 1
+        r = r + 1
     Else
-        R = R - 1
+        r = r - 1
     End If
     
     'SUMAR G
@@ -1925,7 +1937,7 @@ Private Function ColoresLocos(ByVal line As String, ByVal PixelOffsetX As Intege
     
     'SUMAR B
     
-    If B = 0 Then
+     If B = 0 Then
         B = RandomNumber(0, 255)
         sumarB = True
     End If
@@ -1941,15 +1953,23 @@ Private Function ColoresLocos(ByVal line As String, ByVal PixelOffsetX As Intege
         B = B - 1
     End If
     
-    Call RGBAList(FLASH, R, G, B)
+    Dim colorCorazon(3) As RGBA
+    
+    Call RGBAList(colorCorazon, 255, 255, 255)
+    Dim grh As grh
+    
+    Call InitGrh(grh, 32472)
+    Call RGBAList(FLASH, r, G, B)
+    '
+    Grh_Render grh, PixelOffsetX + CInt(Engine_Text_Width(line, True) / 2) + 8, PixelOffsetY + 21 - Engine_Text_Height(line, True), colorCorazon, True, True, False
     Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + 0 - Engine_Text_Height(line, True), FLASH, 1
 End Function
 
-Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
+Public Function IsCharVisible(ByVal charIndex As Integer) As Boolean
 
-    With charlist(charindex)
+    With charlist(charIndex)
     
-        If charindex = UserCharIndex Then
+        If charIndex = UserCharIndex Then
             IsCharVisible = True
             Exit Function
         End If
@@ -2121,13 +2141,13 @@ Private Function VectorToRGBA(Vec As D3DVECTOR, fHeight As Single) As Long
     On Error GoTo VectorToRGBA_Err
     
 
-    Dim R As Integer, G As Integer, B As Integer, A As Integer
+    Dim r As Integer, G As Integer, B As Integer, A As Integer
 
-    R = 127 * Vec.x + 128
+    r = 127 * Vec.x + 128
     G = 127 * Vec.y + 128
     B = 127 * Vec.z + 128
     A = 255 * fHeight
-    VectorToRGBA = D3DColorARGB(A, R, G, B)
+    VectorToRGBA = D3DColorARGB(A, r, G, B)
 
     
     Exit Function
@@ -2773,7 +2793,7 @@ Engine_ElapsedTime_Err:
     
 End Function
 
-Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVal y As Integer, ByVal map_x As Byte, ByVal map_y As Byte, Optional ByVal userindex As Long = 0)
+Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVal y As Integer, ByVal map_x As Byte, ByVal map_y As Byte, Optional ByVal userIndex As Long = 0)
     
     On Error GoTo Renderizar_Aura_Err
     
@@ -2798,14 +2818,14 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
     lado = Val(ReadField(4, aura_index, Asc(":")))
 
     'Debug.Print charlist(userindex).AuraAngle
-    If giro > 0 And userindex > 0 Then
+    If giro > 0 And userIndex > 0 Then
         'If lado = 0 Then
-        charlist(userindex).AuraAngle = charlist(userindex).AuraAngle + (timerTicksPerFrame * giro)
+        charlist(userIndex).AuraAngle = charlist(userIndex).AuraAngle + (timerTicksPerFrame * giro)
         'Else
         'charlist(userindex).AuraAngle = charlist(userindex).AuraAngle - (timerTicksPerFrame * giro)
         ' End If
     
-        If charlist(userindex).AuraAngle >= 360 Then charlist(userindex).AuraAngle = 0
+        If charlist(userIndex).AuraAngle >= 360 Then charlist(userIndex).AuraAngle = 0
 
     End If
 
@@ -2815,8 +2835,8 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
     Call InitGrh(aura_grh, Index)
 
     'Y por ultimo renderizamos esta capa con Draw_Grh
-    If giro > 0 And userindex > 0 Then
-        Call Draw_Grh(aura_grh, x, y + 30, 1, 0, rgb_list(), True, map_x, map_y, charlist(userindex).AuraAngle)
+    If giro > 0 And userIndex > 0 Then
+        Call Draw_Grh(aura_grh, x, y + 30, 1, 0, rgb_list(), True, map_x, map_y, charlist(userIndex).AuraAngle)
     Else
         Call Draw_Grh(aura_grh, x, y + 30, 1, 0, rgb_list(), True, map_x, map_y, 0)
 
@@ -3449,7 +3469,7 @@ EfectoEnPantalla_Err:
     
 End Sub
 
-Public Sub SetBarFx(ByVal charindex As Integer, ByVal BarTime As Integer)
+Public Sub SetBarFx(ByVal charIndex As Integer, ByVal BarTime As Integer)
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/03/04
@@ -3459,7 +3479,7 @@ Public Sub SetBarFx(ByVal charindex As Integer, ByVal BarTime As Integer)
     On Error GoTo SetBarFx_Err
     
 
-    With charlist(charindex)
+    With charlist(charIndex)
         .BarTime = BarTime
 
     End With
@@ -4096,7 +4116,7 @@ Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width A
     On Error GoTo Engine_Draw_Box_Err
     
 
-    Call RGBAList(temp_rgb, Color.R, Color.G, Color.B, Color.A)
+    Call RGBAList(temp_rgb, Color.r, Color.G, Color.B, Color.A)
 
     Call SpriteBatch.SetTexture(Nothing)
     Call SpriteBatch.SetAlpha(False)

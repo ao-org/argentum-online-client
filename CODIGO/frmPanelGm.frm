@@ -1304,10 +1304,6 @@ End Sub
 Private Sub cmdEventos_Click()
     tmp = InputBox("Ingrese tipo de evento:" & vbCrLf & "0: Busqueda de tesoro en continente" & vbCrLf & "1: Busqueda de tesoro en dungeon" & vbCrLf & "2: Aparicion de criatura", "Iniciar evento")
     
-    If tmp = "" Or tmp >= 3 Then
-        Exit Sub
-    End If
-    
     If IsNumeric(tmp) Then
 
         Call WriteBusquedaTesoro(CByte(tmp))
