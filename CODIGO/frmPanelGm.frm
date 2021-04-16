@@ -26,6 +26,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   120
       TabIndex        =   27
+      TabStop         =   0   'False
       Top             =   6120
       Width           =   990
    End
@@ -34,6 +35,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   2160
       TabIndex        =   26
+      TabStop         =   0   'False
       Top             =   4680
       Width           =   990
    End
@@ -42,6 +44,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   2280
       TabIndex        =   25
+      TabStop         =   0   'False
       Top             =   5160
       Width           =   1695
    End
@@ -50,6 +53,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   3480
       TabIndex        =   24
+      TabStop         =   0   'False
       Top             =   7680
       Width           =   1215
    End
@@ -58,6 +62,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   2040
       TabIndex        =   23
+      TabStop         =   0   'False
       Top             =   7680
       Width           =   1215
    End
@@ -66,6 +71,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   120
       TabIndex        =   21
+      TabStop         =   0   'False
       Top             =   5640
       Width           =   975
    End
@@ -74,6 +80,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   1920
       TabIndex        =   20
+      TabStop         =   0   'False
       Top             =   6720
       Width           =   990
    End
@@ -82,6 +89,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   3720
       TabIndex        =   19
+      TabStop         =   0   'False
       Top             =   6720
       Width           =   990
    End
@@ -90,6 +98,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   120
       TabIndex        =   18
+      TabStop         =   0   'False
       Top             =   6720
       Width           =   990
    End
@@ -108,6 +117,7 @@ Begin VB.Form frmPanelgm
       Index           =   2
       Left            =   120
       TabIndex        =   16
+      TabStop         =   0   'False
       Top             =   7200
       Width           =   990
    End
@@ -116,6 +126,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   1920
       TabIndex        =   15
+      TabStop         =   0   'False
       Top             =   7200
       Width           =   990
    End
@@ -124,6 +135,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   3720
       TabIndex        =   14
+      TabStop         =   0   'False
       Top             =   7200
       Width           =   990
    End
@@ -141,6 +153,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   120
       TabIndex        =   12
+      TabStop         =   0   'False
       Top             =   5160
       Width           =   990
    End
@@ -149,13 +162,14 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   120
       TabIndex        =   11
+      TabStop         =   0   'False
       Top             =   7680
       Width           =   1695
    End
    Begin VB.TextBox txtMod 
       Height          =   285
       Left            =   120
-      TabIndex        =   1
+      TabIndex        =   0
       Top             =   4320
       Width           =   4575
    End
@@ -164,6 +178,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   1200
       TabIndex        =   10
+      TabStop         =   0   'False
       Top             =   5160
       Width           =   990
    End
@@ -205,7 +220,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "Cerrar"
       Height          =   375
       Left            =   3480
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   3840
       Width           =   1215
    End
@@ -214,14 +229,15 @@ Begin VB.Form frmPanelgm
       Height          =   375
       Index           =   0
       Left            =   120
-      TabIndex        =   5
+      TabIndex        =   6
+      TabStop         =   0   'False
       Top             =   4680
       Width           =   1815
    End
    Begin VB.ListBox List1 
       Height          =   2010
       Left            =   120
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   600
       Width           =   4560
    End
@@ -232,7 +248,7 @@ Begin VB.Form frmPanelgm
       Locked          =   -1  'True
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   3
+      TabIndex        =   4
       Top             =   2640
       Width           =   4575
    End
@@ -241,6 +257,7 @@ Begin VB.Form frmPanelgm
       Height          =   315
       Left            =   3840
       TabIndex        =   2
+      TabStop         =   0   'False
       Top             =   120
       Width           =   855
    End
@@ -257,7 +274,7 @@ Begin VB.Form frmPanelgm
       Height          =   315
       Left            =   120
       Sorted          =   -1  'True
-      TabIndex        =   0
+      TabIndex        =   1
       Top             =   120
       Width           =   3675
    End
