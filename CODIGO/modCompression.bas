@@ -110,7 +110,7 @@ Private Sub Compress_Data(ByRef Data() As Byte)
     Dim Dimensions As Long
     Dim DimBuffer As Long
     Dim BufTemp() As Byte
-    Dim LoopC As Long
+    Dim loopc As Long
     
     Dimensions = UBound(Data) + 1
     
@@ -157,7 +157,7 @@ Public Function Extract_All_Files(ByVal file_type As resource_file_type, ByVal r
 'Last Modify Date: 10/13/2004
 'Extracts all files from a resource file
 '*****************************************************************
-    Dim LoopC As Long
+    Dim loopc As Long
     Dim SourceFilePath As String
     Dim OutputFilePath As String
     Dim SourceFile As Integer
@@ -273,31 +273,31 @@ On Local Error GoTo errhandler
     Get SourceFile, , InfoHead
 
     'Extract all of the files from the binary file
-    For LoopC = 0 To UBound(InfoHead)
+    For loopc = 0 To UBound(InfoHead)
         
         'Check if there is enough memory
-        If InfoHead(LoopC).lngFileSizeUncompressed > General_Drive_Get_Free_Bytes(Left(App.Path, 3)) Then
+        If InfoHead(loopc).lngFileSizeUncompressed > General_Drive_Get_Free_Bytes(Left(App.Path, 3)) Then
             MsgBox "There is not enough free memory to continue extracting files."
             Exit Function
         End If
         
         'Resize the byte data array
-        ReDim SourceData(InfoHead(LoopC).lngFileSize - 1)
+        ReDim SourceData(InfoHead(loopc).lngFileSize - 1)
         
         'Get the data
-        Get SourceFile, InfoHead(LoopC).lngFileStart, SourceData
+        Get SourceFile, InfoHead(loopc).lngFileStart, SourceData
         
         'Decrypt data
         DoCrypt_Data SourceData, Passwd
         
         'Decompress all data
-        Decompress_Data SourceData, InfoHead(LoopC).lngFileSizeUncompressed
+        Decompress_Data SourceData, InfoHead(loopc).lngFileSizeUncompressed
         
         'Get a free handler
         Handle = FreeFile
         
         'Create a new file and put in the data
-        Open OutputFilePath & InfoHead(LoopC).strFileName For Binary As Handle
+        Open OutputFilePath & InfoHead(loopc).strFileName For Binary As Handle
         
         Put Handle, , SourceData
         
@@ -306,7 +306,7 @@ On Local Error GoTo errhandler
         Erase SourceData
         
         DoEvents
-    Next LoopC
+    Next loopc
     
     'Close the binary file
     Close SourceFile
@@ -321,7 +321,7 @@ errhandler:
     Erase SourceData
     Erase InfoHead
     'Display an error message if it didn't work
-    MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+    MsgBox "Unable to decode binary file. Reason: " & Err.Number & " : " & Err.Description, vbOKOnly, "Error"
 End Function
 
 Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As String, ByVal Passwd As String) As Boolean
@@ -330,7 +330,7 @@ Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As 
 'Last Modify Date: 10/13/2004
 'Comrpesses all files to a resource file
 '*****************************************************************
-    Dim LoopC As Long
+    Dim loopc As Long
     Dim LoopC2 As Long
     Dim LoopC3 As Long
     Dim OutputFile As Integer
@@ -374,6 +374,7 @@ On Local Error GoTo errhandler
 
     'Check the file for validity
     If LOF(SourceFile) <> FileHead.lngFileSize Then
+        Close SourceFile
         Exit Function
     End If
 
@@ -384,6 +385,7 @@ On Local Error GoTo errhandler
     PasswordHash = MD5String(Passwd)
 
     If PasswordHash <> FileHead.lngPassword Then
+        Close SourceFile
         Exit Function
     End If
 
@@ -394,9 +396,9 @@ On Local Error GoTo errhandler
     Get SourceFile, , InfoHead
 
     'Check if there is enough hard drive space to extract all files
-    For LoopC = 0 To UBound(InfoHead)
-        RequiredSpace = RequiredSpace + InfoHead(LoopC).lngFileSizeUncompressed
-    Next LoopC
+    For loopc = 0 To UBound(InfoHead)
+        RequiredSpace = RequiredSpace + InfoHead(loopc).lngFileSizeUncompressed
+    Next loopc
     
     If RequiredSpace >= General_Drive_Get_Free_Bytes(Left(App.Path, 3)) Then
         Erase InfoHead
@@ -405,9 +407,9 @@ On Local Error GoTo errhandler
     End If
     
     'Extract all of the files from the binary file
-    For LoopC = 0 To UBound(InfoHead())
+    For loopc = 0 To UBound(InfoHead())
         'Check the extension of the file
-        Select Case LCase(Right(Trim(InfoHead(LoopC).strFileName), 3))
+        Select Case LCase(Right(Trim(InfoHead(loopc).strFileName), 3))
             Case Is = "png"
                 If bmp_done Then GoTo EndMainLoop
                 FileExtension = "png"
@@ -458,7 +460,7 @@ On Local Error GoTo errhandler
         Get OutputFile, , ResInfoHead
                 
         'Check how many of the files are new, and how many are replacements
-        For LoopC2 = LoopC To UBound(InfoHead())
+        For LoopC2 = loopc To UBound(InfoHead())
             If LCase$(Right$(Trim$(InfoHead(LoopC2).strFileName), 3)) = FileExtension Then
                 'Look for same name in the resource file
                 For LoopC3 = 0 To UBound(ResInfoHead())
@@ -490,7 +492,7 @@ On Local Error GoTo errhandler
         Put UpdatedFile, 1, ResFileHead
         
         'Start storing the Info Heads
-        LoopC2 = LoopC
+        LoopC2 = loopc
         For LoopC3 = 0 To UBound(ResInfoHead())
             Do While LoopC2 <= UBound(InfoHead())
                 If LCase$(ResInfoHead(LoopC3).strFileName) < LCase$(InfoHead(LoopC2).strFileName) Then Exit Do
@@ -541,7 +543,7 @@ EndLoop:
         Next LoopC2
         
         'Now we start adding the compressed data
-        LoopC2 = LoopC
+        LoopC2 = loopc
         For LoopC3 = 0 To UBound(ResInfoHead())
             Do While LoopC2 <= UBound(InfoHead())
                 If LCase$(ResInfoHead(LoopC3).strFileName) < LCase$(InfoHead(LoopC2).strFileName) Then Exit Do
@@ -595,7 +597,7 @@ EndLoop2:
         'Deallocate the memory used by the data array
         Erase SourceData
 EndMainLoop:
-    Next LoopC
+    Next loopc
     
     'Close the binary file
     Close SourceFile
@@ -630,7 +632,7 @@ Public Function Compress_Files(ByVal file_type As resource_file_type, ByVal reso
     Dim InfoHead() As INFOHEADER
     Dim FileNames() As String
     Dim lngFileStart As Long
-    Dim LoopC As Long
+    Dim loopc As Long
     
 'Set up the error handler
 On Local Error GoTo errhandler
@@ -725,15 +727,15 @@ On Local Error GoTo errhandler
 
     Dim IHead As Long
 
-    For LoopC = 0 To FileHead.intNumFiles - 1
+    For loopc = 0 To FileHead.intNumFiles - 1
     
         'Find a free file number to use and open the file
         SourceFile = FreeFile
-        Open SourceFilePath & FileNames(LoopC) For Binary Access Read Lock Write As SourceFile
+        Open SourceFilePath & FileNames(loopc) For Binary Access Read Lock Write As SourceFile
         
         If LOF(SourceFile) > 0 Then
             'Store file name
-            InfoHead(IHead).strFileName = FileNames(LoopC)
+            InfoHead(IHead).strFileName = FileNames(loopc)
         
             'Find out how large the file is and resize the data array appropriately
             ReDim SourceData(LOF(SourceFile) - 1)
@@ -772,7 +774,7 @@ On Local Error GoTo errhandler
             
         DoEvents
             
-    Next LoopC
+    Next loopc
     
     ReDim Preserve InfoHead(FileHead.intNumFiles - 1)
     
@@ -784,10 +786,10 @@ On Local Error GoTo errhandler
 
     'Set InfoHead data
     lngFileStart = Len(FileHead) + CLng(FileHead.intNumFiles) * Len(InfoHead(0)) + 1
-    For LoopC = 0 To FileHead.intNumFiles - 1
-        InfoHead(LoopC).lngFileStart = lngFileStart
-        lngFileStart = lngFileStart + InfoHead(LoopC).lngFileSize
-    Next LoopC
+    For loopc = 0 To FileHead.intNumFiles - 1
+        InfoHead(loopc).lngFileStart = lngFileStart
+        lngFileStart = lngFileStart + InfoHead(loopc).lngFileSize
+    Next loopc
         
     '************ Write Data
     
@@ -814,7 +816,7 @@ errhandler:
     Erase SourceData
     Erase InfoHead
     'Display an error message if it didn't work
-    MsgBox "Unable to create binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+    MsgBox "Unable to create binary file. Reason: " & Err.Number & " : " & Err.Description, vbOKOnly, "Error"
 End Function
 
 Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByVal OutputFilePath As String, ByVal Passwd As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
@@ -823,7 +825,7 @@ Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resour
 'Last Modify Date: 10/13/2004
 'Extracts all files from a resource file
 '*****************************************************************
-    Dim LoopC As Long
+    Dim loopc As Long
     Dim SourceFilePath As String
     Dim SourceData() As Byte
     Dim InfoHead As INFOHEADER
@@ -1010,7 +1012,10 @@ On Error GoTo errhandler
     Dim PasswordHash As String * 32
     PasswordHash = MD5String(Passwd)
     
-    If PasswordHash <> file_head.lngPassword Then Exit Function
+    If PasswordHash <> file_head.lngPassword Then
+        Close file_handler
+        Exit Function
+    End If
     
     min = 1
     max = file_head.intNumFiles
@@ -1130,7 +1135,7 @@ Public Function Extract_File_To_Memory(ByVal file_type As resource_file_type, By
     'Last Modify Date: 10/13/2004
     'Extracts all files from a resource file
     '*****************************************************************
-    Dim LoopC          As Long
+    Dim loopc          As Long
 
     Dim SourceFilePath As String
 
@@ -1219,7 +1224,7 @@ errhandler:
     Exit Function
 
 Extract_File_To_Memory_Err:
-    Call RegistrarError(Err.number, Err.Description, "modCompression.Extract_File_To_Memory", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modCompression.Extract_File_To_Memory", Erl)
     Resume Next
     
 End Function
@@ -1264,7 +1269,7 @@ Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
     Exit Sub
 
 Decompress_Data_B_Err:
-    Call RegistrarError(Err.number, Err.Description, "modCompression.Decompress_Data_B", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modCompression.Decompress_Data_B", Erl)
     Resume Next
     
 End Sub
@@ -1302,7 +1307,7 @@ ErrorHandler:
     Exit Function
 
 GAeneral_Load_Picture_From_Resource_Err:
-    Call RegistrarError(Err.number, Err.Description, "modCompression.GAeneral_Load_Picture_From_Resource", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modCompression.GAeneral_Load_Picture_From_Resource", Erl)
     Resume Next
     
 End Function

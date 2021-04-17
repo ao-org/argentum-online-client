@@ -94,8 +94,8 @@ Public Type GrhData
     
     NumFrames As Integer
     Frames() As Long 'gs-long
-    Speed As Single
-    Active As Boolean
+    speed As Single
+    active As Boolean
     
     ' Precalculated
     Tx1 As Single
@@ -109,7 +109,7 @@ End Type
 Public Type grh
 
     GrhIndex As Long
-    Speed As Single
+    speed As Single
     Started As Long
     Loops As Integer
     Angle As Single
@@ -169,7 +169,7 @@ Public Type Char
     UserMaxHp As Long
     
     EsEnano As Boolean
-    Active As Byte
+    active As Byte
     Heading As E_Heading
     Pos As Position
     
@@ -345,7 +345,7 @@ Public MaxYBorder              As Byte
 'Status del user
 Public CurMap                  As Integer 'Mapa actual
 
-Public userindex               As Integer
+Public userIndex               As Integer
 
 Public UserMoving              As Boolean
 Public UserBody                As Integer
@@ -516,7 +516,7 @@ Public Sub Init_TileEngine()
     Exit Sub
 
 Init_TileEngine_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.Init_TileEngine", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Init_TileEngine", Erl)
     Resume Next
     
 End Sub
@@ -539,7 +539,7 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
     Exit Sub
 
 ConvertCPtoTP_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.ConvertCPtoTP", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.ConvertCPtoTP", Erl)
     Resume Next
     
 End Sub
@@ -563,7 +563,7 @@ Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Star
         End If
         
         grh.Loops = Loops
-        grh.Speed = GrhData(GrhIndex).Speed / GrhData(GrhIndex).NumFrames
+        grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
     Else
         grh.Started = 0
     End If
@@ -587,7 +587,7 @@ Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Star
     Exit Sub
 
 InitGrh_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.InitGrh", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.InitGrh", Erl)
     Resume Next
     
 End Sub
@@ -618,7 +618,7 @@ Public Sub DoFogataFx()
     Exit Sub
 
 DoFogataFx_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.DoFogataFx", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.DoFogataFx", Erl)
     Resume Next
     
 End Sub
@@ -637,7 +637,7 @@ Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
     Exit Function
 
 EstaPCarea_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.EstaPCarea", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.EstaPCarea", Erl)
     Resume Next
     
 End Function
@@ -693,7 +693,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
     Exit Sub
 
 DoPasosFx_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.DoPasosFx", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.DoPasosFx", Erl)
     Resume Next
     
 End Sub
@@ -724,7 +724,7 @@ Private Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
     Exit Function
 
 GetTerrenoDePaso_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.GetTerrenoDePaso", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.GetTerrenoDePaso", Erl)
     Resume Next
     
 End Function
@@ -787,7 +787,7 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
     Exit Sub
 
 MoveScreen_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.MoveScreen", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.MoveScreen", Erl)
     Resume Next
     
 End Sub
@@ -814,7 +814,7 @@ Public Function HayTecho(ByVal x As Integer, ByVal y As Integer) As Boolean
     Exit Function
 
 HayTecho_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.HayTecho", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.HayTecho", Erl)
     Resume Next
     
 End Function
@@ -850,7 +850,7 @@ Public Function HayFogata(ByRef location As Position) As Boolean
     Exit Function
 
 HayFogata_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.HayFogata", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.HayFogata", Erl)
     Resume Next
     
 End Function
@@ -885,7 +885,7 @@ Public Function HayWavAmbiental(ByRef location As Position) As Boolean
     Exit Function
 
 HayWavAmbiental_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.HayWavAmbiental", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.HayWavAmbiental", Erl)
     Resume Next
     
 End Function
@@ -898,24 +898,24 @@ Function NextOpenChar() As Integer
     '*****************************************************************
     'Finds next open char slot in CharList
     '*****************************************************************
-    Dim LoopC As Long
+    Dim loopc As Long
 
     Dim Dale  As Boolean
     
-    LoopC = 1
+    loopc = 1
 
-    Do While charlist(LoopC).Active And Dale
-        LoopC = LoopC + 1
-        Dale = (LoopC <= UBound(charlist))
+    Do While charlist(loopc).active And Dale
+        loopc = loopc + 1
+        Dale = (loopc <= UBound(charlist))
     Loop
     
-    NextOpenChar = LoopC
+    NextOpenChar = loopc
 
     
     Exit Function
 
 NextOpenChar_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.NextOpenChar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.NextOpenChar", Erl)
     Resume Next
     
 End Function
@@ -1009,7 +1009,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     Exit Function
 
 LegalPos_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.LegalPos", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.LegalPos", Erl)
     Resume Next
     
 End Function
@@ -1033,7 +1033,7 @@ Function InMapBounds(ByVal x As Integer, ByVal y As Integer) As Boolean
     Exit Function
 
 InMapBounds_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.InMapBounds", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.InMapBounds", Erl)
     Resume Next
     
 End Function
@@ -1050,12 +1050,15 @@ Function GetBitmapDimensions(ByVal BmpFile As String, ByRef bmWidth As Long, ByR
 
     Dim BINFOHeader As BITMAPINFOHEADER
     
-    Open BmpFile For Binary Access Read As #1
+    Dim FH As Integer
+    FH = FreeFile
+
+    Open BmpFile For Binary Access Read As #FH
     
-    Get #1, , BMHeader
-    Get #1, , BINFOHeader
+    Get #FH, , BMHeader
+    Get #FH, , BINFOHeader
     
-    Close #1
+    Close #FH
     
     bmWidth = BINFOHeader.biWidth
     bmHeight = BINFOHeader.biHeight
@@ -1064,7 +1067,7 @@ Function GetBitmapDimensions(ByVal BmpFile As String, ByRef bmWidth As Long, ByR
     Exit Function
 
 GetBitmapDimensions_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.GetBitmapDimensions", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.GetBitmapDimensions", Erl)
     Resume Next
     
 End Function
@@ -1099,7 +1102,7 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     Exit Sub
 
 Grh_Render_To_Hdc_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.Grh_Render_To_Hdc", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Grh_Render_To_Hdc", Erl)
     Resume Next
     
 End Sub
@@ -1133,7 +1136,7 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
     Exit Sub
 
 Grh_Render_To_HdcSinBorrar_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.Grh_Render_To_HdcSinBorrar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Grh_Render_To_HdcSinBorrar", Erl)
     Resume Next
     
 End Sub
@@ -1184,7 +1187,7 @@ Public Function RenderSounds()
     Exit Function
 
 RenderSounds_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.RenderSounds", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.RenderSounds", Erl)
     Resume Next
     
 End Function
@@ -1203,7 +1206,7 @@ Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As 
     Exit Function
 
 HayUserAbajo_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.HayUserAbajo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.HayUserAbajo", Erl)
     Resume Next
     
 End Function
@@ -1243,7 +1246,7 @@ Private Function GetElapsedTime() As Single
     Exit Function
 
 GetElapsedTime_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.GetElapsedTime", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.GetElapsedTime", Erl)
     Resume Next
     
 End Function
@@ -1298,7 +1301,7 @@ Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal sr
     Exit Sub
 
 Grh_Create_Mask_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.Grh_Create_Mask", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Grh_Create_Mask", Erl)
     Resume Next
     
 End Sub
@@ -1322,7 +1325,7 @@ Public Function Convert_Tile_To_View_X(ByVal x As Integer) As Integer
     Exit Function
 
 Convert_Tile_To_View_X_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.Convert_Tile_To_View_X", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Convert_Tile_To_View_X", Erl)
     Resume Next
     
 End Function
@@ -1346,7 +1349,7 @@ Public Function Convert_Tile_To_View_Y(ByVal y As Integer) As Integer
     Exit Function
 
 Convert_Tile_To_View_Y_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine.Convert_Tile_To_View_Y", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Convert_Tile_To_View_Y", Erl)
     Resume Next
     
 End Function
