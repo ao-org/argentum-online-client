@@ -30,7 +30,7 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   30
       Top             =   4680
-      Width           =   1095
+      Width           =   1335
    End
    Begin VB.CommandButton cmdEventos 
       BackColor       =   &H8000000A&
@@ -47,23 +47,23 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Ir Cerca"
       Height          =   360
-      Left            =   2160
+      Left            =   2040
       Style           =   1  'Graphical
       TabIndex        =   26
       TabStop         =   0   'False
       Top             =   4680
-      Width           =   990
+      Width           =   1215
    End
    Begin VB.CommandButton cmdInformación 
       BackColor       =   &H8000000A&
       Caption         =   "Información General"
       Height          =   360
-      Left            =   2280
+      Left            =   2520
       Style           =   1  'Graphical
       TabIndex        =   25
       TabStop         =   0   'False
       Top             =   5160
-      Width           =   1695
+      Width           =   2055
    End
    Begin VB.CommandButton cmdInvisible 
       BackColor       =   &H8000000A&
@@ -102,18 +102,18 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "+"
       Height          =   240
-      Left            =   4080
+      Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   20
       TabStop         =   0   'False
-      Top             =   6120
+      Top             =   6000
       Width           =   375
    End
    Begin VB.CommandButton cmdHeadMenos 
       BackColor       =   &H8000000A&
       Caption         =   "-"
       Height          =   240
-      Left            =   4080
+      Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   19
       TabStop         =   0   'False
@@ -142,11 +142,11 @@ Begin VB.Form frmPanelgm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   405
+      Height          =   375
       Left            =   3480
       TabIndex        =   17
       Text            =   "0"
-      Top             =   6150
+      Top             =   6180
       Width           =   615
    End
    Begin VB.CommandButton cmdBody0 
@@ -165,18 +165,18 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "+"
       Height          =   240
-      Left            =   4080
+      Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   15
       TabStop         =   0   'False
-      Top             =   7080
+      Top             =   6960
       Width           =   390
    End
    Begin VB.CommandButton cmdBodyMenos 
       BackColor       =   &H8000000A&
       Caption         =   "-"
       Height          =   240
-      Left            =   4080
+      Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   14
       TabStop         =   0   'False
@@ -250,7 +250,7 @@ Begin VB.Form frmPanelgm
       TabIndex        =   10
       TabStop         =   0   'False
       Top             =   5160
-      Width           =   990
+      Width           =   1215
    End
    Begin VB.CommandButton Command2 
       Caption         =   "Lista 2 (Consultas)"
@@ -381,7 +381,7 @@ Begin VB.Form frmPanelgm
       ForeColor       =   &H8000000A&
       Height          =   285
       Index           =   1
-      Left            =   3480
+      Left            =   3240
       TabIndex        =   29
       Top             =   6720
       Width           =   975
@@ -403,7 +403,7 @@ Begin VB.Form frmPanelgm
       ForeColor       =   &H8000000A&
       Height          =   285
       Index           =   0
-      Left            =   3600
+      Left            =   3480
       TabIndex        =   28
       Top             =   5760
       Width           =   645
