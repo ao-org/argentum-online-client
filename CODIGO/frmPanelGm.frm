@@ -58,7 +58,7 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Información General"
       Height          =   360
-      Left            =   2520
+      Left            =   2640
       Style           =   1  'Graphical
       TabIndex        =   25
       TabStop         =   0   'False
@@ -250,7 +250,7 @@ Begin VB.Form frmPanelgm
       TabIndex        =   10
       TabStop         =   0   'False
       Top             =   5160
-      Width           =   1215
+      Width           =   1335
    End
    Begin VB.CommandButton Command2 
       Caption         =   "Lista 2 (Consultas)"
