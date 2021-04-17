@@ -1050,15 +1050,15 @@ Function GetBitmapDimensions(ByVal BmpFile As String, ByRef bmWidth As Long, ByR
 
     Dim BINFOHeader As BITMAPINFOHEADER
     
-    Dim FH As Integer
-    FH = FreeFile
+    Dim fh As Integer
+    fh = FreeFile
 
-    Open BmpFile For Binary Access Read As #FH
+    Open BmpFile For Binary Access Read As #fh
     
-    Get #FH, , BMHeader
-    Get #FH, , BINFOHeader
+    Get #fh, , BMHeader
+    Get #fh, , BINFOHeader
     
-    Close #FH
+    Close #fh
     
     bmWidth = BINFOHeader.biWidth
     bmHeight = BINFOHeader.biHeight

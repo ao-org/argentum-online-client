@@ -1396,7 +1396,8 @@ Private Sub HandleVelocidadToggle()
     If UserCharIndex = 0 Then Exit Sub
     '
     charlist(UserCharIndex).Speeding = incomingData.ReadSingle()
-
+    
+    Call MainTimer.SetInterval(TimersIndex.Walk, IntervaloCaminar / charlist(UserCharIndex).Speeding)
     
     Exit Sub
 
@@ -3647,8 +3648,8 @@ Private Sub HandleTextCharDrop()
         x = .Pos.x
         y = .Pos.y
         
-        OffsetX = .MoveOffsetX + .body.HeadOffset.x
-        OffsetY = .MoveOffsetY + .body.HeadOffset.y
+        OffsetX = .MoveOffsetX + .Body.HeadOffset.x
+        OffsetY = .MoveOffsetY + .Body.HeadOffset.y
     End With
     
     If InMapBounds(x, y) Then
@@ -4352,9 +4353,9 @@ Private Sub HandleCharacterCreate()
     
     Dim charindex     As Integer
 
-    Dim body          As Integer
+    Dim Body          As Integer
 
-    Dim head          As Integer
+    Dim Head          As Integer
 
     Dim Heading       As E_Heading
 
@@ -4379,8 +4380,8 @@ Private Sub HandleCharacterCreate()
     Dim group_index   As Integer
     
     charindex = buffer.ReadInteger()
-    body = buffer.ReadInteger()
-    head = buffer.ReadInteger()
+    Body = buffer.ReadInteger()
+    Head = buffer.ReadInteger()
     Heading = buffer.ReadByte()
     x = buffer.ReadByte()
     y = buffer.ReadByte()
@@ -4475,14 +4476,14 @@ Private Sub HandleCharacterCreate()
 
         End If
 
-        .Muerto = (body = CASPER_BODY_IDLE)
+        .Muerto = (Body = CASPER_BODY_IDLE)
         '.AlphaPJ = 255
     
-        Call MakeChar(charindex, body, head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
+        Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
         
         If .Idle Or .Navegando Then
             'Start animation
-            .body.Walk(.Heading).Started = FrameTime
+            .Body.Walk(.Heading).Started = FrameTime
         End If
         
     End With
@@ -4686,9 +4687,9 @@ Private Sub HandleCharacterChange()
         tempint = incomingData.ReadInteger()
 
         If tempint < LBound(BodyData()) Or tempint > UBound(BodyData()) Then
-            .body = BodyData(0)
+            .Body = BodyData(0)
         Else
-            .body = BodyData(tempint)
+            .Body = BodyData(tempint)
             .iBody = tempint
 
         End If
@@ -4696,11 +4697,11 @@ Private Sub HandleCharacterChange()
         headIndex = incomingData.ReadInteger()
 
         If headIndex < LBound(HeadData()) Or headIndex > UBound(HeadData()) Then
-            .head = HeadData(0)
+            .Head = HeadData(0)
             .IHead = 0
             
         Else
-            .head = HeadData(headIndex)
+            .Head = HeadData(headIndex)
             .IHead = headIndex
 
         End If
@@ -4721,7 +4722,7 @@ Private Sub HandleCharacterChange()
 
         If tempint <> 0 Then .Casco = CascoAnimData(tempint)
                 
-        If .body.HeadOffset.y = -26 Then
+        If .Body.HeadOffset.y = -26 Then
             .EsEnano = True
         Else
             .EsEnano = False
@@ -4743,7 +4744,7 @@ Private Sub HandleCharacterChange()
         
         If .Idle Or .Navegando Then
             'Start animation
-            .body.Walk(.Heading).Started = FrameTime
+            .Body.Walk(.Heading).Started = FrameTime
         End If
 
     End With
@@ -8169,7 +8170,7 @@ Private Sub HandleCharacterInfo()
         End If
         
         .nivel.Caption = "Nivel: " & buffer.ReadByte()
-        .Oro.Caption = "Oro: " & buffer.ReadLong()
+        .oro.Caption = "Oro: " & buffer.ReadLong()
         .Banco.Caption = "Banco: " & buffer.ReadLong()
         
         ' Dim reputation As Long
@@ -8195,8 +8196,8 @@ Private Sub HandleCharacterInfo()
 
         End If
         
-        .Ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(buffer.ReadLong())
-        .criminales.Caption = "Criminales asesinados: " & CStr(buffer.ReadLong())
+        .ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(buffer.ReadLong())
+        .Criminales.Caption = "Criminales asesinados: " & CStr(buffer.ReadLong())
         
         '   If reputation > 0 Then
         '   .status.Caption = " (Ciudadano)"
@@ -14127,13 +14128,13 @@ WriteForgive_Err:
     
 End Sub
 
-Public Sub WriteDonateGold(ByVal Oro As Long)
+Public Sub WriteDonateGold(ByVal oro As Long)
     
     On Error GoTo WriteForgive_Err
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.DonateGold)
-        Call .WriteLong(Oro)
+        Call .WriteLong(oro)
     End With
 
     
@@ -17631,8 +17632,8 @@ Private Sub HandlePersonajesDeCuenta()
     Dim ii As Byte
      
     For ii = 1 To 10
-        Pjs(ii).body = 0
-        Pjs(ii).head = 0
+        Pjs(ii).Body = 0
+        Pjs(ii).Head = 0
         Pjs(ii).Mapa = 0
         Pjs(ii).nivel = 0
         Pjs(ii).nombre = ""
@@ -17649,9 +17650,9 @@ Private Sub HandlePersonajesDeCuenta()
         Pjs(ii).nombre = buffer.ReadASCIIString()
         Pjs(ii).nivel = buffer.ReadByte()
         Pjs(ii).Mapa = buffer.ReadInteger()
-        Pjs(ii).body = buffer.ReadInteger()
+        Pjs(ii).Body = buffer.ReadInteger()
         
-        Pjs(ii).head = buffer.ReadInteger()
+        Pjs(ii).Head = buffer.ReadInteger()
         Pjs(ii).Criminal = buffer.ReadByte()
         Pjs(ii).Clase = buffer.ReadByte()
        
