@@ -49,7 +49,7 @@ Private Type dialog
     y           As Integer
     startTime   As Long
     lifeTime    As Long
-    charIndex   As Integer
+    charindex   As Integer
     Color       As Long
     renderable  As Boolean
     Sube As Byte
@@ -107,7 +107,25 @@ Private ScrollPixelsPerFrameY  As Single
 
 Private TileBufferPixelOffsetX As Integer
 Private TileBufferPixelOffsetY As Integer
-
+Private TimeLast As Long
+Public MovementH As Long
+Public MovementA As Long
+Public MovementR As Long
+Public MovementT As Long
+Public MovementH2 As Long
+Public MovementA2 As Long
+Public MovementO As Long
+Public MovementS As Long
+Public StartH As Boolean
+Public StartA As Boolean
+Public StartR As Boolean
+Public StartT As Boolean
+Public StartH2 As Boolean
+Private StartA2 As Boolean
+Public StartO As Boolean
+Public StartS As Boolean
+Public CanMoveX As Boolean
+Private CanMoveY As Boolean
 Private Const GrhFogata        As Integer = 1521
 
 ' Colores estaticos
@@ -191,7 +209,7 @@ On Error GoTo ErrorHandler:
         .EnableAutoDepthStencil = 1
         .AutoDepthStencilFormat = D3DFMT_D24S8
         
-        .hDeviceWindow = frmMain.renderer.hwnd
+        .hDeviceWindow = frmMain.renderer.hWnd
         
     End With
     
@@ -399,7 +417,7 @@ Engine_BeginScene_Err:
     
 End Sub
 
-Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hwnd As Long = 0)
+Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
 
 On Error GoTo ErrorHandler:
     
@@ -407,7 +425,7 @@ On Error GoTo ErrorHandler:
     
     Call DirectDevice.EndScene
         
-    Call DirectDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
+    Call DirectDevice.Present(DestRect, ByVal 0, hWnd, ByVal 0)
     
     Exit Sub
     
@@ -676,7 +694,7 @@ Draw_Grh_Breathing_Err:
     
 End Sub
 
-Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single, Optional ByVal charIndex As Integer)
+Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single, Optional ByVal charindex As Integer)
     
     On Error GoTo Draw_GrhFX_Err
     
@@ -718,8 +736,8 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
 
         Call RGBAList(rgb_list, 255, 255, 255, grh.Alpha)
 
-        If grh.Alpha = 0 And charIndex > 0 Then
-            charlist(charIndex).fX.Started = 0
+        If grh.Alpha = 0 And charindex > 0 Then
+            charlist(charindex).fX.Started = 0
             Exit Sub
 
         End If
@@ -1318,7 +1336,7 @@ Device_Box_Textured_Render_Err:
     
 End Sub
 
-Sub Char_TextRender(ByVal charIndex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
     
     On Error GoTo Char_TextRender_Err
     
@@ -1340,7 +1358,7 @@ Sub Char_TextRender(ByVal charIndex As Integer, ByVal PixelOffsetX As Integer, B
     ' screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
     ' screen_y = Convert_Tile_To_View_Y(PixelOffsetY) +
 
-    With charlist(charIndex)
+    With charlist(charindex)
 
         PixelOffsetX = PixelOffsetX + .MoveOffsetX
         PixelOffsetY = PixelOffsetY + .MoveOffsetY
@@ -1368,9 +1386,9 @@ Sub Char_TextRender(ByVal charIndex As Integer, ByVal PixelOffsetX As Integer, B
 
                 End If
 
-                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True) + .dialog_offset_counter_y, temp_array, 1, True, MapData(x, y).charIndex
+                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True) + .dialog_offset_counter_y, temp_array, 1, True, MapData(x, y).charindex
             Else
-                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True), temp_array, 1, True, MapData(x, y).charIndex
+                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True), temp_array, 1, True, MapData(x, y).charindex
 
             End If
 
@@ -1395,7 +1413,7 @@ Sub Char_TextRender(ByVal charIndex As Integer, ByVal PixelOffsetX As Integer, B
                                 Call RGBAList(temp_array, .Color.r, .Color.G, .Color.B, .Color.A)
                             End If
                     
-                            Engine_Text_Render_Efect charIndex, .Text, PixelOffsetX + 14 - Int(Engine_Text_Width(.Text, True) * 0.5), PixelOffsetY + charlist(charIndex).Body.HeadOffset.y - Engine_Text_Height(.Text, True) - DeltaTime * 0.025, temp_array, 1, True
+                            Engine_Text_Render_Efect charindex, .Text, PixelOffsetX + 14 - Int(Engine_Text_Width(.Text, True) * 0.5), PixelOffsetY + charlist(charindex).Body.HeadOffset.y - Engine_Text_Height(.Text, True) - DeltaTime * 0.025, temp_array, 1, True
             
                         End If
                     End If
@@ -1418,7 +1436,7 @@ Char_TextRender_Err:
     
 End Sub
 
-Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
     
     On Error GoTo Char_Render_Err
     
@@ -1459,7 +1477,7 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     
     Dim TempGrh As grh
     
-    With charlist(charIndex)
+    With charlist(charindex)
 
         If .Heading = 0 Then Exit Sub
     
@@ -1496,7 +1514,7 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         ElseIf Not .Idle Then
             
             If .Muerto Then
-                If charIndex <> UserCharIndex Then
+                If charindex <> UserCharIndex Then
                     ' Si no somos nosotros, esperamos un intervalo
                     ' antes de poner la animación idle para evitar saltos
                     If FrameTime - .LastStep > TIME_CASPER_IDLE Then
@@ -1540,7 +1558,7 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 
             ElseIf .Invisible Then
 
-                If IsCharVisible(charIndex) Then
+                If IsCharVisible(charindex) Then
                     Call RGBAList(Color, 255, 255, 255, 100)
                     Call RGBAList(NameColor, 100, 100, 200)
                     MostrarNombre = True
@@ -1620,7 +1638,7 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
                                         
                     If .group_index > 0 Then
-                        If charlist(charIndex).group_index = charlist(UserCharIndex).group_index Then
+                        If charlist(charindex).group_index = charlist(UserCharIndex).group_index Then
                             Call Copy_RGBAList(Color, COLOR_WHITE)
                             Call SetRGBA(colorCorazon(0), 255, 255, 0)
                             Call SetRGBA(colorCorazon(1), 0, 255, 255)
@@ -1630,7 +1648,7 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
                         
                     If .clan_index > 0 Then
-                        If .clan_index = charlist(UserCharIndex).clan_index And charIndex <> UserCharIndex And .Muerto = 0 Then
+                        If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
                             If .clan_nivel = 5 Then
                                 OffsetYname = 8
                                 OffsetYClan = 6
@@ -1719,12 +1737,12 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     ' Sombra
                     PresentComposedTexture PixelOffsetX, PixelOffsetY, Color, 0, True
 
-                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
-                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
-                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
-                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
-                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
-                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charIndex)
+                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
                 End If
 
                 ' Char
@@ -1738,7 +1756,7 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     
             'Draw name over head
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
-
+                
                 Pos = InStr(.nombre, "<")
                 
                 If Pos = 0 Then Pos = InStr(.nombre, "[")
@@ -1751,7 +1769,11 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1
                 
                 Else
-                    ColoresLocos charIndex, PixelOffsetX, PixelOffsetY, x, y
+                    If LCase(.nombre) = "harthaos" Then
+                            HarthaosFlasheando charindex, PixelOffsetX, PixelOffsetY, x, y
+                    Else
+                        ColoresLocos charindex, PixelOffsetX, PixelOffsetY, x, y
+                    End If
                     'Call RGBAList(colorHarthaosCeleste, 97, 228, 228)
                     'Call RGBAList(colorHarthaosBlanco, 255, 255, 255)
                     'Call RGBAList(colorHarthaosAmarillo, 234, 234, 0)
@@ -1784,6 +1806,25 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Grh_Render Estrella, PixelOffsetX + 7 + CInt(Engine_Text_Width(.nombre, 1) / 2), PixelOffsetY + 10 + OffsetYname, colorCorazon, True, True, False
                 End If
             
+            ElseIf Not Nombres Then
+                    If Not StartH Then
+                        StartA = False
+                        StartR = False
+                        StartT = False
+                        StartH2 = False
+                        StartA2 = False
+                        StartO = False
+                        StartS = False
+                        MovementH = 0
+                        MovementA = 0
+                        MovementR = 0
+                        MovementT = 0
+                        MovementH2 = 0
+                        MovementA2 = 0
+                        MovementO = 0
+                        MovementS = 0
+                        TimeLast = timeGetTime
+                    End If
             End If
 
         End If
@@ -1815,14 +1856,14 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             .BarTime = .BarTime + (4 * timerTicksPerFrame * Sgn(1))
                              
             If .BarTime >= .MaxBarTime Then
-                If charIndex = UserCharIndex Then
+                If charindex = UserCharIndex Then
                     Call CompletarAccionBarra(.BarAccion)
 
                 End If
 
-                charlist(charIndex).BarTime = 0
-                charlist(charIndex).BarAccion = 99
-                charlist(charIndex).MaxBarTime = 0
+                charlist(charindex).BarTime = 0
+                charlist(charindex).BarAccion = 99
+                charlist(charindex).MaxBarTime = 0
 
             End If
 
@@ -1842,7 +1883,7 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         If .FxIndex <> 0 And .fX.Started <> 0 Then
             Call RGBAList(Color, 255, 255, 255, 180)
 
-            Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 4, 1, 1, Color, False, , , , charIndex)
+            Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 4, 1, 1, Color, False, , , , charindex)
        
         End If
 
@@ -1854,9 +1895,9 @@ Sub Char_Render(ByVal charIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(Color, 255, 255, 255, 220)
 
                     If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
-                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, False, , , , charIndex)
+                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, False, , , , charindex)
                     Else
-                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, True, , , , charIndex)
+                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, True, , , , charindex)
                     End If
 
                 End If
@@ -1885,23 +1926,23 @@ Char_Render_Err:
     Resume Next
     
 End Sub
-Private Function ColoresLocos(ByVal charIndex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Private Function ColoresLocos(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
     Dim line As String
-    If LCase(charlist(charIndex).nombre) = "harthaos" Then
+    If LCase(charlist(charindex).nombre) = "harthaos" Then
         line = "HarThaoS"
     End If
     
-    If LCase(charlist(charIndex).nombre) = "wyrox" Then
+    If LCase(charlist(charindex).nombre) = "wyrox" Then
         line = "WyroX"
     End If
     
     
-    If LCase(charlist(charIndex).nombre) = "reyarb" Then
+    If LCase(charlist(charindex).nombre) = "reyarb" Then
         line = "ReyarB"
     End If
     
-    If LCase(charlist(charIndex).nombre) = "odin" Then
+    If LCase(charlist(charindex).nombre) = "odin" Then
         line = "Odin"
     End If
     
@@ -1969,11 +2010,239 @@ Private Function ColoresLocos(ByVal charIndex As Integer, ByVal PixelOffsetX As 
     Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + 0 - Engine_Text_Height(line, True), FLASH, 1
 End Function
 
-Public Function IsCharVisible(ByVal charIndex As Integer) As Boolean
+Private Function HarthaosFlasheando(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
 
-    With charlist(charIndex)
+    Dim lineaH As String
+    Dim lineaA As String
+    Dim lineaR As String
+    Dim lineaT As String
+    Dim lineaH2 As String
+    Dim lineaA2 As String
+    Dim lineaO As String
+    Dim lineaS As String
+    If LCase(charlist(charindex).nombre) = "harthaos" Then
+        lineaH = "H"
+        lineaA = "a"
+        lineaR = "r"
+        lineaT = "T"
+        lineaH2 = "h"
+        lineaA2 = "a"
+        lineaO = "o"
+        lineaS = "S"
+    End If
     
-        If charIndex = UserCharIndex Then
+    'SUMAR R
+    If r = 0 Then
+        r = RandomNumber(0, 255)
+        sumarR = True
+    End If
+    
+    If r = 255 Then
+        r = RandomNumber(0, 255)
+        sumarR = False
+    End If
+    
+    If sumarR Then
+        r = r + 1
+    Else
+        r = r - 1
+    End If
+    
+    'SUMAR G
+    If G = 0 Then
+        G = RandomNumber(0, 255)
+        sumarG = True
+    End If
+    
+    If G = 255 Then
+        G = RandomNumber(0, 255)
+        sumarG = False
+    End If
+    
+    If sumarG Then
+        G = G + 1
+    Else
+        G = G - 1
+    End If
+    
+    'SUMAR B
+    
+     If B = 0 Then
+        B = RandomNumber(0, 255)
+        sumarB = True
+    End If
+    
+    If B = 255 Then
+        B = RandomNumber(0, 255)
+        sumarB = False
+    End If
+    
+    If sumarB Then
+        B = B + 1
+    Else
+        B = B - 1
+    End If
+    
+    Dim colorCorazon(3) As RGBA
+    
+    Call RGBAList(colorCorazon, 255, 255, 255)
+    Dim grh As grh
+    
+    Call InitGrh(grh, 32472)
+    Call RGBAList(FLASH, r, G, B)
+    
+    Dim timeNow As Long
+    'sum 1 con 300 fps es 5, con 1000fps es 16
+    timeNow = timeGetTime()
+        
+    If (timeNow - TimeLast) > 20 Then
+        If StartH Then MovementH = MovementH + (timeNow - TimeLast) / 20
+        If StartA Then MovementA = MovementA + (timeNow - TimeLast) / 20
+        If StartR Then MovementR = MovementR + (timeNow - TimeLast) / 20
+        If StartT Then MovementT = MovementT + (timeNow - TimeLast) / 20
+        If StartH2 Then MovementH2 = MovementH2 + (timeNow - TimeLast) / 20
+        If StartA2 Then MovementA2 = MovementA2 + (timeNow - TimeLast) / 20
+        If StartO Then MovementO = MovementO + (timeNow - TimeLast) / 20
+        If StartS Then MovementS = MovementS + (timeNow - TimeLast) / 20
+        TimeLast = timeGetTime()
+    End If
+    
+    If StartH Then
+        Select Case MovementH
+            Case Is < 60
+                If MovementH = 15 Then StartA = True
+                Engine_Text_Render lineaH, PixelOffsetX + 45 - MovementH - CInt(Engine_Text_Width(lineaH, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaH, True), FLASH, 1
+            Case Is < 140
+                Engine_Text_Render lineaH, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaH, True) / 2), PixelOffsetY - MovementH + 90 - Engine_Text_Height(lineaH, True), FLASH, 1
+            Case Is < 200
+                Engine_Text_Render lineaH, PixelOffsetX - 152 + MovementH - CInt(Engine_Text_Width(lineaH, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaH, True), FLASH, 1
+            Case Is < 280
+                 Engine_Text_Render lineaH, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaH, True) / 2), PixelOffsetY + MovementH - 247 - Engine_Text_Height(lineaH, True), FLASH, 1
+            Case Is > 280
+                    MovementH = 0
+         End Select
+    End If
+    
+     If StartA Then
+        Select Case MovementA
+            Case Is < 60
+                If MovementA = 15 Then StartR = True
+                Engine_Text_Render lineaA, PixelOffsetX + 45 - MovementA - CInt(Engine_Text_Width(lineaA, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaA, True), FLASH, 1
+            Case Is < 140
+                Engine_Text_Render lineaA, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaA, True) / 2), PixelOffsetY - MovementA + 90 - Engine_Text_Height(lineaA, True), FLASH, 1
+            Case Is < 200
+                Engine_Text_Render lineaA, PixelOffsetX - 152 + MovementA - CInt(Engine_Text_Width(lineaA, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaA, True), FLASH, 1
+            Case Is < 280
+                 Engine_Text_Render lineaA, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaA, True) / 2), PixelOffsetY + MovementA - 247 - Engine_Text_Height(lineaA, True), FLASH, 1
+            Case Is > 280
+                    MovementA = 0
+        End Select
+     End If
+     
+    If StartR Then
+        Select Case MovementR
+            Case Is < 60
+                If MovementR = 15 Then StartT = True
+                Engine_Text_Render lineaR, PixelOffsetX + 45 - MovementR - CInt(Engine_Text_Width(lineaR, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaR, True), FLASH, 1
+            Case Is < 140
+                Engine_Text_Render lineaR, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaR, True) / 2), PixelOffsetY - MovementR + 90 - Engine_Text_Height(lineaR, True), FLASH, 1
+            Case Is < 200
+                Engine_Text_Render lineaR, PixelOffsetX - 152 + MovementR - CInt(Engine_Text_Width(lineaR, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaR, True), FLASH, 1
+            Case Is < 280
+                 Engine_Text_Render lineaR, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaR, True) / 2), PixelOffsetY + MovementR - 247 - Engine_Text_Height(lineaR, True), FLASH, 1
+            Case Is > 280
+                    MovementR = 0
+        End Select
+     End If
+     
+      If StartT Then
+        Select Case MovementT
+            Case Is < 60
+                If MovementT = 15 Then StartH2 = True
+                Engine_Text_Render lineaT, PixelOffsetX + 45 - MovementT - CInt(Engine_Text_Width(lineaT, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaT, True), FLASH, 1
+            Case Is < 140
+                Engine_Text_Render lineaT, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaT, True) / 2), PixelOffsetY - MovementT + 90 - Engine_Text_Height(lineaT, True), FLASH, 1
+            Case Is < 200
+                Engine_Text_Render lineaT, PixelOffsetX - 152 + MovementT - CInt(Engine_Text_Width(lineaT, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaT, True), FLASH, 1
+            Case Is < 280
+                 Engine_Text_Render lineaT, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaT, True) / 2), PixelOffsetY + MovementT - 247 - Engine_Text_Height(lineaT, True), FLASH, 1
+            Case Is > 280
+                    MovementT = 0
+        End Select
+     End If
+     
+      If StartH2 Then
+        Select Case MovementH2
+            Case Is < 60
+                If MovementH2 = 15 Then StartA2 = True
+                Engine_Text_Render lineaH2, PixelOffsetX + 45 - MovementH2 - CInt(Engine_Text_Width(lineaH2, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaH2, True), FLASH, 1
+            Case Is < 140
+                Engine_Text_Render lineaH2, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaH2, True) / 2), PixelOffsetY - MovementH2 + 90 - Engine_Text_Height(lineaH2, True), FLASH, 1
+            Case Is < 200
+                Engine_Text_Render lineaH2, PixelOffsetX - 152 + MovementH2 - CInt(Engine_Text_Width(lineaH2, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaH2, True), FLASH, 1
+            Case Is < 280
+                 Engine_Text_Render lineaH2, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaH2, True) / 2), PixelOffsetY + MovementH2 - 247 - Engine_Text_Height(lineaH2, True), FLASH, 1
+            Case Is > 280
+                    MovementH2 = 0
+        End Select
+     End If
+     
+      If StartA2 Then
+        Select Case MovementA2
+            Case Is < 60
+                If MovementA2 = 15 Then StartO = True
+                Engine_Text_Render lineaA2, PixelOffsetX + 45 - MovementA2 - CInt(Engine_Text_Width(lineaA2, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaA2, True), FLASH, 1
+            Case Is < 140
+                Engine_Text_Render lineaA2, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaA2, True) / 2), PixelOffsetY - MovementA2 + 90 - Engine_Text_Height(lineaA2, True), FLASH, 1
+            Case Is < 200
+                Engine_Text_Render lineaA2, PixelOffsetX - 152 + MovementA2 - CInt(Engine_Text_Width(lineaA2, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaA2, True), FLASH, 1
+            Case Is < 280
+                 Engine_Text_Render lineaA2, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaA2, True) / 2), PixelOffsetY + MovementA2 - 247 - Engine_Text_Height(lineaA2, True), FLASH, 1
+            Case Is > 280
+                    MovementA2 = 0
+        End Select
+     End If
+     
+      If StartO Then
+        Select Case MovementO
+            Case Is < 60
+                If MovementO = 15 Then StartS = True
+                Engine_Text_Render lineaO, PixelOffsetX + 45 - MovementO - CInt(Engine_Text_Width(lineaO, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaO, True), FLASH, 1
+            Case Is < 140
+                Engine_Text_Render lineaO, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaO, True) / 2), PixelOffsetY - MovementO + 90 - Engine_Text_Height(lineaO, True), FLASH, 1
+            Case Is < 200
+                Engine_Text_Render lineaO, PixelOffsetX - 152 + MovementO - CInt(Engine_Text_Width(lineaO, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaO, True), FLASH, 1
+            Case Is < 280
+                 Engine_Text_Render lineaO, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaO, True) / 2), PixelOffsetY + MovementO - 247 - Engine_Text_Height(lineaO, True), FLASH, 1
+            Case Is > 280
+                    MovementO = 0
+        End Select
+     End If
+     
+      If StartS Then
+        Select Case MovementS
+            Case Is < 60
+                Engine_Text_Render lineaS, PixelOffsetX + 45 - MovementS - CInt(Engine_Text_Width(lineaS, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaS, True), FLASH, 1
+            Case Is < 140
+                Engine_Text_Render lineaS, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaS, True) / 2), PixelOffsetY - MovementS + 90 - Engine_Text_Height(lineaS, True), FLASH, 1
+            Case Is < 200
+                Engine_Text_Render lineaS, PixelOffsetX - 152 + MovementS - CInt(Engine_Text_Width(lineaS, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaS, True), FLASH, 1
+            Case Is < 280
+                 Engine_Text_Render lineaS, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaS, True) / 2), PixelOffsetY + MovementS - 247 - Engine_Text_Height(lineaS, True), FLASH, 1
+            Case Is > 280
+                    MovementS = 0
+        End Select
+     End If
+        
+  
+
+End Function
+
+Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
+
+    With charlist(charindex)
+    
+        If charindex = UserCharIndex Then
             IsCharVisible = True
             Exit Function
         End If
@@ -2008,7 +2277,7 @@ Public Sub Start()
         Call FlushBuffer
 
         If frmMain.WindowState <> vbMinimized Then
-            
+            StartH = True
             Select Case QueRender
 
                 Case 0
@@ -2058,6 +2327,23 @@ Public Sub Start()
         Else
             Sleep 60&
             Call frmMain.Inventario.ReDraw
+            StartH = False
+                        StartA = False
+                        StartR = False
+                        StartT = False
+                        StartH2 = False
+                        StartA2 = False
+                        StartO = False
+                        StartS = False
+                        MovementH = 0
+                        MovementA = 0
+                        MovementR = 0
+                        MovementT = 0
+                        MovementH2 = 0
+                        MovementA2 = 0
+                        MovementO = 0
+                        MovementS = 0
+                        TimeLast = timeGetTime
 
         End If
 
@@ -2190,7 +2476,7 @@ Public Sub DrawMainInventory()
     Call frmMain.Inventario.DrawDraggedItem
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmMain.picInv.hwnd)
+    Call Engine_EndScene(InvRect, frmMain.picInv.hWnd)
 
     
     Exit Sub
@@ -2285,14 +2571,14 @@ Public Sub DrawInterfaceComerciar()
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
         frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
-        frmComerciar.lblCosto = PonerPuntos(Fix(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
+        frmComerciar.lblcosto = PonerPuntos(Fix(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
         
         Set CurrentInventory = Nothing
 
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmComerciar.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmComerciar.interface.hWnd)
 
     
     Exit Sub
@@ -2384,8 +2670,8 @@ Public Sub DrawInterfaceBovedaCuenta()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
-    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
 
     
     Exit Sub
@@ -2477,7 +2763,7 @@ Public Sub DrawInterfaceBoveda()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoObj.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmBancoObj.interface.hWnd)
 
     
     Exit Sub
@@ -2512,7 +2798,7 @@ Public Sub DrawInterfaceKeys()
     Call FrmKeyInv.InvKeys.DrawInventory
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hwnd)
+    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hWnd)
 
     
     Exit Sub
@@ -2577,7 +2863,7 @@ Public Sub DrawMapaMundo()
         Call Draw_Grh(Head, x, y, 0, 1, COLOR_WHITE, False, 0, 0, 0)
     End If
     
-    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
+    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hWnd)
 
     
     Exit Sub
@@ -2955,7 +3241,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     ' cc(3) = cc(0)
 
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     'FramesPerSecCounter = FramesPerSecCounter + 1
@@ -2995,7 +3281,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
 
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
@@ -3029,7 +3315,7 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
     
     Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     
     Exit Sub
 
@@ -3473,7 +3759,7 @@ EfectoEnPantalla_Err:
     
 End Sub
 
-Public Sub SetBarFx(ByVal charIndex As Integer, ByVal BarTime As Integer)
+Public Sub SetBarFx(ByVal charindex As Integer, ByVal BarTime As Integer)
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modify Date: 12/03/04
@@ -3483,7 +3769,7 @@ Public Sub SetBarFx(ByVal charIndex As Integer, ByVal BarTime As Integer)
     On Error GoTo SetBarFx_Err
     
 
-    With charlist(charIndex)
+    With charlist(charindex)
         .BarTime = BarTime
 
     End With

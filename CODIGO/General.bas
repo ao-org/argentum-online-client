@@ -401,16 +401,16 @@ Public Sub RefreshAllChars()
     'Goes through the charlist and replots all the characters on the map
     'Used to make sure everyone is visible
     '*****************************************************************
-    Dim loopc As Long
+    Dim LoopC As Long
     
-    For loopc = 1 To LastChar
+    For LoopC = 1 To LastChar
     
-        If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
+        If charlist(LoopC).active = 1 Then
+            MapData(charlist(LoopC).Pos.x, charlist(LoopC).Pos.y).charindex = LoopC
 
         End If
 
-    Next loopc
+    Next LoopC
 
     
     Exit Sub
@@ -504,7 +504,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     
 
     'Validamos los datos del user
-    Dim loopc     As Long
+    Dim LoopC     As Long
 
     Dim CharAscii As Integer
     
@@ -520,8 +520,8 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
     End If
     
-    For loopc = 1 To Len(CuentaPassword)
-        CharAscii = Asc(mid$(CuentaPassword, loopc, 1))
+    For LoopC = 1 To Len(CuentaPassword)
+        CharAscii = Asc(mid$(CuentaPassword, LoopC, 1))
 
         If Not LegalCharacter(CharAscii) Then
             MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
@@ -529,7 +529,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
         End If
 
-    Next loopc
+    Next LoopC
     
     CheckUserData = True
 
@@ -1038,7 +1038,7 @@ Sub Main()
         'End If
         
     #End If
-
+    CanMoveX = True
     'If Not Launcher Then
     '  Call MsgBox("¡El Juego debe ser abierto desde el Launcher! El Cliente ahora se cerrara.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
     ' End
@@ -1669,15 +1669,15 @@ General_Get_Elapsed_Time_Err:
 End Function
 
 
-Public Function Max(ByVal A As Variant, ByVal B As Variant) As Variant
+Public Function max(ByVal A As Variant, ByVal B As Variant) As Variant
     
     On Error GoTo max_Err
     
 
     If A > B Then
-        Max = A
+        max = A
     Else
-        Max = B
+        max = B
 
     End If
 
@@ -1690,15 +1690,15 @@ max_Err:
     
 End Function
 
-Public Function Min(ByVal A As Double, ByVal B As Double) As Variant
+Public Function min(ByVal A As Double, ByVal B As Double) As Variant
     
     On Error GoTo min_Err
     
 
     If A < B Then
-        Min = A
+        min = A
     Else
-        Min = B
+        min = B
 
     End If
 
@@ -1711,16 +1711,16 @@ min_Err:
     
 End Function
 
-Public Function Clamp(ByVal A As Variant, ByVal Min As Variant, ByVal Max As Variant) As Variant
+Public Function Clamp(ByVal A As Variant, ByVal min As Variant, ByVal max As Variant) As Variant
     
     On Error GoTo min_Err
     
 
-    If A < Min Then
-        Clamp = Min
+    If A < min Then
+        Clamp = min
     
-    ElseIf A > Max Then
-        Clamp = Max
+    ElseIf A > max Then
+        Clamp = max
 
     Else
         Clamp = A
@@ -1830,7 +1830,7 @@ Function GetTimeFromString(str As String) As Long
     Dim Splitted() As String
     Splitted = Split(str, ":")
     
-    Dim Hour As Long, Min As Long
+    Dim Hour As Long, min As Long
     Hour = Val(Splitted(0))
 
     If Hour < 0 Then Hour = 0
@@ -1839,12 +1839,12 @@ Function GetTimeFromString(str As String) As Long
     GetTimeFromString = Hour * 60
     
     If UBound(Splitted) > 0 Then
-        Min = Val(Splitted(1))
+        min = Val(Splitted(1))
         
-        If Min < 0 Then Min = 0
-        If Min > 59 Then Min = 59
+        If min < 0 Then min = 0
+        If min > 59 Then min = 59
         
-        GetTimeFromString = GetTimeFromString + Min
+        GetTimeFromString = GetTimeFromString + min
     End If
 
     GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)

@@ -2898,11 +2898,11 @@ Private Sub HandleUpdateExp()
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -3647,8 +3647,8 @@ Private Sub HandleTextCharDrop()
         x = .Pos.x
         y = .Pos.y
         
-        OffsetX = .MoveOffsetX + .Body.HeadOffset.x
-        OffsetY = .MoveOffsetY + .Body.HeadOffset.y
+        OffsetX = .MoveOffsetX + .body.HeadOffset.x
+        OffsetY = .MoveOffsetY + .body.HeadOffset.y
     End With
     
     If InMapBounds(x, y) Then
@@ -4269,7 +4269,7 @@ Private Sub HandleUserIndexInServer()
     'Remove packet ID
     Call incomingData.ReadByte
     
-    userindex = incomingData.ReadInteger()
+    userIndex = incomingData.ReadInteger()
 
     
     Exit Sub
@@ -4352,9 +4352,9 @@ Private Sub HandleCharacterCreate()
     
     Dim charindex     As Integer
 
-    Dim Body          As Integer
+    Dim body          As Integer
 
-    Dim Head          As Integer
+    Dim head          As Integer
 
     Dim Heading       As E_Heading
 
@@ -4379,8 +4379,8 @@ Private Sub HandleCharacterCreate()
     Dim group_index   As Integer
     
     charindex = buffer.ReadInteger()
-    Body = buffer.ReadInteger()
-    Head = buffer.ReadInteger()
+    body = buffer.ReadInteger()
+    head = buffer.ReadInteger()
     Heading = buffer.ReadByte()
     x = buffer.ReadByte()
     y = buffer.ReadByte()
@@ -4475,14 +4475,14 @@ Private Sub HandleCharacterCreate()
 
         End If
 
-        .Muerto = (Body = CASPER_BODY_IDLE)
+        .Muerto = (body = CASPER_BODY_IDLE)
         '.AlphaPJ = 255
     
-        Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
+        Call MakeChar(charindex, body, head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
         
         If .Idle Or .Navegando Then
             'Start animation
-            .Body.Walk(.Heading).Started = FrameTime
+            .body.Walk(.Heading).Started = FrameTime
         End If
         
     End With
@@ -4686,9 +4686,9 @@ Private Sub HandleCharacterChange()
         tempint = incomingData.ReadInteger()
 
         If tempint < LBound(BodyData()) Or tempint > UBound(BodyData()) Then
-            .Body = BodyData(0)
+            .body = BodyData(0)
         Else
-            .Body = BodyData(tempint)
+            .body = BodyData(tempint)
             .iBody = tempint
 
         End If
@@ -4696,11 +4696,11 @@ Private Sub HandleCharacterChange()
         headIndex = incomingData.ReadInteger()
 
         If headIndex < LBound(HeadData()) Or headIndex > UBound(HeadData()) Then
-            .Head = HeadData(0)
+            .head = HeadData(0)
             .IHead = 0
             
         Else
-            .Head = HeadData(headIndex)
+            .head = HeadData(headIndex)
             .IHead = headIndex
 
         End If
@@ -4721,7 +4721,7 @@ Private Sub HandleCharacterChange()
 
         If tempint <> 0 Then .Casco = CascoAnimData(tempint)
                 
-        If .Body.HeadOffset.y = -26 Then
+        If .body.HeadOffset.y = -26 Then
             .EsEnano = True
         Else
             .EsEnano = False
@@ -4743,7 +4743,7 @@ Private Sub HandleCharacterChange()
         
         If .Idle Or .Navegando Then
             'Start animation
-            .Body.Walk(.Heading).Started = FrameTime
+            .body.Walk(.Heading).Started = FrameTime
         End If
 
     End With
@@ -5289,7 +5289,7 @@ Private Sub HandleGuildList()
     Call buffer.ReadByte
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
     
@@ -5314,7 +5314,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -5322,7 +5322,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
 
     Call frmGuildAdm.Show(vbModeless, frmMain)
     
@@ -5601,9 +5601,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
     End If
@@ -7856,10 +7856,10 @@ Private Sub HandleGuildNews()
     List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.GuildsList.Clear
+    Call frmGuildNews.guildslist.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -7891,7 +7891,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
         
         ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
@@ -8169,7 +8169,7 @@ Private Sub HandleCharacterInfo()
         End If
         
         .nivel.Caption = "Nivel: " & buffer.ReadByte()
-        .oro.Caption = "Oro: " & buffer.ReadLong()
+        .Oro.Caption = "Oro: " & buffer.ReadLong()
         .Banco.Caption = "Banco: " & buffer.ReadLong()
         
         ' Dim reputation As Long
@@ -8195,8 +8195,8 @@ Private Sub HandleCharacterInfo()
 
         End If
         
-        .ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(buffer.ReadLong())
-        .Criminales.Caption = "Criminales asesinados: " & CStr(buffer.ReadLong())
+        .Ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(buffer.ReadLong())
+        .criminales.Caption = "Criminales asesinados: " & CStr(buffer.ReadLong())
         
         '   If reputation > 0 Then
         '   .status.Caption = " (Ciudadano)"
@@ -8265,10 +8265,10 @@ Private Sub HandleGuildLeaderInfo()
         List = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
         
         For i = 0 To UBound(List())
-            Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
         Next i
         
         'Get list of guild's members
@@ -8308,7 +8308,7 @@ Private Sub HandleGuildLeaderInfo()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -14127,13 +14127,13 @@ WriteForgive_Err:
     
 End Sub
 
-Public Sub WriteDonateGold(ByVal oro As Long)
+Public Sub WriteDonateGold(ByVal Oro As Long)
     
     On Error GoTo WriteForgive_Err
     '***************************************************
     With outgoingData
         Call .WriteByte(ClientPacketID.DonateGold)
-        Call .WriteLong(oro)
+        Call .WriteLong(Oro)
     End With
 
     
@@ -17631,8 +17631,8 @@ Private Sub HandlePersonajesDeCuenta()
     Dim ii As Byte
      
     For ii = 1 To 10
-        Pjs(ii).Body = 0
-        Pjs(ii).Head = 0
+        Pjs(ii).body = 0
+        Pjs(ii).head = 0
         Pjs(ii).Mapa = 0
         Pjs(ii).nivel = 0
         Pjs(ii).nombre = ""
@@ -17649,9 +17649,9 @@ Private Sub HandlePersonajesDeCuenta()
         Pjs(ii).nombre = buffer.ReadASCIIString()
         Pjs(ii).nivel = buffer.ReadByte()
         Pjs(ii).Mapa = buffer.ReadInteger()
-        Pjs(ii).Body = buffer.ReadInteger()
+        Pjs(ii).body = buffer.ReadInteger()
         
-        Pjs(ii).Head = buffer.ReadInteger()
+        Pjs(ii).head = buffer.ReadInteger()
         Pjs(ii).Criminal = buffer.ReadByte()
         Pjs(ii).Clase = buffer.ReadByte()
        
@@ -18788,9 +18788,9 @@ Private Sub HandleQuestDetails()
     
     
         FrmQuests.PlayerView.BackColor = RGB(11, 11, 11)
-        FrmQuests.Picture1.BackColor = RGB(19, 14, 11)
+        FrmQuests.picture1.BackColor = RGB(19, 14, 11)
         FrmQuests.PlayerView.Refresh
-        FrmQuests.Picture1.Refresh
+        FrmQuests.picture1.Refresh
         FrmQuests.npclbl.Caption = ""
         FrmQuests.objetolbl.Caption = ""
 
@@ -20354,7 +20354,7 @@ Private Sub HandleRequestScreenShot()
         Dim offset As Long
 
         For offset = 1 To Len(Data) Step 10000
-            Call WriteSendScreenShot(mid$(Data, offset, Min(Len(Data) - offset + 1, 10000)))
+            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
         Next
     
     End With

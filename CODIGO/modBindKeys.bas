@@ -80,7 +80,7 @@ Public Sub LoadImpAoInit()
     Exit Sub
 
 LoadImpAoInit_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.LoadImpAoInit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.LoadImpAoInit", Erl)
     Resume Next
     
 End Sub
@@ -110,7 +110,7 @@ Public Sub SaveRAOInit()
     Exit Sub
 
 SaveRAOInit_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.SaveRAOInit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.SaveRAOInit", Erl)
     Resume Next
     
 End Sub
@@ -136,7 +136,7 @@ Sub LoadDefaultBinds()
     Exit Sub
 
 LoadDefaultBinds_Err:
-    Call RegistrarError(Err.number, Err.Description, "modBindKeys.LoadDefaultBinds", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modBindKeys.LoadDefaultBinds", Erl)
     Resume Next
     
 End Sub
@@ -162,7 +162,7 @@ Sub LoadDefaultBinds2()
     Exit Sub
 
 LoadDefaultBinds2_Err:
-    Call RegistrarError(Err.number, Err.Description, "modBindKeys.LoadDefaultBinds2", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modBindKeys.LoadDefaultBinds2", Erl)
     Resume Next
     
 End Sub
@@ -241,6 +241,11 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             MostrarOnline = Not MostrarOnline
         Case BindKeys(7).KeyCode
             Nombres = Not Nombres
+            If Nombres Then
+                StartH = True
+            Else
+                StartH = False
+            End If
         Case BindKeys(8).KeyCode
             Call WriteParyToggle
         Case BindKeys(9).KeyCode
@@ -381,7 +386,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     Exit Function
 
 Accionar_Err:
-    Call RegistrarError(Err.number, Err.Description, "modBindKeys.Accionar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modBindKeys.Accionar", Erl)
     Resume Next
     
 End Function
@@ -422,7 +427,7 @@ Public Sub TirarItem()
     Exit Sub
 
 TirarItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "modBindKeys.TirarItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modBindKeys.TirarItem", Erl)
     Resume Next
     
 End Sub
@@ -437,7 +442,7 @@ Public Sub AgarrarItem()
     Exit Sub
 
 AgarrarItem_Err:
-    Call RegistrarError(Err.number, Err.Description, "modBindKeys.AgarrarItem", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modBindKeys.AgarrarItem", Erl)
     Resume Next
     
 End Sub
@@ -467,7 +472,7 @@ Public Function BuscarObjEnInv(OBJIndex) As Byte
     Exit Function
 
 BuscarObjEnInv_Err:
-    Call RegistrarError(Err.number, Err.Description, "modBindKeys.BuscarObjEnInv", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modBindKeys.BuscarObjEnInv", Erl)
     Resume Next
     
 End Function
