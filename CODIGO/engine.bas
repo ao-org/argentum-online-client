@@ -1769,11 +1769,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1
                 
                 Else
-                    If LCase(.nombre) = "harthaos" Then
-                            HarthaosFlasheando charindex, PixelOffsetX, PixelOffsetY, x, y
-                    Else
+                    'If LCase(.nombre) = "harthaos" Then
+                    '        HarthaosFlasheando charindex, PixelOffsetX, PixelOffsetY, x, y
+                    'Else
                         ColoresLocos charindex, PixelOffsetX, PixelOffsetY, x, y
-                    End If
+                    'End If
                     'Call RGBAList(colorHarthaosCeleste, 97, 228, 228)
                     'Call RGBAList(colorHarthaosBlanco, 255, 255, 255)
                     'Call RGBAList(colorHarthaosAmarillo, 234, 234, 0)
