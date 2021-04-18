@@ -22,6 +22,17 @@ Begin VB.Form frmPanelgm
    ScaleHeight     =   8175
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
+   Begin VB.CommandButton cmdMapaSeguro 
+      BackColor       =   &H8000000A&
+      Caption         =   "Info/Mapa"
+      Height          =   360
+      Left            =   1200
+      Style           =   1  'Graphical
+      TabIndex        =   31
+      TabStop         =   0   'False
+      Top             =   5640
+      Width           =   1335
+   End
    Begin VB.CommandButton Command3 
       BackColor       =   &H8000000A&
       Caption         =   "Destrabar"
@@ -106,7 +117,7 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   20
       TabStop         =   0   'False
-      Top             =   6000
+      Top             =   6120
       Width           =   375
    End
    Begin VB.CommandButton cmdHeadMenos 
@@ -117,7 +128,7 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   19
       TabStop         =   0   'False
-      Top             =   6360
+      Top             =   6480
       Width           =   375
    End
    Begin VB.CommandButton cmdHead0 
@@ -198,7 +209,7 @@ Begin VB.Form frmPanelgm
       Left            =   3480
       TabIndex        =   13
       Text            =   "0"
-      Top             =   7130
+      Top             =   7080
       Width           =   615
    End
    Begin VB.CommandButton cmdConsulta 
@@ -1531,6 +1542,27 @@ Private Sub cmdIrCerca_Click()
     tmpUser = cboListaUsus.Text
     Call WriteGoNearby(tmpUser)
 
+End Sub
+
+Private Sub cmdMapaSeguro_Click()
+
+    tmp = InputBox("Edicion de Mapa:" & vbCrLf & "0 : Informacion del Mapa" & vbCrLf & "1 : Pasar Mapa a Seguro" & vbCrLf & "2 : Pasar Mapa a InSeguro", "Modificar")
+    
+    Select Case tmp
+
+        Case 0
+            Call ParseUserCommand("/MAPINFO")
+
+        Case 1
+            Call ParseUserCommand("/MODMAPINFO SEGURO 1")
+            Call ParseUserCommand("/MAPINFO")
+
+        Case 2
+            Call ParseUserCommand("/MODMAPINFO SEGURO 0")
+            Call ParseUserCommand("/MAPINFO")
+            
+    End Select
+    
 End Sub
 
 Private Sub cmdMatarNPC_Click()
