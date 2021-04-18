@@ -686,7 +686,7 @@ Sub IniciarCrearPj()
     Exit Sub
 
 IniciarCrearPj_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.IniciarCrearPj", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IniciarCrearPj", Erl)
     Resume Next
     
 End Sub
@@ -1638,7 +1638,7 @@ Sub AmbientarAudio(ByVal UserMap As Long)
         '  AmbientalesBufferIndex = Audio.PlayWave(Wav & ".wav", , , LoopStyle.Enabled)
     Else
    
-        wav = ReadField(2, Val(MapDat.extra1), Asc("-"))
+        wav = ReadField(2, Val(MapDat.ambient), Asc("-"))
 
         If wav = 0 Then Exit Sub
         If Sound.AmbienteActual <> wav Then
