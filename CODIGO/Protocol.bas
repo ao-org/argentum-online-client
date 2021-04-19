@@ -1972,7 +1972,7 @@ Private Sub HandleUserCommerceInit()
     'Clears lists if necessary
     If frmComerciarUsu.List1.ListCount > 0 Then frmComerciarUsu.List1.Clear
     If frmComerciarUsu.List2.ListCount > 0 Then frmComerciarUsu.List2.Clear
-    
+    If frmComerciarUsu.List3.ListCount > 0 Then frmComerciarUsu.List2.Clear
     'Fill inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
 
@@ -2025,6 +2025,7 @@ Private Sub HandleUserCommerceEnd()
     'Clear the lists
     frmComerciarUsu.List1.Clear
     frmComerciarUsu.List2.Clear
+    frmComerciarUsu.List3.Clear
     
     'Destroy the form and reset the state
     Unload frmComerciarUsu
@@ -8580,26 +8581,47 @@ Private Sub HandleChangeUserTradeSlot()
     
     'Remove packet ID
     Call buffer.ReadByte
+    Dim miOferta As Boolean
     
-    With OtroInventario(1)
-        .OBJIndex = buffer.ReadInteger()
-        .Name = buffer.ReadASCIIString()
-        .Amount = buffer.ReadLong()
-        .GrhIndex = buffer.ReadLong()
-        .ObjType = buffer.ReadByte()
-        .MaxHit = buffer.ReadInteger()
-        .MinHit = buffer.ReadInteger()
-        .Def = buffer.ReadInteger()
-        .Valor = buffer.ReadLong()
-        
+    miOferta = buffer.ReadBoolean
+    Dim i As Byte
+    Dim txtShow As String
+    Dim cantidad As Long
+    If miOferta Then
+    frmComerciarUsu.lblOroMiOferta.Caption = buffer.ReadLong
+        frmComerciarUsu.List3.Clear
+        For i = 1 To 5
+            With OtroInventario(i)
+                buffer.ReadInteger
+                txtShow = buffer.ReadASCIIString
+                buffer.ReadLong
+                cantidad = buffer.ReadLong
+                If cantidad > 0 Then
+                    txtShow = txtShow & " (" & cantidad & ")"
+                    Call frmComerciarUsu.List3.AddItem(txtShow)
+                End If
+            End With
+        Next i
+    Else
+    frmComerciarUsu.lblOro.Caption = buffer.ReadLong
         frmComerciarUsu.List2.Clear
-        
-        Call frmComerciarUsu.List2.AddItem(.Name)
-        frmComerciarUsu.List2.ItemData(frmComerciarUsu.List2.NewIndex) = .Amount
-        
-        frmComerciarUsu.lblEstadoResp.Visible = False
-
-    End With
+        For i = 1 To 5
+            
+            With OtroInventario(i)
+                buffer.ReadInteger
+                txtShow = buffer.ReadASCIIString
+                buffer.ReadLong
+                cantidad = buffer.ReadLong
+                If cantidad > 0 Then
+                    txtShow = txtShow & " (" & cantidad & ")"
+                Call frmComerciarUsu.List2.AddItem(txtShow)
+                End If
+            End With
+        Next i
+    
+    End If
+    
+    frmComerciarUsu.lblEstadoResp.Visible = False
     
     'If we got here then packet is complete, copy data back to original queue
     Call incomingData.CopyBuffer(buffer)

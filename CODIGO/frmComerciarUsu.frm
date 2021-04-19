@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin VB.Form frmComerciarUsu 
-   BackColor       =   &H00000000&
+   BackColor       =   &H00808080&
    BorderStyle     =   0  'None
    ClientHeight    =   5595
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   6510
+   ClientWidth     =   6390
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
@@ -13,9 +13,28 @@ Begin VB.Form frmComerciarUsu
    MinButton       =   0   'False
    ScaleHeight     =   373
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   434
+   ScaleWidth      =   426
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.ListBox List3 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C0C0C0&
+      Height          =   1110
+      Left            =   720
+      TabIndex        =   7
+      Top             =   2880
+      Width           =   2430
+   End
    Begin VB.PictureBox picture1 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -84,11 +103,71 @@ Begin VB.Form frmComerciarUsu
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C0C0C0&
-      Height          =   2550
-      Left            =   690
+      Height          =   1110
+      Left            =   720
       TabIndex        =   1
-      Top             =   1590
+      Top             =   1080
       Width           =   2430
+   End
+   Begin VB.Label Label2 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Me ofrecen:"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000FFFF&
+      Height          =   495
+      Left            =   600
+      TabIndex        =   10
+      Top             =   840
+      Width           =   1575
+   End
+   Begin VB.Label Label1 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Ofrezco:"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000FFFF&
+      Height          =   495
+      Left            =   600
+      TabIndex        =   9
+      Top             =   2640
+      Width           =   1215
+   End
+   Begin VB.Label lblOroMiOferta 
+      Alignment       =   2  'Center
+      BackColor       =   &H00000000&
+      Caption         =   "0"
+      ForeColor       =   &H8000000B&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   8
+      Top             =   4080
+      Width           =   2655
+   End
+   Begin VB.Label lblOro 
+      Alignment       =   2  'Center
+      BackColor       =   &H00000000&
+      Caption         =   "0"
+      ForeColor       =   &H8000000B&
+      Height          =   255
+      Left            =   600
+      TabIndex        =   6
+      Top             =   2280
+      Width           =   2655
    End
    Begin VB.Image Image2 
       Height          =   270
@@ -113,14 +192,14 @@ Begin VB.Form frmComerciarUsu
       Height          =   480
       Left            =   495
       Tag             =   "0"
-      Top             =   4710
+      Top             =   4950
       Width           =   1440
    End
    Begin VB.Image cmdAceptar 
       Height          =   495
       Left            =   1935
       Tag             =   "0"
-      Top             =   4710
+      Top             =   4950
       Width           =   1335
    End
    Begin VB.Image Command2 
@@ -147,7 +226,7 @@ Begin VB.Form frmComerciarUsu
       Height          =   255
       Left            =   780
       TabIndex        =   2
-      Top             =   4200
+      Top             =   4320
       Width           =   2295
    End
    Begin VB.Label lblEstadoResp 
@@ -167,7 +246,7 @@ Begin VB.Form frmComerciarUsu
       Height          =   255
       Left            =   720
       TabIndex        =   0
-      Top             =   4440
+      Top             =   4680
       Visible         =   0   'False
       Width           =   2490
    End
