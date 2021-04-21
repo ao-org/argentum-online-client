@@ -1970,32 +1970,23 @@ Private Sub HandleUserCommerceInit()
     Call incomingData.ReadByte
     
     'Clears lists if necessary
-    If frmComerciarUsu.List1.ListCount > 0 Then frmComerciarUsu.List1.Clear
-    If frmComerciarUsu.List2.ListCount > 0 Then frmComerciarUsu.List2.Clear
-    If frmComerciarUsu.List3.ListCount > 0 Then frmComerciarUsu.List2.Clear
+    
     'Fill inventory list
-    For i = 1 To MAX_INVENTORY_SLOTS
-
-        If frmMain.Inventario.OBJIndex(i) <> 0 Then
-            frmComerciarUsu.List1.AddItem frmMain.Inventario.ItemName(i)
-            frmComerciarUsu.List1.ItemData(frmComerciarUsu.List1.NewIndex) = frmMain.Inventario.Amount(i)
-        Else
-            frmComerciarUsu.List1.AddItem ""
-            frmComerciarUsu.List1.ItemData(frmComerciarUsu.List1.NewIndex) = 0
-
-        End If
-
-    Next i
+    With frmMain.Inventario
+        For i = 1 To MAX_INVENTORY_SLOTS
+            If frmMain.Inventario.OBJIndex(i) <> 0 Then
+                frmComerciarUsu.InvUser.SetItem i, .OBJIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), 0, 0, 0, 0, 0, 0, 0
+            End If
+        Next i
+    End With
+        
+    Call frmComerciarUsu.InvUser.ReDraw
     
     'Set state and show form
     Comerciando = True
     
-    COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmComerciarUsu.List1, frmComerciarUsu, COLOR_AZUL, 0, 0)
-    Call Establecer_Borde(frmComerciarUsu.List2, frmComerciarUsu, COLOR_AZUL, 0, 0)
     
-    frmComerciarUsu.Picture = LoadInterface("comercioseguro.bmp")
-    frmComerciarUsu.Image1.Picture = LoadInterface("comercioseguro_opbjeto.bmp")
+  '  frmComerciarUsu.Picture = LoadInterface("comercioseguro.bmp")
     frmComerciarUsu.Show , frmMain
 
     
@@ -2023,9 +2014,9 @@ Private Sub HandleUserCommerceEnd()
     Call incomingData.ReadByte
     
     'Clear the lists
-    frmComerciarUsu.List1.Clear
-    frmComerciarUsu.List2.Clear
-    frmComerciarUsu.List3.Clear
+   ' frmComerciarUsu.List1.Clear
+   ' frmComerciarUsu.List2.Clear
+   ' frmComerciarUsu.List3.Clear
     
     'Destroy the form and reset the state
     Unload frmComerciarUsu
@@ -8589,7 +8580,7 @@ Private Sub HandleChangeUserTradeSlot()
     Dim cantidad As Long
     If miOferta Then
     frmComerciarUsu.lblOroMiOferta.Caption = buffer.ReadLong
-        frmComerciarUsu.List3.Clear
+        'frmComerciarUsu.List3.Clear
         For i = 1 To 5
             With OtroInventario(i)
                 buffer.ReadInteger
@@ -8598,13 +8589,13 @@ Private Sub HandleChangeUserTradeSlot()
                 cantidad = buffer.ReadLong
                 If cantidad > 0 Then
                     txtShow = txtShow & " (" & cantidad & ")"
-                    Call frmComerciarUsu.List3.AddItem(txtShow)
+                   ' Call frmComerciarUsu.List3.AddItem(txtShow)
                 End If
             End With
         Next i
     Else
     frmComerciarUsu.lblOro.Caption = buffer.ReadLong
-        frmComerciarUsu.List2.Clear
+       ' frmComerciarUsu.List2.Clear
         For i = 1 To 5
             
             With OtroInventario(i)
@@ -8614,7 +8605,7 @@ Private Sub HandleChangeUserTradeSlot()
                 cantidad = buffer.ReadLong
                 If cantidad > 0 Then
                     txtShow = txtShow & " (" & cantidad & ")"
-                Call frmComerciarUsu.List2.AddItem(txtShow)
+              '  Call frmComerciarUsu.List2.AddItem(txtShow)
                 End If
             End With
         Next i

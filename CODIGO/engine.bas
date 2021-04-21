@@ -2305,6 +2305,12 @@ Public Sub Start()
                     If FrmKeyInv.Visible Then
                         DrawInterfaceKeys
                     End If
+                    
+                    If frmComerciarUsu.Visible Then
+                        DrawInventoryComercio
+                    End If
+                    
+                    
 
                 Case 1
                     If Not frmConnect.Visible Then
@@ -2809,6 +2815,39 @@ DrawInterfaceKeys_Err:
     
 End Sub
 
+Public Sub DrawInventoryComercio()
+    
+    On Error GoTo DrawInventorysComercio_Err
+    
+
+    ' Sólo dibujamos cuando es necesario
+    If Not frmComerciarUsu.InvUser.NeedsRedraw Then Exit Sub
+
+    Dim InvRect As RECT
+
+    InvRect.Left = 0
+    InvRect.Top = 0
+    InvRect.Right = frmComerciarUsu.picInv.ScaleWidth
+    InvRect.Bottom = frmComerciarUsu.picInv.ScaleHeight
+
+    ' Comenzamos la escena
+    Call Engine_BeginScene
+    
+    ' Dibujamos llaves
+    Call frmComerciarUsu.InvUser.DrawInventory
+    
+    ' Presentamos la escena
+    Call Engine_EndScene(InvRect, frmComerciarUsu.picInv.hWnd)
+
+    
+    Exit Sub
+
+DrawInventorysComercio_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventorysComercio", Erl)
+    Resume Next
+    
+End Sub
+
 Public Sub DrawMapaMundo()
     
     On Error GoTo DrawMapaMundo_Err
@@ -3162,7 +3201,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     If intro = 1 Then
         Draw_Grh BodyData(773).Walk(3), 470 + 15, 366, 1, 0, COLOR_WHITE
-        Draw_Grh HeadData(602).Head(3), 470 + 15, 327 + 2, 1, 0, COLOR_WHITE
+        Draw_Grh HeadData(118).Head(3), 470 + 15, 327 + 2, 1, 0, COLOR_WHITE
             
         Draw_Grh CascoAnimData(13).Head(3), 470 + 15, 327, 1, 0, COLOR_WHITE
         Draw_Grh WeaponAnimData(6).WeaponWalk(3), 470 + 15, 366, 1, 0, COLOR_WHITE
@@ -3888,6 +3927,9 @@ Public Sub InitializeInventory()
     Set frmComerciar.InvComNpc = New clsGrapchicalInventory
     Set frmBancoObj.InvBankUsu = New clsGrapchicalInventory
     Set frmBancoObj.InvBoveda = New clsGrapchicalInventory
+    Set frmComerciarUsu.InvUser = New clsGrapchicalInventory
+   ' Set frmComerciarUsu.InvUserSell = New clsGrapchicalInventory
+   ' Set frmComerciarUsu.InvOtherSell = New clsGrapchicalInventory
     
     Set frmBancoCuenta.InvBankUsuCuenta = New clsGrapchicalInventory
     Set frmBancoCuenta.InvBovedaCuenta = New clsGrapchicalInventory
@@ -3897,6 +3939,9 @@ Public Sub InitializeInventory()
     Call frmMain.Inventario.Initialize(frmMain.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True, 9)
     Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3)
+    Call frmComerciarUsu.InvUser.Initialize(frmComerciarUsu.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True)
+    'Call frmComerciarUsu.InvUserSell.Initialize(frmComerciarUsu.picInvUserSell, 6, , , 0, 0, 3, 3, True, 9)
+    'Call frmComerciarUsu.InvOtherSell.Initialize(frmComerciarUsu.picInvOtherSell, 6, , , 0, 0, 3, 3, True, 9)
    
     Call frmBancoObj.InvBankUsu.Initialize(frmBancoObj.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmBancoObj.InvBoveda.Initialize(frmBancoObj.interface, MAX_BANCOINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3)
