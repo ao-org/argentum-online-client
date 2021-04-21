@@ -401,16 +401,16 @@ Public Sub RefreshAllChars()
     'Goes through the charlist and replots all the characters on the map
     'Used to make sure everyone is visible
     '*****************************************************************
-    Dim LoopC As Long
+    Dim loopc As Long
     
-    For LoopC = 1 To LastChar
+    For loopc = 1 To LastChar
     
-        If charlist(LoopC).active = 1 Then
-            MapData(charlist(LoopC).Pos.x, charlist(LoopC).Pos.y).charindex = LoopC
+        If charlist(loopc).active = 1 Then
+            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
 
         End If
 
-    Next LoopC
+    Next loopc
 
     
     Exit Sub
@@ -504,7 +504,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     
 
     'Validamos los datos del user
-    Dim LoopC     As Long
+    Dim loopc     As Long
 
     Dim CharAscii As Integer
     
@@ -520,8 +520,8 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
     End If
     
-    For LoopC = 1 To Len(CuentaPassword)
-        CharAscii = Asc(mid$(CuentaPassword, LoopC, 1))
+    For loopc = 1 To Len(CuentaPassword)
+        CharAscii = Asc(mid$(CuentaPassword, loopc, 1))
 
         If Not LegalCharacter(CharAscii) Then
             MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
@@ -529,7 +529,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
         End If
 
-    Next LoopC
+    Next loopc
     
     CheckUserData = True
 
@@ -1490,6 +1490,7 @@ Public Sub CloseClient()
     Set frmComerciar.InvComUsu = Nothing
     Set frmBancoObj.InvBankUsu = Nothing
     Set frmBancoObj.InvBoveda = Nothing
+    Set frmComerciarUsu.InvUser = Nothing
     
     
     Set frmBancoCuenta.InvBankUsuCuenta = Nothing

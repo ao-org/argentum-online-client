@@ -159,9 +159,9 @@ Private Type JPEG_CORE_PROPERTIES_VB ' Sadly, due to a limitation in VB (UDT var
 End Type
 
 '
-Private Declare Function GetDC Lib "user32" (ByVal hwnd As Long) As Long
+Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
 
-Private Declare Function ReleaseDC Lib "user32" (ByVal hwnd As Long, ByVal hdc As Long) As Long
+Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hdc As Long) As Long
 
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef Dest As Any, ByRef source As Any, ByVal ByteCount As Long)
 
@@ -314,7 +314,7 @@ Public Function LoadJPG(ByRef cDib As cDIBSection, ByVal sFile As String) As Boo
     Exit Function
 
 LoadJPG_Err:
-    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.LoadJPG", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modScreenCapture.LoadJPG", Erl)
     Resume Next
     
 End Function
@@ -404,7 +404,7 @@ Public Function LoadJPGFromPtr(ByRef cDib As cDIBSection, ByVal lPtr As Long, By
     Exit Function
 
 LoadJPGFromPtr_Err:
-    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.LoadJPGFromPtr", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modScreenCapture.LoadJPGFromPtr", Erl)
     Resume Next
     
 End Function
@@ -517,7 +517,7 @@ Public Function SaveJPG(ByRef cDib As cDIBSection, ByVal sFile As String, Option
     Exit Function
 
 SaveJPG_Err:
-    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.SaveJPG", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modScreenCapture.SaveJPG", Erl)
     Resume Next
     
 End Function
@@ -590,7 +590,7 @@ Public Function SaveJPGToPtr(ByRef cDib As cDIBSection, ByVal lPtr As Long, ByRe
     Exit Function
 
 SaveJPGToPtr_Err:
-    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.SaveJPGToPtr", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modScreenCapture.SaveJPGToPtr", Erl)
     Resume Next
     
 End Function
@@ -599,14 +599,14 @@ Public Sub ScreenCapture()
 
     On Error GoTo Err:
 
-    Dim hwnd As Long
+    Dim hWnd As Long
     Dim File As String
     Dim sI   As String
     Dim c    As New cDIBSection
     Dim i    As Long
     Dim hdcc As Long
     
-    hdcc = GetDC(frmMain.hwnd)
+    hdcc = GetDC(frmMain.hWnd)
     
     frmScreenshots.Capture.Visible = True
     frmScreenshots.Capture.AutoRedraw = True
@@ -615,7 +615,7 @@ Public Sub ScreenCapture()
     
     Call BitBlt(frmScreenshots.Capture.hdc, 0, 0, 1024, 768, hdcc, 0, 0, SRCCOPY)
     
-    Call ReleaseDC(frmMain.hwnd, hdcc)
+    Call ReleaseDC(frmMain.hWnd, hdcc)
     
     hdcc = INVALID_HANDLE
     
@@ -643,11 +643,11 @@ Public Sub ScreenCapture()
     Exit Sub
 
 Err:
-    AddtoRichTextBox frmMain.RecTxt, Err.number & "-" & Err.Description, 200, 200, 200, False, False, False
+    AddtoRichTextBox frmMain.RecTxt, Err.Number & "-" & Err.Description, 200, 200, 200, False, False, False
     
     frmScreenshots.Capture.Visible = False
 
-    If hdcc <> INVALID_HANDLE Then Call ReleaseDC(frmMain.hwnd, hdcc)
+    If hdcc <> INVALID_HANDLE Then Call ReleaseDC(frmMain.hWnd, hdcc)
 
 End Sub
 
@@ -655,16 +655,16 @@ Public Function GetScreenShotSerialized() As String
 
     On Error GoTo Handler
     
-    Dim hwnd As Long
+    Dim hWnd As Long
     Dim File As String
     Dim sI   As String
     Dim c    As New cDIBSection
     Dim i    As Long
     Dim hdcc As Long
     Dim Data() As Byte
-    Dim Length As Long
+    Dim length As Long
     
-    hdcc = GetDC(frmMain.hwnd)
+    hdcc = GetDC(frmMain.hWnd)
     
     frmScreenshots.Capture.Visible = True
     frmScreenshots.Capture.AutoRedraw = True
@@ -673,7 +673,7 @@ Public Function GetScreenShotSerialized() As String
     
     Call BitBlt(frmScreenshots.Capture.hdc, 0, 0, 1024, 768, hdcc, 0, 0, SRCCOPY)
     
-    Call ReleaseDC(frmMain.hwnd, hdcc)
+    Call ReleaseDC(frmMain.hWnd, hdcc)
     
     hdcc = INVALID_HANDLE
 
@@ -684,11 +684,11 @@ Public Function GetScreenShotSerialized() As String
     
     ' Asumo que el JPG pesa como mucho lo mismo que el BMP
     ReDim Data(c.Width * c.Height * 4)
-    Length = UBound(Data)
+    length = UBound(Data)
     
-    Call SaveJPGToPtr(c, VarPtr(Data(0)), Length, 50)
+    Call SaveJPGToPtr(c, VarPtr(Data(0)), length, 50)
     
-    ReDim Preserve Data(Length - 1)
+    ReDim Preserve Data(length - 1)
 
     frmScreenshots.Capture.Visible = False
     
@@ -707,9 +707,9 @@ Public Function SaveScreenshotFromBytes(Name As String, Data() As Byte) As Strin
 
     On Error GoTo Handler
     
-    Dim handle As Integer
+    Dim Handle As Integer
     
-    handle = FreeFile
+    Handle = FreeFile
     
     If Not FileExist(App.Path & "\Screenshots\", vbDirectory) Then
         Call MkDir(App.Path & "\Screenshots\")
@@ -725,16 +725,16 @@ Public Function SaveScreenshotFromBytes(Name As String, Data() As Byte) As Strin
     
     SaveScreenshotFromBytes = App.Path & "\Screenshots\Administracion\" & Name & "\" & format(Now, "YYYY-MM-DD hh-mm-ss") & ".jpg"
 
-    Open SaveScreenshotFromBytes For Binary Access Write As #handle
+    Open SaveScreenshotFromBytes For Binary Access Write As #Handle
     
-    Put #handle, , Data
+    Put #Handle, , Data
     
-    Close #handle
+    Close #Handle
     
     Exit Function
     
 Handler:
-    Call RegistrarError(Err.number, Err.Description, "modScreenCapture.SaveScreenshotFromBytes")
+    Call RegistrarError(Err.Number, Err.Description, "modScreenCapture.SaveScreenshotFromBytes")
     Resume Next
 
 End Function

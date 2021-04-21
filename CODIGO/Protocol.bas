@@ -230,6 +230,7 @@ Private Enum ServerPacketID
     SeguroResu
     Stopped
     InvasionInfo
+    CommerceRecieveChatMessage
 End Enum
 
 Private Enum ClientPacketID
@@ -578,6 +579,7 @@ Private Enum NewPacksID
     CuentaExtractItem
     CuentaDeposit
     CreateEvent
+    CommerceSendChatMessage
 End Enum
 
 ''
@@ -1148,6 +1150,8 @@ Public Sub HandleIncomingData()
         Case ServerPacketID.InvasionInfo
             Call HandleInvasionInfo
 
+        Case ServerPacketID.CommerceRecieveChatMessage
+            Call HandleCommerceRecieveChatMessage
         Case Else
         
             Exit Sub
@@ -1600,6 +1604,7 @@ Private Sub HandleDisconnect()
         Call frmComerciar.InvComNpc.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Call frmComerciar.InvComUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Call frmBancoCuenta.InvBankUsuCuenta.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmComerciarUsu.InvUser.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
     Next i
     
     For i = 1 To MAX_BANCOINVENTORY_SLOTS
@@ -1778,7 +1783,7 @@ Private Sub HandleCommerceInit()
     For i = 1 To MAX_INVENTORY_SLOTS
 
         With frmMain.Inventario
-            Call frmComerciar.InvComUsu.SetItem(i, .OBJIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+            Call frmComerciar.InvComUsu.SetItem(i, .objIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
 
         End With
 
@@ -1821,7 +1826,7 @@ Private Sub HandleBankInit()
     For i = 1 To MAX_INVENTORY_SLOTS
 
         With frmMain.Inventario
-            Call frmBancoObj.InvBankUsu.SetItem(i, .OBJIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+            Call frmBancoObj.InvBankUsu.SetItem(i, .objIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
 
         End With
 
@@ -1974,12 +1979,13 @@ Private Sub HandleUserCommerceInit()
     'Fill inventory list
     With frmMain.Inventario
         For i = 1 To MAX_INVENTORY_SLOTS
-            If frmMain.Inventario.OBJIndex(i) <> 0 Then
-                frmComerciarUsu.InvUser.SetItem i, .OBJIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), 0, 0, 0, 0, 0, 0, 0
+            If frmMain.Inventario.objIndex(i) <> 0 Then
+                frmComerciarUsu.InvUser.SetItem i, .objIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), 0, 0, 0, 0, 0, 0, 0
             End If
         Next i
     End With
         
+    frmComerciarUsu.lblMyGold.Caption = frmMain.GldLbl.Caption
     Call frmComerciarUsu.InvUser.ReDraw
     
     'Set state and show form
@@ -2017,6 +2023,9 @@ Private Sub HandleUserCommerceEnd()
    ' frmComerciarUsu.List1.Clear
    ' frmComerciarUsu.List2.Clear
    ' frmComerciarUsu.List3.Clear
+   frmComerciarUsu.InvUser = Nothing
+   frmComerciarUsu.InvUserSell = Nothing
+   frmComerciarUsu.InvOtherSell = Nothing
     
     'Destroy the form and reset the state
     Unload frmComerciarUsu
@@ -4778,7 +4787,7 @@ Private Sub HandleObjectCreate()
 
     Dim y        As Byte
 
-    Dim OBJIndex As Integer
+    Dim objIndex As Integer
 
     Dim Color    As RGBA
 
@@ -4789,17 +4798,17 @@ Private Sub HandleObjectCreate()
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
     
-    OBJIndex = incomingData.ReadInteger()
+    objIndex = incomingData.ReadInteger()
     
-    MapData(x, y).ObjGrh.GrhIndex = ObjData(OBJIndex).GrhIndex
+    MapData(x, y).ObjGrh.GrhIndex = ObjData(objIndex).GrhIndex
     
-    MapData(x, y).OBJInfo.OBJIndex = OBJIndex
+    MapData(x, y).OBJInfo.objIndex = objIndex
     
     Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
     
-    If ObjData(OBJIndex).CreaLuz <> "" Then
-        Call Long_2_RGBA(Color, Val(ReadField(2, ObjData(OBJIndex).CreaLuz, Asc(":"))))
-        Rango = Val(ReadField(1, ObjData(OBJIndex).CreaLuz, Asc(":")))
+    If ObjData(objIndex).CreaLuz <> "" Then
+        Call Long_2_RGBA(Color, Val(ReadField(2, ObjData(objIndex).CreaLuz, Asc(":"))))
+        Rango = Val(ReadField(1, ObjData(objIndex).CreaLuz, Asc(":")))
         MapData(x, y).luz.Color = Color
         MapData(x, y).luz.Rango = Rango
         
@@ -4815,9 +4824,9 @@ Private Sub HandleObjectCreate()
         
     End If
         
-    If ObjData(OBJIndex).CreaParticulaPiso <> 0 Then
+    If ObjData(objIndex).CreaParticulaPiso <> 0 Then
         MapData(x, y).particle_group = 0
-        General_Particle_Create ObjData(OBJIndex).CreaParticulaPiso, x, y, -1
+        General_Particle_Create ObjData(objIndex).CreaParticulaPiso, x, y, -1
 
     End If
     
@@ -4900,7 +4909,7 @@ Private Sub HandleObjectDelete()
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
     
-    If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
+    If ObjData(MapData(x, y).OBJInfo.objIndex).CreaLuz <> "" Then
         id = LucesCuadradas.Light_Find(x & y)
         LucesCuadradas.Light_Remove id
         MapData(x, y).luz.Color = COLOR_EMPTY
@@ -4911,7 +4920,7 @@ Private Sub HandleObjectDelete()
     
     MapData(x, y).ObjGrh.GrhIndex = 0
     
-    If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaParticulaPiso <> 0 Then
+    If ObjData(MapData(x, y).OBJInfo.objIndex).CreaParticulaPiso <> 0 Then
         Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
 
     End If
@@ -5762,7 +5771,7 @@ Private Sub HandleChangeInventorySlot()
     Call buffer.ReadByte
     
     Dim Slot              As Byte
-    Dim OBJIndex          As Integer
+    Dim objIndex          As Integer
     Dim Name              As String
     Dim Amount            As Integer
     Dim Equipped          As Boolean
@@ -5776,7 +5785,7 @@ Private Sub HandleChangeInventorySlot()
     Dim podrausarlo       As Byte
 
     Slot = buffer.ReadByte()
-    OBJIndex = buffer.ReadInteger()
+    objIndex = buffer.ReadInteger()
     Amount = buffer.ReadInteger()
     Equipped = buffer.ReadBoolean()
     Value = buffer.ReadSingle()
@@ -5784,13 +5793,13 @@ Private Sub HandleChangeInventorySlot()
 
     Call incomingData.CopyBuffer(buffer)
 
-    Name = ObjData(OBJIndex).Name
-    GrhIndex = ObjData(OBJIndex).GrhIndex
-    ObjType = ObjData(OBJIndex).ObjType
-    MaxHit = ObjData(OBJIndex).MaxHit
-    MinHit = ObjData(OBJIndex).MinHit
-    MaxDef = ObjData(OBJIndex).MaxDef
-    MinDef = ObjData(OBJIndex).MinDef
+    Name = ObjData(objIndex).Name
+    GrhIndex = ObjData(objIndex).GrhIndex
+    ObjType = ObjData(objIndex).ObjType
+    MaxHit = ObjData(objIndex).MaxHit
+    MinHit = ObjData(objIndex).MinHit
+    MaxDef = ObjData(objIndex).MaxDef
+    MinDef = ObjData(objIndex).MinDef
 
     If Equipped Then
 
@@ -5842,14 +5851,14 @@ Private Sub HandleChangeInventorySlot()
 
     End If
 
-    Call frmMain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmMain.Inventario.SetItem(Slot, objIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
-    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmComerciar.InvComUsu.SetItem(Slot, objIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
-    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmBancoObj.InvBankUsu.SetItem(Slot, objIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
     
     
-    Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, objIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
     Exit Sub
     
@@ -5927,7 +5936,7 @@ Private Sub HandleRefreshAllInventorySlot()
     
     Dim Slot             As Byte
 
-    Dim OBJIndex         As Integer
+    Dim objIndex         As Integer
 
     Dim Name             As String
 
@@ -5976,11 +5985,11 @@ Private Sub HandleRefreshAllInventorySlot()
         With frmMain.Inventario
 
             If frmComerciar.Visible Then
-                Call frmComerciar.InvComUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
+                Call frmComerciar.InvComUsu.SetItem(Slot, .objIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
             ElseIf frmBancoObj.Visible Then
-                Call frmBancoObj.InvBankUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
+                Call frmBancoObj.InvBankUsu.SetItem(Slot, .objIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
             ElseIf frmBancoCuenta.Visible Then
-                Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
+                Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, .objIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
             End If
 
         End With
@@ -6080,18 +6089,18 @@ Private Sub HandleChangeBankSlot()
     
     With BankSlot
     
-        .OBJIndex = buffer.ReadInteger()
-        .Name = ObjData(.OBJIndex).Name
+        .objIndex = buffer.ReadInteger()
+        .Name = ObjData(.objIndex).Name
         .Amount = buffer.ReadInteger()
-        .GrhIndex = ObjData(.OBJIndex).GrhIndex
-        .ObjType = ObjData(.OBJIndex).ObjType
-        .MaxHit = ObjData(.OBJIndex).MaxHit
-        .MinHit = ObjData(.OBJIndex).MinHit
-        .Def = ObjData(.OBJIndex).MaxDef
+        .GrhIndex = ObjData(.objIndex).GrhIndex
+        .ObjType = ObjData(.objIndex).ObjType
+        .MaxHit = ObjData(.objIndex).MaxHit
+        .MinHit = ObjData(.objIndex).MinHit
+        .Def = ObjData(.objIndex).MaxDef
         .Valor = buffer.ReadLong()
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmBancoObj.InvBoveda.SetItem(Slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmBancoObj.InvBoveda.SetItem(Slot, .objIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
 
     End With
     
@@ -6891,18 +6900,18 @@ Private Sub HandleChangeNPCInventorySlot()
     
     Dim SlotInv As NpCinV
     With SlotInv
-        .OBJIndex = buffer.ReadInteger()
-        .Name = ObjData(.OBJIndex).Name
+        .objIndex = buffer.ReadInteger()
+        .Name = ObjData(.objIndex).Name
         .Amount = buffer.ReadInteger()
         .Valor = buffer.ReadSingle()
-        .GrhIndex = ObjData(.OBJIndex).GrhIndex
-        .ObjType = ObjData(.OBJIndex).ObjType
-        .MaxHit = ObjData(.OBJIndex).MaxHit
-        .MinHit = ObjData(.OBJIndex).MinHit
-        .Def = ObjData(.OBJIndex).MaxDef
+        .GrhIndex = ObjData(.objIndex).GrhIndex
+        .ObjType = ObjData(.objIndex).ObjType
+        .MaxHit = ObjData(.objIndex).MaxHit
+        .MinHit = ObjData(.objIndex).MinHit
+        .Def = ObjData(.objIndex).MaxDef
         .PuedeUsar = buffer.ReadByte()
         
-        Call frmComerciar.InvComNpc.SetItem(Slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmComerciar.InvComNpc.SetItem(Slot, .objIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
         
     End With
     
@@ -7428,10 +7437,10 @@ Private Sub HandleAddForumMessage()
     
     Dim title   As String
 
-    Dim Message As String
+    Dim message As String
     
     title = buffer.ReadASCIIString()
-    Message = buffer.ReadASCIIString()
+    message = buffer.ReadASCIIString()
     
     'Call frmForo.List.AddItem(title)
     ' frmForo.Text(frmForo.List.ListCount - 1).Text = Message
@@ -8576,39 +8585,45 @@ Private Sub HandleChangeUserTradeSlot()
     
     miOferta = buffer.ReadBoolean
     Dim i As Byte
-    Dim txtShow As String
-    Dim cantidad As Long
+    Dim nombreItem As String
+    Dim cantidad As Integer
+    Dim grhItem As Long
+    Dim objIndex As Integer
     If miOferta Then
-    frmComerciarUsu.lblOroMiOferta.Caption = buffer.ReadLong
-        'frmComerciarUsu.List3.Clear
+        Dim OroAEnviar As Long
+        OroAEnviar = buffer.ReadLong
+        frmComerciarUsu.lblOroMiOferta.Caption = OroAEnviar
+        frmComerciarUsu.lblMyGold.Caption = PonerPuntos(Val(frmMain.GldLbl.Caption - OroAEnviar))
         For i = 1 To 5
             With OtroInventario(i)
-                buffer.ReadInteger
-                txtShow = buffer.ReadASCIIString
-                buffer.ReadLong
+                objIndex = buffer.ReadInteger
+                nombreItem = buffer.ReadASCIIString
+                grhItem = buffer.ReadLong
                 cantidad = buffer.ReadLong
                 If cantidad > 0 Then
-                    txtShow = txtShow & " (" & cantidad & ")"
-                   ' Call frmComerciarUsu.List3.AddItem(txtShow)
+                    Call frmComerciarUsu.InvUserSell.SetItem(i, objIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, 0)
                 End If
             End With
         Next i
+        
+        Call frmComerciarUsu.InvUserSell.ReDraw
     Else
-    frmComerciarUsu.lblOro.Caption = buffer.ReadLong
+        frmComerciarUsu.lblOro.Caption = buffer.ReadLong
        ' frmComerciarUsu.List2.Clear
         For i = 1 To 5
             
             With OtroInventario(i)
-                buffer.ReadInteger
-                txtShow = buffer.ReadASCIIString
-                buffer.ReadLong
+                 objIndex = buffer.ReadInteger
+                nombreItem = buffer.ReadASCIIString
+                grhItem = buffer.ReadLong
                 cantidad = buffer.ReadLong
                 If cantidad > 0 Then
-                    txtShow = txtShow & " (" & cantidad & ")"
-              '  Call frmComerciarUsu.List2.AddItem(txtShow)
+                    Call frmComerciarUsu.InvOtherSell.SetItem(i, objIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, 0)
                 End If
             End With
         Next i
+        
+        Call frmComerciarUsu.InvOtherSell.ReDraw
     
     End If
     
@@ -10653,7 +10668,7 @@ End Sub
 ' @param    message The body of the message.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteForumPost(ByVal title As String, ByVal Message As String)
+Public Sub WriteForumPost(ByVal title As String, ByVal message As String)
     
     On Error GoTo WriteForumPost_Err
     
@@ -10667,7 +10682,7 @@ Public Sub WriteForumPost(ByVal title As String, ByVal Message As String)
         Call .WriteByte(ClientPacketID.ForumPost)
         
         Call .WriteASCIIString(title)
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -11621,7 +11636,7 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteGrupoMsg(ByVal Message As String)
+Public Sub WriteGrupoMsg(ByVal message As String)
     
     On Error GoTo WriteGrupoMsg_Err
     
@@ -11629,7 +11644,7 @@ Public Sub WriteGrupoMsg(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.GrupoMsg)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -11844,7 +11859,7 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal cantidad As Integer, Motivo As String)
+Public Sub WriteGiveItem(UserName As String, ByVal objIndex As Integer, ByVal cantidad As Integer, Motivo As String)
     '***************************************************
     'Writes the "GiveItem" message to the outgoing data buffer
     '***************************************************
@@ -11854,7 +11869,7 @@ Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal ca
     With outgoingData
         Call .WriteByte(ClientPacketID.GiveItem)
         Call .WriteASCIIString(UserName)
-        Call .WriteInteger(OBJIndex)
+        Call .WriteInteger(objIndex)
         Call .WriteInteger(cantidad)
         Call .WriteASCIIString(Motivo)
     End With
@@ -12074,7 +12089,7 @@ End Sub
 ' @param    message The message to send to the guild.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteGuildMessage(ByVal Message As String)
+Public Sub WriteGuildMessage(ByVal message As String)
     
     On Error GoTo WriteGuildMessage_Err
     
@@ -12087,7 +12102,7 @@ Public Sub WriteGuildMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.GuildMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -12163,7 +12178,7 @@ End Sub
 ' @param    message The message to send to the other council members.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCouncilMessage(ByVal Message As String)
+Public Sub WriteCouncilMessage(ByVal message As String)
     
     On Error GoTo WriteCouncilMessage_Err
     
@@ -12176,7 +12191,7 @@ Public Sub WriteCouncilMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.CouncilMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -12195,7 +12210,7 @@ End Sub
 ' @param    message The message to send to the role masters.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteRoleMasterRequest(ByVal Message As String)
+Public Sub WriteRoleMasterRequest(ByVal message As String)
     
     On Error GoTo WriteRoleMasterRequest_Err
     
@@ -12208,7 +12223,7 @@ Public Sub WriteRoleMasterRequest(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.RoleMasterRequest)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -12943,7 +12958,7 @@ WriteReclamarRecompensa_Err:
     
 End Sub
 
-Public Sub WriteGMMessage(ByVal Message As String)
+Public Sub WriteGMMessage(ByVal message As String)
     
     On Error GoTo WriteGMMessage_Err
     
@@ -12956,7 +12971,7 @@ Public Sub WriteGMMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.GMMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -13082,7 +13097,7 @@ End Sub
 ' @param    message The message to leave in the log as a comment.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteComment(ByVal Message As String)
+Public Sub WriteComment(ByVal message As String)
     
     On Error GoTo WriteComment_Err
     
@@ -13095,7 +13110,7 @@ Public Sub WriteComment(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.comment)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -14638,7 +14653,7 @@ End Sub
 ' @param    message The message to be sent to players.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteServerMessage(ByVal Message As String)
+Public Sub WriteServerMessage(ByVal message As String)
     
     On Error GoTo WriteServerMessage_Err
     
@@ -14651,7 +14666,7 @@ Public Sub WriteServerMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.ServerMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -14966,7 +14981,7 @@ End Sub
 ' @param    message The message to send to the royal army members.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteRoyalArmyMessage(ByVal Message As String)
+Public Sub WriteRoyalArmyMessage(ByVal message As String)
     
     On Error GoTo WriteRoyalArmyMessage_Err
     
@@ -14979,7 +14994,7 @@ Public Sub WriteRoyalArmyMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.RoyalArmyMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -14998,7 +15013,7 @@ End Sub
 ' @param    message The message to send to the chaos legion member.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChaosLegionMessage(ByVal Message As String)
+Public Sub WriteChaosLegionMessage(ByVal message As String)
     
     On Error GoTo WriteChaosLegionMessage_Err
     
@@ -15011,7 +15026,7 @@ Public Sub WriteChaosLegionMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.ChaosLegionMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -15030,7 +15045,7 @@ End Sub
 ' @param    message The message to send to citizens.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCitizenMessage(ByVal Message As String)
+Public Sub WriteCitizenMessage(ByVal message As String)
     
     On Error GoTo WriteCitizenMessage_Err
     
@@ -15043,7 +15058,7 @@ Public Sub WriteCitizenMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.CitizenMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -15062,7 +15077,7 @@ End Sub
 ' @param    message The message to send to criminals.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCriminalMessage(ByVal Message As String)
+Public Sub WriteCriminalMessage(ByVal message As String)
     
     On Error GoTo WriteCriminalMessage_Err
     
@@ -15075,7 +15090,7 @@ Public Sub WriteCriminalMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.CriminalMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -15094,7 +15109,7 @@ End Sub
 ' @param    message The message to send to the royal army members.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteTalkAsNPC(ByVal Message As String)
+Public Sub WriteTalkAsNPC(ByVal message As String)
     
     On Error GoTo WriteTalkAsNPC_Err
     
@@ -15107,7 +15122,7 @@ Public Sub WriteTalkAsNPC(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.TalkAsNPC)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -15944,7 +15959,7 @@ End Sub
 ' @param    message The message to be set as the new MOTD.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteSetMOTD(ByVal Message As String)
+Public Sub WriteSetMOTD(ByVal message As String)
     
     On Error GoTo WriteSetMOTD_Err
     
@@ -15957,7 +15972,7 @@ Public Sub WriteSetMOTD(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.SetMOTD)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -15976,7 +15991,7 @@ End Sub
 ' @param    message The message to be sent to all players.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteSystemMessage(ByVal Message As String)
+Public Sub WriteSystemMessage(ByVal message As String)
     
     On Error GoTo WriteSystemMessage_Err
     
@@ -15989,7 +16004,7 @@ Public Sub WriteSystemMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.SystemMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
 
     End With
 
@@ -17421,7 +17436,7 @@ WriteOferta_Err:
     
 End Sub
 
-Public Sub WriteGlobalMessage(ByVal Message As String)
+Public Sub WriteGlobalMessage(ByVal message As String)
     
     On Error GoTo WriteGlobalMessage_Err
     
@@ -17434,7 +17449,7 @@ Public Sub WriteGlobalMessage(ByVal Message As String)
     With outgoingData
         Call .WriteByte(ClientPacketID.GlobalMessage)
         
-        Call .WriteASCIIString(Message)
+        Call .WriteASCIIString(message)
         
     End With
 
@@ -18782,7 +18797,7 @@ Private Sub HandleQuestDetails()
     
     Dim cantidadobj   As Integer
 
-    Dim OBJIndex      As Integer
+    Dim objIndex      As Integer
     
     Dim AmountHave      As Integer
     
@@ -18883,13 +18898,13 @@ Private Sub HandleQuestDetails()
                 For i = 1 To tmpByte
                
                     cantidadobj = .ReadInteger
-                    OBJIndex = .ReadInteger
+                    objIndex = .ReadInteger
                     
                     AmountHave = .ReadInteger
                    
-                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(OBJIndex).Name)
+                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(objIndex).Name)
                     subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
-                    subelemento.SubItems(2) = OBJIndex
+                    subelemento.SubItems(2) = objIndex
                     subelemento.SubItems(3) = 1
                 Next i
 
@@ -19000,13 +19015,13 @@ Private Sub HandleQuestDetails()
                 For i = 1 To tmpByte
                
                     cantidadobj = .ReadInteger
-                    OBJIndex = .ReadInteger
+                    objIndex = .ReadInteger
                     
                     AmountHave = .ReadInteger
                    
-                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , ObjData(OBJIndex).Name)
+                    Set subelemento = FrmQuests.ListView1.ListItems.Add(, , ObjData(objIndex).Name)
                     subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
-                    subelemento.SubItems(2) = OBJIndex
+                    subelemento.SubItems(2) = objIndex
                     subelemento.SubItems(3) = 1
                 Next i
 
@@ -19212,7 +19227,7 @@ Public Sub HandleNpcQuestListSend()
     
     Dim cantidadobj   As Integer
 
-    Dim OBJIndex      As Integer
+    Dim objIndex      As Integer
     
     Dim QuestIndex    As Integer
     
@@ -19295,7 +19310,7 @@ Public Sub HandleNpcQuestListSend()
                     For i = 1 To tmpByte
                    
                         QuestList(QuestIndex).RequiredOBJ(i).Amount = .ReadInteger
-                        QuestList(QuestIndex).RequiredOBJ(i).OBJIndex = .ReadInteger
+                        QuestList(QuestIndex).RequiredOBJ(i).objIndex = .ReadInteger
 
                        
                        ' Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).OBJIndex).Name)
@@ -19336,7 +19351,7 @@ Public Sub HandleNpcQuestListSend()
 
                                               
                         QuestList(QuestIndex).RewardOBJ(i).Amount = .ReadInteger
-                        QuestList(QuestIndex).RewardOBJ(i).OBJIndex = .ReadInteger
+                        QuestList(QuestIndex).RewardOBJ(i).objIndex = .ReadInteger
                        
                         'Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).OBJIndex).Name)
                            
@@ -19533,7 +19548,7 @@ Public Sub WriteSendCorreo(ByVal UserNick As String, ByVal msg As String, ByVal 
         Dim i As Byte
 
         For i = 1 To ItemCount
-            Call outgoingData.WriteByte(ItemLista(i).OBJIndex) ' Slot
+            Call outgoingData.WriteByte(ItemLista(i).objIndex) ' Slot
             Call outgoingData.WriteInteger(ItemLista(i).Amount) 'Cantidad
         Next i
 
@@ -19700,7 +19715,7 @@ Private Sub HandleListaCorreo()
     'Fill the inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
 
-        If frmMain.Inventario.OBJIndex(i) <> 0 Then
+        If frmMain.Inventario.objIndex(i) <> 0 Then
             FrmCorreo.lstInv.AddItem frmMain.Inventario.ItemName(i)
             
         Else
@@ -20747,3 +20762,34 @@ Public Sub WriteCreateEvent(EventName As String)
         Call .WriteASCIIString(EventName)
     End With
 End Sub
+
+Private Sub HandleCommerceRecieveChatMessage()
+    
+    If incomingData.length < 4 Then
+        Err.Raise incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    Dim buffer As New clsByteQueue
+    
+    Call buffer.CopyBuffer(incomingData)
+    
+    'Remove packet ID
+    Call buffer.ReadByte
+    Dim message As String
+    
+    message = buffer.ReadASCIIString
+    Call AddtoRichTextBox(frmComerciarUsu.RecTxt, message, 255, 255, 255, 0, False, True, False)
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call incomingData.CopyBuffer(buffer)
+    
+End Sub
+Public Sub WriteCommerceSendChatMessage(ByVal message As String)
+  With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.CommerceSendChatMessage)
+        Call .WriteASCIIString(message)
+    End With
+End Sub
+

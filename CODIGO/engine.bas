@@ -2308,6 +2308,8 @@ Public Sub Start()
                     
                     If frmComerciarUsu.Visible Then
                         DrawInventoryComercio
+                        DrawInventoryUserComercio
+                        DrawInventoryOtherComercio
                     End If
                     
                     
@@ -2333,24 +2335,6 @@ Public Sub Start()
         Else
             Sleep 60&
             Call frmMain.Inventario.ReDraw
-            StartH = False
-                        StartA = False
-                        StartR = False
-                        StartT = False
-                        StartH2 = False
-                        StartA2 = False
-                        StartO = False
-                        StartS = False
-                        MovementH = 0
-                        MovementA = 0
-                        MovementR = 0
-                        MovementT = 0
-                        MovementH2 = 0
-                        MovementA2 = 0
-                        MovementO = 0
-                        MovementS = 0
-                        TimeLast = timeGetTime
-
         End If
 
         DoEvents
@@ -2576,7 +2560,7 @@ Public Sub DrawInterfaceComerciar()
         End Select
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
-        frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
+        frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.objIndex(CurrentInventory.SelectedItem))
         frmComerciar.lblcosto = PonerPuntos(Fix(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
         
         Set CurrentInventory = Nothing
@@ -2669,7 +2653,7 @@ Public Sub DrawInterfaceBovedaCuenta()
         End Select
         
         frmBancoCuenta.lblnombre.Caption = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
-        frmBancoCuenta.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
+        frmBancoCuenta.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.objIndex(CurrentInventory.SelectedItem))
         
         Set CurrentInventory = Nothing
 
@@ -2762,7 +2746,7 @@ Public Sub DrawInterfaceBoveda()
         End Select
         
         frmBancoObj.lblnombre.Caption = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
-        frmBancoObj.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
+        frmBancoObj.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.objIndex(CurrentInventory.SelectedItem))
         
         Set CurrentInventory = Nothing
 
@@ -2844,6 +2828,74 @@ Public Sub DrawInventoryComercio()
 
 DrawInventorysComercio_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventorysComercio", Erl)
+    Resume Next
+    
+End Sub
+
+
+Public Sub DrawInventoryUserComercio()
+    
+    On Error GoTo DrawInventoryUserComercio_Err
+    
+
+    ' Sólo dibujamos cuando es necesario
+    If Not frmComerciarUsu.InvUserSell.NeedsRedraw Then Exit Sub
+
+    Dim InvRect As RECT
+
+    InvRect.Left = 0
+    InvRect.Top = 0
+    InvRect.Right = frmComerciarUsu.picInvUserSell.ScaleWidth
+    InvRect.Bottom = frmComerciarUsu.picInvUserSell.ScaleHeight
+
+    ' Comenzamos la escena
+    Call Engine_BeginScene
+    
+    ' Dibujamos llaves
+    Call frmComerciarUsu.InvUserSell.DrawInventory
+    
+    ' Presentamos la escena
+    Call Engine_EndScene(InvRect, frmComerciarUsu.picInvUserSell.hWnd)
+
+    
+    Exit Sub
+
+DrawInventoryUserComercio_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventoryUserComercio", Erl)
+    Resume Next
+    
+End Sub
+
+
+Public Sub DrawInventoryOtherComercio()
+    
+    On Error GoTo DrawInventoryOtherComercio_Err
+    
+
+    ' Sólo dibujamos cuando es necesario
+    If Not frmComerciarUsu.InvOtherSell.NeedsRedraw Then Exit Sub
+
+    Dim InvRect As RECT
+
+    InvRect.Left = 0
+    InvRect.Top = 0
+    InvRect.Right = frmComerciarUsu.picInvOtherSell.ScaleWidth
+    InvRect.Bottom = frmComerciarUsu.picInvOtherSell.ScaleHeight
+
+    ' Comenzamos la escena
+    Call Engine_BeginScene
+    
+    ' Dibujamos llaves
+    Call frmComerciarUsu.InvOtherSell.DrawInventory
+    
+    ' Presentamos la escena
+    Call Engine_EndScene(InvRect, frmComerciarUsu.picInvOtherSell.hWnd)
+
+    
+    Exit Sub
+
+DrawInventoryOtherComercio_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventoryOtherComercio", Erl)
     Resume Next
     
 End Sub
@@ -3928,8 +3980,8 @@ Public Sub InitializeInventory()
     Set frmBancoObj.InvBankUsu = New clsGrapchicalInventory
     Set frmBancoObj.InvBoveda = New clsGrapchicalInventory
     Set frmComerciarUsu.InvUser = New clsGrapchicalInventory
-   ' Set frmComerciarUsu.InvUserSell = New clsGrapchicalInventory
-   ' Set frmComerciarUsu.InvOtherSell = New clsGrapchicalInventory
+    Set frmComerciarUsu.InvUserSell = New clsGrapchicalInventory
+    Set frmComerciarUsu.InvOtherSell = New clsGrapchicalInventory
     
     Set frmBancoCuenta.InvBankUsuCuenta = New clsGrapchicalInventory
     Set frmBancoCuenta.InvBovedaCuenta = New clsGrapchicalInventory
@@ -3940,8 +3992,8 @@ Public Sub InitializeInventory()
     Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3)
     Call frmComerciarUsu.InvUser.Initialize(frmComerciarUsu.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True)
-    'Call frmComerciarUsu.InvUserSell.Initialize(frmComerciarUsu.picInvUserSell, 6, , , 0, 0, 3, 3, True, 9)
-    'Call frmComerciarUsu.InvOtherSell.Initialize(frmComerciarUsu.picInvOtherSell, 6, , , 0, 0, 3, 3, True, 9)
+    Call frmComerciarUsu.InvUserSell.Initialize(frmComerciarUsu.picInvUserSell, 6, , , 0, 0, 3, 3, True)
+    Call frmComerciarUsu.InvOtherSell.Initialize(frmComerciarUsu.picInvOtherSell, 6, , , 0, 0, 3, 3, True)
    
     Call frmBancoObj.InvBankUsu.Initialize(frmBancoObj.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmBancoObj.InvBoveda.Initialize(frmBancoObj.interface, MAX_BANCOINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3)

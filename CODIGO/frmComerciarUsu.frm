@@ -154,6 +154,7 @@ Begin VB.Form frmComerciarUsu
       _Version        =   393217
       BackColor       =   459782
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -169,6 +170,24 @@ Begin VB.Form frmComerciarUsu
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+   End
+   Begin VB.Image cmdOfrecerOro 
+      Height          =   495
+      Left            =   2760
+      Top             =   6840
+      Width           =   1215
+   End
+   Begin VB.Image cmdMenos 
+      Height          =   285
+      Left            =   780
+      Top             =   5985
+      Width           =   285
+   End
+   Begin VB.Image cmdMas 
+      Height          =   285
+      Left            =   2160
+      Top             =   5985
+      Width           =   285
    End
    Begin VB.Label lblEstadoResp 
       BackStyle       =   0  'Transparent
@@ -190,9 +209,9 @@ Begin VB.Form frmComerciarUsu
       Visible         =   0   'False
       Width           =   2490
    End
-   Begin VB.Label Label1 
+   Begin VB.Label lblMyGold 
       BackStyle       =   0  'Transparent
-      Caption         =   "Label1"
+      Caption         =   "0"
       ForeColor       =   &H0000EAFF&
       Height          =   255
       Left            =   1080
@@ -284,8 +303,10 @@ Public LastIndex1   As Integer
 
 Public WithEvents InvUser As clsGrapchicalInventory
 Attribute InvUser.VB_VarHelpID = -1
-'Public WithEvents InvUserSell As clsGrapchicalInventory
-'Public WithEvents InvOtherSell As clsGrapchicalInventory
+Public WithEvents InvUserSell As clsGrapchicalInventory
+Attribute InvUserSell.VB_VarHelpID = -1
+Public WithEvents InvOtherSell As clsGrapchicalInventory
+Attribute InvOtherSell.VB_VarHelpID = -1
 
 Public LasActionBuy As Boolean
 
@@ -356,34 +377,27 @@ cmdAceptar_MouseMove_Err:
     
 End Sub
 
+Private Sub cmdMas_Click()
+    If Val(txtCant.Text) < 10000 Then
+        txtCant.Text = Val(txtCant.Text + 1)
+    End If
+End Sub
+
+Private Sub cmdMenos_Click()
+    If Val(txtCant.Text) > 0 Then
+        txtCant.Text = Val(txtCant.Text - 1)
+    End If
+End Sub
+
 Private Sub cmdOfrecer_Click()
     
     On Error GoTo cmdOfrecer_Click_Err
     
 
-    If Item = True Then
-        'If List1.ListIndex < 0 Then Exit Sub
-       ' If List1.ItemData(List1.ListIndex) <= 0 Then Exit Sub
+    If InvUser.SelectedItem > 0 Then
+        Call WriteUserCommerceOffer(InvUser.SelectedItem, Val(txtCant.Text))
+    End If
     
-        '    If Val(txtCant.Text) > List1.ItemData(List1.ListIndex) Or _
-        '        Val(txtCant.Text) <= 0 Then Exit Sub
-    ElseIf Item = False Then
-
-        '    If Val(txtCant.Text) > UserGLD Then
-        '        Exit Sub
-        '    End If
-    End If
-
-    If Item = True Then
-      '  Call WriteUserCommerceOffer(List1.ListIndex + 1, Val(txtCant.Text))
-    ElseIf Item = False Then
-        Call WriteUserCommerceOffer(FLAGORO, Val(txtCant.Text))
-    Else
-        Exit Sub
-
-    End If
-
-    lblEstadoResp.Visible = True
 
     
     Exit Sub
@@ -418,6 +432,20 @@ cmdOfrecer_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecer_MouseMove", Erl)
     Resume Next
     
+End Sub
+
+Private Sub cmdOfrecerOro_Click()
+ On Error GoTo cmdOfrecerOro_Click_Err
+
+    If Val(txtOro.Text) > 0 Then
+        Call WriteUserCommerceOffer(FLAGORO, Val(txtOro.Text))
+    End If
+        
+    Exit Sub
+
+cmdOfrecerOro_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecerOro_Click", Erl)
+    Resume Next
 End Sub
 
 Private Sub cmdRechazar_Click()
@@ -476,25 +504,6 @@ Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single,
     '  Command2.Tag = "1"
 End Sub
 
-Private Sub Command2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Command2_MouseMove_Err
-    
-
-    If Command2.Tag = "0" Then
-        Command2.Picture = LoadInterface("comercioseguro_cancelarhover.bmp")
-        Command2.Tag = "1"
-
-    End If
-
-    
-    Exit Sub
-
-Command2_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Command2_MouseMove", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub Form_Deactivate()
     'Me.SetFocus
@@ -543,7 +552,6 @@ Private Sub Form_LostFocus()
     On Error GoTo Form_LostFocus_Err
     
     Me.SetFocus
-    picture1.SetFocus
 
     
     Exit Sub
@@ -580,32 +588,17 @@ End Sub
 
 
 
-Public Sub DibujaGrh(grh As Long)
-    
-    On Error GoTo DibujaGrh_Err
-    
-    Call Grh_Render_To_Hdc(picture1, (grh), 0, 0)
-
-    
-    Exit Sub
-
-DibujaGrh_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.DibujaGrh", Erl)
-    Resume Next
-    
-End Sub
-
 
 Private Sub picInv_Paint()
     Call frmComerciarUsu.InvUser.ReDraw
 End Sub
 
 Private Sub picInvOtherSell_Paint()
-  '  Call frmComerciarUsu.InvOtherSell.ReDraw
+    Call frmComerciarUsu.InvOtherSell.ReDraw
 End Sub
 
 Private Sub picInvUserSell_Paint()
-   ' Call frmComerciarUsu.InvUserSell.ReDraw
+    Call frmComerciarUsu.InvUserSell.ReDraw
 End Sub
 
 Private Sub Text1_GotFocus()
@@ -614,6 +607,16 @@ Private Sub Text1_GotFocus()
         Text1.ForeColor = vbWhite
     End If
 End Sub
+
+
+Private Sub Text1_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        If Text1.Text <> "" Then Call WriteCommerceSendChatMessage(Text1.Text)
+        Text1.Text = ""
+        KeyAscii = 0
+    End If
+End Sub
+
 
 Private Sub Text1_LostFocus()
     If Text1.Text = "" Then
