@@ -489,7 +489,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3630,22 +3629,22 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
         ObjLbl.Visible = True
         
-        Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
+        Select Case ObjData(Inventario.objIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.objIndex(Slot)).MinHit & "/" & ObjData(Inventario.objIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.objIndex(Slot)).MinDef & "/" & ObjData(Inventario.objIndex(Slot)).MaxDef
 
             Case eObjType.otCASCO
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.objIndex(Slot)).MinDef & "/" & ObjData(Inventario.objIndex(Slot)).MaxDef
 
             Case eObjType.otESCUDO
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.objIndex(Slot)).MinDef & "/" & ObjData(Inventario.objIndex(Slot)).MaxDef
 
             Case Else
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & ObjData(Inventario.OBJIndex(Slot)).Texto
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & ObjData(Inventario.objIndex(Slot)).Texto
 
         End Select
         
@@ -4036,7 +4035,7 @@ Private Sub renderer_Click()
     On Error GoTo renderer_Click_Err
     
     Call Form_Click
-    
+    If SendTxt.Visible Then SendTxt.SetFocus
     Exit Sub
 
 renderer_Click_Err:
@@ -4363,6 +4362,7 @@ Private Sub cmdLanzar_Click()
                 End If
             End If
 
+            
             Call WriteCastSpell(hlst.ListIndex + 1)
             'Call WriteWork(eSkill.Magia)
             UsaMacro = True
@@ -4845,7 +4845,7 @@ Private Sub picInv_DblClick()
     ' Hacemos acción del doble clic correspondiente
     Dim ObjType As Byte
 
-    ObjType = ObjData(Inventario.OBJIndex(Inventario.SelectedItem)).ObjType
+    ObjType = ObjData(Inventario.objIndex(Inventario.SelectedItem)).ObjType
 
     Select Case ObjType
 
@@ -4854,7 +4854,7 @@ Private Sub picInv_DblClick()
             
         Case eObjType.otWeapon
 
-            If ObjData(Inventario.OBJIndex(Inventario.SelectedItem)).proyectil = 1 And Inventario.Equipped(Inventario.SelectedItem) Then
+            If ObjData(Inventario.objIndex(Inventario.SelectedItem)).proyectil = 1 And Inventario.Equipped(Inventario.SelectedItem) Then
                 Call WriteUseItem(Inventario.SelectedItem)
             Else
                 Call WriteEquipItem(Inventario.SelectedItem)
@@ -5341,7 +5341,7 @@ Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
     Dim Data() As Byte
 
     ' WyroX: Sólo leemos la cantidad que entre en la cola!!
-    Call Socket1.Read(RD, Min(dataLength, incomingData.Capacity - incomingData.length))
+    Call Socket1.Read(RD, min(dataLength, incomingData.Capacity - incomingData.length))
     Data = StrConv(RD, vbFromUnicode)
 
     'Put data in the buffer
