@@ -8603,7 +8603,7 @@ Private Sub HandleChangeUserTradeSlot()
     If miOferta Then
         Dim OroAEnviar As Long
         OroAEnviar = buffer.ReadLong
-        frmComerciarUsu.lblOroMiOferta.Caption = OroAEnviar
+        frmComerciarUsu.lblOroMiOferta.Caption = PonerPuntos(OroAEnviar)
         frmComerciarUsu.lblMyGold.Caption = PonerPuntos(Val(frmMain.GldLbl.Caption - OroAEnviar))
         For i = 1 To 6
             With OtroInventario(i)
@@ -8619,7 +8619,7 @@ Private Sub HandleChangeUserTradeSlot()
         
         Call frmComerciarUsu.InvUserSell.ReDraw
     Else
-        frmComerciarUsu.lblOro.Caption = buffer.ReadLong
+        frmComerciarUsu.lblOro.Caption = PonerPuntos(buffer.ReadLong)
        ' frmComerciarUsu.List2.Clear
         For i = 1 To 6
             
