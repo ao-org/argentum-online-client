@@ -182,7 +182,7 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Public LastIndex1           As Integer
 
@@ -201,7 +201,7 @@ Attribute InvComUsu.VB_VarHelpID = -1
 Public WithEvents InvComNpc As clsGrapchicalInventory ' Inventario con los items que ofrece el npc
 Attribute InvComNpc.VB_VarHelpID = -1
 
-Private Sub moverForm()
+Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
     
@@ -209,13 +209,13 @@ Private Sub moverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub
 
 moverForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.moverForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.moverForm", Erl)
     Resume Next
     
 End Sub
@@ -242,7 +242,7 @@ Private Sub cantidad_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 cantidad_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cantidad_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cantidad_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -276,7 +276,7 @@ Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As 
     Exit Sub
 
 cmdMasMenos_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cmdMasMenos_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cmdMasMenos_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -310,7 +310,7 @@ Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As 
     Exit Sub
 
 cmdMasMenos_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cmdMasMenos_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cmdMasMenos_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -326,7 +326,7 @@ Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As In
     Exit Sub
 
 cmdMasMenos_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cmdMasMenos_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cmdMasMenos_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -345,7 +345,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -388,7 +388,7 @@ Private Sub Image1_Click(Index As Integer)
     Exit Sub
 
 Image1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Image1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Image1_Click", Erl)
     Resume Next
     
 End Sub
@@ -404,7 +404,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -413,7 +413,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    moverForm
+    MoverForm
 
     If Image1(0).Tag = "1" Then
         Image1(0).Picture = Nothing
@@ -443,7 +443,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Form_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -468,7 +468,7 @@ Private Sub addRemove_Click(Index As Integer)
     Exit Sub
 
 addRemove_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.addRemove_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.addRemove_Click", Erl)
     Resume Next
     
 End Sub
@@ -497,7 +497,7 @@ Private Sub cantidad_Change()
     Exit Sub
 
 cantidad_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.cantidad_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cantidad_Change", Erl)
     Resume Next
     
 End Sub
@@ -512,7 +512,7 @@ Private Sub Form_Unload(Cancel As Integer)
     Exit Sub
 
 Form_Unload_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Form_Unload", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_Unload", Erl)
     Resume Next
     
 End Sub
@@ -535,7 +535,7 @@ Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integ
     Exit Sub
 
 Image1_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Image1_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Image1_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -566,7 +566,7 @@ Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integ
     Exit Sub
 
 Image1_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.Image1_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Image1_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -590,7 +590,7 @@ Private Sub interface_Click()
     Exit Sub
 
 interface_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.interface_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.interface_Click", Erl)
     Resume Next
     
 End Sub
@@ -606,12 +606,12 @@ Private Sub interface_DblClick()
     
         LasActionBuy = True
 
-        If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
-            Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
-        Else
-            AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+      '  If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
+      '      Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
+      '  Else
+      '      AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
 
-        End If
+      '  End If
         
     ElseIf InvComUsu.ClickedInside Then
     
@@ -620,7 +620,7 @@ Private Sub interface_DblClick()
         ' Hacemos acción del doble clic correspondiente
         Dim ObjType As Byte
 
-        ObjType = ObjData(InvComUsu.OBJIndex(InvComUsu.SelectedItem)).ObjType
+        ObjType = ObjData(InvComUsu.objIndex(InvComUsu.SelectedItem)).ObjType
         
         If UserMeditar Then Exit Sub
         If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
@@ -632,7 +632,7 @@ Private Sub interface_DblClick()
                 
             Case eObjType.otWeapon
 
-                If ObjData(InvComUsu.OBJIndex(InvComUsu.SelectedItem)).proyectil = 1 And InvComUsu.Equipped(InvComUsu.SelectedItem) Then
+                If ObjData(InvComUsu.objIndex(InvComUsu.SelectedItem)).proyectil = 1 And InvComUsu.Equipped(InvComUsu.SelectedItem) Then
                     Call WriteUseItem(InvComUsu.SelectedItem)
                 Else
                     Call WriteEquipItem(InvComUsu.SelectedItem)
@@ -659,7 +659,7 @@ Private Sub interface_DblClick()
     Exit Sub
 
 interface_DblClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.interface_DblClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.interface_DblClick", Erl)
     Resume Next
     
 End Sub
@@ -721,7 +721,7 @@ Private Sub interface_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 interface_KeyDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.interface_KeyDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.interface_KeyDown", Erl)
     Resume Next
     
 End Sub
@@ -751,7 +751,7 @@ Private Sub InvComUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
     Exit Sub
 
 InvComUsu_ItemDropped_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.InvComUsu_ItemDropped", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.InvComUsu_ItemDropped", Erl)
     Resume Next
     
 End Sub
@@ -780,7 +780,7 @@ Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
     Exit Sub
 
 InvComNpc_ItemDropped_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.InvComNpc_ItemDropped", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.InvComNpc_ItemDropped", Erl)
     Resume Next
     
 End Sub
@@ -795,7 +795,7 @@ Private Sub salir_Click()
     Exit Sub
 
 salir_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.salir_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.salir_Click", Erl)
     Resume Next
     
 End Sub
@@ -830,7 +830,7 @@ Private Sub tmrNumber_Timer()
     Exit Sub
 
 tmrNumber_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmComerciar.tmrNumber_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.tmrNumber_Timer", Erl)
     Resume Next
     
 End Sub
