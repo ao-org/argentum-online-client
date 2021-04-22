@@ -2560,7 +2560,7 @@ Public Sub DrawInterfaceComerciar()
         End Select
                            
         frmComerciar.lblnombre = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
-        frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.objIndex(CurrentInventory.SelectedItem))
+        frmComerciar.lbldesc = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
         frmComerciar.lblcosto = PonerPuntos(Fix(CurrentInventory.Valor(CurrentInventory.SelectedItem) * cantidad))
         
         Set CurrentInventory = Nothing
@@ -2653,7 +2653,7 @@ Public Sub DrawInterfaceBovedaCuenta()
         End Select
         
         frmBancoCuenta.lblnombre.Caption = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
-        frmBancoCuenta.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.objIndex(CurrentInventory.SelectedItem))
+        frmBancoCuenta.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
         
         Set CurrentInventory = Nothing
 
@@ -2746,7 +2746,7 @@ Public Sub DrawInterfaceBoveda()
         End Select
         
         frmBancoObj.lblnombre.Caption = CurrentInventory.ItemName(CurrentInventory.SelectedItem) & str
-        frmBancoObj.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.objIndex(CurrentInventory.SelectedItem))
+        frmBancoObj.lbldesc.Caption = CurrentInventory.GetInfo(CurrentInventory.OBJIndex(CurrentInventory.SelectedItem))
         
         Set CurrentInventory = Nothing
 

@@ -60,17 +60,16 @@ Public Sub Begin()
     
     On Error GoTo Begin_Err
     
-    Call DirectDevice.SetTexture(0, Nothing)
     Call DirectDevice.SetStreamSource(0, m_VBuffer, 24)
     Call DirectDevice.SetIndices(m_IBuffer, 0)
 
     Call SetAlpha(False)
-
+    Call SetTexture(Nothing)
     
     Exit Sub
 
 Begin_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.Begin", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.Begin", Erl)
     Resume Next
     
 End Sub
@@ -88,7 +87,7 @@ Public Sub BeginPrecalculated(ByVal x As Single, ByVal y As Single)
     Exit Sub
 
 BeginPrecalculated_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.BeginPrecalculated", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.BeginPrecalculated", Erl)
     Resume Next
     
 End Sub
@@ -103,7 +102,7 @@ Public Sub EndPrecalculated()
     Exit Sub
 
 EndPrecalculated_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.EndPrecalculated", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.EndPrecalculated", Erl)
     Resume Next
     
 End Sub
@@ -139,7 +138,7 @@ Public Sub SetAlpha(ByVal IsAlpha As Boolean)
     Exit Sub
 
 SetAlpha_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.SetAlpha", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.SetAlpha", Erl)
     Resume Next
     
 End Sub
@@ -169,7 +168,7 @@ Public Sub SetTexture(ByRef Texture As Direct3DTexture8)
     Exit Sub
 
 SetTexture_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.SetTexture", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.SetTexture", Erl)
     Resume Next
     
 End Sub
@@ -291,7 +290,7 @@ Friend Sub Draw(ByVal x As Long, _
     Exit Sub
 
 Draw_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.Draw", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.Draw", Erl)
     Resume Next
     
 End Sub
@@ -313,7 +312,7 @@ Friend Sub DrawShadow(ByVal x As Long, _
 
     Dim i As Integer
     For i = 0 To 3
-        Color(i).A = (0.2126 * ColorLight(i).R + 0.7152 * ColorLight(i).G + 0.0722 * ColorLight(i).B) ^ 2 * 0.000625
+        Color(i).A = (0.2126 * ColorLight(i).r + 0.7152 * ColorLight(i).G + 0.0722 * ColorLight(i).B) ^ 2 * 0.000625
     Next
 
     Dim dX As Single, dy As Single
@@ -371,7 +370,7 @@ Friend Sub DrawShadow(ByVal x As Long, _
     Exit Sub
 
 DrawShadow_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.DrawShadow", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.DrawShadow", Erl)
     Resume Next
     
 End Sub
@@ -394,7 +393,7 @@ Friend Sub DrawReflection(ByVal x As Long, _
     Dim i As Integer
     For i = 0 To 3
         Color(i).A = ColorLight(i).A * 0.5
-        Color(i).R = ColorLight(i).R * 0.2
+        Color(i).r = ColorLight(i).r * 0.2
         Color(i).G = ColorLight(i).G * 0.5
         Color(i).B = ColorLight(i).B
     Next
@@ -448,7 +447,7 @@ Friend Sub DrawReflection(ByVal x As Long, _
     Exit Sub
 
 DrawReflection_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.DrawReflection", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.DrawReflection", Erl)
     Resume Next
     
 End Sub
@@ -515,7 +514,7 @@ Friend Sub DrawBreathing(ByVal x As Long, _
     Exit Sub
 
 DrawBreathing_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.DrawBreathing", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.DrawBreathing", Erl)
     Resume Next
     
 End Sub
@@ -590,7 +589,7 @@ Friend Sub DrawWater(ByVal x As Single, _
     Exit Sub
 
 DrawWater_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.DrawWater", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.DrawWater", Erl)
     Resume Next
     
 End Sub
@@ -665,7 +664,7 @@ Friend Sub DrawLava(ByVal x As Single, _
     Exit Sub
 
 DrawLava_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.DrawLava", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.DrawLava", Erl)
     Resume Next
     
 End Sub
@@ -690,7 +689,7 @@ Friend Sub DrawVertices(vertices() As TYPE_VERTEX)
     Exit Sub
 
 DrawVertices_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.DrawVertices", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.DrawVertices", Erl)
     Resume Next
     
 End Sub
@@ -709,7 +708,7 @@ Public Sub Finish()
     Exit Sub
 
 Finish_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.Finish", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.Finish", Erl)
     Resume Next
     
 End Sub
@@ -742,7 +741,7 @@ Public Sub Flush()
     Exit Sub
 
 Flush_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.Flush", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.Flush", Erl)
     Resume Next
     
 End Sub
@@ -787,7 +786,7 @@ Public Sub Initialize(ByVal Capacity As Long)
     Exit Sub
 
 Initialize_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsBatch.Initialize", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.Initialize", Erl)
     Resume Next
     
 End Sub
