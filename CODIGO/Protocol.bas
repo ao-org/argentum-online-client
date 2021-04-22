@@ -1987,6 +1987,17 @@ Private Sub HandleUserCommerceInit()
         
     frmComerciarUsu.lblMyGold.Caption = frmMain.GldLbl.Caption
     Call frmComerciarUsu.InvUser.ReDraw
+    Dim j As Byte
+    For j = 1 To 6
+        frmComerciarUsu.InvOtherSell.SetItem j, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        frmComerciarUsu.InvUserSell.SetItem j, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    Next j
+    
+        frmComerciarUsu.InvOtherSell.ReDraw
+        frmComerciarUsu.InvUserSell.ReDraw
+        
+        frmComerciarUsu.InvUserSell.DrawInventory
+        frmComerciarUsu.InvOtherSell.DrawInventory
     
     'Set state and show form
     Comerciando = True
@@ -8594,7 +8605,7 @@ Private Sub HandleChangeUserTradeSlot()
         OroAEnviar = buffer.ReadLong
         frmComerciarUsu.lblOroMiOferta.Caption = OroAEnviar
         frmComerciarUsu.lblMyGold.Caption = PonerPuntos(Val(frmMain.GldLbl.Caption - OroAEnviar))
-        For i = 1 To 5
+        For i = 1 To 6
             With OtroInventario(i)
                 objIndex = buffer.ReadInteger
                 nombreItem = buffer.ReadASCIIString
@@ -8610,7 +8621,7 @@ Private Sub HandleChangeUserTradeSlot()
     Else
         frmComerciarUsu.lblOro.Caption = buffer.ReadLong
        ' frmComerciarUsu.List2.Clear
-        For i = 1 To 5
+        For i = 1 To 6
             
             With OtroInventario(i)
                  objIndex = buffer.ReadInteger
