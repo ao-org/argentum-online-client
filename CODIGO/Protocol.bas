@@ -20730,12 +20730,14 @@ WriteCuentaDeposit_Err:
     
 End Sub
 
-Public Sub WriteDuel(Players As String, ByVal Apuesta As Long)
+Public Sub WriteDuel(Players As String, ByVal Apuesta As Long, Optional ByVal PocionesRojas As Long = -1, Optional ByVal CaenItems As Boolean = False)
     With outgoingData
         Call .WriteByte(ClientPacketID.newPacketID)
         Call .WriteByte(NewPacksID.Duel)
         Call .WriteASCIIString(Players)
         Call .WriteLong(Apuesta)
+        Call .WriteInteger(PocionesRojas)
+        Call .WriteBoolean(CaenItems)
     End With
 End Sub
 

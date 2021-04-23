@@ -1046,10 +1046,9 @@ Sub Main()
     
     Call CargarOpciones
     
-    If FileExist(App.Path & "\..\LauncherAO20.ex_", vbNormal) Then
-        Call Sleep(2)
-        Delete_File App.Path & "\..\LauncherAO20.exe"
-        Name App.Path & "\..\LauncherAO20.ex_" As App.Path & "\..\LauncherAO20.exe"
+    If FileExist(App.Path & "\..\..\Launcher\LauncherAO20.ex_", vbNormal) Then
+        Kill App.Path & "\..\..\Launcher\LauncherAO20.exe"
+        Name App.Path & "\..\..\Launcher\LauncherAO20.ex_" As App.Path & "\..\..\Launcher\LauncherAO20.exe"
     End If
 
     'Cursores******

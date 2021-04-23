@@ -1,8 +1,9 @@
 VERSION 5.00
 Begin VB.Form frmRetos 
+   BackColor       =   &H8000000D&
    BorderStyle     =   0  'None
    Caption         =   "Retos"
-   ClientHeight    =   6120
+   ClientHeight    =   7305
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   4365
@@ -10,10 +11,33 @@ Begin VB.Form frmRetos
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   408
+   Picture         =   "frmRetos.frx":57E2
+   ScaleHeight     =   487
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   291
    StartUpPosition =   1  'CenterOwner
+   Begin VB.TextBox txtPociones 
+      Alignment       =   2  'Center
+      BackColor       =   &H0014140F&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   2955
+      TabIndex        =   13
+      Text            =   "10000"
+      Top             =   4695
+      Visible         =   0   'False
+      Width           =   615
+   End
    Begin VB.TextBox Jugador 
       Alignment       =   2  'Center
       BackColor       =   &H000A0A0A&
@@ -32,7 +56,7 @@ Begin VB.Form frmRetos
       Index           =   9
       Left            =   2310
       TabIndex        =   10
-      Top             =   4230
+      Top             =   4200
       Visible         =   0   'False
       Width           =   1575
    End
@@ -54,7 +78,7 @@ Begin VB.Form frmRetos
       Index           =   8
       Left            =   480
       TabIndex        =   9
-      Top             =   4230
+      Top             =   4200
       Visible         =   0   'False
       Width           =   1575
    End
@@ -76,7 +100,7 @@ Begin VB.Form frmRetos
       Index           =   7
       Left            =   2310
       TabIndex        =   8
-      Top             =   3750
+      Top             =   3720
       Visible         =   0   'False
       Width           =   1575
    End
@@ -98,7 +122,7 @@ Begin VB.Form frmRetos
       Index           =   6
       Left            =   480
       TabIndex        =   7
-      Top             =   3750
+      Top             =   3720
       Visible         =   0   'False
       Width           =   1575
    End
@@ -120,7 +144,7 @@ Begin VB.Form frmRetos
       Index           =   5
       Left            =   2310
       TabIndex        =   6
-      Top             =   3270
+      Top             =   3240
       Visible         =   0   'False
       Width           =   1575
    End
@@ -142,7 +166,7 @@ Begin VB.Form frmRetos
       Index           =   4
       Left            =   480
       TabIndex        =   5
-      Top             =   3270
+      Top             =   3240
       Visible         =   0   'False
       Width           =   1575
    End
@@ -164,7 +188,7 @@ Begin VB.Form frmRetos
       Index           =   3
       Left            =   2310
       TabIndex        =   4
-      Top             =   2790
+      Top             =   2760
       Visible         =   0   'False
       Width           =   1575
    End
@@ -186,7 +210,7 @@ Begin VB.Form frmRetos
       Index           =   2
       Left            =   480
       TabIndex        =   3
-      Top             =   2790
+      Top             =   2760
       Visible         =   0   'False
       Width           =   1575
    End
@@ -208,7 +232,7 @@ Begin VB.Form frmRetos
       Index           =   1
       Left            =   2310
       TabIndex        =   2
-      Top             =   2310
+      Top             =   2280
       Width           =   1575
    End
    Begin VB.TextBox txtPPT 
@@ -247,10 +271,10 @@ Begin VB.Form frmRetos
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   225
-      Left            =   1920
+      Left            =   1800
       TabIndex        =   11
       Text            =   "20000"
-      Top             =   4845
+      Top             =   5490
       Width           =   1455
    End
    Begin VB.TextBox Jugador 
@@ -273,15 +297,35 @@ Begin VB.Form frmRetos
       Left            =   480
       TabIndex        =   1
       Text            =   "Nombre"
-      Top             =   2310
+      Top             =   2280
       Width           =   1575
+   End
+   Begin VB.Image CAMPO_CORTO 
+      Height          =   405
+      Left            =   2760
+      Picture         =   "frmRetos.frx":6E4DE
+      Top             =   4605
+      Visible         =   0   'False
+      Width           =   1035
+   End
+   Begin VB.Image Image2 
+      Height          =   255
+      Left            =   840
+      Top             =   5955
+      Width           =   255
+   End
+   Begin VB.Image Image1 
+      Height          =   255
+      Left            =   465
+      Top             =   4665
+      Width           =   255
    End
    Begin VB.Image Campo 
       Height          =   405
       Index           =   9
       Left            =   2265
-      Picture         =   "frmRetos.frx":57E2
-      Top             =   4140
+      Picture         =   "frmRetos.frx":6FB12
+      Top             =   4110
       Visible         =   0   'False
       Width           =   1680
    End
@@ -289,8 +333,8 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   8
       Left            =   435
-      Picture         =   "frmRetos.frx":7B96
-      Top             =   4140
+      Picture         =   "frmRetos.frx":71EC6
+      Top             =   4110
       Visible         =   0   'False
       Width           =   1680
    End
@@ -298,8 +342,8 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   7
       Left            =   2265
-      Picture         =   "frmRetos.frx":9F4A
-      Top             =   3660
+      Picture         =   "frmRetos.frx":7427A
+      Top             =   3630
       Visible         =   0   'False
       Width           =   1680
    End
@@ -307,8 +351,8 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   6
       Left            =   435
-      Picture         =   "frmRetos.frx":C2FE
-      Top             =   3660
+      Picture         =   "frmRetos.frx":7662E
+      Top             =   3630
       Visible         =   0   'False
       Width           =   1680
    End
@@ -316,8 +360,8 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   5
       Left            =   2265
-      Picture         =   "frmRetos.frx":E6B2
-      Top             =   3180
+      Picture         =   "frmRetos.frx":789E2
+      Top             =   3150
       Visible         =   0   'False
       Width           =   1680
    End
@@ -325,8 +369,8 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   4
       Left            =   435
-      Picture         =   "frmRetos.frx":10A66
-      Top             =   3180
+      Picture         =   "frmRetos.frx":7AD96
+      Top             =   3150
       Visible         =   0   'False
       Width           =   1680
    End
@@ -334,8 +378,8 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   3
       Left            =   2265
-      Picture         =   "frmRetos.frx":12E1A
-      Top             =   2700
+      Picture         =   "frmRetos.frx":7D14A
+      Top             =   2670
       Visible         =   0   'False
       Width           =   1680
    End
@@ -343,8 +387,8 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   2
       Left            =   435
-      Picture         =   "frmRetos.frx":151CE
-      Top             =   2700
+      Picture         =   "frmRetos.frx":7F4FE
+      Top             =   2670
       Visible         =   0   'False
       Width           =   1680
    End
@@ -352,16 +396,16 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   1
       Left            =   2265
-      Picture         =   "frmRetos.frx":17582
-      Top             =   2220
+      Picture         =   "frmRetos.frx":818B2
+      Top             =   2190
       Width           =   1680
    End
    Begin VB.Image Campo 
       Height          =   405
       Index           =   0
       Left            =   435
-      Picture         =   "frmRetos.frx":19936
-      Top             =   2220
+      Picture         =   "frmRetos.frx":83C66
+      Top             =   2190
       Width           =   1680
    End
    Begin VB.Image Cerrar 
@@ -389,7 +433,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Left            =   1350
       Tag             =   "0"
-      Top             =   5415
+      Top             =   6720
       Width           =   1650
    End
    Begin VB.Label Error 
@@ -408,7 +452,7 @@ Begin VB.Form frmRetos
       Height          =   225
       Left            =   480
       TabIndex        =   12
-      Top             =   5190
+      Top             =   5760
       Width           =   3375
    End
 End
@@ -419,6 +463,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private PocionesRojas As Boolean
+Private CaenItems As Boolean
 Private Const MAX_JUGADORES = 5
 
 Private Sub Apuesta_Change()
@@ -443,12 +489,12 @@ Private Sub Cerrar_Click()
     Unload Me
 End Sub
 
-Private Sub Cerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Cerrar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Cerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     Cerrar.Tag = "1"
 End Sub
 
-Private Sub Cerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Cerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Cerrar.Tag = "0" Then
         Cerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         Cerrar.Tag = "1"
@@ -457,16 +503,28 @@ End Sub
 
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanaretos.bmp")
+    CAMPO_CORTO.Picture = LoadInterface("campo-corto.bmp")
 
     Jugador(0) = UserName
-    
+    PocionesRojas = False
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
 End Sub
+Private Sub cmdMas_Click()
+    If Val(txtPociones.Text) < 10000 Then
+        txtPociones.Text = Val(txtPociones.Text + 1)
+    End If
+End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdMenos_Click()
+    If Val(txtPociones.Text) > 0 Then
+        txtPociones.Text = Val(txtPociones.Text - 1)
+    End If
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
-    Call moverForm(Me.hWnd)
+    
+    Call MoverForm(Me.hWnd)
 
     If Cerrar.Tag = "1" Then
         Set Cerrar.Picture = Nothing
@@ -489,23 +547,63 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     End If
 End Sub
 
+Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If CaenItems Then
+        CaenItems = False
+    Else
+        CaenItems = True
+
+    End If
+        
+    If CaenItems = 0 Then
+        Image2.Picture = Nothing
+    Else
+        Image2.Picture = LoadInterface("check-amarillo.bmp")
+
+    End If
+    
+    Exit Sub
+End Sub
+
+Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If PocionesRojas Then
+        PocionesRojas = False
+        CAMPO_CORTO.Visible = False
+        txtPociones.Visible = False
+    Else
+        PocionesRojas = True
+        CAMPO_CORTO.Visible = True
+        txtPociones.Visible = True
+
+    End If
+        
+    If PocionesRojas = 0 Then
+        Image1.Picture = Nothing
+    Else
+        Image1.Picture = LoadInterface("check-amarillo.bmp")
+
+    End If
+    
+    Exit Sub
+End Sub
+
 Private Sub Jugador_Change(Index As Integer)
     Error.Caption = vbNullString
 End Sub
 
-Private Sub RestarJugadores_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RestarJugadores_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     RestarJugadores.Picture = LoadInterface("boton-sm-menos-off.bmp")
     RestarJugadores.Tag = "1"
 End Sub
 
-Private Sub RestarJugadores_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RestarJugadores_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If RestarJugadores.Tag = "0" Then
         RestarJugadores.Picture = LoadInterface("boton-sm-menos-over.bmp")
         RestarJugadores.Tag = "1"
     End If
 End Sub
 
-Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Dim CantidadJugadores As Byte
     CantidadJugadores = Val(txtPPT.Text)
     
@@ -519,29 +617,29 @@ Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, x As Si
     Call ActualizarCampos
 End Sub
 
-Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Retar.Picture = LoadInterface("boton-retar-ES-off.bmp")
     Retar.Tag = "1"
 End Sub
 
-Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Retar.Tag = "0" Then
         Retar.Picture = LoadInterface("boton-retar-ES-over.bmp")
         Retar.Tag = "1"
     End If
 End Sub
 
-Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Retar.Picture = LoadInterface("boton-retar-ES-over.bmp")
     Retar.Tag = "1"
 End Sub
 
-Private Sub SumarJugadores_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SumarJugadores_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     SumarJugadores.Picture = LoadInterface("boton-sm-mas-off.bmp")
     SumarJugadores.Tag = "1"
 End Sub
 
-Private Sub SumarJugadores_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SumarJugadores_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If SumarJugadores.Tag = "0" Then
         SumarJugadores.Picture = LoadInterface("boton-sm-mas-over.bmp")
         SumarJugadores.Tag = "1"
@@ -560,9 +658,9 @@ Private Sub Retar_Click()
     Next
         
     Players = Left$(Players, Len(Players) - 1)
+
+    Call WriteDuel(Players, CLng(Apuesta.Text), IIf(PocionesRojas, Val(txtPociones.Text), -1), CaenItems)
     
-    Call WriteDuel(Players, CLng(Apuesta.Text))
-        
     Unload Me
 
 End Sub
@@ -600,12 +698,19 @@ Private Function Validar() As Boolean
         Next
     Next
     
+    If PocionesRojas Then
+        If Val(txtPociones.Text) < 0 Or Val(txtPociones.Text) > 10000000 Then
+            Error.Caption = "¡No puedes apostar mas de 10.000.000 de monedas de oro!"
+            Exit Function
+        End If
+    End If
+    
     Error.Caption = vbNullString
     Validar = True
 
 End Function
 
-Private Sub SumarJugadores_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub SumarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Dim CantidadJugadores As Byte
     CantidadJugadores = Val(txtPPT.Text)
     

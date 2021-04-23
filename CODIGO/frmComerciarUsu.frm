@@ -12,7 +12,6 @@ Begin VB.Form frmComerciarUsu
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmComerciarUsu.frx":0000
    ScaleHeight     =   583
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   575
@@ -154,13 +153,12 @@ Begin VB.Form frmComerciarUsu
       _Version        =   393217
       BackColor       =   459782
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmComerciarUsu.frx":F5F84
+      TextRTF         =   $"frmComerciarUsu.frx":0000
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Alegreya Sans AO"
          Size            =   9
@@ -171,11 +169,17 @@ Begin VB.Form frmComerciarUsu
          Strikethrough   =   0   'False
       EndProperty
    End
-   Begin VB.Image cmdOfrecerOro 
+   Begin VB.Image Image1 
       Height          =   495
-      Left            =   2760
-      Top             =   6840
-      Width           =   1215
+      Left            =   8160
+      Top             =   0
+      Width           =   495
+   End
+   Begin VB.Image cmdOfrecerOro 
+      Height          =   420
+      Left            =   2775
+      Top             =   6900
+      Width           =   1125
    End
    Begin VB.Image cmdMenos 
       Height          =   285
@@ -242,25 +246,25 @@ Begin VB.Form frmComerciarUsu
       Width           =   1335
    End
    Begin VB.Image cmdOfrecer 
-      Height          =   405
-      Left            =   2640
+      Height          =   420
+      Left            =   2775
       Tag             =   "0"
-      Top             =   6000
-      Width           =   1380
+      Top             =   5940
+      Width           =   1125
    End
    Begin VB.Image cmdRechazar 
-      Height          =   480
-      Left            =   2280
+      Height          =   420
+      Left            =   2070
       Tag             =   "0"
-      Top             =   7920
-      Width           =   1440
+      Top             =   7995
+      Width           =   1980
    End
    Begin VB.Image cmdAceptar 
-      Height          =   495
-      Left            =   4800
+      Height          =   420
+      Left            =   4590
       Tag             =   "0"
-      Top             =   7920
-      Width           =   1335
+      Top             =   7995
+      Width           =   1980
    End
 End
 Attribute VB_Name = "frmComerciarUsu"
@@ -344,19 +348,19 @@ cmdAceptar_Click_Err:
     
 End Sub
 
-Private Sub cmdAceptar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdAceptar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-    ' cmdAceptar.Picture = LoadInterface("comercioseguro_aceptarpress.bmp")
-    'cmdAceptar.Tag = "1"
+     cmdAceptar.Picture = LoadInterface("boton-aceptar-ES-off.bmp")
+    cmdAceptar.Tag = "1"
 End Sub
 
-Private Sub cmdAceptar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdAceptar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdAceptar_MouseMove_Err
     
 
     If cmdAceptar.Tag = "0" Then
-        cmdAceptar.Picture = LoadInterface("comercioseguro_aceptarhover.bmp")
+        cmdAceptar.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
         cmdAceptar.Tag = "1"
 
     End If
@@ -377,17 +381,11 @@ cmdAceptar_MouseMove_Err:
     
 End Sub
 
-Private Sub cmdMas_Click()
-    If Val(txtCant.Text) < 10000 Then
-        txtCant.Text = Val(txtCant.Text + 1)
-    End If
+Private Sub cmdAceptar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+     cmdAceptar.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
+    cmdAceptar.Tag = "1"
 End Sub
 
-Private Sub cmdMenos_Click()
-    If Val(txtCant.Text) > 0 Then
-        txtCant.Text = Val(txtCant.Text - 1)
-    End If
-End Sub
 
 Private Sub cmdOfrecer_Click()
     
@@ -408,19 +406,19 @@ cmdOfrecer_Click_Err:
     
 End Sub
 
-Private Sub cmdOfrecer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdOfrecer_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-    'cmdOfrecer.Picture = LoadInterface("comercioseguro_ofrecerpress.bmp")
-    'cmdOfrecer.Tag = "1"
+    cmdOfrecer.Picture = LoadInterface("boton-ofrecer-off.bmp")
+    cmdOfrecer.Tag = "1"
 End Sub
 
-Private Sub cmdOfrecer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdOfrecer_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdOfrecer_MouseMove_Err
     
 
     If cmdOfrecer.Tag = "0" Then
-        cmdOfrecer.Picture = LoadInterface("comercioseguro_ofrecerhover.bmp")
+        cmdOfrecer.Picture = LoadInterface("boton-ofrecer-over.bmp")
         cmdOfrecer.Tag = "1"
 
     End If
@@ -434,6 +432,10 @@ cmdOfrecer_MouseMove_Err:
     
 End Sub
 
+Private Sub cmdOfrecerOro_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    cmdOfrecerOro.Picture = LoadInterface("boton-ofrecer-off.bmp")
+    cmdOfrecerOro.Tag = "1"
+End Sub
 Private Sub cmdOfrecerOro_Click()
  On Error GoTo cmdOfrecerOro_Click_Err
 
@@ -446,6 +448,30 @@ Private Sub cmdOfrecerOro_Click()
 cmdOfrecerOro_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecerOro_Click", Erl)
     Resume Next
+End Sub
+
+Private Sub cmdOfrecerOro_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+    On Error GoTo cmdOfrecerOro_MouseMove_Err
+    
+
+    If cmdOfrecerOro.Tag = "0" Then
+        cmdOfrecerOro.Picture = LoadInterface("boton-ofrecer-over.bmp")
+        cmdOfrecerOro.Tag = "1"
+
+    End If
+
+    
+    Exit Sub
+
+cmdOfrecerOro_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecerOro_MouseMove", Erl)
+    Resume Next
+End Sub
+
+Private Sub cmdOfrecerOro_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    cmdOfrecerOro.Picture = LoadInterface("boton-ofrecer-over.bmp")
+    cmdOfrecerOro.Tag = "1"
 End Sub
 
 Private Sub cmdRechazar_Click()
@@ -463,19 +489,19 @@ cmdRechazar_Click_Err:
     
 End Sub
 
-Private Sub cmdRechazar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdRechazar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-    '  cmdRechazar.Picture = LoadInterface("comercioseguro_rechazarpress.bmp")
-    ' cmdRechazar.Tag = "1"
+     cmdRechazar.Picture = LoadInterface("boton-rechazar-es-off.bmp")
+     cmdRechazar.Tag = "1"
 End Sub
 
-Private Sub cmdRechazar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdRechazar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo cmdRechazar_MouseMove_Err
     
 
     If cmdRechazar.Tag = "0" Then
-        cmdRechazar.Picture = LoadInterface("comercioseguro_rechazarhover.bmp")
+        cmdRechazar.Picture = LoadInterface("boton-rechazar-es-over.bmp")
         cmdRechazar.Tag = "1"
 
     End If
@@ -498,7 +524,7 @@ End Sub
 
 
 
-Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     '  Command2.Picture = LoadInterface("comercioseguro_cancelarpress.bmp")
     '  Command2.Tag = "1"
@@ -519,14 +545,23 @@ Private Sub Form_Load()
     'Carga las imagenes...?
     lblEstadoResp.Visible = False
     Item = True
-    
+    Me.Picture = LoadInterface("ventanacomercio.bmp")
     AddtoRichTextBox frmComerciarUsu.RecTxt, "Antes de aceptar la transacción asegúrate de tener suficiente espacio en tu inventario, de lo contrario los items sobrantes caerán al piso.", 255, 19, 19, 1, 0
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Form_Load", Erl)
     Resume Next
     
+End Sub
+Private Sub cmdMenos_Click()
+    If Val(txtCant.Text) > 0 Then
+        txtCant.Text = Val(txtCant.Text - 1)
+    End If
+End Sub
+Private Sub cmdMas_Click()
+    If Val(txtCant.Text) < 10000 Then
+        txtCant.Text = Val(txtCant.Text + 1)
+    End If
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
     
@@ -562,7 +597,7 @@ Form_LostFocus_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
     On Error GoTo Form_MouseMove_Err
     
@@ -588,6 +623,20 @@ End Sub
 
 
 
+
+Private Sub Image1_Click()
+    On Error GoTo Image1_Click_Err
+    
+    Call WriteUserCommerceReject
+
+    
+    Exit Sub
+
+Image1_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Image1_Click", Erl)
+    Resume Next
+    
+End Sub
 
 Private Sub picInv_Paint()
     Call frmComerciarUsu.InvUser.ReDraw
