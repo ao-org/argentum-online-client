@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
 Begin VB.Form frmConnect 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -29,6 +30,13 @@ Begin VB.Form frmConnect
    ScaleWidth      =   1024
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin InetCtlsObjects.Inet Inet1 
+      Left            =   12600
+      Top             =   5880
+      _ExtentX        =   1005
+      _ExtentY        =   1005
+      _Version        =   393216
+   End
    Begin VB.PictureBox render 
       Appearance      =   0  'Flat
       BackColor       =   &H00FFFFFF&
@@ -119,7 +127,7 @@ Private Sub Form_Activate()
     Exit Sub
 
 Form_Activate_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.Form_Activate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.Form_Activate", Erl)
     Resume Next
     
 End Sub
@@ -139,7 +147,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 Form_KeyDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.Form_KeyDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.Form_KeyDown", Erl)
     Resume Next
     
 End Sub
@@ -165,15 +173,17 @@ Private Sub Form_Load()
     Call Form_RemoveTitleBar(Me)
     Me.Width = 1024 * Screen.TwipsPerPixelX
     Me.Height = 768 * Screen.TwipsPerPixelY
-
+    Call Analizar
     
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.Form_Load", Erl)
     Resume Next
     
 End Sub
+
+
 
 Private Sub relampago_Timer()
     
@@ -235,7 +245,7 @@ Private Sub relampago_Timer()
     Exit Sub
 
 relampago_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.relampago_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.relampago_Timer", Erl)
     Resume Next
     
 End Sub
@@ -251,7 +261,7 @@ Private Sub RelampagoFin_Timer()
     Exit Sub
 
 RelampagoFin_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.RelampagoFin_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.RelampagoFin_Timer", Erl)
     Resume Next
     
 End Sub
@@ -287,8 +297,43 @@ Private Sub render_DblClick()
     Exit Sub
 
 render_DblClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.render_DblClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.render_DblClick", Erl)
     Resume Next
+    
+End Sub
+
+'Comprobación versión cliente
+Sub Analizar()
+    
+    On Error GoTo Analizar_Err
+    
+    On Error Resume Next
+    Dim json As String
+    Const QUOTE = """"
+    Dim jsonSplit() As String
+    Dim Token As String
+    
+    'obtengo el MD5 del Argentum.exe
+    json = Inet1.OpenURL("https://parches.ao20.com.ar/files/Version.json")
+    Token = Left(Split(json, "Argentum.exe" & QUOTE & ":" & QUOTE)(1), 32)
+    
+    If Token <> GetMd5() Then
+         If MsgBox("Hay actualizaciones pendientes, ¿Desea actualizar ahora?", vbYesNo + vbQuestion, "") = vbYes Then
+            #If DEBUGGING = 1 Then
+                Call ShellExecute(0, "open", "LauncherAO20.exe", "", App.Path & "\..\Launcher\Launcher\", 1)
+            #Else
+                Call ShellExecute(0, "open", "LauncherAO20.exe", "", App.Path & "\..\Launcher\", 1)
+            #End If
+            End
+         End If
+    End If
+    
+
+Analizar_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.Analizar", Erl)
+    Resume Next
+    
+    
     
 End Sub
 
@@ -772,7 +817,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 render_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.render_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.render_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -787,7 +832,7 @@ Private Sub txtNombre_Change()
     Exit Sub
 
 txtNombre_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.txtNombre_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.txtNombre_Change", Erl)
     Resume Next
     
 End Sub
@@ -802,7 +847,7 @@ Private Sub txtNombre_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 txtNombre_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.txtNombre_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.txtNombre_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -832,7 +877,7 @@ Private Sub LogearPersonaje(ByVal Nick As String)
     Exit Sub
 
 LogearPersonaje_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmConnect.LogearPersonaje", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.LogearPersonaje", Erl)
     Resume Next
     
 End Sub
