@@ -2001,15 +2001,15 @@ Private Sub MensajeriaMenu_Click(Index As Integer)
 
         Case 1 'Mensaje por ventana a usuarios 0.12.1
             tmp = InputBox("Ingrese el texto:", "Mensaje del sistema a usuarios")
-            Call WriteSystemMessage(tmp)
+            If LenB(tmp) Then Call WriteSystemMessage(tmp)
 
         Case 2 'Mensaje por consola a GMS 0.12.1
             tmp = InputBox("Escriba el mensaje.", "Mensaje por consola de GM")
-            Call WriteGMMessage(tmp)
+            If LenB(tmp) Then Call WriteGMMessage(tmp)
 
         Case 3 'Hablar como NPC 0.12.1
             tmp = InputBox("Escriba un Mensaje.", "Hablar por NPC")
-            Call WriteTalkAsNPC(tmp)
+            If LenB(tmp) Then Call WriteTalkAsNPC(tmp)
 
     End Select
 
