@@ -241,11 +241,6 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             MostrarOnline = Not MostrarOnline
         Case BindKeys(7).KeyCode
             Nombres = Not Nombres
-            If Nombres Then
-                StartH = True
-            Else
-                StartH = False
-            End If
         Case BindKeys(8).KeyCode
             Call WriteParyToggle
         Case BindKeys(9).KeyCode

@@ -108,22 +108,6 @@ Private ScrollPixelsPerFrameY  As Single
 Private TileBufferPixelOffsetX As Integer
 Private TileBufferPixelOffsetY As Integer
 Private TimeLast As Long
-Public MovementH As Long
-Public MovementA As Long
-Public MovementR As Long
-Public MovementT As Long
-Public MovementH2 As Long
-Public MovementA2 As Long
-Public MovementO As Long
-Public MovementS As Long
-Public StartH As Boolean
-Public StartA As Boolean
-Public StartR As Boolean
-Public StartT As Boolean
-Public StartH2 As Boolean
-Private StartA2 As Boolean
-Public StartO As Boolean
-Public StartS As Boolean
 Public CanMoveX As Boolean
 Private CanMoveY As Boolean
 Private Const GrhFogata        As Integer = 1521
@@ -131,9 +115,6 @@ Private Const GrhFogata        As Integer = 1521
 ' Colores estaticos
 
 Public FLASH(3)        As RGBA
-Public sumarR As Boolean
-Public sumarG As Boolean
-Public sumarB As Boolean
 Public COLOR_EMPTY              As RGBA
 Public COLOR_WHITE(3)           As RGBA
 Public r As Byte
@@ -1764,30 +1745,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If Pos = 0 Then Pos = Len(.nombre) + 2
 
                 'Nick
-                If LCase(.nombre) <> "harthaos" And LCase(.nombre) <> "wyrox" And LCase(.nombre) <> "reyarb" And LCase(.nombre) <> "odin" Then
-                    line = Left$(.nombre, Pos - 2)
-                    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1
-                
-                Else
-                    'If LCase(.nombre) = "harthaos" Then
-                    '        HarthaosFlasheando charindex, PixelOffsetX, PixelOffsetY, x, y
-                    'Else
-                        ColoresLocos charindex, PixelOffsetX, PixelOffsetY, x, y
-                    'End If
-                    'Call RGBAList(colorHarthaosCeleste, 97, 228, 228)
-                    'Call RGBAList(colorHarthaosBlanco, 255, 255, 255)
-                    'Call RGBAList(colorHarthaosAmarillo, 234, 234, 0)
-                    'line = "H"
-                    'Engine_Text_Render line, PixelOffsetX - 7 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosCeleste, 1
-                    'line = "ar"
-                    'Engine_Text_Render line, PixelOffsetX + 4 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosBlanco, 1
-                    'line = "T"
-                    'Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosAmarillo, 1
-                    'line = "hao"
-                    'Engine_Text_Render line, PixelOffsetX + 29 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosBlanco, 1
-                    'line = "S"
-                    'Engine_Text_Render line, PixelOffsetX + 45 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), colorHarthaosCeleste, 1
-                End If
+                line = Left$(.nombre, Pos - 2)
+                Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
+
                 
                 'Clan
                 Select Case .priv
@@ -1800,33 +1760,12 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                 End Select
                     
-                Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1
+                Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, , , IIf(.Invisible, 160, 255)
 
                 If .Donador = 1 Then
                     Grh_Render Estrella, PixelOffsetX + 7 + CInt(Engine_Text_Width(.nombre, 1) / 2), PixelOffsetY + 10 + OffsetYname, colorCorazon, True, True, False
                 End If
-            
-            ElseIf Not Nombres Then
-                    If Not StartH Then
-                        StartA = False
-                        StartR = False
-                        StartT = False
-                        StartH2 = False
-                        StartA2 = False
-                        StartO = False
-                        StartS = False
-                        MovementH = 0
-                        MovementA = 0
-                        MovementR = 0
-                        MovementT = 0
-                        MovementH2 = 0
-                        MovementA2 = 0
-                        MovementO = 0
-                        MovementS = 0
-                        TimeLast = timeGetTime
-                    End If
             End If
-
         End If
 
         If .particle_count > 0 Then
@@ -1926,317 +1865,6 @@ Char_Render_Err:
     Resume Next
     
 End Sub
-Private Function ColoresLocos(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
-
-    Dim line As String
-    If LCase(charlist(charindex).nombre) = "harthaos" Then
-        line = "HarThaoS"
-    End If
-    
-    If LCase(charlist(charindex).nombre) = "wyrox" Then
-        line = "WyroX"
-    End If
-    
-    
-    If LCase(charlist(charindex).nombre) = "reyarb" Then
-        line = "ReyarB"
-    End If
-    
-    If LCase(charlist(charindex).nombre) = "odin" Then
-        line = "Odin"
-    End If
-    
-    'SUMAR R
-    If r = 0 Then
-        r = RandomNumber(0, 255)
-        sumarR = True
-    End If
-    
-    If r = 255 Then
-        r = RandomNumber(0, 255)
-        sumarR = False
-    End If
-    
-    If sumarR Then
-        r = r + 1
-    Else
-        r = r - 1
-    End If
-    
-    'SUMAR G
-    If G = 0 Then
-        G = RandomNumber(0, 255)
-        sumarG = True
-    End If
-    
-    If G = 255 Then
-        G = RandomNumber(0, 255)
-        sumarG = False
-    End If
-    
-    If sumarG Then
-        G = G + 1
-    Else
-        G = G - 1
-    End If
-    
-    'SUMAR B
-    
-     If B = 0 Then
-        B = RandomNumber(0, 255)
-        sumarB = True
-    End If
-    
-    If B = 255 Then
-        B = RandomNumber(0, 255)
-        sumarB = False
-    End If
-    
-    If sumarB Then
-        B = B + 1
-    Else
-        B = B - 1
-    End If
-    
-    Dim colorCorazon(3) As RGBA
-    
-    Call RGBAList(colorCorazon, 255, 255, 255)
-    Dim grh As grh
-    
-    Call InitGrh(grh, 32472)
-    Call RGBAList(FLASH, r, G, B)
-    '
-    Grh_Render grh, PixelOffsetX + CInt(Engine_Text_Width(line, True) / 2) + 8, PixelOffsetY + 21 - Engine_Text_Height(line, True), colorCorazon, True, True, False
-    Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + 0 - Engine_Text_Height(line, True), FLASH, 1
-End Function
-
-Private Function HarthaosFlasheando(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
-
-    Dim lineaH As String
-    Dim lineaA As String
-    Dim lineaR As String
-    Dim lineaT As String
-    Dim lineaH2 As String
-    Dim lineaA2 As String
-    Dim lineaO As String
-    Dim lineaS As String
-    If LCase(charlist(charindex).nombre) = "harthaos" Then
-        lineaH = "H"
-        lineaA = "a"
-        lineaR = "r"
-        lineaT = "T"
-        lineaH2 = "h"
-        lineaA2 = "a"
-        lineaO = "o"
-        lineaS = "S"
-    End If
-    
-    'SUMAR R
-    If r = 0 Then
-        r = RandomNumber(0, 255)
-        sumarR = True
-    End If
-    
-    If r = 255 Then
-        r = RandomNumber(0, 255)
-        sumarR = False
-    End If
-    
-    If sumarR Then
-        r = r + 1
-    Else
-        r = r - 1
-    End If
-    
-    'SUMAR G
-    If G = 0 Then
-        G = RandomNumber(0, 255)
-        sumarG = True
-    End If
-    
-    If G = 255 Then
-        G = RandomNumber(0, 255)
-        sumarG = False
-    End If
-    
-    If sumarG Then
-        G = G + 1
-    Else
-        G = G - 1
-    End If
-    
-    'SUMAR B
-    
-     If B = 0 Then
-        B = RandomNumber(0, 255)
-        sumarB = True
-    End If
-    
-    If B = 255 Then
-        B = RandomNumber(0, 255)
-        sumarB = False
-    End If
-    
-    If sumarB Then
-        B = B + 1
-    Else
-        B = B - 1
-    End If
-    
-    Dim colorCorazon(3) As RGBA
-    
-    Call RGBAList(colorCorazon, 255, 255, 255)
-    Dim grh As grh
-    
-    Call InitGrh(grh, 32472)
-    Call RGBAList(FLASH, r, G, B)
-    
-    Dim timeNow As Long
-    'sum 1 con 300 fps es 5, con 1000fps es 16
-    timeNow = timeGetTime()
-        
-    If (timeNow - TimeLast) > 20 Then
-        If StartH Then MovementH = MovementH + (timeNow - TimeLast) / 20
-        If StartA Then MovementA = MovementA + (timeNow - TimeLast) / 20
-        If StartR Then MovementR = MovementR + (timeNow - TimeLast) / 20
-        If StartT Then MovementT = MovementT + (timeNow - TimeLast) / 20
-        If StartH2 Then MovementH2 = MovementH2 + (timeNow - TimeLast) / 20
-        If StartA2 Then MovementA2 = MovementA2 + (timeNow - TimeLast) / 20
-        If StartO Then MovementO = MovementO + (timeNow - TimeLast) / 20
-        If StartS Then MovementS = MovementS + (timeNow - TimeLast) / 20
-        TimeLast = timeGetTime()
-    End If
-    
-    If StartH Then
-        Select Case MovementH
-            Case Is < 60
-                If MovementH = 15 Then StartA = True
-                Engine_Text_Render lineaH, PixelOffsetX + 45 - MovementH - CInt(Engine_Text_Width(lineaH, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaH, True), FLASH, 1
-            Case Is < 140
-                Engine_Text_Render lineaH, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaH, True) / 2), PixelOffsetY - MovementH + 90 - Engine_Text_Height(lineaH, True), FLASH, 1
-            Case Is < 200
-                Engine_Text_Render lineaH, PixelOffsetX - 152 + MovementH - CInt(Engine_Text_Width(lineaH, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaH, True), FLASH, 1
-            Case Is < 280
-                 Engine_Text_Render lineaH, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaH, True) / 2), PixelOffsetY + MovementH - 247 - Engine_Text_Height(lineaH, True), FLASH, 1
-            Case Is > 280
-                    MovementH = 0
-         End Select
-    End If
-    
-     If StartA Then
-        Select Case MovementA
-            Case Is < 60
-                If MovementA = 15 Then StartR = True
-                Engine_Text_Render lineaA, PixelOffsetX + 45 - MovementA - CInt(Engine_Text_Width(lineaA, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaA, True), FLASH, 1
-            Case Is < 140
-                Engine_Text_Render lineaA, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaA, True) / 2), PixelOffsetY - MovementA + 90 - Engine_Text_Height(lineaA, True), FLASH, 1
-            Case Is < 200
-                Engine_Text_Render lineaA, PixelOffsetX - 152 + MovementA - CInt(Engine_Text_Width(lineaA, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaA, True), FLASH, 1
-            Case Is < 280
-                 Engine_Text_Render lineaA, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaA, True) / 2), PixelOffsetY + MovementA - 247 - Engine_Text_Height(lineaA, True), FLASH, 1
-            Case Is > 280
-                    MovementA = 0
-        End Select
-     End If
-     
-    If StartR Then
-        Select Case MovementR
-            Case Is < 60
-                If MovementR = 15 Then StartT = True
-                Engine_Text_Render lineaR, PixelOffsetX + 45 - MovementR - CInt(Engine_Text_Width(lineaR, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaR, True), FLASH, 1
-            Case Is < 140
-                Engine_Text_Render lineaR, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaR, True) / 2), PixelOffsetY - MovementR + 90 - Engine_Text_Height(lineaR, True), FLASH, 1
-            Case Is < 200
-                Engine_Text_Render lineaR, PixelOffsetX - 152 + MovementR - CInt(Engine_Text_Width(lineaR, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaR, True), FLASH, 1
-            Case Is < 280
-                 Engine_Text_Render lineaR, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaR, True) / 2), PixelOffsetY + MovementR - 247 - Engine_Text_Height(lineaR, True), FLASH, 1
-            Case Is > 280
-                    MovementR = 0
-        End Select
-     End If
-     
-      If StartT Then
-        Select Case MovementT
-            Case Is < 60
-                If MovementT = 15 Then StartH2 = True
-                Engine_Text_Render lineaT, PixelOffsetX + 45 - MovementT - CInt(Engine_Text_Width(lineaT, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaT, True), FLASH, 1
-            Case Is < 140
-                Engine_Text_Render lineaT, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaT, True) / 2), PixelOffsetY - MovementT + 90 - Engine_Text_Height(lineaT, True), FLASH, 1
-            Case Is < 200
-                Engine_Text_Render lineaT, PixelOffsetX - 152 + MovementT - CInt(Engine_Text_Width(lineaT, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaT, True), FLASH, 1
-            Case Is < 280
-                 Engine_Text_Render lineaT, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaT, True) / 2), PixelOffsetY + MovementT - 247 - Engine_Text_Height(lineaT, True), FLASH, 1
-            Case Is > 280
-                    MovementT = 0
-        End Select
-     End If
-     
-      If StartH2 Then
-        Select Case MovementH2
-            Case Is < 60
-                If MovementH2 = 15 Then StartA2 = True
-                Engine_Text_Render lineaH2, PixelOffsetX + 45 - MovementH2 - CInt(Engine_Text_Width(lineaH2, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaH2, True), FLASH, 1
-            Case Is < 140
-                Engine_Text_Render lineaH2, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaH2, True) / 2), PixelOffsetY - MovementH2 + 90 - Engine_Text_Height(lineaH2, True), FLASH, 1
-            Case Is < 200
-                Engine_Text_Render lineaH2, PixelOffsetX - 152 + MovementH2 - CInt(Engine_Text_Width(lineaH2, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaH2, True), FLASH, 1
-            Case Is < 280
-                 Engine_Text_Render lineaH2, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaH2, True) / 2), PixelOffsetY + MovementH2 - 247 - Engine_Text_Height(lineaH2, True), FLASH, 1
-            Case Is > 280
-                    MovementH2 = 0
-        End Select
-     End If
-     
-      If StartA2 Then
-        Select Case MovementA2
-            Case Is < 60
-                If MovementA2 = 15 Then StartO = True
-                Engine_Text_Render lineaA2, PixelOffsetX + 45 - MovementA2 - CInt(Engine_Text_Width(lineaA2, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaA2, True), FLASH, 1
-            Case Is < 140
-                Engine_Text_Render lineaA2, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaA2, True) / 2), PixelOffsetY - MovementA2 + 90 - Engine_Text_Height(lineaA2, True), FLASH, 1
-            Case Is < 200
-                Engine_Text_Render lineaA2, PixelOffsetX - 152 + MovementA2 - CInt(Engine_Text_Width(lineaA2, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaA2, True), FLASH, 1
-            Case Is < 280
-                 Engine_Text_Render lineaA2, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaA2, True) / 2), PixelOffsetY + MovementA2 - 247 - Engine_Text_Height(lineaA2, True), FLASH, 1
-            Case Is > 280
-                    MovementA2 = 0
-        End Select
-     End If
-     
-      If StartO Then
-        Select Case MovementO
-            Case Is < 60
-                If MovementO = 15 Then StartS = True
-                Engine_Text_Render lineaO, PixelOffsetX + 45 - MovementO - CInt(Engine_Text_Width(lineaO, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaO, True), FLASH, 1
-            Case Is < 140
-                Engine_Text_Render lineaO, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaO, True) / 2), PixelOffsetY - MovementO + 90 - Engine_Text_Height(lineaO, True), FLASH, 1
-            Case Is < 200
-                Engine_Text_Render lineaO, PixelOffsetX - 152 + MovementO - CInt(Engine_Text_Width(lineaO, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaO, True), FLASH, 1
-            Case Is < 280
-                 Engine_Text_Render lineaO, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaO, True) / 2), PixelOffsetY + MovementO - 247 - Engine_Text_Height(lineaO, True), FLASH, 1
-            Case Is > 280
-                    MovementO = 0
-        End Select
-     End If
-     
-      If StartS Then
-        Select Case MovementS
-            Case Is < 60
-                Engine_Text_Render lineaS, PixelOffsetX + 45 - MovementS - CInt(Engine_Text_Width(lineaS, True) / 2), PixelOffsetY + 30 - Engine_Text_Height(lineaS, True), FLASH, 1
-            Case Is < 140
-                Engine_Text_Render lineaS, PixelOffsetX - 13 - CInt(Engine_Text_Width(lineaS, True) / 2), PixelOffsetY - MovementS + 90 - Engine_Text_Height(lineaS, True), FLASH, 1
-            Case Is < 200
-                Engine_Text_Render lineaS, PixelOffsetX - 152 + MovementS - CInt(Engine_Text_Width(lineaS, True) / 2), PixelOffsetY - 50 - Engine_Text_Height(lineaS, True), FLASH, 1
-            Case Is < 280
-                 Engine_Text_Render lineaS, PixelOffsetX + 47 - CInt(Engine_Text_Width(lineaS, True) / 2), PixelOffsetY + MovementS - 247 - Engine_Text_Height(lineaS, True), FLASH, 1
-            Case Is > 280
-                    MovementS = 0
-        End Select
-     End If
-        
-  
-
-End Function
 
 Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
 
@@ -2277,7 +1905,6 @@ Public Sub Start()
         Call FlushBuffer
 
         If frmMain.WindowState <> vbMinimized Then
-            StartH = True
             Select Case QueRender
 
                 Case 0
