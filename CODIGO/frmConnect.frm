@@ -318,16 +318,11 @@ Sub Analizar()
     Token = Left(Split(json, "Argentum.exe" & QUOTE & ":" & QUOTE)(1), 32)
     
     If Token <> GetMd5() Then
-         If MsgBox("Hay actualizaciones pendientes, ¿Desea actualizar ahora?", vbYesNo + vbQuestion, "") = vbYes Then
-            #If DEBUGGING = 1 Then
-                Call ShellExecute(0, "open", "LauncherAO20.exe", "", App.Path & "\..\Launcher\Launcher\", 1)
-            #Else
-                Call ShellExecute(0, "open", "LauncherAO20.exe", "", App.Path & "\..\Launcher\", 1)
-            #End If
+        #If Not DEBUGGING = 1 Then
+                ShellExecute 0, "open", "LauncherAO20.exe", "", App.Path & "\..\Launcher\", 1
             End
-         End If
+        #End If
     End If
-    
 
 Analizar_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.Analizar", Erl)
