@@ -1541,28 +1541,37 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                 If IsCharVisible(charindex) Then
                     Call RGBAList(Color, 255, 255, 255, 100)
-                    Select Case .status
-                     ' Criminal
-                        Case 0
-                            Call RGBAList(NameColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
-                            Call RGBAList(colorCorazon, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                    
+                    If .priv = 0 Then
                         
-                        ' Ciudadano
-                        Case 1
-                            Call RGBAList(NameColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
-                            Call RGBAList(colorCorazon, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                        Select Case .status
+                            ' Criminal
+                            Case 0
+                                Call RGBAList(NameColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                            
+                            ' Ciudadano
+                            Case 1
+                                Call RGBAList(NameColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                            
+                            ' Caos
+                            Case 2
+                                Call RGBAList(NameColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
+    
+                            ' Armada
+                            Case 3
+                                Call RGBAList(NameColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+                                Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+    
+                        End Select
+                                
+                    Else
+                        Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
                         
-                        ' Caos
-                        Case 2
-                            Call RGBAList(NameColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
-                            Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
-
-                        ' Armada
-                        Case 3
-                            Call RGBAList(NameColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
-                            Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
-
-                    End Select
+                    End If
                                 
                     MostrarNombre = True
                         
