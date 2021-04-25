@@ -1578,6 +1578,7 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).SkPociones = Val(Leer.GetValue("OBJ" & Obj, "SkPociones"))
         ObjData(Obj).Sksastreria = Val(Leer.GetValue("OBJ" & Obj, "Sksastreria"))
         ObjData(Obj).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
+        ObjData(Obj).Agarrable = Val(Leer.GetValue("OBJ" & Obj, "Agarrable"))
         
     Next Obj
     

@@ -39,7 +39,7 @@ Begin VB.Form frmConnect
    End
    Begin VB.PictureBox render 
       Appearance      =   0  'Flat
-      BackColor       =   &H00FFFFFF&
+      BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -320,12 +320,14 @@ Public Sub AnalizarCliente()
     End If
     
     'Compruebo los MD5 con host
-        #If Not DEBUGGING = 1 Then
-            If Token <> CheckMD5 Then
-                Shell App.Path & "\..\..\Launcher\LauncherAO20.exe -openbyexe"
-                End
-            End If
-        #End If
+#If Not DEBUGGING = 1 Then
+    If Token <> CheckMD5 Then
+        Shell App.Path & "\..\..\Launcher\LauncherAO20.exe -openbyexe"
+        End
+    End If
+#End If
+        
+    Exit Sub
 
 Analizar_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.Analizar", Erl)

@@ -199,6 +199,8 @@ Public SensibilidadMouseOriginal   As Byte
 
 Public CopiarDialogoAConsola       As Byte
 
+Public InfoItemsEnRender           As Boolean
+
 Public Musica                      As Byte
 
 Public fX                          As Byte

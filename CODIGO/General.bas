@@ -1074,7 +1074,6 @@ Sub Main()
     
     If PantallaCompleta Then
         Call Resolution.SetResolution
-        PantallaCompleta = 1
     End If
     
     Call Frmcarga.Show
@@ -1466,7 +1465,7 @@ Public Sub CloseClient()
     
     Rem frmCargando.Show
     
-    ' Call Resolution.ResetResolution
+    Call Resolution.ResetResolution
     'Stop tile engine
     'Engine_Deinit
     'Stop tile engine

@@ -77,7 +77,7 @@ Public Sub SetResolution()
     oldResWidth = Screen.Width \ Screen.TwipsPerPixelX
     oldResHeight = Screen.Height \ Screen.TwipsPerPixelY
     
-    If NoRes Then
+    If NoRes And Not PantallaCompleta Then
         CambiarResolucion = (oldResWidth < 1024 Or oldResHeight < 768)
     Else
         CambiarResolucion = (oldResWidth <> 1024 Or oldResHeight <> 768)
@@ -98,6 +98,10 @@ Public Sub SetResolution()
         
         lRes = ChangeDisplaySettings(MidevM, CDS_TEST)
         
+        If frmMain.Visible Then frmMain.Top = 0: frmMain.Left = 0
+        If frmConnect.Visible Then frmConnect.Top = 0: frmConnect.Left = 0
+        If frmOpciones.Visible Then frmOpciones.Top = (Screen.Height - frmOpciones.Height) \ 2: frmOpciones.Left = (Screen.Width - frmOpciones.Width) \ 2
+        
     Else
         bNoResChange = True
 
@@ -107,7 +111,7 @@ Public Sub SetResolution()
     Exit Sub
 
 SetResolution_Err:
-    Call RegistrarError(Err.number, Err.Description, "Resolution.SetResolution", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Resolution.SetResolution", Erl)
     Resume Next
     
 End Sub
@@ -141,6 +145,9 @@ Public Sub ResetResolution()
         End With
         
         lRes = ChangeDisplaySettings(typDevM, CDS_TEST)
+        
+        If frmMain.Visible Then frmMain.Top = (Screen.Height - frmMain.Height) \ 2: frmMain.Left = (Screen.Width - frmMain.Width) \ 2
+        If frmOpciones.Visible Then frmOpciones.Top = (Screen.Height - frmOpciones.Height) \ 2: frmOpciones.Left = (Screen.Width - frmOpciones.Width) \ 2
 
     End If
 
@@ -148,7 +155,7 @@ Public Sub ResetResolution()
     Exit Sub
 
 ResetResolution_Err:
-    Call RegistrarError(Err.number, Err.Description, "Resolution.ResetResolution", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Resolution.ResetResolution", Erl)
     Resume Next
     
 End Sub

@@ -133,6 +133,12 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
+      Begin VB.Image chkItemsEnRender 
+         Height          =   255
+         Left            =   270
+         Top             =   2715
+         Width           =   255
+      End
       Begin VB.Image Fullscreen 
          Height          =   255
          Left            =   270
@@ -498,7 +504,7 @@ Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
     Exit Function
 
 Is_Transparent_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Is_Transparent", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Is_Transparent", Erl)
     Resume Next
     
 End Function
@@ -537,7 +543,7 @@ Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As L
     Exit Function
 
 Aplicar_Transparencia_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Aplicar_Transparencia", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Aplicar_Transparencia", Erl)
     Resume Next
     
 End Function
@@ -552,7 +558,7 @@ Private Sub Alpha_Change()
     Exit Sub
 
 Alpha_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Alpha_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Alpha_Change", Erl)
     Resume Next
     
 End Sub
@@ -650,7 +656,7 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Check1_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check1_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check1_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -677,7 +683,7 @@ Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Check4_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check4_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check4_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -705,7 +711,7 @@ Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Check5_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check5_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check5_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -728,7 +734,7 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Check2_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check2_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check2_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -759,9 +765,18 @@ Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single
     Exit Sub
 
 chkInvertir_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.chkInvertir_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkInvertir_MouseUp", Erl)
     Resume Next
     
+End Sub
+
+Private Sub chkItemsEnRender_Click()
+    InfoItemsEnRender = Not InfoItemsEnRender
+    If InfoItemsEnRender Then
+        chkItemsEnRender.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkItemsEnRender.Picture = Nothing
+    End If
 End Sub
 
 Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -860,7 +875,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
     Exit Sub
 
 chkO_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.chkO_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkO_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -875,7 +890,7 @@ Private Sub cmdayuda_Click()
     Exit Sub
 
 cmdayuda_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdayuda_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdayuda_Click", Erl)
     Resume Next
     
 End Sub
@@ -895,7 +910,7 @@ Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 
 cmdayuda_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdayuda_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdayuda_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -918,7 +933,7 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 
 Command1_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command1_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command1_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -943,7 +958,7 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     Exit Sub
 
 cmdCerrar_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdCerrar_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdCerrar_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -966,7 +981,7 @@ Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x A
     Exit Sub
 
 cmdChangePassword_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdChangePassword_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdChangePassword_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -981,7 +996,7 @@ Private Sub cmdWeb_Click()
     Exit Sub
 
 cmdWeb_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdWeb_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdWeb_Click", Erl)
     Resume Next
     
 End Sub
@@ -996,7 +1011,7 @@ Private Sub Command5_Click()
     Exit Sub
 
 Command5_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command5_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command5_Click", Erl)
     Resume Next
     
 End Sub
@@ -1011,7 +1026,7 @@ Private Sub discord_Click()
     Exit Sub
 
 discord_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.discord_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.discord_Click", Erl)
     Resume Next
     
 End Sub
@@ -1026,7 +1041,7 @@ Private Sub facebook_Click()
     Exit Sub
 
 facebook_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.facebook_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.facebook_Click", Erl)
     Resume Next
     
 End Sub
@@ -1050,7 +1065,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -1068,7 +1083,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Form_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -1087,7 +1102,7 @@ Private Sub MoverForm()
     Exit Sub
 
 moverForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.moverForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.moverForm", Erl)
     Resume Next
     
 End Sub
@@ -1126,7 +1141,7 @@ Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Check6_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check6_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check6_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -1154,7 +1169,7 @@ Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Check9_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Check9_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check9_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -1171,7 +1186,7 @@ Private Sub Command2_Click()
     Exit Sub
 
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command2_Click", Erl)
     Resume Next
     
 End Sub
@@ -1188,7 +1203,7 @@ Private Sub Command3_Click()
     Exit Sub
 
 Command3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command3_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command3_Click", Erl)
     Resume Next
     
 End Sub
@@ -1230,7 +1245,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Form_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Form_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -1247,7 +1262,7 @@ Private Sub cmdcerrar_Click()
     Exit Sub
 
 cmdcerrar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdcerrar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdcerrar_Click", Erl)
     Resume Next
     
 End Sub
@@ -1262,7 +1277,7 @@ Private Sub cmdChangePassword_Click()
     Exit Sub
 
 cmdChangePassword_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.cmdChangePassword_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdChangePassword_Click", Erl)
     Resume Next
     
 End Sub
@@ -1277,7 +1292,7 @@ Private Sub Command1_Click()
     Exit Sub
 
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command1_Click", Erl)
     Resume Next
     
 End Sub
@@ -1300,6 +1315,12 @@ Public Sub Init()
         Check5.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
+    
+    If InfoItemsEnRender Then
+        chkItemsEnRender.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkItemsEnRender.Picture = Nothing
+    End If
 
     If CursoresGraficos = 0 Then
         Check2.Picture = Nothing
@@ -1308,10 +1329,10 @@ Public Sub Init()
 
     End If
     
-    If PantallaCompleta = 0 Then
-        Fullscreen.Picture = Nothing
-    Else
+    If PantallaCompleta Then
         Fullscreen.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        Fullscreen.Picture = Nothing
     End If
 
     If PermitirMoverse = 0 Then
@@ -1404,25 +1425,20 @@ Public Sub Init()
     Exit Sub
 
 Init_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.Init", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Init", Erl)
     Resume Next
     
 End Sub
-
- 
-
 
 Private Sub Fullscreen_Click()
    PantallaCompleta = Not PantallaCompleta
 
     If PantallaCompleta Then
         Fullscreen.Picture = LoadInterface("check-amarillo.bmp")
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "VIDEO", "PantallaCompleta", 1)
-        MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia"
+        Call SetResolution
     Else
         Fullscreen.Picture = Nothing
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "VIDEO", "PantallaCompleta", 0)
-        MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia"
+        Call ResetResolution
     End If
 End Sub
 
@@ -1437,7 +1453,7 @@ Private Sub HScroll1_Change()
     Exit Sub
 
 HScroll1_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.HScroll1_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.HScroll1_Change", Erl)
     Resume Next
     
 End Sub
@@ -1469,7 +1485,7 @@ Private Sub instagram_Click()
     Exit Sub
 
 instagram_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.instagram_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.instagram_Click", Erl)
     Resume Next
     
 End Sub
@@ -1501,7 +1517,7 @@ Private Sub scrMidi_Change()
     Exit Sub
 
 scrMidi_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.scrMidi_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrMidi_Change", Erl)
     Resume Next
     
 End Sub
@@ -1519,7 +1535,7 @@ Private Sub scrSens_Change()
     Exit Sub
 
 scrSens_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.scrSens_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrSens_Change", Erl)
     Resume Next
     
 End Sub
@@ -1535,7 +1551,7 @@ Private Sub scrVolume_Change()
     Exit Sub
 
 scrVolume_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
     Resume Next
     
 End Sub

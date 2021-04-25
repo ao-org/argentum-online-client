@@ -863,7 +863,7 @@ Private Sub cmdAccion_Click(Index As Integer)
     Exit Sub
 
 cmdAccion_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.cmdAccion_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.cmdAccion_Click", Erl)
     Resume Next
     
 End Sub
@@ -888,7 +888,7 @@ Private Sub GuardaConfigEnVariables()
     Exit Sub
 
 GuardaConfigEnVariables_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.GuardaConfigEnVariables", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.GuardaConfigEnVariables", Erl)
     Resume Next
     
 End Sub
@@ -913,7 +913,7 @@ Private Sub CargaConfigEnForm()
     Exit Sub
 
 CargaConfigEnForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.CargaConfigEnForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.CargaConfigEnForm", Erl)
     Resume Next
     
 End Sub
@@ -929,7 +929,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -947,7 +947,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Form_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -986,7 +986,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Exit Sub
 
 Form_QueryUnload_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.Form_QueryUnload", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Form_QueryUnload", Erl)
     Resume Next
     
 End Sub
@@ -1003,7 +1003,7 @@ Private Sub Option1_Click()
     Exit Sub
 
 Option1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.Option1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Option1_Click", Erl)
     Resume Next
     
 End Sub
@@ -1011,7 +1011,9 @@ End Sub
 Private Sub Option2_Click()
     
     On Error GoTo Option2_Click_Err
-    
+
+    PermitirMoverse = 0
+
     Call LoadDefaultBinds2
     Call CargaConfigEnForm
     Call SaveRAOInit
@@ -1020,7 +1022,7 @@ Private Sub Option2_Click()
     Exit Sub
 
 Option2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.Option2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Option2_Click", Erl)
     Resume Next
     
 End Sub
@@ -1147,7 +1149,7 @@ Private Sub txConfig_KeyUp(Index As Integer, KeyCode As Integer, Shift As Intege
     Exit Sub
 
 txConfig_KeyUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.txConfig_KeyUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.txConfig_KeyUp", Erl)
     Resume Next
     
 End Sub
@@ -1163,7 +1165,7 @@ Sub Change_TempKey(Index As Integer, KeyCode As Integer, Name As String)
     Exit Sub
 
 Change_TempKey_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.Change_TempKey", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Change_TempKey", Erl)
     Resume Next
     
 End Sub
@@ -1195,7 +1197,7 @@ Function AlreadyBinded(KeyCode As Integer) As Boolean
     Exit Function
 
 AlreadyBinded_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCustomKeys.AlreadyBinded", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.AlreadyBinded", Erl)
     Resume Next
     
 End Function

@@ -327,8 +327,24 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
         ScreenY = ScreenY + TilePixelHeight
     Next y
-    
-    
+
+    If InfoItemsEnRender And tX And tY Then
+        With MapData(tX, tY)
+            If .OBJInfo.OBJIndex Then
+                If Not ObjData(.OBJInfo.OBJIndex).Agarrable Then
+                    Dim Text As String, Amount As String
+                    If .OBJInfo.Amount > 1000 Then
+                        Amount = Round(.OBJInfo.Amount * 0.001, 1) & "K"
+                    Else
+                        Amount = .OBJInfo.Amount
+                    End If
+                    Text = ObjData(.OBJInfo.OBJIndex).Name & " (" & Amount & ")"
+                    Call Engine_Text_Render(Text, MouseX + 15, MouseY, COLOR_WHITE, , , , 160)
+                End If
+            End If
+        End With
+    End If
+
     ' *********************************
     ' Particles loop
     ScreenY = StartBufferedY
@@ -586,7 +602,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     Exit Sub
 
 RenderScreen_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_RenderScreen.RenderScreen", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen", Erl)
     Resume Next
     
 End Sub
@@ -645,7 +661,7 @@ Private Sub RenderScreen_NombreMapa()
     Exit Sub
 
 RenderScreen_NombreMapa_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_RenderScreen.RenderScreen_NombreMapa", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen_NombreMapa", Erl)
     Resume Next
     
 End Sub

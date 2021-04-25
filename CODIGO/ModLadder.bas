@@ -254,6 +254,7 @@ Public Type ObjDatas
     SkPociones As Byte
     Sksastreria As Byte
     Valor As Long
+    Agarrable As Boolean
 
 End Type
 
@@ -542,7 +543,7 @@ Sub inputbox_Password(El_Form As Form, Caracter As String)
     Exit Sub
 
 inputbox_Password_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.inputbox_Password", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.inputbox_Password", Erl)
     Resume Next
     
 End Sub
@@ -566,7 +567,7 @@ Private Sub TimerProc(ByVal hWnd As Long, ByVal uMsg As Long, ByVal idEvent As L
     Exit Sub
 
 TimerProc_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.TimerProc", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.TimerProc", Erl)
     Resume Next
     
 End Sub
@@ -604,7 +605,7 @@ Public Function LoadPNGtoICO(pngData() As Byte) As IPicture
     Exit Function
 
 LoadPNGtoICO_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.LoadPNGtoICO", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.LoadPNGtoICO", Erl)
     Resume Next
     
 End Function
@@ -626,7 +627,7 @@ Public Function SetTopMostWindow(hWnd As Long, Topmost As Boolean) As Long
     Exit Function
 
 SetTopMostWindow_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.SetTopMostWindow", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.SetTopMostWindow", Erl)
     Resume Next
     
 End Function
@@ -713,7 +714,7 @@ Sub General_Set_Connect()
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -762,7 +763,7 @@ Sub General_Set_Connect()
     Exit Sub
 
 General_Set_Connect_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.General_Set_Connect", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Set_Connect", Erl)
     Resume Next
     
 End Sub
@@ -778,7 +779,7 @@ Public Sub InitializeSurfaceCapture(Frm As Form)
     Exit Sub
 
 InitializeSurfaceCapture_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.InitializeSurfaceCapture", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.InitializeSurfaceCapture", Erl)
     Resume Next
     
 End Sub
@@ -795,7 +796,7 @@ Public Sub ReleaseSurfaceCapture(Frm As Form)
     Exit Sub
 
 ReleaseSurfaceCapture_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.ReleaseSurfaceCapture", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ReleaseSurfaceCapture", Erl)
     Resume Next
     
 End Sub
@@ -810,7 +811,7 @@ Public Sub ApplySurfaceTo(Frm As Form)
     Exit Sub
 
 ApplySurfaceTo_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.ApplySurfaceTo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ApplySurfaceTo", Erl)
     Resume Next
     
 End Sub
@@ -850,7 +851,7 @@ Public Sub CreateSurfacefromPoints(ParamArray XY())
     Exit Sub
 
 CreateSurfacefromPoints_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CreateSurfacefromPoints", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromPoints", Erl)
     Resume Next
     
 End Sub
@@ -871,7 +872,7 @@ Public Sub CreateSurfacefromEllipse(x1 As Integer, y1 As Integer, x2 As Integer,
     Exit Sub
 
 CreateSurfacefromEllipse_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CreateSurfacefromEllipse", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromEllipse", Erl)
     Resume Next
     
 End Sub
@@ -892,7 +893,7 @@ Public Sub CreateSurfacefromRect(x1 As Integer, y1 As Integer, x2 As Integer, y2
     Exit Sub
 
 CreateSurfacefromRect_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CreateSurfacefromRect", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromRect", Erl)
     Resume Next
     
 End Sub
@@ -1026,7 +1027,7 @@ Public Sub CreateSurfacefromMask(Obj As Object, Optional lBackColor As Long)
     Exit Sub
 
 CreateSurfacefromMask_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CreateSurfacefromMask", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromMask", Erl)
     Resume Next
     
 End Sub
@@ -1095,7 +1096,7 @@ Public Sub CreateSurfacefromMask_GetPixel(Obj As Object, Optional lBackColor As 
     Exit Sub
 
 CreateSurfacefromMask_GetPixel_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CreateSurfacefromMask_GetPixel", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromMask_GetPixel", Erl)
     Resume Next
     
 End Sub
@@ -1115,7 +1116,7 @@ Public Sub General_Var_Write(ByVal File As String, ByVal Main As String, ByVal V
     Exit Sub
 
 General_Var_Write_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.General_Var_Write", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Var_Write", Erl)
     Resume Next
     
 End Sub
@@ -1130,7 +1131,7 @@ Public Sub MensajeAdvertencia(ByVal mensaje As String)
     Exit Sub
 
 MensajeAdvertencia_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.MensajeAdvertencia", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.MensajeAdvertencia", Erl)
     Resume Next
     
 End Sub
@@ -1154,7 +1155,7 @@ Public Sub ReproducirMp3(ByVal mp3 As Byte)
     Exit Sub
 
 ReproducirMp3_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.ReproducirMp3", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ReproducirMp3", Erl)
     Resume Next
     
 End Sub
@@ -1173,7 +1174,7 @@ Public Sub ForzarMp3(ByVal mp3 As Byte)
     Exit Sub
 
 ForzarMp3_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.ForzarMp3", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ForzarMp3", Erl)
     Resume Next
     
 End Sub
@@ -1265,7 +1266,7 @@ Public Function IntervaloPermiteClick(Optional ByVal Actualizar As Boolean = Tru
     Exit Function
 
 IntervaloPermiteClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.IntervaloPermiteClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteClick", Erl)
     Resume Next
     
 End Function
@@ -1293,7 +1294,7 @@ Public Function IntervaloPermiteHeading(Optional ByVal Actualizar As Boolean = T
     Exit Function
 
 IntervaloPermiteHeading_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.IntervaloPermiteHeading", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteHeading", Erl)
     Resume Next
     
 End Function
@@ -1318,7 +1319,7 @@ Public Function IntervaloPermiteLLamadaClan() As Boolean
     Exit Function
 
 IntervaloPermiteLLamadaClan_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.IntervaloPermiteLLamadaClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteLLamadaClan", Erl)
     Resume Next
     
 End Function
@@ -1342,7 +1343,7 @@ Public Function IntervaloPermiteAnim() As Boolean
     Exit Function
 
 IntervaloPermiteAnim_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.IntervaloPermiteAnim", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteAnim", Erl)
     Resume Next
     
 End Function
@@ -1366,7 +1367,7 @@ Public Function IntervaloPermiteConectar() As Boolean
     Exit Function
 
 IntervaloPermiteConectar_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.IntervaloPermiteConectar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteConectar", Erl)
     Resume Next
     
 End Function
@@ -1403,6 +1404,7 @@ Sub CargarOpciones()
     PantallaCompleta = ConfigFile.GetValue("VIDEO", "PantallaCompleta")
     CursoresGraficos = IIf(RunningInVB, 0, ConfigFile.GetValue("VIDEO", "CursoresGraficos"))
     UtilizarPreCarga = ConfigFile.GetValue("VIDEO", "UtilizarPreCarga")
+    InfoItemsEnRender = Val(ConfigFile.GetValue("VIDEO", "InfoItemsEnRender"))
     
     Dim Value As String
     Value = ConfigFile.GetValue("VIDEO", "MostrarRespiracion")
@@ -1471,7 +1473,8 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "OPCIONES", "MostrarEscribiendo", MostrarEscribiendo)
 
     Call WriteVar(Arch, "VIDEO", "MostrarRespiracion", IIf(MostrarRespiracion, 1, 0))
-    
+    Call WriteVar(Arch, "VIDEO", "PantallaCompleta", IIf(PantallaCompleta, 1, 0))
+    Call WriteVar(Arch, "VIDEO", "InfoItemsEnRender", IIf(InfoItemsEnRender, 1, 0))
 
     Call WriteVar(Arch, "OPCIONES", "OcultarMacrosAlCastear", OcultarMacrosAlCastear)
     
@@ -1481,7 +1484,7 @@ Sub GuardarOpciones()
     Exit Sub
 
 GuardarOpciones_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.GuardarOpciones", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GuardarOpciones", Erl)
     Resume Next
     
 End Sub
@@ -1562,7 +1565,7 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
     Exit Sub
 
 WriteChatOverHeadInConsole_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.WriteChatOverHeadInConsole", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.WriteChatOverHeadInConsole", Erl)
     Resume Next
     
 End Sub
@@ -1607,7 +1610,7 @@ Public Function PonerPuntos(Numero As Long) As String
     Exit Function
 
 PonerPuntos_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.PonerPuntos", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.PonerPuntos", Erl)
     Resume Next
     
 End Function
@@ -1661,7 +1664,7 @@ Sub AmbientarAudio(ByVal UserMap As Long)
     Exit Sub
 
 AmbientarAudio_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.AmbientarAudio", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.AmbientarAudio", Erl)
     Resume Next
     
 End Sub
@@ -1697,7 +1700,7 @@ Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVa
     Exit Function
 
 General_Var_Get_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.General_Var_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Var_Get", Erl)
     Resume Next
     
 End Function
@@ -1711,7 +1714,7 @@ Public Sub DibujarMiniMapa()
     Exit Sub
 
 DibujarMiniMapa_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.DibujarMiniMapa", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.DibujarMiniMapa", Erl)
     Resume Next
     
 End Sub
@@ -1759,7 +1762,7 @@ Function EncryptStr(ByVal s As String, ByVal P As String) As String
     Exit Function
 
 EncryptStr_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.EncryptStr", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.EncryptStr", Erl)
     Resume Next
     
 End Function
@@ -1807,7 +1810,7 @@ Function UnEncryptStr(ByVal s As String, ByVal P As String) As String
     Exit Function
 
 UnEncryptStr_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.UnEncryptStr", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.UnEncryptStr", Erl)
     Resume Next
     
 End Function
@@ -1830,7 +1833,7 @@ Public Function Input_Key_Get(ByVal key_code As Byte) As Boolean
     Exit Function
 
 Input_Key_Get_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.Input_Key_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.Input_Key_Get", Erl)
     Resume Next
     
 End Function
@@ -1853,7 +1856,7 @@ Public Function Input_Click_Get(ByVal Botton As Byte) As Boolean
     Exit Function
 
 Input_Click_Get_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.Input_Click_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.Input_Click_Get", Erl)
     Resume Next
     
 End Function
@@ -1890,7 +1893,7 @@ Public Function General_Get_Temp_Dir() As String
     Exit Function
 
 General_Get_Temp_Dir_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.General_Get_Temp_Dir", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Get_Temp_Dir", Erl)
     Resume Next
     
 End Function
@@ -1911,7 +1914,7 @@ Public Function General_Get_Mouse_Speed() As Long
     Exit Function
 
 General_Get_Mouse_Speed_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.General_Get_Mouse_Speed", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Get_Mouse_Speed", Erl)
     Resume Next
     
 End Function
@@ -1932,7 +1935,7 @@ Public Sub General_Set_Mouse_Speed(ByVal lngSpeed As Long)
     Exit Sub
 
 General_Set_Mouse_Speed_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.General_Set_Mouse_Speed", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Set_Mouse_Speed", Erl)
     Resume Next
     
 End Sub
@@ -1969,7 +1972,7 @@ Public Sub ResetearUserMacro()
     Exit Sub
 
 ResetearUserMacro_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.ResetearUserMacro", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ResetearUserMacro", Erl)
     Resume Next
     
 End Sub
@@ -1997,7 +2000,7 @@ Public Sub CargarLst()
     Exit Sub
 
 CargarLst_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CargarLst", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CargarLst", Erl)
     Resume Next
     
 End Sub
@@ -2025,7 +2028,7 @@ Public Sub CrearFantasma(ByVal charindex As Integer)
     Exit Sub
 
 CrearFantasma_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CrearFantasma", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CrearFantasma", Erl)
     Resume Next
     
 End Sub
@@ -2043,7 +2046,7 @@ Public Sub CompletarAccionBarra(ByVal BarAccion As Byte)
     Exit Sub
 
 CompletarAccionBarra_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CompletarAccionBarra", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CompletarAccionBarra", Erl)
     Resume Next
     
 End Sub
@@ -2061,7 +2064,7 @@ Public Sub ComprobarEstado()
     Exit Sub
 
 ComprobarEstado_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.ComprobarEstado", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ComprobarEstado", Erl)
     Resume Next
     
 End Sub
@@ -2076,7 +2079,7 @@ Public Function General_Distance_Get(ByVal x1 As Integer, ByVal y1 As Integer, B
     Exit Function
 
 General_Distance_Get_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.General_Distance_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Distance_Get", Erl)
     Resume Next
     
 End Function
@@ -2111,7 +2114,7 @@ Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByV
     Exit Sub
 
 EndGame_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.EndGame", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.EndGame", Erl)
     Resume Next
     
 End Sub
@@ -2133,7 +2136,7 @@ Public Sub Client_UnInitialize_DirectX_Objects()
     Exit Sub
 
 Client_UnInitialize_DirectX_Objects_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.Client_UnInitialize_DirectX_Objects", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.Client_UnInitialize_DirectX_Objects", Erl)
     Resume Next
     
 End Sub
@@ -2149,7 +2152,7 @@ Public Sub TextoAlAsistente(ByVal Texto As String)
     Exit Sub
 
 TextoAlAsistente_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.TextoAlAsistente", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.TextoAlAsistente", Erl)
     Resume Next
     
 End Sub
@@ -2192,7 +2195,7 @@ Public Function GetTimeFormated(Mins As Integer) As String
     Exit Function
 
 GetTimeFormated_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.GetTimeFormated", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GetTimeFormated", Erl)
     Resume Next
     
 End Function
@@ -2212,7 +2215,7 @@ Public Function GetHora(Mins As Integer) As String
     Exit Function
 
 GetHora_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.GetHora", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GetHora", Erl)
     Resume Next
     
 End Function
@@ -2289,7 +2292,7 @@ ErrorHandler:
     Exit Sub
 
 PreloadGraphics_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.PreloadGraphics", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.PreloadGraphics", Erl)
     Resume Next
     
 End Sub
@@ -2348,7 +2351,7 @@ Public Sub CalcularPosicionMAPA()
     Exit Sub
 
 CalcularPosicionMAPA_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.CalcularPosicionMAPA", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CalcularPosicionMAPA", Erl)
     Resume Next
     
 End Sub
@@ -2399,7 +2402,7 @@ Public Function GetDriveSerialNumber(Optional ByVal DriveLetter As String) As Lo
     Exit Function
 
 GetDriveSerialNumber_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.GetDriveSerialNumber", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GetDriveSerialNumber", Erl)
     Resume Next
     
 End Function
@@ -2438,7 +2441,7 @@ Public Function GetMacAddress() As String
     Exit Function
 
 GetMacAddress_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.GetMacAddress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GetMacAddress", Erl)
     Resume Next
     
 End Function
@@ -2471,7 +2474,7 @@ Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal Mapa As Integer) As Integer
     Exit Function
 
 ObtenerIdMapaDeLlamadaDeClan_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.ObtenerIdMapaDeLlamadaDeClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ObtenerIdMapaDeLlamadaDeClan", Erl)
     Resume Next
     
 End Function
@@ -2487,7 +2490,7 @@ Public Sub Auto_Drag(ByVal hWnd As Long)
     Exit Sub
 
 Auto_Drag_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModLadder.Auto_Drag", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.Auto_Drag", Erl)
     Resume Next
     
 End Sub

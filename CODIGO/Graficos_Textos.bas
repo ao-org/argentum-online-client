@@ -483,7 +483,7 @@ Public Sub Engine_Font_Initialize()
     Exit Sub
 
 Engine_Font_Initialize_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Font_Initialize", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Font_Initialize", Erl)
     Resume Next
     
 End Sub
@@ -567,7 +567,7 @@ Public Function Engine_Text_Height(Texto As String, Optional multi As Boolean = 
     Exit Function
 
 Engine_Text_Height_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_Height", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Height", Erl)
     Resume Next
     
 End Function
@@ -721,7 +721,7 @@ Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, 
     Exit Sub
 
 Engine_Text_Render_LetraGrande_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_Render_LetraGrande", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_LetraGrande", Erl)
     Resume Next
     
 End Sub
@@ -885,12 +885,12 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
     Exit Sub
 
 Engine_Text_Render_LetraChica_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_Render_LetraChica", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_LetraChica", Erl)
     Resume Next
     
 End Sub
 
-Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Public Sub Engine_Text_Render(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
     
     On Error GoTo Engine_Text_Render_Err
     
@@ -1042,7 +1042,7 @@ Public Sub Engine_Text_Render(Texto As String, x As Integer, y As Integer, ByRef
     Exit Sub
 
 Engine_Text_Render_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
     Resume Next
     
 End Sub
@@ -1199,7 +1199,7 @@ Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer,
     Exit Sub
 
 Engine_Text_RenderGrande_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_RenderGrande", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_RenderGrande", Erl)
     Resume Next
     
 End Sub
@@ -1317,7 +1317,7 @@ Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRe
     Exit Sub
 
 Engine_Text_Render2_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_Render2", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render2", Erl)
     Resume Next
     
 End Sub
@@ -1381,7 +1381,7 @@ Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As 
     Exit Sub
 
 Engine_Text_Render_Efect_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_Render_Efect", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_Efect", Erl)
     Resume Next
     
 End Sub
@@ -1509,7 +1509,7 @@ Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = F
     Exit Function
 
 Engine_Text_Width_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_Width", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Width", Erl)
     Resume Next
     
 End Function
@@ -1638,7 +1638,7 @@ Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boo
     Exit Function
 
 Engine_Text_WidthCentrado_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Engine_Text_WidthCentrado", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_WidthCentrado", Erl)
     Resume Next
     
 End Function
@@ -1675,7 +1675,7 @@ Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long
     Exit Sub
 
 Text_Render_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Text_Render", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Text_Render", Erl)
     Resume Next
     
 End Sub
@@ -1696,7 +1696,7 @@ Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long
     Exit Sub
 
 Text_Render_ext_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Text_Render_ext", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Text_Render_ext", Erl)
     Resume Next
     
 End Sub
@@ -1730,7 +1730,7 @@ Private Sub Font_Make(ByVal font_index As Long, ByVal Style As String, ByVal bol
     Exit Sub
 
 Font_Make_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Font_Make", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Font_Make", Erl)
     Resume Next
     
 End Sub
@@ -1756,7 +1756,7 @@ Public Function Font_Next_Open() As Long
     Exit Function
 
 Font_Next_Open_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Font_Next_Open", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Font_Next_Open", Erl)
     Resume Next
     
 End Function
@@ -1778,7 +1778,7 @@ Public Function Font_Check(ByVal font_index As Long) As Boolean
     Exit Function
 
 Font_Check_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Textos.Font_Check", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Font_Check", Erl)
     Resume Next
     
 End Function
