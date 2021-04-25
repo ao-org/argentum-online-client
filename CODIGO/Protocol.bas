@@ -3070,7 +3070,7 @@ Private Sub HandlePosUpdate()
     charlist(UserCharIndex).Pos = UserPos
         
     'Are we under a roof?
-    bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+    bTecho = HayTecho(UserPos.x, UserPos.y)
                 
     'Update pos label and minimap
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
@@ -4314,7 +4314,7 @@ Private Sub HandleUserCharIndexInServer()
     UserPos = charlist(UserCharIndex).Pos
     
     'Are we under a roof?
-    bTecho = IIf(MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 4, True, False)
+    bTecho = HayTecho(UserPos.x, UserPos.y)
     
     LastMove = FrameTime
     
@@ -5436,7 +5436,6 @@ Private Sub HandleRainToggle()
     Call incomingData.ReadByte
     
     If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
-    bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger = 4)
             
     If bRain Then
         If MapDat.LLUVIA Then
@@ -18282,7 +18281,6 @@ Private Sub HandleNieveToggle()
     Call incomingData.ReadByte
     
     If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
-    bTecho = (MapData(UserPos.x, UserPos.y).Trigger = 1 Or MapData(UserPos.x, UserPos.y).Trigger = 2 Or MapData(UserPos.x, UserPos.y).Trigger > 9 Or MapData(UserPos.x, UserPos.y).Trigger = 6 Or MapData(UserPos.x, UserPos.y).Trigger = 4)
             
     If MapDat.NIEVE Then
         Engine_MeteoParticle_Set (Particula_Nieve)

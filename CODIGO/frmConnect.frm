@@ -173,7 +173,6 @@ Private Sub Form_Load()
     Call Form_RemoveTitleBar(Me)
     Me.Width = 1024 * Screen.TwipsPerPixelX
     Me.Height = 768 * Screen.TwipsPerPixelY
-    Call Analizar
     
     Exit Sub
 
@@ -303,34 +302,36 @@ render_DblClick_Err:
 End Sub
 
 'Comprobación versión cliente
-Sub Analizar()
+Public Sub AnalizarCliente()
     
     On Error GoTo Analizar_Err
     
     On Error Resume Next
     Dim json As String
-    Const QUOTE = """"
     Dim jsonSplit() As String
     Dim Token As String
     
     'obtengo el MD5 del Argentum.exe
     json = Inet1.OpenURL("https://parches.ao20.com.ar/files/Version.json")
-    Token = Left(Split(json, "Argentum.exe" & QUOTE & ":" & QUOTE)(1), 32)
-    
-    If Token <> GetMd5() Then
-        #If Not DEBUGGING = 1 Then
-                ShellExecute 0, "open", "LauncherAO20.exe", "", App.Path & "\..\Launcher\", 1
-            End
-        #End If
+    If json <> "" Then
+        Token = Left(Split(json, "Argentum.exe"":""")(1), 32)
+    Else
+        Exit Sub
     End If
+    
+    'Compruebo los MD5 con host
+        #If Not DEBUGGING = 1 Then
+            If Token <> CheckMD5 Then
+                Shell App.Path & "\..\..\Launcher\LauncherAO20.exe -openbyexe"
+                End
+            End If
+        #End If
 
 Analizar_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.Analizar", Erl)
     Resume Next
-    
-    
-    
 End Sub
+
 
 Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
@@ -816,6 +817,8 @@ render_MouseUp_Err:
     Resume Next
     
 End Sub
+
+
 
 Private Sub txtNombre_Change()
     

@@ -625,7 +625,6 @@ Sub SetConnected()
     frmMain.NombrePJ.Caption = UserName
     LogeoAlgunaVez = True
     
-    ' bTecho = False
     AlphaNiebla = 0
 
     'Vaciamos la cola de movimiento
@@ -1049,6 +1048,7 @@ Sub Main()
     If FileExist(App.Path & "\..\..\Launcher\LauncherAO20.ex_", vbNormal) Then
         Kill App.Path & "\..\..\Launcher\LauncherAO20.exe"
         Name App.Path & "\..\..\Launcher\LauncherAO20.ex_" As App.Path & "\..\..\Launcher\LauncherAO20.exe"
+        Shell App.Path & "\..\..\Launcher\LauncherAO20.exe -openbyexe"
     End If
 
     'Cursores******
@@ -1079,6 +1079,7 @@ Sub Main()
     
     Call Frmcarga.Show
  
+    Call frmConnect.AnalizarCliente
     
     If Sonido Then
     
