@@ -49,7 +49,7 @@ Private oldResWidth  As Long
 Private oldDepth     As Integer
 Private oldFrequency As Long
 
-Private bNoResChange As Boolean
+Private bResChange As Boolean
 
 Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Long, ByVal iModeNum As Long, lptypDevMode As Any) As Boolean
 Private Declare Function ChangeDisplaySettings Lib "user32" Alias "ChangeDisplaySettingsA" (lptypDevMode As Any, ByVal dwFlags As Long) As Long
@@ -99,11 +99,11 @@ Public Sub SetResolution()
         lRes = ChangeDisplaySettings(MidevM, CDS_TEST)
         
         If frmMain.Visible Then frmMain.Top = 0: frmMain.Left = 0
-        If frmConnect.Visible Then frmConnect.Top = 0: frmConnect.Left = 0
         If frmOpciones.Visible Then frmOpciones.Top = (Screen.Height - frmOpciones.Height) \ 2: frmOpciones.Left = (Screen.Width - frmOpciones.Width) \ 2
         
+        bResChange = True
     Else
-        bNoResChange = True
+        bResChange = False
 
     End If
 
@@ -131,8 +131,8 @@ Public Sub ResetResolution()
     Dim typDevM As typDevMODE
     Dim lRes    As Long
     
-    If Not bNoResChange Then
-    
+    If bResChange Then
+
         lRes = EnumDisplaySettings(0, ENUM_CURRENT_SETTINGS, typDevM)
         
         With typDevM
