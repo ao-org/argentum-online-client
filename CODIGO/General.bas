@@ -1046,11 +1046,16 @@ Sub Main()
     Call CargarOpciones
     
     If FileExist(App.Path & "\..\..\Launcher\LauncherAO20.ex_", vbNormal) Then
+        Sleep (2000)
         Kill App.Path & "\..\..\Launcher\LauncherAO20.exe"
         Name App.Path & "\..\..\Launcher\LauncherAO20.ex_" As App.Path & "\..\..\Launcher\LauncherAO20.exe"
+        If FileExist(App.Path & "\..\..\Launcher\LauncherAO20.dl_", vbNormal) Then
+            Kill App.Path & "\..\..\Launcher\LauncherAO20.dll"
+            Name App.Path & "\..\..\Launcher\LauncherAO20.dl_" As App.Path & "\..\..\Launcher\LauncherAO20.dll"
+        End If
         Shell App.Path & "\..\..\Launcher\LauncherAO20.exe -openbyexe"
+        End
     End If
-
     'Cursores******
     Set FormParser = New clsCursor
     Call FormParser.Init
