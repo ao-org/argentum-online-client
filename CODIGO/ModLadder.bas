@@ -700,8 +700,8 @@ Sub General_Set_Connect()
     AlphaNiebla = 75
     EntradaY = 10
     EntradaX = 10
-
-    UserMap = 1
+    
+    userMap = randomMap()
     Call SwitchMap(UserMap)
 
     If QueRender <> 1 Then

@@ -1160,6 +1160,27 @@ Main_Err:
     
 End Sub
 
+Public Function randomMap() As Integer
+    Select Case RandomNumber(1, 8)
+        Case 1 ' ulla 45-43
+            randomMap = 1
+        Case 2 ' nix 22-75
+            randomMap = 34
+        Case 3 ' bander 49-43
+            randomMap = 59
+        Case 4 ' Arghal 38-41
+            randomMap = 151
+        Case 5 ' Lindos 63-40
+            randomMap = 62
+        Case 6 ' Arkhein 64-32
+            randomMap = 195
+        Case 7 ' Esperanza 50-45
+            randomMap = 112
+        Case 8 ' Polo 78-66
+            randomMap = 354
+    End Select
+End Function
+
 Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Writes a var to a text file

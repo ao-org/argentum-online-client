@@ -1,4 +1,4 @@
-frmComerciar = 130, 130, 1333, 642, , 78, 78, 1126, 732, C
+frmComerciar = 130, 130, 1333, 642, Z, 78, 78, 1126, 732, C
 frmConnect = 52, 52, 1255, 564, , 104, 104, 1152, 758, C
 frmMain = 0, 0, 1044, 628, , 52, 52, 1096, 706, C
 Carteles = 0, 0, 0, 0, C
@@ -34,7 +34,7 @@ clsGuildDlg = 0, 0, 0, 0, C
 ModAreas = 0, 0, 0, 0, C
 clsByteQueue = 234, 234, 1437, 746, 
 clsTimer = 0, 0, 0, 0, C
-Protocol = 156, 156, 1200, 784, Z
+Protocol = 156, 156, 1200, 784, 
 ProtocolCmdParse = 52, 52, 1143, 712, 
 PrevInstance = 156, 156, 1200, 784, 
 modScreenCapture = 0, 0, 0, 0, C
