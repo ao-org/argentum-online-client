@@ -31,17 +31,22 @@ Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
             If (loopY < MinLimiteY) Or (loopY > MaxLimiteY) Or (loopX < MinLimiteX) Or (loopX > MaxLimiteX) Then
                 'Erase NPCs
                 
-                If MapData(loopX, loopY).charindex > 0 Then
-                    If MapData(loopX, loopY).charindex <> UserCharIndex Then
-                        Call EraseChar(MapData(loopX, loopY).charindex)
-
-                    End If
-                End If
+                With MapData(loopX, loopY)
                 
-                'Erase OBJs
-                If Not EsObjetoFijo(loopX, loopY) Then
-                    MapData(loopX, loopY).ObjGrh.GrhIndex = 0
-                End If
+                    If .charindex > 0 Then
+                        If .charindex <> UserCharIndex Then
+                            Call EraseChar(.charindex)
+    
+                        End If
+                    End If
+                    
+                    'Erase OBJs
+                    If Not EsObjetoFijo(loopX, loopY) Then
+                        .ObjGrh.GrhIndex = 0
+                        .OBJInfo.OBJIndex = 0
+                    End If
+
+                End With
                 
             End If
         
@@ -54,7 +59,7 @@ Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
     Exit Sub
 
 CambioDeArea_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModAreas.CambioDeArea", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModAreas.CambioDeArea", Erl)
     Resume Next
     
 End Sub
