@@ -800,9 +800,13 @@ Public Function NearRoof(ByVal x As Integer, ByVal y As Integer) As eTrigger
     
     For lY = y - 1 To y + 1
         For lX = x - 1 To x + 1
-            If MapData(lX, lY).Trigger >= PRIMER_TRIGGER_TECHO Then
-                NearRoof = MapData(lX, lY).Trigger
-                Exit Function
+            If lX >= XMinMapSize And lX <= XMaxMapSize Then
+                If lY >= YMinMapSize And lY <= YMaxMapSize Then
+                    If MapData(lX, lY).Trigger >= PRIMER_TRIGGER_TECHO Then
+                        NearRoof = MapData(lX, lY).Trigger
+                        Exit Function
+                    End If
+                End If
             End If
         Next
     Next

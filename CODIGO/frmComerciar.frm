@@ -733,8 +733,10 @@ Private Sub InvComUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
 
     ' Si soltó dentro del mismo inventario
     If Drop > 0 Then
-        ' Movemos el item dentro del inventario
-        Call WriteItemMove(Drag, Drop)
+        If Drag <> Drop Then
+            ' Movemos el item dentro del inventario
+            Call WriteItemMove(Drag, Drop)
+        End If
     Else
 
         ' Si lo soltó dentro de la tienda

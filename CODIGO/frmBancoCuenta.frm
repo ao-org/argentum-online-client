@@ -723,8 +723,11 @@ Private Sub InvBankUsuCuenta_ItemDropped(ByVal Drag As Integer, ByVal Drop As In
 
     ' Si lo soltó dentro del mismo inventario
     If Drop > 0 Then
-        ' Movemos el item dentro del inventario
-        Call WriteItemMove(Drag, Drop)
+        ' Si el slot de drag es distinto del de drop
+        If Drag <> Drop Then
+            ' Movemos el item dentro del inventario
+            Call WriteItemMove(Drag, Drop)
+        End If
     Else
         Drop = InvBovedaCuenta.GetSlot(x, y)
 
