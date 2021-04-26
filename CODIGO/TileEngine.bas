@@ -317,7 +317,7 @@ Public Type MapBlock
     TileExit As WorldPos
     Blocked As Integer
     
-    trigger As Integer
+    Trigger As Integer
     CharFantasma As Fantasma
     ArbolAlphaTimer As Long
 
@@ -796,31 +796,17 @@ Public Function NearRoof(ByVal x As Integer, ByVal y As Integer) As eTrigger
     
     On Error GoTo NearRoof_Err
     
+    Dim lX As Integer, lY As Integer
     
-    If MapData(x, y).trigger >= PRIMER_TRIGGER_TECHO Then
-        NearRoof = MapData(x, y).trigger
-        Exit Function
-    End If
-    
-    If MapData(x + 1, y).trigger >= PRIMER_TRIGGER_TECHO Then
-        NearRoof = MapData(x + 1, y).trigger
-        Exit Function
-    End If
-    
-    If MapData(x - 1, y).trigger >= PRIMER_TRIGGER_TECHO Then
-        NearRoof = MapData(x - 1, y).trigger
-        Exit Function
-    End If
-    
-    If MapData(x, y + 1).trigger >= PRIMER_TRIGGER_TECHO Then
-        NearRoof = MapData(x, y + 1).trigger
-        Exit Function
-    End If
-    
-    If MapData(x, y - 1).trigger >= PRIMER_TRIGGER_TECHO Then
-        NearRoof = MapData(x, y - 1).trigger
-        Exit Function
-    End If
+    For lY = y - 1 To y + 1
+        For lX = x - 1 To x + 1
+            If MapData(lX, lY).Trigger >= PRIMER_TRIGGER_TECHO Then
+                NearRoof = MapData(lX, lY).Trigger
+                Exit Function
+            End If
+        Next
+    Next
+
     Exit Function
 
 NearRoof_Err:
@@ -833,7 +819,7 @@ Public Function HayTecho(ByVal x As Integer, ByVal y As Integer) As Boolean
     
     On Error GoTo HayTecho_Err
     
-    HayTecho = MapData(x, y).trigger >= PRIMER_TRIGGER_TECHO
+    HayTecho = MapData(x, y).Trigger >= PRIMER_TRIGGER_TECHO
     
     Exit Function
 
@@ -892,7 +878,7 @@ Public Function HayWavAmbiental(ByRef location As Position) As Boolean
         For k = UserPos.y - 15 To UserPos.y + 15
 
             If InMapBounds(j, k) Then
-                If MapData(j, k).trigger = 150 Then
+                If MapData(j, k).Trigger = 150 Then
                     location.x = j
                     location.y = k
                     
@@ -993,13 +979,13 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     ' Exit Function
     '  End If
     
-    If UserMontado And MapData(x, y).trigger > 9 Then
+    If UserMontado And MapData(x, y).Trigger > 9 Then
         Exit Function
 
     End If
 
     '
-    If UserNadando And MapData(x, y).trigger = 8 Then
+    If UserNadando And MapData(x, y).Trigger = 8 Then
         LegalPos = True
         Exit Function
 
@@ -1010,7 +996,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
 
     End If
     
-    If UserNavegando And MapData(x, y).trigger = 8 And Not UserNadando And Not UserEstado = 1 Then
+    If UserNavegando And MapData(x, y).Trigger = 8 And Not UserNadando And Not UserEstado = 1 Then
         If Not UserAvisadoBarca Then
             Call AddtoRichTextBox(frmMain.RecTxt, "¡Atención! El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 255, 255, 255, True, False, False)
             UserAvisadoBarca = True

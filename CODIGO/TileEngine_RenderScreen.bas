@@ -373,7 +373,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     If HayLayer4 Then
 
         ' Actualizo techos
-        Dim Trigger As Integer
+        Dim Trigger As eTrigger
         For Trigger = LBound(RoofsLight) To UBound(RoofsLight)
 
             ' Si estoy bajo este techo
@@ -406,8 +406,10 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                     ' Layer 4 - roofs *******************************
                     If .Graphic(4).GrhIndex Then
 
-                        If HayTecho(x, y) Then
-                            Call Copy_RGBAList_WithAlpha(TempColor, .light_value, RoofsLight(.Trigger))
+                        Trigger = NearRoof(x, y)
+
+                        If Trigger Then
+                            Call Copy_RGBAList_WithAlpha(TempColor, .light_value, RoofsLight(Trigger))
 
                             Call Draw_Grh(.Graphic(4), ScreenX, ScreenY, 1, 1, TempColor, , x, y)
                             
