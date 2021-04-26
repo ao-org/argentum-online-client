@@ -1083,7 +1083,7 @@ Sub Main()
     
     Call Frmcarga.Show
  
-#If Not DEBUGGING Then
+#If DEBUGGING = 0 Then
     Call frmConnect.AnalizarCliente
 #End If
 
