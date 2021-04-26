@@ -313,19 +313,18 @@ Public Sub AnalizarCliente()
     
     'obtengo el MD5 del Argentum.exe
     json = Inet1.OpenURL("https://parches.ao20.com.ar/files/Version.json")
-    If json <> "" Then
-        Token = Left(Split(json, "Argentum.exe"":""")(1), 32)
-    Else
-        Exit Sub
+    If Left(json, 5) <> "<!DOC" Then
+        If json <> "" Then
+            Token = Left(Split(json, "Argentum.exe"":""")(1), 32)
+        Else
+            Exit Sub
+        End If
     End If
-    
     'Compruebo los MD5 con host
-#If Not DEBUGGING = 1 Then
     If Token <> CheckMD5 Then
         Shell App.Path & "\..\..\Launcher\LauncherAO20.exe -openbyexe"
         End
     End If
-#End If
         
     Exit Sub
 

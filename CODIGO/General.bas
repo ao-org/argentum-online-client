@@ -1083,8 +1083,10 @@ Sub Main()
     
     Call Frmcarga.Show
  
+#If Not DEBUGGING Then
     Call frmConnect.AnalizarCliente
-    
+#End If
+
     If Sonido Then
     
         If Sound.Initialize_Engine(frmConnect.hWnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
