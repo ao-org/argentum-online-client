@@ -1953,6 +1953,11 @@ List1_Click_Err:
     
 End Sub
 
+Private Sub List1_DblClick()
+        tmpUser = Split(List1.Text, "(")(0)
+        Call WriteGoNearby(tmpUser)
+End Sub
+
 Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo List1_MouseDown_Err
