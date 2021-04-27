@@ -381,14 +381,14 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             
                 If RoofsLight(Trigger) > 0 Then
                     ' Reduzco el alpha
-                    RoofsLight(Trigger) = RoofsLight(Trigger) - timerTicksPerFrame * 12
+                    RoofsLight(Trigger) = RoofsLight(Trigger) - timerTicksPerFrame * 48
                     If RoofsLight(Trigger) < 0 Then RoofsLight(Trigger) = 0
                 End If
 
             ElseIf RoofsLight(Trigger) < 255 Then
             
                 ' Aumento el alpha
-                RoofsLight(Trigger) = RoofsLight(Trigger) + timerTicksPerFrame * 12
+                RoofsLight(Trigger) = RoofsLight(Trigger) + timerTicksPerFrame * 48
                 If RoofsLight(Trigger) > 255 Then RoofsLight(Trigger) = 255
             
             End If
