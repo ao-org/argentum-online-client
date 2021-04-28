@@ -139,9 +139,12 @@ Public ClickEnAsistenteRandom      As Long
 Public LastClickAsistente    As Long
 
 Public PJSeleccionado        As Byte
-Public LastPJSeleccionado        As Byte
-Public CambioSeleccion        As Boolean
-Public ComenzoFade           As Boolean
+Public LastPJSeleccionado    As Byte
+Public AlphaRenderCuenta     As Byte
+Public RenderCuenta_PosX     As Integer
+Public RenderCuenta_PosY     As Integer
+
+Public Const MAX_ALPHA_RENDER_CUENTA = 85
 
 Public AlphaNiebla           As Byte
 

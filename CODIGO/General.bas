@@ -678,6 +678,7 @@ Sub SetConnected()
     frmMain.Visible = True
     frmMain.cerrarcuenta.Enabled = True
 
+    engine.FadeInAlpha = 255
     
     Exit Sub
 

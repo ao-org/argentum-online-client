@@ -275,7 +275,8 @@ Private Sub render_DblClick()
         Case 2
             
             If PJSeleccionado < 1 Then Exit Sub
-            If Pjs(PJSeleccionado).nombre = "" Then
+            If Pjs(PJSeleccionado).nombre = "" And PJSeleccionado <> 0 Then
+                LastPJSeleccionado = PJSeleccionado
                 PJSeleccionado = 0
                 Exit Sub
 
@@ -613,6 +614,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         ' El resto tiene que ser menor que las dimensiones del "rectangulo" del pj
                         If ModX < 79 Then ' 64 = ancho del "rectangulo" del pj
                             If ModY < 93 Then ' 64 = alto del "rectangulo" del pj
+
+                                If LastPJSeleccionado <> PJSeleccionado Then
+                                    LastPJSeleccionado = PJSeleccionado
+                                End If
+
                                 ' Si todo se cumple, entonces cliqueo en un pj (dado por las divisiones)
                                 PJSeleccionado = 1 + DivX + DivY * 5 ' 5 = cantidad de pjs por linea (+1 porque los pjs van de 1 a MAX)
 
@@ -685,7 +691,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                             frmMain.Socket1.HostName = IPdelServidor
                             frmMain.Socket1.RemotePort = PuertoDelServidor
                             frmMain.Socket1.Connect
-                            PJSeleccionado = 0
+                            
+                            If PJSeleccionado <> 0 Then
+                                LastPJSeleccionado = PJSeleccionado
+                                PJSeleccionado = 0
+                            End If
                         Else
                             MsgBox ("Contraseña incorrecta")
 
@@ -731,7 +741,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case 4
 
                     If PJSeleccionado < 1 Then Exit Sub
-                    If Pjs(PJSeleccionado).nombre = "" Then
+                    If Pjs(PJSeleccionado).nombre = "" And PJSeleccionado <> 0 Then
+                        LastPJSeleccionado = PJSeleccionado
                         PJSeleccionado = 0
                         Exit Sub
 

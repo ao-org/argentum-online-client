@@ -1101,7 +1101,7 @@ Public Sub Engine_Select_Particle_Set(ByVal Select_particle As Long)
     ElseIf (Select_part <> -1) Then
 
         If Select_part <> 0 Then Call Particle_Group_Remove(Select_part)
-        Select_part = General_Particle_Create(Select_particle, -1, -1)
+        Select_part = General_Particle_Create(Select_particle, -1, -1, , True)
 
     End If
     
@@ -1184,7 +1184,6 @@ End Function
 Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal char_index As Integer, Optional ByVal particle_life As Long = 0) As Long
     
     On Error GoTo General_Char_Particle_Create_Err
-    
 
     If ParticulaInd = 0 Then Exit Function
 
@@ -1201,7 +1200,7 @@ Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal c
        StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
        StreamData(ParticulaInd).gravity, StreamData(ParticulaInd).grav_strength, StreamData(ParticulaInd).bounce_strength, StreamData(ParticulaInd).x2, _
        StreamData(ParticulaInd).y2, StreamData(ParticulaInd).XMove, StreamData(ParticulaInd).move_x1, StreamData(ParticulaInd).move_x2, StreamData(ParticulaInd).move_y1, _
-       StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey, noBorrar)
+       StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey)
 
     
     Exit Function

@@ -760,7 +760,8 @@ Sub General_Set_Connect()
         Call TextoAlAsistente("¡Bienvenido a Argentum20! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.") ' hay que poner 20 aniversario
 
     End If
-
+    
+    engine.FadeInAlpha = 255
     
     Exit Sub
 

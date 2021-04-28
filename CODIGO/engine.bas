@@ -29,11 +29,6 @@ Public Const MS_PER_CHAR     As Byte = 100
 ''
 ' Number of extra milliseconds to add to the lifetime of a new dialog
 Public Const MS_ADD_EXTRA    As Integer = 5000
-Public AlphaRenderCuenta As Byte
-Public subiendo As Boolean
-Public bajando As Boolean
-Public RenderCuenta_PosX As Integer
-Public RenderCuenta_PosY As Integer
 ''
 ' The dialog structure
 '
@@ -104,7 +99,9 @@ Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCo
 Public fps                     As Long
 Private FramesPerSecCounter    As Long
 Private lFrameTimer            As Long
-Public FrameTime          As Long
+Public FrameTime               As Long
+
+Public FadeInAlpha             As Integer
 
 Private ScrollPixelsPerFrameX  As Single
 Private ScrollPixelsPerFrameY  As Single
@@ -922,6 +919,11 @@ Public Sub render()
 
     End If
     
+    If FadeInAlpha > 0 Then
+        Call Engine_Draw_Box(0, 0, frmMain.renderer.ScaleWidth, frmMain.renderer.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
+        FadeInAlpha = FadeInAlpha - 1
+    End If
+    
     Call Engine_EndScene(Render_Main_Rect)
     
     FrameTime = (timeGetTime() And &H7FFFFFFF)
@@ -931,9 +933,6 @@ Public Sub render()
     
     Engine_ActFPS
 
-    Exit Sub
-
-    
     Exit Sub
 
 render_Err:
@@ -2950,7 +2949,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         Engine_Text_Render "Gulfas Morgolock", 449, 400, ColorGM, 1
         Engine_Text_Render "<Creador del Mundo>", 438, 415, ColorGM, 1
 
-        Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 870, 750, COLOR_WHITE, 4, False
+        Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 900, 740, COLOR_WHITE, 4, False
 
         Dim ItemName As String
 
@@ -3013,13 +3012,10 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         Engine_Text_Render "Crear cuenta en cliente", 50, 340, COLOR_WHITE
     #End If
 
-    'TempGrh.framecounter = 1
-    'TempGrh.GrhIndex = 32016
-
-    ' cc(0) = D3DColorARGB(255, 255, 255, 255)
-    ' cc(1) = cc(0)
-    ' cc(2) = cc(0)
-    ' cc(3) = cc(0)
+    If FadeInAlpha > 0 Then
+        Call Engine_Draw_Box(0, 0, frmConnect.ScaleWidth, frmConnect.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
+        FadeInAlpha = FadeInAlpha - 1
+    End If
 
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
@@ -3028,9 +3024,6 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     'FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
-
-    Exit Sub
-
     
     Exit Sub
 
@@ -3417,44 +3410,26 @@ Public Sub RenderPjsCuenta()
     
     'Dibujo la escena debajo del mapa
     Call RenderScreen(RenderCuenta_PosX, RenderCuenta_PosY, 0, 0, HalfConnectTileWidth, HalfConnectTileHeight)
+    
+    If LastPJSeleccionado <> PJSeleccionado Then
+        If AlphaRenderCuenta < MAX_ALPHA_RENDER_CUENTA Then
+            AlphaRenderCuenta = AlphaRenderCuenta + 1
+            
+            If AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA Then
+                LastPJSeleccionado = PJSeleccionado
+                
+                If PJSeleccionado <> 0 Then
+                    Call SwitchMap(Pjs(PJSeleccionado).Mapa)
+                    RenderCuenta_PosX = Pjs(PJSeleccionado).PosX
+                    RenderCuenta_PosY = Pjs(PJSeleccionado).PosY
+                End If
+            End If
+        End If
+    ElseIf PJSeleccionado <> 0 And AlphaRenderCuenta > 0 Then
+        AlphaRenderCuenta = AlphaRenderCuenta - 1
+    End If
        
     If PJSeleccionado > 0 Then
-     
-        If (LastRenderMap <> Pjs(PJSeleccionado).Mapa) Then
-            LastRenderMap = Pjs(PJSeleccionado).Mapa
-        End If
-        
-        If LastPJSeleccionado <> PJSeleccionado And LastPJSeleccionado > 0 And PJSeleccionado > 0 Then
-            
-            'efecto entre personajes
-            ComenzoFade = True
-            AlphaRenderCuenta = 0
-            subiendo = True
-        Else
-        End If
-        
-        If ComenzoFade Then
-            If AlphaRenderCuenta >= 0 And AlphaRenderCuenta < 85 And subiendo Then
-                AlphaRenderCuenta = AlphaRenderCuenta + 1
-            End If
-            
-            If AlphaRenderCuenta >= 0 And AlphaRenderCuenta <= 85 And bajando Then
-                AlphaRenderCuenta = AlphaRenderCuenta - 1
-            End If
-            
-            If AlphaRenderCuenta >= 85 Then
-                SwitchMap (Pjs(PJSeleccionado).Mapa)
-                RenderCuenta_PosX = Pjs(PJSeleccionado).PosX
-                RenderCuenta_PosY = Pjs(PJSeleccionado).PosY
-                subiendo = False
-                bajando = True
-            End If
-            
-            If AlphaRenderCuenta <= 0 Then
-                bajando = False
-                ComenzoFade = False
-            End If
-        End If
         
         Call RGBAList(TempColor, 255, 255, 255, 170 + AlphaRenderCuenta)
         
@@ -3466,11 +3441,7 @@ Public Sub RenderPjsCuenta()
         Draw_GrhIndex 3839, 0, 0
         
     Else
-    
-        If AlphaRenderCuenta > 0 And AlphaRenderCuenta <= 85 Then
-            AlphaRenderCuenta = AlphaRenderCuenta - 1
-        End If
-        
+
         Call RGBAList(TempColor, 255, 255, 255, 170 + AlphaRenderCuenta)
         
         Call InitGrh(grh, 4531)
@@ -3587,10 +3558,7 @@ Public Sub RenderPjsCuenta()
         End If
 
     Next i
-    
-    LastPJSeleccionado = PJSeleccionado
-       
-    
+
     Exit Sub
 
 RenderPjsCuenta_Err:
