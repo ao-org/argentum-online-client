@@ -17675,6 +17675,8 @@ Private Sub HandlePersonajesDeCuenta()
         Pjs(ii).Body = 0
         Pjs(ii).Head = 0
         Pjs(ii).Mapa = 0
+        Pjs(ii).PosX = 0
+        Pjs(ii).PosY = 0
         Pjs(ii).nivel = 0
         Pjs(ii).nombre = ""
         Pjs(ii).Criminal = 0
@@ -17690,6 +17692,9 @@ Private Sub HandlePersonajesDeCuenta()
         Pjs(ii).nombre = buffer.ReadASCIIString()
         Pjs(ii).nivel = buffer.ReadByte()
         Pjs(ii).Mapa = buffer.ReadInteger()
+        Pjs(ii).PosX = buffer.ReadInteger()
+        Pjs(ii).PosY = buffer.ReadInteger()
+        
         Pjs(ii).Body = buffer.ReadInteger()
         
         Pjs(ii).Head = buffer.ReadInteger()
@@ -17762,7 +17767,7 @@ Private Sub HandlePersonajesDeCuenta()
    
     If CantidadDePersonajesEnCuenta > 0 Then
         PJSeleccionado = 1
-
+        LastPJSeleccionado = 1
     End If
 
     'If we got here then packet is complete, copy data back to original queue

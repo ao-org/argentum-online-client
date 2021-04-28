@@ -142,6 +142,7 @@ Public Type particle_group
     move_y2 As Integer
     rgb_list(3) As RGBA
     
+    
     'Added by Juan Martín Sotuyo Dodero
     speed As Single
     life_counter As Long
@@ -150,6 +151,8 @@ Public Type particle_group
     grh_resize As Boolean
     grh_resizex As Integer
     grh_resizey As Integer
+    
+    noBorrar As Boolean
 
 End Type
 
@@ -179,7 +182,7 @@ Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Int
    Optional ByVal XMove As Boolean, Optional ByVal move_x1 As Integer, Optional ByVal move_x2 As Integer, _
    Optional ByVal move_y1 As Integer, Optional ByVal move_y2 As Integer, Optional ByVal YMove As Boolean, _
    Optional ByVal spin_speedH As Single, Optional ByVal spin As Boolean, Optional grh_resize As Boolean, _
-   Optional grh_resizex As Integer, Optional grh_resizey As Integer)
+   Optional grh_resizex As Integer, Optional grh_resizey As Integer, Optional ByVal noBorrar As Boolean)
     
     On Error GoTo Particle_Group_Create_Err
     
@@ -195,8 +198,8 @@ Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Int
     If (map_x <> -1) And (map_y <> -1) Then
         If Map_Particle_Group_Get(map_x, map_y) = 0 Then
             Particle_Group_Create = Particle_Group_Next_Open
-
             Particle_Group_Make Particle_Group_Create, map_x, map_y, particle_count, stream_type, grh_index_list(), rgb_list(), alpha_blend, alive_counter, frame_speed, id, x1, y1, Angle, vecx1, vecx2, vecy1, vecy2, life1, life2, fric, spin_speedL, gravity, grav_strength, bounce_strength, x2, y2, XMove, move_x1, move_x2, move_y1, move_y2, YMove, spin_speedH, spin, grh_resize, grh_resizex, grh_resizey
+            particle_group_list(Particle_Group_Create).noBorrar = noBorrar
 
         End If
 
@@ -204,6 +207,7 @@ Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Int
         Particle_Group_Create = Particle_Group_Next_Open
       
         Particle_Group_Make Particle_Group_Create, map_x, map_y, particle_count, stream_type, grh_index_list(), rgb_list(), alpha_blend, alive_counter, frame_speed, id, x1, y1, Angle, vecx1, vecx2, vecy1, vecy2, life1, life2, fric, spin_speedL, gravity, grav_strength, bounce_strength, x2, y2, XMove, move_x1, move_x2, move_y1, move_y2, YMove, spin_speedH, spin, grh_resize, grh_resizex, grh_resizey
+        particle_group_list(Particle_Group_Create).noBorrar = noBorrar
 
     End If
 
@@ -263,7 +267,9 @@ Public Function Particle_Group_Remove_All() As Boolean
 
         'Make sure it's a legal index
         If Particle_Group_Check(Index) Then
-            Particle_Group_Destroy Index
+            If Not particle_group_list(Index).noBorrar Then
+                Particle_Group_Destroy Index
+            End If
 
         End If
 
@@ -1195,7 +1201,7 @@ Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal c
        StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
        StreamData(ParticulaInd).gravity, StreamData(ParticulaInd).grav_strength, StreamData(ParticulaInd).bounce_strength, StreamData(ParticulaInd).x2, _
        StreamData(ParticulaInd).y2, StreamData(ParticulaInd).XMove, StreamData(ParticulaInd).move_x1, StreamData(ParticulaInd).move_x2, StreamData(ParticulaInd).move_y1, _
-       StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey)
+       StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey, noBorrar)
 
     
     Exit Function
@@ -1206,7 +1212,7 @@ General_Char_Particle_Create_Err:
     
 End Function
 
-Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As Integer, ByVal y As Integer, Optional ByVal particle_life As Long = 0) As Long
+Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As Integer, ByVal y As Integer, Optional ByVal particle_life As Long = 0, Optional ByVal noBorrar As Boolean) As Long
     
     On Error GoTo General_Particle_Create_Err
     
@@ -1226,7 +1232,7 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As I
        StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
        StreamData(ParticulaInd).gravity, StreamData(ParticulaInd).grav_strength, StreamData(ParticulaInd).bounce_strength, StreamData(ParticulaInd).x2, _
        StreamData(ParticulaInd).y2, StreamData(ParticulaInd).XMove, StreamData(ParticulaInd).move_x1, StreamData(ParticulaInd).move_x2, StreamData(ParticulaInd).move_y1, _
-       StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey)
+       StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey, noBorrar)
 
     
     Exit Function
@@ -1311,7 +1317,7 @@ Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal st
     Exit Function
 
 Char_Particle_Group_Remove_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove", Erl)
     Resume Next
     
 End Function

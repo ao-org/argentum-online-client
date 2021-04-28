@@ -418,6 +418,8 @@ Type UserCuentaPJS
     nombre As String
     nivel As Byte
     Mapa As Integer
+    PosX As Integer
+    PosY As Integer
     Body As Integer
     Head As Integer
     Criminal As Byte

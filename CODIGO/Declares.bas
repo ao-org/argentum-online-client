@@ -139,6 +139,9 @@ Public ClickEnAsistenteRandom      As Long
 Public LastClickAsistente    As Long
 
 Public PJSeleccionado        As Byte
+Public LastPJSeleccionado        As Byte
+Public CambioSeleccion        As Boolean
+Public ComenzoFade           As Boolean
 
 Public AlphaNiebla           As Byte
 
@@ -1182,6 +1185,7 @@ Public Connected         As Boolean 'True when connected to server
 Public DownloadingMap    As Boolean 'Currently downloading a map from server
 
 Public UserMap           As Integer
+Public LastRenderMap     As Integer
 
 'Control
 Public prgRun            As Boolean 'When true the program ends

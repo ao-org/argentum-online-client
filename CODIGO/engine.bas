@@ -29,7 +29,11 @@ Public Const MS_PER_CHAR     As Byte = 100
 ''
 ' Number of extra milliseconds to add to the lifetime of a new dialog
 Public Const MS_ADD_EXTRA    As Integer = 5000
-
+Public AlphaRenderCuenta As Byte
+Public subiendo As Boolean
+Public bajando As Boolean
+Public RenderCuenta_PosX As Integer
+Public RenderCuenta_PosY As Integer
 ''
 ' The dialog structure
 '
@@ -3090,7 +3094,7 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
 
     RenderPjsCuenta
     
-    Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
+    'Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
 
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     
@@ -3397,14 +3401,87 @@ Public Sub RenderPjsCuenta()
     Texto = CuentaEmail
 
     'Render fondo
-    Draw_GrhIndex 1170, 0, 0
+    
+   
+   
+   'Draw_GrhIndex 1170, 0, 0
     
     Dim temp_array(3) As RGBA
 
     Dim sumax As Long
 
     sumax = 84
+    
+    Dim TempColor(3) As RGBA
+    Dim grh As grh
+    
+    'Dibujo la escena debajo del mapa
+    Call RenderScreen(RenderCuenta_PosX, RenderCuenta_PosY, 0, 0, HalfConnectTileWidth, HalfConnectTileHeight)
+       
+    If PJSeleccionado > 0 Then
+     
+        If (LastRenderMap <> Pjs(PJSeleccionado).Mapa) Then
+            LastRenderMap = Pjs(PJSeleccionado).Mapa
+        End If
+        
+        If LastPJSeleccionado <> PJSeleccionado And LastPJSeleccionado > 0 And PJSeleccionado > 0 Then
             
+            'efecto entre personajes
+            ComenzoFade = True
+            AlphaRenderCuenta = 0
+            subiendo = True
+        Else
+        End If
+        
+        If ComenzoFade Then
+            If AlphaRenderCuenta >= 0 And AlphaRenderCuenta < 85 And subiendo Then
+                AlphaRenderCuenta = AlphaRenderCuenta + 1
+            End If
+            
+            If AlphaRenderCuenta >= 0 And AlphaRenderCuenta <= 85 And bajando Then
+                AlphaRenderCuenta = AlphaRenderCuenta - 1
+            End If
+            
+            If AlphaRenderCuenta >= 85 Then
+                SwitchMap (Pjs(PJSeleccionado).Mapa)
+                RenderCuenta_PosX = Pjs(PJSeleccionado).PosX
+                RenderCuenta_PosY = Pjs(PJSeleccionado).PosY
+                subiendo = False
+                bajando = True
+            End If
+            
+            If AlphaRenderCuenta <= 0 Then
+                bajando = False
+                ComenzoFade = False
+            End If
+        End If
+        
+        Call RGBAList(TempColor, 255, 255, 255, 170 + AlphaRenderCuenta)
+        
+        Call InitGrh(grh, 4531)
+                            
+        Call Draw_Grh(grh, 0, 0, 0, 0, TempColor, False, 0, 0, 0)
+        
+        'Dibujamos frente 3839
+        Draw_GrhIndex 3839, 0, 0
+        
+    Else
+    
+        If AlphaRenderCuenta > 0 And AlphaRenderCuenta <= 85 Then
+            AlphaRenderCuenta = AlphaRenderCuenta - 1
+        End If
+        
+        Call RGBAList(TempColor, 255, 255, 255, 170 + AlphaRenderCuenta)
+        
+        Call InitGrh(grh, 4531)
+                            
+        Call Draw_Grh(grh, 0, 0, 0, 0, TempColor, False, 0, 0, 0)
+
+        'Dibujamos frente 3839
+        Draw_GrhIndex 3839, 0, 0
+        
+    End If
+      
     For i = 1 To 10
             
         If (i > 5) Then
@@ -3429,7 +3506,7 @@ Public Sub RenderPjsCuenta()
         ' Else
         Rem   notY = -5
         ' End If
-        
+
         'Si tiene cuerpo dibuja
         If (Pjs(i).Body <> 0) Then
         
@@ -3482,7 +3559,9 @@ Public Sub RenderPjsCuenta()
             Engine_Text_Render Pjs(i).nombre, x + 30 - Engine_Text_Width(Pjs(i).nombre, True) / 2, y + 56 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True
             
             If PJSeleccionado = i Then
-            
+                
+              
+                
                 Dim Offy As Byte
 
                 Offy = 0
@@ -3508,7 +3587,9 @@ Public Sub RenderPjsCuenta()
         End If
 
     Next i
-
+    
+    LastPJSeleccionado = PJSeleccionado
+       
     
     Exit Sub
 
