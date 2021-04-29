@@ -257,27 +257,10 @@ Private Sub Image1_Click(Index As Integer)
 
             If frmCrearCuenta.Visible = False Then
                 Unload frmCrearCuenta
-
             End If
 
             frmCrearCuenta.Show , frmConnect
             frmCrearCuenta.Top = frmCrearCuenta.Top + 3000
-            
-        Case 1
-            FrmActivarCuenta.Show , frmConnect
-            FrmActivarCuenta.Top = FrmActivarCuenta.Top + 3000
-
-        Case 2
-            FrmReenviarMail.Show , frmConnect
-            FrmReenviarMail.Top = FrmReenviarMail.Top + 3000
-
-        Case 4
-            FrmBorrarCuenta.Show , frmConnect
-            FrmBorrarCuenta.Top = FrmBorrarCuenta.Top + 3000
-
-        Case 3
-            FrmRecuperar.Show , frmConnect
-            FrmRecuperar.Top = FrmRecuperar.Top + 3000
 
         Case 5
             Unload Me

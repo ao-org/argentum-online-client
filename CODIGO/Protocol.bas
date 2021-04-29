@@ -438,7 +438,7 @@ Private Enum ClientPacketID
     ChaosArmour             '/AC1 - 4
     NavigateToggle          '/NAVE
     ServerOpenToUsersToggle '/HABILITAR
-    Participar           '/APAGAR
+    Participar              '/APAGAR
     TurnCriminal            '/CONDEN
     ResetFactions           '/RAJAR
     RemoveCharFromGuild     '/RAJARCLAN
@@ -476,12 +476,8 @@ Private Enum ClientPacketID
     GlobalMessage           '/CONSOLA
     GlobalOnOff
     SilenciarUser           '/SILENCIAR
-    validarCuenta
     IngresarConCuenta
-    RevalidarCuenta
     BorrarPJ
-    RecuperandoConstraseña
-    BorrandoCuenta
     newPacketID
     Desbuggear
     DarLlaveAUsuario
@@ -1906,9 +1902,7 @@ Private Sub HandleShowFrmLogear()
         
     'Remove packet ID
     Call incomingData.ReadByte
-    'Call ComprobarEstado
-    frmCrearCuenta.Visible = False
-    
+
     FrmLogear.Show , frmConnect
     FrmLogear.Top = FrmLogear.Top + 4000
 
@@ -17484,112 +17478,6 @@ Public Sub WriteGlobalOnOff()
 
 WriteGlobalOnOff_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGlobalOnOff", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteNuevaCuenta()
-    
-    On Error GoTo WriteNuevaCuenta_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CrearNuevaCuenta)
-    
-        Call .WriteASCIIString(CuentaEmail)
-        Call .WriteASCIIString(SEncriptar(CuentaPassword))
-        Call .WriteASCIIString(CuentaEmail)
-
-    End With
-
-    
-    Exit Sub
-
-WriteNuevaCuenta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNuevaCuenta", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteValidarCuenta()
-    
-    On Error GoTo WriteValidarCuenta_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.validarCuenta)
-        Call .WriteASCIIString(CuentaEmail)
-        Call .WriteASCIIString(ValidacionCode)
-
-    End With
-
-    
-    Exit Sub
-
-WriteValidarCuenta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteValidarCuenta", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteReValidarCuenta()
-    
-    On Error GoTo WriteReValidarCuenta_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RevalidarCuenta)
-        Call .WriteASCIIString(CuentaEmail)
-
-    End With
-
-    
-    Exit Sub
-
-WriteReValidarCuenta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReValidarCuenta", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteRecuperandoConstraseña()
-    
-    On Error GoTo WriteRecuperandoConstraseña_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RecuperandoConstraseña)
-        Call .WriteASCIIString(CuentaEmail)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRecuperandoConstraseña_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRecuperandoConstraseña", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteBorrandoCuenta()
-    
-    On Error GoTo WriteBorrandoCuenta_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.BorrandoCuenta)
-        Call .WriteASCIIString(CuentaEmail)
-        Call .WriteASCIIString(SEncriptar(CuentaPassword))
-        Call .WriteASCIIString(CheckMD5)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBorrandoCuenta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBorrandoCuenta", Erl)
     Resume Next
     
 End Sub

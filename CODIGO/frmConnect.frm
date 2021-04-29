@@ -763,28 +763,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
         
         Case 1
-
-            #If DEBUGGING = 1 Then
-
-                ' Crear cuenta a manopla
-                If x >= 40 And x < 195 And y >= 330 And y < 365 Then
-                    FrmLogear.Visible = False
-    
-                    If frmMain.Socket1.Connected Then
-                        frmMain.Socket1.Disconnect
-                        frmMain.Socket1.Cleanup
-                        DoEvents
-
-                    End If
-    
-                    frmMasOpciones.Show , frmConnect
-                    frmMasOpciones.Top = frmMasOpciones.Top + 3000
-                    Exit Sub
-
-                End If
-
-            #End If
-            
             
             While LastClickAsistente = ClickEnAsistenteRandom
                 ClickEnAsistenteRandom = RandomNumber(1, 4)

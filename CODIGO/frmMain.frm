@@ -489,6 +489,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -5039,23 +5040,11 @@ End Sub
             Case E_MODO.CrearNuevoPj, E_MODO.Normal, E_MODO.Dados
                 Call Login
           
-            Case E_MODO.ActivandoCuenta
-                Call WriteValidarCuenta
-          
             Case E_MODO.IngresandoConCuenta
                 Call WriteIngresandoConCuenta
-          
-            Case E_MODO.ReValidandoCuenta
-                Call WriteReValidarCuenta
-        
+
             Case E_MODO.BorrandoPJ
                 Call WriteBorrandoPJ
-          
-            Case E_MODO.RecuperandoConstraseña
-                Call WriteRecuperandoConstraseña
-                    
-            Case E_MODO.BorrandoCuenta
-                Call WriteBorrandoCuenta
 
         End Select
 

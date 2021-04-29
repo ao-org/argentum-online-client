@@ -1094,12 +1094,8 @@ Public Enum E_MODO
     CrearNuevoPj = 2
     Dados = 3
     CreandoCuenta = 4
-    ActivandoCuenta = 5
-    IngresandoConCuenta = 6
-    ReValidandoCuenta = 7
-    BorrandoPJ = 8
-    RecuperandoConstraseña = 9
-    BorrandoCuenta = 10
+    IngresandoConCuenta = 5
+    BorrandoPJ = 6
 
 End Enum
 
