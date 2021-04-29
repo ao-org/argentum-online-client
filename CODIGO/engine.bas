@@ -2993,23 +2993,16 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Call RGBAList(cc, 255, 255, 255, 220)
 
-    Draw_Grh TempGrh, 494, 275, 1, 1, cc(), False
+    Draw_Grh TempGrh, (frmConnect.ScaleWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 20, 0, 1, cc(), False
 
     'Logo nuevo
     'Marco
     Call InitGrh(TempGrh, 1169)
 
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
-    
-    'Marco
 
     #If DEBUGGING = 1 Then
-        ' Botones debug
-        Engine_Text_Render "Debug:", 50, 300, COLOR_WHITE
-    
-        ' Crear cuenta a manopla
-        Engine_Draw_Box 40, 330, 155, 35, RGBA_From_Comp(0, 0, 0, 150)
-        Engine_Text_Render "Crear cuenta en cliente", 50, 340, COLOR_WHITE
+        Engine_Text_Render "CLIENTE DEBUG", (frmConnect.ScaleWidth - Engine_Text_Width("CLIENTE DEBUG")) \ 2, 30, COLOR_WHITE
     #End If
 
     If FadeInAlpha > 0 Then

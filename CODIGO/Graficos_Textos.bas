@@ -1407,7 +1407,7 @@ Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = F
 
                     If graf.GrhIndex = 0 Then graf.GrhIndex = 1
                     If B <> 32 Then
-                        Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth '+ 1
+                        Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
                     Else
                         Engine_Text_Width = Engine_Text_Width + 4
 
