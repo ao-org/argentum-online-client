@@ -4516,9 +4516,14 @@ Public Sub Form_Click()
                    
                     If SendSkill Then
                         If UsingSkill = eSkill.Magia Then
-                            Call ComprobarPosibleMacro(MouseX, MouseY)
+                            If ComprobarPosibleMacro(MouseX, MouseY) Then
+                                Call WriteWorkLeftClick(cbytetX + RandomNumber(-2, 2), tY + RandomNumber(-2, 2), UsingSkill)
+                            Else
+                                Call WriteWorkLeftClick(tX, tY, UsingSkill)
+                            End If
+                        Else
+                            Call WriteWorkLeftClick(tX, tY, UsingSkill)
                         End If
-                        Call WriteWorkLeftClick(tX, tY, UsingSkill)
 
                     End If
                    

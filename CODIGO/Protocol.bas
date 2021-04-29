@@ -20702,3 +20702,10 @@ Public Sub WriteCommerceSendChatMessage(ByVal Message As String)
     End With
 End Sub
 
+Public Sub WriteLogMacroClickHechizo()
+  With outgoingData
+        Call .WriteByte(ClientPacketID.newPacketID)
+        Call .WriteByte(NewPacksID.LogMacroClickHechizo)
+    End With
+End Sub
+
