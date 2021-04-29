@@ -191,7 +191,7 @@ On Error GoTo ErrorHandler:
         .EnableAutoDepthStencil = 1
         .AutoDepthStencilFormat = D3DFMT_D24S8
         
-        .hDeviceWindow = frmMain.renderer.hWnd
+        .hDeviceWindow = frmMain.renderer.hwnd
         
     End With
     
@@ -399,7 +399,7 @@ Engine_BeginScene_Err:
     
 End Sub
 
-Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
+Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hwnd As Long = 0)
 
 On Error GoTo ErrorHandler:
     
@@ -407,7 +407,7 @@ On Error GoTo ErrorHandler:
     
     Call DirectDevice.EndScene
         
-    Call DirectDevice.Present(DestRect, ByVal 0, hWnd, ByVal 0)
+    Call DirectDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
     
     Exit Sub
     
@@ -1999,6 +1999,7 @@ Public Sub Start()
             Call frmMain.Inventario.ReDraw
         End If
         DoEvents
+
         Rem Limitar FPS
         '   If LimitarFps Then
         '   While (GetTickCount - FrameTime) < FramesPerSecCounter
@@ -2127,7 +2128,7 @@ Public Sub DrawMainInventory()
     Call frmMain.Inventario.DrawDraggedItem
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmMain.picInv.hWnd)
+    Call Engine_EndScene(InvRect, frmMain.picInv.hwnd)
 
     
     Exit Sub
@@ -2229,7 +2230,7 @@ Public Sub DrawInterfaceComerciar()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmComerciar.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmComerciar.interface.hwnd)
 
     
     Exit Sub
@@ -2321,8 +2322,8 @@ Public Sub DrawInterfaceBovedaCuenta()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
-    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
+    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
 
     
     Exit Sub
@@ -2414,7 +2415,7 @@ Public Sub DrawInterfaceBoveda()
     End If
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmBancoObj.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmBancoObj.interface.hwnd)
 
     
     Exit Sub
@@ -2449,7 +2450,7 @@ Public Sub DrawInterfaceKeys()
     Call FrmKeyInv.InvKeys.DrawInventory
 
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hWnd)
+    Call Engine_EndScene(InvRect, FrmKeyInv.interface.hwnd)
 
     
     Exit Sub
@@ -2482,7 +2483,7 @@ Public Sub DrawInventoryComercio()
     Call frmComerciarUsu.InvUser.DrawInventory
     
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmComerciarUsu.picInv.hWnd)
+    Call Engine_EndScene(InvRect, frmComerciarUsu.picInv.hwnd)
 
     
     Exit Sub
@@ -2516,7 +2517,7 @@ Public Sub DrawInventoryUserComercio()
     Call frmComerciarUsu.InvUserSell.DrawInventory
     
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmComerciarUsu.picInvUserSell.hWnd)
+    Call Engine_EndScene(InvRect, frmComerciarUsu.picInvUserSell.hwnd)
 
     
     Exit Sub
@@ -2550,7 +2551,7 @@ Public Sub DrawInventoryOtherComercio()
     Call frmComerciarUsu.InvOtherSell.DrawInventory
     
     ' Presentamos la escena
-    Call Engine_EndScene(InvRect, frmComerciarUsu.picInvOtherSell.hWnd)
+    Call Engine_EndScene(InvRect, frmComerciarUsu.picInvOtherSell.hwnd)
 
     
     Exit Sub
@@ -2615,7 +2616,7 @@ Public Sub DrawMapaMundo()
         Call Draw_Grh(Head, x, y, 0, 1, COLOR_WHITE, False, 0, 0, 0)
     End If
     
-    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hWnd)
+    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
 
     
     Exit Sub
@@ -3011,7 +3012,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     End If
 
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
     
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     'FramesPerSecCounter = FramesPerSecCounter + 1
@@ -3048,7 +3049,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
 
     FrameTime = (timeGetTime() And &H7FFFFFFF)
     FramesPerSecCounter = FramesPerSecCounter + 1
@@ -3082,7 +3083,7 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
     
     'Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
 
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
     
     Exit Sub
 
@@ -3407,44 +3408,29 @@ Public Sub RenderPjsCuenta()
     If LastPJSeleccionado <> PJSeleccionado Then
         If AlphaRenderCuenta < MAX_ALPHA_RENDER_CUENTA Then
             AlphaRenderCuenta = AlphaRenderCuenta + 1
-            
-            If AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA Then
-                LastPJSeleccionado = PJSeleccionado
-                
-                If PJSeleccionado <> 0 Then
-                    Call SwitchMap(Pjs(PJSeleccionado).Mapa)
-                    RenderCuenta_PosX = Pjs(PJSeleccionado).PosX
-                    RenderCuenta_PosY = Pjs(PJSeleccionado).PosY
-                End If
+        Else
+            LastPJSeleccionado = PJSeleccionado
+
+            If PJSeleccionado <> 0 Then
+                Call SwitchMap(Pjs(PJSeleccionado).Mapa)
+                RenderCuenta_PosX = Pjs(PJSeleccionado).PosX
+                RenderCuenta_PosY = Pjs(PJSeleccionado).PosY
             End If
         End If
     ElseIf PJSeleccionado <> 0 And AlphaRenderCuenta > 0 Then
-        AlphaRenderCuenta = AlphaRenderCuenta - 1
+        If Pjs(PJSeleccionado).Mapa <> 0 Then
+            AlphaRenderCuenta = AlphaRenderCuenta - 1
+        End If
     End If
-       
-    If PJSeleccionado > 0 Then
-        
-        Call RGBAList(TempColor, 255, 255, 255, 170 + AlphaRenderCuenta)
-        
-        Call InitGrh(grh, 4531)
-                            
-        Call Draw_Grh(grh, 0, 0, 0, 0, TempColor, False, 0, 0, 0)
-        
-        'Dibujamos frente 3839
-        Draw_GrhIndex 3839, 0, 0
-        
-    Else
 
-        Call RGBAList(TempColor, 255, 255, 255, 170 + AlphaRenderCuenta)
-        
-        Call InitGrh(grh, 4531)
-                            
-        Call Draw_Grh(grh, 0, 0, 0, 0, TempColor, False, 0, 0, 0)
+    Call RGBAList(TempColor, 255, 255, 255, 170 + AlphaRenderCuenta)
+    
+    Call InitGrh(grh, 4531)
+                        
+    Call Draw_Grh(grh, 0, 0, 0, 0, TempColor, False, 0, 0, 0)
 
-        'Dibujamos frente 3839
-        Draw_GrhIndex 3839, 0, 0
-        
-    End If
+    'Dibujamos frente 3839
+    Draw_GrhIndex 3839, 0, 0
       
     For i = 1 To 10
             

@@ -589,7 +589,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             End If
             
             If OpcionSeleccionada = 0 Then
-                PJSeleccionado = 0
+                Dim NuevoSeleccionado As Byte
+                NuevoSeleccionado = 0
 
                 Dim DivX As Integer, DivY As Integer
 
@@ -615,12 +616,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         If ModX < 79 Then ' 64 = ancho del "rectangulo" del pj
                             If ModY < 93 Then ' 64 = alto del "rectangulo" del pj
 
-                                If LastPJSeleccionado <> PJSeleccionado Then
-                                    LastPJSeleccionado = PJSeleccionado
-                                End If
-
                                 ' Si todo se cumple, entonces cliqueo en un pj (dado por las divisiones)
-                                PJSeleccionado = 1 + DivX + DivY * 5 ' 5 = cantidad de pjs por linea (+1 porque los pjs van de 1 a MAX)
+                                NuevoSeleccionado = 1 + DivX + DivY * 5 ' 5 = cantidad de pjs por linea (+1 porque los pjs van de 1 a MAX)
 
                             End If
 
@@ -628,6 +625,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                     End If
 
+                End If
+                
+                If PJSeleccionado <> NuevoSeleccionado Then
+                    LastPJSeleccionado = PJSeleccionado
+                    PJSeleccionado = NuevoSeleccionado
                 End If
 
             End If
