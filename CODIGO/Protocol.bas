@@ -575,6 +575,7 @@ Private Enum NewPacksID
     CuentaDeposit
     CreateEvent
     CommerceSendChatMessage
+    LogMacroClickHechizo
 End Enum
 
 ''
