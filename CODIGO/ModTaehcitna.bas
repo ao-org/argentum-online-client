@@ -14,8 +14,9 @@ Public Function ComprobarPosibleMacro(ByVal MouseX As Integer, ByVal MouseY As I
     
     For i = 1 To MAX_COMPROBACIONES
         If ContadorMacroClicks(i).x <> MouseX Or ContadorMacroClicks(i).y <> MouseY Then
-        ComprobarPosibleMacro = False
-        Exit Function
+            ComprobarPosibleMacro = False
+            Exit Function
+        End If
     Next i
     
     ComprobarPosibleMacro = True
