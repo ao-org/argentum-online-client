@@ -2949,7 +2949,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         Engine_Text_Render "Gulfas Morgolock", 449, 400, ColorGM, 1
         Engine_Text_Render "<Creador del Mundo>", 438, 415, ColorGM, 1
 
-        Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 900, 740, COLOR_WHITE, 4, False
+        Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 870, 740, COLOR_WHITE, 4, False
 
         Dim ItemName As String
 
