@@ -270,11 +270,17 @@ Private Sub Text1_Change()
         Text1.Text = "1"
 
     End If
+    If frmMain.Inventario.SelectedItem <> FLAGORO Then
+        If Val(Text1.Text) > MAX_INVENTORY_OBJS Then
+            Text1.Text = "10000"
+            Text1.SelStart = Len(Text1.Text)
     
-    If Val(Text1.Text) > MAX_INVENTORY_OBJS Then
-        Text1.Text = "10000"
-        Text1.SelStart = Len(Text1.Text)
-
+        End If
+    Else
+        If Val(Text1.Text) > 100000 Then
+            Text1.Text = "100000"
+            Text1.SelStart = Len(Text1.Text)
+        End If
     End If
     
     Exit Sub

@@ -844,18 +844,8 @@ Private Sub cmdAccion_Click(Index As Integer)
                 End If
 
             Next
-
-            If bCambio Then
-                Resultado = MsgBox("Realizo cambios en la configuración ¿desea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
-
-                If Resultado = vbYes Then
-                    Call GuardaConfigEnVariables
-                    Unload Me
-                End If
-            End If
-        
-            If Resultado <> vbCancel Then Unload Me
-
+            
+            Unload Me
     End Select
     Unload Me
 
