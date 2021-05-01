@@ -1326,7 +1326,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
             If MsgBox("¿Estás seguro que desea silenciar al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
                 If tmp > 255 Then Exit Sub
-                Call ParseUserCommand("/SILENCIO " & cboListaUsus.Text & "@" & tmp)
+                Call ParseUserCommand("/SILENCIAR " & cboListaUsus.Text & "@" & tmp)
 
             End If
 
@@ -2314,7 +2314,7 @@ Private Sub mnuSilencio_Click(Index As Integer)
 
     End If
 
-    Call ParseUserCommand("/SILENCIO " & cboListaUsus.Text & "@" & Index)
+    Call ParseUserCommand("/SILENCIAR " & cboListaUsus.Text & "@" & Index)
 
     
     Exit Sub

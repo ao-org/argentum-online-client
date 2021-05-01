@@ -668,10 +668,19 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/SILENCIAR"
                 If notNullArguments Then
-                    Call WriteSilence(ArgumentosRaw)
+                    tmpArr = Split(ArgumentosRaw, "@", 2)
+
+                    If UBound(tmpArr) = 1 Then
+                        Call WriteSilenciarUser(tmpArr(0), tmpArr(1))
+                    Else
+                        'Faltan los parametros con el formato propio
+                        Call ShowConsoleMsg("Formato incorrecto. Utilice /SILENCIAR NICKNAME@MOTIVO.")
+
+                    End If
+
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /silenciar NICKNAME.")
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /SILENCIAR NICKNAME@MOTIVO.")
 
                 End If
                 
@@ -1160,25 +1169,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Else
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /BANCUENTA NICKNAME@MOTIVO.")
-
-                End If
-                
-            Case "/SILENCIO"
-
-                If notNullArguments Then
-                    tmpArr = Split(ArgumentosRaw, "@", 2)
-
-                    If UBound(tmpArr) = 1 Then
-                        Call WriteSilenciarUser(tmpArr(0), tmpArr(1))
-                    Else
-                        'Faltan los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato incorrecto. Utilice /SILENCIO NICKNAME@MOTIVO.")
-
-                    End If
-
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /SILENCIO NICKNAME@MOTIVO.")
 
                 End If
                 

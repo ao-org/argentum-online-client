@@ -475,7 +475,6 @@ Private Enum ClientPacketID
     'Nuevas Ladder
     GlobalMessage           '/CONSOLA
     GlobalOnOff
-    SilenciarUser           '/SILENCIAR
     IngresarConCuenta
     BorrarPJ
     newPacketID
@@ -13289,7 +13288,7 @@ End Sub
 ' @param    username The user to silence.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteSilence(ByVal UserName As String)
+Public Sub WriteSilence(ByVal UserName As String, ByVal Minutos As Integer)
     
     On Error GoTo WriteSilence_Err
     
@@ -13303,6 +13302,8 @@ Public Sub WriteSilence(ByVal UserName As String)
         Call .WriteByte(ClientPacketID.Silence)
         
         Call .WriteASCIIString(UserName)
+        
+        Call .WriteInteger(Minutos)
 
     End With
 
@@ -14425,34 +14426,6 @@ Public Sub WriteBanTemporal(ByVal UserName As String, ByVal reason As String, By
 
 WriteBanTemporal_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanTemporal", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteSilenciarUser(ByVal UserName As String, ByVal Time As Byte)
-    
-    On Error GoTo WriteSilenciarUser_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BanChar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SilenciarUser)
-        
-        Call .WriteASCIIString(UserName)
-        
-        Call .WriteByte(Time)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSilenciarUser_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSilenciarUser", Erl)
     Resume Next
     
 End Sub

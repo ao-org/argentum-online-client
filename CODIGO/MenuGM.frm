@@ -401,7 +401,7 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 0
             Call ParseUserCommand("/SUM")
         Case 1
-            Call ParseUserCommand("/SILENCIO " & TargetName & "@" & "15")
+            Call ParseUserCommand("/SILENCIAR " & TargetName & "@" & "15")
         Case 2
             Call ParseUserCommand("/NICK2IP " & TargetName)
         Case 3
