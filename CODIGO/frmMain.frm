@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -71,25 +71,6 @@ Begin VB.Form frmMain
       Left            =   6360
       Top             =   2400
    End
-   Begin VB.CommandButton btnSpawn 
-      Caption         =   "Spawn NPC"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   5400
-      TabIndex        =   23
-      TabStop         =   0   'False
-      Top             =   0
-      Visible         =   0   'False
-      Width           =   1335
-   End
    Begin VB.Timer UpdateDaytime 
       Enabled         =   0   'False
       Interval        =   500
@@ -148,63 +129,6 @@ Begin VB.Form frmMain
       Interval        =   60000
       Left            =   4920
       Top             =   2400
-   End
-   Begin VB.CommandButton btnInvisible 
-      Caption         =   "/INVISIBLE"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   6840
-      TabIndex        =   22
-      TabStop         =   0   'False
-      Top             =   0
-      Visible         =   0   'False
-      Width           =   1335
-   End
-   Begin VB.CommandButton createObj 
-      Caption         =   "Crear OBJ"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   3960
-      TabIndex        =   21
-      TabStop         =   0   'False
-      Top             =   0
-      Visible         =   0   'False
-      Width           =   1335
-   End
-   Begin VB.CommandButton panelGM 
-      Caption         =   "Panel GM"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   2520
-      TabIndex        =   20
-      TabStop         =   0   'False
-      Top             =   0
-      Visible         =   0   'False
-      Width           =   1335
    End
    Begin VB.PictureBox panel 
       Appearance      =   0  'Flat
@@ -489,7 +413,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -656,7 +579,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   795
-         TabIndex        =   39
+         TabIndex        =   35
          Top             =   2055
          Width           =   765
       End
@@ -676,7 +599,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   3390
-         TabIndex        =   38
+         TabIndex        =   34
          Top             =   2055
          Width           =   255
       End
@@ -696,7 +619,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   2445
-         TabIndex        =   37
+         TabIndex        =   33
          Top             =   2055
          Width           =   255
       End
@@ -716,7 +639,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   240
          Left            =   1635
-         TabIndex        =   36
+         TabIndex        =   32
          Top             =   1215
          Width           =   945
       End
@@ -736,7 +659,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   3075
-         TabIndex        =   35
+         TabIndex        =   31
          ToolTipText     =   "Aumento de daño mágico"
          Top             =   3150
          Width           =   570
@@ -757,7 +680,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   1935
-         TabIndex        =   34
+         TabIndex        =   30
          ToolTipText     =   "Resistencia mágica"
          Top             =   3150
          Width           =   330
@@ -779,7 +702,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   270
          Left            =   2385
-         TabIndex        =   33
+         TabIndex        =   29
          ToolTipText     =   "Oxígeno acumulado"
          Top             =   570
          Width           =   225
@@ -800,7 +723,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H0080FFFF&
          Height          =   270
          Left            =   480
-         TabIndex        =   32
+         TabIndex        =   28
          ToolTipText     =   "Monedas de oro"
          Top             =   585
          Width           =   690
@@ -821,7 +744,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   270
          Left            =   3585
-         TabIndex        =   31
+         TabIndex        =   27
          ToolTipText     =   "Fuerza"
          Top             =   570
          Width           =   210
@@ -842,7 +765,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   270
          Left            =   2985
-         TabIndex        =   30
+         TabIndex        =   26
          ToolTipText     =   "Agilidad"
          Top             =   570
          Width           =   210
@@ -863,7 +786,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   600
-         TabIndex        =   29
+         TabIndex        =   25
          ToolTipText     =   "Daño físico arma"
          Top             =   2700
          Width           =   480
@@ -884,7 +807,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   1860
-         TabIndex        =   28
+         TabIndex        =   24
          ToolTipText     =   "Defensa escudo"
          Top             =   2700
          Width           =   480
@@ -905,7 +828,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   3120
-         TabIndex        =   27
+         TabIndex        =   23
          ToolTipText     =   "Defensa casco"
          Top             =   2700
          Width           =   480
@@ -926,7 +849,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   600
-         TabIndex        =   26
+         TabIndex        =   22
          ToolTipText     =   "Defensa armadura"
          Top             =   3150
          Width           =   480
@@ -948,7 +871,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   240
          Left            =   1635
-         TabIndex        =   25
+         TabIndex        =   21
          Top             =   1635
          Width           =   945
       End
@@ -1023,6 +946,94 @@ Begin VB.Form frmMain
          Width           =   510
       End
    End
+   Begin VB.Label btnInvisible 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "invisible"
+      BeginProperty Font 
+         Name            =   "Alegreya Sans AO"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000018&
+      Height          =   375
+      Left            =   6840
+      TabIndex        =   41
+      Top             =   75
+      Width           =   1335
+   End
+   Begin VB.Label btnSpawn 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Spawn NPC"
+      BeginProperty Font 
+         Name            =   "Alegreya Sans AO"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000018&
+      Height          =   375
+      Left            =   5400
+      TabIndex        =   40
+      Top             =   75
+      Width           =   1335
+   End
+   Begin VB.Label createObj 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Crear Obj"
+      BeginProperty Font 
+         Name            =   "Alegreya Sans AO"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000018&
+      Height          =   375
+      Left            =   3960
+      TabIndex        =   39
+      Top             =   75
+      Width           =   1335
+   End
+   Begin VB.Label panelGM 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "PanelGM"
+      BeginProperty Font 
+         Name            =   "Alegreya Sans AO"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000018&
+      Height          =   375
+      Left            =   2640
+      TabIndex        =   38
+      Top             =   75
+      Width           =   1215
+   End
+   Begin VB.Label Label3 
+      Caption         =   "Label3"
+      Height          =   495
+      Left            =   9360
+      TabIndex        =   37
+      Top             =   6720
+      Width           =   1215
+   End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
@@ -1030,7 +1041,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   240
       Left            =   11880
-      TabIndex        =   40
+      TabIndex        =   36
       Top             =   0
       Visible         =   0   'False
       Width           =   555
@@ -1075,7 +1086,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   13170
-      TabIndex        =   24
+      TabIndex        =   20
       Top             =   2010
       Width           =   495
    End
@@ -1437,7 +1448,7 @@ Private Const WS_EX_TRANSPARENT = &H20&
 
 Private Const GWL_EXSTYLE = (-20)
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
@@ -1487,9 +1498,9 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
 
 Private Const EM_GETLINE = &HC4
 
@@ -2383,7 +2394,7 @@ Private Sub Image4_Click(Index As Integer)
             If frmCerrar.Visible Then Exit Sub
             Dim mForm As Form
             For Each mForm In Forms
-                If mForm.hwnd <> Me.hwnd Then Unload mForm
+                If mForm.hWnd <> Me.hWnd Then Unload mForm
                 Set mForm = Nothing
             Next
             frmCerrar.Show , Me
@@ -3736,11 +3747,11 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
         intCurrentLine = RecTxt.GetLineFromChar(RecTxt.SelStart)
         'get line length
-        lngLength = SendMessage(RecTxt.hwnd, EM_LINELENGTH, intCurrentLine, 0)
+        lngLength = SendMessage(RecTxt.hWnd, EM_LINELENGTH, intCurrentLine, 0)
         'resize buffer
         strBuffer = Space(lngLength)
         'get line text
-        Call SendMessage(RecTxt.hwnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
+        Call SendMessage(RecTxt.hWnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
 
         Dim partea       As String
 
@@ -4515,7 +4526,7 @@ Public Sub Form_Click()
                     End If
                    
                     If SendSkill Then
-                        If UsingSkill = eSkill.Magia Then
+                        If UsingSkill = eSkill.magia Then
                             If ComprobarPosibleMacro(MouseX, MouseY) Then
                                 Call WriteWorkLeftClick(tX + RandomNumber(-2, 2), tY + RandomNumber(-2, 2), UsingSkill)
                             Else
@@ -5516,7 +5527,7 @@ Private Sub MoverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub
