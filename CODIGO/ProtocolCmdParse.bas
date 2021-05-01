@@ -671,7 +671,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     tmpArr = Split(ArgumentosRaw, "@", 2)
 
                     If UBound(tmpArr) = 1 Then
-                        Call WriteSilenciarUser(tmpArr(0), tmpArr(1))
+                        Call WriteSilence(tmpArr(0), tmpArr(1))
                     Else
                         'Faltan los parametros con el formato propio
                         Call ShowConsoleMsg("Formato incorrecto. Utilice /SILENCIAR NICKNAME@MOTIVO.")
