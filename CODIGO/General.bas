@@ -1956,8 +1956,7 @@ ErrorHandler:
 End Function
 
 Public Function ComprobarTolerancia0() As Boolean
-
-    If ReadRegistryKey(&H80000002, "Software\Temp", "e14a3ff5b5e67ede599cac94358e1028") = "rekcahnuyos" Then
+    If ReadRegistryKey(&H80000001, "Software\pmeT", "e14a3ff5b5e67ede599cac94358e1028") = "rekcahnuyos" Then
         ComprobarTolerancia0 = True
     End If
 

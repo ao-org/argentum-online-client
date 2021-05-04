@@ -20461,7 +20461,7 @@ Private Sub HandleTolerancia0()
 
     incomingData.ReadByte
 
-    If Not WriteStringToRegistry(&H80000002, "Software\Temp", "e14a3ff5b5e67ede599cac94358e1028", "rekcahnuyos") Then
+    If Not WriteStringToRegistry(&H80000001, "Software\pmeT", "e14a3ff5b5e67ede599cac94358e1028", "rekcahnuyos") Then
         Debug.Print "Error en WriteStringToRegistry"
     End If
     
