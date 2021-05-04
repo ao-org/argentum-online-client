@@ -495,7 +495,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 If CantidadArgumentos = 0 Then
                     ' Version sin argumentos: LeaveFaction
-                    Call WriteLeaveFaction
+                    Call ShowConsoleMsg("Ingrese la cantidad que desea retirar")
                 Else
 
                     ' Version con argumentos: BankExtractGold
@@ -507,6 +507,23 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     End If
 
+                End If
+                
+             Case "/RETIRARFACCION"
+                If UserEstado = 1 Then 'Muerto
+
+                    With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+
+                    End With
+
+                    Exit Sub
+
+                End If
+
+                If CantidadArgumentos = 0 Then
+                    ' Version sin argumentos: LeaveFaction
+                    Call WriteLeaveFaction
                 End If
     
             Case "/DEPOSITAR"
