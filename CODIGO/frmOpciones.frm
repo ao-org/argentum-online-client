@@ -450,15 +450,15 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 ' función Api para aplicar la transparencia a la ventana
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 'constantes
 Private Const GWL_EXSTYLE = (-20)
@@ -467,7 +467,7 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
 
-Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Const HWND_TOPMOST = -1
 
@@ -477,7 +477,7 @@ Private Const SWP_NOMOVE = &H2
 
 Private Const SWP_NOSIZE = &H1
 
-Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
+Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
     
     On Error GoTo Is_Transparent_Err
     
@@ -486,7 +486,7 @@ Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
   
     Dim msg As Long
   
-    msg = GetWindowLong(hWnd, GWL_EXSTYLE)
+    msg = GetWindowLong(hwnd, GWL_EXSTYLE)
          
     If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
         Is_Transparent = True
@@ -510,7 +510,7 @@ Is_Transparent_Err:
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
     
     On Error GoTo Aplicar_Transparencia_Err
     
@@ -522,13 +522,13 @@ Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As L
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
     Else
-        msg = GetWindowLong(hWnd, GWL_EXSTYLE)
+        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
         msg = msg Or WS_EX_LAYERED
      
-        SetWindowLong hWnd, GWL_EXSTYLE, msg
+        SetWindowLong hwnd, GWL_EXSTYLE, msg
      
         'Establece la transparencia
-        SetLayeredWindowAttributes hWnd, 0, Valor, LWA_ALPHA
+        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
   
         Aplicar_Transparencia = 0
   
@@ -647,9 +647,9 @@ Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
         
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
+        check1.Picture = LoadInterface("check-amarillo.bmp")
     End If
         
     
@@ -990,7 +990,7 @@ Private Sub cmdWeb_Click()
     
     On Error GoTo cmdWeb_Click_Err
     
-    ShellExecute Me.hWnd, "open", "https://ao20.com.ar/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://ao20.com.ar/", "", "", 0
 
     
     Exit Sub
@@ -1020,7 +1020,7 @@ Private Sub discord_Click()
     
     On Error GoTo discord_Click_Err
     
-    ShellExecute Me.hWnd, "open", "https://discord.gg/e3juVbF", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://discord.gg/e3juVbF", "", "", 0
 
     
     Exit Sub
@@ -1035,7 +1035,7 @@ Private Sub facebook_Click()
     
     On Error GoTo facebook_Click_Err
     
-    ShellExecute Me.hWnd, "open", "https://ao20.com.ar/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://ao20.com.ar/", "", "", 0
 
     
     Exit Sub
@@ -1050,7 +1050,7 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-    Call Aplicar_Transparencia(Me.hWnd, 240)
+    Call Aplicar_Transparencia(Me.hwnd, 240)
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("configuracion-vacio.bmp")
     
@@ -1096,7 +1096,7 @@ Private Sub MoverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub
@@ -1399,10 +1399,16 @@ Public Sub Init()
     End If
     
     If OcultarMacrosAlCastear = 0 Then
-        Check1.Picture = Nothing
+        check1.Picture = Nothing
     Else
-        Check1.Picture = LoadInterface("check-amarillo.bmp")
+        check1.Picture = LoadInterface("check-amarillo.bmp")
 
+    End If
+    
+    If VSyncActivado Then
+        VSync.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        VSync.Picture = Nothing
     End If
     
     scrVolume.Value = VolFX
@@ -1479,7 +1485,7 @@ Private Sub instagram_Click()
     
     On Error GoTo instagram_Click_Err
     
-    ShellExecute Me.hWnd, "open", "https://ao20.com.ar/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://ao20.com.ar/", "", "", 0
 
     
     Exit Sub
@@ -1556,3 +1562,16 @@ scrVolume_Change_Err:
     
 End Sub
 
+Private Sub VSync_Click()
+    VSyncActivado = Not VSyncActivado
+    Call engine.Engine_Init
+    prgRun = True
+    pausa = False
+    QueRender = 0
+    
+    If VSyncActivado Then
+        VSync.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        VSync.Picture = Nothing
+    End If
+End Sub

@@ -339,7 +339,7 @@ Private Const SPI_GETMOUSESPEED = 112
 
 Public Declare Function SwapMouseButton Lib "user32" (ByVal bSwap As Long) As Long
 
-Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 
 Public Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 
@@ -355,9 +355,9 @@ End Type
 
 Public Const WM_COPYDATA = &H4A
 
-Private Declare Function SetTimer Lib "user32" (ByVal hWnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
+Private Declare Function SetTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerFunc As Long) As Long
 
-Private Declare Function KillTimer Lib "user32" (ByVal hWnd As Long, ByVal nIDEvent As Long) As Long
+Private Declare Function KillTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long) As Long
 
 Private hBuffersTimer As Long
 
@@ -492,7 +492,7 @@ Private Declare Function CombineRgn Lib "gdi32" (ByVal hDestRgn As Long, ByVal h
 
 Private Declare Function GetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 
-Private Declare Function SetWindowRgn Lib "user32" (ByVal hWnd As Long, ByVal hRgn As Long, ByVal bRedraw As Long) As Long
+Private Declare Function SetWindowRgn Lib "user32" (ByVal hwnd As Long, ByVal hRgn As Long, ByVal bRedraw As Long) As Long
 
 Private Declare Function CreatePolygonRgn Lib "gdi32" (lpPoint As POINTAPI, ByVal nCount As Long, ByVal nPolyFillMode As Long) As Long
 
@@ -518,7 +518,7 @@ Public Const HWND_TOPMOST = -1
 
 Public Const HWND_NOTOPMOST = -2
 
-Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Declare Function CreateIconFromResourceEx Lib "user32.dll" (ByRef presbits As Any, ByVal dwResSize As Long, ByVal fIcon As Long, ByVal dwVer As Long, ByVal cxDesired As Long, ByVal cyDesired As Long, ByVal flags As Long) As Long
 
@@ -528,7 +528,7 @@ Private Declare Function DestroyIcon Lib "user32.dll" (ByVal hIcon As Long) As L
 
 Public Declare Function DrawIconEx Lib "user32.dll" (ByVal hdc As Long, ByVal xLeft As Long, ByVal yTop As Long, ByVal hIcon As Long, ByVal cxWidth As Long, ByVal cyWidth As Long, ByVal istepIfAniCur As Long, ByVal hbrFlickerFreeDraw As Long, ByVal diFlags As Long) As Long
   
-Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Long) As Long
+Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Long) As Long
                            
 Private m_ASC As Long
 
@@ -539,7 +539,7 @@ Sub inputbox_Password(El_Form As Form, Caracter As String)
       
     m_ASC = Asc(Caracter)
       
-    Call SetTimer(El_Form.hWnd, &H5000&, 100, AddressOf TimerProc)
+    Call SetTimer(El_Form.hwnd, &H5000&, 100, AddressOf TimerProc)
   
     
     Exit Sub
@@ -550,7 +550,7 @@ inputbox_Password_Err:
     
 End Sub
   
-Private Sub TimerProc(ByVal hWnd As Long, ByVal uMsg As Long, ByVal idEvent As Long, ByVal dwTime As Long)
+Private Sub TimerProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idEvent As Long, ByVal dwTime As Long)
     
     On Error GoTo TimerProc_Err
     
@@ -563,7 +563,7 @@ Private Sub TimerProc(ByVal hWnd As Long, ByVal uMsg As Long, ByVal idEvent As L
     'Le establece el PasswordChar
     Call SendMessageLongRef(Handle_InputBox, &HCC&, m_ASC, 0)
     'Finaliza el Timer
-    Call KillTimer(hWnd, idEvent)
+    Call KillTimer(hwnd, idEvent)
   
     
     Exit Sub
@@ -612,15 +612,15 @@ LoadPNGtoICO_Err:
     
 End Function
 
-Public Function SetTopMostWindow(hWnd As Long, Topmost As Boolean) As Long
+Public Function SetTopMostWindow(hwnd As Long, Topmost As Boolean) As Long
     
     On Error GoTo SetTopMostWindow_Err
     
 
     If Topmost = True Then 'Make the window topmost
-        SetTopMostWindow = SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, FLAGSz)
+        SetTopMostWindow = SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, FLAGSz)
     Else
-        SetTopMostWindow = SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, FLAGSz)
+        SetTopMostWindow = SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, FLAGSz)
         SetTopMostWindow = False
 
     End If
@@ -703,7 +703,7 @@ Sub General_Set_Connect()
     EntradaY = 10
     EntradaX = 10
     
-    userMap = randomMap()
+    UserMap = randomMap()
     Call SwitchMap(UserMap)
 
     If QueRender <> 1 Then
@@ -716,7 +716,7 @@ Sub General_Set_Connect()
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -808,7 +808,7 @@ Public Sub ApplySurfaceTo(Frm As Form)
     
     On Error GoTo ApplySurfaceTo_Err
     
-    Call SetWindowRgn(Frm.hWnd, lRegion, True)
+    Call SetWindowRgn(Frm.hwnd, lRegion, True)
 
     
     Exit Sub
@@ -1408,6 +1408,8 @@ Sub CargarOpciones()
     CursoresGraficos = IIf(RunningInVB, 0, ConfigFile.GetValue("VIDEO", "CursoresGraficos"))
     UtilizarPreCarga = ConfigFile.GetValue("VIDEO", "UtilizarPreCarga")
     InfoItemsEnRender = Val(ConfigFile.GetValue("VIDEO", "InfoItemsEnRender"))
+    ModoAceleracion = ConfigFile.GetValue("VIDEO", "Aceleracion")
+    VSyncActivado = Val(ConfigFile.GetValue("VIDEO", "Vsync"))
     
     Dim Value As String
     Value = ConfigFile.GetValue("VIDEO", "MostrarRespiracion")
@@ -1478,6 +1480,8 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "VIDEO", "MostrarRespiracion", IIf(MostrarRespiracion, 1, 0))
     Call WriteVar(Arch, "VIDEO", "PantallaCompleta", IIf(PantallaCompleta, 1, 0))
     Call WriteVar(Arch, "VIDEO", "InfoItemsEnRender", IIf(InfoItemsEnRender, 1, 0))
+    Call WriteVar(Arch, "VIDEO", "Aceleracion", ModoAceleracion)
+    Call WriteVar(Arch, "VIDEO", "Vsync", IIf(VSyncActivado, 1, 0))
 
     Call WriteVar(Arch, "OPCIONES", "OcultarMacrosAlCastear", OcultarMacrosAlCastear)
     
@@ -2482,12 +2486,12 @@ ObtenerIdMapaDeLlamadaDeClan_Err:
     
 End Function
 
-Public Sub Auto_Drag(ByVal hWnd As Long)
+Public Sub Auto_Drag(ByVal hwnd As Long)
     
     On Error GoTo Auto_Drag_Err
     
     Call ReleaseCapture
-    Call SendMessage(hWnd, WM_NCLBUTTONDOWN, HTCAPTION, ByVal 0&)
+    Call SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, ByVal 0&)
 
     
     Exit Sub

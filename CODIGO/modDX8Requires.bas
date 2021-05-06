@@ -71,6 +71,9 @@ Public SpriteBatch As New clsBatch
 Public Projection As D3DMATRIX
 Public IdentityMatrix As D3DMATRIX
 
+Public VSyncActivado As Boolean
+Public ModoAceleracion As String
+
 Public Type TYPE_VERTEX
 
     x       As Single
@@ -105,7 +108,7 @@ Public Function General_Bytes_To_Megabytes(Bytes As Double) As Double
     Exit Function
 
 General_Bytes_To_Megabytes_Err:
-    Call RegistrarError(Err.number, Err.Description, "modDX8Requires.General_Bytes_To_Megabytes", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.General_Bytes_To_Megabytes", Erl)
     Resume Next
     
 End Function
@@ -126,7 +129,7 @@ Public Function General_Get_Free_Ram() As Double
     Exit Function
 
 General_Get_Free_Ram_Err:
-    Call RegistrarError(Err.number, Err.Description, "modDX8Requires.General_Get_Free_Ram", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.General_Get_Free_Ram", Erl)
     Resume Next
     
 End Function
@@ -142,12 +145,12 @@ Public Function General_Get_Free_Ram_Bytes() As Long
     Exit Function
 
 General_Get_Free_Ram_Bytes_Err:
-    Call RegistrarError(Err.number, Err.Description, "modDX8Requires.General_Get_Free_Ram_Bytes", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.General_Get_Free_Ram_Bytes", Erl)
     Resume Next
     
 End Function
 
-Public Function ARGB(ByVal R As Long, ByVal G As Long, ByVal B As Long, ByVal A As Long) As Long
+Public Function ARGB(ByVal r As Long, ByVal G As Long, ByVal B As Long, ByVal A As Long) As Long
     
     On Error GoTo ARGB_Err
     
@@ -157,12 +160,12 @@ Public Function ARGB(ByVal R As Long, ByVal G As Long, ByVal B As Long, ByVal A 
     If A > 127 Then
         A = A - 128
         c = A * 2 ^ 24 Or &H80000000
-        c = c Or R * 2 ^ 16
+        c = c Or r * 2 ^ 16
         c = c Or G * 2 ^ 8
         c = c Or B
     Else
         c = A * 2 ^ 24
-        c = c Or R * 2 ^ 16
+        c = c Or r * 2 ^ 16
         c = c Or G * 2 ^ 8
         c = c Or B
 
@@ -174,7 +177,7 @@ Public Function ARGB(ByVal R As Long, ByVal G As Long, ByVal B As Long, ByVal A 
     Exit Function
 
 ARGB_Err:
-    Call RegistrarError(Err.number, Err.Description, "modDX8Requires.ARGB", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.ARGB", Erl)
     Resume Next
     
 End Function

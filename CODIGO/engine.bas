@@ -109,8 +109,7 @@ Private ScrollPixelsPerFrameY  As Single
 Private TileBufferPixelOffsetX As Integer
 Private TileBufferPixelOffsetY As Integer
 Private TimeLast As Long
-Public CanMoveX As Boolean
-Private CanMoveY As Boolean
+
 Private Const GrhFogata        As Integer = 1521
 
 ' Colores estaticos
@@ -167,8 +166,6 @@ End Function
 Private Function Init_DirectDevice(ByVal ModoAceleracion As CONST_D3DCREATEFLAGS) As Boolean
 On Error GoTo ErrorHandler:
     
-    Dim VSync As String: VSync = CByte(GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "VSync"))
-    
     ' Retrieve the information about your current display adapter.
     Call DirectD3D.GetAdapterDisplayMode(D3DADAPTER_DEFAULT, DispMode)
     
@@ -176,7 +173,7 @@ On Error GoTo ErrorHandler:
     
         .Windowed = True
 
-        If VSync Then
+        If VSyncActivado Then
             .SwapEffect = D3DSWAPEFFECT_COPY_VSYNC
         Else
             .SwapEffect = D3DSWAPEFFECT_DISCARD
@@ -290,10 +287,8 @@ On Error GoTo errhandler:
     Set DirectX = New DirectX8
     Set DirectD3D = DirectX.Direct3DCreate()
     Set DirectD3D8 = New D3DX8
-    
-    Dim Modo As String: Modo = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "Aceleracion")
-    
-    Select Case Modo
+
+    Select Case ModoAceleracion
     
         Case "Auto"
             If Not Init_DirectDevice(D3DCREATE_HARDWARE_VERTEXPROCESSING) Then
