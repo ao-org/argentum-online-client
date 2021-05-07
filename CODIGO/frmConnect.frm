@@ -773,7 +773,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             LastClickAsistente = ClickEnAsistenteRandom
             
             
-             If (x > 479 And x < 501) And (y > 341 And y < 470) Then
+             If (x > 485 And x < 517) And (y > 330 And y < 390) Then
              
                 If ClickEnAsistenteRandom = 1 Then
                     Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/")
