@@ -567,7 +567,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     'Center Grh over X,Y pos
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
+            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2 + 1
         End If
 
         If GrhData(grh.GrhIndex).TileHeight <> 1 Then
