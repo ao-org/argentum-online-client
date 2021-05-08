@@ -585,24 +585,28 @@ End Enum
 ''
 ' Handles incoming data.
 
-Public Sub HandleIncomingData()
+Public Function HandleIncomingData() As Boolean
     
     ' WyroX: No remover
     On Error Resume Next
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+    Dim PacketID As Long
+    
+    If Not incomingData.CheckLength Then
+        HandleIncomingData = False
+        Exit Function
+    End If
+    
+    If Not incomingData.ValidCRC Then
+        HandleIncomingData = False
+        Exit Function
+    End If
 
-    Dim paquete As Long
-
-    paquete = CLng(incomingData.PeekByte())
+    PacketID = CLng(incomingData.PeekByte())
 
     InBytes = InBytes + incomingData.length
 
-    Select Case paquete
+    Select Case PacketID
 
         Case ServerPacketID.logged                  ' LOGGED
             Call HandleLogged
@@ -1145,38 +1149,30 @@ Public Sub HandleIncomingData()
             Call HandleCommerceRecieveChatMessage
 
         Case Else
-        
-            Exit Sub
+            'Stop
+            Call LogError("Error 'Case Else' en HandleIncomingData: " & Err.Number & " " & Err.Description & " PacketID: " & PacketID & " Line: " & Erl())
+            Call incomingData.Clean
+            Exit Function
 
     End Select
     
-    'Done with this packet, move on to next one
-    If incomingData.length > 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then
-        If LastPacket = paquete Then
-            IterationsHID = IterationsHID + 1
-            
-            If IterationsHID > MAX_ITERATIONS_HID Then
-                Call RegistrarError(-1, "Superado el máximo de iteraciones del mismo paquete. Paquete: " & paquete, "Protocol.HandleIncomingData")
-                
-                'Empty buffer
-                Call incomingData.ReadASCIIStringFixed(incomingData.length)
-
-                Exit Sub
-
-            End If
-
-        Else
-            IterationsHID = 0
-            LastPacket = paquete
-
-        End If
-        
+    Call incomingData.ReadNewPacket
+    
+    If (Not incomingData.BufferOver Or incomingData.length > 0) And incomingData.errNumber = 0 Then    'Done with this packet, move on to next one
         Err.Clear
-        Call HandleIncomingData
-
+        HandleIncomingData = True
+    
+    ElseIf incomingData.errNumber <> 0 And incomingData.errNumber <> incomingData.NotEnoughDataErrCode Then
+        Call RegistrarError(Err.Number, Err.Description & ". PacketID: " & PacketID, "Protocol.HandleIncomingData", Erl)
+        Err.Clear
+        HandleIncomingData = False
+    
+    Else
+        Err.Clear
+        HandleIncomingData = False
     End If
     
-End Sub
+End Function
 
 ''
 ' Handles the Logged message.
@@ -1462,12 +1458,7 @@ Private Sub HandleDisconnect()
     Call ResetearUserMacro
 
     'Close connection
-    #If UsarWrench = 1 Then
-        frmMain.Socket1.Disconnect
-    #Else
-
-        If frmMain.Winsock1.State <> sckClosed Then frmMain.Winsock1.Close
-    #End If
+    frmMain.MainSocket.Close
     
     'Hide main form
     'FrmCuenta.Visible = True
@@ -4483,17 +4474,6 @@ Private Sub HandleCharacterChange()
     
     On Error GoTo HandleCharacterChange_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    If incomingData.length < 19 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
     'Remove packet ID
     Call incomingData.ReadID
     
@@ -6930,17 +6910,6 @@ Private Sub HandleMiniStats()
     
     On Error GoTo HandleMiniStats_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    If incomingData.length < 30 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
     'Remove packet ID
     Call incomingData.ReadID
     
@@ -16409,19 +16378,15 @@ Public Sub FlushBuffer()
     'Last Modification: 05/17/06
     'Sends all data existing in the buffer
     '***************************************************
-    Dim sndData As String
-    
+
     With outgoingData
 
         If .length = 0 Then Exit Sub
         
         '   Debug.Print "Salio paquete con peso de: " & .Length & " bytes"
         OutBytes = OutBytes + .length
-        
-        ' InBytes = 0
-        sndData = .ReadASCIIStringFixed(.length)
-        
-        Call SendData(sndData)
+
+        Call SendData(.ReadAll)
 
     End With
     
@@ -16438,25 +16403,12 @@ End Sub
 '
 ' @param    sdData  The data to be sent to the server.
 
-Private Sub SendData(ByRef sdData As String)
+Private Sub SendData(ByRef sdData() As Byte)
     
     On Error GoTo SendData_Err
-    
-    #If UsarWrench = 1 Then
 
-        If Not frmMain.Socket1.IsWritable Then
-            'Put data back in the bytequeue
-            Call outgoingData.WriteASCIIStringFixed(sdData)
-            Exit Sub
+    If frmMain.MainSocket.State <> sckConnected Then Exit Sub
 
-        End If
-   
-        If Not frmMain.Socket1.Connected Then Exit Sub
-    #Else
-
-        If frmMain.Winsock1.State <> sckConnected Then Exit Sub
-    #End If
- 
     #If AntiExternos Then
         Security.Redundance = CLng(Security.Redundance * Security.MultiplicationFactor) Mod 255
 
@@ -16468,11 +16420,7 @@ Private Sub SendData(ByRef sdData As String)
 
     #End If
  
-    #If UsarWrench = 1 Then
-        Call frmMain.Socket1.Write(sdData, Len(sdData))
-    #Else
-        Call frmMain.Winsock1.SendData(sdData)
-    #End If
+    Call frmMain.MainSocket.SendData(sdData)
     
     Exit Sub
 
@@ -16643,12 +16591,6 @@ WriteIngresandoConCuenta_Err:
 End Sub
 
 Private Sub HandlePersonajesDeCuenta()
-
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
 
     On Error GoTo errhandler
     

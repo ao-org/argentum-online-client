@@ -1133,9 +1133,6 @@ Sub Main()
     EntradaX = 10
     
     Call SwitchMap(UserMap)
-
-    'Inicializamos el socket
-    Call frmMain.Socket1.Startup
     
     'Set the dialog's font
     Dialogos.font = frmMain.font

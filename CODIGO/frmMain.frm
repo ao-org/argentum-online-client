@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{33101C00-75C3-11CF-A8A0-444553540000}#1.0#0"; "CSWSK32.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
@@ -33,38 +33,6 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin SocketWrenchCtrl.Socket Socket1 
-      Left            =   6840
-      Top             =   2400
-      _Version        =   65536
-      _ExtentX        =   741
-      _ExtentY        =   741
-      _StockProps     =   0
-      AutoResolve     =   0   'False
-      Backlog         =   1
-      Binary          =   -1  'True
-      Blocking        =   0   'False
-      Broadcast       =   0   'False
-      BufferSize      =   10240
-      HostAddress     =   ""
-      HostFile        =   ""
-      HostName        =   ""
-      InLine          =   0   'False
-      Interval        =   0
-      KeepAlive       =   0   'False
-      Library         =   ""
-      Linger          =   0
-      LocalPort       =   0
-      LocalService    =   ""
-      Protocol        =   0
-      RemotePort      =   0
-      RemoteService   =   ""
-      ReuseAddress    =   0   'False
-      Route           =   -1  'True
-      Timeout         =   1000
-      Type            =   1
-      Urgent          =   0   'False
-   End
    Begin VB.Timer Evento 
       Enabled         =   0   'False
       Interval        =   10000
@@ -412,6 +380,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -450,6 +419,13 @@ Begin VB.Form frmMain
       TabIndex        =   3
       Top             =   2286
       Width           =   10982
+      Begin MSWinsockLib.Winsock MainSocket 
+         Left            =   6720
+         Top             =   120
+         _ExtentX        =   741
+         _ExtentY        =   741
+         _Version        =   393216
+      End
    End
    Begin VB.PictureBox panelInf 
       Appearance      =   0  'Flat
@@ -950,7 +926,7 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Caption         =   "invisible"
       BeginProperty Font 
-         Name            =   "Alegreya Sans AO"
+         Name            =   "Arial"
          Size            =   11.25
          Charset         =   0
          Weight          =   700
@@ -970,7 +946,7 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Caption         =   "Spawn NPC"
       BeginProperty Font 
-         Name            =   "Alegreya Sans AO"
+         Name            =   "Arial"
          Size            =   11.25
          Charset         =   0
          Weight          =   700
@@ -990,7 +966,7 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Caption         =   "Crear Obj"
       BeginProperty Font 
-         Name            =   "Alegreya Sans AO"
+         Name            =   "Arial"
          Size            =   11.25
          Charset         =   0
          Weight          =   700
@@ -1010,7 +986,7 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       Caption         =   "PanelGM"
       BeginProperty Font 
-         Name            =   "Alegreya Sans AO"
+         Name            =   "Arial"
          Size            =   11.25
          Charset         =   0
          Weight          =   700
@@ -2735,6 +2711,136 @@ LlamaDeclan_Timer_Err:
     
 End Sub
 
+Private Sub MainSocket_Connect()
+    On Error GoTo Socket1_Connect_Err
+    
+        Call SetSocketNoDelay(MainSocket.SocketHandle, True)
+    
+        'Clean input and output buffers
+        Call incomingData.Clean
+        Call outgoingData.Clean
+        
+        #If AntiExternos = 1 Then
+            Security.Redundance = Security.DefaultRedundance
+        #End If
+        
+        ShowFPS.Enabled = True
+
+        Select Case EstadoLogin
+
+            Case E_MODO.CrearNuevoPj, E_MODO.Normal, E_MODO.Dados
+                Call Login
+          
+            Case E_MODO.IngresandoConCuenta
+                Call WriteIngresandoConCuenta
+
+            Case E_MODO.BorrandoPJ
+                Call WriteBorrandoPJ
+
+        End Select
+
+    
+    Exit Sub
+
+Socket1_Connect_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_Connect", Erl)
+    Resume Next
+End Sub
+
+Private Sub MainSocket_DataArrival(ByVal bytesTotal As Long)
+    On Error GoTo Socket1_Read_Err
+
+    Dim Data() As Byte
+    Dim LastCompletPacket As Boolean
+
+    Do
+        ' WyroX: Sólo leemos la cantidad que entre en la cola!!
+        Call MainSocket.GetData(Data, vbByte, min(MainSocket.BytesReceived, incomingData.Capacity - incomingData.length))
+        
+        'Put data in the buffer
+        Call incomingData.WriteBlock(Data)
+        
+        If incomingData.PeekLength <= incomingData.length Then
+            LastCompletPacket = True
+            
+            While incomingData.length And LastCompletPacket
+                LastCompletPacket = HandleIncomingData()
+            Wend
+
+        End If
+        
+    Loop While MainSocket.BytesReceived > 0
+    
+    Exit Sub
+
+Socket1_Read_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Read", Erl)
+    Resume Next
+End Sub
+
+Private Sub MainSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    On Error GoTo Socket1_LastError_Err
+    
+
+    '*********************************************
+    'Handle socket errors
+    '*********************************************
+    If Number = 24036 Then
+        frmMain.MainSocket.Close
+        Debug.Print "ErrorCode = 24036"
+        Exit Sub
+
+    End If
+
+    ' Call ComprobarEstado
+    
+    If frmConnect.Visible Then
+        Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
+    Else
+        Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
+    
+        Dim mForm As Form
+
+        For Each mForm In Forms
+
+            Select Case mForm.Name
+
+                Case Me.Name, frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
+                
+                Case Else
+                    Unload mForm
+
+            End Select
+
+        Next
+        
+        frmMain.Visible = False
+        Call ComprobarEstado
+        General_Set_Connect
+
+    End If
+    
+    frmConnect.MousePointer = 1
+    ShowFPS.Enabled = False
+
+    frmMain.MainSocket.Close
+    LogeoAlgunaVez = False
+    
+    'General_Set_Connect
+    
+    'If Not frmCrearPersonaje.Visible Then
+    ' General_Set_Connect
+    '  Else
+    '  frmCrearPersonaje.MousePointer = 0
+    'End If
+    
+    Exit Sub
+
+Socket1_LastError_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_LastError", Erl)
+    Resume Next
+End Sub
+
 Private Sub MANShp_Click()
     
     On Error GoTo MANShp_Click_Err
@@ -4157,21 +4263,6 @@ ShowFPS_Timer_Err:
     
 End Sub
 
-Private Sub Socket1_Timeout(status As Integer, Response As Integer)
-    
-    On Error GoTo Socket1_Timeout_Err
-    
-    MsgBox "Se perdio la conexion time out"
-
-    
-    Exit Sub
-
-Socket1_Timeout_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Timeout", Erl)
-    Resume Next
-    
-End Sub
-
 Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo TiendaBoton_MouseMove_Err
@@ -5002,473 +5093,6 @@ SendTxt_KeyPress_Err:
     Resume Next
     
 End Sub
-
-''''''''''''''''''''''''''''''''''''''
-'     SOCKET1                        '
-''''''''''''''''''''''''''''''''''''''
-#If UsarWrench = 1 Then
-    Private Sub Socket1_Connect()
-    
-    On Error GoTo Socket1_Connect_Err
-    
-        Socket1.NoDelay = True
-    
-        'Clean input and output buffers
-        Call incomingData.ReadASCIIStringFixed(incomingData.length)
-        Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
-        
-        #If AntiExternos = 1 Then
-            Security.Redundance = Security.DefaultRedundance
-        #End If
-        
-        ShowFPS.Enabled = True
-
-        Select Case EstadoLogin
-
-            Case E_MODO.CrearNuevoPj, E_MODO.Normal, E_MODO.Dados
-                Call Login
-          
-            Case E_MODO.IngresandoConCuenta
-                Call WriteIngresandoConCuenta
-
-            Case E_MODO.BorrandoPJ
-                Call WriteBorrandoPJ
-
-        End Select
-
-    
-    Exit Sub
-
-Socket1_Connect_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Connect", Erl)
-    Resume Next
-    
-    End Sub
-
-Private Sub Socket1_Disconnect()
-    
-    On Error GoTo Socket1_Disconnect_Err
-    
-
-    Dim i As Long
-    
-    ShowFPS.Enabled = False
-    Connected = False
-    
-    Socket1.Cleanup
-    
-    ' If Not frmCrearPersonaje.Visible And Not frmConnect.Visible Then
-    Rem  FrmCuenta.Visible = True
-    ' End If
-
-    If LogeoAlgunaVez Then
-        frmConnect.MousePointer = vbNormal
-
-        Dim mForm As Form
-
-        For Each mForm In Forms
-
-            Select Case mForm.Name
-
-                Case Me.Name, frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
-            
-                Case Else
-                    Unload mForm
-
-            End Select
-
-        Next
-    
-        frmMain.Visible = False
-
-        frmMain.personaje(1).Visible = False
-        frmMain.personaje(2).Visible = False
-        frmMain.personaje(3).Visible = False
-        frmMain.personaje(4).Visible = False
-        frmMain.personaje(5).Visible = False
-
-        UserClase = 0
-        UserSexo = 0
-        UserRaza = 0
-        MiCabeza = 0
-        SkillPoints = 0
-        UserEstado = 0
-        Alocados = 0
-        
-        
-        QuePestañaInferior = 0
-        frmMain.stabar.Visible = True
-        frmMain.HpBar.Visible = True
-        frmMain.manabar.Visible = True
-        frmMain.hambar.Visible = True
-        frmMain.AGUbar.Visible = True
-        frmMain.Hpshp.Visible = True
-        frmMain.MANShp.Visible = True
-        frmMain.STAShp.Visible = True
-        frmMain.AGUAsp.Visible = True
-        frmMain.COMIDAsp.Visible = True
-        frmMain.GldLbl.Visible = True
-        ' Label6.Visible = True
-        frmMain.Fuerzalbl.Visible = True
-        frmMain.AgilidadLbl.Visible = True
-        frmMain.oxigenolbl.Visible = True
-        frmMain.TiendaBoton.Visible = False
-        frmMain.rankingBoton.Visible = False
-        frmMain.manualboton.Visible = False
-        frmMain.QuestBoton.Visible = False
-        frmMain.ImgHogar.Visible = False
-        frmMain.lblWeapon.Visible = True
-        frmMain.lblShielder.Visible = True
-        frmMain.lblHelm.Visible = True
-        frmMain.lblArmor.Visible = True
-        frmMain.lblResis.Visible = True
-        frmMain.lbldm.Visible = True
-        frmMain.imgBugReport.Visible = False
-        frmMain.panelinferior(0).Picture = Nothing
-        frmMain.panelinferior(1).Picture = Nothing
-        frmMain.mapMundo.Visible = False
-        frmMain.Image5.Visible = False
-        frmMain.clanimg.Visible = False
-        frmMain.Retar.Visible = False
-        frmMain.cmdLlavero.Visible = False
-        frmMain.QuestBoton.Visible = False
-        frmMain.ImgSeg.Visible = False
-        frmMain.ImgSegParty.Visible = False
-        frmMain.ImgSegClan.Visible = False
-        frmMain.ImgSegResu.Visible = False
-        
-    
-        For i = 1 To NUMSKILLS
-            UserSkills(i) = 0
-        Next i
-
-        For i = 1 To NUMATRIBUTOS
-            UserAtributos(i) = 0
-        Next i
-        
-        For i = 1 To UserInvUnlocked
-            frmMain.imgInvLock(i - 1).Picture = Nothing
-        Next i
-        
-        For i = 1 To MAX_INVENTORY_SLOTS
-            Call frmMain.Inventario.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-            Call frmBancoObj.InvBankUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-            Call frmBancoObj.InvBoveda.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-            Call frmComerciar.InvComNpc.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-            Call frmComerciar.InvComUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-            
-            Call frmBancoCuenta.InvBankUsuCuenta.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-            Call frmBancoCuenta.InvBovedaCuenta.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Next i
-        
-        For i = 1 To MAX_BANCOINVENTORY_SLOTS
-            Call frmBancoObj.InvBoveda.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Next i
-        
-        For i = 1 To MAX_KEYS
-            Call FrmKeyInv.InvKeys.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Next i
-        
-        UserParalizado = False
-        UserSaliendo = False
-        UserInmovilizado = False
-        UserStopped = False
-        pausa = False
-        UserMeditar = False
-        UserDescansar = False
-        UserNavegando = False
-        UserNadando = False
-        UserMontado = False
-        bRain = False
-        AlphaNiebla = 75
-        frmMain.TimerNiebla.Enabled = False
-        bNiebla = False
-        MostrarTrofeo = False
-        bNieve = False
-        bFogata = False
-        InvasionActual = 0
-        frmMain.Evento.Enabled = False
-    
-        '  For i = 1 To LastChar + 1
-        '      charlist(i).Invisible = False
-        '      charlist(i).Arma_Aura = 0
-        '      charlist(i).Body_Aura = 0
-        '      charlist(i).Escudo_Aura = 0
-        '      charlist(i).Otra_Aura = 0
-        '      charlist(i).Head_Aura = 0
-        '      charlist(i).Speeding = 0
-        '  Next i
-
-        For i = 1 To LastChar + 1
-            charlist(i).dialog = ""
-        Next i
-
-        Call RefreshAllChars
-    
-        macrotrabajo.Enabled = False
-        frmMain.Timerping.Enabled = False
-        
-        frmMain.UpdateLight.Enabled = False
-        frmMain.UpdateDaytime.Enabled = False
-
-        frmConnect.Visible = True
-        UserMap = 1
-        AlphaNiebla = 25
-        EntradaY = 1
-        EntradaX = 1
-    
-        Call SwitchMap(UserMap)
-    
-        Call Graficos_Particulas.Engine_Select_Particle_Set(203)
-        ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
-    
-        frmConnect.txtNombre.Visible = False
-        QueRender = 2
-
-        LogeoAlgunaVez = True
-
-        'Else
-        'General_Set_Connect
-    End If
-
-    
-    Exit Sub
-
-Socket1_Disconnect_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Disconnect", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Response As Integer)
-    
-    On Error GoTo Socket1_LastError_Err
-    
-
-    '*********************************************
-    'Handle socket errors
-    '*********************************************
-    If ErrorCode = 24036 Then
-        frmMain.Socket1.Disconnect
-        Debug.Print "ErrorCode = 24036"
-        Exit Sub
-
-    End If
-
-    ' Call ComprobarEstado
-    
-    If frmConnect.Visible Then
-        Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
-    Else
-        Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
-    
-        Dim mForm As Form
-
-        For Each mForm In Forms
-
-            Select Case mForm.Name
-
-                Case Me.Name, frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
-                
-                Case Else
-                    Unload mForm
-
-            End Select
-
-        Next
-        
-        frmMain.Visible = False
-        Call ComprobarEstado
-        General_Set_Connect
-
-    End If
-    
-    frmConnect.MousePointer = 1
-    Response = 0
-    ShowFPS.Enabled = False
-
-    frmMain.Socket1.Disconnect
-    LogeoAlgunaVez = False
-    
-    'General_Set_Connect
-    
-    'If Not frmCrearPersonaje.Visible Then
-    ' General_Set_Connect
-    '  Else
-    '  frmCrearPersonaje.MousePointer = 0
-    'End If
-    
-    Exit Sub
-
-Socket1_LastError_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_LastError", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Socket1_Read(dataLength As Integer, IsUrgent As Integer)
-    
-    On Error GoTo Socket1_Read_Err
-    
-
-    Dim RD     As String
-
-    Dim Data() As Byte
-
-    ' WyroX: Sólo leemos la cantidad que entre en la cola!!
-    Call Socket1.Read(RD, min(dataLength, incomingData.Capacity - incomingData.length))
-    Data = StrConv(RD, vbFromUnicode)
-
-    'Put data in the buffer
-    Call incomingData.WriteBlock(Data)
-    
-    'Send buffer to Handle data
-    Call HandleIncomingData
-
-    
-    Exit Sub
-
-Socket1_Read_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Read", Erl)
-    Resume Next
-    
-End Sub
-
-
-#End If
-
-'
-' -------------------
-'    W I N S O C K
-' -------------------
-'
-
-#If UsarWrench <> 1 Then
-
-Private Sub Winsock1_Close()
-    
-    Debug.Print "WInsock Close"
-    
-    Second.Enabled = False
-    Connected = False
-    
-    If Winsock1.State <> sckClosed Then _
-        Winsock1.Close
-    
-    frmConnect.MousePointer = vbNormal
-    
-    If Not frmCrearPersonaje.Visible And Not FrmCuenta.Visible Then
-        General_Set_Connect
-    End If
-
-    Dim mForm As Form
-    For Each mForm In Forms
-        Select Case mForm.Name
-            Case Me.Name, frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
-            
-            Case Else
-                Unload mForm
-        End Select
-    Next
-    
-    frmMain.Visible = False
-    
-
-frmMain.personaje(1).Visible = False
-frmMain.personaje(2).Visible = False
-frmMain.personaje(3).Visible = False
-frmMain.personaje(4).Visible = False
-frmMain.personaje(5).Visible = False
-    
- 
-
-    pausa = False
-    UserMeditar = False
-
-    UserClase = 0
-    UserSexo = 0
-    UserRaza = 0
-    MiCabeza = 0
-    
-    For i = 1 To NUMSKILLS
-        UserSkills(i) = 0
-    Next i
-
-    For i = 1 To NUMATRIBUTOS
-        UserAtributos(i) = 0
-    Next i
-
-    SkillPoints = 0
-    Alocados = 0
-
-    Dialogos.CantidadDialogos = 0
-End Sub
-
-Private Sub Winsock1_Connect()
-    Debug.Print "Winsock Connect"
-    
-    'Clean input and output buffers
-    Call incomingData.ReadASCIIStringFixed(incomingData.length)
-    Call outgoingData.ReadASCIIStringFixed(outgoingData.length)
-    
-
-    
-    Second.Enabled = True
-    
-    Select Case EstadoLogin
-        Case E_MODO.CrearNuevoPj
-
-            Call Login
-
-
-        Case E_MODO.Normal
-
-            Call Login
-
-        Case E_MODO.Dados
-
-            frmCrearPersonaje.Show vbModal
-            
-    End Select
-End Sub
-
-Private Sub Winsock1_DataArrival(ByVal BytesTotal As Long)
-    Dim RD As String
-    Dim Data() As Byte
-    
-    'Socket1.Read RD, DataLength
-    Call Winsock1.GetData(RD)
-    
-    Data = StrConv(RD, vbFromUnicode)
-
-    'Set data in the buffer
-    Call incomingData.WriteBlock(Data)
-    
-    'Send buffer to Handle data
-    Call HandleIncomingData
-End Sub
-
-Private Sub Winsock1_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    '*********************************************
-    'Handle socket errors
-    '*********************************************
-    
-    Call MsgBox(Description, vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error")
-    frmConnect.MousePointer = 1
-    Second.Enabled = False
-
-    If Winsock1.State <> sckClosed Then _
-        Winsock1.Close
-    
-
-
-    If Not frmCrearPersonaje.Visible Then
-        Rem General_Set_Connect
-    Else
-        frmCrearPersonaje.MousePointer = 0
-    End If
-End Sub
-#End If
 
 Private Function InGameArea() As Boolean
     

@@ -342,9 +342,8 @@ Private Sub cmdIngresar_Click()
 
     If IntervaloPermiteConectar Then
     
-        If frmMain.Socket1.Connected Then
-            frmMain.Socket1.Disconnect
-            frmMain.Socket1.Cleanup
+        If frmMain.MainSocket.State <> sckClosed Then
+            frmMain.MainSocket.Close
             DoEvents
 
         End If
@@ -364,9 +363,7 @@ Private Sub cmdIngresar_Click()
 
         If CheckUserDataLoged() = True Then
             EstadoLogin = E_MODO.IngresandoConCuenta
-            frmMain.Socket1.HostName = IPdelServidor
-            frmMain.Socket1.RemotePort = PuertoDelServidor
-            frmMain.Socket1.Connect
+            frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
 
         End If
 
