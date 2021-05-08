@@ -2058,7 +2058,7 @@ Private Sub HandleShowBlacksmithForm()
         Call WriteCraftBlacksmith(MacroBltIndex)
     Else
         
-        frmHerrero.Picture = LoadInterface("herreria.bmp")
+        frmHerrero.Picture = LoadInterface("ventanaherreria.bmp")
     
         frmHerrero.lstArmas.Clear
 
@@ -2070,7 +2070,7 @@ Private Sub HandleShowBlacksmithForm()
             Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).Name)
         Next i
 
-        frmHerrero.Command3.Picture = LoadInterface("herreria_cascoshover.bmp")
+        frmHerrero.Command3.Picture = LoadInterface("boton-casco-over.bmp")
     
         COLOR_AZUL = RGB(0, 0, 0)
         Call Establecer_Borde(frmHerrero.lstArmas, frmHerrero, COLOR_AZUL, 1, 1)

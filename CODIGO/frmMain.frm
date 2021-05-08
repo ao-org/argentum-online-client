@@ -413,7 +413,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1880,6 +1879,7 @@ Private Sub Contadores_Timer()
         DrogaCounter = DrogaCounter - 1
 
         If DrogaCounter <= 12 And DrogaCounter > 0 Then
+                Call Sound.Sound_Stop(SND_DOPA)
                 Call Sound.Sound_Play(SND_DOPA)
             If DrogaCounter Mod 2 = 0 Then
                 frmMain.Fuerzalbl.ForeColor = vbWhite

@@ -3,17 +3,38 @@ Begin VB.Form frmHerrero
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar con Herreria"
-   ClientHeight    =   5610
+   ClientHeight    =   6525
    ClientLeft      =   0
    ClientTop       =   -90
-   ClientWidth     =   6585
+   ClientWidth     =   7050
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5610
-   ScaleWidth      =   6585
+   Picture         =   "frmHerrero.frx":0000
+   ScaleHeight     =   435
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   470
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.ListBox List2 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   1395
+      Left            =   5880
+      TabIndex        =   5
+      Top             =   2520
+      Width           =   645
+   End
    Begin VB.ListBox lstArmas 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -28,10 +49,10 @@ Begin VB.Form frmHerrero
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   2955
-      Left            =   720
-      TabIndex        =   5
-      Top             =   2150
-      Width           =   2400
+      Left            =   480
+      TabIndex        =   4
+      Top             =   2325
+      Width           =   2775
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
@@ -46,38 +67,16 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   810
+      Height          =   1395
       Left            =   3840
-      TabIndex        =   4
-      Top             =   3000
-      Width           =   1605
-   End
-   Begin VB.ListBox List2 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      Enabled         =   0   'False
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   810
-      ItemData        =   "frmHerrero.frx":0000
-      Left            =   5535
-      List            =   "frmHerrero.frx":0007
       TabIndex        =   3
-      Top             =   3000
-      Width           =   525
+      Top             =   2520
+      Width           =   1965
    End
    Begin VB.TextBox cantidad 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H000D1213&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -90,12 +89,12 @@ Begin VB.Form frmHerrero
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   250
-      Left            =   3820
+      Left            =   5265
       MaxLength       =   3
       TabIndex        =   2
       Text            =   "1"
-      Top             =   4520
-      Width           =   660
+      Top             =   4275
+      Width           =   540
    End
    Begin VB.PictureBox Picture1 
       Appearance      =   0  'Flat
@@ -103,12 +102,12 @@ Begin VB.Form frmHerrero
       BorderStyle     =   0  'None
       ForeColor       =   &H00FFFFFF&
       Height          =   465
-      Left            =   4750
+      Left            =   4905
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   0
-      Top             =   1760
+      Top             =   1845
       Width           =   480
    End
    Begin VB.Label desc 
@@ -131,42 +130,42 @@ Begin VB.Form frmHerrero
       Width           =   2055
    End
    Begin VB.Image Command6 
-      Height          =   450
-      Left            =   4590
-      Top             =   4420
-      Width           =   1740
+      Height          =   420
+      Left            =   4155
+      Top             =   4680
+      Width           =   1980
    End
    Begin VB.Image Command5 
-      Height          =   465
-      Left            =   3960
-      Top             =   5000
-      Width           =   2130
+      Height          =   420
+      Left            =   2535
+      Top             =   5730
+      Width           =   1980
    End
    Begin VB.Image Command2 
       Height          =   510
-      Left            =   2640
+      Left            =   2595
       Stretch         =   -1  'True
-      Top             =   1460
+      Top             =   1365
       Width           =   570
    End
    Begin VB.Image Command1 
       Height          =   600
-      Left            =   1980
+      Left            =   1965
       OLEDropMode     =   1  'Manual
-      Top             =   1450
+      Top             =   1350
       Width           =   615
    End
    Begin VB.Image Command4 
       Height          =   600
-      Left            =   1360
+      Left            =   1305
       Tag             =   "0"
-      Top             =   1440
+      Top             =   1365
       Width           =   615
    End
    Begin VB.Image Command3 
       Height          =   600
-      Left            =   680
-      Top             =   1460
+      Left            =   660
+      Top             =   1350
       Width           =   615
    End
 End
@@ -227,7 +226,7 @@ Private Sub Command1_Click()
         Call frmHerrero.lstArmas.AddItem(ObjData(ArmasHerrero(i).Index).Name)
     Next i
     
-    Command1.Picture = LoadInterface("herreria_armashover.bmp")
+    Command1.Picture = LoadInterface("boton-espada-over.bmp")
     Command3.Picture = Nothing
     Command2.Picture = Nothing
     Command4.Picture = Nothing
@@ -241,10 +240,9 @@ Command1_Click_Err:
     
 End Sub
 
-Private Sub Command1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    ' Command1.Picture = LoadInterface("herreria_armaspress.bmp")
-    ' Command1.Tag = "1"
+Private Sub Command1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+ If Index <> 1 Then Command1.Picture = LoadInterface("boton-espada-off.bmp")
 End Sub
 
 Private Sub Command2_Click()
@@ -266,8 +264,8 @@ Private Sub Command2_Click()
         End If
 
     Next i
-
-    Command2.Picture = LoadInterface("herreria_armadurashover.bmp")
+    
+    Command2.Picture = LoadInterface("boton-armadura-over.bmp")
     Command1.Picture = Nothing
     Command3.Picture = Nothing
     Command4.Picture = Nothing
@@ -279,6 +277,10 @@ Command2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command2_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub Command2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If Index <> 2 Then Command2.Picture = LoadInterface("boton-armadura-off.bmp")
 End Sub
 
 Private Sub Command3_Click()
@@ -297,8 +299,7 @@ Private Sub Command3_Click()
         Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).Name)
     Next i
 
-    Command3.Picture = LoadInterface("herreria_cascoshover.bmp")
-
+    Command3.Picture = LoadInterface("boton-casco-over.bmp")
     Command1.Picture = Nothing
     Command2.Picture = Nothing
     Command4.Picture = Nothing
@@ -310,6 +311,11 @@ Command3_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command3_Click", Erl)
     Resume Next
     
+End Sub
+
+
+Private Sub Command3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If Index <> 3 Then Command3.Picture = LoadInterface("boton-casco-off.bmp")
 End Sub
 
 Private Sub Command4_Click()
@@ -328,7 +334,7 @@ Private Sub Command4_Click()
         Call frmHerrero.lstArmas.AddItem(ObjData(EscudosHerrero(i).Index).Name)
     Next i
 
-    Command4.Picture = LoadInterface("herreria_escudoshover.bmp")
+    Command4.Picture = LoadInterface("boton-escudo-over.bmp")
     Command1.Picture = Nothing
     Command2.Picture = Nothing
     Command3.Picture = Nothing
@@ -340,6 +346,10 @@ Command4_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command4_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub Command4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If Index <> 4 Then Command4.Picture = LoadInterface("boton-escudo-off.bmp")
 End Sub
 
 Private Sub Command5_Click()
@@ -464,7 +474,7 @@ Private Sub Command6_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command6.Tag = "0" Then
-        Command6.Picture = LoadInterface("trabajar_construirhover.bmp")
+        Command6.Picture = LoadInterface("boton-construir-over.bmp")
         Command6.Tag = "1"
 
     End If
@@ -481,11 +491,6 @@ Command6_MouseMove_Err:
     
 End Sub
 
-Private Sub Command5_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    'Command5.Picture = LoadInterface("trabajar_salirpress.bmp")
-    'Command5.Tag = "1"
-End Sub
 
 Private Sub Command5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
@@ -493,7 +498,7 @@ Private Sub Command5_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command5.Tag = "0" Then
-        Command5.Picture = LoadInterface("trabajar_salirhover.bmp")
+        Command5.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
         Command5.Tag = "1"
 
     End If
@@ -510,23 +515,6 @@ Command5_MouseMove_Err:
     
 End Sub
 
-Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    'Command4.Picture = LoadInterface("herreria_escudospress.bmp")
-    'Command4.Tag = "1"
-End Sub
-
-Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    ' 'Command3.Picture = LoadInterface("herreria_cascospress.bmp")
-    ' Command3.Tag = "1"
-End Sub
-
-Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    'Command2.Picture = LoadInterface("herreria_armaduraspress.bmp")
-    ' Command2.Tag = "1"
-End Sub
 
 Private Sub Form_Load()
     
@@ -534,8 +522,6 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     Index = 3
-
-    
     Exit Sub
 
 Form_Load_Err:
@@ -546,13 +532,10 @@ End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
     
     On Error GoTo Form_KeyPress_Err
-    
 
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
-
     
     Exit Sub
 
