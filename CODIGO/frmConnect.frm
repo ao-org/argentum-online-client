@@ -787,12 +787,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                 If ClickEnAsistenteRandom = 3 Then
                     Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta")
-
+                    
                 End If
 
                 If ClickEnAsistenteRandom = 4 Then
                     Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?")
-
                 End If
 
             End If

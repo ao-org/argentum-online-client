@@ -413,6 +413,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1878,45 +1879,20 @@ Private Sub Contadores_Timer()
     If DrogaCounter > 0 Then
         DrogaCounter = DrogaCounter - 1
 
-        If DrogaCounter = 12 Then
-            frmMain.Fuerzalbl.ForeColor = vbWhite
-            frmMain.AgilidadLbl.ForeColor = vbWhite
-        ElseIf DrogaCounter = 11 Then
-            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
-        ElseIf DrogaCounter = 10 Then
-            frmMain.Fuerzalbl.ForeColor = vbWhite
-            frmMain.AgilidadLbl.ForeColor = vbWhite
-        ElseIf DrogaCounter = 9 Then
-            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
-        ElseIf DrogaCounter = 8 Then
-            frmMain.Fuerzalbl.ForeColor = vbWhite
-            frmMain.AgilidadLbl.ForeColor = vbWhite
-        ElseIf DrogaCounter = 7 Then
-            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
-        ElseIf DrogaCounter = 6 Then
-            frmMain.Fuerzalbl.ForeColor = vbWhite
-            frmMain.AgilidadLbl.ForeColor = vbWhite
-        ElseIf DrogaCounter = 5 Then
-            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
-        ElseIf DrogaCounter = 4 Then
-            frmMain.Fuerzalbl.ForeColor = vbWhite
-            frmMain.AgilidadLbl.ForeColor = vbWhite
-        ElseIf DrogaCounter = 3 Then
-            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
-        ElseIf DrogaCounter = 2 Then
-            frmMain.Fuerzalbl.ForeColor = vbWhite
-            frmMain.AgilidadLbl.ForeColor = vbWhite
-        ElseIf DrogaCounter = 1 Then
-            frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-            frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
-
+        If DrogaCounter <= 12 And DrogaCounter > 0 Then
+                Call Sound.Sound_Play(SND_DOPA)
+            If DrogaCounter Mod 2 = 0 Then
+                frmMain.Fuerzalbl.ForeColor = vbWhite
+                frmMain.AgilidadLbl.ForeColor = vbWhite
+            Else
+                frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
+                frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
+            End If
         End If
-
+        
+        If DrogaCounter <= 12 And DrogaCounter > 0 Then
+        End If
+        
     End If
 
     If InviCounter = 0 And ScrollExpCounter = 0 And ScrollOroCounter = 0 And DrogaCounter = 0 And OxigenoCounter = 0 Then

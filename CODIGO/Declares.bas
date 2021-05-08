@@ -382,6 +382,8 @@ Public Const SND_RESUCITAR     As Integer = 104
 
 Public Const SND_CURAR         As Integer = 101
 
+Public Const SND_DOPA          As Byte = 77
+
 Public TargetXMacro            As Byte
 
 Public TargetYMacro            As Byte
