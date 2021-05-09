@@ -6392,15 +6392,9 @@ Private Sub HandleBlacksmithArmors()
         ' Call frmHerrero.lstArmaduras.AddItem(tmp)
         DefensasHerrero(i).Index = buffer.ReadInteger()
     Next i
-    
-    For i = i To UBound(DefensasHerrero())
-        DefensasHerrero(i).Index = 0
-    Next i
-    
+        
     Dim A As Byte
-
     Dim e As Byte
-
     Dim c As Byte
 
     A = 0
@@ -6420,7 +6414,8 @@ Private Sub HandleBlacksmithArmors()
 
         End If
         
-        If ObjData(DefensasHerrero(i).Index).ObjType = 16 Then
+        ' Escudos (16) y Anillos (35) van en la misma lista
+        If ObjData(DefensasHerrero(i).Index).ObjType = 16 Or ObjData(DefensasHerrero(i).Index).ObjType = 35 Then
             EscudosHerrero(e).Index = DefensasHerrero(i).Index
             EscudosHerrero(e).LHierro = DefensasHerrero(i).LHierro
             EscudosHerrero(e).LPlata = DefensasHerrero(i).LPlata
