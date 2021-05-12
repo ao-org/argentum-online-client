@@ -2073,9 +2073,9 @@ Private Sub HandleShowBlacksmithForm()
         frmHerrero.Command3.Picture = LoadInterface("boton-casco-over.bmp")
     
         COLOR_AZUL = RGB(0, 0, 0)
-        Call Establecer_Borde(frmHerrero.lstArmas, frmHerrero, COLOR_AZUL, 1, 1)
-        Call Establecer_Borde(frmHerrero.List1, frmHerrero, COLOR_AZUL, 1, 1)
-        Call Establecer_Borde(frmHerrero.List2, frmHerrero, COLOR_AZUL, 1, 1)
+        Call Establecer_Borde(frmHerrero.lstArmas, frmHerrero, COLOR_AZUL, 0, 0)
+        Call Establecer_Borde(frmHerrero.List1, frmHerrero, COLOR_AZUL, 0, 0)
+        Call Establecer_Borde(frmHerrero.List2, frmHerrero, COLOR_AZUL, 0, 0)
         frmHerrero.Show , frmMain
 
     End If
@@ -2114,7 +2114,6 @@ Private Sub HandleShowCarpenterForm()
         Call Establecer_Borde(frmCarp.lstArmas, frmCarp, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(frmCarp.List1, frmCarp, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(frmCarp.List2, frmCarp, COLOR_AZUL, 0, 0)
-        frmCarp.Picture = LoadInterface("carpinteria.bmp")
         frmCarp.Show , frmMain
 
     End If

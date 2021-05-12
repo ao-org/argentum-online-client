@@ -1769,12 +1769,13 @@ Public Function LoadInterface(FileName As String) As IPicture
 
 On Error GoTo errhandler
 
-    #If Compresion = 1 Then
-        Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
-    #Else
-        Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & LCase$(FileName))
-    #End If
-    
+    If FileName <> "" Then
+        #If Compresion = 1 Then
+            Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
+        #Else
+            Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & LCase$(FileName))
+        #End If
+    End If
 Exit Function
 
 errhandler:

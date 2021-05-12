@@ -92,8 +92,7 @@ Private Sub ButtonHolder_Click()
 '***************************************************
     If Disabled Then Exit Sub
     If Not SoundClick Then Exit Sub
-
-    'Call Audio.PlayWave(SND_CLICK)
+    
 End Sub
 
 Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -106,6 +105,7 @@ Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, X As Sin
     If Disabled Then Exit Sub
 
     ButtonHolder.Picture = ClickButtonImage
+    Call Sound.Sound_Play(SND_CLICK)
 End Sub
 
 Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -126,6 +126,7 @@ Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Sin
         OverButton = True
 
         Set FormActual.LastButtonPressed = Me
+        Call Sound.Sound_Play(SND_CLICK_OVER)
     End If
 End Sub
 

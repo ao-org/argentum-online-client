@@ -4,10 +4,10 @@ Begin VB.Form frmCarp
    BackColor       =   &H80000001&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar de carpintero"
-   ClientHeight    =   5595
+   ClientHeight    =   6525
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   6525
+   ClientWidth     =   7065
    BeginProperty Font 
       Name            =   "Verdana"
       Size            =   8.25
@@ -20,8 +20,10 @@ Begin VB.Form frmCarp
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5595
-   ScaleWidth      =   6525
+   Picture         =   "frmCarp.frx":0000
+   ScaleHeight     =   435
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   471
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.ListBox lstArmas 
@@ -37,11 +39,11 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   3540
-      Left            =   700
+      Height          =   3735
+      Left            =   525
       TabIndex        =   4
-      Top             =   1560
-      Width           =   2400
+      Top             =   1440
+      Width           =   2700
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
@@ -56,11 +58,11 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1200
-      Left            =   3855
+      Height          =   1395
+      Left            =   3840
       TabIndex        =   3
-      Top             =   2950
-      Width           =   1605
+      Top             =   2520
+      Width           =   1845
    End
    Begin VB.ListBox List2 
       Appearance      =   0  'Flat
@@ -76,18 +78,18 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1200
-      ItemData        =   "frmCarp.frx":0000
-      Left            =   5520
-      List            =   "frmCarp.frx":0007
+      Height          =   1395
+      ItemData        =   "frmCarp.frx":95A0C
+      Left            =   5760
+      List            =   "frmCarp.frx":95A13
       TabIndex        =   2
-      Top             =   2950
-      Width           =   525
+      Top             =   2520
+      Width           =   645
    End
    Begin VB.TextBox cantidad 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H000D1213&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -100,11 +102,11 @@ Begin VB.Form frmCarp
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   250
-      Left            =   3735
+      Left            =   5205
       MaxLength       =   3
       TabIndex        =   1
       Text            =   "1"
-      Top             =   4450
+      Top             =   4245
       Width           =   660
    End
    Begin VB.PictureBox picture1 
@@ -113,13 +115,34 @@ Begin VB.Form frmCarp
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   465
-      Left            =   4740
+      Left            =   4890
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   0
-      Top             =   1770
+      Top             =   1845
       Width           =   480
+   End
+   Begin VB.Image Command9 
+      Height          =   315
+      Left            =   6000
+      Tag             =   "0"
+      Top             =   4215
+      Width           =   315
+   End
+   Begin VB.Image Command8 
+      Height          =   315
+      Left            =   4740
+      Tag             =   "0"
+      Top             =   4215
+      Width           =   315
+   End
+   Begin VB.Image Command7 
+      Height          =   420
+      Left            =   6600
+      Tag             =   "0"
+      Top             =   0
+      Width           =   420
    End
    Begin VB.Label desc 
       Alignment       =   2  'Center
@@ -135,24 +158,24 @@ Begin VB.Form frmCarp
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   3600
+      Left            =   3720
       TabIndex        =   5
-      Top             =   2440
+      Top             =   3930
       Width           =   2775
    End
    Begin VB.Image Command4 
-      Height          =   465
-      Left            =   3960
+      Height          =   420
+      Left            =   2520
       Tag             =   "0"
-      Top             =   5000
-      Width           =   2130
+      Top             =   5730
+      Width           =   1980
    End
    Begin VB.Image Command3 
-      Height          =   450
-      Left            =   4590
+      Height          =   420
+      Left            =   4155
       Tag             =   "0"
-      Top             =   4430
-      Width           =   1740
+      Top             =   4680
+      Width           =   1980
    End
 End
 Attribute VB_Name = "frmCarp"
@@ -162,6 +185,85 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private clsFormulario As clsFormMovementManager
+Public LastButtonPressed As clsGraphicalButton
+
+Private cBotonAceptar As clsGraphicalButton
+Private cBotonConstruir As clsGraphicalButton
+Private cBotonCerrar As clsGraphicalButton
+Private cBotonMas As clsGraphicalButton
+Private cBotonMenos As clsGraphicalButton
+
+Private Sub Command7_Click()
+    Unload Me
+End Sub
+
+Private Sub Command8_Click()
+    If cantidad > 0 Then
+        cantidad = cantidad - 1
+    Else
+        Exit Sub
+    End If
+End Sub
+
+Private Sub Command9_Click()
+    If cantidad <= 9999 Then
+        cantidad = cantidad + 1
+    Else
+        Exit Sub
+    End If
+End Sub
+
+Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
+'    Call FormParser.Parse_Form(Me)
+    
+    Set clsFormulario = New clsFormMovementManager
+    clsFormulario.Initialize Me
+    
+    Me.Picture = LoadInterface("VentanaCarpinteria.bmp")
+    Call LoadButtons
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmCarp.Form_Load", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub LoadButtons()
+    
+    Set LastButtonPressed = New clsGraphicalButton
+    
+    Set cBotonAceptar = New clsGraphicalButton
+    Set cBotonConstruir = New clsGraphicalButton
+    Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonMas = New clsGraphicalButton
+    Set cBotonMenos = New clsGraphicalButton
+
+
+    Call cBotonAceptar.Initialize(Command4, "boton-aceptar-ES-default.bmp", _
+                                                "boton-aceptar-ES-over.bmp", _
+                                                "boton-aceptar-ES-off.bmp", Me)
+    
+    Call cBotonConstruir.Initialize(Command3, "boton-construir-default.bmp", _
+                                                "boton-construir-over.bmp", _
+                                                "boton-construir-off.bmp", Me)
+                                                
+    Call cBotonCerrar.Initialize(Command7, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonMas.Initialize(Command9, "boton-sm-mas-default.bmp", _
+                                                "boton-sm-mas-over.bmp", _
+                                                "boton-sm-mas-off.bmp", Me)
+                                                
+    Call cBotonMenos.Initialize(Command8, "boton-sm-menos-default.bmp", _
+                                                "boton-sm-menos-over.bmp", _
+                                                "boton-sm-menos-off.bmp", Me)
+End Sub
 Private Sub Command3_Click()
     
     On Error GoTo Command3_Click_Err
@@ -203,6 +305,8 @@ Command3_Click_Err:
     
 End Sub
 
+
+
 Private Sub Command4_Click()
     
     On Error GoTo Command4_Click_Err
@@ -233,82 +337,14 @@ Form_KeyPress_Err:
     
 End Sub
 
-Private Sub Form_Load()
-    
-    On Error GoTo Form_Load_Err
-    
-    Call FormParser.Parse_Form(Me)
-    
-    Exit Sub
 
-Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCarp.Form_Load", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    'Command3.Picture = LoadInterface("trabajar_construirpress.bmp")
-    'Command3.Tag = "1"
-End Sub
-
-Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Command3_MouseMove_Err
-    
-
-    If Command3.Tag = "0" Then
-        Command3.Picture = LoadInterface("trabajar_construirhover.bmp")
-        Command3.Tag = "1"
-
-    End If
-    
-    Command4.Picture = Nothing
-    Command4.Tag = "0"
-
-    
-    Exit Sub
-
-Command3_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCarp.Command3_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    'Command4.Picture = LoadInterface("trabajar_salirpress.bmp")
-    'Command4.Tag = "1"
-End Sub
-
-Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Command4_MouseMove_Err
-    
-
-    If Command4.Tag = "0" Then
-        Command4.Picture = LoadInterface("trabajar_salirhover.bmp")
-        Command4.Tag = "1"
-
-    End If
-
-    Command3.Picture = Nothing
-    Command3.Tag = "0"
-
-    
-    Exit Sub
-
-Command4_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCarp.Command4_MouseMove", Erl)
-    Resume Next
-    
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    LastButtonPressed.ToggleToNormal
 End Sub
 
 Private Sub List1_Click()
     
     On Error GoTo List1_Click_Err
-    
-
-    
 
     Dim SR As RECT, DR As RECT
 

@@ -10,7 +10,6 @@ Begin VB.Form frmHerrero
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmHerrero.frx":0000
    ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   470
@@ -30,7 +29,7 @@ Begin VB.Form frmHerrero
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   1395
-      Left            =   5880
+      Left            =   5760
       TabIndex        =   5
       Top             =   2520
       Width           =   645
@@ -71,7 +70,7 @@ Begin VB.Form frmHerrero
       Left            =   3840
       TabIndex        =   3
       Top             =   2520
-      Width           =   1965
+      Width           =   1845
    End
    Begin VB.TextBox cantidad 
       Alignment       =   2  'Center
@@ -102,13 +101,33 @@ Begin VB.Form frmHerrero
       BorderStyle     =   0  'None
       ForeColor       =   &H00FFFFFF&
       Height          =   465
-      Left            =   4905
+      Left            =   4890
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   0
       Top             =   1845
       Width           =   480
+   End
+   Begin VB.Image Command8 
+      Height          =   315
+      Left            =   4740
+      Tag             =   "0"
+      Top             =   4215
+      Width           =   315
+   End
+   Begin VB.Image Command9 
+      Height          =   315
+      Left            =   6000
+      Tag             =   "0"
+      Top             =   4215
+      Width           =   315
+   End
+   Begin VB.Image Command7 
+      Height          =   420
+      Left            =   6600
+      Top             =   0
+      Width           =   420
    End
    Begin VB.Label desc 
       Alignment       =   2  'Center
@@ -124,10 +143,10 @@ Begin VB.Form frmHerrero
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   3960
+      Left            =   3840
       TabIndex        =   1
-      Top             =   3840
-      Width           =   2055
+      Top             =   3900
+      Width           =   2535
    End
    Begin VB.Image Command6 
       Height          =   420
@@ -210,6 +229,71 @@ Dim Index As Byte
 
 Option Explicit
 
+Private clsFormulario As clsFormMovementManager
+Public LastButtonPressed As clsGraphicalButton
+
+Private cBotonAceptar As clsGraphicalButton
+Private cBotonConstruir As clsGraphicalButton
+Private cBotonCerrar As clsGraphicalButton
+Private cBotonMas As clsGraphicalButton
+Private cBotonMenos As clsGraphicalButton
+
+
+Private Sub Command7_Click()
+    Unload Me
+End Sub
+
+Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
+    Call FormParser.Parse_Form(Me)
+    
+    Set clsFormulario = New clsFormMovementManager
+    clsFormulario.Initialize Me
+    
+    Me.Picture = LoadInterface("VentanaHerreria.bmp")
+    Call LoadButtons
+    
+    Index = 3
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Form_Load", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub LoadButtons()
+    
+    Set LastButtonPressed = New clsGraphicalButton
+    
+    Set cBotonAceptar = New clsGraphicalButton
+    Set cBotonConstruir = New clsGraphicalButton
+    Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonMas = New clsGraphicalButton
+    Set cBotonMenos = New clsGraphicalButton
+
+    Call cBotonAceptar.Initialize(Command5, "boton-aceptar-ES-default.bmp", _
+                                                "boton-aceptar-ES-over.bmp", _
+                                                "boton-aceptar-ES-off.bmp", Me)
+    
+    Call cBotonConstruir.Initialize(Command6, "boton-construir-default.bmp", _
+                                                "boton-construir-over.bmp", _
+                                                "boton-construir-off.bmp", Me)
+                                                
+    Call cBotonCerrar.Initialize(Command7, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonMas.Initialize(Command9, "boton-sm-mas-default.bmp", _
+                                                "boton-sm-mas-over.bmp", _
+                                                "boton-sm-mas-off.bmp", Me)
+                                                
+    Call cBotonMenos.Initialize(Command8, "boton-sm-menos-default.bmp", _
+                                                "boton-sm-menos-over.bmp", _
+                                                "boton-sm-menos-off.bmp", Me)
+End Sub
 Private Sub Command1_Click()
     
     On Error GoTo Command1_Click_Err
@@ -366,13 +450,24 @@ Command5_Click_Err:
     Resume Next
     
 End Sub
+Private Sub Command8_Click()
+    If cantidad > 0 Then
+        cantidad = cantidad - 1
+    Else
+        Exit Sub
+    End If
+End Sub
 
+Private Sub Command9_Click()
+    If cantidad <= 9999 Then
+        cantidad = cantidad + 1
+    Else
+        Exit Sub
+    End If
+End Sub
 Private Sub Command6_Click()
     
     On Error GoTo Command6_Click_Err
-    
-
-    
 
     If Index = 1 Then
 
@@ -462,73 +557,7 @@ Command6_Click_Err:
     
 End Sub
 
-Private Sub Command6_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    'Command6.Picture = LoadInterface("trabajar_construirpress.bmp")
-    ' Command6.Tag = "1"
-End Sub
-
-Private Sub Command6_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Command6_MouseMove_Err
-    
-
-    If Command6.Tag = "0" Then
-        Command6.Picture = LoadInterface("boton-construir-over.bmp")
-        Command6.Tag = "1"
-
-    End If
-    
-    Command5.Picture = Nothing
-    Command5.Tag = "0"
-
-    
-    Exit Sub
-
-Command6_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command6_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-
-Private Sub Command5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Command5_MouseMove_Err
-    
-
-    If Command5.Tag = "0" Then
-        Command5.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
-        Command5.Tag = "1"
-
-    End If
-
-    Command6.Picture = Nothing
-    Command6.Tag = "0"
-
-    
-    Exit Sub
-
-Command5_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command5_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-
-Private Sub Form_Load()
-    
-    On Error GoTo Form_Load_Err
-    
-    Call FormParser.Parse_Form(Me)
-    Index = 3
-    Exit Sub
-
-Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Form_Load", Erl)
-    Resume Next
-    
-End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
     
     On Error GoTo Form_KeyPress_Err
@@ -546,31 +575,12 @@ Form_KeyPress_Err:
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Form_MouseMove_Err
-    
-
-    Command5.Picture = Nothing
-    Command5.Tag = "0"
-
-    Command6.Picture = Nothing
-    Command6.Tag = "0"
-
-    
-    Exit Sub
-
-Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Form_MouseMove", Erl)
-    Resume Next
-    
+        LastButtonPressed.ToggleToNormal
 End Sub
 
 Private Sub List1_Click()
     
     On Error GoTo List1_Click_Err
-    
-
-    
 
     Dim SR As RECT, DR As RECT
 

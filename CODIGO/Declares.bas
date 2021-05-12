@@ -356,11 +356,11 @@ Public Audio_MP3_Play          As Boolean
 Public MainTimer               As New clsTimer
 
 'Sonidos
-Public Const SND_CAM           As String = "cam.wav"
-
 Public Const SND_EXCLAMACION   As Integer = 451
 
-Public Const SND_CLICK         As Integer = 190
+Public Const SND_CLICK         As String = 500
+
+Public Const SND_CLICK_OVER    As String = 501
 
 Public Const SND_NAVEGANDO     As Integer = 50
 
