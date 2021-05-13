@@ -60,7 +60,6 @@ Public Sub Initialize(ByRef imgButton As Image, ByVal imgNormalPath As String, _
 '***************************************************
     Set ButtonHolder = imgButton
     Set FormActual = Formulario
-Debug.Print imgRollOverPath
     Set RollOverButtonImage = LoadInterface(imgRollOverPath)
     Set NormalButtonImage = LoadInterface(imgNormalPath)
     Set ClickButtonImage = LoadInterface(imgClickPath)
