@@ -109,21 +109,21 @@ Begin VB.Form frmHerrero
       Top             =   1845
       Width           =   480
    End
-   Begin VB.Image Command8 
+   Begin VB.Image cmdMenos 
       Height          =   315
       Left            =   4740
       Tag             =   "0"
       Top             =   4215
       Width           =   315
    End
-   Begin VB.Image Command9 
+   Begin VB.Image cmdMas 
       Height          =   315
       Left            =   6000
       Tag             =   "0"
       Top             =   4215
       Width           =   315
    End
-   Begin VB.Image Command7 
+   Begin VB.Image cmdCerrar 
       Height          =   420
       Left            =   6600
       Top             =   0
@@ -148,13 +148,13 @@ Begin VB.Form frmHerrero
       Top             =   3900
       Width           =   2535
    End
-   Begin VB.Image Command6 
+   Begin VB.Image cmdConstruir 
       Height          =   420
       Left            =   4155
       Top             =   4680
       Width           =   1980
    End
-   Begin VB.Image Command5 
+   Begin VB.Image cmdAceptar 
       Height          =   420
       Left            =   2535
       Top             =   5730
@@ -216,8 +216,7 @@ Attribute VB_Exposed = False
 'Argentum Online is based on Baronsoft's VB6 Online RPG
 'You can contact the original creator of ORE at aaron@baronsoft.com
 'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
+
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
@@ -239,7 +238,7 @@ Private cBotonMas As clsGraphicalButton
 Private cBotonMenos As clsGraphicalButton
 
 
-Private Sub Command7_Click()
+Private Sub cmdCerrar_Click()
     Unload Me
 End Sub
 
@@ -274,23 +273,23 @@ Private Sub LoadButtons()
     Set cBotonMas = New clsGraphicalButton
     Set cBotonMenos = New clsGraphicalButton
 
-    Call cBotonAceptar.Initialize(Command5, "boton-aceptar-ES-default.bmp", _
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-ES-default.bmp", _
                                                 "boton-aceptar-ES-over.bmp", _
                                                 "boton-aceptar-ES-off.bmp", Me)
     
-    Call cBotonConstruir.Initialize(Command6, "boton-construir-default.bmp", _
+    Call cBotonConstruir.Initialize(cmdConstruir, "boton-construir-default.bmp", _
                                                 "boton-construir-over.bmp", _
                                                 "boton-construir-off.bmp", Me)
                                                 
-    Call cBotonCerrar.Initialize(Command7, "boton-cerrar-default.bmp", _
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
                                                 
-    Call cBotonMas.Initialize(Command9, "boton-sm-mas-default.bmp", _
+    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
                                                 "boton-sm-mas-over.bmp", _
                                                 "boton-sm-mas-off.bmp", Me)
                                                 
-    Call cBotonMenos.Initialize(Command8, "boton-sm-menos-default.bmp", _
+    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
                                                 "boton-sm-menos-over.bmp", _
                                                 "boton-sm-menos-off.bmp", Me)
 End Sub
@@ -436,21 +435,21 @@ Private Sub Command4_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     If Index <> 4 Then Command4.Picture = LoadInterface("boton-escudo-off.bmp")
 End Sub
 
-Private Sub Command5_Click()
+Private Sub cmdAceptar_Click()
     
-    On Error GoTo Command5_Click_Err
+    On Error GoTo cmdAceptar_Click_Err
     
     Unload Me
 
     
     Exit Sub
 
-Command5_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command5_Click", Erl)
+cmdAceptar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmHerrero.cmdAceptar_Click", Erl)
     Resume Next
     
 End Sub
-Private Sub Command8_Click()
+Private Sub cmdMenos_Click()
     If cantidad > 0 Then
         cantidad = cantidad - 1
     Else
@@ -458,16 +457,16 @@ Private Sub Command8_Click()
     End If
 End Sub
 
-Private Sub Command9_Click()
+Private Sub cmdMas_Click()
     If cantidad <= 9999 Then
         cantidad = cantidad + 1
     Else
         Exit Sub
     End If
 End Sub
-Private Sub Command6_Click()
+Private Sub cmdConstruir_Click()
     
-    On Error GoTo Command6_Click_Err
+    On Error GoTo cmdConstruir_Click_Err
 
     If Index = 1 Then
 
@@ -551,8 +550,8 @@ Private Sub Command6_Click()
     
     Exit Sub
 
-Command6_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmHerrero.Command6_Click", Erl)
+cmdConstruir_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmHerrero.cmdConstruir_Click", Erl)
     Resume Next
     
 End Sub
@@ -571,7 +570,6 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 Form_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "frmHerrero.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
