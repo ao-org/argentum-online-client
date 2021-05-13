@@ -1840,7 +1840,6 @@ Private Sub HandleBankInit()
     'Set state and show form
     Comerciando = True
     'Call Inventario.Initialize(frmBancoObj.PicInvUser)
-    frmBancoObj.Picture = LoadInterface("banco.bmp")
     frmBancoObj.Show , frmMain
     frmBancoObj.lblcosto = PonerPuntos(UserGLD)
     
@@ -2057,9 +2056,6 @@ Private Sub HandleShowBlacksmithForm()
     If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
         Call WriteCraftBlacksmith(MacroBltIndex)
     Else
-        
-        frmHerrero.Picture = LoadInterface("ventanaherreria.bmp")
-    
         frmHerrero.lstArmas.Clear
 
         Dim i As Byte
