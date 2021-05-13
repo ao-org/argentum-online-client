@@ -123,21 +123,21 @@ Begin VB.Form frmCarp
       Top             =   1845
       Width           =   480
    End
-   Begin VB.Image Command9 
+   Begin VB.Image cmdMas 
       Height          =   315
       Left            =   6000
       Tag             =   "0"
       Top             =   4215
       Width           =   315
    End
-   Begin VB.Image Command8 
+   Begin VB.Image cmdMenos 
       Height          =   315
       Left            =   4740
       Tag             =   "0"
       Top             =   4215
       Width           =   315
    End
-   Begin VB.Image Command7 
+   Begin VB.Image cmdCerrar 
       Height          =   420
       Left            =   6600
       Tag             =   "0"
@@ -163,14 +163,14 @@ Begin VB.Form frmCarp
       Top             =   3930
       Width           =   2775
    End
-   Begin VB.Image Command4 
+   Begin VB.Image cmdAceptar 
       Height          =   420
       Left            =   2520
       Tag             =   "0"
       Top             =   5730
       Width           =   1980
    End
-   Begin VB.Image Command3 
+   Begin VB.Image cmdConstruir 
       Height          =   420
       Left            =   4155
       Tag             =   "0"
@@ -194,37 +194,21 @@ Private cBotonCerrar As clsGraphicalButton
 Private cBotonMas As clsGraphicalButton
 Private cBotonMenos As clsGraphicalButton
 
-Private Sub Command7_Click()
-    Unload Me
-End Sub
 
-Private Sub Command8_Click()
-    If cantidad > 0 Then
-        cantidad = cantidad - 1
-    Else
-        Exit Sub
-    End If
-End Sub
-
-Private Sub Command9_Click()
-    If cantidad <= 9999 Then
-        cantidad = cantidad + 1
-    Else
-        Exit Sub
-    End If
-End Sub
 
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-'    Call FormParser.Parse_Form(Me)
+    Call FormParser.Parse_Form(Me)
     
     Set clsFormulario = New clsFormMovementManager
     clsFormulario.Initialize Me
     
     Me.Picture = LoadInterface("VentanaCarpinteria.bmp")
+    
     Call LoadButtons
+    
     Exit Sub
 
 Form_Load_Err:
@@ -244,29 +228,49 @@ Private Sub LoadButtons()
     Set cBotonMenos = New clsGraphicalButton
 
 
-    Call cBotonAceptar.Initialize(Command4, "boton-aceptar-ES-default.bmp", _
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-ES-default.bmp", _
                                                 "boton-aceptar-ES-over.bmp", _
                                                 "boton-aceptar-ES-off.bmp", Me)
     
-    Call cBotonConstruir.Initialize(Command3, "boton-construir-default.bmp", _
+    Call cBotonConstruir.Initialize(cmdConstruir, "boton-construir-default.bmp", _
                                                 "boton-construir-over.bmp", _
                                                 "boton-construir-off.bmp", Me)
                                                 
-    Call cBotonCerrar.Initialize(Command7, "boton-cerrar-default.bmp", _
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
                                                 
-    Call cBotonMas.Initialize(Command9, "boton-sm-mas-default.bmp", _
+    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
                                                 "boton-sm-mas-over.bmp", _
                                                 "boton-sm-mas-off.bmp", Me)
                                                 
-    Call cBotonMenos.Initialize(Command8, "boton-sm-menos-default.bmp", _
+    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
                                                 "boton-sm-menos-over.bmp", _
                                                 "boton-sm-menos-off.bmp", Me)
 End Sub
-Private Sub Command3_Click()
+
+Private Sub cmdCerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub cmdMenos_Click()
+    If cantidad > 0 Then
+        cantidad = cantidad - 1
+    Else
+        Exit Sub
+    End If
+End Sub
+
+Private Sub cmdMas_Click()
+    If cantidad <= 9999 Then
+        cantidad = cantidad + 1
+    Else
+        Exit Sub
+    End If
+End Sub
+Private Sub cmdConstruir_Click()
     
-    On Error GoTo Command3_Click_Err
+    On Error GoTo cmdConstruir_Click_Err
     
     
     'Si el indice seleccionado es -1 es xq no seleccionamos un item de la lista.
@@ -299,24 +303,24 @@ Private Sub Command3_Click()
     
     Exit Sub
 
-Command3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCarp.Command3_Click", Erl)
+cmdConstruir_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmCarp.cmdConstruir_Click", Erl)
     Resume Next
     
 End Sub
 
 
 
-Private Sub Command4_Click()
+Private Sub cmdAceptar_Click()
     
-    On Error GoTo Command4_Click_Err
+    On Error GoTo cmdAceptar_Click_Err
     
     Unload Me
     
     Exit Sub
 
-Command4_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCarp.Command4_Click", Erl)
+cmdAceptar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmCarp.cmdAceptar_Click", Erl)
     Resume Next
     
 End Sub
