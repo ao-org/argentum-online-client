@@ -39,7 +39,7 @@ Begin VB.Form frmComerciar
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   3660
-      Left            =   630
+      Left            =   600
       MousePointer    =   99  'Custom
       ScaleHeight     =   244
       ScaleMode       =   3  'Pixel
@@ -70,23 +70,21 @@ Begin VB.Form frmComerciar
       Top             =   6555
       Width           =   810
    End
-   Begin VB.Image salir 
+   Begin VB.Image cmdCerrar 
       Height          =   375
       Left            =   7680
       Top             =   0
       Width           =   495
    End
-   Begin VB.Image cmdMasMenos 
+   Begin VB.Image cmdMas 
       Height          =   315
-      Index           =   1
       Left            =   4650
       Tag             =   "1"
       Top             =   6510
       Width           =   315
    End
-   Begin VB.Image cmdMasMenos 
+   Begin VB.Image cmdMenos 
       Height          =   315
-      Index           =   0
       Left            =   3195
       Tag             =   "1"
       Top             =   6525
@@ -151,17 +149,15 @@ Begin VB.Form frmComerciar
       Top             =   5550
       Width           =   1215
    End
-   Begin VB.Image Image1 
+   Begin VB.Image cmdVender 
       Height          =   420
-      Index           =   1
       Left            =   5505
       Tag             =   "0"
       Top             =   6465
       Width           =   1830
    End
-   Begin VB.Image Image1 
+   Begin VB.Image cmdComprar 
       Height          =   420
-      Index           =   0
       Left            =   825
       Tag             =   "0"
       Top             =   6465
@@ -201,6 +197,12 @@ Attribute InvComUsu.VB_VarHelpID = -1
 Public WithEvents InvComNpc As clsGrapchicalInventory ' Inventario con los items que ofrece el npc
 Attribute InvComNpc.VB_VarHelpID = -1
 
+Private cBotonComprar As clsGraphicalButton
+Private cBotonVender As clsGraphicalButton
+Private cBotonCerrar As clsGraphicalButton
+Private cBotonMas As clsGraphicalButton
+Private cBotonMenos As clsGraphicalButton
+
 Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
@@ -220,6 +222,56 @@ moverForm_Err:
     
 End Sub
 
+Private Sub cmdCerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
+    Call FormParser.Parse_Form(Me)
+    cantidad.BackColor = RGB(18, 19, 13)
+
+    Me.Picture = LoadInterface("comerciar.bmp")
+    Call LoadButtons
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_Load", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub LoadButtons()
+       
+    Set cBotonComprar = New clsGraphicalButton
+    Set cBotonVender = New clsGraphicalButton
+    Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonMas = New clsGraphicalButton
+    Set cBotonMenos = New clsGraphicalButton
+
+
+    Call cBotonComprar.Initialize(cmdComprar, "boton-comprar-ES-default.bmp", _
+                                                "boton-comprar-ES-over.bmp", _
+                                                "boton-comprar-ES-off.bmp", Me)
+    
+    Call cBotonVender.Initialize(cmdVender, "boton-vender-ES-default.bmp", _
+                                                "boton-vender-ES-over.bmp", _
+                                                "boton-vender-ES-off.bmp", Me)
+                                                
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
+                                                "boton-sm-mas-over.bmp", _
+                                                "boton-sm-mas-off.bmp", Me)
+                                                
+    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
+                                                "boton-sm-menos-over.bmp", _
+                                                "boton-sm-menos-off.bmp", Me)
+End Sub
 Private Sub cantidad_KeyPress(KeyAscii As Integer)
     
     On Error GoTo cantidad_KeyPress_Err
@@ -247,88 +299,27 @@ cantidad_KeyPress_Err:
     
 End Sub
 
-Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo cmdMasMenos_MouseDown_Err
-    
+Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    m_Increment = 1
 
-    Call Sound.Sound_Play(SND_CLICK)
-    
-    Select Case Index
+    tmrNumber.Interval = 30
+    tmrNumber.Enabled = True
+End Sub
 
-        Case 0
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
-            cmdMasMenos(Index).Tag = "1"
-            cantidad.Text = str((Val(cantidad.Text) - 1))
-            m_Increment = -1
-
-        Case 1
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
-            cmdMasMenos(Index).Tag = "1"
-            m_Increment = 1
-
-    End Select
+Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    cantidad.Text = str((Val(cantidad.Text) - 1))
+    m_Increment = -1
     
     tmrNumber.Interval = 30
     tmrNumber.Enabled = True
-
-    
-    Exit Sub
-
-cmdMasMenos_MouseDown_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cmdMasMenos_MouseDown", Erl)
-    Resume Next
-    
 End Sub
 
-Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo cmdMasMenos_MouseMove_Err
-    
 
-    Select Case Index
-
-        Case 0
-
-            If cmdMasMenos(Index).Tag = "0" Then
-                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-over.bmp")
-                cmdMasMenos(Index).Tag = "1"
-
-            End If
-
-        Case 1
-
-            If cmdMasMenos(Index).Tag = "0" Then
-                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-over.bmp")
-                cmdMasMenos(Index).Tag = "1"
-
-            End If
-
-    End Select
-
-    
-    Exit Sub
-
-cmdMasMenos_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cmdMasMenos_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo cmdMasMenos_MouseUp_Err
-    
-    Call Form_MouseMove(Button, Shift, x, y)
+Private Sub cmdMenos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     tmrNumber.Enabled = False
-
-    
-    Exit Sub
-
-cmdMasMenos_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cmdMasMenos_MouseUp", Erl)
-    Resume Next
-    
+End Sub
+Private Sub cmdMas_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    tmrNumber.Enabled = False
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
@@ -350,103 +341,35 @@ Form_KeyPress_Err:
     
 End Sub
 
-Private Sub Image1_Click(Index As Integer)
-    
-    On Error GoTo Image1_Click_Err
-    
-    Call Sound.Sound_Play(SND_CLICK)
-    
+Private Sub cmdComprar_Click()
     If Not IsNumeric(cantidad.Text) Then Exit Sub
     If Val(cantidad.Text) <= 0 Then Exit Sub
-
-    Select Case Index
-
-        Case 0
-
-            If InvComNpc.SelectedItem <= 0 Then Exit Sub
+    
+     If InvComNpc.SelectedItem <= 0 Then Exit Sub
  
-            LasActionBuy = True
+    LasActionBuy = True
 
-            If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
-                Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
-            Else
-                AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+    If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
+        Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
+    Else
+        AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
 
-            End If
-       
-        Case 1
+    End If
+End Sub
 
-            If InvComUsu.SelectedItem <= 0 Then Exit Sub
+Private Sub cmdVender_Click()
+    If Not IsNumeric(cantidad.Text) Then Exit Sub
+    If Val(cantidad.Text) <= 0 Then Exit Sub
+    
+     If InvComUsu.SelectedItem <= 0 Then Exit Sub
             
-            LasActionBuy = False
-            
-            Call WriteCommerceSell(InvComUsu.SelectedItem, min(Val(cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
-
-    End Select
+    LasActionBuy = False
     
-    
-    Exit Sub
-
-Image1_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Image1_Click", Erl)
-    Resume Next
-    
+    Call WriteCommerceSell(InvComUsu.SelectedItem, min(Val(cantidad.Text), InvComUsu.Amount(InvComUsu.SelectedItem)))
 End Sub
 
-Private Sub Form_Load()
-    
-    On Error GoTo Form_Load_Err
-    
-    Call FormParser.Parse_Form(Me)
-    cantidad.BackColor = RGB(18, 19, 13)
 
-    
-    Exit Sub
 
-Form_Load_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_Load", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Form_MouseMove_Err
-    
-    MoverForm
-
-    If Image1(0).Tag = "1" Then
-        Image1(0).Picture = Nothing
-        Image1(0).Tag = "0"
-
-    End If
-
-    If Image1(1).Tag = "1" Then
-        Image1(1).Picture = Nothing
-        Image1(1).Tag = "0"
-
-    End If
-    
-    If cmdMasMenos(0).Tag = "1" Then
-        cmdMasMenos(0).Picture = Nothing
-        cmdMasMenos(0).Tag = "0"
-
-    End If
-    
-    If cmdMasMenos(1).Tag = "1" Then
-        cmdMasMenos(1).Picture = Nothing
-        cmdMasMenos(1).Tag = "0"
-
-    End If
-
-    
-    Exit Sub
-
-Form_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_MouseMove", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub addRemove_Click(Index As Integer)
     
@@ -517,59 +440,7 @@ Form_Unload_Err:
     
 End Sub
 
-Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Image1_MouseDown_Err
-    
 
-    If Index = 0 Then
-        Image1(0).Picture = LoadInterface("boton-comprar-ES-off.bmp")
-        Image1(0).Tag = "0"
-    Else
-        Image1(1).Picture = LoadInterface("boton-vender-ES-off.bmp")
-        Image1(1).Tag = "0"
-
-    End If
-
-    
-    Exit Sub
-
-Image1_MouseDown_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Image1_MouseDown", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Image1_MouseMove_Err
-    
-
-    If Index = 0 Then
-        If Image1(0).Tag = "0" Then
-            Image1(0).Picture = LoadInterface("boton-comprar-ES-over.bmp")
-            Image1(0).Tag = "1"
-
-        End If
-
-    Else
-        
-        If Image1(1).Tag = "0" Then
-            Image1(1).Picture = LoadInterface("boton-vender-over.bmp")
-            Image1(1).Tag = "1"
-
-        End If
-
-    End If
-
-    
-    Exit Sub
-
-Image1_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Image1_MouseMove", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub interface_Click()
     
@@ -787,21 +658,6 @@ InvComNpc_ItemDropped_Err:
     
 End Sub
 
-Private Sub salir_Click()
-    
-    On Error GoTo salir_Click_Err
-    
-    Unload Me
-
-    
-    Exit Sub
-
-salir_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.salir_Click", Erl)
-    Resume Next
-    
-End Sub
-
 Private Sub tmrNumber_Timer()
     
     On Error GoTo tmrNumber_Timer_Err
@@ -811,16 +667,16 @@ Private Sub tmrNumber_Timer()
 
     Const MAX_NUMBER = 10000
 
-    m_Number = m_Number + m_Increment
+    cantidad = cantidad + m_Increment
 
-    If m_Number < MIN_NUMBER Then
-        m_Number = MIN_NUMBER
-    ElseIf m_Number > MAX_NUMBER Then
-        m_Number = MAX_NUMBER
+    If cantidad < MIN_NUMBER Then
+        cantidad = MIN_NUMBER
+    ElseIf cantidad > MAX_NUMBER Then
+        cantidad = MAX_NUMBER
 
     End If
 
-    cantidad.Text = format$(m_Number)
+    cantidad.Text = format$(cantidad)
     
     If m_Interval > 1 Then
         m_Interval = m_Interval - 1

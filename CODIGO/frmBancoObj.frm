@@ -171,9 +171,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private clsFormulario As clsFormMovementManager
-
-Public LastButtonPressed As clsGraphicalButton
 Private cBotonRetirar As clsGraphicalButton
 Private cBotonDepositar As clsGraphicalButton
 Private cBotonMas As clsGraphicalButton
@@ -296,9 +293,7 @@ End Sub
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
-    
-    Set clsFormulario = New clsFormMovementManager
-    clsFormulario.Initialize Me
+
     Me.Picture = LoadInterface("banco.bmp")
     
     Call FormParser.Parse_Form(Me)
@@ -317,7 +312,6 @@ End Sub
 
 Private Sub LoadButtons()
     
-    Set LastButtonPressed = New clsGraphicalButton
     
     Set cBotonRetirar = New clsGraphicalButton
     Set cBotonDepositar = New clsGraphicalButton
@@ -392,10 +386,6 @@ cantidad_Change_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoObj.cantidad_Change", Erl)
     Resume Next
     
-End Sub
-
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    LastButtonPressed.ToggleToNormal
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)

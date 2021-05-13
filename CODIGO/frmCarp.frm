@@ -185,8 +185,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private clsFormulario As clsFormMovementManager
-Public LastButtonPressed As clsGraphicalButton
 
 Private cBotonAceptar As clsGraphicalButton
 Private cBotonConstruir As clsGraphicalButton
@@ -202,9 +200,6 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     
-    Set clsFormulario = New clsFormMovementManager
-    clsFormulario.Initialize Me
-    
     Me.Picture = LoadInterface("VentanaCarpinteria.bmp")
     
     Call LoadButtons
@@ -218,9 +213,7 @@ Form_Load_Err:
 End Sub
 
 Private Sub LoadButtons()
-    
-    Set LastButtonPressed = New clsGraphicalButton
-    
+       
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonConstruir = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
@@ -341,10 +334,6 @@ Form_KeyPress_Err:
     
 End Sub
 
-
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    LastButtonPressed.ToggleToNormal
-End Sub
 
 Private Sub List1_Click()
     

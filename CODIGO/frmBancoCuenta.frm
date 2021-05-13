@@ -203,10 +203,6 @@ Private m_Increment          As Integer
 
 Private m_Interval           As Integer
 
-
-Private clsFormulario As clsFormMovementManager
-
-Public LastButtonPressed As clsGraphicalButton
 Private cBotonRetirar As clsGraphicalButton
 Private cBotonDepositar As clsGraphicalButton
 Private cBotonMas As clsGraphicalButton
@@ -338,9 +334,6 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-    Set clsFormulario = New clsFormMovementManager
-    clsFormulario.Initialize Me
-    
     Me.Picture = LoadInterface("banco.bmp")
     
     Call FormParser.Parse_Form(Me)
@@ -357,9 +350,7 @@ Form_Load_Err:
 End Sub
 
 Private Sub LoadButtons()
-    
-    Set LastButtonPressed = New clsGraphicalButton
-    
+        
     Set cBotonRetirar = New clsGraphicalButton
     Set cBotonDepositar = New clsGraphicalButton
     Set cBotonMas = New clsGraphicalButton

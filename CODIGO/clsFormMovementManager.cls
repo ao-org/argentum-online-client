@@ -40,8 +40,7 @@ Attribute Formulario.VB_VarHelpID = -1
 
 Private DragX As Single
 Private Dragy As Single
-
-'Private LastButtonPressed As clsGraphicalButton
+Public LastButtonPressed As clsGraphicalButton
 
 Private LimitY As Integer
 
@@ -52,9 +51,7 @@ Public Sub Initialize(ByRef tForm As Form, Optional ByVal VerticalLimit As Integ
 'Sets the reference to the form
 '***************************************************
     Set Formulario = tForm
-    
-    'Set LastButtonPressed = New clsGraphicalButton
-
+    Set LastButtonPressed = New clsGraphicalButton
     LimitY = VerticalLimit
 End Sub
 
@@ -81,9 +78,7 @@ Private Sub Formulario_MouseMove(Button As Integer, Shift As Integer, x As Singl
     If LimitY > 0 Then
         If y > LimitY Then Exit Sub
     End If
-    
-    'LastButtonPressed.ToggleToNormal
-        
+    LastButtonPressed.ToggleToNormal
     'If Button > 0 Then
     'Formulario.Left = Formulario.Left + (X - DragX)
     'Formulario.Top = Formulario.Top + (Y - Dragy)

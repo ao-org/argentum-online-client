@@ -109,8 +109,6 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 
-Private clsFormulario As clsFormMovementManager
-Public LastButtonPressed As clsGraphicalButton
 Private cBotonMas As clsGraphicalButton
 Private cBotonMenos As clsGraphicalButton
 Private cBotonTirarTodo As clsGraphicalButton
@@ -122,11 +120,8 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-    Call FormParser.Parse_Form(Me)
+    'Call FormParser.Parse_Form(Me)
     Text1.SelStart = 1
-        
-    Set clsFormulario = New clsFormMovementManager
-    clsFormulario.Initialize Me
     
     Me.Picture = LoadInterface("cantidad.bmp")
     
@@ -141,13 +136,12 @@ Form_Load_Err:
 End Sub
 
 Private Sub LoadButtons()
-    
+
     Set cBotonTirarTodo = New clsGraphicalButton
     Set cBotonTirar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonMas = New clsGraphicalButton
     Set cBotonMenos = New clsGraphicalButton
-    Set LastButtonPressed = New clsGraphicalButton
 
 
     Call cBotonTirarTodo.Initialize(cmdTirarTodo, "boton-tirar-todo-ES-default.bmp", _
@@ -234,9 +228,7 @@ cmdMenos_Click_Err:
     Resume Next
     
 End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    LastButtonPressed.ToggleToNormal
-End Sub
+
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
     

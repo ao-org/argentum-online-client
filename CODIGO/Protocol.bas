@@ -1787,7 +1787,6 @@ Private Sub HandleCommerceInit()
     'Set state and show form
     Comerciando = True
     'Call Inventario.Initialize(frmComerciar.PicInvUser)
-    frmComerciar.Picture = LoadInterface("comerciar.bmp")
     frmComerciar.Show , frmMain
     
     

@@ -52,8 +52,6 @@ Public dy           As Integer
 
 Private RealizoCambios As String
 
-Private clsFormulario As clsFormMovementManager
-Public LastButtonPressed As clsGraphicalButton
 Private cBotonAceptar As clsGraphicalButton
 Private cBotonConstruir As clsGraphicalButton
 Private cBotonCerrar As clsGraphicalButton
@@ -65,9 +63,7 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hWnd, 220)
-    
-    Set clsFormulario = New clsFormMovementManager
-    clsFormulario.Initialize Me
+
     
     Me.Picture = LoadInterface("desconectar.bmp")
     
@@ -82,13 +78,10 @@ Form_Load_Err:
 End Sub
 
 Private Sub LoadButtons()
-    
-    Set LastButtonPressed = New clsGraphicalButton
-    
+        
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonConstruir = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
-
 
     Call cBotonAceptar.Initialize(cmdMenuPrincipal, "boton-mainmenu-ES-default.bmp", _
                                                 "boton-mainmenu-ES-over.bmp", _
@@ -132,6 +125,3 @@ Private Sub cmdSalir_Click()
     Call CloseClient
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    LastButtonPressed.ToggleToNormal
-End Sub

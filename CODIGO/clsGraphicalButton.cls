@@ -40,59 +40,32 @@ Attribute ButtonHolder.VB_VarHelpID = -1
 Private RollOverButtonImage As Picture  'img holder
 Private NormalButtonImage As Picture    'img holder
 Private ClickButtonImage As Picture  'img holder
-Private DisabledButtonImage As Picture  'img holder
 
 Private SoundClick As Boolean
 
-Private FormActual As Form    ' Form owner
+Private Form_Movement As clsFormMovementManager
 
 Private OverButton As Boolean    'Indicates wether the mouse is over the button or not
-Private Disabled As Boolean    'Indicates wether it's enabled or not
 
-Public Sub Initialize(ByRef imgButton As Image, ByVal imgNormalPath As String, _
-                      ByVal imgRollOverPath As String, ByVal imgClickPath As String, ByRef Formulario As Form, _
-                      Optional ByVal imgDisabledPath As String, Optional ByVal StartDisabled As Boolean = False, _
-                      Optional ByVal MakeClickSound As Boolean = True, Optional ByVal ShowHandPointer As Boolean = True)
+Public Sub Initialize(ByRef imgButton As Image, ByVal imgNormalPath As String, ByVal imgRollOverPath As String, ByVal imgClickPath As String, Optional ByRef Form As Form)
 '***************************************************
 'Author: ZaMa
 'Last Modify Date: 22/12/09
 'Sets the reference to the image container
 '***************************************************
     Set ButtonHolder = imgButton
-    Set FormActual = Formulario
+    Set Form_Movement = New clsFormMovementManager
+    Call Form_Movement.Initialize(Form)
     Set RollOverButtonImage = LoadInterface(imgRollOverPath)
     Set NormalButtonImage = LoadInterface(imgNormalPath)
     Set ClickButtonImage = LoadInterface(imgClickPath)
-    Set DisabledButtonImage = LoadInterface(imgDisabledPath)
-
-    SoundClick = MakeClickSound
 
     With ButtonHolder
-        If ShowHandPointer Then
-            .MousePointer = vbCustom
-        End If
-
-        If StartDisabled Then
-            Disabled = True
-            .Picture = DisabledButtonImage
-        Else
             .Picture = NormalButtonImage
-        End If
     End With
 
 End Sub
 
-Private Sub ButtonHolder_Click()
-'***************************************************
-'Author: ZaMa
-'Last Modify Date: 02/01/2010
-'Implements the mouse click event of the image button.
-'Plays the Click Sound.
-'***************************************************
-    If Disabled Then Exit Sub
-    If Not SoundClick Then Exit Sub
-    
-End Sub
 
 Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 '***************************************************
@@ -101,7 +74,6 @@ Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, X As Sin
 'Implements the mouse down event of the image button.
 'Toggle to Click image button.
 '***************************************************
-    If Disabled Then Exit Sub
 
     ButtonHolder.Picture = ClickButtonImage
     Call Sound.Sound_Play(SND_CLICK)
@@ -114,17 +86,16 @@ Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Sin
 'Implements the mouse move event of the image button.
 'Toggle to pressed image button.
 '***************************************************
-    If Disabled Then Exit Sub
 
     If Not OverButton Then
 
         'This helps when two buttons are close
-        FormActual.LastButtonPressed.ToggleToNormal
+        Form_Movement.LastButtonPressed.ToggleToNormal
 
         ButtonHolder.Picture = RollOverButtonImage
         OverButton = True
 
-        Set FormActual.LastButtonPressed = Me
+        Set Form_Movement.LastButtonPressed = Me
         Call Sound.Sound_Play(SND_CLICK_OVER)
     End If
 End Sub
@@ -135,8 +106,6 @@ Public Sub ToggleToNormal()
 'Last Modify Date: 22/12/09
 'Toggle to normal image button.
 '***************************************************
-    If Disabled Then Exit Sub
-
     If Not OverButton Then Exit Sub
 
     ButtonHolder.Picture = NormalButtonImage
@@ -150,26 +119,7 @@ Private Sub ButtonHolder_MouseUp(Button As Integer, Shift As Integer, X As Singl
 'Implements the mouse up event of the image button.
 'Toggle to RollOver image button.
 '***************************************************
-    If Disabled Then Exit Sub
-
     ButtonHolder.Picture = RollOverButtonImage
 End Sub
-
-Public Sub EnableButton(Optional ByVal ToogleEnable As Boolean = True)
-    If Disabled = Not ToogleEnable Then Exit Sub
-
-    OverButton = False
-    Disabled = Not ToogleEnable
-    If Disabled Then
-        ButtonHolder.Picture = DisabledButtonImage
-    Else
-        ButtonHolder.Picture = NormalButtonImage
-    End If
-
-End Sub
-
-Public Function IsEnabled() As Boolean
-    IsEnabled = Not Disabled
-End Function
 
 
