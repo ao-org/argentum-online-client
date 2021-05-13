@@ -6395,15 +6395,18 @@ Private Sub HandleBlacksmithArmors()
     Dim A As Byte
     Dim e As Byte
     Dim c As Byte
+    Dim tmpObj As ObjDatas
 
     A = 0
     e = 0
     c = 0
     
     For i = 1 To UBound(DefensasHerrero())
-    
         If DefensasHerrero(i).Index = 0 Then Exit For
-        If ObjData(DefensasHerrero(i).Index).ObjType = 3 Then
+        
+        tmpObj = ObjData(DefensasHerrero(i).Index)
+        
+        If tmpObj.ObjType = 3 Then
            
             ArmadurasHerrero(A).Index = DefensasHerrero(i).Index
             ArmadurasHerrero(A).LHierro = DefensasHerrero(i).LHierro
@@ -6413,8 +6416,8 @@ Private Sub HandleBlacksmithArmors()
 
         End If
         
-        ' Escudos (16) y Anillos (35) van en la misma lista
-        If ObjData(DefensasHerrero(i).Index).ObjType = 16 Or ObjData(DefensasHerrero(i).Index).ObjType = 35 Then
+        ' Escudos (16), Objetos Magicos (21) y Anillos (35) van en la misma lista
+        If tmpObj.ObjType = 16 Or tmpObj.ObjType = 35 Or tmpObj.ObjType = 21 Then
             EscudosHerrero(e).Index = DefensasHerrero(i).Index
             EscudosHerrero(e).LHierro = DefensasHerrero(i).LHierro
             EscudosHerrero(e).LPlata = DefensasHerrero(i).LPlata
@@ -6423,7 +6426,7 @@ Private Sub HandleBlacksmithArmors()
 
         End If
 
-        If ObjData(DefensasHerrero(i).Index).ObjType = 17 Then
+        If tmpObj.ObjType = 17 Then
             CascosHerrero(c).Index = DefensasHerrero(i).Index
             CascosHerrero(c).LHierro = DefensasHerrero(i).LHierro
             CascosHerrero(c).LPlata = DefensasHerrero(i).LPlata
