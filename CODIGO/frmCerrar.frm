@@ -132,3 +132,6 @@ Private Sub cmdSalir_Click()
     Call CloseClient
 End Sub
 
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    LastButtonPressed.ToggleToNormal
+End Sub

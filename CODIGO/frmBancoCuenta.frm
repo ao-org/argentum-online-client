@@ -303,7 +303,7 @@ Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As In
     
     On Error GoTo cmdMasMenos_MouseUp_Err
     
-    Call Form_MouseMove(Button, Shift, x, y)
+    'Call Form_MouseMove(Button, Shift, x, y)
     tmrNumber.Enabled = False
 
     

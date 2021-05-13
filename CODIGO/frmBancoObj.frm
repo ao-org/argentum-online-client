@@ -394,6 +394,10 @@ cantidad_Change_Err:
     
 End Sub
 
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    LastButtonPressed.ToggleToNormal
+End Sub
+
 Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err

@@ -42,35 +42,35 @@ Begin VB.Form frmCantidad
       Top             =   1620
       Width           =   1560
    End
-   Begin VB.Image imgMas 
+   Begin VB.Image cmdMas 
       Height          =   300
       Left            =   3120
       Tag             =   "0"
       Top             =   1605
       Width           =   300
    End
-   Begin VB.Image imgMenos 
+   Begin VB.Image cmdMenos 
       Height          =   300
       Left            =   960
       Tag             =   "0"
       Top             =   1605
       Width           =   300
    End
-   Begin VB.Image imgCerrar 
+   Begin VB.Image cmdCerrar 
       Height          =   420
       Left            =   3900
       Tag             =   "0"
       Top             =   15
       Width           =   480
    End
-   Begin VB.Image tirartodo 
+   Begin VB.Image cmdTirarTodo 
       Height          =   420
       Left            =   2250
       Tag             =   "0"
       Top             =   2175
       Width           =   1680
    End
-   Begin VB.Image tirar 
+   Begin VB.Image cmdTirar 
       Height          =   420
       Left            =   435
       Tag             =   "0"
@@ -108,8 +108,69 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
-Private Sub Form_KeyPress(KeyAscii As Integer)
+
+Private clsFormulario As clsFormMovementManager
+Public LastButtonPressed As clsGraphicalButton
+Private cBotonMas As clsGraphicalButton
+Private cBotonMenos As clsGraphicalButton
+Private cBotonTirarTodo As clsGraphicalButton
+Private cBotonTirar As clsGraphicalButton
+Private cBotonCerrar As clsGraphicalButton
+
+
+Private Sub Form_Load()
     
+    On Error GoTo Form_Load_Err
+    
+    Call FormParser.Parse_Form(Me)
+    Text1.SelStart = 1
+        
+    Set clsFormulario = New clsFormMovementManager
+    clsFormulario.Initialize Me
+    
+    Me.Picture = LoadInterface("cantidad.bmp")
+    
+    Call LoadButtons
+    
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmCantidad.Form_Load", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub LoadButtons()
+    
+    Set cBotonTirarTodo = New clsGraphicalButton
+    Set cBotonTirar = New clsGraphicalButton
+    Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonMas = New clsGraphicalButton
+    Set cBotonMenos = New clsGraphicalButton
+    Set LastButtonPressed = New clsGraphicalButton
+
+
+    Call cBotonTirarTodo.Initialize(cmdTirarTodo, "boton-tirar-todo-ES-default.bmp", _
+                                                "boton-tirar-todo-ES-over.bmp", _
+                                                "boton-tirar-todo-ES-off.bmp", Me)
+    
+    Call cBotonTirar.Initialize(cmdTirar, "boton-tirar-ES-default.bmp", _
+                                                "boton-tirar-ES-over.bmp", _
+                                                "boton-tirar-ES-off.bmp", Me)
+                                                
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
+                                                "boton-sm-mas-over.bmp", _
+                                                "boton-sm-mas-off.bmp", Me)
+                                                
+    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
+                                                "boton-sm-menos-over.bmp", _
+                                                "boton-sm-menos-off.bmp", Me)
+End Sub
+Private Sub Form_KeyPress(KeyAscii As Integer)
     On Error GoTo Form_KeyPress_Err
     
 
@@ -122,60 +183,29 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCantidad.Form_KeyPress", Erl)
     Resume Next
     
 End Sub
 
-Private Sub imgCerrar_Click()
+Private Sub cmdCerrar_Click()
     
-    On Error GoTo imgCerrar_Click_Err
+    On Error GoTo cmdCerrar_Click_Err
     
     Unload Me
     
     Exit Sub
 
-imgCerrar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgCerrar_Click", Erl)
+cmdCerrar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdCerrar_Click", Erl)
     Resume Next
     
 End Sub
 
-Private Sub imgCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo imgCerrar_MouseDown_Err
-    
-    imgCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
-    imgCerrar.Tag = "1"
-    
-    Exit Sub
 
-imgCerrar_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgCerrar_MouseDown", Erl)
-    Resume Next
+Private Sub cmdMas_Click()
     
-End Sub
-
-Private Sub imgCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo imgCerrar_MouseMove_Err
-    
-    If imgCerrar.Tag = "0" Then
-        imgCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
-        imgCerrar.Tag = "1"
-    End If
-    
-    Exit Sub
-
-imgCerrar_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgCerrar_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub imgMas_Click()
-    
-    On Error GoTo imgMas_Click_Err
+    On Error GoTo cmdMas_Click_Err
     
     If Val(Text1.Text) < MAX_INVENTORY_OBJS Then
         Text1.Text = Val(Text1.Text) + 1
@@ -183,15 +213,15 @@ Private Sub imgMas_Click()
     
     Exit Sub
 
-imgMas_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgMas_Click", Erl)
+cmdMas_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdMas_Click", Erl)
     Resume Next
     
 End Sub
 
-Private Sub imgMenos_Click()
+Private Sub cmdMenos_Click()
     
-    On Error GoTo imgMenos_Click_Err
+    On Error GoTo cmdMenos_Click_Err
     
     If Val(Text1.Text) > 0 Then
         Text1.Text = Val(Text1.Text) - 1
@@ -199,10 +229,13 @@ Private Sub imgMenos_Click()
     
     Exit Sub
 
-imgMenos_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.imgMenos_Click", Erl)
+cmdMenos_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdMenos_Click", Erl)
     Resume Next
     
+End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    LastButtonPressed.ToggleToNormal
 End Sub
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
@@ -215,7 +248,6 @@ Private Sub Text1_KeyPress(KeyAscii As Integer)
             KeyAscii = 0
 
         End If
-
     End If
 
     
@@ -246,21 +278,6 @@ moverForm_Err:
     
 End Sub
 
-Private Sub Form_Load()
-    
-    On Error GoTo Form_Load_Err
-    
-    Call FormParser.Parse_Form(Me)
-    Text1.SelStart = 1
-
-    
-    Exit Sub
-
-Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.Form_Load", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub Text1_Change()
 
@@ -290,39 +307,8 @@ errhandler:
 
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Form_MouseMove_Err
-    
-    moverForm
 
-    If tirar.Tag = "1" Then
-        tirar.Picture = Nothing
-        tirar.Tag = "0"
-
-    End If
-
-    If tirartodo.Tag = "1" Then
-        tirartodo.Picture = Nothing
-        tirartodo.Tag = "0"
-
-    End If
-    
-    If imgCerrar.Tag = "1" Then
-        imgCerrar.Picture = Nothing
-        imgCerrar.Tag = "0"
-    End If
-
-    
-    Exit Sub
-
-Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.Form_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub tirar_click()
+Private Sub cmdTirar_click()
     
     On Error GoTo tirar_click_Err
     
@@ -369,42 +355,9 @@ tirar_click_Err:
     
 End Sub
 
-Private Sub tirar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo tirar_MouseDown_Err
-    
 
-    tirar.Picture = LoadInterface("boton-tirar-es-off.bmp")
-    
-    Exit Sub
 
-tirar_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirar_MouseDown", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub tirar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo tirar_MouseMove_Err
-    
-
-    If tirar.Tag = "0" Then
-        tirar.Picture = LoadInterface("boton-tirar-es-over.bmp")
-        tirar.Tag = "1"
-
-    End If
-
-    
-    Exit Sub
-
-tirar_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirar_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub tirartodo_click()
+Private Sub cmdTirarTodo_click()
     
     On Error GoTo tirartodo_click_Err
     
@@ -453,38 +406,3 @@ tirartodo_click_Err:
     Resume Next
     
 End Sub
-
-Private Sub tirartodo_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo tirartodo_MouseDown_Err
-    
-    tirartodo.Picture = LoadInterface("boton-tirar-todo-es-off.bmp")
-    
-    Exit Sub
-
-tirartodo_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirartodo_MouseDown", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub tirartodo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo tirartodo_MouseMove_Err
-    
-
-    If tirartodo.Tag = "0" Then
-        tirartodo.Picture = LoadInterface("boton-tirar-todo-es-over.bmp")
-        tirartodo.Tag = "1"
-
-    End If
-
-    
-    Exit Sub
-
-tirartodo_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirartodo_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-

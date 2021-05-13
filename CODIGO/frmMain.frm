@@ -413,7 +413,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2206,7 +2205,6 @@ Private Sub GldLbl_Click()
     Inventario.SelectGold
 
     If UserGLD > 0 Then
-        frmCantidad.Picture = LoadInterface("cantidad.bmp")
         frmCantidad.Show , frmMain
 
     End If
@@ -3116,7 +3114,6 @@ Private Sub Label6_Click()
     Inventario.SelectGold
 
     If UserGLD > 0 Then
-        frmCantidad.Picture = LoadInterface("cantidad.bmp")
         frmCantidad.Show , frmMain
 
     End If
