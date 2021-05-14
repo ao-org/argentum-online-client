@@ -20,156 +20,164 @@ Begin VB.Form frmGoliath
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7215
-   ScaleWidth      =   8175
+   ScaleHeight     =   481
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   545
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Frame frameRetirar 
+      BackColor       =   &H80000007&
+      BorderStyle     =   0  'None
+      Height          =   3330
+      Left            =   600
+      TabIndex        =   0
+      Top             =   2100
+      Visible         =   0   'False
+      Width           =   2670
+      Begin VB.TextBox txtDatos 
+         Alignment       =   2  'Center
+         BackColor       =   &H00000000&
+         BorderStyle     =   0  'None
+         BeginProperty DataFormat 
+            Type            =   0
+            Format          =   "0"
+            HaveTrueFalseNull=   0
+            FirstDayOfWeek  =   0
+            FirstWeekOfYear =   0
+            LCID            =   1033
+            SubFormatType   =   0
+         EndProperty
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Left            =   825
+         MaxLength       =   30
+         TabIndex        =   3
+         Text            =   "0"
+         Top             =   1200
+         Width           =   975
+      End
+      Begin VB.TextBox txtname 
+         Alignment       =   2  'Center
+         BackColor       =   &H00000000&
+         BorderStyle     =   0  'None
+         BeginProperty DataFormat 
+            Type            =   0
+            Format          =   "0"
+            HaveTrueFalseNull=   0
+            FirstDayOfWeek  =   0
+            FirstWeekOfYear =   0
+            LCID            =   1033
+            SubFormatType   =   0
+         EndProperty
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   255
+         Left            =   450
+         MaxLength       =   30
+         TabIndex        =   2
+         Top             =   2040
+         Visible         =   0   'False
+         Width           =   1815
+      End
+      Begin VB.Image cmdAceptar 
+         Height          =   420
+         Left            =   375
+         Tag             =   "0"
+         Top             =   2520
+         Width           =   1980
+      End
+      Begin VB.Label lblDatos 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   6.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   4
+         Top             =   3015
+         Visible         =   0   'False
+         Width           =   2415
+      End
+      Begin VB.Image cmdMenos 
+         Height          =   315
+         Left            =   360
+         Tag             =   "0"
+         Top             =   1155
+         Width           =   315
+      End
+      Begin VB.Image cmdMas 
+         Height          =   315
+         Left            =   1980
+         Tag             =   "0"
+         Top             =   1140
+         Width           =   315
+      End
+      Begin VB.Image Image3 
+         Height          =   3330
+         Left            =   0
+         Picture         =   "frmGoliath.frx":0000
+         Tag             =   "0"
+         Top             =   0
+         Width           =   2670
+      End
+   End
    Begin VB.Timer tmrNumber 
       Enabled         =   0   'False
       Interval        =   30
       Left            =   0
       Top             =   0
    End
-   Begin VB.TextBox txtname 
-      Alignment       =   2  'Center
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      BeginProperty DataFormat 
-         Type            =   0
-         Format          =   "0"
-         HaveTrueFalseNull=   0
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   1033
-         SubFormatType   =   0
-      EndProperty
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Left            =   1080
-      MaxLength       =   30
-      TabIndex        =   3
-      Top             =   4300
-      Visible         =   0   'False
-      Width           =   1815
-   End
-   Begin VB.TextBox txtDatos 
-      Alignment       =   2  'Center
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      BeginProperty DataFormat 
-         Type            =   0
-         Format          =   "0"
-         HaveTrueFalseNull=   0
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   1033
-         SubFormatType   =   0
-      EndProperty
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   210
-      Left            =   1450
-      MaxLength       =   30
-      TabIndex        =   0
-      Text            =   "0"
-      Top             =   3460
-      Visible         =   0   'False
-      Width           =   975
-   End
-   Begin VB.Image cmdMasMenos 
-      Height          =   315
-      Index           =   1
-      Left            =   2610
-      Tag             =   "0"
-      Top             =   3400
-      Visible         =   0   'False
-      Width           =   315
-   End
-   Begin VB.Image cmdMasMenos 
-      Height          =   315
-      Index           =   0
-      Left            =   990
-      Tag             =   "0"
-      Top             =   3420
-      Visible         =   0   'False
-      Width           =   315
-   End
-   Begin VB.Label lblDatos 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   6.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Left            =   760
-      TabIndex        =   1
-      Top             =   5280
-      Visible         =   0   'False
-      Width           =   2415
-   End
-   Begin VB.Image Image2 
+   Begin VB.Image cmdCerrar 
       Height          =   420
-      Left            =   1000
-      Tag             =   "0"
-      Top             =   4780
-      Visible         =   0   'False
-      Width           =   1980
-   End
-   Begin VB.Image operacion 
-      Height          =   420
-      Index           =   4
       Left            =   7680
       Top             =   0
       Width           =   510
    End
-   Begin VB.Image operacion 
+   Begin VB.Image cmdTransferir 
       Height          =   420
-      Index           =   3
       Left            =   5250
       Top             =   6220
       Width           =   1830
    End
-   Begin VB.Image operacion 
+   Begin VB.Image cmdBoveda 
       Height          =   420
-      Index           =   2
       Left            =   4570
       Top             =   5010
       Width           =   1830
    End
-   Begin VB.Image operacion 
+   Begin VB.Image cmdDepositar 
       Height          =   420
-      Index           =   0
       Left            =   3170
       Top             =   6230
       Width           =   1830
    End
-   Begin VB.Image operacion 
+   Begin VB.Image cmdRetirar 
       Height          =   420
-      Index           =   1
       Left            =   1080
       Top             =   6230
       Width           =   1830
@@ -189,16 +197,9 @@ Begin VB.Form frmGoliath
       ForeColor       =   &H000080FF&
       Height          =   255
       Left            =   4440
-      TabIndex        =   2
+      TabIndex        =   1
       Top             =   1300
       Width           =   1095
-   End
-   Begin VB.Image Image3 
-      Height          =   3330
-      Left            =   630
-      Tag             =   "0"
-      Top             =   2260
-      Width           =   2670
    End
 End
 Attribute VB_Name = "frmGoliath"
@@ -233,7 +234,7 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private QueOperacion       As Byte
+Private TipoOperacion       As Byte
 
 Private OroDep             As Long
 Private m_Number             As Integer
@@ -242,10 +243,18 @@ Private m_Increment          As Integer
 
 Private m_Interval           As Integer
 
+Private cBotonBoveda As clsGraphicalButton
+Private cBotonRetirar As clsGraphicalButton
+Private cBotonDepositar As clsGraphicalButton
+Private cBotonTransferir As clsGraphicalButton
+Private cBotonAceptar As clsGraphicalButton
+Private cBotonCerrar As clsGraphicalButton
+Private cBotonMas As clsGraphicalButton
+Private cBotonMenos As clsGraphicalButton
+
 Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
     
     On Error GoTo ParseBancoInfo_Err
-    
 
     OroDep = oro
     gold.Caption = OroDep
@@ -259,10 +268,6 @@ Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
     txtname.BackColor = RGB(17, 18, 12)
     Me.Show vbModeless, frmMain
     
-
-    Exit Sub
-
-    
     Exit Sub
 
 ParseBancoInfo_Err:
@@ -271,95 +276,15 @@ ParseBancoInfo_Err:
     
 End Sub
 
-Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo cmdMasMenos_MouseDown_Err
-    
-
-    Call Sound.Sound_Play(SND_CLICK)
-
-    Select Case Index
-
-        Case 0
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
-            cmdMasMenos(Index).Tag = "1"
-            txtDatos.Text = str((Val(txtDatos.Text) - 1))
-            m_Increment = -1
-
-        Case 1
-            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
-            cmdMasMenos(Index).Tag = "1"
-            m_Increment = 1
-
-    End Select
-
-    tmrNumber.Interval = 30
-    tmrNumber.Enabled = True
-
-    
-    Exit Sub
-
-cmdMasMenos_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.cmdMasMenos_MouseDown", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub cmdMasMenos_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo cmdMasMenos_MouseMove_Err
-    
-
-    Select Case Index
-
-        Case 0
-
-            If cmdMasMenos(Index).Tag = "0" Then
-                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-over.bmp")
-                cmdMasMenos(Index).Tag = "1"
-
-            End If
-
-        Case 1
-
-            If cmdMasMenos(Index).Tag = "0" Then
-                cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-over.bmp")
-                cmdMasMenos(Index).Tag = "1"
-
-            End If
-
-    End Select
-
-    
-    Exit Sub
-
-cmdMasMenos_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.cmdMasMenos_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo cmdMasMenos_MouseUp_Err
-    
-    Call Form_MouseMove(Button, Shift, x, y)
-    tmrNumber.Enabled = False
-
-    
-    Exit Sub
-
-cmdMasMenos_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.cmdMasMenos_MouseUp", Erl)
-    Resume Next
-    
-End Sub
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
+
+    Me.Picture = LoadInterface("ventanabanco.bmp")
     
+    Call LoadButtons
     Exit Sub
 
 Form_Load_Err:
@@ -367,6 +292,51 @@ Form_Load_Err:
     Resume Next
     
 End Sub
+
+Private Sub LoadButtons()
+       
+    Set cBotonBoveda = New clsGraphicalButton
+    Set cBotonRetirar = New clsGraphicalButton
+    Set cBotonDepositar = New clsGraphicalButton
+    Set cBotonTransferir = New clsGraphicalButton
+    Set cBotonAceptar = New clsGraphicalButton
+    Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonMas = New clsGraphicalButton
+    Set cBotonMenos = New clsGraphicalButton
+
+    Call cBotonBoveda.Initialize(cmdBoveda, "boton-ver-boveda-ES-default.bmp", _
+                                                "boton-ver-boveda-ES-over.bmp", _
+                                                "boton-ver-boveda-ES-off.bmp", Me)
+    
+    Call cBotonRetirar.Initialize(cmdRetirar, "boton-retirar-es-default.bmp", _
+                                                "boton-retirar-es-over.bmp", _
+                                                "boton-retirar-es-off.bmp", Me)
+                                                
+    Call cBotonDepositar.Initialize(cmdDepositar, "boton-depositar-ES-default.bmp", _
+                                                "boton-depositar-ES-over.bmp", _
+                                                "boton-depositar-ES-off.bmp", Me)
+    
+    Call cBotonTransferir.Initialize(cmdTransferir, "boton-transferir-es-default.bmp", _
+                                                "boton-transferir-es-over.bmp", _
+                                                "boton-transferir-es-off.bmp", Me)
+                                                
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-es-default.bmp", _
+                                                "boton-aceptar-es-over.bmp", _
+                                                "boton-aceptar-es-off.bmp", Me)
+                                                
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
+                                                "boton-sm-mas-over.bmp", _
+                                                "boton-sm-mas-off.bmp", Me)
+                                                
+    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
+                                                "boton-sm-menos-over.bmp", _
+                                                "boton-sm-menos-off.bmp", Me)
+End Sub
+
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
     
@@ -388,18 +358,7 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseDown_Err
     
-    operacion(1).Tag = "0"
-    operacion(2).Tag = "0"
-    operacion(3).Tag = "0"
-
-    Image3.Picture = Nothing
-    txtDatos.Visible = False
-    txtname.Visible = False
-    lblDatos.Visible = False
-    Image2.Visible = False
-    cmdMasMenos(0).Visible = False
-    cmdMasMenos(1).Visible = False
-    
+    frameRetirar.Visible = False
     
     Exit Sub
 
@@ -409,87 +368,43 @@ Form_MouseDown_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Form_MouseMove_Err
-    
-    operacion(0).Tag = "0"
-    operacion(1).Tag = "0"
-    operacion(2).Tag = "0"
-    operacion(3).Tag = "0"
-    'operacion(4).Tag = "0"
-
-    operacion(0).Picture = Nothing
-    operacion(1).Picture = Nothing
-    operacion(2).Picture = Nothing
-    operacion(3).Picture = Nothing
-
-    Image2.Picture = Nothing
-    Image2.Tag = "0"
-        
-     If cmdMasMenos(0).Tag = "1" Then
-        cmdMasMenos(0).Picture = Nothing
-        cmdMasMenos(0).Tag = "0"
-    End If
-
-    If cmdMasMenos(1).Tag = "1" Then
-        cmdMasMenos(1).Picture = Nothing
-        cmdMasMenos(1).Tag = "0"
-    End If
-
-    
-    Exit Sub
-
-Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Form_MouseMove", Erl)
-    Resume Next
-    
+Private Sub cmdDepositar_Click()
+    lblDatos.Caption = ""
+    Image3.Picture = LoadInterface("ventanabanco-depositar.bmp")
+    frameRetirar.Visible = True
+    txtname.Visible = False
+    TipoOperacion = 1
 End Sub
 
-Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Image2_MouseDown_Err
-    
-    Image2 = LoadInterface("boton-aceptar-ES-off.bmp")
-    
-    Exit Sub
-
-Image2_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Image2_MouseDown", Erl)
-    Resume Next
-    
+Private Sub cmdRetirar_Click()
+    lblDatos.Caption = ""
+    Image3.Picture = LoadInterface("ventanabanco-retirar.bmp")
+    frameRetirar.Visible = True
+    txtname.Visible = False
+    TipoOperacion = 2
 End Sub
 
-Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Image2_MouseMove_Err
-    
-    If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
-        Image2.Tag = "1"
-
-    End If
-    
-    Exit Sub
-
-Image2_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Image2_MouseMove", Erl)
-    Resume Next
-    
+Private Sub cmdTransferir_Click()
+    Image3.Picture = LoadInterface("ventanabanco-transferir.bmp")
+    frameRetirar.Visible = True
+    txtname.Visible = True
+    TipoOperacion = 3
 End Sub
-
-Private Sub Image2_Click()
+Private Sub cmdBoveda_Click()
+    Call WriteBankStart
+    Unload Me
+End Sub
+Private Sub cmdCerrar_Click()
+    Unload Me
+End Sub
+Private Sub cmdAceptar_Click()
     
-    On Error GoTo Image2_Click_Err
-    
-
-    Select Case QueOperacion
+    Select Case TipoOperacion
 
         Case 0
             Unload Me
     
-        Case 5 'Depositar
-    
+        Case 1 'Depositar
             'Negativos y ceros
             If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad inválida."
             
@@ -499,10 +414,8 @@ Private Sub Image2_Click()
             End If
     
             Call WriteBankDepositGold(min(Val(txtDatos.Text), UserGLD))
-            Unload Me
 
-        Case 1 'Retirar
-    
+        Case 2 'Retirar
             'Negativos y ceros
             If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad inválida."
             
@@ -512,13 +425,12 @@ Private Sub Image2_Click()
             End If
     
             Call WriteBankExtractGold(min(Val(txtDatos.Text), OroDep))
-            Unload Me
 
-        Case 4 'Transferir - Destino - Cantidad
+        Case 3 'Transferir
             'Negativos y ceros
             If Val(txtDatos.Text) < 1 Then
                 lblDatos.Caption = "Cantidad inválida, reintente."
-                'txtDatos.Text = ""
+
                 Exit Sub
             End If
             
@@ -534,243 +446,49 @@ Private Sub Image2_Click()
                 lblDatos.Caption = "¡Nombre de destino inválido!"
                 txtDatos.Text = ""
             End If
-
-
     End Select
 
-    
-    Exit Sub
-
-Image2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Image2_Click", Erl)
-    Resume Next
-    
 End Sub
 
-Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Image3_MouseMove_Err
-    
-     If cmdMasMenos(0).Tag = "1" Then
-        cmdMasMenos(0).Picture = Nothing
-        cmdMasMenos(0).Tag = "0"
-    End If
-
-    If cmdMasMenos(1).Tag = "1" Then
-        cmdMasMenos(1).Picture = Nothing
-        cmdMasMenos(1).Tag = "0"
-    End If
-    
-    
-    Image2.Picture = Nothing
-    Image2.Tag = "0"
-    
-    Exit Sub
-
-Image3_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Image3_MouseMove", Erl)
-    Resume Next
-    
+Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    m_Increment = 1
+    tmrNumber.Interval = 30
+    tmrNumber.Enabled = True
 End Sub
 
-Private Sub operacion_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo operacion_MouseDown_Err
-    
-
-    Select Case Index
-
-        Case 0 ' depositar
-            lblDatos.Caption = ""
-            Image3.Picture = LoadInterface("ventanabanco-depositar.bmp")
-            operacion(Index) = LoadInterface("boton-depositar-ES-off.bmp")
-            operacion(1).Tag = "0"
-            operacion(2).Tag = "0"
-            operacion(3).Tag = "0"
-            txtDatos.Visible = True
-            txtname.Visible = False
-            lblDatos.Visible = True
-            Image2.Visible = True
-            cmdMasMenos(0).Visible = True
-            cmdMasMenos(1).Visible = True
-            
-        Case 1 ' retirar
-            lblDatos.Caption = ""
-            Image3.Picture = LoadInterface("ventanabanco-retirar.bmp")
-            operacion(Index) = LoadInterface("boton-retirar-ES-off.bmp")
-            operacion(0).Tag = "0"
-            operacion(2).Tag = "0"
-            operacion(3).Tag = "0"
-            txtDatos.Visible = True
-            txtname.Visible = False
-            lblDatos.Visible = True
-            Image2.Visible = True
-            cmdMasMenos(0).Visible = True
-            cmdMasMenos(1).Visible = True
-
-        Case 2 ' boveda
-            lblDatos.Caption = ""
-            'Image3.Picture = LoadInterface("ventanabanco.bmp")
-            operacion(Index) = LoadInterface("boton-ver-boveda-es-off.bmp")
-            operacion(1).Tag = "0"
-            operacion(0).Tag = "0"
-            operacion(3).Tag = "0"
-            txtDatos.Visible = False
-            txtname.Visible = False
-        
-        Case 3 ' transfer
-
-            Image3.Picture = LoadInterface("ventanabanco-transferir.bmp")
-            operacion(Index) = LoadInterface("boton-transferir-es-off.bmp")
-            operacion(1).Tag = "0"
-            operacion(2).Tag = "0"
-            operacion(0).Tag = "0"
-            txtDatos.Visible = True
-            txtname.Visible = True
-            lblDatos.Visible = True
-            Image2.Visible = True
-            cmdMasMenos(0).Visible = True
-            cmdMasMenos(1).Visible = True
-        Case 4 'Cerrar
-            Unload Me
-    End Select
-
-    
-    Exit Sub
-
-operacion_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.operacion_MouseDown", Erl)
-    Resume Next
-    
+Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    txtDatos.Text = str((Val(txtDatos.Text) - 1))
+    m_Increment = -1
+    tmrNumber.Interval = 30
+    tmrNumber.Enabled = True
 End Sub
 
-Private Sub operacion_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo operacion_MouseMove_Err
-    
-    Select Case Index
-
-        Case 0 ' depositar
-
-            If operacion(Index).Tag = "0" Then
-                operacion(Index).Picture = LoadInterface("boton-depositar-ES-over.bmp")
-                operacion(Index).Tag = "1"
-
-            End If
-
-            operacion(1).Tag = "0"
-            operacion(2).Tag = "0"
-            operacion(3).Tag = "0"
-            'operacion(4).Tag = "0"
-
-        Case 1 ' retirar
-
-            If operacion(Index).Tag = "0" Then
-                operacion(Index).Picture = LoadInterface("boton-retirar-ES-over.bmp")
-                operacion(Index).Tag = "1"
-
-            End If
-
-            operacion(0).Tag = "0"
-            operacion(2).Tag = "0"
-            operacion(3).Tag = "0"
-
-        Case 2 ' boveda
-
-            If operacion(Index).Tag = "0" Then
-                operacion(Index).Picture = LoadInterface("boton-ver-boveda-es-over.bmp")
-                operacion(Index).Tag = "1"
-
-            End If
-
-            operacion(0).Tag = "0"
-            operacion(1).Tag = "0"
-            operacion(3).Tag = "0"
-
-        Case 3 ' transfer
-
-            If operacion(Index).Tag = "0" Then
-                operacion(Index).Picture = LoadInterface("boton-transferir-es-over.bmp")
-                operacion(Index).Tag = "1"
-
-            End If
-
-            operacion(1).Tag = "0"
-            operacion(2).Tag = "0"
-            operacion(0).Tag = "0"
-    
-    End Select
-
-    
-    Exit Sub
-
-operacion_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.operacion_MouseMove", Erl)
-    Resume Next
-    
+Private Sub cmdMas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    tmrNumber.Enabled = False
 End Sub
 
-Private Sub operacion_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo operacion_MouseUp_Err
-    
-
-    Select Case Index
-
-        Case 0 ' depositar
-            QueOperacion = 5
-            'Me.Picture = LoadInterface("goliathdepositar.bmp")
-            operacion(1).Tag = "0"
-            operacion(2).Tag = "0"
-            operacion(3).Tag = "0"
-           ' operacion(4).Tag = "0"
-
-        Case 1 ' retirar
-            QueOperacion = 1
-           ' Me.Picture = LoadInterface("goliathretiro.bmp")
-            operacion(0).Tag = "0"
-            operacion(2).Tag = "0"
-            operacion(3).Tag = "0"
-           ' operacion(4).Tag = "0"
-
-        Case 2 ' boveda
-            Call WriteBankStart
-            Unload Me
-
-        Case 3 ' transfer
-            QueOperacion = 4
-            lblDatos.Visible = True
-    
-    End Select
-
-    
-    Exit Sub
-
-operacion_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.operacion_MouseUp", Erl)
-    Resume Next
-    
+Private Sub cmdMenos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    tmrNumber.Enabled = False
 End Sub
 
 Private Sub tmrNumber_Timer()
     
     On Error GoTo tmrNumber_Timer_Err
-    
 
     Const MIN_NUMBER = 1
 
     Const MAX_NUMBER = 10000
 
-    m_Number = m_Number + m_Increment
+    txtDatos = txtDatos + m_Increment
 
-    If m_Number < MIN_NUMBER Then
-        m_Number = MIN_NUMBER
-    ElseIf m_Number > MAX_NUMBER Then
-        m_Number = MAX_NUMBER
+    If txtDatos < MIN_NUMBER Then
+        txtDatos = MIN_NUMBER
+    ElseIf txtDatos > MAX_NUMBER Then
+        txtDatos = MAX_NUMBER
 
     End If
 
-    txtDatos.Text = format$(m_Number)
+    txtDatos.Text = format$(txtDatos)
     
     If m_Interval > 1 Then
         m_Interval = m_Interval - 1
@@ -786,3 +504,4 @@ tmrNumber_Timer_Err:
     Resume Next
     
 End Sub
+
