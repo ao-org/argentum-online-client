@@ -20,7 +20,6 @@ Begin VB.Form frmGuildAdm
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmGuildAdm.frx":0000
    ScaleHeight     =   391
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   415
@@ -50,9 +49,9 @@ Begin VB.Form frmGuildAdm
       BackColor       =   &H00000000&
       ForeColor       =   &H00FFFFFF&
       Height          =   2565
-      ItemData        =   "frmGuildAdm.frx":768A4
+      ItemData        =   "frmGuildAdm.frx":0000
       Left            =   495
-      List            =   "frmGuildAdm.frx":768A6
+      List            =   "frmGuildAdm.frx":0002
       TabIndex        =   1
       Top             =   2160
       Width           =   4080
@@ -71,9 +70,9 @@ Begin VB.Form frmGuildAdm
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   285
-      ItemData        =   "frmGuildAdm.frx":768A8
+      ItemData        =   "frmGuildAdm.frx":0004
       Left            =   2280
-      List            =   "frmGuildAdm.frx":768B5
+      List            =   "frmGuildAdm.frx":0011
       Style           =   2  'Dropdown List
       TabIndex        =   0
       Top             =   1600

@@ -9,7 +9,6 @@ Begin VB.Form FrmGmAyuda
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "FrmGmAyuda.frx":0000
    ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   470

@@ -1190,13 +1190,13 @@ Public Sub CargarCuentasGuardadas()
     CuentaRecordada.nombre = GetVar(Arch, "CUENTA", "Nombre")
     CuentaRecordada.Password = UnEncryptStr(GetVar(Arch, "CUENTA", "Password"), 9256)
     
-    FrmLogear.Image4.Tag = "0"
+    FrmLogear.chkRecordar.Tag = "0"
  
     If LenB(CuentaRecordada.nombre) <> 0 Then
         FrmLogear.NameTxt = CuentaRecordada.nombre
         FrmLogear.PasswordTxt = CuentaRecordada.Password
-        FrmLogear.Image4.Picture = LoadInterface("check-amarillo.bmp")
-        FrmLogear.Image4.Tag = "1"
+        FrmLogear.chkRecordar.Picture = LoadInterface("check-amarillo.bmp")
+        FrmLogear.chkRecordar.Tag = "1"
         FrmLogear.PasswordTxt.TabIndex = 0
         FrmLogear.PasswordTxt.SelStart = Len(FrmLogear.PasswordTxt)
     End If

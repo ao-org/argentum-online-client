@@ -15,7 +15,6 @@ Begin VB.Form FrmLogear
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Moveable        =   0   'False
-   Picture         =   "FrmLogear.frx":0000
    ScaleHeight     =   4005
    ScaleWidth      =   5340
    ShowInTaskbar   =   0   'False
@@ -81,9 +80,9 @@ Begin VB.Form FrmLogear
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   240
-      ItemData        =   "FrmLogear.frx":451CE
+      ItemData        =   "FrmLogear.frx":0000
       Left            =   720
-      List            =   "FrmLogear.frx":451D0
+      List            =   "FrmLogear.frx":0002
       Style           =   2  'Dropdown List
       TabIndex        =   3
       TabStop         =   0   'False
@@ -99,27 +98,27 @@ Begin VB.Form FrmLogear
       Top             =   1800
       Width           =   1095
    End
-   Begin VB.Image Image4 
+   Begin VB.Image chkRecordar 
       Height          =   255
       Left            =   640
       Top             =   2150
       Width           =   255
    End
-   Begin VB.Image Image3 
+   Begin VB.Image cmdIngresar 
       Height          =   420
       Left            =   2750
       Tag             =   "0"
       Top             =   2055
       Width           =   1980
    End
-   Begin VB.Image btnCuenta 
+   Begin VB.Image cmdCuenta 
       Height          =   420
       Left            =   630
       Tag             =   "0"
       Top             =   3030
       Width           =   1980
    End
-   Begin VB.Image Image1 
+   Begin VB.Image cmdSalir 
       Height          =   420
       Left            =   2750
       Tag             =   "0"
@@ -183,16 +182,18 @@ Private Const SWP_NOMOVE = &H2
 
 Private Const SWP_NOSIZE = &H1
 
+Private cBotonSalir As clsGraphicalButton
+Private cBotonCuenta As clsGraphicalButton
+Private cBotonIngresar As clsGraphicalButton
+
 Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
-    
 
     Dim res As Long
 
     ReleaseCapture
     res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
-
     
     Exit Sub
 
@@ -205,9 +206,6 @@ End Sub
 Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
     
     On Error GoTo Is_Transparent_Err
-    
-
-    
 
     Dim msg As Long
 
@@ -236,13 +234,9 @@ End Function
 
 'Funciï¿½n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
-    
     On Error GoTo Aplicar_Transparencia_Err
     
-
     Dim msg As Long
-
-    
 
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
@@ -273,7 +267,7 @@ Aplicar_Transparencia_Err:
     
 End Function
 
-Private Sub btnCuenta_Click()
+Private Sub cmdCuenta_Click()
     
     On Error GoTo btnCuenta_Click_Err
     
@@ -295,19 +289,16 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     Me.Top = Me.Top + 2500
-    'Call CargarLst
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hWnd, 220)
     
-    'TODO: Me.Picture = LoadInterface("")
-
-    Rem Call SetWindowPos(FrmLogear.hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE)
+    Me.Picture = LoadInterface("ventanaconectar.bmp")
     
     #If DEBUGGING = 1 Then
         lstServers.Visible = True
     #End If
 
-    
+    Call LoadButtons
     Exit Sub
 
 Form_Load_Err:
@@ -316,120 +307,36 @@ Form_Load_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub LoadButtons()
+
+    Set cBotonSalir = New clsGraphicalButton
+    Set cBotonCuenta = New clsGraphicalButton
+    Set cBotonIngresar = New clsGraphicalButton
     
-    On Error GoTo Form_MouseMove_Err
-    
-
-    If btnCuenta.Tag = "1" Then
-        btnCuenta.Picture = Nothing
-        btnCuenta.Tag = "0"
-
-    End If
-
-    If Image1.Tag = "1" Then
-        Image1.Picture = Nothing
-        Image1.Tag = "0"
-
-    End If
-
-    If Image3.Tag = "1" Then
-        Image3.Picture = Nothing
-        Image3.Tag = "0"
-
-    End If
-
-    
-    Exit Sub
-
-Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Form_MouseMove", Erl)
-    Resume Next
-    
+    Call cBotonSalir.Initialize(cmdSalir, "boton-salir-ES-default.bmp", "boton-salir-ES-over.bmp", "boton-salir-ES-off.bmp", Me)
+    Call cBotonCuenta.Initialize(cmdCuenta, "boton-cuenta-ES-default.bmp", "boton-cuenta-ES-over.bmp", "boton-cuenta-ES-off.bmp", Me)
+    Call cBotonIngresar.Initialize(cmdIngresar, "boton-ingresar-ES-default.bmp", "boton-ingresar-ES-over.bmp", "boton-ingresar-ES-off.bmp", Me)
 End Sub
 
-Private Sub Image1_Click()
+
+Private Sub cmdSalir_Click()
     
-    On Error GoTo Image1_Click_Err
+    On Error GoTo cmdSalir_Click_Err
     
     Call CloseClient
 
     
     Exit Sub
 
-Image1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image1_Click", Erl)
+cmdSalir_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmLogear.cmdSalir_Click", Erl)
     Resume Next
     
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdIngresar_Click()
     
-    On Error GoTo Image1_MouseMove_Err
-    
-
-    If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("boton-salir-ES-over.bmp")
-        Image1.Tag = "1"
-
-    End If
-
-    If btnCuenta.Tag = "1" Then
-        btnCuenta.Picture = Nothing
-        btnCuenta.Tag = "0"
-
-    End If
-
-    If Image3.Tag = "1" Then
-        Image3.Picture = Nothing
-        Image3.Tag = "0"
-
-    End If
-
-    
-    Exit Sub
-
-Image1_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image1_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub btnCuenta_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo btnCuenta_MouseMove_Err
-    
-
-    If btnCuenta.Tag = "0" Then
-        btnCuenta.Picture = LoadInterface("boton-cuenta-ES-over.bmp")
-        btnCuenta.Tag = "1"
-
-    End If
-
-    If Image1.Tag = "1" Then
-        Image1.Picture = Nothing
-        Image1.Tag = "0"
-
-    End If
-
-    If Image3.Tag = "1" Then
-        Image3.Picture = Nothing
-        Image3.Tag = "0"
-
-    End If
-
-    
-    Exit Sub
-
-btnCuenta_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.btnCuenta_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Image3_Click()
-    
-    On Error GoTo Image3_Click_Err
+    On Error GoTo cmdIngresar_Click_Err
     
     Call FormParser.Parse_Form(Me, E_WAIT)
 
@@ -445,18 +352,14 @@ Private Sub Image3_Click()
         CuentaEmail = NameTxt.Text
         CuentaPassword = PasswordTxt.Text
 
-        If Image4.Tag = "1" Then
-
+        If chkRecordar.Tag = "1" Then
             CuentaRecordada.nombre = CuentaEmail
             CuentaRecordada.Password = CuentaPassword
             
             Call GuardarCuenta(CuentaEmail, CuentaPassword)
-
         Else
-            
             ' Reseteamos los datos de cuenta guardados
             Call GuardarCuenta(vbNullString, vbNullString)
-
         End If
 
         If CheckUserDataLoged() = True Then
@@ -476,90 +379,31 @@ Private Sub Image3_Click()
     
     Exit Sub
 
-Image3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image3_Click", Erl)
+cmdIngresar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmLogear.cmdIngresar_Click", Erl)
     Resume Next
     
 End Sub
 
-Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub chkRecordar_Click()
     
-    On Error GoTo Image3_MouseMove_Err
-    
+    On Error GoTo chkRecordar_Click_Err
 
-    If Image3.Tag = "0" Then
-        Image3.Picture = LoadInterface("boton-ingresar-ES-over.bmp")
-        Image3.Tag = "1"
-
-    End If
-
-    If btnCuenta.Tag = "1" Then
-        btnCuenta.Picture = Nothing
-        btnCuenta.Tag = "0"
-
-    End If
-
-    If Image1.Tag = "1" Then
-        Image1.Picture = Nothing
-        Image1.Tag = "0"
-
-    End If
-
-    
-    Exit Sub
-
-Image3_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image3_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Image4_Click()
-    
-    On Error GoTo Image4_Click_Err
-    
-
-    If Image4.Tag = "0" Then
-        Image4.Picture = LoadInterface("check-amarillo.bmp")
+    If chkRecordar.Tag = "0" Then
+        chkRecordar.Picture = LoadInterface("check-amarillo.bmp")
         Call TextoAlAsistente("¡Recordare la cuenta para la proxima!")
-        Image4.Tag = "1"
+        chkRecordar.Tag = "1"
     Else
-        Image4.Picture = Nothing
-        Image4.Tag = "0"
+        chkRecordar.Picture = Nothing
+        chkRecordar.Tag = "0"
         Call TextoAlAsistente("¡No recordare nada!")
-
     End If
 
     
     Exit Sub
 
-Image4_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Image4_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Label1_Click()
-    
-    On Error GoTo Label1_Click_Err
-    
-
-    If Image4.Tag = "0" Then
-        Image4.Picture = LoadInterface("check-amarillo.bmp")
-        Call TextoAlAsistente("¡Recordaré la cuenta para la próxima!")
-        Image4.Tag = "1"
-    Else
-        Image4.Picture = Nothing
-        Image4.Tag = "0"
-        Call TextoAlAsistente("¡No recordare nada!")
-
-    End If
-
-    
-    Exit Sub
-
-Label1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.Label1_Click", Erl)
+chkRecordar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmLogear.chkRecordar_Click", Erl)
     Resume Next
     
 End Sub
@@ -582,17 +426,13 @@ End Sub
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo NameTxt_KeyDown_Err
-    
 
     If KeyCode = 27 Then
         prgRun = False
         End
-    
     ElseIf KeyCode = vbKeyReturn Then
-        Call Image3_Click
-
+        Call cmdIngresar_Click
     End If
-
     
     Exit Sub
 
@@ -605,54 +445,18 @@ End Sub
 Private Sub PasswordTxt_KeyDown(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo PasswordTxt_KeyDown_Err
-    
 
     If KeyCode = 27 Then
         prgRun = False
         End
-
     ElseIf KeyCode = vbKeyReturn Then
-        Call Image3_Click
-
+        Call cmdIngresar_Click
     End If
-
     
     Exit Sub
 
 PasswordTxt_KeyDown_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmLogear.PasswordTxt_KeyDown", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub PasswordTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo PasswordTxt_MouseMove_Err
-    
-
-    If btnCuenta.Tag = "1" Then
-        btnCuenta.Picture = Nothing
-        btnCuenta.Tag = "0"
-
-    End If
-
-    If Image1.Tag = "1" Then
-        Image1.Picture = Nothing
-        Image1.Tag = "0"
-
-    End If
-
-    If Image3.Tag = "1" Then
-        Image3.Picture = Nothing
-        Image3.Tag = "0"
-
-    End If
-
-    
-    Exit Sub
-
-PasswordTxt_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.PasswordTxt_MouseMove", Erl)
     Resume Next
     
 End Sub
