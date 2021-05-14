@@ -140,7 +140,6 @@ Begin VB.Form frmGoliath
       Begin VB.Image Image3 
          Height          =   3330
          Left            =   0
-         Picture         =   "frmGoliath.frx":0000
          Tag             =   "0"
          Top             =   0
          Width           =   2670
@@ -258,8 +257,6 @@ Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
 
     OroDep = oro
     gold.Caption = OroDep
-
-    Me.Picture = LoadInterface("ventanabanco.bmp")
     
     txtDatos.BackColor = RGB(17, 18, 12)
     gold.ForeColor = RGB(235, 164, 14)
@@ -271,7 +268,7 @@ Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
     Exit Sub
 
 ParseBancoInfo_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.ParseBancoInfo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGoliath.ParseBancoInfo", Erl)
     Resume Next
     
 End Sub
@@ -288,7 +285,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGoliath.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -349,7 +346,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGoliath.Form_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -363,7 +360,7 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Form_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.Form_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGoliath.Form_MouseDown", Erl)
     Resume Next
     
 End Sub
@@ -471,6 +468,7 @@ Private Sub cmdMenos_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     tmrNumber.Enabled = False
 End Sub
 
+
 Private Sub tmrNumber_Timer()
     
     On Error GoTo tmrNumber_Timer_Err
@@ -500,7 +498,7 @@ Private Sub tmrNumber_Timer()
     Exit Sub
 
 tmrNumber_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGoliath.tmrNumber_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGoliath.tmrNumber_Timer", Erl)
     Resume Next
     
 End Sub
