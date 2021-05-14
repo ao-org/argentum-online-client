@@ -20,7 +20,6 @@ Begin VB.Form frmCarp
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmCarp.frx":0000
    ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   471
@@ -79,9 +78,9 @@ Begin VB.Form frmCarp
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   1395
-      ItemData        =   "frmCarp.frx":95A0C
+      ItemData        =   "frmCarp.frx":0000
       Left            =   5760
-      List            =   "frmCarp.frx":95A13
+      List            =   "frmCarp.frx":0007
       TabIndex        =   2
       Top             =   2520
       Width           =   645
