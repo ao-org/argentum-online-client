@@ -881,7 +881,7 @@ Sub Check_Keys()
  
         If Not UserMoving Then
             If Not UserEstupido Then
-                If Not MainTimer.Check(TimersIndex.Walk, False) Then Exit Sub
+                'If Not MainTimer.Check(TimersIndex.Walk, False) Then Exit Sub
 
                 Call AddMovementToKeysMovementPressedQueue
                 
