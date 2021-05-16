@@ -301,11 +301,11 @@ Private Sub Form_Load()
     
     detalle.BackColor = RGB(11, 11, 11)
     PlayerView.BackColor = RGB(11, 11, 11)
-    Picture1.BackColor = RGB(19, 14, 11)
+    picture1.BackColor = RGB(19, 14, 11)
     
     Me.Picture = LoadInterface("ventanadetallemision.bmp")
     
-    Call Aplicar_Transparencia(Me.hWnd, 240)
+    Call Aplicar_Transparencia(Me.hwnd, 240)
     
     Exit Sub
 
@@ -319,7 +319,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    MoverForm Me.hWnd
+    MoverForm Me.hwnd
     
     Image1.Picture = Nothing
     Image1.Tag = 0
@@ -432,7 +432,7 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Call WriteQuestAbandon(lstQuests.ListIndex + 1)
             detalle.Text = ""
             titulo.Caption = ""
-            Picture1.Refresh
+            picture1.Refresh
             PlayerView.Refresh
             ListView1.ListItems.Clear
             ListView2.ListItems.Clear
@@ -513,8 +513,8 @@ Public Sub ListView2_Click()
 
     If ListView2.SelectedItem.SubItems(2) <> "" Then
  
-        Call Grh_Render_To_Hdc(Picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(11, 11, 11))
-        Picture1.Visible = True
+        'Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(11, 11, 11))
+        picture1.Visible = True
         
         objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
     

@@ -380,7 +380,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1423,7 +1422,7 @@ Private Const WS_EX_TRANSPARENT = &H20&
 
 Private Const GWL_EXSTYLE = (-20)
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
@@ -1473,9 +1472,9 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
 
 Private Const EM_GETLINE = &HC4
 
@@ -2344,7 +2343,7 @@ Private Sub Image4_Click(Index As Integer)
             If frmCerrar.Visible Then Exit Sub
             Dim mForm As Form
             For Each mForm In Forms
-                If mForm.hWnd <> Me.hWnd Then Unload mForm
+                If mForm.hwnd <> Me.hwnd Then Unload mForm
                 Set mForm = Nothing
             Next
             frmCerrar.Show , Me
@@ -2747,7 +2746,7 @@ Socket1_Connect_Err:
     Resume Next
 End Sub
 
-Private Sub MainSocket_DataArrival(ByVal bytesTotal As Long)
+Private Sub MainSocket_DataArrival(ByVal BytesTotal As Long)
     On Error GoTo Socket1_Read_Err
 
     Dim Data() As Byte
@@ -2780,7 +2779,6 @@ End Sub
 
 Private Sub MainSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     On Error GoTo Socket1_LastError_Err
-    
 
     '*********************************************
     'Handle socket errors
@@ -3825,11 +3823,11 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
         intCurrentLine = RecTxt.GetLineFromChar(RecTxt.SelStart)
         'get line length
-        lngLength = SendMessage(RecTxt.hWnd, EM_LINELENGTH, intCurrentLine, 0)
+        lngLength = SendMessage(RecTxt.hwnd, EM_LINELENGTH, intCurrentLine, 0)
         'resize buffer
         strBuffer = Space(lngLength)
         'get line text
-        Call SendMessage(RecTxt.hWnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
+        Call SendMessage(RecTxt.hwnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
 
         Dim partea       As String
 
@@ -5120,7 +5118,7 @@ Private Sub MoverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub

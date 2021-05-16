@@ -178,7 +178,7 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Public LastIndex1           As Integer
 
@@ -211,7 +211,7 @@ Private Sub MoverForm()
     Dim res As Long
 
     ReleaseCapture
-    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
+    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
 
     
     Exit Sub
@@ -222,7 +222,7 @@ moverForm_Err:
     
 End Sub
 
-Private Sub cmdCerrar_Click()
+Private Sub cmdcerrar_Click()
     Unload Me
 End Sub
 
@@ -299,14 +299,14 @@ cantidad_KeyPress_Err:
     
 End Sub
 
-Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     m_Increment = 1
 
     tmrNumber.Interval = 30
     tmrNumber.Enabled = True
 End Sub
 
-Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     cantidad.Text = str((Val(cantidad.Text) - 1))
     m_Increment = -1
     
@@ -315,10 +315,10 @@ Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, X As Single,
 End Sub
 
 
-Private Sub cmdMenos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdMenos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     tmrNumber.Enabled = False
 End Sub
-Private Sub cmdMas_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdMas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     tmrNumber.Enabled = False
 End Sub
 
@@ -429,8 +429,9 @@ Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err
     
-    Call WriteCommerceEnd
-
+    If frmComerciar.Visible Then
+        Call WriteCommerceEnd
+    End If
     
     Exit Sub
 
@@ -491,7 +492,7 @@ Private Sub interface_DblClick()
         ' Hacemos acción del doble clic correspondiente
         Dim ObjType As Byte
 
-        ObjType = ObjData(InvComUsu.objIndex(InvComUsu.SelectedItem)).ObjType
+        ObjType = ObjData(InvComUsu.OBJIndex(InvComUsu.SelectedItem)).ObjType
         
         If UserMeditar Then Exit Sub
         If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
@@ -503,7 +504,7 @@ Private Sub interface_DblClick()
                 
             Case eObjType.otWeapon
 
-                If ObjData(InvComUsu.objIndex(InvComUsu.SelectedItem)).proyectil = 1 And InvComUsu.Equipped(InvComUsu.SelectedItem) Then
+                If ObjData(InvComUsu.OBJIndex(InvComUsu.SelectedItem)).proyectil = 1 And InvComUsu.Equipped(InvComUsu.SelectedItem) Then
                     Call WriteUseItem(InvComUsu.SelectedItem)
                 Else
                     Call WriteEquipItem(InvComUsu.SelectedItem)
