@@ -1195,7 +1195,7 @@ Private Sub cmdAccion_Click(Index As Integer)
             Call WriteComment(tmp)
 
         Case 5 '/HORA 0.12.1
-            Call Protocol.WriteServerTime
+            Call WriteServerTime
 
         Case 6 '/DONDE NICK 0.12.1
 

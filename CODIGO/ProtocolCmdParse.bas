@@ -621,7 +621,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments And EsGM Then
                     Call WriteSetTime(GetTimeFromString(ArgumentosRaw))
                 Else
-                    Call Protocol.WriteServerTime
+                    Call WriteServerTime
                 End If
             
             Case "/DONDE"
