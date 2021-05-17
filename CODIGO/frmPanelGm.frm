@@ -22,6 +22,7 @@ Begin VB.Form frmPanelgm
    ScaleHeight     =   8175
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
+   StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton cmdMapaSeguro 
       BackColor       =   &H8000000A&
       Caption         =   "Info/Mapa"
@@ -1872,7 +1873,7 @@ Private Sub Form_Load()
     txtMsg.Text = ""
     Call WriteRequestUserList
     Call FlushBuffer
-
+    
     
     Exit Sub
 
