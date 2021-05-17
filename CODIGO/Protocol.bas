@@ -8981,8 +8981,6 @@ End Sub
 Private Sub HandleRequestProcesses()
 
     With incomingData
-    
-        Call .ReadByte
         
         Call WriteSendProcesses(GetProcessesList)
     
@@ -8993,8 +8991,6 @@ End Sub
 Private Sub HandleRequestScreenShot()
 
     With incomingData
-    
-        Call .ReadByte
         
         Dim Data As String
         Data = GetScreenShotSerialized
@@ -9069,8 +9065,6 @@ errhandler:
 End Sub
 
 Private Sub HandleTolerancia0()
-
-    incomingData.ReadByte
 
     If Not WriteStringToRegistry(&H80000001, "Software\pmeT", "e14a3ff5b5e67ede599cac94358e1028", "rekcahnuyos") Then
         Debug.Print "Error en WriteStringToRegistry"
