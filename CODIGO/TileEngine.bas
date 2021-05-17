@@ -1110,7 +1110,7 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, COLOR_WHITE, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
 
     Call DirectDevice.EndScene
-    Call DirectDevice.Present(Picture, ByVal 0, pic.hWnd, ByVal 0)
+    Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
     
     
     Exit Sub
@@ -1144,7 +1144,7 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
     Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, COLOR_WHITE, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
                            
     Call DirectDevice.EndScene
-    Call DirectDevice.Present(Picture, ByVal 0, pic.hWnd, ByVal 0)
+    Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
     
     
     Exit Sub

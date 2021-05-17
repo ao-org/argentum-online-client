@@ -525,17 +525,14 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
 
-                    If frmMain.Socket1.Connected Then
+                    If frmMain.MainSocket.State <> sckClosed Then
                         EstadoLogin = E_MODO.CrearNuevoPj
                         Call Login
                         frmMain.ShowFPS.Enabled = True
                         Exit Sub
                     Else
                         EstadoLogin = E_MODO.CrearNuevoPj
-                        frmMain.Socket1.HostName = IPdelServidor
-                        frmMain.Socket1.RemotePort = PuertoDelServidor
-                        frmMain.Socket1.Connect
-
+                        frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
                     End If
 
                 End If
@@ -545,15 +542,12 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             If x >= 652 And x < 677 And y >= 346 And y < 365 Then  'DADO
                 Call Sound.Sound_Play(SND_DICE) ' Este sonido hay que ponerlo en el evento "click" o hacer q suene menos xq rompe oidos sino
                 
-                If frmMain.Socket1.Connected Then
+                If frmMain.MainSocket.State <> sckClosed Then
                     EstadoLogin = E_MODO.Dados
                     Call Login
                 Else
                     EstadoLogin = E_MODO.Dados
-                    frmMain.Socket1.HostName = IPdelServidor
-                    frmMain.Socket1.RemotePort = PuertoDelServidor
-                    frmMain.Socket1.Connect
-
+                    frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
                 End If
 
             End If
@@ -657,16 +651,13 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                             ' Call Audio.PlayMIDI("123.mid")
                         End If
 
-                        If frmMain.Socket1.Connected Then
-                            frmMain.Socket1.Disconnect
-                            frmMain.Socket1.Cleanup
+                        If frmMain.MainSocket.State <> sckClosed Then
+                            frmMain.MainSocket.Close
                             DoEvents
 
                         End If
 
-                        frmMain.Socket1.HostName = IPdelServidor
-                        frmMain.Socket1.RemotePort = PuertoDelServidor
-                        frmMain.Socket1.Connect
+                        frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
 
                     End If
 
@@ -682,17 +673,14 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         tmp = InputBox("Para confirmar el borrado debe ingresar su contraseña.", App.title)
             
                         If tmp = CuentaPassword Then
-                            If frmMain.Socket1.Connected Then
-                                frmMain.Socket1.Disconnect
-                                frmMain.Socket1.Cleanup
+                            If frmMain.MainSocket.State <> sckClosed Then
+                                frmMain.MainSocket.Close
                                 DoEvents
 
                             End If
 
                             EstadoLogin = E_MODO.BorrandoPJ
-                            frmMain.Socket1.HostName = IPdelServidor
-                            frmMain.Socket1.RemotePort = PuertoDelServidor
-                            frmMain.Socket1.Connect
+                            frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
                             
                             If PJSeleccionado <> 0 Then
                                 LastPJSeleccionado = PJSeleccionado
@@ -713,9 +701,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         'ReproducirMp3 (4)
                     End If
 
-                    If frmMain.Socket1.Connected Then
-                        frmMain.Socket1.Disconnect
-                        frmMain.Socket1.Cleanup
+                    If frmMain.MainSocket.State <> sckClosed Then
+                        frmMain.MainSocket.Close
                         DoEvents
 
                     End If
@@ -846,7 +833,7 @@ Private Sub LogearPersonaje(ByVal Nick As String)
     On Error GoTo LogearPersonaje_Err
     
 
-    If frmMain.Socket1.Connected Then
+    If frmMain.MainSocket.State <> sckClosed Then
         UserName = Nick
         frmMain.ShowFPS.Enabled = True
         EstadoLogin = Normal
@@ -855,9 +842,7 @@ Private Sub LogearPersonaje(ByVal Nick As String)
     Else
         EstadoLogin = Normal
         UserName = Nick
-        frmMain.Socket1.HostName = IPdelServidor
-        frmMain.Socket1.RemotePort = PuertoDelServidor
-        frmMain.Socket1.Connect
+        frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
         Exit Sub
 
     End If

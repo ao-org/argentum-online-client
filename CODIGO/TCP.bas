@@ -4,11 +4,27 @@ Attribute VB_Name = "Mod_TCP"
 
 Option Explicit
 
+Public Const SOL_SOCKET As Long = &HFFFF&
+Public Const TCP_NODELAY As Long = &H1
+Public Declare Function setsockopt Lib "ws2_32" ( _
+    ByVal s As Long, _
+    ByVal level As Long, _
+    ByVal optname As Long, _
+    ByRef optval As Any, _
+    ByVal optlen As Long _
+    ) As Long
+
 Public Warping        As Boolean
 
 Public LlegaronSkills As Boolean
 Public LlegaronStats  As Boolean
 Public LlegaronAtrib  As Boolean
+
+Public Sub SetSocketNoDelay(ByVal Handle As Long, ByVal Status As Boolean)
+    Dim TcpNoDelay As Long
+    TcpNoDelay = IIf(Status, 1, 0)
+    setsockopt Handle, SOL_SOCKET, TCP_NODELAY, TcpNoDelay, LenB(TcpNoDelay)
+End Sub
 
 Public Function PuedoQuitarFoco() As Boolean
     

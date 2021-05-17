@@ -42,8 +42,9 @@ Option Explicit
 'having too many string lengths in the queue. Yes, each string is NULL-terminated :P
 Private Const SEPARATOR As String * 1 = vbNullChar
 
-Private LastPacket As Byte
-Private IterationsHID As Integer
+Private LastPacket      As Byte
+
+Private IterationsHID   As Integer
 
 Private Const MAX_ITERATIONS_HID = 200
 
@@ -231,9 +232,10 @@ Private Enum ServerPacketID
     Stopped
     InvasionInfo
     CommerceRecieveChatMessage
+
 End Enum
 
-Private Enum ClientPacketID
+Public Enum ClientPacketID
 
     LoginExistingChar       'OLOGIN
     LoginNewChar            'NLOGIN
@@ -488,9 +490,11 @@ Private Enum ClientPacketID
     DonateGold              '/DONAR
     Promedio                '/PROMEDIO
     GiveItem                '/DAR
+
 End Enum
 
-Private Enum NewPacksID
+Public Enum NewPacksID
+
     OfertaInicial
     OfertaDeSubasta
     QuestionGM
@@ -575,38 +579,36 @@ Private Enum NewPacksID
     CreateEvent
     CommerceSendChatMessage
     LogMacroClickHechizo
+
 End Enum
 
 ''
 ' Handles incoming data.
 
-Public Sub HandleIncomingData()
+Public Function HandleIncomingData() As Boolean
     
     ' WyroX: No remover
     On Error Resume Next
+
+    Dim PacketID As Long
     
+    If Not incomingData.CheckLength Then
+        HandleIncomingData = False
+        Exit Function
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+    End If
     
+    If Not incomingData.ValidCRC Then
+        HandleIncomingData = False
+        Exit Function
 
-    Dim paquete As Long
+    End If
 
-    paquete = CLng(incomingData.PeekByte())
-
-    'CantdPaquetes = CantdPaquetes + 1
- 
-    'Debug.Print time & " llego paquete nº" & paquete & " pesa: " & incomingData.Length & "Bytes"
-
-    'Call LogError("llego paquete nº" & paquete & " pesa: " & incomingData.Length & "Bytes")
+    PacketID = CLng(incomingData.ReadID())
 
     InBytes = InBytes + incomingData.length
 
-    Rem  Call LogError("Llego paquete" & paquete)
-    Select Case paquete
+    Select Case PacketID
 
         Case ServerPacketID.logged                  ' LOGGED
             Call HandleLogged
@@ -1147,35 +1149,40 @@ Public Sub HandleIncomingData()
 
         Case ServerPacketID.CommerceRecieveChatMessage
             Call HandleCommerceRecieveChatMessage
+
         Case Else
-        
-            Exit Sub
+            'Stop
+            Call LogError("Error 'Case Else' en HandleIncomingData: " & Err.Number & " " & Err.Description & " PacketID: " & PacketID & " Line: " & Erl())
+            Call incomingData.Clean
+            incomingData.errNumber = 0
+            Exit Function
 
     End Select
     
-    'Done with this packet, move on to next one
-    If incomingData.length > 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then
-        If LastPacket = paquete Then
-            IterationsHID = IterationsHID + 1
-            
-            If IterationsHID > MAX_ITERATIONS_HID Then
-                Call RegistrarError(-1, "Superado el máximo de iteraciones del mismo paquete. Paquete: " & paquete, "Protocol.HandleIncomingData")
-                
-                'Empty buffer
-                Call incomingData.ReadASCIIStringFixed(incomingData.length)
-
-                Exit Sub
-            End If
+    With incomingData
+    
+        Call .ReadNewPacket
+    
+        If (Not .BufferOver Or .length > 0) And .errNumber = 0 Then    'Done with this packet, move on to next one
+            Err.Clear
+            HandleIncomingData = True
+        
+        ElseIf .errNumber <> 0 And .errNumber <> .NotEnoughDataErrCode Then
+            Call RegistrarError(Err.Number, Err.Description & ". PacketID: " & PacketID, "Protocol.HandleIncomingData", Erl)
+            Err.Clear
+            HandleIncomingData = False
+        
         Else
-            IterationsHID = 0
-            LastPacket = paquete
+            Err.Clear
+            HandleIncomingData = False
         End If
         
-        Err.Clear
-        Call HandleIncomingData
-    End If
+        .errNumber = 0
     
-End Sub
+    End With
+    
+    
+End Function
 
 ''
 ' Handles the Logged message.
@@ -1189,9 +1196,7 @@ Private Sub HandleLogged()
     'Remove packet ID
     
     On Error GoTo HandleLogged_Err
-    
-    Call incomingData.ReadByte
-
+ 
     ' Variable initialization
     UserCiego = False
     EngineRun = True
@@ -1206,6 +1211,7 @@ Private Sub HandleLogged()
 
     If UserMaxMAN <> 0 Then
         frmMain.manabar.Visible = True
+
     End If
 
     frmMain.hambar.Visible = True
@@ -1222,14 +1228,12 @@ Private Sub HandleLogged()
     frmMain.oxigenolbl.Visible = True
     QueRender = 0
     
-    
     frmMain.ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")
     frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
     frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
-    
     
     'Set connected state
     
@@ -1241,7 +1245,7 @@ Private Sub HandleLogged()
 
 HandleLogged_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLogged", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1257,17 +1261,14 @@ Private Sub HandleRemoveDialogs()
     'Remove packet ID
     
     On Error GoTo HandleRemoveDialogs_Err
-    
-    Call incomingData.ReadByte
-    
-    Call Dialogos.RemoveAllDialogs
 
+    Call Dialogos.RemoveAllDialogs
     
     Exit Sub
 
 HandleRemoveDialogs_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRemoveDialogs", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1277,31 +1278,20 @@ End Sub
 Private Sub HandleRemoveCharDialog()
     
     On Error GoTo HandleRemoveCharDialog_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Check if the packet is complete
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
 
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     Call Dialogos.RemoveDialog(incomingData.ReadInteger())
-
     
     Exit Sub
 
 HandleRemoveCharDialog_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRemoveCharDialog", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1317,83 +1307,51 @@ Private Sub HandleNavigateToggle()
     'Remove packet ID
     
     On Error GoTo HandleNavigateToggle_Err
-    
-    Call incomingData.ReadByte
-    
-    UserNavegando = Not UserNavegando
 
+    UserNavegando = Not UserNavegando
     
     Exit Sub
 
 HandleNavigateToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNavigateToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleNadarToggle()
     
     On Error GoTo HandleNadarToggle_Err
-    
 
-    If incomingData.length < 2 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    '
     UserNadando = incomingData.ReadBoolean()
-
     
     Exit Sub
 
 HandleNadarToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNadarToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleEquiteToggle()
-    'Remove packet ID
-    
+ 
     On Error GoTo HandleEquiteToggle_Err
     
-    Call incomingData.ReadByte
     UserMontado = Not UserMontado
 
-    'If UserMontado Then
-    '    charlist(UserCharIndex).Speeding = 1.3
-    ' Else
-    '    charlist(UserCharIndex).Speeding = 1.1
-    ' End If
-    
     Exit Sub
 
 HandleEquiteToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleEquiteToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleVelocidadToggle()
     
     On Error GoTo HandleVelocidadToggle_Err
-    
 
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     If UserCharIndex = 0 Then Exit Sub
-    '
+    
     charlist(UserCharIndex).Speeding = incomingData.ReadSingle()
     
     Call MainTimer.SetInterval(TimersIndex.Walk, IntervaloCaminar / charlist(UserCharIndex).Speeding)
@@ -1402,7 +1360,7 @@ Private Sub HandleVelocidadToggle()
 
 HandleVelocidadToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleVelocidadToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1410,28 +1368,21 @@ Private Sub HandleMacroTrabajoToggle()
     'Activa o Desactiva el macro de trabajo  06/07/2014 Ladder
     
     On Error GoTo HandleMacroTrabajoToggle_Err
-    
-
-    If incomingData.length < 2 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
 
     Dim activar As Boolean
-    
-    '
     activar = incomingData.ReadBoolean()
 
     If activar = False Then
+    
         Call ResetearUserMacro
+        
     Else
-        AddtoRichTextBox frmMain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0
+    
+        Call AddtoRichTextBox(frmMain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0)
+        
         frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
         frmMain.MacroLadder.Enabled = True
+        
         UserMacro.Intervalo = IntervaloTrabajoConstruir
         UserMacro.Activado = True
         UserMacro.cantidad = 999
@@ -1441,13 +1392,12 @@ Private Sub HandleMacroTrabajoToggle()
         TargetYMacro = tY
 
     End If
-
     
     Exit Sub
 
 HandleMacroTrabajoToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMacroTrabajoToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1457,7 +1407,6 @@ End Sub
 Private Sub HandleDisconnect()
     
     On Error GoTo HandleDisconnect_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -1465,17 +1414,11 @@ Private Sub HandleDisconnect()
     '
     '***************************************************
     Dim i As Long
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    Call ResetearUserMacro
-    'Close connection
-    #If UsarWrench = 1 Then
-        frmMain.Socket1.Disconnect
-    #Else
 
-        If frmMain.Winsock1.State <> sckClosed Then frmMain.Winsock1.Close
-    #End If
+    Call ResetearUserMacro
+
+    'Close connection
+    frmMain.MainSocket.Close
     
     'Hide main form
     'FrmCuenta.Visible = True
@@ -1497,9 +1440,6 @@ Private Sub HandleDisconnect()
     frmMain.Visible = False
     
     OpcionMenu = 0
-    ' Panel.Picture = LoadInterface("centroinventario.bmp")
-    ' frmMain.Image2(0).Visible = False
-    'frmMain.Image2(1).Visible = True
 
     frmMain.picInv.Visible = True
     frmMain.hlst.Visible = False
@@ -1553,6 +1493,7 @@ Private Sub HandleDisconnect()
     If Sonido Then
         Sound.Sound_Stop_All
         Sound.Ambient_Stop
+
     End If
 
     Call CleanDialogs
@@ -1678,12 +1619,11 @@ Private Sub HandleDisconnect()
 
     Next
     
-    
     Exit Sub
 
 HandleDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDisconnect", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1696,11 +1636,8 @@ Private Sub HandleCommerceEnd()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
-    
+
     On Error GoTo HandleCommerceEnd_Err
-    
-    Call incomingData.ReadByte
 
     'Reset vars
     Comerciando = False
@@ -1712,7 +1649,7 @@ Private Sub HandleCommerceEnd()
 
 HandleCommerceEnd_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCommerceEnd", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1725,24 +1662,17 @@ Private Sub HandleBankEnd()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
-    
+
     On Error GoTo HandleBankEnd_Err
-    
-    Call incomingData.ReadByte
-    
-    ' frmBancoObj.List1(0).Clear
-    ' frmBancoObj.List1(1).Clear
 
     'Unload frmBancoObj
     Comerciando = False
-
     
     Exit Sub
 
 HandleBankEnd_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBankEnd", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1752,26 +1682,16 @@ End Sub
 Private Sub HandleCommerceInit()
     
     On Error GoTo HandleCommerceInit_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    Dim i As Long
-    
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
+    Dim i       As Long
 
-    End If
-    
     Dim NpcName As String
 
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     NpcName = incomingData.ReadASCIIString()
 
     'Fill our inventory list
@@ -1789,12 +1709,11 @@ Private Sub HandleCommerceInit()
     'Call Inventario.Initialize(frmComerciar.PicInvUser)
     frmComerciar.Show , frmMain
     
-    
     Exit Sub
 
 HandleCommerceInit_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCommerceInit", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1804,7 +1723,6 @@ End Sub
 Private Sub HandleBankInit()
     
     On Error GoTo HandleBankInit_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -1812,10 +1730,7 @@ Private Sub HandleBankInit()
     '
     '***************************************************
     Dim i As Long
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
+
     'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
 
@@ -1826,16 +1741,6 @@ Private Sub HandleBankInit()
 
     Next i
 
-    'Fill our inventory list
-    'For i = 1 To MAX_BANCOINVENTORY_SLOTS
-    '    With UserBancoInventory(i)
-    '        Call InvBoveda.SetItem(i, .OBJIndex, _
-    '        .Amount, .Equipped, .GrhIndex, _
-    '        .ObjType, .MaxHit, .MinHit, .Def, _
-    '        .Valor, .name, .PuedeUsar)
-    '    End With
-    'Next i
-    
     'Set state and show form
     Comerciando = True
     'Call Inventario.Initialize(frmBancoObj.PicInvUser)
@@ -1846,90 +1751,59 @@ Private Sub HandleBankInit()
 
 HandleBankInit_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBankInit", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleGoliathInit()
     
     On Error GoTo HandleGoliathInit_Err
-    
 
     '***************************************************
     '
     '***************************************************
-    If incomingData.length < 6 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
 
-    End If
-    
     Dim UserBoveOro As Long
 
     Dim UserInvBove As Byte
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     UserBoveOro = incomingData.ReadLong()
     UserInvBove = incomingData.ReadByte()
     Call frmGoliath.ParseBancoInfo(UserBoveOro, UserInvBove)
     
-    
     Exit Sub
 
 HandleGoliathInit_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGoliathInit", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleShowFrmLogear()
     
     On Error GoTo HandleShowFrmLogear_Err
-    
 
     '***************************************************
     '
     '***************************************************
-    If incomingData.length < 1 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-        
-    'Remove packet ID
-    Call incomingData.ReadByte
-
     FrmLogear.Show , frmConnect
     FrmLogear.Top = FrmLogear.Top + 4000
-
     
     Exit Sub
 
 HandleShowFrmLogear_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowFrmLogear", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleShowFrmMapa()
     
     On Error GoTo HandleShowFrmMapa_Err
-    
 
     '***************************************************
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-        
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     ExpMult = incomingData.ReadInteger()
     OroMult = incomingData.ReadInteger()
     
@@ -1937,13 +1811,12 @@ Private Sub HandleShowFrmMapa()
 
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
     frmMapaGrande.Show , frmMain
-
     
     Exit Sub
 
 HandleShowFrmMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowFrmMapa", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -1953,7 +1826,6 @@ End Sub
 Private Sub HandleUserCommerceInit()
     
     On Error GoTo HandleUserCommerceInit_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -1962,21 +1834,21 @@ Private Sub HandleUserCommerceInit()
     '***************************************************
     Dim i As Long
     
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     'Clears lists if necessary
     
     'Fill inventory list
     With frmMain.Inventario
+
         For i = 1 To MAX_INVENTORY_SLOTS
             frmComerciarUsu.InvUser.SetItem i, .OBJIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), 0, 0, 0, 0, .ItemName(i), 0
         Next i
+
     End With
         
     frmComerciarUsu.lblMyGold.Caption = frmMain.GldLbl.Caption
     
     Dim j As Byte
+
     For j = 1 To 6
         Call frmComerciarUsu.InvOtherSell.SetItem(j, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
         Call frmComerciarUsu.InvUserSell.SetItem(j, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
@@ -1985,19 +1857,13 @@ Private Sub HandleUserCommerceInit()
     'Set state and show form
     Comerciando = True
     
-    
-  '  frmComerciarUsu.Picture = LoadInterface("comercioseguro.bmp")
     frmComerciarUsu.Show , frmMain
-
-    'frmComerciarUsu.InvUser.ReDraw
-    'frmComerciarUsu.InvOtherSell.ReDraw
-    'frmComerciarUsu.InvUserSell.ReDraw
     
     Exit Sub
 
 HandleUserCommerceInit_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCommerceInit", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2010,30 +1876,18 @@ Private Sub HandleUserCommerceEnd()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
     
     On Error GoTo HandleUserCommerceEnd_Err
-    
-    Call incomingData.ReadByte
-    
-    'Clear the lists
-   ' frmComerciarUsu.List1.Clear
-   ' frmComerciarUsu.List2.Clear
-   ' frmComerciarUsu.List3.Clear
-   'frmComerciarUsu.InvUser = Nothing
-   'frmComerciarUsu.InvUserSell = Nothing
-   'frmComerciarUsu.InvOtherSell = Nothing
     
     'Destroy the form and reset the state
     Unload frmComerciarUsu
     Comerciando = False
-
     
     Exit Sub
 
 HandleUserCommerceEnd_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCommerceEnd", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2046,15 +1900,15 @@ Private Sub HandleShowBlacksmithForm()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
     
     On Error GoTo HandleShowBlacksmithForm_Err
     
-    Call incomingData.ReadByte
-    
     If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    
         Call WriteCraftBlacksmith(MacroBltIndex)
+        
     Else
+    
         frmHerrero.lstArmas.Clear
 
         Dim i As Byte
@@ -2074,13 +1928,12 @@ Private Sub HandleShowBlacksmithForm()
         frmHerrero.Show , frmMain
 
     End If
-
     
     Exit Sub
 
 HandleShowBlacksmithForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowBlacksmithForm", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2088,19 +1941,18 @@ End Sub
 ' Handles the ShowCarpenterForm message.
 
 Private Sub HandleShowCarpenterForm()
+
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
-    
     On Error GoTo HandleShowCarpenterForm_Err
-    
-    Call incomingData.ReadByte
-    
+        
     If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    
         Call WriteCraftCarpenter(MacroBltIndex)
+        
     Else
          
         COLOR_AZUL = RGB(0, 0, 0)
@@ -2112,13 +1964,12 @@ Private Sub HandleShowCarpenterForm()
         frmCarp.Show , frmMain
 
     End If
-
     
     Exit Sub
 
 HandleShowCarpenterForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowCarpenterForm", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2128,15 +1979,15 @@ Private Sub HandleShowAlquimiaForm()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
     
     On Error GoTo HandleShowAlquimiaForm_Err
     
-    Call incomingData.ReadByte
-
     If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    
         Call WriteCraftAlquimista(MacroBltIndex)
+        
     Else
+    
         frmAlqui.Picture = LoadInterface("alquimia.bmp")
     
         COLOR_AZUL = RGB(0, 0, 0)
@@ -2149,13 +2000,12 @@ Private Sub HandleShowAlquimiaForm()
         frmAlqui.Show , frmMain
 
     End If
-
     
     Exit Sub
 
 HandleShowAlquimiaForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowAlquimiaForm", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2165,15 +2015,15 @@ Private Sub HandleShowSastreForm()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
     
     On Error GoTo HandleShowSastreForm_Err
-    
-    Call incomingData.ReadByte
-    
+        
     If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    
         Call WriteCraftSastre(MacroBltIndex)
+        
     Else
+    
         COLOR_AZUL = RGB(0, 0, 0)
 
         ' establece el borde al listbox
@@ -2196,13 +2046,12 @@ Private Sub HandleShowSastreForm()
         FrmSastre.Show , frmMain
 
     End If
-
     
     Exit Sub
 
 HandleShowSastreForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSastreForm", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2215,20 +2064,16 @@ Private Sub HandleNPCKillUser()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
-    
-    On Error GoTo HandleNPCKillUser_Err
-    
-    Call incomingData.ReadByte
-    
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_CRIATURA_MATADO, 255, 0, 0, True, False, False)
 
+    On Error GoTo HandleNPCKillUser_Err
+        
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_CRIATURA_MATADO, 255, 0, 0, True, False, False)
     
     Exit Sub
 
 HandleNPCKillUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNPCKillUser", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2236,25 +2081,21 @@ End Sub
 ' Handles the BlockedWithShieldUser message.
 
 Private Sub HandleBlockedWithShieldUser()
+
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
-    
     On Error GoTo HandleBlockedWithShieldUser_Err
-    
-    Call incomingData.ReadByte
-    
+        
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
-
     
     Exit Sub
 
 HandleBlockedWithShieldUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlockedWithShieldUser", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2262,25 +2103,21 @@ End Sub
 ' Handles the BlockedWithShieldOther message.
 
 Private Sub HandleBlockedWithShieldOther()
+
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
-    
     On Error GoTo HandleBlockedWithShieldOther_Err
-    
-    Call incomingData.ReadByte
-    
+        
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
-
     
     Exit Sub
 
 HandleBlockedWithShieldOther_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlockedWithShieldOther", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2290,17 +2127,6 @@ End Sub
 Private Sub HandleCharSwing()
     
     On Error GoTo HandleCharSwing_Err
-    
-
-    '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex As Integer
 
@@ -2313,27 +2139,25 @@ Private Sub HandleCharSwing()
     Dim ShowText As Boolean
 
     ShowText = incomingData.ReadBoolean
-    
-    'Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_FALLADO_GOLPE, 255, 0, 0, True, False, False)
-    
+        
     With charlist(charindex)
 
         If ShowText Then
             Call SetCharacterDialogFx(charindex, IIf(charindex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
+
         End If
         
-        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.X, .Pos.Y), Sound.Calculate_Pan(.Pos.X, .Pos.Y)) ' Swing
+        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y)) ' Swing
         
         If ShowFX Then Call SetCharacterFx(charindex, 90, 0)
 
     End With
     
-    
     Exit Sub
 
 HandleCharSwing_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharSwing", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2341,26 +2165,22 @@ End Sub
 ' Handles the SafeModeOn message.
 
 Private Sub HandleSafeModeOn()
+
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
-    
     On Error GoTo HandleSafeModeOn_Err
-    
-    Call incomingData.ReadByte
-    
+        
     Call frmMain.DibujarSeguro
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_ACTIVADO, 65, 190, 156, False, False, False)
-
     
     Exit Sub
 
 HandleSafeModeOn_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSafeModeOn", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2373,21 +2193,17 @@ Private Sub HandleSafeModeOff()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
     
     On Error GoTo HandleSafeModeOff_Err
     
-    Call incomingData.ReadByte
-    
     Call frmMain.DesDibujarSeguro
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_DESACTIVADO, 65, 190, 156, False, False, False)
-
     
     Exit Sub
 
 HandleSafeModeOff_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSafeModeOff", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2399,79 +2215,58 @@ Private Sub HandlePartySafeOff()
     'Author: Rapsodius
     'Creation date: 10/10/07
     '***************************************************
-    'Remove packet ID
     
     On Error GoTo HandlePartySafeOff_Err
     
-    Call incomingData.ReadByte
     Call frmMain.ControlSeguroParty(False)
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_PARTY_OFF, 250, 250, 0, False, True, False)
-
     
     Exit Sub
 
 HandlePartySafeOff_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePartySafeOff", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleClanSeguro()
     
     On Error GoTo HandleClanSeguro_Err
-    
 
     '***************************************************
     'Author: Rapsodius
     'Creation date: 10/10/07
     '***************************************************
-    'Check packet is complete
-    If incomingData.length < 2 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
     Dim Seguro As Boolean
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     'Get data and update form
     Seguro = incomingData.ReadBoolean()
     
     If SeguroClanX Then
+    
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan desactivado.", 65, 190, 156, False, False, False)
         frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-off.bmp")
         SeguroClanX = False
+        
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan activado.", 65, 190, 156, False, False, False)
         frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
         SeguroClanX = True
-    End If
 
+    End If
     
     Exit Sub
 
 HandleClanSeguro_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleClanSeguro", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleIntervals()
     
     On Error GoTo HandleIntervals_Err
-    
 
-    If incomingData.length < 45 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     IntervaloArco = incomingData.ReadLong()
     IntervaloCaminar = incomingData.ReadLong()
     IntervaloGolpe = incomingData.ReadLong()
@@ -2510,141 +2305,105 @@ Private Sub HandleIntervals()
     Call MainTimer.Start(TimersIndex.AttackUse)
     Call MainTimer.Start(TimersIndex.Drop)
     Call MainTimer.Start(TimersIndex.Walk)
-
     
     Exit Sub
 
 HandleIntervals_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleIntervals", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleUpdateUserKey()
     
     On Error GoTo HandleUpdateUserKey_Err
-    
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
+ 
     Dim Slot As Integer, Llave As Integer
     
     Slot = incomingData.ReadInteger
     Llave = incomingData.ReadInteger
 
     Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
-
     
     Exit Sub
 
 HandleUpdateUserKey_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateUserKey", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleUpdateDM()
     
     On Error GoTo HandleUpdateDM_Err
-    
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
-    'Remove packet ID
-    Call incomingData.ReadByte
-
+ 
     Dim Value As Integer
 
-    Value = incomingData.ReadInteger
+    value = incomingData.ReadInteger
 
-    frmMain.lbldm = "+" & Value & "%"
-
+    frmMain.lbldm = "+" & value & "%"
     
     Exit Sub
 
 HandleUpdateDM_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateDM", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleUpdateRM()
     
     On Error GoTo HandleUpdateRM_Err
-    
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
-    'Remove packet ID
-    Call incomingData.ReadByte
-
+ 
     Dim Value As Integer
 
-    Value = incomingData.ReadInteger
+    value = incomingData.ReadInteger
 
-    frmMain.lblResis = "+" & Value
-
+    frmMain.lblResis = "+" & value
     
     Exit Sub
 
 HandleUpdateRM_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateRM", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 ' Handles the ResuscitationSafeOn message.
 Private Sub HandlePartySafeOn()
+
     '***************************************************
     'Author: Rapsodius
     'Creation date: 10/10/07
     '***************************************************
-    'Remove packet ID
-    
     On Error GoTo HandlePartySafeOn_Err
-    
-    Call incomingData.ReadByte
+
     Call frmMain.ControlSeguroParty(True)
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_PARTY_ON, 250, 250, 0, False, True, False)
-
     
     Exit Sub
 
 HandlePartySafeOn_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePartySafeOn", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleCorreoPicOn()
+
     '***************************************************
     'Author: Rapsodius
     'Creation date: 10/10/07
     '***************************************************
-    'Remove packet ID
-    
     On Error GoTo HandleCorreoPicOn_Err
-    
-    Call incomingData.ReadByte
+
     frmMain.PicCorreo.Visible = True
 
-    'Call AddtoRichTextBox(frmMain.RecTxt, "Tenes un nuevo correo.", 204, 193, 115, False, False, False)
-    'Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_RESU_ON, 65, 190, 156, False, False, False)
-    
     Exit Sub
 
 HandleCorreoPicOn_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCorreoPicOn", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2657,20 +2416,16 @@ Private Sub HandleCantUseWhileMeditating()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Remove packet ID
-    
-    On Error GoTo HandleCantUseWhileMeditating_Err
-    
-    Call incomingData.ReadByte
-    
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_USAR_MEDITANDO, 255, 0, 0, False, False, False)
 
+    On Error GoTo HandleCantUseWhileMeditating_Err
+
+    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_USAR_MEDITANDO, 255, 0, 0, False, False, False)
     
     Exit Sub
 
 HandleCantUseWhileMeditating_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCantUseWhileMeditating", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2680,37 +2435,28 @@ End Sub
 Private Sub HandleUpdateSta()
     
     On Error GoTo HandleUpdateSta_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Check packet is complete
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
 
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     'Get data and update form
     UserMinSTA = incomingData.ReadInteger()
     frmMain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
     frmMain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
+
     If QuePestañaInferior = 0 Then
         frmMain.STAShp.Visible = (UserMinSTA > 0)
-    End If
 
+    End If
     
     Exit Sub
 
 HandleUpdateSta_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateSta", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2720,23 +2466,13 @@ End Sub
 Private Sub HandleUpdateMana()
     
     On Error GoTo HandleUpdateMana_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Check packet is complete
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
 
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     Dim OldMana As Integer
     OldMana = UserMinMAN
     
@@ -2744,30 +2480,36 @@ Private Sub HandleUpdateMana()
     UserMinMAN = incomingData.ReadInteger()
     
     If UserMeditar And UserMinMAN - OldMana > 0 Then
+
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
             Call ShowConsoleMsg("Has ganado " & UserMinMAN - OldMana & " de maná.", .red, .green, .blue, .bold, .italic)
+
         End With
+
     End If
     
     If UserMaxMAN > 0 Then
         frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
         frmMain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
+
         If QuePestañaInferior = 0 Then
             frmMain.MANShp.Visible = (UserMinMAN > 0)
             frmMain.manabar.Visible = True
+
         End If
+
     Else
         frmMain.MANShp.Width = 0
         frmMain.manabar.Visible = False
         frmMain.MANShp.Visible = False
-    End If
 
+    End If
     
     Exit Sub
 
 HandleUpdateMana_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateMana", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2777,28 +2519,20 @@ End Sub
 Private Sub HandleUpdateHP()
     
     On Error GoTo HandleUpdateHP_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Check packet is complete
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
+
     Dim NuevoValor As Long
     NuevoValor = incomingData.ReadInteger()
     
     ' Si perdió vida, mostramos los stats en el frmMain
     If NuevoValor < UserMinHp Then
         Call frmMain.ShowStats
+
     End If
     
     'Get data and update form
@@ -2808,6 +2542,7 @@ Private Sub HandleUpdateHP()
     
     If QuePestañaInferior = 0 Then
         frmMain.Hpshp.Visible = (UserMinHp > 0)
+
     End If
     
     'Velocidad de la musica
@@ -2817,14 +2552,14 @@ Private Sub HandleUpdateHP()
         UserEstado = 1
     Else
         UserEstado = 0
-    End If
 
+    End If
     
     Exit Sub
 
 HandleUpdateHP_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateHP", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2834,7 +2569,6 @@ End Sub
 Private Sub HandleUpdateGold()
     
     On Error GoTo HandleUpdateGold_Err
-    
 
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
@@ -2842,27 +2576,17 @@ Private Sub HandleUpdateGold()
     'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
     '- 08/14/07: Added GldLbl color variation depending on User Gold and Level
     '***************************************************
-    'Check packet is complete
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
 
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     'Get data and update form
     UserGLD = incomingData.ReadLong()
     
     frmMain.GldLbl.Caption = PonerPuntos(UserGLD)
-
     
     Exit Sub
 
 HandleUpdateGold_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGold", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2872,42 +2596,33 @@ End Sub
 Private Sub HandleUpdateExp()
     
     On Error GoTo HandleUpdateExp_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    'Check packet is complete
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
 
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     'Get data and update form
     UserExp = incomingData.ReadLong()
 
     If UserPasarNivel > 0 Then
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
+        
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
-    End If
 
+    End If
     
     Exit Sub
 
 HandleUpdateExp_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateExp", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -2917,22 +2632,13 @@ End Sub
 Private Sub HandleChangeMap()
     
     On Error GoTo HandleChangeMap_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
 
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     UserMap = incomingData.ReadInteger()
     
     'TODO: Once on-the-fly editor is implemented check for map version before loading....
@@ -2940,83 +2646,41 @@ Private Sub HandleChangeMap()
     Call incomingData.ReadInteger
     
     If bRain Then
+    
         If Not MapDat.LLUVIA Then
-            '  Call Audio.StopWave(RainBufferIndex)
-            ' RainBufferIndex = 0
             frmMain.IsPlaying = PlayLoop.plNone
 
         End If
 
     End If
 
-    If frmComerciar.Visible Then
-        Unload frmComerciar
-    End If
-    
-    If frmBancoObj.Visible Then
-        Unload frmBancoObj
-    End If
-    
-    If FrmShop.Visible Then
-        Unload FrmShop
-    End If
-        
-    If frmEstadisticas.Visible Then
-        Unload frmEstadisticas
-    End If
-    
-    If frmHerrero.Visible Then
-        Unload frmHerrero
-    End If
-    
-    If FrmSastre.Visible Then
-        Unload FrmSastre
-    End If
+    If frmComerciar.Visible Then Unload frmComerciar
+    If frmBancoObj.Visible Then Unload frmBancoObj
+    If FrmShop.Visible Then Unload FrmShop
+    If frmEstadisticas.Visible Then Unload frmEstadisticas
+    If frmHerrero.Visible Then Unload frmHerrero
+    If FrmSastre.Visible Then Unload FrmSastre
+    If frmAlqui.Visible Then Unload frmAlqui
+    If frmCarp.Visible Then Unload frmCarp
+    If FrmGrupo.Visible Then Unload FrmGrupo
+    If FrmCorreo.Visible Then Unload FrmCorreo
+    If frmGoliath.Visible Then Unload frmGoliath
+    If FrmViajes.Visible Then Unload FrmViajes
+    If frmCantidad.Visible Then Unload frmCantidad
+    If FrmRanking.Visible Then Unload FrmRanking
 
-    If frmAlqui.Visible Then
-        Unload frmAlqui
-    End If
-
-    If frmCarp.Visible Then
-        Unload frmCarp
-    End If
-    
-    If FrmGrupo.Visible Then
-        Unload FrmGrupo
-    End If
-    
-    If FrmCorreo.Visible Then
-        Unload FrmCorreo
-    End If
-    
-    If frmGoliath.Visible Then
-        Unload frmGoliath
-    End If
-       
-    If FrmViajes.Visible Then
-        Unload FrmViajes
-    End If
-    
-    If frmCantidad.Visible Then
-        Unload frmCantidad
-    End If
-    
-    If FrmRanking.Visible Then
-        Unload FrmRanking
-    End If
-    
     If frmMapaGrande.Visible Then
         Call CalcularPosicionMAPA
+
     End If
 
     Call SwitchMap(UserMap)
-
     
     Exit Sub
 
 HandleChangeMap_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeMap", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -3026,42 +2690,33 @@ End Sub
 Private Sub HandlePosUpdate()
     
     On Error GoTo HandlePosUpdate_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
 
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     'Remove char from old position
-    If MapData(UserPos.X, UserPos.Y).charindex = UserCharIndex Then
-        MapData(UserPos.X, UserPos.Y).charindex = 0
+    If MapData(UserPos.x, UserPos.y).charindex = UserCharIndex Then
+        MapData(UserPos.x, UserPos.y).charindex = 0
 
     End If
     
     'Set new pos
-    UserPos.X = incomingData.ReadByte()
-    UserPos.Y = incomingData.ReadByte()
+    UserPos.x = incomingData.ReadByte()
+    UserPos.y = incomingData.ReadByte()
 
     'Set char
-    MapData(UserPos.X, UserPos.Y).charindex = UserCharIndex
+    MapData(UserPos.x, UserPos.y).charindex = UserCharIndex
     charlist(UserCharIndex).Pos = UserPos
         
     'Are we under a roof?
-    bTecho = HayTecho(UserPos.X, UserPos.Y)
+    bTecho = HayTecho(UserPos.x, UserPos.y)
                 
     'Update pos label and minimap
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
-    Call frmMain.SetMinimapPosition(0, UserPos.X, UserPos.Y)
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
 
     Call RefreshAllChars
     
@@ -3069,7 +2724,7 @@ Private Sub HandlePosUpdate()
 
 HandlePosUpdate_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosUpdate", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -3079,22 +2734,12 @@ End Sub
 Private Sub HandleNPCHitUser()
     
     On Error GoTo HandleNPCHitUser_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     Dim Lugar As Byte, DañoStr As String
     
     Lugar = incomingData.ReadByte()
@@ -3122,13 +2767,12 @@ Private Sub HandleNPCHitUser()
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_TORSO & DañoStr, 255, 0, 0, True, False, False)
 
     End Select
-
     
     Exit Sub
 
 HandleNPCHitUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNPCHitUser", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -3138,30 +2782,19 @@ End Sub
 Private Sub HandleUserHitNPC()
     
     On Error GoTo HandleUserHitNPC_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & PonerPuntos(incomingData.ReadLong()) & MENSAJE_2, 255, 0, 0, True, False, False)
-
     
     Exit Sub
 
 HandleUserHitNPC_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHitNPC", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -3171,30 +2804,19 @@ End Sub
 Private Sub HandleUserAttackedSwing()
     
     On Error GoTo HandleUserAttackedSwing_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & charlist(incomingData.ReadInteger()).nombre & MENSAJE_ATAQUE_FALLO, 255, 0, 0, True, False, False)
-
     
     Exit Sub
 
 HandleUserAttackedSwing_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserAttackedSwing", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -3204,28 +2826,16 @@ End Sub
 Private Sub HandleUserHittedByUser()
     
     On Error GoTo HandleUserHittedByUser_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 6 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     Dim attacker As String
-    
     Dim intt     As Integer
     
     intt = incomingData.ReadInteger()
-    'attacker = charlist().Nombre
     
     Dim Pos As String
 
@@ -3262,13 +2872,12 @@ Private Sub HandleUserHittedByUser()
             Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_TORSO & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
     End Select
-
     
     Exit Sub
 
 HandleUserHittedByUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHittedByUser", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -3278,22 +2887,12 @@ End Sub
 Private Sub HandleUserHittedUser()
     
     On Error GoTo HandleUserHittedUser_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 6 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     Dim victim As String
     
     Dim intt   As Integer
@@ -3336,13 +2935,12 @@ Private Sub HandleUserHittedUser()
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_TORSO & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
 
     End Select
-
     
     Exit Sub
 
 HandleUserHittedUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHittedUser", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -3356,22 +2954,8 @@ Private Sub HandleChatOverHead()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 12 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
     On Error GoTo errhandler
 
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
-    
     Dim chat       As String
 
     Dim charindex  As Integer
@@ -3386,14 +2970,14 @@ Private Sub HandleChatOverHead()
 
     Dim QueEs      As String
 
-    chat = buffer.ReadASCIIString()
-    charindex = buffer.ReadInteger()
+    chat = incomingData.ReadASCIIString()
+    charindex = incomingData.ReadInteger()
     
-    r = buffer.ReadByte()
-    G = buffer.ReadByte()
-    B = buffer.ReadByte()
+    r = incomingData.ReadByte()
+    G = incomingData.ReadByte()
+    B = incomingData.ReadByte()
     
-    colortexto = vbColor_2_Long(buffer.ReadLong())
+    colortexto = vbColor_2_Long(incomingData.ReadLong())
 
     'Optimizacion de protocolo por Ladder
     QueEs = ReadField(1, chat, Asc("*"))
@@ -3429,6 +3013,7 @@ Private Sub HandleChatOverHead()
             
             If LenB(chat) = 0 Then
                 chat = "Ya has completado esa misión para mí."
+
             End If
         
     End Select
@@ -3449,45 +3034,19 @@ Private Sub HandleChatOverHead()
         End If
 
     End If
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
 
     Exit Sub
     
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-    
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHead", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
 Private Sub HandleTextOverChar()
 
-    If incomingData.length < 9 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim chat      As String
 
@@ -3495,67 +3054,40 @@ Private Sub HandleTextOverChar()
 
     Dim Color     As Long
     
-    chat = buffer.ReadASCIIString()
-    charindex = buffer.ReadInteger()
+    chat = incomingData.ReadASCIIString()
+    charindex = incomingData.ReadInteger()
     
-    Color = buffer.ReadLong()
+    Color = incomingData.ReadLong()
     
     Call SetCharacterDialogFx(charindex, chat, RGBA_From_vbColor(Color))
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
 
+    Exit Sub
+    
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-    
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverChar", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
 Private Sub HandleTextOverTile()
 
-    If incomingData.length < 11 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
     On Error GoTo errhandler
+    
+    Dim Text  As String
 
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
+    Dim x     As Integer, y As Integer
 
-    Call buffer.CopyBuffer(incomingData)
+    Dim Color As Long
     
-    'Remove packet ID
-    Call buffer.ReadByte
+    Text = incomingData.ReadASCIIString()
+    x = incomingData.ReadInteger()
+    y = incomingData.ReadInteger()
+    Color = incomingData.ReadLong()
     
-    Dim Text      As String
-
-    Dim X As Integer, Y As Integer
-
-    Dim Color     As Long
+    If InMapBounds(x, y) Then
     
-    Text = buffer.ReadASCIIString()
-    X = buffer.ReadInteger()
-    Y = buffer.ReadInteger()
-    Color = buffer.ReadLong()
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
-    If InMapBounds(X, Y) Then
-    
-        With MapData(X, Y)
+        With MapData(x, y)
             Dim Index As Integer
             
             If UBound(.DialogEffects) = 0 Then
@@ -3563,15 +3095,21 @@ Private Sub HandleTextOverTile()
                 
                 Index = 1
             Else
+
                 For Index = 1 To UBound(.DialogEffects)
+
                     If .DialogEffects(Index).Text = vbNullString Then
                         Exit For
+
                     End If
+
                 Next
                 
                 If Index > UBound(.DialogEffects) Then
                     ReDim .DialogEffects(1 To UBound(.DialogEffects) + 1)
+
                 End If
+
             End If
             
             With .DialogEffects(Index)
@@ -3579,47 +3117,27 @@ Private Sub HandleTextOverTile()
                 .Color = RGBA_From_vbColor(Color)
                 .Start = FrameTime
                 .Text = Text
-                .offset.X = 0
-                .offset.Y = 0
+                .offset.x = 0
+                .offset.y = 0
             
             End With
+
         End With
         
     End If
 
+    Exit Sub
+    
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-    
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverTile", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
 Private Sub HandleTextCharDrop()
 
-    If incomingData.length < 9 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim Text      As String
 
@@ -3627,28 +3145,26 @@ Private Sub HandleTextCharDrop()
 
     Dim Color     As Long
     
-    Text = buffer.ReadASCIIString()
-    charindex = buffer.ReadInteger()
-    Color = buffer.ReadLong()
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
+    Text = incomingData.ReadASCIIString()
+    charindex = incomingData.ReadInteger()
+    Color = incomingData.ReadLong()
     
     If charindex = 0 Then Exit Sub
 
-    Dim X As Integer, Y As Integer, OffsetX As Integer, OffsetY As Integer
+    Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
     
     With charlist(charindex)
-        X = .Pos.X
-        Y = .Pos.Y
+        x = .Pos.x
+        y = .Pos.y
         
-        OffsetX = .MoveOffsetX + .Body.HeadOffset.X
-        OffsetY = .MoveOffsetY + .Body.HeadOffset.Y
+        OffsetX = .MoveOffsetX + .Body.HeadOffset.x
+        OffsetY = .MoveOffsetY + .Body.HeadOffset.y
+
     End With
     
-    If InMapBounds(X, Y) Then
+    If InMapBounds(x, y) Then
     
-        With MapData(X, Y)
+        With MapData(x, y)
             Dim Index As Integer
             
             If UBound(.DialogEffects) = 0 Then
@@ -3656,15 +3172,21 @@ Private Sub HandleTextCharDrop()
                 
                 Index = 1
             Else
+
                 For Index = 1 To UBound(.DialogEffects)
+
                     If .DialogEffects(Index).Text = vbNullString Then
                         Exit For
+
                     End If
+
                 Next
                 
                 If Index > UBound(.DialogEffects) Then
                     ReDim .DialogEffects(1 To UBound(.DialogEffects) + 1)
+
                 End If
+
             End If
             
             With .DialogEffects(Index)
@@ -3672,28 +3194,21 @@ Private Sub HandleTextCharDrop()
                 .Color = RGBA_From_vbColor(Color)
                 .Start = FrameTime
                 .Text = Text
-                .offset.X = OffsetX
-                .offset.Y = OffsetY
+                .offset.x = OffsetX
+                .offset.y = OffsetY
             
             End With
+
         End With
         
     End If
 
+    Exit Sub
+    
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-    
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextCharDrop", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -3707,20 +3222,8 @@ Private Sub HandleConsoleMessage()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As clsByteQueue
-    Set buffer = New clsByteQueue
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim chat      As String
     Dim fontIndex As Integer
@@ -3735,11 +3238,8 @@ Private Sub HandleConsoleMessage()
     Dim UserName  As String
     Dim Valor     As String
 
-    chat = buffer.ReadASCIIString()
-    fontIndex = buffer.ReadByte()
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
+    chat = incomingData.ReadASCIIString()
+    fontIndex = incomingData.ReadByte()
     
     If ChatGlobal = 0 And fontIndex = FontTypeNames.FONTTYPE_GLOBAL Then Exit Sub
 
@@ -3757,12 +3257,7 @@ Private Sub HandleConsoleMessage()
 
         Case "HECINF"
             Hechizo = ReadField(2, chat, Asc("*"))
-            chat = "------------< Información del hechizo >------------" & vbCrLf & _
-                    "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & _
-                    "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & _
-                    "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & _
-                    "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & _
-                    "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
+            chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
 
         Case "ProMSG"
             Hechizo = ReadField(2, chat, Asc("*"))
@@ -3832,26 +3327,19 @@ Private Sub HandleConsoleMessage()
 
         With FontTypes(fontIndex)
             Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
+
         End With
 
     End If
     
     Exit Sub
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleConsoleMessage", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -3862,21 +3350,8 @@ Private Sub HandleLocaleMsg()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim chat      As String
 
@@ -3904,16 +3379,10 @@ Private Sub HandleLocaleMsg()
 
     Dim id        As Integer
 
-    id = buffer.ReadInteger()
-    chat = buffer.ReadASCIIString()
-    fontIndex = buffer.ReadByte()
-    
-    ' If Not CHATGLOBAL And fontIndex = FontTypeNames.FONTTYPE_GLOBAL Then
-    '    Call incomingData.CopyBuffer(Buffer)
-    '    Set Buffer = Nothing
-    '    Exit Sub
-    ' End If
-   
+    id = incomingData.ReadInteger()
+    chat = incomingData.ReadASCIIString()
+    fontIndex = incomingData.ReadByte()
+
     chat = Locale_Parse_ServerMessage(id, chat)
     
     If InStr(1, chat, "~") Then
@@ -3954,23 +3423,12 @@ Private Sub HandleLocaleMsg()
 
     End If
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLocaleMsg", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -3984,21 +3442,8 @@ Private Sub HandleGuildChat()
     'Last Modification: 04/07/08 (NicoNZ)
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim chat As String
 
@@ -4014,7 +3459,7 @@ Private Sub HandleGuildChat()
 
     Dim Cont As Integer
     
-    chat = buffer.ReadASCIIString()
+    chat = incomingData.ReadASCIIString()
     
     Rem If Not DialogosClanes.Activo Then
     If InStr(1, chat, "~") Then
@@ -4055,23 +3500,12 @@ Private Sub HandleGuildChat()
 
     End If
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildChat", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -4085,27 +3519,15 @@ Private Sub HandleShowMessageBox()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim mensaje As String
 
-    mensaje = buffer.ReadASCIIString()
+    mensaje = incomingData.ReadASCIIString()
 
     Select Case QueRender
+
         Case 0
             frmMensaje.msg.Caption = mensaje
             frmMensaje.Show , frmMain
@@ -4125,23 +3547,12 @@ Private Sub HandleShowMessageBox()
 
     End Select
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMessageBox", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -4152,21 +3563,9 @@ Private Sub HandleMostrarCuenta()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 1 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
     
-    'Remove packet ID
-    Call buffer.ReadByte
     ' FrmCuenta.Show
     AlphaNiebla = 30
     frmConnect.Visible = True
@@ -4222,23 +3621,12 @@ Private Sub HandleMostrarCuenta()
 
     End If
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMostrarCuenta", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -4248,30 +3636,20 @@ End Sub
 Private Sub HandleUserIndexInServer()
     
     On Error GoTo HandleUserIndexInServer_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     userIndex = incomingData.ReadInteger()
-
     
     Exit Sub
 
 HandleUserIndexInServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserIndexInServer", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -4281,42 +3659,34 @@ End Sub
 Private Sub HandleUserCharIndexInServer()
     
     On Error GoTo HandleUserCharIndexInServer_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     UserCharIndex = incomingData.ReadInteger()
     UserPos = charlist(UserCharIndex).Pos
     
     'Are we under a roof?
-    bTecho = HayTecho(UserPos.X, UserPos.Y)
+    bTecho = HayTecho(UserPos.x, UserPos.y)
     
     LastMove = FrameTime
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
-    Call frmMain.SetMinimapPosition(0, UserPos.X, UserPos.Y)
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
     
     If frmMapaGrande.Visible Then
         Call CalcularPosicionMAPA
+
     End If
     
     Exit Sub
 
 HandleUserCharIndexInServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCharIndexInServer", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -4330,20 +3700,8 @@ Private Sub HandleCharacterCreate()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 62 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim charindex     As Integer
 
@@ -4353,9 +3711,9 @@ Private Sub HandleCharacterCreate()
 
     Dim Heading       As E_Heading
 
-    Dim X             As Byte
+    Dim x             As Byte
 
-    Dim Y             As Byte
+    Dim y             As Byte
 
     Dim weapon        As Integer
 
@@ -4373,72 +3731,74 @@ Private Sub HandleCharacterCreate()
 
     Dim group_index   As Integer
     
-    charindex = buffer.ReadInteger()
-    Body = buffer.ReadInteger()
-    Head = buffer.ReadInteger()
-    Heading = buffer.ReadByte()
-    X = buffer.ReadByte()
-    Y = buffer.ReadByte()
-    weapon = buffer.ReadInteger()
-    shield = buffer.ReadInteger()
-    helmet = buffer.ReadInteger()
+    charindex = incomingData.ReadInteger()
+    Body = incomingData.ReadInteger()
+    Head = incomingData.ReadInteger()
+    Heading = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
+    weapon = incomingData.ReadInteger()
+    shield = incomingData.ReadInteger()
+    helmet = incomingData.ReadInteger()
     
     With charlist(charindex)
-        'Call SetCharacterFx(charindex, buffer.ReadInteger(), buffer.ReadInteger())
-        .FxIndex = buffer.ReadInteger
+        'Call SetCharacterFx(charindex, incomingData.ReadInteger(), incomingData.ReadInteger())
+        .FxIndex = incomingData.ReadInteger
         
-        buffer.ReadInteger 'Ignore loops
+        incomingData.ReadInteger 'Ignore loops
         
         If .FxIndex > 0 Then
             Call InitGrh(.fX, FxData(.FxIndex).Animacion)
+
         End If
         
         Dim NombreYClan As String
-        NombreYClan = buffer.ReadASCIIString()
+        NombreYClan = incomingData.ReadASCIIString()
         
         Dim Pos As Integer
         Pos = InStr(NombreYClan, "<")
+
         If Pos = 0 Then Pos = InStr(NombreYClan, "[")
         If Pos = 0 Then Pos = Len(NombreYClan) + 2
         
         .nombre = Left$(NombreYClan, Pos - 2)
         .clan = mid$(NombreYClan, Pos)
         
-        .status = buffer.ReadByte()
+        .status = incomingData.ReadByte()
         
-        privs = buffer.ReadByte()
-        ParticulaFx = buffer.ReadByte()
-        .Head_Aura = buffer.ReadASCIIString()
-        .Arma_Aura = buffer.ReadASCIIString()
-        .Body_Aura = buffer.ReadASCIIString()
-        .DM_Aura = buffer.ReadASCIIString()
-        .RM_Aura = buffer.ReadASCIIString()
-        .Otra_Aura = buffer.ReadASCIIString()
-        .Escudo_Aura = buffer.ReadASCIIString()
-        .Speeding = buffer.ReadSingle()
+        privs = incomingData.ReadByte()
+        ParticulaFx = incomingData.ReadByte()
+        .Head_Aura = incomingData.ReadASCIIString()
+        .Arma_Aura = incomingData.ReadASCIIString()
+        .Body_Aura = incomingData.ReadASCIIString()
+        .DM_Aura = incomingData.ReadASCIIString()
+        .RM_Aura = incomingData.ReadASCIIString()
+        .Otra_Aura = incomingData.ReadASCIIString()
+        .Escudo_Aura = incomingData.ReadASCIIString()
+        .Speeding = incomingData.ReadSingle()
         
         Dim FlagNpc As Byte
-        FlagNpc = buffer.ReadByte()
+        FlagNpc = incomingData.ReadByte()
         
         .EsNpc = FlagNpc > 0
         .EsMascota = FlagNpc = 2
         
-        .Donador = buffer.ReadByte()
-        .appear = buffer.ReadByte()
+        .Donador = incomingData.ReadByte()
+        .appear = incomingData.ReadByte()
         appear = .appear
-        .group_index = buffer.ReadInteger()
-        .clan_index = buffer.ReadInteger()
-        .clan_nivel = buffer.ReadByte()
-        .UserMinHp = buffer.ReadLong()
-        .UserMaxHp = buffer.ReadLong()
-        .simbolo = buffer.ReadByte()
-        .Idle = buffer.ReadBoolean()
-        .Navegando = buffer.ReadBoolean()
+        .group_index = incomingData.ReadInteger()
+        .clan_index = incomingData.ReadInteger()
+        .clan_nivel = incomingData.ReadByte()
+        .UserMinHp = incomingData.ReadLong()
+        .UserMaxHp = incomingData.ReadLong()
+        .simbolo = incomingData.ReadByte()
+        .Idle = incomingData.ReadBoolean()
+        .Navegando = incomingData.ReadBoolean()
         
-        If (.Pos.X <> 0 And .Pos.Y <> 0) Then
-            If MapData(.Pos.X, .Pos.Y).charindex = charindex Then
+        If (.Pos.x <> 0 And .Pos.y <> 0) Then
+            If MapData(.Pos.x, .Pos.y).charindex = charindex Then
                 'Erase the old character from map
-                MapData(charlist(charindex).Pos.X, charlist(charindex).Pos.Y).charindex = 0
+                MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
 
             End If
 
@@ -4473,34 +3833,24 @@ Private Sub HandleCharacterCreate()
         .Muerto = (Body = CASPER_BODY_IDLE)
         '.AlphaPJ = 255
     
-        Call MakeChar(charindex, Body, Head, Heading, X, Y, weapon, shield, helmet, ParticulaFx, appear)
+        Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
         
         If .Idle Or .Navegando Then
             'Start animation
             .Body.Walk(.Heading).Started = FrameTime
+
         End If
         
     End With
     
     Call RefreshAllChars
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterCreate", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -4510,21 +3860,12 @@ End Sub
 Private Sub HandleCharacterRemove()
     
     On Error GoTo HandleCharacterRemove_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex   As Integer
 
@@ -4540,13 +3881,12 @@ Private Sub HandleCharacterRemove()
 
     Call EraseChar(charindex)
     Call RefreshAllChars
-
     
     Exit Sub
 
 HandleCharacterRemove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterRemove", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -4556,29 +3896,20 @@ End Sub
 Private Sub HandleCharacterMove()
     
     On Error GoTo HandleCharacterMove_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex As Integer
-    Dim X         As Byte
-    Dim Y         As Byte
+    Dim x         As Byte
+    Dim y         As Byte
     
     charindex = incomingData.ReadInteger()
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     
     With charlist(charindex)
         
@@ -4590,16 +3921,15 @@ Private Sub HandleCharacterMove()
 
     End With
     
-    Call Char_Move_by_Pos(charindex, X, Y)
+    Call Char_Move_by_Pos(charindex, x, y)
     
     Call RefreshAllChars
-
     
     Exit Sub
 
 HandleCharacterMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterMove", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -4610,16 +3940,8 @@ Private Sub HandleForceCharMove()
     
     On Error GoTo HandleForceCharMove_Err
     
-    
-    If incomingData.length < 2 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    Dim Direccion As Byte: Direccion = incomingData.ReadByte()
+    Dim Direccion As Byte
+    Direccion = incomingData.ReadByte()
     
     Moviendose = True
     
@@ -4628,22 +3950,22 @@ Private Sub HandleForceCharMove()
     Call Char_Move_by_Head(UserCharIndex, Direccion)
     Call MoveScreen(Direccion)
     
-    Call frmMain.SetMinimapPosition(0, UserPos.X, UserPos.Y)
+    Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.X & "-" & UserPos.Y
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
 
     If frmMapaGrande.Visible Then
         Call CalcularPosicionMAPA
+
     End If
     
     Call RefreshAllChars
-    
     
     Exit Sub
 
 HandleForceCharMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMove", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -4653,21 +3975,6 @@ End Sub
 Private Sub HandleCharacterChange()
     
     On Error GoTo HandleCharacterChange_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    If incomingData.length < 19 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex As Integer
 
@@ -4716,7 +4023,7 @@ Private Sub HandleCharacterChange()
 
         If tempint <> 0 Then .Casco = CascoAnimData(tempint)
                 
-        If .Body.HeadOffset.Y = -26 Then
+        If .Body.HeadOffset.y = -26 Then
             .EsEnano = True
         Else
             .EsEnano = False
@@ -4730,6 +4037,7 @@ Private Sub HandleCharacterChange()
         
         If .FxIndex > 0 Then
             Call InitGrh(.fX, FxData(.FxIndex).Animacion)
+
         End If
         
         .Idle = incomingData.ReadBoolean
@@ -4739,18 +4047,18 @@ Private Sub HandleCharacterChange()
         If .Idle Or .Navegando Then
             'Start animation
             .Body.Walk(.Heading).Started = FrameTime
+
         End If
 
     End With
     
     Call RefreshAllChars
-
     
     Exit Sub
 
 HandleCharacterChange_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterChange", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -4760,29 +4068,20 @@ End Sub
 Private Sub HandleObjectCreate()
     
     On Error GoTo HandleObjectCreate_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    Dim X        As Byte
+    Dim x        As Byte
 
-    Dim Y        As Byte
+    Dim y        As Byte
 
     Dim OBJIndex As Integer
     
-    Dim Amount As Integer
+    Dim Amount   As Integer
 
     Dim Color    As RGBA
 
@@ -4790,90 +4089,80 @@ Private Sub HandleObjectCreate()
 
     Dim id       As Long
     
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     
     OBJIndex = incomingData.ReadInteger()
     
     Amount = incomingData.ReadInteger
     
-    MapData(X, Y).ObjGrh.GrhIndex = ObjData(OBJIndex).GrhIndex
+    MapData(x, y).ObjGrh.GrhIndex = ObjData(OBJIndex).GrhIndex
     
-    MapData(X, Y).OBJInfo.OBJIndex = OBJIndex
+    MapData(x, y).OBJInfo.OBJIndex = OBJIndex
     
-    MapData(X, Y).OBJInfo.Amount = Amount
+    MapData(x, y).OBJInfo.Amount = Amount
     
-    Call InitGrh(MapData(X, Y).ObjGrh, MapData(X, Y).ObjGrh.GrhIndex)
+    Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
     
     If ObjData(OBJIndex).CreaLuz <> "" Then
         Call Long_2_RGBA(Color, Val(ReadField(2, ObjData(OBJIndex).CreaLuz, Asc(":"))))
         Rango = Val(ReadField(1, ObjData(OBJIndex).CreaLuz, Asc(":")))
-        MapData(X, Y).luz.Color = Color
-        MapData(X, Y).luz.Rango = Rango
+        MapData(x, y).luz.Color = Color
+        MapData(x, y).luz.Rango = Rango
         
         If Rango < 100 Then
-            id = X & Y
-            LucesCuadradas.Light_Create X, Y, Color, Rango, id
+            id = x & y
+            LucesCuadradas.Light_Create x, y, Color, Rango, id
             LucesCuadradas.Light_Render_All
         Else
-            LucesRedondas.Create_Light_To_Map X, Y, Color, Rango - 99
+            LucesRedondas.Create_Light_To_Map x, y, Color, Rango - 99
             LucesRedondas.LightRenderAll
             LucesCuadradas.Light_Render_All
+
         End If
         
     End If
         
     If ObjData(OBJIndex).CreaParticulaPiso <> 0 Then
-        MapData(X, Y).particle_group = 0
-        General_Particle_Create ObjData(OBJIndex).CreaParticulaPiso, X, Y, -1
+        MapData(x, y).particle_group = 0
+        General_Particle_Create ObjData(OBJIndex).CreaParticulaPiso, x, y, -1
 
     End If
-    
     
     Exit Sub
 
 HandleObjectCreate_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleObjectCreate", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleFxPiso()
     
     On Error GoTo HandleFxPiso_Err
-    
 
     '***************************************************
     'Ladder
     '30/5/10
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    Dim X  As Byte
+    Dim x  As Byte
 
-    Dim Y  As Byte
+    Dim y  As Byte
 
     Dim fX As Byte
 
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     fX = incomingData.ReadInteger()
     
-    Call SetMapFx(X, Y, fX, 0)
-    
+    Call SetMapFx(x, y, fX, 0)
     
     Exit Sub
 
 HandleFxPiso_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleFxPiso", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -4883,54 +4172,44 @@ End Sub
 Private Sub HandleObjectDelete()
     
     On Error GoTo HandleObjectDelete_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    Dim X  As Byte
+    Dim x  As Byte
 
-    Dim Y  As Byte
+    Dim y  As Byte
 
     Dim id As Long
     
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     
-    If ObjData(MapData(X, Y).OBJInfo.OBJIndex).CreaLuz <> "" Then
-        id = LucesCuadradas.Light_Find(X & Y)
+    If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
+        id = LucesCuadradas.Light_Find(x & y)
         LucesCuadradas.Light_Remove id
-        MapData(X, Y).luz.Color = COLOR_EMPTY
-        MapData(X, Y).luz.Rango = 0
+        MapData(x, y).luz.Color = COLOR_EMPTY
+        MapData(x, y).luz.Rango = 0
         LucesCuadradas.Light_Render_All
 
     End If
     
-    MapData(X, Y).ObjGrh.GrhIndex = 0
-    MapData(X, Y).OBJInfo.OBJIndex = 0
+    MapData(x, y).ObjGrh.GrhIndex = 0
+    MapData(x, y).OBJInfo.OBJIndex = 0
     
-    If ObjData(MapData(X, Y).OBJInfo.OBJIndex).CreaParticulaPiso <> 0 Then
-        Graficos_Particulas.Particle_Group_Remove (MapData(X, Y).particle_group)
+    If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaParticulaPiso <> 0 Then
+        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
 
     End If
-
     
     Exit Sub
 
 HandleObjectDelete_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleObjectDelete", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -4940,37 +4219,27 @@ End Sub
 Private Sub HandleBlockPosition()
     
     On Error GoTo HandleBlockPosition_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
-    'Remove packet ID
-    Call incomingData.ReadByte
+    Dim x As Byte, y As Byte, B As Byte
     
-    Dim X As Byte, Y As Byte, B As Byte
-    
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     B = incomingData.ReadByte()
 
-    MapData(X, Y).Blocked = MapData(X, Y).Blocked And Not eBlock.ALL_SIDES
-    MapData(X, Y).Blocked = MapData(X, Y).Blocked Or B
-
+    MapData(x, y).Blocked = MapData(x, y).Blocked And Not eBlock.ALL_SIDES
+    MapData(x, y).Blocked = MapData(x, y).Blocked Or B
     
     Exit Sub
 
 HandleBlockPosition_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlockPosition", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -4980,23 +4249,14 @@ End Sub
 Private Sub HandlePlayMIDI()
     
     On Error GoTo HandlePlayMIDI_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     Dim currentMidi As Byte
-
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     currentMidi = incomingData.ReadByte()
     
@@ -5008,13 +4268,12 @@ Private Sub HandlePlayMIDI()
         Call incomingData.ReadInteger
 
     End If
-
     
     Exit Sub
 
 HandlePlayMIDI_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayMIDI", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5024,7 +4283,6 @@ End Sub
 Private Sub HandlePlayWave()
     
     On Error GoTo HandlePlayWave_Err
-    
 
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
@@ -5032,14 +4290,6 @@ Private Sub HandlePlayWave()
     'Last Modified by: Rapsodius
     'Added support for 3D Sounds.
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
         
     Dim wave As Integer
 
@@ -5075,14 +4325,13 @@ Private Sub HandlePlayWave()
 
 HandlePlayWave_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayWave", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandlePosLLamadaDeClan()
     
     On Error GoTo HandlePosLLamadaDeClan_Err
-    
 
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
@@ -5090,14 +4339,6 @@ Private Sub HandlePosLLamadaDeClan()
     'Last Modified by: Rapsodius
     'Added support for 3D Sounds.
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
         
     Dim map  As Integer
 
@@ -5114,18 +4355,18 @@ Private Sub HandlePosLLamadaDeClan()
     LLamadaDeclanMapa = map
     idmap = ObtenerIdMapaDeLlamadaDeClan(map)
 
-    Dim X As Long
+    Dim x As Long
 
-    Dim Y As Long
+    Dim y As Long
     
-    X = (idmap - 1) Mod 14
-    Y = Int((idmap - 1) / 14)
+    x = (idmap - 1) Mod 14
+    y = Int((idmap - 1) / 14)
 
     'frmMapaGrande.lblAllies.Top = Y * 32
     'frmMapaGrande.lblAllies.Left = X * 32
 
-    frmMapaGrande.llamadadeclan.Top = Y * 32 + (srcX / 4.5)
-    frmMapaGrande.llamadadeclan.Left = X * 32 + (srcY / 4.5)
+    frmMapaGrande.llamadadeclan.Top = y * 32 + (srcX / 4.5)
+    frmMapaGrande.llamadadeclan.Left = x * 32 + (srcY / 4.5)
 
     frmMapaGrande.llamadadeclan.Visible = True
 
@@ -5133,8 +4374,8 @@ Private Sub HandlePosLLamadaDeClan()
 
     frmMapaGrande.Shape2.Visible = True
 
-    frmMapaGrande.Shape2.Top = Y * 32
-    frmMapaGrande.Shape2.Left = X * 32
+    frmMapaGrande.Shape2.Top = y * 32
+    frmMapaGrande.Shape2.Left = x * 32
 
     LLamadaDeclanX = srcX
     LLamadaDeclanY = srcY
@@ -5147,14 +4388,13 @@ Private Sub HandlePosLLamadaDeClan()
 
 HandlePosLLamadaDeClan_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosLLamadaDeClan", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleCharUpdateHP()
     
     On Error GoTo HandleCharUpdateHP_Err
-    
 
     '***************************************************
     'Autor: Juan Martín Sotuyo Dodero (Maraxus)
@@ -5162,14 +4402,6 @@ Private Sub HandleCharUpdateHP()
     'Last Modified by: Rapsodius
     'Added support for 3D Sounds.
     '***************************************************
-    If incomingData.length < 7 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
         
     Dim charindex As Integer
 
@@ -5190,77 +4422,65 @@ Private Sub HandleCharUpdateHP()
 
 HandleCharUpdateHP_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharUpdateHP", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleArmaMov()
     
     On Error GoTo HandleArmaMov_Err
-    
 
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
-    'Remove packet ID
-    Call incomingData.ReadByte
 
     Dim charindex As Integer
 
     charindex = incomingData.ReadInteger()
 
     With charlist(charindex)
+
         If Not .Moving Then
             .MovArmaEscudo = True
             .Arma.WeaponWalk(.Heading).Started = FrameTime
             .Arma.WeaponWalk(.Heading).Loops = 0
-        End If
-    End With
 
+        End If
+
+    End With
     
     Exit Sub
 
 HandleArmaMov_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleArmaMov", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleEscudoMov()
     
     On Error GoTo HandleEscudoMov_Err
-    
 
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
-    'Remove packet ID
-    Call incomingData.ReadByte
 
     Dim charindex As Integer
 
     charindex = incomingData.ReadInteger()
 
     With charlist(charindex)
+
         If Not .Moving Then
             .MovArmaEscudo = True
             .Escudo.ShieldWalk(.Heading).Started = FrameTime
             .Escudo.ShieldWalk(.Heading).Loops = 0
-        End If
-    End With
 
+        End If
+
+    End With
     
     Exit Sub
 
 HandleEscudoMov_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleEscudoMov", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5274,33 +4494,19 @@ Private Sub HandleGuildList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As clsByteQueue
-    Set buffer = New clsByteQueue
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     'Clear guild's list
     frmGuildAdm.guildslist.Clear
     
-    Dim guildsStr As String: guildsStr = buffer.ReadASCIIString()
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
+    Dim guildsStr As String
+    guildsStr = incomingData.ReadASCIIString()
     
     If Len(guildsStr) > 0 Then
 
-        Dim guilds() As String: guilds = Split(guildsStr, SEPARATOR)
+        Dim guilds() As String
+        guilds = Split(guildsStr, SEPARATOR)
         
         ReDim ClanesList(0 To UBound(guilds())) As Tclan
         
@@ -5330,20 +4536,12 @@ Private Sub HandleGuildList()
     
     Exit Sub
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildList", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -5353,37 +4551,27 @@ End Sub
 Private Sub HandleAreaChanged()
     
     On Error GoTo HandleAreaChanged_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
+    
+    Dim x As Byte
 
-    End If
+    Dim y As Byte
     
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    Dim X As Byte
-
-    Dim Y As Byte
-    
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
         
-    Call CambioDeArea(X, Y)
-
+    Call CambioDeArea(x, y)
     
     Exit Sub
 
 HandleAreaChanged_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAreaChanged", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5400,16 +4588,13 @@ Private Sub HandlePauseToggle()
     
     On Error GoTo HandlePauseToggle_Err
     
-    Call incomingData.ReadByte
-    
     pausa = Not pausa
-
     
     Exit Sub
 
 HandlePauseToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePauseToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5425,9 +4610,6 @@ Private Sub HandleRainToggle()
     'Remove packet ID
     
     On Error GoTo HandleRainToggle_Err
-    
-    
-    Call incomingData.ReadByte
     
     If Not InMapBounds(UserPos.X, UserPos.Y) Then Exit Sub
             
@@ -5459,13 +4641,12 @@ Private Sub HandleRainToggle()
     End If
     
     bRain = Not bRain
-  
     
     Exit Sub
 
 HandleRainToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRainToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5478,18 +4659,14 @@ Private Sub HandleTrofeoToggleOn()
     'Remove packet ID
     
     On Error GoTo HandleTrofeoToggleOn_Err
-    
-    
-    Call incomingData.ReadByte
 
     MostrarTrofeo = True
-  
     
     Exit Sub
 
 HandleTrofeoToggleOn_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrofeoToggleOn", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5502,18 +4679,14 @@ Private Sub HandleTrofeoToggleOff()
     'Remove packet ID
     
     On Error GoTo HandleTrofeoToggleOff_Err
-    
-    
-    Call incomingData.ReadByte
 
     MostrarTrofeo = False
-  
     
     Exit Sub
 
 HandleTrofeoToggleOff_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrofeoToggleOff", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5523,21 +4696,12 @@ End Sub
 Private Sub HandleCreateFX()
     
     On Error GoTo HandleCreateFX_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 7 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex As Integer
 
@@ -5556,13 +4720,12 @@ Private Sub HandleCreateFX()
     End If
     
     Call SetCharacterFx(charindex, fX, Loops)
-
     
     Exit Sub
 
 HandleCreateFX_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCreateFX", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5572,20 +4735,12 @@ End Sub
 Private Sub HandleUpdateUserStats()
     
     On Error GoTo HandleUpdateUserStats_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 27 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     UserMaxHp = incomingData.ReadInteger()
     UserMinHp = incomingData.ReadInteger()
@@ -5602,30 +4757,37 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
+
     End If
     
     frmMain.Hpshp.Width = UserMinHp / UserMaxHp * 216
     frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
+
     If QuePestañaInferior = 0 Then
         frmMain.Hpshp.Visible = (UserMinHp > 0)
+
     End If
 
     If UserMaxMAN > 0 Then
         frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
         frmMain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
+
         If QuePestañaInferior = 0 Then
             frmMain.MANShp.Visible = (UserMinMAN > 0)
             frmMain.manabar.Visible = True
+
         End If
+
     Else
         frmMain.manabar.Visible = False
         frmMain.MANShp.Width = 0
         frmMain.MANShp.Visible = False
+
     End If
     
     frmMain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
@@ -5633,7 +4795,9 @@ Private Sub HandleUpdateUserStats()
     
     If QuePestañaInferior = 0 Then
         frmMain.STAShp.Visible = (UserMinSTA > 0)
+
     End If
+
     frmMain.GldLbl.Caption = PonerPuntos(UserGLD)
     frmMain.lblLvl.Caption = ListaClases(UserClase) & " - Nivel " & UserLvl
     
@@ -5641,13 +4805,14 @@ Private Sub HandleUpdateUserStats()
         UserEstado = 1
     Else
         UserEstado = 0
+
     End If
     
     Exit Sub
 
 HandleUpdateUserStats_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateUserStats", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5657,21 +4822,12 @@ End Sub
 Private Sub HandleWorkRequestTarget()
     
     On Error GoTo HandleWorkRequestTarget_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 2 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
 
     Dim UsingSkillREcibido As Byte
      
@@ -5733,13 +4889,12 @@ Private Sub HandleWorkRequestTarget()
             Call FormParser.Parse_Form(frmMain, E_SHOOT)
 
     End Select
-
     
     Exit Sub
 
 HandleWorkRequestTarget_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleWorkRequestTarget", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5753,44 +4908,29 @@ Private Sub HandleChangeInventorySlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 12 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As clsByteQueue
-    Set buffer = New clsByteQueue
-    Call buffer.CopyBuffer(incomingData)
     
-    'Remove packet ID
-    Call buffer.ReadByte
-    
-    Dim Slot              As Byte
-    Dim OBJIndex          As Integer
-    Dim Name              As String
-    Dim Amount            As Integer
-    Dim Equipped          As Boolean
-    Dim GrhIndex          As Long
-    Dim ObjType           As Byte
-    Dim MaxHit            As Integer
-    Dim MinHit            As Integer
-    Dim MaxDef            As Integer
-    Dim MinDef            As Integer
-    Dim Value             As Single
-    Dim podrausarlo       As Byte
+    Dim Slot        As Byte
+    Dim OBJIndex    As Integer
+    Dim Name        As String
+    Dim Amount      As Integer
+    Dim Equipped    As Boolean
+    Dim GrhIndex    As Long
+    Dim ObjType     As Byte
+    Dim MaxHit      As Integer
+    Dim MinHit      As Integer
+    Dim MaxDef      As Integer
+    Dim MinDef      As Integer
+    Dim value       As Single
+    Dim podrausarlo As Byte
 
-    Slot = buffer.ReadByte()
-    OBJIndex = buffer.ReadInteger()
-    Amount = buffer.ReadInteger()
-    Equipped = buffer.ReadBoolean()
-    Value = buffer.ReadSingle()
-    podrausarlo = buffer.ReadByte()
-
-    Call incomingData.CopyBuffer(buffer)
+    Slot = incomingData.ReadByte()
+    OBJIndex = incomingData.ReadInteger()
+    Amount = incomingData.ReadInteger()
+    Equipped = incomingData.ReadBoolean()
+    value = incomingData.ReadSingle()
+    podrausarlo = incomingData.ReadByte()
 
     Name = ObjData(OBJIndex).Name
     GrhIndex = ObjData(OBJIndex).GrhIndex
@@ -5850,29 +4990,20 @@ Private Sub HandleChangeInventorySlot()
 
     End If
 
-    Call frmMain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmMain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, podrausarlo)
 
-    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, podrausarlo)
 
-    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, podrausarlo)
     
-    
-    Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, podrausarlo)
 
     Exit Sub
     
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long: Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeInventorySlot", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -5886,10 +5017,7 @@ Private Sub HandleInventoryUnlockSlots()
     
     On Error GoTo HandleInventoryUnlockSlots_Err
     
-    
     Dim i As Integer
-
-    Call incomingData.ReadByte
     
     UserInvUnlocked = incomingData.ReadByte
     
@@ -5898,15 +5026,12 @@ Private Sub HandleInventoryUnlockSlots()
         frmMain.imgInvLock(i - 1).Picture = LoadInterface("inventoryunlocked.bmp")
     
     Next i
-    
-    'Call Inventario.DrawInventory
-    
-    
+
     Exit Sub
 
 HandleInventoryUnlockSlots_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleInventoryUnlockSlots", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -5917,21 +5042,8 @@ Private Sub HandleRefreshAllInventorySlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim Slot             As Byte
 
@@ -5953,7 +5065,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     Dim defense          As Integer
 
-    Dim Value            As Single
+    Dim value            As Single
 
     Dim PuedeUsar        As Byte
 
@@ -5963,7 +5075,7 @@ Private Sub HandleRefreshAllInventorySlot()
     
     Dim slotNum(1 To 25) As String
     
-    todo = buffer.ReadASCIIString()
+    todo = incomingData.ReadASCIIString()
     
     todo = Right$(todo, Len(todo))
     
@@ -5989,71 +5101,19 @@ Private Sub HandleRefreshAllInventorySlot()
                 Call frmBancoObj.InvBankUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
             ElseIf frmBancoCuenta.Visible Then
                 Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
+
             End If
 
         End With
     
     Next i
-    
-    ' For i = 1 To 10
-    Rem slotNum(1) = Right$(slotNum(1), Len(slotNum(1)))
 
-    'slot = ReadField(1, slotNum(1), Asc("@")) 'Nick
-    ' OBJIndex = ReadField(2, slotNum(1), Asc("@")) 'Nick
-    ' Name = ReadField(3, slotNum(1), Asc("@")) 'Nick
-    ' Amount = ReadField(4, slotNum(1), Asc("@")) 'Nick
-    ' Equipped = ReadField(5, slotNum(1), Asc("@")) 'Nick
-    'grhindex = ReadField(6, slotNum(1), Asc("@")) 'Nick
-    ' ObjType = ReadField(7, slotNum(1), Asc("@")) 'Nick
-    ' MaxHit = ReadField(8, slotNum(1), Asc("@")) 'Nick
-    ' MinHit = ReadField(9, slotNum(1), Asc("@")) 'Nick
-    ' defense = ReadField(10, slotNum(1), Asc("@")) 'Nick
-    '  value = ReadField(11, slotNum(1), Asc("@")) 'Nick
-
-    ' Next i
-     
-    Rem  Call Inventario.SetItem(slot, OBJIndex, Amount, Equipped, grhindex, ObjType, MaxHit, MinHit, defense, value, Name, PuedeUsar)
-    
-    ' For i = 1 To 25
-    ' slotNum(i) = Right$(slotNum(i), Len(slotNum(i)))
-    '  slot = ReadField(1, slotNum(i), Asc("@")) 'Nick
-    '   OBJIndex = ReadField(2, slotNum(i), Asc("@")) 'Nick
-    '  Name = ReadField(3, slotNum(i), Asc("@")) 'Nick
-    '  Amount = ReadField(4, slotNum(i), Asc("@")) 'Nick
-    '  Equipped = ReadField(5, slotNum(i), Asc("@")) 'Nick
-    '  grhindex = ReadField(6, slotNum(i), Asc("@")) 'Nick
-    '    ObjType = ReadField(7, slotNum(i), Asc("@")) 'Nick
-    '  MaxHit = ReadField(8, slotNum(i), Asc("@")) 'Nick
-    '  MinHit = ReadField(9, slotNum(i), Asc("@")) 'Nick
-    '   defense = ReadField(10, slotNum(i), Asc("@")) 'Nick
-    '   value = ReadField(11, slotNum(i), Asc("@")) 'Nick
-    '  Debug.Print Name
-    Rem  Call Inventario.SetItem(i, OBJIndex, Amount, Equipped, grhindex, ObjType, MaxHit, MinHit, defense, value, Name, PuedeUsar)
-    
-    ' If slot < 16 Then
-
-    '  Else
-    'If we got here then packet is complete, copy data back to original queue
-
-    '  End If
-    Call incomingData.CopyBuffer(buffer)
-     
     Exit Sub
-     
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRefreshAllInventorySlot", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6067,59 +5127,37 @@ Private Sub HandleChangeBankSlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 11 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As clsByteQueue
-    Set buffer = New clsByteQueue
-    Call buffer.CopyBuffer(incomingData)
     
-    'Remove packet ID
-    Call buffer.ReadByte
-    
-    Dim Slot As Byte: Slot = buffer.ReadByte()
+    Dim Slot As Byte
+    Slot = incomingData.ReadByte()
     
     Dim BankSlot As Inventory
     
     With BankSlot
     
-        .OBJIndex = buffer.ReadInteger()
+        .OBJIndex = incomingData.ReadInteger()
         .Name = ObjData(.OBJIndex).Name
-        .Amount = buffer.ReadInteger()
+        .Amount = incomingData.ReadInteger()
         .GrhIndex = ObjData(.OBJIndex).GrhIndex
         .ObjType = ObjData(.OBJIndex).ObjType
         .MaxHit = ObjData(.OBJIndex).MaxHit
         .MinHit = ObjData(.OBJIndex).MinHit
         .Def = ObjData(.OBJIndex).MaxDef
-        .Valor = buffer.ReadLong()
-        .PuedeUsar = buffer.ReadByte()
+        .Valor = incomingData.ReadLong()
+        .PuedeUsar = incomingData.ReadByte()
         
         Call frmBancoObj.InvBoveda.SetItem(Slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
 
     End With
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeBankSlot", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6133,21 +5171,8 @@ Private Sub HandleChangeSpellSlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 6 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim Slot     As Byte
 
@@ -6155,10 +5180,10 @@ Private Sub HandleChangeSpellSlot()
 
     Dim cooldown As Integer
 
-    Slot = buffer.ReadByte()
+    Slot = incomingData.ReadByte()
     
-    UserHechizos(Slot) = buffer.ReadInteger()
-    Index = buffer.ReadByte()
+    UserHechizos(Slot) = incomingData.ReadInteger()
+    Index = incomingData.ReadByte()
 
     If Index < 254 Then
     
@@ -6180,25 +5205,14 @@ Private Sub HandleChangeSpellSlot()
     
     End If
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
     Exit Sub
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeSpellSlot", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6208,21 +5222,12 @@ End Sub
 Private Sub HandleAtributes()
     
     On Error GoTo HandleAtributes_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 1 + NUMATRIBUTES Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim i As Long
     
@@ -6247,6 +5252,7 @@ Private Sub HandleAtributes()
         End With
 
     Else
+
         If LlegaronSkills And LlegaronStats Then
             Alocados = SkillPoints
             frmEstadisticas.puntos.Caption = SkillPoints
@@ -6255,15 +5261,16 @@ Private Sub HandleAtributes()
             frmEstadisticas.Show , frmMain
         Else
             LlegaronAtrib = True
-        End If
-    End If
 
+        End If
+
+    End If
     
     Exit Sub
 
 HandleAtributes_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAtributes", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -6277,21 +5284,8 @@ Private Sub HandleBlacksmithWeapons()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 9 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim count As Integer
 
@@ -6299,16 +5293,16 @@ Private Sub HandleBlacksmithWeapons()
 
     Dim tmp   As String
     
-    count = buffer.ReadInteger()
+    count = incomingData.ReadInteger()
     
     Call frmHerrero.lstArmas.Clear
     
     For i = 1 To count
-        ArmasHerrero(i).Index = buffer.ReadInteger()
+        ArmasHerrero(i).Index = incomingData.ReadInteger()
         ' tmp = ObjData(ArmasHerrero(i).Index).name        'Get the object's name
-        ArmasHerrero(i).LHierro = buffer.ReadInteger()  'The iron needed
-        ArmasHerrero(i).LPlata = buffer.ReadInteger()    'The silver needed
-        ArmasHerrero(i).LOro = buffer.ReadInteger()    'The gold needed
+        ArmasHerrero(i).LHierro = incomingData.ReadInteger()  'The iron needed
+        ArmasHerrero(i).LPlata = incomingData.ReadInteger()    'The silver needed
+        ArmasHerrero(i).LOro = incomingData.ReadInteger()    'The gold needed
         
         ' Call frmHerrero.lstArmas.AddItem(tmp)
     Next i
@@ -6319,25 +5313,14 @@ Private Sub HandleBlacksmithWeapons()
     
     i = 0
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
     Exit Sub
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithWeapons", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6351,21 +5334,8 @@ Private Sub HandleBlacksmithArmors()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim count As Integer
 
@@ -6373,23 +5343,23 @@ Private Sub HandleBlacksmithArmors()
 
     Dim tmp   As String
     
-    count = buffer.ReadInteger()
+    count = incomingData.ReadInteger()
     
     'Call frmHerrero.lstArmaduras.Clear
     
     For i = 1 To count
-        tmp = buffer.ReadASCIIString()         'Get the object's name
-        DefensasHerrero(i).LHierro = buffer.ReadInteger()   'The iron needed
-        DefensasHerrero(i).LPlata = buffer.ReadInteger()   'The silver needed
-        DefensasHerrero(i).LOro = buffer.ReadInteger()   'The gold needed
+        tmp = incomingData.ReadASCIIString()         'Get the object's name
+        DefensasHerrero(i).LHierro = incomingData.ReadInteger()   'The iron needed
+        DefensasHerrero(i).LPlata = incomingData.ReadInteger()   'The silver needed
+        DefensasHerrero(i).LOro = incomingData.ReadInteger()   'The gold needed
         
         ' Call frmHerrero.lstArmaduras.AddItem(tmp)
-        DefensasHerrero(i).Index = buffer.ReadInteger()
+        DefensasHerrero(i).Index = incomingData.ReadInteger()
     Next i
         
-    Dim A As Byte
-    Dim e As Byte
-    Dim c As Byte
+    Dim A      As Byte
+    Dim e      As Byte
+    Dim c      As Byte
     Dim tmpObj As ObjDatas
 
     A = 0
@@ -6397,6 +5367,7 @@ Private Sub HandleBlacksmithArmors()
     c = 0
     
     For i = 1 To UBound(DefensasHerrero())
+
         If DefensasHerrero(i).Index = 0 Then Exit For
         
         tmpObj = ObjData(DefensasHerrero(i).Index)
@@ -6432,25 +5403,14 @@ Private Sub HandleBlacksmithArmors()
 
     Next i
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
     Exit Sub
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithArmors", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6464,21 +5424,8 @@ Private Sub HandleCarpenterObjects()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 2 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim count As Integer
 
@@ -6486,12 +5433,12 @@ Private Sub HandleCarpenterObjects()
 
     Dim tmp   As String
     
-    count = buffer.ReadByte()
+    count = incomingData.ReadByte()
     
     Call frmCarp.lstArmas.Clear
     
     For i = 1 To count
-        ObjCarpintero(i) = buffer.ReadInteger()
+        ObjCarpintero(i) = incomingData.ReadInteger()
         
         Call frmCarp.lstArmas.AddItem(ObjData(ObjCarpintero(i)).Name)
     Next i
@@ -6500,23 +5447,12 @@ Private Sub HandleCarpenterObjects()
         ObjCarpintero(i) = 0
     Next i
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCarpenterObjects", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6525,21 +5461,8 @@ Private Sub HandleSastreObjects()
     '***************************************************
     'Author: Ladder
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim count As Integer
 
@@ -6547,7 +5470,7 @@ Private Sub HandleSastreObjects()
 
     Dim tmp   As String
     
-    count = buffer.ReadInteger()
+    count = incomingData.ReadInteger()
     
     For i = i To UBound(ObjSastre())
         ObjSastre(i).Index = 0
@@ -6556,7 +5479,7 @@ Private Sub HandleSastreObjects()
     i = 0
     
     For i = 1 To count
-        ObjSastre(i).Index = buffer.ReadInteger()
+        ObjSastre(i).Index = incomingData.ReadInteger()
         
         ObjSastre(i).PielLobo = ObjData(ObjSastre(i).Index).PielLobo
         ObjSastre(i).PielOsoPardo = ObjData(ObjSastre(i).Index).PielOsoPardo
@@ -6595,23 +5518,12 @@ Private Sub HandleSastreObjects()
 
     Next i
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSastreObjects", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6623,21 +5535,8 @@ Private Sub HandleAlquimiaObjects()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim count As Integer
 
@@ -6647,12 +5546,12 @@ Private Sub HandleAlquimiaObjects()
     
     Dim Obj   As Integer
 
-    count = buffer.ReadInteger()
+    count = incomingData.ReadInteger()
     
     Call frmAlqui.lstArmas.Clear
     
     For i = 1 To count
-        Obj = buffer.ReadInteger()
+        Obj = incomingData.ReadInteger()
         tmp = ObjData(Obj).Name        'Get the object's name
 
         ObjAlquimista(i) = Obj
@@ -6663,23 +5562,12 @@ Private Sub HandleAlquimiaObjects()
         ObjAlquimista(i) = 0
     Next i
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlquimiaObjects", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6696,16 +5584,13 @@ Private Sub HandleRestOK()
     
     On Error GoTo HandleRestOK_Err
     
-    Call incomingData.ReadByte
-    
     UserDescansar = Not UserDescansar
-
     
     Exit Sub
 
 HandleRestOK_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRestOK", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -6719,41 +5604,17 @@ Private Sub HandleErrorMessage()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
+    
+    Call MsgBox(incomingData.ReadASCIIString())
+    
+    Exit Sub
 
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
-    
-    Call MsgBox(buffer.ReadASCIIString())
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleErrorMessage", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6770,19 +5631,16 @@ Private Sub HandleBlind()
     
     On Error GoTo HandleBlind_Err
     
-    Call incomingData.ReadByte
-    
     UserCiego = True
     
     Call SetRGBA(global_light, 4, 4, 4)
     Call MapUpdateGlobalLight
     
-    
     Exit Sub
 
 HandleBlind_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlind", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -6799,16 +5657,13 @@ Private Sub HandleDumb()
     
     On Error GoTo HandleDumb_Err
     
-    Call incomingData.ReadByte
-    
     UserEstupido = True
-
     
     Exit Sub
 
 HandleDumb_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDumb", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -6823,47 +5678,23 @@ Private Sub HandleShowSignal()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim tmp As String
-
     Dim grh As Integer
 
-    tmp = ObjData(buffer.ReadInteger()).Texto
-    grh = buffer.ReadInteger()
+    tmp = ObjData(incomingData.ReadInteger()).Texto
+    grh = incomingData.ReadInteger()
+    
     Call InitCartel(tmp, grh)
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSignal", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6877,60 +5708,38 @@ Private Sub HandleChangeNPCInventorySlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 11 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As clsByteQueue
-    Set buffer = New clsByteQueue
-    Call buffer.CopyBuffer(incomingData)
     
-    'Remove packet ID
-    Call buffer.ReadByte
-    
-    Dim Slot As Byte: Slot = buffer.ReadByte()
+    Dim Slot As Byte
+    Slot = incomingData.ReadByte()
     
     Dim SlotInv As NpCinV
+
     With SlotInv
-        .OBJIndex = buffer.ReadInteger()
+        .OBJIndex = incomingData.ReadInteger()
         .Name = ObjData(.OBJIndex).Name
-        .Amount = buffer.ReadInteger()
-        .Valor = buffer.ReadSingle()
+        .Amount = incomingData.ReadInteger()
+        .Valor = incomingData.ReadSingle()
         .GrhIndex = ObjData(.OBJIndex).GrhIndex
         .ObjType = ObjData(.OBJIndex).ObjType
         .MaxHit = ObjData(.OBJIndex).MaxHit
         .MinHit = ObjData(.OBJIndex).MinHit
         .Def = ObjData(.OBJIndex).MaxDef
-        .PuedeUsar = buffer.ReadByte()
+        .PuedeUsar = incomingData.ReadByte()
         
         Call frmComerciar.InvComNpc.SetItem(Slot, .OBJIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
         
     End With
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
     Exit Sub
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeNPCInventorySlot", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -6940,21 +5749,12 @@ End Sub
 Private Sub HandleUpdateHungerAndThirst()
     
     On Error GoTo HandleUpdateHungerAndThirst_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     UserMaxAGU = incomingData.ReadByte()
     UserMinAGU = incomingData.ReadByte()
@@ -6965,15 +5765,17 @@ Private Sub HandleUpdateHungerAndThirst()
     frmMain.AGUbar.Caption = UserMinAGU '& " / " & UserMaxAGU
     frmMain.hambar.Caption = UserMinHAM ' & " / " & UserMaxHAM
     
-        If QuePestañaInferior = 0 Then
-            frmMain.AGUAsp.Visible = (UserMinAGU > 0)
-            frmMain.COMIDAsp.Visible = (UserMinHAM > 0)
-        End If
+    If QuePestañaInferior = 0 Then
+        frmMain.AGUAsp.Visible = (UserMinAGU > 0)
+        frmMain.COMIDAsp.Visible = (UserMinHAM > 0)
+
+    End If
+
     Exit Sub
 
 HandleUpdateHungerAndThirst_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateHungerAndThirst", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -6981,76 +5783,50 @@ Private Sub HandleHora()
     '***************************************************
     
     On Error GoTo HandleHora_Err
-    
-    If incomingData.length < 9 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
 
     HoraMundo = (timeGetTime And &H7FFFFFFF) - incomingData.ReadLong()
     DuracionDia = incomingData.ReadLong()
     
     If Not Connected Then
         Call RevisarHoraMundo(True)
-    End If
 
+    End If
     
     Exit Sub
 
 HandleHora_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleHora", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
  
 Private Sub HandleLight()
     
     On Error GoTo HandleLight_Err
-    
- 
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
  
     Dim Color As String
-
-    Call incomingData.ReadByte
+    
     Color = incomingData.ReadASCIIString()
 
     'Call SetGlobalLight(Map_light_base)
- 
     
     Exit Sub
 
 HandleLight_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLight", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
  
 Private Sub HandleFYA()
     
     On Error GoTo HandleFYA_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     UserAtributos(eAtributos.Fuerza) = incomingData.ReadByte()
     UserAtributos(eAtributos.Agilidad) = incomingData.ReadByte()
@@ -7068,6 +5844,7 @@ Private Sub HandleFYA()
         frmMain.Fuerzalbl.ForeColor = RGB(204, 100, 100)
     Else
         frmMain.Fuerzalbl.ForeColor = vbWhite
+
     End If
     
     If UserAtributos(eAtributos.Agilidad) >= 35 Then
@@ -7076,38 +5853,29 @@ Private Sub HandleFYA()
         frmMain.AgilidadLbl.ForeColor = RGB(204, 100, 100)
     Else
         frmMain.AgilidadLbl.ForeColor = vbWhite
+
     End If
 
     frmMain.Fuerzalbl.Caption = UserAtributos(eAtributos.Fuerza)
     frmMain.AgilidadLbl.Caption = UserAtributos(eAtributos.Agilidad)
-
     
     Exit Sub
 
 HandleFYA_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleFYA", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleUpdateNPCSimbolo()
     
     On Error GoTo HandleUpdateNPCSimbolo_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim NpcIndex As Integer
 
@@ -7118,13 +5886,12 @@ Private Sub HandleUpdateNPCSimbolo()
     simbolo = incomingData.ReadByte()
 
     charlist(NpcIndex).simbolo = simbolo
-
     
     Exit Sub
 
 HandleUpdateNPCSimbolo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateNPCSimbolo", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7138,39 +5905,27 @@ Private Sub HandleCerrarleCliente()
     
     On Error GoTo HandleCerrarleCliente_Err
     
-    Call incomingData.ReadByte
-    
     EngineRun = False
 
     Call CloseClient
-
     
     Exit Sub
 
 HandleCerrarleCliente_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleContadores()
     
     On Error GoTo HandleContadores_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 9 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     InviCounter = incomingData.ReadInteger()
     ScrollExpCounter = incomingData.ReadInteger()
@@ -7186,33 +5941,23 @@ Private Sub HandleContadores()
     
     frmMain.Contadores.Enabled = True
     
-    
     Exit Sub
 
 HandleContadores_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleContadores", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleOxigeno()
     
     On Error GoTo HandleOxigeno_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim oxigeno As Integer
 
@@ -7249,12 +5994,11 @@ Private Sub HandleOxigeno()
 
     End If
     
-    
     Exit Sub
 
 HandleOxigeno_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleOxigeno", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7263,7 +6007,6 @@ End Sub
 Private Sub HandleFlashScreen()
     
     On Error GoTo HandleEfectToScreen_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -7271,15 +6014,7 @@ Private Sub HandleFlashScreen()
     '
     '***************************************************
     Dim Color As Long, duracion As Long, ignorar As Boolean
-
-    If incomingData.length < 10 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
-    'Remove packet ID
-    Call incomingData.ReadByte
     Color = incomingData.ReadLong()
     duracion = incomingData.ReadLong()
     ignorar = incomingData.ReadBoolean()
@@ -7300,32 +6035,17 @@ Private Sub HandleFlashScreen()
 
     Call EfectoEnPantalla(Color, duracion)
     
-    
     Exit Sub
 
 HandleEfectToScreen_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleEfectToScreen", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleMiniStats()
     
     On Error GoTo HandleMiniStats_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    If incomingData.length < 30 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     With UserEstadisticas
         .CiudadanosMatados = incomingData.ReadLong()
@@ -7362,14 +6082,14 @@ Private Sub HandleMiniStats()
         frmEstadisticas.Show , frmMain
     Else
         LlegaronStats = True
-    End If
 
+    End If
     
     Exit Sub
 
 HandleMiniStats_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMiniStats", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7379,30 +6099,20 @@ End Sub
 Private Sub HandleLevelUp()
     
     On Error GoTo HandleLevelUp_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     SkillPoints = incomingData.ReadInteger()
-
     
     Exit Sub
 
 HandleLevelUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLevelUp", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7416,50 +6126,22 @@ Private Sub HandleAddForumMessage()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim title   As String
 
     Dim Message As String
     
-    title = buffer.ReadASCIIString()
-    Message = buffer.ReadASCIIString()
-    
-    'Call frmForo.List.AddItem(title)
-    ' frmForo.Text(frmForo.List.ListCount - 1).Text = Message
-    ' Call Load(frmForo.Text(frmForo.List.ListCount))
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    title = incomingData.ReadASCIIString()
+    Message = incomingData.ReadASCIIString()
+
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAddForumMessage", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -7476,8 +6158,6 @@ Private Sub HandleShowForumForm()
     
     On Error GoTo HandleShowForumForm_Err
     
-    Call incomingData.ReadByte
-    
     ' If Not frmForo.Visible Then
     '   frmForo.Show , frmMain
     ' End If
@@ -7486,7 +6166,7 @@ Private Sub HandleShowForumForm()
 
 HandleShowForumForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowForumForm", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7496,67 +6176,47 @@ End Sub
 Private Sub HandleSetInvisible()
     
     On Error GoTo HandleSetInvisible_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex As Integer
     
     charindex = incomingData.ReadInteger()
     charlist(charindex).Invisible = incomingData.ReadBoolean()
     charlist(charindex).TimerI = 0
-
     
     Exit Sub
 
 HandleSetInvisible_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSetInvisible", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleSetEscribiendo()
     
     On Error GoTo HandleSetEscribiendo_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex As Integer
     
     charindex = incomingData.ReadInteger()
     charlist(charindex).Escribiendo = incomingData.ReadBoolean()
-
     
     Exit Sub
 
 HandleSetEscribiendo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSetEscribiendo", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7566,21 +6226,12 @@ End Sub
 Private Sub HandleDiceRoll()
     
     On Error GoTo HandleDiceRoll_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     UserAtributos(eAtributos.Fuerza) = incomingData.ReadByte()
     UserAtributos(eAtributos.Agilidad) = incomingData.ReadByte()
@@ -7593,13 +6244,12 @@ Private Sub HandleDiceRoll()
     frmCrearPersonaje.lbInteligencia = UserAtributos(eAtributos.Inteligencia)
     frmCrearPersonaje.lbConstitucion = UserAtributos(eAtributos.Constitucion)
     frmCrearPersonaje.lbCarisma = UserAtributos(eAtributos.Carisma)
-
     
     Exit Sub
 
 HandleDiceRoll_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDiceRoll", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7612,8 +6262,6 @@ Private Sub HandleMeditateToggle()
     
     On Error GoTo HandleMeditateToggle_Err
     
-    Call incomingData.ReadByte
-    
     Dim charindex As Integer, fX As Integer
     
     charindex = incomingData.ReadInteger
@@ -7623,32 +6271,41 @@ Private Sub HandleMeditateToggle()
         UserMeditar = (fX <> 0)
         
         If UserMeditar Then
+
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
                 Call ShowConsoleMsg("Comienzas a meditar.", .red, .green, .blue, .bold, .italic)
+
             End With
+
         Else
+
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
                 Call ShowConsoleMsg("Has dejado de meditar.", .red, .green, .blue, .bold, .italic)
+
             End With
+
         End If
+
     End If
     
     With charlist(charindex)
+
         If fX <> 0 Then
             Call InitGrh(.fX, FxData(fX).Animacion)
+
         End If
         
         .FxIndex = fX
         .fX.Loops = -1
         .fX.AnimacionContador = 0
-    End With
 
+    End With
     
     Exit Sub
 
 HandleMeditateToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMeditateToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7665,7 +6322,6 @@ Private Sub HandleBlindNoMore()
     
     On Error GoTo HandleBlindNoMore_Err
     
-    Call incomingData.ReadByte
     UserCiego = False
     
     Call RestaurarLuz
@@ -7674,7 +6330,7 @@ Private Sub HandleBlindNoMore()
 
 HandleBlindNoMore_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlindNoMore", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7691,16 +6347,13 @@ Private Sub HandleDumbNoMore()
     
     On Error GoTo HandleDumbNoMore_Err
     
-    Call incomingData.ReadByte
-    
     UserEstupido = False
-
     
     Exit Sub
 
 HandleDumbNoMore_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDumbNoMore", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7710,21 +6363,12 @@ End Sub
 Private Sub HandleSendSkills()
     
     On Error GoTo HandleSendSkills_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 1 + NUMSKILLS Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim i As Long
     
@@ -7741,14 +6385,14 @@ Private Sub HandleSendSkills()
         frmEstadisticas.Show , frmMain
     Else
         LlegaronSkills = True
-    End If
 
+    End If
     
     Exit Sub
 
 HandleSendSkills_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendSkills", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -7762,27 +6406,14 @@ Private Sub HandleTrainerCreatureList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim creatures() As String
 
     Dim i           As Long
     
-    creatures = Split(buffer.ReadASCIIString(), SEPARATOR)
+    creatures = Split(incomingData.ReadASCIIString(), SEPARATOR)
     
     For i = 0 To UBound(creatures())
         Call frmEntrenador.lstCriaturas.AddItem(creatures(i))
@@ -7790,23 +6421,12 @@ Private Sub HandleTrainerCreatureList()
 
     frmEntrenador.Show , frmMain
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrainerCreatureList", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -7820,21 +6440,8 @@ Private Sub HandleGuildNews()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 12 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     ' Dim guildList() As String
     Dim List()      As String
@@ -7849,10 +6456,10 @@ Private Sub HandleGuildNews()
 
     Dim guildList() As String
         
-    frmGuildNews.news = buffer.ReadASCIIString()
+    frmGuildNews.news = incomingData.ReadASCIIString()
     
     'Get list of existing guilds
-    List = Split(buffer.ReadASCIIString(), SEPARATOR)
+    List = Split(incomingData.ReadASCIIString(), SEPARATOR)
         
     'Empty the list
     Call frmGuildNews.guildslist.Clear
@@ -7862,7 +6469,7 @@ Private Sub HandleGuildNews()
     Next i
     
     'Get  guilds list member
-    guildList = Split(buffer.ReadASCIIString(), SEPARATOR)
+    guildList = Split(incomingData.ReadASCIIString(), SEPARATOR)
     
     Dim cantidad As String
 
@@ -7882,19 +6489,17 @@ Private Sub HandleGuildNews()
         'Debug.Print guildList(i)
     Next i
     
-    ClanNivel = buffer.ReadByte()
-    expacu = buffer.ReadInteger()
-    ExpNe = buffer.ReadInteger()
+    ClanNivel = incomingData.ReadByte()
+    expacu = incomingData.ReadInteger()
+    ExpNe = incomingData.ReadInteger()
      
     With frmGuildNews
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
-        
-        ' frmMain.exp.Caption = UserExp & "/" & UserPasarNivel
-        ' frmMain.ExpBar.Width = (((UserExp / 100) / (UserPasarNivel / 100)) * 165)
+
         If ExpNe > 0 Then
        
             .porciento.Caption = Round(CDbl(expacu) * CDbl(100) / CDbl(ExpNe), 0) & "%"
@@ -7929,23 +6534,12 @@ Private Sub HandleGuildNews()
     
     frmGuildNews.Show vbModeless, frmMain
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildNews", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -7959,41 +6553,17 @@ Private Sub HandleOfferDetails()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
+    
+    Call frmUserRequest.recievePeticion(incomingData.ReadASCIIString())
+    
+    Exit Sub
 
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
-    
-    Call frmUserRequest.recievePeticion(buffer.ReadASCIIString())
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleOfferDetails", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8007,27 +6577,14 @@ Private Sub HandleAlianceProposalsList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim guildList() As String
 
     Dim i           As Long
     
-    guildList = Split(buffer.ReadASCIIString(), SEPARATOR)
+    guildList = Split(incomingData.ReadASCIIString(), SEPARATOR)
     
     For i = 0 To UBound(guildList())
         Call frmPeaceProp.lista.AddItem(guildList(i))
@@ -8036,23 +6593,12 @@ Private Sub HandleAlianceProposalsList()
     frmPeaceProp.ProposalType = TIPO_PROPUESTA.ALIANZA
     Call frmPeaceProp.Show(vbModeless, frmMain)
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlianceProposalsList", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8066,27 +6612,14 @@ Private Sub HandlePeaceProposalsList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim guildList() As String
 
     Dim i           As Long
     
-    guildList = Split(buffer.ReadASCIIString(), SEPARATOR)
+    guildList = Split(incomingData.ReadASCIIString(), SEPARATOR)
     
     For i = 0 To UBound(guildList())
         Call frmPeaceProp.lista.AddItem(guildList(i))
@@ -8095,23 +6628,12 @@ Private Sub HandlePeaceProposalsList()
     frmPeaceProp.ProposalType = TIPO_PROPUESTA.PAZ
     Call frmPeaceProp.Show(vbModeless, frmMain)
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePeaceProposalsList", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8125,21 +6647,8 @@ Private Sub HandleCharacterInfo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 31 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     With frmCharInfo
 
@@ -8155,77 +6664,53 @@ Private Sub HandleCharacterInfo()
             .desc.Visible = True
 
         End If
-        
-        .nombre.Caption = "Nombre: " & buffer.ReadASCIIString()
-        .Raza.Caption = "Raza: " & ListaRazas(buffer.ReadByte())
-        .Clase.Caption = "Clase: " & ListaClases(buffer.ReadByte())
-        
-        If buffer.ReadByte() = 1 Then
+    
+        If incomingData.ReadByte() = 1 Then
+            .nombre.Caption = "Nombre: " & incomingData.ReadASCIIString()
+            .Raza.Caption = "Raza: " & ListaRazas(incomingData.ReadByte())
+            .Clase.Caption = "Clase: " & ListaClases(incomingData.ReadByte())
+            
             .Genero.Caption = "Genero: Hombre"
         Else
             .Genero.Caption = "Genero: Mujer"
-
+    
         End If
-        
-        .nivel.Caption = "Nivel: " & buffer.ReadByte()
-        .oro.Caption = "Oro: " & buffer.ReadLong()
-        .Banco.Caption = "Banco: " & buffer.ReadLong()
-        
-        ' Dim reputation As Long
-        'reputation = buffer.ReadLong()
-        
-        '.reputacion.Caption = "Reputación: " & reputation
-        
-        .txtPeticiones.Text = buffer.ReadASCIIString()
-        .guildactual.Caption = "Clan: " & buffer.ReadASCIIString()
-        .txtMiembro.Text = buffer.ReadASCIIString()
-        
+            
+        .nivel.Caption = "Nivel: " & incomingData.ReadByte()
+        .oro.Caption = "Oro: " & incomingData.ReadLong()
+        .Banco.Caption = "Banco: " & incomingData.ReadLong()
+    
+        .txtPeticiones.Text = incomingData.ReadASCIIString()
+        .guildactual.Caption = "Clan: " & incomingData.ReadASCIIString()
+        .txtMiembro.Text = incomingData.ReadASCIIString()
+            
         Dim armada As Boolean
-
+    
         Dim caos   As Boolean
-        
-        armada = buffer.ReadBoolean()
-        caos = buffer.ReadBoolean()
-        
+            
+        armada = incomingData.ReadBoolean()
+        caos = incomingData.ReadBoolean()
+            
         If armada Then
             .ejercito.Caption = "Ejército: Armada Real"
         ElseIf caos Then
             .ejercito.Caption = "Ejército: Legión Oscura"
-
-        End If
-        
-        .ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(buffer.ReadLong())
-        .Criminales.Caption = "Criminales asesinados: " & CStr(buffer.ReadLong())
-        
-        '   If reputation > 0 Then
-        '   .status.Caption = " (Ciudadano)"
-        '     .status.ForeColor = vbBlue
-        ' Else
-        '    .status.Caption = " (Criminal)"
-        '    .status.ForeColor = vbRed
-        '  End If
-        
-        Call .Show(vbModeless, frmMain)
-
-    End With
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
+        End If
+            
+        .ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(incomingData.ReadLong())
+        .Criminales.Caption = "Criminales asesinados: " & CStr(incomingData.ReadLong())
+    
+        Call .Show(vbModeless, frmMain)
+    
+    End With
+        
+    Exit Sub
     
 errhandler:
-
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
     
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterInfo", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8239,21 +6724,8 @@ Private Sub HandleGuildLeaderInfo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 14 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim List() As String
 
@@ -8261,7 +6733,7 @@ Private Sub HandleGuildLeaderInfo()
     
     With frmGuildLeader
         'Get list of existing guilds
-        List = Split(buffer.ReadASCIIString(), SEPARATOR)
+        List = Split(incomingData.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
         Call .guildslist.Clear
@@ -8271,7 +6743,7 @@ Private Sub HandleGuildLeaderInfo()
         Next i
         
         'Get list of guild's members
-        List = Split(buffer.ReadASCIIString(), SEPARATOR)
+        List = Split(incomingData.ReadASCIIString(), SEPARATOR)
         .miembros.Caption = "El clan cuenta con " & CStr(UBound(List()) + 1) & " miembros."
         
         'Empty the list
@@ -8281,10 +6753,10 @@ Private Sub HandleGuildLeaderInfo()
             Call .members.AddItem(List(i))
         Next i
         
-        .txtguildnews = buffer.ReadASCIIString()
+        .txtguildnews = incomingData.ReadASCIIString()
         
         'Get list of join requests
-        List = Split(buffer.ReadASCIIString(), SEPARATOR)
+        List = Split(incomingData.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
         Call .solicitudes.Clear
@@ -8299,15 +6771,15 @@ Private Sub HandleGuildLeaderInfo()
 
         Dim nivel  As Byte
          
-        nivel = buffer.ReadByte()
+        nivel = incomingData.ReadByte()
         .nivel = "Nivel: " & nivel
         
-        expacu = buffer.ReadInteger()
-        ExpNe = buffer.ReadInteger()
+        expacu = incomingData.ReadInteger()
+        ExpNe = incomingData.ReadInteger()
         '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 2370
         
         If ExpNe > 0 Then
        
@@ -8340,24 +6812,13 @@ Private Sub HandleGuildLeaderInfo()
         .Show , frmMain
 
     End With
-
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildLeaderInfo", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8371,21 +6832,8 @@ Private Sub HandleGuildDetails()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 16 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     With frmGuildBrief
 
@@ -8393,38 +6841,27 @@ Private Sub HandleGuildDetails()
 
         End If
         
-        .nombre.Caption = "Nombre:" & buffer.ReadASCIIString()
-        .fundador.Caption = "Fundador:" & buffer.ReadASCIIString()
-        .creacion.Caption = "Fecha de creacion:" & buffer.ReadASCIIString()
-        .lider.Caption = "Líder:" & buffer.ReadASCIIString()
-        .miembros.Caption = "Miembros:" & buffer.ReadInteger()
+        .nombre.Caption = "Nombre:" & incomingData.ReadASCIIString()
+        .fundador.Caption = "Fundador:" & incomingData.ReadASCIIString()
+        .creacion.Caption = "Fecha de creacion:" & incomingData.ReadASCIIString()
+        .lider.Caption = "Líder:" & incomingData.ReadASCIIString()
+        .miembros.Caption = "Miembros:" & incomingData.ReadInteger()
         
-        .lblAlineacion.Caption = "Alineación: " & buffer.ReadASCIIString()
+        .lblAlineacion.Caption = "Alineación: " & incomingData.ReadASCIIString()
         
-        .desc.Text = buffer.ReadASCIIString()
-        .nivel.Caption = "Nivel de clan: " & buffer.ReadByte()
+        .desc.Text = incomingData.ReadASCIIString()
+        .nivel.Caption = "Nivel de clan: " & incomingData.ReadByte()
 
     End With
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
     frmGuildBrief.Show vbModeless, frmMain
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildDetails", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8441,17 +6878,14 @@ Private Sub HandleShowGuildFundationForm()
     
     On Error GoTo HandleShowGuildFundationForm_Err
     
-    Call incomingData.ReadByte
-    
     CreandoClan = True
     frmGuildDetails.Show , frmMain
-
     
     Exit Sub
 
 HandleShowGuildFundationForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowGuildFundationForm", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -8468,16 +6902,13 @@ Private Sub HandleParalizeOK()
     
     On Error GoTo HandleParalizeOK_Err
     
-    Call incomingData.ReadByte
-    
     UserParalizado = Not UserParalizado
-
     
     Exit Sub
 
 HandleParalizeOK_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParalizeOK", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -8491,16 +6922,13 @@ Private Sub HandleInmovilizadoOK()
     
     On Error GoTo HandleInmovilizadoOK_Err
     
-    Call incomingData.ReadByte
-    
     UserInmovilizado = Not UserInmovilizado
-
     
     Exit Sub
 
 HandleInmovilizadoOK_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleInmovilizadoOK", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -8514,42 +6942,18 @@ Private Sub HandleShowUserRequest()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
     
-    'Remove packet ID
-    Call buffer.ReadByte
-    
-    Call frmUserRequest.recievePeticion(buffer.ReadASCIIString())
+    Call frmUserRequest.recievePeticion(incomingData.ReadASCIIString())
     Call frmUserRequest.Show(vbModeless, frmMain)
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowUserRequest", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8563,61 +6967,61 @@ Private Sub HandleChangeUserTradeSlot()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 22 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
     
-    'Remove packet ID
-    Call buffer.ReadByte
     Dim miOferta As Boolean
     
-    miOferta = buffer.ReadBoolean
-    Dim i As Byte
+    miOferta = incomingData.ReadBoolean
+    Dim i          As Byte
     Dim nombreItem As String
-    Dim cantidad As Integer
-    Dim grhItem As Long
-    Dim OBJIndex As Integer
+    Dim cantidad   As Integer
+    Dim grhItem    As Long
+    Dim OBJIndex   As Integer
+
     If miOferta Then
         Dim OroAEnviar As Long
-        OroAEnviar = buffer.ReadLong
+        OroAEnviar = incomingData.ReadLong
         frmComerciarUsu.lblOroMiOferta.Caption = PonerPuntos(OroAEnviar)
         frmComerciarUsu.lblMyGold.Caption = PonerPuntos(Val(frmMain.GldLbl.Caption - OroAEnviar))
+
         For i = 1 To 6
+
             With OtroInventario(i)
-                OBJIndex = buffer.ReadInteger
-                nombreItem = buffer.ReadASCIIString
-                grhItem = buffer.ReadLong
-                cantidad = buffer.ReadLong
+                OBJIndex = incomingData.ReadInteger
+                nombreItem = incomingData.ReadASCIIString
+                grhItem = incomingData.ReadLong
+                cantidad = incomingData.ReadLong
+
                 If cantidad > 0 Then
                     Call frmComerciarUsu.InvUserSell.SetItem(i, OBJIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, 0)
+
                 End If
+
             End With
+
         Next i
         
         Call frmComerciarUsu.InvUserSell.ReDraw
     Else
-        frmComerciarUsu.lblOro.Caption = PonerPuntos(buffer.ReadLong)
-       ' frmComerciarUsu.List2.Clear
+        frmComerciarUsu.lblOro.Caption = PonerPuntos(incomingData.ReadLong)
+
+        ' frmComerciarUsu.List2.Clear
         For i = 1 To 6
             
             With OtroInventario(i)
-                 OBJIndex = buffer.ReadInteger
-                nombreItem = buffer.ReadASCIIString
-                grhItem = buffer.ReadLong
-                cantidad = buffer.ReadLong
+                OBJIndex = incomingData.ReadInteger
+                nombreItem = incomingData.ReadASCIIString
+                grhItem = incomingData.ReadLong
+                cantidad = incomingData.ReadLong
+
                 If cantidad > 0 Then
                     Call frmComerciarUsu.InvOtherSell.SetItem(i, OBJIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, 0)
+
                 End If
+
             End With
+
         Next i
         
         Call frmComerciarUsu.InvOtherSell.ReDraw
@@ -8626,23 +7030,12 @@ Private Sub HandleChangeUserTradeSlot()
     
     frmComerciarUsu.lblEstadoResp.Visible = False
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeUserTradeSlot", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8656,47 +7049,23 @@ Private Sub HandleSpawnList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim creatureList() As String
 
-    creatureList = Split(buffer.ReadASCIIString(), SEPARATOR)
+    creatureList = Split(incomingData.ReadASCIIString(), SEPARATOR)
 
     Call frmSpawnList.FillList
 
     frmSpawnList.Show , frmMain
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpawnList", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8710,21 +7079,8 @@ Private Sub HandleShowSOSForm()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim sosList()      As String
 
@@ -8736,7 +7092,7 @@ Private Sub HandleShowSOSForm()
 
     Dim TipoDeConsulta As String
     
-    sosList = Split(buffer.ReadASCIIString(), SEPARATOR)
+    sosList = Split(incomingData.ReadASCIIString(), SEPARATOR)
     
     For i = 0 To UBound(sosList())
         nombre = ReadField(1, sosList(i), Asc("Ø"))
@@ -8746,23 +7102,12 @@ Private Sub HandleShowSOSForm()
         frmPanelgm.List2.AddItem Consulta
     Next i
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSOSForm", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8776,42 +7121,18 @@ Private Sub HandleShowMOTDEditionForm()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
     
-    'Remove packet ID
-    Call buffer.ReadByte
-    
-    frmCambiaMotd.txtMotd.Text = buffer.ReadASCIIString()
+    frmCambiaMotd.txtMotd.Text = incomingData.ReadASCIIString()
     frmCambiaMotd.Show , frmMain
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMOTDEditionForm", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8828,18 +7149,16 @@ Private Sub HandleShowGMPanelForm()
     
     On Error GoTo HandleShowGMPanelForm_Err
     
-    Call incomingData.ReadByte
     frmPanelgm.txtHeadNumero = incomingData.ReadInteger
     frmPanelgm.txtBodyYo = incomingData.ReadInteger
     
     frmPanelgm.Show vbModeless, frmMain
-
     
     Exit Sub
 
 HandleShowGMPanelForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowGMPanelForm", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -8853,17 +7172,14 @@ Private Sub HandleShowFundarClanForm()
     
     On Error GoTo HandleShowFundarClanForm_Err
     
-    Call incomingData.ReadByte
-    
     CreandoClan = True
     frmGuildDetails.Show vbModeless, frmMain
-
     
     Exit Sub
 
 HandleShowFundarClanForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowFundarClanForm", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -8877,27 +7193,14 @@ Private Sub HandleUserNameList()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim userList() As String
 
     Dim i          As Long
     
-    userList = Split(buffer.ReadASCIIString(), SEPARATOR)
+    userList = Split(incomingData.ReadASCIIString(), SEPARATOR)
     
     If frmPanelgm.Visible Then
         frmPanelgm.cboListaUsus.Clear
@@ -8910,23 +7213,12 @@ Private Sub HandleUserNameList()
 
     End If
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserNameList", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -8936,37 +7228,24 @@ End Sub
 Private Sub HandlePong()
     
     On Error GoTo HandlePong_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 5 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim Time As Long
-
     Time = incomingData.ReadLong()
-    'Call AddtoRichTextBox(frmMain.RecTxt, "El ping anterior seria " & (GetTickCount - pingTime) & " ms.", 255, 0, 0, True, False, False)
-    'Call AddtoRichTextBox(frmMain.RecTxt, "El ping es " & (GetTickCount - time) & " ms.", 255, 0, 0, True, False, False)
-    'timeGetTime -pingTime
+
     PingRender = (timeGetTime And &H7FFFFFFF) - Time
     pingTime = 0
-
     
     Exit Sub
 
 HandlePong_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePong", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -8980,21 +7259,8 @@ Private Sub HandleUpdateTagAndStatus()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 8 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim charindex   As Integer
 
@@ -9004,8251 +7270,33 @@ Private Sub HandleUpdateTagAndStatus()
 
     Dim group_index As Integer
     
-    charindex = buffer.ReadInteger()
-    status = buffer.ReadByte()
-    NombreYClan = buffer.ReadASCIIString()
+    charindex = incomingData.ReadInteger()
+    status = incomingData.ReadByte()
+    NombreYClan = incomingData.ReadASCIIString()
         
     Dim Pos As Integer
     Pos = InStr(NombreYClan, "<")
+
     If Pos = 0 Then Pos = InStr(NombreYClan, "[")
     If Pos = 0 Then Pos = Len(NombreYClan) + 2
     
     charlist(charindex).nombre = Left$(NombreYClan, Pos - 2)
     charlist(charindex).clan = mid$(NombreYClan, Pos)
     
-    group_index = buffer.ReadInteger()
+    group_index = incomingData.ReadInteger()
     
     'Update char status adn tag!
     charlist(charindex).status = status
     
     charlist(charindex).group_index = group_index
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateTagAndStatus", Erl)
+    Call incomingData.SafeClearPacket
 
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
-
-End Sub
-
-''
-' Writes the "LoginExistingChar" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteLoginExistingChar()
-    
-    On Error GoTo WriteLoginExistingChar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "LoginExistingChar" message to the outgoing data buffer
-    '***************************************************
-    Dim i As Long
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.LoginExistingChar)
-        Call .WriteASCIIString(CuentaEmail)
-        Call .WriteASCIIString(SEncriptar(CuentaPassword))
-        Call .WriteByte(App.Major)
-        Call .WriteByte(App.Minor)
-        Call .WriteByte(App.Revision)
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(MacAdress)  'Seguridad
-        Call .WriteLong(HDserial)  'SeguridadHDserial
-        Call .WriteASCIIString(CheckMD5)
-        
-    End With
-
-    
-    Exit Sub
-
-WriteLoginExistingChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLoginExistingChar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "LoginNewChar" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteLoginNewChar()
-    
-    On Error GoTo WriteLoginNewChar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "LoginNewChar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.LoginNewChar)
-        Call .WriteASCIIString(CuentaEmail)
-        Call .WriteASCIIString(SEncriptar(CuentaPassword))
-        Call .WriteByte(App.Major)
-        Call .WriteByte(App.Minor)
-        Call .WriteByte(App.Revision)
-        Call .WriteASCIIString(UserName)
-        Call .WriteByte(UserRaza)
-        Call .WriteByte(UserSexo)
-        Call .WriteByte(UserClase)
-        Call .WriteInteger(MiCabeza)
-        Call .WriteByte(UserHogar)
-        Call .WriteASCIIString(MacAdress)  'Seguridad
-        Call .WriteLong(HDserial)  'SeguridadHDserial
-        Call .WriteASCIIString(CheckMD5)
-
-    End With
-
-    
-    Exit Sub
-
-WriteLoginNewChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLoginNewChar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Talk" message to the outgoing data buffer.
-'
-' @param    chat The chat text to be sent.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteTalk(ByVal chat As String)
-    
-    On Error GoTo WriteTalk_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Talk" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Talk)
-        
-        Call .WriteASCIIString(chat)
-
-    End With
-
-    
-    Exit Sub
-
-WriteTalk_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTalk", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Yell" message to the outgoing data buffer.
-'
-' @param    chat The chat text to be sent.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteYell(ByVal chat As String)
-    
-    On Error GoTo WriteYell_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Yell" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Yell)
-        
-        Call .WriteASCIIString(chat)
-
-    End With
-
-    
-    Exit Sub
-
-WriteYell_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteYell", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Whisper" message to the outgoing data buffer.
-'
-' @param    charIndex The index of the char to whom to whisper.
-' @param    chat The chat text to be sent to the user.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWhisper(ByVal nombre As String, ByVal chat As String)
-    
-    On Error GoTo WriteWhisper_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Whisper" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Whisper)
-        
-        Call .WriteASCIIString(nombre)
-        
-        Call .WriteASCIIString(chat)
-
-    End With
-
-    
-    Exit Sub
-
-WriteWhisper_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWhisper", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Walk" message to the outgoing data buffer.
-'
-' @param    heading The direction in wich the user is moving.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWalk(ByVal Heading As E_Heading)
-    
-    On Error GoTo WriteWalk_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Walk" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Walk)
-        
-        Call .WriteByte(Heading)
-
-    End With
-
-    
-    Exit Sub
-
-WriteWalk_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWalk", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestPositionUpdate" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestPositionUpdate()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestPositionUpdate" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestPositionUpdate_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestPositionUpdate)
-
-    
-    Exit Sub
-
-WriteRequestPositionUpdate_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestPositionUpdate", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Attack" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteAttack()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Attack" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteAttack_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Attack)
-
-    
-    Exit Sub
-
-WriteAttack_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAttack", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "PickUp" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WritePickUp()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "PickUp" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WritePickUp_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.PickUp)
-
-    
-    Exit Sub
-
-WritePickUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePickUp", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SafeToggle" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSafeToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SafeToggle" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteSafeToggle_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.SafeToggle)
-
-    
-    Exit Sub
-
-WriteSafeToggle_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSafeToggle", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteSeguroClan()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SafeToggle" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteSeguroClan_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.SeguroClan)
-
-    
-    Exit Sub
-
-WriteSeguroClan_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSeguroClan", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteTraerBoveda()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SafeToggle" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteTraerBoveda_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.TraerBoveda)
-
-    
-    Exit Sub
-
-WriteTraerBoveda_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTraerBoveda", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CreatePretorianClan" message to the outgoing data buffer.
-'
-' @param    Map         The map in which create the pretorian clan.
-' @param    X           The x pos where the king is settled.
-' @param    Y           The y pos where the king is settled.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 29/10/2010
-'Writes the "CreatePretorianClan" message to the outgoing data buffer
-'***************************************************
-    
-    On Error GoTo WriteCreatePretorianClan_Err
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CreatePretorianClan)
-        Call .WriteInteger(map)
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-    End With
-    
-    Exit Sub
-
-WriteCreatePretorianClan_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreatePretorianClan", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "DeletePretorianClan" message to the outgoing data buffer.
-'
-' @param    Map         The map which contains the pretorian clan to be removed.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteDeletePretorianClan(ByVal map As Integer)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 29/10/2010
-'Writes the "DeletePretorianClan" message to the outgoing data buffer
-'***************************************************
-    
-    On Error GoTo WriteDeletePretorianClan_Err
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.RemovePretorianClan)
-        Call .WriteInteger(map)
-    End With
-    
-    Exit Sub
-
-WriteDeletePretorianClan_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDeletePretorianClan", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "PartySafeToggle" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteParyToggle()
-    '**************************************************************
-    'Author: Rapsodius
-    'Creation Date: 10/10/07
-    'Writes the Resuscitation safe toggle packet to the outgoing data buffer.
-    '**************************************************************
-    
-    On Error GoTo WriteParyToggle_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.PartySafeToggle)
-
-    
-    Exit Sub
-
-WriteParyToggle_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteParyToggle", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SeguroResu" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSeguroResu()
-    '**************************************************************
-    'Author: Rapsodius
-    'Creation Date: 10/10/07
-    'Writes the Resuscitation safe toggle packet to the outgoing data buffer.
-    '**************************************************************
-    
-    On Error GoTo WriteSeguroResu_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.SeguroResu)
-
-    
-    Exit Sub
-
-WriteSeguroResu_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSeguroResu", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestGuildLeaderInfo" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestGuildLeaderInfo()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestGuildLeaderInfo" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestGuildLeaderInfo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestGuildLeaderInfo)
-
-    
-    Exit Sub
-
-WriteRequestGuildLeaderInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestGuildLeaderInfo", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestAtributes" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestAtributes()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestAtributes" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestAtributes_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestAtributes)
-
-    
-    Exit Sub
-
-WriteRequestAtributes_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestAtributes", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteRequestFamiliar()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestFamiliar" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestFamiliar_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.RequestFamiliar)
-
-    
-    Exit Sub
-
-WriteRequestFamiliar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestFamiliar", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteRequestGrupo()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestFamiliar" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestGrupo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.RequestGrupo)
-
-    
-    Exit Sub
-
-WriteRequestGrupo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestGrupo", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestSkills" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestSkills()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestSkills" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestSkills_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestSkills)
-
-    
-    Exit Sub
-
-WriteRequestSkills_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestSkills", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestMiniStats" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestMiniStats()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestMiniStats" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestMiniStats_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestMiniStats)
-
-    
-    Exit Sub
-
-WriteRequestMiniStats_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestMiniStats", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CommerceEnd" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCommerceEnd()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CommerceEnd" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteCommerceEnd_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.CommerceEnd)
-
-    
-    Exit Sub
-
-WriteCommerceEnd_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCommerceEnd", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "UserCommerceEnd" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteUserCommerceEnd()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "UserCommerceEnd" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteUserCommerceEnd_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.UserCommerceEnd)
-
-    
-    Exit Sub
-
-WriteUserCommerceEnd_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUserCommerceEnd", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BankEnd" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBankEnd()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BankEnd" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteBankEnd_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.BankEnd)
-
-    
-    Exit Sub
-
-WriteBankEnd_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankEnd", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "UserCommerceOk" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteUserCommerceOk()
-    '***************************************************
-    'Author: Fredy Horacio Treboux (liquid)
-    'Last Modification: 01/10/07
-    'Writes the "UserCommerceOk" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteUserCommerceOk_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.UserCommerceOk)
-
-    
-    Exit Sub
-
-WriteUserCommerceOk_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUserCommerceOk", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "UserCommerceReject" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteUserCommerceReject()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "UserCommerceReject" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteUserCommerceReject_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.UserCommerceReject)
-
-    
-    Exit Sub
-
-WriteUserCommerceReject_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUserCommerceReject", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Drop" message to the outgoing data buffer.
-'
-' @param    slot Inventory slot where the item to drop is.
-' @param    amount Number of items to drop.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
-    
-    On Error GoTo WriteDrop_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Drop" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Drop)
-        Call .WriteByte(Slot)
-        Call .WriteLong(Amount)
-
-    End With
-
-    
-    Exit Sub
-
-WriteDrop_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDrop", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CastSpell" message to the outgoing data buffer.
-'
-' @param    slot Spell List slot where the spell to cast is.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCastSpell(ByVal Slot As Byte)
-    
-    On Error GoTo WriteCastSpell_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CastSpell" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CastSpell)
-        
-        Call .WriteByte(Slot)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCastSpell_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCastSpell", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteInvitarGrupo()
-    
-    On Error GoTo WriteInvitarGrupo_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CastSpell" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.InvitarGrupo)
-
-    End With
-
-    
-    Exit Sub
-
-WriteInvitarGrupo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInvitarGrupo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteMarcaDeClan()
-    
-    On Error GoTo WriteMarcaDeClan_Err
-    
-
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 23/08/2020
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.MarcaDeClanpack)
-
-    End With
-
-    
-    Exit Sub
-
-WriteMarcaDeClan_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMarcaDeClan", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteMarcaDeGm()
-    
-    On Error GoTo WriteMarcaDeGm_Err
-    
-
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 23/08/2020
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.MarcaDeGMPack)
-
-    End With
-
-    
-    Exit Sub
-
-WriteMarcaDeGm_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMarcaDeGm", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteAbandonarGrupo()
-    
-    On Error GoTo WriteAbandonarGrupo_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CastSpell" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.AbandonarGrupo)
-
-    End With
-
-    
-    Exit Sub
-
-WriteAbandonarGrupo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAbandonarGrupo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteHecharDeGrupo(ByVal indice As Byte)
-    
-    On Error GoTo WriteHecharDeGrupo_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CastSpell" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.HecharDeGrupo)
-        Call .WriteByte(indice)
-
-    End With
-
-    
-    Exit Sub
-
-WriteHecharDeGrupo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteHecharDeGrupo", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "LeftClick" message to the outgoing data buffer.
-'
-' @param    x Tile coord in the x-axis in which the user clicked.
-' @param    y Tile coord in the y-axis in which the user clicked.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteLeftClick(ByVal X As Byte, ByVal Y As Byte)
-    
-    On Error GoTo WriteLeftClick_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "LeftClick" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.LeftClick)
-        
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-
-    End With
-
-    
-    Exit Sub
-
-WriteLeftClick_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLeftClick", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "DoubleClick" message to the outgoing data buffer.
-'
-' @param    x Tile coord in the x-axis in which the user clicked.
-' @param    y Tile coord in the y-axis in which the user clicked.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteDoubleClick(ByVal X As Byte, ByVal Y As Byte)
-    
-    On Error GoTo WriteDoubleClick_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "DoubleClick" message to the outgoing data buffer
-    '***************************************************
-    'Call IntervaloPermiteClick(True)
-    With outgoingData
-        Call .WriteByte(ClientPacketID.DoubleClick)
-        
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-
-    End With
-
-    
-    Exit Sub
-
-WriteDoubleClick_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDoubleClick", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Work" message to the outgoing data buffer.
-'
-' @param    skill The skill which the user attempts to use.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWork(ByVal Skill As eSkill)
-    
-    On Error GoTo WriteWork_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Work" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Work)
-        
-        Call .WriteByte(Skill)
-
-    End With
-
-    
-    Exit Sub
-
-WriteWork_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWork", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteThrowDice()
-    
-    On Error GoTo WriteThrowDice_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ThrowDice)
-
-    
-    Exit Sub
-
-WriteThrowDice_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteThrowDice", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "UseSpellMacro" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteUseSpellMacro()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "UseSpellMacro" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteUseSpellMacro_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.UseSpellMacro)
-
-    
-    Exit Sub
-
-WriteUseSpellMacro_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUseSpellMacro", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "UseItem" message to the outgoing data buffer.
-'
-' @param    slot Invetory slot where the item to use is.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteUseItem(ByVal Slot As Byte)
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "UseItem" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteUseItem_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.UseItem)
-        Call .WriteByte(Slot)
-
-    End With
-
-    
-    Exit Sub
-
-WriteUseItem_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUseItem", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CraftBlacksmith" message to the outgoing data buffer.
-'
-' @param    item Index of the item to craft in the list sent by the server.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCraftBlacksmith(ByVal Item As Integer)
-    
-    On Error GoTo WriteCraftBlacksmith_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CraftBlacksmith" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CraftBlacksmith)
-        
-        Call .WriteInteger(Item)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCraftBlacksmith_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCraftBlacksmith", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CraftCarpenter" message to the outgoing data buffer.
-'
-' @param    item Index of the item to craft in the list sent by the server.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCraftCarpenter(ByVal Item As Integer)
-    
-    On Error GoTo WriteCraftCarpenter_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CraftCarpenter" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CraftCarpenter)
-        
-        Call .WriteInteger(Item)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCraftCarpenter_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCraftCarpenter", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCraftAlquimista(ByVal Item As Integer)
-    
-    On Error GoTo WriteCraftAlquimista_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CraftCarpenter" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CraftAlquimista)
-        Call .WriteInteger(Item)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCraftAlquimista_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCraftAlquimista", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCraftSastre(ByVal Item As Integer)
-    
-    On Error GoTo WriteCraftSastre_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CraftCarpenter" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CraftSastre)
-        Call .WriteInteger(Item)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCraftSastre_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCraftSastre", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "WorkLeftClick" message to the outgoing data buffer.
-'
-' @param    x Tile coord in the x-axis in which the user clicked.
-' @param    y Tile coord in the y-axis in which the user clicked.
-' @param    skill The skill which the user attempts to use.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWorkLeftClick(ByVal X As Byte, ByVal Y As Byte, ByVal Skill As eSkill)
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "WorkLeftClick" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteWorkLeftClick_Err
-    
-    
-    If pausa Then Exit Sub
-    
-
-    'Call IntervaloPermiteClick(True)
-    With outgoingData
-        Call .WriteByte(ClientPacketID.WorkLeftClick)
-        
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-        Call .WriteByte(Skill)
-
-    End With
-
-    
-    Exit Sub
-
-WriteWorkLeftClick_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWorkLeftClick", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CreateNewGuild" message to the outgoing data buffer.
-'
-' @param    desc    The guild's description
-' @param    name    The guild's name
-' @param    site    The guild's website
-' @param    codex   Array of all rules of the guild.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCreateNewGuild(ByVal desc As String, ByVal Name As String, ByVal Alineacion As Byte)
-    
-    On Error GoTo WriteCreateNewGuild_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CreateNewGuild" message to the outgoing data buffer
-    '***************************************************
-    Dim temp As String
-
-    Dim i    As Long
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CreateNewGuild)
-        
-        Call .WriteASCIIString(desc)
-        Call .WriteASCIIString(Name)
-        
-        Call .WriteByte(Alineacion)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCreateNewGuild_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreateNewGuild", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SpellInfo" message to the outgoing data buffer.
-'
-' @param    slot Spell List slot where the spell which's info is requested is.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSpellInfo(ByVal Slot As Byte)
-    
-    On Error GoTo WriteSpellInfo_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SpellInfo" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SpellInfo)
-        
-        Call .WriteByte(Slot)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSpellInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSpellInfo", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "EquipItem" message to the outgoing data buffer.
-'
-' @param    slot Invetory slot where the item to equip is.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteEquipItem(ByVal Slot As Byte)
-    
-    On Error GoTo WriteEquipItem_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "EquipItem" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.EquipItem)
-        
-        Call .WriteByte(Slot)
-
-    End With
-
-    
-    Exit Sub
-
-WriteEquipItem_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEquipItem", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChangeHeading" message to the outgoing data buffer.
-'
-' @param    heading The direction in wich the user is moving.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeHeading(ByVal Heading As E_Heading)
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ChangeHeading" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteChangeHeading_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeHeading)
-        
-        Call .WriteByte(Heading)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeHeading_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeHeading", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ModifySkills" message to the outgoing data buffer.
-'
-' @param    skillEdt a-based array containing for each skill the number of points to add to it.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteModifySkills(ByRef skillEdt() As Byte)
-    
-    On Error GoTo WriteModifySkills_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ModifySkills" message to the outgoing data buffer
-    '***************************************************
-    Dim i As Long
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ModifySkills)
-        
-        For i = 1 To NUMSKILLS
-            Call .WriteByte(skillEdt(i))
-        Next i
-
-    End With
-
-    
-    Exit Sub
-
-WriteModifySkills_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteModifySkills", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Train" message to the outgoing data buffer.
-'
-' @param    creature Position within the list provided by the server of the creature to train against.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteTrain(ByVal creature As Byte)
-    
-    On Error GoTo WriteTrain_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Train" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Train)
-        
-        Call .WriteByte(creature)
-
-    End With
-
-    
-    Exit Sub
-
-WriteTrain_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTrain", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CommerceBuy" message to the outgoing data buffer.
-'
-' @param    slot Position within the NPC's inventory in which the desired item is.
-' @param    amount Number of items to buy.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCommerceBuy(ByVal Slot As Byte, ByVal Amount As Integer)
-    
-    On Error GoTo WriteCommerceBuy_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CommerceBuy" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CommerceBuy)
-        
-        Call .WriteByte(Slot)
-        Call .WriteInteger(Amount)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCommerceBuy_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCommerceBuy", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteUseKey(ByVal Slot As Byte)
-    
-    On Error GoTo WriteUseKey_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.UseKey)
-        Call .WriteByte(Slot)
-    End With
-
-    
-    Exit Sub
-
-WriteUseKey_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUseKey", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BankExtractItem" message to the outgoing data buffer.
-'
-' @param    slot Position within the bank in which the desired item is.
-' @param    amount Number of items to extract.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBankExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
-    
-    On Error GoTo WriteBankExtractItem_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BankExtractItem" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.BankExtractItem)
-        
-        Call .WriteByte(Slot)
-        Call .WriteInteger(Amount)
-        Call .WriteByte(slotdestino)
-        
-    End With
-
-    
-    Exit Sub
-
-WriteBankExtractItem_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankExtractItem", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CommerceSell" message to the outgoing data buffer.
-'
-' @param    slot Position within user inventory in which the desired item is.
-' @param    amount Number of items to sell.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCommerceSell(ByVal Slot As Byte, ByVal Amount As Integer)
-    
-    On Error GoTo WriteCommerceSell_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CommerceSell" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CommerceSell)
-        
-        Call .WriteByte(Slot)
-        Call .WriteInteger(Amount)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCommerceSell_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCommerceSell", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BankDeposit" message to the outgoing data buffer.
-'
-' @param    slot Position within the user inventory in which the desired item is.
-' @param    amount Number of items to deposit.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBankDeposit(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
-    
-    On Error GoTo WriteBankDeposit_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BankDeposit" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.BankDeposit)
-        Call .WriteByte(Slot)
-        Call .WriteInteger(Amount)
-        Call .WriteByte(slotdestino)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBankDeposit_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankDeposit", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ForumPost" message to the outgoing data buffer.
-'
-' @param    title The message's title.
-' @param    message The body of the message.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteForumPost(ByVal title As String, ByVal Message As String)
-    
-    On Error GoTo WriteForumPost_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ForumPost" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ForumPost)
-        
-        Call .WriteASCIIString(title)
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteForumPost_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForumPost", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "MoveSpell" message to the outgoing data buffer.
-'
-' @param    upwards True if the spell will be moved up in the list, False if it will be moved downwards.
-' @param    slot Spell List slot where the spell which's info is requested is.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal Slot As Byte)
-    
-    On Error GoTo WriteMoveSpell_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "MoveSpell" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.MoveSpell)
-        
-        Call .WriteBoolean(upwards)
-        Call .WriteByte(Slot)
-
-    End With
-
-    
-    Exit Sub
-
-WriteMoveSpell_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMoveSpell", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ClanCodexUpdate" message to the outgoing data buffer.
-'
-' @param    desc New description of the clan.
-' @param    codex New codex of the clan.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteClanCodexUpdate(ByVal desc As String)
-    
-    On Error GoTo WriteClanCodexUpdate_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ClanCodexUpdate" message to the outgoing data buffer
-    '***************************************************
-    Dim temp As String
-
-    Dim i    As Long
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ClanCodexUpdate)
-        Call .WriteASCIIString(desc)
-
-    End With
-
-    
-    Exit Sub
-
-WriteClanCodexUpdate_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteClanCodexUpdate", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "UserCommerceOffer" message to the outgoing data buffer.
-'
-' @param    slot Position within user inventory in which the desired item is.
-' @param    amount Number of items to offer.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteUserCommerceOffer(ByVal Slot As Byte, ByVal Amount As Long)
-    
-    On Error GoTo WriteUserCommerceOffer_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "UserCommerceOffer" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.UserCommerceOffer)
-        
-        Call .WriteByte(Slot)
-        Call .WriteLong(Amount)
-
-    End With
-
-    
-    Exit Sub
-
-WriteUserCommerceOffer_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUserCommerceOffer", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildAcceptPeace" message to the outgoing data buffer.
-'
-' @param    guild The guild whose peace offer is accepted.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildAcceptPeace(ByVal guild As String)
-    
-    On Error GoTo WriteGuildAcceptPeace_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildAcceptPeace" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildAcceptPeace)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildAcceptPeace_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAcceptPeace", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildRejectAlliance" message to the outgoing data buffer.
-'
-' @param    guild The guild whose aliance offer is rejected.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildRejectAlliance(ByVal guild As String)
-    
-    On Error GoTo WriteGuildRejectAlliance_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildRejectAlliance" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildRejectAlliance)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildRejectAlliance_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRejectAlliance", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildRejectPeace" message to the outgoing data buffer.
-'
-' @param    guild The guild whose peace offer is rejected.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildRejectPeace(ByVal guild As String)
-    
-    On Error GoTo WriteGuildRejectPeace_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildRejectPeace" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildRejectPeace)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildRejectPeace_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRejectPeace", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildAcceptAlliance" message to the outgoing data buffer.
-'
-' @param    guild The guild whose aliance offer is accepted.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildAcceptAlliance(ByVal guild As String)
-    
-    On Error GoTo WriteGuildAcceptAlliance_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildAcceptAlliance" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildAcceptAlliance)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildAcceptAlliance_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAcceptAlliance", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildOfferPeace" message to the outgoing data buffer.
-'
-' @param    guild The guild to whom peace is offered.
-' @param    proposal The text to send with the proposal.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildOfferPeace(ByVal guild As String, ByVal proposal As String)
-    
-    On Error GoTo WriteGuildOfferPeace_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildOfferPeace" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildOfferPeace)
-        
-        Call .WriteASCIIString(guild)
-        Call .WriteASCIIString(proposal)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildOfferPeace_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOfferPeace", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildOfferAlliance" message to the outgoing data buffer.
-'
-' @param    guild The guild to whom an aliance is offered.
-' @param    proposal The text to send with the proposal.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildOfferAlliance(ByVal guild As String, ByVal proposal As String)
-    
-    On Error GoTo WriteGuildOfferAlliance_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildOfferAlliance" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildOfferAlliance)
-        
-        Call .WriteASCIIString(guild)
-        Call .WriteASCIIString(proposal)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildOfferAlliance_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOfferAlliance", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildAllianceDetails" message to the outgoing data buffer.
-'
-' @param    guild The guild whose aliance proposal's details are requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildAllianceDetails(ByVal guild As String)
-    
-    On Error GoTo WriteGuildAllianceDetails_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildAllianceDetails" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildAllianceDetails)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildAllianceDetails_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAllianceDetails", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildPeaceDetails" message to the outgoing data buffer.
-'
-' @param    guild The guild whose peace proposal's details are requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildPeaceDetails(ByVal guild As String)
-    
-    On Error GoTo WriteGuildPeaceDetails_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildPeaceDetails" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildPeaceDetails)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildPeaceDetails_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildPeaceDetails", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildRequestJoinerInfo" message to the outgoing data buffer.
-'
-' @param    username The user who wants to join the guild whose info is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildRequestJoinerInfo(ByVal UserName As String)
-    
-    On Error GoTo WriteGuildRequestJoinerInfo_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildRequestJoinerInfo" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildRequestJoinerInfo)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildRequestJoinerInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRequestJoinerInfo", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildAlliancePropList" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildAlliancePropList()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildAlliancePropList" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteGuildAlliancePropList_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.GuildAlliancePropList)
-
-    
-    Exit Sub
-
-WriteGuildAlliancePropList_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAlliancePropList", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildPeacePropList" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildPeacePropList()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildPeacePropList" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteGuildPeacePropList_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.GuildPeacePropList)
-
-    
-    Exit Sub
-
-WriteGuildPeacePropList_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildPeacePropList", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildDeclareWar" message to the outgoing data buffer.
-'
-' @param    guild The guild to which to declare war.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildDeclareWar(ByVal guild As String)
-    
-    On Error GoTo WriteGuildDeclareWar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildDeclareWar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildDeclareWar)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildDeclareWar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildDeclareWar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildNewWebsite" message to the outgoing data buffer.
-'
-' @param    url The guild's new website's URL.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildNewWebsite(ByVal url As String)
-    
-    On Error GoTo WriteGuildNewWebsite_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildNewWebsite" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildNewWebsite)
-        
-        Call .WriteASCIIString(url)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildNewWebsite_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildNewWebsite", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildAcceptNewMember" message to the outgoing data buffer.
-'
-' @param    username The name of the accepted player.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildAcceptNewMember(ByVal UserName As String)
-    
-    On Error GoTo WriteGuildAcceptNewMember_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildAcceptNewMember" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildAcceptNewMember)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildAcceptNewMember_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildAcceptNewMember", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildRejectNewMember" message to the outgoing data buffer.
-'
-' @param    username The name of the rejected player.
-' @param    reason The reason for which the player was rejected.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildRejectNewMember(ByVal UserName As String, ByVal reason As String)
-    
-    On Error GoTo WriteGuildRejectNewMember_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildRejectNewMember" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildRejectNewMember)
-        
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(reason)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildRejectNewMember_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRejectNewMember", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildKickMember" message to the outgoing data buffer.
-'
-' @param    username The name of the kicked player.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildKickMember(ByVal UserName As String)
-    
-    On Error GoTo WriteGuildKickMember_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildKickMember" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildKickMember)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildKickMember_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildKickMember", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildUpdateNews" message to the outgoing data buffer.
-'
-' @param    news The news to be posted.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildUpdateNews(ByVal news As String)
-    
-    On Error GoTo WriteGuildUpdateNews_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildUpdateNews" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildUpdateNews)
-        
-        Call .WriteASCIIString(news)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildUpdateNews_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildUpdateNews", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildMemberInfo" message to the outgoing data buffer.
-'
-' @param    username The user whose info is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildMemberInfo(ByVal UserName As String)
-    
-    On Error GoTo WriteGuildMemberInfo_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildMemberInfo" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildMemberInfo)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildMemberInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildMemberInfo", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildOpenElections" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildOpenElections()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildOpenElections" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteGuildOpenElections_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.GuildOpenElections)
-
-    
-    Exit Sub
-
-WriteGuildOpenElections_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOpenElections", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildRequestMembership" message to the outgoing data buffer.
-'
-' @param    guild The guild to which to request membership.
-' @param    application The user's application sheet.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildRequestMembership(ByVal guild As String, ByVal Application As String)
-    
-    On Error GoTo WriteGuildRequestMembership_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildRequestMembership" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildRequestMembership)
-        
-        Call .WriteASCIIString(guild)
-        Call .WriteASCIIString(Application)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildRequestMembership_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRequestMembership", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildRequestDetails" message to the outgoing data buffer.
-'
-' @param    guild The guild whose details are requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildRequestDetails(ByVal guild As String)
-    
-    On Error GoTo WriteGuildRequestDetails_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildRequestDetails" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildRequestDetails)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildRequestDetails_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildRequestDetails", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Online" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteOnline()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Online" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteOnline_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Online)
-
-    
-    Exit Sub
-
-WriteOnline_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnline", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Quit" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteQuit()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Quit" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteQuit_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Quit)
-    UserSaliendo = True
-
-    Rem  MostrarCuenta = True
-    
-    Exit Sub
-
-WriteQuit_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuit", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildLeave" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildLeave()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildLeave" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteGuildLeave_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.GuildLeave)
-
-    
-    Exit Sub
-
-WriteGuildLeave_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildLeave", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestAccountState" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestAccountState()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestAccountState" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestAccountState_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestAccountState)
-
-    
-    Exit Sub
-
-WriteRequestAccountState_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestAccountState", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "PetStand" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WritePetStand()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "PetStand" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WritePetStand_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.PetStand)
-
-    
-    Exit Sub
-
-WritePetStand_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePetStand", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "PetFollow" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WritePetFollow()
-    '***************************************************
-    'Writes the "PetFollow" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WritePetStand_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.PetFollow)
-
-    
-    Exit Sub
-
-WritePetStand_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePetFollow", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "PetLeave" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WritePetLeave()
-    '***************************************************
-    'Writes the "PetLeave" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WritePetStand_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.PetLeave)
-
-    
-    Exit Sub
-
-WritePetStand_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePetLeave", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GrupoMsg" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGrupoMsg(ByVal Message As String)
-    
-    On Error GoTo WriteGrupoMsg_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GrupoMsg)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGrupoMsg_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGrupoMsg", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "TrainList" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteTrainList()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "TrainList" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteTrainList_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.TrainList)
-
-    
-    Exit Sub
-
-WriteTrainList_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTrainList", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Rest" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRest()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Rest" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRest_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Rest)
-
-    
-    Exit Sub
-
-WriteRest_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRest", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Meditate" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteMeditate()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Meditate" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteMeditate_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Meditate)
-
-    
-    Exit Sub
-
-WriteMeditate_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMeditate", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Resucitate" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteResucitate()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Resucitate" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteResucitate_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Resucitate)
-
-    
-    Exit Sub
-
-WriteResucitate_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResucitate", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Heal" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteHeal()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Heal" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteHeal_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Heal)
-
-    
-    Exit Sub
-
-WriteHeal_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteHeal", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Help" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteHelp()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Help" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteHelp_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Help)
-
-    
-    Exit Sub
-
-WriteHelp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteHelp", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestStats" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestStats()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestStats" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestStats_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestStats)
-
-    
-    Exit Sub
-
-WriteRequestStats_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestStats", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Promedio" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WritePromedio()
-    '***************************************************
-    'Writes the "Promedio" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo Handle
-    
-    Call outgoingData.WriteByte(ClientPacketID.Promedio)
-
-    Exit Sub
-
-Handle:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePromedio", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GiveItem" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGiveItem(UserName As String, ByVal OBJIndex As Integer, ByVal cantidad As Integer, Motivo As String)
-    '***************************************************
-    'Writes the "GiveItem" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo Handle
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GiveItem)
-        Call .WriteASCIIString(UserName)
-        Call .WriteInteger(OBJIndex)
-        Call .WriteInteger(cantidad)
-        Call .WriteASCIIString(Motivo)
-    End With
-    
-
-    Exit Sub
-
-Handle:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGiveItem", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CommerceStart" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCommerceStart()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CommerceStart" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteCommerceStart_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.CommerceStart)
-
-    
-    Exit Sub
-
-WriteCommerceStart_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCommerceStart", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BankStart" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBankStart()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BankStart" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteBankStart_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.BankStart)
-
-    
-    Exit Sub
-
-WriteBankStart_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankStart", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Enlist" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteEnlist()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Enlist" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteEnlist_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Enlist)
-
-    
-    Exit Sub
-
-WriteEnlist_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEnlist", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Information" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteInformation()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Information" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteInformation_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Information)
-
-    
-    Exit Sub
-
-WriteInformation_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInformation", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Reward" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteReward()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Reward" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteReward_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Reward)
-
-    
-    Exit Sub
-
-WriteReward_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReward", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestMOTD" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestMOTD()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestMOTD" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestMOTD_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestMOTD)
-
-    
-    Exit Sub
-
-WriteRequestMOTD_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestMOTD", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "UpTime" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteUpTime()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "UpTime" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteUpTime_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Uptime)
-
-    
-    Exit Sub
-
-WriteUpTime_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUpTime", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Inquiry" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteInquiry()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Inquiry" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteInquiry_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Inquiry)
-
-    
-    Exit Sub
-
-WriteInquiry_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInquiry", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildMessage" message to the outgoing data buffer.
-'
-' @param    message The message to send to the guild.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildMessage(ByVal Message As String)
-    
-    On Error GoTo WriteGuildMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildRequestDetails" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildMessage)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildMessage", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CentinelReport" message to the outgoing data buffer.
-'
-' @param    number The number to report to the centinel.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCentinelReport(ByVal Number As Integer)
-    
-    On Error GoTo WriteCentinelReport_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CentinelReport" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CentinelReport)
-        
-        Call .WriteInteger(Number)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCentinelReport_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCentinelReport", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildOnline" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildOnline()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildOnline" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteGuildOnline_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.GuildOnline)
-
-    
-    Exit Sub
-
-WriteGuildOnline_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOnline", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CouncilMessage" message to the outgoing data buffer.
-'
-' @param    message The message to send to the other council members.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCouncilMessage(ByVal Message As String)
-    
-    On Error GoTo WriteCouncilMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CouncilMessage" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CouncilMessage)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCouncilMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCouncilMessage", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RoleMasterRequest" message to the outgoing data buffer.
-'
-' @param    message The message to send to the role masters.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRoleMasterRequest(ByVal Message As String)
-    
-    On Error GoTo WriteRoleMasterRequest_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RoleMasterRequest" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RoleMasterRequest)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRoleMasterRequest_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRoleMasterRequest", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GMRequest" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGMRequest()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GMRequest" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteGMRequest_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.GMRequest)
-
-    
-    Exit Sub
-
-WriteGMRequest_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGMRequest", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChangeDescription" message to the outgoing data buffer.
-'
-' @param    desc The new description of the user's character.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeDescription(ByVal desc As String)
-    
-    On Error GoTo WriteChangeDescription_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ChangeDescription" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeDescription)
-        
-        Call .WriteASCIIString(desc)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeDescription_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeDescription", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildVote" message to the outgoing data buffer.
-'
-' @param    username The user to vote for clan leader.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildVote(ByVal UserName As String)
-    
-    On Error GoTo WriteGuildVote_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildVote" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildVote)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildVote_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildVote", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Punishments" message to the outgoing data buffer.
-'
-' @param    username The user whose's  punishments are requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WritePunishments(ByVal UserName As String)
-    
-    On Error GoTo WritePunishments_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Punishments" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Punishments)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WritePunishments_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePunishments", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChangePassword" message to the outgoing data buffer.
-'
-' @param    oldPass Previous password.
-' @param    newPass New password.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangePassword(ByRef oldPass As String, ByRef newPass As String)
-    
-    On Error GoTo WriteChangePassword_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 10/10/07
-    'Last Modified By: Rapsodius
-    'Writes the "ChangePassword" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangePassword)
-
-        Call .WriteASCIIString(SEncriptar(oldPass))
-        Call .WriteASCIIString(SEncriptar(newPass))
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangePassword_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangePassword", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Gamble" message to the outgoing data buffer.
-'
-' @param    amount The amount to gamble.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGamble(ByVal Amount As Integer)
-    
-    On Error GoTo WriteGamble_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Gamble" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Gamble)
-        
-        Call .WriteInteger(Amount)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGamble_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGamble", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "InquiryVote" message to the outgoing data buffer.
-'
-' @param    opt The chosen option to vote for.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteInquiryVote(ByVal opt As Byte)
-    
-    On Error GoTo WriteInquiryVote_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "InquiryVote" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.InquiryVote)
-        
-        Call .WriteByte(opt)
-
-    End With
-
-    
-    Exit Sub
-
-WriteInquiryVote_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInquiryVote", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "LeaveFaction" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteLeaveFaction()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "LeaveFaction" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteLeaveFaction_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.LeaveFaction)
-
-    
-    Exit Sub
-
-WriteLeaveFaction_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLeaveFaction", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BankExtractGold" message to the outgoing data buffer.
-'
-' @param    amount The amount of money to extract from the bank.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBankExtractGold(ByVal Amount As Long)
-    
-    On Error GoTo WriteBankExtractGold_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BankExtractGold" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.BankExtractGold)
-        
-        Call .WriteLong(Amount)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBankExtractGold_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankExtractGold", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BankDepositGold" message to the outgoing data buffer.
-'
-' @param    amount The amount of money to deposit in the bank.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBankDepositGold(ByVal Amount As Long)
-    
-    On Error GoTo WriteBankDepositGold_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BankDepositGold" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.BankDepositGold)
-        
-        Call .WriteLong(Amount)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBankDepositGold_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBankDepositGold", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteTransFerGold(ByVal Amount As Long, ByVal destino As String)
-    
-    On Error GoTo WriteTransFerGold_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BankDepositGold" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.TransFerGold)
-        Call .WriteLong(Amount)
-        Call .WriteASCIIString(destino)
-
-    End With
-
-    
-    Exit Sub
-
-WriteTransFerGold_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTransFerGold", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte)
-    
-    On Error GoTo WriteItemMove_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.MoveItem)
-        Call .WriteByte(SlotActual)
-        Call .WriteByte(SlotNuevo)
-
-    End With
-
-    
-    Exit Sub
-
-WriteItemMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteItemMove", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteBovedaItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte)
-    
-    On Error GoTo WriteBovedaItemMove_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.BovedaMoveItem)
-        Call .WriteByte(SlotActual)
-        Call .WriteByte(SlotNuevo)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBovedaItemMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBovedaItemMove", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "FinEvento" message to the outgoing data buffer.
-'
-' @param    message The message to send with the denounce.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteFinEvento()
-    
-    On Error GoTo WriteFinEvento_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "FinEvento" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.FinEvento)
-    End With
-
-    
-    Exit Sub
-
-WriteFinEvento_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteFinEvento", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Denounce" message to the outgoing data buffer.
-'
-' @param    message The message to send with the denounce.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteDenounce(Name As String)
-    
-    On Error GoTo WriteDenounce_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Denounce" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Denounce)
-        Call .WriteASCIIString(Name)
-    End With
-
-    
-    Exit Sub
-
-WriteDenounce_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDenounce", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteQuieroFundarClan()
-    
-    On Error GoTo WriteQuieroFundarClan_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Denounce" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.QuieroFundarClan)
-
-    End With
-
-    
-    Exit Sub
-
-WriteQuieroFundarClan_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuieroFundarClan", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildMemberList" message to the outgoing data buffer.
-'
-' @param    guild The guild whose member list is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildMemberList(ByVal guild As String)
-    
-    On Error GoTo WriteGuildMemberList_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildMemberList" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildMemberList)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildMemberList_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildMemberList", Erl)
-    Resume Next
-    
-End Sub
-
-'ladder
-Public Sub WriteCasamiento(ByVal UserName As String)
-    
-    On Error GoTo WriteCasamiento_Err
-    
-
-    '***************************************************
-    'Ladder
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.Casarse)
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCasamiento_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCasamiento", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteMacroPos()
-    
-    On Error GoTo WriteMacroPos_Err
-    
-
-    '***************************************************
-    'Ladder
-    'Macros
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.MacroPosSent)
-        Call .WriteByte(ChatCombate)
-        Call .WriteByte(ChatGlobal)
-
-    End With
-
-    
-    Exit Sub
-
-WriteMacroPos_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMacroPos", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteSubastaInfo()
-    
-    On Error GoTo WriteSubastaInfo_Err
-    
-
-    '***************************************************
-    'Ladder
-    'Macros
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.SubastaInfo)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSubastaInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSubastaInfo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteScrollInfo()
-    
-    On Error GoTo WriteScrollInfo_Err
-    
-
-    '***************************************************
-    'Ladder
-    'Macros
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.SCROLLINFO)
-
-    End With
-
-    
-    Exit Sub
-
-WriteScrollInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteScrollInfo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCancelarExit()
-    '***************************************************
-    'Ladder
-    'Cancelar Salida
-    '***************************************************
-    
-    On Error GoTo WriteCancelarExit_Err
-    
-    UserSaliendo = False
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CancelarExit)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCancelarExit_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCancelarExit", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteEventoInfo()
-    
-    On Error GoTo WriteEventoInfo_Err
-    
-
-    '***************************************************
-    'Ladder
-    'Macros
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.EventoInfo)
-
-    End With
-
-    
-    Exit Sub
-
-WriteEventoInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEventoInfo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteFlagTrabajar()
-    
-    On Error GoTo WriteFlagTrabajar_Err
-    
-
-    '***************************************************
-    'Ladder
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.FlagTrabajar)
-
-    End With
-
-    
-    Exit Sub
-
-WriteFlagTrabajar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteFlagTrabajar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GMMessage" message to the outgoing data buffer.
-'
-' @param    message The message to be sent to the other GMs online.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteEscribiendo()
-    
-    On Error GoTo WriteEscribiendo_Err
-    
-    If MostrarEscribiendo = 0 Then Exit Sub
-    
-
-    '***************************************************
-    'Ladder
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.Escribiendo)
-
-    End With
-
-    
-    Exit Sub
-
-WriteEscribiendo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEscribiendo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteReclamarRecompensa(ByVal Index As Byte)
-    
-    On Error GoTo WriteReclamarRecompensa_Err
-    
-
-    '***************************************************
-    'Ladder
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.ReclamarRecompensa)
-        Call .WriteByte(Index)
-
-    End With
-
-    
-    Exit Sub
-
-WriteReclamarRecompensa_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReclamarRecompensa", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteGMMessage(ByVal Message As String)
-    
-    On Error GoTo WriteGMMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GMMessage" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GMMessage)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGMMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGMMessage", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ShowName" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteShowName()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ShowName" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteShowName_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.showName)
-
-    
-    Exit Sub
-
-WriteShowName_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteShowName", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "OnlineRoyalArmy" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteOnlineRoyalArmy()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "OnlineRoyalArmy" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteOnlineRoyalArmy_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.OnlineRoyalArmy)
-
-    
-    Exit Sub
-
-WriteOnlineRoyalArmy_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnlineRoyalArmy", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "OnlineChaosLegion" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteOnlineChaosLegion()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "OnlineChaosLegion" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteOnlineChaosLegion_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.OnlineChaosLegion)
-
-    
-    Exit Sub
-
-WriteOnlineChaosLegion_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnlineChaosLegion", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GoNearby" message to the outgoing data buffer.
-'
-' @param    username The suer to approach.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGoNearby(ByVal UserName As String)
-    
-    On Error GoTo WriteGoNearby_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GoNearby" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GoNearby)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGoNearby_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGoNearby", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Comment" message to the outgoing data buffer.
-'
-' @param    message The message to leave in the log as a comment.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteComment(ByVal Message As String)
-    
-    On Error GoTo WriteComment_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Comment" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.comment)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteComment_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteComment", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ServerTime" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteServerTime()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ServerTime" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteServerTime_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.serverTime)
-
-    
-    Exit Sub
-
-WriteServerTime_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteServerTime", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Where" message to the outgoing data buffer.
-'
-' @param    username The user whose position is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWhere(ByVal UserName As String)
-    
-    On Error GoTo WriteWhere_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Where" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Where)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteWhere_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWhere", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CreaturesInMap" message to the outgoing data buffer.
-'
-' @param    map The map in which to check for the existing creatures.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCreaturesInMap(ByVal map As Integer)
-    
-    On Error GoTo WriteCreaturesInMap_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CreaturesInMap" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CreaturesInMap)
-        
-        Call .WriteInteger(map)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCreaturesInMap_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreaturesInMap", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "WarpMeToTarget" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWarpMeToTarget()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "WarpMeToTarget" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteWarpMeToTarget_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.WarpMeToTarget)
-
-    
-    Exit Sub
-
-WriteWarpMeToTarget_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWarpMeToTarget", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "WarpChar" message to the outgoing data buffer.
-'
-' @param    username The user to be warped. "YO" represent's the user's char.
-' @param    map The map to which to warp the character.
-' @param    x The x position in the map to which to waro the character.
-' @param    y The y position in the map to which to waro the character.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWarpChar(ByVal UserName As String, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
-    
-    On Error GoTo WriteWarpChar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "WarpChar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.WarpChar)
-        
-        Call .WriteASCIIString(UserName)
-        
-        Call .WriteInteger(map)
-        
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-
-    End With
-
-    
-    Exit Sub
-
-WriteWarpChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWarpChar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Silence" message to the outgoing data buffer.
-'
-' @param    username The user to silence.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSilence(ByVal UserName As String, ByVal Minutos As Integer)
-    
-    On Error GoTo WriteSilence_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Silence" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Silence)
-        
-        Call .WriteASCIIString(UserName)
-        
-        Call .WriteInteger(Minutos)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSilence_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSilence", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCuentaRegresiva(ByVal Second As Byte)
-    
-    On Error GoTo WriteCuentaRegresiva_Err
-    
-
-    '***************************************************
-    'Writer by Ladder
-    '/Cuentaregresiva <Segundos>
-    '04-12-08
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CuentaRegresiva)
-        Call .WriteByte(Second)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCuentaRegresiva_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCuentaRegresiva", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WritePossUser(ByVal UserName As String)
-    '***************************************************
-    'Write by Ladder
-    '03-12-08
-    'Guarda la posición donde estamos parados, como la posición del personaje.
-    'Esta pensado exclusivamente para deslogear PJs.
-    '***************************************************
-    
-    On Error GoTo WritePossUser_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.PossUser)
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WritePossUser_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePossUser", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SOSShowList" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSOSShowList()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SOSShowList" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteSOSShowList_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.SOSShowList)
-
-    
-    Exit Sub
-
-WriteSOSShowList_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSOSShowList", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SOSRemove" message to the outgoing data buffer.
-'
-' @param    username The user whose SOS call has been already attended.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSOSRemove(ByVal UserName As String)
-    
-    On Error GoTo WriteSOSRemove_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SOSRemove" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SOSRemove)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSOSRemove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSOSRemove", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GoToChar" message to the outgoing data buffer.
-'
-' @param    username The user to be approached.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGoToChar(ByVal UserName As String)
-    
-    On Error GoTo WriteGoToChar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GoToChar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GoToChar)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGoToChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGoToChar", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteDesbuggear(ByVal Params As String)
-    
-    On Error GoTo WriteDesbuggear_Err
-    
-
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Desbuggear)
-        Call .WriteASCIIString(Params)
-
-    End With
-
-    
-    Exit Sub
-
-WriteDesbuggear_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDesbuggear", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteDarLlaveAUsuario(ByVal User As String, ByVal Llave As Integer)
-    
-    On Error GoTo WriteDarLlaveAUsuario_Err
-    
-
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.DarLlaveAUsuario)
-        Call .WriteASCIIString(User)
-        Call .WriteInteger(Llave)
-    End With
-
-    
-    Exit Sub
-
-WriteDarLlaveAUsuario_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDarLlaveAUsuario", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteSacarLlave(ByVal Llave As Integer)
-    
-    On Error GoTo WriteSacarLlave_Err
-    
-
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SacarLlave)
-        Call .WriteInteger(Llave)
-    End With
-
-    
-    Exit Sub
-
-WriteSacarLlave_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSacarLlave", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteVerLlaves()
-    
-    On Error GoTo WriteVerLlaves_Err
-    
-
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.VerLlaves)
-    End With
-
-    
-    Exit Sub
-
-WriteVerLlaves_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteVerLlaves", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Invisible" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteInvisible()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Invisible" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteInvisible_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Invisible)
-
-    
-    Exit Sub
-
-WriteInvisible_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteInvisible", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GMPanel" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGMPanel()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GMPanel" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteGMPanel_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.GMPanel)
-
-    
-    Exit Sub
-
-WriteGMPanel_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGMPanel", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestUserList" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestUserList()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestUserList" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestUserList_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestUserList)
-
-    
-    Exit Sub
-
-WriteRequestUserList_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestUserList", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Working" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWorking()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Working" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteWorking_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Working)
-
-    
-    Exit Sub
-
-WriteWorking_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWorking", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Hiding" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteHiding()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Hiding" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteHiding_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Hiding)
-
-    
-    Exit Sub
-
-WriteHiding_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteHiding", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Jail" message to the outgoing data buffer.
-'
-' @param    username The user to be sent to jail.
-' @param    reason The reason for which to send him to jail.
-' @param    time The time (in minutes) the user will have to spend there.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteJail(ByVal UserName As String, ByVal reason As String, ByVal Time As Byte)
-    
-    On Error GoTo WriteJail_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Jail" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Jail)
-        
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(reason)
-        
-        Call .WriteByte(Time)
-
-    End With
-
-    
-    Exit Sub
-
-WriteJail_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteJail", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCrearEvento(ByVal TIPO As Byte, ByVal duracion As Byte, ByVal multiplicacion As Byte)
-    
-    On Error GoTo WriteCrearEvento_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Jail" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CrearEvento)
-        
-        Call .WriteByte(TIPO)
-        Call .WriteByte(duracion)
-        
-        Call .WriteByte(multiplicacion)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCrearEvento_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCrearEvento", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "KillNPC" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteKillNPC()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "KillNPC" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteKillNPC_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.KillNPC)
-
-    
-    Exit Sub
-
-WriteKillNPC_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKillNPC", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "WarnUser" message to the outgoing data buffer.
-'
-' @param    username The user to be warned.
-' @param    reason Reason for the warning.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWarnUser(ByVal UserName As String, ByVal reason As String)
-    
-    On Error GoTo WriteWarnUser_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "WarnUser" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.WarnUser)
-        
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(reason)
-
-    End With
-
-    
-    Exit Sub
-
-WriteWarnUser_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteWarnUser", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteMensajeUser(ByVal UserName As String, ByVal mensaje As String)
-    
-    On Error GoTo WriteMensajeUser_Err
-    
-
-    '***************************************************
-    'Author: Ladder
-    'Last Modification: 04/jun/2014
-    'Escribe un mensaje al usuario
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.MensajeUser)
-        
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(mensaje)
-
-    End With
-
-    
-    Exit Sub
-
-WriteMensajeUser_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMensajeUser", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "EditChar" message to the outgoing data buffer.
-'
-' @param    UserName    The user to be edited.
-' @param    editOption  Indicates what to edit in the char.
-' @param    arg1        Additional argument 1. Contents depend on editoption.
-' @param    arg2        Additional argument 2. Contents depend on editoption.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteEditChar(ByVal UserName As String, ByVal editOption As eEditOptions, ByVal arg1 As String, ByVal arg2 As String)
-    
-    On Error GoTo WriteEditChar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "EditChar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.EditChar)
-        
-        Call .WriteASCIIString(UserName)
-        
-        Call .WriteByte(editOption)
-        
-        Call .WriteASCIIString(arg1)
-        Call .WriteASCIIString(arg2)
-
-    End With
-
-    
-    Exit Sub
-
-WriteEditChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteEditChar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestCharInfo" message to the outgoing data buffer.
-'
-' @param    username The user whose information is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestCharInfo(ByVal UserName As String)
-    
-    On Error GoTo WriteRequestCharInfo_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestCharInfo" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RequestCharInfo)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRequestCharInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharInfo", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestCharStats" message to the outgoing data buffer.
-'
-' @param    username The user whose stats are requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestCharStats(ByVal UserName As String)
-    
-    On Error GoTo WriteRequestCharStats_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestCharStats" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RequestCharStats)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRequestCharStats_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharStats", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestCharGold" message to the outgoing data buffer.
-'
-' @param    username The user whose gold is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestCharGold(ByVal UserName As String)
-    
-    On Error GoTo WriteRequestCharGold_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestCharGold" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RequestCharGold)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRequestCharGold_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharGold", Erl)
-    Resume Next
-    
-End Sub
-    
-''
-' Writes the "RequestCharInventory" message to the outgoing data buffer.
-'
-' @param    username The user whose inventory is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestCharInventory(ByVal UserName As String)
-    
-    On Error GoTo WriteRequestCharInventory_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestCharInventory" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RequestCharInventory)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRequestCharInventory_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharInventory", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestCharBank" message to the outgoing data buffer.
-'
-' @param    username The user whose banking information is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestCharBank(ByVal UserName As String)
-    
-    On Error GoTo WriteRequestCharBank_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestCharBank" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RequestCharBank)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRequestCharBank_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharBank", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestCharSkills" message to the outgoing data buffer.
-'
-' @param    username The user whose skills are requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestCharSkills(ByVal UserName As String)
-    
-    On Error GoTo WriteRequestCharSkills_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestCharSkills" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RequestCharSkills)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRequestCharSkills_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharSkills", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ReviveChar" message to the outgoing data buffer.
-'
-' @param    username The user to eb revived.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteReviveChar(ByVal UserName As String)
-    
-    On Error GoTo WriteReviveChar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ReviveChar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ReviveChar)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteReviveChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReviveChar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "OnlineGM" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteOnlineGM()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "OnlineGM" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteOnlineGM_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.OnlineGM)
-
-    
-    Exit Sub
-
-WriteOnlineGM_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnlineGM", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "OnlineMap" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteOnlineMap()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "OnlineMap" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteOnlineMap_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.OnlineMap)
-
-    
-    Exit Sub
-
-WriteOnlineMap_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOnlineMap", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Forgive" message to the outgoing data buffer.
-'
-' @param    username The user to be forgiven.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteForgive()
-    
-    On Error GoTo WriteForgive_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Forgive" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Forgive)
-        
-        '  Call .WriteASCIIString(UserName)
-    End With
-
-    
-    Exit Sub
-
-WriteForgive_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForgive", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteDonateGold(ByVal oro As Long)
-    
-    On Error GoTo WriteForgive_Err
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.DonateGold)
-        Call .WriteLong(oro)
-    End With
-
-    
-    Exit Sub
-
-WriteForgive_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDonateGold", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Kick" message to the outgoing data buffer.
-'
-' @param    username The user to be kicked.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteKick(ByVal UserName As String)
-    
-    On Error GoTo WriteKick_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Kick" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Kick)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteKick_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKick", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Execute" message to the outgoing data buffer.
-'
-' @param    username The user to be executed.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteExecute(ByVal UserName As String)
-    
-    On Error GoTo WriteExecute_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Execute" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.Execute)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteExecute_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteExecute", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BanChar" message to the outgoing data buffer.
-'
-' @param    username The user to be banned.
-' @param    reason The reson for which the user is to be banned.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBanChar(ByVal UserName As String, ByVal reason As String)
-    
-    On Error GoTo WriteBanChar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BanChar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.BanChar)
-        
-        Call .WriteASCIIString(UserName)
-        
-        Call .WriteASCIIString(reason)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBanChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanChar", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteBanCuenta(ByVal UserName As String, ByVal reason As String)
-    
-    On Error GoTo WriteBanCuenta_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BanCuenta" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.BanCuenta)
-    
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(reason)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBanCuenta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanCuenta", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteUnBanCuenta(ByVal UserName As String)
-    
-    On Error GoTo WriteUnBanCuenta_Err
-    
-
-    '***************************************************
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.UnbanCuenta)
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteUnBanCuenta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUnBanCuenta", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteBanSerial(ByVal UserName As String)
-    
-    On Error GoTo WriteBanSerial_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BanCuenta" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.BanSerial)
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBanSerial_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanSerial", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteUnBanSerial(ByVal UserName As String, ByVal reason As String)
-    
-    On Error GoTo WriteUnBanSerial_Err
-    
-
-    '***************************************************
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.UnBanSerial)
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteUnBanSerial_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUnBanSerial", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCerraCliente(ByVal UserName As String)
-    
-    On Error GoTo WriteCerraCliente_Err
-    
-
-    '***************************************************
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CerrarCliente)
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCerraCliente_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCerraCliente", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteBanTemporal(ByVal UserName As String, ByVal reason As String, ByVal dias As Byte)
-    
-    On Error GoTo WriteBanTemporal_Err
-    
-
-    '***************************************************
-    'Writes the "BanTemporal" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.BanTemporal)
-        
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(reason)
-        Call .WriteByte(dias)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBanTemporal_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanTemporal", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "UnbanChar" message to the outgoing data buffer.
-'
-' @param    username The user to be unbanned.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteUnbanChar(ByVal UserName As String)
-    
-    On Error GoTo WriteUnbanChar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "UnbanChar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.UnbanChar)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteUnbanChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUnbanChar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "NPCFollow" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteNPCFollow()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "NPCFollow" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteNPCFollow_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.NPCFollow)
-
-    
-    Exit Sub
-
-WriteNPCFollow_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNPCFollow", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SummonChar" message to the outgoing data buffer.
-'
-' @param    username The user to be summoned.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSummonChar(ByVal UserName As String)
-    
-    On Error GoTo WriteSummonChar_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SummonChar" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SummonChar)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSummonChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSummonChar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SpawnListRequest" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSpawnListRequest()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SpawnListRequest" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteSpawnListRequest_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.SpawnListRequest)
-
-    
-    Exit Sub
-
-WriteSpawnListRequest_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSpawnListRequest", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SpawnCreature" message to the outgoing data buffer.
-'
-' @param    creatureIndex The index of the creature in the spawn list to be spawned.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSpawnCreature(ByVal creatureIndex As Integer)
-    
-    On Error GoTo WriteSpawnCreature_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SpawnCreature" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SpawnCreature)
-        
-        Call .WriteInteger(creatureIndex)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSpawnCreature_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSpawnCreature", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ResetNPCInventory" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteResetNPCInventory()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ResetNPCInventory" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteResetNPCInventory_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ResetNPCInventory)
-
-    
-    Exit Sub
-
-WriteResetNPCInventory_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResetNPCInventory", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CleanWorld" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCleanWorld()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CleanWorld" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteCleanWorld_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.CleanWorld)
-
-    
-    Exit Sub
-
-WriteCleanWorld_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCleanWorld", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ServerMessage" message to the outgoing data buffer.
-'
-' @param    message The message to be sent to players.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteServerMessage(ByVal Message As String)
-    
-    On Error GoTo WriteServerMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ServerMessage" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ServerMessage)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteServerMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteServerMessage", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "NickToIP" message to the outgoing data buffer.
-'
-' @param    username The user whose IP is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteNickToIP(ByVal UserName As String)
-    
-    On Error GoTo WriteNickToIP_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "NickToIP" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.NickToIP)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteNickToIP_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNickToIP", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "IPToNick" message to the outgoing data buffer.
-'
-' @param    IP The IP for which to search for players. Must be an array of 4 elements with the 4 components of the IP.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteIPToNick(ByRef IP() As Byte)
-    
-    On Error GoTo WriteIPToNick_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "IPToNick" message to the outgoing data buffer
-    '***************************************************
-    If UBound(IP()) - LBound(IP()) + 1 <> 4 Then Exit Sub   'Invalid IP
-    
-    Dim i As Long
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.IPToNick)
-        
-        For i = LBound(IP()) To UBound(IP())
-            Call .WriteByte(IP(i))
-        Next i
-
-    End With
-
-    
-    Exit Sub
-
-WriteIPToNick_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteIPToNick", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildOnlineMembers" message to the outgoing data buffer.
-'
-' @param    guild The guild whose online player list is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildOnlineMembers(ByVal guild As String)
-    
-    On Error GoTo WriteGuildOnlineMembers_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildOnlineMembers" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildOnlineMembers)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildOnlineMembers_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildOnlineMembers", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "TeleportCreate" message to the outgoing data buffer.
-'
-' @param    map the map to which the teleport will lead.
-' @param    x The position in the x axis to which the teleport will lead.
-' @param    y The position in the y axis to which the teleport will lead.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
-    
-    On Error GoTo WriteTeleportCreate_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "TeleportCreate" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.TeleportCreate)
-        
-        Call .WriteInteger(map)
-        
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-
-    End With
-
-    
-    Exit Sub
-
-WriteTeleportCreate_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTeleportCreate", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "TeleportDestroy" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteTeleportDestroy()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "TeleportDestroy" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteTeleportDestroy_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.TeleportDestroy)
-
-    
-    Exit Sub
-
-WriteTeleportDestroy_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTeleportDestroy", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RainToggle" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRainToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RainToggle" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRainToggle_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RainToggle)
-
-    
-    Exit Sub
-
-WriteRainToggle_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRainToggle", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SetCharDescription" message to the outgoing data buffer.
-'
-' @param    desc The description to set to players.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSetCharDescription(ByVal desc As String)
-    
-    On Error GoTo WriteSetCharDescription_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SetCharDescription" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SetCharDescription)
-        
-        Call .WriteASCIIString(desc)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSetCharDescription_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSetCharDescription", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ForceMIDIToMap" message to the outgoing data buffer.
-'
-' @param    midiID The ID of the midi file to play.
-' @param    map The map in which to play the given midi.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal map As Integer)
-    
-    On Error GoTo WriteForceMIDIToMap_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ForceMIDIToMap" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ForceMIDIToMap)
-        
-        Call .WriteByte(midiID)
-        
-        Call .WriteInteger(map)
-
-    End With
-
-    
-    Exit Sub
-
-WriteForceMIDIToMap_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForceMIDIToMap", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ForceWAVEToMap" message to the outgoing data buffer.
-'
-' @param    waveID  The ID of the wave file to play.
-' @param    Map     The map into which to play the given wave.
-' @param    x       The position in the x axis in which to play the given wave.
-' @param    y       The position in the y axis in which to play the given wave.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte)
-    
-    On Error GoTo WriteForceWAVEToMap_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ForceWAVEToMap" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ForceWAVEToMap)
-        
-        Call .WriteByte(waveID)
-        
-        Call .WriteInteger(map)
-        
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-
-    End With
-
-    
-    Exit Sub
-
-WriteForceWAVEToMap_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForceWAVEToMap", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RoyalArmyMessage" message to the outgoing data buffer.
-'
-' @param    message The message to send to the royal army members.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRoyalArmyMessage(ByVal Message As String)
-    
-    On Error GoTo WriteRoyalArmyMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RoyalArmyMessage" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RoyalArmyMessage)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRoyalArmyMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRoyalArmyMessage", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChaosLegionMessage" message to the outgoing data buffer.
-'
-' @param    message The message to send to the chaos legion member.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChaosLegionMessage(ByVal Message As String)
-    
-    On Error GoTo WriteChaosLegionMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ChaosLegionMessage" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChaosLegionMessage)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChaosLegionMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChaosLegionMessage", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CitizenMessage" message to the outgoing data buffer.
-'
-' @param    message The message to send to citizens.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCitizenMessage(ByVal Message As String)
-    
-    On Error GoTo WriteCitizenMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CitizenMessage" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CitizenMessage)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCitizenMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCitizenMessage", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CriminalMessage" message to the outgoing data buffer.
-'
-' @param    message The message to send to criminals.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCriminalMessage(ByVal Message As String)
-    
-    On Error GoTo WriteCriminalMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CriminalMessage" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CriminalMessage)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCriminalMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCriminalMessage", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "TalkAsNPC" message to the outgoing data buffer.
-'
-' @param    message The message to send to the royal army members.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteTalkAsNPC(ByVal Message As String)
-    
-    On Error GoTo WriteTalkAsNPC_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "TalkAsNPC" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.TalkAsNPC)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteTalkAsNPC_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTalkAsNPC", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "DestroyAllItemsInArea" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteDestroyAllItemsInArea()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "DestroyAllItemsInArea" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteDestroyAllItemsInArea_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.DestroyAllItemsInArea)
-
-    
-    Exit Sub
-
-WriteDestroyAllItemsInArea_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDestroyAllItemsInArea", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "AcceptRoyalCouncilMember" message to the outgoing data buffer.
-'
-' @param    username The name of the user to be accepted into the royal army council.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteAcceptRoyalCouncilMember(ByVal UserName As String)
-    
-    On Error GoTo WriteAcceptRoyalCouncilMember_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "AcceptRoyalCouncilMember" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.AcceptRoyalCouncilMember)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteAcceptRoyalCouncilMember_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAcceptRoyalCouncilMember", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "AcceptChaosCouncilMember" message to the outgoing data buffer.
-'
-' @param    username The name of the user to be accepted as a chaos council member.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteAcceptChaosCouncilMember(ByVal UserName As String)
-    
-    On Error GoTo WriteAcceptChaosCouncilMember_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "AcceptChaosCouncilMember" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.AcceptChaosCouncilMember)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteAcceptChaosCouncilMember_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAcceptChaosCouncilMember", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ItemsInTheFloor" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteItemsInTheFloor()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ItemsInTheFloor" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteItemsInTheFloor_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ItemsInTheFloor)
-
-    
-    Exit Sub
-
-WriteItemsInTheFloor_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteItemsInTheFloor", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "MakeDumb" message to the outgoing data buffer.
-'
-' @param    username The name of the user to be made dumb.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteMakeDumb(ByVal UserName As String)
-    
-    On Error GoTo WriteMakeDumb_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "MakeDumb" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.MakeDumb)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteMakeDumb_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMakeDumb", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "MakeDumbNoMore" message to the outgoing data buffer.
-'
-' @param    username The name of the user who will no longer be dumb.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteMakeDumbNoMore(ByVal UserName As String)
-    
-    On Error GoTo WriteMakeDumbNoMore_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "MakeDumbNoMore" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.MakeDumbNoMore)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteMakeDumbNoMore_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteMakeDumbNoMore", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "DumpIPTables" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteDumpIPTables()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "DumpIPTables" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteDumpIPTables_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.DumpIPTables)
-
-    
-    Exit Sub
-
-WriteDumpIPTables_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDumpIPTables", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CouncilKick" message to the outgoing data buffer.
-'
-' @param    username The name of the user to be kicked from the council.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCouncilKick(ByVal UserName As String)
-    
-    On Error GoTo WriteCouncilKick_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CouncilKick" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CouncilKick)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCouncilKick_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCouncilKick", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SetTrigger" message to the outgoing data buffer.
-'
-' @param    trigger The type of trigger to be set to the tile.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSetTrigger(ByVal Trigger As eTrigger)
-    
-    On Error GoTo WriteSetTrigger_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SetTrigger" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SetTrigger)
-        
-        Call .WriteByte(Trigger)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSetTrigger_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSetTrigger", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "AskTrigger" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteAskTrigger()
-    '***************************************************
-    'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 04/13/07
-    'Writes the "AskTrigger" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteAskTrigger_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.AskTrigger)
-
-    
-    Exit Sub
-
-WriteAskTrigger_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAskTrigger", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BannedIPList" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBannedIPList()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BannedIPList" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteBannedIPList_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.BannedIPList)
-
-    
-    Exit Sub
-
-WriteBannedIPList_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBannedIPList", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BannedIPReload" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBannedIPReload()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BannedIPReload" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteBannedIPReload_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.BannedIPReload)
-
-    
-    Exit Sub
-
-WriteBannedIPReload_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBannedIPReload", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "GuildBan" message to the outgoing data buffer.
-'
-' @param    guild The guild whose members will be banned.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGuildBan(ByVal guild As String)
-    
-    On Error GoTo WriteGuildBan_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildBan" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GuildBan)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteGuildBan_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGuildBan", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "BanIP" message to the outgoing data buffer.
-'
-' @param    byIp    If set to true, we are banning by IP, otherwise the ip of a given character.
-' @param    IP      The IP for which to search for players. Must be an array of 4 elements with the 4 components of the IP.
-' @param    nick    The nick of the player whose ip will be banned.
-' @param    reason  The reason for the ban.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBanIP(ByVal byIp As Boolean, ByRef IP() As Byte, ByVal Nick As String, ByVal reason As String)
-    
-    On Error GoTo WriteBanIP_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BanIP" message to the outgoing data buffer
-    '***************************************************
-    If byIp And UBound(IP()) - LBound(IP()) + 1 <> 4 Then Exit Sub   'Invalid IP
-    
-    Dim i As Long
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.BanIP)
-        
-        Call .WriteBoolean(byIp)
-        
-        If byIp Then
-
-            For i = LBound(IP()) To UBound(IP())
-                Call .WriteByte(IP(i))
-            Next i
-
-        Else
-            Call .WriteASCIIString(Nick)
-
-        End If
-        
-        Call .WriteASCIIString(reason)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBanIP_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBanIP", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "UnbanIP" message to the outgoing data buffer.
-'
-' @param    IP The IP for which to search for players. Must be an array of 4 elements with the 4 components of the IP.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteUnbanIP(ByRef IP() As Byte)
-    
-    On Error GoTo WriteUnbanIP_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "UnbanIP" message to the outgoing data buffer
-    '***************************************************
-    If UBound(IP()) - LBound(IP()) + 1 <> 4 Then Exit Sub   'Invalid IP
-    
-    Dim i As Long
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.UnBanIp)
-        
-        For i = LBound(IP()) To UBound(IP())
-            Call .WriteByte(IP(i))
-        Next i
-
-    End With
-
-    
-    Exit Sub
-
-WriteUnbanIP_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteUnbanIP", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CreateItem" message to the outgoing data buffer.
-'
-' @param    itemIndex The index of the item to be created.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCreateItem(ByVal ItemIndex As Long, ByVal cantidad As Integer)
-    
-    On Error GoTo WriteCreateItem_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CreateItem" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CreateItem)
-        
-        Call .WriteInteger(ItemIndex)
-        Call .WriteInteger(cantidad)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCreateItem_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreateItem", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "DestroyItems" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteDestroyItems()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "DestroyItems" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteDestroyItems_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.DestroyItems)
-
-    
-    Exit Sub
-
-WriteDestroyItems_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDestroyItems", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChaosLegionKick" message to the outgoing data buffer.
-'
-' @param    username The name of the user to be kicked from the Chaos Legion.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChaosLegionKick(ByVal UserName As String)
-    
-    On Error GoTo WriteChaosLegionKick_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ChaosLegionKick" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChaosLegionKick)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChaosLegionKick_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChaosLegionKick", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RoyalArmyKick" message to the outgoing data buffer.
-'
-' @param    username The name of the user to be kicked from the Royal Army.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRoyalArmyKick(ByVal UserName As String)
-    
-    On Error GoTo WriteRoyalArmyKick_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RoyalArmyKick" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RoyalArmyKick)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRoyalArmyKick_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRoyalArmyKick", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ForceMIDIAll" message to the outgoing data buffer.
-'
-' @param    midiID The id of the midi file to play.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteForceMIDIAll(ByVal midiID As Byte)
-    
-    On Error GoTo WriteForceMIDIAll_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ForceMIDIAll" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ForceMIDIAll)
-        
-        Call .WriteByte(midiID)
-
-    End With
-
-    
-    Exit Sub
-
-WriteForceMIDIAll_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForceMIDIAll", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ForceWAVEAll" message to the outgoing data buffer.
-'
-' @param    waveID The id of the wave file to play.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteForceWAVEAll(ByVal waveID As Byte)
-    
-    On Error GoTo WriteForceWAVEAll_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ForceWAVEAll" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ForceWAVEAll)
-        
-        Call .WriteByte(waveID)
-
-    End With
-
-    
-    Exit Sub
-
-WriteForceWAVEAll_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteForceWAVEAll", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RemovePunishment" message to the outgoing data buffer.
-'
-' @param    username The user whose punishments will be altered.
-' @param    punishment The id of the punishment to be removed.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRemovePunishment(ByVal UserName As String, ByVal punishment As Byte, ByVal NewText As String)
-    
-    On Error GoTo WriteRemovePunishment_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RemovePunishment" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RemovePunishment)
-        
-        Call .WriteASCIIString(UserName)
-        Call .WriteByte(punishment)
-        Call .WriteASCIIString(NewText)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRemovePunishment_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRemovePunishment", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "TileBlockedToggle" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteTileBlockedToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "TileBlockedToggle" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteTileBlockedToggle_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.TileBlockedToggle)
-
-    
-    Exit Sub
-
-WriteTileBlockedToggle_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTileBlockedToggle", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "KillNPCNoRespawn" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteKillNPCNoRespawn()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "KillNPCNoRespawn" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteKillNPCNoRespawn_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.KillNPCNoRespawn)
-
-    
-    Exit Sub
-
-WriteKillNPCNoRespawn_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKillNPCNoRespawn", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "KillAllNearbyNPCs" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteKillAllNearbyNPCs()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "KillAllNearbyNPCs" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteKillAllNearbyNPCs_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.KillAllNearbyNPCs)
-
-    
-    Exit Sub
-
-WriteKillAllNearbyNPCs_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKillAllNearbyNPCs", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "LastIP" message to the outgoing data buffer.
-'
-' @param    username The user whose last IPs are requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteLastIP(ByVal UserName As String)
-    
-    On Error GoTo WriteLastIP_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "LastIP" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.LastIP)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteLastIP_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLastIP", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChangeMOTD" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeMOTD()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ChangeMOTD" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteChangeMOTD_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ChangeMOTD)
-
-    
-    Exit Sub
-
-WriteChangeMOTD_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMOTD", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SetMOTD" message to the outgoing data buffer.
-'
-' @param    message The message to be set as the new MOTD.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSetMOTD(ByVal Message As String)
-    
-    On Error GoTo WriteSetMOTD_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SetMOTD" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SetMOTD)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSetMOTD_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSetMOTD", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SystemMessage" message to the outgoing data buffer.
-'
-' @param    message The message to be sent to all players.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSystemMessage(ByVal Message As String)
-    
-    On Error GoTo WriteSystemMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SystemMessage" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SystemMessage)
-        
-        Call .WriteASCIIString(Message)
-
-    End With
-
-    
-    Exit Sub
-
-WriteSystemMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSystemMessage", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CreateNPC" message to the outgoing data buffer.
-'
-' @param    npcIndex The index of the NPC to be created.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCreateNPC(ByVal NpcIndex As Integer)
-    
-    On Error GoTo WriteCreateNPC_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CreateNPC" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CreateNPC)
-        
-        Call .WriteInteger(NpcIndex)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCreateNPC_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreateNPC", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CreateNPCWithRespawn" message to the outgoing data buffer.
-'
-' @param    npcIndex The index of the NPC to be created.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCreateNPCWithRespawn(ByVal NpcIndex As Integer)
-    
-    On Error GoTo WriteCreateNPCWithRespawn_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CreateNPCWithRespawn" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CreateNPCWithRespawn)
-        
-        Call .WriteInteger(NpcIndex)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCreateNPCWithRespawn_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreateNPCWithRespawn", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ImperialArmour" message to the outgoing data buffer.
-'
-' @param    armourIndex The index of imperial armour to be altered.
-' @param    objectIndex The index of the new object to be set as the imperial armour.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteImperialArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    
-    On Error GoTo WriteImperialArmour_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ImperialArmour" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ImperialArmour)
-        
-        Call .WriteByte(armourIndex)
-        
-        Call .WriteInteger(objectIndex)
-
-    End With
-
-    
-    Exit Sub
-
-WriteImperialArmour_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteImperialArmour", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChaosArmour" message to the outgoing data buffer.
-'
-' @param    armourIndex The index of chaos armour to be altered.
-' @param    objectIndex The index of the new object to be set as the chaos armour.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChaosArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    
-    On Error GoTo WriteChaosArmour_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ChaosArmour" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChaosArmour)
-        
-        Call .WriteByte(armourIndex)
-        
-        Call .WriteInteger(objectIndex)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChaosArmour_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChaosArmour", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "NavigateToggle" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteNavigateToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "NavigateToggle" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteNavigateToggle_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.NavigateToggle)
-
-    
-    Exit Sub
-
-WriteNavigateToggle_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNavigateToggle", Erl)
-    Resume Next
-    
-End Sub
-
-' Writes the "ServerOpenToUsersToggle" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteServerOpenToUsersToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ServerOpenToUsersToggle" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteServerOpenToUsersToggle_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ServerOpenToUsersToggle)
-
-    
-    Exit Sub
-
-WriteServerOpenToUsersToggle_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteServerOpenToUsersToggle", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Participar" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteParticipar()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "TurnOffServer" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteParticipar_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Participar)
-
-    
-    Exit Sub
-
-WriteParticipar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteParticipar", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "TurnCriminal" message to the outgoing data buffer.
-'
-' @param    username The name of the user to turn into criminal.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteTurnCriminal(ByVal UserName As String)
-    
-    On Error GoTo WriteTurnCriminal_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "TurnCriminal" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.TurnCriminal)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteTurnCriminal_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTurnCriminal", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ResetFactions" message to the outgoing data buffer.
-'
-' @param    username The name of the user who will be removed from any faction.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteResetFactions(ByVal UserName As String)
-    
-    On Error GoTo WriteResetFactions_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ResetFactions" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ResetFactions)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteResetFactions_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResetFactions", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RemoveCharFromGuild" message to the outgoing data buffer.
-'
-' @param    username The name of the user who will be removed from any guild.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRemoveCharFromGuild(ByVal UserName As String)
-    
-    On Error GoTo WriteRemoveCharFromGuild_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RemoveCharFromGuild" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RemoveCharFromGuild)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRemoveCharFromGuild_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRemoveCharFromGuild", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestCharMail" message to the outgoing data buffer.
-'
-' @param    username The name of the user whose mail is requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestCharMail(ByVal UserName As String)
-    
-    On Error GoTo WriteRequestCharMail_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestCharMail" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.RequestCharMail)
-        
-        Call .WriteASCIIString(UserName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteRequestCharMail_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestCharMail", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "AlterPassword" message to the outgoing data buffer.
-'
-' @param    username The name of the user whose mail is requested.
-' @param    copyFrom The name of the user from which to copy the password.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteAlterPassword(ByVal UserName As String, ByVal CopyFrom As String)
-    
-    On Error GoTo WriteAlterPassword_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "AlterPassword" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.AlterPassword)
-        
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(CopyFrom)
-
-    End With
-
-    
-    Exit Sub
-
-WriteAlterPassword_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAlterPassword", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "AlterMail" message to the outgoing data buffer.
-'
-' @param    username The name of the user whose mail is requested.
-' @param    newMail The new email of the player.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteAlterMail(ByVal UserName As String, ByVal newMail As String)
-    
-    On Error GoTo WriteAlterMail_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "AlterMail" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.AlterMail)
-        
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(newMail)
-
-    End With
-
-    
-    Exit Sub
-
-WriteAlterMail_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAlterMail", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "AlterName" message to the outgoing data buffer.
-'
-' @param    username The name of the user whose mail is requested.
-' @param    newName The new user name.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteAlterName(ByVal UserName As String, ByVal newName As String)
-    
-    On Error GoTo WriteAlterName_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "AlterName" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.AlterName)
-        
-        Call .WriteASCIIString(UserName)
-        Call .WriteASCIIString(newName)
-
-    End With
-
-    
-    Exit Sub
-
-WriteAlterName_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteAlterName", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "DoBackup" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteDoBackup()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "DoBackup" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteDoBackup_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.DoBackUp)
-
-    
-    Exit Sub
-
-WriteDoBackup_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDoBackup", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ShowGuildMessages" message to the outgoing data buffer.
-'
-' @param    guild The guild to listen to.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteShowGuildMessages(ByVal guild As String)
-    
-    On Error GoTo WriteShowGuildMessages_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ShowGuildMessages" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ShowGuildMessages)
-        
-        Call .WriteASCIIString(guild)
-
-    End With
-
-    
-    Exit Sub
-
-WriteShowGuildMessages_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteShowGuildMessages", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SaveMap" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSaveMap()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SaveMap" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteSaveMap_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.SaveMap)
-
-    
-    Exit Sub
-
-WriteSaveMap_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSaveMap", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChangeMapInfoPK" message to the outgoing data buffer.
-'
-' @param    isPK True if the map is PK, False otherwise.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeMapInfoPK(ByVal isPK As Boolean)
-    
-    On Error GoTo WriteChangeMapInfoPK_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ChangeMapInfoPK" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeMapInfoPK)
-        
-        Call .WriteBoolean(isPK)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeMapInfoPK_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoPK", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChangeMapInfoBackup" message to the outgoing data buffer.
-'
-' @param    backup True if the map is to be backuped, False otherwise.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeMapInfoBackup(ByVal backup As Boolean)
-    
-    On Error GoTo WriteChangeMapInfoBackup_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ChangeMapInfoBackup" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeMapInfoBackup)
-        
-        Call .WriteBoolean(backup)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeMapInfoBackup_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoBackup", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChangeMapInfoRestricted" message to the outgoing data buffer.
-'
-' @param    restrict NEWBIES (only newbies), NO (everyone), ARMADA (just Armadas), CAOS (just caos) or FACCION (Armadas & caos only)
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeMapInfoRestricted(ByVal restrict As String)
-    
-    On Error GoTo WriteChangeMapInfoRestricted_Err
-    
-
-    '***************************************************
-    'Author: Pablo (ToxicWaste)
-    'Last Modification: 26/01/2007
-    'Writes the "ChangeMapInfoRestricted" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeMapInfoRestricted)
-        
-        Call .WriteASCIIString(restrict)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeMapInfoRestricted_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoRestricted", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChangeMapInfoNoMagic" message to the outgoing data buffer.
-'
-' @param    nomagic TRUE if no magic is to be allowed in the map.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeMapInfoNoMagic(ByVal nomagic As Boolean)
-    
-    On Error GoTo WriteChangeMapInfoNoMagic_Err
-    
-
-    '***************************************************
-    'Author: Pablo (ToxicWaste)
-    'Last Modification: 26/01/2007
-    'Writes the "ChangeMapInfoNoMagic" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeMapInfoNoMagic)
-        
-        Call .WriteBoolean(nomagic)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeMapInfoNoMagic_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoNoMagic", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChangeMapInfoNoInvi" message to the outgoing data buffer.
-'
-' @param    noinvi TRUE if invisibility is not to be allowed in the map.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeMapInfoNoInvi(ByVal noinvi As Boolean)
-    
-    On Error GoTo WriteChangeMapInfoNoInvi_Err
-    
-
-    '***************************************************
-    'Author: Pablo (ToxicWaste)
-    'Last Modification: 26/01/2007
-    'Writes the "ChangeMapInfoNoInvi" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeMapInfoNoInvi)
-        
-        Call .WriteBoolean(noinvi)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeMapInfoNoInvi_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoNoInvi", Erl)
-    Resume Next
-    
-End Sub
-                            
-''
-' Writes the "ChangeMapInfoNoResu" message to the outgoing data buffer.
-'
-' @param    noresu TRUE if resurection is not to be allowed in the map.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeMapInfoNoResu(ByVal noresu As Boolean)
-    
-    On Error GoTo WriteChangeMapInfoNoResu_Err
-    
-
-    '***************************************************
-    'Author: Pablo (ToxicWaste)
-    'Last Modification: 26/01/2007
-    'Writes the "ChangeMapInfoNoResu" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeMapInfoNoResu)
-        
-        Call .WriteBoolean(noresu)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeMapInfoNoResu_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoNoResu", Erl)
-    Resume Next
-    
-End Sub
-                        
-''
-' Writes the "ChangeMapInfoLand" message to the outgoing data buffer.
-'
-' @param    land options: "BOSQUE", "NIEVE", "DESIERTO", "CIUDAD", "CAMPO", "DUNGEON".
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeMapInfoLand(ByVal lAnd As String)
-    
-    On Error GoTo WriteChangeMapInfoLand_Err
-    
-
-    '***************************************************
-    'Author: Pablo (ToxicWaste)
-    'Last Modification: 26/01/2007
-    'Writes the "ChangeMapInfoLand" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeMapInfoLand)
-        
-        Call .WriteASCIIString(lAnd)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeMapInfoLand_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoLand", Erl)
-    Resume Next
-    
-End Sub
-                        
-''
-' Writes the "ChangeMapInfoZone" message to the outgoing data buffer.
-'
-' @param    zone options: "BOSQUE", "NIEVE", "DESIERTO", "CIUDAD", "CAMPO", "DUNGEON".
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChangeMapInfoZone(ByVal zone As String)
-    
-    On Error GoTo WriteChangeMapInfoZone_Err
-    
-
-    '***************************************************
-    'Author: Pablo (ToxicWaste)
-    'Last Modification: 26/01/2007
-    'Writes the "ChangeMapInfoZone" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChangeMapInfoZone)
-        
-        Call .WriteASCIIString(zone)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChangeMapInfoZone_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChangeMapInfoZone", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "SaveChars" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteSaveChars()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "SaveChars" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteSaveChars_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.SaveChars)
-
-    
-    Exit Sub
-
-WriteSaveChars_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSaveChars", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CleanSOS" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCleanSOS()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "CleanSOS" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteCleanSOS_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.CleanSOS)
-
-    
-    Exit Sub
-
-WriteCleanSOS_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCleanSOS", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ShowServerForm" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteShowServerForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ShowServerForm" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteShowServerForm_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ShowServerForm)
-
-    
-    Exit Sub
-
-WriteShowServerForm_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteShowServerForm", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Night" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteNight()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Night" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteNight_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.night)
-
-    
-    Exit Sub
-
-WriteNight_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNight", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteDay()
-    
-    On Error GoTo WriteDay_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Day)
-    
-    Exit Sub
-
-WriteDay_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteDay", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteSetTime(ByVal Time As Long)
-    
-    On Error GoTo WriteSetTime_Err
-    
-    With outgoingData
-        Call .WriteByte(ClientPacketID.SetTime)
-        Call .WriteLong(Time)
-    End With
-    
-    Exit Sub
-
-WriteSetTime_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSetTime", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "KickAllChars" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteKickAllChars()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "KickAllChars" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteKickAllChars_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.KickAllChars)
-
-    
-    Exit Sub
-
-WriteKickAllChars_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteKickAllChars", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "RequestTCPStats" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRequestTCPStats()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "RequestTCPStats" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRequestTCPStats_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.RequestTCPStats)
-
-    
-    Exit Sub
-
-WriteRequestTCPStats_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRequestTCPStats", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ReloadNPCs" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteReloadNPCs()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ReloadNPCs" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteReloadNPCs_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ReloadNPCs)
-
-    
-    Exit Sub
-
-WriteReloadNPCs_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReloadNPCs", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ReloadServerIni" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteReloadServerIni()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ReloadServerIni" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteReloadServerIni_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ReloadServerIni)
-
-    
-    Exit Sub
-
-WriteReloadServerIni_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReloadServerIni", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ReloadSpells" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteReloadSpells()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ReloadSpells" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteReloadSpells_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ReloadSpells)
-
-    
-    Exit Sub
-
-WriteReloadSpells_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReloadSpells", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ReloadObjects" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteReloadObjects()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ReloadObjects" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteReloadObjects_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ReloadObjects)
-
-    
-    Exit Sub
-
-WriteReloadObjects_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteReloadObjects", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Restart" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteRestart()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Restart" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteRestart_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Restart)
-
-    
-    Exit Sub
-
-WriteRestart_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRestart", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ResetAutoUpdate" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteResetAutoUpdate()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ResetAutoUpdate" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteResetAutoUpdate_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.ResetAutoUpdate)
-
-    
-    Exit Sub
-
-WriteResetAutoUpdate_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResetAutoUpdate", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "ChatColor" message to the outgoing data buffer.
-'
-' @param    r The red component of the new chat color.
-' @param    g The green component of the new chat color.
-' @param    b The blue component of the new chat color.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteChatColor(ByVal r As Byte, ByVal G As Byte, ByVal B As Byte)
-    
-    On Error GoTo WriteChatColor_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ChatColor" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.ChatColor)
-        
-        Call .WriteByte(r)
-        Call .WriteByte(G)
-        Call .WriteByte(B)
-
-    End With
-
-    
-    Exit Sub
-
-WriteChatColor_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteChatColor", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Ignored" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteIgnored()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "Ignored" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteIgnored_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.Ignored)
-
-    
-    Exit Sub
-
-WriteIgnored_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteIgnored", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "CheckSlot" message to the outgoing data buffer.
-'
-' @param    UserName    The name of the char whose slot will be checked.
-' @param    slot        The slot to be checked.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteCheckSlot(ByVal UserName As String, ByVal Slot As Byte)
-    
-    On Error GoTo WriteCheckSlot_Err
-    
-
-    '***************************************************
-    'Author: Pablo (ToxicWaste)
-    'Last Modification: 26/01/2007
-    'Writes the "CheckSlot" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.CheckSlot)
-        Call .WriteASCIIString(UserName)
-        Call .WriteByte(Slot)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCheckSlot_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCheckSlot", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Ping" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WritePing()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 26/01/2007
-    'Writes the "Ping" message to the outgoing data buffer
-    '***************************************************
-    'Prevent the timer from being cut
-    '   If pingTime <> 0 Then Exit Sub
-    
-    On Error GoTo WritePing_Err
-    
-
-    Call outgoingData.WriteByte(ClientPacketID.Ping)
-    pingTime = timeGetTime And &H7FFFFFFF
-    Call outgoingData.WriteLong(pingTime)
-    
-    ' Avoid computing errors due to frame rate
-    Call FlushBuffer
-    'DoEvents
-    
-    
-    Exit Sub
-
-WritePing_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePing", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteLlamadadeClan()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 26/01/2007
-    'Writes the "Ping" message to the outgoing data buffer
-    '***************************************************
-    'Prevent the timer from being cut
-    '   If pingTime <> 0 Then Exit Sub
-    
-    On Error GoTo WriteLlamadadeClan_Err
-    
-
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.llamadadeclan)
-    
-    ' Avoid computing errors due to frame rate
-    Call FlushBuffer
-    'DoEvents
-    
-    
-    Exit Sub
-
-WriteLlamadadeClan_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteLlamadadeClan", Erl)
-    Resume Next
-    
 End Sub
 
 ''
@@ -17259,33 +7307,28 @@ End Sub
 Public Sub FlushBuffer()
     
     On Error GoTo FlushBuffer_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     'Sends all data existing in the buffer
     '***************************************************
-    Dim sndData As String
-    
+
     With outgoingData
 
         If .length = 0 Then Exit Sub
-        '   Debug.Print "Salio paquete con peso de: " & .Length & " bytes"
+
         OutBytes = OutBytes + .length
-        ' InBytes = 0
-        sndData = .ReadASCIIStringFixed(.length)
-        
-        Call SendData(sndData)
+
+        Call SendData(.ReadAll)
 
     End With
-
     
     Exit Sub
 
 FlushBuffer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.FlushBuffer", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -17294,233 +7337,38 @@ End Sub
 '
 ' @param    sdData  The data to be sent to the server.
 
-Private Sub SendData(ByRef sdData As String)
+Private Sub SendData(ByRef sdData() As Byte)
     
     On Error GoTo SendData_Err
-    
-    #If UsarWrench = 1 Then
 
-        If Not frmMain.Socket1.IsWritable Then
-            'Put data back in the bytequeue
-            Call outgoingData.WriteASCIIStringFixed(sdData)
-            Exit Sub
+    If frmMain.MainSocket.State <> sckConnected Then Exit Sub
 
-        End If
-   
-        If Not frmMain.Socket1.Connected Then Exit Sub
-    #Else
-
-        If frmMain.Winsock1.State <> sckConnected Then Exit Sub
-    #End If
- 
     #If AntiExternos Then
         Security.Redundance = CLng(Security.Redundance * Security.MultiplicationFactor) Mod 255
 
-        Dim Data() As Byte: Data = StrConv(sdData, vbFromUnicode)
+        Dim DATA() As Byte
+        DATA = StrConv(sdData, vbFromUnicode)
         Call Security.NAC_E_Byte(Data, Security.Redundance)
         
         sdData = StrConv(Data, vbUnicode)
 
     #End If
  
-    #If UsarWrench = 1 Then
-        Call frmMain.Socket1.Write(sdData, Len(sdData))
-    #Else
-        Call frmMain.Winsock1.SendData(sdData)
-    #End If
- 
+    Call frmMain.MainSocket.SendData(sdData)
     
     Exit Sub
 
 SendData_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.SendData", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteQuestionGM(ByVal Consulta As String, ByVal TipoDeConsulta As String)
-    
-    On Error GoTo WriteQuestionGM_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ForumPost" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.QuestionGM)
-        Call .WriteASCIIString(Consulta)
-        Call .WriteASCIIString(TipoDeConsulta)
-
-    End With
-
-    
-    Exit Sub
-
-WriteQuestionGM_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestionGM", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteOfertaInicial(ByVal Oferta As Long)
-    
-    On Error GoTo WriteOfertaInicial_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.OfertaInicial)
-        Call .WriteLong(Oferta)
-
-    End With
-
-    
-    Exit Sub
-
-WriteOfertaInicial_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOfertaInicial", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteOferta(ByVal OfertaDeSubasta As Long)
-    
-    On Error GoTo WriteOferta_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.OfertaDeSubasta)
-        Call .WriteLong(OfertaDeSubasta)
-
-    End With
-
-    
-    Exit Sub
-
-WriteOferta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteOferta", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteGlobalMessage(ByVal Message As String)
-    
-    On Error GoTo WriteGlobalMessage_Err
-    
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GuildRequestDetails" message to the outgoing data buffer
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.GlobalMessage)
-        
-        Call .WriteASCIIString(Message)
-        
-    End With
-
-    
-    Exit Sub
-
-WriteGlobalMessage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGlobalMessage", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteGlobalOnOff()
-    
-    On Error GoTo WriteGlobalOnOff_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.GlobalOnOff)
-
-    
-    Exit Sub
-
-WriteGlobalOnOff_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGlobalOnOff", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteBorrandoPJ()
-    
-    On Error GoTo WriteBorrandoPJ_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.BorrarPJ)
-        Call .WriteASCIIString(DeleteUser)
-        Call .WriteASCIIString(CuentaEmail)
-        Call .WriteASCIIString(SEncriptar(CuentaPassword))
-        Call .WriteByte(App.Major)
-        Call .WriteByte(App.Minor)
-        Call .WriteByte(App.Revision)
-        Call .WriteASCIIString(MacAdress)  'Seguridad
-        Call .WriteLong(HDserial)  'SeguridadHDserial
-        Call .WriteASCIIString(CheckMD5)
-
-    End With
-
-    
-    Exit Sub
-
-WriteBorrandoPJ_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBorrandoPJ", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteIngresandoConCuenta()
-    
-    On Error GoTo WriteIngresandoConCuenta_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.IngresarConCuenta)
-        Call .WriteASCIIString(CuentaEmail)
-        Call .WriteASCIIString(SEncriptar(CuentaPassword))
-        Call .WriteByte(App.Major)
-        Call .WriteByte(App.Minor)
-        Call .WriteByte(App.Revision)
-        Call .WriteASCIIString(MacAdress)  'Seguridad
-        Call .WriteLong(HDserial)  'SeguridadHDserial
-        Call .WriteASCIIString(CheckMD5)
-        
-    End With
-
-    
-    Exit Sub
-
-WriteIngresandoConCuenta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteIngresandoConCuenta", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandlePersonajesDeCuenta()
 
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    'Remove packet ID
-    Call buffer.ReadByte
     
-    CantidadDePersonajesEnCuenta = buffer.ReadByte()
+    CantidadDePersonajesEnCuenta = incomingData.ReadByte()
 
     Dim ii As Byte
      
@@ -17542,29 +7390,29 @@ Private Sub HandlePersonajesDeCuenta()
     Next ii
 
     For ii = 1 To CantidadDePersonajesEnCuenta
-        Pjs(ii).nombre = buffer.ReadASCIIString()
-        Pjs(ii).nivel = buffer.ReadByte()
-        Pjs(ii).Mapa = buffer.ReadInteger()
-        Pjs(ii).PosX = buffer.ReadInteger()
-        Pjs(ii).PosY = buffer.ReadInteger()
+        Pjs(ii).nombre = incomingData.ReadASCIIString()
+        Pjs(ii).nivel = incomingData.ReadByte()
+        Pjs(ii).Mapa = incomingData.ReadInteger()
+        Pjs(ii).PosX = incomingData.ReadInteger()
+        Pjs(ii).PosY = incomingData.ReadInteger()
         
-        Pjs(ii).Body = buffer.ReadInteger()
+        Pjs(ii).Body = incomingData.ReadInteger()
         
-        Pjs(ii).Head = buffer.ReadInteger()
-        Pjs(ii).Criminal = buffer.ReadByte()
-        Pjs(ii).Clase = buffer.ReadByte()
+        Pjs(ii).Head = incomingData.ReadInteger()
+        Pjs(ii).Criminal = incomingData.ReadByte()
+        Pjs(ii).Clase = incomingData.ReadByte()
        
-        Pjs(ii).Casco = buffer.ReadInteger()
-        Pjs(ii).Escudo = buffer.ReadInteger()
-        Pjs(ii).Arma = buffer.ReadInteger()
-        Pjs(ii).ClanName = "<" & buffer.ReadASCIIString() & ">"
+        Pjs(ii).Casco = incomingData.ReadInteger()
+        Pjs(ii).Escudo = incomingData.ReadInteger()
+        Pjs(ii).Arma = incomingData.ReadInteger()
+        Pjs(ii).ClanName = "<" & incomingData.ReadASCIIString() & ">"
        
         ' Pjs(ii).NameMapa = Pjs(ii).mapa
         Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).Name
 
     Next ii
     
-    CuentaDonador = buffer.ReadByte()
+    CuentaDonador = incomingData.ReadByte()
     
     Dim i As Integer
 
@@ -17625,93 +7473,51 @@ Private Sub HandlePersonajesDeCuenta()
         Call SwitchMap(Pjs(1).Mapa)
         RenderCuenta_PosX = Pjs(1).PosX
         RenderCuenta_PosY = Pjs(1).PosY
-    End If
 
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
+    End If
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePersonajesDeCuenta", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
 Private Sub HandleUserOnline()
-
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
 
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    'Remove packet ID
-    Call buffer.ReadByte
-
     Dim rdata As Integer
     
-    rdata = buffer.ReadInteger()
+    rdata = incomingData.ReadInteger()
     
     usersOnline = rdata
     frmMain.onlines = "Online: " & usersOnline
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserOnline", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
 Private Sub HandleParticleFXToFloor()
     
     On Error GoTo HandleParticleFXToFloor_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 8 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim X              As Byte
 
-    Dim Y              As Byte
+    Dim y              As Byte
 
     Dim ParticulaIndex As Byte
 
@@ -17719,8 +7525,8 @@ Private Sub HandleParticleFXToFloor()
 
     Dim Borrar         As Boolean
      
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     ParticulaIndex = incomingData.ReadInteger()
     Time = incomingData.ReadLong()
 
@@ -17735,59 +7541,49 @@ Private Sub HandleParticleFXToFloor()
     End If
 
     If Borrar Then
-        Graficos_Particulas.Particle_Group_Remove (MapData(X, Y).particle_group)
+        Graficos_Particulas.Particle_Group_Remove (MapData(x, y).particle_group)
     Else
 
-        If MapData(X, Y).particle_group = 0 Then
-            MapData(X, Y).particle_group = 0
-            General_Particle_Create ParticulaIndex, X, Y, Time
+        If MapData(x, y).particle_group = 0 Then
+            MapData(x, y).particle_group = 0
+            General_Particle_Create ParticulaIndex, x, y, Time
         Else
-            Call General_Char_Particle_Create(ParticulaIndex, MapData(X, Y).charindex, Time)
+            Call General_Char_Particle_Create(ParticulaIndex, MapData(x, y).charindex, Time)
 
         End If
 
     End If
-
     
     Exit Sub
 
 HandleParticleFXToFloor_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFXToFloor", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleLightToFloor()
     
     On Error GoTo HandleLightToFloor_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 8 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    Dim X     As Byte
+    Dim x           As Byte
 
-    Dim Y     As Byte
+    Dim y           As Byte
 
-    Dim Color As Long
+    Dim Color       As Long
     
     Dim color_value As RGBA
 
-    Dim Rango As Byte
+    Dim Rango       As Byte
      
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     Color = incomingData.ReadLong()
     Rango = incomingData.ReadByte()
     
@@ -17799,17 +7595,17 @@ Private Sub HandleLightToFloor()
 
     If Color = 0 Then
    
-        If MapData(X, Y).luz.Rango > 100 Then
-            LucesRedondas.Delete_Light_To_Map X, Y
+        If MapData(x, y).luz.Rango > 100 Then
+            LucesRedondas.Delete_Light_To_Map x, y
    
             LucesCuadradas.Light_Render_All
             LucesRedondas.LightRenderAll
             Exit Sub
         Else
-            id = LucesCuadradas.Light_Find(X & Y)
+            id = LucesCuadradas.Light_Find(x & y)
             LucesCuadradas.Light_Remove id
-            MapData(X, Y).luz.Color = COLOR_EMPTY
-            MapData(X, Y).luz.Rango = 0
+            MapData(x, y).luz.Color = COLOR_EMPTY
+            MapData(x, y).luz.Rango = 0
             LucesCuadradas.Light_Render_All
             Exit Sub
 
@@ -17817,49 +7613,39 @@ Private Sub HandleLightToFloor()
 
     End If
     
-    MapData(X, Y).luz.Color = color_value
-    MapData(X, Y).luz.Rango = Rango
+    MapData(x, y).luz.Color = color_value
+    MapData(x, y).luz.Rango = Rango
     
     If Rango < 100 Then
-        id = X & Y
-        LucesCuadradas.Light_Create X, Y, color_value, Rango, id
+        id = x & y
+        LucesCuadradas.Light_Create x, y, color_value, Rango, id
         LucesRedondas.LightRenderAll
         LucesCuadradas.Light_Render_All
     Else
 
-        LucesRedondas.Create_Light_To_Map X, Y, color_value, Rango - 99
+        LucesRedondas.Create_Light_To_Map x, y, color_value, Rango - 99
         LucesRedondas.LightRenderAll
         LucesCuadradas.Light_Render_All
 
     End If
-
     
     Exit Sub
 
 HandleLightToFloor_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLightToFloor", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleParticleFX()
     
     On Error GoTo HandleParticleFX_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 10 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex      As Integer
 
@@ -17886,33 +7672,23 @@ Private Sub HandleParticleFX()
 
     End If
     
-    
     Exit Sub
 
 HandleParticleFX_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFX", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleParticleFXWithDestino()
     
     On Error GoTo HandleParticleFXWithDestino_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 17 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim Emisor         As Integer
 
@@ -17946,33 +7722,23 @@ Private Sub HandleParticleFXWithDestino()
 
     ' Call General_Char_Particle_Create(ParticulaIndex, charindex, time)
     
-    
     Exit Sub
 
 HandleParticleFXWithDestino_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFXWithDestino", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleParticleFXWithDestinoXY()
     
     On Error GoTo HandleParticleFXWithDestinoXY_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 17 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim Emisor         As Integer
 
@@ -17986,9 +7752,9 @@ Private Sub HandleParticleFXWithDestinoXY()
 
     Dim fX             As Integer
 
-    Dim X              As Byte
+    Dim x              As Byte
 
-    Dim Y              As Byte
+    Dim y              As Byte
      
     Emisor = incomingData.ReadInteger()
     ParticulaViaje = incomingData.ReadInteger()
@@ -17998,47 +7764,37 @@ Private Sub HandleParticleFXWithDestinoXY()
     wav = incomingData.ReadInteger()
     fX = incomingData.ReadInteger()
     
-    X = incomingData.ReadByte()
-    Y = incomingData.ReadByte()
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     
     ' Debug.Print "RECIBI FX= " & fX
 
     Engine_spell_Particle_Set (ParticulaViaje)
 
-    Call Effect_BeginXY(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), X, Y, ParticulaFinal, Time, Emisor, wav, fX)
+    Call Effect_BeginXY(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), x, y, ParticulaFinal, Time, Emisor, wav, fX)
 
     ' charlist(charindex).Particula = ParticulaIndex
     ' charlist(charindex).ParticulaTime = time
 
     ' Call General_Char_Particle_Create(ParticulaIndex, charindex, time)
     
-    
     Exit Sub
 
 HandleParticleFXWithDestinoXY_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFXWithDestinoXY", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleAuraToChar()
     
     On Error GoTo HandleAuraToChar_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/0
     '
     '***************************************************
-    If incomingData.length < 7 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex      As Integer
 
@@ -18068,35 +7824,26 @@ Private Sub HandleAuraToChar()
         charlist(charindex).DM_Aura = ParticulaIndex
     Else
         charlist(charindex).RM_Aura = ParticulaIndex
-    End If
 
+    End If
     
     Exit Sub
 
 HandleAuraToChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAuraToChar", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleSpeedToChar()
     
     On Error GoTo HandleSpeedToChar_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/0
     '
     '***************************************************
-    If incomingData.length < 7 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex As Integer
 
@@ -18106,33 +7853,12 @@ Private Sub HandleSpeedToChar()
     Speeding = incomingData.ReadSingle()
    
     charlist(charindex).Speeding = Speeding
-
     
     Exit Sub
 
 HandleSpeedToChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpeedToChar", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteNieveToggle()
-    
-    On Error GoTo WriteNieveToggle_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.NieveToggle)
-
-    End With
-
-    
-    Exit Sub
-
-WriteNieveToggle_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNieveToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -18146,9 +7872,6 @@ Private Sub HandleNieveToggle()
     
     On Error GoTo HandleNieveToggle_Err
     
-    
-    Call incomingData.ReadByte
-    
     If Not InMapBounds(UserPos.X, UserPos.Y) Then Exit Sub
             
     If MapDat.NIEVE Then
@@ -18157,13 +7880,12 @@ Private Sub HandleNieveToggle()
     End If
 
     bNieve = Not bNieve
-  
     
     Exit Sub
 
 HandleNieveToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNieveToggle", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -18177,59 +7899,16 @@ Private Sub HandleNieblaToggle()
     
     On Error GoTo HandleNieblaToggle_Err
     
-    
-    Call incomingData.ReadByte
-    
     MaxAlphaNiebla = incomingData.ReadByte()
             
     bNiebla = Not bNiebla
     frmMain.TimerNiebla.Enabled = True
-  
     
     Exit Sub
 
 HandleNieblaToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNieblaToggle", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteNieblaToggle()
-    
-    On Error GoTo WriteNieblaToggle_Err
-    
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.NieblaToggle)
-    End With
-
-    
-    Exit Sub
-
-WriteNieblaToggle_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteNieblaToggle", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteGenio()
-    '***************************************************
-    '/GENIO
-    'Ladder
-    '***************************************************
-    
-    On Error GoTo WriteGenio_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.Genio)
-
-    
-    Exit Sub
-
-WriteGenio_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGenio", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -18237,42 +7916,23 @@ Private Sub HandleFamiliar()
     
     On Error GoTo HandleFamiliar_Err
     
-
-    If incomingData.length < 1 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
-    
     Exit Sub
 
 HandleFamiliar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleFamiliar", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleBindKeys()
     
     On Error GoTo HandleBindKeys_Err
-    
 
     '***************************************************
     'Macros
     'Pablo Mercavides
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
-    'Remove packet ID
-    Call incomingData.ReadByte
     ChatCombate = incomingData.ReadByte()
     ChatGlobal = incomingData.ReadByte()
 
@@ -18289,32 +7949,22 @@ Private Sub HandleBindKeys()
         frmMain.CombateIcon.Picture = LoadInterface("global.bmp")
 
     End If
-
     
     Exit Sub
 
 HandleBindKeys_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBindKeys", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleLogros()
     
     On Error GoTo HandleLogros_Err
-    
 
     '***************************************************
     'Pablo Mercavides
     '***************************************************
-    If incomingData.length < 40 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     NPcLogros.nombre = incomingData.ReadASCIIString()
     NPcLogros.desc = incomingData.ReadASCIIString()
@@ -18410,32 +8060,22 @@ Private Sub HandleLogros()
     End If
     
     FrmLogros.Show , frmMain
-
     
     Exit Sub
 
 HandleLogros_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLogros", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleBarFx()
     
     On Error GoTo HandleBarFx_Err
-    
 
     '***************************************************
     'Author: Pablo Mercavides
     '***************************************************
-    If incomingData.length < 6 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim charindex As Integer
 
@@ -18450,191 +8090,12 @@ Private Sub HandleBarFx()
     charlist(charindex).BarTime = 0
     charlist(charindex).BarAccion = BarAccion
     charlist(charindex).MaxBarTime = BarTime
-
     
     Exit Sub
 
 HandleBarFx_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBarFx", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCompletarAccion(ByVal Accion As Byte)
-    
-    On Error GoTo WriteCompletarAccion_Err
-    
-
-    '***************************************************
-    'Author: Pablo Mercavides
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CompletarAccion)
-        Call .WriteByte(Accion)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCompletarAccion_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCompletarAccion", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteTraerRecompensas()
-    
-    On Error GoTo WriteTraerRecompensas_Err
-    
-
-    '***************************************************
-    'Ladder
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.TraerRecompensas)
-
-    End With
-
-    
-    Exit Sub
-
-WriteTraerRecompensas_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTraerRecompensas", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteTraerShop()
-    
-    On Error GoTo WriteTraerShop_Err
-    
-
-    '***************************************************
-    'Ladder
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.Traershop)
-
-    End With
-
-    
-    Exit Sub
-
-WriteTraerShop_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTraerShop", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteTraerRanking()
-    
-    On Error GoTo WriteTraerRanking_Err
-    
-
-    '***************************************************
-    'Ladder
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.TraerRanking)
-
-    End With
-
-    
-    Exit Sub
-
-WriteTraerRanking_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteTraerRanking", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WritePareja()
-    
-    On Error GoTo WritePareja_Err
-    
-
-    '***************************************************
-    'Ladder
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.Pareja)
-
-    End With
-
-    
-    Exit Sub
-
-WritePareja_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WritePareja", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteQuest()
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Escribe el paquete Quest al servidor.
-    'Last modified: 31/01/2010 by Amraphen
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    
-    On Error GoTo WriteQuest_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.Quest)
-
-    
-    Exit Sub
-
-WriteQuest_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuest", Erl)
-    Resume Next
-    
-End Sub
- 
-Public Sub WriteQuestDetailsRequest(ByVal QuestSlot As Byte)
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Escribe el paquete QuestDetailsRequest al servidor.
-    'Last modified: 31/01/2010 by Amraphen
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    
-    On Error GoTo WriteQuestDetailsRequest_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.QuestDetailsRequest)
-    Call outgoingData.WriteByte(QuestSlot)
-
-    
-    Exit Sub
-
-WriteQuestDetailsRequest_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestDetailsRequest", Erl)
-    Resume Next
-    
-End Sub
- 
-Public Sub WriteQuestAccept(ByVal ListInd As Byte)
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Escribe el paquete QuestAccept al servidor.
-    'Last modified: 31/01/2010 by Amraphen
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    
-    On Error GoTo WriteQuestAccept_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.QuestAccept)
-    Call outgoingData.WriteByte(ListInd)
-
-    
-    Exit Sub
-
-WriteQuestAccept_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestAccept", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
  
@@ -18644,38 +8105,28 @@ Private Sub HandleQuestDetails()
     'Recibe y maneja el paquete QuestDetails del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    If incomingData.length < 15 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
     
-    Dim tmpStr        As String
+    Dim tmpStr         As String
 
-    Dim tmpByte       As Byte
+    Dim tmpByte        As Byte
 
-    Dim QuestEmpezada As Boolean
+    Dim QuestEmpezada  As Boolean
 
-    Dim i             As Integer
+    Dim i              As Integer
     
-    Dim cantidadnpc   As Integer
+    Dim cantidadnpc    As Integer
 
-    Dim NpcIndex      As Integer
+    Dim NpcIndex       As Integer
     
-    Dim cantidadobj   As Integer
+    Dim cantidadobj    As Integer
 
-    Dim OBJIndex      As Integer
+    Dim OBJIndex       As Integer
     
-    Dim AmountHave      As Integer
+    Dim AmountHave     As Integer
     
-    Dim QuestIndex    As Integer
-    
+    Dim QuestIndex     As Integer
     
     Dim LevelRequerido As Byte
     Dim QuestRequerida As Integer
@@ -18685,22 +8136,14 @@ Private Sub HandleQuestDetails()
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
     
+    FrmQuests.PlayerView.BackColor = RGB(11, 11, 11)
+    FrmQuests.picture1.BackColor = RGB(19, 14, 11)
+    FrmQuests.PlayerView.Refresh
+    FrmQuests.picture1.Refresh
+    FrmQuests.npclbl.Caption = ""
+    FrmQuests.objetolbl.Caption = ""
     
-    
-    
-    
-        FrmQuests.PlayerView.BackColor = RGB(11, 11, 11)
-        FrmQuests.picture1.BackColor = RGB(19, 14, 11)
-        FrmQuests.PlayerView.Refresh
-        FrmQuests.picture1.Refresh
-        FrmQuests.npclbl.Caption = ""
-        FrmQuests.objetolbl.Caption = ""
-
-    
-    With buffer
-        'Leemos el id del paquete
-        Call .ReadByte
-        
+    With incomingData
         'Nos fijamos si se trata de una quest empezada, para poder leer los NPCs que se han matado.
         QuestEmpezada = IIf(.ReadByte, True, False)
         
@@ -18712,10 +8155,6 @@ Private Sub HandleQuestDetails()
            
             'tmpStr = "Mision: " & .ReadASCIIString & vbCrLf
             
-            
-            
-            
-            
             LevelRequerido = .ReadByte
             QuestRequerida = .ReadInteger
            
@@ -18725,10 +8164,7 @@ Private Sub HandleQuestDetails()
             
                 FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
             
-            
             End If
-            
-
            
             tmpByte = .ReadByte
 
@@ -18818,12 +8254,7 @@ Private Sub HandleQuestDetails()
                     subelemento.SubItems(1) = cantidadobjs
                     subelemento.SubItems(2) = obindex
                     subelemento.SubItems(3) = 1
-                           
-                    ' Set subelemento = frmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
-                               
-                    ' subelemento.SubItems(1) = .ReadInteger
-                    ' subelemento.SubItems(2) = 0
-                    ' subelemento.SubItems(3) = 1
+
            
                 Next i
 
@@ -18839,12 +8270,12 @@ Private Sub HandleQuestDetails()
             QuestRequerida = .ReadInteger
            
             FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
+
             If QuestRequerida <> 0 Then
-                 FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & "Quest: " & QuestList(QuestRequerida).nombre
+                FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & "Quest: " & QuestList(QuestRequerida).nombre
+
             End If
-            
-            'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
-            'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
+
            
             tmpStr = tmpStr & vbCrLf & "OBJETIVOS" & vbCrLf
            
@@ -18901,20 +8332,17 @@ Private Sub HandleQuestDetails()
             End If
     
             tmpStr = tmpStr & vbCrLf & "RECOMPENSAS" & vbCrLf
-            'tmpStr = tmpStr & "*) Oro: " & .ReadLong & " monedas de oro." & vbCrLf
-            'tmpStr = tmpStr & "*) Experiencia: " & .ReadLong & " puntos de experiencia." & vbCrLf
+
+            Dim tmplong As Long
            
-           
-           Dim tmplong As Long
-           
-           
-           tmplong = .ReadLong
+            tmplong = .ReadLong
            
             If tmplong <> 0 Then
                 Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Oro")
                 subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
                 subelemento.SubItems(2) = 12
                 subelemento.SubItems(3) = 0
+
             End If
             
             tmplong = .ReadLong
@@ -18925,6 +8353,7 @@ Private Sub HandleQuestDetails()
                 subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
                 subelemento.SubItems(2) = 608
                 subelemento.SubItems(3) = 1
+
             End If
            
             tmpByte = .ReadByte
@@ -18932,8 +8361,6 @@ Private Sub HandleQuestDetails()
             If tmpByte Then
 
                 For i = 1 To tmpByte
-                    'tmpStr = tmpStr & "*) " & .ReadInteger & " " & .ReadInteger & vbCrLf
-                   
                     cantidadobjs = .ReadInteger
                     obindex = .ReadInteger
                    
@@ -18942,12 +8369,7 @@ Private Sub HandleQuestDetails()
                     subelemento.SubItems(1) = cantidadobjs
                     subelemento.SubItems(2) = obindex
                     subelemento.SubItems(3) = 1
-                           
-                    ' Set subelemento = frmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
-                               
-                    ' subelemento.SubItems(1) = .ReadInteger
-                    ' subelemento.SubItems(2) = 0
-                    ' subelemento.SubItems(3) = 1
+
            
                 Next i
 
@@ -18964,7 +8386,7 @@ Private Sub HandleQuestDetails()
         Call FrmQuests.ListView2_Click
         Call FrmQuests.lstQuests.SetFocus
     Else
-        ' frmQuestInfo.txtInfo.Text = tmpStr
+
         FrmQuestInfo.Show vbModeless, frmMain
         FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
         Call FrmQuestInfo.ListView1_Click
@@ -18972,22 +8394,12 @@ Private Sub HandleQuestDetails()
 
     End If
     
-    Call incomingData.CopyBuffer(buffer)
+    Exit Sub
     
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
- 
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestDetails", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
  
@@ -18997,29 +8409,15 @@ Public Sub HandleQuestListSend()
     'Recibe y maneja el paquete QuestListSend del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    If incomingData.length < 1 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
     
     Dim i       As Integer
-
     Dim tmpByte As Byte
-
     Dim tmpStr  As String
-    
-    'Leemos el id del paquete
-    Call buffer.ReadByte
      
     'Leemos la cantidad de quests que tiene el usuario
-    tmpByte = buffer.ReadByte
+    tmpByte = incomingData.ReadByte
     
     'Limpiamos el ListBox y el TextBox del formulario
     FrmQuests.lstQuests.Clear
@@ -19028,7 +8426,7 @@ Public Sub HandleQuestListSend()
     'Si el usuario tiene quests entonces hacemos el handle
     If tmpByte Then
         'Leemos el string
-        tmpStr = buffer.ReadASCIIString
+        tmpStr = incomingData.ReadASCIIString
         
         'Agregamos los items
         For i = 1 To tmpByte
@@ -19044,480 +8442,178 @@ Public Sub HandleQuestListSend()
     FrmQuests.Picture = LoadInterface("ventanadetallemision.bmp")
     FrmQuests.Show vbModeless, frmMain
     
-    'Pedimos la informaciï¿½n de la primer quest (si la hay)
-    If tmpByte Then Call Protocol.WriteQuestDetailsRequest(1)
+    'Pedimos la informacion de la primer quest (si la hay)
+    If tmpByte Then Call WriteQuestDetailsRequest(1)
+
+    Exit Sub
     
-    'Copiamos de vuelta el buffer
-    Call incomingData.CopyBuffer(buffer)
- 
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
- 
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestListSend", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
+
 Public Sub HandleNpcQuestListSend()
 
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Recibe y maneja el paquete QuestListSend del servidor.
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-   If incomingData.length < 14 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
 
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    Dim tmpStr        As String
-
-    Dim tmpByte       As Byte
-
-    Dim QuestEmpezada As Boolean
-
-    Dim i             As Integer
-    
-    Dim j             As Byte
-    
-    Dim cantidadnpc   As Integer
-
-    Dim NpcIndex      As Integer
-    
-    Dim cantidadobj   As Integer
-
-    Dim OBJIndex      As Integer
-    
-    Dim QuestIndex    As Integer
-    
-    Dim estado    As Byte
-    
-    
+    Dim tmpStr         As String
+    Dim tmpByte        As Byte
+    Dim QuestEmpezada  As Boolean
+    Dim i              As Integer
+    Dim j              As Byte
+    Dim cantidadnpc    As Integer
+    Dim NpcIndex       As Integer
+    Dim cantidadobj    As Integer
+    Dim OBJIndex       As Integer
+    Dim QuestIndex     As Integer
+    Dim estado         As Byte
     Dim LevelRequerido As Byte
     Dim QuestRequerida As Integer
-    
-    
-    Dim CantidadQuest As Byte
-    Dim subelemento As ListItem
-    
+    Dim CantidadQuest  As Byte
+    Dim subelemento    As ListItem
     
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
     
-    With buffer
-        'Leemos el id del paquete
-        Call .ReadByte
-        
-        
-            CantidadQuest = .ReadByte
-        
+    With incomingData
+
+        CantidadQuest = .ReadByte
             
-            For j = 1 To CantidadQuest
+        For j = 1 To CantidadQuest
         
-                QuestIndex = .ReadInteger
+            QuestIndex = .ReadInteger
             
-                FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
-               
-                'tmpStr = "Mision: " & .ReadASCIIString & vbCrLf
-               
-                QuestList(QuestIndex).RequiredLevel = .ReadByte
-                
-                QuestList(QuestIndex).RequiredQuest = .ReadInteger
-                
-               ' FrmQuestInfo.Text1 = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf
-                'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
-                'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
-               
-                tmpByte = .ReadByte
+            FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
+                              
+            QuestList(QuestIndex).RequiredLevel = .ReadByte
+            QuestList(QuestIndex).RequiredQuest = .ReadInteger
+            
+            tmpByte = .ReadByte
     
-                If tmpByte Then 'Hay NPCs
-                    If tmpByte > 5 Then
-                        FrmQuestInfo.ListView1.FlatScrollBar = False
-                    Else
-                        FrmQuestInfo.ListView1.FlatScrollBar = True
+            If tmpByte Then 'Hay NPCs
+            
+                If tmpByte > 5 Then
+                    FrmQuestInfo.ListView1.FlatScrollBar = False
+                Else
+                    FrmQuestInfo.ListView1.FlatScrollBar = True
                
-                    End If
+                End If
                     
+                ReDim QuestList(QuestIndex).RequiredNPC(1 To tmpByte)
                     
-                    ReDim QuestList(QuestIndex).RequiredNPC(1 To tmpByte)
-                    
-                    For i = 1 To tmpByte
+                For i = 1 To tmpByte
                                                 
-                        QuestList(QuestIndex).RequiredNPC(i).Amount = .ReadInteger
-                        QuestList(QuestIndex).RequiredNPC(i).NpcIndex = .ReadInteger
+                    QuestList(QuestIndex).RequiredNPC(i).Amount = .ReadInteger
+                    QuestList(QuestIndex).RequiredNPC(i).NpcIndex = .ReadInteger
 
-                          '
-    
-                          '  Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
-                           
-                         '   subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
-                         '   subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
-                          '  subelemento.SubItems(3) = 0
+                Next i
 
-    
-                    Next i
-                Else
-                    ReDim QuestList(QuestIndex).RequiredNPC(0)
-                End If
+            Else
+                ReDim QuestList(QuestIndex).RequiredNPC(0)
+
+            End If
                
-                tmpByte = .ReadByte
-                    
+            tmpByte = .ReadByte
     
-                If tmpByte Then 'Hay OBJs
-                    ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
+            If tmpByte Then 'Hay OBJs
+                ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
     
-                    For i = 1 To tmpByte
+                For i = 1 To tmpByte
                    
-                        QuestList(QuestIndex).RequiredOBJ(i).Amount = .ReadInteger
-                        QuestList(QuestIndex).RequiredOBJ(i).OBJIndex = .ReadInteger
+                    QuestList(QuestIndex).RequiredOBJ(i).Amount = .ReadInteger
+                    QuestList(QuestIndex).RequiredOBJ(i).OBJIndex = .ReadInteger
 
-                       
-                       ' Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).OBJIndex).Name)
-                       ' subelemento.SubItems(1) = QuestList(QuestIndex).RequiredOBJ(i).Amount
-                       ' subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).OBJIndex
-                       ' subelemento.SubItems(3) = 1
-                    Next i
-                Else
-                     ReDim QuestList(QuestIndex).RequiredOBJ(0)
-                
-    
-                End If
-        
-               
-                QuestList(QuestIndex).RewardGLD = .ReadLong
-               ' Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
-                           
-              '  subelemento.SubItems(1) = QuestList(QuestIndex).RewardGLD
-               ' subelemento.SubItems(2) = 12
-               ' subelemento.SubItems(3) = 0
-               
-              '  Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
-                           
-                           
-                QuestList(QuestIndex).RewardEXP = .ReadLong
-                'subelemento.SubItems(1) = QuestList(QuestIndex).RewardEXP
-               ' subelemento.SubItems(2) = 608
-               ' subelemento.SubItems(3) = 1
-               
-                tmpByte = .ReadByte
-    
-                If tmpByte Then
-                
-                
-                    ReDim QuestList(QuestIndex).RewardOBJ(1 To tmpByte)
-    
-                    For i = 1 To tmpByte
+                Next i
 
+            Else
+                ReDim QuestList(QuestIndex).RequiredOBJ(0)
+    
+            End If
+               
+            QuestList(QuestIndex).RewardGLD = .ReadLong
+            QuestList(QuestIndex).RewardEXP = .ReadLong
+
+            tmpByte = .ReadByte
+    
+            If tmpByte Then
+                
+                ReDim QuestList(QuestIndex).RewardOBJ(1 To tmpByte)
+    
+                For i = 1 To tmpByte
                                               
-                        QuestList(QuestIndex).RewardOBJ(i).Amount = .ReadInteger
-                        QuestList(QuestIndex).RewardOBJ(i).OBJIndex = .ReadInteger
-                       
-                        'Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).OBJIndex).Name)
-                           
-                        'subelemento.SubItems(1) = QuestList(QuestIndex).RewardOBJ(i).Amount
-                        'subelemento.SubItems(2) = QuestList(QuestIndex).RewardOBJ(i).OBJIndex
-                        'subelemento.SubItems(3) = 1
-                               
+                    QuestList(QuestIndex).RewardOBJ(i).Amount = .ReadInteger
+                    QuestList(QuestIndex).RewardOBJ(i).OBJIndex = .ReadInteger
                
-                    Next i
-                Else
-                    ReDim QuestList(QuestIndex).RewardOBJ(0)
-                
+                Next i
+
+            Else
+                ReDim QuestList(QuestIndex).RewardOBJ(0)
     
-                End If
+            End If
                 
-                estado = .ReadByte
+            estado = .ReadByte
                 
-                Select Case estado
+            Select Case estado
                 
-                    Case 0
-                        Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
+                Case 0
+                    Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
                         
-                        subelemento.SubItems(1) = "Disponible"
-                        subelemento.SubItems(2) = QuestIndex
-                        subelemento.ForeColor = vbWhite
-                        subelemento.ListSubItems(1).ForeColor = vbWhite
+                    subelemento.SubItems(1) = "Disponible"
+                    subelemento.SubItems(2) = QuestIndex
+                    subelemento.ForeColor = vbWhite
+                    subelemento.ListSubItems(1).ForeColor = vbWhite
+
+                Case 1
+                    Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
                         
-                        'FrmQuestInfo.lstQuests.AddItem QuestIndex & "-" & QuestList(QuestIndex).nombre & "(Disponible)"
-                    Case 1
-                        Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
+                    subelemento.SubItems(1) = "En Curso"
+                    subelemento.ForeColor = RGB(255, 175, 10)
+                    subelemento.SubItems(2) = QuestIndex
+                    subelemento.ListSubItems(1).ForeColor = RGB(255, 175, 10)
+                    FrmQuestInfo.ListViewQuest.Refresh
+
+                Case 2
+                    Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
                         
-                        subelemento.SubItems(1) = "En Curso"
-                        subelemento.ForeColor = RGB(255, 175, 10)
-                        subelemento.SubItems(2) = QuestIndex
-                        subelemento.ListSubItems(1).ForeColor = RGB(255, 175, 10)
-                        FrmQuestInfo.ListViewQuest.Refresh
-                        'FrmQuestInfo.lstQuests.AddItem QuestIndex & "-" & QuestList(QuestIndex).nombre & "(En curso)"
-                    Case 2
-                        Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
+                    subelemento.SubItems(1) = "Finalizada"
+                    subelemento.SubItems(2) = QuestIndex
+                    subelemento.ForeColor = RGB(15, 140, 50)
+                    subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
+                    FrmQuestInfo.ListViewQuest.Refresh
+
+                Case 3
+                    Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
                         
-                        subelemento.SubItems(1) = "Finalizada"
-                        subelemento.SubItems(2) = QuestIndex
-                        subelemento.ForeColor = RGB(15, 140, 50)
-                        subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
-                        FrmQuestInfo.ListViewQuest.Refresh
-                       ' FrmQuestInfo.lstQuests.AddItem QuestIndex & "-" & QuestList(QuestIndex).nombre & "(Realizada)"
-                    Case 3
-                        Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
-                        
-                        subelemento.SubItems(1) = "No disponible"
-                        subelemento.SubItems(2) = QuestIndex
-                        subelemento.ForeColor = RGB(255, 10, 10)
-                        subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
-                        FrmQuestInfo.ListViewQuest.Refresh
+                    subelemento.SubItems(1) = "No disponible"
+                    subelemento.SubItems(2) = QuestIndex
+                    subelemento.ForeColor = RGB(255, 10, 10)
+                    subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
+                    FrmQuestInfo.ListViewQuest.Refresh
                 
-                End Select
+            End Select
                 
-            Next j
-        
-        
+        Next j
 
     End With
     
-    'Determinamos que formulario se muestra, segï¿½n si recibimos la informaciï¿½n y la quest estï¿½ empezada o no.
-
-        ' frmQuestInfo.txtInfo.Text = tmpStr
+    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
     FrmQuestInfo.Show vbModeless, frmMain
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)
-
     
-    Call incomingData.CopyBuffer(buffer)
+    Exit Sub
     
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
- 
-    If Error <> 0 Then Err.Raise Error
-    
-End Sub
- 
-Public Sub WriteQuestListRequest()
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Escribe el paquete QuestListRequest al servidor.
-    'Last modified: 31/01/2010 by Amraphen
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    
-    On Error GoTo WriteQuestListRequest_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.QuestListRequest)
-
-    
-    Exit Sub
-
-WriteQuestListRequest_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestListRequest", Erl)
-    Resume Next
-    
-End Sub
- 
-Public Sub WriteQuestAbandon(ByVal QuestSlot As Byte)
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Escribe el paquete QuestAbandon al servidor.
-    'Last modified: 31/01/2010 by Amraphen
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Escribe el ID del paquete.
-    
-    On Error GoTo WriteQuestAbandon_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.QuestAbandon)
-    
-    'Escribe el Slot de Quest.
-    Call outgoingData.WriteByte(QuestSlot)
-
-    
-    Exit Sub
-
-WriteQuestAbandon_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteQuestAbandon", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteResponderPregunta(ByVal Respuesta As Boolean)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 22/11/2017
-    '***************************************************
-    
-    On Error GoTo WriteResponderPregunta_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.ResponderPregunta)
-    Call outgoingData.WriteBoolean(Respuesta)
-
-    
-    Exit Sub
-
-WriteResponderPregunta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteResponderPregunta", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCorreo()
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 22/11/2017
-    '***************************************************
-    
-    On Error GoTo WriteCorreo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.Correo)
-
-    
-    Exit Sub
-
-WriteCorreo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCorreo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteSendCorreo(ByVal UserNick As String, ByVal msg As String, ByVal ItemCount As Byte)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 4/5/2020
-    '***************************************************
-    
-    On Error GoTo WriteSendCorreo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.SendCorreo)
-    
-    Call outgoingData.WriteASCIIString(UserNick)
-    Call outgoingData.WriteASCIIString(msg)
-    
-    Call outgoingData.WriteByte(ItemCount)
-
-    If ItemCount > 0 Then
-
-        Dim i As Byte
-
-        For i = 1 To ItemCount
-            Call outgoingData.WriteByte(ItemLista(i).OBJIndex) ' Slot
-            Call outgoingData.WriteInteger(ItemLista(i).Amount) 'Cantidad
-        Next i
-
-    End If
-    
-    
-    Exit Sub
-
-WriteSendCorreo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteSendCorreo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteComprarItem(ByVal ItemIndex As Byte)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 22/11/2017
-    '***************************************************
-    
-    On Error GoTo WriteComprarItem_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.ComprarItem)
-    Call outgoingData.WriteByte(ItemIndex)
-    
-    
-    Exit Sub
-
-WriteComprarItem_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteComprarItem", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCompletarViaje(ByVal destino As Byte, ByVal costo As Long)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 22/11/2017
-    '***************************************************
-    
-    On Error GoTo WriteCompletarViaje_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.CompletarViaje)
-    Call outgoingData.WriteByte(destino)
-    Call outgoingData.WriteLong(costo)
-    
-    
-    Exit Sub
-
-WriteCompletarViaje_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCompletarViaje", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteRetirarItemCorreo(ByVal IndexMsg As Integer)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 22/11/2017
-    '***************************************************
-    
-    On Error GoTo WriteRetirarItemCorreo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.RetirarItemCorreo)
-    Call outgoingData.WriteInteger(IndexMsg)
-
-    
-    Exit Sub
-
-WriteRetirarItemCorreo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteRetirarItemCorreo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteBorrarCorreo(ByVal IndexMsg As Integer)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 22/11/2017
-    '***************************************************
-    
-    On Error GoTo WriteBorrarCorreo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.BorrarCorreo)
-    Call outgoingData.WriteInteger(IndexMsg)
-
-    
-    Exit Sub
-
-WriteBorrarCorreo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBorrarCorreo", Erl)
-    Resume Next
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -19528,27 +8624,14 @@ Private Sub HandleListaCorreo()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim cant       As Byte
     Dim i          As Byte
     Dim Actualizar As Boolean
 
-    cant = buffer.ReadByte()
+    cant = incomingData.ReadByte()
     
     FrmCorreo.lstMsg.Clear
     FrmCorreo.ListAdjuntos.Clear
@@ -19560,12 +8643,12 @@ Private Sub HandleListaCorreo()
 
         For i = 1 To cant
         
-            CorreoMsj(i).Remitente = buffer.ReadASCIIString()
-            CorreoMsj(i).mensaje = buffer.ReadASCIIString()
-            CorreoMsj(i).ItemCount = buffer.ReadByte()
-            CorreoMsj(i).ItemArray = buffer.ReadASCIIString()
-            CorreoMsj(i).Leido = buffer.ReadByte()
-            CorreoMsj(i).Fecha = buffer.ReadASCIIString()
+            CorreoMsj(i).Remitente = incomingData.ReadASCIIString()
+            CorreoMsj(i).mensaje = incomingData.ReadASCIIString()
+            CorreoMsj(i).ItemCount = incomingData.ReadByte()
+            CorreoMsj(i).ItemArray = incomingData.ReadASCIIString()
+            CorreoMsj(i).Leido = incomingData.ReadByte()
+            CorreoMsj(i).Fecha = incomingData.ReadASCIIString()
             
             FrmCorreo.lstMsg.AddItem CorreoMsj(i).Remitente
             FrmCorreo.lstMsg.Enabled = True
@@ -19579,9 +8662,6 @@ Private Sub HandleListaCorreo()
         FrmCorreo.txMensaje.Enabled = False
 
     End If
-        
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
         
     Call FrmCorreo.lstInv.Clear
 
@@ -19598,7 +8678,7 @@ Private Sub HandleListaCorreo()
 
     Next i
     
-    Actualizar = buffer.ReadBoolean()
+    Actualizar = incomingData.ReadBoolean()
 
     ' FrmCorreo.lstMsg.AddItem
     If Not Actualizar Then
@@ -19614,28 +8694,17 @@ Private Sub HandleListaCorreo()
         FrmCorreo.Show , frmMain
         
     End If
-    
-    'chat = Buffer.ReadASCIIString()
-    'fontIndex = Buffer.ReadByte()
-    
+
     frmMain.PicCorreo.Visible = False
     
     Exit Sub
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleListaCorreo", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -19646,60 +8715,26 @@ Private Sub HandleShowPregunta()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim msg As String
 
-    PreguntaScreen = buffer.ReadASCIIString()
+    PreguntaScreen = incomingData.ReadASCIIString()
     Pregunta = True
-
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
 Private Sub HandleDatosGrupo()
     
     On Error GoTo HandleDatosGrupo_Err
-    
-
-    If incomingData.length < 2 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim EnGrupo      As Boolean
 
@@ -19729,7 +8764,7 @@ Private Sub HandleDatosGrupo()
 
 HandleDatosGrupo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDatosGrupo", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -19737,72 +8772,43 @@ Private Sub HandleUbicacion()
     
     On Error GoTo HandleUbicacion_Err
     
-
-    If incomingData.length < 6 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-    
     Dim miembro As Byte
-
-    Dim X       As Byte
-
-    Dim Y       As Byte
-
+    Dim x       As Byte
+    Dim y       As Byte
     Dim map     As Integer
     
     miembro = incomingData.ReadByte()
-    
-    X = incomingData.ReadByte()
-    
-    Y = incomingData.ReadByte()
-    
+    x = incomingData.ReadByte()
+    y = incomingData.ReadByte()
     map = incomingData.ReadInteger()
     
-    If X = 0 Then
+    If x = 0 Then
         frmMain.personaje(miembro).Visible = False
     Else
 
         If UserMap = map Then
             frmMain.personaje(miembro).Visible = True
-            Call frmMain.SetMinimapPosition(miembro, X, Y)
+            Call frmMain.SetMinimapPosition(miembro, x, y)
+
         End If
 
     End If
-
     
     Exit Sub
 
 HandleUbicacion_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUbicacion", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleViajarForm()
     
     On Error GoTo HandleViajarForm_Err
-    
-
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
             
     Dim Dest     As String
-
     Dim DestCant As Byte
-
     Dim i        As Byte
-
     Dim tempdest As String
 
     FrmViajes.List1.Clear
@@ -19837,29 +8843,18 @@ Private Sub HandleViajarForm()
     End If
 
     FrmViajes.Show , frmMain
-
     
     Exit Sub
 
 HandleViajarForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleViajarForm", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
 Private Sub HandleActShop()
     
     On Error GoTo HandleActShop_Err
-    
-
-    If incomingData.length < 7 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     Dim credito As Long
 
@@ -19870,13 +8865,12 @@ Private Sub HandleActShop()
 
     FrmShop.Label7.Caption = dias & " dias"
     FrmShop.Label3.Caption = credito & " creditos"
-
     
     Exit Sub
 
 HandleActShop_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleActShop", Erl)
-    Resume Next
+    Call incomingData.SafeClearPacket
     
 End Sub
 
@@ -19887,44 +8881,25 @@ Private Sub HandleDonadorObjects()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 9 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim count    As Integer
-
     Dim i        As Long
-
     Dim tmp      As String
-    
     Dim Obj      As Integer
-
     Dim precio   As Integer
-
     Dim creditos As Long
-
     Dim dias     As Integer
 
-    count = buffer.ReadInteger()
+    count = incomingData.ReadInteger()
     
     Call FrmShop.lstArmas.Clear
     
     For i = 1 To count
-        Obj = buffer.ReadInteger()
+        Obj = incomingData.ReadInteger()
         tmp = ObjData(Obj).Name           'Get the object's name
-        precio = buffer.ReadInteger()
+        precio = incomingData.ReadInteger()
         ObjDonador(i).Index = Obj
         ObjDonador(i).precio = precio
         Call FrmShop.lstArmas.AddItem(tmp)
@@ -19935,8 +8910,8 @@ Private Sub HandleDonadorObjects()
         ObjDonador(i).precio = 0
     Next i
     
-    creditos = buffer.ReadLong()
-    dias = buffer.ReadInteger()
+    creditos = incomingData.ReadLong()
+    dias = incomingData.ReadInteger()
     
     FrmShop.Label3.Caption = creditos & " creditos"
     
@@ -19948,23 +8923,13 @@ Private Sub HandleDonadorObjects()
     ' establece el borde al listbox
     Call Establecer_Borde(FrmShop.lstArmas, FrmShop, COLOR_AZUL, 1, 1)
     FrmShop.Show , frmMain
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
     
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDonadorObjects", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
@@ -19977,21 +8942,8 @@ Private Sub HandleRanking()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    If incomingData.length < 40 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim i      As Long
 
@@ -20002,8 +8954,8 @@ Private Sub HandleRanking()
     Dim puntos As Integer
     
     For i = 1 To 10
-        LRanking(i).nombre = buffer.ReadASCIIString()
-        LRanking(i).puntos = buffer.ReadInteger()
+        LRanking(i).nombre = incomingData.ReadASCIIString()
+        LRanking(i).puntos = incomingData.ReadInteger()
 
         If LRanking(i).nombre = "-0" Then
             FrmRanking.Puesto(i).Caption = "Vacante"
@@ -20017,222 +8969,18 @@ Private Sub HandleRanking()
     FrmRanking.Picture = LoadInterface("ranking.bmp")
     FrmRanking.Show , frmMain
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRanking", Erl)
+    Call incomingData.SafeClearPacket
 
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
-
-End Sub
-
-''
-' Handles the RestOK message.
-
-Public Sub WriteCodigo(ByVal Codigo As String)
-    
-    On Error GoTo WriteCodigo_Err
-    
-
-    '***************************************************
-    'Ladder
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.EnviarCodigo)
-        Call .WriteASCIIString(Codigo)
-
-    End With
-
-    
-    Exit Sub
-
-WriteCodigo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCodigo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal Name As String, ByVal reglas As String)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 16/05/2020
-    '***************************************************
-    
-    On Error GoTo WriteCreaerTorneo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.CrearTorneo)
-    
-    Call outgoingData.WriteByte(nivelminimo)
-    Call outgoingData.WriteByte(nivelmaximo)
-    Call outgoingData.WriteByte(cupos)
-    Call outgoingData.WriteLong(costo)
-    Call outgoingData.WriteByte(mago)
-    Call outgoingData.WriteByte(clerico)
-    Call outgoingData.WriteByte(guerrero)
-    Call outgoingData.WriteByte(asesino)
-    Call outgoingData.WriteByte(bardo)
-    Call outgoingData.WriteByte(druido)
-    Call outgoingData.WriteByte(paladin)
-    Call outgoingData.WriteByte(cazador)
-    
-    Call outgoingData.WriteByte(Trabajador)
-    Call outgoingData.WriteInteger(map)
-    Call outgoingData.WriteByte(X)
-    Call outgoingData.WriteByte(Y)
-    Call outgoingData.WriteASCIIString(Name)
-    Call outgoingData.WriteASCIIString(reglas)
-     
-    
-    Exit Sub
-
-WriteCreaerTorneo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCreaerTorneo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteComenzarTorneo()
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 16/05/2020
-    '***************************************************
-    
-    On Error GoTo WriteComenzarTorneo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.ComenzarTorneo)
-     
-    
-    Exit Sub
-
-WriteComenzarTorneo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteComenzarTorneo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteCancelarTorneo()
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 16/05/2020
-    '***************************************************
-    
-    On Error GoTo WriteCancelarTorneo_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.CancelarTorneo)
-     
-    
-    Exit Sub
-
-WriteCancelarTorneo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCancelarTorneo", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteBusquedaTesoro(ByVal TIPO As Byte)
-    '***************************************************
-    'Author: Pablo Mercavides
-    'Last Modification: 16/05/2020
-    '***************************************************
-    
-    On Error GoTo WriteBusquedaTesoro_Err
-    
-    Call outgoingData.WriteByte(ClientPacketID.newPacketID)
-    Call outgoingData.WriteByte(NewPacksID.BusquedaTesoro)
-    Call outgoingData.WriteByte(TIPO)
-     
-    
-    Exit Sub
-
-WriteBusquedaTesoro_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteBusquedaTesoro", Erl)
-    Resume Next
-    
-End Sub
-
-''
-' Writes the "Home" message to the outgoing data buffer.
-'
-Public Sub WriteHome()
-'***************************************************
-'Author: Budi
-'Last Modification: 01/06/10
-'Writes the "Home" message to the outgoing data buffer
-'***************************************************
-
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.Home)
-    End With
-    
-End Sub
-
-''
-' Writes the "Consulta" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteConsulta(Optional ByVal Nick As String = vbNullString)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 01/05/2010
-'Writes the "Consulta" message to the outgoing data buffer
-'***************************************************
-    
-    With outgoingData
-    
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.Consulta)
-        Call .WriteASCIIString(Nick)
-    
-    End With
-    
-End Sub
-
-Public Sub WriteRequestScreenShot(ByVal Nick As String)
-
-    With outgoingData
-
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.RequestScreenShot)
-        Call .WriteASCIIString(Nick)
-
-    End With
-    
-End Sub
-
-Public Sub WriteRequestProcesses(ByVal Nick As String)
-
-    With outgoingData
-
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.RequestProcesses)
-        Call .WriteASCIIString(Nick)
-
-    End With
-    
 End Sub
 
 Private Sub HandleRequestProcesses()
 
     With incomingData
-    
-        Call .ReadByte
         
         Call WriteSendProcesses(GetProcessesList)
     
@@ -20243,14 +8991,13 @@ End Sub
 Private Sub HandleRequestScreenShot()
 
     With incomingData
-    
-        Call .ReadByte
         
         Dim Data As String
         Data = GetScreenShotSerialized
         
         If Right$(Data, 4) <> "ERROR" Then
             Data = Data & "~~~"
+
         End If
         
         Dim offset As Long
@@ -20263,198 +9010,65 @@ Private Sub HandleRequestScreenShot()
 
 End Sub
 
-Public Sub WriteSendProcesses(ProcessesList As String)
-
-    On Error GoTo Handler
-
-    With outgoingData
-
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.SendProcesses)
-        Call .WriteASCIIString(ProcessesList)
-
-    End With
-    
-    Exit Sub
-    
-Handler:
-    If Err.Number = outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer
-        Resume
-    End If
-    
-End Sub
-
-Public Sub WriteSendScreenShot(ScreenShotSerialized As String)
-
-    On Error GoTo Handler
-
-    With outgoingData
-
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.SendScreenShot)
-        Call .WriteASCIIString(ScreenShotSerialized)
-
-    End With
-    
-Handler:
-    If Err.Number = outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer
-        Resume
-    End If
-    
-End Sub
-
 Private Sub HandleShowProcesses()
-
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim Data As String
-    Data = buffer.ReadASCIIString
+    Data = incomingData.ReadASCIIString
     
     Call frmProcesses.ShowProcesses(Data)
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowProcesses", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
 Private Sub HandleShowScreenShot()
-
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
     
     On Error GoTo errhandler
-
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     
     Dim Name As String
-    Name = buffer.ReadASCIIString
+    Name = incomingData.ReadASCIIString
     
     Call frmScreenshots.ShowScreenShot(Name)
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
+    Exit Sub
+
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
-
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowScreenShot", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
 Private Sub HandleScreenShotData()
 
-    If incomingData.length < 3 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
     On Error GoTo errhandler
 
-    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-    Dim buffer As New clsByteQueue
-
-    Call buffer.CopyBuffer(incomingData)
-
-    'Remove packet ID
-    Call buffer.ReadByte
-
     Dim Data As String
-    Data = buffer.ReadASCIIString
+    Data = incomingData.ReadASCIIString
 
     Call frmScreenshots.AddData(Data)
 
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
+    Exit Sub
 
 errhandler:
 
-    If Err.Number <> 0 And Err.Number <> incomingData.NotEnoughDataErrCode Then Resume Next
-    
-    Dim Error As Long
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleScreenShotData", Erl)
+    Call incomingData.SafeClearPacket
 
-    Error = Err.Number
-
-    On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
-    If Error <> 0 Then Err.Raise Error
-
-End Sub
-
-Public Sub WriteTolerancia0(Nick As String)
-    On Error GoTo Handler
-
-    With outgoingData
-
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.Tolerancia0)
-        Call .WriteASCIIString(Nick)
-
-    End With
-    
-Handler:
-    If Err.Number = outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer
-        Resume
-    End If
 End Sub
 
 Private Sub HandleTolerancia0()
 
-    incomingData.ReadByte
-
     If Not WriteStringToRegistry(&H80000001, "Software\pmeT", "e14a3ff5b5e67ede599cac94358e1028", "rekcahnuyos") Then
         Debug.Print "Error en WriteStringToRegistry"
+
     End If
     
     End
@@ -20462,8 +9076,6 @@ Private Sub HandleTolerancia0()
 End Sub
 
 Private Sub HandleRedundancia()
-
-    Call incomingData.ReadByte
     
     #If AntiExternos = 1 Then
         Security.Redundance = incomingData.ReadByte
@@ -20473,32 +9085,7 @@ Private Sub HandleRedundancia()
     
 End Sub
 
-Public Sub WriteGetMapInfo()
-    On Error GoTo Handler
-
-    With outgoingData
-
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.GetMapInfo)
-
-    End With
-    
-Handler:
-    If Err.Number = outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer
-        Resume
-    End If
-End Sub
-
 Private Sub HandleSeguroResu()
-
-    If incomingData.length < 2 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-
-    'Remove packet ID
-    Call incomingData.ReadByte
     
     'Get data and update form
     SeguroResuX = incomingData.ReadBoolean()
@@ -20509,33 +9096,18 @@ Private Sub HandleSeguroResu()
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección desactivado.", 65, 190, 156, False, False, False)
         frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
+
     End If
     
 End Sub
 
 Private Sub HandleStopped()
 
-    If incomingData.length < 2 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
-
     UserStopped = incomingData.ReadBoolean()
 
 End Sub
 
 Private Sub HandleInvasionInfo()
-    
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    'Remove packet ID
-    Call incomingData.ReadByte
 
     InvasionActual = incomingData.ReadByte
     InvasionPorcentajeVida = incomingData.ReadByte
@@ -20548,130 +9120,12 @@ Private Sub HandleInvasionInfo()
 
 End Sub
 
-Public Sub WriteCuentaExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
-    
-    On Error GoTo WriteCuentaExtractItem_Err
-    '***************************************************
-    'Author: Ladder
-    'Last Modification: 22/11/21
-    'Retirar item de cuenta
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CuentaExtractItem)
-        Call .WriteByte(Slot)
-        Call .WriteInteger(Amount)
-        Call .WriteByte(slotdestino)
-        
-    End With
-
-    
-    Exit Sub
-
-WriteCuentaExtractItem_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCuentaExtractItem", Erl)
-    Resume Next
-    
-End Sub
-Public Sub WriteCuentaDeposit(ByVal Slot As Byte, ByVal Amount As Integer, ByVal slotdestino As Byte)
-    
-    On Error GoTo WriteCuentaDeposit_Err
-    '***************************************************
-    'Author: Ladder
-    'Last Modification: 22/11/21
-    'Depositar item en cuenta
-    '***************************************************
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CuentaDeposit)
-        Call .WriteByte(Slot)
-        Call .WriteInteger(Amount)
-        Call .WriteByte(slotdestino)
-
-    End With
-    
-    Exit Sub
-WriteCuentaDeposit_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteCuentaDeposit", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub WriteDuel(Players As String, ByVal Apuesta As Long, Optional ByVal PocionesRojas As Long = -1, Optional ByVal CaenItems As Boolean = False)
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.Duel)
-        Call .WriteASCIIString(Players)
-        Call .WriteLong(Apuesta)
-        Call .WriteInteger(PocionesRojas)
-        Call .WriteBoolean(CaenItems)
-    End With
-End Sub
-
-Public Sub WriteAcceptDuel(Offerer As String)
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.AcceptDuel)
-        Call .WriteASCIIString(Offerer)
-    End With
-End Sub
-
-Public Sub WriteCancelDuel()
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CancelDuel)
-    End With
-End Sub
-
-Public Sub WriteQuitDuel()
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.QuitDuel)
-    End With
-End Sub
-
-Public Sub WriteCreateEvent(EventName As String)
-    With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CreateEvent)
-        Call .WriteASCIIString(EventName)
-    End With
-End Sub
-
 Private Sub HandleCommerceRecieveChatMessage()
     
-    If incomingData.length < 4 Then
-        Err.Raise incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    Dim buffer As New clsByteQueue
-    
-    Call buffer.CopyBuffer(incomingData)
-    
-    'Remove packet ID
-    Call buffer.ReadByte
     Dim Message As String
-    
-    Message = buffer.ReadASCIIString
+    Message = incomingData.ReadASCIIString
+        
     Call AddtoRichTextBox(frmComerciarUsu.RecTxt, Message, 255, 255, 255, 0, False, True, False)
     
-    'If we got here then packet is complete, copy data back to original queue
-    Call incomingData.CopyBuffer(buffer)
-    
-End Sub
-Public Sub WriteCommerceSendChatMessage(ByVal Message As String)
-  With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.CommerceSendChatMessage)
-        Call .WriteASCIIString(Message)
-    End With
-End Sub
-
-Public Sub WriteLogMacroClickHechizo()
-  With outgoingData
-        Call .WriteByte(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.LogMacroClickHechizo)
-    End With
 End Sub
 

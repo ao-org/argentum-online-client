@@ -1224,7 +1224,7 @@ Public Sub Batch_Textured_Box_Shadow(ByVal x As Long, ByVal y As Long, _
         Call .SetAlpha(False)
         
         If TextureWidth <> 0 And TextureHeight <> 0 Then
-            Call .DrawShadow(x, y, Width, Height, Color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight)
+            Call .DrawShadow(x, y, Width, Height, Color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight)
         Else
             Call .DrawShadow(x, y, TextureWidth, TextureHeight, Color)
         End If
@@ -1780,15 +1780,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                 
                 'Clan
-                Select Case .priv
-
-                    Case 1, 2, 3, 4
-                        line = "<Game Master>"
-
-                    Case Else
-                        line = .clan
-
-                End Select
+                If .priv > 1 And .priv < &H40 Then
+                    line = "<Game Master>"
+                Else
+                    line = .clan
+                End If
                     
                 Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
