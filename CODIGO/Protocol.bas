@@ -8089,7 +8089,7 @@ Private Sub HandleBarFx()
     
     charlist(charindex).BarTime = 0
     charlist(charindex).BarAccion = BarAccion
-    charlist(charindex).MaxBarTime = BarTime
+    charlist(charindex).MaxBarTime = BarTime / engineBaseSpeed
     
     Exit Sub
 

@@ -1606,16 +1606,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
                     
                 Else
-                    'If HayTecho(.Pos.x, .Pos.y) Then
-                       ' If MapData(.Pos.x, .Pos.y).Trigger = MapData(UserPos.x, UserPos.y).Trigger Then
-                            'If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
-                              '  MostrarNombre = True
-                           ' End If
-                       ' End If
-                        
-                   ' Else
-                        MostrarNombre = True
-                   ' End If
+                    MostrarNombre = True
                     
                     If .priv = 0 Then
                         
@@ -1809,27 +1800,19 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         
         'Barra de tiempo
         If .BarTime < .MaxBarTime Then
-            'Engine_Draw_Box PixelOffsetX - 17, PixelOffsetY - 40, 70, 7, RGBA_From_Comp(0, 0, 0, 255)
-                        Call InitGrh(TempGrh, 839)
+            Call InitGrh(TempGrh, 839)
             Call RGBAList(Color, 255, 255, 255, 200)
 
             Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY - 55, 1, 0, Color, False, 0, 0, 0)
             
-            
             Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY - 29, (((.BarTime / 100) / (.MaxBarTime / 100))) * 24, 3, RGBA_From_Comp(0, 128, 128, 255), RGBA_From_Comp(0, 0, 0, 255)
 
-            .BarTime = .BarTime + (4 * timerTicksPerFrame * Sgn(1))
+            .BarTime = .BarTime + (timerTicksPerFrame * 4)
                              
             If .BarTime >= .MaxBarTime Then
-                If charindex = UserCharIndex Then
-                    Call CompletarAccionBarra(.BarAccion)
-
-                End If
-
                 charlist(charindex).BarTime = 0
                 charlist(charindex).BarAccion = 99
                 charlist(charindex).MaxBarTime = 0
-
             End If
 
         End If
