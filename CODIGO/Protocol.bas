@@ -6744,7 +6744,7 @@ Private Sub HandleGuildLeaderInfo()
         
         'Get list of guild's members
         List = Split(incomingData.ReadASCIIString(), SEPARATOR)
-        .miembros.Caption = "El clan cuenta con " & CStr(UBound(List()) + 1) & " miembros."
+        .Miembros.Caption = CStr(UBound(List()) + 1)
         
         'Empty the list
         Call .members.Clear
@@ -6776,10 +6776,9 @@ Private Sub HandleGuildLeaderInfo()
         
         expacu = incomingData.ReadInteger()
         ExpNe = incomingData.ReadInteger()
-        '.expacu = "Experiencia acumulada: " & expacu
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 2370
+        .EXPBAR.Width = expacu / ExpNe * 239
         
         If ExpNe > 0 Then
        
@@ -6787,25 +6786,28 @@ Private Sub HandleGuildLeaderInfo()
         Else
             .porciento.Caption = "¡Nivel máximo!"
             .expcount.Caption = "¡Nivel máximo!"
-
         End If
 
         Select Case nivel
 
             Case 1
-                .beneficios = "No atacarse / Chat de clan." & vbCrLf & "Max miembros: 5"
-
+                .beneficios = "No atacarse / Chat de clan."
+                .maxMiembros = "5"
             Case 2
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G)." & vbCrLf & "Max miembros: 10"
+                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G)."
+                .maxMiembros = "10"
 
             Case 3
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible." & vbCrLf & "Max miembros: 15"
+                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible."
+                .maxMiembros = "15"
 
             Case 4
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible / Marca de clan (V)." & vbCrLf & "Max miembros: 20"
+                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible / Marca de clan (V)."
+                .maxMiembros = "20"
 
             Case 5
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible / Marca de clan (V) / Verse vida." & vbCrLf & " Max miembros: 25"
+                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible / Marca de clan (V) / Verse vida."
+                .maxMiembros = "25"
         
         End Select
         

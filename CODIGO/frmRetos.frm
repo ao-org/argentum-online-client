@@ -11,7 +11,6 @@ Begin VB.Form frmRetos
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmRetos.frx":57E2
    ScaleHeight     =   487
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   291
@@ -303,7 +302,7 @@ Begin VB.Form frmRetos
    Begin VB.Image CAMPO_CORTO 
       Height          =   405
       Left            =   2760
-      Picture         =   "frmRetos.frx":6E4DE
+      Picture         =   "frmRetos.frx":57E2
       Top             =   4605
       Visible         =   0   'False
       Width           =   1035
@@ -324,7 +323,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   9
       Left            =   2265
-      Picture         =   "frmRetos.frx":6FB12
+      Picture         =   "frmRetos.frx":6E16
       Top             =   4110
       Visible         =   0   'False
       Width           =   1680
@@ -333,7 +332,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   8
       Left            =   435
-      Picture         =   "frmRetos.frx":71EC6
+      Picture         =   "frmRetos.frx":91CA
       Top             =   4110
       Visible         =   0   'False
       Width           =   1680
@@ -342,7 +341,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   7
       Left            =   2265
-      Picture         =   "frmRetos.frx":7427A
+      Picture         =   "frmRetos.frx":B57E
       Top             =   3630
       Visible         =   0   'False
       Width           =   1680
@@ -351,7 +350,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   6
       Left            =   435
-      Picture         =   "frmRetos.frx":7662E
+      Picture         =   "frmRetos.frx":D932
       Top             =   3630
       Visible         =   0   'False
       Width           =   1680
@@ -360,7 +359,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   5
       Left            =   2265
-      Picture         =   "frmRetos.frx":789E2
+      Picture         =   "frmRetos.frx":FCE6
       Top             =   3150
       Visible         =   0   'False
       Width           =   1680
@@ -369,7 +368,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   4
       Left            =   435
-      Picture         =   "frmRetos.frx":7AD96
+      Picture         =   "frmRetos.frx":1209A
       Top             =   3150
       Visible         =   0   'False
       Width           =   1680
@@ -378,7 +377,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   3
       Left            =   2265
-      Picture         =   "frmRetos.frx":7D14A
+      Picture         =   "frmRetos.frx":1444E
       Top             =   2670
       Visible         =   0   'False
       Width           =   1680
@@ -387,7 +386,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   2
       Left            =   435
-      Picture         =   "frmRetos.frx":7F4FE
+      Picture         =   "frmRetos.frx":16802
       Top             =   2670
       Visible         =   0   'False
       Width           =   1680
@@ -396,7 +395,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   1
       Left            =   2265
-      Picture         =   "frmRetos.frx":818B2
+      Picture         =   "frmRetos.frx":18BB6
       Top             =   2190
       Width           =   1680
    End
@@ -404,7 +403,7 @@ Begin VB.Form frmRetos
       Height          =   405
       Index           =   0
       Left            =   435
-      Picture         =   "frmRetos.frx":83C66
+      Picture         =   "frmRetos.frx":1AF6A
       Top             =   2190
       Width           =   1680
    End
