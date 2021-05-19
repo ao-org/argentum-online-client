@@ -1054,7 +1054,7 @@ Sub Main()
             Kill App.Path & "\..\..\Launcher\LauncherAO20.dll"
             Name App.Path & "\..\..\Launcher\LauncherAO20.dl_" As App.Path & "\..\..\Launcher\LauncherAO20.dll"
         End If
-        Shell App.Path & "\..\..\Launcher\LauncherAO20.exe -openbyexe"
+        Shell App.Path & "\..\..\Launcher\LauncherAO20.exe"
         End
     End If
     'Cursores******

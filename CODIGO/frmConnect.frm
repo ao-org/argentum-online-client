@@ -323,7 +323,7 @@ Public Sub AnalizarCliente()
     End If
     'Compruebo los MD5 con host
     If Token <> CheckMD5 Then
-        Shell App.Path & "\..\..\Launcher\LauncherAO20.exe -openbyexe"
+        Shell App.Path & "\..\..\Launcher\LauncherAO20.exe"
         End
     End If
         
