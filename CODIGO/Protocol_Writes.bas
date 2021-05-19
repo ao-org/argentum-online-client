@@ -6265,7 +6265,7 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteBanIP(ByVal byIp As Boolean, ByRef IP() As Byte, ByVal Nick As String, ByVal reason As String)
+Public Sub WriteBanIP(ByVal NickOrIP As String, ByVal reason As String)
     
     On Error GoTo WriteBanIP_Err
 
@@ -6274,26 +6274,11 @@ Public Sub WriteBanIP(ByVal byIp As Boolean, ByRef IP() As Byte, ByVal Nick As S
     'Last Modification: 05/17/06
     'Writes the "BanIP" message to the outgoing data buffer
     '***************************************************
-    If byIp And UBound(IP()) - LBound(IP()) + 1 <> 4 Then Exit Sub   'Invalid IP
-    
-    Dim i As Long
-    
+
     With outgoingData
         Call .WriteID(ClientPacketID.BanIP)
-        
-        Call .WriteBoolean(byIp)
-        
-        If byIp Then
 
-            For i = LBound(IP()) To UBound(IP())
-                Call .WriteByte(IP(i))
-            Next i
-
-        Else
-            Call .WriteASCIIString(Nick)
-
-        End If
-        
+        Call .WriteASCIIString(NickOrIP)
         Call .WriteASCIIString(reason)
         
         Call .EndPacket

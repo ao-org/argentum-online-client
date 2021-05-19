@@ -1189,6 +1189,17 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
+            Case "/UNBANCUENTA"
+                If notNullArguments Then
+
+                    Call WriteUnBanCuenta(ArgumentosRaw)
+    
+                Else
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /UNBANCUENTA NICKNAME o EMAIL.")
+
+                End If
+                
             Case "/UNBAN"
 
                 If notNullArguments Then
@@ -1554,16 +1565,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/BANIP"
 
-                If CantidadArgumentos >= 2 Then
-                    If validipv4str(ArgumentosAll(0)) Then
-                        Call WriteBanIP(True, str2ipv4l(ArgumentosAll(0)), vbNullString, Right$(ArgumentosRaw, Len(ArgumentosRaw) - Len(ArgumentosAll(0)) - 1))
-                    Else
-                        'No es una IP, es un nick
-                        Call WriteBanIP(False, str2ipv4l("0.0.0.0"), ArgumentosAll(0), Right$(ArgumentosRaw, Len(ArgumentosRaw) - Len(ArgumentosAll(0)) - 1))
+                If CantidadArgumentos = 2 Then
 
-                    End If
+                    Call WriteBanIP(ArgumentosAll(0), ArgumentosAll(1))
 
                 Else
+                
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /banip IP motivo o /banip nick motivo.")
 
@@ -1572,15 +1579,20 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/UNBANIP"
 
                 If notNullArguments Then
+                
                     If validipv4str(ArgumentosRaw) Then
+                    
                         Call WriteUnbanIP(str2ipv4l(ArgumentosRaw))
+                        
                     Else
+                    
                         'No es una IP
                         Call ShowConsoleMsg("IP incorrecta. Utilice /unbanip IP.")
 
                     End If
 
                 Else
+                
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /unbanip IP.")
 
