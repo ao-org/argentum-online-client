@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin VB.Form frmGuildLeader 
-   BorderStyle     =   4  'Fixed ToolWindow
+   BorderStyle     =   0  'None
    Caption         =   "Administración del Clan"
-   ClientHeight    =   6330
-   ClientLeft      =   45
-   ClientTop       =   210
-   ClientWidth     =   6075
+   ClientHeight    =   8370
+   ClientLeft      =   0
+   ClientTop       =   -180
+   ClientWidth     =   8280
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -18,298 +18,204 @@ Begin VB.Form frmGuildLeader
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6330
-   ScaleWidth      =   6075
+   Picture         =   "frmGuildLeader.frx":0000
+   ScaleHeight     =   558
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   552
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.Frame Frame4 
-      Caption         =   "Estadisticas"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1935
-      Left            =   120
-      TabIndex        =   13
-      Top             =   120
-      Width           =   2895
-      Begin VB.Label Miembros 
-         Caption         =   "El clan cuenta con x miembros"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   20
-         Top             =   840
-         Width           =   2535
-      End
-      Begin VB.Label porciento 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "0%"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   120
-         TabIndex        =   17
-         Top             =   490
-         Width           =   2415
-      End
-      Begin VB.Label expcount 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "400 / 500"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   120
-         TabIndex        =   18
-         Top             =   490
-         Visible         =   0   'False
-         Width           =   2415
-      End
-      Begin VB.Shape Shape1 
-         BorderWidth     =   2
-         Height          =   255
-         Left            =   120
-         Top             =   480
-         Width           =   2415
-      End
-      Begin VB.Shape EXPBAR 
-         BackColor       =   &H000000C0&
-         BorderColor     =   &H00FFFFFF&
-         FillColor       =   &H000000FF&
-         FillStyle       =   0  'Solid
-         Height          =   210
-         Left            =   135
-         Top             =   495
-         Width           =   960
-      End
-      Begin VB.Label beneficios 
-         BackStyle       =   0  'Transparent
-         Caption         =   "No atacarse / Chat de clan / Pedir ayuda (K) / Verse Invisible / Marca de clan / Verse vida / Max miembros: 25"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   6.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   735
-         Left            =   120
-         TabIndex        =   16
-         Top             =   1320
-         Width           =   2655
-      End
-      Begin VB.Label expacu 
-         Caption         =   "Beneficios:"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   120
-         TabIndex        =   15
-         Top             =   1080
-         Width           =   2055
-      End
-      Begin VB.Label nivel 
-         Caption         =   "Nivel:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   14
-         Top             =   240
-         Width           =   1215
-      End
+   Begin VB.TextBox txtguildnews 
+      BackColor       =   &H00070707&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H00FFFFFF&
+      Height          =   1170
+      Left            =   330
+      MultiLine       =   -1  'True
+      ScrollBars      =   2  'Vertical
+      TabIndex        =   7
+      Top             =   6240
+      Width           =   7560
    End
-   Begin VB.Frame Frame3 
-      Caption         =   "Clanes"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   2055
-      Left            =   3120
-      TabIndex        =   9
-      Top             =   2160
-      Width           =   2895
-      Begin VB.ListBox guildslist 
-         Height          =   1230
-         ItemData        =   "frmGuildLeader.frx":0000
-         Left            =   120
-         List            =   "frmGuildLeader.frx":0002
-         TabIndex        =   11
-         Top             =   240
-         Width           =   2655
-      End
-      Begin VB.CommandButton Command4 
-         Caption         =   "Detalles"
-         Height          =   375
-         Left            =   120
-         MouseIcon       =   "frmGuildLeader.frx":0004
-         MousePointer    =   99  'Custom
-         TabIndex        =   10
-         Top             =   1560
-         Width           =   2655
-      End
+   Begin VB.ListBox solicitudes 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00070707&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   1200
+      ItemData        =   "frmGuildLeader.frx":E204C
+      Left            =   4185
+      List            =   "frmGuildLeader.frx":E204E
+      TabIndex        =   2
+      Top             =   1590
+      Width           =   3735
    End
-   Begin VB.Frame txtnews 
-      Caption         =   "Noticias para clan"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1935
-      Left            =   120
-      TabIndex        =   6
-      Top             =   4320
-      Width           =   5895
-      Begin VB.CommandButton Command5 
-         Caption         =   "Editar descripción del clan"
-         Height          =   375
-         Left            =   3120
-         MouseIcon       =   "frmGuildLeader.frx":0156
-         MousePointer    =   99  'Custom
-         TabIndex        =   19
-         Top             =   1440
-         Width           =   2655
-      End
-      Begin VB.CommandButton Command3 
-         Caption         =   "Actualizar"
-         Height          =   375
-         Left            =   120
-         MouseIcon       =   "frmGuildLeader.frx":02A8
-         MousePointer    =   99  'Custom
-         TabIndex        =   8
-         Top             =   1440
-         Width           =   2415
-      End
-      Begin VB.TextBox txtguildnews 
-         Height          =   1095
-         Left            =   120
-         MultiLine       =   -1  'True
-         ScrollBars      =   2  'Vertical
-         TabIndex        =   7
-         Top             =   240
-         Width           =   5655
-      End
+   Begin VB.ListBox guildslist 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00070707&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   1395
+      ItemData        =   "frmGuildLeader.frx":E2050
+      Left            =   4200
+      List            =   "frmGuildLeader.frx":E2052
+      TabIndex        =   1
+      Top             =   3720
+      Width           =   3735
    End
-   Begin VB.Frame Frame2 
-      Caption         =   "Miembros"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   2055
-      Left            =   120
-      TabIndex        =   3
-      Top             =   2160
-      Width           =   2895
-      Begin VB.CommandButton Command2 
-         Caption         =   "Detalles"
-         Height          =   375
-         Left            =   120
-         MouseIcon       =   "frmGuildLeader.frx":03FA
-         MousePointer    =   99  'Custom
-         TabIndex        =   5
-         Top             =   1560
-         Width           =   2655
-      End
-      Begin VB.ListBox members 
-         Height          =   1230
-         ItemData        =   "frmGuildLeader.frx":054C
-         Left            =   120
-         List            =   "frmGuildLeader.frx":054E
-         TabIndex        =   4
-         Top             =   240
-         Width           =   2655
-      End
-   End
-   Begin VB.Frame Frame1 
-      Caption         =   "Solicitudes de ingreso"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1935
-      Left            =   3120
+   Begin VB.ListBox members 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00070707&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   1395
+      ItemData        =   "frmGuildLeader.frx":E2054
+      Left            =   315
+      List            =   "frmGuildLeader.frx":E2056
       TabIndex        =   0
-      Top             =   120
-      Width           =   2895
-      Begin VB.CommandButton cmdElecciones 
-         Caption         =   "Abrir elecciones"
-         Enabled         =   0   'False
-         Height          =   375
-         Left            =   120
-         MouseIcon       =   "frmGuildLeader.frx":0550
-         MousePointer    =   99  'Custom
-         TabIndex        =   12
-         Top             =   1935
-         Width           =   2655
-      End
-      Begin VB.CommandButton Command1 
-         Caption         =   "Detalles"
-         Height          =   375
-         Left            =   120
-         MouseIcon       =   "frmGuildLeader.frx":06A2
-         MousePointer    =   99  'Custom
-         TabIndex        =   2
-         Top             =   1440
-         Width           =   2655
-      End
-      Begin VB.ListBox solicitudes 
-         Height          =   1035
-         ItemData        =   "frmGuildLeader.frx":07F4
-         Left            =   120
-         List            =   "frmGuildLeader.frx":07F6
-         TabIndex        =   1
-         Top             =   240
-         Width           =   2655
-      End
+      Top             =   3720
+      Width           =   3735
+   End
+   Begin VB.Label nivel 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "12"
+      BeginProperty Font 
+         Name            =   "Alegreya Sans AO"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000CB1FE&
+      Height          =   240
+      Left            =   870
+      TabIndex        =   9
+      Top             =   1575
+      Width           =   195
+   End
+   Begin VB.Label expcount 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "400 / 500"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000B&
+      Height          =   255
+      Left            =   540
+      TabIndex        =   6
+      Top             =   1965
+      Visible         =   0   'False
+      Width           =   3285
+   End
+   Begin VB.Label maxMiembros 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "25"
+      BeginProperty Font 
+         Name            =   "Alegreya Sans AO"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000CB1FE&
+      Height          =   240
+      Left            =   3525
+      TabIndex        =   8
+      Top             =   2295
+      Width           =   210
+   End
+   Begin VB.Image cmdCerrar 
+      Height          =   420
+      Left            =   7815
+      Top             =   0
+      Width           =   465
+   End
+   Begin VB.Image cmdActualizar 
+      Height          =   420
+      Left            =   1260
+      Top             =   7725
+      Width           =   1980
+   End
+   Begin VB.Image cmdEditarDescripcion 
+      Height          =   420
+      Left            =   3780
+      Top             =   7725
+      Width           =   3240
+   End
+   Begin VB.Label porciento 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "0%"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000B&
+      Height          =   255
+      Left            =   540
+      TabIndex        =   5
+      Top             =   1965
+      Width           =   3285
+   End
+   Begin VB.Label Miembros 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "12"
+      BeginProperty Font 
+         Name            =   "Alegreya Sans AO"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000CB1FE&
+      Height          =   240
+      Left            =   2100
+      TabIndex        =   4
+      Top             =   2280
+      Width           =   195
+   End
+   Begin VB.Label beneficios 
+      BackStyle       =   0  'Transparent
+      Caption         =   "No atacarse / Chat de clan / Pedir ayuda (K)  / Verse Invisible / Marca de clan / Verse vida."
+      BeginProperty Font 
+         Name            =   "Alegreya Sans AO"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000CB1FE&
+      Height          =   735
+      Left            =   390
+      TabIndex        =   3
+      Top             =   2775
+      Width           =   3615
+   End
+   Begin VB.Image EXPBAR 
+      Height          =   225
+      Left            =   390
+      Picture         =   "frmGuildLeader.frx":E2058
+      Top             =   1950
+      Width           =   3585
    End
 End
 Attribute VB_Name = "frmGuildLeader"
@@ -348,8 +254,11 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
 Option Explicit
+
+Private cBotonCerrar As clsGraphicalButton
+Private cBotonActualizar As clsGraphicalButton
+Private cBotonEditarDescripcion As clsGraphicalButton
 
 Private Sub cmdElecciones_Click()
     
@@ -407,11 +316,7 @@ Command2_Click_Err:
     
 End Sub
 
-Private Sub Command3_Click()
-    
-    On Error GoTo Command3_Click_Err
-    
-
+Private Sub cmdActualizar_Click()
     Dim k As String
 
     k = Replace(txtguildnews, vbCrLf, "º")
@@ -420,35 +325,13 @@ Private Sub Command3_Click()
 
     
     Exit Sub
-
-Command3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command3_Click", Erl)
-    Resume Next
-    
 End Sub
 
-Private Sub Command4_Click()
-    
-    On Error GoTo Command4_Click_Err
-    
-    frmGuildBrief.EsLeader = True
-    Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
-
-    'Unload Me
-    
-    Exit Sub
-
-Command4_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command4_Click", Erl)
-    Resume Next
-    
+Private Sub cmdCerrar_Click()
+    Unload Me
 End Sub
 
-Private Sub Command5_Click()
-    
-    On Error GoTo Command5_Click_Err
-    
-
+Private Sub cmdEditarDescripcion_Click()
     Dim fdesc As String
 
     fdesc = InputBox("Ingrese la descripción:", "Modificar descripción")
@@ -466,11 +349,25 @@ Private Sub Command5_Click()
     
     Exit Sub
 
-Command5_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command5_Click", Erl)
+End Sub
+
+Private Sub Command4_Click()
+    
+    On Error GoTo Command4_Click_Err
+    
+    frmGuildBrief.EsLeader = True
+    Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
+
+    'Unload Me
+    
+    Exit Sub
+
+Command4_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Command4_Click", Erl)
     Resume Next
     
 End Sub
+
 
 Private Sub Command6_Click()
 
@@ -525,17 +422,35 @@ expne_MouseMove_Err:
 End Sub
 
 Private Sub Form_Load()
-    
+   
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-
     
+    Call LoadButtons
     Exit Sub
 
 Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Form_Load", Erl)
     Resume Next
+    
+End Sub
+
+Private Sub LoadButtons()
+    Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonActualizar = New clsGraphicalButton
+    Set cBotonEditarDescripcion = New clsGraphicalButton
+    
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonActualizar.Initialize(cmdActualizar, "boton-actualizar-es-default.bmp", _
+                                                "boton-actualizar-es-over.bmp", _
+                                                "boton-actualizar-es-off.bmp", Me)
+    Call cBotonEditarDescripcion.Initialize(cmdEditarDescripcion, "boton-editar-desc-clan-es-default.bmp", _
+                                                "boton-editar-desc-clan-es-over.bmp", _
+                                                "boton-editar-desc-clan-es-off.bmp", Me)
     
 End Sub
 
@@ -555,9 +470,9 @@ Form_MouseMove_Err:
     
 End Sub
 
-Private Sub Form_Unload(Cancel As Integer)
 
-    'frmMain.SetFocus
+Private Sub Frame3_DragDrop(Source As Control, X As Single, Y As Single)
+
 End Sub
 
 Private Sub Frame4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -574,6 +489,27 @@ Frame4_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Frame4_MouseMove", Erl)
     Resume Next
     
+End Sub
+
+Private Sub guildslist_DblClick()
+   If guildslist.ListIndex > -1 Then
+        frmGuildBrief.EsLeader = True
+        Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
+        Exit Sub
+    End If
+End Sub
+
+Private Sub members_DblClick()
+  If members.ListIndex = -1 Then Exit Sub
+    frmCharInfo.frmType = CharInfoFrmType.frmMembers
+    Call WriteGuildMemberInfo(members.List(members.ListIndex))
+End Sub
+
+Private Sub solicitudes_DblClick()
+ If solicitudes.ListIndex = -1 Then Exit Sub
+    frmCharInfo.frmType = CharInfoFrmType.frmMembershipRequests
+    Call WriteGuildMemberInfo(solicitudes.List(solicitudes.ListIndex))
+    Exit Sub
 End Sub
 
 Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)

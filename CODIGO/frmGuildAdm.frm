@@ -169,6 +169,10 @@ Image1_Click_Err:
     
 End Sub
 
+Private Sub cmdCerrar_Click()
+    Unload Me
+End Sub
+
 Private Sub cmdFundarClan_Click()
     On Error GoTo cmdFundarClan_Click_Err
 
