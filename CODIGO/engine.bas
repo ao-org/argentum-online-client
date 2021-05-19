@@ -506,7 +506,7 @@ Public Sub Draw_GrhFont(ByVal grh_index As Long, ByVal x As Integer, ByVal y As 
 
     If grh_index <= 0 Then Exit Sub
 
-    Call Batch_Textured_Box_Advance(x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, GrhData(grh_index).pixelWidth + 1, GrhData(grh_index).pixelHeight + 1, text_color)
+    Call Batch_Textured_Box_Advance(x, y, GrhData(grh_index).pixelWidth + 1, GrhData(grh_index).pixelHeight + 1, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, GrhData(grh_index).pixelWidth + 1, GrhData(grh_index).pixelHeight + 1, text_color)
 
     
     Exit Sub
@@ -567,11 +567,11 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     'Center Grh over X,Y pos
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2 + 1
+            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
         End If
 
         If GrhData(grh.GrhIndex).TileHeight <> 1 Then
-            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
+            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
 
@@ -633,11 +633,11 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
     'Center Grh over X,Y pos
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
+            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
         End If
 
         If GrhData(grh.GrhIndex).TileHeight <> 1 Then
-            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
+            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
 
@@ -733,11 +733,11 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
     'Center Grh over X,Y pos
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
+            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
         End If
 
         If GrhData(grh.GrhIndex).TileHeight <> 1 Then
-            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
+            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
 
@@ -807,12 +807,12 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
     'Center Grh over X,Y pos
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
+            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
 
         End If
 
         If GrhData(grh.GrhIndex).TileHeight <> 1 Then
-            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
+            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
 
         End If
 
@@ -1106,7 +1106,7 @@ Public Sub Batch_Textured_Box(ByVal x As Long, ByVal y As Long, _
         Call .SetAlpha(Alpha)
 
         If TextureWidth <> 0 And TextureHeight <> 0 Then
-            Call .Draw(x, y, Width * ScaleX, Height * ScaleY, Color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, Angle)
+            Call .Draw(x, y, Width * ScaleX, Height * ScaleY, Color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, Angle)
         Else
             Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , Angle)
         End If
@@ -1149,7 +1149,7 @@ Public Sub Batch_Textured_Box_Advance(ByVal x As Long, ByVal y As Long, _
         Call .SetAlpha(Alpha)
         
         If TextureWidth <> 0 And TextureHeight <> 0 Then
-            Call .Draw(x, y, dw * ScaleX, dH * ScaleY, Color, sX / TextureWidth, sY / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, Angle)
+            Call .Draw(x, y, dw * ScaleX, dH * ScaleY, Color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, Angle)
         Else
             Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , Angle)
         End If
@@ -1964,8 +1964,6 @@ Public Sub Start()
                         DrawInventoryUserComercio
                         DrawInventoryOtherComercio
                     End If
-                    
-                    
 
                 Case 1
                     If Not frmConnect.Visible Then
@@ -1989,18 +1987,10 @@ Public Sub Start()
             Sleep 60&
             Call frmMain.Inventario.ReDraw
         End If
+
         DoEvents
 
-        Rem Limitar FPS
-        '   If LimitarFps Then
-        '   While (GetTickCount - FrameTime) < FramesPerSecCounter
-        '     Sleep 1
-        '  Wend
-        '   While GetTickCount - FrameTime < 55
-        '     Sleep 5
-        '   Wend
-        '  End If
-    Loop '
+    Loop
 
     EngineRun = False
 

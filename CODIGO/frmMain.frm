@@ -380,6 +380,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4405,7 +4406,6 @@ Private Sub Timerping_Timer()
         Call WritePing
     #End If
 
-    
     Exit Sub
 
 Timerping_Timer_Err:
