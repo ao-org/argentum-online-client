@@ -1189,6 +1189,17 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
+            Case "/UNBANCUENTA"
+                If notNullArguments Then
+
+                    Call WriteUnBanCuenta(ArgumentosRaw)
+    
+                Else
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /UNBANCUENTA NICKNAME o EMAIL.")
+
+                End If
+                
             Case "/UNBAN"
 
                 If notNullArguments Then
