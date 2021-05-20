@@ -92,12 +92,12 @@ Private Const SIF_TRACKPOS = &H10
 Private Const SIF_ALL = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
 Private tSI As SCROLLINFO
 
-Public Declare Function GetScrollInfo Lib "user32" (ByVal hwnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
+Public Declare Function GetScrollInfo Lib "user32" (ByVal hWnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
 
-Public Declare Function GetScrollPos Lib "user32" (ByVal hwnd As Long, ByVal nBar As Long) As Long
+Public Declare Function GetScrollPos Lib "user32" (ByVal hWnd As Long, ByVal nBar As Long) As Long
 
 'Api SendMessage
-Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
 
 Public Const MAX_TAB_STOPS = 32&
 
@@ -237,12 +237,12 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         Dim bUrl As Boolean
         Dim sMax As Long
         Dim sPos As Long
-        Dim Pos As Long
+        Dim pos As Long
         Dim Ret As Long
         
         Dim bHoldBar As Boolean
 
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
 
     With RichTextBox
         
@@ -258,10 +258,10 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
-        Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+        pos = tSI.nTrackPos
+        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
         bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         
         .SelStart = Len(.Text)
@@ -286,7 +286,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         End If
         
         If bHoldBar Then
-            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
 
     End With
@@ -316,11 +316,11 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     Dim bUrl As Boolean
     Dim sMax As Long
     Dim sPos As Long
-    Dim Pos As Long
+    Dim pos As Long
     Dim Ret As Long
     
     Dim bHoldBar As Boolean
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
 
     With RichTextBox
 
@@ -333,10 +333,10 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        Ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
-        Pos = tSI.nTrackPos
-        Call GetScrollInfo(.hwnd, SB_VERT, tSI)
+        pos = tSI.nTrackPos
+        Call GetScrollInfo(.hWnd, SB_VERT, tSI)
          bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         .SelStart = Len(.Text)
         .SelLength = 0
@@ -350,7 +350,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
         .SelText = Text
         
         If bHoldBar Then
-            Call SendMessage(.hwnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
+            Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
     End With
     
@@ -385,7 +385,7 @@ Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, O
     End With
 
     Dim Ret As Long
-    Ret = SendMessage(rtbTarget.hwnd, EM_SETPARAFORMAT, 0&, Para)
+    Ret = SendMessage(rtbTarget.hWnd, EM_SETPARAFORMAT, 0&, Para)
     
     If Ret = 0 Then Debug.Print "Error al setear el espaciado entre líneas del RichTextBox."
 End Sub
@@ -406,7 +406,7 @@ Public Sub RefreshAllChars()
     For loopc = 1 To LastChar
     
         If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
+            MapData(charlist(loopc).pos.x, charlist(loopc).pos.y).charindex = loopc
 
         End If
 
@@ -645,10 +645,10 @@ Sub SetConnected()
     ' establece el borde al listbox
     Call Establecer_Borde(frmMain.hlst, frmMain, COLOR_AZUL, 0, 0)
 
-    Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
+    Call Make_Transparent_Richtext(frmMain.RecTxt.hWnd)
    
     ' Detect links in console
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
+    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
         
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(frmMain)
@@ -927,7 +927,7 @@ Check_Keys_Err:
     
 End Sub
 
-Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
+Function ReadField(ByVal pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
     
     On Error GoTo ReadField_Err
     
@@ -947,7 +947,7 @@ Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As
     
     delimiter = Chr$(SepASCII)
     
-    For i = 1 To Pos
+    For i = 1 To pos
         LastPos = CurrentPos
         CurrentPos = InStr(LastPos + 1, Text, delimiter, vbBinaryCompare)
     Next i
@@ -1057,6 +1057,7 @@ Sub Main()
         Shell App.Path & "\..\..\Launcher\LauncherAO20.exe"
         End
     End If
+    
     'Cursores******
     Set FormParser = New clsCursor
     Call FormParser.Init
@@ -1084,13 +1085,13 @@ Sub Main()
     
     Call Frmcarga.Show
  
-#If DEBUGGING = 0 Then
-    Call frmConnect.AnalizarCliente
-#End If
+    #If DEBUGGING = 0 Then
+        Call frmConnect.AnalizarCliente
+    #End If
 
     If Sonido Then
     
-        If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
+        If Sound.Initialize_Engine(frmConnect.hWnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
             Call Sound.Ambient_Volume_Set(VolAmbient)
         
         Else
@@ -1179,14 +1180,14 @@ Public Function randomMap() As Integer
     End Select
 End Function
 
-Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
+Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
     
     On Error GoTo WriteVar_Err
     
-    writeprivateprofilestring Main, Var, Value, File
+    writeprivateprofilestring Main, Var, value, File
 
     
     Exit Sub
@@ -1695,15 +1696,15 @@ General_Get_Elapsed_Time_Err:
 End Function
 
 
-Public Function max(ByVal A As Variant, ByVal B As Variant) As Variant
+Public Function Max(ByVal A As Variant, ByVal B As Variant) As Variant
     
     On Error GoTo max_Err
     
 
     If A > B Then
-        max = A
+        Max = A
     Else
-        max = B
+        Max = B
 
     End If
 
@@ -1716,15 +1717,15 @@ max_Err:
     
 End Function
 
-Public Function min(ByVal A As Double, ByVal B As Double) As Variant
+Public Function Min(ByVal A As Double, ByVal B As Double) As Variant
     
     On Error GoTo min_Err
     
 
     If A < B Then
-        min = A
+        Min = A
     Else
-        min = B
+        Min = B
 
     End If
 
@@ -1737,16 +1738,16 @@ min_Err:
     
 End Function
 
-Public Function Clamp(ByVal A As Variant, ByVal min As Variant, ByVal max As Variant) As Variant
+Public Function Clamp(ByVal A As Variant, ByVal Min As Variant, ByVal Max As Variant) As Variant
     
     On Error GoTo min_Err
     
 
-    If A < min Then
-        Clamp = min
+    If A < Min Then
+        Clamp = Min
     
-    ElseIf A > max Then
-        Clamp = max
+    ElseIf A > Max Then
+        Clamp = Max
 
     Else
         Clamp = A
@@ -1797,12 +1798,12 @@ errhandler:
 
 End Function
 
-Public Function Tilde(ByRef Data As String) As String
+Public Function Tilde(ByRef DATA As String) As String
     
     On Error GoTo Tilde_Err
     
 
-    Tilde = UCase$(Data)
+    Tilde = UCase$(DATA)
  
     Tilde = Replace$(Tilde, "Á", "A")
     Tilde = Replace$(Tilde, "É", "E")
@@ -1857,7 +1858,7 @@ Function GetTimeFromString(str As String) As Long
     Dim Splitted() As String
     Splitted = Split(str, ":")
     
-    Dim Hour As Long, min As Long
+    Dim Hour As Long, Min As Long
     Hour = Val(Splitted(0))
 
     If Hour < 0 Then Hour = 0
@@ -1866,12 +1867,12 @@ Function GetTimeFromString(str As String) As Long
     GetTimeFromString = Hour * 60
     
     If UBound(Splitted) > 0 Then
-        min = Val(Splitted(1))
+        Min = Val(Splitted(1))
         
-        If min < 0 Then min = 0
-        If min > 59 Then min = 59
+        If Min < 0 Then Min = 0
+        If Min > 59 Then Min = 59
         
-        GetTimeFromString = GetTimeFromString + min
+        GetTimeFromString = GetTimeFromString + Min
     End If
 
     GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)
@@ -1931,19 +1932,19 @@ Public Function ReadRegistryKey(Hkey As Long, strPath As String, strValue As Str
     
     Dim keyhand As Long
     Dim r As Long
-    Dim Data As String
+    Dim DATA As String
     Dim LenValue As Long
        
     r = RegOpenKey(Hkey, strPath, keyhand)
     If r = 0 Then
         r = RegQueryValueEx(keyhand, strValue, 0, 1, vbNullString, LenValue)
         
-        Data = Space(LenValue)
+        DATA = Space(LenValue)
         
-        r = RegQueryValueEx(keyhand, strValue, 0, 1, ByVal Data, Len(Data))
+        r = RegQueryValueEx(keyhand, strValue, 0, 1, ByVal DATA, Len(DATA))
         r = RegCloseKey(keyhand)
         
-        ReadRegistryKey = Left$(Data, Len(Data) - 1)
+        ReadRegistryKey = Left$(DATA, Len(DATA) - 1)
     End If
     
     Exit Function
@@ -1962,24 +1963,24 @@ End Function
 
 Public Sub CheckResources()
 
-    Dim Data(1 To 200) As Byte
+    Dim DATA(1 To 200) As Byte
     
     Dim Handle As Integer
     Handle = FreeFile
 
     Open App.Path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #Handle
     
-    Get #Handle, , Data
+    Get #Handle, , DATA
     
     Close #Handle
     
-    Dim length As Integer
-    length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
+    Dim Length As Integer
+    Length = DATA(UBound(DATA)) + DATA(UBound(DATA) - 1) * 256
 
     Dim i As Integer
     
-    For i = 1 To length
-        ResourcesPassword = ResourcesPassword & Chr(Data(i * 3 - 1) Xor 37)
+    For i = 1 To Length
+        ResourcesPassword = ResourcesPassword & Chr(DATA(i * 3 - 1) Xor 37)
     Next
 
 End Sub

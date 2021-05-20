@@ -99,9 +99,9 @@ Private Const MINIMAP_PATH As String = "\MiniMapas\"
 Private Declare Function Compress Lib "zlib.dll" Alias "compress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
 Private Declare Function UnCompress Lib "zlib.dll" Alias "uncompress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal Length As Long)
 
-Private Sub Compress_Data(ByRef Data() As Byte)
+Private Sub Compress_Data(ByRef DATA() As Byte)
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -112,27 +112,27 @@ Private Sub Compress_Data(ByRef Data() As Byte)
     Dim BufTemp() As Byte
     Dim loopc As Long
     
-    Dimensions = UBound(Data) + 1
+    Dimensions = UBound(DATA) + 1
     
     ' The worst case scenario, compressed info is 1.06 times the original - see zlib's doc for more info.
     DimBuffer = Dimensions * 1.06
     
     ReDim BufTemp(DimBuffer)
     
-    Call Compress(BufTemp(0), DimBuffer, Data(0), Dimensions)
+    Call Compress(BufTemp(0), DimBuffer, DATA(0), Dimensions)
     
-    Erase Data
+    Erase DATA
     
-    ReDim Data(DimBuffer - 1)
+    ReDim DATA(DimBuffer - 1)
     ReDim Preserve BufTemp(DimBuffer - 1)
     
-    Data = BufTemp
+    DATA = BufTemp
     
     Erase BufTemp
 
 End Sub
 
-Private Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
+Private Sub Decompress_Data(ByRef DATA() As Byte, ByVal OrigSize As Long)
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -142,11 +142,11 @@ Private Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
     
     ReDim BufTemp(OrigSize - 1)
     
-    Call UnCompress(BufTemp(0), OrigSize, Data(0), UBound(Data) + 1)
+    Call UnCompress(BufTemp(0), OrigSize, DATA(0), UBound(DATA) + 1)
     
-    ReDim Data(OrigSize - 1)
+    ReDim DATA(OrigSize - 1)
     
-    Data = BufTemp
+    DATA = BufTemp
     
     Erase BufTemp
 End Sub
@@ -956,7 +956,7 @@ Public Sub Delete_File(ByVal file_path As String)
 'Deletes a resource files
 '*****************************************************************
     Dim Handle As Integer
-    Dim Data() As Byte
+    Dim DATA() As Byte
     
     On Error GoTo Error_Handler
     
@@ -965,8 +965,8 @@ Public Sub Delete_File(ByVal file_path As String)
     Open file_path For Binary Access Write Lock Read As Handle
     
     'We replace all the bytes in it with 0s
-    ReDim Data(LOF(Handle) - 1)
-    Put Handle, 1, Data
+    ReDim DATA(LOF(Handle) - 1)
+    Put Handle, 1, DATA
     
     'We close the file
     Close Handle
@@ -988,8 +988,8 @@ Private Function File_Find(ByVal resource_file_path As String, ByVal file_name A
 'Looks for a compressed file in a resource file. Uses binary search ;)
 '**************************************************************
 On Error GoTo errhandler
-    Dim max As Integer  'Max index
-    Dim min As Integer  'Min index
+    Dim Max As Integer  'Max index
+    Dim Min As Integer  'Min index
     Dim mid As Integer  'Middle index
     Dim file_handler As Integer
     Dim file_head As FILEHEADER
@@ -1017,26 +1017,26 @@ On Error GoTo errhandler
         Exit Function
     End If
     
-    min = 1
-    max = file_head.intNumFiles
+    Min = 1
+    Max = file_head.intNumFiles
     
-    Do While min <= max
-        mid = (min + max) / 2
+    Do While Min <= Max
+        mid = (Min + Max) / 2
         
         'Get the info header of the appropiate compressed file
         Get file_handler, CLng(Len(file_head) + CLng(Len(info_head)) * CLng((mid - 1)) + 1), info_head
                 
         If file_name < info_head.strFileName Then
-            If max = mid Then
-                max = max - 1
+            If Max = mid Then
+                Max = Max - 1
             Else
-                max = mid
+                Max = mid
             End If
         ElseIf file_name > info_head.strFileName Then
-            If min = mid Then
-                min = min + 1
+            If Min = mid Then
+                Min = Min + 1
             Else
-                min = mid
+                Min = mid
             End If
         Else
             'Copy info head
@@ -1107,16 +1107,16 @@ Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal first As Long, B
 End Sub
 
 ' WyroX: Encriptado casero. Funciona para encriptar y desencriptar (maravillas del Xor)
-Private Sub DoCrypt_Data(Data() As Byte, ByVal Password As String)
+Private Sub DoCrypt_Data(DATA() As Byte, ByVal Password As String)
     
     Dim i As Long, c As Integer
     
     ' Recorro todos los bytes haciendo Xor con la contraseña, variando también el caracter elegido de la contraseña
     
-    c = UBound(Data) Mod Len(Password) + 1
+    c = UBound(DATA) Mod Len(Password) + 1
     
-    For i = LBound(Data) To UBound(Data)
-        Data(i) = Data(i) Xor (Asc(mid$(Password, c, 1)) And &HFF)
+    For i = LBound(DATA) To UBound(DATA)
+        DATA(i) = DATA(i) Xor (Asc(mid$(Password, c, 1)) And &HFF)
         
         c = c + 1
         If c > Len(Password) Then c = 1
@@ -1231,17 +1231,17 @@ End Function
 
 Public Function Extract_File_To_String(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef file_str As String, ByVal Passwd As String) As Boolean
 
-    Dim Data() As Byte
+    Dim DATA() As Byte
     
-    Extract_File_To_String = Extract_File_To_Memory(file_type, resource_path, file_name, Data, Passwd)
+    Extract_File_To_String = Extract_File_To_Memory(file_type, resource_path, file_name, DATA, Passwd)
     
     If Not Extract_File_To_String Then Exit Function
     
-    file_str = StrConv(Data, vbUnicode)
+    file_str = StrConv(DATA, vbUnicode)
     
 End Function
 
-Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
+Public Sub Decompress_Data_B(ByRef DATA() As Byte, ByVal OrigSize As Long)
     
     On Error GoTo Decompress_Data_B_Err
     
@@ -1257,11 +1257,11 @@ Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
    
     'Des-encrypt the first byte of the compressed data
     
-    Call UnCompress(BufTemp(0), OrigSize, Data(0), UBound(Data) + 1)
+    Call UnCompress(BufTemp(0), OrigSize, DATA(0), UBound(DATA) + 1)
    
-    ReDim Data(OrigSize - 1)
+    ReDim DATA(OrigSize - 1)
    
-    Data = BufTemp
+    DATA = BufTemp
    
     Erase BufTemp
     
