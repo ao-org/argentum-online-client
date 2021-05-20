@@ -18,7 +18,6 @@ Begin VB.Form frmGuildLeader
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmGuildLeader.frx":0000
    ScaleHeight     =   558
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   552
@@ -41,9 +40,9 @@ Begin VB.Form frmGuildLeader
       BackColor       =   &H00070707&
       ForeColor       =   &H00FFFFFF&
       Height          =   1200
-      ItemData        =   "frmGuildLeader.frx":E204C
+      ItemData        =   "frmGuildLeader.frx":0000
       Left            =   4185
-      List            =   "frmGuildLeader.frx":E204E
+      List            =   "frmGuildLeader.frx":0002
       TabIndex        =   2
       Top             =   1590
       Width           =   3735
@@ -53,9 +52,9 @@ Begin VB.Form frmGuildLeader
       BackColor       =   &H00070707&
       ForeColor       =   &H00FFFFFF&
       Height          =   1395
-      ItemData        =   "frmGuildLeader.frx":E2050
+      ItemData        =   "frmGuildLeader.frx":0004
       Left            =   4200
-      List            =   "frmGuildLeader.frx":E2052
+      List            =   "frmGuildLeader.frx":0006
       TabIndex        =   1
       Top             =   3720
       Width           =   3735
@@ -65,9 +64,9 @@ Begin VB.Form frmGuildLeader
       BackColor       =   &H00070707&
       ForeColor       =   &H00FFFFFF&
       Height          =   1395
-      ItemData        =   "frmGuildLeader.frx":E2054
+      ItemData        =   "frmGuildLeader.frx":0008
       Left            =   315
-      List            =   "frmGuildLeader.frx":E2056
+      List            =   "frmGuildLeader.frx":000A
       TabIndex        =   0
       Top             =   3720
       Width           =   3735
@@ -213,7 +212,6 @@ Begin VB.Form frmGuildLeader
    Begin VB.Image EXPBAR 
       Height          =   225
       Left            =   390
-      Picture         =   "frmGuildLeader.frx":E2058
       Top             =   1950
       Width           =   3585
    End
@@ -426,7 +424,8 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    
+    Me.Picture = LoadInterface("ventanaadminclan.bmp")
+    EXPBAR.Picture = LoadInterface("barra-nivel-clan.bmp")
     Call LoadButtons
     Exit Sub
 

@@ -3257,7 +3257,7 @@ Private Sub HandleConsoleMessage()
 
         Case "HECINF"
             Hechizo = ReadField(2, chat, Asc("*"))
-            chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
+            chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).Nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
 
         Case "ProMSG"
             Hechizo = ReadField(2, chat, Asc("*"))
@@ -6666,16 +6666,15 @@ Private Sub HandleCharacterInfo()
         End If
     
         If incomingData.ReadByte() = 1 Then
-            .nombre.Caption = "Nombre: " & incomingData.ReadASCIIString()
-            .Raza.Caption = "Raza: " & ListaRazas(incomingData.ReadByte())
-            .Clase.Caption = "Clase: " & ListaClases(incomingData.ReadByte())
-            
             .Genero.Caption = "Genero: Hombre"
         Else
             .Genero.Caption = "Genero: Mujer"
-    
         End If
             
+        .Nombre.Caption = "Nombre: " & incomingData.ReadASCIIString()
+        .Raza.Caption = "Raza: " & ListaRazas(incomingData.ReadByte())
+        .Clase.Caption = "Clase: " & ListaClases(incomingData.ReadByte())
+
         .nivel.Caption = "Nivel: " & incomingData.ReadByte()
         .oro.Caption = "Oro: " & incomingData.ReadLong()
         .Banco.Caption = "Banco: " & incomingData.ReadLong()
@@ -7097,7 +7096,7 @@ Private Sub HandleShowSOSForm()
     sosList = Split(incomingData.ReadASCIIString(), SEPARATOR)
     
     For i = 0 To UBound(sosList())
-        nombre = ReadField(1, sosList(i), Asc("Ø"))
+        Nombre = ReadField(1, sosList(i), Asc("Ø"))
         Consulta = ReadField(2, sosList(i), Asc("Ø"))
         TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
         frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ")"
