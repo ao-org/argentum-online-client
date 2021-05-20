@@ -895,6 +895,8 @@ On Local Error GoTo errhandler
             Exit Function
     End Select
     
+    MsgBox "Source: -- " & SourceFilePath & "---- App.Path: " & App.Path
+    
     'Find the Info Head of the desired file
     InfoHead = File_Find(SourceFilePath, file_name, Passwd)
     
