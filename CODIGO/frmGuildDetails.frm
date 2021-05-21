@@ -89,7 +89,7 @@ Begin VB.Form frmGuildDetails
          Height          =   315
          ItemData        =   "frmGuildDetails.frx":0000
          Left            =   240
-         List            =   "frmGuildDetails.frx":000A
+         List            =   "frmGuildDetails.frx":000D
          Style           =   2  'Dropdown List
          TabIndex        =   4
          Top             =   840
@@ -120,7 +120,7 @@ Begin VB.Form frmGuildDetails
       Height          =   375
       Index           =   1
       Left            =   120
-      MouseIcon       =   "frmGuildDetails.frx":0023
+      MouseIcon       =   "frmGuildDetails.frx":0050
       MousePointer    =   99  'Custom
       TabIndex        =   2
       Top             =   3480
@@ -192,6 +192,8 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+
+
 Private Sub Command1_Click(Index As Integer)
     
     On Error GoTo Command1_Click_Err
@@ -249,17 +251,17 @@ Private Sub Command1_Click(Index As Integer)
             End If
     
             If CreandoClan Then
-                If Combo1.Text = "" Then
+                If Combo1.ListIndex < 0 Then
                     MensajeAdvertencia "Debes definir el alineamiento del clan."
                     Exit Sub
-
                 End If
 
-                If UCase$(Combo1.Text) = "CIUDADANA" Then
-                    Alineacion = eClanType.ct_Legal
-                ElseIf UCase$(Combo1.Text) = "CRIMINAL" Then
-                    Alineacion = eClanType.ct_Evil
-
+                If Combo1.ListIndex = eClanType.ct_Neutral Then
+                    Alineacion = eClanType.ct_Neutral
+                ElseIf Combo1.ListIndex = eClanType.ct_Real Then
+                    Alineacion = eClanType.ct_Real
+                ElseIf Combo1.ListIndex = eClanType.ct_Caos Then
+                    Alineacion = eClanType.ct_Caos
                 End If
         
                 Call WriteCreateNewGuild(fdesc, ClanName, Alineacion)
