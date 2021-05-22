@@ -3,7 +3,7 @@ Begin VB.Form frmPanelgm
    BackColor       =   &H00000000&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
-   ClientHeight    =   8175
+   ClientHeight    =   8550
    ClientLeft      =   17580
    ClientTop       =   3030
    ClientWidth     =   4815
@@ -19,24 +19,102 @@ Begin VB.Form frmPanelgm
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8175
+   ScaleHeight     =   8550
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton cmdEscudo 
+      Caption         =   "-"
+      Height          =   360
+      Index           =   1
+      Left            =   4200
+      TabIndex        =   43
+      Top             =   5640
+      Width           =   390
+   End
+   Begin VB.TextBox txtEscudo 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   3360
+      TabIndex        =   42
+      Text            =   "0"
+      Top             =   5640
+      Width           =   735
+   End
+   Begin VB.CommandButton cmdEscudo 
+      Caption         =   "+"
+      Height          =   360
+      Index           =   0
+      Left            =   2880
+      TabIndex        =   41
+      Top             =   5640
+      Width           =   375
+   End
+   Begin VB.CommandButton cmd 
+      Caption         =   "-"
+      Height          =   405
+      Index           =   1
+      Left            =   4200
+      MaskColor       =   &H80000006&
+      TabIndex        =   39
+      Top             =   6120
+      Width           =   375
+   End
+   Begin VB.TextBox txtArma 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   405
+      Left            =   3360
+      TabIndex        =   38
+      Text            =   "0"
+      Top             =   6120
+      Width           =   700
+   End
+   Begin VB.CommandButton cmd 
+      BackColor       =   &H00C0C0C0&
+      Caption         =   "+"
+      Height          =   405
+      Index           =   0
+      Left            =   2880
+      MaskColor       =   &H80000006&
+      TabIndex        =   37
+      Top             =   6120
+      Width           =   375
+   End
    Begin VB.CommandButton cmdmenos 
       Caption         =   "-"
-      Height          =   240
-      Left            =   2160
+      Height          =   405
+      Left            =   4200
+      MaskColor       =   &H80000006&
       TabIndex        =   35
-      Top             =   7320
+      Top             =   6600
       Width           =   375
    End
    Begin VB.CommandButton cmdmas 
+      BackColor       =   &H8000000A&
       Caption         =   "+"
-      Height          =   240
-      Left            =   2160
+      Height          =   405
+      Left            =   2880
+      MaskColor       =   &H80000006&
       TabIndex        =   34
-      Top             =   6960
+      Top             =   6600
       Width           =   375
    End
    Begin VB.TextBox txtCasco 
@@ -50,22 +128,22 @@ Begin VB.Form frmPanelgm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
-      Left            =   1320
+      Height          =   405
+      Left            =   3360
       TabIndex        =   33
       Text            =   "0"
-      Top             =   7080
-      Width           =   735
+      Top             =   6600
+      Width           =   700
    End
    Begin VB.CommandButton cmdMapaSeguro 
       BackColor       =   &H8000000A&
       Caption         =   "Info/Mapa"
       Height          =   360
-      Left            =   1200
+      Left            =   120
       Style           =   1  'Graphical
       TabIndex        =   31
       TabStop         =   0   'False
-      Top             =   5640
+      Top             =   7560
       Width           =   1335
    End
    Begin VB.CommandButton Command3 
@@ -119,18 +197,18 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   24
       TabStop         =   0   'False
-      Top             =   7680
+      Top             =   8040
       Width           =   1215
    End
    Begin VB.CommandButton cmdGuardarMapa 
       BackColor       =   &H8000000A&
       Caption         =   "Guardar Mapa"
       Height          =   360
-      Left            =   2040
+      Left            =   1920
       Style           =   1  'Graphical
       TabIndex        =   23
       TabStop         =   0   'False
-      Top             =   7680
+      Top             =   8040
       Width           =   1215
    End
    Begin VB.CommandButton cmdMatarNPC 
@@ -147,23 +225,23 @@ Begin VB.Form frmPanelgm
    Begin VB.CommandButton cmdHeadMas 
       BackColor       =   &H8000000A&
       Caption         =   "+"
-      Height          =   240
-      Left            =   4200
+      Height          =   405
+      Left            =   2880
       Style           =   1  'Graphical
       TabIndex        =   20
       TabStop         =   0   'False
-      Top             =   6120
+      Top             =   7080
       Width           =   375
    End
    Begin VB.CommandButton cmdHeadMenos 
       BackColor       =   &H8000000A&
       Caption         =   "-"
-      Height          =   240
+      Height          =   405
       Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   19
       TabStop         =   0   'False
-      Top             =   6480
+      Top             =   7080
       Width           =   375
    End
    Begin VB.CommandButton cmdHead0 
@@ -174,7 +252,7 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   18
       TabStop         =   0   'False
-      Top             =   6720
+      Top             =   6600
       Width           =   990
    End
    Begin VB.TextBox txtHeadNumero 
@@ -188,12 +266,12 @@ Begin VB.Form frmPanelgm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
-      Left            =   3480
+      Height          =   405
+      Left            =   3360
       TabIndex        =   17
       Text            =   "0"
-      Top             =   6180
-      Width           =   615
+      Top             =   7080
+      Width           =   700
    End
    Begin VB.CommandButton cmdBody0 
       BackColor       =   &H8000000A&
@@ -204,29 +282,29 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   16
       TabStop         =   0   'False
-      Top             =   7200
+      Top             =   7080
       Width           =   990
    End
    Begin VB.CommandButton cmdBodyMas 
       BackColor       =   &H8000000A&
       Caption         =   "+"
-      Height          =   240
-      Left            =   4200
+      Height          =   405
+      Left            =   2880
       Style           =   1  'Graphical
       TabIndex        =   15
       TabStop         =   0   'False
-      Top             =   6960
+      Top             =   7560
       Width           =   390
    End
    Begin VB.CommandButton cmdBodyMenos 
       BackColor       =   &H8000000A&
       Caption         =   "-"
-      Height          =   240
+      Height          =   405
       Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   14
       TabStop         =   0   'False
-      Top             =   7320
+      Top             =   7560
       Width           =   390
    End
    Begin VB.TextBox txtBodyYo 
@@ -241,11 +319,11 @@ Begin VB.Form frmPanelgm
          Strikethrough   =   0   'False
       EndProperty
       Height          =   405
-      Left            =   3480
+      Left            =   3360
       TabIndex        =   13
       Text            =   "0"
-      Top             =   7080
-      Width           =   615
+      Top             =   7560
+      Width           =   700
    End
    Begin VB.CommandButton cmdConsulta 
       BackColor       =   &H8000000A&
@@ -266,7 +344,7 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   11
       TabStop         =   0   'False
-      Top             =   7680
+      Top             =   8040
       Width           =   1695
    End
    Begin VB.TextBox txtMod 
@@ -410,6 +488,52 @@ Begin VB.Form frmPanelgm
       Top             =   600
       Width           =   4575
    End
+   Begin VB.Label lblEscudo 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackColor       =   &H80000009&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Escudo"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000A&
+      Height          =   285
+      Index           =   0
+      Left            =   1800
+      TabIndex        =   40
+      Top             =   5760
+      Width           =   975
+   End
+   Begin VB.Label lblArma 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackColor       =   &H80000009&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Arma"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000A&
+      Height          =   285
+      Index           =   3
+      Left            =   2040
+      TabIndex        =   36
+      Top             =   6240
+      Width           =   735
+   End
    Begin VB.Label lblHead 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
@@ -428,7 +552,7 @@ Begin VB.Form frmPanelgm
       ForeColor       =   &H8000000A&
       Height          =   285
       Index           =   2
-      Left            =   1320
+      Left            =   2040
       TabIndex        =   32
       Top             =   6720
       Width           =   735
@@ -450,9 +574,9 @@ Begin VB.Form frmPanelgm
       ForeColor       =   &H8000000A&
       Height          =   285
       Index           =   1
-      Left            =   3240
+      Left            =   1920
       TabIndex        =   29
-      Top             =   6720
+      Top             =   7680
       Width           =   975
    End
    Begin VB.Label lblHead 
@@ -472,10 +596,10 @@ Begin VB.Form frmPanelgm
       ForeColor       =   &H8000000A&
       Height          =   285
       Index           =   0
-      Left            =   3480
+      Left            =   1920
       TabIndex        =   28
-      Top             =   5760
-      Width           =   645
+      Top             =   7200
+      Width           =   885
    End
    Begin VB.Label lblDialogo 
       AutoSize        =   -1  'True
@@ -1221,9 +1345,38 @@ Clase_Click_Err:
     
 End Sub
 
+Private Sub cmd_Click(Index As Integer)
+        
+        On Error GoTo cmd_Click_Err
+        
+100     tmpUser = "yo"
+
+102     Select Case Index
+     
+            Case 0
+104             txtArma.Text = txtArma.Text + 1
+
+106         Case 1
+108             txtArma.Text = txtArma.Text - 1
+        End Select
+    
+110     tmp = txtArma.Text
+
+112     Call ParseUserCommand("/MOD " & tmpUser & " Arma " & tmp)
+    
+114     Call frmPanelgm.txtMod.SetFocus
+        
+        Exit Sub
+
+cmd_Click_Err:
+        MsgBox Err.Description & vbCrLf & "in Argentum20.frmPanelgm.cmd_Click " & "at line " & Erl, vbExclamation + vbOKOnly, "Application Error"
+        Resume Next
+        
+End Sub
+
 Private Sub cmdAccion_Click(Index As Integer)
     
-    On Error GoTo cmdAccion_Click_Err
+    On Error GoTo 0
     
     Nick = Replace(cboListaUsus.Text, " ", "+")
 
@@ -1516,6 +1669,28 @@ Private Sub cmdConsulta_Click()
  
 End Sub
 
+Private Sub cmdEscudo_Click(Index As Integer)
+                
+100     tmpUser = "yo"
+
+102     Select Case Index
+     
+            Case 0
+104             txtEscudo.Text = txtEscudo.Text + 1
+
+106         Case 1
+108             txtEscudo.Text = txtEscudo.Text - 1
+        End Select
+    
+110     tmp = txtEscudo.Text
+
+112     Call ParseUserCommand("/MOD " & tmpUser & " Escudo " & tmp)
+    
+114     Call frmPanelgm.txtMod.SetFocus
+        
+        Exit Sub
+End Sub
+
 Private Sub cmdEventos_Click()
     tmp = InputBox("Ingrese tipo de evento:" & vbCrLf & "0: Busqueda de tesoro en continente" & vbCrLf & "1: Busqueda de tesoro en dungeon" & vbCrLf & "2: Aparicion de criatura", "Iniciar evento")
     
@@ -1623,7 +1798,7 @@ Private Sub cmdMapaSeguro_Click()
     
 End Sub
 
-Private Sub cmdmas_Click()
+Private Sub cmdMas_Click()
     tmpUser = "yo"
        
     txtCasco.Text = txtCasco.Text + 1
@@ -1643,7 +1818,7 @@ Call ParseUserCommand("/MATA")
 
 End Sub
 
-Private Sub cmdmenos_Click()
+Private Sub cmdMenos_Click()
     tmpUser = "yo"
        
     txtCasco.Text = txtCasco.Text - 1

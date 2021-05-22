@@ -7152,6 +7152,8 @@ Private Sub HandleShowGMPanelForm()
     frmPanelgm.txtHeadNumero = incomingData.ReadInteger
     frmPanelgm.txtBodyYo = incomingData.ReadInteger
     frmPanelgm.txtCasco = incomingData.ReadInteger
+    frmPanelgm.txtArma = incomingData.ReadInteger
+    frmPanelgm.txtEscudo = incomingData.ReadInteger
     frmPanelgm.Show vbModeless, frmMain
     
     Exit Sub
