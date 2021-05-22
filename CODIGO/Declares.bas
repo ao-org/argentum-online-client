@@ -1104,14 +1104,9 @@ End Enum
 Public EstadoLogin As E_MODO
 
 Public Enum eClanType
-
-    ct_RoyalArmy
-    ct_Evil
-    ct_Neutral
-    ct_GM
-    ct_Legal
-    ct_Criminal
-
+    ct_Neutral = 0
+    ct_Real
+    ct_Caos
 End Enum
 
 Public Enum eEditOptions

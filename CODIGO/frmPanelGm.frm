@@ -23,6 +23,40 @@ Begin VB.Form frmPanelgm
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton cmdmenos 
+      Caption         =   "-"
+      Height          =   240
+      Left            =   2160
+      TabIndex        =   35
+      Top             =   7320
+      Width           =   375
+   End
+   Begin VB.CommandButton cmdmas 
+      Caption         =   "+"
+      Height          =   240
+      Left            =   2160
+      TabIndex        =   34
+      Top             =   6960
+      Width           =   375
+   End
+   Begin VB.TextBox txtCasco 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   1320
+      TabIndex        =   33
+      Text            =   "0"
+      Top             =   7080
+      Width           =   735
+   End
    Begin VB.CommandButton cmdMapaSeguro 
       BackColor       =   &H8000000A&
       Caption         =   "Info/Mapa"
@@ -376,7 +410,30 @@ Begin VB.Form frmPanelgm
       Top             =   600
       Width           =   4575
    End
-   Begin VB.Label Label1 
+   Begin VB.Label lblHead 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackColor       =   &H80000009&
+      BackStyle       =   0  'Transparent
+      Caption         =   "Casco"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H8000000A&
+      Height          =   285
+      Index           =   2
+      Left            =   1320
+      TabIndex        =   32
+      Top             =   6720
+      Width           =   735
+   End
+   Begin VB.Label lblHead 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackColor       =   &H80000009&
@@ -398,7 +455,7 @@ Begin VB.Form frmPanelgm
       Top             =   6720
       Width           =   975
    End
-   Begin VB.Label Label1 
+   Begin VB.Label lblHead 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackColor       =   &H80000009&
@@ -1566,11 +1623,36 @@ Private Sub cmdMapaSeguro_Click()
     
 End Sub
 
+Private Sub cmdmas_Click()
+    tmpUser = "yo"
+       
+    txtCasco.Text = txtCasco.Text + 1
+    
+    tmp = txtCasco.Text
+    
+
+    Call ParseUserCommand("/MOD " & tmpUser & " Casco " & tmp)
+    
+    Call frmPanelgm.txtMod.SetFocus
+End Sub
+
 Private Sub cmdMatarNPC_Click()
 
 Call ParseUserCommand("/MATA")
     Call frmPanelgm.txtMod.SetFocus
 
+End Sub
+
+Private Sub cmdmenos_Click()
+    tmpUser = "yo"
+       
+    txtCasco.Text = txtCasco.Text - 1
+    
+    tmp = txtCasco.Text
+
+    Call ParseUserCommand("/MOD " & tmpUser & " Casco " & tmp)
+    
+    Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdModIntervalo_Click()

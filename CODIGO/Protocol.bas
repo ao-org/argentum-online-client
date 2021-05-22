@@ -606,7 +606,7 @@ Public Function HandleIncomingData() As Boolean
 
     PacketID = CLng(incomingData.ReadID())
 
-    InBytes = InBytes + incomingData.length
+    InBytes = InBytes + incomingData.Length
 
     Select Case PacketID
 
@@ -1163,7 +1163,7 @@ Public Function HandleIncomingData() As Boolean
     
         Call .ReadNewPacket
     
-        If (Not .BufferOver Or .length > 0) And .errNumber = 0 Then    'Done with this packet, move on to next one
+        If (Not .BufferOver Or .Length > 0) And .errNumber = 0 Then    'Done with this packet, move on to next one
             Err.Clear
             HandleIncomingData = True
         
@@ -2147,7 +2147,7 @@ Private Sub HandleCharSwing()
 
         End If
         
-        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y)) ' Swing
+        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y)) ' Swing
         
         If ShowFX Then Call SetCharacterFx(charindex, 90, 0)
 
@@ -2337,7 +2337,7 @@ Private Sub HandleUpdateDM()
     
     On Error GoTo HandleUpdateDM_Err
  
-    Dim Value As Integer
+    Dim value As Integer
 
     value = incomingData.ReadInteger
 
@@ -2355,7 +2355,7 @@ Private Sub HandleUpdateRM()
     
     On Error GoTo HandleUpdateRM_Err
  
-    Dim Value As Integer
+    Dim value As Integer
 
     value = incomingData.ReadInteger
 
@@ -2709,7 +2709,7 @@ Private Sub HandlePosUpdate()
 
     'Set char
     MapData(UserPos.x, UserPos.y).charindex = UserCharIndex
-    charlist(UserCharIndex).Pos = UserPos
+    charlist(UserCharIndex).pos = UserPos
         
     'Are we under a roof?
     bTecho = HayTecho(UserPos.x, UserPos.y)
@@ -2837,13 +2837,13 @@ Private Sub HandleUserHittedByUser()
     
     intt = incomingData.ReadInteger()
     
-    Dim Pos As String
+    Dim pos As String
 
-    Pos = InStr(charlist(intt).nombre, "<")
+    pos = InStr(charlist(intt).nombre, "<")
     
-    If Pos = 0 Then Pos = Len(charlist(intt).nombre) + 2
+    If pos = 0 Then pos = Len(charlist(intt).nombre) + 2
     
-    attacker = Left$(charlist(intt).nombre, Pos - 2)
+    attacker = Left$(charlist(intt).nombre, pos - 2)
     
     Dim Lugar As Byte
     Lugar = incomingData.ReadByte
@@ -2900,13 +2900,13 @@ Private Sub HandleUserHittedUser()
     intt = incomingData.ReadInteger()
     'attacker = charlist().Nombre
     
-    Dim Pos As String
+    Dim pos As String
 
-    Pos = InStr(charlist(intt).nombre, "<")
+    pos = InStr(charlist(intt).nombre, "<")
     
-    If Pos = 0 Then Pos = Len(charlist(intt).nombre) + 2
+    If pos = 0 Then pos = Len(charlist(intt).nombre) + 2
     
-    victim = Left$(charlist(intt).nombre, Pos - 2)
+    victim = Left$(charlist(intt).nombre, pos - 2)
     
     Dim Lugar As Byte
     Lugar = incomingData.ReadByte()
@@ -3154,8 +3154,8 @@ Private Sub HandleTextCharDrop()
     Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
     
     With charlist(charindex)
-        x = .Pos.x
-        y = .Pos.y
+        x = .pos.x
+        y = .pos.y
         
         OffsetX = .MoveOffsetX + .Body.HeadOffset.x
         OffsetY = .MoveOffsetY + .Body.HeadOffset.y
@@ -3283,13 +3283,13 @@ Private Sub HandleConsoleMessage()
         
         Case "ID"
 
-            Dim id    As Integer
+            Dim ID    As Integer
             Dim extra As String
 
-            id = ReadField(2, chat, Asc("*"))
+            ID = ReadField(2, chat, Asc("*"))
             extra = ReadField(3, chat, Asc("*"))
                 
-            chat = Locale_Parse_ServerMessage(id, extra)
+            chat = Locale_Parse_ServerMessage(ID, extra)
            
     End Select
     
@@ -3377,13 +3377,13 @@ Private Sub HandleLocaleMsg()
 
     Dim Valor     As String
 
-    Dim id        As Integer
+    Dim ID        As Integer
 
-    id = incomingData.ReadInteger()
+    ID = incomingData.ReadInteger()
     chat = incomingData.ReadASCIIString()
     fontIndex = incomingData.ReadByte()
 
-    chat = Locale_Parse_ServerMessage(id, chat)
+    chat = Locale_Parse_ServerMessage(ID, chat)
     
     If InStr(1, chat, "~") Then
         str = ReadField(2, chat, 126)
@@ -3667,7 +3667,7 @@ Private Sub HandleUserCharIndexInServer()
     '***************************************************
     
     UserCharIndex = incomingData.ReadInteger()
-    UserPos = charlist(UserCharIndex).Pos
+    UserPos = charlist(UserCharIndex).pos
     
     'Are we under a roof?
     bTecho = HayTecho(UserPos.x, UserPos.y)
@@ -3755,14 +3755,14 @@ Private Sub HandleCharacterCreate()
         Dim NombreYClan As String
         NombreYClan = incomingData.ReadASCIIString()
         
-        Dim Pos As Integer
-        Pos = InStr(NombreYClan, "<")
+        Dim pos As Integer
+        pos = InStr(NombreYClan, "<")
 
-        If Pos = 0 Then Pos = InStr(NombreYClan, "[")
-        If Pos = 0 Then Pos = Len(NombreYClan) + 2
+        If pos = 0 Then pos = InStr(NombreYClan, "[")
+        If pos = 0 Then pos = Len(NombreYClan) + 2
         
-        .nombre = Left$(NombreYClan, Pos - 2)
-        .clan = mid$(NombreYClan, Pos)
+        .nombre = Left$(NombreYClan, pos - 2)
+        .clan = mid$(NombreYClan, pos)
         
         .status = incomingData.ReadByte()
         
@@ -3795,10 +3795,10 @@ Private Sub HandleCharacterCreate()
         .Idle = incomingData.ReadBoolean()
         .Navegando = incomingData.ReadBoolean()
         
-        If (.Pos.x <> 0 And .Pos.y <> 0) Then
-            If MapData(.Pos.x, .Pos.y).charindex = charindex Then
+        If (.pos.x <> 0 And .pos.y <> 0) Then
+            If MapData(.pos.x, .pos.y).charindex = charindex Then
                 'Erase the old character from map
-                MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+                MapData(charlist(charindex).pos.x, charlist(charindex).pos.y).charindex = 0
 
             End If
 
@@ -4087,7 +4087,7 @@ Private Sub HandleObjectCreate()
 
     Dim Rango    As Byte
 
-    Dim id       As Long
+    Dim ID       As Long
     
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
@@ -4111,8 +4111,8 @@ Private Sub HandleObjectCreate()
         MapData(x, y).luz.Rango = Rango
         
         If Rango < 100 Then
-            id = x & y
-            LucesCuadradas.Light_Create x, y, Color, Rango, id
+            ID = x & y
+            LucesCuadradas.Light_Create x, y, Color, Rango, ID
             LucesCuadradas.Light_Render_All
         Else
             LucesRedondas.Create_Light_To_Map x, y, Color, Rango - 99
@@ -4183,14 +4183,14 @@ Private Sub HandleObjectDelete()
 
     Dim y  As Byte
 
-    Dim id As Long
+    Dim ID As Long
     
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
     
     If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
-        id = LucesCuadradas.Light_Find(x & y)
-        LucesCuadradas.Light_Remove id
+        ID = LucesCuadradas.Light_Find(x & y)
+        LucesCuadradas.Light_Remove ID
         MapData(x, y).luz.Color = COLOR_EMPTY
         MapData(x, y).luz.Rango = 0
         LucesCuadradas.Light_Render_All
@@ -4611,7 +4611,7 @@ Private Sub HandleRainToggle()
     
     On Error GoTo HandleRainToggle_Err
     
-    If Not InMapBounds(UserPos.X, UserPos.Y) Then Exit Sub
+    If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
             
     If bRain Then
         If MapDat.LLUVIA Then
@@ -6666,16 +6666,15 @@ Private Sub HandleCharacterInfo()
         End If
     
         If incomingData.ReadByte() = 1 Then
-            .nombre.Caption = "Nombre: " & incomingData.ReadASCIIString()
-            .Raza.Caption = "Raza: " & ListaRazas(incomingData.ReadByte())
-            .Clase.Caption = "Clase: " & ListaClases(incomingData.ReadByte())
-            
             .Genero.Caption = "Genero: Hombre"
         Else
             .Genero.Caption = "Genero: Mujer"
-    
         End If
             
+        .nombre.Caption = "Nombre: " & incomingData.ReadASCIIString()
+        .Raza.Caption = "Raza: " & ListaRazas(incomingData.ReadByte())
+        .Clase.Caption = "Clase: " & ListaClases(incomingData.ReadByte())
+
         .nivel.Caption = "Nivel: " & incomingData.ReadByte()
         .oro.Caption = "Oro: " & incomingData.ReadLong()
         .Banco.Caption = "Banco: " & incomingData.ReadLong()
@@ -6744,7 +6743,7 @@ Private Sub HandleGuildLeaderInfo()
         
         'Get list of guild's members
         List = Split(incomingData.ReadASCIIString(), SEPARATOR)
-        .Miembros.Caption = CStr(UBound(List()) + 1)
+        .miembros.Caption = CStr(UBound(List()) + 1)
         
         'Empty the list
         Call .members.Clear
@@ -7153,7 +7152,7 @@ Private Sub HandleShowGMPanelForm()
     
     frmPanelgm.txtHeadNumero = incomingData.ReadInteger
     frmPanelgm.txtBodyYo = incomingData.ReadInteger
-    
+    frmPanelgm.txtCasco = incomingData.ReadInteger
     frmPanelgm.Show vbModeless, frmMain
     
     Exit Sub
@@ -7276,14 +7275,14 @@ Private Sub HandleUpdateTagAndStatus()
     status = incomingData.ReadByte()
     NombreYClan = incomingData.ReadASCIIString()
         
-    Dim Pos As Integer
-    Pos = InStr(NombreYClan, "<")
+    Dim pos As Integer
+    pos = InStr(NombreYClan, "<")
 
-    If Pos = 0 Then Pos = InStr(NombreYClan, "[")
-    If Pos = 0 Then Pos = Len(NombreYClan) + 2
+    If pos = 0 Then pos = InStr(NombreYClan, "[")
+    If pos = 0 Then pos = Len(NombreYClan) + 2
     
-    charlist(charindex).nombre = Left$(NombreYClan, Pos - 2)
-    charlist(charindex).clan = mid$(NombreYClan, Pos)
+    charlist(charindex).nombre = Left$(NombreYClan, pos - 2)
+    charlist(charindex).clan = mid$(NombreYClan, pos)
     
     group_index = incomingData.ReadInteger()
     
@@ -7318,9 +7317,9 @@ Public Sub FlushBuffer()
 
     With outgoingData
 
-        If .length = 0 Then Exit Sub
+        If .Length = 0 Then Exit Sub
 
-        OutBytes = OutBytes + .length
+        OutBytes = OutBytes + .Length
 
         Call SendData(.ReadAll)
 
@@ -7350,9 +7349,9 @@ Private Sub SendData(ByRef sdData() As Byte)
 
         Dim DATA() As Byte
         DATA = StrConv(sdData, vbFromUnicode)
-        Call Security.NAC_E_Byte(Data, Security.Redundance)
+        Call Security.NAC_E_Byte(DATA, Security.Redundance)
         
-        sdData = StrConv(Data, vbUnicode)
+        sdData = StrConv(DATA, vbUnicode)
 
     #End If
  
@@ -7517,7 +7516,7 @@ Private Sub HandleParticleFXToFloor()
     '
     '***************************************************
     
-    Dim X              As Byte
+    Dim x              As Byte
 
     Dim y              As Byte
 
@@ -7591,7 +7590,7 @@ Private Sub HandleLightToFloor()
     
     Call Long_2_RGBA(color_value, Color)
 
-    Dim id  As Long
+    Dim ID  As Long
 
     Dim id2 As Long
 
@@ -7604,8 +7603,8 @@ Private Sub HandleLightToFloor()
             LucesRedondas.LightRenderAll
             Exit Sub
         Else
-            id = LucesCuadradas.Light_Find(x & y)
-            LucesCuadradas.Light_Remove id
+            ID = LucesCuadradas.Light_Find(x & y)
+            LucesCuadradas.Light_Remove ID
             MapData(x, y).luz.Color = COLOR_EMPTY
             MapData(x, y).luz.Rango = 0
             LucesCuadradas.Light_Render_All
@@ -7619,8 +7618,8 @@ Private Sub HandleLightToFloor()
     MapData(x, y).luz.Rango = Rango
     
     If Rango < 100 Then
-        id = x & y
-        LucesCuadradas.Light_Create x, y, color_value, Rango, id
+        ID = x & y
+        LucesCuadradas.Light_Create x, y, color_value, Rango, ID
         LucesRedondas.LightRenderAll
         LucesCuadradas.Light_Render_All
     Else
@@ -7874,7 +7873,7 @@ Private Sub HandleNieveToggle()
     
     On Error GoTo HandleNieveToggle_Err
     
-    If Not InMapBounds(UserPos.X, UserPos.Y) Then Exit Sub
+    If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
             
     If MapDat.NIEVE Then
         Engine_MeteoParticle_Set (Particula_Nieve)
@@ -8994,18 +8993,18 @@ Private Sub HandleRequestScreenShot()
 
     With incomingData
         
-        Dim Data As String
-        Data = GetScreenShotSerialized
+        Dim DATA As String
+        DATA = GetScreenShotSerialized
         
-        If Right$(Data, 4) <> "ERROR" Then
-            Data = Data & "~~~"
+        If Right$(DATA, 4) <> "ERROR" Then
+            DATA = DATA & "~~~"
 
         End If
         
         Dim offset As Long
 
-        For offset = 1 To Len(Data) Step 10000
-            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
+        For offset = 1 To Len(DATA) Step 10000
+            Call WriteSendScreenShot(mid$(DATA, offset, Min(Len(DATA) - offset + 1, 10000)))
         Next
     
     End With
@@ -9016,10 +9015,10 @@ Private Sub HandleShowProcesses()
     
     On Error GoTo errhandler
     
-    Dim Data As String
-    Data = incomingData.ReadASCIIString
+    Dim DATA As String
+    DATA = incomingData.ReadASCIIString
     
-    Call frmProcesses.ShowProcesses(Data)
+    Call frmProcesses.ShowProcesses(DATA)
     
     Exit Sub
 
@@ -9052,10 +9051,10 @@ Private Sub HandleScreenShotData()
 
     On Error GoTo errhandler
 
-    Dim Data As String
-    Data = incomingData.ReadASCIIString
+    Dim DATA As String
+    DATA = incomingData.ReadASCIIString
 
-    Call frmScreenshots.AddData(Data)
+    Call frmScreenshots.AddData(DATA)
 
     Exit Sub
 
