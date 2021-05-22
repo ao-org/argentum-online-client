@@ -33,6 +33,11 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.Timer Second 
+      Interval        =   1000
+      Left            =   7440
+      Top             =   2400
+   End
    Begin VB.Timer Evento 
       Enabled         =   0   'False
       Interval        =   10000
@@ -380,7 +385,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2044,7 +2048,9 @@ Form_Activate_Err:
     Resume Next
     
 End Sub
-
+Private Sub Second_Timer()
+    If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
+End Sub
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo Form_KeyUp_Err
@@ -4963,31 +4969,6 @@ picInv_DblClick_Err:
     
 End Sub
 
-Private Sub RecTxt_Change()
-    
-    On Error GoTo RecTxt_Change_Err
-    
-    Exit Sub
-
-      'el .SetFocus causaba errores al salir y volver a entrar
-
-    If Not Application.IsAppActive() Then Exit Sub
-    
-    If SendTxt.Visible Then
-        SendTxt.SetFocus
-    ElseIf (Not frmComerciar.Visible) And (Not frmComerciarUsu.Visible) And (Not frmBancoObj.Visible) And (Not frmPanelgm.Visible) And (Not frmEstadisticas.Visible) And (Not frmCantidad.Visible) And (picInv.Visible) And (Not frmGoliath.Visible) And (Not FrmGmAyuda.Visible) Then
-        picInv.SetFocus
-
-    End If
-
-    
-    Exit Sub
-
-RecTxt_Change_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.RecTxt_Change", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     

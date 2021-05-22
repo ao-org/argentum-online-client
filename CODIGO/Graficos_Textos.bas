@@ -1047,6 +1047,115 @@ Engine_Text_Render_Err:
     
 End Sub
 
+Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+    
+    On Error GoTo Engine_Text_Render_Err
+    
+
+    
+
+    Dim A, B, c, d, e, f As Integer
+
+    Dim graf          As grh
+
+    Dim temp_array(3) As RGBA
+
+    If charindex = 0 Then
+        A = 255
+    Else
+        A = Clamp(charlist(charindex).AlphaText, 0, 255)
+    End If
+
+    If Alpha <> 255 Then
+        A = Alpha
+    End If
+    
+    Call RGBAList(temp_array, text_color(0).r, text_color(0).G, text_color(0).B, A)
+
+    Dim i              As Long
+
+    Dim removedDialogs As Long
+
+    For i = 0 To dialogCount - 1
+
+        'Decrease index to prevent jumping over a dialog
+        'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
+        With dialogs(i - removedDialogs)
+
+            If FrameTime - .startTime >= .lifeTime Then
+                Call Char_Dialog_Remove(.charindex, charindex)
+                             
+                If A <= 0 Then
+                    removedDialogs = removedDialogs + 1
+
+                End If
+
+            Else
+            
+            End If
+
+        End With
+
+    Next i
+
+    Dim Sombra(3) As RGBA 'Sombra
+    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
+
+    If (Len(Texto) = 0) Then Exit Sub
+
+    d = 0
+
+        e = 0
+        f = 0
+
+        For A = 1 To Len(Texto)
+            B = Asc(mid(Texto, A, 1))
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
+
+            If B = 32 Or B = 13 Then
+                If e >= 500 Then 'reemplazar por lo que os plazca
+                    f = f + 1
+                    e = 0
+                    d = 0
+                Else
+
+                    If B = 32 Then d = d + 4
+
+                End If
+
+            Else
+
+                If graf.GrhIndex > 12 Then
+
+                    'mega sombra O-matica
+                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
+
+                    If font_index <> 3 Then
+                        Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
+
+                    End If
+
+                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+                
+                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
+                    ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
+                    d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
+
+                End If
+
+            End If
+
+            e = e + 1
+        Next A
+
+    
+    Exit Sub
+
+Engine_Text_Render_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
+    Resume Next
+    
+End Sub
 Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
     
     On Error GoTo Engine_Text_RenderGrande_Err
@@ -1689,7 +1798,6 @@ Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long
         Call Text_Render(font_list(font), Text, Top, Left, Width, Height, Color, DT_VCENTER & DT_CENTER, Shadow)
     Else
         Call Text_Render(font_list(font), Text, Top, Left, Width, Height, Color, DT_TOP Or DT_LEFT, Shadow)
-
     End If
 
     

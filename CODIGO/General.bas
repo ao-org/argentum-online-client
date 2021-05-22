@@ -1113,7 +1113,6 @@ Sub Main()
     
     'Inicializamos el motor grafico.
     Call Engine_Init
-    
     'Inicializamos el inventario
     Call InitializeInventory
     
@@ -1137,6 +1136,7 @@ Sub Main()
     
     'Set the dialog's font
     Dialogos.font = frmMain.font
+    DialogosClanes.font = frmMain.font
     
     ' Load the form for screenshots
     Call Load(frmScreenshots)
@@ -1455,9 +1455,8 @@ Public Sub CleanDialogs()
     
     On Error GoTo CleanDialogs_Err
     
-    
+    Call DialogosClanes.RemoveDialogs
     Call Dialogos.RemoveAllDialogs
-
     
     Exit Sub
 
@@ -1503,6 +1502,7 @@ Public Sub CloseClient()
     Set CustomKeys = Nothing
     Set SurfaceDB = Nothing
     Set Dialogos = Nothing
+    Set DialogosClanes = Nothing
     ' Set Audio = Nothing
     Set MainTimer = Nothing
     Set incomingData = Nothing

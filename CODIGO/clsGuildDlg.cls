@@ -13,43 +13,24 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Const p_SEGUNDOS = 7
+Private Const p_SEGUNDOS = 10
 
-Private p_CANTIDADDIALOGOS As Byte
+Private Const p_CANTIDADDIALOGOS As Byte = 7
 
 Private Type t_GuildDlg
 
     Texto As String
-    Segundos As Byte
 
 End Type
 
+Private Segundos As Byte
 Private p_Dialogos() As t_GuildDlg
-
+Private offset       As Single
 Private p_Activo     As Boolean
-
 Private usedFont     As StdFont
+Private Alpha        As Single
+Private Const DIALOG_HEIGHT As Integer = 10
 
-Public Property Let CantidadDialogos(ByVal v As Byte)
-    
-    On Error GoTo CantidadDialogos_Err
-    
-
-    If v > 0 Then
-        ReDim Preserve p_Dialogos(1 To v) As t_GuildDlg
-
-    End If
-
-    p_CANTIDADDIALOGOS = v
-
-    
-    Exit Property
-
-CantidadDialogos_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.CantidadDialogos", Erl)
-    Resume Next
-    
-End Property
 
 ''
 ' Removes all dialogs from screen.
@@ -138,7 +119,6 @@ Private Sub Class_Initialize()
     
     On Error GoTo Class_Initialize_Err
     
-    p_CANTIDADDIALOGOS = 5
     ReDim p_Dialogos(1 To p_CANTIDADDIALOGOS) As t_GuildDlg
     p_Activo = True
 
@@ -154,28 +134,50 @@ End Sub
 Public Sub Draw()
     
     On Error GoTo Draw_Err
+
+    Dim i As Long
+    Dim y As Integer
     
 
-    Dim i As Byte
-
-    Dim y As Long
-
     If Not p_Activo Then Exit Sub
-
+    
+    Dim Color(3) As RGBA
+    Call RGBAList(Color, 222, 194, 112)
+    
+    Dim dY As Single
+    Dim alphaOffset As Integer
+    alphaOffset = DIALOG_HEIGHT * (p_CANTIDADDIALOGOS - 3)
+    
     For i = 1 To p_CANTIDADDIALOGOS
-
+            
         If Trim$(p_Dialogos(i).Texto) <> vbNullString Then
-            If Left$(p_Dialogos(i).Texto, 1) = Chr(3) Then
-                Call Text_Render_ext(mid(p_Dialogos(i).Texto, 2), i * 10, 5, 400, 12, &HFF00FF00)
+            dY = (DIALOG_HEIGHT * i - offset - alphaOffset) / alphaOffset
+            y = frmMain.renderer.ScaleHeight - 6 - DIALOG_HEIGHT * i + offset
+            If dY < 0 Then
+                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5, y, Color, 1, False, 0, Alpha)
             Else
-                Call Text_Render_ext(p_Dialogos(i).Texto, i * 10, 5, 400, 12, &HFFFFFF00)
-
+                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5, y, Color, 1, False, 0, Alpha * (1 - dY))
             End If
-
         End If
 
     Next i
-
+    
+    If Segundos <= 0 Then
+        If Alpha > 0 Then
+            Alpha = Alpha - timerTicksPerFrame * 20
+            If Alpha < 0 Then Alpha = 0
+        Else
+            RemoveDialogs
+        End If
+    End If
+    
+    If offset > 0 Then
+        offset = offset - timerTicksPerFrame * 2
+        If offset <= 0 Then
+            offset = 0
+        End If
+    End If
+    
     
     Exit Sub
 
@@ -190,20 +192,12 @@ Public Sub PassTimer()
     On Error GoTo PassTimer_Err
     
 
-    Dim i As Byte
+    If Not p_Activo Then Exit Sub
 
-    For i = 1 To p_CANTIDADDIALOGOS
-
-        If p_Dialogos(i).Segundos > 0 Then
-            p_Dialogos(i).Segundos = p_Dialogos(i).Segundos - 1
-        Else
-            p_Dialogos(i).Texto = vbNullString
-
-        End If
-
-    Next i
-    
-    
+    If Segundos > 0 Then
+        Segundos = Segundos - 1
+    End If
+        
     Exit Sub
 
 PassTimer_Err:
@@ -231,12 +225,12 @@ Public Sub PushBackText(ByVal s As String)
     
     str = s
     
-    ' If it's too long to fit, split it
-    Do While frmMain.textwidth(str) > 500
+     'If it's too long to fit, split it
+    Do While Engine_Text_Width(str) > frmMain.renderer.ScaleWidth - 20
         tmp = InStrRev(str, " ")
-        
+    
         If tmp = 0 Then Exit Do
-        
+    
         str = Left$(str, tmp - 1)
     Loop
     
@@ -260,43 +254,17 @@ End Sub
 Private Sub RealPushBackText(ByVal s As String)
     
     On Error GoTo RealPushBackText_Err
+
+    Dim i     As Integer
+
+    For i = (p_CANTIDADDIALOGOS - 1) To 1 Step -1
+        p_Dialogos(i + 1) = p_Dialogos(i)
+    Next i
     
-
-    Dim i     As Byte
-
-    Dim Vacio As Boolean
-
-    If p_CANTIDADDIALOGOS > 0 Then
-        i = p_CANTIDADDIALOGOS
-        Vacio = True
-
-        While i > 0 And Vacio
-
-            Vacio = p_Dialogos(i).Texto = vbNullString
-
-            If Vacio Then i = i - 1
-        Wend
-
-        If i = p_CANTIDADDIALOGOS Then
-            'hay q scrollear, estamos llenos
-            i = 1
-
-            While i < p_CANTIDADDIALOGOS
-
-                p_Dialogos(i) = p_Dialogos(i + 1)
-                i = i + 1
-            Wend
-            p_Dialogos(i).Texto = s
-            p_Dialogos(i).Segundos = p_SEGUNDOS
-        Else
-            p_Dialogos(i + 1).Texto = s
-            p_Dialogos(i + 1).Segundos = p_SEGUNDOS
-
-        End If
-
-    End If
-
-    
+    p_Dialogos(1).Texto = s
+    Segundos = p_SEGUNDOS
+    offset = DIALOG_HEIGHT
+    Alpha = 255
     Exit Sub
 
 RealPushBackText_Err:

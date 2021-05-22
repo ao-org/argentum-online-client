@@ -3461,43 +3461,42 @@ Private Sub HandleGuildChat()
     
     chat = incomingData.ReadASCIIString()
     
-    Rem If Not DialogosClanes.Activo Then
-    If InStr(1, chat, "~") Then
-        str = ReadField(2, chat, 126)
-
-        If Val(str) > 255 Then
-            r = 255
+    If Not DialogosClanes.Activo Then
+        If InStr(1, chat, "~") Then
+            str = ReadField(2, chat, 126)
+    
+            If Val(str) > 255 Then
+                r = 255
+            Else
+                r = Val(str)
+    
+            End If
+                
+            str = ReadField(3, chat, 126)
+    
+            If Val(str) > 255 Then
+                G = 255
+            Else
+                G = Val(str)
+    
+            End If
+                
+            str = ReadField(4, chat, 126)
+    
+            If Val(str) > 255 Then
+                B = 255
+            Else
+                B = Val(str)
+            End If
+                
+            Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
         Else
-            r = Val(str)
-
+            With FontTypes(FontTypeNames.FONTTYPE_GUILDMSG)
+                Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
+            End With
         End If
-            
-        str = ReadField(3, chat, 126)
-
-        If Val(str) > 255 Then
-            G = 255
-        Else
-            G = Val(str)
-
-        End If
-            
-        str = ReadField(4, chat, 126)
-
-        If Val(str) > 255 Then
-            B = 255
-        Else
-            B = Val(str)
-
-        End If
-            
-        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
     Else
-
-        With FontTypes(FontTypeNames.FONTTYPE_GUILDMSG)
-            Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
-
-        End With
-
+        Call DialogosClanes.PushBackText(ReadField(1, chat, 126))
     End If
     
     Exit Sub

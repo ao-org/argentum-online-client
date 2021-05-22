@@ -979,7 +979,8 @@ Sub ShowNextFrame()
     Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
     
     Call RenderScreen(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY, HalfWindowTileWidth, HalfWindowTileHeight)
-
+    
+    Call DialogosClanes.Draw
     
     Exit Sub
 

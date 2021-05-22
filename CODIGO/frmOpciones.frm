@@ -122,54 +122,6 @@ Begin VB.Form frmOpciones
       Top             =   10440
       Width           =   1335
    End
-   Begin VB.PictureBox PanelVideo 
-      BorderStyle     =   0  'None
-      Height          =   4845
-      Left            =   240
-      ScaleHeight     =   323
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   504
-      TabIndex        =   14
-      Top             =   1800
-      Visible         =   0   'False
-      Width           =   7560
-      Begin VB.Image chkItemsEnRender 
-         Height          =   255
-         Left            =   270
-         Top             =   2715
-         Width           =   255
-      End
-      Begin VB.Image Fullscreen 
-         Height          =   255
-         Left            =   270
-         Top             =   2310
-         Width           =   255
-      End
-      Begin VB.Image Respiracion 
-         Height          =   255
-         Left            =   270
-         Top             =   1905
-         Width           =   255
-      End
-      Begin VB.Image VSync 
-         Height          =   255
-         Left            =   270
-         Top             =   1500
-         Width           =   255
-      End
-      Begin VB.Image Check5 
-         Height          =   255
-         Left            =   270
-         Top             =   1095
-         Width           =   255
-      End
-      Begin VB.Image Check6 
-         Height          =   255
-         Left            =   270
-         Top             =   690
-         Width           =   255
-      End
-   End
    Begin VB.PictureBox PanelJugabilidad 
       BorderStyle     =   0  'None
       Height          =   4845
@@ -306,6 +258,54 @@ Begin VB.Form frmOpciones
          Index           =   1
          Left            =   255
          Top             =   1095
+         Width           =   255
+      End
+   End
+   Begin VB.PictureBox PanelVideo 
+      BorderStyle     =   0  'None
+      Height          =   4845
+      Left            =   240
+      ScaleHeight     =   323
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   504
+      TabIndex        =   14
+      Top             =   1800
+      Visible         =   0   'False
+      Width           =   7560
+      Begin VB.Image chkItemsEnRender 
+         Height          =   255
+         Left            =   270
+         Top             =   2715
+         Width           =   255
+      End
+      Begin VB.Image Fullscreen 
+         Height          =   255
+         Left            =   270
+         Top             =   2310
+         Width           =   255
+      End
+      Begin VB.Image Respiracion 
+         Height          =   255
+         Left            =   270
+         Top             =   1905
+         Width           =   255
+      End
+      Begin VB.Image VSync 
+         Height          =   255
+         Left            =   270
+         Top             =   1500
+         Width           =   255
+      End
+      Begin VB.Image Check5 
+         Height          =   255
+         Left            =   270
+         Top             =   1095
+         Width           =   255
+      End
+      Begin VB.Image Check6 
+         Height          =   255
+         Left            =   270
+         Top             =   690
          Width           =   255
       End
    End
@@ -1088,6 +1088,7 @@ Form_KeyPress_Err:
     
 End Sub
 
+
 Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
@@ -1422,7 +1423,6 @@ Public Sub Init()
     Call cbBloqueoHechizos.AddItem("Bloqueo al lanzar")
     Call cbBloqueoHechizos.AddItem("Sin bloqueo")
     cbBloqueoHechizos.ListIndex = ModoHechizos
-    
     scrSens.Value = SensibilidadMouse
     
     Me.Show vbModeless, frmMain

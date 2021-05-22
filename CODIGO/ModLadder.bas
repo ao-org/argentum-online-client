@@ -1378,6 +1378,7 @@ End Function
 Sub CargarOpciones()
 
     On Error GoTo ErrorHandler
+    Set DialogosClanes = New clsGuildDlg
     
     If FileExist(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", vbArchive) Then
         Call LoadImpAoInit
@@ -1424,7 +1425,7 @@ Sub CargarOpciones()
     AlphaMacro = ConfigFile.GetValue("OPCIONES", "AlphaMacro")
     ModoHechizos = Val(ConfigFile.GetValue("OPCIONES", "ModoHechizos"))
     MostrarEscribiendo = Val(ConfigFile.GetValue("OPCIONES", "MostrarEscribiendo"))
-    
+    DialogosClanes.Activo = Val(ConfigFile.GetValue("OPCIONES", "DialogosClanes"))
     'Init
     ServerIndex = Val(ConfigFile.GetValue("INIT", "ServerIndex"))
 
@@ -1438,6 +1439,7 @@ Sub CargarOpciones()
     
     Call General_Set_Mouse_Speed(SensibilidadMouse)
     
+    'Dialogos clanes
     Exit Sub
     
 ErrorHandler:
@@ -1486,6 +1488,7 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "OPCIONES", "OcultarMacrosAlCastear", OcultarMacrosAlCastear)
     
     Call WriteVar(Arch, "OPCIONES", "SensibilidadMouse", SensibilidadMouse)
+    Call WriteVar(Arch, "OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
 
     
     Exit Sub
@@ -1561,10 +1564,8 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
         If LenB(.nombre) <> 0 And LenB(ChatText) > 0 Then
             Call AddtoRichTextBox2(frmMain.RecTxt, "[" & Name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
             Call AddtoRichTextBox2(frmMain.RecTxt, ChatText, red, green, blue, False, False, False, rtfLeft)
-
         End If
 
-        Dim i As Byte
 
     End With
     
