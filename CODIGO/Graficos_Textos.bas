@@ -1114,6 +1114,7 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
+            If B = 1 Then separador = Not separador
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
@@ -1122,7 +1123,6 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
                     If font_index <> 3 Then
                         Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + 10, Sombra())
                     End If
-                    If B = 1 Then separador = Not separador
                     
                     If separador Then
                         Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color1)
