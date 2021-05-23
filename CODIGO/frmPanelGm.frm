@@ -2891,6 +2891,28 @@ torneo_comenzar_Click_Err:
 End Sub
 
 
+Private Sub txtArma_Change()
+    Call ParseUserCommand("/MOD YO" & " Arma " & txtArma.Text)
+End Sub
+
+Private Sub txtBodyYo_Change()
+    Call ParseUserCommand("/MOD YO" & " Body " & txtBodyYo.Text)
+End Sub
+
+Private Sub txtCasco_Change()
+Call ParseUserCommand("/MOD YO" & " Casco " & txtCasco.Text)
+End Sub
+
+Private Sub txtEscudo_Change()
+
+ Call ParseUserCommand("/MOD YO" & " Escudo " & txtEscudo.Text)
+ 
+End Sub
+
+Private Sub txtHeadNumero_Change()
+    Call ParseUserCommand("/MOD YO" & " Head " & txtHeadNumero.Text)
+End Sub
+
 Private Sub txtMod_KeyPress(KeyAscii As Integer)
 
     If KeyAscii = vbKeyReturn Then
