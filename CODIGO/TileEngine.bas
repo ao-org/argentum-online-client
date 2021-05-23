@@ -802,7 +802,7 @@ Public Function NearRoof(ByVal x As Integer, ByVal y As Integer) As eTrigger
         For lX = x - 1 To x + 1
             If lX >= XMinMapSize And lX <= XMaxMapSize Then
                 If lY >= YMinMapSize And lY <= YMaxMapSize Then
-                    If MapData(lX, lY).Trigger >= PRIMER_TRIGGER_TECHO Then
+                    If HayTecho(lX, lY) Then
                         NearRoof = MapData(lX, lY).Trigger
                         Exit Function
                     End If
@@ -822,9 +822,11 @@ End Function
 Public Function HayTecho(ByVal x As Integer, ByVal y As Integer) As Boolean
     
     On Error GoTo HayTecho_Err
-    
-    HayTecho = MapData(x, y).Trigger >= PRIMER_TRIGGER_TECHO
-    
+
+    With MapData(x, y)
+        HayTecho = .Trigger >= PRIMER_TRIGGER_TECHO Or .Trigger = eTrigger.BAJOTECHO Or .Trigger = eTrigger.ZONASEGURA
+    End With
+
     Exit Function
 
 HayTecho_Err:
