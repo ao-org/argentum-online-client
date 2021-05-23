@@ -20,6 +20,7 @@ Public Sub Engine_Font_Initialize()
     Dim A As Integer
 
     Fuentes(1).Tamanio = 9
+    Fuentes(1).Caracteres(32) = 21494
     Fuentes(1).Caracteres(48) = 21452
     Fuentes(1).Caracteres(49) = 21453
     Fuentes(1).Caracteres(50) = 21454
@@ -1054,11 +1055,12 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
 
     
 
-    Dim A, B, c, d, e, f As Integer
+    Dim A As Integer, B As Integer, c As Integer, d As Integer
 
     Dim graf          As grh
 
-    Dim temp_array(3) As RGBA
+    Dim color1(3) As RGBA
+    Dim color2(3) As RGBA
 
     If charindex = 0 Then
         A = 255
@@ -1070,8 +1072,9 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
         A = Alpha
     End If
     
-    Call RGBAList(temp_array, text_color(0).r, text_color(0).G, text_color(0).B, A)
-
+    Call RGBAList(color1, text_color(0).r, text_color(0).G, text_color(0).B, A)
+    'Call RGBAList(color2, 50, 170, 220, A)
+    Call RGBAList(color2, 255, 255, 255, A)
     Dim i              As Long
 
     Dim removedDialogs As Long
@@ -1103,49 +1106,33 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
 
     If (Len(Texto) = 0) Then Exit Sub
 
+    Dim row As Integer, charPos As Integer
     d = 0
-
-        e = 0
-        f = 0
-
+    row = 0
+    charPos = 0
+    Dim separador As Boolean
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
-            If B = 32 Or B = 13 Then
-                If e >= 500 Then 'reemplazar por lo que os plazca
-                    f = f + 1
-                    e = 0
-                    d = 0
-                Else
-
-                    If B = 32 Then d = d + 4
-
-                End If
-
-            Else
-
                 If graf.GrhIndex > 12 Then
 
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
+                    
                     If font_index <> 3 Then
-                        Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-
+                        Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + 10, Sombra())
                     End If
-
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
+                    If B = 1 Then separador = Not separador
+                    
+                    If separador Then
+                        Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color1)
+                    Else
+                        Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color2)
+                    End If
                     d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                 End If
 
-            End If
-
-            e = e + 1
+            charPos = charPos + 1
         Next A
 
     
@@ -1890,5 +1877,106 @@ Font_Check_Err:
     Resume Next
     
 End Function
+Public Function Prepare_Multiline_Text(Text As String, ByVal MaxWidth As Integer, Optional ByVal FontIndex As Integer = 1) As String()
+        
+    On Error GoTo Handler
+    
+    Dim Lines() As String
+    
+    If LenB(Text) = 0 Then
+        ReDim Lines(0)
+        Prepare_Multiline_Text = Lines
+        Exit Function
+    End If
 
+    Dim LetterIndex As Long, CurLetter As Integer, LastBreak As Long, CanBreak As Long, CurWidth As Integer, CurLine As Integer, CanBreakWidth As Integer
+
+    With Fuentes(FontIndex)
+
+        LastBreak = 1
+
+        For LetterIndex = 1 To Len(Text)
+            CurLetter = Asc(mid$(Text, LetterIndex, 1))
+
+            If CurLetter = vbKeyReturn Then
+                ReDim Preserve Lines(CurLine)
+                
+                If LetterIndex - LastBreak > 0 Then
+                    Lines(CurLine) = mid$(Text, LastBreak, LetterIndex - LastBreak)
+                End If
+
+                LastBreak = LetterIndex + 2
+                CanBreak = LastBreak
+                CurLine = CurLine + 1
+                CurWidth = 0
+            
+            Else
+                If .Caracteres(CurLetter) <> 0 Then CurWidth = CurWidth + GrhData(.Caracteres(CurLetter)).pixelWidth
+
+
+                If CurLetter = vbKeySpace Or CurLetter = vbKeyTab Then
+                    CanBreak = LetterIndex
+                    CanBreakWidth = CurWidth
+                End If
+
+                If CurWidth > MaxWidth And MaxWidth > 0 Then
+                    ReDim Preserve Lines(CurLine)
+
+                    If CanBreak - LastBreak > 0 Then
+                        Lines(CurLine) = mid$(Text, LastBreak, CanBreak - LastBreak)
+                        CurWidth = CurWidth - CanBreakWidth
+                        LastBreak = CanBreak + 1
+                    Else
+                        Lines(CurLine) = mid$(Text, LastBreak, LetterIndex - LastBreak)
+                        CurWidth = GrhData(.Caracteres(CurLetter)).pixelWidth
+                        LastBreak = LetterIndex
+                    End If
+
+                    CanBreak = LastBreak
+                    CurLine = CurLine + 1
+                End If
+            End If
+        Next
+        
+        If LetterIndex - LastBreak > 0 Then
+            ReDim Preserve Lines(CurLine)
+            Lines(CurLine) = mid$(Text, LastBreak, LetterIndex - LastBreak)
+        End If
+
+    End With
+    
+    Prepare_Multiline_Text = Lines
+    
+    Exit Function
+    
+Handler:
+    Call RegistrarError(Err.Number, Err.Description, "clsDX8Engine.Prepare_Multiline_Text", Erl)
+    
+    ReDim Lines(0)
+    Prepare_Multiline_Text = Lines
+        
+End Function
+
+Public Function Text_Width(Text As String, Optional ByVal FontIndex As Byte = 1) As Integer
+
+    On Error GoTo Handler
+    
+    Dim LetterIndex As Long, CurLetter As Integer
+
+    With Fuentes(FontIndex)
+
+        For LetterIndex = 1 To Len(Text)
+            CurLetter = Asc(mid$(Text, LetterIndex, 1))
+
+            Text_Width = Text_Width + GrhData(.Caracteres(CurLetter)).pixelWidth
+        Next
+
+    End With
+    
+    Exit Function
+
+Handler:
+    Call RegistrarError(Err.Number, Err.Description, "clsDX8Engine.Text_Width", Erl)
+
+End Function
 

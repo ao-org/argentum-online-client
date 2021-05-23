@@ -29,7 +29,7 @@ Private offset       As Single
 Private p_Activo     As Boolean
 Private usedFont     As StdFont
 Private Alpha        As Single
-Private Const DIALOG_HEIGHT As Integer = 10
+Private Const DIALOG_HEIGHT As Integer = 14
 
 
 ''
@@ -146,13 +146,15 @@ Public Sub Draw()
     
     Dim dY As Single
     Dim alphaOffset As Integer
+    Dim Texto(2) As String
     alphaOffset = DIALOG_HEIGHT * (p_CANTIDADDIALOGOS - 3)
     
+    If p_Dialogos(1).Texto <> vbNullString Then Call Engine_Draw_Box(0, frmMain.renderer.ScaleHeight - 105, 300, 105, RGBA_From_Comp(0, 0, 0, 75))
+    
     For i = 1 To p_CANTIDADDIALOGOS
-            
         If Trim$(p_Dialogos(i).Texto) <> vbNullString Then
             dY = (DIALOG_HEIGHT * i - offset - alphaOffset) / alphaOffset
-            y = frmMain.renderer.ScaleHeight - 6 - DIALOG_HEIGHT * i + offset
+            y = frmMain.renderer.ScaleHeight - 14 - DIALOG_HEIGHT * i + offset
             If dY < 0 Then
                 Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5, y, Color, 1, False, 0, Alpha)
             Else
@@ -212,37 +214,27 @@ End Sub
 Public Sub PushBackText(ByVal s As String)
     
     On Error GoTo PushBackText_Err
-    
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 04/07/08
     'Splits dialogs into lines fitting properly the render area and inserts them
     '***************************************************
-    Dim str As String
-
-    Dim tmp As Integer
+    Dim outputText() As String
+    Dim i As Long
+    Dim separatorPos As Long
+    outputText = Prepare_Multiline_Text(s, 290)
     
-    str = s
-    
-     'If it's too long to fit, split it
-    Do While Engine_Text_Width(str) > frmMain.renderer.ScaleWidth - 20
-        tmp = InStrRev(str, " ")
-    
-        If tmp = 0 Then Exit Do
-    
-        str = Left$(str, tmp - 1)
-    Loop
+    separatorPos = InStr(1, outputText(0), ">")
+    If separatorPos > 0 Then
+        outputText(0) = Chr(1) & Left(outputText(0), separatorPos) & Chr(1) & Right(outputText(0), Len(outputText(0)) - separatorPos)
+    End If
     
     'Show message and continue with the rest
-    Call RealPushBackText(str)
-    
-    If LenB(str) <> LenB(s) Then
-        Call PushBackText(Right$(s, Len(s) - tmp))
-
-    End If
-
-    
+    For i = 0 To UBound(outputText)
+        Call RealPushBackText(outputText(i))
+    Next i
+        
     Exit Sub
 
 PushBackText_Err:
@@ -320,6 +312,5 @@ Public Property Let font(ByRef nValue As StdFont)
 font_Err:
     Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.font", Erl)
     Resume Next
-    
 End Property
 
