@@ -3447,6 +3447,8 @@ Private Sub HandleGuildChat()
     
     Dim chat As String
 
+    Dim status As Byte
+
     Dim str  As String
 
     Dim r    As Byte
@@ -3458,7 +3460,7 @@ Private Sub HandleGuildChat()
     Dim tmp  As Integer
 
     Dim Cont As Integer
-    
+    status = incomingData.ReadByte()
     chat = incomingData.ReadASCIIString()
     
     If Not DialogosClanes.Activo Then
@@ -3496,7 +3498,7 @@ Private Sub HandleGuildChat()
             End With
         End If
     Else
-        Call DialogosClanes.PushBackText(ReadField(1, chat, 126))
+        Call DialogosClanes.PushBackText(ReadField(1, chat, 126), status)
     End If
     
     Exit Sub

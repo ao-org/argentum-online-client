@@ -20,7 +20,7 @@ Private Const p_CANTIDADDIALOGOS As Byte = 7
 Private Type t_GuildDlg
 
     Texto As String
-
+    status As Byte
 End Type
 
 Private Segundos As Byte
@@ -49,6 +49,7 @@ Public Sub RemoveDialogs()
     
     For i = 1 To p_CANTIDADDIALOGOS
         p_Dialogos(i).Texto = vbNullString
+        p_Dialogos(i).status = 0
     Next i
 
     
@@ -121,7 +122,6 @@ Private Sub Class_Initialize()
     
     ReDim p_Dialogos(1 To p_CANTIDADDIALOGOS) As t_GuildDlg
     p_Activo = True
-
     
     Exit Sub
 
@@ -156,9 +156,9 @@ Public Sub Draw()
             dY = (DIALOG_HEIGHT * i - offset - alphaOffset) / alphaOffset
             y = frmMain.renderer.ScaleHeight - 14 - DIALOG_HEIGHT * i + offset
             If dY < 0 Then
-                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5, y, Color, 1, False, 0, Alpha)
+                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5, y, color, p_Dialogos(i).status, 1, False, 0, Alpha)
             Else
-                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5, y, Color, 1, False, 0, Alpha * (1 - dY))
+                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5, y, color, p_Dialogos(i).status, 1, False, 0, Alpha * (1 - dy))
             End If
         End If
 
@@ -211,7 +211,7 @@ End Sub
 ''
 ' Splits dialogs into lines fitting properly the render area and inserts them
 
-Public Sub PushBackText(ByVal s As String)
+Public Sub PushBackText(ByVal s As String, ByVal status As Byte)
     
     On Error GoTo PushBackText_Err
 
@@ -223,6 +223,7 @@ Public Sub PushBackText(ByVal s As String)
     Dim outputText() As String
     Dim i As Long
     Dim separatorPos As Long
+    
     outputText = Prepare_Multiline_Text(s, 290)
     
     separatorPos = InStr(1, outputText(0), ">")
@@ -232,7 +233,7 @@ Public Sub PushBackText(ByVal s As String)
     
     'Show message and continue with the rest
     For i = 0 To UBound(outputText)
-        Call RealPushBackText(outputText(i))
+        Call RealPushBackText(outputText(i), status)
     Next i
         
     Exit Sub
@@ -243,7 +244,7 @@ PushBackText_Err:
     
 End Sub
 
-Private Sub RealPushBackText(ByVal s As String)
+Private Sub RealPushBackText(ByVal s As String, ByVal status As Byte)
     
     On Error GoTo RealPushBackText_Err
 
@@ -254,6 +255,7 @@ Private Sub RealPushBackText(ByVal s As String)
     Next i
     
     p_Dialogos(1).Texto = s
+    p_Dialogos(1).status = status
     Segundos = p_SEGUNDOS
     offset = DIALOG_HEIGHT
     Alpha = 255

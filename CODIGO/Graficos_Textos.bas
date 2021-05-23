@@ -1048,12 +1048,9 @@ Engine_Text_Render_Err:
     
 End Sub
 
-Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, ByVal status As Byte, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
     
     On Error GoTo Engine_Text_Render_Err
-    
-
-    
 
     Dim A As Integer, B As Integer, c As Integer, d As Integer
 
@@ -1072,8 +1069,26 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
         A = Alpha
     End If
     
-    Call RGBAList(color1, text_color(0).r, text_color(0).G, text_color(0).B, A)
-    'Call RGBAList(color2, 50, 170, 220, A)
+     Select Case status
+        Case 0 'criminal
+            Call RGBAList(color1, 225, 0, 0, A)
+        Case 1 'ciuda
+            Call RGBAList(color1, 0, 128, 255, A)
+        Case 2 'legión oscura
+            Call RGBAList(color1, 155, 0, 0, A)
+        Case 3 'armada real
+            Call RGBAList(color1, 0, 175, 255, A)
+        Case 7 'aviso solicitud
+            Call RGBAList(color2, 255, 255, 0, A)
+        Case 8 'aviso desconectado
+            Call RGBAList(color2, 255, 0, 0, A)
+        Case 9 'aviso conectado
+            Call RGBAList(color2, 10, 182, 70, A)
+        Case 10 'lider
+            Call RGBAList(color2, 222, 194, 112, A)
+    End Select
+    
+    
     Call RGBAList(color2, 255, 255, 255, A)
     Dim i              As Long
 
@@ -1100,6 +1115,7 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
         End With
 
     Next i
+    
 
     Dim Sombra(3) As RGBA 'Sombra
     Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
@@ -1127,6 +1143,7 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
                     If separador Then
                         Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color1)
                     Else
+                        
                         Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color2)
                     End If
                     d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
