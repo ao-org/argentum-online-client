@@ -1072,12 +1072,16 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
      Select Case status
         Case 0 'criminal
             Call RGBAList(color1, 225, 0, 0, A)
+            Call RGBAList(color2, 255, 255, 255, A)
         Case 1 'ciuda
             Call RGBAList(color1, 0, 128, 255, A)
+            Call RGBAList(color2, 255, 255, 255, A)
         Case 2 'legión oscura
             Call RGBAList(color1, 155, 0, 0, A)
+            Call RGBAList(color2, 255, 255, 255, A)
         Case 3 'armada real
             Call RGBAList(color1, 0, 175, 255, A)
+            Call RGBAList(color2, 255, 255, 255, A)
         Case 7 'aviso solicitud
             Call RGBAList(color2, 255, 255, 0, A)
         Case 8 'aviso desconectado
@@ -1085,11 +1089,12 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
         Case 9 'aviso conectado
             Call RGBAList(color2, 10, 182, 70, A)
         Case 10 'lider
-            Call RGBAList(color2, 222, 194, 112, A)
+            Call RGBAList(color1, 222, 194, 112, A)
+            Call RGBAList(color2, 255, 255, 255, A)
     End Select
     
     
-    Call RGBAList(color2, 255, 255, 255, A)
+    'Call RGBAList(color2, 255, 255, 255, A)
     Dim i              As Long
 
     Dim removedDialogs As Long
@@ -1140,10 +1145,13 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
                         Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + 10, Sombra())
                     End If
                     
-                    If separador Then
-                        Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color1)
+                    If status >= 0 And status <= 3 Or status = 10 Then
+                        If separador Then
+                            Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color1)
+                        Else
+                            Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color2)
+                        End If
                     Else
-                        
                         Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color2)
                     End If
                     d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
@@ -1756,7 +1764,7 @@ Engine_Text_WidthCentrado_Err:
     
 End Function
 
-Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal Color As Long, ByVal format As Long, Optional ByVal Shadow As Boolean = False)
+Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal color As Long, ByVal format As Long, Optional ByVal Shadow As Boolean = False)
     
     On Error GoTo Text_Render_Err
     
@@ -1782,7 +1790,7 @@ Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long
 
     End If
     
-    DirectD3D8.DrawText font, Color, Text, TextRect, format
+    DirectD3D8.DrawText font, color, Text, TextRect, format
 
     
     Exit Sub
@@ -1793,15 +1801,15 @@ Text_Render_Err:
     
 End Sub
 
-Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal Color As Long, Optional ByVal Shadow As Boolean = False, Optional ByVal center As Boolean = False, Optional ByVal font As Long = 0)
+Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal color As Long, Optional ByVal Shadow As Boolean = False, Optional ByVal center As Boolean = False, Optional ByVal font As Long = 0)
     
     On Error GoTo Text_Render_ext_Err
     
 
     If center = True Then
-        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, Color, DT_VCENTER & DT_CENTER, Shadow)
+        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, color, DT_VCENTER & DT_CENTER, Shadow)
     Else
-        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, Color, DT_TOP Or DT_LEFT, Shadow)
+        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, color, DT_TOP Or DT_LEFT, Shadow)
     End If
 
     
