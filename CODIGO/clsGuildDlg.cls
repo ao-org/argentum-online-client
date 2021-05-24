@@ -169,7 +169,7 @@ Public Sub Draw()
             Alpha = Alpha - timerTicksPerFrame * 20
             If Alpha < 0 Then Alpha = 0
         Else
-            RemoveDialogs
+            'RemoveDialogs
         End If
     End If
     
@@ -250,6 +250,7 @@ Private Sub RealPushBackText(ByVal s As String, ByVal status As Byte)
 
     Dim i     As Integer
 
+    
     For i = (p_CANTIDADDIALOGOS - 1) To 1 Step -1
         p_Dialogos(i + 1) = p_Dialogos(i)
     Next i
