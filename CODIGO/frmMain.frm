@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -385,6 +385,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2048,6 +2049,7 @@ Form_Activate_Err:
     Resume Next
     
 End Sub
+
 Private Sub Second_Timer()
     If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
 End Sub
@@ -2756,20 +2758,20 @@ End Sub
 Private Sub MainSocket_DataArrival(ByVal BytesTotal As Long)
     On Error GoTo Socket1_Read_Err
 
-    Dim Data() As Byte
+    Dim DATA() As Byte
     Dim LastCompletPacket As Boolean
 
     Do
         ' WyroX: Sólo leemos la cantidad que entre en la cola!!
-        Call MainSocket.GetData(Data, vbByte, min(MainSocket.BytesReceived, incomingData.Capacity - incomingData.length))
+        Call MainSocket.GetData(DATA, vbByte, Min(MainSocket.BytesReceived, incomingData.Capacity - incomingData.Length))
         
         'Put data in the buffer
-        Call incomingData.WriteBlock(Data)
+        Call incomingData.WriteBlock(DATA)
         
-        If incomingData.PeekLength <= incomingData.length Then
+        If incomingData.PeekLength <= incomingData.Length Then
             LastCompletPacket = True
             
-            While incomingData.length And LastCompletPacket
+            While incomingData.Length And LastCompletPacket
                 LastCompletPacket = HandleIncomingData()
             Wend
 
@@ -4556,13 +4558,13 @@ Public Sub Form_Click()
                         If MainTimer.Check(TimersIndex.CastSpell) Then
                             If UsingSkill = MarcaDeGM Then
 
-                                Dim Pos As Integer
+                                Dim pos As Integer
 
                                 If MapData(tX, tY).charindex <> 0 Then
-                                    Pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
+                                    pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
                                 
-                                    If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
-                                    frmPanelgm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
+                                    If pos = 0 Then pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
+                                    frmPanelgm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, pos - 2)
 
                                 End If
 

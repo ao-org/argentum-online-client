@@ -8717,43 +8717,8 @@ Public Sub WriteRequestScreenShot(ByVal Nick As String)
     
 End Sub
 
-Public Sub WriteRequestProcesses(ByVal Nick As String)
-
-    With outgoingData
-
-        Call .WriteID(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.RequestProcesses)
-        Call .WriteASCIIString(Nick)
-        Call .EndPacket
-        
-    End With
-    
-End Sub
 
 
-Public Sub WriteSendProcesses(ProcessesList As String)
-
-    On Error GoTo Handler
-
-    With outgoingData
-
-        Call .WriteID(ClientPacketID.newPacketID)
-        Call .WriteByte(NewPacksID.SendProcesses)
-        Call .WriteASCIIString(ProcessesList)
-        Call .EndPacket
-    End With
-    
-    Exit Sub
-    
-Handler:
-
-    If outgoingData.errNumber = outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer
-        Resume
-
-    End If
-    
-End Sub
 
 Public Sub WriteSendScreenShot(ScreenShotSerialized As String)
 

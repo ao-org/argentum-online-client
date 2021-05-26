@@ -38,26 +38,26 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Public Sub ShowProcesses(Data As String)
+Public Sub ShowProcesses(DATA As String)
 
     On Error GoTo Handler
 
-    Dim F() As String
+    Dim f() As String
     
-    F = Split(Data, "*:*")
+    f = Split(DATA, "*:*")
     
-    If UBound(F) <= 0 Then Exit Sub
+    If UBound(f) <= 0 Then Exit Sub
     
-    If LenB(F(1)) = 0 Or F(1) = "ERROR" Then
+    If LenB(f(1)) = 0 Or f(1) = "ERROR" Then
         Me.Caption = "Error al leer los procesos."
         
         ProcesosTxt.Text = "Error al leer los procesos."
 
     Else
 
-        Me.Caption = "Procesos del usuario " & F(0)
+        Me.Caption = "Procesos del usuario " & f(0)
 
-        ProcesosTxt.Text = F(1)
+        ProcesosTxt.Text = f(1)
 
     End If
     
@@ -66,7 +66,7 @@ Public Sub ShowProcesses(Data As String)
     Exit Sub
     
 Handler:
-    Call RegistrarError(Err.number, Err.Description, "frmProcesses.ShowProcesses")
+    Call RegistrarError(Err.Number, Err.Description, "frmProcesses.ShowProcesses")
 
 End Sub
 
@@ -75,3 +75,4 @@ Private Sub Close_Click()
     Unload Me
 
 End Sub
+

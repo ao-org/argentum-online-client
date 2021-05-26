@@ -221,9 +221,7 @@ Private Enum ServerPacketID
     UpdateUserKey
     UpdateRM
     UpdateDM
-    RequestProcesses
     RequestScreenShot
-    ShowProcesses
     ShowScreenShot
     ScreenShotData
     Tolerancia0
@@ -567,9 +565,7 @@ Public Enum NewPacksID
     Home                    '/HOGAR
     Consulta                '/CONSULTA
     RequestScreenShot       '/SS
-    RequestProcesses        '/VERPROCESOS
     SendScreenShot
-    SendProcesses
     Tolerancia0
     GetMapInfo
     FinEvento
@@ -595,7 +591,6 @@ Public Function HandleIncomingData() As Boolean
     If Not incomingData.CheckLength Then
         HandleIncomingData = False
         Exit Function
-
     End If
     
     If Not incomingData.ValidCRC Then
@@ -1117,14 +1112,10 @@ Public Function HandleIncomingData() As Boolean
         Case ServerPacketID.ViajarForm
             Call HandleViajarForm
             
-        Case ServerPacketID.RequestProcesses
-            Call HandleRequestProcesses
             
         Case ServerPacketID.RequestScreenShot
             Call HandleRequestScreenShot
-            
-        Case ServerPacketID.ShowProcesses
-            Call HandleShowProcesses
+
             
         Case ServerPacketID.ShowScreenShot
             Call HandleShowScreenShot
@@ -3226,7 +3217,7 @@ Private Sub HandleConsoleMessage()
     On Error GoTo errhandler
     
     Dim chat      As String
-    Dim fontIndex As Integer
+    Dim FontIndex As Integer
     Dim str       As String
     Dim r         As Byte
     Dim G         As Byte
@@ -3239,9 +3230,9 @@ Private Sub HandleConsoleMessage()
     Dim Valor     As String
 
     chat = incomingData.ReadASCIIString()
-    fontIndex = incomingData.ReadByte()
+    FontIndex = incomingData.ReadByte()
     
-    If ChatGlobal = 0 And fontIndex = FontTypeNames.FONTTYPE_GLOBAL Then Exit Sub
+    If ChatGlobal = 0 And FontIndex = FontTypeNames.FONTTYPE_GLOBAL Then Exit Sub
 
     QueEs = ReadField(1, chat, Asc("*"))
 
@@ -3325,7 +3316,7 @@ Private Sub HandleConsoleMessage()
     
     Else
 
-        With FontTypes(fontIndex)
+        With FontTypes(FontIndex)
             Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
 
         End With
@@ -3355,7 +3346,7 @@ Private Sub HandleLocaleMsg()
     
     Dim chat      As String
 
-    Dim fontIndex As Integer
+    Dim FontIndex As Integer
 
     Dim str       As String
 
@@ -3381,7 +3372,7 @@ Private Sub HandleLocaleMsg()
 
     ID = incomingData.ReadInteger()
     chat = incomingData.ReadASCIIString()
-    fontIndex = incomingData.ReadByte()
+    FontIndex = incomingData.ReadByte()
 
     chat = Locale_Parse_ServerMessage(ID, chat)
     
@@ -3416,7 +3407,7 @@ Private Sub HandleLocaleMsg()
         Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
     Else
 
-        With FontTypes(fontIndex)
+        With FontTypes(FontIndex)
             Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
 
         End With
@@ -8982,15 +8973,6 @@ errhandler:
 
 End Sub
 
-Private Sub HandleRequestProcesses()
-
-    With incomingData
-        
-        Call WriteSendProcesses(GetProcessesList)
-    
-    End With
-
-End Sub
 
 Private Sub HandleRequestScreenShot()
 
@@ -9011,24 +8993,6 @@ Private Sub HandleRequestScreenShot()
         Next
     
     End With
-
-End Sub
-
-Private Sub HandleShowProcesses()
-    
-    On Error GoTo errhandler
-    
-    Dim DATA As String
-    DATA = incomingData.ReadASCIIString
-    
-    Call frmProcesses.ShowProcesses(DATA)
-    
-    Exit Sub
-
-errhandler:
-
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowProcesses", Erl)
-    Call incomingData.SafeClearPacket
 
 End Sub
 

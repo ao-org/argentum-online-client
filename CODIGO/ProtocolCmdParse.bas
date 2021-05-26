@@ -2200,11 +2200,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestScreenShot(ArgumentosRaw)
                 End If
                 
-            Case "/VERPROCESOS", "/PROCESOS", "/PROC"
-                If EsGM Then
-                    Call WriteRequestProcesses(ArgumentosRaw)
-                End If
-                
             Case "/TOLERANCIA0", "/T0"
                 If EsGM Then
                     Call WriteTolerancia0(ArgumentosRaw)
@@ -2276,7 +2271,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
     Exit Sub
 
 ParseUserCommand_Err:
-    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.ParseUserCommand", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.ParseUserCommand", Erl)
     Resume Next
     
 End Sub
@@ -2306,7 +2301,7 @@ Public Sub ShowConsoleMsg(ByVal Message As String, Optional ByVal red As Integer
     Exit Sub
 
 ShowConsoleMsg_Err:
-    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.ShowConsoleMsg", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.ShowConsoleMsg", Erl)
     Resume Next
     
 End Sub
@@ -2359,7 +2354,7 @@ Public Function ValidNumber(ByVal Numero As String, ByVal TIPO As eNumber_Types)
     Exit Function
 
 ValidNumber_Err:
-    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.ValidNumber", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.ValidNumber", Erl)
     Resume Next
     
 End Function
@@ -2393,7 +2388,7 @@ Private Function validipv4str(ByVal IP As String) As Boolean
     Exit Function
 
 validipv4str_Err:
-    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.validipv4str", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.validipv4str", Erl)
     Resume Next
     
 End Function
@@ -2433,7 +2428,7 @@ Private Function str2ipv4l(ByVal IP As String) As Byte()
     Exit Function
 
 str2ipv4l_Err:
-    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.str2ipv4l", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.str2ipv4l", Erl)
     Resume Next
     
 End Function
@@ -2460,13 +2455,13 @@ Private Function AEMAILSplit(ByRef Text As String) As String()
     '***************************************************
     Dim tmpArr(0 To 1) As String
 
-    Dim Pos            As Byte
+    Dim pos            As Byte
     
-    Pos = InStr(1, Text, "-")
+    pos = InStr(1, Text, "-")
     
-    If Pos <> 0 Then
-        tmpArr(0) = mid$(Text, 1, Pos - 1)
-        tmpArr(1) = mid$(Text, Pos + 1)
+    If pos <> 0 Then
+        tmpArr(0) = mid$(Text, 1, pos - 1)
+        tmpArr(1) = mid$(Text, pos + 1)
     Else
         tmpArr(0) = vbNullString
 
@@ -2478,7 +2473,7 @@ Private Function AEMAILSplit(ByRef Text As String) As String()
     Exit Function
 
 AEMAILSplit_Err:
-    Call RegistrarError(Err.number, Err.Description, "ProtocolCmdParse.AEMAILSplit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.AEMAILSplit", Erl)
     Resume Next
     
 End Function

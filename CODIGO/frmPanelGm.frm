@@ -808,9 +808,6 @@ Begin VB.Form frmPanelgm
       End
       Begin VB.Menu Investigar 
          Caption         =   "Investigar"
-         Begin VB.Menu VerProcesos 
-            Caption         =   "Ver procesos"
-         End
          Begin VB.Menu VerPantalla 
             Caption         =   "Ver pantalla cliente"
          End
@@ -2961,9 +2958,6 @@ Private Sub VerPantalla_Click()
     Call ParseUserCommand("/SS " & cboListaUsus.Text)
 End Sub
 
-Private Sub VerProcesos_Click()
-    Call ParseUserCommand("/PROC " & cboListaUsus.Text)
-End Sub
 
 Private Sub Vida_Click()
     
