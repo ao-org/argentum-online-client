@@ -1113,6 +1113,7 @@ Sub Main()
     
     'Inicializamos el motor grafico.
     Call Engine_Init
+    
     'Inicializamos el inventario
     Call InitializeInventory
     

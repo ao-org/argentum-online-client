@@ -1634,10 +1634,10 @@ Public Function WriteID(ByVal value As Byte) As Long
 
     PacketStartPosition = queueLength
 
-    Call WriteByte(value)
+    Call WriteInteger(value)
     Call WriteInteger(0)
 
-    WriteID = 3
+    WriteID = 4
 
 End Function
 
@@ -1696,26 +1696,23 @@ Public Function ReadID() As Byte
 
     End If
 
-    'Call ReadNewPacket
-
     Dim PacketID As Byte
 
-    PacketID = ReadByte()
+    PacketID = ReadInteger()
     LastLength = ReadInteger()
-    'Call RemoveData(ReadData(buf, 3))
 
     ReadID = PacketID
 
 End Function
 
 Public Function PeekCRC(ByVal pos As Integer) As Byte
+
     #If BYTE_QUEUE_DEBUG = 1 Then
         Call ReadCheckType(wrByte)
     #End If
 
     If 1 > queueLength Then
         Call ErrRaise(NOT_ENOUGH_DATA)
-
         Exit Function
 
     End If

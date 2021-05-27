@@ -221,7 +221,9 @@ Private Enum ServerPacketID
     UpdateUserKey
     UpdateRM
     UpdateDM
+    RequestProcesses
     RequestScreenShot
+    ShowProcesses
     ShowScreenShot
     ScreenShotData
     Tolerancia0
@@ -230,7 +232,8 @@ Private Enum ServerPacketID
     Stopped
     InvasionInfo
     CommerceRecieveChatMessage
-
+    
+    [LastPacketID] = 179
 End Enum
 
 Public Enum ClientPacketID
@@ -472,12 +475,13 @@ Public Enum ClientPacketID
     ChatColor               '/CHATCOLOR
     Ignored                 '/IGNORADO
     CheckSlot               '/SLOT
+    
     'Nuevas Ladder
     GlobalMessage           '/CONSOLA
     GlobalOnOff
     IngresarConCuenta
     BorrarPJ
-    newPacketID
+    NewPacketID
     Desbuggear
     DarLlaveAUsuario
     SacarLlave
@@ -488,11 +492,6 @@ Public Enum ClientPacketID
     DonateGold              '/DONAR
     Promedio                '/PROMEDIO
     GiveItem                '/DAR
-
-End Enum
-
-Public Enum NewPacksID
-
     OfertaInicial
     OfertaDeSubasta
     QuestionGM
@@ -505,7 +504,7 @@ Public Enum NewPacksID
     NieveToggle
     NieblaToggle
     TransFerGold
-    MoveItem
+    Moveitem
     Genio                 '/GENIO
     Casarse
     CraftAlquimista
@@ -527,12 +526,12 @@ Public Enum NewPacksID
     RequestGrupo
     AbandonarGrupo
     HecharDeGrupo
-    MacroPosSent
+    MacroPossent
     SubastaInfo
     BanCuenta
     UnbanCuenta
     BanSerial
-    UnBanSerial
+    unBanSerial
     CerrarCliente
     EventoInfo
     CrearEvento
@@ -550,7 +549,7 @@ Public Enum NewPacksID
     BovedaMoveItem
     QuieroFundarClan
     llamadadeclan
-    MarcaDeClanpack
+    MarcaDeClanPack
     MarcaDeGMPack
     TraerRanking
     Pareja
@@ -565,7 +564,9 @@ Public Enum NewPacksID
     Home                    '/HOGAR
     Consulta                '/CONSULTA
     RequestScreenShot       '/SS
+    RequestProcesses        '/VERPROCESOS
     SendScreenShot
+    SendProcesses
     Tolerancia0
     GetMapInfo
     FinEvento
@@ -575,8 +576,221 @@ Public Enum NewPacksID
     CreateEvent
     CommerceSendChatMessage
     LogMacroClickHechizo
-
+    
 End Enum
+
+' Rezniaq: Sacamos alv la busqueda lineal que hacia el Select Case de la funcion HandleIncomingData.
+Private PacketList(0 To ServerPacketID.LastPacketID) As Long
+Private Declare Function CallWindowProc Lib "user32.dll" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hwnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+
+Public Sub InitializePacketList()
+
+    PacketList(ServerPacketID.logged) = GetAddress(AddressOf HandleLogged)
+    PacketList(ServerPacketID.RemoveDialogs) = GetAddress(AddressOf HandleRemoveDialogs)
+    PacketList(ServerPacketID.RemoveCharDialog) = GetAddress(AddressOf HandleRemoveCharDialog)
+    PacketList(ServerPacketID.NavigateToggle) = GetAddress(AddressOf HandleNavigateToggle)
+    PacketList(ServerPacketID.EquiteToggle) = GetAddress(AddressOf HandleEquiteToggle)
+    PacketList(ServerPacketID.Disconnect) = GetAddress(AddressOf HandleDisconnect)
+    PacketList(ServerPacketID.CommerceEnd) = GetAddress(AddressOf HandleCommerceEnd)
+    PacketList(ServerPacketID.BankEnd) = GetAddress(AddressOf HandleBankEnd)
+    PacketList(ServerPacketID.CommerceInit) = GetAddress(AddressOf HandleCommerceInit)
+    PacketList(ServerPacketID.BankInit) = GetAddress(AddressOf HandleBankInit)
+    PacketList(ServerPacketID.UserCommerceInit) = GetAddress(AddressOf HandleUserCommerceInit)
+    PacketList(ServerPacketID.UserCommerceEnd) = GetAddress(AddressOf HandleUserCommerceEnd)
+    PacketList(ServerPacketID.ShowBlacksmithForm) = GetAddress(AddressOf HandleShowBlacksmithForm)
+    PacketList(ServerPacketID.ShowCarpenterForm) = GetAddress(AddressOf HandleShowCarpenterForm)
+    PacketList(ServerPacketID.NPCKillUser) = GetAddress(AddressOf HandleNPCKillUser)
+    PacketList(ServerPacketID.BlockedWithShieldUser) = GetAddress(AddressOf HandleBlockedWithShieldUser)
+    PacketList(ServerPacketID.BlockedWithShieldOther) = GetAddress(AddressOf HandleBlockedWithShieldOther)
+    PacketList(ServerPacketID.CharSwing) = GetAddress(AddressOf HandleCharSwing)
+    PacketList(ServerPacketID.SafeModeOn) = GetAddress(AddressOf HandleSafeModeOn)
+    PacketList(ServerPacketID.SafeModeOff) = GetAddress(AddressOf HandleSafeModeOff)
+    PacketList(ServerPacketID.PartySafeOn) = GetAddress(AddressOf HandlePartySafeOn)
+    PacketList(ServerPacketID.PartySafeOff) = GetAddress(AddressOf HandlePartySafeOff)
+    PacketList(ServerPacketID.CantUseWhileMeditating) = GetAddress(AddressOf HandleCantUseWhileMeditating)
+    PacketList(ServerPacketID.UpdateSta) = GetAddress(AddressOf HandleUpdateSta)
+    PacketList(ServerPacketID.UpdateMana) = GetAddress(AddressOf HandleUpdateMana)
+    PacketList(ServerPacketID.UpdateHP) = GetAddress(AddressOf HandleUpdateHP)
+    PacketList(ServerPacketID.UpdateGold) = GetAddress(AddressOf HandleUpdateGold)
+    PacketList(ServerPacketID.UpdateExp) = GetAddress(AddressOf HandleUpdateExp)
+    PacketList(ServerPacketID.ChangeMap) = GetAddress(AddressOf HandleChangeMap)
+    PacketList(ServerPacketID.PosUpdate) = GetAddress(AddressOf HandlePosUpdate)
+    PacketList(ServerPacketID.NPCHitUser) = GetAddress(AddressOf HandleNPCHitUser)
+    PacketList(ServerPacketID.UserHitNPC) = GetAddress(AddressOf HandleUserHitNPC)
+    PacketList(ServerPacketID.UserAttackedSwing) = GetAddress(AddressOf HandleUserAttackedSwing)
+    PacketList(ServerPacketID.UserHittedByUser) = GetAddress(AddressOf HandleUserHittedByUser)
+    PacketList(ServerPacketID.UserHittedUser) = GetAddress(AddressOf HandleUserHittedUser)
+    PacketList(ServerPacketID.ChatOverHead) = GetAddress(AddressOf HandleChatOverHead)
+    'PacketList(ServerPacketID.ConsoleMsg) = GetAddress(AddressOf HandleConsoleMsg)
+    PacketList(ServerPacketID.GuildChat) = GetAddress(AddressOf HandleGuildChat)
+    PacketList(ServerPacketID.ShowMessageBox) = GetAddress(AddressOf HandleShowMessageBox)
+    PacketList(ServerPacketID.MostrarCuenta) = GetAddress(AddressOf HandleMostrarCuenta)
+    PacketList(ServerPacketID.UserIndexInServer) = GetAddress(AddressOf HandleUserIndexInServer)
+    PacketList(ServerPacketID.UserCharIndexInServer) = GetAddress(AddressOf HandleUserCharIndexInServer)
+    PacketList(ServerPacketID.CharacterCreate) = GetAddress(AddressOf HandleCharacterCreate)
+    PacketList(ServerPacketID.CharacterRemove) = GetAddress(AddressOf HandleCharacterRemove)
+    PacketList(ServerPacketID.CharacterMove) = GetAddress(AddressOf HandleCharacterMove)
+    PacketList(ServerPacketID.ForceCharMove) = GetAddress(AddressOf HandleForceCharMove)
+    PacketList(ServerPacketID.CharacterChange) = GetAddress(AddressOf HandleCharacterChange)
+    PacketList(ServerPacketID.ObjectCreate) = GetAddress(AddressOf HandleObjectCreate)
+    PacketList(ServerPacketID.fxpiso) = GetAddress(AddressOf HandleFxPiso)
+    PacketList(ServerPacketID.ObjectDelete) = GetAddress(AddressOf HandleObjectDelete)
+    PacketList(ServerPacketID.BlockPosition) = GetAddress(AddressOf HandleBlockPosition)
+    PacketList(ServerPacketID.PlayMIDI) = GetAddress(AddressOf HandlePlayMIDI)
+    PacketList(ServerPacketID.PlayWave) = GetAddress(AddressOf HandlePlayWave)
+    PacketList(ServerPacketID.guildList) = GetAddress(AddressOf HandleGuildList)
+    PacketList(ServerPacketID.AreaChanged) = GetAddress(AddressOf HandleAreaChanged)
+    PacketList(ServerPacketID.PauseToggle) = GetAddress(AddressOf HandlePauseToggle)
+    PacketList(ServerPacketID.RainToggle) = GetAddress(AddressOf HandleRainToggle)
+    PacketList(ServerPacketID.CreateFX) = GetAddress(AddressOf HandleCreateFX)
+    PacketList(ServerPacketID.UpdateUserStats) = GetAddress(AddressOf HandleUpdateUserStats)
+    PacketList(ServerPacketID.WorkRequestTarget) = GetAddress(AddressOf HandleWorkRequestTarget)
+    PacketList(ServerPacketID.ChangeInventorySlot) = GetAddress(AddressOf HandleChangeInventorySlot)
+    PacketList(ServerPacketID.InventoryUnlockSlots) = GetAddress(AddressOf HandleInventoryUnlockSlots)
+    PacketList(ServerPacketID.ChangeBankSlot) = GetAddress(AddressOf HandleChangeBankSlot)
+    PacketList(ServerPacketID.ChangeSpellSlot) = GetAddress(AddressOf HandleChangeSpellSlot)
+    PacketList(ServerPacketID.Atributes) = GetAddress(AddressOf HandleAtributes)
+    PacketList(ServerPacketID.BlacksmithWeapons) = GetAddress(AddressOf HandleBlacksmithWeapons)
+    PacketList(ServerPacketID.BlacksmithArmors) = GetAddress(AddressOf HandleBlacksmithArmors)
+    PacketList(ServerPacketID.CarpenterObjects) = GetAddress(AddressOf HandleCarpenterObjects)
+    PacketList(ServerPacketID.RestOK) = GetAddress(AddressOf HandleRestOK)
+    'PacketList(ServerPacketID.ErrorMsg) = GetAddress(AddressOf HandleErrorMsg)
+    PacketList(ServerPacketID.Blind) = GetAddress(AddressOf HandleBlind)
+    PacketList(ServerPacketID.Dumb) = GetAddress(AddressOf HandleDumb)
+    PacketList(ServerPacketID.ShowSignal) = GetAddress(AddressOf HandleShowSignal)
+    PacketList(ServerPacketID.ChangeNPCInventorySlot) = GetAddress(AddressOf HandleChangeNPCInventorySlot)
+    PacketList(ServerPacketID.UpdateHungerAndThirst) = GetAddress(AddressOf HandleUpdateHungerAndThirst)
+    PacketList(ServerPacketID.MiniStats) = GetAddress(AddressOf HandleMiniStats)
+    PacketList(ServerPacketID.LevelUp) = GetAddress(AddressOf HandleLevelUp)
+    'PacketList(ServerPacketID.AddForumMsg) = GetAddress(AddressOf HandleAddForumMsg)
+    PacketList(ServerPacketID.ShowForumForm) = GetAddress(AddressOf HandleShowForumForm)
+    PacketList(ServerPacketID.SetInvisible) = GetAddress(AddressOf HandleSetInvisible)
+    PacketList(ServerPacketID.DiceRoll) = GetAddress(AddressOf HandleDiceRoll)
+    PacketList(ServerPacketID.MeditateToggle) = GetAddress(AddressOf HandleMeditateToggle)
+    PacketList(ServerPacketID.BlindNoMore) = GetAddress(AddressOf HandleBlindNoMore)
+    PacketList(ServerPacketID.DumbNoMore) = GetAddress(AddressOf HandleDumbNoMore)
+    PacketList(ServerPacketID.SendSkills) = GetAddress(AddressOf HandleSendSkills)
+    PacketList(ServerPacketID.TrainerCreatureList) = GetAddress(AddressOf HandleTrainerCreatureList)
+    PacketList(ServerPacketID.guildNews) = GetAddress(AddressOf HandleGuildNews)
+    PacketList(ServerPacketID.OfferDetails) = GetAddress(AddressOf HandleOfferDetails)
+    PacketList(ServerPacketID.AlianceProposalsList) = GetAddress(AddressOf HandleAlianceProposalsList)
+    PacketList(ServerPacketID.PeaceProposalsList) = GetAddress(AddressOf HandlePeaceProposalsList)
+    PacketList(ServerPacketID.CharacterInfo) = GetAddress(AddressOf HandleCharacterInfo)
+    PacketList(ServerPacketID.GuildLeaderInfo) = GetAddress(AddressOf HandleGuildLeaderInfo)
+    PacketList(ServerPacketID.GuildDetails) = GetAddress(AddressOf HandleGuildDetails)
+    PacketList(ServerPacketID.ShowGuildFundationForm) = GetAddress(AddressOf HandleShowGuildFundationForm)
+    PacketList(ServerPacketID.ParalizeOK) = GetAddress(AddressOf HandleParalizeOK)
+    PacketList(ServerPacketID.ShowUserRequest) = GetAddress(AddressOf HandleShowUserRequest)
+    PacketList(ServerPacketID.ChangeUserTradeSlot) = GetAddress(AddressOf HandleChangeUserTradeSlot)
+    'PacketList(ServerPacketID.SendNight) = GetAddress(AddressOf HandleSendNight)
+    PacketList(ServerPacketID.Pong) = GetAddress(AddressOf HandlePong)
+    PacketList(ServerPacketID.UpdateTagAndStatus) = GetAddress(AddressOf HandleUpdateTagAndStatus)
+    PacketList(ServerPacketID.FYA) = GetAddress(AddressOf HandleFYA)
+    PacketList(ServerPacketID.CerrarleCliente) = GetAddress(AddressOf HandleCerrarleCliente)
+    PacketList(ServerPacketID.Contadores) = GetAddress(AddressOf HandleContadores)
+    
+    ' GM Messages
+    PacketList(ServerPacketID.SpawnList) = GetAddress(AddressOf HandleSpawnList)
+    PacketList(ServerPacketID.ShowSOSForm) = GetAddress(AddressOf HandleShowSOSForm)
+    PacketList(ServerPacketID.ShowMOTDEditionForm) = GetAddress(AddressOf HandleShowMOTDEditionForm)
+    PacketList(ServerPacketID.ShowGMPanelForm) = GetAddress(AddressOf HandleShowGMPanelForm)
+    PacketList(ServerPacketID.UserNameList) = GetAddress(AddressOf HandleUserNameList)
+    PacketList(ServerPacketID.PersonajesDeCuenta) = GetAddress(AddressOf HandlePersonajesDeCuenta)
+    PacketList(ServerPacketID.UserOnline) = GetAddress(AddressOf HandleUserOnline)
+    PacketList(ServerPacketID.ParticleFX) = GetAddress(AddressOf HandleParticleFX)
+    PacketList(ServerPacketID.ParticleFXToFloor) = GetAddress(AddressOf HandleParticleFXToFloor)
+    PacketList(ServerPacketID.ParticleFXWithDestino) = GetAddress(AddressOf HandleParticleFXWithDestino)
+    PacketList(ServerPacketID.ParticleFXWithDestinoXY) = GetAddress(AddressOf HandleParticleFXWithDestinoXY)
+    PacketList(ServerPacketID.hora) = GetAddress(AddressOf HandleHora)
+    PacketList(ServerPacketID.Light) = GetAddress(AddressOf HandleLight)
+    PacketList(ServerPacketID.AuraToChar) = GetAddress(AddressOf HandleAuraToChar)
+    PacketList(ServerPacketID.SpeedToChar) = GetAddress(AddressOf HandleSpeedToChar)
+    PacketList(ServerPacketID.LightToFloor) = GetAddress(AddressOf HandleLightToFloor)
+    PacketList(ServerPacketID.NieveToggle) = GetAddress(AddressOf HandleNieveToggle)
+    PacketList(ServerPacketID.NieblaToggle) = GetAddress(AddressOf HandleNieblaToggle)
+    'PacketList(ServerPacketID.Goliath) = GetAddress(AddressOf HandleGoliath)
+    PacketList(ServerPacketID.TextOverChar) = GetAddress(AddressOf HandleTextOverChar)
+    PacketList(ServerPacketID.TextOverTile) = GetAddress(AddressOf HandleTextOverTile)
+    PacketList(ServerPacketID.TextCharDrop) = GetAddress(AddressOf HandleTextCharDrop)
+    PacketList(ServerPacketID.FlashScreen) = GetAddress(AddressOf HandleFlashScreen)
+    'PacketList(ServerPacketID.AlquimistaObj) = GetAddress(AddressOf HandleAlquimistaObj)
+    PacketList(ServerPacketID.ShowAlquimiaForm) = GetAddress(AddressOf HandleShowAlquimiaForm)
+    PacketList(ServerPacketID.familiar) = GetAddress(AddressOf HandleFamiliar)
+    'PacketList(ServerPacketID.SastreObj) = GetAddress(AddressOf HandleSastreObj)
+    PacketList(ServerPacketID.ShowSastreForm) = GetAddress(AddressOf HandleShowSastreForm)
+    PacketList(ServerPacketID.VelocidadToggle) = GetAddress(AddressOf HandleVelocidadToggle)
+    PacketList(ServerPacketID.MacroTrabajoToggle) = GetAddress(AddressOf HandleMacroTrabajoToggle)
+    PacketList(ServerPacketID.RefreshAllInventorySlot) = GetAddress(AddressOf HandleRefreshAllInventorySlot)
+    PacketList(ServerPacketID.BindKeys) = GetAddress(AddressOf HandleBindKeys)
+    PacketList(ServerPacketID.ShowFrmLogear) = GetAddress(AddressOf HandleShowFrmLogear)
+    PacketList(ServerPacketID.ShowFrmMapa) = GetAddress(AddressOf HandleShowFrmMapa)
+    PacketList(ServerPacketID.InmovilizadoOK) = GetAddress(AddressOf HandleInmovilizadoOK)
+    PacketList(ServerPacketID.BarFx) = GetAddress(AddressOf HandleBarFx)
+    PacketList(ServerPacketID.SetEscribiendo) = GetAddress(AddressOf HandleSetEscribiendo)
+    PacketList(ServerPacketID.Logros) = GetAddress(AddressOf HandleLogros)
+    PacketList(ServerPacketID.TrofeoToggleOn) = GetAddress(AddressOf HandleTrofeoToggleOn)
+    PacketList(ServerPacketID.TrofeoToggleOff) = GetAddress(AddressOf HandleTrofeoToggleOff)
+    PacketList(ServerPacketID.LocaleMsg) = GetAddress(AddressOf HandleLocaleMsg)
+    PacketList(ServerPacketID.ListaCorreo) = GetAddress(AddressOf HandleListaCorreo)
+    PacketList(ServerPacketID.ShowPregunta) = GetAddress(AddressOf HandleShowPregunta)
+    PacketList(ServerPacketID.DatosGrupo) = GetAddress(AddressOf HandleDatosGrupo)
+    PacketList(ServerPacketID.ubicacion) = GetAddress(AddressOf HandleUbicacion)
+    PacketList(ServerPacketID.CorreoPicOn) = GetAddress(AddressOf HandleCorreoPicOn)
+    'PacketList(ServerPacketID.DonadorObj) = GetAddress(AddressOf HandleDonadorObj)
+    PacketList(ServerPacketID.ArmaMov) = GetAddress(AddressOf HandleArmaMov)
+    PacketList(ServerPacketID.EscudoMov) = GetAddress(AddressOf HandleEscudoMov)
+    PacketList(ServerPacketID.ActShop) = GetAddress(AddressOf HandleActShop)
+    PacketList(ServerPacketID.ViajarForm) = GetAddress(AddressOf HandleViajarForm)
+    PacketList(ServerPacketID.oxigeno) = GetAddress(AddressOf HandleOxigeno)
+    PacketList(ServerPacketID.NadarToggle) = GetAddress(AddressOf HandleNadarToggle)
+    PacketList(ServerPacketID.ShowFundarClanForm) = GetAddress(AddressOf HandleShowFundarClanForm)
+    PacketList(ServerPacketID.CharUpdateHP) = GetAddress(AddressOf HandleCharUpdateHP)
+    PacketList(ServerPacketID.Ranking) = GetAddress(AddressOf HandleRanking)
+    PacketList(ServerPacketID.PosLLamadaDeClan) = GetAddress(AddressOf HandlePosLLamadaDeClan)
+    PacketList(ServerPacketID.QuestDetails) = GetAddress(AddressOf HandleQuestDetails)
+    PacketList(ServerPacketID.QuestListSend) = GetAddress(AddressOf HandleQuestListSend)
+    PacketList(ServerPacketID.NpcQuestListSend) = GetAddress(AddressOf HandleNpcQuestListSend)
+    PacketList(ServerPacketID.UpdateNPCSimbolo) = GetAddress(AddressOf HandleUpdateNPCSimbolo)
+    PacketList(ServerPacketID.ClanSeguro) = GetAddress(AddressOf HandleClanSeguro)
+    PacketList(ServerPacketID.Intervals) = GetAddress(AddressOf HandleIntervals)
+    PacketList(ServerPacketID.UpdateUserKey) = GetAddress(AddressOf HandleUpdateUserKey)
+    PacketList(ServerPacketID.UpdateRM) = GetAddress(AddressOf HandleUpdateRM)
+    PacketList(ServerPacketID.UpdateDM) = GetAddress(AddressOf HandleUpdateDM)
+    PacketList(ServerPacketID.RequestProcesses) = GetAddress(AddressOf HandleRequestProcesses)
+    PacketList(ServerPacketID.RequestScreenShot) = GetAddress(AddressOf HandleRequestScreenShot)
+    PacketList(ServerPacketID.ShowProcesses) = GetAddress(AddressOf HandleShowProcesses)
+    PacketList(ServerPacketID.ShowScreenShot) = GetAddress(AddressOf HandleShowScreenShot)
+    PacketList(ServerPacketID.ScreenShotData) = GetAddress(AddressOf HandleScreenShotData)
+    PacketList(ServerPacketID.Tolerancia0) = GetAddress(AddressOf HandleTolerancia0)
+    PacketList(ServerPacketID.Redundancia) = GetAddress(AddressOf HandleRedundancia)
+    PacketList(ServerPacketID.SeguroResu) = GetAddress(AddressOf HandleSeguroResu)
+    PacketList(ServerPacketID.Stopped) = GetAddress(AddressOf HandleStopped)
+    PacketList(ServerPacketID.InvasionInfo) = GetAddress(AddressOf HandleInvasionInfo)
+    PacketList(ServerPacketID.CommerceRecieveChatMessage) = GetAddress(AddressOf HandleCommerceRecieveChatMessage)
+
+End Sub
+
+Private Sub ParsePacket(ByVal packetIndex As Long)
+        
+     If packetIndex > UBound(PacketList()) Then Exit Sub
+       
+    'TODO: me parece que los handles no podrían
+    'tener más de 4 argumentos (cada 0& es un argumento),
+    'igual esto se puede obviar utilizando un poco el protocolo
+    'binario, le pasamos como paramétro el userindex y de
+    'ahí obtenemos todos los datos o lo que sea
+ 
+    'llamamos al sub mediante su dirección en memoria
+    Call CallWindowProc(PacketList(packetIndex), 0&, 0&, 0&, 0&)
+ 
+End Sub
+
+'Devuelve el argumento que se le pasó (sirve para usar AddressOf en variables)
+Private Function GetAddress(ByVal address As Long) As Long
+ 
+    GetAddress = address
+ 
+End Function
 
 ''
 ' Handles incoming data.
@@ -591,6 +805,7 @@ Public Function HandleIncomingData() As Boolean
     If Not incomingData.CheckLength Then
         HandleIncomingData = False
         Exit Function
+
     End If
     
     If Not incomingData.ValidCRC Then
@@ -603,552 +818,7 @@ Public Function HandleIncomingData() As Boolean
 
     InBytes = InBytes + incomingData.Length
 
-    Select Case PacketID
-
-        Case ServerPacketID.logged                  ' LOGGED
-            Call HandleLogged
-            
-        Case ServerPacketID.PersonajesDeCuenta      ' LOGGED
-            Call HandlePersonajesDeCuenta
-            
-        Case ServerPacketID.UserOnline                 ' LOGGED
-            Call HandleUserOnline
-            
-        Case ServerPacketID.CharUpdateHP                ' TW
-            Call HandleCharUpdateHP
-        
-        Case ServerPacketID.RemoveDialogs           ' QTDL
-            Call HandleRemoveDialogs
-        
-        Case ServerPacketID.RemoveCharDialog        ' QDL
-            Call HandleRemoveCharDialog
-            
-        Case ServerPacketID.NadarToggle          ' NAVEG
-            Call HandleNadarToggle
-        
-        Case ServerPacketID.NavigateToggle          ' NAVEG
-            Call HandleNavigateToggle
-        
-        Case ServerPacketID.EquiteToggle         ' NAVEG
-            Call HandleEquiteToggle
-
-        Case ServerPacketID.VelocidadToggle        ' NAVEG
-            Call HandleVelocidadToggle
-            
-        Case ServerPacketID.MacroTrabajoToggle       ' NAVEG
-            Call HandleMacroTrabajoToggle
-        
-        Case ServerPacketID.Disconnect              ' FINOK
-            Call HandleDisconnect
-        
-        Case ServerPacketID.CommerceEnd             ' FINCOMOK
-            Call HandleCommerceEnd
-        
-        Case ServerPacketID.BankEnd                 ' FINBANOK
-            Call HandleBankEnd
-        
-        Case ServerPacketID.CommerceInit            ' INITCOM
-            Call HandleCommerceInit
-        
-        Case ServerPacketID.BankInit                ' INITBANCO
-            Call HandleBankInit
-        
-        Case ServerPacketID.UserCommerceInit        ' INITCOMUSU
-            Call HandleUserCommerceInit
-        
-        Case ServerPacketID.UserCommerceEnd         ' FINCOMUSUOK
-            Call HandleUserCommerceEnd
-        
-        Case ServerPacketID.ShowBlacksmithForm      ' SFH
-            Call HandleShowBlacksmithForm
-        
-        Case ServerPacketID.ShowCarpenterForm       ' SFC
-            Call HandleShowCarpenterForm
-
-        Case ServerPacketID.NPCKillUser             ' 6
-            Call HandleNPCKillUser
-        
-        Case ServerPacketID.BlockedWithShieldUser   ' 7
-            Call HandleBlockedWithShieldUser
-        
-        Case ServerPacketID.BlockedWithShieldOther  ' 8
-            Call HandleBlockedWithShieldOther
-        
-        Case ServerPacketID.CharSwing               ' U1
-            Call HandleCharSwing
-        
-        Case ServerPacketID.SafeModeOn              ' SEGON
-            Call HandleSafeModeOn
-        
-        Case ServerPacketID.SafeModeOff             ' SEGOFF
-            Call HandleSafeModeOff
-            
-        Case ServerPacketID.PartySafeOff
-            Call HandlePartySafeOff
-            
-        Case ServerPacketID.ClanSeguro
-            Call HandleClanSeguro
-            
-        Case ServerPacketID.Intervals
-            Call HandleIntervals
-            
-        Case ServerPacketID.UpdateUserKey
-            Call HandleUpdateUserKey
-            
-        Case ServerPacketID.UpdateDM
-            Call HandleUpdateDM
-            
-        Case ServerPacketID.UpdateRM
-            Call HandleUpdateRM
-        
-        Case ServerPacketID.PartySafeOn
-            Call HandlePartySafeOn
-        
-        Case ServerPacketID.CantUseWhileMeditating  ' M!
-            Call HandleCantUseWhileMeditating
-        
-        Case ServerPacketID.UpdateSta               ' ASS
-            Call HandleUpdateSta
-        
-        Case ServerPacketID.UpdateMana              ' ASM
-            Call HandleUpdateMana
-        
-        Case ServerPacketID.UpdateHP                ' ASH
-            Call HandleUpdateHP
-        
-        Case ServerPacketID.UpdateGold              ' ASG
-            Call HandleUpdateGold
-        
-        Case ServerPacketID.UpdateExp               ' ASE
-            Call HandleUpdateExp
-        
-        Case ServerPacketID.ChangeMap               ' CM
-            Call HandleChangeMap
-        
-        Case ServerPacketID.PosUpdate               ' PU
-            Call HandlePosUpdate
-        
-        Case ServerPacketID.NPCHitUser              ' N2
-            Call HandleNPCHitUser
-        
-        Case ServerPacketID.UserHitNPC              ' U2
-            Call HandleUserHitNPC
-        
-        Case ServerPacketID.UserAttackedSwing       ' U3
-            Call HandleUserAttackedSwing
-        
-        Case ServerPacketID.UserHittedByUser        ' N4
-            Call HandleUserHittedByUser
-        
-        Case ServerPacketID.UserHittedUser          ' N5
-            Call HandleUserHittedUser
-        
-        Case ServerPacketID.ChatOverHead            ' ||
-            Call HandleChatOverHead
-        
-        Case ServerPacketID.ConsoleMsg              ' || - Beware!! its the same as above, but it was properly splitted
-            Call HandleConsoleMessage
-        
-        Case ServerPacketID.LocaleMsg              ' || - Beware!! its the same as above, but it was properly splitted
-            Call HandleLocaleMsg
-        
-        Case ServerPacketID.ListaCorreo              ' || - Beware!! its the same as above, but it was properly splitted
-            Call HandleListaCorreo
-        
-        Case ServerPacketID.ShowPregunta
-            Call HandleShowPregunta
-            
-        Case ServerPacketID.GuildChat               ' |+
-            Call HandleGuildChat
-        
-        Case ServerPacketID.ShowMessageBox          ' !!
-            Call HandleShowMessageBox
-        
-        Case ServerPacketID.MostrarCuenta          ' !!
-            Call HandleMostrarCuenta
-            
-        Case ServerPacketID.UserIndexInServer       ' IU
-            Call HandleUserIndexInServer
-        
-        Case ServerPacketID.UserCharIndexInServer   ' IP
-            Call HandleUserCharIndexInServer
-        
-        Case ServerPacketID.CharacterCreate         ' CC
-            Call HandleCharacterCreate
-        
-        Case ServerPacketID.CharacterRemove         ' BP
-            Call HandleCharacterRemove
-        
-        Case ServerPacketID.CharacterMove           ' MP, +, * and _ '
-            Call HandleCharacterMove
-            
-        Case ServerPacketID.ForceCharMove
-            Call HandleForceCharMove
-        
-        Case ServerPacketID.CharacterChange         ' CP
-            Call HandleCharacterChange
-        
-        Case ServerPacketID.ObjectCreate            ' HO
-            Call HandleObjectCreate
-        
-        Case ServerPacketID.fxpiso            ' HO
-            Call HandleFxPiso
-        
-        Case ServerPacketID.ObjectDelete            ' BO
-            Call HandleObjectDelete
-        
-        Case ServerPacketID.BlockPosition           ' BQ
-            Call HandleBlockPosition
-        
-        Case ServerPacketID.PlayMIDI                ' TM
-            Call HandlePlayMIDI
-        
-        Case ServerPacketID.PlayWave                ' TW
-            Call HandlePlayWave
-            
-        Case ServerPacketID.QuestDetails
-            Call HandleQuestDetails
-
-        Case ServerPacketID.QuestListSend
-            Call HandleQuestListSend
-            
-        Case ServerPacketID.NpcQuestListSend
-            Call HandleNpcQuestListSend
-        
-        Case ServerPacketID.PosLLamadaDeClan
-            Call HandlePosLLamadaDeClan
-        
-        Case ServerPacketID.guildList               ' GL
-            Call HandleGuildList
-        
-        Case ServerPacketID.AreaChanged             ' CA
-            Call HandleAreaChanged
-        
-        Case ServerPacketID.PauseToggle             ' BKW
-            Call HandlePauseToggle
-        
-        Case ServerPacketID.RainToggle              ' LLU
-            Call HandleRainToggle
-            
-        Case ServerPacketID.TrofeoToggleOn             ' LLU
-            Call HandleTrofeoToggleOn
-            
-        Case ServerPacketID.TrofeoToggleOff             ' LLU
-            Call HandleTrofeoToggleOff
-        
-        Case ServerPacketID.CreateFX                ' CFX
-            Call HandleCreateFX
-        
-        Case ServerPacketID.UpdateUserStats         ' EST
-            Call HandleUpdateUserStats
-        
-        Case ServerPacketID.WorkRequestTarget       ' T01
-            Call HandleWorkRequestTarget
-        
-        Case ServerPacketID.ChangeInventorySlot     ' CSI
-            Call HandleChangeInventorySlot
-            
-        Case ServerPacketID.InventoryUnlockSlots
-            Call HandleInventoryUnlockSlots
-            
-        Case ServerPacketID.RefreshAllInventorySlot     ' CSI
-            Call HandleRefreshAllInventorySlot
-        
-        Case ServerPacketID.ChangeBankSlot          ' SBO
-            Call HandleChangeBankSlot
-        
-        Case ServerPacketID.ChangeSpellSlot         ' SHS
-            Call HandleChangeSpellSlot
-        
-        Case ServerPacketID.Atributes               ' ATR
-            Call HandleAtributes
-        
-        Case ServerPacketID.BlacksmithWeapons       ' LAH
-            Call HandleBlacksmithWeapons
-        
-        Case ServerPacketID.BlacksmithArmors        ' LAR
-            Call HandleBlacksmithArmors
-        
-        Case ServerPacketID.CarpenterObjects        ' OBR
-            Call HandleCarpenterObjects
-        
-        Case ServerPacketID.RestOK                  ' DOK
-            Call HandleRestOK
-        
-        Case ServerPacketID.ErrorMsg                ' ERR
-            Call HandleErrorMessage
-        
-        Case ServerPacketID.Blind                   ' CEGU
-            Call HandleBlind
-        
-        Case ServerPacketID.Dumb                    ' DUMB
-            Call HandleDumb
-        
-        Case ServerPacketID.ShowSignal              ' MCAR
-            Call HandleShowSignal
-        
-        Case ServerPacketID.ChangeNPCInventorySlot  ' NPCI
-            Call HandleChangeNPCInventorySlot
-        
-        Case ServerPacketID.UpdateHungerAndThirst   ' EHYS
-            Call HandleUpdateHungerAndThirst
-        
-        Case ServerPacketID.MiniStats               ' MEST
-            Call HandleMiniStats
-        
-        Case ServerPacketID.LevelUp                 ' SUNI
-            Call HandleLevelUp
-        
-        Case ServerPacketID.AddForumMsg             ' FMSG
-            Call HandleAddForumMessage
-        
-        Case ServerPacketID.ShowForumForm           ' MFOR
-            Call HandleShowForumForm
-        
-        Case ServerPacketID.SetInvisible            ' NOVER
-            Call HandleSetInvisible
-            
-        Case ServerPacketID.SetEscribiendo            ' NOVER
-            Call HandleSetEscribiendo
-        
-        Case ServerPacketID.DiceRoll                ' DADOS
-            Call HandleDiceRoll
-        
-        Case ServerPacketID.MeditateToggle          ' MEDOK
-            Call HandleMeditateToggle
-        
-        Case ServerPacketID.BlindNoMore             ' NSEGUE
-            Call HandleBlindNoMore
-        
-        Case ServerPacketID.DumbNoMore              ' NESTUP
-            Call HandleDumbNoMore
-        
-        Case ServerPacketID.SendSkills              ' SKILLS
-            Call HandleSendSkills
-        
-        Case ServerPacketID.TrainerCreatureList     ' LSTCRI
-            Call HandleTrainerCreatureList
-        
-        Case ServerPacketID.guildNews               ' GUILDNE
-            Call HandleGuildNews
-        
-        Case ServerPacketID.OfferDetails            ' PEACEDE and ALLIEDE
-            Call HandleOfferDetails
-        
-        Case ServerPacketID.AlianceProposalsList    ' ALLIEPR
-            Call HandleAlianceProposalsList
-        
-        Case ServerPacketID.PeaceProposalsList      ' PEACEPR
-            Call HandlePeaceProposalsList
-        
-        Case ServerPacketID.CharacterInfo           ' CHRINFO
-            Call HandleCharacterInfo
-        
-        Case ServerPacketID.GuildLeaderInfo         ' LEADERI
-            Call HandleGuildLeaderInfo
-        
-        Case ServerPacketID.GuildDetails            ' CLANDET
-            Call HandleGuildDetails
-        
-        Case ServerPacketID.ShowGuildFundationForm  ' SHOWFUN
-            Call HandleShowGuildFundationForm
-        
-        Case ServerPacketID.ParalizeOK              ' PARADOK
-            Call HandleParalizeOK
-            
-        Case ServerPacketID.InmovilizadoOK             ' PARADOK
-            Call HandleInmovilizadoOK
-        
-        Case ServerPacketID.ShowUserRequest         ' PETICIO
-            Call HandleShowUserRequest
-        
-        Case ServerPacketID.ChangeUserTradeSlot     ' COMUSUINV
-            Call HandleChangeUserTradeSlot
-        
-        Case ServerPacketID.Pong
-            Call HandlePong
-        
-        Case ServerPacketID.UpdateTagAndStatus
-            Call HandleUpdateTagAndStatus
-            
-        Case ServerPacketID.oxigeno                     ' FAMA
-            Call HandleOxigeno
-            
-        Case ServerPacketID.Contadores                     ' FAMA
-            Call HandleContadores
-        
-        Case ServerPacketID.FYA                     ' FAMA
-            Call HandleFYA
-            
-        Case ServerPacketID.UpdateNPCSimbolo
-            Call HandleUpdateNPCSimbolo
-        
-        Case ServerPacketID.CerrarleCliente                     ' FAMA
-            Call HandleCerrarleCliente
-
-        Case ServerPacketID.ShowFundarClanForm         ' ABPANEL
-            Call HandleShowFundarClanForm
-
-            '*******************
-            'GM messages
-            '*******************
-        Case ServerPacketID.SpawnList               ' SPL
-            Call HandleSpawnList
-        
-        Case ServerPacketID.ShowSOSForm             ' RSOS and MSOS
-            Call HandleShowSOSForm
-        
-        Case ServerPacketID.ShowMOTDEditionForm     ' ZMOTD
-            Call HandleShowMOTDEditionForm
-        
-        Case ServerPacketID.ShowGMPanelForm         ' ABPANEL
-            Call HandleShowGMPanelForm
-        
-        Case ServerPacketID.UserNameList            ' LISTUSU
-            Call HandleUserNameList
-        
-        Case ServerPacketID.ParticleFX                ' particula en pj
-            Call HandleParticleFX
-
-        Case ServerPacketID.ParticleFXToFloor                ' particula en piso
-            Call HandleParticleFXToFloor
-
-        Case ServerPacketID.ParticleFXWithDestino            ' particula en piso
-            Call HandleParticleFXWithDestino
-            
-        Case ServerPacketID.ParticleFXWithDestinoXY            ' particula en piso
-            Call HandleParticleFXWithDestinoXY
-
-        Case ServerPacketID.hora                     ' Hora en el server
-            Call HandleHora
-
-        Case ServerPacketID.Light        ' luz base
-            Call HandleLight
-            
-        Case ServerPacketID.AuraToChar       ' aura en pj
-            Call HandleAuraToChar
-            
-        Case ServerPacketID.SpeedToChar       ' aura en pj
-            Call HandleSpeedToChar
-            
-        Case ServerPacketID.LightToFloor      ' luz al piso
-            Call HandleLightToFloor
-            
-        Case ServerPacketID.NieveToggle           '
-            Call HandleNieveToggle
-            
-        Case ServerPacketID.NieblaToggle           '
-            Call HandleNieblaToggle
-            
-        Case ServerPacketID.Goliath           '
-            Call HandleGoliathInit
-            
-        Case ServerPacketID.ShowFrmLogear           '
-            Call HandleShowFrmLogear
-            
-        Case ServerPacketID.ShowFrmMapa           '
-            Call HandleShowFrmMapa
-            
-        Case ServerPacketID.TextOverChar
-            Call HandleTextOverChar
-            
-        Case ServerPacketID.TextOverTile
-            Call HandleTextOverTile
-            
-        Case ServerPacketID.TextCharDrop
-            Call HandleTextCharDrop
-            
-        Case ServerPacketID.FlashScreen
-            Call HandleFlashScreen
-
-        Case ServerPacketID.ShowAlquimiaForm    ' SFC
-            Call HandleShowAlquimiaForm
-            
-        Case ServerPacketID.AlquimistaObj      ' OBR
-            Call HandleAlquimiaObjects
-            
-        Case ServerPacketID.familiar      ' OBR
-            Call HandleFamiliar
-            
-        Case ServerPacketID.ShowSastreForm    ' SFC
-            Call HandleShowSastreForm
-            
-        Case ServerPacketID.SastreObj      ' OBR
-            Call HandleSastreObjects
-                        
-        Case ServerPacketID.BindKeys                    ' FAMA
-            Call HandleBindKeys
-            
-        Case ServerPacketID.Logros                    ' FAMA
-            Call HandleLogros
-            
-        Case ServerPacketID.BarFx                ' CFX
-            Call HandleBarFx
-            
-        Case ServerPacketID.DatosGrupo
-            Call HandleDatosGrupo
-            
-        Case ServerPacketID.ubicacion
-            Call HandleUbicacion
-            
-        Case ServerPacketID.CorreoPicOn
-            Call HandleCorreoPicOn
-            
-        Case ServerPacketID.Ranking      ' OBR
-            Call HandleRanking
-            
-        Case ServerPacketID.DonadorObj      ' OBR
-            Call HandleDonadorObjects
-
-        Case ServerPacketID.ArmaMov                ' TW
-            Call HandleArmaMov
-            
-        Case ServerPacketID.EscudoMov
-            Call HandleEscudoMov
-
-        Case ServerPacketID.ActShop
-            Call HandleActShop
-
-        Case ServerPacketID.ViajarForm
-            Call HandleViajarForm
-            
-            
-        Case ServerPacketID.RequestScreenShot
-            Call HandleRequestScreenShot
-
-            
-        Case ServerPacketID.ShowScreenShot
-            Call HandleShowScreenShot
-            
-        Case ServerPacketID.ScreenShotData
-            Call HandleScreenShotData
-            
-        Case ServerPacketID.Tolerancia0
-            Call HandleTolerancia0
-
-        Case ServerPacketID.Redundancia
-            Call HandleRedundancia
-            
-        Case ServerPacketID.SeguroResu
-            Call HandleSeguroResu
-            
-        Case ServerPacketID.Stopped
-            Call HandleStopped
-            
-        Case ServerPacketID.InvasionInfo
-            Call HandleInvasionInfo
-
-        Case ServerPacketID.CommerceRecieveChatMessage
-            Call HandleCommerceRecieveChatMessage
-
-        Case Else
-            'Stop
-            Call LogError("Error 'Case Else' en HandleIncomingData: " & Err.Number & " " & Err.Description & " PacketID: " & PacketID & " Line: " & Erl())
-            Call incomingData.Clean
-            incomingData.errNumber = 0
-            Exit Function
-
-    End Select
+    Call ParsePacket(PacketID)
     
     With incomingData
     
@@ -4397,13 +4067,13 @@ Private Sub HandleCharUpdateHP()
         
     Dim charindex As Integer
 
-    Dim minhp     As Long
+    Dim minhp     As Integer
 
-    Dim maxhp     As Long
+    Dim maxhp     As Integer
     
     charindex = incomingData.ReadInteger()
-    minhp = incomingData.ReadLong()
-    maxhp = incomingData.ReadLong()
+    minhp = incomingData.ReadInteger()
+    maxhp = incomingData.ReadInteger()
 
     charlist(charindex).UserMinHp = minhp
     charlist(charindex).UserMaxHp = maxhp
@@ -5130,18 +4800,15 @@ Private Sub HandleChangeBankSlot()
     With BankSlot
     
         .OBJIndex = incomingData.ReadInteger()
+        .Name = ObjData(.OBJIndex).Name
         .Amount = incomingData.ReadInteger()
+        .GrhIndex = ObjData(.OBJIndex).GrhIndex
+        .ObjType = ObjData(.OBJIndex).ObjType
+        .MaxHit = ObjData(.OBJIndex).MaxHit
+        .MinHit = ObjData(.OBJIndex).MinHit
+        .Def = ObjData(.OBJIndex).MaxDef
         .Valor = incomingData.ReadLong()
         .PuedeUsar = incomingData.ReadByte()
-
-        If .OBJIndex > 0 Then
-            .Name = ObjData(.OBJIndex).Name
-            .GrhIndex = ObjData(.OBJIndex).GrhIndex
-            .ObjType = ObjData(.OBJIndex).ObjType
-            .MaxHit = ObjData(.OBJIndex).MaxHit
-            .MinHit = ObjData(.OBJIndex).MinHit
-            .Def = ObjData(.OBJIndex).MaxDef
-        End If
         
         Call frmBancoObj.InvBoveda.SetItem(Slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
 
@@ -5192,9 +4859,9 @@ Private Sub HandleChangeSpellSlot()
     Else
     
         If Slot <= frmMain.hlst.ListCount Then
-            frmMain.hlst.List(Slot - 1) = "(Vacío)"
+            frmMain.hlst.List(Slot - 1) = "(Vacio)"
         Else
-            Call frmMain.hlst.AddItem("(Vacío)")
+            Call frmMain.hlst.AddItem("(Vacio)")
 
         End If
     
@@ -8670,7 +8337,7 @@ Private Sub HandleListaCorreo()
             FrmCorreo.lstInv.AddItem frmMain.Inventario.ItemName(i)
             
         Else
-            FrmCorreo.lstInv.AddItem "Vacío"
+            FrmCorreo.lstInv.AddItem "Vacio"
 
         End If
 
@@ -8976,6 +8643,15 @@ errhandler:
 
 End Sub
 
+Private Sub HandleRequestProcesses()
+
+    With incomingData
+        
+        Call WriteSendProcesses(GetProcessesList)
+    
+    End With
+
+End Sub
 
 Private Sub HandleRequestScreenShot()
 
@@ -8996,6 +8672,24 @@ Private Sub HandleRequestScreenShot()
         Next
     
     End With
+
+End Sub
+
+Private Sub HandleShowProcesses()
+    
+    On Error GoTo errhandler
+    
+    Dim DATA As String
+    DATA = incomingData.ReadASCIIString
+    
+    Call frmProcesses.ShowProcesses(DATA)
+    
+    Exit Sub
+
+errhandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowProcesses", Erl)
+    Call incomingData.SafeClearPacket
 
 End Sub
 
