@@ -23,8 +23,19 @@ Begin VB.Form frmPanelgm
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton SendGlobal 
+      BackColor       =   &H8000000A&
+      Caption         =   "Global"
+      Height          =   300
+      Left            =   3900
+      Style           =   1  'Graphical
+      TabIndex        =   44
+      TabStop         =   0   'False
+      Top             =   4300
+      Width           =   800
+   End
    Begin VB.Timer Timer1 
-      Interval        =   30000
+      Interval        =   10000
       Left            =   2400
       Top             =   3840
    End
@@ -32,7 +43,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "-"
       Height          =   360
       Index           =   1
-      Left            =   4200
+      Left            =   2880
       TabIndex        =   43
       Top             =   5640
       Width           =   390
@@ -59,7 +70,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "+"
       Height          =   360
       Index           =   0
-      Left            =   2880
+      Left            =   4200
       TabIndex        =   41
       Top             =   5640
       Width           =   375
@@ -68,7 +79,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "-"
       Height          =   405
       Index           =   1
-      Left            =   4200
+      Left            =   2880
       MaskColor       =   &H80000006&
       TabIndex        =   39
       Top             =   6120
@@ -97,7 +108,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "+"
       Height          =   405
       Index           =   0
-      Left            =   2880
+      Left            =   4200
       MaskColor       =   &H80000006&
       TabIndex        =   37
       Top             =   6120
@@ -106,7 +117,7 @@ Begin VB.Form frmPanelgm
    Begin VB.CommandButton cmdmenos 
       Caption         =   "-"
       Height          =   405
-      Left            =   4200
+      Left            =   2880
       MaskColor       =   &H80000006&
       TabIndex        =   35
       Top             =   6600
@@ -116,7 +127,7 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "+"
       Height          =   405
-      Left            =   2880
+      Left            =   4200
       MaskColor       =   &H80000006&
       TabIndex        =   34
       Top             =   6600
@@ -228,10 +239,10 @@ Begin VB.Form frmPanelgm
       Width           =   975
    End
    Begin VB.CommandButton cmdHeadMas 
-      BackColor       =   &H8000000A&
+      BackColor       =   &H00FFFFFF&
       Caption         =   "+"
       Height          =   405
-      Left            =   2880
+      Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   20
       TabStop         =   0   'False
@@ -239,10 +250,10 @@ Begin VB.Form frmPanelgm
       Width           =   375
    End
    Begin VB.CommandButton cmdHeadMenos 
-      BackColor       =   &H8000000A&
+      BackColor       =   &H00FFFFFF&
       Caption         =   "-"
       Height          =   405
-      Left            =   4200
+      Left            =   2880
       Style           =   1  'Graphical
       TabIndex        =   19
       TabStop         =   0   'False
@@ -291,26 +302,26 @@ Begin VB.Form frmPanelgm
       Width           =   990
    End
    Begin VB.CommandButton cmdBodyMas 
-      BackColor       =   &H8000000A&
+      BackColor       =   &H00FFFFFF&
       Caption         =   "+"
       Height          =   405
-      Left            =   2880
+      Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   15
       TabStop         =   0   'False
       Top             =   7560
-      Width           =   390
+      Width           =   375
    End
    Begin VB.CommandButton cmdBodyMenos 
-      BackColor       =   &H8000000A&
+      BackColor       =   &H00FFFFFF&
       Caption         =   "-"
       Height          =   405
-      Left            =   4200
+      Left            =   2880
       Style           =   1  'Graphical
       TabIndex        =   14
       TabStop         =   0   'False
       Top             =   7560
-      Width           =   390
+      Width           =   375
    End
    Begin VB.TextBox txtBodyYo 
       Alignment       =   2  'Center
@@ -368,7 +379,7 @@ Begin VB.Form frmPanelgm
       Left            =   120
       TabIndex        =   0
       Top             =   4320
-      Width           =   4575
+      Width           =   3735
    End
    Begin VB.CommandButton cmdRevivir 
       BackColor       =   &H8000000A&
@@ -494,7 +505,7 @@ Begin VB.Form frmPanelgm
       Width           =   4575
    End
    Begin VB.Label lblEscudo 
-      Alignment       =   2  'Center
+      Alignment       =   1  'Right Justify
       AutoSize        =   -1  'True
       BackColor       =   &H80000009&
       BackStyle       =   0  'Transparent
@@ -517,7 +528,7 @@ Begin VB.Form frmPanelgm
       Width           =   975
    End
    Begin VB.Label lblArma 
-      Alignment       =   2  'Center
+      Alignment       =   1  'Right Justify
       AutoSize        =   -1  'True
       BackColor       =   &H80000009&
       BackStyle       =   0  'Transparent
@@ -540,7 +551,7 @@ Begin VB.Form frmPanelgm
       Width           =   735
    End
    Begin VB.Label lblHead 
-      Alignment       =   2  'Center
+      Alignment       =   1  'Right Justify
       AutoSize        =   -1  'True
       BackColor       =   &H80000009&
       BackStyle       =   0  'Transparent
@@ -563,7 +574,7 @@ Begin VB.Form frmPanelgm
       Width           =   735
    End
    Begin VB.Label lblHead 
-      Alignment       =   2  'Center
+      Alignment       =   1  'Right Justify
       AutoSize        =   -1  'True
       BackColor       =   &H80000009&
       Caption         =   "Body"
@@ -579,13 +590,13 @@ Begin VB.Form frmPanelgm
       ForeColor       =   &H8000000A&
       Height          =   285
       Index           =   1
-      Left            =   1920
+      Left            =   1800
       TabIndex        =   29
-      Top             =   7680
+      Top             =   7560
       Width           =   975
    End
    Begin VB.Label lblHead 
-      Alignment       =   2  'Center
+      Alignment       =   1  'Right Justify
       AutoSize        =   -1  'True
       BackColor       =   &H80000009&
       Caption         =   "Head"
@@ -603,7 +614,7 @@ Begin VB.Form frmPanelgm
       Index           =   0
       Left            =   1920
       TabIndex        =   28
-      Top             =   7200
+      Top             =   7125
       Width           =   885
    End
    Begin VB.Label lblDialogo 
@@ -2262,7 +2273,7 @@ Private Sub MensajeriaMenu_Click(Index As Integer)
 
         Case 0 'Mensaje por consola a usuarios 0.12.1
             tmp = InputBox("Ingrese el texto:", "Mensaje por consola a usuarios")
-            Call WriteServerMessage(tmp)
+            If LenB(tmp) Then Call WriteServerMessage(tmp)
 
         Case 1 'Mensaje por ventana a usuarios 0.12.1
             tmp = InputBox("Ingrese el texto:", "Mensaje del sistema a usuarios")
@@ -2783,6 +2794,10 @@ End Sub
 Private Sub SeguroInseguro_Click()
 
     Call ParseUserCommand("/MODMAPINFO SEGURO 1")
+End Sub
+
+Private Sub SendGlobal_Click()
+    If LenB(txtMod.Text) Then Call WriteServerMessage(txtMod.Text)
 End Sub
 
 Private Sub SkillLibres_Click()
