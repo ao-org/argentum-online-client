@@ -5130,15 +5130,18 @@ Private Sub HandleChangeBankSlot()
     With BankSlot
     
         .OBJIndex = incomingData.ReadInteger()
-        .Name = ObjData(.OBJIndex).Name
         .Amount = incomingData.ReadInteger()
-        .GrhIndex = ObjData(.OBJIndex).GrhIndex
-        .ObjType = ObjData(.OBJIndex).ObjType
-        .MaxHit = ObjData(.OBJIndex).MaxHit
-        .MinHit = ObjData(.OBJIndex).MinHit
-        .Def = ObjData(.OBJIndex).MaxDef
         .Valor = incomingData.ReadLong()
         .PuedeUsar = incomingData.ReadByte()
+
+        If .OBJIndex > 0 Then
+            .Name = ObjData(.OBJIndex).Name
+            .GrhIndex = ObjData(.OBJIndex).GrhIndex
+            .ObjType = ObjData(.OBJIndex).ObjType
+            .MaxHit = ObjData(.OBJIndex).MaxHit
+            .MinHit = ObjData(.OBJIndex).MinHit
+            .Def = ObjData(.OBJIndex).MaxDef
+        End If
         
         Call frmBancoObj.InvBoveda.SetItem(Slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
 
