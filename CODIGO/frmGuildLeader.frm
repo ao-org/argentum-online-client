@@ -426,6 +426,9 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanaadminclan.bmp")
     EXPBAR.Picture = LoadInterface("barra-nivel-clan.bmp")
+    
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+    
     Call LoadButtons
     Exit Sub
 
@@ -456,6 +459,8 @@ End Sub
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Form_MouseMove_Err
+    
+    Call MoverForm(Me.hwnd)
     
     porciento.Visible = True
     expcount.Visible = False
