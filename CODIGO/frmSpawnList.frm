@@ -168,7 +168,7 @@ Public Sub FillList()
     Dim i As Long
 
     For i = 1 To UBound(NpcData())
-        If NpcData(i).Name <> "Vacio" Then
+        If NpcData(i).Name <> "Vacío" Then
             If InStr(1, Tilde(NpcData(i).Name), Tilde(Filter.Text)) Then
                 Call lstCriaturas.AddItem(i & " - " & NpcData(i).Name)
                 lstCriaturas.ItemData(lstCriaturas.NewIndex) = i

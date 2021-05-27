@@ -2005,7 +2005,7 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         Char = Asc(mid$(temp, i, 1))
         
         If (Char < 65 Or Char > 90) And Char <> 32 Then
-            Error = "Sólo se permiten letras y espacios."
+            Error = "Sólo se permites letras y espacios."
             Exit Function
         
         ElseIf Char = 32 And LastChar = 32 Then

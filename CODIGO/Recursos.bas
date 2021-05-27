@@ -1485,7 +1485,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).Name = Leer.GetValue("npc" & Npc, "Name")
 
         If NpcData(Npc).Name = "" Then
-            NpcData(Npc).Name = "Vacio"
+            NpcData(Npc).Name = "Vacío"
 
         End If
 

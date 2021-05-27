@@ -241,7 +241,7 @@ Private Sub LoadButtons()
                                                 "boton-sm-menos-off.bmp", Me)
 End Sub
 
-Private Sub cmdCerrar_Click()
+Private Sub cmdcerrar_Click()
     Unload Me
 End Sub
 
@@ -328,7 +328,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCarp.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCarp.Form_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -356,7 +356,7 @@ Private Sub List1_Click()
     Exit Sub
 
 List1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCarp.List1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCarp.List1_Click", Erl)
     Resume Next
     
 End Sub
@@ -398,7 +398,7 @@ Private Sub lstArmas_Click()
     Exit Sub
 
 lstArmas_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCarp.lstArmas_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCarp.lstArmas_Click", Erl)
     Resume Next
     
 End Sub

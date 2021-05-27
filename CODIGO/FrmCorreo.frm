@@ -442,7 +442,7 @@ Private Sub cmdClean_Click()
         If frmMain.Inventario.OBJIndex(i) <> 0 Then
             lstInv.AddItem frmMain.Inventario.ItemName(i) & " - " & frmMain.Inventario.Amount(i)
         Else
-            lstInv.AddItem "Vacio"
+            lstInv.AddItem "Vacío"
 
         End If
 
