@@ -296,8 +296,15 @@ Public Sub WriteSafeToggle()
     
     On Error GoTo WriteSafeToggle_Err
     
-    Call outgoingData.WriteID(ClientPacketID.SafeToggle)
-    Call outgoingData.EndPacket
+    If SeguroGame = True Then
+        If MsgBox("¿Estás seguro que desea desactivar el seguro de ataque?", vbYesNo + vbQuestion, "Desactivar seguro de ataque") = vbYes Then
+            Call outgoingData.WriteID(ClientPacketID.SafeToggle)
+            Call outgoingData.EndPacket
+        End If
+    Else
+            Call outgoingData.WriteID(ClientPacketID.SafeToggle)
+            Call outgoingData.EndPacket
+    End If
     
     Exit Sub
 
