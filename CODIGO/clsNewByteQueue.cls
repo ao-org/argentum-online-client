@@ -1628,6 +1628,7 @@ Public Function WriteID(ByVal value As Byte) As Long
     End If
 
     Call EndPacket
+    
     #If BYTE_QUEUE_DEBUG = 1 Then
         'Debug.Print "WriteID: " & value
     #End If
@@ -1687,7 +1688,7 @@ Public Function ValidCRC() As Boolean
 
 End Function
 
-Public Function ReadID() As Byte
+Public Function ReadID() As Integer
 
     If GetHeaderSize > queueLength Then
         Call ErrRaise(NOT_ENOUGH_DATA)
@@ -1696,7 +1697,7 @@ Public Function ReadID() As Byte
 
     End If
 
-    Dim PacketID As Byte
+    Dim PacketID As Integer
 
     PacketID = ReadInteger()
     LastLength = ReadInteger()
