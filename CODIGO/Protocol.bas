@@ -4397,13 +4397,13 @@ Private Sub HandleCharUpdateHP()
         
     Dim charindex As Integer
 
-    Dim minhp     As Integer
+    Dim minhp     As Long
 
-    Dim maxhp     As Integer
+    Dim maxhp     As Long
     
     charindex = incomingData.ReadInteger()
-    minhp = incomingData.ReadInteger()
-    maxhp = incomingData.ReadInteger()
+    minhp = incomingData.ReadLong()
+    maxhp = incomingData.ReadLong()
 
     charlist(charindex).UserMinHp = minhp
     charlist(charindex).UserMaxHp = maxhp
@@ -5189,9 +5189,9 @@ Private Sub HandleChangeSpellSlot()
     Else
     
         If Slot <= frmMain.hlst.ListCount Then
-            frmMain.hlst.List(Slot - 1) = "(Vacio)"
+            frmMain.hlst.List(Slot - 1) = "(Vacío)"
         Else
-            Call frmMain.hlst.AddItem("(Vacio)")
+            Call frmMain.hlst.AddItem("(Vacío)")
 
         End If
     
@@ -8667,7 +8667,7 @@ Private Sub HandleListaCorreo()
             FrmCorreo.lstInv.AddItem frmMain.Inventario.ItemName(i)
             
         Else
-            FrmCorreo.lstInv.AddItem "Vacio"
+            FrmCorreo.lstInv.AddItem "Vacío"
 
         End If
 

@@ -104,16 +104,16 @@ Begin VB.Form frmComerciar
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C0C0C0&
-      Height          =   495
+      Height          =   375
       Left            =   2520
       TabIndex        =   4
-      Top             =   5820
+      Top             =   5940
       Width           =   3135
    End
    Begin VB.Label lblnombre 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "(Vacio)"
+      Caption         =   "(Vacío)"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   6.75
@@ -124,7 +124,7 @@ Begin VB.Form frmComerciar
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   255
+      Height          =   375
       Left            =   2520
       TabIndex        =   3
       Top             =   5610
