@@ -504,7 +504,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                 Dim k As Object
 
-                If StopCreandoCuenta = True Then Exit Sub
                 
                 UserName = frmConnect.txtNombre.Text
                 
