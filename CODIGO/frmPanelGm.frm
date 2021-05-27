@@ -23,6 +23,11 @@ Begin VB.Form frmPanelgm
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Timer Timer1 
+      Interval        =   30000
+      Left            =   2400
+      Top             =   3840
+   End
    Begin VB.CommandButton cmdEscudo 
       Caption         =   "-"
       Height          =   360
@@ -2198,7 +2203,7 @@ Private Sub List1_Click()
 
     ind = Val(ReadField(2, List1.List(List1.ListIndex), Asc("@")))
     txtMsg = List2.List(List1.ListIndex)
-
+    
     
     Exit Sub
 
@@ -2855,6 +2860,12 @@ Temporal_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Temporal_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub Timer1_Timer()
+    List1.Clear
+    List2.Clear
+    Call WriteSOSShowList
 End Sub
 
 Private Sub torneo_cancelar_Click()
