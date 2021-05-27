@@ -770,7 +770,7 @@ Public Sub InitializePacketList()
 
 End Sub
 
-Private Sub ParsePacket(ByVal packetIndex As Long, ByVal UserIndex As Integer)
+Private Sub ParsePacket(ByVal packetIndex As Long)
         
     If packetIndex > UBound(PacketList()) Then Exit Sub
     
@@ -783,7 +783,7 @@ Private Sub ParsePacket(ByVal packetIndex As Long, ByVal UserIndex As Integer)
     'ahí obtenemos todos los datos o lo que sea
  
     'llamamos al sub mediante su dirección en memoria
-    Call CallWindowProc(PacketList(packetIndex), UserIndex, 0&, 0&, 0&)
+    Call CallWindowProc(PacketList(packetIndex), 0&, 0&, 0&, 0&)
  
 End Sub
 
@@ -820,7 +820,7 @@ Public Function HandleIncomingData() As Boolean
 
     InBytes = InBytes + incomingData.Length
 
-    Call ParsePacket(PacketID, UserIndex)
+    Call ParsePacket(PacketID)
     
     With incomingData
     
