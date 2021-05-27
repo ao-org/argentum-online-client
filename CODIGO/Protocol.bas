@@ -772,8 +772,10 @@ End Sub
 
 Private Sub ParsePacket(ByVal packetIndex As Long)
         
-     If packetIndex > UBound(PacketList()) Then Exit Sub
-       
+    If packetIndex > UBound(PacketList()) Then Exit Sub
+    
+    If PacketList(packetIndex) = 0 Then Exit Sub
+    
     'TODO: me parece que los handles no podrían
     'tener más de 4 argumentos (cada 0& es un argumento),
     'igual esto se puede obviar utilizando un poco el protocolo
