@@ -1145,9 +1145,9 @@ End Function
 Public Function PeekLength() As Integer
     #If BYTE_QUEUE_DEBUG = 1 Then
         ' En Debug escribimos 1byte antes del PacketID y otro Byte antes del PacketLength
-        CopyMemory PeekLength, DATA(queuePos + 3), 2
+        CopyMemory PeekLength, DATA(queuePos + 4), 2
     #Else
-        CopyMemory PeekLength, DATA(queuePos + 1), 2
+        CopyMemory PeekLength, DATA(queuePos + 2), 2
     #End If
 
 End Function
@@ -1657,9 +1657,9 @@ End Function
 
 Public Function GetHeaderSize() As Byte
     #If BYTE_QUEUE_DEBUG = 1 Then
-        GetHeaderSize = 5
+        GetHeaderSize = 6
     #Else
-        GetHeaderSize = 3
+        GetHeaderSize = 4
     #End If
 
 End Function
@@ -1770,9 +1770,9 @@ Public Sub EndPacket()
         packetLength = queueLength - PacketStartPosition + GetCRCSize
 
         #If BYTE_QUEUE_DEBUG = 1 Then
-            CopyMemory DATA(PacketStartPosition + 3), packetLength, 2
+            CopyMemory DATA(PacketStartPosition + 4), packetLength, 2
         #Else
-            CopyMemory DATA(PacketStartPosition + 1), packetLength, 2
+            CopyMemory DATA(PacketStartPosition + 2), packetLength, 2
         #End If
 
         #If NO_CRC = 0 Then
