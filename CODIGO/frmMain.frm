@@ -2048,7 +2048,6 @@ Form_Activate_Err:
     Resume Next
     
 End Sub
-
 Private Sub Second_Timer()
     If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
 End Sub
@@ -4717,7 +4716,10 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
 
+    Call Protocol.InitializePacketList
+
     Call FormParser.Parse_Form(frmMain)
+    
     MenuNivel = 1
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
 

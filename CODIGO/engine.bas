@@ -1593,12 +1593,12 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         Call RGBAList(NameColor, 210, 105, 30)
                         Call InitGrh(TempGrh, 839)
                         
-                        If .UserMinHp > 0 Then
+                        If .UserMaxHp > 0 Then
                             Dim TempColor(3) As RGBA
                             Call RGBAList(TempColor, 255, 255, 255, 200)
                             Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY + 10, 1, 0, TempColor, False, 0, 0, 0)
-                           
-                            Engine_Draw_Box PixelOffsetX + 4, PixelOffsetY + 36, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
+
+                            Engine_Draw_Box PixelOffsetX + 5, PixelOffsetY + 37, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
                         End If
                     End If
 
@@ -1656,7 +1656,12 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 OffsetYname = 8
                                 OffsetYClan = 6
                                 Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, Color, True, True, False
-                                Engine_Draw_Box_Border PixelOffsetX + 3, PixelOffsetY + 31, (((.UserMinHp + 1 / 100) / (.UserMaxHp + 1 / 100))) * 26, 4, RGBA_From_Comp(255, 200, 0, 0), RGBA_From_Comp(0, 200, 200, 200)
+                                
+                                If .UserMaxHp <> 0 Then
+                                    Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 37, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, 200, 0, 0), RGBA_From_Comp(0, 200, 200, 200)
+                                Else
+                                    Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 37, 26, 4, RGBA_From_Comp(255, 200, 0, 0), RGBA_From_Comp(0, 200, 200, 200)
+                                End If
                             End If
                         End If
                     End If
@@ -1806,7 +1811,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
             Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY - 55, 1, 0, Color, False, 0, 0, 0)
             
-            Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY - 29, (((.BarTime / 100) / (.MaxBarTime / 100))) * 24, 3, RGBA_From_Comp(0, 128, 128, 255), RGBA_From_Comp(0, 0, 0, 255)
+            Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY - 29, .BarTime / .MaxBarTime * 24, 3, RGBA_From_Comp(0, 128, 128, 255), RGBA_From_Comp(0, 0, 0, 255)
 
             .BarTime = .BarTime + (timerTicksPerFrame * 4)
                              
