@@ -579,7 +579,7 @@ End Enum
 
 ' Rezniaq: Sacamos alv la busqueda lineal que hacia el Select Case de la funcion HandleIncomingData.
 Private PacketList(0 To ServerPacketID.LastPacketID) As Long
-Private Declare Function CallWindowProc Lib "user32.dll" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hwnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Private Declare Sub CallHandle Lib "ao20.dll" (ByVal Address As Long, ByVal UserIndex As Integer)
 
 Public Sub InitializePacketList()
 
@@ -619,7 +619,7 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.UserHittedByUser) = GetAddress(AddressOf HandleUserHittedByUser)
     PacketList(ServerPacketID.UserHittedUser) = GetAddress(AddressOf HandleUserHittedUser)
     PacketList(ServerPacketID.ChatOverHead) = GetAddress(AddressOf HandleChatOverHead)
-    'PacketList(ServerPacketID.ConsoleMsg) = GetAddress(AddressOf HandleConsoleMsg)
+    PacketList(ServerPacketID.ConsoleMsg) = GetAddress(AddressOf HandleConsoleMessage)
     PacketList(ServerPacketID.GuildChat) = GetAddress(AddressOf HandleGuildChat)
     PacketList(ServerPacketID.ShowMessageBox) = GetAddress(AddressOf HandleShowMessageBox)
     PacketList(ServerPacketID.MostrarCuenta) = GetAddress(AddressOf HandleMostrarCuenta)
@@ -652,7 +652,7 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.BlacksmithArmors) = GetAddress(AddressOf HandleBlacksmithArmors)
     PacketList(ServerPacketID.CarpenterObjects) = GetAddress(AddressOf HandleCarpenterObjects)
     PacketList(ServerPacketID.RestOK) = GetAddress(AddressOf HandleRestOK)
-    'PacketList(ServerPacketID.ErrorMsg) = GetAddress(AddressOf HandleErrorMsg)
+    PacketList(ServerPacketID.ErrorMsg) = GetAddress(AddressOf HandleErrorMessage)
     PacketList(ServerPacketID.Blind) = GetAddress(AddressOf HandleBlind)
     PacketList(ServerPacketID.Dumb) = GetAddress(AddressOf HandleDumb)
     PacketList(ServerPacketID.ShowSignal) = GetAddress(AddressOf HandleShowSignal)
@@ -660,7 +660,7 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.UpdateHungerAndThirst) = GetAddress(AddressOf HandleUpdateHungerAndThirst)
     PacketList(ServerPacketID.MiniStats) = GetAddress(AddressOf HandleMiniStats)
     PacketList(ServerPacketID.LevelUp) = GetAddress(AddressOf HandleLevelUp)
-    'PacketList(ServerPacketID.AddForumMsg) = GetAddress(AddressOf HandleAddForumMsg)
+    PacketList(ServerPacketID.AddForumMsg) = GetAddress(AddressOf HandleAddForumMessage)
     PacketList(ServerPacketID.ShowForumForm) = GetAddress(AddressOf HandleShowForumForm)
     PacketList(ServerPacketID.SetInvisible) = GetAddress(AddressOf HandleSetInvisible)
     PacketList(ServerPacketID.DiceRoll) = GetAddress(AddressOf HandleDiceRoll)
@@ -706,15 +706,15 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.LightToFloor) = GetAddress(AddressOf HandleLightToFloor)
     PacketList(ServerPacketID.NieveToggle) = GetAddress(AddressOf HandleNieveToggle)
     PacketList(ServerPacketID.NieblaToggle) = GetAddress(AddressOf HandleNieblaToggle)
-    'PacketList(ServerPacketID.Goliath) = GetAddress(AddressOf HandleGoliath)
+    PacketList(ServerPacketID.Goliath) = GetAddress(AddressOf HandleGoliathInit)
     PacketList(ServerPacketID.TextOverChar) = GetAddress(AddressOf HandleTextOverChar)
     PacketList(ServerPacketID.TextOverTile) = GetAddress(AddressOf HandleTextOverTile)
     PacketList(ServerPacketID.TextCharDrop) = GetAddress(AddressOf HandleTextCharDrop)
     PacketList(ServerPacketID.FlashScreen) = GetAddress(AddressOf HandleFlashScreen)
-    'PacketList(ServerPacketID.AlquimistaObj) = GetAddress(AddressOf HandleAlquimistaObj)
+    PacketList(ServerPacketID.AlquimistaObj) = GetAddress(AddressOf HandleAlquimiaObjects)
     PacketList(ServerPacketID.ShowAlquimiaForm) = GetAddress(AddressOf HandleShowAlquimiaForm)
     PacketList(ServerPacketID.familiar) = GetAddress(AddressOf HandleFamiliar)
-    'PacketList(ServerPacketID.SastreObj) = GetAddress(AddressOf HandleSastreObj)
+    PacketList(ServerPacketID.SastreObj) = GetAddress(AddressOf HandleSastreObjects)
     PacketList(ServerPacketID.ShowSastreForm) = GetAddress(AddressOf HandleShowSastreForm)
     PacketList(ServerPacketID.VelocidadToggle) = GetAddress(AddressOf HandleVelocidadToggle)
     PacketList(ServerPacketID.MacroTrabajoToggle) = GetAddress(AddressOf HandleMacroTrabajoToggle)
@@ -734,7 +734,7 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.DatosGrupo) = GetAddress(AddressOf HandleDatosGrupo)
     PacketList(ServerPacketID.ubicacion) = GetAddress(AddressOf HandleUbicacion)
     PacketList(ServerPacketID.CorreoPicOn) = GetAddress(AddressOf HandleCorreoPicOn)
-    'PacketList(ServerPacketID.DonadorObj) = GetAddress(AddressOf HandleDonadorObj)
+    PacketList(ServerPacketID.DonadorObj) = GetAddress(AddressOf HandleDonadorObjects)
     PacketList(ServerPacketID.ArmaMov) = GetAddress(AddressOf HandleArmaMov)
     PacketList(ServerPacketID.EscudoMov) = GetAddress(AddressOf HandleEscudoMov)
     PacketList(ServerPacketID.ActShop) = GetAddress(AddressOf HandleActShop)
@@ -767,19 +767,16 @@ Public Sub InitializePacketList()
 End Sub
 
 Private Sub ParsePacket(ByVal packetIndex As Long)
-        
+
     If packetIndex > UBound(PacketList()) Then Exit Sub
-    
-    If PacketList(packetIndex) = 0 Then Exit Sub
-    
-    'TODO: me parece que los handles no podrían
-    'tener más de 4 argumentos (cada 0& es un argumento),
-    'igual esto se puede obviar utilizando un poco el protocolo
-    'binario, le pasamos como paramétro el userindex y de
-    'ahí obtenemos todos los datos o lo que sea
- 
+
+    If PacketList(packetIndex) = 0 Then
+        Debug.Print "Paquete inexistente: " & packetIndex
+        Exit Sub
+    End If
+
     'llamamos al sub mediante su dirección en memoria
-    Call CallWindowProc(PacketList(packetIndex), 0&, 0&, 0&, 0&)
+    Call CallHandle(PacketList(packetIndex), 0)
  
 End Sub
 
@@ -4065,13 +4062,13 @@ Private Sub HandleCharUpdateHP()
         
     Dim charindex As Integer
 
-    Dim minhp     As Integer
+    Dim minhp     As Long
 
-    Dim maxhp     As Integer
+    Dim maxhp     As Long
     
     charindex = incomingData.ReadInteger()
-    minhp = incomingData.ReadInteger()
-    maxhp = incomingData.ReadInteger()
+    minhp = incomingData.ReadLong()
+    maxhp = incomingData.ReadLong()
 
     charlist(charindex).UserMinHp = minhp
     charlist(charindex).UserMaxHp = maxhp
