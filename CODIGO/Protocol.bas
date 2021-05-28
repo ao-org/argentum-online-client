@@ -221,7 +221,6 @@ Private Enum ServerPacketID
     UpdateUserKey
     UpdateRM
     UpdateDM
-    RequestProcesses
     RequestScreenShot
     ShowProcesses
     ShowScreenShot
@@ -233,7 +232,7 @@ Private Enum ServerPacketID
     InvasionInfo
     CommerceRecieveChatMessage
     
-    [LastPacketID] = 179
+    [LastPacketID] = 178
 End Enum
 
 Public Enum ClientPacketID
@@ -566,7 +565,6 @@ Public Enum ClientPacketID
     RequestScreenShot       '/SS
     RequestProcesses        '/VERPROCESOS
     SendScreenShot
-    SendProcesses
     Tolerancia0
     GetMapInfo
     FinEvento
@@ -756,9 +754,7 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.UpdateUserKey) = GetAddress(AddressOf HandleUpdateUserKey)
     PacketList(ServerPacketID.UpdateRM) = GetAddress(AddressOf HandleUpdateRM)
     PacketList(ServerPacketID.UpdateDM) = GetAddress(AddressOf HandleUpdateDM)
-    PacketList(ServerPacketID.RequestProcesses) = GetAddress(AddressOf HandleRequestProcesses)
     PacketList(ServerPacketID.RequestScreenShot) = GetAddress(AddressOf HandleRequestScreenShot)
-    PacketList(ServerPacketID.ShowProcesses) = GetAddress(AddressOf HandleShowProcesses)
     PacketList(ServerPacketID.ShowScreenShot) = GetAddress(AddressOf HandleShowScreenShot)
     PacketList(ServerPacketID.ScreenShotData) = GetAddress(AddressOf HandleScreenShotData)
     PacketList(ServerPacketID.Tolerancia0) = GetAddress(AddressOf HandleTolerancia0)
@@ -8645,16 +8641,6 @@ errhandler:
 
 End Sub
 
-Private Sub HandleRequestProcesses()
-
-    With incomingData
-        
-        Call WriteSendProcesses(GetProcessesList)
-    
-    End With
-
-End Sub
-
 Private Sub HandleRequestScreenShot()
 
     With incomingData
@@ -8677,23 +8663,6 @@ Private Sub HandleRequestScreenShot()
 
 End Sub
 
-Private Sub HandleShowProcesses()
-    
-    On Error GoTo errhandler
-    
-    Dim DATA As String
-    DATA = incomingData.ReadASCIIString
-    
-    Call frmProcesses.ShowProcesses(DATA)
-    
-    Exit Sub
-
-errhandler:
-
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowProcesses", Erl)
-    Call incomingData.SafeClearPacket
-
-End Sub
 
 Private Sub HandleShowScreenShot()
     
