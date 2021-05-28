@@ -1181,15 +1181,25 @@ ErrorHandler:
 
 End Function
 
-Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal char_index As Integer, Optional ByVal particle_life As Long = 0) As Long
+Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal char_index As Integer, Optional ByVal particle_life As Long = 0, Optional ByVal grh As Long = 0) As Long
     
     On Error GoTo General_Char_Particle_Create_Err
 
     If ParticulaInd = 0 Then Exit Function
-
+    
+    If grh > 0 Then
+        Dim i As Byte
+        StreamData(ParticulaInd).grh_list(1) = grh
+        For i = 0 To 3
+            StreamData(ParticulaInd).colortint(i).r = 255
+            StreamData(ParticulaInd).colortint(i).G = 255
+            StreamData(ParticulaInd).colortint(i).B = 255
+        Next i
+    End If
+    
     Dim rgb_list(0 To 3) As RGBA
-
-    Call SetRGBA(rgb_list(0), StreamData(ParticulaInd).colortint(0).B, StreamData(ParticulaInd).colortint(0).G, StreamData(ParticulaInd).colortint(0).R)
+    
+    Call SetRGBA(rgb_list(0), StreamData(ParticulaInd).colortint(0).r, StreamData(ParticulaInd).colortint(0).G, StreamData(ParticulaInd).colortint(0).r)
     Call SetRGBA(rgb_list(1), StreamData(ParticulaInd).colortint(1).B, StreamData(ParticulaInd).colortint(1).G, StreamData(ParticulaInd).colortint(1).R)
     Call SetRGBA(rgb_list(2), StreamData(ParticulaInd).colortint(2).B, StreamData(ParticulaInd).colortint(2).G, StreamData(ParticulaInd).colortint(2).R)
     Call SetRGBA(rgb_list(3), StreamData(ParticulaInd).colortint(3).B, StreamData(ParticulaInd).colortint(3).G, StreamData(ParticulaInd).colortint(3).R)

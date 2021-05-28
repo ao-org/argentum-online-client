@@ -7652,11 +7652,13 @@ Private Sub HandleParticleFX()
     Dim Time           As Long
 
     Dim Remove         As Boolean
+    Dim grh            As Long
      
     charindex = incomingData.ReadInteger()
     ParticulaIndex = incomingData.ReadInteger()
     Time = incomingData.ReadLong()
     Remove = incomingData.ReadBoolean()
+    grh = incomingData.ReadLong()
     
     If Remove Then
         Call Char_Particle_Group_Remove(charindex, ParticulaIndex)
@@ -7665,8 +7667,11 @@ Private Sub HandleParticleFX()
     Else
         charlist(charindex).Particula = ParticulaIndex
         charlist(charindex).ParticulaTime = Time
-     
-        Call General_Char_Particle_Create(ParticulaIndex, charindex, Time)
+        If grh > 0 Then
+            Call General_Char_Particle_Create(ParticulaIndex, charindex, Time, grh)
+        Else
+            Call General_Char_Particle_Create(ParticulaIndex, charindex, Time)
+        End If
 
     End If
     
