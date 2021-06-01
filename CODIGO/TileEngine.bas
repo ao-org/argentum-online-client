@@ -106,7 +106,7 @@ Public Type GrhData
 End Type
 
 'apunta a una estructura grhdata y mantiene la animacion
-Public Type grh
+Public Type Grh
 
     GrhIndex As Long
     speed As Single
@@ -127,7 +127,7 @@ End Type
 'Lista de cuerpos
 Public Type BodyData
 
-    Walk(E_Heading.NORTH To E_Heading.WEST) As grh
+    Walk(E_Heading.NORTH To E_Heading.WEST) As Grh
     HeadOffset As Position
 
 End Type
@@ -135,21 +135,21 @@ End Type
 'Lista de cabezas
 Public Type HeadData
 
-    Head(E_Heading.NORTH To E_Heading.WEST) As grh
+    Head(E_Heading.NORTH To E_Heading.WEST) As Grh
 
 End Type
 
 'Lista de las animaciones de las armas
 Type WeaponAnimData
 
-    WeaponWalk(E_Heading.NORTH To E_Heading.WEST) As grh
+    WeaponWalk(E_Heading.NORTH To E_Heading.WEST) As Grh
 
 End Type
 
 'Lista de las animaciones de los escudos
 Type ShieldAnimData
 
-    ShieldWalk(E_Heading.NORTH To E_Heading.WEST) As grh
+    ShieldWalk(E_Heading.NORTH To E_Heading.WEST) As Grh
 
 End Type
 
@@ -185,7 +185,7 @@ Public Type Char
     Escudo As ShieldAnimData
     MovArmaEscudo As Boolean
     
-    fX As grh
+    fX As Grh
     FxIndex As Integer
     BarTime As Single
     Escribiendo As Boolean
@@ -215,7 +215,7 @@ Public Type Char
     AuraAngle As Single
     
     FxCount As Integer
-    FxList() As grh
+    FxList() As Grh
         
     particle_count As Integer
     CreandoCant As Integer
@@ -279,11 +279,11 @@ End Type
 Public Type Fantasma
 
     Activo As Boolean
-    Body As grh
-    Head As grh
-    Arma As grh
-    Casco As grh
-    Escudo As grh
+    Body As Grh
+    Head As Grh
+    Arma As Grh
+    Casco As Grh
+    Escudo As Grh
     Body_Aura As String
     AlphaB As Single
     OffX As Integer
@@ -294,15 +294,15 @@ End Type
 
 Public Type MapBlock
 
-    fX As grh
+    fX As Grh
     FxIndex As Byte
     
     FxCount As Integer
-    FxList() As grh
+    FxList() As Grh
     
-    Graphic(1 To 4) As grh
+    Graphic(1 To 4) As Grh
     charindex As Integer
-    ObjGrh As grh
+    ObjGrh As Grh
     GrhBlend As Single
     light_value(3) As RGBA
     
@@ -544,7 +544,7 @@ ConvertCPtoTP_Err:
     
 End Sub
 
-Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Started As Long = -1, Optional ByVal Loops As Integer = INFINITE_LOOPS)
+Public Sub InitGrh(ByRef Grh As Grh, ByVal GrhIndex As Long, Optional ByVal Started As Long = -1, Optional ByVal Loops As Integer = INFINITE_LOOPS)
     '*****************************************************************
     'Sets up a grh. MUST be done before rendering
     '*****************************************************************
@@ -553,23 +553,23 @@ Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Star
 
     If GrhIndex = 0 Or GrhIndex > MaxGrh Then Exit Sub
     
-     grh.GrhIndex = GrhIndex
+     Grh.GrhIndex = GrhIndex
 
     If GrhData(GrhIndex).NumFrames > 1 Then
         If Started >= 0 Then
-            grh.Started = Started
+            Grh.Started = Started
         Else
-            grh.Started = FrameTime
+            Grh.Started = FrameTime
         End If
         
-        grh.Loops = Loops
-        grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
+        Grh.Loops = Loops
+        Grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
     Else
-        grh.Started = 0
+        Grh.Started = 0
     End If
 
     'Precalculate texture coordinates
-    With GrhData(grh.GrhIndex)
+    With GrhData(Grh.GrhIndex)
         If .Tx2 = 0 And .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
 
@@ -1227,7 +1227,7 @@ HayUserAbajo_Err:
     
 End Function
 
-Private Function GetElapsedTime() As Single
+Public Function GetElapsedTime() As Single
     
     On Error GoTo GetElapsedTime_Err
     
