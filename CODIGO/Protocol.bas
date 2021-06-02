@@ -480,7 +480,6 @@ Public Enum ClientPacketID
     GlobalOnOff
     IngresarConCuenta
     BorrarPJ
-    NewPacketID
     Desbuggear
     DarLlaveAUsuario
     SacarLlave

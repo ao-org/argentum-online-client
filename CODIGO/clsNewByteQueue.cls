@@ -1619,7 +1619,7 @@ Public Sub Clear()
 
 End Sub
 
-Public Function WriteID(ByVal value As Byte) As Long
+Public Function WriteID(ByVal Value As Integer) As Long
 
     If queueCapacity - queueLength - GetHeaderSize < 0 Then
 

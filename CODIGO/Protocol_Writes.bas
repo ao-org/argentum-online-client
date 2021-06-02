@@ -317,7 +317,7 @@ Public Sub WriteSeguroClan()
     On Error GoTo WriteSeguroClan_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.SeguroClan)
+    Call outgoingData.WriteID(ClientPacketID.SeguroClan)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -338,7 +338,7 @@ Public Sub WriteTraerBoveda()
     On Error GoTo WriteTraerBoveda_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.TraerBoveda)
+    Call outgoingData.WriteID(ClientPacketID.TraerBoveda)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -367,8 +367,7 @@ Public Sub WriteCreatePretorianClan(ByVal map As Integer, ByVal x As Byte, ByVal
     On Error GoTo WriteCreatePretorianClan_Err
     
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CreatePretorianClan)
+        Call .WriteID(ClientPacketID.CreatePretorianClan)
         Call .WriteInteger(map)
         Call .WriteByte(x)
         Call .WriteByte(y)
@@ -399,8 +398,7 @@ Public Sub WriteDeletePretorianClan(ByVal map As Integer)
     On Error GoTo WriteDeletePretorianClan_Err
     
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.RemovePretorianClan)
+        Call .WriteID(ClientPacketID.RemovePretorianClan)
         Call .WriteInteger(map)
         Call .EndPacket
         
@@ -454,7 +452,7 @@ Public Sub WriteSeguroResu()
     On Error GoTo WriteSeguroResu_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.SeguroResu)
+    Call outgoingData.WriteID(ClientPacketID.SeguroResu)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -525,7 +523,7 @@ Public Sub WriteRequestFamiliar()
     On Error GoTo WriteRequestFamiliar_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.RequestFamiliar)
+    Call outgoingData.WriteID(ClientPacketID.RequestFamiliar)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -546,7 +544,7 @@ Public Sub WriteRequestGrupo()
     On Error GoTo WriteRequestGrupo_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.RequestGrupo)
+    Call outgoingData.WriteID(ClientPacketID.RequestGrupo)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -804,8 +802,7 @@ Public Sub WriteInvitarGrupo()
     'Writes the "CastSpell" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.InvitarGrupo)
+        Call .WriteID(ClientPacketID.InvitarGrupo)
         Call .EndPacket
     End With
     
@@ -826,8 +823,7 @@ Public Sub WriteMarcaDeClan()
     'Last Modification: 23/08/2020
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.MarcaDeClanPack)
+        Call .WriteID(ClientPacketID.MarcaDeClanPack)
         Call .EndPacket
     End With
     
@@ -848,8 +844,7 @@ Public Sub WriteMarcaDeGm()
     'Last Modification: 23/08/2020
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.MarcaDeGMPack)
+        Call .WriteID(ClientPacketID.MarcaDeGMPack)
         Call .EndPacket
     End With
     
@@ -871,8 +866,7 @@ Public Sub WriteAbandonarGrupo()
     'Writes the "CastSpell" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.AbandonarGrupo)
+        Call .WriteID(ClientPacketID.AbandonarGrupo)
         Call .EndPacket
     End With
     
@@ -894,8 +888,7 @@ Public Sub WriteHecharDeGrupo(ByVal indice As Byte)
     'Writes the "CastSpell" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.HecharDeGrupo)
+        Call .WriteID(ClientPacketID.HecharDeGrupo)
         Call .WriteByte(indice)
         Call .EndPacket
     End With
@@ -1148,8 +1141,7 @@ Public Sub WriteCraftAlquimista(ByVal Item As Integer)
     'Writes the "CraftCarpenter" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CraftAlquimista)
+        Call .WriteID(ClientPacketID.CraftAlquimista)
         Call .WriteInteger(Item)
         Call .EndPacket
     End With
@@ -1172,8 +1164,7 @@ Public Sub WriteCraftSastre(ByVal Item As Integer)
     'Writes the "CraftCarpenter" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CraftSastre)
+        Call .WriteID(ClientPacketID.CraftSastre)
         Call .WriteInteger(Item)
         
         Call .EndPacket
@@ -3427,8 +3418,7 @@ Public Sub WriteTransFerGold(ByVal Amount As Long, ByVal destino As String)
     'Writes the "BankDepositGold" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.TransFerGold)
+        Call .WriteID(ClientPacketID.TransFerGold)
         Call .WriteLong(Amount)
         Call .WriteASCIIString(destino)
         Call .EndPacket
@@ -3447,8 +3437,7 @@ Public Sub WriteItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte)
     On Error GoTo WriteItemMove_Err
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.Moveitem)
+        Call .WriteID(ClientPacketID.Moveitem)
         Call .WriteByte(SlotActual)
         Call .WriteByte(SlotNuevo)
         Call .EndPacket
@@ -3467,8 +3456,7 @@ Public Sub WriteBovedaItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte
     On Error GoTo WriteBovedaItemMove_Err
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.BovedaMoveItem)
+        Call .WriteID(ClientPacketID.BovedaMoveItem)
         Call .WriteByte(SlotActual)
         Call .WriteByte(SlotNuevo)
         Call .EndPacket
@@ -3498,8 +3486,7 @@ Public Sub WriteFinEvento()
     'Writes the "FinEvento" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.FinEvento)
+        Call .WriteID(ClientPacketID.FinEvento)
         Call .EndPacket
     End With
     
@@ -3550,8 +3537,7 @@ Public Sub WriteQuieroFundarClan()
     'Writes the "Denounce" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.QuieroFundarClan)
+        Call .WriteID(ClientPacketID.QuieroFundarClan)
         
         Call .EndPacket
     End With
@@ -3604,8 +3590,7 @@ Public Sub WriteCasamiento(ByVal UserName As String)
     'Ladder
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.Casarse)
+        Call .WriteID(ClientPacketID.Casarse)
         Call .WriteASCIIString(UserName)
         Call .EndPacket
     End With
@@ -3627,8 +3612,7 @@ Public Sub WriteMacroPos()
     'Macros
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.MacroPossent)
+        Call .WriteID(ClientPacketID.MacroPossent)
         Call .WriteByte(ChatCombate)
         Call .WriteByte(ChatGlobal)
         Call .EndPacket
@@ -3651,8 +3635,7 @@ Public Sub WriteSubastaInfo()
     'Macros
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.SubastaInfo)
+        Call .WriteID(ClientPacketID.SubastaInfo)
         Call .EndPacket
     End With
     
@@ -3673,8 +3656,7 @@ Public Sub WriteScrollInfo()
     'Macros
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.SCROLLINFO)
+        Call .WriteID(ClientPacketID.SCROLLINFO)
         Call .EndPacket
     End With
     
@@ -3697,8 +3679,7 @@ Public Sub WriteCancelarExit()
     UserSaliendo = False
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CancelarExit)
+        Call .WriteID(ClientPacketID.CancelarExit)
         Call .EndPacket
     End With
     
@@ -3719,8 +3700,7 @@ Public Sub WriteEventoInfo()
     'Macros
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.EventoInfo)
+        Call .WriteID(ClientPacketID.EventoInfo)
         Call .EndPacket
     End With
     
@@ -3740,8 +3720,7 @@ Public Sub WriteFlagTrabajar()
     'Ladder
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.FlagTrabajar)
+        Call .WriteID(ClientPacketID.FlagTrabajar)
         Call .EndPacket
     End With
     
@@ -3768,8 +3747,7 @@ Public Sub WriteEscribiendo()
     'Ladder
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.Escribiendo)
+        Call .WriteID(ClientPacketID.Escribiendo)
         Call .EndPacket
     End With
     
@@ -3789,8 +3767,7 @@ Public Sub WriteReclamarRecompensa(ByVal Index As Byte)
     'Ladder
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.ReclamarRecompensa)
+        Call .WriteID(ClientPacketID.ReclamarRecompensa)
         Call .WriteByte(Index)
         Call .EndPacket
     End With
@@ -4156,8 +4133,7 @@ Public Sub WriteCuentaRegresiva(ByVal Second As Byte)
     '04-12-08
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CuentaRegresiva)
+        Call .WriteID(ClientPacketID.CuentaRegresiva)
         Call .WriteByte(Second)
         Call .EndPacket
     End With
@@ -4181,8 +4157,7 @@ Public Sub WritePossUser(ByVal UserName As String)
     On Error GoTo WritePossUser_Err
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.PossUser)
+        Call .WriteID(ClientPacketID.PossUser)
         Call .WriteASCIIString(UserName)
         Call .EndPacket
     End With
@@ -4529,8 +4504,7 @@ Public Sub WriteCrearEvento(ByVal TIPO As Byte, ByVal duracion As Byte, ByVal mu
     'Writes the "Jail" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CrearEvento)
+        Call .WriteID(ClientPacketID.CrearEvento)
         
         Call .WriteByte(TIPO)
         Call .WriteByte(duracion)
@@ -4616,8 +4590,7 @@ Public Sub WriteMensajeUser(ByVal UserName As String, ByVal mensaje As String)
     'Escribe un mensaje al usuario
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.MensajeUser)
+        Call .WriteID(ClientPacketID.MensajeUser)
         
         Call .WriteASCIIString(UserName)
         Call .WriteASCIIString(mensaje)
@@ -5091,8 +5064,7 @@ Public Sub WriteBanCuenta(ByVal UserName As String, ByVal reason As String)
     'Writes the "BanCuenta" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.BanCuenta)
+        Call .WriteID(ClientPacketID.BanCuenta)
     
         Call .WriteASCIIString(UserName)
         Call .WriteASCIIString(reason)
@@ -5115,8 +5087,7 @@ Public Sub WriteUnBanCuenta(ByVal UserName As String)
     '***************************************************
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.UnbanCuenta)
+        Call .WriteID(ClientPacketID.UnbanCuenta)
         Call .WriteASCIIString(UserName)
         Call .EndPacket
     End With
@@ -5139,8 +5110,7 @@ Public Sub WriteBanSerial(ByVal UserName As String)
     'Writes the "BanCuenta" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.BanSerial)
+        Call .WriteID(ClientPacketID.BanSerial)
         Call .WriteASCIIString(UserName)
         
         Call .EndPacket
@@ -5161,8 +5131,7 @@ Public Sub WriteUnBanSerial(ByVal UserName As String, ByVal reason As String)
     '***************************************************
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.unBanSerial)
+        Call .WriteID(ClientPacketID.unBanSerial)
         Call .WriteASCIIString(UserName)
         
         Call .EndPacket
@@ -5183,8 +5152,7 @@ Public Sub WriteCerraCliente(ByVal UserName As String)
     '***************************************************
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CerrarCliente)
+        Call .WriteID(ClientPacketID.CerrarCliente)
         Call .WriteASCIIString(UserName)
         
         Call .EndPacket
@@ -5206,8 +5174,7 @@ Public Sub WriteBanTemporal(ByVal UserName As String, ByVal reason As String, By
     'Writes the "BanTemporal" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.BanTemporal)
+        Call .WriteID(ClientPacketID.BanTemporal)
         
         Call .WriteASCIIString(UserName)
         Call .WriteASCIIString(reason)
@@ -7961,7 +7928,7 @@ Public Sub WriteLlamadadeClan()
     On Error GoTo WriteLlamadadeClan_Err
 
     
-    Call outgoingData.WriteByte(ClientPacketID.llamadadeclan)
+    Call outgoingData.WriteID(ClientPacketID.llamadadeclan)
     Call outgoingData.EndPacket
     
     ' Avoid computing errors due to frame rate
@@ -7987,8 +7954,7 @@ Public Sub WriteQuestionGM(ByVal Consulta As String, ByVal TipoDeConsulta As Str
     'Writes the "ForumPost" message to the outgoing data buffer
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.QuestionGM)
+        Call .WriteID(ClientPacketID.QuestionGM)
         Call .WriteASCIIString(Consulta)
         Call .WriteASCIIString(TipoDeConsulta)
         Call .EndPacket
@@ -8008,8 +7974,7 @@ Public Sub WriteOfertaInicial(ByVal Oferta As Long)
     On Error GoTo WriteOfertaInicial_Err
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.OfertaInicial)
+        Call .WriteID(ClientPacketID.OfertaInicial)
         Call .WriteLong(Oferta)
         Call .EndPacket
         
@@ -8028,8 +7993,7 @@ Public Sub WriteOferta(ByVal OfertaDeSubasta As Long)
     On Error GoTo WriteOferta_Err
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.OfertaDeSubasta)
+        Call .WriteID(ClientPacketID.OfertaDeSubasta)
         Call .WriteLong(OfertaDeSubasta)
         Call .EndPacket
         
@@ -8143,8 +8107,7 @@ Public Sub WriteNieblaToggle()
     On Error GoTo WriteNieblaToggle_Err
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.NieblaToggle)
+        Call .WriteID(ClientPacketID.NieblaToggle)
         Call .EndPacket
     End With
     
@@ -8165,7 +8128,7 @@ Public Sub WriteGenio()
     On Error GoTo WriteGenio_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.Genio)
+    Call outgoingData.WriteID(ClientPacketID.Genio)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -8184,8 +8147,7 @@ Public Sub WriteTraerRecompensas()
     'Ladder
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.TraerRecompensas)
+        Call .WriteID(ClientPacketID.TraerRecompensas)
         Call .EndPacket
     End With
     
@@ -8205,8 +8167,7 @@ Public Sub WriteTraerShop()
     'Ladder
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.Traershop)
+        Call .WriteID(ClientPacketID.Traershop)
         Call .EndPacket
     End With
     
@@ -8226,8 +8187,7 @@ Public Sub WriteTraerRanking()
     'Ladder
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.TraerRanking)
+        Call .WriteID(ClientPacketID.TraerRanking)
         Call .EndPacket
         
     End With
@@ -8248,8 +8208,7 @@ Public Sub WritePareja()
     'Ladder
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.Pareja)
+        Call .WriteID(ClientPacketID.Pareja)
         Call .EndPacket
         
     End With
@@ -8271,7 +8230,7 @@ Public Sub WriteQuest()
     On Error GoTo WriteQuest_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.Quest)
+    Call outgoingData.WriteID(ClientPacketID.Quest)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -8291,7 +8250,7 @@ Public Sub WriteQuestDetailsRequest(ByVal QuestSlot As Byte)
     On Error GoTo WriteQuestDetailsRequest_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.QuestDetailsRequest)
+    Call outgoingData.WriteID(ClientPacketID.QuestDetailsRequest)
     Call outgoingData.WriteByte(QuestSlot)
     Call outgoingData.EndPacket
     
@@ -8312,7 +8271,7 @@ Public Sub WriteQuestAccept(ByVal ListInd As Byte)
     On Error GoTo WriteQuestAccept_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.QuestAccept)
+    Call outgoingData.WriteID(ClientPacketID.QuestAccept)
     Call outgoingData.WriteByte(ListInd)
     Call outgoingData.EndPacket
     
@@ -8334,7 +8293,7 @@ Public Sub WriteQuestListRequest()
     On Error GoTo WriteQuestListRequest_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.QuestListRequest)
+    Call outgoingData.WriteID(ClientPacketID.QuestListRequest)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -8355,7 +8314,7 @@ Public Sub WriteQuestAbandon(ByVal QuestSlot As Byte)
     On Error GoTo WriteQuestAbandon_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.QuestAbandon)
+    Call outgoingData.WriteID(ClientPacketID.QuestAbandon)
     
     'Escribe el Slot de Quest.
     Call outgoingData.WriteByte(QuestSlot)
@@ -8379,7 +8338,7 @@ Public Sub WriteResponderPregunta(ByVal Respuesta As Boolean)
     On Error GoTo WriteResponderPregunta_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.ResponderPregunta)
+    Call outgoingData.WriteID(ClientPacketID.ResponderPregunta)
     Call outgoingData.WriteBoolean(Respuesta)
     Call outgoingData.EndPacket
     
@@ -8400,7 +8359,7 @@ Public Sub WriteCorreo()
     On Error GoTo WriteCorreo_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.Correo)
+    Call outgoingData.WriteID(ClientPacketID.Correo)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -8420,7 +8379,7 @@ Public Sub WriteSendCorreo(ByVal UserNick As String, ByVal msg As String, ByVal 
     On Error GoTo WriteSendCorreo_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.SendCorreo)
+    Call outgoingData.WriteID(ClientPacketID.SendCorreo)
     
     Call outgoingData.WriteASCIIString(UserNick)
     Call outgoingData.WriteASCIIString(msg)
@@ -8457,7 +8416,7 @@ Public Sub WriteComprarItem(ByVal ItemIndex As Byte)
     On Error GoTo WriteComprarItem_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.ComprarItem)
+    Call outgoingData.WriteID(ClientPacketID.ComprarItem)
     Call outgoingData.WriteByte(ItemIndex)
     Call outgoingData.EndPacket
     
@@ -8478,7 +8437,7 @@ Public Sub WriteCompletarViaje(ByVal destino As Byte, ByVal costo As Long)
     On Error GoTo WriteCompletarViaje_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.CompletarViaje)
+    Call outgoingData.WriteID(ClientPacketID.CompletarViaje)
     Call outgoingData.WriteByte(destino)
     Call outgoingData.WriteLong(costo)
     Call outgoingData.EndPacket
@@ -8500,7 +8459,7 @@ Public Sub WriteRetirarItemCorreo(ByVal IndexMsg As Integer)
     On Error GoTo WriteRetirarItemCorreo_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.RetirarItemCorreo)
+    Call outgoingData.WriteID(ClientPacketID.RetirarItemCorreo)
     Call outgoingData.WriteInteger(IndexMsg)
     Call outgoingData.EndPacket
     
@@ -8521,7 +8480,7 @@ Public Sub WriteBorrarCorreo(ByVal IndexMsg As Integer)
     On Error GoTo WriteBorrarCorreo_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.BorrarCorreo)
+    Call outgoingData.WriteID(ClientPacketID.BorrarCorreo)
     Call outgoingData.WriteInteger(IndexMsg)
     Call outgoingData.EndPacket
     
@@ -8545,8 +8504,7 @@ Public Sub WriteCodigo(ByVal Codigo As String)
     'Ladder
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.EnviarCodigo)
+        Call .WriteID(ClientPacketID.EnviarCodigo)
         Call .WriteASCIIString(Codigo)
         Call .EndPacket
         
@@ -8569,7 +8527,7 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byt
     On Error GoTo WriteCreaerTorneo_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.CrearTorneo)
+    Call outgoingData.WriteID(ClientPacketID.CrearTorneo)
     
     Call outgoingData.WriteByte(nivelminimo)
     Call outgoingData.WriteByte(nivelmaximo)
@@ -8611,7 +8569,7 @@ Public Sub WriteComenzarTorneo()
     On Error GoTo WriteComenzarTorneo_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.ComenzarTorneo)
+    Call outgoingData.WriteID(ClientPacketID.ComenzarTorneo)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -8631,7 +8589,7 @@ Public Sub WriteCancelarTorneo()
     On Error GoTo WriteCancelarTorneo_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.CancelarTorneo)
+    Call outgoingData.WriteID(ClientPacketID.CancelarTorneo)
     Call outgoingData.EndPacket
     
     Exit Sub
@@ -8651,7 +8609,7 @@ Public Sub WriteBusquedaTesoro(ByVal TIPO As Byte)
     On Error GoTo WriteBusquedaTesoro_Err
     
     
-    Call outgoingData.WriteByte(ClientPacketID.BusquedaTesoro)
+    Call outgoingData.WriteID(ClientPacketID.BusquedaTesoro)
     Call outgoingData.WriteByte(TIPO)
     Call outgoingData.EndPacket
     
@@ -8674,8 +8632,7 @@ Public Sub WriteHome()
     '***************************************************
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.Home)
+        Call .WriteID(ClientPacketID.Home)
         Call .EndPacket
     End With
     
@@ -8695,8 +8652,7 @@ Public Sub WriteConsulta(Optional ByVal Nick As String = vbNullString)
     
     With outgoingData
     
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.Consulta)
+        Call .WriteID(ClientPacketID.Consulta)
         Call .WriteASCIIString(Nick)
         Call .EndPacket
         
@@ -8708,8 +8664,7 @@ Public Sub WriteRequestScreenShot(ByVal Nick As String)
 
     With outgoingData
 
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.RequestScreenShot)
+        Call .WriteID(ClientPacketID.RequestScreenShot)
         Call .WriteASCIIString(Nick)
         Call .EndPacket
         
@@ -8723,8 +8678,7 @@ Public Sub WriteSendScreenShot(ScreenShotSerialized As String)
 
     With outgoingData
 
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.SendScreenShot)
+        Call .WriteID(ClientPacketID.SendScreenShot)
         Call .WriteASCIIString(ScreenShotSerialized)
         Call .EndPacket
     End With
@@ -8749,8 +8703,7 @@ Public Sub WriteCuentaExtractItem(ByVal Slot As Byte, ByVal Amount As Integer, B
     'Retirar item de cuenta
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CuentaExtractItem)
+        Call .WriteID(ClientPacketID.CuentaExtractItem)
         Call .WriteByte(Slot)
         Call .WriteInteger(Amount)
         Call .WriteByte(slotdestino)
@@ -8775,8 +8728,7 @@ Public Sub WriteCuentaDeposit(ByVal Slot As Byte, ByVal Amount As Integer, ByVal
     'Depositar item en cuenta
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CuentaDeposit)
+        Call .WriteID(ClientPacketID.CuentaDeposit)
         Call .WriteByte(Slot)
         Call .WriteInteger(Amount)
         Call .WriteByte(slotdestino)
@@ -8793,8 +8745,7 @@ End Sub
 Public Sub WriteDuel(Players As String, ByVal Apuesta As Long, Optional ByVal PocionesRojas As Long = -1, Optional ByVal CaenItems As Boolean = False)
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.Duel)
+        Call .WriteID(ClientPacketID.Duel)
         Call .WriteASCIIString(Players)
         Call .WriteLong(Apuesta)
         Call .WriteInteger(PocionesRojas)
@@ -8807,8 +8758,7 @@ End Sub
 Public Sub WriteAcceptDuel(Offerer As String)
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.AcceptDuel)
+        Call .WriteID(ClientPacketID.AcceptDuel)
         Call .WriteASCIIString(Offerer)
         Call .EndPacket
     End With
@@ -8818,8 +8768,7 @@ End Sub
 Public Sub WriteCancelDuel()
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CancelDuel)
+        Call .WriteID(ClientPacketID.CancelDuel)
         Call .EndPacket
     End With
 
@@ -8828,8 +8777,7 @@ End Sub
 Public Sub WriteQuitDuel()
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.QuitDuel)
+        Call .WriteID(ClientPacketID.QuitDuel)
         Call .EndPacket
     End With
 
@@ -8838,8 +8786,7 @@ End Sub
 Public Sub WriteCreateEvent(EventName As String)
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CreateEvent)
+        Call .WriteID(ClientPacketID.CreateEvent)
         Call .WriteASCIIString(EventName)
         Call .EndPacket
     End With
@@ -8850,8 +8797,7 @@ End Sub
 Public Sub WriteCommerceSendChatMessage(ByVal Message As String)
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CommerceSendChatMessage)
+        Call .WriteID(ClientPacketID.CommerceSendChatMessage)
         Call .WriteASCIIString(Message)
         Call .EndPacket
     End With
@@ -8861,8 +8807,7 @@ End Sub
 Public Sub WriteLogMacroClickHechizo()
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.LogMacroClickHechizo)
+        Call .WriteID(ClientPacketID.LogMacroClickHechizo)
         Call .EndPacket
     End With
 
@@ -8873,8 +8818,7 @@ Public Sub WriteNieveToggle()
     On Error GoTo WriteNieveToggle_Err
 
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.NieveToggle)
+        Call .WriteID(ClientPacketID.NieveToggle)
         Call .EndPacket
 
     End With
@@ -8895,8 +8839,7 @@ Public Sub WriteCompletarAccion(ByVal Accion As Byte)
     'Author: Pablo Mercavides
     '***************************************************
     With outgoingData
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.CompletarAccion)
+        Call .WriteID(ClientPacketID.CompletarAccion)
         Call .WriteByte(Accion)
         Call .EndPacket
 
@@ -8916,8 +8859,7 @@ Public Sub WriteTolerancia0(Nick As String)
 
     With outgoingData
 
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.Tolerancia0)
+        Call .WriteID(ClientPacketID.Tolerancia0)
         Call .WriteASCIIString(Nick)
         Call .EndPacket
 
@@ -8939,8 +8881,7 @@ Public Sub WriteGetMapInfo()
 
     With outgoingData
 
-        Call .WriteID(ClientPacketID.NewPacketID)
-        Call .WriteByte(ClientPacketID.GetMapInfo)
+        Call .WriteID(ClientPacketID.GetMapInfo)
         Call .EndPacket
 
     End With
