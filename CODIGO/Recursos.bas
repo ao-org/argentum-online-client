@@ -1071,7 +1071,7 @@ Public Sub CargarMapa(ByVal map As Integer)
                 MapData(x, y).Graphic(3).GrhIndex = L3(i).GrhIndex
             
                 InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
-                
+
                 If EsArbol(L3(i).GrhIndex) Then
                     MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
                 End If
