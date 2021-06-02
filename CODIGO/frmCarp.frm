@@ -350,7 +350,7 @@ Private Sub List1_Click()
     DR.Right = 32
     DR.Bottom = 32
     
-    Call Grh_Render_To_Hdc(picture1, 550, 0, 0, False)
+    Call Grh_Render_To_Hdc(picture1, IIf(List1.ListIndex = 0, 550, 5348), 0, 0, False)
 
     
     Exit Sub
