@@ -276,8 +276,45 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 ' Objects *********************************
                 If .ObjGrh.GrhIndex <> 0 Then
                     Select Case ObjData(.OBJInfo.OBJIndex).ObjType
-                    
-                        Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otArboles
+                        
+                        Case eObjType.otArboles
+                            Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
+
+                            ' Debajo del arbol
+                            If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 8 And (Abs(UserPos.y) < y) Then
+    
+                                If .ArbolAlphaTimer <= 0 Then
+                                    .ArbolAlphaTimer = LastMove
+                                End If
+    
+                                DeltaTime = FrameTime - .ArbolAlphaTimer
+    
+                                Call Copy_RGBAList_WithAlpha(TempColor, .light_value, IIf(DeltaTime > ARBOL_ALPHA_TIME, ARBOL_MIN_ALPHA, 255 - DeltaTime / ARBOL_ALPHA_TIME * (255 - ARBOL_MIN_ALPHA)))
+                                Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
+    
+                            Else    ' Lejos del arbol
+                                If .ArbolAlphaTimer = 0 Then
+                                    Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+    
+                                Else
+                                    If .ArbolAlphaTimer > 0 Then
+                                        .ArbolAlphaTimer = -LastMove
+                                    End If
+    
+                                    DeltaTime = FrameTime + .ArbolAlphaTimer
+    
+                                    If DeltaTime > ARBOL_ALPHA_TIME Then
+                                        .ArbolAlphaTimer = 0
+                                        Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                                    Else
+                                        Call Copy_RGBAList_WithAlpha(TempColor, .light_value, ARBOL_MIN_ALPHA + DeltaTime * (255 - ARBOL_MIN_ALPHA) / ARBOL_ALPHA_TIME)
+                                        Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
+                                    End If
+                                End If
+    
+                            End If
+                        
+                        Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
                             ' Objetos grandes (menos árboles)
                             Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, , x, y)
                     
