@@ -219,8 +219,8 @@ Public Sub CargarRecursos()
     Call Cargarmapsworlddata
     Call InitFontTypes
 
-    Call LoadGrhData
-    'Call LoadGrhIni ' WyroX: Es muy lento :(
+    'Call LoadGrhData
+    Call LoadGrhIni
     Call CargarMoldes
     Call CargarCabezas
     Call CargarCascos
@@ -2284,9 +2284,9 @@ Public Sub LoadGrhIni()
             GoTo ErrorHandler
         End If
     
-        Open Windows_Temp_Dir & "Graficos.ini" For Binary Access Read As #FileHandle
+        Open Windows_Temp_Dir & "Graficos.ini" For Input As #FileHandle
     #Else
-        Open App.Path & "\..\Recursos\init\Graficos.ini" For Binary Access Read As #FileHandle
+        Open App.Path & "\..\Recursos\init\Graficos.ini" For Input As #FileHandle
     #End If
 
     ' Leemos el total de Grhs
