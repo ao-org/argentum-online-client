@@ -385,7 +385,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4699,7 +4698,7 @@ Private Sub Form_DblClick()
     If Not frmComerciar.Visible And Not frmBancoObj.Visible Then
         If MouseBoton = vbLeftButton Then
 
-            'Call WriteDoubleClick(tX, tY)
+            Call WriteDoubleClick(tX, tY)
         End If
 
     End If
