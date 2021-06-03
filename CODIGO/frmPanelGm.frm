@@ -4,8 +4,8 @@ Begin VB.Form frmPanelgm
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
    ClientHeight    =   8550
-   ClientLeft      =   17580
-   ClientTop       =   3030
+   ClientLeft      =   18150
+   ClientTop       =   4710
    ClientWidth     =   4815
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -22,7 +22,6 @@ Begin VB.Form frmPanelgm
    ScaleHeight     =   8550
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton SendGlobal 
       BackColor       =   &H8000000A&
       Caption         =   "Global"
