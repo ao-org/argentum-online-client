@@ -862,7 +862,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
         If temp_particle.alive_counter = 0 And Not destruir Then
             'Start new particle
             InitGrh temp_particle.grh, grh_index
-            temp_particle.grh.Alpha = alpha_blend
+            temp_particle.grh.Alpha = 255
             temp_particle.x = RandomNumber(x1, x2) - (32 / 2)
             temp_particle.y = RandomNumber(y1, y2) - (32 / 2)
             temp_particle.vector_x = RandomNumber(vecx1, vecx2)
@@ -929,10 +929,10 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
         Call RGBAList(rgb_list, 5, 5, 5, 5)
 
     ElseIf Not alpha_blend Then
-        Call SetRGBA(rgb_list(0), rgb_list(0).R, rgb_list(0).G, rgb_list(0).B, temp_particle.Angle)
-        Call SetRGBA(rgb_list(1), rgb_list(1).R, rgb_list(1).G, rgb_list(1).B, temp_particle.Angle)
-        Call SetRGBA(rgb_list(2), rgb_list(2).R, rgb_list(2).G, rgb_list(2).B, temp_particle.Angle)
-        Call SetRGBA(rgb_list(3), rgb_list(3).R, rgb_list(3).G, rgb_list(3).B, temp_particle.Angle)
+        Call SetRGBA(rgb_list(0), rgb_list(0).r, rgb_list(0).G, rgb_list(0).B, temp_particle.grh.Alpha)
+        Call SetRGBA(rgb_list(1), rgb_list(1).r, rgb_list(1).G, rgb_list(1).B, temp_particle.grh.Alpha)
+        Call SetRGBA(rgb_list(2), rgb_list(2).r, rgb_list(2).G, rgb_list(2).B, temp_particle.grh.Alpha)
+        Call SetRGBA(rgb_list(3), rgb_list(3).r, rgb_list(3).G, rgb_list(3).B, temp_particle.grh.Alpha)
     End If
     
     If grh_resize = True Then
@@ -1205,7 +1205,7 @@ Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal c
     Call SetRGBA(rgb_list(3), StreamData(ParticulaInd).colortint(3).B, StreamData(ParticulaInd).colortint(3).G, StreamData(ParticulaInd).colortint(3).R)
 
     General_Char_Particle_Create = Char_Particle_Group_Create(char_index, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
-       StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).Angle, _
+       grh = 0 And StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).Angle, _
        StreamData(ParticulaInd).vecx1, StreamData(ParticulaInd).vecx2, StreamData(ParticulaInd).vecy1, StreamData(ParticulaInd).vecy2, _
        StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
        StreamData(ParticulaInd).gravity, StreamData(ParticulaInd).grav_strength, StreamData(ParticulaInd).bounce_strength, StreamData(ParticulaInd).x2, _

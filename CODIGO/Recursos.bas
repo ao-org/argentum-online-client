@@ -2361,16 +2361,9 @@ Public Sub LoadGrhIni()
                         
                     ' Por ultimo, copiamos las dimensiones del primer frame
                     .pixelHeight = GrhData(.Frames(1)).pixelHeight
-                    If .pixelHeight <= 0 Then GoTo hErr
-                        
                     .pixelWidth = GrhData(.Frames(1)).pixelWidth
-                    If .pixelWidth <= 0 Then GoTo hErr
-                        
                     .TileWidth = GrhData(.Frames(1)).TileWidth
-                    If .TileWidth <= 0 Then GoTo hErr
-                        
                     .TileHeight = GrhData(.Frames(1)).TileHeight
-                    If .TileHeight <= 0 Then GoTo hErr
         
                 ElseIf .NumFrames = 1 Then
                     
