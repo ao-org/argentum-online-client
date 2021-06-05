@@ -222,7 +222,6 @@ Private Enum ServerPacketID
     UpdateRM
     UpdateDM
     RequestScreenShot
-    ShowProcesses
     ShowScreenShot
     ScreenShotData
     Tolerancia0
@@ -231,8 +230,9 @@ Private Enum ServerPacketID
     Stopped
     InvasionInfo
     CommerceRecieveChatMessage
+    DoAnimation
     
-    [LastPacketID] = 178
+    [PacketCount]
 End Enum
 
 Public Enum ClientPacketID
@@ -562,7 +562,6 @@ Public Enum ClientPacketID
     Home                    '/HOGAR
     Consulta                '/CONSULTA
     RequestScreenShot       '/SS
-    RequestProcesses        '/VERPROCESOS
     SendScreenShot
     Tolerancia0
     GetMapInfo
@@ -574,10 +573,11 @@ Public Enum ClientPacketID
     CommerceSendChatMessage
     LogMacroClickHechizo
     
+    [PacketCount]
 End Enum
 
 ' Rezniaq: Sacamos alv la busqueda lineal que hacia el Select Case de la funcion HandleIncomingData.
-Private PacketList(0 To ServerPacketID.LastPacketID) As Long
+Private PacketList(0 To ServerPacketID.[PacketCount] - 1) As Long
 Private Declare Sub CallHandle Lib "ao20.dll" (ByVal Address As Long, ByVal UserIndex As Integer)
 
 Public Sub InitializePacketList()
@@ -762,12 +762,16 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.Stopped) = GetAddress(AddressOf HandleStopped)
     PacketList(ServerPacketID.InvasionInfo) = GetAddress(AddressOf HandleInvasionInfo)
     PacketList(ServerPacketID.CommerceRecieveChatMessage) = GetAddress(AddressOf HandleCommerceRecieveChatMessage)
+    PacketList(ServerPacketID.DoAnimation) = GetAddress(AddressOf HandleDoAnimation)
 
 End Sub
 
 Private Sub ParsePacket(ByVal packetIndex As Long)
 
-    If packetIndex > UBound(PacketList()) Then Exit Sub
+    If packetIndex > UBound(PacketList()) Then
+        Debug.Print "Paquete inexistente: " & packetIndex
+        Exit Sub
+    End If
 
     If PacketList(packetIndex) = 0 Then
         Debug.Print "Paquete inexistente: " & packetIndex
@@ -3707,8 +3711,6 @@ Private Sub HandleCharacterChange()
         End If
 
     End With
-    
-    Call RefreshAllChars
     
     Exit Sub
 
@@ -8766,3 +8768,30 @@ Private Sub HandleCommerceRecieveChatMessage()
     
 End Sub
 
+Private Sub HandleDoAnimation()
+    
+    On Error GoTo HandleCharacterChange_Err
+    
+    Dim charindex As Integer
+
+    Dim tempint   As Integer
+
+    Dim headIndex As Integer
+
+    charindex = incomingData.ReadInteger()
+    
+    With charlist(charindex)
+        .AnimatingBody = incomingData.ReadInteger()
+        .Body = BodyData(.AnimatingBody)
+        'Start animation
+        .Body.Walk(.Heading).Started = FrameTime
+        .Body.Walk(.Heading).Loops = 0
+    End With
+    
+    Exit Sub
+
+HandleCharacterChange_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDoAnimation", Erl)
+    Call incomingData.SafeClearPacket
+    
+End Sub

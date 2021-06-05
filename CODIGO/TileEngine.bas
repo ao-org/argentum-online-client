@@ -184,7 +184,8 @@ Public Type Char
     Arma As WeaponAnimData
     Escudo As ShieldAnimData
     MovArmaEscudo As Boolean
-    
+    AnimatingBody As Integer
+
     fX As Grh
     FxIndex As Integer
     BarTime As Single
@@ -566,6 +567,7 @@ Public Sub InitGrh(ByRef Grh As Grh, ByVal GrhIndex As Long, Optional ByVal Star
         Grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
     Else
         Grh.Started = 0
+        grh.speed = 1
     End If
 
     'Precalculate texture coordinates

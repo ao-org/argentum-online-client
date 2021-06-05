@@ -1492,8 +1492,26 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 .Moving = False
             End If
 
+        ElseIf .AnimatingBody Then
+            If .Body.Walk(.Heading).Started = 0 Then
+                .AnimatingBody = 0
+                
+                If .iBody Then
+                    .Body = BodyData(.iBody)
+                Else
+                    .Body = BodyData(0)
+                End If
+
+                .Body.Walk(.Heading).Loops = -1
+                
+                If .Idle Or .Navegando Then
+                    'Start animation
+                    .Body.Walk(.Heading).Started = FrameTime
+                End If
+            End If
+
         ElseIf Not .Idle Then
-            
+
             If .Muerto Then
                 If charindex <> UserCharIndex Then
                     ' Si no somos nosotros, esperamos un intervalo
