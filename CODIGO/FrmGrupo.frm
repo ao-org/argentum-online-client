@@ -102,7 +102,7 @@ Private Sub Form_Load()
     
     'Call FormParser.Parse_Form(Me)
     
-    Call Aplicar_Transparencia(Me.hwnd, 220)
+    Call Aplicar_Transparencia(Me.hwnd, 240)
     
     Me.Picture = LoadInterface("ventanagrupo.bmp")
     

@@ -62,7 +62,7 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    Call Aplicar_Transparencia(Me.hWnd, 220)
+    Call Aplicar_Transparencia(Me.hwnd, 240)
 
     
     Me.Picture = LoadInterface("desconectar.bmp")

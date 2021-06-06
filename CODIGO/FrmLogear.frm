@@ -290,7 +290,7 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     Me.Top = Me.Top + 2500
     Call CargarCuentasGuardadas
-    Call Aplicar_Transparencia(Me.hWnd, 220)
+    Call Aplicar_Transparencia(Me.hwnd, 240)
     
     Me.Picture = LoadInterface("ventanaconectar.bmp")
     

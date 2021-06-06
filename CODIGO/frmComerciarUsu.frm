@@ -153,7 +153,6 @@ Begin VB.Form frmComerciarUsu
       _Version        =   393217
       BackColor       =   459782
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -161,7 +160,7 @@ Begin VB.Form frmComerciarUsu
       Appearance      =   0
       TextRTF         =   $"frmComerciarUsu.frx":0000
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Alegreya Sans AO"
+         Name            =   "Arial"
          Size            =   9
          Charset         =   0
          Weight          =   400
@@ -314,25 +313,6 @@ Public WithEvents InvOtherSell As clsGrapchicalInventory
 Attribute InvOtherSell.VB_VarHelpID = -1
 
 Public LasActionBuy As Boolean
-
-Private Sub MoverForm()
-    
-    On Error GoTo moverForm_Err
-    
-
-    Dim res As Long
-
-    ReleaseCapture
-    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
-
-    
-    Exit Sub
-
-moverForm_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.moverForm", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub cmdAceptar_Click()
     
@@ -542,6 +522,8 @@ Private Sub Form_Load()
         
     On Error GoTo Form_Load_Err
     
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+    
     Call FormParser.Parse_Form(Me)
     'Carga las imagenes...?
     lblEstadoResp.Visible = False
@@ -611,7 +593,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
     cmdOfrecer.Picture = Nothing
     cmdOfrecer.Tag = "0"
 
-    MoverForm
+    MoverForm Me.hwnd
 
     
     Exit Sub

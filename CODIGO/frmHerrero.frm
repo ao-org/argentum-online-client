@@ -243,6 +243,8 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+    
     Call FormParser.Parse_Form(Me)
     
     Me.Picture = LoadInterface("VentanaHerreria.bmp")
@@ -564,6 +566,10 @@ Form_KeyPress_Err:
     Resume Next
 End Sub
 
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    MoverForm Me.hwnd
+End Sub
 
 Private Sub List1_Click()
     

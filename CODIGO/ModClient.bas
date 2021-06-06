@@ -45,7 +45,9 @@ Public Sub NameMapa(ByVal map As Long)
     'DarNombreMapa = DarNameMapa(Map)
     frmMain.NameMapa.Caption = MapDat.map_name
     
-    Letter_Set 0, MapDat.map_name
+    If QueRender = 0 Then
+        Letter_Set 0, MapDat.map_name
+    End If
     
     'Map_Letter_Fade_Set 1, 0
 

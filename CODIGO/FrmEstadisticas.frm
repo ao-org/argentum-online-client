@@ -1991,25 +1991,6 @@ Private RealizoCambios                As Long
 
 Private PonerloEnRojo(1 To NUMSKILLS) As Boolean
 
-Private Sub moverForm()
-    
-    On Error GoTo moverForm_Err
-    
-
-    Dim res As Long
-
-    ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
-
-    
-    Exit Sub
-
-moverForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.moverForm", Erl)
-    Resume Next
-    
-End Sub
-
 Public Sub Iniciar_Labels()
     
     On Error GoTo Iniciar_Labels_Err
@@ -2248,6 +2229,8 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+    
     Call FormParser.Parse_Form(Me)
     'Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
     RealizoCambios = 0
@@ -2266,7 +2249,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    moverForm
+    MoverForm Me.hwnd
     'If Image1.Tag = "1" Then
     ' Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
     '    Image1.Tag = "0"

@@ -120,6 +120,8 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+    
     'Call FormParser.Parse_Form(Me)
     Text1.SelStart = 1
     
@@ -230,6 +232,10 @@ cmdMenos_Click_Err:
 End Sub
 
 
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    MoverForm Me.hwnd
+End Sub
+
 Private Sub Text1_KeyPress(KeyAscii As Integer)
     
     On Error GoTo Text1_KeyPress_Err
@@ -247,25 +253,6 @@ Private Sub Text1_KeyPress(KeyAscii As Integer)
 
 Text1_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCantidad.Text1_KeyPress", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub moverForm()
-    
-    On Error GoTo moverForm_Err
-    
-
-    Dim res As Long
-
-    ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
-
-    
-    Exit Sub
-
-moverForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.moverForm", Erl)
     Resume Next
     
 End Sub

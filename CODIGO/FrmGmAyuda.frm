@@ -260,6 +260,8 @@ End Sub
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
+    
+    Call Aplicar_Transparencia(Me.hwnd, 240)
 
     'Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanagm.bmp")
@@ -317,6 +319,10 @@ cmdEnviarMensaje_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmGmAyuda.cmdEnviarMensaje_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    MoverForm Me.hwnd
 End Sub
 
 Private Sub optConsult_Click(Index As Integer)

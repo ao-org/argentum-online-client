@@ -1088,26 +1088,6 @@ Form_KeyPress_Err:
     
 End Sub
 
-
-Private Sub MoverForm()
-    
-    On Error GoTo moverForm_Err
-    
-
-    Dim res As Long
-
-    ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
-
-    
-    Exit Sub
-
-moverForm_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.moverForm", Erl)
-    Resume Next
-    
-End Sub
-
 Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 
    ' If Check3 Then
@@ -1212,8 +1192,8 @@ End Sub
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Form_MouseMove_Err
-    
-    MoverForm
+
+    MoverForm Me.hwnd
     cmdayuda = Nothing
     cmdayuda.Tag = "0"
     discord = Nothing
