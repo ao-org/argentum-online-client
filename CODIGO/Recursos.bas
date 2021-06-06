@@ -2281,7 +2281,7 @@ Public Sub LoadGrhIni()
 
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "Graficos.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de recurso!"
-            GoTo ErrorHandler
+            GoTo hErr
         End If
     
         Open Windows_Temp_Dir & "Graficos.ini" For Input As #FileHandle
