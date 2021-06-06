@@ -2123,7 +2123,7 @@ Public Function LoadGrhData() As Boolean
 
     On Error GoTo ErrorHandler
 
-    Dim Grh         As Long
+    Dim grh         As Long
     Dim Frame       As Long
     Dim grhCount    As Long
     Dim Handle      As Integer
@@ -2162,17 +2162,17 @@ Public Function LoadGrhData() As Boolean
 
     While Not EOF(Handle) And Fin = False
 
-        Get #Handle, , Grh
+        Get #Handle, , grh
 
-        With GrhData(Grh)
+        With GrhData(grh)
         
-            GrhData(Grh).active = True
+            GrhData(grh).active = True
             'Get number of frames
             Get #Handle, , .NumFrames
 
             If .NumFrames <= 0 Then GoTo ErrorHandler
             
-            ReDim .Frames(1 To GrhData(Grh).NumFrames)
+            ReDim .Frames(1 To GrhData(grh).NumFrames)
             
             If .NumFrames > 1 Then
 
@@ -2187,7 +2187,7 @@ Public Function LoadGrhData() As Boolean
 
                 Next Frame
                 
-                Get #Handle, , GrhData(Grh).speed
+                Get #Handle, , GrhData(grh).speed
                 
                 If .speed <= 0 Then GoTo ErrorHandler
                 
@@ -2213,19 +2213,19 @@ Public Function LoadGrhData() As Boolean
 
                 If .FileNum <= 0 Then GoTo ErrorHandler
                                 
-                Get #Handle, , GrhData(Grh).sX
+                Get #Handle, , GrhData(grh).sX
 
                 If .sX < 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(Grh).sY
+                Get #Handle, , GrhData(grh).sY
 
                 If .sY < 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(Grh).pixelWidth
+                Get #Handle, , GrhData(grh).pixelWidth
 
                 If .pixelWidth <= 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(Grh).pixelHeight
+                Get #Handle, , GrhData(grh).pixelHeight
 
                 If .pixelHeight <= 0 Then GoTo ErrorHandler
                 
@@ -2233,13 +2233,13 @@ Public Function LoadGrhData() As Boolean
                 .TileWidth = .pixelWidth / TilePixelHeight
                 .TileHeight = .pixelHeight / TilePixelWidth
 
-                .Frames(1) = Grh
+                .Frames(1) = grh
 
             End If
 
         End With
 
-        If Grh = MaxGrh Then Fin = True
+        If grh = MaxGrh Then Fin = True
     Wend
 
     Close #Handle
@@ -2254,7 +2254,7 @@ Public Function LoadGrhData() As Boolean
 
 ErrorHandler:
     LoadGrhData = False
-    MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & Grh
+    MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & grh
     
 End Function
 
@@ -2262,7 +2262,7 @@ Public Sub LoadGrhIni()
     On Error GoTo hErr
 
     Dim FileHandle     As Integer
-    Dim Grh            As Long
+    Dim grh            As Long
     Dim Frame          As Long
     Dim SeparadorClave As String
     Dim SeparadorGrh   As String
@@ -2334,12 +2334,12 @@ Public Sub LoadGrhIni()
             Fields = Split(CurrentLine, SeparadorClave)
                 
             ' Leemos el numero de Grh (el numero a la derecha de la palabra "Grh")
-            Grh = Right(Fields(0), Len(Fields(0)) - 3)
+            grh = Right(Fields(0), Len(Fields(0)) - 3)
             
             ' Leemos los campos de datos del Grh
             Fields = Split(Fields(1), SeparadorGrh)
                 
-            With GrhData(Grh)
+            With GrhData(grh)
                     
                 ' Primer lugar: cantidad de frames.
                 .NumFrames = Val(Fields(0))
@@ -2368,7 +2368,7 @@ Public Sub LoadGrhIni()
                 ElseIf .NumFrames = 1 Then
                     
                     ' Si es un solo frame lo asignamos a si mismo
-                    .Frames(1) = Grh
+                    .Frames(1) = grh
                         
                     ' Segundo lugar: NumeroDelGrafico.bmp, pero sin el ".bmp"
                     .FileNum = Val(Fields(1))
@@ -2411,8 +2411,8 @@ hErr:
         If Err.Number = 53 Then
             Call MsgBox("El archivo Graficos.ini no existe. Por favor, reinstale el juego.", , "Argentum 20")
         
-        ElseIf Grh > 0 Then
-            Call MsgBox("Hay un error en Graficos.ini con el Grh" & Grh & ".", , "Argentum 20")
+        ElseIf grh > 0 Then
+            Call MsgBox("Hay un error en Graficos.ini con el Grh" & grh & ".", , "Argentum 20")
         
         Else
             Call MsgBox("Hay un error en Graficos.ini. Por favor, reinstale el juego.", , "Argentum 20")
@@ -2423,7 +2423,7 @@ hErr:
     End If
     
     #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "graficos.ind"
+        Delete_File Windows_Temp_Dir & "graficos.ini"
     #End If
     
     Exit Sub
