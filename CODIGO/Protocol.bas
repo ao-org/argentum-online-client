@@ -1466,7 +1466,7 @@ Private Sub HandleShowFrmMapa()
     ExpMult = incomingData.ReadInteger()
     OroMult = incomingData.ReadInteger()
     
-    Call CalcularPosicionMAPA
+    Call frmMapaGrande.CalcularPosicionMAPA
 
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
     frmMapaGrande.Show , frmMain
@@ -2327,11 +2327,6 @@ Private Sub HandleChangeMap()
     If FrmViajes.Visible Then Unload FrmViajes
     If frmCantidad.Visible Then Unload frmCantidad
     If FrmRanking.Visible Then Unload FrmRanking
-
-    If frmMapaGrande.Visible Then
-        Call CalcularPosicionMAPA
-
-    End If
 
     Call SwitchMap(UserMap)
     
@@ -3338,8 +3333,7 @@ Private Sub HandleUserCharIndexInServer()
     Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
     
     If frmMapaGrande.Visible Then
-        Call CalcularPosicionMAPA
-
+        Call frmMapaGrande.ActualizarPosicionMapa
     End If
     
     Exit Sub
@@ -3615,7 +3609,7 @@ Private Sub HandleForceCharMove()
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
 
     If frmMapaGrande.Visible Then
-        Call CalcularPosicionMAPA
+        Call frmMapaGrande.ActualizarPosicionMapa
 
     End If
     

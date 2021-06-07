@@ -385,6 +385,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3429,7 +3430,7 @@ Private Sub mapMundo_Click()
     
     ExpMult = 1
     OroMult = 1
-    Call CalcularPosicionMAPA
+    Call frmMapaGrande.CalcularPosicionMAPA
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
     frmMapaGrande.Show , frmMain
 
@@ -3477,7 +3478,7 @@ Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, 
   
     ExpMult = 1
     OroMult = 1
-    Call CalcularPosicionMAPA
+    Call frmMapaGrande.CalcularPosicionMAPA
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
     frmMapaGrande.Show , frmMain
   
@@ -4087,7 +4088,7 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     If frmBancoObj.Visible Then Unload frmBancoObj
     If frmEstadisticas.Visible Then Unload frmEstadisticas
     If frmGoliath.Visible Then Unload frmGoliath
-    If frmMapaGrande.Visible Then Unload frmMapaGrande
+    If frmMapaGrande.Visible Then frmMapaGrande.Visible = False
     If FrmViajes.Visible Then Unload FrmViajes
     If frmCantidad.Visible Then Unload frmCantidad
     If FrmGrupo.Visible Then Unload FrmGrupo

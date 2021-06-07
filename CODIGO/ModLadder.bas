@@ -2305,65 +2305,6 @@ PreloadGraphics_Err:
     
 End Sub
 
-Public Sub CalcularPosicionMAPA()
-    
-    On Error GoTo CalcularPosicionMAPA_Err
-    
-    frmMapaGrande.lblMapInfo(0) = MapDat.map_name & "(" & UserMap & ")"
-
-    If NameMaps(UserMap).desc <> "" Then
-        frmMapaGrande.Label1.Caption = NameMaps(UserMap).desc
-    Else
-        frmMapaGrande.Label1.Caption = "Sin información relevante."
-
-    End If
-
-    Dim i       As Integer
-    Dim j       As Byte
-
-    Dim Encontre As Boolean
-    
-    
-    For j = 1 To TotalWorlds
-        For i = 1 To Mundo(j).Ancho * Mundo(j).Alto
-    
-            If Mundo(j).MapIndice(i) = UserMap Then
-                idmap = i
-                Encontre = True
-                frmMapaGrande.picMap.Picture = LoadInterface("mapa" & j & ".bmp")
-                frmMapaGrande.Image2.Picture = Nothing
-                WorldActual = j
-                frmMapaGrande.ComMundo.ListIndex = j - 1
-                Exit For
-            End If
-        Next i
-        
-        If Encontre Then
-            Exit For
-        End If
-    Next j
-    
-    If Encontre = False Then
-        If frmMapaGrande.Visible = False Then
-            frmMapaGrande.picMap.Picture = LoadInterface("mapa1.bmp")
-            frmMapaGrande.Image2.Picture = Nothing
-        End If
-
-    End If
-    
-    Call CargarDatosMapa(UserMap)
-
-    Call frmMapaGrande.ActualizarPosicion(idmap)
-
-    
-    Exit Sub
-
-CalcularPosicionMAPA_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CalcularPosicionMAPA", Erl)
-    Resume Next
-    
-End Sub
-
 Public Function GetDriveSerialNumber(Optional ByVal DriveLetter As String) As Long
     
     On Error GoTo GetDriveSerialNumber_Err

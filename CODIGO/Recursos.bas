@@ -664,10 +664,8 @@ Sub CargarDatosMapa(ByVal map As Integer)
     #If Compresion = 1 Then
 
         If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
-            MsgBox Err.Description
-            End
-
+            Debug.Print "Error al cargar datos del mapa " & map
+            Exit Sub
         End If
 
         MapRoute = Windows_Temp_Dir & "mapa" & map & ".csm"
@@ -887,7 +885,6 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
 CargarDatosMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarDatosMapa", Erl)
-    Resume Next
     
 End Sub
 
@@ -934,7 +931,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     #If Compresion = 1 Then
 
         If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de mapas! El juego se cerrara."
+            Err.Description = "No se pudo cargar el mapa " & map & ", el juego se cerrará. Si su personaje se encuentra en un mapa inválido, por favor, avise a un GM."
             Call MsgBox(Err.Description)
             End
 
@@ -1636,8 +1633,6 @@ Public Sub Cargarmapsworlddata()
          For i = 1 To Mundo(j).Alto * Mundo(j).Ancho
              Mundo(j).MapIndice(i) = Val(Leer.GetValue("WORLDMAP" & j, i))
          Next i
-         
-         frmMapaGrande.ComMundo.AddItem "Mapa " & j
          
      Next j
     

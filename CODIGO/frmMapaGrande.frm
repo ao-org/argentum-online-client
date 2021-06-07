@@ -19,24 +19,6 @@ Begin VB.Form frmMapaGrande
    ScaleWidth      =   771
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.ComboBox ComMundo 
-      Appearance      =   0  'Flat
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   315
-      Left            =   8490
-      Style           =   2  'Dropdown List
-      TabIndex        =   16
-      Top             =   2400
-      Width           =   1095
-   End
    Begin VB.PictureBox PlayerView 
       Appearance      =   0  'Flat
       BackColor       =   &H000A0A0A&
@@ -193,11 +175,11 @@ Begin VB.Form frmMapaGrande
          BackStyle       =   1  'Opaque
          BorderColor     =   &H000000FF&
          BorderWidth     =   2
-         Height          =   90
-         Left            =   3120
+         Height          =   75
+         Left            =   4800
          Shape           =   1  'Square
-         Top             =   3720
-         Width           =   90
+         Top             =   4800
+         Width           =   75
       End
       Begin VB.Shape lblAllies 
          BorderColor     =   &H000000C0&
@@ -309,7 +291,7 @@ Begin VB.Form frmMapaGrande
       Height          =   210
       Left            =   8520
       TabIndex        =   11
-      Top             =   1770
+      Top             =   1800
       Width           =   2670
       WordWrap        =   -1  'True
    End
@@ -321,7 +303,7 @@ Begin VB.Form frmMapaGrande
    End
    Begin VB.Image Image2 
       Height          =   255
-      Left            =   8520
+      Left            =   8565
       Top             =   2385
       Width           =   255
    End
@@ -424,7 +406,7 @@ Begin VB.Form frmMapaGrande
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H000040C0&
-      Height          =   315
+      Height          =   555
       Index           =   0
       Left            =   8490
       TabIndex        =   2
@@ -447,63 +429,11 @@ Public dy           As Integer
 
 Public Referencias  As Boolean
 
-' Constantes para SendMessage
-Const WM_SYSCOMMAND As Long = &H112&
-
-Const MOUSE_MOVE    As Long = &HF012&
-
-Private Declare Function ReleaseCapture Lib "user32" () As Long
-
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
-
-Private RealizoCambios As String
-
-Const HWND_TOPMOST = -1
-
-Const HWND_NOTOPMOST = -2
-
-Const SWP_NOSIZE = &H1
-
-Const SWP_NOMOVE = &H2
-
-Const SWP_NOACTIVATE = &H10
-
-Const SWP_SHOWWINDOW = &H40
-
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
-
 Private Const TILE_SIZE = 27
 
 Private Const MAPAS_ANCHO = 19
 
 Private Const MAPAS_ALTO = 22
-
-Private Sub MoverForm()
-    
-    On Error GoTo moverForm_Err
-    
-
-    Dim res As Long
-
-    ReleaseCapture
-    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
-
-    
-    Exit Sub
-
-moverForm_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.moverForm", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub ComMundo_Click()
-picMap.Picture = LoadInterface("mapa" & ComMundo.ListIndex + 1 & ".bmp")
-
-WorldActual = ComMundo.ListIndex + 1
-
-
-End Sub
 
 Private Sub Form_Activate()
     Call CargarDatosMapa(UserMap)
@@ -517,7 +447,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo Form_KeyDown_Err
     
     If KeyCode = 27 Then
-        Unload Me
+        Me.Visible = False
     End If
     
     Exit Sub
@@ -553,7 +483,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-    MoverForm
+    MoverForm Me.hwnd
     Image1 = Nothing
     
     If Image1.Tag = "1" Then
@@ -645,6 +575,16 @@ Private Sub Image2_Click()
     
     On Error GoTo Image2_Click_Err
 
+    If WorldActual = 1 Then
+        WorldActual = 2
+        Image2.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        WorldActual = 1
+        Image2.Picture = Nothing
+    End If
+    
+    ActualizarPosicionMapa
+
     picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
     
     Exit Sub
@@ -663,7 +603,7 @@ Private Sub Image3_Click()
     If Dungeon Then Exit Sub
 
     If Referencias Then
-        picMap.Picture = LoadInterface("mapa1.bmp")
+        picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
         Image3.Picture = Nothing
         Referencias = False
     Else
@@ -794,6 +734,14 @@ ListView1_Click_Err:
     
 End Sub
 
+Private Sub ListView1_KeyDown(KeyCode As Integer, Shift As Integer)
+    KeyCode = 0
+End Sub
+
+Private Sub ListView1_KeyPress(KeyAscii As Integer)
+    KeyAscii = 0
+End Sub
+
 Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo picMap_MouseDown_Err
@@ -869,7 +817,7 @@ Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
     On Error GoTo picMap_MouseMove_Err
     
-    MoverForm
+    MoverForm Me.hwnd
 
     
     Exit Sub
@@ -880,15 +828,98 @@ picMap_MouseMove_Err:
     
 End Sub
 
-Public Sub ActualizarPosicion(ByVal map As Integer)
+Private Sub ActualizarPosicion(ByVal map As Integer)
     Dim x As Long, y As Long
 
     x = (map - 1) Mod MAPAS_ANCHO
     y = Int((map - 1) / MAPAS_ANCHO)
-    
-    lblAllies.Top = y * TILE_SIZE
-    lblAllies.Left = x * TILE_SIZE
 
-    Shape1.Top = y * TILE_SIZE + (UserPos.y * TILE_SIZE / 100)
-    Shape1.Left = x * TILE_SIZE + (UserPos.x * TILE_SIZE / 100)
+    Shape1.Top = y * TILE_SIZE + (UserPos.y * TILE_SIZE / 100) - Shape1.Height \ 2
+    Shape1.Left = x * TILE_SIZE + (UserPos.x * TILE_SIZE / 100) - Shape1.Width \ 2
+    
+    Shape1.Visible = True
+End Sub
+
+Public Sub ActualizarPosicionMapa()
+    Dim Index As Integer
+
+    For Index = 1 To Mundo(WorldActual).Ancho * Mundo(WorldActual).Alto
+
+        If Mundo(WorldActual).MapIndice(Index) = UserMap Then
+            Call ActualizarPosicion(Index)
+            Exit Sub
+        End If
+    Next
+    
+    Shape1.Visible = False
+End Sub
+
+Public Sub CalcularPosicionMAPA()
+    
+    On Error GoTo CalcularPosicionMAPA_Err
+    
+    frmMapaGrande.lblMapInfo(0) = MapDat.map_name & "(" & UserMap & ")"
+
+    If NameMaps(UserMap).desc <> "" Then
+        frmMapaGrande.Label1.Caption = NameMaps(UserMap).desc
+    Else
+        frmMapaGrande.Label1.Caption = "Sin información relevante."
+
+    End If
+
+    Dim i       As Integer
+    Dim j       As Byte
+
+    Dim Encontre As Boolean
+    
+    
+    For j = 1 To TotalWorlds
+        For i = 1 To Mundo(j).Ancho * Mundo(j).Alto
+    
+            If Mundo(j).MapIndice(i) = UserMap Then
+                idmap = i
+                Encontre = True
+                frmMapaGrande.picMap.Picture = LoadInterface("mapa" & j & ".bmp")
+                WorldActual = j
+
+                If j = 1 Then
+                    frmMapaGrande.Image2.Picture = Nothing
+                Else
+                    frmMapaGrande.Image2.Picture = LoadInterface("check-amarillo.bmp")
+                End If
+                
+                Call ActualizarPosicion(idmap)
+
+                Dim x As Long, y As Long
+                x = (idmap - 1) Mod MAPAS_ANCHO
+                y = Int((idmap - 1) / MAPAS_ANCHO)
+                lblAllies.Top = y * TILE_SIZE
+                lblAllies.Left = x * TILE_SIZE
+                lblAllies.Visible = True
+
+                Exit For
+            End If
+        Next i
+        
+        If Encontre Then
+            Exit For
+        End If
+    Next j
+    
+    If Encontre = False Then
+        If frmMapaGrande.Visible = False Then
+            frmMapaGrande.picMap.Picture = LoadInterface("mapa1.bmp")
+            frmMapaGrande.Image2.Picture = Nothing
+        End If
+
+    End If
+    
+    Call CargarDatosMapa(UserMap)
+    
+    Exit Sub
+
+CalcularPosicionMAPA_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CalcularPosicionMAPA", Erl)
+    Resume Next
+    
 End Sub

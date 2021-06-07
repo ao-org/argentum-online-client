@@ -761,7 +761,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
 
     If frmMapaGrande.Visible Then
-        Call CalcularPosicionMAPA
+        Call frmMapaGrande.ActualizarPosicionMapa
     End If
     
     ' Update 3D sounds!
@@ -802,7 +802,7 @@ Private Sub AddMovementToKeysMovementPressedQueue()
     On Error GoTo AddMovementToKeysMovementPressedQueue_Err
     
 
-    If GetKeyState(BindKeys(14).KeyCode) < 0 Then
+    If BindKeys(14).KeyCode <> 0 And GetKeyState(BindKeys(14).KeyCode) < 0 Then
         If keysMovementPressedQueue.itemExist(BindKeys(14).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(14).KeyCode) ' Agrega la tecla al arraylist
     Else
 
@@ -810,7 +810,7 @@ Private Sub AddMovementToKeysMovementPressedQueue()
 
     End If
 
-    If GetKeyState(BindKeys(15).KeyCode) < 0 Then
+    If BindKeys(15).KeyCode <> 0 And GetKeyState(BindKeys(15).KeyCode) < 0 Then
         If keysMovementPressedQueue.itemExist(BindKeys(15).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(15).KeyCode) ' Agrega la tecla al arraylist
     Else
 
@@ -818,7 +818,7 @@ Private Sub AddMovementToKeysMovementPressedQueue()
 
     End If
 
-    If GetKeyState(BindKeys(16).KeyCode) < 0 Then
+    If BindKeys(16).KeyCode <> 0 And GetKeyState(BindKeys(16).KeyCode) < 0 Then
         If keysMovementPressedQueue.itemExist(BindKeys(16).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(16).KeyCode) ' Agrega la tecla al arraylist
     Else
 
@@ -826,7 +826,7 @@ Private Sub AddMovementToKeysMovementPressedQueue()
 
     End If
 
-    If GetKeyState(BindKeys(17).KeyCode) < 0 Then
+    If BindKeys(17).KeyCode <> 0 And GetKeyState(BindKeys(17).KeyCode) < 0 Then
         If keysMovementPressedQueue.itemExist(BindKeys(17).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(17).KeyCode) ' Agrega la tecla al arraylist
     Else
 
@@ -886,6 +886,9 @@ Sub Check_Keys()
                 Call AddMovementToKeysMovementPressedQueue
                 
                 Select Case keysMovementPressedQueue.GetLastItem()
+                
+                    ' Prevenimos teclas sin asignar... Te deja moviendo para siempre
+                    Case 0: Exit Sub
                     
                     'Move Up
                     Case BindKeys(14).KeyCode
