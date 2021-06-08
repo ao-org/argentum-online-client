@@ -466,11 +466,10 @@ Friend Sub DrawBreathing(ByVal x As Long, _
     On Error GoTo DrawBreathing_Err
     
 
-    Dim dX As Long, dy As Long
-    dX = Fix(ease)
-    dy = Fix(3 * ease)
+    Dim dy As Integer
+    dy = Int(2 * ease)
 
-    m_Data(m_Position).x = x
+    m_Data(m_Position).x = x + 0.25
     m_Data(m_Position).y = y + Height
     m_Data(m_Position).z = 0
     m_Data(m_Position).Color = Color(0)
@@ -479,7 +478,7 @@ Friend Sub DrawBreathing(ByVal x As Long, _
  
     m_Position = m_Position + 1
     
-    m_Data(m_Position).x = x
+    m_Data(m_Position).x = x + 0.25
     m_Data(m_Position).y = y - dy
     m_Data(m_Position).z = 0
     m_Data(m_Position).Color = Color(1)
@@ -488,7 +487,7 @@ Friend Sub DrawBreathing(ByVal x As Long, _
    
     m_Position = m_Position + 1
    
-    m_Data(m_Position).x = x + Width
+    m_Data(m_Position).x = x + Width + 0.25
     m_Data(m_Position).y = y + Height
     m_Data(m_Position).z = 0
     m_Data(m_Position).Color = Color(2)
@@ -497,7 +496,7 @@ Friend Sub DrawBreathing(ByVal x As Long, _
 
     m_Position = m_Position + 1
    
-    m_Data(m_Position).x = x + Width + dX
+    m_Data(m_Position).x = x + Width + 0.25
     m_Data(m_Position).y = y - dy
     m_Data(m_Position).z = 0
     m_Data(m_Position).Color = Color(3)

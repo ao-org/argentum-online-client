@@ -106,7 +106,7 @@ Public Type GrhData
 End Type
 
 'apunta a una estructura grhdata y mantiene la animacion
-Public Type Grh
+Public Type grh
 
     GrhIndex As Long
     speed As Single
@@ -127,7 +127,7 @@ End Type
 'Lista de cuerpos
 Public Type BodyData
 
-    Walk(E_Heading.NORTH To E_Heading.WEST) As Grh
+    Walk(E_Heading.NORTH To E_Heading.WEST) As grh
     HeadOffset As Position
 
 End Type
@@ -135,21 +135,21 @@ End Type
 'Lista de cabezas
 Public Type HeadData
 
-    Head(E_Heading.NORTH To E_Heading.WEST) As Grh
+    Head(E_Heading.NORTH To E_Heading.WEST) As grh
 
 End Type
 
 'Lista de las animaciones de las armas
 Type WeaponAnimData
 
-    WeaponWalk(E_Heading.NORTH To E_Heading.WEST) As Grh
+    WeaponWalk(E_Heading.NORTH To E_Heading.WEST) As grh
 
 End Type
 
 'Lista de las animaciones de los escudos
 Type ShieldAnimData
 
-    ShieldWalk(E_Heading.NORTH To E_Heading.WEST) As Grh
+    ShieldWalk(E_Heading.NORTH To E_Heading.WEST) As grh
 
 End Type
 
@@ -171,7 +171,7 @@ Public Type Char
     EsEnano As Boolean
     active As Byte
     Heading As E_Heading
-    Pos As Position
+    pos As Position
     
     NowPosX As Integer
     NowPosY As Integer
@@ -186,7 +186,7 @@ Public Type Char
     MovArmaEscudo As Boolean
     AnimatingBody As Integer
 
-    fX As Grh
+    fX As grh
     FxIndex As Integer
     BarTime As Single
     Escribiendo As Boolean
@@ -216,7 +216,7 @@ Public Type Char
     AuraAngle As Single
     
     FxCount As Integer
-    FxList() As Grh
+    FxList() As grh
         
     particle_count As Integer
     CreandoCant As Integer
@@ -280,11 +280,11 @@ End Type
 Public Type Fantasma
 
     Activo As Boolean
-    Body As Grh
-    Head As Grh
-    Arma As Grh
-    Casco As Grh
-    Escudo As Grh
+    Body As grh
+    Head As grh
+    Arma As grh
+    Casco As grh
+    Escudo As grh
     Body_Aura As String
     AlphaB As Single
     OffX As Integer
@@ -295,15 +295,15 @@ End Type
 
 Public Type MapBlock
 
-    fX As Grh
+    fX As grh
     FxIndex As Byte
     
     FxCount As Integer
-    FxList() As Grh
+    FxList() As grh
     
-    Graphic(1 To 4) As Grh
+    Graphic(1 To 4) As grh
     charindex As Integer
-    ObjGrh As Grh
+    ObjGrh As grh
     GrhBlend As Single
     light_value(3) As RGBA
     
@@ -545,7 +545,7 @@ ConvertCPtoTP_Err:
     
 End Sub
 
-Public Sub InitGrh(ByRef Grh As Grh, ByVal GrhIndex As Long, Optional ByVal Started As Long = -1, Optional ByVal Loops As Integer = INFINITE_LOOPS)
+Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Started As Long = -1, Optional ByVal Loops As Integer = INFINITE_LOOPS)
     '*****************************************************************
     'Sets up a grh. MUST be done before rendering
     '*****************************************************************
@@ -554,24 +554,24 @@ Public Sub InitGrh(ByRef Grh As Grh, ByVal GrhIndex As Long, Optional ByVal Star
 
     If GrhIndex = 0 Or GrhIndex > MaxGrh Then Exit Sub
     
-     Grh.GrhIndex = GrhIndex
+     grh.GrhIndex = GrhIndex
 
     If GrhData(GrhIndex).NumFrames > 1 Then
         If Started >= 0 Then
-            Grh.Started = Started
+            grh.Started = Started
         Else
-            Grh.Started = FrameTime
+            grh.Started = FrameTime
         End If
         
-        Grh.Loops = Loops
-        Grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
+        grh.Loops = Loops
+        grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
     Else
-        Grh.Started = 0
+        grh.Started = 0
         grh.speed = 1
     End If
 
     'Precalculate texture coordinates
-    With GrhData(Grh.GrhIndex)
+    With GrhData(grh.GrhIndex)
         If .Tx2 = 0 And .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
 
@@ -630,7 +630,7 @@ Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
     On Error GoTo EstaPCarea_Err
     
 
-    With charlist(charindex).Pos
+    With charlist(charindex).pos
         EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
 
     End With
@@ -660,7 +660,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
             If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv Then
                 If .Speeding > 1.3 Then
                    
-                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y))
                     Exit Sub
 
                 End If
@@ -668,12 +668,12 @@ Sub DoPasosFx(ByVal charindex As Integer)
                 .Pie = Not .Pie
 
                 If .Pie Then
-                    FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
+                    FileNum = GrhData(MapData(.pos.x, .pos.y).Graphic(1).GrhIndex).FileNum
                     TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y))
                     'Call Audio.PlayWave(SND_PASOS3, .Pos.X, .Pos.Y)
                 Else
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y))
 
                 End If
 
@@ -1216,7 +1216,7 @@ Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As 
     
 
     If GrhIndex > 0 Then
-        HayUserAbajo = charlist(UserCharIndex).Pos.x >= x - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.x <= x + (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.y >= y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).Pos.y <= y
+        HayUserAbajo = charlist(UserCharIndex).pos.x >= x - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).pos.x <= x + (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).pos.y >= y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).pos.y <= y
 
     End If
 

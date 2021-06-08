@@ -385,7 +385,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -416,14 +415,14 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000008&
-      Height          =   9060
-      Left            =   180
-      ScaleHeight     =   604
+      Height          =   9120
+      Left            =   150
+      ScaleHeight     =   608
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   732
+      ScaleWidth      =   736
       TabIndex        =   3
-      Top             =   2286
-      Width           =   10982
+      Top             =   2250
+      Width           =   11040
       Begin MSWinsockLib.Winsock MainSocket 
          Left            =   6720
          Top             =   120
@@ -4557,13 +4556,13 @@ Public Sub Form_Click()
                         If MainTimer.Check(TimersIndex.CastSpell) Then
                             If UsingSkill = MarcaDeGM Then
 
-                                Dim Pos As Integer
+                                Dim pos As Integer
 
                                 If MapData(tX, tY).charindex <> 0 Then
-                                    Pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
+                                    pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
                                 
-                                    If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
-                                    frmPanelgm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
+                                    If pos = 0 Then pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
+                                    frmPanelgm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, pos - 2)
 
                                 End If
 

@@ -281,7 +281,7 @@ End Sub
 
 Public Sub Engine_Init()
 
-On Error GoTo errhandler:
+On Error GoTo ErrHandler:
     
     ' Initialize all DirectX objects.
     Set DirectX = New DirectX8
@@ -295,22 +295,22 @@ On Error GoTo errhandler:
                 If Not Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) Then
                     If Not Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) Then
                         
-                        GoTo errhandler
+                        GoTo ErrHandler
                         
                     End If
                 End If
             End If
                 
         Case "Hardware"
-            If Init_DirectDevice(D3DCREATE_HARDWARE_VERTEXPROCESSING) = False Then GoTo errhandler
+            If Init_DirectDevice(D3DCREATE_HARDWARE_VERTEXPROCESSING) = False Then GoTo ErrHandler
             Debug.Print "Modo de Renderizado: HARDWARE"
             
         Case "Mixed"
-            If Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) = False Then GoTo errhandler
+            If Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) = False Then GoTo ErrHandler
             Debug.Print "Modo de Renderizado: MIXED"
         
         Case Else
-            If Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) = False Then GoTo errhandler
+            If Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) = False Then GoTo ErrHandler
             Debug.Print "Modo de Renderizado: SOFTWARE"
     
     End Select
@@ -363,7 +363,7 @@ On Error GoTo errhandler:
     
     Exit Sub
     
-errhandler:
+ErrHandler:
     
     Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
                 "Asegúrate de tener los drivers gráficos actualizados y la librería DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
@@ -567,7 +567,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     'Center Grh over X,Y pos
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
+            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * TilePixelWidth \ 2) + TilePixelWidth \ 2
         End If
 
         If GrhData(grh.GrhIndex).TileHeight <> 1 Then
@@ -633,7 +633,7 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
     'Center Grh over X,Y pos
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
+            x = x + Int(TilePixelWidth - GrhData(CurrentGrhIndex).pixelWidth) \ 2
         End If
 
         If GrhData(grh.GrhIndex).TileHeight <> 1 Then
@@ -653,9 +653,9 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
         Call SpriteBatch.SetAlpha(Alpha)
         
         If .Tx2 = 0 And .FileNum > 0 Then
-            .Tx1 = .sX / TextureWidth
+            .Tx1 = (.sX + 0.25) / TextureWidth
             .Tx2 = (.sX + .pixelWidth) / TextureWidth
-            .Ty1 = .sY / TextureHeight
+            .Ty1 = (.sY + 0.25) / TextureHeight
             .Ty2 = (.sY + .pixelHeight) / TextureHeight
         End If
 
@@ -1324,7 +1324,7 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
 
     Dim moved         As Boolean
 
-    Dim Pos           As Integer
+    Dim pos           As Integer
 
     Dim line          As String
 
@@ -1427,7 +1427,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     'Last Modify Date: 12/03/04
     'Draw char's to screen without offcentering them
     '***************************************************
-    Dim Pos                 As Integer
+    Dim pos                 As Integer
 
     Dim line                As String
 
@@ -1606,7 +1606,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
 
                 If .EsNpc Then
-                    If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
+                    If Abs(tX - .pos.x) < 1 And tY - .pos.y < 1 And .pos.y - tY < 2 Then
                         MostrarNombre = True
                         Call RGBAList(NameColor, 210, 105, 30)
                         Call InitGrh(TempGrh, 839)
@@ -1694,8 +1694,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     OffAuras = 7
                 End If
 
-                OffArma = OffArma - ease * 4
-                OffHead = .Body.HeadOffset.y - ease * 2
+                OffArma = OffArma - Int(ease * 3)
+                OffHead = .Body.HeadOffset.y - Int(ease * 1.75) - 1
     
                 BeginComposedTexture
                 
@@ -1742,9 +1742,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     
                     Case E_Heading.south
                                          
-                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
-                                         
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+                        
+                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                                          
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                                          
@@ -1783,14 +1783,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             'Draw name over head
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
                 
-                Pos = InStr(.nombre, "<")
+                pos = InStr(.nombre, "<")
                 
-                If Pos = 0 Then Pos = InStr(.nombre, "[")
+                If pos = 0 Then pos = InStr(.nombre, "[")
 
-                If Pos = 0 Then Pos = Len(.nombre) + 2
+                If pos = 0 Then pos = Len(.nombre) + 2
 
                 'Nick
-                line = Left$(.nombre, Pos - 2)
+                line = Left$(.nombre, pos - 2)
                 Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 
@@ -2051,11 +2051,11 @@ Private Function Engine_FToDW(f As Single) As Long
     
 
     ' single > long
-    Dim Buf As D3DXBuffer
+    Dim buf As D3DXBuffer
 
-    Set Buf = DirectD3D8.CreateBuffer(4)
-    DirectD3D8.BufferSetData Buf, 0, 4, 1, f
-    DirectD3D8.BufferGetData Buf, 0, 4, 1, Engine_FToDW
+    Set buf = DirectD3D8.CreateBuffer(4)
+    DirectD3D8.BufferSetData buf, 0, 4, 1, f
+    DirectD3D8.BufferGetData buf, 0, 4, 1, Engine_FToDW
 
     
     Exit Function
@@ -3964,7 +3964,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 If (.End_Effect <> 0) And .DestinoChar <> 0 Then
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
-                        Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y))
+                        Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).pos.x, charlist(.DestinoChar).pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).pos.x, charlist(.DestinoChar).pos.y))
                         .Slot_Used = False
                         Exit Sub
 
@@ -3982,7 +3982,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 End If
             
                 If (.FxEnd_Effect > 0) And .DestinoChar <> 0 Then
-                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y))
+                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).pos.x, charlist(.DestinoChar).pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).pos.x, charlist(.DestinoChar).pos.y))
                     Call SetCharacterFx(.DestinoChar, .FxEnd_Effect, .End_Loops)
                     .Slot_Used = False
                     Exit Sub
