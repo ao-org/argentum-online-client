@@ -140,7 +140,7 @@ Private Type tDatosObjs
 
     x As Integer
     y As Integer
-    OBJIndex As Integer
+    ObjIndex As Integer
     ObjAmmount As Integer
 
 End Type
@@ -230,7 +230,7 @@ Public Sub CargarRecursos()
     Call CargarAnimArmas
     Call CargarAnimEscudos
     Call CargarColores
-
+    Call CargarCrafteo
     
     Exit Sub
 
@@ -1157,9 +1157,9 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Objetos
 
             For i = 1 To .NumeroOBJs
-                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.OBJIndex = Objetos(i).OBJIndex
+                MapData(Objetos(i).x, Objetos(i).y).OBJInfo.ObjIndex = Objetos(i).ObjIndex
                 MapData(Objetos(i).x, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
-                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).OBJIndex).GrhIndex
+                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).ObjIndex).GrhIndex
                 Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex)
 
             Next i
@@ -1201,7 +1201,7 @@ Public Sub CargarParticulas()
     Dim GrhListing As String
     Dim TempSet    As String
     Dim ColorSet   As Long
-    Dim temp       As Integer
+    Dim Temp       As Integer
 
     #If Compresion = 1 Then
 
@@ -1252,8 +1252,8 @@ Public Sub CargarParticulas()
         StreamData(loopc).move_y2 = General_Var_Get(StreamFile, Val(loopc), "move_y2")
         StreamData(loopc).life_counter = General_Var_Get(StreamFile, Val(loopc), "life_counter")
         StreamData(loopc).speed = Val(General_Var_Get(StreamFile, Val(loopc), "Speed"))
-        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
+        Temp = General_Var_Get(StreamFile, Val(loopc), "resize")
+        StreamData(loopc).grh_resize = IIf((Temp = -1), True, False)
         StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
         StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
         
@@ -1305,12 +1305,12 @@ Public Sub CargarParticulasBinary()
     Dim GrhListing As String
     Dim TempSet    As String
     Dim ColorSet   As Long
-    Dim temp       As Integer
+    Dim Temp       As Integer
 
-    Dim Handle     As Integer
+    Dim handle     As Integer
 
     'Open files
-    Handle = FreeFile()
+    handle = FreeFile()
 
     #If Compresion = 1 Then
 
@@ -1350,8 +1350,8 @@ Public Sub CargarParticulasBinary()
     'fill StreamData array with info from Particles.ini
     For loopc = 1 To ParticulasTotales
 
-        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
+        Temp = General_Var_Get(StreamFile, Val(loopc), "resize")
+        StreamData(loopc).grh_resize = IIf((Temp = -1), True, False)
         StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
         StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
         
@@ -1518,7 +1518,7 @@ Public Sub CargarIndicesOBJ()
     
     For Hechizo = 1 To NumHechizos
         DoEvents
-        HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
+        HechizoData(Hechizo).Nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
         HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "desc")
         HechizoData(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
         HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
@@ -1542,7 +1542,7 @@ Public Sub CargarIndicesOBJ()
     For Hechizo = 1 To NumQuest
         DoEvents
         
-        QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
+        QuestList(Hechizo).Nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
         
         QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
         QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
@@ -2121,11 +2121,11 @@ Public Function LoadGrhData() As Boolean
     Dim grh         As Long
     Dim Frame       As Long
     Dim grhCount    As Long
-    Dim Handle      As Integer
+    Dim handle      As Integer
     Dim fileVersion As Long
     
     'Open files
-    Handle = FreeFile()
+    handle = FreeFile()
     
     #If Compresion = 1 Then
 
@@ -2135,16 +2135,16 @@ Public Function LoadGrhData() As Boolean
 
         End If
     
-        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #Handle
+        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #handle
     #Else
-        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #Handle
+        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #handle
     #End If
     
     'Get file version
-    Get #Handle, , fileVersion
+    Get #handle, , fileVersion
     
     'Get number of grhs
-    Get #Handle, , grhCount
+    Get #handle, , grhCount
     
     'Resize arrays
     ReDim GrhData(1 To grhCount) As GrhData
@@ -2155,15 +2155,15 @@ Public Function LoadGrhData() As Boolean
 
     Fin = False
 
-    While Not EOF(Handle) And Fin = False
+    While Not EOF(handle) And Fin = False
 
-        Get #Handle, , grh
+        Get #handle, , grh
 
         With GrhData(grh)
         
             GrhData(grh).active = True
             'Get number of frames
-            Get #Handle, , .NumFrames
+            Get #handle, , .NumFrames
 
             If .NumFrames <= 0 Then GoTo ErrorHandler
             
@@ -2173,7 +2173,7 @@ Public Function LoadGrhData() As Boolean
 
                 'Read a animation GRH set
                 For Frame = 1 To .NumFrames
-                    Get #Handle, , .Frames(Frame)
+                    Get #handle, , .Frames(Frame)
 
                     If .Frames(Frame) <= 0 Or .Frames(Frame) > grhCount Then
                         GoTo ErrorHandler
@@ -2182,7 +2182,7 @@ Public Function LoadGrhData() As Boolean
 
                 Next Frame
                 
-                Get #Handle, , GrhData(grh).speed
+                Get #handle, , GrhData(grh).speed
                 
                 If .speed <= 0 Then GoTo ErrorHandler
                 
@@ -2204,23 +2204,23 @@ Public Function LoadGrhData() As Boolean
                 If .TileHeight <= 0 Then GoTo ErrorHandler
             Else
                 'Read in normal GRH data
-                Get #Handle, , .FileNum
+                Get #handle, , .FileNum
 
                 If .FileNum <= 0 Then GoTo ErrorHandler
                                 
-                Get #Handle, , GrhData(grh).sX
+                Get #handle, , GrhData(grh).sX
 
                 If .sX < 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(grh).sY
+                Get #handle, , GrhData(grh).sY
 
                 If .sY < 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(grh).pixelWidth
+                Get #handle, , GrhData(grh).pixelWidth
 
                 If .pixelWidth <= 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(grh).pixelHeight
+                Get #handle, , GrhData(grh).pixelHeight
 
                 If .pixelHeight <= 0 Then GoTo ErrorHandler
                 
@@ -2237,7 +2237,7 @@ Public Function LoadGrhData() As Boolean
         If grh = MaxGrh Then Fin = True
     Wend
 
-    Close #Handle
+    Close #handle
     
     LoadGrhData = True
     
@@ -2684,6 +2684,50 @@ CargarColores_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarColores", Erl)
     Resume Next
     
+End Sub
+
+Sub CargarCrafteo()
+    Dim FileName As String
+
+    #If Compresion = 1 Then
+        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "crafteo.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
+            Err.Description = "No se puede cargar el archivo de crafteo.ini"
+            MsgBox Err.Description
+        End If
+        
+        FileName = Windows_Temp_Dir & "crafteo.ini"
+    #Else
+        FileName = App.Path & "\..\Recursos\init\crafteo.ini"
+    #End If
+    
+    Dim Reader As clsIniManager
+    Set Reader = New clsIniManager
+    
+    Call Reader.Initialize(FileName)
+    
+    ReDim TipoCrafteo(1 To Reader.NodesCount)
+    
+    Dim i As Byte
+    For i = 0 To Reader.NodesCount - 1
+        Dim Nombre As String
+        Nombre = Reader.GetNode(i)
+        
+        Dim id As Byte
+        id = Val(Reader.GetValue(Nombre, "ID"))
+        
+        With TipoCrafteo(id)
+            .Nombre = Nombre
+            .Ventana = Reader.GetValue(Nombre, "Ventana")
+            .Inventario = Val(Reader.GetValue(Nombre, "Inventario"))
+            .Icono = Val(Reader.GetValue(Nombre, "Icono"))
+        End With
+    Next
+
+    Set Reader = Nothing
+    
+    #If Compresion = 1 Then
+        Delete_File FileName
+    #End If
 End Sub
 
 Sub CargarAnimEscudos()

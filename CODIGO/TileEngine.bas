@@ -507,10 +507,10 @@ Public Sub Init_TileEngine()
     UserPos.x = 50
     UserPos.y = 50
     
-    MinXBorder = XMinMapSize + (frmMain.renderer.ScaleWidth / 64)
-    MaxXBorder = XMaxMapSize - (frmMain.renderer.ScaleWidth / 64)
-    MinYBorder = YMinMapSize + (frmMain.renderer.ScaleHeight / 64)
-    MaxYBorder = YMaxMapSize - (frmMain.renderer.ScaleHeight / 64)
+    MinXBorder = XMinMapSize + (frmMain.renderer.ScaleWidth \ 64)
+    MaxXBorder = XMaxMapSize - (frmMain.renderer.ScaleWidth \ 64)
+    MinYBorder = YMinMapSize + (frmMain.renderer.ScaleHeight \ 64)
+    MaxYBorder = YMaxMapSize - (frmMain.renderer.ScaleHeight \ 64)
     MinYBorder = MinYBorder
 
     

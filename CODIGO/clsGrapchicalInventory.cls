@@ -593,6 +593,27 @@ SetItem_Err:
     
 End Sub
 
+Public Sub ClearSlot(ByVal Slot As Byte)
+    If Slot < 1 Or Slot > InvMaxSlots Then Exit Sub
+
+    With UserInventory(Slot)
+        .Amount = 0
+        .Def = 0
+        .Equipped = 0
+        .GrhIndex = 0
+        .MaxHit = 0
+        .MinHit = 0
+        .Name = vbNullString
+        .OBJIndex = 0
+        .ObjType = 0
+        .Valor = 0
+        .PuedeUsar = 0
+
+    End With
+
+    InvNeedsRedraw = True
+End Sub
+
 Public Sub SeleccionarItem(ByVal SelectedItem As Byte)
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -834,7 +855,7 @@ Private Sub InventoryWindow_MouseMove(Button As Integer, Shift As Integer, x As 
     
 
     ' Si estamos arrastrando
-    If Dragging >= 0 Then
+    If Dragging > 0 Then
 
         ' Mantenemos el item dentro del Picture
         If x < HALF_ITEM_SIZE Then x = HALF_ITEM_SIZE

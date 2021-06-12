@@ -8,7 +8,7 @@ Option Explicit
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
 Public Sub WriteLoginExistingChar()
-    
+
     On Error GoTo WriteLoginExistingChar_Err
 
     '***************************************************
@@ -16,8 +16,7 @@ Public Sub WriteLoginExistingChar()
     'Last Modification: 05/17/06
     'Writes the "LoginExistingChar" message to the outgoing data buffer
     '***************************************************
-    Dim i As Long
-    
+
     With outgoingData
         Call .WriteID(ClientPacketID.LoginExistingChar)
         Call .WriteASCIIString(CuentaEmail)
@@ -31,7 +30,7 @@ Public Sub WriteLoginExistingChar()
         Call .WriteASCIIString(CheckMD5)
         Call .EndPacket
     End With
-    
+
     Exit Sub
 
 WriteLoginExistingChar_Err:
@@ -8894,4 +8893,121 @@ Handler:
 
     End If
 
+End Sub
+
+Public Sub WriteAddItemCrafting(ByVal SlotInv As Byte, ByVal SlotCraft As Byte)
+    On Error GoTo Handler
+
+    With outgoingData
+        Call .WriteID(ClientPacketID.AddItemCrafting)
+        Call .WriteByte(SlotInv)
+        Call .WriteByte(SlotCraft)
+        Call .EndPacket
+    End With
+    
+Handler:
+    If outgoingData.errNumber = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+End Sub
+    
+Public Sub WriteRemoveItemCrafting(ByVal SlotCraft As Byte, ByVal SlotInv As Byte)
+    On Error GoTo Handler
+
+    With outgoingData
+        Call .WriteID(ClientPacketID.RemoveItemCrafting)
+        Call .WriteByte(SlotCraft)
+        Call .WriteByte(SlotInv)
+        Call .EndPacket
+    End With
+    
+Handler:
+    If outgoingData.errNumber = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+End Sub
+
+Public Sub WriteAddCatalyst(ByVal SlotInv As Byte)
+    On Error GoTo Handler
+
+    With outgoingData
+        Call .WriteID(ClientPacketID.AddCatalyst)
+        Call .WriteByte(SlotInv)
+        Call .EndPacket
+    End With
+    
+Handler:
+    If outgoingData.errNumber = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+End Sub
+
+Public Sub WriteRemoveCatalyst(ByVal SlotInv As Byte)
+    On Error GoTo Handler
+
+    With outgoingData
+        Call .WriteID(ClientPacketID.RemoveCatalyst)
+        Call .WriteByte(SlotInv)
+        Call .EndPacket
+    End With
+
+Handler:
+    If outgoingData.errNumber = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+End Sub
+
+Public Sub WriteCraftItem()
+    On Error GoTo Handler
+
+    With outgoingData
+        Call .WriteID(ClientPacketID.CraftItem)
+        Call .EndPacket
+    End With
+    
+Handler:
+    If outgoingData.errNumber = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+End Sub
+
+Public Sub WriteMoveCraftItem(ByVal Drag As Byte, ByVal Drop As Byte)
+    On Error GoTo Handler
+
+    With outgoingData
+        Call .WriteID(ClientPacketID.MoveCraftItem)
+        Call .WriteByte(Drag)
+        Call .WriteByte(Drop)
+        Call .EndPacket
+    End With
+    
+Handler:
+    If outgoingData.errNumber = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+End Sub
+
+Public Sub WriteCloseCrafting()
+    On Error GoTo Handler
+
+    With outgoingData
+
+        Call .WriteID(ClientPacketID.CloseCrafting)
+        Call .EndPacket
+
+    End With
+    
+Handler:
+
+    If outgoingData.errNumber = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+
+    End If
 End Sub

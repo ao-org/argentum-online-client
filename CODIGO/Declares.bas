@@ -522,6 +522,13 @@ Type tSasteria
 
 End Type
 
+Type tCrafteo
+    nombre As String
+    Ventana As String
+    Inventario As Long
+    Icono As Long
+End Type
+
 Public ArmasHerrero(0 To 100)     As tHerreria
 
 Public DefensasHerrero(0 To 100)  As tHerreria
@@ -548,6 +555,8 @@ Public UsaMacro                   As Boolean
 
 Public CnTd                       As Byte
 
+Public TipoCrafteo()              As tCrafteo
+
 Public Type ObjDonador
 
     precio As Integer
@@ -560,6 +569,8 @@ Public ObjDonador(0 To 100)           As ObjDonador
 Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 42
 
 Public Const MAX_KEYS As Byte = 10
+
+Public Const MAX_SLOTS_CRAFTEO = 5
 
 Public Const LoopAdEternum            As Integer = 999
 

@@ -203,7 +203,7 @@ Attribute InvBankUsu.VB_VarHelpID = -1
 Public WithEvents InvBoveda  As clsGrapchicalInventory ' Inventario de la bóveda
 Attribute InvBoveda.VB_VarHelpID = -1
 
-Private Sub moverForm()
+Private Sub MoverForm()
     
     On Error GoTo moverForm_Err
     
@@ -217,7 +217,7 @@ Private Sub moverForm()
     Exit Sub
 
 moverForm_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.moverForm", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.moverForm", Erl)
     Resume Next
     
 End Sub
@@ -244,7 +244,7 @@ Private Sub cantidad_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 cantidad_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.cantidad_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.cantidad_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -285,7 +285,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.Form_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -304,7 +304,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -352,7 +352,7 @@ Private Sub cmdDepositar_Click()
 End Sub
 
 Private Sub cmdRetirar_Click()
- If Not IsNumeric(cantidad.Text) Then Exit Sub
+    If Not IsNumeric(cantidad.Text) Then Exit Sub
     If Val(cantidad.Text) <= 0 Then Exit Sub
 
     LasActionBuy = True
@@ -383,7 +383,7 @@ Private Sub cantidad_Change()
     Exit Sub
 
 cantidad_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.cantidad_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.cantidad_Change", Erl)
     Resume Next
     
 End Sub
@@ -399,7 +399,7 @@ Private Sub Form_Unload(Cancel As Integer)
     Exit Sub
 
 Form_Unload_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.Form_Unload", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.Form_Unload", Erl)
     Resume Next
     
 End Sub
@@ -423,7 +423,7 @@ Private Sub interface_Click()
     Exit Sub
 
 interface_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.interface_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.interface_Click", Erl)
     Resume Next
     
 End Sub
@@ -478,7 +478,7 @@ Private Sub interface_DblClick()
     Exit Sub
 
 interface_DblClick_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.interface_DblClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.interface_DblClick", Erl)
     Resume Next
     
 End Sub
@@ -540,7 +540,7 @@ Private Sub interface_KeyDown(KeyCode As Integer, Shift As Integer)
     Exit Sub
 
 interface_KeyDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.interface_KeyDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.interface_KeyDown", Erl)
     Resume Next
     
 End Sub
@@ -570,7 +570,7 @@ Private Sub InvBoveda_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
     Exit Sub
 
 InvBoveda_ItemDropped_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.InvBoveda_ItemDropped", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.InvBoveda_ItemDropped", Erl)
     Resume Next
     
 End Sub
@@ -602,7 +602,7 @@ Private Sub InvBankUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer,
     Exit Sub
 
 InvBankUsu_ItemDropped_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.InvBankUsu_ItemDropped", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.InvBankUsu_ItemDropped", Erl)
     Resume Next
     
 End Sub
@@ -617,7 +617,7 @@ Private Sub salir_Click()
     Exit Sub
 
 salir_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.salir_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.salir_Click", Erl)
     Resume Next
     
 End Sub
@@ -652,7 +652,7 @@ Private Sub tmrNumber_Timer()
     Exit Sub
 
 tmrNumber_Timer_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmBancoObj.tmrNumber_Timer", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.tmrNumber_Timer", Erl)
     Resume Next
     
 End Sub

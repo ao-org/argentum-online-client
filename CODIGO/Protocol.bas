@@ -231,6 +231,10 @@ Private Enum ServerPacketID
     InvasionInfo
     CommerceRecieveChatMessage
     DoAnimation
+    OpenCrafting
+    CraftingItem
+    CraftingCatalyst
+    CraftingResult
     
     [PacketCount]
 End Enum
@@ -324,7 +328,7 @@ Public Enum ClientPacketID
     Information             '/INFORMACION
     Reward                  '/RECOMPENSA
     RequestMOTD             '/MOTD
-    Uptime                  '/UPTIME
+    UpTime                  '/UPTIME
     Inquiry                 '/ENCUESTA ( with no params )
     GuildMessage            '/CMSG
     CentinelReport          '/CENTINELA
@@ -334,7 +338,7 @@ Public Enum ClientPacketID
     GMRequest               '/GM
     ChangeDescription       '/DESC
     GuildVote               '/VOTO
-    Punishments             '/PENAS
+    punishments             '/PENAS
     ChangePassword          '/CONTRASEÑA
     Gamble                  '/APOSTAR
     InquiryVote             '/ENCUESTA ( with parameters )
@@ -418,7 +422,7 @@ Public Enum ClientPacketID
     BannedIPReload          '/BANIPRELOAD
     GuildMemberList         '/MIEMBROSCLAN
     GuildBan                '/BANCLAN
-    BanIP                   '/BANIP
+    banip                   '/BANIP
     UnBanIp                 '/UNBANIP
     CreateItem              '/CI
     DestroyItems            '/DEST
@@ -572,13 +576,20 @@ Public Enum ClientPacketID
     CreateEvent
     CommerceSendChatMessage
     LogMacroClickHechizo
+    AddItemCrafting
+    RemoveItemCrafting
+    AddCatalyst
+    RemoveCatalyst
+    CraftItem
+    CloseCrafting
+    MoveCraftItem
     
     [PacketCount]
 End Enum
 
 ' Rezniaq: Sacamos alv la busqueda lineal que hacia el Select Case de la funcion HandleIncomingData.
 Private PacketList(0 To ServerPacketID.[PacketCount] - 1) As Long
-Private Declare Sub CallHandle Lib "ao20.dll" (ByVal Address As Long, ByVal UserIndex As Integer)
+Private Declare Sub CallHandle Lib "ao20.dll" (ByVal address As Long, ByVal userIndex As Integer)
 
 Public Sub InitializePacketList()
 
@@ -763,6 +774,10 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.InvasionInfo) = GetAddress(AddressOf HandleInvasionInfo)
     PacketList(ServerPacketID.CommerceRecieveChatMessage) = GetAddress(AddressOf HandleCommerceRecieveChatMessage)
     PacketList(ServerPacketID.DoAnimation) = GetAddress(AddressOf HandleDoAnimation)
+    PacketList(ServerPacketID.OpenCrafting) = GetAddress(AddressOf HandleOpenCrafting)
+    PacketList(ServerPacketID.CraftingItem) = GetAddress(AddressOf HandleCraftingItem)
+    PacketList(ServerPacketID.CraftingCatalyst) = GetAddress(AddressOf HandleCraftingCatalyst)
+    PacketList(ServerPacketID.CraftingResult) = GetAddress(AddressOf HandleCraftingResult)
 
 End Sub
 
@@ -814,7 +829,7 @@ Public Function HandleIncomingData() As Boolean
 
     PacketID = CLng(incomingData.ReadID())
 
-    InBytes = InBytes + incomingData.Length
+    InBytes = InBytes + incomingData.length
 
     Call ParsePacket(PacketID)
     
@@ -822,7 +837,7 @@ Public Function HandleIncomingData() As Boolean
     
         Call .ReadNewPacket
     
-        If (Not .BufferOver Or .Length > 0) And .errNumber = 0 Then    'Done with this packet, move on to next one
+        If (Not .BufferOver Or .length > 0) And .errNumber = 0 Then    'Done with this packet, move on to next one
             Err.Clear
             HandleIncomingData = True
         
@@ -1180,7 +1195,7 @@ Private Sub HandleDisconnect()
     UserRaza = 0
     MiCabeza = 0
     UserHogar = 0
-    
+
     For i = 1 To NUMSKILLS
         UserSkills(i) = 0
     Next i
@@ -1188,27 +1203,34 @@ Private Sub HandleDisconnect()
     For i = 1 To NUMATRIBUTOS
         UserAtributos(i) = 0
     Next i
-    
+
     For i = 1 To UserInvUnlocked
         frmMain.imgInvLock(i - 1).Picture = Nothing
     Next i
-    
+
     For i = 1 To MAX_INVENTORY_SLOTS
-        Call frmMain.Inventario.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Call frmBancoObj.InvBankUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Call frmComerciar.InvComNpc.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Call frmComerciar.InvComUsu.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Call frmBancoCuenta.InvBankUsuCuenta.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Call frmComerciarUsu.InvUser.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmMain.Inventario.ClearSlot(i)
+        Call frmBancoObj.InvBankUsu.ClearSlot(i)
+        Call frmComerciar.InvComNpc.ClearSlot(i)
+        Call frmComerciar.InvComUsu.ClearSlot(i)
+        Call frmBancoCuenta.InvBankUsuCuenta.ClearSlot(i)
+        Call frmComerciarUsu.InvUser.ClearSlot(i)
+        Call frmCrafteo.InvCraftUser.ClearSlot(i)
     Next i
-    
+
     For i = 1 To MAX_BANCOINVENTORY_SLOTS
-        Call frmBancoObj.InvBoveda.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmBancoObj.InvBoveda.ClearSlot(i)
     Next i
-    
+
     For i = 1 To MAX_KEYS
-        Call FrmKeyInv.InvKeys.SetItem(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call FrmKeyInv.InvKeys.ClearSlot(i)
     Next i
+
+    For i = 1 To MAX_SLOTS_CRAFTEO
+        Call frmCrafteo.InvCraftItems.ClearSlot(i)
+    Next i
+
+    Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
     
     UserInvUnlocked = 0
 
@@ -1996,11 +2018,11 @@ Private Sub HandleUpdateDM()
     
     On Error GoTo HandleUpdateDM_Err
  
-    Dim value As Integer
+    Dim Value As Integer
 
-    value = incomingData.ReadInteger
+    Value = incomingData.ReadInteger
 
-    frmMain.lbldm = "+" & value & "%"
+    frmMain.lbldm = "+" & Value & "%"
     
     Exit Sub
 
@@ -2014,11 +2036,11 @@ Private Sub HandleUpdateRM()
     
     On Error GoTo HandleUpdateRM_Err
  
-    Dim value As Integer
+    Dim Value As Integer
 
-    value = incomingData.ReadInteger
+    Value = incomingData.ReadInteger
 
-    frmMain.lblResis = "+" & value
+    frmMain.lblResis = "+" & Value
     
     Exit Sub
 
@@ -2608,7 +2630,7 @@ Private Sub HandleChatOverHead()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim chat       As String
 
@@ -2691,7 +2713,7 @@ Private Sub HandleChatOverHead()
 
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHead", Erl)
     Call incomingData.SafeClearPacket
@@ -2700,7 +2722,7 @@ End Sub
 
 Private Sub HandleTextOverChar()
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim chat      As String
 
@@ -2717,7 +2739,7 @@ Private Sub HandleTextOverChar()
 
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverChar", Erl)
     Call incomingData.SafeClearPacket
@@ -2726,7 +2748,7 @@ End Sub
 
 Private Sub HandleTextOverTile()
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim Text  As String
 
@@ -2782,7 +2804,7 @@ Private Sub HandleTextOverTile()
 
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverTile", Erl)
     Call incomingData.SafeClearPacket
@@ -2791,7 +2813,7 @@ End Sub
 
 Private Sub HandleTextCharDrop()
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim Text      As String
 
@@ -2859,7 +2881,7 @@ Private Sub HandleTextCharDrop()
 
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextCharDrop", Erl)
     Call incomingData.SafeClearPacket
@@ -2877,7 +2899,7 @@ Private Sub HandleConsoleMessage()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim chat      As String
     Dim FontIndex As Integer
@@ -2937,13 +2959,13 @@ Private Sub HandleConsoleMessage()
         
         Case "ID"
 
-            Dim ID    As Integer
+            Dim id    As Integer
             Dim extra As String
 
-            ID = ReadField(2, chat, Asc("*"))
+            id = ReadField(2, chat, Asc("*"))
             extra = ReadField(3, chat, Asc("*"))
                 
-            chat = Locale_Parse_ServerMessage(ID, extra)
+            chat = Locale_Parse_ServerMessage(id, extra)
            
     End Select
     
@@ -2990,7 +3012,7 @@ Private Sub HandleConsoleMessage()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleConsoleMessage", Erl)
     Call incomingData.SafeClearPacket
@@ -3005,7 +3027,7 @@ Private Sub HandleLocaleMsg()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim chat      As String
 
@@ -3031,13 +3053,13 @@ Private Sub HandleLocaleMsg()
 
     Dim Valor     As String
 
-    Dim ID        As Integer
+    Dim id        As Integer
 
-    ID = incomingData.ReadInteger()
+    id = incomingData.ReadInteger()
     chat = incomingData.ReadASCIIString()
     FontIndex = incomingData.ReadByte()
 
-    chat = Locale_Parse_ServerMessage(ID, chat)
+    chat = Locale_Parse_ServerMessage(id, chat)
     
     If InStr(1, chat, "~") Then
         str = ReadField(2, chat, 126)
@@ -3079,7 +3101,7 @@ Private Sub HandleLocaleMsg()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLocaleMsg", Erl)
     Call incomingData.SafeClearPacket
@@ -3097,7 +3119,7 @@ Private Sub HandleGuildChat()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim chat As String
 
@@ -3157,7 +3179,7 @@ Private Sub HandleGuildChat()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildChat", Erl)
     Call incomingData.SafeClearPacket
@@ -3175,7 +3197,7 @@ Private Sub HandleShowMessageBox()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim mensaje As String
 
@@ -3204,7 +3226,7 @@ Private Sub HandleShowMessageBox()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMessageBox", Erl)
     Call incomingData.SafeClearPacket
@@ -3219,7 +3241,7 @@ Private Sub HandleMostrarCuenta()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     ' FrmCuenta.Show
     AlphaNiebla = 30
@@ -3278,7 +3300,7 @@ Private Sub HandleMostrarCuenta()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMostrarCuenta", Erl)
     Call incomingData.SafeClearPacket
@@ -3355,7 +3377,7 @@ Private Sub HandleCharacterCreate()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim charindex     As Integer
 
@@ -3501,7 +3523,7 @@ Private Sub HandleCharacterCreate()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterCreate", Erl)
     Call incomingData.SafeClearPacket
@@ -3739,7 +3761,7 @@ Private Sub HandleObjectCreate()
 
     Dim Rango    As Byte
 
-    Dim ID       As Long
+    Dim id       As Long
     
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
@@ -3763,8 +3785,8 @@ Private Sub HandleObjectCreate()
         MapData(x, y).luz.Rango = Rango
         
         If Rango < 100 Then
-            ID = x & y
-            LucesCuadradas.Light_Create x, y, Color, Rango, ID
+            id = x & y
+            LucesCuadradas.Light_Create x, y, Color, Rango, id
             LucesCuadradas.Light_Render_All
         Else
             LucesRedondas.Create_Light_To_Map x, y, Color, Rango - 99
@@ -3835,14 +3857,14 @@ Private Sub HandleObjectDelete()
 
     Dim y  As Byte
 
-    Dim ID As Long
+    Dim id As Long
     
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
     
     If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
-        ID = LucesCuadradas.Light_Find(x & y)
-        LucesCuadradas.Light_Remove ID
+        id = LucesCuadradas.Light_Find(x & y)
+        LucesCuadradas.Light_Remove id
         MapData(x, y).luz.Color = COLOR_EMPTY
         MapData(x, y).luz.Rango = 0
         LucesCuadradas.Light_Render_All
@@ -4147,7 +4169,7 @@ Private Sub HandleGuildList()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     'Clear guild's list
     frmGuildAdm.guildslist.Clear
@@ -4190,7 +4212,7 @@ Private Sub HandleGuildList()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildList", Erl)
     Call incomingData.SafeClearPacket
@@ -4561,7 +4583,7 @@ Private Sub HandleChangeInventorySlot()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim Slot        As Byte
     Dim OBJIndex    As Integer
@@ -4574,14 +4596,14 @@ Private Sub HandleChangeInventorySlot()
     Dim MinHit      As Integer
     Dim MaxDef      As Integer
     Dim MinDef      As Integer
-    Dim value       As Single
+    Dim Value       As Single
     Dim podrausarlo As Byte
 
     Slot = incomingData.ReadByte()
     OBJIndex = incomingData.ReadInteger()
     Amount = incomingData.ReadInteger()
     Equipped = incomingData.ReadBoolean()
-    value = incomingData.ReadSingle()
+    Value = incomingData.ReadSingle()
     podrausarlo = incomingData.ReadByte()
 
     Name = ObjData(OBJIndex).Name
@@ -4642,17 +4664,24 @@ Private Sub HandleChangeInventorySlot()
 
     End If
 
-    Call frmMain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, podrausarlo)
+    Call frmMain.Inventario.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
-    Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, podrausarlo)
+    If frmComerciar.Visible Then
+        Call frmComerciar.InvComUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
-    Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, podrausarlo)
+    ElseIf frmBancoObj.Visible Then
+        Call frmBancoObj.InvBankUsu.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+        
+    ElseIf frmBancoCuenta.Visible Then
+        Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
     
-    Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, podrausarlo)
+    ElseIf frmCrafteo.Visible Then
+        Call frmCrafteo.InvCraftUser.SetItem(Slot, OBJIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    End If
 
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeInventorySlot", Erl)
     Call incomingData.SafeClearPacket
@@ -4695,7 +4724,7 @@ Private Sub HandleRefreshAllInventorySlot()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim Slot             As Byte
 
@@ -4717,7 +4746,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     Dim defense          As Integer
 
-    Dim value            As Single
+    Dim Value            As Single
 
     Dim PuedeUsar        As Byte
 
@@ -4762,7 +4791,7 @@ Private Sub HandleRefreshAllInventorySlot()
 
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRefreshAllInventorySlot", Erl)
     Call incomingData.SafeClearPacket
@@ -4780,7 +4809,7 @@ Private Sub HandleChangeBankSlot()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim Slot As Byte
     Slot = incomingData.ReadByte()
@@ -4806,7 +4835,7 @@ Private Sub HandleChangeBankSlot()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeBankSlot", Erl)
     Call incomingData.SafeClearPacket
@@ -4824,7 +4853,7 @@ Private Sub HandleChangeSpellSlot()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim Slot     As Byte
 
@@ -4861,7 +4890,7 @@ Private Sub HandleChangeSpellSlot()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeSpellSlot", Erl)
     Call incomingData.SafeClearPacket
@@ -4937,7 +4966,7 @@ Private Sub HandleBlacksmithWeapons()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim count As Integer
 
@@ -4969,7 +4998,7 @@ Private Sub HandleBlacksmithWeapons()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithWeapons", Erl)
     Call incomingData.SafeClearPacket
@@ -4987,7 +5016,7 @@ Private Sub HandleBlacksmithArmors()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim count As Integer
 
@@ -5059,7 +5088,7 @@ Private Sub HandleBlacksmithArmors()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithArmors", Erl)
     Call incomingData.SafeClearPacket
@@ -5077,7 +5106,7 @@ Private Sub HandleCarpenterObjects()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim count As Integer
 
@@ -5101,7 +5130,7 @@ Private Sub HandleCarpenterObjects()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCarpenterObjects", Erl)
     Call incomingData.SafeClearPacket
@@ -5114,7 +5143,7 @@ Private Sub HandleSastreObjects()
     'Author: Ladder
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim count As Integer
 
@@ -5172,7 +5201,7 @@ Private Sub HandleSastreObjects()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSastreObjects", Erl)
     Call incomingData.SafeClearPacket
@@ -5188,7 +5217,7 @@ Private Sub HandleAlquimiaObjects()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim count As Integer
 
@@ -5216,7 +5245,7 @@ Private Sub HandleAlquimiaObjects()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlquimiaObjects", Erl)
     Call incomingData.SafeClearPacket
@@ -5257,13 +5286,13 @@ Private Sub HandleErrorMessage()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Call MsgBox(incomingData.ReadASCIIString())
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleErrorMessage", Erl)
     Call incomingData.SafeClearPacket
@@ -5331,7 +5360,7 @@ Private Sub HandleShowSignal()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim tmp As String
     Dim grh As Integer
@@ -5343,7 +5372,7 @@ Private Sub HandleShowSignal()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSignal", Erl)
     Call incomingData.SafeClearPacket
@@ -5361,7 +5390,7 @@ Private Sub HandleChangeNPCInventorySlot()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim Slot As Byte
     Slot = incomingData.ReadByte()
@@ -5388,7 +5417,7 @@ Private Sub HandleChangeNPCInventorySlot()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeNPCInventorySlot", Erl)
     Call incomingData.SafeClearPacket
@@ -5779,7 +5808,7 @@ Private Sub HandleAddForumMessage()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim title   As String
 
@@ -5790,7 +5819,7 @@ Private Sub HandleAddForumMessage()
 
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAddForumMessage", Erl)
     Call incomingData.SafeClearPacket
@@ -6059,7 +6088,7 @@ Private Sub HandleTrainerCreatureList()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim creatures() As String
 
@@ -6075,7 +6104,7 @@ Private Sub HandleTrainerCreatureList()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrainerCreatureList", Erl)
     Call incomingData.SafeClearPacket
@@ -6093,7 +6122,7 @@ Private Sub HandleGuildNews()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     ' Dim guildList() As String
     Dim List()      As String
@@ -6188,7 +6217,7 @@ Private Sub HandleGuildNews()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildNews", Erl)
     Call incomingData.SafeClearPacket
@@ -6206,13 +6235,13 @@ Private Sub HandleOfferDetails()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Call frmUserRequest.recievePeticion(incomingData.ReadASCIIString())
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleOfferDetails", Erl)
     Call incomingData.SafeClearPacket
@@ -6230,7 +6259,7 @@ Private Sub HandleAlianceProposalsList()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim guildList() As String
 
@@ -6247,7 +6276,7 @@ Private Sub HandleAlianceProposalsList()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlianceProposalsList", Erl)
     Call incomingData.SafeClearPacket
@@ -6265,7 +6294,7 @@ Private Sub HandlePeaceProposalsList()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim guildList() As String
 
@@ -6282,7 +6311,7 @@ Private Sub HandlePeaceProposalsList()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePeaceProposalsList", Erl)
     Call incomingData.SafeClearPacket
@@ -6300,7 +6329,7 @@ Private Sub HandleCharacterInfo()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     With frmCharInfo
 
@@ -6358,7 +6387,7 @@ Private Sub HandleCharacterInfo()
         
     Exit Sub
     
-errhandler:
+ErrHandler:
     
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterInfo", Erl)
     Call incomingData.SafeClearPacket
@@ -6376,7 +6405,7 @@ Private Sub HandleGuildLeaderInfo()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim List() As String
 
@@ -6468,7 +6497,7 @@ Private Sub HandleGuildLeaderInfo()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildLeaderInfo", Erl)
     Call incomingData.SafeClearPacket
@@ -6486,7 +6515,7 @@ Private Sub HandleGuildDetails()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     With frmGuildBrief
 
@@ -6511,7 +6540,7 @@ Private Sub HandleGuildDetails()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildDetails", Erl)
     Call incomingData.SafeClearPacket
@@ -6596,14 +6625,14 @@ Private Sub HandleShowUserRequest()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Call frmUserRequest.recievePeticion(incomingData.ReadASCIIString())
     Call frmUserRequest.Show(vbModeless, frmMain)
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowUserRequest", Erl)
     Call incomingData.SafeClearPacket
@@ -6621,7 +6650,7 @@ Private Sub HandleChangeUserTradeSlot()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim miOferta As Boolean
     
@@ -6685,7 +6714,7 @@ Private Sub HandleChangeUserTradeSlot()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeUserTradeSlot", Erl)
     Call incomingData.SafeClearPacket
@@ -6703,7 +6732,7 @@ Private Sub HandleSpawnList()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim creatureList() As String
 
@@ -6715,7 +6744,7 @@ Private Sub HandleSpawnList()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpawnList", Erl)
     Call incomingData.SafeClearPacket
@@ -6733,7 +6762,7 @@ Private Sub HandleShowSOSForm()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim sosList()      As String
 
@@ -6757,7 +6786,7 @@ Private Sub HandleShowSOSForm()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSOSForm", Erl)
     Call incomingData.SafeClearPacket
@@ -6775,14 +6804,14 @@ Private Sub HandleShowMOTDEditionForm()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     frmCambiaMotd.txtMotd.Text = incomingData.ReadASCIIString()
     frmCambiaMotd.Show , frmMain
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMOTDEditionForm", Erl)
     Call incomingData.SafeClearPacket
@@ -6849,7 +6878,7 @@ Private Sub HandleUserNameList()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim userList() As String
 
@@ -6870,7 +6899,7 @@ Private Sub HandleUserNameList()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserNameList", Erl)
     Call incomingData.SafeClearPacket
@@ -6915,7 +6944,7 @@ Private Sub HandleUpdateTagAndStatus()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim charindex   As Integer
 
@@ -6947,7 +6976,7 @@ Private Sub HandleUpdateTagAndStatus()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateTagAndStatus", Erl)
     Call incomingData.SafeClearPacket
@@ -6971,9 +7000,9 @@ Public Sub FlushBuffer()
 
     With outgoingData
 
-        If .Length = 0 Then Exit Sub
+        If .length = 0 Then Exit Sub
 
-        OutBytes = OutBytes + .Length
+        OutBytes = OutBytes + .length
 
         Call SendData(.ReadAll)
 
@@ -7001,11 +7030,11 @@ Private Sub SendData(ByRef sdData() As Byte)
     #If AntiExternos Then
         Security.Redundance = CLng(Security.Redundance * Security.MultiplicationFactor) Mod 255
 
-        Dim DATA() As Byte
-        DATA = StrConv(sdData, vbFromUnicode)
-        Call Security.NAC_E_Byte(DATA, Security.Redundance)
+        Dim Data() As Byte
+        Data = StrConv(sdData, vbFromUnicode)
+        Call Security.NAC_E_Byte(Data, Security.Redundance)
         
-        sdData = StrConv(DATA, vbUnicode)
+        sdData = StrConv(Data, vbUnicode)
 
     #End If
  
@@ -7021,7 +7050,7 @@ End Sub
 
 Private Sub HandlePersonajesDeCuenta()
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     CantidadDePersonajesEnCuenta = incomingData.ReadByte()
 
@@ -7133,7 +7162,7 @@ Private Sub HandlePersonajesDeCuenta()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePersonajesDeCuenta", Erl)
     Call incomingData.SafeClearPacket
@@ -7142,7 +7171,7 @@ End Sub
 
 Private Sub HandleUserOnline()
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim rdata As Integer
     
@@ -7153,7 +7182,7 @@ Private Sub HandleUserOnline()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserOnline", Erl)
     Call incomingData.SafeClearPacket
@@ -7244,7 +7273,7 @@ Private Sub HandleLightToFloor()
     
     Call Long_2_RGBA(color_value, Color)
 
-    Dim ID  As Long
+    Dim id  As Long
 
     Dim id2 As Long
 
@@ -7257,8 +7286,8 @@ Private Sub HandleLightToFloor()
             LucesRedondas.LightRenderAll
             Exit Sub
         Else
-            ID = LucesCuadradas.Light_Find(x & y)
-            LucesCuadradas.Light_Remove ID
+            id = LucesCuadradas.Light_Find(x & y)
+            LucesCuadradas.Light_Remove id
             MapData(x, y).luz.Color = COLOR_EMPTY
             MapData(x, y).luz.Rango = 0
             LucesCuadradas.Light_Render_All
@@ -7272,8 +7301,8 @@ Private Sub HandleLightToFloor()
     MapData(x, y).luz.Rango = Rango
     
     If Rango < 100 Then
-        ID = x & y
-        LucesCuadradas.Light_Create x, y, color_value, Rango, ID
+        id = x & y
+        LucesCuadradas.Light_Create x, y, color_value, Rango, id
         LucesRedondas.LightRenderAll
         LucesCuadradas.Light_Render_All
     Else
@@ -7766,7 +7795,7 @@ Private Sub HandleQuestDetails()
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim tmpStr         As String
 
@@ -8056,7 +8085,7 @@ Private Sub HandleQuestDetails()
     
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestDetails", Erl)
     Call incomingData.SafeClearPacket
@@ -8070,7 +8099,7 @@ Public Sub HandleQuestListSend()
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim i       As Integer
     Dim tmpByte As Byte
@@ -8107,7 +8136,7 @@ Public Sub HandleQuestListSend()
 
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestListSend", Erl)
     Call incomingData.SafeClearPacket
@@ -8121,7 +8150,7 @@ Public Sub HandleNpcQuestListSend()
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim tmpStr         As String
     Dim tmpByte        As Byte
@@ -8270,7 +8299,7 @@ Public Sub HandleNpcQuestListSend()
     
     Exit Sub
     
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
     Call incomingData.SafeClearPacket
@@ -8285,7 +8314,7 @@ Private Sub HandleListaCorreo()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim cant       As Byte
     Dim i          As Byte
@@ -8361,7 +8390,7 @@ Private Sub HandleListaCorreo()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleListaCorreo", Erl)
     Call incomingData.SafeClearPacket
@@ -8376,7 +8405,7 @@ Private Sub HandleShowPregunta()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim msg As String
 
@@ -8385,7 +8414,7 @@ Private Sub HandleShowPregunta()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
     Call incomingData.SafeClearPacket
@@ -8542,13 +8571,13 @@ Private Sub HandleDonadorObjects()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim count    As Integer
     Dim i        As Long
     Dim tmp      As String
     Dim Obj      As Integer
-    Dim precio   As Integer
+    Dim Precio   As Integer
     Dim creditos As Long
     Dim dias     As Integer
 
@@ -8559,15 +8588,15 @@ Private Sub HandleDonadorObjects()
     For i = 1 To count
         Obj = incomingData.ReadInteger()
         tmp = ObjData(Obj).Name           'Get the object's name
-        precio = incomingData.ReadInteger()
+        Precio = incomingData.ReadInteger()
         ObjDonador(i).Index = Obj
-        ObjDonador(i).precio = precio
+        ObjDonador(i).Precio = Precio
         Call FrmShop.lstArmas.AddItem(tmp)
     Next i
     
     For i = i To UBound(ObjDonador())
         ObjDonador(i).Index = 0
-        ObjDonador(i).precio = 0
+        ObjDonador(i).Precio = 0
     Next i
     
     creditos = incomingData.ReadLong()
@@ -8586,7 +8615,7 @@ Private Sub HandleDonadorObjects()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDonadorObjects", Erl)
     Call incomingData.SafeClearPacket
@@ -8603,7 +8632,7 @@ Private Sub HandleRanking()
     '
     '***************************************************
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim i      As Long
 
@@ -8631,7 +8660,7 @@ Private Sub HandleRanking()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRanking", Erl)
     Call incomingData.SafeClearPacket
@@ -8642,18 +8671,18 @@ Private Sub HandleRequestScreenShot()
 
     With incomingData
         
-        Dim DATA As String
-        DATA = GetScreenShotSerialized
+        Dim Data As String
+        Data = GetScreenShotSerialized
         
-        If Right$(DATA, 4) <> "ERROR" Then
-            DATA = DATA & "~~~"
+        If Right$(Data, 4) <> "ERROR" Then
+            Data = Data & "~~~"
 
         End If
         
         Dim offset As Long
 
-        For offset = 1 To Len(DATA) Step 10000
-            Call WriteSendScreenShot(mid$(DATA, offset, Min(Len(DATA) - offset + 1, 10000)))
+        For offset = 1 To Len(Data) Step 10000
+            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
         Next
     
     End With
@@ -8663,7 +8692,7 @@ End Sub
 
 Private Sub HandleShowScreenShot()
     
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     
     Dim Name As String
     Name = incomingData.ReadASCIIString
@@ -8672,7 +8701,7 @@ Private Sub HandleShowScreenShot()
     
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowScreenShot", Erl)
     Call incomingData.SafeClearPacket
@@ -8681,16 +8710,16 @@ End Sub
 
 Private Sub HandleScreenShotData()
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
-    Dim DATA As String
-    DATA = incomingData.ReadASCIIString
+    Dim Data As String
+    Data = incomingData.ReadASCIIString
 
-    Call frmScreenshots.AddData(DATA)
+    Call frmScreenshots.AddData(Data)
 
     Exit Sub
 
-errhandler:
+ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleScreenShotData", Erl)
     Call incomingData.SafeClearPacket
@@ -8788,4 +8817,82 @@ HandleCharacterChange_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDoAnimation", Erl)
     Call incomingData.SafeClearPacket
     
+End Sub
+
+Private Sub HandleOpenCrafting()
+
+    Dim TIPO As Byte
+    TIPO = incomingData.ReadByte
+
+    frmCrafteo.Picture = LoadInterface(TipoCrafteo(TIPO).Ventana)
+    frmCrafteo.InventoryGrhIndex = TipoCrafteo(TIPO).Inventario
+    frmCrafteo.TipoGrhIndex = TipoCrafteo(TIPO).Icono
+    
+    Dim i As Long
+    'Fill our inventory list
+    For i = 1 To MAX_INVENTORY_SLOTS
+        With frmMain.Inventario
+            Call frmCrafteo.InvCraftUser.SetItem(i, .OBJIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+        End With
+    Next i
+    
+    For i = 1 To MAX_SLOTS_CRAFTEO
+        Call frmCrafteo.InvCraftItems.ClearSlot(i)
+    Next i
+
+    Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
+
+    Call frmCrafteo.SetResult(0, 0, 0)
+
+    Comerciando = True
+
+    frmCrafteo.Show , frmMain
+
+End Sub
+
+Private Sub HandleCraftingItem()
+    Dim Slot As Byte, OBJIndex As Integer
+    Slot = incomingData.ReadByte
+    OBJIndex = incomingData.ReadInteger
+    
+    If OBJIndex <> 0 Then
+        With ObjData(OBJIndex)
+            Call frmCrafteo.InvCraftItems.SetItem(Slot, OBJIndex, 1, 0, .GrhIndex, .ObjType, 0, 0, 0, .Valor, .Name, 0)
+        End With
+    Else
+        Call frmCrafteo.InvCraftItems.ClearSlot(Slot)
+    End If
+    
+End Sub
+
+Private Sub HandleCraftingCatalyst()
+    Dim OBJIndex As Integer, Amount As Integer, Porcentaje As Byte
+    OBJIndex = incomingData.ReadInteger
+    Amount = incomingData.ReadInteger
+    Porcentaje = incomingData.ReadByte
+    
+    If OBJIndex <> 0 Then
+        With ObjData(OBJIndex)
+            Call frmCrafteo.InvCraftCatalyst.SetItem(1, OBJIndex, Amount, 0, .GrhIndex, .ObjType, 0, 0, 0, .Valor, .Name, 0)
+        End With
+    Else
+        Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
+    End If
+
+    frmCrafteo.PorcentajeAcierto = Porcentaje
+    
+End Sub
+
+Private Sub HandleCraftingResult()
+    Dim OBJIndex As Integer
+    OBJIndex = incomingData.ReadInteger
+
+    If OBJIndex > 0 Then
+        Dim Porcentaje As Byte, Precio As Long
+        Porcentaje = incomingData.ReadByte
+        Precio = incomingData.ReadLong
+        Call frmCrafteo.SetResult(ObjData(OBJIndex).GrhIndex, Porcentaje, Precio)
+    Else
+        Call frmCrafteo.SetResult(0, 0, 0)
+    End If
 End Sub

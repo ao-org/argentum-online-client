@@ -1952,10 +1952,12 @@ Public Sub Start()
 
                     ElseIf frmBancoObj.Visible Then
                         DrawInterfaceBoveda
-                    End If
-                    
-                    If frmBancoCuenta.Visible Then
+
+                    ElseIf frmBancoCuenta.Visible Then
                         DrawInterfaceBovedaCuenta
+
+                    ElseIf frmCrafteo.Visible Then
+                        DrawInterfaceCrafting
                     End If
                     
                     If frmMapaGrande.Visible Then
@@ -2228,6 +2230,7 @@ DrawInterfaceComerciar_Err:
     Resume Next
     
 End Sub
+
 Public Sub DrawInterfaceBovedaCuenta()
     
     On Error GoTo DrawInterfaceBoveda_Err
@@ -2321,6 +2324,7 @@ DrawInterfaceBoveda_Err:
     Resume Next
     
 End Sub
+
 Public Sub DrawInterfaceBoveda()
     
     On Error GoTo DrawInterfaceBoveda_Err
@@ -2413,6 +2417,7 @@ DrawInterfaceBoveda_Err:
     Resume Next
     
 End Sub
+
 Public Sub DrawInterfaceKeys()
     
     On Error GoTo DrawInterfaceKeys_Err
@@ -2482,7 +2487,6 @@ DrawInventorysComercio_Err:
     
 End Sub
 
-
 Public Sub DrawInventoryUserComercio()
     
     On Error GoTo DrawInventoryUserComercio_Err
@@ -2516,7 +2520,6 @@ DrawInventoryUserComercio_Err:
     
 End Sub
 
-
 Public Sub DrawInventoryOtherComercio()
     
     On Error GoTo DrawInventoryOtherComercio_Err
@@ -2546,6 +2549,58 @@ Public Sub DrawInventoryOtherComercio()
 
 DrawInventoryOtherComercio_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventoryOtherComercio", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub DrawInterfaceCrafting()
+    
+    On Error GoTo DrawInterfaceBoveda_Err
+
+    ' Sólo dibujamos cuando es necesario
+    If Not frmCrafteo.InvCraftUser.NeedsRedraw And Not frmCrafteo.InvCraftItems.NeedsRedraw And Not frmCrafteo.InvCraftCatalyst.NeedsRedraw Then Exit Sub
+
+    Dim InvRect As RECT
+    InvRect.Left = 0
+    InvRect.Top = 0
+    InvRect.Right = frmCrafteo.PicInven.ScaleWidth
+    InvRect.Bottom = frmCrafteo.PicInven.ScaleHeight
+
+    ' Comenzamos la escena
+    Call Engine_BeginScene
+
+    ' Dibujamos el fondo
+    Call Draw_GrhIndex(frmCrafteo.InventoryGrhIndex, 0, 0)
+
+    ' Dibujamos los inventarios
+    Call frmCrafteo.InvCraftUser.DrawInventory
+    Call frmCrafteo.InvCraftItems.DrawInventory
+    Call frmCrafteo.InvCraftCatalyst.DrawInventory
+    
+    ' Dibujamos el resultado o, si no hay ninguno, el tipo de crafteo
+    If frmCrafteo.ResultGrhIndex Then
+        Call Draw_GrhIndex(frmCrafteo.ResultGrhIndex, 100, 15)
+        Call Engine_Text_Render("Probabilidad de éxito: " & frmCrafteo.PorcentajeAcierto & "%", 25, 60, COLOR_WHITE)
+
+        Dim Color(3) As RGBA
+        Call RGBAList(Color, 255, 255, 0)
+        Call Engine_Text_Render("Costo: " & PonerPuntos(frmCrafteo.PrecioCrafteo) & " monedas de oro", 25, 140, Color)
+    Else
+        Call Draw_GrhIndex(frmCrafteo.TipoGrhIndex, 100, 15)
+    End If
+
+    ' Dibujamos los items arrastrados (aunque sólo puede estar uno activo a la vez)
+    Call frmCrafteo.InvCraftUser.DrawDraggedItem
+    Call frmCrafteo.InvCraftItems.DrawDraggedItem
+    Call frmCrafteo.InvCraftCatalyst.DrawDraggedItem
+
+    ' Presentamos la escena
+    Call Engine_EndScene(InvRect, frmCrafteo.PicInven.hwnd)
+
+    Exit Sub
+
+DrawInterfaceBoveda_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInterfaceCrafting", Erl)
     Resume Next
     
 End Sub
@@ -3702,13 +3757,18 @@ Public Sub InitializeInventory()
     
     Call frmBancoCuenta.InvBankUsuCuenta.Initialize(frmBancoCuenta.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmBancoCuenta.InvBovedaCuenta.Initialize(frmBancoCuenta.interface, MAX_BANCOINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3)
-    
-    
-    'Ladder
+
     Call FrmKeyInv.InvKeys.Initialize(FrmKeyInv.interface, MAX_KEYS, , , 0, 0, 3, 3, True) 'Inventario de llaves
     FrmKeyInv.InvKeys.MostrarCantidades = False
- 
     
+    Set frmCrafteo.InvCraftUser = New clsGrapchicalInventory
+    Set frmCrafteo.InvCraftItems = New clsGrapchicalInventory
+    Set frmCrafteo.InvCraftCatalyst = New clsGrapchicalInventory
+
+    Call frmCrafteo.InvCraftUser.Initialize(frmCrafteo.PicInven, MAX_INVENTORY_SLOTS, 210, , 250, 0, 3, 3, True)
+    Call frmCrafteo.InvCraftItems.Initialize(frmCrafteo.PicInven, MAX_SLOTS_CRAFTEO, 175, , 25, 180, 3, 3, True)
+    Call frmCrafteo.InvCraftCatalyst.Initialize(frmCrafteo.PicInven, 1, 35, 35, 100, 90, 3, 3, True)
+
     Exit Sub
 
 Initialize_Err:

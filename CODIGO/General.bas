@@ -237,7 +237,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         Dim bUrl As Boolean
         Dim sMax As Long
         Dim sPos As Long
-        Dim Pos As Long
+        Dim pos As Long
         Dim Ret As Long
         
         Dim bHoldBar As Boolean
@@ -260,7 +260,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
         Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
-        Pos = tSI.nTrackPos
+        pos = tSI.nTrackPos
         Call GetScrollInfo(.hwnd, SB_VERT, tSI)
         bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         
@@ -316,7 +316,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     Dim bUrl As Boolean
     Dim sMax As Long
     Dim sPos As Long
-    Dim Pos As Long
+    Dim pos As Long
     Dim Ret As Long
     
     Dim bHoldBar As Boolean
@@ -335,7 +335,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
         Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
-        Pos = tSI.nTrackPos
+        pos = tSI.nTrackPos
         Call GetScrollInfo(.hwnd, SB_VERT, tSI)
          bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
         .SelStart = Len(.Text)
@@ -406,7 +406,7 @@ Public Sub RefreshAllChars()
     For loopc = 1 To LastChar
     
         If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
+            MapData(charlist(loopc).pos.x, charlist(loopc).pos.y).charindex = loopc
 
         End If
 
@@ -720,7 +720,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
             LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
 
     End Select
-    
+
     If LegalOk And Not UserParalizado And Not UserInmovilizado And Not UserStopped Then
         If Not UserDescansar Then
             If UserMacro.Activado Then
@@ -732,7 +732,6 @@ Sub MoveTo(ByVal Direccion As E_Heading)
             Call WriteWalk(Direccion) 'We only walk if we are not meditating or resting
             Call Char_Move_by_Head(UserCharIndex, Direccion)
             Call MoveScreen(Direccion)
-            
         Else
 
             If Not UserAvisado Then
@@ -875,7 +874,8 @@ Sub Check_Keys()
         Not FrmShop.Visible And _
         Not FrmSastre.Visible And _
         Not FrmCorreo.Visible And _
-        Not FrmGmAyuda.Visible Then
+        Not FrmGmAyuda.Visible And _
+        Not frmCrafteo.Visible Then
  
         If frmMain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub
  
@@ -930,7 +930,7 @@ Check_Keys_Err:
     
 End Sub
 
-Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
+Function ReadField(ByVal pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
     
     On Error GoTo ReadField_Err
     
@@ -950,7 +950,7 @@ Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As
     
     delimiter = Chr$(SepASCII)
     
-    For i = 1 To Pos
+    For i = 1 To pos
         LastPos = CurrentPos
         CurrentPos = InStr(LastPos + 1, Text, delimiter, vbBinaryCompare)
     Next i
@@ -1184,14 +1184,14 @@ Public Function randomMap() As Integer
     End Select
 End Function
 
-Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
+Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
     
     On Error GoTo WriteVar_Err
     
-    writeprivateprofilestring Main, Var, value, File
+    writeprivateprofilestring Main, Var, Value, File
 
     
     Exit Sub
@@ -1769,7 +1769,7 @@ End Function
 
 Public Function LoadInterface(FileName As String) As IPicture
 
-On Error GoTo errhandler
+On Error GoTo ErrHandler
 
     If FileName <> "" Then
         #If Compresion = 1 Then
@@ -1780,14 +1780,14 @@ On Error GoTo errhandler
     End If
 Exit Function
 
-errhandler:
+ErrHandler:
     MsgBox "Error al cargar la interface: " & FileName
 
 End Function
 
 Public Function LoadMinimap(ByVal map As Integer) As IPicture
 
-On Error GoTo errhandler
+On Error GoTo ErrHandler
 
     #If Compresion = 1 Then
         Set LoadMinimap = General_Load_Minimap_From_Resource_Ex("mapa" & map & ".bmp", ResourcesPassword)
@@ -1797,7 +1797,7 @@ On Error GoTo errhandler
     
 Exit Function
 
-errhandler:
+ErrHandler:
     MsgBox "Error al cargar minimapa: Mapa" & map & ".bmp"
 
 End Function

@@ -68,7 +68,7 @@ Option Base 0
 
 Private Type ChildNode
 
-    key As String
+    Key As String
     Value As String
 
 End Type
@@ -143,7 +143,7 @@ Private Sub Class_Terminate()
     Exit Sub
 
 Class_Terminate_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.Class_Terminate", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.Class_Terminate", Erl)
     Resume Next
     
 End Sub
@@ -213,7 +213,7 @@ Public Sub Initialize(ByVal File As String)
                             ReDim Preserve .values(.numValues) As ChildNode
                             
                             .values(.numValues).Value = Right$(Text, Len(Text) - Pos)
-                            .values(.numValues).key = UCase$(Left$(Text, Pos - 1))
+                            .values(.numValues).Key = UCase$(Left$(Text, Pos - 1))
                             
                             .numValues = .numValues + 1
 
@@ -230,16 +230,15 @@ Public Sub Initialize(ByVal File As String)
     Loop
     
     Close handle
-    
-    Dim i As Long
-    
+
     If MainNodes Then
+    
         'Sort main nodes to allow binary search
         Call SortMainNodes(0, MainNodes - 1)
         
         'Sort values of each node to allow binary search
+        Dim i As Long
         For i = 0 To MainNodes - 1
-
             If fileData(i).numValues Then Call SortChildNodes(fileData(i), 0, fileData(i).numValues - 1)
         Next i
 
@@ -249,7 +248,8 @@ Public Sub Initialize(ByVal File As String)
     Exit Sub
 
 Initialize_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.Initialize", Erl)
+    Close handle
+    Call RegistrarError(Err.Number, Err.Description & vbNewLine & "Archivo: " & File, "clsIniManager.Initialize", Erl)
     Resume Next
     
 End Sub
@@ -262,8 +262,8 @@ End Sub
 ' @param    last The last index to be considered when sorting.
 
 Private Sub SortChildNodes(ByRef Node As MainNode, _
-                           ByVal first As Integer, _
-                           ByVal last As Integer)
+                           ByVal First As Integer, _
+                           ByVal Last As Integer)
     
     On Error GoTo SortChildNodes_Err
     
@@ -274,34 +274,34 @@ Private Sub SortChildNodes(ByRef Node As MainNode, _
     'Sorts the list of values in a given MainNode using quicksort,
     'this allows the use of Binary Search for faster searches
     '**************************************************************
-    Dim min  As Integer      'First item in the list
+    Dim Min  As Integer      'First item in the list
 
     Dim max  As Integer      'Last item in the list
 
     Dim comp As String      'Item used to compare
 
-    Dim temp As ChildNode
+    Dim Temp As ChildNode
     
-    min = first
-    max = last
+    Min = First
+    max = Last
     
     With Node
-        comp = .values((min + max) \ 2).key
+        comp = .values((Min + max) \ 2).Key
     
-        Do While min <= max
-            Do While .values(min).key < comp And min < last
-                min = min + 1
+        Do While Min <= max
+            Do While .values(Min).Key < comp And Min < Last
+                Min = Min + 1
             Loop
 
-            Do While .values(max).key > comp And max > first
+            Do While .values(max).Key > comp And max > First
                 max = max - 1
             Loop
 
-            If min <= max Then
-                temp = .values(min)
-                .values(min) = .values(max)
-                .values(max) = temp
-                min = min + 1
+            If Min <= max Then
+                Temp = .values(Min)
+                .values(Min) = .values(max)
+                .values(max) = Temp
+                Min = Min + 1
                 max = max - 1
 
             End If
@@ -310,14 +310,14 @@ Private Sub SortChildNodes(ByRef Node As MainNode, _
 
     End With
     
-    If first < max Then SortChildNodes Node, first, max
-    If min < last Then SortChildNodes Node, min, last
+    If First < max Then SortChildNodes Node, First, max
+    If Min < Last Then SortChildNodes Node, Min, Last
 
     
     Exit Sub
 
 SortChildNodes_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.SortChildNodes", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.SortChildNodes", Erl)
     Resume Next
     
 End Sub
@@ -328,7 +328,7 @@ End Sub
 ' @param    first The first index to consider when sorting.
 ' @param    last The last index to be considered when sorting.
 
-Private Sub SortMainNodes(ByVal first As Integer, ByVal last As Integer)
+Private Sub SortMainNodes(ByVal First As Integer, ByVal Last As Integer)
     
     On Error GoTo SortMainNodes_Err
     
@@ -339,47 +339,47 @@ Private Sub SortMainNodes(ByVal first As Integer, ByVal last As Integer)
     'Sorts the MainNodes list using quicksort,
     'this allows the use of Binary Search for faster searches
     '**************************************************************
-    Dim min  As Integer      'First item in the list
+    Dim Min  As Integer      'First item in the list
 
     Dim max  As Integer      'Last item in the list
 
     Dim comp As String      'Item used to compare
 
-    Dim temp As MainNode
+    Dim Temp As MainNode
     
-    min = first
-    max = last
+    Min = First
+    max = Last
     
-    comp = fileData((min + max) \ 2).Name
+    comp = fileData((Min + max) \ 2).Name
     
-    Do While min <= max
-        Do While fileData(min).Name < comp And min < last
-            min = min + 1
+    Do While Min <= max
+        Do While fileData(Min).Name < comp And Min < Last
+            Min = Min + 1
         Loop
 
-        Do While fileData(max).Name > comp And max > first
+        Do While fileData(max).Name > comp And max > First
             max = max - 1
         Loop
 
-        If min <= max Then
-            temp = fileData(min)
-            fileData(min) = fileData(max)
-            fileData(max) = temp
-            min = min + 1
+        If Min <= max Then
+            Temp = fileData(Min)
+            fileData(Min) = fileData(max)
+            fileData(max) = Temp
+            Min = Min + 1
             max = max - 1
 
         End If
 
     Loop
     
-    If first < max Then SortMainNodes first, max
-    If min < last Then SortMainNodes min, last
+    If First < max Then SortMainNodes First, max
+    If Min < Last Then SortMainNodes Min, Last
 
     
     Exit Sub
 
 SortMainNodes_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.SortMainNodes", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.SortMainNodes", Erl)
     Resume Next
     
 End Sub
@@ -391,7 +391,7 @@ End Sub
 ' @param    key The key of the value we are looking for.
 ' @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
 
-Public Function GetValue(ByVal Main As String, ByVal key As String)
+Public Function GetValue(ByVal Main As String, ByVal Key As String)
     
     On Error GoTo GetValue_Err
     
@@ -411,7 +411,7 @@ Public Function GetValue(ByVal Main As String, ByVal key As String)
     If i >= 0 Then
     
         'If valid, binary search among keys
-        j = FindKey(fileData(i), UCase$(key))
+        j = FindKey(fileData(i), UCase$(Key))
         
         'If we found it we return it
         If j >= 0 Then retval = fileData(i).values(j).Value
@@ -424,7 +424,7 @@ Public Function GetValue(ByVal Main As String, ByVal key As String)
     Exit Function
 
 GetValue_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.GetValue", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.GetValue", Erl)
     Resume Next
     
 End Function
@@ -436,7 +436,7 @@ End Function
 ' @param    key The key of the value we are looking for.
 ' @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
 
-Public Sub ChangeValue(ByVal Main As String, ByVal key As String, ByVal Value As String)
+Public Sub ChangeValue(ByVal Main As String, ByVal Key As String, ByVal Value As String)
     
     On Error GoTo ChangeValue_Err
     
@@ -456,10 +456,10 @@ Public Sub ChangeValue(ByVal Main As String, ByVal key As String, ByVal Value As
     If i < 0 Then i = AddNode(Main)
     
     'If valid, binary search among keys
-    j = FindKey(fileData(i), UCase$(key))
+    j = FindKey(fileData(i), UCase$(Key))
     
     If j < 0 Then
-        Call AddKey(Main, key, Value)
+        Call AddKey(Main, Key, Value)
     Else
         'If we found it we change it
         fileData(i).values(j).Value = Value
@@ -470,7 +470,7 @@ Public Sub ChangeValue(ByVal Main As String, ByVal key As String, ByVal Value As
     Exit Sub
 
 ChangeValue_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.ChangeValue", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.ChangeValue", Erl)
     Resume Next
     
 End Sub
@@ -482,7 +482,7 @@ End Sub
 ' @param    key The key of the value we are looking for.
 ' @returns  The index in which the value with the key we are looking for is stored or the negation of the index in which it should be if not found.
 
-Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
+Private Function FindKey(ByRef Node As MainNode, ByVal Key As String) As Long
     
     On Error GoTo FindKey_Err
     
@@ -493,21 +493,21 @@ Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
     'Returns the index of the value which key matches the requested one,
     'or the negation of the position were it should be if not found
     '**************************************************************
-    Dim min As Long
+    Dim Min As Long
 
     Dim max As Long
 
     Dim mid As Long
     
-    min = 0
+    Min = 0
     max = Node.numValues - 1
     
-    Do While min <= max
-        mid = (min + max) \ 2
+    Do While Min <= max
+        mid = (Min + max) \ 2
         
-        If Node.values(mid).key < key Then
-            min = mid + 1
-        ElseIf Node.values(mid).key > key Then
+        If Node.values(mid).Key < Key Then
+            Min = mid + 1
+        ElseIf Node.values(mid).Key > Key Then
             max = mid - 1
         Else
             'We found it
@@ -520,13 +520,13 @@ Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
     
     'Not found, return the negation of the position where it should be
     '(all higher values are to the right of the list and lower values are to the left)
-    FindKey = Not min
+    FindKey = Not Min
 
     
     Exit Function
 
 FindKey_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.FindKey", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.FindKey", Erl)
     Resume Next
     
 End Function
@@ -548,20 +548,20 @@ Private Function FindMain(ByVal Name As String) As Long
     'Returns the index of the MainNode which name matches the requested one,
     'or the negation of the position were it should be if not found
     '**************************************************************
-    Dim min As Long
+    Dim Min As Long
 
     Dim max As Long
 
     Dim mid As Long
     
-    min = 0
+    Min = 0
     max = MainNodes - 1
     
-    Do While min <= max
-        mid = (min + max) \ 2
+    Do While Min <= max
+        mid = (Min + max) \ 2
         
         If fileData(mid).Name < Name Then
-            min = mid + 1
+            Min = mid + 1
         ElseIf fileData(mid).Name > Name Then
             max = mid - 1
         Else
@@ -575,13 +575,13 @@ Private Function FindMain(ByVal Name As String) As Long
     
     'Not found, return the negation of the position where it should be
     '(all higher values are to the right of the list and lower values are to the left)
-    FindMain = Not min
+    FindMain = Not Min
 
     
     Exit Function
 
 FindMain_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.FindMain", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.FindMain", Erl)
     Resume Next
     
 End Function
@@ -607,7 +607,7 @@ Public Function KeyExists(ByVal Name As String) As Boolean
     Exit Function
 
 KeyExists_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.KeyExists", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.KeyExists", Erl)
     Resume Next
     
 End Function
@@ -655,13 +655,13 @@ Private Function AddNode(ByRef Name As String) As Long
     Exit Function
 
 AddNode_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.AddNode", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.AddNode", Erl)
     Resume Next
     
 End Function
 
 Private Function AddKey(ByRef Main As String, _
-                        ByRef key As String, _
+                        ByRef Key As String, _
                         Optional ByRef Value As String = vbNullString) As Long
     
     On Error GoTo AddKey_Err
@@ -679,7 +679,7 @@ Private Function AddKey(ByRef Main As String, _
     Dim i       As Long
 
     Main = UCase$(Main)
-    key = UCase$(key)
+    Key = UCase$(Key)
 
     MainPos = FindMain(Main)
 
@@ -691,7 +691,7 @@ Private Function AddKey(ByRef Main As String, _
     
         If .numValues > 0 Then
             i = .numValues - 1
-            KeyPos = Not FindKey(fileData(MainPos), key)
+            KeyPos = Not FindKey(fileData(MainPos), Key)
         
             Do While i >= KeyPos
                 .values(i + 1) = .values(i)
@@ -700,7 +700,7 @@ Private Function AddKey(ByRef Main As String, _
 
         End If
     
-        .values(KeyPos).key = key
+        .values(KeyPos).Key = Key
         .values(KeyPos).Value = Value
     
         .numValues = .numValues + 1
@@ -713,7 +713,7 @@ Private Function AddKey(ByRef Main As String, _
     Exit Function
 
 AddKey_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.AddKey", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.AddKey", Erl)
     Resume Next
     
 End Function
@@ -744,7 +744,7 @@ Public Sub DumpFile(ByRef File As String)
             Print #hFile, "[" & .Name & "]"
             
             For j = 0 To .numValues - 1
-                Print #hFile, .values(j).key & "=" & .values(j).Value
+                Print #hFile, .values(j).Key & "=" & .values(j).Value
             Next j
             
             Print #hFile, ""
@@ -759,7 +759,92 @@ Public Sub DumpFile(ByRef File As String)
     Exit Sub
 
 DumpFile_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsIniManager.DumpFile", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.DumpFile", Erl)
     Resume Next
     
 End Sub
+
+Public Function GetKey(ByVal Main As String, ByVal Index As Long) As String
+
+        On Error GoTo ErrHandler
+
+        Dim i As Long
+    
+        'Search for the main node
+100     i = FindMain(UCase$(Main))
+    
+102     If i >= 0 Then
+            
+104         GetKey = fileData(i).values(Index).Key
+
+        End If
+
+        
+        Exit Function
+
+ErrHandler:
+     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.GetKey", Erl)
+     Resume Next
+        
+End Function
+
+Public Property Get EntriesCount(ByVal Main As String) As Long
+
+    On Error GoTo ErrHandler
+
+        Dim i As Long
+
+        'Search for the main node
+100     i = FindMain(UCase$(Main))
+    
+102     If i >= 0 Then
+            
+104         EntriesCount = fileData(i).numValues
+
+        End If
+
+        
+        Exit Function
+
+ErrHandler:
+108     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.GetKey", Erl)
+110     Resume Next
+
+End Property
+
+Public Sub GetPair(ByVal Main As String, ByVal Index As Long, ByRef Key As String, ByRef Value As String)
+
+        On Error GoTo ErrHandler
+
+        Dim i As Long
+
+        'Search for the main node
+100     i = FindMain(UCase$(Main))
+    
+102     If i >= 0 Then
+            
+            With fileData(i).values(Index)
+104             Key = .Key
+                Value = .Value
+            End With
+
+        End If
+
+        
+        Exit Sub
+
+ErrHandler:
+108     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.GetPair", Erl)
+110     Resume Next
+        
+End Sub
+
+Public Function GetNode(ByVal i As Long) As String
+    GetNode = fileData(i).Name
+End Function
+
+Public Property Get NodesCount() As Long
+    NodesCount = MainNodes
+End Property
+
+
