@@ -1107,7 +1107,7 @@ Sub Main()
 
     End If
 
-    RawServersList = "190.245.160.106:7667:Horacio;45.235.98.165:7667:InetG;186.139.27.206:7667:ReyarB;191.97.254.154:7667:Martin;127.0.0.1:7667:Localhost"
+    RawServersList = "190.245.169.111:7667:Horacio;45.235.98.165:7667:InetG;127.0.0.1:7667:Localhost"
 
     Call ComprobarEstado
     Call CargarLst
@@ -1700,15 +1700,15 @@ General_Get_Elapsed_Time_Err:
 End Function
 
 
-Public Function max(ByVal A As Variant, ByVal B As Variant) As Variant
+Public Function Max(ByVal A As Variant, ByVal B As Variant) As Variant
     
     On Error GoTo max_Err
     
 
     If A > B Then
-        max = A
+        Max = A
     Else
-        max = B
+        Max = B
 
     End If
 
@@ -1721,15 +1721,15 @@ max_Err:
     
 End Function
 
-Public Function min(ByVal A As Double, ByVal B As Double) As Variant
+Public Function Min(ByVal A As Double, ByVal B As Double) As Variant
     
     On Error GoTo min_Err
     
 
     If A < B Then
-        min = A
+        Min = A
     Else
-        min = B
+        Min = B
 
     End If
 
@@ -1742,16 +1742,16 @@ min_Err:
     
 End Function
 
-Public Function Clamp(ByVal A As Variant, ByVal min As Variant, ByVal max As Variant) As Variant
+Public Function Clamp(ByVal A As Variant, ByVal Min As Variant, ByVal Max As Variant) As Variant
     
     On Error GoTo min_Err
     
 
-    If A < min Then
-        Clamp = min
+    If A < Min Then
+        Clamp = Min
     
-    ElseIf A > max Then
-        Clamp = max
+    ElseIf A > Max Then
+        Clamp = Max
 
     Else
         Clamp = A
@@ -1802,12 +1802,12 @@ ErrHandler:
 
 End Function
 
-Public Function Tilde(ByRef Data As String) As String
+Public Function Tilde(ByRef DATA As String) As String
     
     On Error GoTo Tilde_Err
     
 
-    Tilde = UCase$(Data)
+    Tilde = UCase$(DATA)
  
     Tilde = Replace$(Tilde, "Á", "A")
     Tilde = Replace$(Tilde, "É", "E")
@@ -1862,7 +1862,7 @@ Function GetTimeFromString(str As String) As Long
     Dim Splitted() As String
     Splitted = Split(str, ":")
     
-    Dim Hour As Long, min As Long
+    Dim Hour As Long, Min As Long
     Hour = Val(Splitted(0))
 
     If Hour < 0 Then Hour = 0
@@ -1871,12 +1871,12 @@ Function GetTimeFromString(str As String) As Long
     GetTimeFromString = Hour * 60
     
     If UBound(Splitted) > 0 Then
-        min = Val(Splitted(1))
+        Min = Val(Splitted(1))
         
-        If min < 0 Then min = 0
-        If min > 59 Then min = 59
+        If Min < 0 Then Min = 0
+        If Min > 59 Then Min = 59
         
-        GetTimeFromString = GetTimeFromString + min
+        GetTimeFromString = GetTimeFromString + Min
     End If
 
     GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)
@@ -1936,19 +1936,19 @@ Public Function ReadRegistryKey(Hkey As Long, strPath As String, strValue As Str
     
     Dim keyhand As Long
     Dim r As Long
-    Dim Data As String
+    Dim DATA As String
     Dim LenValue As Long
        
     r = RegOpenKey(Hkey, strPath, keyhand)
     If r = 0 Then
         r = RegQueryValueEx(keyhand, strValue, 0, 1, vbNullString, LenValue)
         
-        Data = Space(LenValue)
+        DATA = Space(LenValue)
         
-        r = RegQueryValueEx(keyhand, strValue, 0, 1, ByVal Data, Len(Data))
+        r = RegQueryValueEx(keyhand, strValue, 0, 1, ByVal DATA, Len(DATA))
         r = RegCloseKey(keyhand)
         
-        ReadRegistryKey = Left$(Data, Len(Data) - 1)
+        ReadRegistryKey = Left$(DATA, Len(DATA) - 1)
     End If
     
     Exit Function
@@ -1967,24 +1967,24 @@ End Function
 
 Public Sub CheckResources()
 
-    Dim Data(1 To 200) As Byte
+    Dim DATA(1 To 200) As Byte
     
     Dim Handle As Integer
     Handle = FreeFile
 
     Open App.Path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #Handle
     
-    Get #Handle, , Data
+    Get #Handle, , DATA
     
     Close #Handle
     
-    Dim length As Integer
-    length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
+    Dim Length As Integer
+    Length = DATA(UBound(DATA)) + DATA(UBound(DATA) - 1) * 256
 
     Dim i As Integer
     
-    For i = 1 To length
-        ResourcesPassword = ResourcesPassword & Chr(Data(i * 3 - 1) Xor 37)
+    For i = 1 To Length
+        ResourcesPassword = ResourcesPassword & Chr(DATA(i * 3 - 1) Xor 37)
     Next
 
 End Sub
