@@ -1670,7 +1670,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         
                     If .clan_index > 0 Then
                         If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
-                            If .clan_nivel = 5 Then
+                            If .clan_nivel >= 4 Then
                                 OffsetYname = 8
                                 OffsetYClan = 6
                                 Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, Color, True, True, False
@@ -1679,6 +1679,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                     Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 37, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, 200, 0, 0), RGBA_From_Comp(0, 200, 200, 200)
                                 Else
                                     Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 37, 26, 4, RGBA_From_Comp(255, 200, 0, 0), RGBA_From_Comp(0, 200, 200, 200)
+                                End If
+                                
+                                Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, Color, True, True, False
+                                
+                                If .UserMaxMAN <> 0 Then
+                                    Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 43, .UserMinMAN / .UserMaxMAN * 26, 4, RGBA_From_Comp(0, 100, 255, 0), RGBA_From_Comp(0, 200, 200, 200)
+                                Else
+                                    Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 43, 26, 4, RGBA_From_Comp(0, 100, 255, 0), RGBA_From_Comp(0, 200, 200, 200)
                                 End If
                             End If
                         End If
@@ -1911,15 +1919,6 @@ Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
         If charlist(UserCharIndex).priv > 0 And .priv <= charlist(UserCharIndex).priv Then
             IsCharVisible = True
             Exit Function
-        End If
-        
-        If .clan_index > 0 Then
-            If .clan_index = charlist(UserCharIndex).clan_index Then
-                If .clan_nivel >= 3 Then
-                    IsCharVisible = True
-                    Exit Function
-                End If
-            End If
         End If
 
     End With
@@ -2172,7 +2171,7 @@ Public Sub DrawInterfaceComerciar()
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
         ' Al vender, calculamos el valor según el min(cantidad_ingresada, cantidad_items)
-        cantidad = min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
+        cantidad = Min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
 
     End If
     
@@ -4318,7 +4317,7 @@ Public Sub DibujarBody(PicBox As PictureBox, ByVal MyBody As Integer, Optional B
     grhH = HeadData(NpcData(MyBody).Head).Head(3)
 
     x = (PicBox.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) / 2
-    y = max((PicBox.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2, BodyData(NpcData(MyBody).Body).HeadOffset.y)
+    y = Max((PicBox.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2, BodyData(NpcData(MyBody).Body).HeadOffset.y)
      Call Grh_Render_To_Hdc(PicBox, GrhData(grh.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
     
 

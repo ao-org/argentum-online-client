@@ -210,6 +210,7 @@ Private Enum ServerPacketID
     NadarToggle
     ShowFundarClanForm
     CharUpdateHP
+    CharUpdateMAN
     Ranking
     PosLLamadaDeClan
     QuestDetails
@@ -753,6 +754,7 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.NadarToggle) = GetAddress(AddressOf HandleNadarToggle)
     PacketList(ServerPacketID.ShowFundarClanForm) = GetAddress(AddressOf HandleShowFundarClanForm)
     PacketList(ServerPacketID.CharUpdateHP) = GetAddress(AddressOf HandleCharUpdateHP)
+    PacketList(ServerPacketID.CharUpdateMAN) = GetAddress(AddressOf HandleCharUpdateMAN)
     PacketList(ServerPacketID.Ranking) = GetAddress(AddressOf HandleRanking)
     PacketList(ServerPacketID.PosLLamadaDeClan) = GetAddress(AddressOf HandlePosLLamadaDeClan)
     PacketList(ServerPacketID.QuestDetails) = GetAddress(AddressOf HandleQuestDetails)
@@ -829,7 +831,7 @@ Public Function HandleIncomingData() As Boolean
 
     PacketID = CLng(incomingData.ReadID())
 
-    InBytes = InBytes + incomingData.length
+    InBytes = InBytes + incomingData.Length
 
     Call ParsePacket(PacketID)
     
@@ -837,7 +839,7 @@ Public Function HandleIncomingData() As Boolean
     
         Call .ReadNewPacket
     
-        If (Not .BufferOver Or .length > 0) And .errNumber = 0 Then    'Done with this packet, move on to next one
+        If (Not .BufferOver Or .Length > 0) And .errNumber = 0 Then    'Done with this packet, move on to next one
             Err.Clear
             HandleIncomingData = True
         
@@ -2959,13 +2961,13 @@ Private Sub HandleConsoleMessage()
         
         Case "ID"
 
-            Dim id    As Integer
+            Dim ID    As Integer
             Dim extra As String
 
-            id = ReadField(2, chat, Asc("*"))
+            ID = ReadField(2, chat, Asc("*"))
             extra = ReadField(3, chat, Asc("*"))
                 
-            chat = Locale_Parse_ServerMessage(id, extra)
+            chat = Locale_Parse_ServerMessage(ID, extra)
            
     End Select
     
@@ -3053,13 +3055,13 @@ Private Sub HandleLocaleMsg()
 
     Dim Valor     As String
 
-    Dim id        As Integer
+    Dim ID        As Integer
 
-    id = incomingData.ReadInteger()
+    ID = incomingData.ReadInteger()
     chat = incomingData.ReadASCIIString()
     FontIndex = incomingData.ReadByte()
 
-    chat = Locale_Parse_ServerMessage(id, chat)
+    chat = Locale_Parse_ServerMessage(ID, chat)
     
     If InStr(1, chat, "~") Then
         str = ReadField(2, chat, 126)
@@ -3467,6 +3469,8 @@ Private Sub HandleCharacterCreate()
         .clan_nivel = incomingData.ReadByte()
         .UserMinHp = incomingData.ReadLong()
         .UserMaxHp = incomingData.ReadLong()
+        .UserMinMAN = incomingData.ReadLong()
+        .UserMaxMAN = incomingData.ReadLong()
         .simbolo = incomingData.ReadByte()
         .Idle = incomingData.ReadBoolean()
         .Navegando = incomingData.ReadBoolean()
@@ -3761,7 +3765,7 @@ Private Sub HandleObjectCreate()
 
     Dim Rango    As Byte
 
-    Dim id       As Long
+    Dim ID       As Long
     
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
@@ -3785,8 +3789,8 @@ Private Sub HandleObjectCreate()
         MapData(x, y).luz.Rango = Rango
         
         If Rango < 100 Then
-            id = x & y
-            LucesCuadradas.Light_Create x, y, Color, Rango, id
+            ID = x & y
+            LucesCuadradas.Light_Create x, y, Color, Rango, ID
             LucesCuadradas.Light_Render_All
         Else
             LucesRedondas.Create_Light_To_Map x, y, Color, Rango - 99
@@ -3857,14 +3861,14 @@ Private Sub HandleObjectDelete()
 
     Dim y  As Byte
 
-    Dim id As Long
+    Dim ID As Long
     
     x = incomingData.ReadByte()
     y = incomingData.ReadByte()
     
     If ObjData(MapData(x, y).OBJInfo.OBJIndex).CreaLuz <> "" Then
-        id = LucesCuadradas.Light_Find(x & y)
-        LucesCuadradas.Light_Remove id
+        ID = LucesCuadradas.Light_Find(x & y)
+        LucesCuadradas.Light_Remove ID
         MapData(x, y).luz.Color = COLOR_EMPTY
         MapData(x, y).luz.Rango = 0
         LucesCuadradas.Light_Render_All
@@ -4070,13 +4074,6 @@ Private Sub HandleCharUpdateHP()
     
     On Error GoTo HandleCharUpdateHP_Err
 
-    '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 08/14/07
-    'Last Modified by: Rapsodius
-    'Added support for 3D Sounds.
-    '***************************************************
-        
     Dim charindex As Integer
 
     Dim minhp     As Long
@@ -4090,12 +4087,35 @@ Private Sub HandleCharUpdateHP()
     charlist(charindex).UserMinHp = minhp
     charlist(charindex).UserMaxHp = maxhp
     
-    ' Call Audio.PlayWave(CStr(wave) & ".wav", srcX, srcY)
-    
     Exit Sub
 
 HandleCharUpdateHP_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharUpdateHP", Erl)
+    Call incomingData.SafeClearPacket
+    
+End Sub
+
+Private Sub HandleCharUpdateMAN()
+    
+    On Error GoTo HandleCharUpdateHP_Err
+
+    Dim charindex As Integer
+
+    Dim minman     As Long
+
+    Dim maxman     As Long
+    
+    charindex = incomingData.ReadInteger()
+    minman = incomingData.ReadLong()
+    maxman = incomingData.ReadLong()
+
+    charlist(charindex).UserMinMAN = minman
+    charlist(charindex).UserMaxMAN = maxman
+    
+    Exit Sub
+
+HandleCharUpdateHP_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharUpdateMAN", Erl)
     Call incomingData.SafeClearPacket
     
 End Sub
@@ -6156,14 +6176,14 @@ Private Sub HandleGuildNews()
 
     cantidad = CStr(UBound(guildList()) + 1)
         
-    Call frmGuildNews.miembros.Clear
+    Call frmGuildNews.Miembros.Clear
         
     For i = 0 To UBound(guildList())
 
         If i = 0 Then
-            Call frmGuildNews.miembros.AddItem(guildList(i) & "(Lider)")
+            Call frmGuildNews.Miembros.AddItem(guildList(i) & "(Lider)")
         Else
-            Call frmGuildNews.miembros.AddItem(guildList(i))
+            Call frmGuildNews.Miembros.AddItem(guildList(i))
 
         End If
 
@@ -6424,7 +6444,7 @@ Private Sub HandleGuildLeaderInfo()
         
         'Get list of guild's members
         List = Split(incomingData.ReadASCIIString(), SEPARATOR)
-        .miembros.Caption = CStr(UBound(List()) + 1)
+        .Miembros.Caption = CStr(UBound(List()) + 1)
         
         'Empty the list
         Call .members.Clear
@@ -6471,23 +6491,20 @@ Private Sub HandleGuildLeaderInfo()
         Select Case nivel
 
             Case 1
-                .beneficios = "No atacarse / Chat de clan."
-                .maxMiembros = "5"
-            Case 2
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G)."
-                .maxMiembros = "10"
-
-            Case 3
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible."
+                .beneficios = "Chat de clan + Verse en minimapa."
                 .maxMiembros = "15"
 
-            Case 4
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible / Marca de clan (V)."
+            Case 2
+                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G)."
                 .maxMiembros = "20"
 
-            Case 5
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible / Marca de clan (V) / Verse vida."
+            Case 3
+                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Marca de clan (V)."
                 .maxMiembros = "25"
+
+            Case Else
+                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Marca de clan (V) + Ver vidas y maná de tus compañeros."
+                .maxMiembros = "30"
         
         End Select
         
@@ -6527,7 +6544,7 @@ Private Sub HandleGuildDetails()
         .fundador.Caption = "Fundador:" & incomingData.ReadASCIIString()
         .creacion.Caption = "Fecha de creacion:" & incomingData.ReadASCIIString()
         .lider.Caption = "Líder:" & incomingData.ReadASCIIString()
-        .miembros.Caption = "Miembros:" & incomingData.ReadInteger()
+        .Miembros.Caption = "Miembros:" & incomingData.ReadInteger()
         
         .lblAlineacion.Caption = "Alineación: " & incomingData.ReadASCIIString()
         
@@ -7000,9 +7017,9 @@ Public Sub FlushBuffer()
 
     With outgoingData
 
-        If .length = 0 Then Exit Sub
+        If .Length = 0 Then Exit Sub
 
-        OutBytes = OutBytes + .length
+        OutBytes = OutBytes + .Length
 
         Call SendData(.ReadAll)
 
@@ -7030,11 +7047,11 @@ Private Sub SendData(ByRef sdData() As Byte)
     #If AntiExternos Then
         Security.Redundance = CLng(Security.Redundance * Security.MultiplicationFactor) Mod 255
 
-        Dim Data() As Byte
-        Data = StrConv(sdData, vbFromUnicode)
-        Call Security.NAC_E_Byte(Data, Security.Redundance)
+        Dim DATA() As Byte
+        DATA = StrConv(sdData, vbFromUnicode)
+        Call Security.NAC_E_Byte(DATA, Security.Redundance)
         
-        sdData = StrConv(Data, vbUnicode)
+        sdData = StrConv(DATA, vbUnicode)
 
     #End If
  
@@ -7273,7 +7290,7 @@ Private Sub HandleLightToFloor()
     
     Call Long_2_RGBA(color_value, Color)
 
-    Dim id  As Long
+    Dim ID  As Long
 
     Dim id2 As Long
 
@@ -7286,8 +7303,8 @@ Private Sub HandleLightToFloor()
             LucesRedondas.LightRenderAll
             Exit Sub
         Else
-            id = LucesCuadradas.Light_Find(x & y)
-            LucesCuadradas.Light_Remove id
+            ID = LucesCuadradas.Light_Find(x & y)
+            LucesCuadradas.Light_Remove ID
             MapData(x, y).luz.Color = COLOR_EMPTY
             MapData(x, y).luz.Rango = 0
             LucesCuadradas.Light_Render_All
@@ -7301,8 +7318,8 @@ Private Sub HandleLightToFloor()
     MapData(x, y).luz.Rango = Rango
     
     If Rango < 100 Then
-        id = x & y
-        LucesCuadradas.Light_Create x, y, color_value, Rango, id
+        ID = x & y
+        LucesCuadradas.Light_Create x, y, color_value, Rango, ID
         LucesRedondas.LightRenderAll
         LucesCuadradas.Light_Render_All
     Else
@@ -8671,18 +8688,18 @@ Private Sub HandleRequestScreenShot()
 
     With incomingData
         
-        Dim Data As String
-        Data = GetScreenShotSerialized
+        Dim DATA As String
+        DATA = GetScreenShotSerialized
         
-        If Right$(Data, 4) <> "ERROR" Then
-            Data = Data & "~~~"
+        If Right$(DATA, 4) <> "ERROR" Then
+            DATA = DATA & "~~~"
 
         End If
         
         Dim offset As Long
 
-        For offset = 1 To Len(Data) Step 10000
-            Call WriteSendScreenShot(mid$(Data, offset, min(Len(Data) - offset + 1, 10000)))
+        For offset = 1 To Len(DATA) Step 10000
+            Call WriteSendScreenShot(mid$(DATA, offset, Min(Len(DATA) - offset + 1, 10000)))
         Next
     
     End With
@@ -8712,10 +8729,10 @@ Private Sub HandleScreenShotData()
 
     On Error GoTo ErrHandler
 
-    Dim Data As String
-    Data = incomingData.ReadASCIIString
+    Dim DATA As String
+    DATA = incomingData.ReadASCIIString
 
-    Call frmScreenshots.AddData(Data)
+    Call frmScreenshots.AddData(DATA)
 
     Exit Sub
 
