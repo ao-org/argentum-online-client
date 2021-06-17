@@ -1107,7 +1107,7 @@ Sub Main()
 
     End If
 
-    RawServersList = "190.245.169.111:7667:Horacio;45.235.98.165:7667:InetG;127.0.0.1:7667:Localhost"
+    RawServersList = "190.245.144.59:7667:Horacio;45.235.98.165:7667:InetG;127.0.0.1:7667:Localhost"
 
     Call ComprobarEstado
     Call CargarLst
