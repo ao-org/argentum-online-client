@@ -1962,8 +1962,13 @@ Sub CargarCuerpos()
         BodyKey = "BODY" & i
     
         Std = Val(Loader.GetValue(BodyKey, "Std"))
-        BodyData(i).HeadOffset.x = Val(Loader.GetValue(BodyKey, "HeadOffsetX"))
-        BodyData(i).HeadOffset.y = Val(Loader.GetValue(BodyKey, "HeadOffsetY"))
+        
+        With BodyData(i)
+            .BodyOffset.x = Val(Loader.GetValue(BodyKey, "BodyOffsetX"))
+            .BodyOffset.y = Val(Loader.GetValue(BodyKey, "BodyOffsetY"))
+            .HeadOffset.x = Val(Loader.GetValue(BodyKey, "HeadOffsetX")) + .BodyOffset.x
+            .HeadOffset.y = Val(Loader.GetValue(BodyKey, "HeadOffsetY")) + .BodyOffset.y
+        End With
 
         If Std = 0 Then
             InitGrh BodyData(i).Walk(1), Val(Loader.GetValue(BodyKey, "Walk1")), 0
