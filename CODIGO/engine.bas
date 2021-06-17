@@ -1672,21 +1672,22 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
                             If .clan_nivel >= 4 Then
                                 OffsetYname = 8
-                                OffsetYClan = 6
-                                Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, Color, True, True, False
+                                OffsetYClan = 8
                                 
+                                Engine_Draw_Box PixelOffsetX, PixelOffsetY + 33, 33, 5, RGBA_From_Comp(10, 10, 10)
+
                                 If .UserMaxHp <> 0 Then
-                                    Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 37, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, 200, 0, 0), RGBA_From_Comp(0, 200, 200, 200)
+                                    Engine_Draw_Box PixelOffsetX + 1, PixelOffsetY + 34, .UserMinHp / .UserMaxHp * 31, 3, RGBA_From_Comp(255, 0, 0)
                                 Else
-                                    Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 37, 26, 4, RGBA_From_Comp(255, 200, 0, 0), RGBA_From_Comp(0, 200, 200, 200)
+                                    Engine_Draw_Box PixelOffsetX + 1, PixelOffsetY + 34, 31, 4, RGBA_From_Comp(255, 0, 0)
                                 End If
-                                
-                                Grh_Render Marco, PixelOffsetX, PixelOffsetY + 5, Color, True, True, False
-                                
+
                                 If .UserMaxMAN <> 0 Then
-                                    Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 43, .UserMinMAN / .UserMaxMAN * 26, 4, RGBA_From_Comp(0, 100, 255, 0), RGBA_From_Comp(0, 200, 200, 200)
-                                Else
-                                    Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY + 43, 26, 4, RGBA_From_Comp(0, 100, 255, 0), RGBA_From_Comp(0, 200, 200, 200)
+                                    OffsetYname = 12
+                                    OffsetYClan = 12
+
+                                    Engine_Draw_Box PixelOffsetX, PixelOffsetY + 38, 33, 4, RGBA_From_Comp(10, 10, 10)
+                                    Engine_Draw_Box PixelOffsetX + 1, PixelOffsetY + 38, .UserMinMAN / .UserMaxMAN * 31, 3, RGBA_From_Comp(0, 100, 255)
                                 End If
                             End If
                         End If
@@ -1809,7 +1810,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     line = .clan
                 End If
                     
-                Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 45 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
+                Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 If .Donador = 1 Then
                     Grh_Render Estrella, PixelOffsetX + 7 + CInt(Engine_Text_Width(.nombre, 1) / 2), PixelOffsetY + 10 + OffsetYname, colorCorazon, True, True, False
