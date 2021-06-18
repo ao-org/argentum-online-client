@@ -257,8 +257,8 @@ Public Sub InitComposedTexture()
     On Error GoTo InitComposedTexture_Err
     
 
-    ComposedTextureWidth = 160
-    ComposedTextureHeight = 160
+    ComposedTextureWidth = 192
+    ComposedTextureHeight = 192
 
     ComposedTextureCenterX = ComposedTextureWidth \ 2
 
