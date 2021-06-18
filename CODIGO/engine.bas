@@ -1614,14 +1614,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         If .UserMaxHp > 0 Then
                             Dim TempColor(3) As RGBA
                             Call RGBAList(TempColor, 255, 255, 255, 200)
-                            Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY + 10, 1, 0, TempColor, False, 0, 0, 0)
+                            Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 10 + .Body.BodyOffset.y, 1, 0, TempColor, False, 0, 0, 0)
 
-                            Engine_Draw_Box PixelOffsetX + 5, PixelOffsetY + 37, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
+                            Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY + 37 + .Body.BodyOffset.y, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
                         End If
                     End If
 
                     If .simbolo <> 0 Then
-                        Call Draw_GrhIndex(5257 + .simbolo, PixelOffsetX + 6, PixelOffsetY + .Body.HeadOffset.y - 12 - 10 * Sin((FrameTime Mod 31415) * 0.002) ^ 2)
+                        Call Draw_GrhIndex(5257 + .simbolo, PixelOffsetX + 6 + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y - 12 - 10 * Sin((FrameTime Mod 31415) * 0.002) ^ 2)
                     End If
                     
                 Else
@@ -1674,20 +1674,20 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 OffsetYname = 8
                                 OffsetYClan = 8
                                 
-                                Engine_Draw_Box PixelOffsetX, PixelOffsetY + 33, 33, 5, RGBA_From_Comp(10, 10, 10)
+                                Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 33 + .Body.BodyOffset.y, 33, 5, RGBA_From_Comp(10, 10, 10)
 
                                 If .UserMaxHp <> 0 Then
-                                    Engine_Draw_Box PixelOffsetX + 1, PixelOffsetY + 34, .UserMinHp / .UserMaxHp * 31, 3, RGBA_From_Comp(255, 0, 0)
+                                    Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 34 + .Body.BodyOffset.y, .UserMinHp / .UserMaxHp * 31, 3, RGBA_From_Comp(255, 0, 0)
                                 Else
-                                    Engine_Draw_Box PixelOffsetX + 1, PixelOffsetY + 34, 31, 4, RGBA_From_Comp(255, 0, 0)
+                                    Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 34 + .Body.BodyOffset.y, 31, 4, RGBA_From_Comp(255, 0, 0)
                                 End If
 
                                 If .UserMaxMAN <> 0 Then
                                     OffsetYname = 12
                                     OffsetYClan = 12
 
-                                    Engine_Draw_Box PixelOffsetX, PixelOffsetY + 38, 33, 4, RGBA_From_Comp(10, 10, 10)
-                                    Engine_Draw_Box PixelOffsetX + 1, PixelOffsetY + 38, .UserMinMAN / .UserMaxMAN * 31, 3, RGBA_From_Comp(0, 100, 255)
+                                    Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 38 + .Body.BodyOffset.y, 33, 4, RGBA_From_Comp(10, 10, 10)
+                                    Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.y, PixelOffsetY + 38 + .Body.BodyOffset.y, .UserMinMAN / .UserMaxMAN * 31, 3, RGBA_From_Comp(0, 100, 255)
                                 End If
                             End If
                         End If
@@ -1703,8 +1703,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     OffAuras = 7
                 End If
 
-                OffArma = OffArma - Int(ease * 3)
-                OffHead = .Body.HeadOffset.y - Int(ease * 1.75) - 1
+                OffArma = OffArma - Int(ease * 3) - .Body.BodyOffset.y
+                OffHead = .Body.HeadOffset.y - Int(ease * 1.75) - 1 - .Body.BodyOffset.y
     
                 BeginComposedTexture
                 
@@ -1717,7 +1717,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                                                                     
-                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX + .Body.BodyOffset.x, TextureY + .Body.BodyOffset.y, 1, 1, COLOR_WHITE, ease)
+                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                                          
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                                          
@@ -1731,7 +1731,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                              
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                                              
-                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX + .Body.BodyOffset.x, TextureY + .Body.BodyOffset.y, 1, 1, COLOR_WHITE, ease)
+                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                                          
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                                          
@@ -1741,7 +1741,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                                              
-                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX + .Body.BodyOffset.x, TextureY + .Body.BodyOffset.y, 1, 1, COLOR_WHITE, ease)
+                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                                          
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                                          
@@ -1750,10 +1750,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
     
                     Case E_Heading.south
-                                         
+
+                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
+
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
-                        
-                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX + .Body.BodyOffset.x, TextureY + .Body.BodyOffset.y, 1, 1, COLOR_WHITE, ease)
                                          
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                                          
@@ -1767,21 +1767,21 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                 If Not .Invisible Then
                     ' Reflejo
-                    PresentComposedTexture PixelOffsetX, PixelOffsetY, Color, 0, , True
+                    PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, , True
 
                     ' Sombra
-                    PresentComposedTexture PixelOffsetX, PixelOffsetY, Color, 0, True
+                    PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, True
 
-                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
+                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
+                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
+                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
+                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
+                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
                 End If
 
                 ' Char
-                PresentComposedTexture PixelOffsetX, PixelOffsetY, Color, False
+                PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, False
                 
             ' Si no, solo dibujamos body
             Else
@@ -1800,7 +1800,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                 'Nick
                 line = Left$(.nombre, pos - 2)
-                Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
+                Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 
                 'Clan
@@ -1810,10 +1810,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     line = .clan
                 End If
                     
-                Engine_Text_Render line, PixelOffsetX + 15 - CInt(Engine_Text_Width(line, True) / 2), PixelOffsetY + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
+                Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 If .Donador = 1 Then
-                    Grh_Render Estrella, PixelOffsetX + 7 + CInt(Engine_Text_Width(.nombre, 1) / 2), PixelOffsetY + 10 + OffsetYname, colorCorazon, True, True, False
+                    Grh_Render Estrella, PixelOffsetX + 8 + CInt(Engine_Text_Width(.nombre, 1) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 10 + OffsetYname, colorCorazon, True, True, False
                 End If
             End If
         End If
@@ -1823,7 +1823,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             For i = 1 To .particle_count
 
                 If .particle_group(i) > 0 Then
-                    Particle_Group_Render .particle_group(i), PixelOffsetX + .Body.HeadOffset.x + (32 / 2), PixelOffsetY
+                    Particle_Group_Render .particle_group(i), PixelOffsetX + .Body.BodyOffset.x + (TilePixelWidth / 2), PixelOffsetY + .Body.BodyOffset.y
                 End If
 
             Next i
@@ -1836,9 +1836,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Call InitGrh(TempGrh, 839)
             Call RGBAList(Color, 255, 255, 255, 200)
 
-            Call Draw_Grh(TempGrh, PixelOffsetX + 1, PixelOffsetY - 55, 1, 0, Color, False, 0, 0, 0)
+            Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 55 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
             
-            Engine_Draw_Box_Border PixelOffsetX + 5, PixelOffsetY - 29, .BarTime / .MaxBarTime * 24, 3, RGBA_From_Comp(0, 128, 128, 255), RGBA_From_Comp(0, 0, 0, 255)
+            Engine_Draw_Box_Border PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY - 29 + .Body.BodyOffset.y, .BarTime / .MaxBarTime * 24, 3, RGBA_From_Comp(0, 128, 128, 255), RGBA_From_Comp(0, 0, 0, 255)
 
             .BarTime = .BarTime + (timerTicksPerFrame * 4)
                              
@@ -1856,7 +1856,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Call InitGrh(TempGrh, 32017)
             Call RGBAList(Color, 255, 255, 255, 200)
 
-            Call Draw_Grh(TempGrh, PixelOffsetX + 20, PixelOffsetY - 45, 1, 0, Color, False, 0, 0, 0)
+            Call Draw_Grh(TempGrh, PixelOffsetX + 20 + .Body.BodyOffset.x, PixelOffsetY - 45 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
 
         End If
 
@@ -1864,7 +1864,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         If .FxIndex <> 0 And .fX.Started <> 0 Then
             Call RGBAList(Color, 255, 255, 255, 180)
 
-            Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX, PixelOffsetY + FxData(.FxIndex).OffsetY + 4, 1, 1, Color, False, , , , charindex)
+            Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX + .Body.BodyOffset.x, PixelOffsetY + FxData(.FxIndex).OffsetY + 4 + .Body.BodyOffset.y, 1, 1, Color, False, , , , charindex)
        
         End If
 
@@ -1876,9 +1876,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(Color, 255, 255, 255, 220)
 
                     If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
-                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, False, , , , charindex)
+                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX + .Body.BodyOffset.x, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20 + .Body.BodyOffset.y, 1, 1, Color, False, , , , charindex)
                     Else
-                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, Color, True, , , , charindex)
+                        Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX + .Body.BodyOffset.x, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20 + .Body.BodyOffset.y, 1, 1, Color, True, , , , charindex)
                     End If
 
                 End If
