@@ -385,6 +385,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3280,15 +3281,19 @@ Private Sub MacroLadder_Timer()
 
             Case 1 'Alquimia
                 Call WriteCraftAlquimista(UserMacro.Index)
+                UserMacro.cantidad = UserMacro.cantidad - 1
 
             Case 2 'Carpinteria
                 Call WriteCraftCarpenter(UserMacro.Index)
+                UserMacro.cantidad = UserMacro.cantidad - 1
 
             Case 3 'Sasteria
                 Call WriteCraftSastre(UserMacro.Index)
+                UserMacro.cantidad = UserMacro.cantidad - 1
 
             Case 4 'Herreria
                 Call WriteCraftBlacksmith(UserMacro.Index)
+                UserMacro.cantidad = UserMacro.cantidad - 1
 
             Case 6
                 Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
@@ -3300,8 +3305,7 @@ Private Sub MacroLadder_Timer()
 
     End If
 
-    UserMacro.cantidad = UserMacro.cantidad - 1
-
+    'UserMacro.cantidad = UserMacro.cantidad - 1
     
     Exit Sub
 
