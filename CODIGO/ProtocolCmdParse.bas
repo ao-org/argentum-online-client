@@ -169,6 +169,19 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
 
                 Call WritePetLeave
+            
+            Case "/LIBERARTODOS", "/LIBERARTODAS"
+                If UserEstado = 1 Then 'Muerto
+
+                    With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                    End With
+
+                    Exit Sub
+
+                End If
+
+                Call WritePetLeaveAll
                                 
             Case "/ENTRENAR"
                 If UserEstado = 1 Then 'Muerto

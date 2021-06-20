@@ -3,18 +3,46 @@ Begin VB.Form MenuNPC
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   1080
+   ClientHeight    =   1485
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   1950
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   72
+   ScaleHeight     =   99
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   130
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.Label OpcionLbl 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "LIBERAR TODOS"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   300
+      Index           =   3
+      Left            =   0
+      TabIndex        =   3
+      Top             =   1170
+      Width           =   1950
+   End
+   Begin VB.Image OpcionImg 
+      Height          =   360
+      Index           =   3
+      Left            =   0
+      Top             =   1080
+      Width           =   1950
+   End
    Begin VB.Image OpcionImg 
       Height          =   360
       Index           =   2
@@ -40,7 +68,7 @@ Begin VB.Form MenuNPC
       Index           =   2
       Left            =   0
       TabIndex        =   2
-      Top             =   795
+      Top             =   810
       Width           =   1950
    End
    Begin VB.Image OpcionImg 
@@ -68,7 +96,7 @@ Begin VB.Form MenuNPC
       Index           =   1
       Left            =   0
       TabIndex        =   1
-      Top             =   435
+      Top             =   450
       Width           =   1950
    End
    Begin VB.Image OpcionImg 
@@ -96,7 +124,7 @@ Begin VB.Form MenuNPC
       Index           =   0
       Left            =   0
       TabIndex        =   0
-      Top             =   75
+      Top             =   90
       Width           =   1950
    End
 End
@@ -124,6 +152,8 @@ Private Sub OpcionImg_Click(Index As Integer)
             Call ParseUserCommand("/ACOMPAÑAR")
         Case 2
             Call ParseUserCommand("/LIBERAR")
+        Case 3
+            Call ParseUserCommand("/LIBERARTODOS")
     End Select
 
     Unload Me

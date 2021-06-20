@@ -585,6 +585,7 @@ Public Enum ClientPacketID
     CraftItem
     CloseCrafting
     MoveCraftItem
+    PetLeaveAll
     
     [PacketCount]
 End Enum

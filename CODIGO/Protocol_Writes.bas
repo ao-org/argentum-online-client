@@ -9011,3 +9011,18 @@ Handler:
 
     End If
 End Sub
+
+Public Sub WritePetLeaveAll()
+    On Error GoTo Handler
+
+    With outgoingData
+        Call .WriteID(ClientPacketID.PetLeaveAll)
+        Call .EndPacket
+    End With
+    
+Handler:
+    If outgoingData.errNumber = outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer
+        Resume
+    End If
+End Sub
