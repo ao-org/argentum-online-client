@@ -236,6 +236,7 @@ Private Enum ServerPacketID
     CraftingItem
     CraftingCatalyst
     CraftingResult
+    ForceUpdate
     
     [PacketCount]
 End Enum
@@ -780,6 +781,7 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.CraftingItem) = GetAddress(AddressOf HandleCraftingItem)
     PacketList(ServerPacketID.CraftingCatalyst) = GetAddress(AddressOf HandleCraftingCatalyst)
     PacketList(ServerPacketID.CraftingResult) = GetAddress(AddressOf HandleCraftingResult)
+    PacketList(ServerPacketID.ForceUpdate) = GetAddress(AddressOf HandleForceUpdate)
 
 End Sub
 
@@ -8912,4 +8914,22 @@ Private Sub HandleCraftingResult()
     Else
         Call frmCrafteo.SetResult(0, 0, 0)
     End If
+End Sub
+
+Private Sub HandleForceUpdate()
+    On Error GoTo HandleCerrarleCliente_Err
+    
+    Call MsgBox("¡Nueva versión disponible! Se abrirá el lanzador para que puedas actualizar.", vbOKOnly, "Argentum 20 - Noland Studios")
+    
+    Shell App.Path & "\..\..\Launcher\LauncherAO20.exe"
+    
+    EngineRun = False
+
+    Call CloseClient
+    
+    Exit Sub
+
+HandleCerrarleCliente_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
+    Call incomingData.SafeClearPacket
 End Sub
