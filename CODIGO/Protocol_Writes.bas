@@ -8517,7 +8517,7 @@ WriteCodigo_Err:
     
 End Sub
 
-Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal Name As String, ByVal reglas As String)
+Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byte, ByVal cupos As Byte, ByVal costo As Long, ByVal mago As Byte, ByVal clerico As Byte, ByVal guerrero As Byte, ByVal asesino As Byte, ByVal bardo As Byte, ByVal druido As Byte, ByVal paladin As Byte, ByVal cazador As Byte, ByVal Trabajador As Byte, ByVal Pirata As Byte, ByVal Ladron As Byte, ByVal Bandido As Byte, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal Name As String, ByVal reglas As String)
     '***************************************************
     'Author: Pablo Mercavides
     'Last Modification: 16/05/2020
@@ -8540,8 +8540,11 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, ByVal nivelmaximo As Byt
     Call outgoingData.WriteByte(druido)
     Call outgoingData.WriteByte(paladin)
     Call outgoingData.WriteByte(cazador)
-    
     Call outgoingData.WriteByte(Trabajador)
+    Call outgoingData.WriteByte(Pirata)
+    Call outgoingData.WriteByte(Ladron)
+    Call outgoingData.WriteByte(Bandido)
+    
     Call outgoingData.WriteInteger(map)
     Call outgoingData.WriteByte(x)
     Call outgoingData.WriteByte(y)

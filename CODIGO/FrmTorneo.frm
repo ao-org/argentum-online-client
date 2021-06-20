@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form FrmTorneo 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Organizacion de evento"
-   ClientHeight    =   5865
+   ClientHeight    =   6210
    ClientLeft      =   45
    ClientTop       =   390
-   ClientWidth     =   4305
+   ClientWidth     =   4425
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -18,10 +18,34 @@ Begin VB.Form FrmTorneo
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5865
-   ScaleWidth      =   4305
+   ScaleHeight     =   6210
+   ScaleWidth      =   4425
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CheckBox Check12 
+      Caption         =   "Bandido"
+      Height          =   195
+      Left            =   360
+      TabIndex        =   33
+      Top             =   3480
+      Width           =   975
+   End
+   Begin VB.CheckBox Check11 
+      Caption         =   "Ladron"
+      Height          =   195
+      Left            =   2640
+      TabIndex        =   32
+      Top             =   3480
+      Width           =   975
+   End
+   Begin VB.CheckBox Check10 
+      Caption         =   "Pirata"
+      Height          =   195
+      Left            =   1560
+      TabIndex        =   31
+      Top             =   3480
+      Width           =   975
+   End
    Begin VB.Frame Frame1 
       Caption         =   "Requisitos"
       BeginProperty Font 
@@ -33,11 +57,11 @@ Begin VB.Form FrmTorneo
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   5775
+      Height          =   6015
       Left            =   120
       TabIndex        =   0
-      Top             =   0
-      Width           =   4095
+      Top             =   120
+      Width           =   4215
       Begin VB.TextBox reglas 
          Alignment       =   2  'Center
          Height          =   885
@@ -45,7 +69,7 @@ Begin VB.Form FrmTorneo
          ScrollBars      =   1  'Horizontal
          TabIndex        =   29
          Text            =   "Prohibido atacarse, tirar invisibilidad, etc"
-         Top             =   4080
+         Top             =   4440
          Width           =   3375
       End
       Begin VB.TextBox nombre 
@@ -54,7 +78,7 @@ Begin VB.Form FrmTorneo
          Left            =   360
          TabIndex        =   27
          Text            =   "Torneo 2vs 2"
-         Top             =   3600
+         Top             =   3960
          Width           =   3375
       End
       Begin VB.TextBox y 
@@ -88,7 +112,7 @@ Begin VB.Form FrmTorneo
          Width           =   615
       End
       Begin VB.CheckBox Check9 
-         Caption         =   "Buscavidas"
+         Caption         =   "Trabajador"
          Height          =   195
          Left            =   2520
          TabIndex        =   19
@@ -109,7 +133,7 @@ Begin VB.Form FrmTorneo
          Height          =   375
          Left            =   240
          TabIndex        =   18
-         Top             =   5160
+         Top             =   5520
          Width           =   3615
       End
       Begin VB.CheckBox Check8 
@@ -227,7 +251,7 @@ Begin VB.Form FrmTorneo
          Height          =   255
          Left            =   360
          TabIndex        =   30
-         Top             =   3840
+         Top             =   4200
          Width           =   3375
       End
       Begin VB.Label Label10 
@@ -245,7 +269,7 @@ Begin VB.Form FrmTorneo
          Height          =   255
          Left            =   360
          TabIndex        =   28
-         Top             =   3360
+         Top             =   3720
          Width           =   3375
       End
       Begin VB.Label Label9 
@@ -342,7 +366,7 @@ Private Sub Command1_Click()
     
     On Error GoTo Command1_Click_Err
     
-    Call WriteCreaerTorneo(nivelmin, nivelmax, cupos, costo, Check1.Value, Check2.Value, Check3.Value, Check4.Value, Check5.Value, Check6.Value, Check7.Value, Check8.Value, Check9.Value, map, x, y, nombre, reglas)
+    Call WriteCreaerTorneo(nivelmin, nivelmax, cupos, costo.Text, Check1.Value, Check2.Value, Check3.Value, Check4.Value, Check5.Value, Check6.Value, Check7.Value, Check8.Value, Check9.Value, Check10.Value, Check11.Value, Check12.Value, map, x, y, nombre, reglas)
 
     
     Exit Sub
