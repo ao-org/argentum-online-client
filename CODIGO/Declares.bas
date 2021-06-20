@@ -1252,8 +1252,10 @@ Public Type tIndiceFx
 
 End Type
 
-#If AntiExternos Then
+#If AntiExternos = 1 Then
     Public Security As New clsSecurity
+    Public XorIndexIn As Integer
+    Public XorIndexOut As Integer
 #End If
 
 ' Load custom font

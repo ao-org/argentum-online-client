@@ -226,7 +226,6 @@ Private Enum ServerPacketID
     ShowScreenShot
     ScreenShotData
     Tolerancia0
-    Redundancia
     SeguroResu
     Stopped
     InvasionInfo
@@ -772,7 +771,6 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.ShowScreenShot) = GetAddress(AddressOf HandleShowScreenShot)
     PacketList(ServerPacketID.ScreenShotData) = GetAddress(AddressOf HandleScreenShotData)
     PacketList(ServerPacketID.Tolerancia0) = GetAddress(AddressOf HandleTolerancia0)
-    PacketList(ServerPacketID.Redundancia) = GetAddress(AddressOf HandleRedundancia)
     PacketList(ServerPacketID.SeguroResu) = GetAddress(AddressOf HandleSeguroResu)
     PacketList(ServerPacketID.Stopped) = GetAddress(AddressOf HandleStopped)
     PacketList(ServerPacketID.InvasionInfo) = GetAddress(AddressOf HandleInvasionInfo)
@@ -7039,26 +7037,19 @@ End Sub
 ''
 ' Sends the data using the socket controls in the MainForm.
 '
-' @param    sdData  The data to be sent to the server.
+' @param    Data  The data to be sent to the server.
 
-Private Sub SendData(ByRef sdData() As Byte)
+Private Sub SendData(ByRef Data() As Byte)
     
     On Error GoTo SendData_Err
 
     If frmMain.MainSocket.State <> sckConnected Then Exit Sub
 
-    #If AntiExternos Then
-        Security.Redundance = CLng(Security.Redundance * Security.MultiplicationFactor) Mod 255
-
-        Dim DATA() As Byte
-        DATA = StrConv(sdData, vbFromUnicode)
-        Call Security.NAC_E_Byte(DATA, Security.Redundance)
-        
-        sdData = StrConv(DATA, vbUnicode)
-
+    #If AntiExternos = 1 Then
+        Call Security.XorData(Data, UBound(Data), XorIndexOut)
     #End If
  
-    Call frmMain.MainSocket.SendData(sdData)
+    Call frmMain.MainSocket.SendData(Data)
     
     Exit Sub
 
@@ -8757,12 +8748,12 @@ Private Sub HandleTolerancia0()
 
 End Sub
 
-Private Sub HandleRedundancia()
+Private Sub HandleXorIndex()
     
     #If AntiExternos = 1 Then
-        Security.Redundance = incomingData.ReadByte
+        XorIndexIn = incomingData.ReadInteger
     #Else
-        Call incomingData.ReadByte
+        Call incomingData.ReadInteger
     #End If
     
 End Sub

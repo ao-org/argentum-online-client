@@ -1129,6 +1129,10 @@ Sub Main()
     'Cargar fuentes
     Call LoadFonts
     
+    #If AntiExternos = 1 Then
+        Call Security.Initialize
+    #End If
+    
     FrameTime = timeGetTime And &H7FFFFFFF
     
     UserMap = 1

@@ -2727,9 +2727,8 @@ Private Sub MainSocket_Connect()
         Call incomingData.Clean
         Call outgoingData.Clean
         
-        #If AntiExternos = 1 Then
-            Security.Redundance = Security.DefaultRedundance
-        #End If
+        XorIndexIn = 0
+        XorIndexOut = 0
         
         ShowFPS.Enabled = True
 
@@ -2763,6 +2762,8 @@ Private Sub MainSocket_DataArrival(ByVal BytesTotal As Long)
     Do
         ' WyroX: Sólo leemos la cantidad que entre en la cola!!
         Call MainSocket.GetData(Data, vbByte, min(MainSocket.BytesReceived, incomingData.Capacity - incomingData.length))
+        
+        Call Security.XorData(Data, BytesTotal - 1, XorIndexIn)
         
         'Put data in the buffer
         Call incomingData.WriteBlock(Data)

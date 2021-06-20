@@ -12,66 +12,31 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-#If AntiExternos Then
- 
-    Rem Desencriptador / Encriptador - Check de paquetes
-    Rem @writer: MENDUZ - MENDUZ@NOICODER.COM
-    Rem @date: 03122008
-    Rem ###################################################
- 
-    Public Redundance As Byte 'CLIENTE
-    
-    Private Const R_DEFAULT As Byte = 13
-    Private Const R_MULTIP_FACTOR As Byte = 3
- 
-Public Sub NAC_E_Byte(ByRef ByteArray() As Byte, ByVal code As Byte)
-Rem Encriptador de ByteArrays
-Rem @writer: MENDUZ - MENDUZ@NOICODER.COM
-Rem @date: 03122008
-    Dim i As Integer 'Ponemos integer porque no manejamos paquetes más grandes de 10KB
-    For i = 0 To UBound(ByteArray)
-        ByteArray(i) = code Xor ByteArray(i)
+#If AntiExternos = 1 Then
+
+' Módulo "anti-externos", ponele. By WyroX
+' La idea es complicársela un poco a un sniffer.
+
+Private XorArray(137) As Byte
+
+Public Sub Initialize()
+    Call Rnd(-1)
+    Call Randomize(123)
+
+    Dim i As Integer
+    For i = 0 To UBound(XorArray)
+        XorArray(i) = Rnd * 256
     Next
 End Sub
- 
-Public Sub NAC_D_Byte(ByRef ByteArray() As Byte, ByVal code As Byte)
-Rem Desencriptador de ByteArrays
-Rem @writer: MENDUZ - MENDUZ@NOICODER.COM
-Rem @date: 03122008
-    Dim i As Integer 'Ponemos integer porque no manejamos paquetes más grandes de 10KB
-    For i = 0 To UBound(ByteArray)
-        ByteArray(i) = ByteArray(i) Xor code
+
+Public Sub XorData(ByRef Data() As Byte, ByVal UpperBound As Long, ByRef Index As Integer)
+    Dim i As Long
+    For i = 0 To UpperBound
+        Data(i) = Data(i) Xor XorArray(Index)
+        Index = Index + 7
+        If Index > UBound(XorArray) Then Index = Index - UBound(XorArray) - 1
     Next
 End Sub
- 
-Public Function NAC_E_String(ByVal T As String, ByVal code As Byte) As String
-Rem Encriptador de Strings
-Rem CLIENT-SIDE
-Rem @writer: MENDUZ - MENDUZ@NOICODER.COM
-Rem @date: 03122008
-    Dim Bytes() As Byte: Bytes = StrConv(T, vbFromUnicode)
-    Call NAC_E_Byte(Bytes, code)
-    NAC_E_String = StrConv(Bytes, vbUnicode)
-End Function
- 
-Public Function NAC_D_String(ByVal T As String, ByVal code As Byte) As String
-Rem Desencriptador de Strings
-Rem CLIENT-SIDE
-Rem @writer: MENDUZ - MENDUZ@NOICODER.COM
-Rem @date: 03122008
-    Dim Bytes() As Byte: Bytes = StrConv(T, vbFromUnicode)
-    Call NAC_D_Byte(Bytes, code)
-    NAC_D_String = StrConv(Bytes, vbUnicode)
-End Function
-
-Public Property Get MultiplicationFactor()
-    MultiplicationFactor = R_MULTIP_FACTOR
-End Property
-
-Public Property Get DefaultRedundance()
-    DefaultRedundance = R_DEFAULT
-End Property
 
 #End If
- 
 
