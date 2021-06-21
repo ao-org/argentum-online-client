@@ -1800,11 +1800,10 @@ Private Sub cmdMapaSeguro_Click()
 
         Case 1
             Call ParseUserCommand("/MODMAPINFO SEGURO 1")
-            Call ParseUserCommand("/MAPINFO")
 
         Case 2
             Call ParseUserCommand("/MODMAPINFO SEGURO 0")
-            Call ParseUserCommand("/MAPINFO")
+            
             
     End Select
     
