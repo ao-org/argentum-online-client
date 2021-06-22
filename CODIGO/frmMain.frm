@@ -385,7 +385,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -944,6 +943,7 @@ Begin VB.Form frmMain
       Left            =   6840
       TabIndex        =   41
       Top             =   75
+      Visible         =   0   'False
       Width           =   1335
    End
    Begin VB.Label btnSpawn 
@@ -964,6 +964,7 @@ Begin VB.Form frmMain
       Left            =   5400
       TabIndex        =   40
       Top             =   75
+      Visible         =   0   'False
       Width           =   1335
    End
    Begin VB.Label createObj 
@@ -984,6 +985,7 @@ Begin VB.Form frmMain
       Left            =   3960
       TabIndex        =   39
       Top             =   75
+      Visible         =   0   'False
       Width           =   1335
    End
    Begin VB.Label panelGM 
@@ -1004,6 +1006,7 @@ Begin VB.Form frmMain
       Left            =   2640
       TabIndex        =   38
       Top             =   75
+      Visible         =   0   'False
       Width           =   1215
    End
    Begin VB.Label Label3 
