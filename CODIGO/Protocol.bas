@@ -7160,15 +7160,18 @@ Private Sub HandlePersonajesDeCuenta()
         End Select
 
     Next i
+    
+    AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
    
     If CantidadDePersonajesEnCuenta > 0 Then
         PJSeleccionado = 1
         LastPJSeleccionado = 1
-        AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
-        Call SwitchMap(Pjs(1).Mapa)
-        RenderCuenta_PosX = Pjs(1).PosX
-        RenderCuenta_PosY = Pjs(1).PosY
-
+        
+        If Pjs(1).Mapa <> 0 Then
+            Call SwitchMap(Pjs(1).Mapa)
+            RenderCuenta_PosX = Pjs(1).PosX
+            RenderCuenta_PosY = Pjs(1).PosY
+        End If
     End If
     
     Exit Sub

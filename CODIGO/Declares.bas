@@ -140,7 +140,7 @@ Public LastClickAsistente    As Long
 
 Public PJSeleccionado        As Byte
 Public LastPJSeleccionado    As Byte
-Public AlphaRenderCuenta     As Byte
+Public AlphaRenderCuenta     As Single
 Public RenderCuenta_PosX     As Integer
 Public RenderCuenta_PosY     As Integer
 

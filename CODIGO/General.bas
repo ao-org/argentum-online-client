@@ -1156,6 +1156,8 @@ Sub Main()
     
     Call General_Set_Connect
     
+    Call engine.GetElapsedTime
+    
     Call Start
  
     

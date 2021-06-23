@@ -124,9 +124,7 @@ Public textcolorAsistente(3)    As RGBA
 
 'Sets a Grh animation to loop indefinitely.
 
-#Const HARDCODED = False 'True ' == MÁS FPS ^^
-
-Private Function GetElapsedTime() As Single
+Public Function GetElapsedTime() As Single
     
     On Error GoTo GetElapsedTime_Err
     
@@ -2994,23 +2992,10 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         Engine_Text_Render "<Creador del Mundo>", 438, 415, ColorGM, 1
 
         Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 870, 740, COLOR_WHITE, 4, False
-
-        Dim ItemName As String
-
-        'itemname = "abcdfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789¡!¿TEST?#$100%&/\()=-@^[]<>*+.,:; pálmas séso te píso sólo púto ý LÁL LÉ"
-            
-        ' itemname = "pálmas séso te píso sólo púto ý lÁ Élefante PÍSÓS PÚTO ÑOño"
-        Engine_Text_Render_LetraChica ItemName, 100, 730, COLOR_WHITE, 4, False
-
-        If ClickEnAsistente < 30 Then
-          '  Call Particle_Group_Render(spell_particle, 500, 365)
-        End If
-
     End If
 
     LastOffsetX = ParticleOffsetX
     LastOffsetY = ParticleOffsetY
-    'Engine_Weather_UpdateFog
     
     TextEfectAsistente = TextEfectAsistente + (15 * timerTicksPerFrame * Sgn(-1))
 
@@ -3019,15 +3004,6 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     End If
 
     Engine_Text_Render TextAsistente, 510 - Engine_Text_Width(TextAsistente, True, 1) / 2, 320 - Engine_Text_Height(TextAsistente, True) + TextEfectAsistente, textcolorAsistente, 1, True, , 200
-
-    '
-    ' Engine_Draw_Box 975, 5, 15, 15, D3DColorARGB(100, 70, 0, 0)
-    'Engine_Text_Render UserCuenta, 490 - Engine_Text_Width(UserCuenta, False, 3) / 2, 38 - Engine_Text_Height(UserCuenta, False, 3), DefaultColor, 3, False
-    ' Engine_Text_Render "X", 977, 5, DefaultColor, 1, False
-    
-    '   Engine_Draw_Box 955, 5, 15, 15, D3DColorARGB(100, 70, 0, 0)
-    'Engine_Text_Render UserCuenta, 490 - Engine_Text_Width(UserCuenta, False, 3) / 2, 38 - Engine_Text_Height(UserCuenta, False, 3), DefaultColor, 3, False
-    ' Engine_Text_Render "_", 957, 3, DefaultColor, 1, False
 
     'Logo viejo
     Dim TempGrh As grh, cc(3) As RGBA
@@ -3051,7 +3027,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     If FadeInAlpha > 0 Then
         Call Engine_Draw_Box(0, 0, frmConnect.ScaleWidth, frmConnect.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
-        FadeInAlpha = FadeInAlpha - 1
+        FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
 
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
@@ -3450,7 +3426,7 @@ Public Sub RenderPjsCuenta()
     
     If LastPJSeleccionado <> PJSeleccionado Then
         If AlphaRenderCuenta < MAX_ALPHA_RENDER_CUENTA Then
-            AlphaRenderCuenta = AlphaRenderCuenta + 1
+            AlphaRenderCuenta = min(AlphaRenderCuenta + timerTicksPerFrame * 10, MAX_ALPHA_RENDER_CUENTA)
         Else
             LastPJSeleccionado = PJSeleccionado
 
@@ -3462,7 +3438,7 @@ Public Sub RenderPjsCuenta()
         End If
     ElseIf PJSeleccionado <> 0 And AlphaRenderCuenta > 0 Then
         If Pjs(PJSeleccionado).Mapa <> 0 Then
-            AlphaRenderCuenta = AlphaRenderCuenta - 1
+            AlphaRenderCuenta = max(AlphaRenderCuenta - timerTicksPerFrame * 10, 0)
         End If
     End If
 

@@ -275,12 +275,6 @@ Private Sub render_DblClick()
         Case 2
             
             If PJSeleccionado < 1 Then Exit Sub
-            If Pjs(PJSeleccionado).nombre = "" And PJSeleccionado <> 0 Then
-                LastPJSeleccionado = PJSeleccionado
-                PJSeleccionado = 0
-                Exit Sub
-
-            End If
 
             Call Sound.Sound_Play(SND_CLICK)
 
@@ -612,6 +606,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                                 ' Si todo se cumple, entonces cliqueo en un pj (dado por las divisiones)
                                 NuevoSeleccionado = 1 + DivX + DivY * 5 ' 5 = cantidad de pjs por linea (+1 porque los pjs van de 1 a MAX)
 
+                                If Pjs(NuevoSeleccionado).Mapa = 0 Then NuevoSeleccionado = 0
+                                
                             End If
 
                         End If
@@ -729,12 +725,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case 4
 
                     If PJSeleccionado < 1 Then Exit Sub
-                    If Pjs(PJSeleccionado).nombre = "" And PJSeleccionado <> 0 Then
-                        LastPJSeleccionado = PJSeleccionado
-                        PJSeleccionado = 0
-                        Exit Sub
-
-                    End If
 
                     If IntervaloPermiteConectar Then
                         Call Sound.Sound_Play(SND_CLICK)

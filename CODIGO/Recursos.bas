@@ -927,7 +927,9 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim demorafinal  As Long
 
     demora = timeGetTime And &H7FFFFFFF
-    
+
+    Debug.Assert map <> 0
+
     #If Compresion = 1 Then
 
         If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
