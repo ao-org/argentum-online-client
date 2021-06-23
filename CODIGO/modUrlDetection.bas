@@ -105,7 +105,7 @@ Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As 
                     
                     ' Jopi: Preguntamos si realmente quiere abrir ese link.
                     If MsgBox("Estas a punto de abrir un enlace a un sitio externo." & vbNewLine & _
-                              "¿Estás seguro que quieres continuar?", vbYesNo + vbExclamation, "Enlace externo") = vbYes Then
+                              "Â¿EstÃ¡s seguro que quieres continuar?", vbYesNo + vbExclamation, "Enlace externo") = vbYes Then
                     
                         eText.chrg.cpMin = eLink.chrg.cpMin
                         eText.chrg.cpMax = eLink.chrg.cpMax
