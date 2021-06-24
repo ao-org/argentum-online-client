@@ -904,16 +904,13 @@ Begin VB.Form frmPanelgm
       Begin VB.Menu cmdcrearevento 
          Caption         =   "Eventos"
          Begin VB.Menu evento1 
-            Caption         =   "Exp y oro x2 - 30 min"
+            Caption         =   "Recolección x2 - 30 min"
          End
          Begin VB.Menu evento2 
-            Caption         =   "Exp y oro x2 - 59 min"
+            Caption         =   "Recolección x3 - 59 min"
          End
          Begin VB.Menu evento3 
-            Caption         =   "Todo x 2 - 30 min"
-         End
-         Begin VB.Menu evento4 
-            Caption         =   "Exp x3 - 30 min"
+            Caption         =   "Recolección x 5 - 30 min"
          End
          Begin VB.Menu personalizado 
             Caption         =   "Personalizado"
@@ -2058,7 +2055,7 @@ Private Sub evento1_Click()
     
     On Error GoTo evento1_Click_Err
     
-    Call WriteCrearEvento(5, 30, 2)
+    Call WriteCrearEvento(3, 30, 2)
 
     
     Exit Sub
@@ -2073,7 +2070,7 @@ Private Sub evento2_Click()
     
     On Error GoTo evento2_Click_Err
     
-    Call WriteCrearEvento(5, 59, 2)
+    Call WriteCrearEvento(3, 59, 3)
 
     
     Exit Sub
@@ -2088,7 +2085,7 @@ Private Sub evento3_Click()
     
     On Error GoTo evento3_Click_Err
     
-    Call WriteCrearEvento(7, 30, 2)
+    Call WriteCrearEvento(3, 30, 5)
 
     
     Exit Sub
