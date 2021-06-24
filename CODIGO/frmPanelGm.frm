@@ -3,7 +3,7 @@ Begin VB.Form frmPanelgm
    BackColor       =   &H00000000&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
-   ClientHeight    =   8550
+   ClientHeight    =   8565
    ClientLeft      =   18150
    ClientTop       =   4710
    ClientWidth     =   4815
@@ -19,7 +19,7 @@ Begin VB.Form frmPanelgm
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8550
+   ScaleHeight     =   8565
    ScaleWidth      =   4815
    ShowInTaskbar   =   0   'False
    Begin VB.CommandButton SendGlobal 
@@ -165,10 +165,10 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Destrabar"
       Height          =   375
-      Left            =   3360
+      Left            =   3240
       Style           =   1  'Graphical
       TabIndex        =   30
-      Top             =   4680
+      Top             =   8040
       Width           =   1335
    End
    Begin VB.CommandButton cmdEventos 
@@ -186,12 +186,12 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Ir Cerca"
       Height          =   360
-      Left            =   2040
+      Left            =   120
       Style           =   1  'Graphical
       TabIndex        =   26
       TabStop         =   0   'False
-      Top             =   4680
-      Width           =   1215
+      Top             =   5160
+      Width           =   1095
    End
    Begin VB.CommandButton cmdInformación 
       BackColor       =   &H8000000A&
@@ -208,12 +208,12 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Invisible"
       Height          =   360
-      Left            =   3480
+      Left            =   3360
       Style           =   1  'Graphical
       TabIndex        =   24
       TabStop         =   0   'False
-      Top             =   8040
-      Width           =   1215
+      Top             =   3360
+      Width           =   1335
    End
    Begin VB.CommandButton cmdGuardarMapa 
       BackColor       =   &H8000000A&
@@ -344,12 +344,12 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "/Consulta"
       Height          =   360
-      Left            =   120
+      Left            =   2040
       Style           =   1  'Graphical
       TabIndex        =   12
       TabStop         =   0   'False
-      Top             =   5160
-      Width           =   990
+      Top             =   3360
+      Width           =   1215
    End
    Begin VB.CommandButton cmdModIntervalo 
       BackColor       =   &H8000000A&
@@ -384,12 +384,12 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "/Revivir"
       Height          =   360
-      Left            =   1200
+      Left            =   1320
       Style           =   1  'Graphical
       TabIndex        =   10
       TabStop         =   0   'False
       Top             =   5160
-      Width           =   1335
+      Width           =   1215
    End
    Begin VB.CommandButton Command2 
       Caption         =   "Lista 2 (Consultas)"
@@ -444,7 +444,7 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   6
       TabStop         =   0   'False
-      Top             =   4680
+      Top             =   3360
       Width           =   1815
    End
    Begin VB.ListBox List1 
@@ -452,7 +452,7 @@ Begin VB.Form frmPanelgm
       Height          =   2010
       Left            =   120
       TabIndex        =   3
-      Top             =   600
+      Top             =   120
       Width           =   4560
    End
    Begin VB.TextBox txtMsg 
@@ -464,7 +464,7 @@ Begin VB.Form frmPanelgm
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
       TabIndex        =   4
-      Top             =   2640
+      Top             =   2160
       Width           =   4575
    End
    Begin VB.CommandButton cmdActualiza 
@@ -475,7 +475,7 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   2
       TabStop         =   0   'False
-      Top             =   120
+      Top             =   4680
       Width           =   855
    End
    Begin VB.ComboBox cboListaUsus 
@@ -493,15 +493,15 @@ Begin VB.Form frmPanelgm
       Left            =   120
       Sorted          =   -1  'True
       TabIndex        =   1
-      Top             =   120
+      Top             =   4680
       Width           =   3675
    End
    Begin VB.ListBox List2 
-      Height          =   2010
+      Height          =   1425
       Left            =   120
       TabIndex        =   7
       Top             =   600
-      Width           =   4575
+      Width           =   4560
    End
    Begin VB.Label lblEscudo 
       Alignment       =   1  'Right Justify
