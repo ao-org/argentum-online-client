@@ -6849,12 +6849,47 @@ Private Sub HandleShowGMPanelForm()
     
     On Error GoTo HandleShowGMPanelForm_Err
     
+    Dim MiCargo As Integer
+    
+    
     frmPanelgm.txtHeadNumero = incomingData.ReadInteger
     frmPanelgm.txtBodyYo = incomingData.ReadInteger
     frmPanelgm.txtCasco = incomingData.ReadInteger
     frmPanelgm.txtArma = incomingData.ReadInteger
     frmPanelgm.txtEscudo = incomingData.ReadInteger
     frmPanelgm.Show vbModeless, frmMain
+    
+    MiCargo = charlist(UserCharIndex).priv
+    
+    Select Case MiCargo ' ReyarB ajustar privilejios
+    
+        Case 1
+        frmPanelgm.mnuChar.Visible = False
+        frmPanelgm.cmdHerramientas.Visible = False
+        frmPanelgm.Admin(0).Visible = False
+        
+        Case 2
+        frmPanelgm.mnuChar.Visible = False
+        frmPanelgm.cmdHerramientas.Visible = False
+        frmPanelgm.Admin(0).Visible = False
+        frmPanelgm.Height = 5340
+        
+        Case 3
+        frmPanelgm.mnuChar.Visible = False
+        frmPanelgm.mnuChar.Visible = False
+        frmPanelgm.cmdHerramientas.Visible = True
+        frmPanelgm.Admin(0).Visible = False
+        
+        Case 4
+        frmPanelgm.mnuChar.Visible = True
+        frmPanelgm.mnuChar.Visible = True
+        frmPanelgm.cmdHerramientas.Visible = True
+        frmPanelgm.Admin(0).Visible = False
+        
+        Case 5
+        
+    
+    End Select
     
     Exit Sub
 
