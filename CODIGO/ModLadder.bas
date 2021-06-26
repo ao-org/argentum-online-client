@@ -1389,7 +1389,7 @@ Sub CargarOpciones()
     
     Dim ConfigFile As clsIniManager
     Set ConfigFile = New clsIniManager
-    Call ConfigFile.Initialize(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini")
+    Call ConfigFile.Initialize(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini")
     
     'Musica y Sonido
     Musica = ConfigFile.GetValue("AUDIO", "Musica")
@@ -1415,6 +1415,7 @@ Sub CargarOpciones()
     Dim Value As String
     Value = ConfigFile.GetValue("VIDEO", "MostrarRespiracion")
     MostrarRespiracion = IIf(LenB(Value) > 0, Val(Value), True)
+
     FxNavega = ConfigFile.GetValue("OPCIONES", "FxNavega")
     OcultarMacrosAlCastear = ConfigFile.GetValue("OPCIONES", "OcultarMacrosAlCastear")
     MostrarIconosMeteorologicos = ConfigFile.GetValue("OPCIONES", "MostrarIconosMeteorologicos")
@@ -1426,6 +1427,7 @@ Sub CargarOpciones()
     ModoHechizos = Val(ConfigFile.GetValue("OPCIONES", "ModoHechizos"))
     MostrarEscribiendo = Val(ConfigFile.GetValue("OPCIONES", "MostrarEscribiendo"))
     DialogosClanes.Activo = Val(ConfigFile.GetValue("OPCIONES", "DialogosClanes"))
+    
     'Init
     ServerIndex = Val(ConfigFile.GetValue("INIT", "ServerIndex"))
 
@@ -1471,7 +1473,6 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "OPCIONES", "MoverVentana", MoverVentana)
     Call WriteVar(Arch, "OPCIONES", "PermitirMoverse", PermitirMoverse)
     Call WriteVar(Arch, "OPCIONES", "CopiarDialogoAConsola", CopiarDialogoAConsola)
-    Call WriteVar(Arch, "OPCIONES", "InvertirSonido", InvertirSonido)
     Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
     Call WriteVar(Arch, "OPCIONES", "AlphaMacro", AlphaMacro)
     Call WriteVar(Arch, "OPCIONES", "ModoHechizos", ModoHechizos)
