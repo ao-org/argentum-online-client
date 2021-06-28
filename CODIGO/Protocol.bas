@@ -6428,43 +6428,57 @@ Private Sub HandleGuildLeaderInfo()
     
     On Error GoTo ErrHandler
     
+    Dim Str As String
+    
     Dim List() As String
 
     Dim i      As Long
     
     With frmGuildLeader
-        'Get list of existing guilds
-        List = Split(incomingData.ReadASCIIString(), SEPARATOR)
-        
         'Empty the list
         Call .guildslist.Clear
-        
-        For i = 0 To UBound(List())
-            Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
-        Next i
-        
-        'Get list of guild's members
-        List = Split(incomingData.ReadASCIIString(), SEPARATOR)
-        .Miembros.Caption = CStr(UBound(List()) + 1)
+    
+        Str = incomingData.ReadASCIIString()
+    
+        If LenB(Str) > 0 Then
+            'Get list of existing guilds
+            List = Split(Str, SEPARATOR)
+
+            For i = 0 To UBound(List())
+                Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+            Next i
+        End If
         
         'Empty the list
         Call .members.Clear
         
-        For i = 0 To UBound(List())
-            Call .members.AddItem(List(i))
-        Next i
+        Str = incomingData.ReadASCIIString()
+        
+        If LenB(Str) > 0 Then
+            'Get list of guild's members
+            List = Split(Str, SEPARATOR)
+            .miembros.Caption = CStr(UBound(List()) + 1)
+
+            For i = 0 To UBound(List())
+                Call .members.AddItem(List(i))
+            Next i
+        End If
         
         .txtguildnews = incomingData.ReadASCIIString()
-        
-        'Get list of join requests
-        List = Split(incomingData.ReadASCIIString(), SEPARATOR)
         
         'Empty the list
         Call .solicitudes.Clear
         
-        For i = 0 To UBound(List())
-            Call .solicitudes.AddItem(List(i))
-        Next i
+        Str = incomingData.ReadASCIIString()
+        
+        If LenB(Str) > 0 Then
+            'Get list of join requests
+            List = Split(Str, SEPARATOR)
+        
+            For i = 0 To UBound(List())
+                Call .solicitudes.AddItem(List(i))
+            Next i
+        End If
         
         Dim expacu As Integer
 
@@ -6479,12 +6493,12 @@ Private Sub HandleGuildLeaderInfo()
         ExpNe = incomingData.ReadInteger()
         'barra
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = expacu / ExpNe * 239
         
         If ExpNe > 0 Then
-       
+            .EXPBAR.Width = expacu / ExpNe * 239
             .porciento.Caption = Round(expacu / ExpNe * 100#, 0) & "%"
         Else
+            .EXPBAR.Width = 239
             .porciento.Caption = "¡Nivel máximo!"
             .expcount.Caption = "¡Nivel máximo!"
         End If
