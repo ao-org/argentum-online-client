@@ -8987,7 +8987,14 @@ HandleCerrarleCliente_Err:
 End Sub
 
 Private Sub HandleGuardNotice()
+On Error GoTo HandleGuardNotice_Err
     
     frmAOGuard.Show vbModeless, FrmLogear
+    
+    Exit Sub
+    
+HandleGuardNotice_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
+    Call incomingData.SafeClearPacket
     
 End Sub

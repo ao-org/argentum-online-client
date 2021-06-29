@@ -2193,7 +2193,7 @@ Public Sub DrawInterfaceComerciar()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "Facción)"
+                Str = Str & "Facción)"
 
             Case 4
                 str = str & "Skill)"
@@ -2287,7 +2287,7 @@ Public Sub DrawInterfaceBovedaCuenta()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "Facción)"
+                Str = Str & "Facción)"
 
             Case 4
                 str = str & "Skill)"
@@ -2381,7 +2381,7 @@ Public Sub DrawInterfaceBoveda()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "Facción)"
+                Str = Str & "Facción)"
 
             Case 4
                 str = str & "Skill)"

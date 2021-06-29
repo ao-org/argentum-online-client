@@ -42,7 +42,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cmdSend_Click()
     
-    If LenB(txtCodigo) = 0 Then Exit Sub
+    If LenB(txtCodigo.Text) = 0 Then Exit Sub
     
     Call WriteGuardNoticeResponse(txtCodigo.Text, CuentaEmail)
     
