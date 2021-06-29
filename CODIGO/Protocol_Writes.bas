@@ -9029,3 +9029,16 @@ Handler:
         Resume
     End If
 End Sub
+
+Public Sub WriteGuardNoticeResponse(ByVal Codigo As String, ByVal Email As String)
+    
+    With outgoingData
+        Call .WriteID(ClientPacketID.GuardNoticeResponse)
+        
+        Call .WriteASCIIString(Codigo)
+        Call .WriteASCIIString(Email)
+        
+        Call .EndPacket
+    End With
+    
+End Sub
