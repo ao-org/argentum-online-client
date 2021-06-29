@@ -154,11 +154,11 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Info/Mapa"
       Height          =   360
-      Left            =   3360
+      Left            =   2040
       Style           =   1  'Graphical
       TabIndex        =   31
       TabStop         =   0   'False
-      Top             =   6600
+      Top             =   3360
       Width           =   1335
    End
    Begin VB.CommandButton Command3 
@@ -175,12 +175,12 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Eventos"
       Height          =   360
-      Left            =   3360
+      Left            =   3120
       Style           =   1  'Graphical
       TabIndex        =   27
       TabStop         =   0   'False
       Top             =   5640
-      Width           =   1350
+      Width           =   1590
    End
    Begin VB.CommandButton cmdIrCerca 
       BackColor       =   &H8000000A&
@@ -208,12 +208,12 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Invisible"
       Height          =   360
-      Left            =   3360
+      Left            =   3480
       Style           =   1  'Graphical
       TabIndex        =   24
       TabStop         =   0   'False
       Top             =   3360
-      Width           =   1335
+      Width           =   1215
    End
    Begin VB.CommandButton cmdGuardarMapa 
       BackColor       =   &H8000000A&
@@ -230,12 +230,12 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Matar NPC"
       Height          =   360
-      Left            =   3360
+      Left            =   3120
       Style           =   1  'Graphical
       TabIndex        =   21
       TabStop         =   0   'False
       Top             =   6120
-      Width           =   1335
+      Width           =   1575
    End
    Begin VB.CommandButton cmdHeadMas 
       BackColor       =   &H00FFFFFF&
@@ -263,12 +263,12 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Head 0"
       Height          =   360
-      Left            =   3360
+      Left            =   3120
       Style           =   1  'Graphical
       TabIndex        =   18
       TabStop         =   0   'False
       Top             =   5160
-      Width           =   1350
+      Width           =   1590
    End
    Begin VB.TextBox txtHeadNumero 
       Alignment       =   2  'Center
@@ -293,12 +293,12 @@ Begin VB.Form frmPanelgm
       Caption         =   "Body 0"
       Height          =   360
       Index           =   2
-      Left            =   3360
+      Left            =   3120
       Style           =   1  'Graphical
       TabIndex        =   16
       TabStop         =   0   'False
       Top             =   4680
-      Width           =   1350
+      Width           =   1590
    End
    Begin VB.CommandButton cmdBodyMas 
       BackColor       =   &H00FFFFFF&
@@ -344,12 +344,12 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "/Consulta"
       Height          =   360
-      Left            =   2040
+      Left            =   3120
       Style           =   1  'Graphical
       TabIndex        =   12
       TabStop         =   0   'False
-      Top             =   3360
-      Width           =   1215
+      Top             =   6600
+      Width           =   1575
    End
    Begin VB.CommandButton cmdModIntervalo 
       BackColor       =   &H8000000A&
