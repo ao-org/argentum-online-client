@@ -6887,6 +6887,10 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.cmdHerramientas.Visible = False
         frmPanelgm.Admin(0).Visible = False
         frmPanelgm.cmdConsulta.Visible = False
+        frmPanelgm.cmdMatarNPC.Visible = False
+        frmPanelgm.cmdEventos.Visible = False
+        frmPanelgm.cmdBody0(2).Visible = False
+        frmPanelgm.cmdHead0.Visible = False
         frmPanelgm.Height = 7830
         
         Case 3
