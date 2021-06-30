@@ -25,10 +25,21 @@ Begin VB.Form frmAOGuard
    ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox txtCodigo 
-      Height          =   375
+      Alignment       =   2  'Center
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Consolas"
+         Size            =   20.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
       Left            =   1080
       TabIndex        =   0
-      Top             =   1680
+      Top             =   1920
       Width           =   3255
    End
    Begin VB.Image cmdSalir 
@@ -77,6 +88,8 @@ Private Sub Form_Load()
     'Me.Picture = LoadInterface("ventanaconectar.bmp")
     Me.Top = FrmLogear.Top
     Me.Left = FrmLogear.Left
+    
+    Me.txtCodigo.MaxLength = 5
     
     Call LoadButtons
     
