@@ -40,10 +40,14 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
 Private Sub cmdSend_Click()
     
     If LenB(txtCodigo.Text) = 0 Then Exit Sub
     
-    Call WriteGuardNoticeResponse(txtCodigo.Text, CuentaEmail)
+    Call WriteGuardNoticeResponse(txtCodigo.Text)
+    
+    Unload Me
     
 End Sub

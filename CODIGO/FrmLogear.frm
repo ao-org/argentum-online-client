@@ -363,8 +363,7 @@ Private Sub cmdIngresar_Click()
 
         If CheckUserDataLoged() = True Then
             EstadoLogin = E_MODO.IngresandoConCuenta
-            frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
-
+            Call frmMain.MainSocket.Connect(IPdelServidor, PuertoDelServidor)
         End If
 
         ServerIndex = lstServers.ListIndex
