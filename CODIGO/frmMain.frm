@@ -2801,26 +2801,24 @@ Private Sub MainSocket_Error(ByVal Number As Integer, Description As String, ByV
     'Handle socket errors
     '*********************************************
     If Number = 24036 Then
-        frmMain.MainSocket.Close
+        Call frmMain.MainSocket.Close
         Debug.Print "ErrorCode = 24036"
         Exit Sub
 
     End If
-
-    ' Call ComprobarEstado
     
     If frmConnect.Visible Then
         Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
+    
     Else
         Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
     
         Dim mForm As Form
-
         For Each mForm In Forms
 
             Select Case mForm.Name
 
-                Case Me.Name, frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
+                Case frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
                 
                 Case Else
                     Unload mForm
@@ -2829,25 +2827,17 @@ Private Sub MainSocket_Error(ByVal Number As Integer, Description As String, ByV
 
         Next
         
-        frmMain.Visible = False
         Call ComprobarEstado
-        General_Set_Connect
+        Call General_Set_Connect
 
     End If
     
     frmConnect.MousePointer = 1
     ShowFPS.Enabled = False
 
-    frmMain.MainSocket.Close
+    Call frmMain.MainSocket.Close
+    
     LogeoAlgunaVez = False
-    
-    'General_Set_Connect
-    
-    'If Not frmCrearPersonaje.Visible Then
-    ' General_Set_Connect
-    '  Else
-    '  frmCrearPersonaje.MousePointer = 0
-    'End If
     
     Exit Sub
 
