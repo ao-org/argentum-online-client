@@ -709,7 +709,6 @@ Sub General_Set_Connect()
     If QueRender <> 1 Then
         frmConnect.Show
         FrmLogear.Show , frmConnect
-        FrmLogear.Top = FrmLogear.Top + 3500
     End If
             
     intro = 1

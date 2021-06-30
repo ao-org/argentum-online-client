@@ -166,6 +166,7 @@ Private Sub Form_Load()
         
     Timer2.Enabled = True
     Timer1.Enabled = True
+    
     ' Seteamos el caption hay que poner 20 aniversario
     Me.Caption = "Argentum20"
     

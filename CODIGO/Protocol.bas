@@ -1474,7 +1474,6 @@ Private Sub HandleShowFrmLogear()
     '
     '***************************************************
     FrmLogear.Show , frmConnect
-    FrmLogear.Top = FrmLogear.Top + 4000
     
     Exit Sub
 
@@ -8989,7 +8988,7 @@ End Sub
 Private Sub HandleGuardNotice()
 On Error GoTo HandleGuardNotice_Err
     
-    frmAOGuard.Show vbModeless, FrmLogear
+    frmAOGuard.Show vbModeless, frmConnect
     
     Exit Sub
     

@@ -1976,7 +1976,6 @@ Public Sub Start()
                     If Not frmConnect.Visible Then
                         frmConnect.Show
                         FrmLogear.Show , frmConnect
-                        FrmLogear.Top = FrmLogear.Top + 3500
                     End If
                     
                     RenderConnect 57, 45, 0, 0
