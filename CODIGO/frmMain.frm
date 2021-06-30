@@ -385,7 +385,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2053,9 +2052,11 @@ Form_Activate_Err:
     Resume Next
     
 End Sub
+
 Private Sub Second_Timer()
     If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
 End Sub
+
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo Form_KeyUp_Err
@@ -2834,7 +2835,9 @@ Private Sub MainSocket_Error(ByVal Number As Integer, Description As String, ByV
     
     frmConnect.MousePointer = 1
     ShowFPS.Enabled = False
-
+    
+    If frmAOGuard.Visible Then Unload frmAOGuard
+    
     Call frmMain.MainSocket.Close
     
     LogeoAlgunaVez = False
@@ -2844,6 +2847,12 @@ Private Sub MainSocket_Error(ByVal Number As Integer, Description As String, ByV
 Socket1_LastError_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_LastError", Erl)
     Resume Next
+End Sub
+
+Private Sub MainSocket_Close()
+
+    If frmAOGuard.Visible Then Unload frmAOGuard
+    
 End Sub
 
 Private Sub MANShp_Click()
@@ -3269,6 +3278,7 @@ lblPorcLvl_Click_Err:
 End Sub
 
 Private Sub MacroLadder_Timer()
+    
     
     On Error GoTo MacroLadder_Timer_Err
     
