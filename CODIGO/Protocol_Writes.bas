@@ -9041,3 +9041,13 @@ Public Sub WriteGuardNoticeResponse(ByVal Codigo As String)
     End With
     
 End Sub
+
+Public Sub WriteResendVerificationCode(ByVal Codigo As String)
+    
+    With outgoingData
+        Call .WriteID(ClientPacketID.GuardResendVerificationCode)
+        Call .EndPacket
+    End With
+    
+End Sub
+

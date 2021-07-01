@@ -587,6 +587,7 @@ Public Enum ClientPacketID
     MoveCraftItem
     PetLeaveAll
     GuardNoticeResponse
+    GuardResendVerificationCode
     
     [PacketCount]
 End Enum
