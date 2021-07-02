@@ -907,19 +907,23 @@ Begin VB.Form frmPanelgm
             Caption         =   "Recolección x2 - 30 min"
          End
          Begin VB.Menu evento2 
-            Caption         =   "Recolección x3 - 59 min"
+            Caption         =   "Recolección x3 - 30 min"
          End
          Begin VB.Menu evento3 
             Caption         =   "Recolección x 5 - 30 min"
          End
          Begin VB.Menu personalizado 
             Caption         =   "Personalizado"
+            Enabled         =   0   'False
+            Visible         =   0   'False
          End
          Begin VB.Menu finalizarevento 
             Caption         =   "Finalizar actual"
          End
          Begin VB.Menu BusqedaTesoro 
             Caption         =   "Busqueda del tesoro"
+            Enabled         =   0   'False
+            Visible         =   0   'False
          End
       End
       Begin VB.Menu mnuHerramientas 
@@ -2070,7 +2074,7 @@ Private Sub evento2_Click()
     
     On Error GoTo evento2_Click_Err
     
-    Call WriteCrearEvento(3, 59, 3)
+    Call WriteCrearEvento(3, 30, 3)
 
     
     Exit Sub
