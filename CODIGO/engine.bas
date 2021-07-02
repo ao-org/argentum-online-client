@@ -1976,7 +1976,6 @@ Public Sub Start()
                     If Not frmConnect.Visible Then
                         frmConnect.Show
                         FrmLogear.Show , frmConnect
-                        FrmLogear.Top = FrmLogear.Top + 3500
                     End If
                     
                     RenderConnect 57, 45, 0, 0
@@ -2193,7 +2192,7 @@ Public Sub DrawInterfaceComerciar()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "Facción)"
+                Str = Str & "Facción)"
 
             Case 4
                 str = str & "Skill)"
@@ -2287,7 +2286,7 @@ Public Sub DrawInterfaceBovedaCuenta()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "Facción)"
+                Str = Str & "Facción)"
 
             Case 4
                 str = str & "Skill)"
@@ -2381,7 +2380,7 @@ Public Sub DrawInterfaceBoveda()
                 str = str & "Clase)"
 
             Case 3
-                str = str & "Facción)"
+                Str = Str & "Facción)"
 
             Case 4
                 str = str & "Skill)"

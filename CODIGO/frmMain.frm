@@ -467,7 +467,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1680
-         Picture         =   "frmMain.frx":6180
+         Picture         =   "frmMain.frx":6181
          ToolTipText     =   "Seguro de resurrección"
          Top             =   3060
          Visible         =   0   'False
@@ -863,35 +863,35 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":6F92
+         Picture         =   "frmMain.frx":6F93
          Top             =   1215
          Width           =   3240
       End
       Begin VB.Image MANShp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":9856
+         Picture         =   "frmMain.frx":9857
          Top             =   1635
          Width           =   3240
       End
       Begin VB.Image STAShp 
          Height          =   135
          Left            =   510
-         Picture         =   "frmMain.frx":C11A
+         Picture         =   "frmMain.frx":C11B
          Top             =   2085
          Width           =   1335
       End
       Begin VB.Image AGUAsp 
          Height          =   135
          Left            =   2340
-         Picture         =   "frmMain.frx":CAC8
+         Picture         =   "frmMain.frx":CAC9
          Top             =   2085
          Width           =   480
       End
       Begin VB.Image COMIDAsp 
          Height          =   120
          Left            =   3285
-         Picture         =   "frmMain.frx":CE6C
+         Picture         =   "frmMain.frx":CE6D
          Top             =   2100
          Width           =   480
       End
@@ -899,7 +899,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   630
-         Picture         =   "frmMain.frx":D1B0
+         Picture         =   "frmMain.frx":D1B1
          ToolTipText     =   "Seguro de clan"
          Top             =   3060
          Visible         =   0   'False
@@ -908,7 +908,7 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   510
          Left            =   105
-         Picture         =   "frmMain.frx":DFC2
+         Picture         =   "frmMain.frx":DFC3
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -918,7 +918,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1155
-         Picture         =   "frmMain.frx":EDD4
+         Picture         =   "frmMain.frx":EDD5
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -1224,14 +1224,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":FBE6
+      Picture         =   "frmMain.frx":FBE7
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":1016A
+      Picture         =   "frmMain.frx":1016B
       Top             =   2008
       Width           =   555
    End
@@ -1309,7 +1309,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":106EE
+      Picture         =   "frmMain.frx":106EF
       Top             =   480
       Visible         =   0   'False
       Width           =   525
@@ -1379,7 +1379,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":1136E
+      Picture         =   "frmMain.frx":1136F
       Top             =   1545
       Width           =   3540
    End
@@ -2052,9 +2052,11 @@ Form_Activate_Err:
     Resume Next
     
 End Sub
+
 Private Sub Second_Timer()
     If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
 End Sub
+
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo Form_KeyUp_Err
@@ -2800,26 +2802,24 @@ Private Sub MainSocket_Error(ByVal Number As Integer, Description As String, ByV
     'Handle socket errors
     '*********************************************
     If Number = 24036 Then
-        frmMain.MainSocket.Close
+        Call frmMain.MainSocket.Close
         Debug.Print "ErrorCode = 24036"
         Exit Sub
 
     End If
-
-    ' Call ComprobarEstado
     
     If frmConnect.Visible Then
         Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
+    
     Else
         Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
     
         Dim mForm As Form
-
         For Each mForm In Forms
 
             Select Case mForm.Name
 
-                Case Me.Name, frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
+                Case frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
                 
                 Case Else
                     Unload mForm
@@ -2828,31 +2828,31 @@ Private Sub MainSocket_Error(ByVal Number As Integer, Description As String, ByV
 
         Next
         
-        frmMain.Visible = False
         Call ComprobarEstado
-        General_Set_Connect
+        Call General_Set_Connect
 
     End If
     
     frmConnect.MousePointer = 1
     ShowFPS.Enabled = False
-
-    frmMain.MainSocket.Close
+    
+    If frmAOGuard.Visible Then Unload frmAOGuard
+    
+    Call frmMain.MainSocket.Close
+    
     LogeoAlgunaVez = False
-    
-    'General_Set_Connect
-    
-    'If Not frmCrearPersonaje.Visible Then
-    ' General_Set_Connect
-    '  Else
-    '  frmCrearPersonaje.MousePointer = 0
-    'End If
     
     Exit Sub
 
 Socket1_LastError_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_LastError", Erl)
     Resume Next
+End Sub
+
+Private Sub MainSocket_Close()
+
+    If frmAOGuard.Visible Then Unload frmAOGuard
+    
 End Sub
 
 Private Sub MANShp_Click()
@@ -3278,6 +3278,7 @@ lblPorcLvl_Click_Err:
 End Sub
 
 Private Sub MacroLadder_Timer()
+    
     
     On Error GoTo MacroLadder_Timer_Err
     

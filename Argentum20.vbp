@@ -131,6 +131,7 @@ Class=clsFormMovementManager; CODIGO\clsFormMovementManager.cls
 Class=clsByteQueue; CODIGO\clsNewByteQueue.cls
 Module=Protocol_Writes; CODIGO\Protocol_Writes.bas
 Form=CODIGO\frmCrafteo.frm
+Form=CODIGO\frmAOGuard.frm
 ResFile32="AO20.res"
 IconForm="frmMain"
 Startup="Sub Main"

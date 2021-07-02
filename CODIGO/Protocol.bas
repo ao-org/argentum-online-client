@@ -236,6 +236,7 @@ Private Enum ServerPacketID
     CraftingCatalyst
     CraftingResult
     ForceUpdate
+    GuardNotice
     
     [PacketCount]
 End Enum
@@ -585,6 +586,8 @@ Public Enum ClientPacketID
     CloseCrafting
     MoveCraftItem
     PetLeaveAll
+    GuardNoticeResponse
+    GuardResendVerificationCode
     
     [PacketCount]
 End Enum
@@ -781,7 +784,8 @@ Public Sub InitializePacketList()
     PacketList(ServerPacketID.CraftingCatalyst) = GetAddress(AddressOf HandleCraftingCatalyst)
     PacketList(ServerPacketID.CraftingResult) = GetAddress(AddressOf HandleCraftingResult)
     PacketList(ServerPacketID.ForceUpdate) = GetAddress(AddressOf HandleForceUpdate)
-
+    PacketList(ServerPacketID.GuardNotice) = GetAddress(AddressOf HandleGuardNotice)
+    
 End Sub
 
 Private Sub ParsePacket(ByVal packetIndex As Long)
@@ -1471,7 +1475,6 @@ Private Sub HandleShowFrmLogear()
     '
     '***************************************************
     FrmLogear.Show , frmConnect
-    FrmLogear.Top = FrmLogear.Top + 4000
     
     Exit Sub
 
@@ -8981,4 +8984,17 @@ Private Sub HandleForceUpdate()
 HandleCerrarleCliente_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
     Call incomingData.SafeClearPacket
+End Sub
+
+Private Sub HandleGuardNotice()
+On Error GoTo HandleGuardNotice_Err
+    
+    frmAOGuard.Show vbModeless, frmConnect
+    
+    Exit Sub
+    
+HandleGuardNotice_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
+    Call incomingData.SafeClearPacket
+    
 End Sub

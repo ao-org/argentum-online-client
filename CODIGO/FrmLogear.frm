@@ -15,10 +15,11 @@ Begin VB.Form FrmLogear
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Moveable        =   0   'False
-   ScaleHeight     =   4005
-   ScaleWidth      =   5340
+   Picture         =   "FrmLogear.frx":0000
+   ScaleHeight     =   267
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox PasswordTxt 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -80,9 +81,9 @@ Begin VB.Form FrmLogear
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   240
-      ItemData        =   "FrmLogear.frx":0000
+      ItemData        =   "FrmLogear.frx":451D0
       Left            =   720
-      List            =   "FrmLogear.frx":0002
+      List            =   "FrmLogear.frx":451D2
       Style           =   2  'Dropdown List
       TabIndex        =   3
       TabStop         =   0   'False
@@ -133,53 +134,42 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-'Declaraciï¿½n del Api SetLayeredWindowAttributes que establece _
+'Declaracion del Api SetLayeredWindowAttributes que establece _
  la transparencia al form
-
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 'Recupera el estilo de la ventana
 Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 
-'Declaraciï¿½n del Api SetWindowLong necesaria para aplicar un estilo _
+'Declaracion del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
 
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 Private Const GWL_EXSTYLE = (-20)
-
 Private Const LWA_ALPHA = &H2
-
 Private Const WS_EX_LAYERED = &H80000
 
-'Funciï¿½n para saber si formulario ya es transparente. _
- Se le pasa el Hwnd del formulario en cuestiï¿½n
+'Funcion para saber si formulario ya es transparente. _
+ Se le pasa el Hwnd del formulario en cuestion
 
 Public bmoving      As Boolean
-
 Public dX           As Integer
-
 Public dy           As Integer
 
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
-
 Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 Private RealizoCambios As String
 
 Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
-
 Private Const HWND_TOPMOST = -1
-
 Private Const HWND_NOTOPMOST = -2
-
 Private Const SWP_NOMOVE = &H2
-
 Private Const SWP_NOSIZE = &H1
 
 Private cBotonSalir As clsGraphicalButton
@@ -220,7 +210,6 @@ Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
 
     If Err Then
         Is_Transparent = False
-
     End If
 
     
@@ -232,7 +221,7 @@ Is_Transparent_Err:
     
 End Function
 
-'Funciï¿½n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+'Funcion que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
     On Error GoTo Aplicar_Transparencia_Err
     
@@ -283,12 +272,14 @@ btnCuenta_Click_Err:
 End Sub
 
 Private Sub Form_Load()
-    'MakeFormTransparent Me, vbBlack
-    
+
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    Me.Top = Me.Top + 2500
+    
+    Me.Top = (frmConnect.Height / 4) * 3.3
+    Me.Left = (frmConnect.Width / 2) + (Me.Width / 2) * 1.5
+    
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hwnd, 240)
     
@@ -299,6 +290,7 @@ Private Sub Form_Load()
     #End If
 
     Call LoadButtons
+    
     Exit Sub
 
 Form_Load_Err:
@@ -318,20 +310,10 @@ Private Sub LoadButtons()
     Call cBotonIngresar.Initialize(cmdIngresar, "boton-ingresar-ES-default.bmp", "boton-ingresar-ES-over.bmp", "boton-ingresar-ES-off.bmp", Me)
 End Sub
 
-
 Private Sub cmdSalir_Click()
-    
-    On Error GoTo cmdSalir_Click_Err
     
     Call CloseClient
 
-    
-    Exit Sub
-
-cmdSalir_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "FrmLogear.cmdSalir_Click", Erl)
-    Resume Next
-    
 End Sub
 
 Private Sub cmdIngresar_Click()
@@ -363,8 +345,7 @@ Private Sub cmdIngresar_Click()
 
         If CheckUserDataLoged() = True Then
             EstadoLogin = E_MODO.IngresandoConCuenta
-            frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
-
+            Call frmMain.MainSocket.Connect(IPdelServidor, PuertoDelServidor)
         End If
 
         ServerIndex = lstServers.ListIndex
@@ -373,7 +354,6 @@ Private Sub cmdIngresar_Click()
 
     End If
 
-    
     Exit Sub
 
 cmdIngresar_Click_Err:
