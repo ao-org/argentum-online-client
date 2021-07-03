@@ -112,7 +112,9 @@ End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     
-    If Not FrmLogear.Visible Then FrmLogear.Show
+    If prgRun Then
+        If Not FrmLogear.Visible Then FrmLogear.Show
+    End If
     
 End Sub
 

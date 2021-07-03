@@ -277,7 +277,12 @@ Public light_transition       As Single
 Public Const Particula_Lluvia As Long = 58
 Public Const Particula_Nieve  As Long = 57
 Public VolMusicFadding        As Integer
-Public RawServersList         As String
+
+#If DEBUGGING = 1 Then
+    Public IPServers(1 To 3) As String
+#Else
+    Public IPServers(1) As String
+#End If
 
 Public Type tServerInfo
 
@@ -559,7 +564,7 @@ Public TipoCrafteo()              As tCrafteo
 
 Public Type ObjDonador
 
-    precio As Integer
+    Precio As Integer
     Index As Integer
 
 End Type

@@ -7,7 +7,7 @@ Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
 
 'Nueva seguridad
-Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal length As Long)
+Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal Length As Long)
 Private Declare Function GetAdaptersInfo Lib "iphlpapi" (lpAdapterInfo As Any, lpSize As Long) As Long
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 'get mac adress
@@ -120,10 +120,6 @@ End Type
 
 Public CantPartLLuvia     As Integer
 Public MeteoIndex         As Integer
-
-'Servidores
-Public ChequeandoServidor As Byte
-Public CantServer         As Byte
 
 'Dropeo
 Public CantdPaquetes      As Long
@@ -636,7 +632,7 @@ End Function
 
 Public Sub LogError(desc As String)
 
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -647,7 +643,7 @@ Public Sub LogError(desc As String)
 
     Exit Sub
 
-errhandler:
+ErrHandler:
 
 End Sub
 
@@ -715,7 +711,7 @@ Sub General_Set_Connect()
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -1994,14 +1990,14 @@ Public Sub CargarLst()
 
     FrmLogear.lstServers.Clear
 
-    For i = 1 To CantServer
+    For i = 1 To UBound(ServersLst)
         FrmLogear.lstServers.AddItem ServersLst(i).desc
     Next i
     
 #If DEBUGGING = 1 Then
     FrmLogear.lstServers.ListIndex = Val(ServerIndex)
 #Else
-    FrmLogear.lstServers.ListIndex = 1
+    FrmLogear.lstServers.ListIndex = 0
 #End If
 
     
@@ -2064,7 +2060,7 @@ Public Sub ComprobarEstado()
     On Error GoTo ComprobarEstado_Err
     
 
-    Call InitServersList(RawServersList)
+    Call InitServersList
 
     Call CargarLst
 
