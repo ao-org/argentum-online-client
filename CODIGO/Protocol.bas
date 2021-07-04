@@ -789,7 +789,7 @@ Public Sub InitializePacketList()
 End Sub
 
 Private Sub ParsePacket(ByVal packetIndex As Long)
-
+Debug.Print packetIndex
     If packetIndex > UBound(PacketList()) Then
         Debug.Print "Paquete inexistente: " & packetIndex
         Exit Sub

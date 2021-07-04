@@ -78,7 +78,7 @@ Public Sub SetResolution()
     oldResHeight = Screen.Height \ Screen.TwipsPerPixelY
     
     If NoRes And Not PantallaCompleta Then
-        CambiarResolucion = (oldResWidth < 1024 Or oldResHeight < 768)
+        CambiarResolucion = (oldResWidth <= 1024 Or oldResHeight <= 768)
     Else
         CambiarResolucion = (oldResWidth <> 1024 Or oldResHeight <> 768)
     End If

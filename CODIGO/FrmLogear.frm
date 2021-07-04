@@ -271,14 +271,16 @@ btnCuenta_Click_Err:
     
 End Sub
 
+Private Sub Form_Activate()
+    Me.Top = frmConnect.Top + frmConnect.Height - Me.Height - 450
+    Me.Left = frmConnect.Left + (frmConnect.Width - Me.Width) / 2
+End Sub
+
 Private Sub Form_Load()
 
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    
-    Me.Top = (frmConnect.Height / 4) * 3.3
-    Me.Left = (frmConnect.Width / 2) + (Me.Width / 2) * 1.5
     
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hwnd, 240)
