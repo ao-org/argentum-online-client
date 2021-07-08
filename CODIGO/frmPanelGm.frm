@@ -22,6 +22,7 @@ Begin VB.Form frmPanelgm
    ScaleHeight     =   8460
    ScaleWidth      =   4785
    ShowInTaskbar   =   0   'False
+   StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton SendGlobal 
       BackColor       =   &H8000000A&
       Caption         =   "Global"
@@ -2750,7 +2751,7 @@ End Sub
 
 Private Sub quitarnpcs_Click()
 
-    Call ParseUserCommand("/LIMPIAR") ' Ver ReyarB
+    Call ParseUserCommand("/LIMPIAR")
 End Sub
 
 Private Sub rapido_Click()

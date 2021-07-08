@@ -268,6 +268,7 @@ Public Type NpcDatas
     NumQuiza As Byte
     QuizaDropea() As Integer
     ExpClan As Long
+    PuedeInvocar As Byte
     
 End Type
 

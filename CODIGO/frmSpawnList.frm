@@ -113,6 +113,7 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+Public ListaCompleta As Boolean
 
 Private Sub Command1_Click()
     
@@ -162,16 +163,18 @@ End Sub
 Public Sub FillList()
     
     On Error GoTo FillList_Err
-    
+
     lstCriaturas.Clear
 
     Dim i As Long
 
     For i = 1 To UBound(NpcData())
         If NpcData(i).Name <> "Vacío" Then
-            If InStr(1, Tilde(NpcData(i).Name), Tilde(Filter.Text)) Then
-                Call lstCriaturas.AddItem(i & " - " & NpcData(i).Name)
-                lstCriaturas.ItemData(lstCriaturas.NewIndex) = i
+            If NpcData(i).PuedeInvocar Or ListaCompleta Then
+                If InStr(1, Tilde(NpcData(i).Name), Tilde(Filter.Text)) Then
+                    Call lstCriaturas.AddItem(i & " - " & NpcData(i).Name)
+                    lstCriaturas.ItemData(lstCriaturas.NewIndex) = i
+                End If
             End If
         End If
     Next i

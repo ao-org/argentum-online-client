@@ -279,7 +279,7 @@ Public Const Particula_Nieve  As Long = 57
 Public VolMusicFadding        As Integer
 
 #If DEBUGGING = 1 Then
-    Public IPServers(1 To 3) As String
+    Public IPServers(1 To 4) As String
 #Else
     Public IPServers(1) As String
 #End If

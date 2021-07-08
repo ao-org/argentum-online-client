@@ -1499,6 +1499,8 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).oro = Val(Leer.GetValue("npc" & Npc, "oro"))
         
         NpcData(Npc).ExpClan = Val(Leer.GetValue("npc" & Npc, "GiveEXPClan"))
+        
+        NpcData(Npc).PuedeInvocar = Val(Leer.GetValue("npc" & Npc, "PuedeInvocar"))
        
         aux = Val(Leer.GetValue("npc" & Npc, "NumQuiza"))
 

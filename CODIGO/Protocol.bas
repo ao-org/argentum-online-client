@@ -789,7 +789,7 @@ Public Sub InitializePacketList()
 End Sub
 
 Private Sub ParsePacket(ByVal packetIndex As Long)
-Debug.Print packetIndex
+
     If packetIndex > UBound(PacketList()) Then
         Debug.Print "Paquete inexistente: " & packetIndex
         Exit Sub
@@ -6769,9 +6769,7 @@ Private Sub HandleSpawnList()
     
     On Error GoTo ErrHandler
     
-    Dim creatureList() As String
-
-    creatureList = Split(incomingData.ReadASCIIString(), SEPARATOR)
+    frmSpawnList.ListaCompleta = incomingData.ReadBoolean
 
     Call frmSpawnList.FillList
 
