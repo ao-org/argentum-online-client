@@ -441,7 +441,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If Len(ArgumentosRaw) > 50 Then
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFOIAO)
-                        Call ShowConsoleMsg("Tu descripción no puede ser tán larga (Max. 50 caracteres).", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg("Tu descripción no puede ser tan larga (Max. 50 caracteres).", .red, .green, .blue, .bold, .italic)
 
                     End With
 

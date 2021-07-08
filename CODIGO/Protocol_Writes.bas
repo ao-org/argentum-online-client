@@ -3109,31 +3109,6 @@ WriteRoleMasterRequest_Err:
 End Sub
 
 ''
-' Writes the "GMRequest" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteGMRequest()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "GMRequest" message to the outgoing data buffer
-    '***************************************************
-    
-    On Error GoTo WriteGMRequest_Err
-    
-    Call outgoingData.WriteID(ClientPacketID.GMRequest)
-    Call outgoingData.EndPacket
-    
-    Exit Sub
-
-WriteGMRequest_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.WriteGMRequest", Erl)
-    Call incomingData.SafeClearPacket
-    
-End Sub
-
-''
 ' Writes the "ChangeDescription" message to the outgoing data buffer.
 '
 ' @param    desc The new description of the user's character.

@@ -1003,9 +1003,6 @@ Begin VB.Form frmPanelgm
       Begin VB.Menu ResetPozos 
          Caption         =   "Reseter Pozos Magicos"
       End
-      Begin VB.Menu quitarnpcs 
-         Caption         =   "Quitar NPCs del area"
-      End
    End
    Begin VB.Menu Admin 
       Caption         =   "Administración"
@@ -2747,11 +2744,6 @@ personalizado_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.personalizado_Click", Erl)
     Resume Next
     
-End Sub
-
-Private Sub quitarnpcs_Click()
-
-    Call ParseUserCommand("/LIMPIAR")
 End Sub
 
 Private Sub rapido_Click()

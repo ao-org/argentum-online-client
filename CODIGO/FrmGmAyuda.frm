@@ -13,7 +13,7 @@ Begin VB.Form FrmGmAyuda
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   470
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
+   StartUpPosition =   1  'CenterOwner
    Begin VB.OptionButton optConsulta 
       Caption         =   "Consulta regular"
       BeginProperty Font 

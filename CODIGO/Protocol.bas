@@ -337,7 +337,6 @@ Public Enum ClientPacketID
     GuildOnline             '/ONLINECLAN
     CouncilMessage          '/BMSG
     RoleMasterRequest       '/ROL
-    GMRequest               '/GM
     ChangeDescription       '/DESC
     GuildVote               '/VOTO
     punishments             '/PENAS
