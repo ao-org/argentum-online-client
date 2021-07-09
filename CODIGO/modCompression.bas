@@ -99,7 +99,7 @@ Private Const MINIMAP_PATH As String = "\MiniMapas\"
 Private Declare Function Compress Lib "zlib.dll" Alias "compress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
 Private Declare Function UnCompress Lib "zlib.dll" Alias "uncompress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal Length As Long)
 
 Private Sub Compress_Data(ByRef Data() As Byte)
 '*****************************************************************
@@ -167,7 +167,7 @@ Public Function Extract_All_Files(ByVal file_type As resource_file_type, ByVal r
     Dim Handle As Integer
     
 'Set up the error handler
-On Local Error GoTo errhandler
+On Local Error GoTo ErrHandler
     
     Select Case file_type
         Case Graphics
@@ -316,7 +316,7 @@ On Local Error GoTo errhandler
     Extract_All_Files = True
 Exit Function
 
-errhandler:
+ErrHandler:
     Close SourceFile
     Erase SourceData
     Erase InfoHead
@@ -362,7 +362,7 @@ Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As 
     'This is similar to Extract, but has some small differences to make sure what is being updated
     '************************************************************************************************
 'Set up the error handler
-On Local Error GoTo errhandler
+On Local Error GoTo ErrHandler
 
     'Open the binary file
     SourceFile = FreeFile
@@ -608,7 +608,7 @@ EndMainLoop:
     Extract_Patch = True
 Exit Function
 
-errhandler:
+ErrHandler:
     Erase SourceData
     Erase InfoHead
 
@@ -635,7 +635,7 @@ Public Function Compress_Files(ByVal file_type As resource_file_type, ByVal reso
     Dim loopc As Long
     
 'Set up the error handler
-On Local Error GoTo errhandler
+On Local Error GoTo ErrHandler
     
     Select Case file_type
         Case Graphics
@@ -812,7 +812,7 @@ On Local Error GoTo errhandler
     Erase SourceData
 Exit Function
 
-errhandler:
+ErrHandler:
     Erase SourceData
     Erase InfoHead
     'Display an error message if it didn't work
@@ -832,7 +832,7 @@ Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resour
     Dim Handle As Integer
     
 'Set up the error handler
-On Local Error GoTo errhandler
+On Local Error GoTo ErrHandler
     
     Select Case file_type
         Case Graphics
@@ -942,7 +942,7 @@ On Local Error GoTo errhandler
     Extract_File = True
 Exit Function
 
-errhandler:
+ErrHandler:
     Close Handle
     Erase SourceData
     'Display an error message if it didn't work
@@ -987,7 +987,7 @@ Private Function File_Find(ByVal resource_file_path As String, ByVal file_name A
 'Last Modify Date: 5/04/2005
 'Looks for a compressed file in a resource file. Uses binary search ;)
 '**************************************************************
-On Error GoTo errhandler
+On Error GoTo ErrHandler
     Dim max As Integer  'Max index
     Dim min As Integer  'Min index
     Dim mid As Integer  'Middle index
@@ -1050,7 +1050,7 @@ On Error GoTo errhandler
         End If
     Loop
     
-errhandler:
+ErrHandler:
     'Close file
     Close file_handler
     File_Find.strFileName = ""
@@ -1076,7 +1076,7 @@ Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Curre
 End Function
 
 
-Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal first As Long, ByVal last As Long)
+Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal First As Long, ByVal Last As Long)
 '**************************************************************
 'Author: juan Martín Sotuyo Dodero
 'Last Modify Date: 3/03/2005
@@ -1086,9 +1086,9 @@ Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal first As Long, B
     Dim temp As Variant
     Dim List_Separator As Variant
     
-    Low = first
-    High = last
-    List_Separator = SortArray((first + last) / 2)
+    Low = First
+    High = Last
+    List_Separator = SortArray((First + Last) / 2)
     Do While (Low <= High)
         Do While SortArray(Low) < List_Separator
             Low = Low + 1
@@ -1104,8 +1104,8 @@ Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal first As Long, B
             High = High - 1
         End If
     Loop
-    If first < High Then General_Quick_Sort SortArray, first, High
-    If Low < last Then General_Quick_Sort SortArray, Low, last
+    If First < High Then General_Quick_Sort SortArray, First, High
+    If Low < Last Then General_Quick_Sort SortArray, Low, Last
 End Sub
 
 ' WyroX: Encriptado casero. Funciona para encriptar y desencriptar (maravillas del Xor)
@@ -1120,8 +1120,8 @@ Private Sub DoCrypt_Data(Data() As Byte, ByVal Password As String)
     For i = LBound(Data) To UBound(Data)
         Data(i) = Data(i) Xor (Asc(mid$(Password, c, 1)) And &HFF)
         
-        c = c + 1
-        If c > Len(Password) Then c = 1
+        c = c - 1
+        If c < 1 Then c = Len(Password)
     Next
     
 End Sub
@@ -1145,7 +1145,7 @@ Public Function Extract_File_To_Memory(ByVal file_type As resource_file_type, By
 
     Dim Handle         As Integer
 
-    On Local Error GoTo errhandler
+    On Local Error GoTo ErrHandler
     
     Select Case file_type
 
@@ -1215,7 +1215,7 @@ Public Function Extract_File_To_Memory(ByVal file_type As resource_file_type, By
     Extract_File_To_Memory = True
     Exit Function
 
-errhandler:
+ErrHandler:
     Close Handle
     ' Erase SourceData
     Erase bytArr
