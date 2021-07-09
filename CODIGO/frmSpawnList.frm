@@ -170,7 +170,7 @@ Public Sub FillList()
 
     For i = 1 To UBound(NpcData())
         If NpcData(i).Name <> "Vacío" Then
-            If NpcData(i).PuedeInvocar Or ListaCompleta Then
+            If NpcData(i).PuedeInvocar = 1 Or ListaCompleta Then
                 If InStr(1, Tilde(NpcData(i).Name), Tilde(Filter.Text)) Then
                     Call lstCriaturas.AddItem(i & " - " & NpcData(i).Name)
                     lstCriaturas.ItemData(lstCriaturas.NewIndex) = i
