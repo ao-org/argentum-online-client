@@ -1240,8 +1240,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/CC"
                 If EsGM Then
-                    frmSpawnList.FillList
-                    frmSpawnList.Show , frmMain
+                    Call WriteSpawnListRequest
                 End If
                 
             Case "/CO"
