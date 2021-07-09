@@ -3,7 +3,7 @@ Begin VB.Form frmPanelgm
    BackColor       =   &H00000000&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
-   ClientHeight    =   8460
+   ClientHeight    =   8505
    ClientLeft      =   18150
    ClientTop       =   4710
    ClientWidth     =   4785
@@ -19,7 +19,7 @@ Begin VB.Form frmPanelgm
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8460
+   ScaleHeight     =   8505
    ScaleWidth      =   4785
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner

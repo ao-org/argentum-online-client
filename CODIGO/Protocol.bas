@@ -6891,7 +6891,10 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.cmdEventos.Visible = False
         frmPanelgm.cmdBody0(2).Visible = False
         frmPanelgm.cmdHead0.Visible = False
-        frmPanelgm.Height = 7830
+        frmPanelgm.SendGlobal.Visible = False
+        frmPanelgm.Mensajeria.Visible = False
+        frmPanelgm.txtMod.Width = 4580
+        frmPanelgm.Height = 7580
         
         Case 3
         frmPanelgm.mnuChar.Visible = False
