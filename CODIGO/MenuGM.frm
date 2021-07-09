@@ -3,14 +3,14 @@ Begin VB.Form MenuGM
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   4680
+   ClientHeight    =   2535
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   1950
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   312
+   ScaleHeight     =   169
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   130
    ShowInTaskbar   =   0   'False
@@ -214,7 +214,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "ECHAR"
+      Caption         =   "REVIVIR"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -409,7 +409,7 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 4
             Call ParseUserCommand("/INV " & TargetName)
         Case 5
-            Call ParseUserCommand("/ECHAR " & TargetName)
+            Call ParseUserCommand("/REVIVIR " & TargetName)
         Case 6
             Call ParseUserCommand("/CONSULTA " & TargetName)
         Case 7
