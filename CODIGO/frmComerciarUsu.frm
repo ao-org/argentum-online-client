@@ -169,6 +169,42 @@ Begin VB.Form frmComerciarUsu
          Strikethrough   =   0   'False
       EndProperty
    End
+   Begin VB.Label lblItemName 
+      Alignment       =   1  'Right Justify
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Vacío"
+      ForeColor       =   &H00E0E0E0&
+      Height          =   195
+      Left            =   3420
+      TabIndex        =   13
+      Top             =   6600
+      Width           =   435
+   End
+   Begin VB.Label lblUserItemName 
+      Alignment       =   1  'Right Justify
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Vacío"
+      ForeColor       =   &H00E0E0E0&
+      Height          =   195
+      Left            =   7530
+      TabIndex        =   12
+      Top             =   2835
+      Width           =   435
+   End
+   Begin VB.Label lblOtherItemName 
+      Alignment       =   1  'Right Justify
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Vacío"
+      ForeColor       =   &H00E0E0E0&
+      Height          =   195
+      Left            =   7530
+      TabIndex        =   11
+      Top             =   4320
+      Width           =   435
+   End
    Begin VB.Image Image1 
       Height          =   495
       Left            =   8160
@@ -242,7 +278,7 @@ Begin VB.Form frmComerciarUsu
       Height          =   255
       Left            =   5160
       TabIndex        =   2
-      Top             =   4350
+      Top             =   4320
       Width           =   1335
    End
    Begin VB.Image cmdOfrecer 
@@ -605,8 +641,6 @@ Form_MouseMove_Err:
 End Sub
 
 
-
-
 Private Sub Image1_Click()
     On Error GoTo Image1_Click_Err
     
@@ -618,6 +652,52 @@ Private Sub Image1_Click()
 Image1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Image1_Click", Erl)
     Resume Next
+    
+End Sub
+
+Private Sub picInv_Click()
+    
+    If InvUser.SelectedItem <> 0 Then
+        
+        Me.lblItemName.Caption = ObjData(InvUser.OBJIndex(InvUser.SelectedItem)).Name
+    
+    Else
+        
+        Me.lblItemName.Caption = "Vacío"
+        
+    End If
+    
+End Sub
+
+Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Call picInv_Click
+End Sub
+
+Private Sub picInvUserSell_Click()
+    
+    If InvUserSell.SelectedItem <> 0 Then
+        
+        Me.lblUserItemName.Caption = ObjData(InvUserSell.OBJIndex(InvUserSell.SelectedItem)).Name
+    
+    Else
+        
+        Me.lblUserItemName.Caption = "Vacío"
+        
+    End If
+    
+End Sub
+
+Private Sub picInvOtherSell_Click()
+    
+    If InvOtherSell.SelectedItem <> 0 Then
+        
+        Me.lblOtherItemName.Caption = ObjData(InvOtherSell.OBJIndex(InvOtherSell.SelectedItem)).Name
+    
+    Else
+        
+        Me.lblOtherItemName.Caption = "Vacío"
+    
+    End If
     
 End Sub
 
