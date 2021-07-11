@@ -1957,11 +1957,7 @@ Public Sub Start()
                     ElseIf frmCrafteo.Visible Then
                         DrawInterfaceCrafting
                     End If
-                    
-                    If frmMapaGrande.Visible Then
-                        DrawMapaMundo
-                    End If
-                    
+
                     If FrmKeyInv.Visible Then
                         DrawInterfaceKeys
                     End If
@@ -2192,7 +2188,7 @@ Public Sub DrawInterfaceComerciar()
                 str = str & "Clase)"
 
             Case 3
-                Str = Str & "Facción)"
+                str = str & "Facción)"
 
             Case 4
                 str = str & "Skill)"
@@ -2286,7 +2282,7 @@ Public Sub DrawInterfaceBovedaCuenta()
                 str = str & "Clase)"
 
             Case 3
-                Str = Str & "Facción)"
+                str = str & "Facción)"
 
             Case 4
                 str = str & "Skill)"
@@ -2380,7 +2376,7 @@ Public Sub DrawInterfaceBoveda()
                 str = str & "Clase)"
 
             Case 3
-                Str = Str & "Facción)"
+                str = str & "Facción)"
 
             Case 4
                 str = str & "Skill)"
@@ -2598,71 +2594,6 @@ Public Sub DrawInterfaceCrafting()
 
 DrawInterfaceBoveda_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.DrawInterfaceCrafting", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub DrawMapaMundo()
-    
-    On Error GoTo DrawMapaMundo_Err
-    
-
-    
-
-    Static re As RECT
-    re.Left = 0
-    re.Top = 0
-    re.Bottom = 89
-    re.Right = 177
-    
-    frmMapaGrande.PlayerView.Height = 89
-    frmMapaGrande.PlayerView.Width = 177
-    frmMapaGrande.PlayerView.ScaleHeight = 89
-    frmMapaGrande.PlayerView.ScaleWidth = 177
-    
-    If frmMapaGrande.ListView1.ListItems.count <= 0 Then Exit Sub
-    
-    Call Engine_BeginScene
-        
-    Dim i    As Byte
-
-    Dim x    As Integer
-
-    Dim y    As Integer
-    
-    Dim Head As grh, grh As grh
-    Dim HeadID As Integer, BodyID As Integer
-    HeadID = NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Head
-    BodyID = NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body
-    
-    Dim tmp           As String
-
-    Dim temp_array As RGBA
-    Call SetRGBA(temp_array, 7, 7, 7)
-
-    Engine_Draw_Box x, y, 177, 89, temp_array 'Fondo del inventario
-    
-    If BodyID > 0 Then
-        grh = BodyData(BodyID).Walk(3)
-        x = (frmMapaGrande.PlayerView.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) \ 2
-        y = (frmMapaGrande.PlayerView.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) \ 2
-        Call Draw_Grh(grh, x, y, 0, 1, COLOR_WHITE, False, 0, 0, 0)
-    End If
-
-    If HeadID > 0 Then
-        Head = HeadData(HeadID).Head(3)
-        x = (frmMapaGrande.PlayerView.ScaleWidth - GrhData(Head.GrhIndex).pixelWidth) \ 2
-        y = (frmMapaGrande.PlayerView.ScaleHeight - GrhData(Head.GrhIndex).pixelHeight) \ 2 + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y
-        Call Draw_Grh(Head, x, y, 0, 1, COLOR_WHITE, False, 0, 0, 0)
-    End If
-    
-    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
-
-    
-    Exit Sub
-
-DrawMapaMundo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "engine.DrawMapaMundo", Erl)
     Resume Next
     
 End Sub
@@ -4105,8 +4036,12 @@ Public Function Engine_GetAngle(ByVal CenterX As Integer, ByVal CenterY As Integ
     SideA = Sqr(Abs(TargetX - CenterX) ^ 2 + TargetY ^ 2)
  
     'Calculate the angle
-    Engine_GetAngle = (SideA ^ 2 - CenterY ^ 2 - SideC ^ 2) / (CenterY * SideC * -2)
-    Engine_GetAngle = (Atn(-Engine_GetAngle / Sqr(-Engine_GetAngle * Engine_GetAngle + 1)) + 1.5708) * 57.29583
+    If CenterY = 0 Then
+        Engine_GetAngle = 90
+    Else
+        Engine_GetAngle = (SideA ^ 2 - CenterY ^ 2 - SideC ^ 2) / (CenterY * SideC * -2)
+        Engine_GetAngle = (Atn(-Engine_GetAngle / Sqr(-Engine_GetAngle * Engine_GetAngle + 1)) + 1.5708) * 57.29583
+    End If
  
     'If the angle is >180, subtract from 360
     If TargetX < CenterX Then Engine_GetAngle = 360 - Engine_GetAngle
@@ -4276,39 +4211,46 @@ Engine_Draw_Box_Border_Err:
     
 End Sub
 
-Public Sub DibujarBody(PicBox As PictureBox, ByVal MyBody As Integer, Optional ByVal Heading As Byte = 3)
-    
-    On Error GoTo DibujarBody_Err
+Public Sub DibujarNPC(PicBox As PictureBox, ByVal Head As Integer, ByVal Body As Integer, Optional ByVal Heading As Byte = 3)
 
-    Dim grh As grh
+    On Error GoTo DibujarNPC_Err
 
-    grh = BodyData(NpcData(MyBody).Body).Walk(3)
+    Dim x As Integer
+    Dim y As Integer
 
-    Dim x    As Long
+    Dim BodyGrh As Long, HeadGrh As Long
 
-    Dim y    As Long
-
-    Dim grhH As grh
-
-    grhH = HeadData(NpcData(MyBody).Head).Head(3)
-
-    x = (PicBox.ScaleWidth - GrhData(grh.GrhIndex).pixelWidth) / 2
-    y = Max((PicBox.ScaleHeight - GrhData(grh.GrhIndex).pixelHeight) / 2, BodyData(NpcData(MyBody).Body).HeadOffset.y)
-     Call Grh_Render_To_Hdc(PicBox, GrhData(grh.GrhIndex).Frames(1), x, y, False, RGB(11, 11, 11))
-    
-
-    If NpcData(MyBody).Head <> 0 Then
-        x = (PicBox.ScaleWidth - GrhData(grhH.GrhIndex).pixelWidth) / 2
-        y = y + 8 + BodyData(NpcData(MyBody).Body).HeadOffset.y
-        PicBox.BackColor = RGB(11, 11, 11)
-        Call Grh_Render_To_HdcSinBorrar(PicBox, GrhData(grhH.GrhIndex).Frames(1), x, y, False)
+    If Body Then
+        BodyGrh = BodyData(Body).Walk(Heading).GrhIndex
     End If
 
+    If Head Then
+        HeadGrh = HeadData(Head).Head(Heading).GrhIndex
+    End If
+    
+    If BodyGrh Then
+        BodyGrh = GrhData(BodyGrh).Frames(1)
+    
+        x = (PicBox.ScaleWidth - GrhData(BodyGrh).pixelWidth) \ 2
+        y = min(PicBox.ScaleHeight - GrhData(BodyGrh).pixelHeight + BodyData(Body).HeadOffset.y \ 2, (PicBox.ScaleHeight - GrhData(BodyGrh).pixelHeight) \ 2)
+        
+        Call Grh_Render_To_Hdc(PicBox, BodyGrh, x, y, False, RGB(11, 11, 11))
+
+        If HeadGrh Then
+            HeadGrh = GrhData(HeadGrh).Frames(1)
+            
+            x = (PicBox.ScaleWidth - GrhData(HeadGrh).pixelWidth) \ 2 + 1
+            y = y + GrhData(BodyGrh).pixelHeight - GrhData(HeadGrh).pixelHeight + BodyData(Body).HeadOffset.y
+
+            Call Grh_Render_To_HdcSinBorrar(PicBox, HeadGrh, x, y, False)
+        End If
+        
+    End If
     
     Exit Sub
 
-DibujarBody_Err:
-    Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.DibujarBody", Erl)
+DibujarNPC_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.DibujarNPC", Erl)
     Resume Next
     
 End Sub

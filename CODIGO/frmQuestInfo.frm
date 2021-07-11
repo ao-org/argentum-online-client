@@ -13,7 +13,7 @@ Begin VB.Form FrmQuestInfo
    ScaleHeight     =   6555
    ScaleWidth      =   12315
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
+   StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox Text1 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
@@ -30,12 +30,12 @@ Begin VB.Form FrmQuestInfo
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   3255
+      Height          =   2895
       Left            =   3950
       LinkItem        =   "detalle"
       MultiLine       =   -1  'True
       TabIndex        =   7
-      Top             =   2040
+      Top             =   2400
       Width           =   3130
    End
    Begin VB.ListBox lstQuests 
@@ -226,14 +226,35 @@ Begin VB.Form FrmQuestInfo
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
-      Height          =   1305
+      Height          =   1185
       Left            =   7330
-      ScaleHeight     =   87
+      ScaleHeight     =   79
       ScaleMode       =   0  'User
       ScaleWidth      =   146
       TabIndex        =   2
-      Top             =   4080
+      Top             =   3830
       Width           =   2190
+   End
+   Begin VB.Label lblRepetible 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Misión repetible"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C0C0C0&
+      Height          =   255
+      Left            =   4800
+      TabIndex        =   10
+      Top             =   2040
+      Visible         =   0   'False
+      Width           =   1455
    End
    Begin VB.Label npclbl 
       Alignment       =   2  'Center
@@ -248,10 +269,10 @@ Begin VB.Form FrmQuestInfo
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   240
-      Left            =   7365
+      Height          =   480
+      Left            =   7320
       TabIndex        =   9
-      Top             =   3840
+      Top             =   5040
       Width           =   2175
    End
    Begin VB.Image Image3 
@@ -310,7 +331,7 @@ Begin VB.Form FrmQuestInfo
       Height          =   255
       Left            =   3840
       TabIndex        =   0
-      Top             =   1680
+      Top             =   1800
       Width           =   3375
    End
 End
@@ -476,8 +497,8 @@ Public Sub ListView1_Click()
     If ListView1.SelectedItem.SubItems(2) <> "" Then
         If ListView1.SelectedItem.SubItems(3) = 0 Then
             PlayerView.BackColor = RGB(11, 11, 11)
-            Call DibujarBody(PlayerView, ListView1.SelectedItem.SubItems(2), 3)
-      
+            Call DibujarNPC(PlayerView, NpcData(ListView1.SelectedItem.SubItems(2)).Head, NpcData(ListView1.SelectedItem.SubItems(2)).Body, 3)
+
             npclbl.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
     
         Else

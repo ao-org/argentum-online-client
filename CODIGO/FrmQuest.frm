@@ -15,7 +15,7 @@ Begin VB.Form FrmQuests
    ScaleHeight     =   6555
    ScaleWidth      =   12255
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
+   StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox detalle 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
@@ -32,27 +32,27 @@ Begin VB.Form FrmQuests
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   3375
+      Height          =   3255
       Left            =   3880
       LinkItem        =   "detalle"
       MultiLine       =   -1  'True
       TabIndex        =   8
-      Top             =   1920
+      Top             =   2130
       Width           =   3260
    End
    Begin VB.PictureBox PlayerView 
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H000B0B0B&
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
-      Height          =   1335
+      Height          =   1215
       Left            =   7320
-      ScaleHeight     =   89
+      ScaleHeight     =   81
       ScaleMode       =   0  'User
       ScaleWidth      =   149
       TabIndex        =   6
-      Top             =   4080
+      Top             =   3800
       Width           =   2235
    End
    Begin VB.PictureBox picture1 
@@ -248,10 +248,10 @@ Begin VB.Form FrmQuests
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   280
+      Height          =   525
       Left            =   7320
       TabIndex        =   7
-      Top             =   3840
+      Top             =   5040
       Width           =   2205
    End
    Begin VB.Image Image1 
@@ -285,7 +285,7 @@ Begin VB.Form FrmQuests
       Height          =   255
       Left            =   3960
       TabIndex        =   2
-      Top             =   1680
+      Top             =   1800
       Width           =   3255
    End
 End
@@ -475,7 +475,7 @@ Public Sub ListView1_Click()
 
     If ListView1.SelectedItem.SubItems(2) <> "" Then
         If ListView1.SelectedItem.SubItems(3) = 0 Then
-            Call DibujarBody(PlayerView, ListView1.SelectedItem.SubItems(2), 3)
+            Call DibujarNPC(PlayerView, NpcData(ListView1.SelectedItem.SubItems(2)).Head, NpcData(ListView1.SelectedItem.SubItems(2)).Body, 3)
       
             npclbl.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
         Else

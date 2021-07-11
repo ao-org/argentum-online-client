@@ -686,6 +686,8 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
     If ListView1.ListItems.count <= 0 Then Exit Sub
 
     Label8.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Name
+    
+    Call DibujarNPC(Me.PlayerView, NpcData(ListView1.SelectedItem.SubItems(2)).Head, NpcData(ListView1.SelectedItem.SubItems(2)).Body)
 
     Dim i As Byte
 

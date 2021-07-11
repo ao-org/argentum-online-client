@@ -8248,6 +8248,7 @@ Public Sub HandleNpcQuestListSend()
     Dim LevelRequerido As Byte
     Dim QuestRequerida As Integer
     Dim CantidadQuest  As Byte
+    Dim Repetible      As Boolean
     Dim subelemento    As ListItem
     
     FrmQuestInfo.ListView2.ListItems.Clear
@@ -8330,45 +8331,43 @@ Public Sub HandleNpcQuestListSend()
             End If
                 
             estado = .ReadByte
+            Repetible = .ReadBoolean
+            
+            Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
+            subelemento.SubItems(2) = QuestIndex
+
+            FrmQuestInfo.lblRepetible.Visible = Repetible
                 
             Select Case estado
                 
                 Case 0
-                    Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
-                        
                     subelemento.SubItems(1) = "Disponible"
-                    subelemento.SubItems(2) = QuestIndex
                     subelemento.ForeColor = vbWhite
                     subelemento.ListSubItems(1).ForeColor = vbWhite
 
                 Case 1
-                    Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
-                        
                     subelemento.SubItems(1) = "En Curso"
                     subelemento.ForeColor = RGB(255, 175, 10)
-                    subelemento.SubItems(2) = QuestIndex
                     subelemento.ListSubItems(1).ForeColor = RGB(255, 175, 10)
-                    FrmQuestInfo.ListViewQuest.Refresh
 
                 Case 2
-                    Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
-                        
-                    subelemento.SubItems(1) = "Finalizada"
-                    subelemento.SubItems(2) = QuestIndex
-                    subelemento.ForeColor = RGB(15, 140, 50)
-                    subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
-                    FrmQuestInfo.ListViewQuest.Refresh
+                    If Repetible Then
+                        subelemento.SubItems(1) = "Repetible"
+                        subelemento.ForeColor = RGB(180, 180, 180)
+                        subelemento.ListSubItems(1).ForeColor = RGB(180, 180, 180)
+                    Else
+                        subelemento.SubItems(1) = "Finalizada"
+                        subelemento.ForeColor = RGB(15, 140, 50)
+                        subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
+                    End If
 
                 Case 3
-                    Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
-                        
                     subelemento.SubItems(1) = "No disponible"
-                    subelemento.SubItems(2) = QuestIndex
                     subelemento.ForeColor = RGB(255, 10, 10)
                     subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
-                    FrmQuestInfo.ListViewQuest.Refresh
-                
             End Select
+            
+            FrmQuestInfo.ListViewQuest.Refresh
                 
         Next j
 
