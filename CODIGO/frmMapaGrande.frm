@@ -909,7 +909,8 @@ Public Sub CalcularPosicionMAPA()
     Next j
     
     If Encontre = False Then
-        If frmMapaGrande.Visible = False Then
+        If Not frmMapaGrande.Visible Then
+            WorldActual = 1
             frmMapaGrande.picMap.Picture = LoadInterface("mapa1.bmp")
             frmMapaGrande.Image2.Picture = Nothing
         End If
