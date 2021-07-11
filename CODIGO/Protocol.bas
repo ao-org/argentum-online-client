@@ -1430,9 +1430,9 @@ Private Sub HandleBankInit()
 
     'Set state and show form
     Comerciando = True
-    'Call Inventario.Initialize(frmBancoObj.PicInvUser)
-    frmBancoObj.Show , frmMain
+
     frmBancoObj.lblcosto = PonerPuntos(UserGLD)
+    frmBancoObj.Show , frmMain
     
     Exit Sub
 
@@ -4462,7 +4462,12 @@ Private Sub HandleUpdateUserStats()
 
     End If
     
-    frmMain.Hpshp.Width = UserMinHp / UserMaxHp * 216
+    If UserMaxHp > 0 Then
+        frmMain.Hpshp.Width = UserMinHp / UserMaxHp * 216
+    Else
+        frmMain.Hpshp.Width = 0
+    End If
+
     frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
 
     If QuePestañaInferior = 0 Then
@@ -4487,7 +4492,12 @@ Private Sub HandleUpdateUserStats()
 
     End If
     
-    frmMain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
+    If UserMaxSTA > 0 Then
+        frmMain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
+    Else
+        frmMain.STAShp.Width = 0
+    End If
+
     frmMain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
     
     If QuePestañaInferior = 0 Then
@@ -4835,22 +4845,23 @@ Private Sub HandleChangeBankSlot()
     On Error GoTo ErrHandler
     
     Dim Slot As Byte
-    Slot = incomingData.ReadByte()
-    
     Dim BankSlot As Inventory
     
     With BankSlot
-    
+        Slot = incomingData.ReadByte()
         .OBJIndex = incomingData.ReadInteger()
-        .Name = ObjData(.OBJIndex).Name
         .Amount = incomingData.ReadInteger()
-        .GrhIndex = ObjData(.OBJIndex).GrhIndex
-        .ObjType = ObjData(.OBJIndex).ObjType
-        .MaxHit = ObjData(.OBJIndex).MaxHit
-        .MinHit = ObjData(.OBJIndex).MinHit
-        .Def = ObjData(.OBJIndex).MaxDef
         .Valor = incomingData.ReadLong()
         .PuedeUsar = incomingData.ReadByte()
+        
+        If .OBJIndex > 0 Then
+            .Name = ObjData(.OBJIndex).Name
+            .GrhIndex = ObjData(.OBJIndex).GrhIndex
+            .ObjType = ObjData(.OBJIndex).ObjType
+            .MaxHit = ObjData(.OBJIndex).MaxHit
+            .MinHit = ObjData(.OBJIndex).MinHit
+            .Def = ObjData(.OBJIndex).MaxDef
+        End If
         
         Call frmBancoObj.InvBoveda.SetItem(Slot, .OBJIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
 
