@@ -507,8 +507,8 @@ Public Sub ListView1_Click()
 
             Dim y As Long
         
-            x = (PlayerView.ScaleWidth - GrhData(ListView1.SelectedItem.SubItems(2)).pixelWidth) / 2
-            y = (PlayerView.ScaleHeight - GrhData(ListView1.SelectedItem.SubItems(2)).pixelHeight) / 2
+            x = (PlayerView.ScaleWidth - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelWidth) / 2
+            y = (PlayerView.ScaleHeight - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelHeight) / 2
             Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
         
             npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
