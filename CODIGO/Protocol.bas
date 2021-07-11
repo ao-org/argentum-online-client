@@ -2665,7 +2665,7 @@ Private Sub HandleChatOverHead()
     
     Dim copiar As Boolean
 
-    copiar = False
+    copiar = True
     
     Dim duracion As Integer
 
@@ -2675,27 +2675,32 @@ Private Sub HandleChatOverHead()
 
         Case "NPCDESC"
             chat = NpcData(ReadField(2, chat, Asc("*"))).desc
-            copiar = True
+            copiar = False
 
         Case "PMAG"
             chat = HechizoData(ReadField(2, chat, Asc("*"))).PalabrasMagicas
-            copiar = True
+            copiar = False
             duracion = 20
             
         Case "QUESTFIN"
             chat = QuestList(ReadField(2, chat, Asc("*"))).DescFinal
-            copiar = True
+            copiar = False
             duracion = 20
             
         Case "QUESTNEXT"
             chat = QuestList(ReadField(2, chat, Asc("*"))).NextQuest
-            copiar = True
+            copiar = False
             duracion = 20
             
             If LenB(chat) = 0 Then
                 chat = "Ya has completado esa misión para mí."
 
             End If
+            
+        Case "NOCONSOLA" ' El chat no sale en la consola
+            chat = ReadField(2, chat, Asc("*"))
+            copiar = False
+            duracion = 20
         
     End Select
             
@@ -2708,7 +2713,7 @@ Private Sub HandleChatOverHead()
     
     If charlist(charindex).EsNpc = False Then
          
-        If CopiarDialogoAConsola = 1 And Not copiar Then
+        If CopiarDialogoAConsola = 1 And copiar Then
     
             Call WriteChatOverHeadInConsole(charindex, chat, r, G, B)
 
