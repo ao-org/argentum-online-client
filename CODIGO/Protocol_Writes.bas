@@ -7874,7 +7874,7 @@ Public Sub WritePing()
     On Error GoTo WritePing_Err
 
     Call outgoingData.WriteID(ClientPacketID.Ping)
-    pingTime = timeGetTime And &H7FFFFFFF
+    pingTime = GetTickCount()
     Call outgoingData.WriteLong(pingTime)
     Call outgoingData.EndPacket
     

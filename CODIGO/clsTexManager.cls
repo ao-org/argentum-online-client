@@ -103,7 +103,7 @@ Public Function GetTexture(ByVal FileName As Integer, ByRef textwidth As Long, B
         For i = 1 To .surfaceCount
 
             If .SurfaceEntry(i).FileName = FileName Then
-                .SurfaceEntry(i).UltimoAcceso = (timeGetTime() And &H7FFFFFFF)
+                .SurfaceEntry(i).UltimoAcceso = GetTickCount()
                 textwidth = .SurfaceEntry(i).texture_width
                 textheight = .SurfaceEntry(i).texture_height
                 Set GetTexture = .SurfaceEntry(i).Texture
@@ -181,7 +181,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
             .FileName = Archivo
             
             'Ultimo acceso
-            .UltimoAcceso = (timeGetTime() And &H7FFFFFFF)
+            .UltimoAcceso = GetTickCount()
             
             '  Dim demora As Long
             '  Dim demoraok As Long
@@ -259,7 +259,7 @@ Private Function RemoveLRU() As Boolean
 
     Dim surface_desc As D3DSURFACE_DESC
     
-    LRUtime = (timeGetTime() And &H7FFFFFFF)
+    LRUtime = GetTickCount()
     
     'Check out through the whole list for the least recently used
     For i = 0 To HASH_TABLE_SIZE - 1

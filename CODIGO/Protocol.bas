@@ -5504,7 +5504,7 @@ Private Sub HandleHora()
     
     On Error GoTo HandleHora_Err
 
-    HoraMundo = (timeGetTime And &H7FFFFFFF) - incomingData.ReadLong()
+    HoraMundo = GetTickCount() - incomingData.ReadLong()
     DuracionDia = incomingData.ReadLong()
     
     If Not Connected Then
@@ -7013,7 +7013,7 @@ Private Sub HandlePong()
     Dim Time As Long
     Time = incomingData.ReadLong()
 
-    PingRender = (timeGetTime And &H7FFFFFFF) - Time
+    PingRender = GetTickCount() - Time
     pingTime = 0
     
     Exit Sub

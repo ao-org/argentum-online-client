@@ -10,8 +10,6 @@ Public Type Tdestino
 
 End Type
 
-Public Declare Function timeGetTime Lib "winmm.dll" () As Long
-
 Public Destinos() As Tdestino
 
 Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional ByVal strExtra As String = vbNullString) As String

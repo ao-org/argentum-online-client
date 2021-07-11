@@ -205,7 +205,7 @@ Private Function GetBuffer(ByVal FileName As Integer) As DirectSoundSecondaryBuf
         'Set GetBuffer = mBuffers(IndiceObtenido).buffer(i)
         
         'Ultimo acceso
-        mBuffers(IndiceObtenido).UltimoAcceso = (timeGetTime() And &H7FFFFFFF)
+        mBuffers(IndiceObtenido).UltimoAcceso = GetTickCount()
             
     Else    'Sonido no cargado
         GoTo CrearNuevoBuffer
@@ -500,7 +500,7 @@ Private Function CrearBuffer(ByVal Archivo As Integer, Optional ByVal Index As I
         .FileName = Archivo
         
         'Ultimo acceso
-        .UltimoAcceso = (timeGetTime() And &H7FFFFFFF)
+        .UltimoAcceso = GetTickCount()
         
         Call CreateBufferFromFile(Archivo, Index, 1, Extraido)
 
@@ -759,7 +759,7 @@ Public Sub BorraTimerProc()
 
     Dim TiempoActual As Long
     
-    TiempoActual = (timeGetTime() And &H7FFFFFFF)
+    TiempoActual = GetTickCount()
     
     For LoopC = 1 To mCantidadBuffers
 

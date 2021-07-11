@@ -926,7 +926,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim demora       As Long
     Dim demorafinal  As Long
 
-    demora = timeGetTime And &H7FFFFFFF
+    demora = GetTickCount()
 
     Debug.Assert map <> 0
 

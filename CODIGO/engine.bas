@@ -1,6 +1,7 @@
 Attribute VB_Name = "engine"
 Option Explicit
 
+Private Declare Function timeGetTime Lib "winmm.dll" () As Long
 
 Public FrameNum               As Long
 
@@ -135,9 +136,7 @@ Public Function GetElapsedTime() As Single
     'Gets the time that past since the last call
     '**************************************************************
     Dim Start_Time    As Currency
-
     Static end_time   As Currency
-
     Static timer_freq As Currency
 
     'Get the timer frequency
@@ -839,7 +838,6 @@ Public Sub render()
     
     On Error GoTo render_Err
     
-
     '*****************************************************
     '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
     '*****************************************************
@@ -854,31 +852,21 @@ Public Sub render()
        
     If frmMain.Contadores.Enabled Then
 
-        Dim PosY As Integer
-       
-        Dim PosX As Integer
-
-        PosY = -10
-        PosX = 5
+        Dim PosY As Integer: PosY = -10
+        Dim PosX As Integer: PosX = 5
 
         If DrogaCounter > 0 Then
             Call RGBAList(temp_array, 0, 153, 0)
-            
             PosY = PosY + 15
-            Engine_Text_Render "Potenciado: " & CLng(DrogaCounter) & "s", PosX, PosY, temp_array, 1, True, 0, 160
-            
+            Call Engine_Text_Render("Potenciado: " & CLng(DrogaCounter) & "s", PosX, PosY, temp_array, 1, True, 0, 160)
         End If
         
         If OxigenoCounter > 0 Then
 
             Dim HR                  As Integer
-
             Dim ms                  As Integer
-
             Dim SS                  As Integer
-
             Dim secs                As Integer
-
             Dim TextoOxigenoCounter As String
         
             Call RGBAList(temp_array, 50, 100, 255)
@@ -892,7 +880,6 @@ Public Sub render()
                 TextoOxigenoCounter = ms & ":" & SS
             Else
                 TextoOxigenoCounter = ms & ":0" & SS
-
             End If
             
             PosY = PosY + 15
@@ -903,10 +890,9 @@ Public Sub render()
             Else
                 frmMain.oxigenolbl = ms
                 frmMain.oxigenolbl.ForeColor = vbWhite
-
             End If
 
-            Engine_Text_Render "Oxigeno: " & TextoOxigenoCounter, PosX, PosY, temp_array, 1, True, 0, 128
+            Call Engine_Text_Render("Oxigeno: " & TextoOxigenoCounter, PosX, PosY, temp_array, 1, True, 0, 128)
 
         End If
 
@@ -919,7 +905,7 @@ Public Sub render()
     
     Call Engine_EndScene(Render_Main_Rect)
     
-    FrameTime = (timeGetTime() And &H7FFFFFFF)
+    FrameTime = GetTickCount()
     FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
@@ -1928,7 +1914,7 @@ Public Sub Start()
     
     On Error GoTo Start_Err
     
-
+    
     DoEvents
 
     Do While prgRun
@@ -2963,7 +2949,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
     
-    FrameTime = (timeGetTime() And &H7FFFFFFF)
+    FrameTime = GetTickCount()
     'FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
@@ -3000,7 +2986,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
 
-    FrameTime = (timeGetTime() And &H7FFFFFFF)
+    FrameTime = GetTickCount()
     FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
@@ -3023,7 +3009,7 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
 
     Call Engine_BeginScene
 
-    FrameTime = (timeGetTime() And &H7FFFFFFF)
+    FrameTime = GetTickCount()
     FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
@@ -3873,11 +3859,11 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
  
         Dim target_Angle As Single
      
-        .Now_Moved = (timeGetTime() And &H7FFFFFFF)
+        .Now_Moved = GetTickCount()
      
         'Controla el intervalo de vuelo
         If (.Last_Move + 10) < .Now_Moved Then
-            .Last_Move = (timeGetTime() And &H7FFFFFFF)
+            .Last_Move = GetTickCount()
         
             'Si tiene char de destino.
             If (.DestinoChar <> 0) Then
@@ -4254,3 +4240,10 @@ DibujarNPC_Err:
     Resume Next
     
 End Sub
+
+Public Function GetTickCount() As Long
+    ' Devolvemos el valor absoluto de la cantidad de ticks que paso desde que prendimos la PC
+    
+    GetTickCount = (timeGetTime And &H7FFFFFFF)
+    
+End Function

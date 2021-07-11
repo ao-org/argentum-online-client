@@ -1139,7 +1139,7 @@ Sub Main()
         Call Security.Initialize
     #End If
     
-    FrameTime = timeGetTime And &H7FFFFFFF
+    FrameTime = GetTickCount()
     
     UserMap = 1
     AlphaNiebla = 75
