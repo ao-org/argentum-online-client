@@ -236,7 +236,11 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             End If
     
         Case BindKeys(6).KeyCode
-            Call WriteSafeToggle
+            If SeguroGame Then
+                Call AddtoRichTextBox(frmMain.RecTxt, "Para desactivar el seguro escribe /SEG o usa el botón en la pestaña MENU en la esquina inferior derecha.", 255, 0, 0, True, False, False)
+            Else
+                Call WriteSafeToggle
+            End If
         Case BindKeys(12).KeyCode
             MostrarOnline = Not MostrarOnline
         Case BindKeys(7).KeyCode
