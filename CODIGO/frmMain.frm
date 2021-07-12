@@ -3306,7 +3306,8 @@ Private Sub MacroLadder_Timer()
                 UserMacro.cantidad = UserMacro.cantidad - 1
 
             Case 6
-                Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
+                ' Jopi: Esto se hace desde el servidor
+                'Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
 
         End Select
 
