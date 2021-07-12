@@ -5495,7 +5495,7 @@ End Sub
 ' @param    y The position in the y axis to which the teleport will lead.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As Byte, ByVal Motivo As String)
     
     On Error GoTo WriteTeleportCreate_Err
 
@@ -5510,6 +5510,7 @@ Public Sub WriteTeleportCreate(ByVal map As Integer, ByVal x As Byte, ByVal y As
         Call .WriteInteger(map)
         Call .WriteByte(x)
         Call .WriteByte(y)
+        Call .WriteASCIIString(Motivo)
         
         Call .EndPacket
     End With

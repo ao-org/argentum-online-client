@@ -1321,21 +1321,29 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
-            Case "/CT"
-
-                If notNullArguments And CantidadArgumentos = 3 Then
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Byte) Then
-                        Call WriteTeleportCreate(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2))
+            Case "/CT" ' 1 50 50 @motivo asd asd asd
+                Dim tempStr() As String
+                
+                If InStr(1, ArgumentosRaw, "@") Then
+                
+                    tempStr = Split(ArgumentosRaw, "@")
+                    
+                    If notNullArguments And CantidadArgumentos > 3 And tempStr(1) <> vbNullString Then
+                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Byte) Then
+                            Call WriteTeleportCreate(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), tempStr(1))
+                        Else
+                            'No es numerico
+                            Call ShowConsoleMsg("Valor incorrecto. Utilice /ct MAPA X Y @MOTIVO.")
+    
+                        End If
+    
                     Else
-                        'No es numerico
-                        Call ShowConsoleMsg("Valor incorrecto. Utilice /ct MAPA X Y.")
-
+                        'Avisar que falta el parametro
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /ct MAPA X Y @MOTIVO.")
+    
                     End If
-
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /ct MAPA X Y.")
-
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /ct MAPA X Y @MOTIVO.")
                 End If
                 
             Case "/DT"
