@@ -171,6 +171,28 @@ RGBAList_Err:
     
 End Sub
 
+
+Sub RGBA_ToList(Dest() As RGBA, Color As RGBA)
+    '***************************************************
+    'Author: Alexis Caraballo (WyroX)
+    '***************************************************
+    
+    On Error GoTo RGBAList_Err
+    
+    Dim i As Long
+    
+    For i = 0 To 3
+        Call SetRGBA(Dest(i), Color.r, Color.G, Color.B, Color.A)
+    Next
+    
+    Exit Sub
+
+RGBAList_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Color.RGBA_ToList", Erl)
+    Resume Next
+    
+End Sub
+
 Sub Copy_RGBAList(Dest() As RGBA, Src() As RGBA)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)
