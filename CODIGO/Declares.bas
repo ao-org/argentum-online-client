@@ -1025,6 +1025,8 @@ Public UserMontado                              As Boolean
 
 Public UserNadando                              As Boolean
 
+Public UserNadandoTrajeCaucho                   As Boolean
+
 Public UserAvisado                              As Boolean
 
 Public UserAvisadoBarca                         As Boolean

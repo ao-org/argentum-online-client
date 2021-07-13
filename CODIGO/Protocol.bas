@@ -1003,6 +1003,7 @@ Private Sub HandleNadarToggle()
     On Error GoTo HandleNadarToggle_Err
 
     UserNadando = incomingData.ReadBoolean()
+    UserNadandoTrajeCaucho = incomingData.ReadBoolean()
     
     Exit Sub
 
@@ -1253,6 +1254,7 @@ Private Sub HandleDisconnect()
     UserNavegando = False
     UserMontado = False
     UserNadando = False
+    UserNadandoTrajeCaucho = False
     bRain = False
     AlphaNiebla = 30
     frmMain.TimerNiebla.Enabled = False
