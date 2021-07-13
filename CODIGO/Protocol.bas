@@ -8337,14 +8337,12 @@ Public Sub HandleNpcQuestListSend()
     
             End If
                 
-            estado = .ReadByte
-            Repetible = .ReadBoolean
+            estado = .ReadByte: .ReadByte
+            Repetible = QuestList(QuestIndex).Repetible = 1
             
-            Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre)
+            Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre & IIf(Repetible, " (R)", ""))
             subelemento.SubItems(2) = QuestIndex
-
-            FrmQuestInfo.lblRepetible.Visible = Repetible
-                
+  
             Select Case estado
                 
                 Case 0

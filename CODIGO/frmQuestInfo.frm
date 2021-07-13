@@ -581,6 +581,8 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         picture1.Refresh
         npclbl.Caption = ""
         objetolbl.Caption = ""
+        
+        lblRepetible.Visible = QuestList(QuestIndex).Repetible = 1
                 
         
                 'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf

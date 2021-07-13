@@ -1552,6 +1552,7 @@ Public Sub CargarIndicesOBJ()
         QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
         QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
         QuestList(Hechizo).RequiredLevel = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
+        QuestList(Hechizo).Repetible = Val(Leer.GetValue("QUEST" & Hechizo, "Repetible"))
         PosMap(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "PosMap")
     Next Hechizo
     
