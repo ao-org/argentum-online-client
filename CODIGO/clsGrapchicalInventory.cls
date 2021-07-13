@@ -765,7 +765,7 @@ Public Sub DrawInventory()
                 If UserInventory(i).Amount > 1 Then
                     Call RGBAList(Color, 239, 228, 176)
         
-                    If InvSelectedItem <> i And UserInventory(i).Amount > 1000 Then
+                    If InvSelectedItem <> i And UserInventory(i).Amount > 1000 And NumerosCompletosInventario = 0 Then
                         tmpString = Round(UserInventory(i).Amount * 0.001, 1) & "K"
                     Else
                         tmpString = UserInventory(i).Amount

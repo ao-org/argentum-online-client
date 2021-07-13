@@ -122,6 +122,70 @@ Begin VB.Form frmOpciones
       Top             =   10440
       Width           =   1335
    End
+   Begin VB.PictureBox PanelVideo 
+      BorderStyle     =   0  'None
+      Height          =   4965
+      Left            =   240
+      ScaleHeight     =   331
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   504
+      TabIndex        =   14
+      Top             =   1800
+      Visible         =   0   'False
+      Width           =   7560
+      Begin VB.Image num_comp_inv 
+         Height          =   255
+         Left            =   270
+         Top             =   3120
+         Width           =   255
+      End
+      Begin VB.Label Label2 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Mostrar números completos en inventario"
+         ForeColor       =   &H00FFFFFF&
+         Height          =   255
+         Left            =   690
+         TabIndex        =   20
+         Top             =   3165
+         Width           =   3015
+      End
+      Begin VB.Image chkItemsEnRender 
+         Height          =   255
+         Left            =   270
+         Top             =   2715
+         Width           =   255
+      End
+      Begin VB.Image Fullscreen 
+         Height          =   255
+         Left            =   270
+         Top             =   2310
+         Width           =   255
+      End
+      Begin VB.Image Respiracion 
+         Height          =   255
+         Left            =   270
+         Top             =   1905
+         Width           =   255
+      End
+      Begin VB.Image VSync 
+         Height          =   255
+         Left            =   270
+         Top             =   1500
+         Width           =   255
+      End
+      Begin VB.Image Check5 
+         Height          =   255
+         Left            =   270
+         Top             =   1095
+         Width           =   255
+      End
+      Begin VB.Image Check6 
+         Height          =   255
+         Left            =   270
+         Top             =   690
+         Width           =   255
+      End
+   End
    Begin VB.PictureBox PanelJugabilidad 
       BorderStyle     =   0  'None
       Height          =   4845
@@ -190,7 +254,7 @@ Begin VB.Form frmOpciones
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   504
       TabIndex        =   15
-      Top             =   1680
+      Top             =   1800
       Visible         =   0   'False
       Width           =   7560
       Begin VB.HScrollBar HScroll1 
@@ -258,54 +322,6 @@ Begin VB.Form frmOpciones
          Index           =   1
          Left            =   255
          Top             =   1095
-         Width           =   255
-      End
-   End
-   Begin VB.PictureBox PanelVideo 
-      BorderStyle     =   0  'None
-      Height          =   4845
-      Left            =   240
-      ScaleHeight     =   323
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   504
-      TabIndex        =   14
-      Top             =   1800
-      Visible         =   0   'False
-      Width           =   7560
-      Begin VB.Image chkItemsEnRender 
-         Height          =   255
-         Left            =   270
-         Top             =   2715
-         Width           =   255
-      End
-      Begin VB.Image Fullscreen 
-         Height          =   255
-         Left            =   270
-         Top             =   2310
-         Width           =   255
-      End
-      Begin VB.Image Respiracion 
-         Height          =   255
-         Left            =   270
-         Top             =   1905
-         Width           =   255
-      End
-      Begin VB.Image VSync 
-         Height          =   255
-         Left            =   270
-         Top             =   1500
-         Width           =   255
-      End
-      Begin VB.Image Check5 
-         Height          =   255
-         Left            =   270
-         Top             =   1095
-         Width           =   255
-      End
-      Begin VB.Image Check6 
-         Height          =   255
-         Left            =   270
-         Top             =   690
          Width           =   255
       End
    End
@@ -1345,6 +1361,12 @@ Public Sub Init()
 
     End If
     
+    If NumerosCompletosInventario = 0 Then
+        num_comp_inv.Picture = Nothing
+    Else
+        num_comp_inv.Picture = LoadInterface("check-amarillo.bmp")
+    End If
+    
     If MostrarRespiracion Then
         Respiracion.Picture = LoadInterface("check-amarillo.bmp")
     Else
@@ -1476,6 +1498,16 @@ instagram_Click_Err:
     
 End Sub
 
+
+Private Sub num_comp_inv_Click()
+    If NumerosCompletosInventario = 0 Then
+        NumerosCompletosInventario = 1
+        num_comp_inv.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        NumerosCompletosInventario = 0
+        num_comp_inv.Picture = Nothing
+    End If
+End Sub
 
 Private Sub Respiracion_Click()
     MostrarRespiracion = Not MostrarRespiracion

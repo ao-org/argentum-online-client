@@ -189,6 +189,8 @@ Public Music                       As E_SISTEMA_MUSICA
 
 Public MostrarEscribiendo          As Byte
 
+Public NumerosCompletosInventario  As Byte
+
 Public MostrarRespiracion          As Boolean
 
 Public PermitirMoverse             As Byte
