@@ -519,12 +519,17 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
 
-                    If frmMain.MainSocket.State <> sckClosed Then
+                    If frmMain.MainSocket.State = sckConnected Then
                         EstadoLogin = E_MODO.CrearNuevoPj
                         Call Login
                         frmMain.ShowFPS.Enabled = True
                         Exit Sub
                     Else
+                        If frmMain.MainSocket.State <> sckClosed Then
+                            frmMain.MainSocket.Close
+                            DoEvents
+                        End If
+                        
                         EstadoLogin = E_MODO.CrearNuevoPj
                         frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
                     End If
