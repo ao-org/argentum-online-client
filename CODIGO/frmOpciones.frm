@@ -136,18 +136,8 @@ Begin VB.Form frmOpciones
       Begin VB.Image num_comp_inv 
          Height          =   255
          Left            =   270
-         Top             =   3120
+         Top             =   3090
          Width           =   255
-      End
-      Begin VB.Label Label2 
-         BackStyle       =   0  'Transparent
-         Caption         =   "Mostrar números completos en inventario"
-         ForeColor       =   &H00FFFFFF&
-         Height          =   255
-         Left            =   690
-         TabIndex        =   20
-         Top             =   3165
-         Width           =   3015
       End
       Begin VB.Image chkItemsEnRender 
          Height          =   255
