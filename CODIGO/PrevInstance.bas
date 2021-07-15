@@ -55,7 +55,7 @@ Private Function CreateNamedMutex(ByRef mutexName As String) As Boolean
     Exit Function
 
 CreateNamedMutex_Err:
-    Call RegistrarError(Err.number, Err.Description, "PrevInstance.CreateNamedMutex", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "PrevInstance.CreateNamedMutex", Erl)
     Resume Next
     
 End Function
@@ -74,7 +74,7 @@ Public Function FindPreviousInstance() As Boolean
     '
     '***************************************************
     'We try to create a mutex, the name could be anything, but must contain no backslashes.
-    If CreateNamedMutex("UniqueNameThatActuallyCouldBeAnything") Then
+    If CreateNamedMutex("EnVezDeChitearAyudanos!HablanosAlDiscord") Then
         'There's no other instance running
         FindPreviousInstance = False
     Else
@@ -87,7 +87,7 @@ Public Function FindPreviousInstance() As Boolean
     Exit Function
 
 FindPreviousInstance_Err:
-    Call RegistrarError(Err.number, Err.Description, "PrevInstance.FindPreviousInstance", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "PrevInstance.FindPreviousInstance", Erl)
     Resume Next
     
 End Function
@@ -111,7 +111,7 @@ Public Sub ReleaseInstance()
     Exit Sub
 
 ReleaseInstance_Err:
-    Call RegistrarError(Err.number, Err.Description, "PrevInstance.ReleaseInstance", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "PrevInstance.ReleaseInstance", Erl)
     Resume Next
     
 End Sub
