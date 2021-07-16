@@ -30,7 +30,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   54
-      Top             =   3000
+      Top             =   6120
       Width           =   2295
    End
    Begin VB.CommandButton cmdMagiaSin 
@@ -40,7 +40,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   53
-      Top             =   2520
+      Top             =   5640
       Width           =   2295
    End
    Begin VB.CommandButton cmdRestringirMapa 
@@ -50,7 +50,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   52
-      Top             =   2040
+      Top             =   5160
       Width           =   2295
    End
    Begin VB.TextBox txtTextTriggers 
@@ -68,7 +68,7 @@ Begin VB.Form frmPanelgm
       Left            =   6600
       TabIndex        =   51
       Text            =   "5"
-      Top             =   1560
+      Top             =   4200
       Width           =   495
    End
    Begin VB.CommandButton cmdInsertarTrigger 
@@ -78,7 +78,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   50
-      Top             =   1560
+      Top             =   4200
       Width           =   1695
    End
    Begin VB.CommandButton cmdRecargarObjetos 
@@ -88,7 +88,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   49
-      Top             =   1080
+      Top             =   6600
       Width           =   2295
    End
    Begin VB.CommandButton cmdInseguro 
@@ -98,7 +98,7 @@ Begin VB.Form frmPanelgm
       Left            =   6000
       Style           =   1  'Graphical
       TabIndex        =   48
-      Top             =   600
+      Top             =   4680
       Width           =   1110
    End
    Begin VB.CommandButton cmdSeguro 
@@ -108,7 +108,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   47
-      Top             =   600
+      Top             =   4680
       Width           =   1095
    End
    Begin VB.CommandButton cmdMapeo 
