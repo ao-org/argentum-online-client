@@ -6911,6 +6911,8 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.cmdHead0.Visible = False
         frmPanelgm.SendGlobal.Visible = False
         frmPanelgm.Mensajeria.Visible = False
+        frmPanelgm.cmdMapeo.Visible = False
+        frmPanelgm.cmdMapeo.Enabled = False
         frmPanelgm.txtMod.Width = 4580
         frmPanelgm.Height = 7580
         

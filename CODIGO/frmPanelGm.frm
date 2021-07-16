@@ -6,7 +6,7 @@ Begin VB.Form frmPanelgm
    ClientHeight    =   8505
    ClientLeft      =   18150
    ClientTop       =   4710
-   ClientWidth     =   4785
+   ClientWidth     =   7275
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -20,9 +20,117 @@ Begin VB.Form frmPanelgm
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   8505
-   ScaleWidth      =   4785
+   ScaleWidth      =   7275
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.CommandButton cmdInvisibilidadSi 
+      BackColor       =   &H8000000A&
+      Caption         =   "Invisibilidad Si/No"
+      Height          =   360
+      Left            =   4800
+      Style           =   1  'Graphical
+      TabIndex        =   54
+      Top             =   3000
+      Width           =   2295
+   End
+   Begin VB.CommandButton cmdMagiaSin 
+      BackColor       =   &H8000000A&
+      Caption         =   "Magia / Sin Magia"
+      Height          =   360
+      Left            =   4800
+      Style           =   1  'Graphical
+      TabIndex        =   53
+      Top             =   2520
+      Width           =   2295
+   End
+   Begin VB.CommandButton cmdRestringirMapa 
+      BackColor       =   &H8000000A&
+      Caption         =   "Restringir Mapa"
+      Height          =   360
+      Left            =   4800
+      Style           =   1  'Graphical
+      TabIndex        =   52
+      Top             =   2040
+      Width           =   2295
+   End
+   Begin VB.TextBox txtTextTriggers 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   6600
+      TabIndex        =   51
+      Text            =   "5"
+      Top             =   1560
+      Width           =   495
+   End
+   Begin VB.CommandButton cmdInsertarTrigger 
+      BackColor       =   &H8000000A&
+      Caption         =   "Insertar trigger´s"
+      Height          =   360
+      Left            =   4800
+      Style           =   1  'Graphical
+      TabIndex        =   50
+      Top             =   1560
+      Width           =   1695
+   End
+   Begin VB.CommandButton cmdRecargarObjetos 
+      BackColor       =   &H8000000A&
+      Caption         =   "Recargar Objetos"
+      Height          =   360
+      Left            =   4800
+      Style           =   1  'Graphical
+      TabIndex        =   49
+      Top             =   1080
+      Width           =   2295
+   End
+   Begin VB.CommandButton cmdInseguro 
+      BackColor       =   &H8000000A&
+      Caption         =   "Inseguro"
+      Height          =   360
+      Left            =   6000
+      Style           =   1  'Graphical
+      TabIndex        =   48
+      Top             =   600
+      Width           =   1110
+   End
+   Begin VB.CommandButton cmdSeguro 
+      BackColor       =   &H8000000A&
+      Caption         =   " Seguro"
+      Height          =   360
+      Left            =   4800
+      Style           =   1  'Graphical
+      TabIndex        =   47
+      Top             =   600
+      Width           =   1095
+   End
+   Begin VB.CommandButton cmdMapeo 
+      BackColor       =   &H8000000A&
+      Caption         =   "Mapeo"
+      Height          =   360
+      Left            =   2040
+      Style           =   1  'Graphical
+      TabIndex        =   46
+      Top             =   3840
+      Width           =   1335
+   End
+   Begin VB.CommandButton cmdBloqueoPos 
+      BackColor       =   &H8000000A&
+      Caption         =   "Bloquear/Desbloquear - Pos"
+      Height          =   360
+      Left            =   4800
+      Style           =   1  'Graphical
+      TabIndex        =   45
+      Top             =   120
+      Width           =   2295
+   End
    Begin VB.CommandButton SendGlobal 
       BackColor       =   &H8000000A&
       Caption         =   "Global"
@@ -36,7 +144,7 @@ Begin VB.Form frmPanelgm
    End
    Begin VB.Timer Timer1 
       Interval        =   10000
-      Left            =   2400
+      Left            =   600
       Top             =   3840
    End
    Begin VB.CommandButton cmdEscudo 
@@ -404,9 +512,9 @@ Begin VB.Form frmPanelgm
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   8280
+      Left            =   7320
       TabIndex        =   9
-      Top             =   240
+      Top             =   840
       Width           =   2175
    End
    Begin VB.CommandButton Command1 
@@ -421,9 +529,9 @@ Begin VB.Form frmPanelgm
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   5640
+      Left            =   7320
       TabIndex        =   8
-      Top             =   240
+      Top             =   360
       Width           =   2175
    End
    Begin VB.CommandButton cmdCerrar 
@@ -1581,6 +1689,10 @@ cmdActualiza_Click_Err:
     
 End Sub
 
+Private Sub cmdBloqueoPos_Click()
+    Call WriteTileBlockedToggle
+End Sub
+
 Private Sub cmdBody0_Click(Index As Integer)
 
     tmpUser = "yo"
@@ -1772,6 +1884,22 @@ Private Sub cmdInformación_Click()
 
 End Sub
 
+Private Sub cmdInseguro_Click()
+Call ParseUserCommand("/MODMAPINFO SEGURO 0")
+End Sub
+
+Private Sub cmdInsertarTrigger_Click()
+
+    Call ParseUserCommand("/TRIGGER " & txtTextTriggers.Text)
+
+End Sub
+
+Private Sub cmdInvisibilidadSi_Click()
+
+    Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "SININVI")
+    
+End Sub
+
 Private Sub cmdInvisible_Click()
     
     Call ParseUserCommand("/INVISIBLE")
@@ -1786,6 +1914,12 @@ Private Sub cmdIrCerca_Click()
     tmpUser = cboListaUsus.Text
     Call WriteGoNearby(tmpUser)
 
+End Sub
+
+Private Sub cmdMagiaSin_Click()
+
+    Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "SINMAGIA")
+        
 End Sub
 
 Private Sub cmdMapaSeguro_Click()
@@ -1806,6 +1940,14 @@ Private Sub cmdMapaSeguro_Click()
             
     End Select
     
+End Sub
+
+Private Sub cmdMapeo_Click()
+    If frmPanelgm.Width = 7300 Then
+        frmPanelgm.Width = 4860
+    Else
+        frmPanelgm.Width = 7300
+    End If
 End Sub
 
 Private Sub cmdMas_Click()
@@ -1849,6 +1991,22 @@ Call ParseUserCommand("/MOD " & "yo" & " INTERVALO GOLPE " & tmp)
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
+Private Sub cmdRecargarObjetos_Click()
+    Call WriteReloadObjects
+End Sub
+
+Private Sub cmdRestringirMapa_Click()
+
+    Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "Newbie")
+    Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "NoPKS")
+    Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "NoCIUD")
+    ' Wyrox Harthaos me falta Criminales , no se como restringir a todos de una
+    ' luego de restringir
+    ' faltaria mandar a cada uno a su hogar
+    ' tambien los loguean mandarlos a su hogar.
+
+End Sub
+
 Private Sub cmdRevivir_Click()
 
     tmpUser = cboListaUsus.Text
@@ -1856,6 +2014,10 @@ Private Sub cmdRevivir_Click()
     Call WriteReviveChar(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
     
+End Sub
+
+Private Sub cmdSeguro_Click()
+Call ParseUserCommand("/MODMAPINFO SEGURO 1")
 End Sub
 
 Private Sub cmdSeleccionarPersonaje_Click(Index As Integer)
