@@ -1063,18 +1063,6 @@ Begin VB.Form frmPanelgm
          Caption         =   "Usuarios en el mapa"
          Index           =   30
       End
-      Begin VB.Menu Spawn 
-         Caption         =   "Lista de Spawn"
-      End
-      Begin VB.Menu Teleports 
-         Caption         =   "Teleports"
-         Begin VB.Menu CrearTeleport 
-            Caption         =   "Crear Teleport"
-         End
-         Begin VB.Menu DestruirTeleport 
-            Caption         =   "Destruir"
-         End
-      End
       Begin VB.Menu IP 
          Caption         =   "Direcciones de IP"
          Index           =   0
@@ -1107,9 +1095,6 @@ Begin VB.Form frmPanelgm
       End
       Begin VB.Menu StaffOnline 
          Caption         =   "Staff Online"
-      End
-      Begin VB.Menu ResetPozos 
-         Caption         =   "Reseter Pozos Magicos"
       End
    End
    Begin VB.Menu Admin 
