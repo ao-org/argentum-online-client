@@ -6913,6 +6913,8 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.Mensajeria.Visible = False
         frmPanelgm.cmdMapeo.Visible = False
         frmPanelgm.cmdMapeo.Enabled = False
+        frmPanelgm.cmdcrearevento.Enabled = False
+        frmPanelgm.cmdcrearevento.Visible = False
         frmPanelgm.txtMod.Width = 4580
         frmPanelgm.Height = 7580
         
@@ -6921,6 +6923,8 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.mnuChar.Visible = False
         frmPanelgm.cmdHerramientas.Visible = True
         frmPanelgm.Admin(0).Visible = False
+        frmPanelgm.cmdcrearevento.Enabled = False
+        frmPanelgm.cmdcrearevento.Visible = False
         
         Case 4
         frmPanelgm.mnuChar.Visible = True
