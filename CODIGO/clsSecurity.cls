@@ -21,7 +21,7 @@ Private XorArray(137) As Byte
 
 Public Sub Initialize()
     Call Rnd(-1)
-    Call Randomize(105)
+    Call Randomize(108)
 
     Dim i As Integer
     For i = 0 To UBound(XorArray)
