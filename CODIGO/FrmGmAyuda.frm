@@ -14,6 +14,15 @@ Begin VB.Form FrmGmAyuda
    ScaleWidth      =   470
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.CommandButton cmdButtonEntrarForo 
+      Caption         =   "Reportar bug en foro [Sugerido]"
+      Height          =   495
+      Left            =   5280
+      MaskColor       =   &H00404080&
+      TabIndex        =   8
+      Top             =   840
+      Width           =   1695
+   End
    Begin VB.OptionButton optConsulta 
       Caption         =   "Consulta regular"
       BeginProperty Font 
@@ -255,6 +264,10 @@ End Sub
 
 Private Sub cmdCerrar_Click()
     Unload Me
+End Sub
+
+Private Sub cmdButtonEntrarForo_Click()
+    Call ShellExecute(0, "Open", "https://www.elmesonhostigado.com/foro", "", App.Path, 1)
 End Sub
 
 Private Sub Form_Load()
