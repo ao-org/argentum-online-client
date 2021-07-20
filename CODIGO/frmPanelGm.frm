@@ -23,6 +23,17 @@ Begin VB.Form frmPanelgm
    ScaleWidth      =   7275
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.CommandButton cmdButtonActualizarListaGms 
+      BackColor       =   &H80000018&
+      Caption         =   "Actualizar"
+      Height          =   360
+      Left            =   3720
+      Style           =   1  'Graphical
+      TabIndex        =   55
+      TabStop         =   0   'False
+      Top             =   240
+      Width           =   855
+   End
    Begin VB.CommandButton cmdInvisibilidadSi 
       BackColor       =   &H8000000A&
       Caption         =   "Invisibilidad Si/No"
@@ -141,11 +152,6 @@ Begin VB.Form frmPanelgm
       TabStop         =   0   'False
       Top             =   4300
       Width           =   800
-   End
-   Begin VB.Timer Timer1 
-      Interval        =   10000
-      Left            =   600
-      Top             =   3840
    End
    Begin VB.CommandButton cmdEscudo 
       Caption         =   "-"
@@ -561,7 +567,7 @@ Begin VB.Form frmPanelgm
       Height          =   2010
       Left            =   120
       TabIndex        =   3
-      Top             =   120
+      Top             =   110
       Width           =   4560
    End
    Begin VB.TextBox txtMsg 
@@ -3016,10 +3022,12 @@ Temporal_Click_Err:
     
 End Sub
 
-Private Sub Timer1_Timer()
+Private Sub cmdButtonActualizarListaGms_Click()
+    cmdButtonActualizarListaGms.Enabled = False
     List1.Clear
     List2.Clear
     Call WriteSOSShowList
+    cmdButtonActualizarListaGms.Enabled = True
 End Sub
 
 Private Sub torneo_cancelar_Click()
