@@ -1668,7 +1668,6 @@ Private Sub cmdActualiza_Click()
     On Error GoTo cmdActualiza_Click_Err
     
     Call WriteRequestUserList
-    Call FlushBuffer
     
     Call frmPanelgm.txtMod.SetFocus
     
@@ -2292,7 +2291,6 @@ Private Sub Form_Load()
     List2.Clear
     txtMsg.Text = ""
     Call WriteRequestUserList
-    Call FlushBuffer
     
     
     Exit Sub

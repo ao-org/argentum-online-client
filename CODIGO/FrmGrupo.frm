@@ -164,7 +164,7 @@ Private Sub cmdExpulsar_Click()
     On Error GoTo cmdExpulsar_Click_Err
 
     If lstGrupo.ListIndex >= 0 Then
-        Call WriteHecharDeGrupo(lstGrupo.ListIndex)
+        Call WriteEcharDeGrupo(lstGrupo.ListIndex)
         Unload Me
     End If
     

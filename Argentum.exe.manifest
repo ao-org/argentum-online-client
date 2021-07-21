@@ -20,4 +20,14 @@
           uiAccess="false"
         />
       </requestedPrivileges>
-   </security></trustInfo></assembly>
+   </security>
+  </trustInfo>
+  <file name="Aurora.Network.dll">
+        <typelib tlbid="{88D89F7C-BB59-4F13-9850-93CBD874039D}" version="1.5" flags="hasdiskimage" helpdir="" />
+        <comClass clsid="{07CC11E3-D300-4CD4-9EB0-C4EB4D63865D}"/>
+        <comClass clsid="{ACF5D638-7DDD-443D-B9B4-E5DC3C01BB4C}"/>
+        <comClass clsid="{9BE50AF2-385F-4C56-9826-65C320451642}"/>
+        <comClass clsid="{AC398261-6275-4797-950A-5B914DDB2130}"/>
+        <comClass clsid="{25DEA4F0-4C5B-4674-B357-2C6FFE8ABF46}"/>
+  </file>
+</assembly>

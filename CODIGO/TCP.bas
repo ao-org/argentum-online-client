@@ -53,6 +53,16 @@ PuedoQuitarFoco_Err:
     
 End Function
 
+Sub LoginOrConnect(ByVal Modo As E_MODO)
+    EstadoLogin = Modo
+    
+    If (Connected) Then
+        Call Login
+    Else
+        Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+    End If
+End Sub
+
 Sub Login()
     
     On Error GoTo Login_Err
@@ -88,11 +98,6 @@ Sub Login()
         End If
 
     End If
-    
-    DoEvents
-    
-    Call FlushBuffer
-
     
     Exit Sub
 
