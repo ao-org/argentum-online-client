@@ -1391,6 +1391,7 @@ Private Sub HandleCommerceInit()
     Comerciando = True
     'Call Inventario.Initialize(frmComerciar.PicInvUser)
     frmComerciar.Show , frmMain
+    frmComerciar.Refresh
     
     Exit Sub
 
@@ -1429,6 +1430,7 @@ Private Sub HandleBankInit()
 
     frmBancoObj.lblcosto = PonerPuntos(UserGLD)
     frmBancoObj.Show , frmMain
+    frmBancoObj.Refresh
     
     Exit Sub
 
