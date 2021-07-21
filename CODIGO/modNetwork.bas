@@ -67,9 +67,7 @@ On Error GoTo OnClientSend_Err:
 
     Dim BytesRef() As Byte
     Call Message.GetData(BytesRef) ' Is only a view of the buffer as a SafeArrayPtr ;-)
-    
-    Debug.Print "SEND BYTES", UBound(BytesRef), Message.GetCapacity()
-    
+
     #If AntiExternos = 1 Then
         Call Security.XorData(BytesRef, UBound(BytesRef), XorIndexOut)
     #End If
@@ -85,9 +83,7 @@ On Error GoTo OnClientRecv_Err:
 
     Dim BytesRef() As Byte
     Call Message.GetData(BytesRef) ' Is only a view of the buffer as a SafeArrayPtr ;-)
-    
-    Debug.Print "RECV BYTES", UBound(BytesRef), Message.GetCapacity()
-    
+
     #If AntiExternos = 1 Then
         Call Security.XorData(BytesRef, UBound(BytesRef), XorIndexIn)
     #End If
