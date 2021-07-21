@@ -49,10 +49,10 @@ OnClientConnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "modNetwork.OnClientConnect", Erl)
 End Sub
 
-Private Sub OnClientClose()
+Private Sub OnClientClose(ByVal Code As Long)
 On Error GoTo OnClientClose_Err:
 
-    Call frmMain.OnClientDisconnect(Not Connected)
+    Call frmMain.OnClientDisconnect(Code <> 0)
     
     Connected = False
     
