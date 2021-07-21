@@ -2364,7 +2364,7 @@ Public Function ValidNumber(ByVal Numero As String, ByVal TIPO As eNumber_Types)
         
         Case eNumber_Types.ent_Trigger
             Minimo = 0
-            Maximo = 7
+            Maximo = 99
 
     End Select
     
