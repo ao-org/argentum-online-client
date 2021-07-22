@@ -160,16 +160,6 @@ Public Sub WriteCreatePretorianClan(ByVal map As Integer, _
 End Sub
 
 ''
-' Writes the "DeletePretorianClan" message to the outgoing data buffer.
-'
-' @param    Map         The map which contains the pretorian clan to be removed.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteDeletePretorianClan(ByVal map As Integer)
-    Call Writer.WriteInt(ClientPacketID.RemovePretorianClan)
-    Call Writer.WriteInt16(map)
-End Sub
-
-''
 ' Writes the "PartySafeToggle" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
@@ -2690,10 +2680,6 @@ End Sub
 
 Public Sub WriteTraerRanking()
     Call Writer.WriteInt(ClientPacketID.TraerRanking)
-End Sub
-
-Public Sub WritePareja()
-    Call Writer.WriteInt(ClientPacketID.Pareja)
 End Sub
 
 Public Sub WriteQuest()
