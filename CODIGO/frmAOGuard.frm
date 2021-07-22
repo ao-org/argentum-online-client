@@ -69,18 +69,14 @@ Private cBotonIngresar As clsGraphicalButton
 
 Private Sub cmdSalir_Click()
     
-    If frmMain.MainSocket.State <> sckClosed Then
-        frmMain.MainSocket.Close
-        DoEvents
+    Call modNetwork.Disconnect
 
-    End If
-        
     Unload Me
     
 End Sub
 
 Private Sub Form_Load()
- 
+
     Call FormParser.Parse_Form(Me)
     
     Call Aplicar_Transparencia(Me.hwnd, 240)

@@ -1,5 +1,4 @@
 VERSION 5.00
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
@@ -385,6 +384,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -423,13 +423,6 @@ Begin VB.Form frmMain
       TabIndex        =   3
       Top             =   2250
       Width           =   11040
-      Begin MSWinsockLib.Winsock MainSocket 
-         Left            =   6720
-         Top             =   120
-         _ExtentX        =   741
-         _ExtentY        =   741
-         _Version        =   393216
-      End
    End
    Begin VB.PictureBox panelInf 
       Appearance      =   0  'Flat
@@ -467,7 +460,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1680
-         Picture         =   "frmMain.frx":6181
+         Picture         =   "frmMain.frx":6180
          ToolTipText     =   "Seguro de resurrección"
          Top             =   3060
          Visible         =   0   'False
@@ -863,35 +856,35 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":6F93
+         Picture         =   "frmMain.frx":6F92
          Top             =   1215
          Width           =   3240
       End
       Begin VB.Image MANShp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":9857
+         Picture         =   "frmMain.frx":9856
          Top             =   1635
          Width           =   3240
       End
       Begin VB.Image STAShp 
          Height          =   135
          Left            =   510
-         Picture         =   "frmMain.frx":C11B
+         Picture         =   "frmMain.frx":C11A
          Top             =   2085
          Width           =   1335
       End
       Begin VB.Image AGUAsp 
          Height          =   135
          Left            =   2340
-         Picture         =   "frmMain.frx":CAC9
+         Picture         =   "frmMain.frx":CAC8
          Top             =   2085
          Width           =   480
       End
       Begin VB.Image COMIDAsp 
          Height          =   120
          Left            =   3285
-         Picture         =   "frmMain.frx":CE6D
+         Picture         =   "frmMain.frx":CE6C
          Top             =   2100
          Width           =   480
       End
@@ -899,7 +892,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   630
-         Picture         =   "frmMain.frx":D1B1
+         Picture         =   "frmMain.frx":D1B0
          ToolTipText     =   "Seguro de clan"
          Top             =   3060
          Visible         =   0   'False
@@ -908,7 +901,7 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   510
          Left            =   105
-         Picture         =   "frmMain.frx":DFC3
+         Picture         =   "frmMain.frx":DFC2
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -918,7 +911,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1155
-         Picture         =   "frmMain.frx":EDD5
+         Picture         =   "frmMain.frx":EDD4
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -1224,14 +1217,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":FBE7
+      Picture         =   "frmMain.frx":FBE6
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":1016B
+      Picture         =   "frmMain.frx":1016A
       Top             =   2008
       Width           =   555
    End
@@ -1309,7 +1302,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":106EF
+      Picture         =   "frmMain.frx":106EE
       Top             =   480
       Visible         =   0   'False
       Width           =   525
@@ -1379,7 +1372,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":1136F
+      Picture         =   "frmMain.frx":1136E
       Top             =   1545
       Width           =   3540
    End
@@ -2720,138 +2713,6 @@ Private Sub LlamaDeclan_Timer()
 LlamaDeclan_Timer_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.LlamaDeclan_Timer", Erl)
     Resume Next
-    
-End Sub
-
-Private Sub MainSocket_Connect()
-    On Error GoTo Socket1_Connect_Err
-    
-        Call SetSocketNoDelay(MainSocket.SocketHandle, True)
-    
-        'Clean input and output buffers
-        Call incomingData.Clean
-        Call outgoingData.Clean
-        
-        #If AntiExternos = 1 Then
-            XorIndexIn = 0
-            XorIndexOut = 0
-        #End If
-        
-        ShowFPS.Enabled = True
-
-        Select Case EstadoLogin
-
-            Case E_MODO.CrearNuevoPj, E_MODO.Normal, E_MODO.Dados
-                Call Login
-          
-            Case E_MODO.IngresandoConCuenta
-                Call WriteIngresandoConCuenta
-
-            Case E_MODO.BorrandoPJ
-                Call WriteBorrandoPJ
-
-        End Select
-
-    
-    Exit Sub
-
-Socket1_Connect_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_Connect", Erl)
-    Resume Next
-End Sub
-
-Private Sub MainSocket_DataArrival(ByVal BytesTotal As Long)
-    On Error GoTo Socket1_Read_Err
-
-    Dim Data() As Byte
-    Dim LastCompletPacket As Boolean
-
-    Do
-        ' WyroX: Sólo leemos la cantidad que entre en la cola!!
-        Call MainSocket.GetData(Data, vbByte, min(MainSocket.BytesReceived, incomingData.Capacity - incomingData.length))
-        
-        #If AntiExternos = 1 Then
-            Call Security.XorData(Data, BytesTotal - 1, XorIndexIn)
-        #End If
-        
-        'Put data in the buffer
-        Call incomingData.WriteBlock(Data)
-        
-        If incomingData.PeekLength <= incomingData.length Then
-            LastCompletPacket = True
-            
-            While incomingData.length And LastCompletPacket
-                LastCompletPacket = HandleIncomingData()
-            Wend
-
-        End If
-        
-    Loop While MainSocket.BytesReceived > 0
-    
-    Exit Sub
-
-Socket1_Read_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Socket1_Read", Erl)
-    Resume Next
-End Sub
-
-Private Sub MainSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    On Error GoTo Socket1_LastError_Err
-
-    '*********************************************
-    'Handle socket errors
-    '*********************************************
-    If Number = 24036 Then
-        Call frmMain.MainSocket.Close
-        Debug.Print "ErrorCode = 24036"
-        Exit Sub
-
-    End If
-    
-    If frmConnect.Visible Then
-        Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
-    
-    Else
-        Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
-    
-        Dim mForm As Form
-        For Each mForm In Forms
-
-            Select Case mForm.Name
-
-                Case frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
-                
-                Case Else
-                    Unload mForm
-
-            End Select
-
-        Next
-        
-        Call ComprobarEstado
-        Call General_Set_Connect
-
-    End If
-    
-    frmConnect.MousePointer = 1
-    ShowFPS.Enabled = False
-    
-    If frmAOGuard.Visible Then Unload frmAOGuard
-    
-    Call frmMain.MainSocket.Close
-    
-    LogeoAlgunaVez = False
-    
-    Exit Sub
-
-Socket1_LastError_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_LastError", Erl)
-    Resume Next
-End Sub
-
-Private Sub MainSocket_Close()
-
-    If frmAOGuard.Visible Then Unload frmAOGuard
     
 End Sub
 
@@ -5197,4 +5058,46 @@ End Sub
 Public Sub GetMinimapPosition(ByRef x As Single, ByRef y As Single)
     x = x * (100 - 2 * HalfWindowTileWidth - 4) / 100 + HalfWindowTileWidth + 2
     y = y * (100 - 2 * HalfWindowTileHeight - 4) / 100 + HalfWindowTileHeight + 2
+End Sub
+
+Public Sub OnClientDisconnect(ByVal Error As Boolean)
+    On Error GoTo OnClientDisconnect_Err
+    
+    If (Error) Then
+        If frmConnect.Visible Then
+            If (Not Connected) Then
+                Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
+            End If
+        Else
+            Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
+                 
+            Dim mForm As Form
+            For Each mForm In Forms
+                Select Case mForm.Name
+                    Case frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
+                    Case Else
+                        Unload mForm
+                End Select
+            Next
+            
+            Call ComprobarEstado
+            Call General_Set_Connect
+        End If
+    
+        frmConnect.MousePointer = 1
+        ShowFPS.Enabled = False
+    
+        Unload frmAOGuard
+        
+        LogeoAlgunaVez = False
+    Else
+        Unload frmAOGuard
+    End If
+    
+        
+    Exit Sub
+
+OnClientDisconnect_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_LastError", Erl)
+    Resume Next
 End Sub

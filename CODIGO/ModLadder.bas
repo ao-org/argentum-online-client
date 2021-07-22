@@ -2105,7 +2105,7 @@ Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByV
     prgRun = False
 
     '0. Cerramos el socket
-    If frmMain.MainSocket.State <> sckClosed Then frmMain.MainSocket.Close
+    Call modNetwork.Disconnect
 
     '2. Eliminamos objetos DX
     Call Client_UnInitialize_DirectX_Objects

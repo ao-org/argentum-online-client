@@ -2214,12 +2214,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If EsGM Then
                     Call WriteConsulta(ArgumentosRaw)
                 End If
-                
-            Case "/VERPANTALLA", "/SCREENSHOT", "/SS"
-                If EsGM Then
-                    Call WriteRequestScreenShot(ArgumentosRaw)
-                End If
-                
+
             Case "/TOLERANCIA0", "/T0"
                 If EsGM Then
                     Call WriteTolerancia0(ArgumentosRaw)

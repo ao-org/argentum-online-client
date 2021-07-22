@@ -519,36 +519,19 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
 
-                    If frmMain.MainSocket.State = sckConnected Then
-                        EstadoLogin = E_MODO.CrearNuevoPj
-                        Call Login
+                    If Connected Then
                         frmMain.ShowFPS.Enabled = True
-                        Exit Sub
-                    Else
-                        If frmMain.MainSocket.State <> sckClosed Then
-                            frmMain.MainSocket.Close
-                            DoEvents
-                        End If
-                        
-                        EstadoLogin = E_MODO.CrearNuevoPj
-                        frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
                     End If
-
+                    
+                    Call LoginOrConnect(E_MODO.CrearNuevoPj)
                 End If
 
             End If
             
             If x >= 652 And x < 677 And y >= 346 And y < 365 Then  'DADO
                 Call Sound.Sound_Play(SND_DICE) ' Este sonido hay que ponerlo en el evento "click" o hacer q suene menos xq rompe oidos sino
-                
-                If frmMain.MainSocket.State <> sckClosed Then
-                    EstadoLogin = E_MODO.Dados
-                    Call Login
-                Else
-                    EstadoLogin = E_MODO.Dados
-                    frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
-                End If
 
+                Call LoginOrConnect(E_MODO.Dados)
             End If
 
             Exit Sub
@@ -643,8 +626,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
                     
                     If IntervaloPermiteConectar Then
-                        EstadoLogin = E_MODO.Dados
-
                         If Musica Then
 
                             '  ReproducirMp3 (2)
@@ -652,14 +633,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                             ' Call Audio.PlayMIDI("123.mid")
                         End If
 
-                        If frmMain.MainSocket.State <> sckClosed Then
-                            frmMain.MainSocket.Close
-                            DoEvents
-
-                        End If
-
-                        frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
-
+                        Call LoginOrConnect(E_MODO.Dados)
                     End If
 
                 Case 2
@@ -674,14 +648,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         tmp = InputBox("Para confirmar el borrado debe ingresar su contraseña.", App.title)
             
                         If tmp = CuentaPassword Then
-                            If frmMain.MainSocket.State <> sckClosed Then
-                                frmMain.MainSocket.Close
-                                DoEvents
-
-                            End If
-
-                            EstadoLogin = E_MODO.BorrandoPJ
-                            frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
+                            Call LoginOrConnect(E_MODO.BorrandoPJ)
                             
                             If PJSeleccionado <> 0 Then
                                 LastPJSeleccionado = PJSeleccionado
@@ -702,11 +669,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         'ReproducirMp3 (4)
                     End If
 
-                    If frmMain.MainSocket.State <> sckClosed Then
-                        frmMain.MainSocket.Close
-                        DoEvents
-
-                    End If
+                    Call modNetwork.Disconnect
 
                     CantidadDePersonajesEnCuenta = 0
                     CuentaDonador = 0
@@ -827,21 +790,13 @@ Private Sub LogearPersonaje(ByVal Nick As String)
     
     On Error GoTo LogearPersonaje_Err
     
+    UserName = Nick
 
-    If frmMain.MainSocket.State <> sckClosed Then
-        UserName = Nick
+    If Connected Then
         frmMain.ShowFPS.Enabled = True
-        EstadoLogin = Normal
-        Call Login
-        Exit Sub
-    Else
-        EstadoLogin = Normal
-        UserName = Nick
-        frmMain.MainSocket.Connect IPdelServidor, PuertoDelServidor
-        Exit Sub
-
     End If
 
+    Call LoginOrConnect(E_MODO.Normal)
     
     Exit Sub
 

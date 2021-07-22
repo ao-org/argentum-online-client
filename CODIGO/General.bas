@@ -1134,7 +1134,7 @@ Sub Main()
     
     'Cargar fuentes
     Call LoadFonts
-    
+
     #If AntiExternos = 1 Then
         Call Security.Initialize
     #End If
@@ -1521,8 +1521,7 @@ Public Sub CloseClient()
     Set DialogosClanes = Nothing
     ' Set Audio = Nothing
     Set MainTimer = Nothing
-    Set incomingData = Nothing
-    Set outgoingData = Nothing
+
     Set FormParser = Nothing
     Call EndGame(True)
     

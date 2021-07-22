@@ -21,10 +21,6 @@ Public Function ComprobarPosibleMacro(ByVal MouseX As Integer, ByVal MouseY As I
     
     ComprobarPosibleMacro = True
     Call generarLogMacrero
-    Call FlushBuffer
-    DoEvents
-    'Call CloseClient
-    
 End Function
 
 Private Sub generarLogMacrero()

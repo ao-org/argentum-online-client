@@ -1917,7 +1917,7 @@ Public Sub Start()
 
     Do While prgRun
 
-        Call FlushBuffer
+        Call modNetwork.Poll
 
         If frmMain.WindowState <> vbMinimized Then
             Select Case QueRender

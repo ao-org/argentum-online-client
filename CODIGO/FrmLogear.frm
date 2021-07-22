@@ -325,13 +325,6 @@ Private Sub cmdIngresar_Click()
     Call FormParser.Parse_Form(Me, E_WAIT)
 
     If IntervaloPermiteConectar Then
-    
-        If frmMain.MainSocket.State <> sckClosed Then
-            frmMain.MainSocket.Close
-            DoEvents
-
-        End If
-
         CuentaEmail = NameTxt.Text
         CuentaPassword = PasswordTxt.Text
 
@@ -346,8 +339,7 @@ Private Sub cmdIngresar_Click()
         End If
 
         If CheckUserDataLoged() = True Then
-            EstadoLogin = E_MODO.IngresandoConCuenta
-            Call frmMain.MainSocket.Connect(IPdelServidor, PuertoDelServidor)
+            Call LoginOrConnect(E_MODO.IngresandoConCuenta)
         End If
 
         ServerIndex = lstServers.ListIndex

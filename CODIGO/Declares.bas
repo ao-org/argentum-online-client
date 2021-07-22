@@ -352,9 +352,6 @@ Public CustomKeys              As New clsCustomKeys
 
 Public Sound                   As New clsSoundEngine
 
-Public incomingData            As New clsByteQueue
-Public outgoingData            As New clsByteQueue
-
 Public Audio_MP3_Load          As Boolean
 
 Public Audio_MP3_Play          As Boolean
