@@ -1467,7 +1467,7 @@ Private Sub cmd_Click(Index As Integer)
 104             txtArma.Text = txtArma.Text + 1
 
 106         Case 1
-108             txtArma.Text = txtArma.Text - 1
+108             If txtArma.Text >= 1 Then txtArma.Text = txtArma.Text - 1
         End Select
     
 110     tmp = txtArma.Text
@@ -1713,7 +1713,7 @@ Private Sub cmdBodyMenos_Click()
 
     tmpUser = "yo"
     
-    txtBodyYo.Text = txtBodyYo.Text - 1
+    If txtBodyYo.Text >= 1 Then txtBodyYo.Text = txtBodyYo.Text - 1
     
     tmp = txtBodyYo.Text
     
@@ -1792,7 +1792,7 @@ Private Sub cmdEscudo_Click(Index As Integer)
 104             txtEscudo.Text = txtEscudo.Text + 1
 
 106         Case 1
-108             txtEscudo.Text = txtEscudo.Text - 1
+108             If txtEscudo.Text >= 1 Then txtEscudo.Text = txtEscudo.Text - 1
         End Select
     
 110     tmp = txtEscudo.Text
@@ -1828,7 +1828,7 @@ Private Sub cmdHeadMenos_Click()
 
     tmpUser = "yo"
        
-    txtHeadNumero.Text = txtHeadNumero.Text - 1
+    If txtHeadNumero.Text >= 1 Then txtHeadNumero.Text = txtHeadNumero.Text - 1
     
     tmp = txtHeadNumero.Text
     
@@ -1944,10 +1944,9 @@ Private Sub cmdMas_Click()
     tmpUser = "yo"
        
     txtCasco.Text = txtCasco.Text + 1
-    
+        
     tmp = txtCasco.Text
-    
-
+        
     Call ParseUserCommand("/MOD " & tmpUser & " Casco " & tmp)
     
     Call frmPanelgm.txtMod.SetFocus
@@ -1963,10 +1962,11 @@ End Sub
 Private Sub cmdMenos_Click()
     tmpUser = "yo"
        
-    txtCasco.Text = txtCasco.Text - 1
-    
+    If txtCasco.Text >= 1 Then txtCasco.Text = txtCasco.Text - 1
+        
     tmp = txtCasco.Text
-
+    
+    
     Call ParseUserCommand("/MOD " & tmpUser & " Casco " & tmp)
     
     Call frmPanelgm.txtMod.SetFocus
