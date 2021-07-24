@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+    <assemblyIdentity name="Argentum20.Argentum" processorArchitecture="X86" type="win32" version="2.0.0.4" />
+    <dependency>
+        <dependentAssembly>
+            <assemblyIdentity language="*" name="Microsoft.Windows.Common-Controls" processorArchitecture="X86" publicKeyToken="6595b64144ccf1df" type="win32" version="6.0.0.0" />
+        </dependentAssembly>
+    </dependency>
+    <file name="Aurora.Network.dll">
+        <typelib tlbid="{88D89F7C-BB59-4F13-9850-93CBD874039D}" version="1.5" flags="hasdiskimage" helpdir="" />
+        <comClass clsid="{9BE50AF2-385F-4C56-9826-65C320451642}" tlbid="{88D89F7C-BB59-4F13-9850-93CBD874039D}" progid="Reader.Reader.1" threadingModel="apartment">
+            <progid>Reader.Reader</progid>
+        </comClass>
+        <comClass clsid="{25DEA4F0-4C5B-4674-B357-2C6FFE8ABF46}" tlbid="{88D89F7C-BB59-4F13-9850-93CBD874039D}" progid="Writer.Writer.1" threadingModel="apartment">
+            <progid>Writer.Writer</progid>
+        </comClass>
+        <comClass clsid="{07CC11E3-D300-4CD4-9EB0-C4EB4D63865D}" tlbid="{88D89F7C-BB59-4F13-9850-93CBD874039D}" progid="Client.Client.1" threadingModel="apartment">
+            <progid>Client.Client</progid>
+        </comClass>
+        <comClass clsid="{ACF5D638-7DDD-443D-B9B4-E5DC3C01BB4C}" tlbid="{88D89F7C-BB59-4F13-9850-93CBD874039D}" progid="Group.Group.1" threadingModel="apartment">
+            <progid>Group.Group</progid>
+        </comClass>
+        <comClass clsid="{AC398261-6275-4797-950A-5B914DDB2130}" tlbid="{88D89F7C-BB59-4F13-9850-93CBD874039D}" progid="Server.Server.1" threadingModel="apartment">
+            <progid>Server.Server</progid>
+        </comClass>
+    </file>
+    <file name="DX8VB.DLL">
+        <typelib tlbid="{E1211242-8E94-11D1-8808-00C04FC2C603}" version="1.0" flags="hasdiskimage" helpdir="" />
+        <comClass clsid="{58356C5D-0BFD-48ED-93C5-F4520B6233DE}" tlbid="{E1211242-8E94-11D1-8808-00C04FC2C603}" progid="DIRECT.D3DX8.0" threadingModel="both" />
+        <comClass clsid="{E7FF1300-96A5-11D3-AC85-00C04FC2C602}" tlbid="{E1211242-8E94-11D1-8808-00C04FC2C603}" progid="DIRECT.DirectX8.0" threadingModel="both" />
+    </file>
+    <file name="MSINET.OCX">
+        <typelib tlbid="{48E59290-9880-11CF-9754-00AA00C00908}" version="1.0" flags="control,hasdiskimage" helpdir="" />
+        <comClass clsid="{48E59293-9880-11CF-9754-00AA00C00908}" tlbid="{48E59290-9880-11CF-9754-00AA00C00908}" progid="InetCtls.Inet.1" threadingModel="Apartment" miscStatus="" miscStatusContent="recomposeonresize,cantlinkinside,insideout,activatewhenvisible,invisibleatruntime,setclientsitefirst">
+            <progid>InetCtls.Inet</progid>
+        </comClass>
+        <comClass clsid="{E2D211D5-11E4-4D9E-B6DB-1E902C851A49}" tlbid="{48E59290-9880-11CF-9754-00AA00C00908}" threadingModel="Apartment" miscStatus="" miscStatusContent="recomposeonresize,cantlinkinside,insideout,activatewhenvisible,invisibleatruntime,setclientsitefirst" />
+    </file>
+    <file name="RICHTX32.OCX">
+        <typelib tlbid="{3B7C8863-D78F-101B-B9B5-04021C009402}" version="1.2" flags="control,hasdiskimage" helpdir="" />
+        <comClass clsid="{3B7C8860-D78F-101B-B9B5-04021C009402}" tlbid="{3B7C8863-D78F-101B-B9B5-04021C009402}" progid="RICHTEXT.RichtextCtrl.1" threadingModel="Apartment" miscStatus="" miscStatusContent="recomposeonresize,cantlinkinside,insideout,activatewhenvisible,setclientsitefirst">
+            <progid>RICHTEXT.RichtextCtrl</progid>
+        </comClass>
+    </file>
+    <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+        <security>
+            <requestedPrivileges>
+                <requestedExecutionLevel level="requireAdministrator" />
+            </requestedPrivileges>
+        </security>
+    </trustInfo>
+    <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+        <application>
+            <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
+        </application>
+    </compatibility>
+    <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+        <application>
+            <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
+        </application>
+    </compatibility>
+</assembly>
