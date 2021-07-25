@@ -602,6 +602,10 @@ On Error GoTo HandleIncomingData_Err
     Dim PacketID As Long:
     PacketID = Reader.ReadInt
     
+    #If DEBUGGING Then
+        Debug.Print PacketID
+    #End If
+    
     Select Case PacketID
         Case ServerPacketID.Connected
             Call HandleConnected
