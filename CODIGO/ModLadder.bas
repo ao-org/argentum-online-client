@@ -28,8 +28,6 @@ Public CheckMD5         As String
 Public intro            As Byte
 
 Public InviCounter      As Integer
-Public ScrollExpCounter As Long
-Public ScrollOroCounter As Long
 Public OxigenoCounter   As Long
 Public DrogaCounter     As Integer
 
@@ -73,50 +71,16 @@ Public Enum FXSound
     MP_SOUND = 150
 End Enum
 
-Public Const MAX_CORREOS_SLOTS = 60
-
 Public LastIndex2                        As Integer
-
-Public CorreoMsj(1 To MAX_CORREOS_SLOTS) As CorreoMsj
 
 Public ItemLista(1 To 10)                As Obj
 Public ItemCount                         As Byte
-
-Public Type CorreoMsj
-    Remitente As String
-    mensaje As String
-    ItemCount As Byte
-    ItemArray As String
-    Leido As Byte
-    Fecha As String
-End Type
 
 Public TieneFamiliar As Long
 
 Public PetPercExp    As Long
 
 Public HayLayer4     As Boolean
-
-'Logros
-Public NPcLogros     As TLogros
-Public UserLogros    As TLogros
-Public LevelLogros   As TLogros
-Public MostrarTrofeo As Boolean
-
-Type TLogros
-    nombre As String
-    desc As String
-    cant As Long
-    TipoRecompensa As Byte
-    ObjRecompensa As String
-    OroRecompensa As Long
-    ExpRecompensa As Long
-    HechizoRecompensa As Byte
-    NpcsMatados As Integer
-    NivelUser As Byte
-    UserMatados As Integer
-    Finalizada As Boolean
-End Type
 
 Public CantPartLLuvia     As Integer
 Public MeteoIndex         As Integer

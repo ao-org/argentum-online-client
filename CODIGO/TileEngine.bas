@@ -204,7 +204,6 @@ Public Type Char
     EsNpc As Boolean
     EsMascota As Boolean
     
-    Donador As Byte
     appear As Byte
     simbolo As Byte
     Idle As Boolean
