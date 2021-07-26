@@ -1793,10 +1793,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                     
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
-
-                If .Donador = 1 Then
-                    Grh_Render Estrella, PixelOffsetX + 8 + CInt(Engine_Text_Width(.nombre, 1) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 10 + OffsetYname, colorCorazon, True, True, False
-                End If
             End If
         End If
 
@@ -3432,11 +3428,6 @@ Public Sub RenderPjsCuenta()
                 Draw_Grh WeaponAnimData(Pjs(i).Arma).WeaponWalk(3), x + 14, y - notY + 10, 1, 0, COLOR_WHITE
 
                 ' End If
-            End If
-        
-            If CuentaDonador = 1 Then
-                Grh_Render Estrella, x + 17 + 6 + Engine_Text_Width(Pjs(i).nombre, 1) / 2, y + 19, temp_array(), True, True, False
-
             End If
 
             Engine_Text_Render Pjs(i).nombre, x + 30 - Engine_Text_Width(Pjs(i).nombre, True) / 2, y + 56 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True

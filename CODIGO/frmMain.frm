@@ -384,6 +384,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1021,22 +1022,6 @@ Begin VB.Form frmMain
       Visible         =   0   'False
       Width           =   555
    End
-   Begin VB.Image temp2 
-      Height          =   495
-      Left            =   17040
-      Tag             =   "0"
-      Top             =   3840
-      Visible         =   0   'False
-      Width           =   540
-   End
-   Begin VB.Image rankingBoton 
-      Height          =   375
-      Left            =   16560
-      Tag             =   "0"
-      Top             =   1440
-      Visible         =   0   'False
-      Width           =   1230
-   End
    Begin VB.Image manualboton 
       Height          =   390
       Left            =   16560
@@ -1197,14 +1182,6 @@ Begin VB.Form frmMain
       Top             =   1545
       Visible         =   0   'False
       Width           =   3540
-   End
-   Begin VB.Image TiendaBoton 
-      Height          =   405
-      Left            =   18600
-      Tag             =   "0"
-      Top             =   5040
-      Visible         =   0   'False
-      Width           =   1335
    End
    Begin VB.Image OpcionesBoton 
       Height          =   315
@@ -1835,16 +1812,6 @@ Private Sub Contadores_Timer()
 
     End If
 
-    If ScrollExpCounter > 0 Then
-        ScrollExpCounter = ScrollExpCounter - 1
-
-    End If
-
-    If ScrollOroCounter > 0 Then
-        ScrollOroCounter = ScrollOroCounter - 1
-
-    End If
-
     If OxigenoCounter > 0 Then
         OxigenoCounter = OxigenoCounter - 1
 
@@ -1870,7 +1837,7 @@ Private Sub Contadores_Timer()
         
     End If
 
-    If InviCounter = 0 And ScrollExpCounter = 0 And ScrollOroCounter = 0 And DrogaCounter = 0 And OxigenoCounter = 0 Then
+    If InviCounter = 0 And DrogaCounter = 0 And OxigenoCounter = 0 Then
         Contadores.Enabled = False
 
     End If
@@ -2065,7 +2032,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                     Call CompletarEnvioMensajes
                     SendTxt.Visible = True
                     SendTxt.SetFocus
-                    Call WriteEscribiendo
+                    Call WriteEscribiendo(True)
                 
                 End If
 
@@ -2860,8 +2827,6 @@ Select Case Index
         Fuerzalbl.Visible = False
         AgilidadLbl.Visible = False
         oxigenolbl.Visible = False
-        TiendaBoton.Visible = True
-        rankingBoton.Visible = True
         manualboton.Visible = True
         QuestBoton.Visible = True
         ImgHogar.Visible = True
@@ -2935,8 +2900,6 @@ Select Case Index
         Fuerzalbl.Visible = True
         AgilidadLbl.Visible = True
         oxigenolbl.Visible = True
-        TiendaBoton.Visible = False
-        rankingBoton.Visible = False
         manualboton.Visible = False
         QuestBoton.Visible = False
         ImgHogar.Visible = False
@@ -2961,21 +2924,6 @@ Select Case Index
         ImgSegClan.Visible = False
         ImgSegResu.Visible = False
 End Select
-End Sub
-
-Private Sub PicCorreo_Click()
-    
-    On Error GoTo PicCorreo_Click_Err
-    
-    Call AddtoRichTextBox(frmMain.RecTxt, "Tenes un mensaje, ve al correo local para leerlo.", 255, 255, 255, False, False, False)
-
-    
-    Exit Sub
-
-PicCorreo_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.PicCorreo_Click", Erl)
-    Resume Next
-    
 End Sub
 
 Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
@@ -3048,41 +2996,6 @@ Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single,
 
 QuestBoton_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.QuestBoton_MouseUp", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub RankingBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo RankingBoton_MouseMove_Err
-    
-
-    If rankingBoton.Tag = "0" Then
-        rankingBoton.Picture = LoadInterface("rankingover.bmp")
-        rankingBoton.Tag = "1"
-
-    End If
-
-    
-    Exit Sub
-
-RankingBoton_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.RankingBoton_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub RankingBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo RankingBoton_MouseUp_Err
-    
-    Call WriteTraerRanking
-
-    
-    Exit Sub
-
-RankingBoton_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.RankingBoton_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -3728,8 +3641,7 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             SendTxt.SelStart = Len(SendTxt.Text)
 
             If SendTxt.Visible = False Then
-                Call WriteEscribiendo
-
+                Call WriteEscribiendo(False)
             End If
 
             SendTxt.Visible = True
@@ -3968,12 +3880,10 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     If FrmGrupo.Visible Then Unload FrmGrupo
     If FrmGmAyuda.Visible Then Unload FrmGmAyuda
     If frmGuildAdm.Visible Then Unload frmGuildAdm
-    If FrmShop.Visible Then Unload FrmShop
     If frmHerrero.Visible Then Unload frmHerrero
     If FrmSastre.Visible Then Unload FrmSastre
     If frmAlqui.Visible Then Unload frmAlqui
     If frmCarp.Visible Then Unload frmCarp
-    If FrmCorreo.Visible Then Unload FrmCorreo
     If MenuUser.Visible Then Unload MenuUser
     If MenuGM.Visible Then Unload MenuGM
     If MenuNPC.Visible Then Unload MenuNPC
@@ -4117,7 +4027,7 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
         SendTxt.Text = ""
         KeyCode = 0
         SendTxt.Visible = False
-        Call WriteEscribiendo
+        Call WriteEscribiendo(False)
         
     End If
 
@@ -4139,41 +4049,6 @@ Private Sub ShowFPS_Timer()
 
 ShowFPS_Timer_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.ShowFPS_Timer", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub TiendaBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo TiendaBoton_MouseMove_Err
-    
-
-    If TiendaBoton.Tag = "0" Then
-        TiendaBoton.Picture = LoadInterface("tiendaover.bmp")
-        TiendaBoton.Tag = "1"
-
-    End If
-
-    
-    Exit Sub
-
-TiendaBoton_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.TiendaBoton_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub TiendaBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo TiendaBoton_MouseUp_Err
-    
-    Call WriteTraerShop
-
-    
-    Exit Sub
-
-TiendaBoton_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.TiendaBoton_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -4533,7 +4408,7 @@ Public Sub Form_Click()
                     SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
 
                     If SendTxt.Visible = False Then
-                        Call WriteEscribiendo
+                        Call WriteEscribiendo(False)
 
                     End If
 

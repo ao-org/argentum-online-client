@@ -190,7 +190,7 @@ Private Sub OpcionImg_Click(Index As Integer)
             frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.Text)
 
             If frmMain.SendTxt.Visible = False Then
-                Call WriteEscribiendo
+                Call WriteEscribiendo(False)
             End If
 
             frmMain.SendTxt.Visible = True

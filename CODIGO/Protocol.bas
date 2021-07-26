@@ -49,6 +49,7 @@ Private IterationsHID   As Integer
 Private Const MAX_ITERATIONS_HID = 200
 
 Private Enum ServerPacketID
+
     Connected
     logged                  ' LOGGED  0
     RemoveDialogs           ' QTDL
@@ -147,7 +148,7 @@ Private Enum ServerPacketID
     ParalizeOK              ' PARADOK
     ShowUserRequest         ' PETICIO
     ChangeUserTradeSlot     ' COMUSUINV
-    'SendNight               ' NOC
+    'SendNight              ' NOC
     Pong
     UpdateTagAndStatus
     FYA
@@ -155,7 +156,7 @@ Private Enum ServerPacketID
     Contadores
     
     'GM messages
-    SpawnList               ' SPL
+    SpawnListt               ' SPL
     ShowSOSForm             ' MSOS
     ShowMOTDEditionForm     ' ZMOTD
     ShowGMPanelForm         ' ABPANEL
@@ -185,33 +186,24 @@ Private Enum ServerPacketID
     ShowSastreForm ' 126
     VelocidadToggle
     MacroTrabajoToggle
-    RefreshAllInventorySlot
     BindKeys
     ShowFrmLogear
     ShowFrmMapa
     InmovilizadoOK
     BarFx
     SetEscribiendo
-    Logros
-    TrofeoToggleOn
-    TrofeoToggleOff
     LocaleMsg
-    ListaCorreo
     ShowPregunta
     DatosGrupo
     ubicacion
-    CorreoPicOn
-    DonadorObj
     ArmaMov
     EscudoMov
-    ActShop
     ViajarForm
     oxigeno
     NadarToggle
     ShowFundarClanForm
     CharUpdateHP
     CharUpdateMAN
-    Ranking
     PosLLamadaDeClan
     QuestDetails
     QuestListSend
@@ -222,7 +214,6 @@ Private Enum ServerPacketID
     UpdateUserKey
     UpdateRM
     UpdateDM
-    Tolerancia0
     SeguroResu
     Stopped
     InvasionInfo
@@ -242,11 +233,11 @@ Public Enum ClientPacketID
 
     LoginExistingChar       'OLOGIN
     LoginNewChar            'NLOGIN
-    ThrowDice               'TirarDados
+    ThrowDice
     Talk                    ';
     Yell                    '-
     Whisper                 '\
-    Walk
+    Walk                    'M
     RequestPositionUpdate   'RPU
     Attack                  'AT
     PickUp                  'AG
@@ -337,7 +328,7 @@ Public Enum ClientPacketID
     ChangeDescription       '/DESC
     GuildVote               '/VOTO
     punishments             '/PENAS
-    ChangePassword          '/CONTRASEÑA
+    ChangePassword          '/Contraseña
     Gamble                  '/APOSTAR
     InquiryVote             '/ENCUESTA ( with parameters )
     LeaveFaction            '/RETIRAR ( with no arguments )
@@ -415,7 +406,7 @@ Public Enum ClientPacketID
     DumpIPTables            '/DUMPSECURITY
     CouncilKick             '/KICKCONSE
     SetTrigger              '/TRIGGER
-    AskTrigger              '/TRIGGER with no arguments
+    AskTrigger              '/TRIGGER with no args
     BannedIPList            '/BANIPLIST
     BannedIPReload          '/BANIPRELOAD
     GuildMemberList         '/MIEMBROSCLAN
@@ -466,13 +457,11 @@ Public Enum ClientPacketID
     ShowServerForm          '/SHOW INT
     night                   '/NOCHE
     KickAllChars            '/ECHARTODOSPJS
-    RequestTCPStats         '/TCPESSTATS
     ReloadNPCs              '/RELOADNPCS
     ReloadServerIni         '/RELOADSINI
     ReloadSpells            '/RELOADHECHIZOS
     ReloadObjects           '/RELOADOBJ
     Restart                 '/REINICIAR
-    ResetAutoUpdate         '/AUTOUPDATE
     ChatColor               '/CHATCOLOR
     Ignored                 '/IGNORADO
     CheckSlot               '/SLOT
@@ -505,7 +494,7 @@ Public Enum ClientPacketID
     NieblaToggle
     TransFerGold
     Moveitem
-    Genio                 '/GENIO
+    Genio
     Casarse
     CraftAlquimista
     RequestFamiliar
@@ -515,12 +504,6 @@ Public Enum ClientPacketID
     TraerBoveda
     CompletarAccion
     Escribiendo
-    TraerRecompensas
-    ReclamarRecompensa
-    Correo
-    SendCorreo
-    RetirarItemCorreo
-    BorrarCorreo
     InvitarGrupo
     ResponderPregunta
     RequestGrupo
@@ -536,11 +519,7 @@ Public Enum ClientPacketID
     EventoInfo
     CrearEvento
     BanTemporal
-    Traershop
-    ComprarItem
-    SCROLLINFO
     CancelarExit
-    EnviarCodigo
     CrearTorneo
     ComenzarTorneo
     CancelarTorneo
@@ -551,7 +530,6 @@ Public Enum ClientPacketID
     llamadadeclan
     MarcaDeClanPack
     MarcaDeGMPack
-    TraerRanking
     Quest
     QuestAccept
     QuestListRequest
@@ -561,8 +539,8 @@ Public Enum ClientPacketID
     CreatePretorianClan     '/CREARPRETORIANOS
     Home                    '/HOGAR
     Consulta                '/CONSULTA
-    Tolerancia0
-    GetMapInfo
+    Tolerancia0             '/T0
+    GetMapInfo              '/MAPINFO
     FinEvento
     SeguroResu
     CuentaExtractItem
@@ -815,7 +793,7 @@ On Error GoTo HandleIncomingData_Err
             Call HandleCerrarleCliente
         Case ServerPacketID.Contadores
             Call HandleContadores
-        Case ServerPacketID.SpawnList
+        Case ServerPacketID.SpawnListt
             Call HandleSpawnList
         Case ServerPacketID.ShowSOSForm
             Call HandleShowSOSForm
@@ -875,8 +853,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleVelocidadToggle
         Case ServerPacketID.MacroTrabajoToggle
             Call HandleMacroTrabajoToggle
-        Case ServerPacketID.RefreshAllInventorySlot
-            Call HandleRefreshAllInventorySlot
         Case ServerPacketID.BindKeys
             Call HandleBindKeys
         Case ServerPacketID.ShowFrmLogear
@@ -889,32 +865,18 @@ On Error GoTo HandleIncomingData_Err
             Call HandleBarFx
         Case ServerPacketID.SetEscribiendo
             Call HandleSetEscribiendo
-        Case ServerPacketID.Logros
-            Call HandleLogros
-        Case ServerPacketID.TrofeoToggleOn
-            Call HandleTrofeoToggleOn
-        Case ServerPacketID.TrofeoToggleOff
-            Call HandleTrofeoToggleOff
         Case ServerPacketID.LocaleMsg
             Call HandleLocaleMsg
-        Case ServerPacketID.ListaCorreo
-            Call HandleListaCorreo
         Case ServerPacketID.ShowPregunta
             Call HandleShowPregunta
         Case ServerPacketID.DatosGrupo
             Call HandleDatosGrupo
         Case ServerPacketID.ubicacion
             Call HandleUbicacion
-        Case ServerPacketID.CorreoPicOn
-            Call HandleCorreoPicOn
-        Case ServerPacketID.DonadorObj
-            Call HandleDonadorObjects
         Case ServerPacketID.ArmaMov
             Call HandleArmaMov
         Case ServerPacketID.EscudoMov
             Call HandleEscudoMov
-        Case ServerPacketID.ActShop
-            Call HandleActShop
         Case ServerPacketID.ViajarForm
             Call HandleViajarForm
         Case ServerPacketID.oxigeno
@@ -927,8 +889,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleCharUpdateHP
         Case ServerPacketID.CharUpdateMAN
             Call HandleCharUpdateMAN
-        Case ServerPacketID.Ranking
-            Call HandleRanking
         Case ServerPacketID.PosLLamadaDeClan
             Call HandlePosLLamadaDeClan
         Case ServerPacketID.QuestDetails
@@ -949,8 +909,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateRM
         Case ServerPacketID.UpdateDM
             Call HandleUpdateDM
-        Case ServerPacketID.Tolerancia0
-            Call HandleTolerancia0
         Case ServerPacketID.SeguroResu
             Call HandleSeguroResu
         Case ServerPacketID.Stopped
@@ -1297,8 +1255,6 @@ Private Sub HandleDisconnect()
     frmMain.Fuerzalbl.Visible = True
     frmMain.AgilidadLbl.Visible = True
     frmMain.oxigenolbl.Visible = True
-    frmMain.TiendaBoton.Visible = False
-    frmMain.rankingBoton.Visible = False
     frmMain.manualboton.Visible = False
     frmMain.QuestBoton.Visible = False
     frmMain.ImgHogar.Visible = False
@@ -1410,15 +1366,12 @@ Private Sub HandleDisconnect()
     AlphaNiebla = 30
     frmMain.TimerNiebla.Enabled = False
     bNiebla = False
-    MostrarTrofeo = False
     bNieve = False
     bFogata = False
     SkillPoints = 0
     UserEstado = 0
     
     InviCounter = 0
-    ScrollExpCounter = 0
-    ScrollOroCounter = 0
     DrogaCounter = 0
     OxigenoCounter = 0
      
@@ -2230,24 +2183,6 @@ HandlePartySafeOn_Err:
     
 End Sub
 
-Private Sub HandleCorreoPicOn()
-
-    '***************************************************
-    'Author: Rapsodius
-    'Creation date: 10/10/07
-    '***************************************************
-    On Error GoTo HandleCorreoPicOn_Err
-
-    frmMain.PicCorreo.Visible = True
-
-    Exit Sub
-
-HandleCorreoPicOn_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCorreoPicOn", Erl)
-    
-    
-End Sub
-
 ''
 ' Handles the CantUseWhileMeditating message.
 
@@ -2497,18 +2432,15 @@ Private Sub HandleChangeMap()
 
     If frmComerciar.Visible Then Unload frmComerciar
     If frmBancoObj.Visible Then Unload frmBancoObj
-    If FrmShop.Visible Then Unload FrmShop
     If frmEstadisticas.Visible Then Unload frmEstadisticas
     If frmHerrero.Visible Then Unload frmHerrero
     If FrmSastre.Visible Then Unload FrmSastre
     If frmAlqui.Visible Then Unload frmAlqui
     If frmCarp.Visible Then Unload frmCarp
     If FrmGrupo.Visible Then Unload FrmGrupo
-    If FrmCorreo.Visible Then Unload FrmCorreo
     If frmGoliath.Visible Then Unload frmGoliath
     If FrmViajes.Visible Then Unload FrmViajes
     If frmCantidad.Visible Then Unload frmCantidad
-    If FrmRanking.Visible Then Unload FrmRanking
 
     Call SwitchMap(UserMap)
     
@@ -3624,7 +3556,6 @@ Private Sub HandleCharacterCreate()
         .EsNpc = FlagNpc > 0
         .EsMascota = FlagNpc = 2
         
-        .Donador = Reader.ReadInt8()
         .appear = Reader.ReadInt8()
         appear = .appear
         .group_index = Reader.ReadInt16()
@@ -4097,18 +4028,8 @@ Private Sub HandlePlayMIDI()
     '
     '***************************************************
     
-    Dim currentMidi As Byte
-    
-    currentMidi = Reader.ReadInt8()
-    
-    If currentMidi And mp3 = 0 Then
-        ' SEngine.Music_MP3_Empty
-        '  Call Audio.PlayMIDI(CStr(currentMidi) & ".mid", Reader.ReadInt16())
-    Else
-        'Remove the bytes to prevent errors
-        Call Reader.ReadInt16
-
-    End If
+    Call Reader.ReadInt8   ' File
+    Call Reader.ReadInt16  ' Loop
     
     Exit Sub
 
@@ -4507,46 +4428,6 @@ HandleRainToggle_Err:
     
 End Sub
 
-Private Sub HandleTrofeoToggleOn()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    'Remove packet ID
-    
-    On Error GoTo HandleTrofeoToggleOn_Err
-
-    MostrarTrofeo = True
-    
-    Exit Sub
-
-HandleTrofeoToggleOn_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrofeoToggleOn", Erl)
-    
-    
-End Sub
-
-Private Sub HandleTrofeoToggleOff()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    'Remove packet ID
-    
-    On Error GoTo HandleTrofeoToggleOff_Err
-
-    MostrarTrofeo = False
-    
-    Exit Sub
-
-HandleTrofeoToggleOff_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrofeoToggleOff", Erl)
-    
-    
-End Sub
-
 ''
 ' Handles the CreateFX message.
 
@@ -4907,88 +4788,6 @@ HandleInventoryUnlockSlots_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleInventoryUnlockSlots", Erl)
     
     
-End Sub
-
-Private Sub HandleRefreshAllInventorySlot()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    On Error GoTo ErrHandler
-    
-    Dim Slot             As Byte
-
-    Dim OBJIndex         As Integer
-
-    Dim Name             As String
-
-    Dim Amount           As Integer
-
-    Dim Equipped         As Boolean
-
-    Dim GrhIndex         As Long
-
-    Dim ObjType          As Byte
-
-    Dim MaxHit           As Integer
-
-    Dim MinHit           As Integer
-
-    Dim defense          As Integer
-
-    Dim Value            As Single
-
-    Dim PuedeUsar        As Byte
-
-    Dim rdata            As String
-
-    Dim todo             As String
-    
-    Dim slotNum(1 To 25) As String
-    
-    todo = Reader.ReadString8()
-    
-    todo = Right$(todo, Len(todo))
-    
-    Dim i As Byte
-    
-    For i = 1 To 25
-    
-        slotNum(i) = ReadField(i, todo, Asc("*")) 'Nick
-    
-    Next i
-        
-    For i = 1 To 20
-    
-        slotNum(i) = Right$(slotNum(i), Len(slotNum(i)))
-        Slot = ReadField(1, slotNum(i), Asc("@"))
-        Call frmMain.Inventario.SetItem(Slot, ReadField(2, slotNum(i), Asc("@")), ReadField(4, slotNum(i), Asc("@")), ReadField(5, slotNum(i), Asc("@")), ReadField(6, slotNum(i), Asc("@")), ReadField(7, slotNum(i), Asc("@")), ReadField(8, slotNum(i), Asc("@")), ReadField(9, slotNum(i), Asc("@")), ReadField(10, slotNum(i), Asc("@")), ReadField(11, slotNum(i), Asc("@")), ReadField(3, slotNum(i), Asc("@")), 0)
-    
-        With frmMain.Inventario
-
-            If frmComerciar.Visible Then
-                Call frmComerciar.InvComUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
-            ElseIf frmBancoObj.Visible Then
-                Call frmBancoObj.InvBankUsu.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
-            ElseIf frmBancoCuenta.Visible Then
-                Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, .OBJIndex(Slot), .Amount(Slot), .Equipped(Slot), .GrhIndex(Slot), .ObjType(Slot), .MaxHit(Slot), .MinHit(Slot), .Def(Slot), .Valor(Slot), .ItemName(Slot), .PuedeUsar(Slot))
-
-            End If
-
-        End With
-    
-    Next i
-
-    Exit Sub
-
-ErrHandler:
-
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRefreshAllInventorySlot", Erl)
-    
-
 End Sub
 
 ''
@@ -5803,17 +5602,11 @@ Private Sub HandleContadores()
     '***************************************************
     
     InviCounter = Reader.ReadInt16()
-    ScrollExpCounter = Reader.ReadInt16()
-    ScrollOroCounter = Reader.ReadInt16()
     OxigenoCounter = Reader.ReadInt16()
     DrogaCounter = Reader.ReadInt16()
     
-    ScrollExpCounter = ScrollExpCounter
-    ScrollOroCounter = ScrollOroCounter
     OxigenoCounter = OxigenoCounter
-    
-    'Debug.Print ScrollExpCounter
-    
+
     frmMain.Contadores.Enabled = True
     
     Exit Sub
@@ -5942,11 +5735,6 @@ Private Sub HandleMiniStats()
 
         .Raza = Reader.ReadInt8()
         .Raza = ListaRazas(.Raza)
-        
-        .Donador = Reader.ReadInt8()
-        .CreditoDonador = Reader.ReadInt32()
-        .DiasRestantes = Reader.ReadInt16()
-
     End With
     
     If LlegaronAtrib And LlegaronSkills Then
@@ -6554,7 +6342,7 @@ Private Sub HandleCharacterInfo()
         .oro.Caption = "Oro: " & Reader.ReadInt32()
         .Banco.Caption = "Banco: " & Reader.ReadInt32()
     
-        .txtPeticiones.Text = Reader.ReadString8()
+        '.txtPeticiones.Text = Reader.ReadString8()
         .guildactual.Caption = "Clan: " & Reader.ReadString8()
         .txtMiembro.Text = Reader.ReadString8()
             
@@ -7282,9 +7070,7 @@ Private Sub HandlePersonajesDeCuenta()
         Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).Name
 
     Next ii
-    
-    CuentaDonador = Reader.ReadInt8()
-    
+
     Dim i As Integer
 
     For i = 1 To CantidadDePersonajesEnCuenta
@@ -7837,117 +7623,6 @@ HandleBindKeys_Err:
     
 End Sub
 
-Private Sub HandleLogros()
-    
-    On Error GoTo HandleLogros_Err
-
-    '***************************************************
-    'Pablo Mercavides
-    '***************************************************
-    
-    NPcLogros.nombre = Reader.ReadString8()
-    NPcLogros.desc = Reader.ReadString8()
-    NPcLogros.cant = Reader.ReadInt16()
-    NPcLogros.TipoRecompensa = Reader.ReadInt8()
-
-    If NPcLogros.TipoRecompensa = 1 Then
-        NPcLogros.ObjRecompensa = Reader.ReadString8()
-
-    End If
-    
-    If NPcLogros.TipoRecompensa = 2 Then
-    
-        NPcLogros.OroRecompensa = Reader.ReadInt32()
-
-    End If
-    
-    If NPcLogros.TipoRecompensa = 3 Then
-        NPcLogros.ExpRecompensa = Reader.ReadInt32()
-
-    End If
-    
-    If NPcLogros.TipoRecompensa = 4 Then
-        NPcLogros.HechizoRecompensa = Reader.ReadInt8()
-
-    End If
-    
-    NPcLogros.NpcsMatados = Reader.ReadInt16()
-    
-    NPcLogros.Finalizada = Reader.ReadBool()
-    
-    UserLogros.nombre = Reader.ReadString8()
-    UserLogros.desc = Reader.ReadString8()
-    UserLogros.cant = Reader.ReadInt16()
-    UserLogros.TipoRecompensa = Reader.ReadInt16()
-    UserLogros.UserMatados = Reader.ReadInt16()
-    
-    If UserLogros.TipoRecompensa = 1 Then
-        UserLogros.ObjRecompensa = Reader.ReadString8()
-
-    End If
-    
-    If UserLogros.TipoRecompensa = 2 Then
-    
-        UserLogros.OroRecompensa = Reader.ReadInt32()
-
-    End If
-    
-    If UserLogros.TipoRecompensa = 3 Then
-        UserLogros.ExpRecompensa = Reader.ReadInt32()
-
-    End If
-    
-    If UserLogros.TipoRecompensa = 4 Then
-        UserLogros.HechizoRecompensa = Reader.ReadInt8()
-
-    End If
-    
-    UserLogros.Finalizada = Reader.ReadBool()
-        
-    LevelLogros.nombre = Reader.ReadString8()
-    LevelLogros.desc = Reader.ReadString8()
-    LevelLogros.cant = Reader.ReadInt16()
-    LevelLogros.TipoRecompensa = Reader.ReadInt16()
-    LevelLogros.NivelUser = Reader.ReadInt8()
-    
-    If LevelLogros.TipoRecompensa = 1 Then
-        LevelLogros.ObjRecompensa = Reader.ReadString8()
-
-    End If
-    
-    If LevelLogros.TipoRecompensa = 2 Then
-    
-        LevelLogros.OroRecompensa = Reader.ReadInt32()
-
-    End If
-    
-    If LevelLogros.TipoRecompensa = 3 Then
-        LevelLogros.ExpRecompensa = Reader.ReadInt32()
-
-    End If
-
-    If LevelLogros.TipoRecompensa = 4 Then
-        LevelLogros.HechizoRecompensa = Reader.ReadInt8()
-
-    End If
-    
-    LevelLogros.Finalizada = Reader.ReadBool()
-    
-    If FrmLogros.Visible Then
-        Unload FrmLogros
-
-    End If
-    
-    FrmLogros.Show , frmMain
-    
-    Exit Sub
-
-HandleLogros_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLogros", Erl)
-    
-    
-End Sub
-
 Private Sub HandleBarFx()
     
     On Error GoTo HandleBarFx_Err
@@ -8486,97 +8161,6 @@ ErrHandler:
     
 End Sub
 
-Private Sub HandleListaCorreo()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    On Error GoTo ErrHandler
-    
-    Dim cant       As Byte
-    Dim i          As Byte
-    Dim Actualizar As Boolean
-
-    cant = Reader.ReadInt8()
-    
-    FrmCorreo.lstMsg.Clear
-    FrmCorreo.ListAdjuntos.Clear
-    FrmCorreo.txMensaje.Text = vbNullString
-    FrmCorreo.lbFecha.Caption = vbNullString
-    FrmCorreo.lbItem.Caption = vbNullString
-
-    If cant > 0 Then
-
-        For i = 1 To cant
-        
-            CorreoMsj(i).Remitente = Reader.ReadString8()
-            CorreoMsj(i).mensaje = Reader.ReadString8()
-            CorreoMsj(i).ItemCount = Reader.ReadInt8()
-            CorreoMsj(i).ItemArray = Reader.ReadString8()
-            CorreoMsj(i).Leido = Reader.ReadInt8()
-            CorreoMsj(i).Fecha = Reader.ReadString8()
-            
-            FrmCorreo.lstMsg.AddItem CorreoMsj(i).Remitente
-            FrmCorreo.lstMsg.Enabled = True
-            
-            FrmCorreo.txMensaje.Enabled = True
-        Next i
-
-    Else
-    
-        FrmCorreo.lstMsg.AddItem ("Sin mensajes")
-        FrmCorreo.txMensaje.Enabled = False
-
-    End If
-        
-    Call FrmCorreo.lstInv.Clear
-
-    'Fill the inventory list
-    For i = 1 To MAX_INVENTORY_SLOTS
-
-        If frmMain.Inventario.OBJIndex(i) <> 0 Then
-            FrmCorreo.lstInv.AddItem frmMain.Inventario.ItemName(i)
-            
-        Else
-            FrmCorreo.lstInv.AddItem "Vacio"
-
-        End If
-
-    Next i
-    
-    Actualizar = Reader.ReadBool()
-
-    ' FrmCorreo.lstMsg.AddItem
-    If Not Actualizar Then
-        FrmCorreo.Picture = LoadInterface("ventanacorreo.bmp")
-        COLOR_AZUL = RGB(0, 0, 0)
-        
-        ' establece el borde al listbox
-        Call Establecer_Borde(FrmCorreo.lstMsg, FrmCorreo, COLOR_AZUL, 0, 0)
-        Call Establecer_Borde(FrmCorreo.ListAdjuntos, FrmCorreo, COLOR_AZUL, 0, 0)
-        Call Establecer_Borde(FrmCorreo.ListaAenviar, FrmCorreo, COLOR_AZUL, 0, 0)
-        Call Establecer_Borde(FrmCorreo.lstInv, FrmCorreo, COLOR_AZUL, 0, 0)
-
-        FrmCorreo.Show , frmMain
-        
-    End If
-
-    frmMain.PicCorreo.Visible = False
-    
-    Exit Sub
-    
-    Exit Sub
-
-ErrHandler:
-
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleListaCorreo", Erl)
-    
-
-End Sub
-
 Private Sub HandleShowPregunta()
 
     '***************************************************
@@ -8718,153 +8302,6 @@ Private Sub HandleViajarForm()
 HandleViajarForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleViajarForm", Erl)
     
-    
-End Sub
-
-Private Sub HandleActShop()
-    
-    On Error GoTo HandleActShop_Err
-    
-    Dim credito As Long
-
-    Dim dias    As Integer
-    
-    credito = Reader.ReadInt32()
-    dias = Reader.ReadInt16()
-
-    FrmShop.Label7.Caption = dias & " dias"
-    FrmShop.Label3.Caption = credito & " creditos"
-    
-    Exit Sub
-
-HandleActShop_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleActShop", Erl)
-    
-    
-End Sub
-
-Private Sub HandleDonadorObjects()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    On Error GoTo ErrHandler
-    
-    Dim count    As Integer
-    Dim i        As Long
-    Dim tmp      As String
-    Dim Obj      As Integer
-    Dim Precio   As Integer
-    Dim creditos As Long
-    Dim dias     As Integer
-
-    count = Reader.ReadInt16()
-    
-    Call FrmShop.lstArmas.Clear
-    
-    For i = 1 To count
-        Obj = Reader.ReadInt16()
-        tmp = ObjData(Obj).Name           'Get the object's name
-        Precio = Reader.ReadInt16()
-        ObjDonador(i).Index = Obj
-        ObjDonador(i).Precio = Precio
-        Call FrmShop.lstArmas.AddItem(tmp)
-    Next i
-    
-    For i = i To UBound(ObjDonador())
-        ObjDonador(i).Index = 0
-        ObjDonador(i).Precio = 0
-    Next i
-    
-    creditos = Reader.ReadInt32()
-    dias = Reader.ReadInt16()
-    
-    FrmShop.Label3.Caption = creditos & " creditos"
-    
-    FrmShop.Label7.Caption = dias & " dias"
-    FrmShop.Picture = LoadInterface("shop.bmp")
-    
-    COLOR_AZUL = RGB(0, 0, 0)
-    
-    ' establece el borde al listbox
-    Call Establecer_Borde(FrmShop.lstArmas, FrmShop, COLOR_AZUL, 1, 1)
-    FrmShop.Show , frmMain
-    
-    Exit Sub
-
-ErrHandler:
-
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDonadorObjects", Erl)
-    
-
-End Sub
-
-''
-' Handles the RestOK message.
-Private Sub HandleRanking()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    On Error GoTo ErrHandler
-    
-    Dim i      As Long
-
-    Dim tmp    As String
-    
-    Dim Nick   As String
-
-    Dim puntos As Integer
-    
-    For i = 1 To 10
-        LRanking(i).nombre = Reader.ReadString8()
-        LRanking(i).puntos = Reader.ReadInt16()
-
-        If LRanking(i).nombre = "-0" Then
-            FrmRanking.Puesto(i).Caption = "Vacante"
-        Else
-            FrmRanking.Puesto(i).Caption = LRanking(i).nombre
-
-        End If
-
-    Next i
-    
-    FrmRanking.Picture = LoadInterface("ranking.bmp")
-    FrmRanking.Show , frmMain
-    
-    Exit Sub
-
-ErrHandler:
-
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRanking", Erl)
-    
-
-End Sub
-
-Private Sub HandleTolerancia0()
-
-    If Not WriteStringToRegistry(&H80000001, "Software\pmeT", "e14a3ff5b5e67ede599cac94358e1028", "rekcahnuyos") Then
-        Debug.Print "Error en WriteStringToRegistry"
-
-    End If
-    
-    End
-
-End Sub
-
-Private Sub HandleXorIndex()
-    
-    #If AntiExternos = 1 Then
-        XorIndexIn = Reader.ReadInt16
-    #Else
-        Call Reader.ReadInt16
-    #End If
     
 End Sub
 

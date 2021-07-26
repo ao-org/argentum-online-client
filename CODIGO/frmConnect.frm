@@ -672,8 +672,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Call modNetwork.Disconnect
 
                     CantidadDePersonajesEnCuenta = 0
-                    CuentaDonador = 0
-                
+
                     Dim i As Integer
 
                     For i = 1 To 8

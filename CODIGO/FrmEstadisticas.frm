@@ -32,7 +32,7 @@ Begin VB.Form frmEstadisticas
       Height          =   150
       Index           =   18
       Left            =   6930
-      TabIndex        =   76
+      TabIndex        =   73
       Top             =   2700
       Width           =   1620
    End
@@ -51,7 +51,7 @@ Begin VB.Form frmEstadisticas
       Height          =   150
       Index           =   17
       Left            =   6930
-      TabIndex        =   75
+      TabIndex        =   72
       Top             =   2325
       Width           =   1620
    End
@@ -70,7 +70,7 @@ Begin VB.Form frmEstadisticas
       Height          =   150
       Index           =   16
       Left            =   3675
-      TabIndex        =   74
+      TabIndex        =   71
       Top             =   3090
       Width           =   1620
    End
@@ -91,7 +91,7 @@ Begin VB.Form frmEstadisticas
       Height          =   210
       Index           =   5
       Left            =   1920
-      TabIndex        =   73
+      TabIndex        =   70
       Top             =   5310
       Width           =   180
    End
@@ -129,7 +129,7 @@ Begin VB.Form frmEstadisticas
       Height          =   210
       Index           =   24
       Left            =   9195
-      TabIndex        =   72
+      TabIndex        =   69
       Top             =   6390
       Width           =   285
    End
@@ -148,7 +148,7 @@ Begin VB.Form frmEstadisticas
       Height          =   150
       Index           =   24
       Left            =   6960
-      TabIndex        =   71
+      TabIndex        =   68
       Top             =   6465
       Width           =   1620
    End
@@ -158,30 +158,6 @@ Begin VB.Form frmEstadisticas
       Tag             =   "0"
       Top             =   0
       Width           =   465
-   End
-   Begin VB.Label lblcredito 
-      Caption         =   "Label2"
-      Height          =   255
-      Left            =   1200
-      TabIndex        =   70
-      Top             =   10560
-      Width           =   975
-   End
-   Begin VB.Label lbldiasrestantes 
-      Caption         =   "Label2"
-      Height          =   255
-      Left            =   1200
-      TabIndex        =   69
-      Top             =   10320
-      Width           =   975
-   End
-   Begin VB.Label lbldonador 
-      Caption         =   "Label2"
-      Height          =   255
-      Left            =   1200
-      TabIndex        =   68
-      Top             =   10080
-      Width           =   975
    End
    Begin VB.Image estado 
       Height          =   390
@@ -2049,16 +2025,6 @@ Public Sub Iniciar_Labels()
         Label6(7).Caption = .VecesQueMoriste
         Label6(8).Caption = .Raza
 
-        If .Donador = 0 Then
-            lbldonador.Caption = "Inactivo"
-        Else
-            lbldonador.Caption = "Activo"
-
-        End If
-
-        'lbldonador.Caption = .Donador
-        lbldiasrestantes.Caption = .DiasRestantes
-        lblcredito.Caption = .CreditoDonador
         lblpuntosbattle.Caption = .BattlePuntos
     
     End With

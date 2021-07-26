@@ -1202,10 +1202,6 @@ Public Sub WriteSubastaInfo()
     Call Writer.WriteInt(ClientPacketID.SubastaInfo)
 End Sub
 
-Public Sub WriteScrollInfo()
-    Call Writer.WriteInt(ClientPacketID.SCROLLINFO)
-End Sub
-
 Public Sub WriteCancelarExit()
     UserSaliendo = False
     Call Writer.WriteInt(ClientPacketID.CancelarExit)
@@ -1224,13 +1220,9 @@ End Sub
 '
 ' @param    message The message to be sent to the other GMs online.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteEscribiendo()
+Public Sub WriteEscribiendo(ByVal Flag As Boolean)
     Call Writer.WriteInt(ClientPacketID.Escribiendo)
-End Sub
-
-Public Sub WriteReclamarRecompensa(ByVal Index As Byte)
-    Call Writer.WriteInt(ClientPacketID.ReclamarRecompensa)
-    Call Writer.WriteInt8(Index)
+    Call Writer.WriteBool(Flag)
 End Sub
 
 Public Sub WriteGMMessage(ByVal Message As String)
@@ -2504,14 +2496,6 @@ Public Sub WriteKickAllChars()
 End Sub
 
 ''
-' Writes the "RequestTCPStats" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteRequestTCPStats()
-    Call Writer.WriteInt(ClientPacketID.RequestTCPStats)
-End Sub
-
-''
 ' Writes the "ReloadNPCs" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
@@ -2549,14 +2533,6 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRestart()
     Call Writer.WriteInt(ClientPacketID.Restart)
-End Sub
-
-''
-' Writes the "ResetAutoUpdate" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteResetAutoUpdate()
-    Call Writer.WriteInt(ClientPacketID.ResetAutoUpdate)
 End Sub
 
 ''
@@ -2670,18 +2646,6 @@ Public Sub WriteGenio()
     Call Writer.WriteInt(ClientPacketID.Genio)
 End Sub
 
-Public Sub WriteTraerRecompensas()
-    Call Writer.WriteInt(ClientPacketID.TraerRecompensas)
-End Sub
-
-Public Sub WriteTraerShop()
-    Call Writer.WriteInt(ClientPacketID.Traershop)
-End Sub
-
-Public Sub WriteTraerRanking()
-    Call Writer.WriteInt(ClientPacketID.TraerRanking)
-End Sub
-
 Public Sub WriteQuest()
     Call Writer.WriteInt(ClientPacketID.Quest)
 End Sub
@@ -2711,55 +2675,10 @@ Public Sub WriteResponderPregunta(ByVal Respuesta As Boolean)
     Call Writer.WriteBool(Respuesta)
 End Sub
 
-Public Sub WriteCorreo()
-    Call Writer.WriteInt(ClientPacketID.Correo)
-End Sub
-
-Public Sub WriteSendCorreo(ByVal UserNick As String, _
-                           ByVal msg As String, _
-                           ByVal ItemCount As Byte)
-    Call Writer.WriteInt(ClientPacketID.SendCorreo)
-    Call Writer.WriteString8(UserNick)
-    Call Writer.WriteString8(msg)
-    Call Writer.WriteInt8(ItemCount)
-
-    If ItemCount > 0 Then
-
-        Dim i As Byte
-
-        For i = 1 To ItemCount
-            Call Writer.WriteInt8(ItemLista(i).OBJIndex) ' Slot
-            Call Writer.WriteInt16(ItemLista(i).Amount) 'Cantidad
-        Next i
-
-    End If
-
-End Sub
-
-Public Sub WriteComprarItem(ByVal ItemIndex As Byte)
-    Call Writer.WriteInt(ClientPacketID.ComprarItem)
-    Call Writer.WriteInt8(ItemIndex)
-End Sub
-
 Public Sub WriteCompletarViaje(ByVal destino As Byte, ByVal costo As Long)
     Call Writer.WriteInt(ClientPacketID.CompletarViaje)
     Call Writer.WriteInt8(destino)
     Call Writer.WriteInt32(costo)
-End Sub
-
-Public Sub WriteRetirarItemCorreo(ByVal IndexMsg As Integer)
-    Call Writer.WriteInt(ClientPacketID.RetirarItemCorreo)
-    Call Writer.WriteInt16(IndexMsg)
-End Sub
-
-Public Sub WriteBorrarCorreo(ByVal IndexMsg As Integer)
-    Call Writer.WriteInt(ClientPacketID.BorrarCorreo)
-    Call Writer.WriteInt16(IndexMsg)
-End Sub
-
-Public Sub WriteCodigo(ByVal Codigo As String)
-    Call Writer.WriteInt(ClientPacketID.EnviarCodigo)
-    Call Writer.WriteString8(Codigo)
 End Sub
 
 Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, _

@@ -2102,10 +2102,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/ECHARTODOSPJS"
                 Call WriteKickAllChars
-                
-            Case "/TCPESSTATS"
-                Call WriteRequestTCPStats
-                
+
             Case "/RELOADNPCS"
                 Call WriteReloadNPCs
                 
@@ -2123,10 +2120,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                  
             Case "/REINICIAR"
                 Call WriteRestart
-                
-            Case "/AUTOUPDATE"
-                Call WriteResetAutoUpdate
-            
+
             Case "/CHATCOLOR"
 
                 If notNullArguments And CantidadArgumentos >= 3 Then
