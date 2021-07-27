@@ -2997,7 +2997,6 @@ End Sub
 Private Sub Temporal_Click()
     
     On Error GoTo Temporal_Click_Err
-    
 
     Dim tmp  As String
 
@@ -3011,7 +3010,6 @@ Private Sub Temporal_Click()
 
     End If
 
-    
     Exit Sub
 
 Temporal_Click_Err:
@@ -3058,36 +3056,55 @@ torneo_comenzar_Click_Err:
     
 End Sub
 
+Private Sub txtArma_KeyPress(KeyAscii As Integer)
+    If Not IsNumeric(txtArma.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+End Sub
 
 Private Sub txtArma_Change()
     Call ParseUserCommand("/MOD YO" & " Arma " & txtArma.Text)
+End Sub
+
+
+Private Sub txtBodyYo_KeyPress(KeyAscii As Integer)
+    If Not IsNumeric(txtBodyYo.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
 End Sub
 
 Private Sub txtBodyYo_Change()
     Call ParseUserCommand("/MOD YO" & " Body " & txtBodyYo.Text)
 End Sub
 
+Private Sub txtCasco_KeyPress(KeyAscii As Integer)
+    If Not IsNumeric(txtCasco.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+End Sub
+
 Private Sub txtCasco_Change()
-Call ParseUserCommand("/MOD YO" & " Casco " & txtCasco.Text)
+    Call ParseUserCommand("/MOD YO" & " Casco " & txtCasco.Text)
+End Sub
+
+Private Sub txtEscudo_KeyPress(KeyAscii As Integer)
+    If Not IsNumeric(txtEscudo.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
 End Sub
 
 Private Sub txtEscudo_Change()
+    Call ParseUserCommand("/MOD YO" & " Escudo " & txtEscudo.Text)
+End Sub
 
- Call ParseUserCommand("/MOD YO" & " Escudo " & txtEscudo.Text)
- 
+Private Sub txtHeadNumero_KeyPress(KeyAscii As Integer)
+    If Not IsNumeric(txtHeadNumero.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
 End Sub
 
 Private Sub txtHeadNumero_Change()
     Call ParseUserCommand("/MOD YO" & " Head " & txtHeadNumero.Text)
 End Sub
 
-Private Sub txtMod_KeyPress(KeyAscii As Integer)
 
+Private Sub txtMod_KeyPress(KeyAscii As Integer)
+    If Not IsNumeric(txtMod.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    
     If KeyAscii = vbKeyReturn Then
         Call ParseUserCommand(txtMod.Text)
         txtMod = ""
     End If
-
 End Sub
 
 Private Sub UnbanCuenta_Click()
