@@ -951,8 +951,7 @@ End Function
 ' Handles the Connected message.
 
 Private Sub HandleConnected()
-    Call Protocol_Writes.Initialize
-    
+
     frmMain.ShowFPS.Enabled = True
 
     Select Case EstadoLogin
