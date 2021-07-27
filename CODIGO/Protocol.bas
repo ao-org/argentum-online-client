@@ -1639,7 +1639,7 @@ Private Sub HandleUserCommerceInit()
 
     End With
         
-    frmComerciarUsu.lblMyGold.Caption = frmMain.GldLbl.Caption
+    frmComerciarUsu.lblMyGold.Caption = PonerPuntos(UserGLD)
     
     Dim j As Byte
 
@@ -6658,7 +6658,7 @@ Private Sub HandleChangeUserTradeSlot()
         Dim OroAEnviar As Long
         OroAEnviar = Reader.ReadInt32
         frmComerciarUsu.lblOroMiOferta.Caption = PonerPuntos(OroAEnviar)
-        frmComerciarUsu.lblMyGold.Caption = PonerPuntos(Val(frmMain.GldLbl.Caption - OroAEnviar))
+        frmComerciarUsu.lblMyGold.Caption = PonerPuntos(UserGLD - OroAEnviar)
 
         For i = 1 To 6
 
