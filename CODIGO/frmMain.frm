@@ -384,7 +384,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4463,8 +4462,6 @@ End Sub
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
-
-    Call Protocol.InitializePacketList
 
     Call FormParser.Parse_Form(frmMain)
     

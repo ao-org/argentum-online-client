@@ -7,9 +7,10 @@ Public Sub Connect(ByVal Address As String, ByVal Service As String)
     If (Address = vbNullString Or Service = vbNullString) Then
         Exit Sub
     End If
+
+    Call Protocol_Writes.Initialize
     
     Set Client = New Network.Client
-
     Call Client.Attach(AddressOf OnClientConnect, AddressOf OnClientClose, AddressOf OnClientSend, AddressOf OnClientRecv)
     Call Client.Connect(Address, Service)
 End Sub
@@ -34,7 +35,7 @@ End Sub
 Private Sub OnClientConnect()
 On Error GoTo OnClientConnect_Err:
     
-    Call Protocol_Writes.Clear
+    Call Protocol_Writes.Initialize
     
 #If AntiExternos = 1 Then
     XorIndexIn = 0
@@ -51,7 +52,9 @@ End Sub
 
 Private Sub OnClientClose(ByVal Code As Long)
 On Error GoTo OnClientClose_Err:
-
+    
+    Call Protocol_Writes.Clear
+    
     Call frmMain.OnClientDisconnect(Code <> 0)
     
     Connected = False
@@ -69,7 +72,7 @@ On Error GoTo OnClientSend_Err:
     Call Message.GetData(BytesRef) ' Is only a view of the buffer as a SafeArrayPtr ;-)
 
     #If AntiExternos = 1 Then
-        Call Security.XorData(BytesRef, UBound(BytesRef), XorIndexOut)
+        Call Security.XorData(BytesRef, UBound(BytesRef) - 1, XorIndexOut)
     #End If
     
     Exit Sub
@@ -85,7 +88,7 @@ On Error GoTo OnClientRecv_Err:
     Call Message.GetData(BytesRef) ' Is only a view of the buffer as a SafeArrayPtr ;-)
 
     #If AntiExternos = 1 Then
-        Call Security.XorData(BytesRef, UBound(BytesRef), XorIndexIn)
+        Call Security.XorData(BytesRef, UBound(BytesRef) - 1, XorIndexIn)
     #End If
   
     While (Message.GetAvailable() > 0)

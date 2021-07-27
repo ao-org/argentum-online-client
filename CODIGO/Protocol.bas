@@ -564,11 +564,6 @@ End Enum
 
 Private Reader As Network.Reader
 
-Public Sub InitializePacketList()
-    Call Protocol_Writes.Initialize
-
-End Sub
-
 ''
 ' Handles incoming data.
 
@@ -956,7 +951,8 @@ End Function
 ' Handles the Connected message.
 
 Private Sub HandleConnected()
-       
+    Call Protocol_Writes.Initialize
+    
     frmMain.ShowFPS.Enabled = True
 
     Select Case EstadoLogin
