@@ -6342,7 +6342,7 @@ Private Sub HandleCharacterInfo()
         .oro.Caption = "Oro: " & Reader.ReadInt32()
         .Banco.Caption = "Banco: " & Reader.ReadInt32()
     
-        '.txtPeticiones.Text = Reader.ReadString8()
+        .txtPeticiones.Text = Reader.ReadString8()
         .guildactual.Caption = "Clan: " & Reader.ReadString8()
         .txtMiembro.Text = Reader.ReadString8()
             
