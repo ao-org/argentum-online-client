@@ -928,9 +928,12 @@ On Error GoTo HandleIncomingData_Err
             Call HandleGuardNotice
             
         Case Else
-            Err.Raise -1, "Invalid Message"
+            Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
-
+    
+    If (Message.GetAvailable() > 0) Then
+        Err.Raise &HDEADBEEF, "HandleIncomingData", "El paquete '" & PacketID & "' se encuentra en mal estado con '" & Message.GetAvailable() & "' bytes de mas"
+    End If
 
     HandleIncomingData = True
     
@@ -6763,9 +6766,9 @@ Private Sub HandleShowSOSForm()
     sosList = Split(Reader.ReadString8(), SEPARATOR)
     
     For i = 0 To UBound(sosList())
-        nombre = ReadField(1, sosList(i), Asc("Ø"))
-        Consulta = ReadField(2, sosList(i), Asc("Ø"))
-        TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
+        nombre = ReadField(1, sosList(I), Asc("Ø"))
+        Consulta = ReadField(2, sosList(I), Asc("Ø"))
+        TipoDeConsulta = ReadField(3, sosList(I), Asc("Ø"))
         frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ")"
         frmPanelgm.List2.AddItem Consulta
     Next i

@@ -8,15 +8,13 @@ Public Sub Connect(ByVal Address As String, ByVal Service As String)
         Exit Sub
     End If
 
-    Call Protocol_Writes.Initialize
-    
     Set Client = New Network.Client
     Call Client.Attach(AddressOf OnClientConnect, AddressOf OnClientClose, AddressOf OnClientSend, AddressOf OnClientRecv)
     Call Client.Connect(Address, Service)
 End Sub
 
 Public Sub Disconnect()
-    Call Client.Close
+    Call Client.Close(True)
 End Sub
 
 Public Sub Poll()
@@ -24,12 +22,16 @@ Public Sub Poll()
         Exit Sub
     End If
     
-    Call Protocol_Writes.Flush(Client)
     Call Client.Poll
+    Call Client.Flush
 End Sub
 
 Public Sub Send(ByVal Buffer As Network.Writer)
-    Call Client.Send(False, Buffer)
+    If (Connected) Then
+        Call Client.Send(False, Buffer)
+    End If
+    
+    Call Buffer.Clear
 End Sub
 
 Private Sub OnClientConnect()
@@ -90,11 +92,9 @@ On Error GoTo OnClientRecv_Err:
     #If AntiExternos = 1 Then
         Call Security.XorData(BytesRef, UBound(BytesRef) - 1, XorIndexIn)
     #End If
-  
-    While (Message.GetAvailable() > 0)
-        Call Protocol.HandleIncomingData(Message)
-    Wend
-    
+
+    Call Protocol.HandleIncomingData(Message)
+
     Exit Sub
     
 OnClientRecv_Err:

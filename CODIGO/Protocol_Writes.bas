@@ -11,17 +11,6 @@ Public Sub Clear()
     Call Writer.Clear
 End Sub
 
-Public Sub Flush(ByVal Connection As Network.Client)
-    If (Writer.GetOffset() = 0) Then
-        Exit Sub
-    End If
-    
-    Call Connection.Send(False, Writer)
-    Call Connection.Flush
-    
-    Call Writer.Clear
-End Sub
-
 ''
 ' Writes the "LoginExistingChar" message to the outgoing data buffer.
 '
@@ -37,6 +26,8 @@ Public Sub WriteLoginExistingChar()
     Call Writer.WriteString8(MacAdress)  'Seguridad
     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
     Call Writer.WriteString8(CheckMD5)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -59,6 +50,8 @@ Public Sub WriteLoginNewChar()
     Call Writer.WriteString8(MacAdress)  'Seguridad
     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
     Call Writer.WriteString8(CheckMD5)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -69,6 +62,8 @@ End Sub
 Public Sub WriteTalk(ByVal chat As String)
     Call Writer.WriteInt(ClientPacketID.Talk)
     Call Writer.WriteString8(chat)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -79,6 +74,8 @@ End Sub
 Public Sub WriteYell(ByVal chat As String)
     Call Writer.WriteInt(ClientPacketID.Yell)
     Call Writer.WriteString8(chat)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -91,6 +88,8 @@ Public Sub WriteWhisper(ByVal nombre As String, ByVal chat As String)
     Call Writer.WriteInt(ClientPacketID.Whisper)
     Call Writer.WriteString8(nombre)
     Call Writer.WriteString8(chat)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -101,6 +100,8 @@ End Sub
 Public Sub WriteWalk(ByVal Heading As E_Heading)
     Call Writer.WriteInt(ClientPacketID.Walk)
     Call Writer.WriteInt8(Heading)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -109,6 +110,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestPositionUpdate()
     Call Writer.WriteInt(ClientPacketID.RequestPositionUpdate)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -117,6 +120,9 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAttack()
     Call Writer.WriteInt(ClientPacketID.Attack)
+    Call Writer.WriteInt(ClientPacketID.PickUp)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -125,6 +131,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePickUp()
     Call Writer.WriteInt(ClientPacketID.PickUp)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -133,14 +141,20 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSafeToggle()
     Call Writer.WriteInt(ClientPacketID.SafeToggle)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteSeguroClan()
     Call Writer.WriteInt(ClientPacketID.SeguroClan)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteTraerBoveda()
     Call Writer.WriteInt(ClientPacketID.TraerBoveda)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -157,6 +171,8 @@ Public Sub WriteCreatePretorianClan(ByVal map As Integer, _
     Call Writer.WriteInt16(map)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -165,6 +181,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteParyToggle()
     Call Writer.WriteInt(ClientPacketID.PartySafeToggle)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -173,6 +191,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSeguroResu()
     Call Writer.WriteInt(ClientPacketID.SeguroResu)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -181,6 +201,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestGuildLeaderInfo()
     Call Writer.WriteInt(ClientPacketID.RequestGuildLeaderInfo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -189,14 +211,20 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestAtributes()
     Call Writer.WriteInt(ClientPacketID.RequestAtributes)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteRequestFamiliar()
     Call Writer.WriteInt(ClientPacketID.RequestFamiliar)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteRequestGrupo()
     Call Writer.WriteInt(ClientPacketID.RequestGrupo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -205,6 +233,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestSkills()
     Call Writer.WriteInt(ClientPacketID.RequestSkills)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -213,6 +243,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestMiniStats()
     Call Writer.WriteInt(ClientPacketID.RequestMiniStats)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -221,6 +253,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCommerceEnd()
     Call Writer.WriteInt(ClientPacketID.CommerceEnd)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -229,6 +263,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUserCommerceEnd()
     Call Writer.WriteInt(ClientPacketID.UserCommerceEnd)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -237,6 +273,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBankEnd()
     Call Writer.WriteInt(ClientPacketID.BankEnd)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -245,6 +283,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUserCommerceOk()
     Call Writer.WriteInt(ClientPacketID.UserCommerceOk)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -253,6 +293,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUserCommerceReject()
     Call Writer.WriteInt(ClientPacketID.UserCommerceReject)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -265,6 +307,8 @@ Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
     Call Writer.WriteInt(ClientPacketID.Drop)
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt32(Amount)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -275,27 +319,39 @@ End Sub
 Public Sub WriteCastSpell(ByVal Slot As Byte)
     Call Writer.WriteInt(ClientPacketID.CastSpell)
     Call Writer.WriteInt8(Slot)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteInvitarGrupo()
     Call Writer.WriteInt(ClientPacketID.InvitarGrupo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteMarcaDeClan()
     Call Writer.WriteInt(ClientPacketID.MarcaDeClanPack)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteMarcaDeGm()
     Call Writer.WriteInt(ClientPacketID.MarcaDeGMPack)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteAbandonarGrupo()
     Call Writer.WriteInt(ClientPacketID.AbandonarGrupo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteEcharDeGrupo(ByVal indice As Byte)
     Call Writer.WriteInt(ClientPacketID.HecharDeGrupo)
     Call Writer.WriteInt8(indice)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -308,6 +364,8 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
     Call Writer.WriteInt(ClientPacketID.LeftClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -320,6 +378,8 @@ Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
     Call Writer.WriteInt(ClientPacketID.DoubleClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -330,10 +390,14 @@ End Sub
 Public Sub WriteWork(ByVal Skill As eSkill)
     Call Writer.WriteInt(ClientPacketID.Work)
     Call Writer.WriteInt8(Skill)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteThrowDice()
     Call Writer.WriteInt(ClientPacketID.ThrowDice)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -342,6 +406,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUseSpellMacro()
     Call Writer.WriteInt(ClientPacketID.UseSpellMacro)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -352,6 +418,8 @@ End Sub
 Public Sub WriteUseItem(ByVal Slot As Byte)
     Call Writer.WriteInt(ClientPacketID.UseItem)
     Call Writer.WriteInt8(Slot)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -362,6 +430,8 @@ End Sub
 Public Sub WriteCraftBlacksmith(ByVal Item As Integer)
     Call Writer.WriteInt(ClientPacketID.CraftBlacksmith)
     Call Writer.WriteInt16(Item)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -372,16 +442,22 @@ End Sub
 Public Sub WriteCraftCarpenter(ByVal Item As Integer)
     Call Writer.WriteInt(ClientPacketID.CraftCarpenter)
     Call Writer.WriteInt16(Item)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCraftAlquimista(ByVal Item As Integer)
     Call Writer.WriteInt(ClientPacketID.CraftAlquimista)
     Call Writer.WriteInt16(Item)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCraftSastre(ByVal Item As Integer)
     Call Writer.WriteInt(ClientPacketID.CraftSastre)
     Call Writer.WriteInt16(Item)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -396,6 +472,8 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
     Call Writer.WriteInt8(Skill)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -413,6 +491,8 @@ Public Sub WriteCreateNewGuild(ByVal desc As String, _
     Call Writer.WriteString8(desc)
     Call Writer.WriteString8(Name)
     Call Writer.WriteInt8(Alineacion)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -423,6 +503,8 @@ End Sub
 Public Sub WriteSpellInfo(ByVal Slot As Byte)
     Call Writer.WriteInt(ClientPacketID.SpellInfo)
     Call Writer.WriteInt8(Slot)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -433,6 +515,8 @@ End Sub
 Public Sub WriteEquipItem(ByVal Slot As Byte)
     Call Writer.WriteInt(ClientPacketID.EquipItem)
     Call Writer.WriteInt8(Slot)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -443,6 +527,8 @@ End Sub
 Public Sub WriteChangeHeading(ByVal Heading As E_Heading)
     Call Writer.WriteInt(ClientPacketID.ChangeHeading)
     Call Writer.WriteInt8(Heading)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -458,6 +544,8 @@ Public Sub WriteModifySkills(ByRef skillEdt() As Byte)
     For i = 1 To NUMSKILLS
         Call Writer.WriteInt8(skillEdt(i))
     Next i
+    
+    Call modNetwork.Send(Writer)
 
 End Sub
 
@@ -469,6 +557,8 @@ End Sub
 Public Sub WriteTrain(ByVal creature As Byte)
     Call Writer.WriteInt(ClientPacketID.Train)
     Call Writer.WriteInt8(creature)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -481,11 +571,15 @@ Public Sub WriteCommerceBuy(ByVal Slot As Byte, ByVal Amount As Integer)
     Call Writer.WriteInt(ClientPacketID.CommerceBuy)
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt16(Amount)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteUseKey(ByVal Slot As Byte)
     Call Writer.WriteInt(ClientPacketID.UseKey)
     Call Writer.WriteInt8(Slot)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -501,6 +595,8 @@ Public Sub WriteBankExtractItem(ByVal Slot As Byte, _
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt16(Amount)
     Call Writer.WriteInt8(slotdestino)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -513,6 +609,8 @@ Public Sub WriteCommerceSell(ByVal Slot As Byte, ByVal Amount As Integer)
     Call Writer.WriteInt(ClientPacketID.CommerceSell)
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt16(Amount)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -528,6 +626,8 @@ Public Sub WriteBankDeposit(ByVal Slot As Byte, _
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt16(Amount)
     Call Writer.WriteInt8(slotdestino)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -540,6 +640,8 @@ Public Sub WriteForumPost(ByVal title As String, ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.ForumPost)
     Call Writer.WriteString8(title)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -552,6 +654,8 @@ Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal Slot As Byte)
     Call Writer.WriteInt(ClientPacketID.MoveSpell)
     Call Writer.WriteBool(upwards)
     Call Writer.WriteInt8(Slot)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -563,6 +667,8 @@ End Sub
 Public Sub WriteClanCodexUpdate(ByVal desc As String)
     Call Writer.WriteInt(ClientPacketID.ClanCodexUpdate)
     Call Writer.WriteString8(desc)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -575,6 +681,8 @@ Public Sub WriteUserCommerceOffer(ByVal Slot As Byte, ByVal Amount As Long)
     Call Writer.WriteInt(ClientPacketID.UserCommerceOffer)
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt32(Amount)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -585,6 +693,8 @@ End Sub
 Public Sub WriteGuildAcceptPeace(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildAcceptPeace)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -595,6 +705,8 @@ End Sub
 Public Sub WriteGuildRejectAlliance(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildRejectAlliance)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -605,6 +717,8 @@ End Sub
 Public Sub WriteGuildRejectPeace(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildRejectPeace)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -615,6 +729,8 @@ End Sub
 Public Sub WriteGuildAcceptAlliance(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildAcceptAlliance)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -627,6 +743,8 @@ Public Sub WriteGuildOfferPeace(ByVal guild As String, ByVal proposal As String)
     Call Writer.WriteInt(ClientPacketID.GuildOfferPeace)
     Call Writer.WriteString8(guild)
     Call Writer.WriteString8(proposal)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -639,6 +757,8 @@ Public Sub WriteGuildOfferAlliance(ByVal guild As String, ByVal proposal As Stri
     Call Writer.WriteInt(ClientPacketID.GuildOfferAlliance)
     Call Writer.WriteString8(guild)
     Call Writer.WriteString8(proposal)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -649,6 +769,8 @@ End Sub
 Public Sub WriteGuildAllianceDetails(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildAllianceDetails)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -659,6 +781,8 @@ End Sub
 Public Sub WriteGuildPeaceDetails(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildPeaceDetails)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -669,6 +793,8 @@ End Sub
 Public Sub WriteGuildRequestJoinerInfo(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.GuildRequestJoinerInfo)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -677,6 +803,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildAlliancePropList()
     Call Writer.WriteInt(ClientPacketID.GuildAlliancePropList)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -685,6 +813,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildPeacePropList()
     Call Writer.WriteInt(ClientPacketID.GuildPeacePropList)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -695,6 +825,8 @@ End Sub
 Public Sub WriteGuildDeclareWar(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildDeclareWar)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -705,6 +837,8 @@ End Sub
 Public Sub WriteGuildNewWebsite(ByVal url As String)
     Call Writer.WriteInt(ClientPacketID.GuildNewWebsite)
     Call Writer.WriteString8(url)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -715,6 +849,8 @@ End Sub
 Public Sub WriteGuildAcceptNewMember(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.GuildAcceptNewMember)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -727,6 +863,8 @@ Public Sub WriteGuildRejectNewMember(ByVal UserName As String, ByVal reason As S
     Call Writer.WriteInt(ClientPacketID.GuildRejectNewMember)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(reason)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -737,6 +875,8 @@ End Sub
 Public Sub WriteGuildKickMember(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.GuildKickMember)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -747,6 +887,8 @@ End Sub
 Public Sub WriteGuildUpdateNews(ByVal news As String)
     Call Writer.WriteInt(ClientPacketID.GuildUpdateNews)
     Call Writer.WriteString8(news)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -757,6 +899,8 @@ End Sub
 Public Sub WriteGuildMemberInfo(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.GuildMemberInfo)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -765,6 +909,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildOpenElections()
     Call Writer.WriteInt(ClientPacketID.GuildOpenElections)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -777,6 +923,8 @@ Public Sub WriteGuildRequestMembership(ByVal guild As String, ByVal Application 
     Call Writer.WriteInt(ClientPacketID.GuildRequestMembership)
     Call Writer.WriteString8(guild)
     Call Writer.WriteString8(Application)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -787,6 +935,8 @@ End Sub
 Public Sub WriteGuildRequestDetails(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildRequestDetails)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -795,6 +945,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnline()
     Call Writer.WriteInt(ClientPacketID.Online)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -804,6 +956,8 @@ End Sub
 Public Sub WriteQuit()
     Call Writer.WriteInt(ClientPacketID.Quit)
     UserSaliendo = True
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -812,6 +966,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildLeave()
     Call Writer.WriteInt(ClientPacketID.GuildLeave)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -820,6 +976,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestAccountState()
     Call Writer.WriteInt(ClientPacketID.RequestAccountState)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -828,6 +986,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePetStand()
     Call Writer.WriteInt(ClientPacketID.PetStand)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -836,6 +996,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePetFollow()
     Call Writer.WriteInt(ClientPacketID.PetFollow)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -844,6 +1006,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePetLeave()
     Call Writer.WriteInt(ClientPacketID.PetLeave)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -853,6 +1017,8 @@ End Sub
 Public Sub WriteGrupoMsg(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.GrupoMsg)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -861,6 +1027,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTrainList()
     Call Writer.WriteInt(ClientPacketID.TrainList)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -869,6 +1037,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRest()
     Call Writer.WriteInt(ClientPacketID.Rest)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -877,6 +1047,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteMeditate()
     Call Writer.WriteInt(ClientPacketID.Meditate)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -885,6 +1057,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteResucitate()
     Call Writer.WriteInt(ClientPacketID.Resucitate)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -893,6 +1067,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteHeal()
     Call Writer.WriteInt(ClientPacketID.Heal)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -901,6 +1077,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteHelp()
     Call Writer.WriteInt(ClientPacketID.Help)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -909,6 +1087,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestStats()
     Call Writer.WriteInt(ClientPacketID.RequestStats)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -917,6 +1097,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePromedio()
     Call Writer.WriteInt(ClientPacketID.Promedio)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -932,6 +1114,8 @@ Public Sub WriteGiveItem(UserName As String, _
     Call Writer.WriteInt16(OBJIndex)
     Call Writer.WriteInt16(cantidad)
     Call Writer.WriteString8(Motivo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -940,6 +1124,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCommerceStart()
     Call Writer.WriteInt(ClientPacketID.CommerceStart)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -948,6 +1134,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBankStart()
     Call Writer.WriteInt(ClientPacketID.BankStart)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -956,6 +1144,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteEnlist()
     Call Writer.WriteInt(ClientPacketID.Enlist)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -964,6 +1154,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteInformation()
     Call Writer.WriteInt(ClientPacketID.Information)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -972,6 +1164,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReward()
     Call Writer.WriteInt(ClientPacketID.Reward)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -980,6 +1174,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestMOTD()
     Call Writer.WriteInt(ClientPacketID.RequestMOTD)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -988,6 +1184,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUpTime()
     Call Writer.WriteInt(ClientPacketID.UpTime)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -996,6 +1194,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteInquiry()
     Call Writer.WriteInt(ClientPacketID.Inquiry)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1006,6 +1206,8 @@ End Sub
 Public Sub WriteGuildMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.GuildMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1016,6 +1218,8 @@ End Sub
 Public Sub WriteCentinelReport(ByVal Number As Integer)
     Call Writer.WriteInt(ClientPacketID.CentinelReport)
     Call Writer.WriteInt16(Number)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1024,6 +1228,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildOnline()
     Call Writer.WriteInt(ClientPacketID.GuildOnline)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1034,6 +1240,8 @@ End Sub
 Public Sub WriteCouncilMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.CouncilMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1044,6 +1252,8 @@ End Sub
 Public Sub WriteRoleMasterRequest(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.RoleMasterRequest)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1054,6 +1264,8 @@ End Sub
 Public Sub WriteChangeDescription(ByVal desc As String)
     Call Writer.WriteInt(ClientPacketID.ChangeDescription)
     Call Writer.WriteString8(desc)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1064,6 +1276,8 @@ End Sub
 Public Sub WriteGuildVote(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.GuildVote)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1074,6 +1288,8 @@ End Sub
 Public Sub WritePunishments(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.punishments)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1086,6 +1302,8 @@ Public Sub WriteChangePassword(ByRef oldPass As String, ByRef newPass As String)
     Call Writer.WriteInt(ClientPacketID.ChangePassword)
     Call Writer.WriteString8(SEncriptar(oldPass))
     Call Writer.WriteString8(SEncriptar(newPass))
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1096,6 +1314,8 @@ End Sub
 Public Sub WriteGamble(ByVal Amount As Integer)
     Call Writer.WriteInt(ClientPacketID.Gamble)
     Call Writer.WriteInt16(Amount)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1106,6 +1326,8 @@ End Sub
 Public Sub WriteInquiryVote(ByVal opt As Byte)
     Call Writer.WriteInt(ClientPacketID.InquiryVote)
     Call Writer.WriteInt8(opt)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1114,6 +1336,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteLeaveFaction()
     Call Writer.WriteInt(ClientPacketID.LeaveFaction)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1124,6 +1348,8 @@ End Sub
 Public Sub WriteBankExtractGold(ByVal Amount As Long)
     Call Writer.WriteInt(ClientPacketID.BankExtractGold)
     Call Writer.WriteInt32(Amount)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1134,24 +1360,32 @@ End Sub
 Public Sub WriteBankDepositGold(ByVal Amount As Long)
     Call Writer.WriteInt(ClientPacketID.BankDepositGold)
     Call Writer.WriteInt32(Amount)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteTransFerGold(ByVal Amount As Long, ByVal destino As String)
     Call Writer.WriteInt(ClientPacketID.TransFerGold)
     Call Writer.WriteInt32(Amount)
     Call Writer.WriteString8(destino)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte)
     Call Writer.WriteInt(ClientPacketID.Moveitem)
     Call Writer.WriteInt8(SlotActual)
     Call Writer.WriteInt8(SlotNuevo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteBovedaItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte)
     Call Writer.WriteInt(ClientPacketID.BovedaMoveItem)
     Call Writer.WriteInt8(SlotActual)
     Call Writer.WriteInt8(SlotNuevo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1161,6 +1395,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteFinEvento()
     Call Writer.WriteInt(ClientPacketID.FinEvento)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1171,10 +1407,14 @@ End Sub
 Public Sub WriteDenounce(Name As String)
     Call Writer.WriteInt(ClientPacketID.Denounce)
     Call Writer.WriteString8(Name)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteQuieroFundarClan()
     Call Writer.WriteInt(ClientPacketID.QuieroFundarClan)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1185,34 +1425,48 @@ End Sub
 Public Sub WriteGuildMemberList(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildMemberList)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCasamiento(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.Casarse)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteMacroPos()
     Call Writer.WriteInt(ClientPacketID.MacroPossent)
     Call Writer.WriteInt8(ChatCombate)
     Call Writer.WriteInt8(ChatGlobal)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteSubastaInfo()
     Call Writer.WriteInt(ClientPacketID.SubastaInfo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCancelarExit()
     UserSaliendo = False
     Call Writer.WriteInt(ClientPacketID.CancelarExit)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteEventoInfo()
     Call Writer.WriteInt(ClientPacketID.EventoInfo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteFlagTrabajar()
     Call Writer.WriteInt(ClientPacketID.FlagTrabajar)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1223,11 +1477,15 @@ End Sub
 Public Sub WriteEscribiendo(ByVal Flag As Boolean)
     Call Writer.WriteInt(ClientPacketID.Escribiendo)
     Call Writer.WriteBool(Flag)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteGMMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.GMMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1236,6 +1494,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteShowName()
     Call Writer.WriteInt(ClientPacketID.showName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1244,6 +1504,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnlineRoyalArmy()
     Call Writer.WriteInt(ClientPacketID.OnlineRoyalArmy)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1252,6 +1514,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnlineChaosLegion()
     Call Writer.WriteInt(ClientPacketID.OnlineChaosLegion)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1262,6 +1526,8 @@ End Sub
 Public Sub WriteGoNearby(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.GoNearby)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1272,6 +1538,8 @@ End Sub
 Public Sub WriteComment(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.comment)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1280,6 +1548,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteServerTime()
     Call Writer.WriteInt(ClientPacketID.serverTime)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1290,6 +1560,8 @@ End Sub
 Public Sub WriteWhere(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.Where)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1300,6 +1572,8 @@ End Sub
 Public Sub WriteCreaturesInMap(ByVal map As Integer)
     Call Writer.WriteInt(ClientPacketID.CreaturesInMap)
     Call Writer.WriteInt16(map)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1308,6 +1582,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWarpMeToTarget()
     Call Writer.WriteInt(ClientPacketID.WarpMeToTarget)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1327,6 +1603,8 @@ Public Sub WriteWarpChar(ByVal UserName As String, _
     Call Writer.WriteInt16(map)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1338,16 +1616,22 @@ Public Sub WriteSilence(ByVal UserName As String, ByVal Minutos As Integer)
     Call Writer.WriteInt(ClientPacketID.Silence)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteInt16(Minutos)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCuentaRegresiva(ByVal Second As Byte)
     Call Writer.WriteInt(ClientPacketID.CuentaRegresiva)
     Call Writer.WriteInt8(Second)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WritePossUser(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.PossUser)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1356,6 +1640,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSOSShowList()
     Call Writer.WriteInt(ClientPacketID.SOSShowList)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1366,6 +1652,8 @@ End Sub
 Public Sub WriteSOSRemove(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.SOSRemove)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1376,26 +1664,36 @@ End Sub
 Public Sub WriteGoToChar(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.GoToChar)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteDesbuggear(ByVal Params As String)
     Call Writer.WriteInt(ClientPacketID.Desbuggear)
     Call Writer.WriteString8(Params)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteDarLlaveAUsuario(ByVal User As String, ByVal Llave As Integer)
     Call Writer.WriteInt(ClientPacketID.DarLlaveAUsuario)
     Call Writer.WriteString8(User)
     Call Writer.WriteInt16(Llave)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteSacarLlave(ByVal Llave As Integer)
     Call Writer.WriteInt(ClientPacketID.SacarLlave)
     Call Writer.WriteInt16(Llave)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteVerLlaves()
     Call Writer.WriteInt(ClientPacketID.VerLlaves)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1404,6 +1702,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteInvisible()
     Call Writer.WriteInt(ClientPacketID.Invisible)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1412,6 +1712,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGMPanel()
     Call Writer.WriteInt(ClientPacketID.GMPanel)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1420,6 +1722,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestUserList()
     Call Writer.WriteInt(ClientPacketID.RequestUserList)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1428,6 +1732,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWorking()
     Call Writer.WriteInt(ClientPacketID.Working)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1436,6 +1742,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteHiding()
     Call Writer.WriteInt(ClientPacketID.Hiding)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1450,6 +1758,8 @@ Public Sub WriteJail(ByVal UserName As String, ByVal reason As String, ByVal Tim
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(reason)
     Call Writer.WriteInt8(Time)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCrearEvento(ByVal TIPO As Byte, _
@@ -1459,6 +1769,8 @@ Public Sub WriteCrearEvento(ByVal TIPO As Byte, _
     Call Writer.WriteInt8(TIPO)
     Call Writer.WriteInt8(duracion)
     Call Writer.WriteInt8(multiplicacion)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1467,6 +1779,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteKillNPC()
     Call Writer.WriteInt(ClientPacketID.KillNPC)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1479,12 +1793,16 @@ Public Sub WriteWarnUser(ByVal UserName As String, ByVal reason As String)
     Call Writer.WriteInt(ClientPacketID.WarnUser)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(reason)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteMensajeUser(ByVal UserName As String, ByVal mensaje As String)
     Call Writer.WriteInt(ClientPacketID.MensajeUser)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(mensaje)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1504,6 +1822,8 @@ Public Sub WriteEditChar(ByVal UserName As String, _
     Call Writer.WriteInt8(editOption)
     Call Writer.WriteString8(arg1)
     Call Writer.WriteString8(arg2)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1514,6 +1834,8 @@ End Sub
 Public Sub WriteRequestCharInfo(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.RequestCharInfo)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1524,6 +1846,8 @@ End Sub
 Public Sub WriteRequestCharStats(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.RequestCharStats)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1534,6 +1858,8 @@ End Sub
 Public Sub WriteRequestCharGold(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.RequestCharGold)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
     
 ''
@@ -1544,6 +1870,8 @@ End Sub
 Public Sub WriteRequestCharInventory(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.RequestCharInventory)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1554,6 +1882,8 @@ End Sub
 Public Sub WriteRequestCharBank(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.RequestCharBank)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1564,6 +1894,8 @@ End Sub
 Public Sub WriteRequestCharSkills(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.RequestCharSkills)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1574,6 +1906,8 @@ End Sub
 Public Sub WriteReviveChar(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.ReviveChar)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1582,6 +1916,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnlineGM()
     Call Writer.WriteInt(ClientPacketID.OnlineGM)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1590,6 +1926,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnlineMap()
     Call Writer.WriteInt(ClientPacketID.OnlineMap)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1599,11 +1937,15 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteForgive()
     Call Writer.WriteInt(ClientPacketID.Forgive)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteDonateGold(ByVal oro As Long)
     Call Writer.WriteInt(ClientPacketID.DonateGold)
     Call Writer.WriteInt32(oro)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1614,6 +1956,8 @@ End Sub
 Public Sub WriteKick(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.Kick)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1624,6 +1968,8 @@ End Sub
 Public Sub WriteExecute(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.Execute)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1636,32 +1982,44 @@ Public Sub WriteBanChar(ByVal UserName As String, ByVal reason As String)
     Call Writer.WriteInt(ClientPacketID.BanChar)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(reason)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteBanCuenta(ByVal UserName As String, ByVal reason As String)
     Call Writer.WriteInt(ClientPacketID.BanCuenta)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(reason)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteUnBanCuenta(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.UnbanCuenta)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteBanSerial(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.BanSerial)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteUnBanSerial(ByVal UserName As String, ByVal reason As String)
     Call Writer.WriteInt(ClientPacketID.unBanSerial)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCerraCliente(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.CerrarCliente)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteBanTemporal(ByVal UserName As String, _
@@ -1671,6 +2029,8 @@ Public Sub WriteBanTemporal(ByVal UserName As String, _
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(reason)
     Call Writer.WriteInt8(dias)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1681,6 +2041,8 @@ End Sub
 Public Sub WriteUnbanChar(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.UnbanChar)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1689,6 +2051,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteNPCFollow()
     Call Writer.WriteInt(ClientPacketID.NPCFollow)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1699,6 +2063,8 @@ End Sub
 Public Sub WriteSummonChar(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.SummonChar)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1707,6 +2073,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSpawnListRequest()
     Call Writer.WriteInt(ClientPacketID.SpawnListRequest)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1717,6 +2085,8 @@ End Sub
 Public Sub WriteSpawnCreature(ByVal creatureIndex As Integer)
     Call Writer.WriteInt(ClientPacketID.SpawnCreature)
     Call Writer.WriteInt16(creatureIndex)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1725,6 +2095,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteResetNPCInventory()
     Call Writer.WriteInt(ClientPacketID.ResetNPCInventory)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1733,6 +2105,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCleanWorld()
     Call Writer.WriteInt(ClientPacketID.CleanWorld)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1743,6 +2117,8 @@ End Sub
 Public Sub WriteServerMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.ServerMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1753,6 +2129,8 @@ End Sub
 Public Sub WriteNickToIP(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.NickToIP)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1772,6 +2150,7 @@ Public Sub WriteIPToNick(ByRef IP() As Byte)
         Call Writer.WriteInt8(IP(i))
     Next i
 
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1782,6 +2161,8 @@ End Sub
 Public Sub WriteGuildOnlineMembers(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildOnlineMembers)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1800,6 +2181,8 @@ Public Sub WriteTeleportCreate(ByVal map As Integer, _
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
     Call Writer.WriteString8(Motivo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1808,6 +2191,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTeleportDestroy()
     Call Writer.WriteInt(ClientPacketID.TeleportDestroy)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1816,6 +2201,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRainToggle()
     Call Writer.WriteInt(ClientPacketID.RainToggle)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1826,6 +2213,8 @@ End Sub
 Public Sub WriteSetCharDescription(ByVal desc As String)
     Call Writer.WriteInt(ClientPacketID.SetCharDescription)
     Call Writer.WriteString8(desc)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1838,6 +2227,8 @@ Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal map As Integer)
     Call Writer.WriteInt(ClientPacketID.ForceMIDIToMap)
     Call Writer.WriteInt8(midiID)
     Call Writer.WriteInt16(map)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1857,6 +2248,8 @@ Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, _
     Call Writer.WriteInt16(map)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1867,6 +2260,8 @@ End Sub
 Public Sub WriteRoyalArmyMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.RoyalArmyMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1877,6 +2272,8 @@ End Sub
 Public Sub WriteChaosLegionMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.ChaosLegionMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1887,6 +2284,8 @@ End Sub
 Public Sub WriteCitizenMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.CitizenMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1897,6 +2296,8 @@ End Sub
 Public Sub WriteCriminalMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.CriminalMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1907,6 +2308,8 @@ End Sub
 Public Sub WriteTalkAsNPC(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.TalkAsNPC)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1915,6 +2318,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDestroyAllItemsInArea()
     Call Writer.WriteInt(ClientPacketID.DestroyAllItemsInArea)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1925,6 +2330,8 @@ End Sub
 Public Sub WriteAcceptRoyalCouncilMember(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.AcceptRoyalCouncilMember)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1935,6 +2342,8 @@ End Sub
 Public Sub WriteAcceptChaosCouncilMember(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.AcceptChaosCouncilMember)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1943,6 +2352,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteItemsInTheFloor()
     Call Writer.WriteInt(ClientPacketID.ItemsInTheFloor)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1953,6 +2364,8 @@ End Sub
 Public Sub WriteMakeDumb(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.MakeDumb)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1963,6 +2376,8 @@ End Sub
 Public Sub WriteMakeDumbNoMore(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.MakeDumbNoMore)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1971,6 +2386,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDumpIPTables()
     Call Writer.WriteInt(ClientPacketID.DumpIPTables)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1981,6 +2398,8 @@ End Sub
 Public Sub WriteCouncilKick(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.CouncilKick)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1991,6 +2410,8 @@ End Sub
 Public Sub WriteSetTrigger(ByVal Trigger As eTrigger)
     Call Writer.WriteInt(ClientPacketID.SetTrigger)
     Call Writer.WriteInt8(Trigger)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -1999,6 +2420,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAskTrigger()
     Call Writer.WriteInt(ClientPacketID.AskTrigger)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2007,6 +2430,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBannedIPList()
     Call Writer.WriteInt(ClientPacketID.BannedIPList)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2015,6 +2440,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBannedIPReload()
     Call Writer.WriteInt(ClientPacketID.BannedIPReload)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2025,6 +2452,8 @@ End Sub
 Public Sub WriteGuildBan(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.GuildBan)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2040,6 +2469,8 @@ Public Sub WriteBanIP(ByVal NickOrIP As String, ByVal reason As String)
     Call Writer.WriteInt(ClientPacketID.banip)
     Call Writer.WriteString8(NickOrIP)
     Call Writer.WriteString8(reason)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2059,6 +2490,7 @@ Public Sub WriteUnbanIP(ByRef IP() As Byte)
         Call Writer.WriteInt8(IP(i))
     Next i
 
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2070,6 +2502,8 @@ Public Sub WriteCreateItem(ByVal ItemIndex As Long, ByVal cantidad As Integer)
     Call Writer.WriteInt(ClientPacketID.CreateItem)
     Call Writer.WriteInt16(ItemIndex)
     Call Writer.WriteInt16(cantidad)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2078,6 +2512,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDestroyItems()
     Call Writer.WriteInt(ClientPacketID.DestroyItems)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2088,6 +2524,8 @@ End Sub
 Public Sub WriteChaosLegionKick(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.ChaosLegionKick)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2098,6 +2536,8 @@ End Sub
 Public Sub WriteRoyalArmyKick(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.RoyalArmyKick)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2108,6 +2548,8 @@ End Sub
 Public Sub WriteForceMIDIAll(ByVal midiID As Byte)
     Call Writer.WriteInt(ClientPacketID.ForceMIDIAll)
     Call Writer.WriteInt8(midiID)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2118,6 +2560,8 @@ End Sub
 Public Sub WriteForceWAVEAll(ByVal waveID As Byte)
     Call Writer.WriteInt(ClientPacketID.ForceWAVEAll)
     Call Writer.WriteInt8(waveID)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2133,6 +2577,8 @@ Public Sub WriteRemovePunishment(ByVal UserName As String, _
     Call Writer.WriteString8(UserName)
     Call Writer.WriteInt8(punishment)
     Call Writer.WriteString8(NewText)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2141,6 +2587,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTileBlockedToggle()
     Call Writer.WriteInt(ClientPacketID.TileBlockedToggle)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2149,6 +2597,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteKillNPCNoRespawn()
     Call Writer.WriteInt(ClientPacketID.KillNPCNoRespawn)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2157,6 +2607,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteKillAllNearbyNPCs()
     Call Writer.WriteInt(ClientPacketID.KillAllNearbyNPCs)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2167,6 +2619,8 @@ End Sub
 Public Sub WriteLastIP(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.LastIP)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2175,6 +2629,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMOTD()
     Call Writer.WriteInt(ClientPacketID.ChangeMOTD)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2185,6 +2641,8 @@ End Sub
 Public Sub WriteSetMOTD(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.SetMOTD)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2195,6 +2653,8 @@ End Sub
 Public Sub WriteSystemMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.SystemMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2205,6 +2665,8 @@ End Sub
 Public Sub WriteCreateNPC(ByVal NpcIndex As Integer)
     Call Writer.WriteInt(ClientPacketID.CreateNPC)
     Call Writer.WriteInt16(NpcIndex)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2215,6 +2677,8 @@ End Sub
 Public Sub WriteCreateNPCWithRespawn(ByVal NpcIndex As Integer)
     Call Writer.WriteInt(ClientPacketID.CreateNPCWithRespawn)
     Call Writer.WriteInt16(NpcIndex)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2227,6 +2691,8 @@ Public Sub WriteImperialArmour(ByVal armourIndex As Byte, ByVal objectIndex As I
     Call Writer.WriteInt(ClientPacketID.ImperialArmour)
     Call Writer.WriteInt8(armourIndex)
     Call Writer.WriteInt16(objectIndex)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2239,6 +2705,8 @@ Public Sub WriteChaosArmour(ByVal armourIndex As Byte, ByVal objectIndex As Inte
     Call Writer.WriteInt(ClientPacketID.ChaosArmour)
     Call Writer.WriteInt8(armourIndex)
     Call Writer.WriteInt16(objectIndex)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2247,6 +2715,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteNavigateToggle()
     Call Writer.WriteInt(ClientPacketID.NavigateToggle)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ' Writes the "ServerOpenToUsersToggle" message to the outgoing data buffer.
@@ -2254,6 +2724,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteServerOpenToUsersToggle()
     Call Writer.WriteInt(ClientPacketID.ServerOpenToUsersToggle)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2262,6 +2734,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteParticipar()
     Call Writer.WriteInt(ClientPacketID.Participar)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2272,6 +2746,8 @@ End Sub
 Public Sub WriteTurnCriminal(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.TurnCriminal)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2282,6 +2758,8 @@ End Sub
 Public Sub WriteResetFactions(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.ResetFactions)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2292,6 +2770,8 @@ End Sub
 Public Sub WriteRemoveCharFromGuild(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.RemoveCharFromGuild)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2302,6 +2782,8 @@ End Sub
 Public Sub WriteRequestCharMail(ByVal UserName As String)
     Call Writer.WriteInt(ClientPacketID.RequestCharMail)
     Call Writer.WriteString8(UserName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2314,6 +2796,8 @@ Public Sub WriteAlterPassword(ByVal UserName As String, ByVal CopyFrom As String
     Call Writer.WriteInt(ClientPacketID.AlterPassword)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(CopyFrom)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2326,6 +2810,8 @@ Public Sub WriteAlterMail(ByVal UserName As String, ByVal newMail As String)
     Call Writer.WriteInt(ClientPacketID.AlterMail)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(newMail)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2338,6 +2824,8 @@ Public Sub WriteAlterName(ByVal UserName As String, ByVal newName As String)
     Call Writer.WriteInt(ClientPacketID.AlterName)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteString8(newName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2346,6 +2834,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDoBackup()
     Call Writer.WriteInt(ClientPacketID.DoBackUp)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2356,6 +2846,8 @@ End Sub
 Public Sub WriteShowGuildMessages(ByVal guild As String)
     Call Writer.WriteInt(ClientPacketID.ShowGuildMessages)
     Call Writer.WriteString8(guild)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2364,6 +2856,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSaveMap()
     Call Writer.WriteInt(ClientPacketID.SaveMap)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2374,6 +2868,8 @@ End Sub
 Public Sub WriteChangeMapInfoPK(ByVal isPK As Boolean)
     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoPK)
     Call Writer.WriteBool(isPK)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2384,6 +2880,8 @@ End Sub
 Public Sub WriteChangeMapInfoBackup(ByVal backup As Boolean)
     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoBackup)
     Call Writer.WriteBool(backup)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2394,6 +2892,8 @@ End Sub
 Public Sub WriteChangeMapInfoRestricted(ByVal restrict As String)
     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoRestricted)
     Call Writer.WriteString8(restrict)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2404,6 +2904,8 @@ End Sub
 Public Sub WriteChangeMapInfoNoMagic(ByVal nomagic As Boolean)
     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoNoMagic)
     Call Writer.WriteBool(nomagic)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2414,6 +2916,8 @@ End Sub
 Public Sub WriteChangeMapInfoNoInvi(ByVal noinvi As Boolean)
     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoNoInvi)
     Call Writer.WriteBool(noinvi)
+    
+    Call modNetwork.Send(Writer)
 End Sub
                             
 ''
@@ -2424,6 +2928,8 @@ End Sub
 Public Sub WriteChangeMapInfoNoResu(ByVal noresu As Boolean)
     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoNoResu)
     Call Writer.WriteBool(noresu)
+    
+    Call modNetwork.Send(Writer)
 End Sub
                         
 ''
@@ -2434,6 +2940,8 @@ End Sub
 Public Sub WriteChangeMapInfoLand(ByVal lAnd As String)
     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoLand)
     Call Writer.WriteString8(lAnd)
+    
+    Call modNetwork.Send(Writer)
 End Sub
                         
 ''
@@ -2444,6 +2952,8 @@ End Sub
 Public Sub WriteChangeMapInfoZone(ByVal zone As String)
     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoZone)
     Call Writer.WriteString8(zone)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2452,6 +2962,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSaveChars()
     Call Writer.WriteInt(ClientPacketID.SaveChars)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2460,6 +2972,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCleanSOS()
     Call Writer.WriteInt(ClientPacketID.CleanSOS)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2468,6 +2982,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteShowServerForm()
     Call Writer.WriteInt(ClientPacketID.ShowServerForm)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2476,15 +2992,21 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteNight()
     Call Writer.WriteInt(ClientPacketID.night)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteDay()
     Call Writer.WriteInt(ClientPacketID.Day)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteSetTime(ByVal Time As Long)
     Call Writer.WriteInt(ClientPacketID.SetTime)
     Call Writer.WriteInt32(Time)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2493,6 +3015,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteKickAllChars()
     Call Writer.WriteInt(ClientPacketID.KickAllChars)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2501,6 +3025,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReloadNPCs()
     Call Writer.WriteInt(ClientPacketID.ReloadNPCs)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2509,6 +3035,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReloadServerIni()
     Call Writer.WriteInt(ClientPacketID.ReloadServerIni)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2517,6 +3045,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReloadSpells()
     Call Writer.WriteInt(ClientPacketID.ReloadSpells)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2525,6 +3055,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReloadObjects()
     Call Writer.WriteInt(ClientPacketID.ReloadObjects)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2533,6 +3065,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRestart()
     Call Writer.WriteInt(ClientPacketID.Restart)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2547,6 +3081,8 @@ Public Sub WriteChatColor(ByVal r As Byte, ByVal G As Byte, ByVal B As Byte)
     Call Writer.WriteInt8(r)
     Call Writer.WriteInt8(G)
     Call Writer.WriteInt8(B)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2555,6 +3091,8 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteIgnored()
     Call Writer.WriteInt(ClientPacketID.Ignored)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2567,6 +3105,8 @@ Public Sub WriteCheckSlot(ByVal UserName As String, ByVal Slot As Byte)
     Call Writer.WriteInt(ClientPacketID.CheckSlot)
     Call Writer.WriteString8(UserName)
     Call Writer.WriteInt8(Slot)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2579,36 +3119,50 @@ Public Sub WritePing()
     Call Writer.WriteInt32(pingTime)
     
     ' Avoid computing errors due to frame rate
+    
+    Call modNetwork.Send(Writer)
     Call modNetwork.Poll
 End Sub
 
 Public Sub WriteLlamadadeClan()
     Call Writer.WriteInt(ClientPacketID.llamadadeclan)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteQuestionGM(ByVal Consulta As String, ByVal TipoDeConsulta As String)
     Call Writer.WriteInt(ClientPacketID.QuestionGM)
     Call Writer.WriteString8(Consulta)
     Call Writer.WriteString8(TipoDeConsulta)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteOfertaInicial(ByVal Oferta As Long)
     Call Writer.WriteInt(ClientPacketID.OfertaInicial)
     Call Writer.WriteInt32(Oferta)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteOferta(ByVal OfertaDeSubasta As Long)
     Call Writer.WriteInt(ClientPacketID.OfertaDeSubasta)
     Call Writer.WriteInt32(OfertaDeSubasta)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteGlobalMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.GlobalMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteGlobalOnOff()
     Call Writer.WriteInt(ClientPacketID.GlobalOnOff)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteBorrandoPJ()
@@ -2623,6 +3177,8 @@ Public Sub WriteBorrandoPJ()
     Call Writer.WriteString8(MacAdress)  'Seguridad
     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
     Call Writer.WriteString8(CheckMD5)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteIngresandoConCuenta()
@@ -2636,49 +3192,69 @@ Public Sub WriteIngresandoConCuenta()
     Call Writer.WriteString8(MacAdress)  'Seguridad
     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
     Call Writer.WriteString8(CheckMD5)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteNieblaToggle()
     Call Writer.WriteInt(ClientPacketID.NieblaToggle)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteGenio()
     Call Writer.WriteInt(ClientPacketID.Genio)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteQuest()
     Call Writer.WriteInt(ClientPacketID.Quest)
+    
+    Call modNetwork.Send(Writer)
 End Sub
  
 Public Sub WriteQuestDetailsRequest(ByVal QuestSlot As Byte)
     Call Writer.WriteInt(ClientPacketID.QuestDetailsRequest)
     Call Writer.WriteInt8(QuestSlot)
+    
+    Call modNetwork.Send(Writer)
 End Sub
  
 Public Sub WriteQuestAccept(ByVal ListInd As Byte)
     Call Writer.WriteInt(ClientPacketID.QuestAccept)
     Call Writer.WriteInt8(ListInd)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteQuestListRequest()
     Call Writer.WriteInt(ClientPacketID.QuestListRequest)
+    
+    Call modNetwork.Send(Writer)
 End Sub
  
 Public Sub WriteQuestAbandon(ByVal QuestSlot As Byte)
     Call Writer.WriteInt(ClientPacketID.QuestAbandon)
     'Escribe el Slot de Quest.
     Call Writer.WriteInt8(QuestSlot)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteResponderPregunta(ByVal Respuesta As Boolean)
     Call Writer.WriteInt(ClientPacketID.ResponderPregunta)
     Call Writer.WriteBool(Respuesta)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCompletarViaje(ByVal destino As Byte, ByVal costo As Long)
     Call Writer.WriteInt(ClientPacketID.CompletarViaje)
     Call Writer.WriteInt8(destino)
     Call Writer.WriteInt32(costo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, _
@@ -2724,19 +3300,27 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, _
     Call Writer.WriteInt8(y)
     Call Writer.WriteString8(Name)
     Call Writer.WriteString8(reglas)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteComenzarTorneo()
     Call Writer.WriteInt(ClientPacketID.ComenzarTorneo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCancelarTorneo()
     Call Writer.WriteInt(ClientPacketID.CancelarTorneo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteBusquedaTesoro(ByVal TIPO As Byte)
     Call Writer.WriteInt(ClientPacketID.BusquedaTesoro)
     Call Writer.WriteInt8(TIPO)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2744,6 +3328,8 @@ End Sub
 '
 Public Sub WriteHome()
     Call Writer.WriteInt(ClientPacketID.Home)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 ''
@@ -2753,6 +3339,8 @@ End Sub
 Public Sub WriteConsulta(Optional ByVal Nick As String = vbNullString)
     Call Writer.WriteInt(ClientPacketID.Consulta)
     Call Writer.WriteString8(Nick)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCuentaExtractItem(ByVal Slot As Byte, _
@@ -2762,6 +3350,8 @@ Public Sub WriteCuentaExtractItem(ByVal Slot As Byte, _
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt16(Amount)
     Call Writer.WriteInt8(slotdestino)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCuentaDeposit(ByVal Slot As Byte, _
@@ -2771,6 +3361,8 @@ Public Sub WriteCuentaDeposit(ByVal Slot As Byte, _
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt16(Amount)
     Call Writer.WriteInt8(slotdestino)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteDuel(Players As String, _
@@ -2782,98 +3374,140 @@ Public Sub WriteDuel(Players As String, _
     Call Writer.WriteInt32(Apuesta)
     Call Writer.WriteInt16(PocionesRojas)
     Call Writer.WriteBool(CaenItems)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteAcceptDuel(Offerer As String)
     Call Writer.WriteInt(ClientPacketID.AcceptDuel)
     Call Writer.WriteString8(Offerer)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCancelDuel()
     Call Writer.WriteInt(ClientPacketID.CancelDuel)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteQuitDuel()
     Call Writer.WriteInt(ClientPacketID.QuitDuel)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCreateEvent(EventName As String)
     Call Writer.WriteInt(ClientPacketID.CreateEvent)
     Call Writer.WriteString8(EventName)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCommerceSendChatMessage(ByVal Message As String)
     Call Writer.WriteInt(ClientPacketID.CommerceSendChatMessage)
     Call Writer.WriteString8(Message)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteLogMacroClickHechizo()
     Call Writer.WriteInt(ClientPacketID.LogMacroClickHechizo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteNieveToggle()
     Call Writer.WriteInt(ClientPacketID.NieveToggle)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCompletarAccion(ByVal Accion As Byte)
     Call Writer.WriteInt(ClientPacketID.CompletarAccion)
     Call Writer.WriteInt8(Accion)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteTolerancia0(Nick As String)
     Call Writer.WriteInt(ClientPacketID.Tolerancia0)
     Call Writer.WriteString8(Nick)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteGetMapInfo()
     Call Writer.WriteInt(ClientPacketID.GetMapInfo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteAddItemCrafting(ByVal SlotInv As Byte, ByVal SlotCraft As Byte)
     Call Writer.WriteInt(ClientPacketID.AddItemCrafting)
     Call Writer.WriteInt8(SlotInv)
     Call Writer.WriteInt8(SlotCraft)
+    
+    Call modNetwork.Send(Writer)
 End Sub
     
 Public Sub WriteRemoveItemCrafting(ByVal SlotCraft As Byte, ByVal SlotInv As Byte)
     Call Writer.WriteInt(ClientPacketID.RemoveItemCrafting)
     Call Writer.WriteInt8(SlotCraft)
     Call Writer.WriteInt8(SlotInv)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteAddCatalyst(ByVal SlotInv As Byte)
     Call Writer.WriteInt(ClientPacketID.AddCatalyst)
     Call Writer.WriteInt8(SlotInv)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteRemoveCatalyst(ByVal SlotInv As Byte)
     Call Writer.WriteInt(ClientPacketID.RemoveCatalyst)
     Call Writer.WriteInt8(SlotInv)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCraftItem()
     Call Writer.WriteInt(ClientPacketID.CraftItem)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteMoveCraftItem(ByVal Drag As Byte, ByVal Drop As Byte)
     Call Writer.WriteInt(ClientPacketID.MoveCraftItem)
     Call Writer.WriteInt8(Drag)
     Call Writer.WriteInt8(Drop)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteCloseCrafting()
     Call Writer.WriteInt(ClientPacketID.CloseCrafting)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WritePetLeaveAll()
     Call Writer.WriteInt(ClientPacketID.PetLeaveAll)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteGuardNoticeResponse(ByVal Codigo As String)
     Call Writer.WriteInt(ClientPacketID.GuardNoticeResponse)
     Call Writer.WriteString8(Codigo)
+    
+    Call modNetwork.Send(Writer)
 End Sub
 
 Public Sub WriteResendVerificationCode(ByVal Codigo As String)
     Call Writer.WriteInt(ClientPacketID.GuardResendVerificationCode)
+    
+    Call modNetwork.Send(Writer)
 End Sub
