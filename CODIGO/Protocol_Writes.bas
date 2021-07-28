@@ -120,7 +120,6 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAttack()
     Call Writer.WriteInt(ClientPacketID.Attack)
-    Call Writer.WriteInt(ClientPacketID.PickUp)
     
     Call modNetwork.Send(Writer)
 End Sub
