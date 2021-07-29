@@ -6952,8 +6952,7 @@ Private Sub HandlePong()
     Time = Reader.ReadInt32()
 
     PingRender = GetTickCount() - Time
-    pingTime = 0
-    
+
     Exit Sub
 
 HandlePong_Err:

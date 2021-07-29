@@ -1076,8 +1076,6 @@ Public logged                            As Boolean
 
 Public UsingSkill                        As Integer
 
-Public pingTime                          As Long
-
 Public InvasionActual                    As Byte
 
 Public InvasionPorcentajeVida            As Byte
