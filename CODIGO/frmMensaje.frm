@@ -198,9 +198,10 @@ Form_KeyPress_Err:
 End Sub
 
 Private Sub Form_Load()
-    Call FormParser.Parse_Form(Me)
-    
+
     On Error GoTo Form_Load_Err
+       
+    Call FormParser.Parse_Form(Me)
     
     SetWindowPos Me.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE
     Me.Picture = LoadInterface("mensaje.bmp")

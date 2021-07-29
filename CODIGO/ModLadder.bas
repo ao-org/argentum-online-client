@@ -364,8 +364,6 @@ Public Type tIntervalos
 
 End Type
 
-Public LogeoAlgunaVez               As Boolean
-
 Public Pjs(1 To 10)                 As UserCuentaPJS
 
 Public RecordarCuenta               As Boolean

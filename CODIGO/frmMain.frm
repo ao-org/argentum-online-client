@@ -4941,6 +4941,11 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
             Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
         End If
     Else
+    
+        frmConnect.MousePointer = 1
+        ShowFPS.Enabled = False
+        Unload frmAOGuard
+
         If (Error <> 0 And Error <> 2) Then
             Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
                  
@@ -4955,18 +4960,13 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
             
             Call ComprobarEstado
             Call General_Set_Connect
-            
-            frmConnect.MousePointer = 1
-            
-            ShowFPS.Enabled = False
+        Else
+            If (Connected) Then
+                Call HandleDisconnect
+            End If
         End If
     End If
-        
-    Unload frmAOGuard
 
-    If (LogeoAlgunaVez) Then
-        Call HandleDisconnect
-    End If
 
     Exit Sub
 

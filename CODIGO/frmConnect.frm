@@ -161,7 +161,6 @@ Private Sub Form_Load()
     QueRender = 1
     relampago.Enabled = True
     
-    LogeoAlgunaVez = False
     EngineRun = False
         
     Timer2.Enabled = True
@@ -687,7 +686,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         Pjs(i).NameMapa = ""
                     Next i
 
-                    LogeoAlgunaVez = False
                     General_Set_Connect
                     
                     'Unload Me

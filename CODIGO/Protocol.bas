@@ -1193,7 +1193,9 @@ Public Sub HandleDisconnect()
     '
     '***************************************************
     Dim i As Long
-
+    
+    Mod_Declaraciones.Connected = False
+    
     Call ResetearUserMacro
 
     'Close connection
@@ -1278,8 +1280,6 @@ Public Sub HandleDisconnect()
     'frmMain.IsPlaying = PlayLoop.plNone
     
     'Show connection form
-
-    LogeoAlgunaVez = True
     UserMap = 1
     
     EntradaY = 1

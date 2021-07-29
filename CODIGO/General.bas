@@ -623,8 +623,7 @@ Sub SetConnected()
     'FrmCuenta.Visible = False
 
     frmMain.NombrePJ.Caption = UserName
-    LogeoAlgunaVez = True
-    
+
     AlphaNiebla = 0
 
     'Vaciamos la cola de movimiento

@@ -56,11 +56,9 @@ Private Sub OnClientClose(ByVal Code As Long)
 On Error GoTo OnClientClose_Err:
     
     Call Protocol_Writes.Clear
-    
+
     Call frmMain.OnClientDisconnect(Code)
-    
-    Connected = False
-    
+
     Exit Sub
     
 OnClientClose_Err:
