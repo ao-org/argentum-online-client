@@ -510,28 +510,17 @@ tmrNumber_Timer_Err:
 End Sub
 
 Private Sub txtname_KeyPress(KeyAscii As Integer)
-    Dim ValidKeyAscii As Boolean
-    
-    If (KeyAscii >= Asc("A")) And (KeyAscii <= Asc("Z")) Then
-        ValidKeyAscii = True
-    End If
-    If (KeyAscii >= Asc("a")) And (KeyAscii <= Asc("z")) Then
-        ValidKeyAscii = True
+    If KeyAscii = 8 Then
+        Exit Sub
     End If
     
-   If Not ValidKeyAscii Then
-      KeyAscii = 0
-   End If
+    If InStr(" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", Chr(KeyAscii)) = 0 Then KeyAscii = 0
 End Sub
 
 Private Sub txtDatos_KeyPress(KeyAscii As Integer)
-    Dim ValidKeyAscii As Boolean
-    
-    If (KeyAscii >= Asc("0")) And (KeyAscii <= Asc("9")) Then
-        ValidKeyAscii = True
+    If KeyAscii = 8 Then
+        Exit Sub
     End If
-
-   If Not ValidKeyAscii Then
-      KeyAscii = 0
-   End If
+    
+    If InStr("0123456789", Chr(KeyAscii)) = 0 Then KeyAscii = 0
 End Sub
