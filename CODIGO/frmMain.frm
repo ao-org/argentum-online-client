@@ -4934,7 +4934,7 @@ End Sub
 Public Sub OnClientDisconnect(ByVal Error As Long)
     On Error GoTo OnClientDisconnect_Err
 
-    If (Not Connected) Then
+    If (Error = 10061) Then
         If frmConnect.Visible Then
             Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
         Else

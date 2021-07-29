@@ -101,9 +101,8 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteOnline
                 
             Case "/SALIR"
-                With FontTypes(FontTypeNames.FONTTYPE_WARNING)
-                    Call ShowConsoleMsg("Presione F12 para salir.", .red, .green, .blue, .bold, .italic)
-                End With
+                Call WriteQuit
+                
             Case "/SALIRCLAN"
                 Call WriteGuildLeave
                 
