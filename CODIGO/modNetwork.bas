@@ -57,7 +57,7 @@ On Error GoTo OnClientClose_Err:
     
     Call Protocol_Writes.Clear
     
-    Call frmMain.OnClientDisconnect(Code <> 0)
+    Call frmMain.OnClientDisconnect(Code)
     
     Connected = False
     

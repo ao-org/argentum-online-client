@@ -1183,7 +1183,7 @@ End Sub
 ''
 ' Handles the Disconnect message.
 
-Private Sub HandleDisconnect()
+Public Sub HandleDisconnect()
     
     On Error GoTo HandleDisconnect_Err
 
