@@ -437,9 +437,6 @@ Public Enum ClientPacketID
     TurnCriminal            '/CONDEN
     ResetFactions           '/RAJAR
     RemoveCharFromGuild     '/RAJARCLAN
-    RequestCharMail         '/LASTEMAIL
-    AlterPassword           '/APASS
-    AlterMail               '/AEMAIL
     AlterName               '/ANAME
     DoBackUp                '/DOBACKUP
     ShowGuildMessages       '/SHOWCMSG

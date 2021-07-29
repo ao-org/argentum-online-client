@@ -1559,9 +1559,6 @@ Private Sub cmdAccion_Click(Index As Integer)
 
             If LenB(Nick) <> 0 Then Call WriteGoNearby(Nick)
 
-        Case 16 '/LASTMAIL NICK 0.12.1
-            Call WriteRequestCharMail(Nick)
-
         Case 17 '/BANIP IP 0.12.1
             tmp = InputBox("Escriba la dirección IP a banear.", "")
             reason = InputBox("Escriba el motivo del baneo.", "")

@@ -1894,55 +1894,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /rajarclan NICKNAME.")
 
                 End If
-                
-            Case "/LASTEMAIL"
 
-                If notNullArguments Then
-                    Call WriteRequestCharMail(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /lastemail NICKNAME.")
-
-                End If
-                
-            Case "/APASS"
-
-                If notNullArguments Then
-                    tmpArr = Split(ArgumentosRaw, "@", 2)
-
-                    If UBound(tmpArr) = 1 Then
-                        Call WriteAlterPassword(tmpArr(0), tmpArr(1))
-                    Else
-                        'Faltan los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato incorrecto. Utilice /apass PJSINPASS@PJCONPASS.")
-
-                    End If
-
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /apass PJSINPASS@PJCONPASS.")
-
-                End If
-                
-            Case "/AEMAIL"
-
-                If notNullArguments Then
-                    tmpArr = AEMAILSplit(ArgumentosRaw)
-
-                    If LenB(tmpArr(0)) = 0 Then
-                        'Faltan los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato incorrecto. Utilice /aemail NICKNAME-NUEVOMAIL.")
-                    Else
-                        Call WriteAlterMail(tmpArr(0), tmpArr(1))
-
-                    End If
-
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /aemail NICKNAME-NUEVOMAIL.")
-
-                End If
-                
             Case "/ANAME"
 
                 If notNullArguments Then
