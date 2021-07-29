@@ -668,7 +668,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                         'ReproducirMp3 (4)
                     End If
-
+                
+                    UserSaliendo = True
                     Call modNetwork.Disconnect
 
                     CantidadDePersonajesEnCuenta = 0

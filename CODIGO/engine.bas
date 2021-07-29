@@ -1913,8 +1913,6 @@ Public Sub Start()
 
     Do While prgRun
 
-        Call modNetwork.Poll
-
         If frmMain.WindowState <> vbMinimized Then
             Select Case QueRender
 
@@ -1972,6 +1970,7 @@ Public Sub Start()
 
         DoEvents
 
+        Call modNetwork.Poll
     Loop
 
     EngineRun = False

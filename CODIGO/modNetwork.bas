@@ -7,7 +7,9 @@ Public Sub Connect(ByVal Address As String, ByVal Service As String)
     If (Address = vbNullString Or Service = vbNullString) Then
         Exit Sub
     End If
-
+    
+    Call Protocol_Writes.Initialize
+    
     Set Client = New Network.Client
     Call Client.Attach(AddressOf OnClientConnect, AddressOf OnClientClose, AddressOf OnClientSend, AddressOf OnClientRecv)
     Call Client.Connect(Address, Service)
@@ -22,8 +24,8 @@ Public Sub Poll()
         Exit Sub
     End If
     
-    Call Client.Poll
     Call Client.Flush
+    Call Client.Poll
 End Sub
 
 Public Sub Send(ByVal Buffer As Network.Writer)
@@ -36,9 +38,7 @@ End Sub
 
 Private Sub OnClientConnect()
 On Error GoTo OnClientConnect_Err:
-    
-    Call Protocol_Writes.Initialize
-    
+
 #If AntiExternos = 1 Then
     XorIndexIn = 0
     XorIndexOut = 0

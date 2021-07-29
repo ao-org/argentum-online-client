@@ -3955,6 +3955,8 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
 
     'Send text
     If KeyCode = vbKeyReturn Then
+        Call WriteEscribiendo(False)
+        
         If LenB(stxtbuffer) <> 0 Then
         
             ' If Right$(stxtbuffer, 1) = " " Or left(stxtbuffer, 1) = " " Then
@@ -4026,7 +4028,6 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
         SendTxt.Text = ""
         KeyCode = 0
         SendTxt.Visible = False
-        Call WriteEscribiendo(False)
         
     End If
 
@@ -4932,12 +4933,14 @@ End Sub
 Public Sub OnClientDisconnect(ByVal Error As Boolean)
     On Error GoTo OnClientDisconnect_Err
     
-    If (Error) Then
+    If (Not Connected) Then
         If frmConnect.Visible Then
-            If (Not Connected) Then
-                Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
-            End If
+            Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
         Else
+            Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
+        End If
+    Else
+        If (Not UserSaliendo) Then
             Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
                  
             Dim mForm As Form
@@ -4951,19 +4954,18 @@ Public Sub OnClientDisconnect(ByVal Error As Boolean)
             
             Call ComprobarEstado
             Call General_Set_Connect
+            
+            frmConnect.MousePointer = 1
+            
+            ShowFPS.Enabled = False
         End If
-    
-        frmConnect.MousePointer = 1
-        ShowFPS.Enabled = False
-    
-        Unload frmAOGuard
-        
-        LogeoAlgunaVez = False
-    Else
-        Unload frmAOGuard
+
     End If
     
-        
+    Unload frmAOGuard
+       
+    LogeoAlgunaVez = False
+
     Exit Sub
 
 OnClientDisconnect_Err:

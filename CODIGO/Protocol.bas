@@ -467,6 +467,7 @@ Public Enum ClientPacketID
     CheckSlot               '/SLOT
     
     'Nuevas Ladder
+    SetSpeed                '/SPEED
     GlobalMessage           '/CONSOLA
     GlobalOnOff
     IngresarConCuenta
@@ -957,18 +958,8 @@ Private Sub HandleConnected()
 
     frmMain.ShowFPS.Enabled = True
 
-    Select Case EstadoLogin
-            Case E_MODO.CrearNuevoPj, E_MODO.Normal, E_MODO.Dados
-                Call Login
-          
-            Case E_MODO.IngresandoConCuenta
-                Call WriteIngresandoConCuenta
-
-            Case E_MODO.BorrandoPJ
-                Call WriteBorrandoPJ
-
-        End Select
-
+    Call Login
+    
 End Sub
 
 ''
@@ -6766,9 +6757,9 @@ Private Sub HandleShowSOSForm()
     sosList = Split(Reader.ReadString8(), SEPARATOR)
     
     For i = 0 To UBound(sosList())
-        nombre = ReadField(1, sosList(I), Asc("Ø"))
-        Consulta = ReadField(2, sosList(I), Asc("Ø"))
-        TipoDeConsulta = ReadField(3, sosList(I), Asc("Ø"))
+        nombre = ReadField(1, sosList(i), Asc("Ø"))
+        Consulta = ReadField(2, sosList(i), Asc("Ø"))
+        TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
         frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ")"
         frmPanelgm.List2.AddItem Consulta
     Next i

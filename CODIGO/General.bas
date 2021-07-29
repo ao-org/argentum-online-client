@@ -1486,6 +1486,8 @@ Public Sub CloseClient()
     
     On Error GoTo CloseClient_Err
     
+    UserSaliendo = True
+
     Call GuardarOpciones
     
     Call PrevInstance.ReleaseInstance

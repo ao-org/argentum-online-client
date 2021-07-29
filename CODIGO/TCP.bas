@@ -51,38 +51,45 @@ Sub Login()
     
     On Error GoTo Login_Err
     
-
-    If EstadoLogin = E_MODO.Normal Then
-        Call WriteLoginExistingChar
-    ElseIf EstadoLogin = E_MODO.CrearNuevoPj Then
-        Call WriteLoginNewChar
-    ElseIf EstadoLogin = E_MODO.Dados Then
-        Call WriteThrowDice
-        
-        If QueRender <> 3 Then
-            UserMap = 37
-            AlphaNiebla = 3
-            'EntradaY = 90
-            'EntradaX = 90
-            CPHeading = 3
-            CPEquipado = True
-            Call SwitchMap(UserMap)
-            ' frmCrearPersonaje.Show
-            QueRender = 3
-            
-            Call IniciarCrearPj
-            '      Sound.NextMusic = 3
-            ' Sound.Fading = 350
-            'FrmCuenta.Visible = False
-            frmConnect.txtNombre.Visible = True
-            frmConnect.txtNombre.SetFocus
-
-            Call Sound.Sound_Play(SND_DICE)
-
-        End If
-
-    End If
+    Select Case EstadoLogin
     
+        Case E_MODO.Normal
+            Call WriteLoginExistingChar
+        
+        Case E_MODO.CrearNuevoPj
+            Call WriteLoginNewChar
+            
+        Case E_MODO.Dados
+            Call WriteThrowDice
+            
+            If QueRender <> 3 Then
+                UserMap = 37
+                AlphaNiebla = 3
+                'EntradaY = 90
+                'EntradaX = 90
+                CPHeading = 3
+                CPEquipado = True
+                Call SwitchMap(UserMap)
+                ' frmCrearPersonaje.Show
+                QueRender = 3
+                
+                Call IniciarCrearPj
+                '      Sound.NextMusic = 3
+                ' Sound.Fading = 350
+                'FrmCuenta.Visible = False
+                frmConnect.txtNombre.Visible = True
+                frmConnect.txtNombre.SetFocus
+    
+                Call Sound.Sound_Play(SND_DICE)
+            End If
+        
+        Case E_MODO.IngresandoConCuenta
+            Call WriteIngresandoConCuenta
+            
+        Case E_MODO.BorrandoPJ
+            Call WriteBorrandoPJ
+    End Select
+
     Exit Sub
 
 Login_Err:

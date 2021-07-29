@@ -54,11 +54,11 @@ Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByV
        
            'Si ya recibimos error en el mismo componente 10 veces, es bastante probable que estemos en un bucle
             'x lo que no hace falta registrar el error.
-102         If HistorialError.Contador = 10 Then
-                Debug.Print "Mismo error"
-                Debug.Assert False
-                Exit Sub
-            End If
+102        ' If HistorialError.Contador = 10 Then
+           '     Debug.Print "Mismo error"
+           '     Debug.Assert False
+           '     Exit Sub
+           ' End If
         
             'Agregamos el error al historial.
 104         HistorialError.Contador = HistorialError.Contador + 1

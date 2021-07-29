@@ -101,19 +101,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteOnline
                 
             Case "/SALIR"
-                If UserParalizado Or UserInmovilizado Then 'Inmo
-
-                    With FontTypes(FontTypeNames.FONTTYPE_WARNING)
-                        Call ShowConsoleMsg("No puedes salir estando paralizado.", .red, .green, .blue, .bold, .italic)
-
-                    End With
-
-                    Exit Sub
-
-                End If
-                
-                Call WriteQuit
-                
+                With FontTypes(FontTypeNames.FONTTYPE_WARNING)
+                    Call ShowConsoleMsg("Presione F12 para salir.", .red, .green, .blue, .bold, .italic)
+                End With
             Case "/SALIRCLAN"
                 Call WriteGuildLeave
                 

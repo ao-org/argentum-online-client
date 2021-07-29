@@ -1095,6 +1095,9 @@ Begin VB.Form frmPanelgm
          Begin VB.Menu muyrapido 
             Caption         =   "Muy rapido"
          End
+         Begin VB.Menu flash 
+            Caption         =   "Flash"
+         End
       End
       Begin VB.Menu usersOnline 
          Caption         =   "Usuarios Online"
@@ -2283,6 +2286,10 @@ finalizarevento_Click_Err:
     
 End Sub
 
+Private Sub flash_Click()
+    Call WriteSetSpeed(15#)
+End Sub
+
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
@@ -2839,8 +2846,7 @@ Private Sub muyrapido_Click()
     
     On Error GoTo muyrapido_Click_Err
     
-    charlist(UserCharIndex).Speeding = 5
-
+    Call WriteSetSpeed(5#)
     
     Exit Sub
 
@@ -2854,8 +2860,7 @@ Private Sub Normal_Click()
     
     On Error GoTo Normal_Click_Err
     
-    charlist(UserCharIndex).Speeding = 1#
-
+    Call WriteSetSpeed(1#)
     
     Exit Sub
 
@@ -2900,10 +2905,9 @@ End Sub
 Private Sub rapido_Click()
     
     On Error GoTo rapido_Click_Err
-    
-    charlist(UserCharIndex).Speeding = 2 ' ver ReyarB
 
-    
+    Call WriteSetSpeed(2#)
+
     Exit Sub
 
 rapido_Click_Err:

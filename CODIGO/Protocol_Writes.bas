@@ -16,18 +16,30 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteLoginExistingChar()
-    Call Writer.WriteInt(ClientPacketID.LoginExistingChar)
-    Call Writer.WriteString8(CuentaEmail)
-    Call Writer.WriteString8(SEncriptar(CuentaPassword))
-    Call Writer.WriteInt8(App.Major)
-    Call Writer.WriteInt8(App.Minor)
-    Call Writer.WriteInt8(App.Revision)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(MacAdress)  'Seguridad
-    Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
-    Call Writer.WriteString8(CheckMD5)
+        '<EhHeader>
+        On Error GoTo WriteLoginExistingChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.LoginExistingChar)
+102     Call Writer.WriteString8(CuentaEmail)
+104     Call Writer.WriteString8(SEncriptar(CuentaPassword))
+106     Call Writer.WriteInt8(App.Major)
+108     Call Writer.WriteInt8(App.Minor)
+110     Call Writer.WriteInt8(App.Revision)
+112     Call Writer.WriteString8(UserName)
+114     Call Writer.WriteString8(MacAdress)  'Seguridad
+116     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
+118     Call Writer.WriteString8(CheckMD5)
     
-    Call modNetwork.Send(Writer)
+120     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLoginExistingChar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginExistingChar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -35,23 +47,35 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteLoginNewChar()
-    Call Writer.WriteInt(ClientPacketID.LoginNewChar)
-    Call Writer.WriteString8(CuentaEmail)
-    Call Writer.WriteString8(SEncriptar(CuentaPassword))
-    Call Writer.WriteInt8(App.Major)
-    Call Writer.WriteInt8(App.Minor)
-    Call Writer.WriteInt8(App.Revision)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteInt8(UserRaza)
-    Call Writer.WriteInt8(UserSexo)
-    Call Writer.WriteInt8(UserClase)
-    Call Writer.WriteInt16(MiCabeza)
-    Call Writer.WriteInt8(UserHogar)
-    Call Writer.WriteString8(MacAdress)  'Seguridad
-    Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
-    Call Writer.WriteString8(CheckMD5)
+        '<EhHeader>
+        On Error GoTo WriteLoginNewChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.LoginNewChar)
+102     Call Writer.WriteString8(CuentaEmail)
+104     Call Writer.WriteString8(SEncriptar(CuentaPassword))
+106     Call Writer.WriteInt8(App.Major)
+108     Call Writer.WriteInt8(App.Minor)
+110     Call Writer.WriteInt8(App.Revision)
+112     Call Writer.WriteString8(UserName)
+114     Call Writer.WriteInt8(UserRaza)
+116     Call Writer.WriteInt8(UserSexo)
+118     Call Writer.WriteInt8(UserClase)
+120     Call Writer.WriteInt16(MiCabeza)
+122     Call Writer.WriteInt8(UserHogar)
+124     Call Writer.WriteString8(MacAdress)  'Seguridad
+126     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
+128     Call Writer.WriteString8(CheckMD5)
     
-    Call modNetwork.Send(Writer)
+130     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLoginNewChar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginNewChar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -60,10 +84,22 @@ End Sub
 ' @param    chat The chat text to be sent.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTalk(ByVal chat As String)
-    Call Writer.WriteInt(ClientPacketID.Talk)
-    Call Writer.WriteString8(chat)
+        '<EhHeader>
+        On Error GoTo WriteTalk_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Talk)
+102     Call Writer.WriteString8(chat)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTalk_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTalk", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -72,10 +108,22 @@ End Sub
 ' @param    chat The chat text to be sent.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteYell(ByVal chat As String)
-    Call Writer.WriteInt(ClientPacketID.Yell)
-    Call Writer.WriteString8(chat)
+        '<EhHeader>
+        On Error GoTo WriteYell_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Yell)
+102     Call Writer.WriteString8(chat)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteYell_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteYell", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -85,11 +133,23 @@ End Sub
 ' @param    chat The chat text to be sent to the user.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWhisper(ByVal nombre As String, ByVal chat As String)
-    Call Writer.WriteInt(ClientPacketID.Whisper)
-    Call Writer.WriteString8(nombre)
-    Call Writer.WriteString8(chat)
+        '<EhHeader>
+        On Error GoTo WriteWhisper_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Whisper)
+102     Call Writer.WriteString8(nombre)
+104     Call Writer.WriteString8(chat)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteWhisper_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWhisper", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -98,10 +158,22 @@ End Sub
 ' @param    heading The direction in wich the user is moving.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWalk(ByVal Heading As E_Heading)
-    Call Writer.WriteInt(ClientPacketID.Walk)
-    Call Writer.WriteInt8(Heading)
+        '<EhHeader>
+        On Error GoTo WriteWalk_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Walk)
+102     Call Writer.WriteInt8(Heading)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteWalk_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWalk", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -109,9 +181,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestPositionUpdate()
-    Call Writer.WriteInt(ClientPacketID.RequestPositionUpdate)
+        '<EhHeader>
+        On Error GoTo WriteRequestPositionUpdate_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestPositionUpdate)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestPositionUpdate_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestPositionUpdate", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -119,9 +203,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAttack()
-    Call Writer.WriteInt(ClientPacketID.Attack)
+        '<EhHeader>
+        On Error GoTo WriteAttack_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Attack)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAttack_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAttack", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -129,9 +225,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePickUp()
-    Call Writer.WriteInt(ClientPacketID.PickUp)
+        '<EhHeader>
+        On Error GoTo WritePickUp_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.PickUp)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WritePickUp_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePickUp", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -139,21 +247,57 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSafeToggle()
-    Call Writer.WriteInt(ClientPacketID.SafeToggle)
+        '<EhHeader>
+        On Error GoTo WriteSafeToggle_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SafeToggle)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSafeToggle_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSafeToggle", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteSeguroClan()
-    Call Writer.WriteInt(ClientPacketID.SeguroClan)
+        '<EhHeader>
+        On Error GoTo WriteSeguroClan_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SeguroClan)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSeguroClan_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSeguroClan", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteTraerBoveda()
-    Call Writer.WriteInt(ClientPacketID.TraerBoveda)
+        '<EhHeader>
+        On Error GoTo WriteTraerBoveda_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.TraerBoveda)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTraerBoveda_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTraerBoveda", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -166,12 +310,24 @@ End Sub
 Public Sub WriteCreatePretorianClan(ByVal map As Integer, _
                                     ByVal x As Byte, _
                                     ByVal y As Byte)
-    Call Writer.WriteInt(ClientPacketID.CreatePretorianClan)
-    Call Writer.WriteInt16(map)
-    Call Writer.WriteInt8(x)
-    Call Writer.WriteInt8(y)
+        '<EhHeader>
+        On Error GoTo WriteCreatePretorianClan_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CreatePretorianClan)
+102     Call Writer.WriteInt16(map)
+104     Call Writer.WriteInt8(x)
+106     Call Writer.WriteInt8(y)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCreatePretorianClan_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreatePretorianClan", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -179,9 +335,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteParyToggle()
-    Call Writer.WriteInt(ClientPacketID.PartySafeToggle)
+        '<EhHeader>
+        On Error GoTo WriteParyToggle_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.PartySafeToggle)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteParyToggle_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteParyToggle", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -189,9 +357,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSeguroResu()
-    Call Writer.WriteInt(ClientPacketID.SeguroResu)
+        '<EhHeader>
+        On Error GoTo WriteSeguroResu_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SeguroResu)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSeguroResu_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSeguroResu", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -199,9 +379,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestGuildLeaderInfo()
-    Call Writer.WriteInt(ClientPacketID.RequestGuildLeaderInfo)
+        '<EhHeader>
+        On Error GoTo WriteRequestGuildLeaderInfo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestGuildLeaderInfo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestGuildLeaderInfo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestGuildLeaderInfo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -209,21 +401,57 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestAtributes()
-    Call Writer.WriteInt(ClientPacketID.RequestAtributes)
+        '<EhHeader>
+        On Error GoTo WriteRequestAtributes_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestAtributes)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestAtributes_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestAtributes", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteRequestFamiliar()
-    Call Writer.WriteInt(ClientPacketID.RequestFamiliar)
+        '<EhHeader>
+        On Error GoTo WriteRequestFamiliar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestFamiliar)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestFamiliar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestFamiliar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteRequestGrupo()
-    Call Writer.WriteInt(ClientPacketID.RequestGrupo)
+        '<EhHeader>
+        On Error GoTo WriteRequestGrupo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestGrupo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestGrupo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestGrupo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -231,9 +459,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestSkills()
-    Call Writer.WriteInt(ClientPacketID.RequestSkills)
+        '<EhHeader>
+        On Error GoTo WriteRequestSkills_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestSkills)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestSkills_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestSkills", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -241,9 +481,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestMiniStats()
-    Call Writer.WriteInt(ClientPacketID.RequestMiniStats)
+        '<EhHeader>
+        On Error GoTo WriteRequestMiniStats_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestMiniStats)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestMiniStats_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestMiniStats", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -251,9 +503,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCommerceEnd()
-    Call Writer.WriteInt(ClientPacketID.CommerceEnd)
+        '<EhHeader>
+        On Error GoTo WriteCommerceEnd_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CommerceEnd)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCommerceEnd_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCommerceEnd", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -261,9 +525,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUserCommerceEnd()
-    Call Writer.WriteInt(ClientPacketID.UserCommerceEnd)
+        '<EhHeader>
+        On Error GoTo WriteUserCommerceEnd_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UserCommerceEnd)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUserCommerceEnd_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUserCommerceEnd", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -271,9 +547,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBankEnd()
-    Call Writer.WriteInt(ClientPacketID.BankEnd)
+        '<EhHeader>
+        On Error GoTo WriteBankEnd_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BankEnd)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBankEnd_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBankEnd", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -281,9 +569,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUserCommerceOk()
-    Call Writer.WriteInt(ClientPacketID.UserCommerceOk)
+        '<EhHeader>
+        On Error GoTo WriteUserCommerceOk_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UserCommerceOk)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUserCommerceOk_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUserCommerceOk", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -291,9 +591,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUserCommerceReject()
-    Call Writer.WriteInt(ClientPacketID.UserCommerceReject)
+        '<EhHeader>
+        On Error GoTo WriteUserCommerceReject_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UserCommerceReject)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUserCommerceReject_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUserCommerceReject", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -303,11 +615,23 @@ End Sub
 ' @param    amount Number of items to drop.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
-    Call Writer.WriteInt(ClientPacketID.Drop)
-    Call Writer.WriteInt8(Slot)
-    Call Writer.WriteInt32(Amount)
+        '<EhHeader>
+        On Error GoTo WriteDrop_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Drop)
+102     Call Writer.WriteInt8(Slot)
+104     Call Writer.WriteInt32(Amount)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDrop_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDrop", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -316,41 +640,113 @@ End Sub
 ' @param    slot Spell List slot where the spell to cast is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCastSpell(ByVal Slot As Byte)
-    Call Writer.WriteInt(ClientPacketID.CastSpell)
-    Call Writer.WriteInt8(Slot)
+        '<EhHeader>
+        On Error GoTo WriteCastSpell_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CastSpell)
+102     Call Writer.WriteInt8(Slot)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCastSpell_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCastSpell", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteInvitarGrupo()
-    Call Writer.WriteInt(ClientPacketID.InvitarGrupo)
+        '<EhHeader>
+        On Error GoTo WriteInvitarGrupo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.InvitarGrupo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteInvitarGrupo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteInvitarGrupo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteMarcaDeClan()
-    Call Writer.WriteInt(ClientPacketID.MarcaDeClanPack)
+        '<EhHeader>
+        On Error GoTo WriteMarcaDeClan_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.MarcaDeClanPack)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteMarcaDeClan_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMarcaDeClan", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteMarcaDeGm()
-    Call Writer.WriteInt(ClientPacketID.MarcaDeGMPack)
+        '<EhHeader>
+        On Error GoTo WriteMarcaDeGm_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.MarcaDeGMPack)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteMarcaDeGm_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMarcaDeGm", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteAbandonarGrupo()
-    Call Writer.WriteInt(ClientPacketID.AbandonarGrupo)
+        '<EhHeader>
+        On Error GoTo WriteAbandonarGrupo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AbandonarGrupo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAbandonarGrupo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAbandonarGrupo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteEcharDeGrupo(ByVal indice As Byte)
-    Call Writer.WriteInt(ClientPacketID.HecharDeGrupo)
-    Call Writer.WriteInt8(indice)
+        '<EhHeader>
+        On Error GoTo WriteEcharDeGrupo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.HecharDeGrupo)
+102     Call Writer.WriteInt8(indice)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteEcharDeGrupo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEcharDeGrupo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -360,11 +756,23 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
-    Call Writer.WriteInt(ClientPacketID.LeftClick)
-    Call Writer.WriteInt8(x)
-    Call Writer.WriteInt8(y)
+        '<EhHeader>
+        On Error GoTo WriteLeftClick_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.LeftClick)
+102     Call Writer.WriteInt8(x)
+104     Call Writer.WriteInt8(y)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLeftClick_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLeftClick", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -374,11 +782,23 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
-    Call Writer.WriteInt(ClientPacketID.DoubleClick)
-    Call Writer.WriteInt8(x)
-    Call Writer.WriteInt8(y)
+        '<EhHeader>
+        On Error GoTo WriteDoubleClick_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.DoubleClick)
+102     Call Writer.WriteInt8(x)
+104     Call Writer.WriteInt8(y)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDoubleClick_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDoubleClick", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -387,16 +807,40 @@ End Sub
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWork(ByVal Skill As eSkill)
-    Call Writer.WriteInt(ClientPacketID.Work)
-    Call Writer.WriteInt8(Skill)
+        '<EhHeader>
+        On Error GoTo WriteWork_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Work)
+102     Call Writer.WriteInt8(Skill)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteWork_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWork", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteThrowDice()
-    Call Writer.WriteInt(ClientPacketID.ThrowDice)
+        '<EhHeader>
+        On Error GoTo WriteThrowDice_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ThrowDice)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteThrowDice_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteThrowDice", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -404,9 +848,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUseSpellMacro()
-    Call Writer.WriteInt(ClientPacketID.UseSpellMacro)
+        '<EhHeader>
+        On Error GoTo WriteUseSpellMacro_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UseSpellMacro)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUseSpellMacro_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseSpellMacro", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -415,10 +871,22 @@ End Sub
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUseItem(ByVal Slot As Byte)
-    Call Writer.WriteInt(ClientPacketID.UseItem)
-    Call Writer.WriteInt8(Slot)
+        '<EhHeader>
+        On Error GoTo WriteUseItem_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UseItem)
+102     Call Writer.WriteInt8(Slot)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUseItem_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseItem", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -427,10 +895,22 @@ End Sub
 ' @param    item Index of the item to craft in the list sent by the server.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCraftBlacksmith(ByVal Item As Integer)
-    Call Writer.WriteInt(ClientPacketID.CraftBlacksmith)
-    Call Writer.WriteInt16(Item)
+        '<EhHeader>
+        On Error GoTo WriteCraftBlacksmith_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CraftBlacksmith)
+102     Call Writer.WriteInt16(Item)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCraftBlacksmith_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCraftBlacksmith", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -439,24 +919,60 @@ End Sub
 ' @param    item Index of the item to craft in the list sent by the server.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCraftCarpenter(ByVal Item As Integer)
-    Call Writer.WriteInt(ClientPacketID.CraftCarpenter)
-    Call Writer.WriteInt16(Item)
+        '<EhHeader>
+        On Error GoTo WriteCraftCarpenter_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CraftCarpenter)
+102     Call Writer.WriteInt16(Item)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCraftCarpenter_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCraftCarpenter", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCraftAlquimista(ByVal Item As Integer)
-    Call Writer.WriteInt(ClientPacketID.CraftAlquimista)
-    Call Writer.WriteInt16(Item)
+        '<EhHeader>
+        On Error GoTo WriteCraftAlquimista_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CraftAlquimista)
+102     Call Writer.WriteInt16(Item)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCraftAlquimista_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCraftAlquimista", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCraftSastre(ByVal Item As Integer)
-    Call Writer.WriteInt(ClientPacketID.CraftSastre)
-    Call Writer.WriteInt16(Item)
+        '<EhHeader>
+        On Error GoTo WriteCraftSastre_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CraftSastre)
+102     Call Writer.WriteInt16(Item)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCraftSastre_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCraftSastre", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -467,12 +983,24 @@ End Sub
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill)
-    Call Writer.WriteInt(ClientPacketID.WorkLeftClick)
-    Call Writer.WriteInt8(x)
-    Call Writer.WriteInt8(y)
-    Call Writer.WriteInt8(Skill)
+        '<EhHeader>
+        On Error GoTo WriteWorkLeftClick_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.WorkLeftClick)
+102     Call Writer.WriteInt8(x)
+104     Call Writer.WriteInt8(y)
+106     Call Writer.WriteInt8(Skill)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteWorkLeftClick_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWorkLeftClick", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -486,12 +1014,24 @@ End Sub
 Public Sub WriteCreateNewGuild(ByVal desc As String, _
                                ByVal Name As String, _
                                ByVal Alineacion As Byte)
-    Call Writer.WriteInt(ClientPacketID.CreateNewGuild)
-    Call Writer.WriteString8(desc)
-    Call Writer.WriteString8(Name)
-    Call Writer.WriteInt8(Alineacion)
+        '<EhHeader>
+        On Error GoTo WriteCreateNewGuild_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CreateNewGuild)
+102     Call Writer.WriteString8(desc)
+104     Call Writer.WriteString8(Name)
+106     Call Writer.WriteInt8(Alineacion)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCreateNewGuild_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreateNewGuild", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -500,10 +1040,22 @@ End Sub
 ' @param    slot Spell List slot where the spell which's info is requested is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSpellInfo(ByVal Slot As Byte)
-    Call Writer.WriteInt(ClientPacketID.SpellInfo)
-    Call Writer.WriteInt8(Slot)
+        '<EhHeader>
+        On Error GoTo WriteSpellInfo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SpellInfo)
+102     Call Writer.WriteInt8(Slot)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSpellInfo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSpellInfo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -512,10 +1064,22 @@ End Sub
 ' @param    slot Invetory slot where the item to equip is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteEquipItem(ByVal Slot As Byte)
-    Call Writer.WriteInt(ClientPacketID.EquipItem)
-    Call Writer.WriteInt8(Slot)
+        '<EhHeader>
+        On Error GoTo WriteEquipItem_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.EquipItem)
+102     Call Writer.WriteInt8(Slot)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteEquipItem_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEquipItem", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -524,10 +1088,22 @@ End Sub
 ' @param    heading The direction in wich the user is moving.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeHeading(ByVal Heading As E_Heading)
-    Call Writer.WriteInt(ClientPacketID.ChangeHeading)
-    Call Writer.WriteInt8(Heading)
+        '<EhHeader>
+        On Error GoTo WriteChangeHeading_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeHeading)
+102     Call Writer.WriteInt8(Heading)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeHeading_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeHeading", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -536,16 +1112,28 @@ End Sub
 ' @param    skillEdt a-based array containing for each skill the number of points to add to it.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteModifySkills(ByRef skillEdt() As Byte)
-    Call Writer.WriteInt(ClientPacketID.ModifySkills)
+        '<EhHeader>
+        On Error GoTo WriteModifySkills_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ModifySkills)
     
-    Dim i As Long
+        Dim i As Long
     
-    For i = 1 To NUMSKILLS
-        Call Writer.WriteInt8(skillEdt(i))
-    Next i
+102     For i = 1 To NUMSKILLS
+104         Call Writer.WriteInt8(skillEdt(i))
+106     Next i
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
 
+        '<EhFooter>
+        Exit Sub
+
+WriteModifySkills_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteModifySkills", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -554,10 +1142,22 @@ End Sub
 ' @param    creature Position within the list provided by the server of the creature to train against.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTrain(ByVal creature As Byte)
-    Call Writer.WriteInt(ClientPacketID.Train)
-    Call Writer.WriteInt8(creature)
+        '<EhHeader>
+        On Error GoTo WriteTrain_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Train)
+102     Call Writer.WriteInt8(creature)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTrain_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTrain", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -567,18 +1167,42 @@ End Sub
 ' @param    amount Number of items to buy.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCommerceBuy(ByVal Slot As Byte, ByVal Amount As Integer)
-    Call Writer.WriteInt(ClientPacketID.CommerceBuy)
-    Call Writer.WriteInt8(Slot)
-    Call Writer.WriteInt16(Amount)
+        '<EhHeader>
+        On Error GoTo WriteCommerceBuy_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CommerceBuy)
+102     Call Writer.WriteInt8(Slot)
+104     Call Writer.WriteInt16(Amount)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCommerceBuy_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCommerceBuy", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteUseKey(ByVal Slot As Byte)
-    Call Writer.WriteInt(ClientPacketID.UseKey)
-    Call Writer.WriteInt8(Slot)
+        '<EhHeader>
+        On Error GoTo WriteUseKey_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UseKey)
+102     Call Writer.WriteInt8(Slot)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUseKey_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseKey", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -590,12 +1214,24 @@ End Sub
 Public Sub WriteBankExtractItem(ByVal Slot As Byte, _
                                 ByVal Amount As Integer, _
                                 ByVal slotdestino As Byte)
-    Call Writer.WriteInt(ClientPacketID.BankExtractItem)
-    Call Writer.WriteInt8(Slot)
-    Call Writer.WriteInt16(Amount)
-    Call Writer.WriteInt8(slotdestino)
+        '<EhHeader>
+        On Error GoTo WriteBankExtractItem_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BankExtractItem)
+102     Call Writer.WriteInt8(Slot)
+104     Call Writer.WriteInt16(Amount)
+106     Call Writer.WriteInt8(slotdestino)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBankExtractItem_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBankExtractItem", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -605,11 +1241,23 @@ End Sub
 ' @param    amount Number of items to sell.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCommerceSell(ByVal Slot As Byte, ByVal Amount As Integer)
-    Call Writer.WriteInt(ClientPacketID.CommerceSell)
-    Call Writer.WriteInt8(Slot)
-    Call Writer.WriteInt16(Amount)
+        '<EhHeader>
+        On Error GoTo WriteCommerceSell_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CommerceSell)
+102     Call Writer.WriteInt8(Slot)
+104     Call Writer.WriteInt16(Amount)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCommerceSell_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCommerceSell", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -621,12 +1269,24 @@ End Sub
 Public Sub WriteBankDeposit(ByVal Slot As Byte, _
                             ByVal Amount As Integer, _
                             ByVal slotdestino As Byte)
-    Call Writer.WriteInt(ClientPacketID.BankDeposit)
-    Call Writer.WriteInt8(Slot)
-    Call Writer.WriteInt16(Amount)
-    Call Writer.WriteInt8(slotdestino)
+        '<EhHeader>
+        On Error GoTo WriteBankDeposit_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BankDeposit)
+102     Call Writer.WriteInt8(Slot)
+104     Call Writer.WriteInt16(Amount)
+106     Call Writer.WriteInt8(slotdestino)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBankDeposit_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBankDeposit", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -636,11 +1296,23 @@ End Sub
 ' @param    message The body of the message.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteForumPost(ByVal title As String, ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.ForumPost)
-    Call Writer.WriteString8(title)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteForumPost_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ForumPost)
+102     Call Writer.WriteString8(title)
+104     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteForumPost_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteForumPost", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -650,11 +1322,23 @@ End Sub
 ' @param    slot Spell List slot where the spell which's info is requested is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteMoveSpell(ByVal upwards As Boolean, ByVal Slot As Byte)
-    Call Writer.WriteInt(ClientPacketID.MoveSpell)
-    Call Writer.WriteBool(upwards)
-    Call Writer.WriteInt8(Slot)
+        '<EhHeader>
+        On Error GoTo WriteMoveSpell_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.MoveSpell)
+102     Call Writer.WriteBool(upwards)
+104     Call Writer.WriteInt8(Slot)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteMoveSpell_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMoveSpell", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -664,10 +1348,22 @@ End Sub
 ' @param    codex New codex of the clan.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteClanCodexUpdate(ByVal desc As String)
-    Call Writer.WriteInt(ClientPacketID.ClanCodexUpdate)
-    Call Writer.WriteString8(desc)
+        '<EhHeader>
+        On Error GoTo WriteClanCodexUpdate_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ClanCodexUpdate)
+102     Call Writer.WriteString8(desc)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteClanCodexUpdate_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteClanCodexUpdate", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -677,11 +1373,23 @@ End Sub
 ' @param    amount Number of items to offer.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUserCommerceOffer(ByVal Slot As Byte, ByVal Amount As Long)
-    Call Writer.WriteInt(ClientPacketID.UserCommerceOffer)
-    Call Writer.WriteInt8(Slot)
-    Call Writer.WriteInt32(Amount)
+        '<EhHeader>
+        On Error GoTo WriteUserCommerceOffer_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UserCommerceOffer)
+102     Call Writer.WriteInt8(Slot)
+104     Call Writer.WriteInt32(Amount)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUserCommerceOffer_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUserCommerceOffer", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -690,10 +1398,22 @@ End Sub
 ' @param    guild The guild whose peace offer is accepted.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildAcceptPeace(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildAcceptPeace)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildAcceptPeace_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildAcceptPeace)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildAcceptPeace_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildAcceptPeace", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -702,10 +1422,22 @@ End Sub
 ' @param    guild The guild whose aliance offer is rejected.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildRejectAlliance(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildRejectAlliance)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildRejectAlliance_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildRejectAlliance)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildRejectAlliance_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildRejectAlliance", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -714,10 +1446,22 @@ End Sub
 ' @param    guild The guild whose peace offer is rejected.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildRejectPeace(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildRejectPeace)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildRejectPeace_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildRejectPeace)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildRejectPeace_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildRejectPeace", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -726,10 +1470,22 @@ End Sub
 ' @param    guild The guild whose aliance offer is accepted.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildAcceptAlliance(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildAcceptAlliance)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildAcceptAlliance_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildAcceptAlliance)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildAcceptAlliance_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildAcceptAlliance", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -739,11 +1495,23 @@ End Sub
 ' @param    proposal The text to s the proposal.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildOfferPeace(ByVal guild As String, ByVal proposal As String)
-    Call Writer.WriteInt(ClientPacketID.GuildOfferPeace)
-    Call Writer.WriteString8(guild)
-    Call Writer.WriteString8(proposal)
+        '<EhHeader>
+        On Error GoTo WriteGuildOfferPeace_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildOfferPeace)
+102     Call Writer.WriteString8(guild)
+104     Call Writer.WriteString8(proposal)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildOfferPeace_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildOfferPeace", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -753,11 +1521,23 @@ End Sub
 ' @param    proposal The text to s the proposal.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildOfferAlliance(ByVal guild As String, ByVal proposal As String)
-    Call Writer.WriteInt(ClientPacketID.GuildOfferAlliance)
-    Call Writer.WriteString8(guild)
-    Call Writer.WriteString8(proposal)
+        '<EhHeader>
+        On Error GoTo WriteGuildOfferAlliance_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildOfferAlliance)
+102     Call Writer.WriteString8(guild)
+104     Call Writer.WriteString8(proposal)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildOfferAlliance_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildOfferAlliance", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -766,10 +1546,22 @@ End Sub
 ' @param    guild The guild whose aliance proposal's details are requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildAllianceDetails(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildAllianceDetails)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildAllianceDetails_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildAllianceDetails)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildAllianceDetails_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildAllianceDetails", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -778,10 +1570,22 @@ End Sub
 ' @param    guild The guild whose peace proposal's details are requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildPeaceDetails(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildPeaceDetails)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildPeaceDetails_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildPeaceDetails)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildPeaceDetails_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildPeaceDetails", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -790,10 +1594,22 @@ End Sub
 ' @param    username The user who wants to join the guild whose info is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildRequestJoinerInfo(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.GuildRequestJoinerInfo)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteGuildRequestJoinerInfo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildRequestJoinerInfo)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildRequestJoinerInfo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildRequestJoinerInfo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -801,9 +1617,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildAlliancePropList()
-    Call Writer.WriteInt(ClientPacketID.GuildAlliancePropList)
+        '<EhHeader>
+        On Error GoTo WriteGuildAlliancePropList_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildAlliancePropList)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildAlliancePropList_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildAlliancePropList", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -811,9 +1639,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildPeacePropList()
-    Call Writer.WriteInt(ClientPacketID.GuildPeacePropList)
+        '<EhHeader>
+        On Error GoTo WriteGuildPeacePropList_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildPeacePropList)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildPeacePropList_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildPeacePropList", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -822,10 +1662,22 @@ End Sub
 ' @param    guild The guild to which to declare war.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildDeclareWar(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildDeclareWar)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildDeclareWar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildDeclareWar)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildDeclareWar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildDeclareWar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -834,10 +1686,22 @@ End Sub
 ' @param    url The guild's new website's URL.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildNewWebsite(ByVal url As String)
-    Call Writer.WriteInt(ClientPacketID.GuildNewWebsite)
-    Call Writer.WriteString8(url)
+        '<EhHeader>
+        On Error GoTo WriteGuildNewWebsite_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildNewWebsite)
+102     Call Writer.WriteString8(url)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildNewWebsite_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildNewWebsite", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -846,10 +1710,22 @@ End Sub
 ' @param    username The name of the accepted player.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildAcceptNewMember(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.GuildAcceptNewMember)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteGuildAcceptNewMember_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildAcceptNewMember)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildAcceptNewMember_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildAcceptNewMember", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -859,11 +1735,23 @@ End Sub
 ' @param    reason The reason for which the player was rejected.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildRejectNewMember(ByVal UserName As String, ByVal reason As String)
-    Call Writer.WriteInt(ClientPacketID.GuildRejectNewMember)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(reason)
+        '<EhHeader>
+        On Error GoTo WriteGuildRejectNewMember_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildRejectNewMember)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(reason)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildRejectNewMember_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildRejectNewMember", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -872,10 +1760,22 @@ End Sub
 ' @param    username The name of the kicked player.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildKickMember(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.GuildKickMember)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteGuildKickMember_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildKickMember)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildKickMember_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildKickMember", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -884,10 +1784,22 @@ End Sub
 ' @param    news The news to be posted.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildUpdateNews(ByVal news As String)
-    Call Writer.WriteInt(ClientPacketID.GuildUpdateNews)
-    Call Writer.WriteString8(news)
+        '<EhHeader>
+        On Error GoTo WriteGuildUpdateNews_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildUpdateNews)
+102     Call Writer.WriteString8(news)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildUpdateNews_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildUpdateNews", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -896,10 +1808,22 @@ End Sub
 ' @param    username The user whose info is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildMemberInfo(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.GuildMemberInfo)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteGuildMemberInfo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildMemberInfo)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildMemberInfo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildMemberInfo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -907,9 +1831,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildOpenElections()
-    Call Writer.WriteInt(ClientPacketID.GuildOpenElections)
+        '<EhHeader>
+        On Error GoTo WriteGuildOpenElections_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildOpenElections)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildOpenElections_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildOpenElections", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -919,11 +1855,23 @@ End Sub
 ' @param    application The user's application sheet.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildRequestMembership(ByVal guild As String, ByVal Application As String)
-    Call Writer.WriteInt(ClientPacketID.GuildRequestMembership)
-    Call Writer.WriteString8(guild)
-    Call Writer.WriteString8(Application)
+        '<EhHeader>
+        On Error GoTo WriteGuildRequestMembership_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildRequestMembership)
+102     Call Writer.WriteString8(guild)
+104     Call Writer.WriteString8(Application)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildRequestMembership_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildRequestMembership", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -932,10 +1880,22 @@ End Sub
 ' @param    guild The guild whose details are requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildRequestDetails(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildRequestDetails)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildRequestDetails_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildRequestDetails)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildRequestDetails_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildRequestDetails", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -943,9 +1903,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnline()
-    Call Writer.WriteInt(ClientPacketID.Online)
+        '<EhHeader>
+        On Error GoTo WriteOnline_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Online)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteOnline_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteOnline", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -953,10 +1925,22 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteQuit()
-    Call Writer.WriteInt(ClientPacketID.Quit)
-    UserSaliendo = True
+        '<EhHeader>
+        On Error GoTo WriteQuit_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Quit)
+102     Call modNetwork.Send(Writer)
     
-    Call modNetwork.Send(Writer)
+104     UserSaliendo = True
+        '<EhFooter>
+        Exit Sub
+
+WriteQuit_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuit", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -964,9 +1948,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildLeave()
-    Call Writer.WriteInt(ClientPacketID.GuildLeave)
+        '<EhHeader>
+        On Error GoTo WriteGuildLeave_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildLeave)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildLeave_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildLeave", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -974,9 +1970,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestAccountState()
-    Call Writer.WriteInt(ClientPacketID.RequestAccountState)
+        '<EhHeader>
+        On Error GoTo WriteRequestAccountState_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestAccountState)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestAccountState_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestAccountState", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -984,9 +1992,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePetStand()
-    Call Writer.WriteInt(ClientPacketID.PetStand)
+        '<EhHeader>
+        On Error GoTo WritePetStand_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.PetStand)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WritePetStand_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePetStand", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -994,9 +2014,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePetFollow()
-    Call Writer.WriteInt(ClientPacketID.PetFollow)
+        '<EhHeader>
+        On Error GoTo WritePetFollow_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.PetFollow)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WritePetFollow_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePetFollow", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1004,9 +2036,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePetLeave()
-    Call Writer.WriteInt(ClientPacketID.PetLeave)
+        '<EhHeader>
+        On Error GoTo WritePetLeave_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.PetLeave)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WritePetLeave_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePetLeave", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1014,10 +2058,22 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGrupoMsg(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.GrupoMsg)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteGrupoMsg_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GrupoMsg)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGrupoMsg_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGrupoMsg", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1025,9 +2081,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTrainList()
-    Call Writer.WriteInt(ClientPacketID.TrainList)
+        '<EhHeader>
+        On Error GoTo WriteTrainList_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.TrainList)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTrainList_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTrainList", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1035,9 +2103,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRest()
-    Call Writer.WriteInt(ClientPacketID.Rest)
+        '<EhHeader>
+        On Error GoTo WriteRest_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Rest)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRest_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRest", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1045,9 +2125,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteMeditate()
-    Call Writer.WriteInt(ClientPacketID.Meditate)
+        '<EhHeader>
+        On Error GoTo WriteMeditate_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Meditate)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteMeditate_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMeditate", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1055,9 +2147,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteResucitate()
-    Call Writer.WriteInt(ClientPacketID.Resucitate)
+        '<EhHeader>
+        On Error GoTo WriteResucitate_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Resucitate)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteResucitate_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResucitate", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1065,9 +2169,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteHeal()
-    Call Writer.WriteInt(ClientPacketID.Heal)
+        '<EhHeader>
+        On Error GoTo WriteHeal_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Heal)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteHeal_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteHeal", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1075,9 +2191,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteHelp()
-    Call Writer.WriteInt(ClientPacketID.Help)
+        '<EhHeader>
+        On Error GoTo WriteHelp_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Help)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteHelp_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteHelp", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1085,9 +2213,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestStats()
-    Call Writer.WriteInt(ClientPacketID.RequestStats)
+        '<EhHeader>
+        On Error GoTo WriteRequestStats_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestStats)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestStats_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestStats", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1095,9 +2235,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePromedio()
-    Call Writer.WriteInt(ClientPacketID.Promedio)
+        '<EhHeader>
+        On Error GoTo WritePromedio_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Promedio)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WritePromedio_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePromedio", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1108,13 +2260,25 @@ Public Sub WriteGiveItem(UserName As String, _
                          ByVal OBJIndex As Integer, _
                          ByVal cantidad As Integer, _
                          Motivo As String)
-    Call Writer.WriteInt(ClientPacketID.GiveItem)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteInt16(OBJIndex)
-    Call Writer.WriteInt16(cantidad)
-    Call Writer.WriteString8(Motivo)
+        '<EhHeader>
+        On Error GoTo WriteGiveItem_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GiveItem)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteInt16(OBJIndex)
+106     Call Writer.WriteInt16(cantidad)
+108     Call Writer.WriteString8(Motivo)
     
-    Call modNetwork.Send(Writer)
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGiveItem_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGiveItem", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1122,9 +2286,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCommerceStart()
-    Call Writer.WriteInt(ClientPacketID.CommerceStart)
+        '<EhHeader>
+        On Error GoTo WriteCommerceStart_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CommerceStart)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCommerceStart_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCommerceStart", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1132,9 +2308,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBankStart()
-    Call Writer.WriteInt(ClientPacketID.BankStart)
+        '<EhHeader>
+        On Error GoTo WriteBankStart_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BankStart)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBankStart_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBankStart", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1142,9 +2330,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteEnlist()
-    Call Writer.WriteInt(ClientPacketID.Enlist)
+        '<EhHeader>
+        On Error GoTo WriteEnlist_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Enlist)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteEnlist_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEnlist", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1152,9 +2352,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteInformation()
-    Call Writer.WriteInt(ClientPacketID.Information)
+        '<EhHeader>
+        On Error GoTo WriteInformation_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Information)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteInformation_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteInformation", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1162,9 +2374,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReward()
-    Call Writer.WriteInt(ClientPacketID.Reward)
+        '<EhHeader>
+        On Error GoTo WriteReward_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Reward)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteReward_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReward", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1172,9 +2396,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestMOTD()
-    Call Writer.WriteInt(ClientPacketID.RequestMOTD)
+        '<EhHeader>
+        On Error GoTo WriteRequestMOTD_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestMOTD)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestMOTD_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestMOTD", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1182,9 +2418,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUpTime()
-    Call Writer.WriteInt(ClientPacketID.UpTime)
+        '<EhHeader>
+        On Error GoTo WriteUpTime_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UpTime)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUpTime_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUpTime", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1192,9 +2440,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteInquiry()
-    Call Writer.WriteInt(ClientPacketID.Inquiry)
+        '<EhHeader>
+        On Error GoTo WriteInquiry_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Inquiry)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteInquiry_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteInquiry", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1203,10 +2463,22 @@ End Sub
 ' @param    message The message to send to the guild.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.GuildMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteGuildMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1215,10 +2487,22 @@ End Sub
 ' @param    number The number to report to the centinel.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCentinelReport(ByVal Number As Integer)
-    Call Writer.WriteInt(ClientPacketID.CentinelReport)
-    Call Writer.WriteInt16(Number)
+        '<EhHeader>
+        On Error GoTo WriteCentinelReport_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CentinelReport)
+102     Call Writer.WriteInt16(Number)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCentinelReport_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCentinelReport", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1226,9 +2510,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildOnline()
-    Call Writer.WriteInt(ClientPacketID.GuildOnline)
+        '<EhHeader>
+        On Error GoTo WriteGuildOnline_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildOnline)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildOnline_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildOnline", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1237,10 +2533,22 @@ End Sub
 ' @param    message The message to send to the other council members.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCouncilMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.CouncilMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteCouncilMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CouncilMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCouncilMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCouncilMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1249,10 +2557,22 @@ End Sub
 ' @param    message The message to send to the role masters.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRoleMasterRequest(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.RoleMasterRequest)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteRoleMasterRequest_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RoleMasterRequest)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRoleMasterRequest_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRoleMasterRequest", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1261,10 +2581,22 @@ End Sub
 ' @param    desc The new description of the user's character.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeDescription(ByVal desc As String)
-    Call Writer.WriteInt(ClientPacketID.ChangeDescription)
-    Call Writer.WriteString8(desc)
+        '<EhHeader>
+        On Error GoTo WriteChangeDescription_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeDescription)
+102     Call Writer.WriteString8(desc)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeDescription_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeDescription", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1273,10 +2605,22 @@ End Sub
 ' @param    username The user to vote for clan leader.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildVote(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.GuildVote)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteGuildVote_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildVote)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildVote_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildVote", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1285,10 +2629,22 @@ End Sub
 ' @param    username The user whose's  punishments are requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePunishments(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.punishments)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WritePunishments_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.punishments)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WritePunishments_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePunishments", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1298,11 +2654,23 @@ End Sub
 ' @param    newPass New password.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangePassword(ByRef oldPass As String, ByRef newPass As String)
-    Call Writer.WriteInt(ClientPacketID.ChangePassword)
-    Call Writer.WriteString8(SEncriptar(oldPass))
-    Call Writer.WriteString8(SEncriptar(newPass))
+        '<EhHeader>
+        On Error GoTo WriteChangePassword_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangePassword)
+102     Call Writer.WriteString8(SEncriptar(oldPass))
+104     Call Writer.WriteString8(SEncriptar(newPass))
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangePassword_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangePassword", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1311,10 +2679,22 @@ End Sub
 ' @param    amount The amount to gamble.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGamble(ByVal Amount As Integer)
-    Call Writer.WriteInt(ClientPacketID.Gamble)
-    Call Writer.WriteInt16(Amount)
+        '<EhHeader>
+        On Error GoTo WriteGamble_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Gamble)
+102     Call Writer.WriteInt16(Amount)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGamble_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGamble", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1323,10 +2703,22 @@ End Sub
 ' @param    opt The chosen option to vote for.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteInquiryVote(ByVal opt As Byte)
-    Call Writer.WriteInt(ClientPacketID.InquiryVote)
-    Call Writer.WriteInt8(opt)
+        '<EhHeader>
+        On Error GoTo WriteInquiryVote_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.InquiryVote)
+102     Call Writer.WriteInt8(opt)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteInquiryVote_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteInquiryVote", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1334,9 +2726,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteLeaveFaction()
-    Call Writer.WriteInt(ClientPacketID.LeaveFaction)
+        '<EhHeader>
+        On Error GoTo WriteLeaveFaction_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.LeaveFaction)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLeaveFaction_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLeaveFaction", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1345,10 +2749,22 @@ End Sub
 ' @param    amount The amount of money to extract from the bank.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBankExtractGold(ByVal Amount As Long)
-    Call Writer.WriteInt(ClientPacketID.BankExtractGold)
-    Call Writer.WriteInt32(Amount)
+        '<EhHeader>
+        On Error GoTo WriteBankExtractGold_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BankExtractGold)
+102     Call Writer.WriteInt32(Amount)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBankExtractGold_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBankExtractGold", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1357,34 +2773,82 @@ End Sub
 ' @param    amount The amount of money to deposit in the bank.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBankDepositGold(ByVal Amount As Long)
-    Call Writer.WriteInt(ClientPacketID.BankDepositGold)
-    Call Writer.WriteInt32(Amount)
+        '<EhHeader>
+        On Error GoTo WriteBankDepositGold_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BankDepositGold)
+102     Call Writer.WriteInt32(Amount)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBankDepositGold_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBankDepositGold", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteTransFerGold(ByVal Amount As Long, ByVal destino As String)
-    Call Writer.WriteInt(ClientPacketID.TransFerGold)
-    Call Writer.WriteInt32(Amount)
-    Call Writer.WriteString8(destino)
+        '<EhHeader>
+        On Error GoTo WriteTransFerGold_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.TransFerGold)
+102     Call Writer.WriteInt32(Amount)
+104     Call Writer.WriteString8(destino)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTransFerGold_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTransFerGold", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte)
-    Call Writer.WriteInt(ClientPacketID.Moveitem)
-    Call Writer.WriteInt8(SlotActual)
-    Call Writer.WriteInt8(SlotNuevo)
+        '<EhHeader>
+        On Error GoTo WriteItemMove_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Moveitem)
+102     Call Writer.WriteInt8(SlotActual)
+104     Call Writer.WriteInt8(SlotNuevo)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteItemMove_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteItemMove", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteBovedaItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte)
-    Call Writer.WriteInt(ClientPacketID.BovedaMoveItem)
-    Call Writer.WriteInt8(SlotActual)
-    Call Writer.WriteInt8(SlotNuevo)
+        '<EhHeader>
+        On Error GoTo WriteBovedaItemMove_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BovedaMoveItem)
+102     Call Writer.WriteInt8(SlotActual)
+104     Call Writer.WriteInt8(SlotNuevo)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBovedaItemMove_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBovedaItemMove", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1393,9 +2857,21 @@ End Sub
 ' @param    message The message to s the denounce.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteFinEvento()
-    Call Writer.WriteInt(ClientPacketID.FinEvento)
+        '<EhHeader>
+        On Error GoTo WriteFinEvento_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.FinEvento)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteFinEvento_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFinEvento", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1404,16 +2880,40 @@ End Sub
 ' @param    message The message to s the denounce.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDenounce(Name As String)
-    Call Writer.WriteInt(ClientPacketID.Denounce)
-    Call Writer.WriteString8(Name)
+        '<EhHeader>
+        On Error GoTo WriteDenounce_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Denounce)
+102     Call Writer.WriteString8(Name)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDenounce_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDenounce", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteQuieroFundarClan()
-    Call Writer.WriteInt(ClientPacketID.QuieroFundarClan)
+        '<EhHeader>
+        On Error GoTo WriteQuieroFundarClan_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.QuieroFundarClan)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteQuieroFundarClan_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuieroFundarClan", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1422,50 +2922,134 @@ End Sub
 ' @param    guild The guild whose member list is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildMemberList(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildMemberList)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildMemberList_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildMemberList)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildMemberList_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildMemberList", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCasamiento(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.Casarse)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteCasamiento_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Casarse)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCasamiento_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCasamiento", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteMacroPos()
-    Call Writer.WriteInt(ClientPacketID.MacroPossent)
-    Call Writer.WriteInt8(ChatCombate)
-    Call Writer.WriteInt8(ChatGlobal)
+        '<EhHeader>
+        On Error GoTo WriteMacroPos_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.MacroPossent)
+102     Call Writer.WriteInt8(ChatCombate)
+104     Call Writer.WriteInt8(ChatGlobal)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteMacroPos_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMacroPos", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteSubastaInfo()
-    Call Writer.WriteInt(ClientPacketID.SubastaInfo)
+        '<EhHeader>
+        On Error GoTo WriteSubastaInfo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SubastaInfo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSubastaInfo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSubastaInfo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCancelarExit()
-    UserSaliendo = False
-    Call Writer.WriteInt(ClientPacketID.CancelarExit)
+        '<EhHeader>
+        On Error GoTo WriteCancelarExit_Err
+        '</EhHeader>
+100     UserSaliendo = False
+102     Call Writer.WriteInt(ClientPacketID.CancelarExit)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCancelarExit_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCancelarExit", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteEventoInfo()
-    Call Writer.WriteInt(ClientPacketID.EventoInfo)
+        '<EhHeader>
+        On Error GoTo WriteEventoInfo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.EventoInfo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteEventoInfo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEventoInfo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteFlagTrabajar()
-    Call Writer.WriteInt(ClientPacketID.FlagTrabajar)
+        '<EhHeader>
+        On Error GoTo WriteFlagTrabajar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.FlagTrabajar)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteFlagTrabajar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFlagTrabajar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1474,17 +3058,41 @@ End Sub
 ' @param    message The message to be sent to the other GMs online.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteEscribiendo(ByVal Flag As Boolean)
-    Call Writer.WriteInt(ClientPacketID.Escribiendo)
-    Call Writer.WriteBool(Flag)
+        '<EhHeader>
+        On Error GoTo WriteEscribiendo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Escribiendo)
+102     Call Writer.WriteBool(Flag)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteEscribiendo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEscribiendo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteGMMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.GMMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteGMMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GMMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGMMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGMMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1492,9 +3100,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteShowName()
-    Call Writer.WriteInt(ClientPacketID.showName)
+        '<EhHeader>
+        On Error GoTo WriteShowName_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.showName)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteShowName_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteShowName", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1502,9 +3122,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnlineRoyalArmy()
-    Call Writer.WriteInt(ClientPacketID.OnlineRoyalArmy)
+        '<EhHeader>
+        On Error GoTo WriteOnlineRoyalArmy_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.OnlineRoyalArmy)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteOnlineRoyalArmy_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteOnlineRoyalArmy", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1512,9 +3144,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnlineChaosLegion()
-    Call Writer.WriteInt(ClientPacketID.OnlineChaosLegion)
+        '<EhHeader>
+        On Error GoTo WriteOnlineChaosLegion_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.OnlineChaosLegion)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteOnlineChaosLegion_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteOnlineChaosLegion", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1523,10 +3167,22 @@ End Sub
 ' @param    username The suer to approach.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGoNearby(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.GoNearby)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteGoNearby_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GoNearby)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGoNearby_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGoNearby", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1535,10 +3191,22 @@ End Sub
 ' @param    message The message to leave in the log as a comment.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteComment(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.comment)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteComment_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.comment)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteComment_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteComment", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1546,9 +3214,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteServerTime()
-    Call Writer.WriteInt(ClientPacketID.serverTime)
+        '<EhHeader>
+        On Error GoTo WriteServerTime_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.serverTime)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteServerTime_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteServerTime", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1557,10 +3237,22 @@ End Sub
 ' @param    username The user whose position is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWhere(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.Where)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteWhere_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Where)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteWhere_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWhere", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1569,10 +3261,22 @@ End Sub
 ' @param    map The map in which to check for the existing creatures.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCreaturesInMap(ByVal map As Integer)
-    Call Writer.WriteInt(ClientPacketID.CreaturesInMap)
-    Call Writer.WriteInt16(map)
+        '<EhHeader>
+        On Error GoTo WriteCreaturesInMap_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CreaturesInMap)
+102     Call Writer.WriteInt16(map)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCreaturesInMap_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreaturesInMap", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1580,9 +3284,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWarpMeToTarget()
-    Call Writer.WriteInt(ClientPacketID.WarpMeToTarget)
+        '<EhHeader>
+        On Error GoTo WriteWarpMeToTarget_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.WarpMeToTarget)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteWarpMeToTarget_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWarpMeToTarget", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1597,13 +3313,25 @@ Public Sub WriteWarpChar(ByVal UserName As String, _
                          ByVal map As Integer, _
                          ByVal x As Byte, _
                          ByVal y As Byte)
-    Call Writer.WriteInt(ClientPacketID.WarpChar)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteInt16(map)
-    Call Writer.WriteInt8(x)
-    Call Writer.WriteInt8(y)
+        '<EhHeader>
+        On Error GoTo WriteWarpChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.WarpChar)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteInt16(map)
+106     Call Writer.WriteInt8(x)
+108     Call Writer.WriteInt8(y)
     
-    Call modNetwork.Send(Writer)
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteWarpChar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWarpChar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1612,25 +3340,61 @@ End Sub
 ' @param    username The user to silence.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSilence(ByVal UserName As String, ByVal Minutos As Integer)
-    Call Writer.WriteInt(ClientPacketID.Silence)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteInt16(Minutos)
+        '<EhHeader>
+        On Error GoTo WriteSilence_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Silence)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteInt16(Minutos)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSilence_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSilence", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCuentaRegresiva(ByVal Second As Byte)
-    Call Writer.WriteInt(ClientPacketID.CuentaRegresiva)
-    Call Writer.WriteInt8(Second)
+        '<EhHeader>
+        On Error GoTo WriteCuentaRegresiva_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CuentaRegresiva)
+102     Call Writer.WriteInt8(Second)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCuentaRegresiva_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCuentaRegresiva", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WritePossUser(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.PossUser)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WritePossUser_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.PossUser)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WritePossUser_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePossUser", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1638,9 +3402,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSOSShowList()
-    Call Writer.WriteInt(ClientPacketID.SOSShowList)
+        '<EhHeader>
+        On Error GoTo WriteSOSShowList_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SOSShowList)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSOSShowList_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSOSShowList", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1649,10 +3425,22 @@ End Sub
 ' @param    username The user whose SOS call has been already attended.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSOSRemove(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.SOSRemove)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteSOSRemove_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SOSRemove)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSOSRemove_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSOSRemove", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1661,38 +3449,98 @@ End Sub
 ' @param    username The user to be approached.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGoToChar(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.GoToChar)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteGoToChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GoToChar)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGoToChar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGoToChar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteDesbuggear(ByVal Params As String)
-    Call Writer.WriteInt(ClientPacketID.Desbuggear)
-    Call Writer.WriteString8(Params)
+        '<EhHeader>
+        On Error GoTo WriteDesbuggear_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Desbuggear)
+102     Call Writer.WriteString8(Params)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDesbuggear_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDesbuggear", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteDarLlaveAUsuario(ByVal User As String, ByVal Llave As Integer)
-    Call Writer.WriteInt(ClientPacketID.DarLlaveAUsuario)
-    Call Writer.WriteString8(User)
-    Call Writer.WriteInt16(Llave)
+        '<EhHeader>
+        On Error GoTo WriteDarLlaveAUsuario_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.DarLlaveAUsuario)
+102     Call Writer.WriteString8(User)
+104     Call Writer.WriteInt16(Llave)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDarLlaveAUsuario_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDarLlaveAUsuario", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteSacarLlave(ByVal Llave As Integer)
-    Call Writer.WriteInt(ClientPacketID.SacarLlave)
-    Call Writer.WriteInt16(Llave)
+        '<EhHeader>
+        On Error GoTo WriteSacarLlave_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SacarLlave)
+102     Call Writer.WriteInt16(Llave)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSacarLlave_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSacarLlave", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteVerLlaves()
-    Call Writer.WriteInt(ClientPacketID.VerLlaves)
+        '<EhHeader>
+        On Error GoTo WriteVerLlaves_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.VerLlaves)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteVerLlaves_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteVerLlaves", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1700,9 +3548,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteInvisible()
-    Call Writer.WriteInt(ClientPacketID.Invisible)
+        '<EhHeader>
+        On Error GoTo WriteInvisible_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Invisible)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteInvisible_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteInvisible", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1710,9 +3570,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGMPanel()
-    Call Writer.WriteInt(ClientPacketID.GMPanel)
+        '<EhHeader>
+        On Error GoTo WriteGMPanel_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GMPanel)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGMPanel_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGMPanel", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1720,9 +3592,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestUserList()
-    Call Writer.WriteInt(ClientPacketID.RequestUserList)
+        '<EhHeader>
+        On Error GoTo WriteRequestUserList_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestUserList)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestUserList_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestUserList", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1730,9 +3614,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWorking()
-    Call Writer.WriteInt(ClientPacketID.Working)
+        '<EhHeader>
+        On Error GoTo WriteWorking_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Working)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteWorking_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWorking", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1740,9 +3636,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteHiding()
-    Call Writer.WriteInt(ClientPacketID.Hiding)
+        '<EhHeader>
+        On Error GoTo WriteHiding_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Hiding)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteHiding_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteHiding", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1753,23 +3661,47 @@ End Sub
 ' @param    time The time (in minutes) the user will have to spend there.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteJail(ByVal UserName As String, ByVal reason As String, ByVal Time As Byte)
-    Call Writer.WriteInt(ClientPacketID.Jail)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(reason)
-    Call Writer.WriteInt8(Time)
+        '<EhHeader>
+        On Error GoTo WriteJail_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Jail)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(reason)
+106     Call Writer.WriteInt8(Time)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteJail_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteJail", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCrearEvento(ByVal TIPO As Byte, _
                             ByVal duracion As Byte, _
                             ByVal multiplicacion As Byte)
-    Call Writer.WriteInt(ClientPacketID.CrearEvento)
-    Call Writer.WriteInt8(TIPO)
-    Call Writer.WriteInt8(duracion)
-    Call Writer.WriteInt8(multiplicacion)
+        '<EhHeader>
+        On Error GoTo WriteCrearEvento_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CrearEvento)
+102     Call Writer.WriteInt8(TIPO)
+104     Call Writer.WriteInt8(duracion)
+106     Call Writer.WriteInt8(multiplicacion)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCrearEvento_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCrearEvento", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1777,9 +3709,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteKillNPC()
-    Call Writer.WriteInt(ClientPacketID.KillNPC)
+        '<EhHeader>
+        On Error GoTo WriteKillNPC_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.KillNPC)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteKillNPC_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteKillNPC", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1789,19 +3733,43 @@ End Sub
 ' @param    reason Reason for the warning.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWarnUser(ByVal UserName As String, ByVal reason As String)
-    Call Writer.WriteInt(ClientPacketID.WarnUser)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(reason)
+        '<EhHeader>
+        On Error GoTo WriteWarnUser_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.WarnUser)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(reason)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteWarnUser_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWarnUser", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteMensajeUser(ByVal UserName As String, ByVal mensaje As String)
-    Call Writer.WriteInt(ClientPacketID.MensajeUser)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(mensaje)
+        '<EhHeader>
+        On Error GoTo WriteMensajeUser_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.MensajeUser)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(mensaje)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteMensajeUser_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMensajeUser", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1816,13 +3784,25 @@ Public Sub WriteEditChar(ByVal UserName As String, _
                          ByVal editOption As eEditOptions, _
                          ByVal arg1 As String, _
                          ByVal arg2 As String)
-    Call Writer.WriteInt(ClientPacketID.EditChar)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteInt8(editOption)
-    Call Writer.WriteString8(arg1)
-    Call Writer.WriteString8(arg2)
+        '<EhHeader>
+        On Error GoTo WriteEditChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.EditChar)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteInt8(editOption)
+106     Call Writer.WriteString8(arg1)
+108     Call Writer.WriteString8(arg2)
     
-    Call modNetwork.Send(Writer)
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteEditChar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEditChar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1831,10 +3811,22 @@ End Sub
 ' @param    username The user whose information is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestCharInfo(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.RequestCharInfo)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteRequestCharInfo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestCharInfo)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestCharInfo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestCharInfo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1843,10 +3835,22 @@ End Sub
 ' @param    username The user whose stats are requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestCharStats(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.RequestCharStats)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteRequestCharStats_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestCharStats)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestCharStats_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestCharStats", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1855,10 +3859,22 @@ End Sub
 ' @param    username The user whose gold is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestCharGold(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.RequestCharGold)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteRequestCharGold_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestCharGold)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestCharGold_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestCharGold", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
     
 ''
@@ -1867,10 +3883,22 @@ End Sub
 ' @param    username The user whose inventory is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestCharInventory(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.RequestCharInventory)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteRequestCharInventory_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestCharInventory)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestCharInventory_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestCharInventory", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1879,10 +3907,22 @@ End Sub
 ' @param    username The user whose banking information is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestCharBank(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.RequestCharBank)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteRequestCharBank_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestCharBank)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestCharBank_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestCharBank", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1891,10 +3931,22 @@ End Sub
 ' @param    username The user whose skills are requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestCharSkills(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.RequestCharSkills)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteRequestCharSkills_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestCharSkills)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestCharSkills_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestCharSkills", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1903,10 +3955,22 @@ End Sub
 ' @param    username The user to eb revived.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReviveChar(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.ReviveChar)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteReviveChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ReviveChar)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteReviveChar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReviveChar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1914,9 +3978,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnlineGM()
-    Call Writer.WriteInt(ClientPacketID.OnlineGM)
+        '<EhHeader>
+        On Error GoTo WriteOnlineGM_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.OnlineGM)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteOnlineGM_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteOnlineGM", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1924,9 +4000,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteOnlineMap()
-    Call Writer.WriteInt(ClientPacketID.OnlineMap)
+        '<EhHeader>
+        On Error GoTo WriteOnlineMap_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.OnlineMap)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteOnlineMap_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteOnlineMap", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1935,16 +4023,40 @@ End Sub
 ' @param    username The user to be forgiven.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteForgive()
-    Call Writer.WriteInt(ClientPacketID.Forgive)
+        '<EhHeader>
+        On Error GoTo WriteForgive_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Forgive)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteForgive_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteForgive", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteDonateGold(ByVal oro As Long)
-    Call Writer.WriteInt(ClientPacketID.DonateGold)
-    Call Writer.WriteInt32(oro)
+        '<EhHeader>
+        On Error GoTo WriteDonateGold_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.DonateGold)
+102     Call Writer.WriteInt32(oro)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDonateGold_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDonateGold", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1953,10 +4065,22 @@ End Sub
 ' @param    username The user to be kicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteKick(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.Kick)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteKick_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Kick)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteKick_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteKick", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1965,10 +4089,22 @@ End Sub
 ' @param    username The user to be executed.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteExecute(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.Execute)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteExecute_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Execute)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteExecute_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteExecute", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -1978,58 +4114,142 @@ End Sub
 ' @param    reason The reson for which the user is to be banned.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBanChar(ByVal UserName As String, ByVal reason As String)
-    Call Writer.WriteInt(ClientPacketID.BanChar)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(reason)
+        '<EhHeader>
+        On Error GoTo WriteBanChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BanChar)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(reason)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBanChar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBanChar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteBanCuenta(ByVal UserName As String, ByVal reason As String)
-    Call Writer.WriteInt(ClientPacketID.BanCuenta)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(reason)
+        '<EhHeader>
+        On Error GoTo WriteBanCuenta_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BanCuenta)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(reason)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBanCuenta_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBanCuenta", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteUnBanCuenta(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.UnbanCuenta)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteUnBanCuenta_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UnbanCuenta)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUnBanCuenta_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUnBanCuenta", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteBanSerial(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.BanSerial)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteBanSerial_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BanSerial)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBanSerial_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBanSerial", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteUnBanSerial(ByVal UserName As String, ByVal reason As String)
-    Call Writer.WriteInt(ClientPacketID.unBanSerial)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteUnBanSerial_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.unBanSerial)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUnBanSerial_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUnBanSerial", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCerraCliente(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.CerrarCliente)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteCerraCliente_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CerrarCliente)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCerraCliente_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCerraCliente", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteBanTemporal(ByVal UserName As String, _
                             ByVal reason As String, _
                             ByVal dias As Byte)
-    Call Writer.WriteInt(ClientPacketID.BanTemporal)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(reason)
-    Call Writer.WriteInt8(dias)
+        '<EhHeader>
+        On Error GoTo WriteBanTemporal_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BanTemporal)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(reason)
+106     Call Writer.WriteInt8(dias)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBanTemporal_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBanTemporal", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2038,10 +4258,22 @@ End Sub
 ' @param    username The user to be unbanned.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUnbanChar(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.UnbanChar)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteUnbanChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UnbanChar)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUnbanChar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUnbanChar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2049,9 +4281,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteNPCFollow()
-    Call Writer.WriteInt(ClientPacketID.NPCFollow)
+        '<EhHeader>
+        On Error GoTo WriteNPCFollow_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.NPCFollow)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteNPCFollow_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteNPCFollow", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2060,10 +4304,22 @@ End Sub
 ' @param    username The user to be summoned.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSummonChar(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.SummonChar)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteSummonChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SummonChar)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSummonChar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSummonChar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2071,9 +4327,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSpawnListRequest()
-    Call Writer.WriteInt(ClientPacketID.SpawnListRequest)
+        '<EhHeader>
+        On Error GoTo WriteSpawnListRequest_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SpawnListRequest)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSpawnListRequest_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSpawnListRequest", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2082,10 +4350,22 @@ End Sub
 ' @param    creatureIndex The index of the creature in the spawn list to be spawned.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSpawnCreature(ByVal creatureIndex As Integer)
-    Call Writer.WriteInt(ClientPacketID.SpawnCreature)
-    Call Writer.WriteInt16(creatureIndex)
+        '<EhHeader>
+        On Error GoTo WriteSpawnCreature_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SpawnCreature)
+102     Call Writer.WriteInt16(creatureIndex)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSpawnCreature_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSpawnCreature", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2093,9 +4373,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteResetNPCInventory()
-    Call Writer.WriteInt(ClientPacketID.ResetNPCInventory)
+        '<EhHeader>
+        On Error GoTo WriteResetNPCInventory_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ResetNPCInventory)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteResetNPCInventory_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetNPCInventory", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2103,9 +4395,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCleanWorld()
-    Call Writer.WriteInt(ClientPacketID.CleanWorld)
+        '<EhHeader>
+        On Error GoTo WriteCleanWorld_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CleanWorld)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCleanWorld_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCleanWorld", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2114,10 +4418,22 @@ End Sub
 ' @param    message The message to be sent to players.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteServerMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.ServerMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteServerMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ServerMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteServerMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteServerMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2126,10 +4442,22 @@ End Sub
 ' @param    username The user whose IP is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteNickToIP(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.NickToIP)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteNickToIP_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.NickToIP)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteNickToIP_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteNickToIP", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2138,18 +4466,30 @@ End Sub
 ' @param    IP The IP for which to search for players. Must be an array of 4 elements with the 4 components of the IP.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteIPToNick(ByRef IP() As Byte)
+        '<EhHeader>
+        On Error GoTo WriteIPToNick_Err
+        '</EhHeader>
 
-    If UBound(IP()) - LBound(IP()) + 1 <> 4 Then Exit Sub   'Invalid IP
+100     If UBound(IP()) - LBound(IP()) + 1 <> 4 Then Exit Sub   'Invalid IP
 
-    Dim i As Long
+        Dim i As Long
 
-    Call Writer.WriteInt(ClientPacketID.IPToNick)
+102     Call Writer.WriteInt(ClientPacketID.IPToNick)
 
-    For i = LBound(IP()) To UBound(IP())
-        Call Writer.WriteInt8(IP(i))
-    Next i
+104     For i = LBound(IP()) To UBound(IP())
+106         Call Writer.WriteInt8(IP(i))
+108     Next i
 
-    Call modNetwork.Send(Writer)
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteIPToNick_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteIPToNick", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2158,10 +4498,22 @@ End Sub
 ' @param    guild The guild whose online player list is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildOnlineMembers(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildOnlineMembers)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildOnlineMembers_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildOnlineMembers)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildOnlineMembers_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildOnlineMembers", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2175,13 +4527,25 @@ Public Sub WriteTeleportCreate(ByVal map As Integer, _
                                ByVal x As Byte, _
                                ByVal y As Byte, _
                                ByVal Motivo As String)
-    Call Writer.WriteInt(ClientPacketID.TeleportCreate)
-    Call Writer.WriteInt16(map)
-    Call Writer.WriteInt8(x)
-    Call Writer.WriteInt8(y)
-    Call Writer.WriteString8(Motivo)
+        '<EhHeader>
+        On Error GoTo WriteTeleportCreate_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.TeleportCreate)
+102     Call Writer.WriteInt16(map)
+104     Call Writer.WriteInt8(x)
+106     Call Writer.WriteInt8(y)
+108     Call Writer.WriteString8(Motivo)
     
-    Call modNetwork.Send(Writer)
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTeleportCreate_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTeleportCreate", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2189,9 +4553,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTeleportDestroy()
-    Call Writer.WriteInt(ClientPacketID.TeleportDestroy)
+        '<EhHeader>
+        On Error GoTo WriteTeleportDestroy_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.TeleportDestroy)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTeleportDestroy_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTeleportDestroy", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2199,9 +4575,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRainToggle()
-    Call Writer.WriteInt(ClientPacketID.RainToggle)
+        '<EhHeader>
+        On Error GoTo WriteRainToggle_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RainToggle)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRainToggle_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRainToggle", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2210,10 +4598,22 @@ End Sub
 ' @param    desc The description to set to players.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSetCharDescription(ByVal desc As String)
-    Call Writer.WriteInt(ClientPacketID.SetCharDescription)
-    Call Writer.WriteString8(desc)
+        '<EhHeader>
+        On Error GoTo WriteSetCharDescription_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SetCharDescription)
+102     Call Writer.WriteString8(desc)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSetCharDescription_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSetCharDescription", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2223,11 +4623,23 @@ End Sub
 ' @param    map The map in which to play the given midi.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteForceMIDIToMap(ByVal midiID As Byte, ByVal map As Integer)
-    Call Writer.WriteInt(ClientPacketID.ForceMIDIToMap)
-    Call Writer.WriteInt8(midiID)
-    Call Writer.WriteInt16(map)
+        '<EhHeader>
+        On Error GoTo WriteForceMIDIToMap_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ForceMIDIToMap)
+102     Call Writer.WriteInt8(midiID)
+104     Call Writer.WriteInt16(map)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteForceMIDIToMap_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteForceMIDIToMap", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2242,13 +4654,25 @@ Public Sub WriteForceWAVEToMap(ByVal waveID As Byte, _
                                ByVal map As Integer, _
                                ByVal x As Byte, _
                                ByVal y As Byte)
-    Call Writer.WriteInt(ClientPacketID.ForceWAVEToMap)
-    Call Writer.WriteInt8(waveID)
-    Call Writer.WriteInt16(map)
-    Call Writer.WriteInt8(x)
-    Call Writer.WriteInt8(y)
+        '<EhHeader>
+        On Error GoTo WriteForceWAVEToMap_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ForceWAVEToMap)
+102     Call Writer.WriteInt8(waveID)
+104     Call Writer.WriteInt16(map)
+106     Call Writer.WriteInt8(x)
+108     Call Writer.WriteInt8(y)
     
-    Call modNetwork.Send(Writer)
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteForceWAVEToMap_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteForceWAVEToMap", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2257,10 +4681,22 @@ End Sub
 ' @param    message The message to send to the royal army members.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRoyalArmyMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.RoyalArmyMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteRoyalArmyMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RoyalArmyMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRoyalArmyMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRoyalArmyMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2269,10 +4705,22 @@ End Sub
 ' @param    message The message to send to the chaos legion member.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChaosLegionMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.ChaosLegionMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteChaosLegionMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChaosLegionMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChaosLegionMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChaosLegionMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2281,10 +4729,22 @@ End Sub
 ' @param    message The message to send to citizens.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCitizenMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.CitizenMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteCitizenMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CitizenMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCitizenMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCitizenMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2293,10 +4753,22 @@ End Sub
 ' @param    message The message to send to criminals.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCriminalMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.CriminalMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteCriminalMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CriminalMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCriminalMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCriminalMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2305,10 +4777,22 @@ End Sub
 ' @param    message The message to send to the royal army members.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTalkAsNPC(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.TalkAsNPC)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteTalkAsNPC_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.TalkAsNPC)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTalkAsNPC_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTalkAsNPC", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2316,9 +4800,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDestroyAllItemsInArea()
-    Call Writer.WriteInt(ClientPacketID.DestroyAllItemsInArea)
+        '<EhHeader>
+        On Error GoTo WriteDestroyAllItemsInArea_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.DestroyAllItemsInArea)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDestroyAllItemsInArea_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDestroyAllItemsInArea", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2327,10 +4823,22 @@ End Sub
 ' @param    username The name of the user to be accepted into the royal army council.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAcceptRoyalCouncilMember(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.AcceptRoyalCouncilMember)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteAcceptRoyalCouncilMember_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AcceptRoyalCouncilMember)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAcceptRoyalCouncilMember_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAcceptRoyalCouncilMember", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2339,10 +4847,22 @@ End Sub
 ' @param    username The name of the user to be accepted as a chaos council member.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAcceptChaosCouncilMember(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.AcceptChaosCouncilMember)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteAcceptChaosCouncilMember_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AcceptChaosCouncilMember)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAcceptChaosCouncilMember_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAcceptChaosCouncilMember", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2350,9 +4870,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteItemsInTheFloor()
-    Call Writer.WriteInt(ClientPacketID.ItemsInTheFloor)
+        '<EhHeader>
+        On Error GoTo WriteItemsInTheFloor_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ItemsInTheFloor)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteItemsInTheFloor_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteItemsInTheFloor", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2361,10 +4893,22 @@ End Sub
 ' @param    username The name of the user to be made dumb.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteMakeDumb(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.MakeDumb)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteMakeDumb_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.MakeDumb)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteMakeDumb_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMakeDumb", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2373,10 +4917,22 @@ End Sub
 ' @param    username The name of the user who will no longer be dumb.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteMakeDumbNoMore(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.MakeDumbNoMore)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteMakeDumbNoMore_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.MakeDumbNoMore)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteMakeDumbNoMore_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMakeDumbNoMore", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2384,9 +4940,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDumpIPTables()
-    Call Writer.WriteInt(ClientPacketID.DumpIPTables)
+        '<EhHeader>
+        On Error GoTo WriteDumpIPTables_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.DumpIPTables)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDumpIPTables_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDumpIPTables", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2395,10 +4963,22 @@ End Sub
 ' @param    username The name of the user to be kicked from the council.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCouncilKick(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.CouncilKick)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteCouncilKick_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CouncilKick)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCouncilKick_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCouncilKick", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2407,10 +4987,22 @@ End Sub
 ' @param    trigger The type of trigger to be set to the tile.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSetTrigger(ByVal Trigger As eTrigger)
-    Call Writer.WriteInt(ClientPacketID.SetTrigger)
-    Call Writer.WriteInt8(Trigger)
+        '<EhHeader>
+        On Error GoTo WriteSetTrigger_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SetTrigger)
+102     Call Writer.WriteInt8(Trigger)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSetTrigger_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSetTrigger", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2418,9 +5010,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAskTrigger()
-    Call Writer.WriteInt(ClientPacketID.AskTrigger)
+        '<EhHeader>
+        On Error GoTo WriteAskTrigger_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AskTrigger)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAskTrigger_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAskTrigger", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2428,9 +5032,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBannedIPList()
-    Call Writer.WriteInt(ClientPacketID.BannedIPList)
+        '<EhHeader>
+        On Error GoTo WriteBannedIPList_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BannedIPList)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBannedIPList_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBannedIPList", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2438,9 +5054,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBannedIPReload()
-    Call Writer.WriteInt(ClientPacketID.BannedIPReload)
+        '<EhHeader>
+        On Error GoTo WriteBannedIPReload_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BannedIPReload)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBannedIPReload_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBannedIPReload", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2449,10 +5077,22 @@ End Sub
 ' @param    guild The guild whose members will be banned.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGuildBan(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.GuildBan)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteGuildBan_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuildBan)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuildBan_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuildBan", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2465,11 +5105,23 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteBanIP(ByVal NickOrIP As String, ByVal reason As String)
-    Call Writer.WriteInt(ClientPacketID.banip)
-    Call Writer.WriteString8(NickOrIP)
-    Call Writer.WriteString8(reason)
+        '<EhHeader>
+        On Error GoTo WriteBanIP_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.banip)
+102     Call Writer.WriteString8(NickOrIP)
+104     Call Writer.WriteString8(reason)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBanIP_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBanIP", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2478,18 +5130,30 @@ End Sub
 ' @param    IP The IP for which to search for players. Must be an array of 4 elements with the 4 components of the IP.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUnbanIP(ByRef IP() As Byte)
+        '<EhHeader>
+        On Error GoTo WriteUnbanIP_Err
+        '</EhHeader>
 
-    If UBound(IP()) - LBound(IP()) + 1 <> 4 Then Exit Sub   'Invalid IP
+100     If UBound(IP()) - LBound(IP()) + 1 <> 4 Then Exit Sub   'Invalid IP
 
-    Dim i As Long
+        Dim i As Long
 
-    Call Writer.WriteInt(ClientPacketID.UnBanIp)
+102     Call Writer.WriteInt(ClientPacketID.UnBanIp)
 
-    For i = LBound(IP()) To UBound(IP())
-        Call Writer.WriteInt8(IP(i))
-    Next i
+104     For i = LBound(IP()) To UBound(IP())
+106         Call Writer.WriteInt8(IP(i))
+108     Next i
 
-    Call modNetwork.Send(Writer)
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUnbanIP_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUnbanIP", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2498,11 +5162,23 @@ End Sub
 ' @param    itemIndex The index of the item to be created.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCreateItem(ByVal ItemIndex As Long, ByVal cantidad As Integer)
-    Call Writer.WriteInt(ClientPacketID.CreateItem)
-    Call Writer.WriteInt16(ItemIndex)
-    Call Writer.WriteInt16(cantidad)
+        '<EhHeader>
+        On Error GoTo WriteCreateItem_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CreateItem)
+102     Call Writer.WriteInt16(ItemIndex)
+104     Call Writer.WriteInt16(cantidad)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCreateItem_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreateItem", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2510,9 +5186,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDestroyItems()
-    Call Writer.WriteInt(ClientPacketID.DestroyItems)
+        '<EhHeader>
+        On Error GoTo WriteDestroyItems_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.DestroyItems)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDestroyItems_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDestroyItems", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2521,10 +5209,22 @@ End Sub
 ' @param    username The name of the user to be kicked from the Chaos Legion.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChaosLegionKick(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.ChaosLegionKick)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteChaosLegionKick_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChaosLegionKick)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChaosLegionKick_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChaosLegionKick", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2533,10 +5233,22 @@ End Sub
 ' @param    username The name of the user to be kicked from the Royal Army.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRoyalArmyKick(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.RoyalArmyKick)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteRoyalArmyKick_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RoyalArmyKick)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRoyalArmyKick_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRoyalArmyKick", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2545,10 +5257,22 @@ End Sub
 ' @param    midiID The id of the midi file to play.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteForceMIDIAll(ByVal midiID As Byte)
-    Call Writer.WriteInt(ClientPacketID.ForceMIDIAll)
-    Call Writer.WriteInt8(midiID)
+        '<EhHeader>
+        On Error GoTo WriteForceMIDIAll_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ForceMIDIAll)
+102     Call Writer.WriteInt8(midiID)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteForceMIDIAll_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteForceMIDIAll", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2557,10 +5281,22 @@ End Sub
 ' @param    waveID The id of the wave file to play.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteForceWAVEAll(ByVal waveID As Byte)
-    Call Writer.WriteInt(ClientPacketID.ForceWAVEAll)
-    Call Writer.WriteInt8(waveID)
+        '<EhHeader>
+        On Error GoTo WriteForceWAVEAll_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ForceWAVEAll)
+102     Call Writer.WriteInt8(waveID)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteForceWAVEAll_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteForceWAVEAll", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2572,12 +5308,24 @@ End Sub
 Public Sub WriteRemovePunishment(ByVal UserName As String, _
                                  ByVal punishment As Byte, _
                                  ByVal NewText As String)
-    Call Writer.WriteInt(ClientPacketID.RemovePunishment)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteInt8(punishment)
-    Call Writer.WriteString8(NewText)
+        '<EhHeader>
+        On Error GoTo WriteRemovePunishment_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RemovePunishment)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteInt8(punishment)
+106     Call Writer.WriteString8(NewText)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRemovePunishment_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRemovePunishment", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2585,9 +5333,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTileBlockedToggle()
-    Call Writer.WriteInt(ClientPacketID.TileBlockedToggle)
+        '<EhHeader>
+        On Error GoTo WriteTileBlockedToggle_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.TileBlockedToggle)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTileBlockedToggle_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTileBlockedToggle", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2595,9 +5355,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteKillNPCNoRespawn()
-    Call Writer.WriteInt(ClientPacketID.KillNPCNoRespawn)
+        '<EhHeader>
+        On Error GoTo WriteKillNPCNoRespawn_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.KillNPCNoRespawn)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteKillNPCNoRespawn_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteKillNPCNoRespawn", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2605,9 +5377,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteKillAllNearbyNPCs()
-    Call Writer.WriteInt(ClientPacketID.KillAllNearbyNPCs)
+        '<EhHeader>
+        On Error GoTo WriteKillAllNearbyNPCs_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.KillAllNearbyNPCs)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteKillAllNearbyNPCs_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteKillAllNearbyNPCs", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2616,10 +5400,22 @@ End Sub
 ' @param    username The user whose last IPs are requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteLastIP(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.LastIP)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteLastIP_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.LastIP)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLastIP_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLastIP", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2627,9 +5423,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMOTD()
-    Call Writer.WriteInt(ClientPacketID.ChangeMOTD)
+        '<EhHeader>
+        On Error GoTo WriteChangeMOTD_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeMOTD)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMOTD_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMOTD", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2638,10 +5446,22 @@ End Sub
 ' @param    message The message to be set as the new MOTD.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSetMOTD(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.SetMOTD)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteSetMOTD_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SetMOTD)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSetMOTD_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSetMOTD", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2650,10 +5470,22 @@ End Sub
 ' @param    message The message to be sent to all players.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSystemMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.SystemMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteSystemMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SystemMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSystemMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSystemMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2662,10 +5494,22 @@ End Sub
 ' @param    npcIndex The index of the NPC to be created.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCreateNPC(ByVal NpcIndex As Integer)
-    Call Writer.WriteInt(ClientPacketID.CreateNPC)
-    Call Writer.WriteInt16(NpcIndex)
+        '<EhHeader>
+        On Error GoTo WriteCreateNPC_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CreateNPC)
+102     Call Writer.WriteInt16(NpcIndex)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCreateNPC_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreateNPC", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2674,10 +5518,22 @@ End Sub
 ' @param    npcIndex The index of the NPC to be created.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCreateNPCWithRespawn(ByVal NpcIndex As Integer)
-    Call Writer.WriteInt(ClientPacketID.CreateNPCWithRespawn)
-    Call Writer.WriteInt16(NpcIndex)
+        '<EhHeader>
+        On Error GoTo WriteCreateNPCWithRespawn_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CreateNPCWithRespawn)
+102     Call Writer.WriteInt16(NpcIndex)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCreateNPCWithRespawn_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreateNPCWithRespawn", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2687,11 +5543,23 @@ End Sub
 ' @param    objectIndex The index of the new object to be set as the imperial armour.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteImperialArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    Call Writer.WriteInt(ClientPacketID.ImperialArmour)
-    Call Writer.WriteInt8(armourIndex)
-    Call Writer.WriteInt16(objectIndex)
+        '<EhHeader>
+        On Error GoTo WriteImperialArmour_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ImperialArmour)
+102     Call Writer.WriteInt8(armourIndex)
+104     Call Writer.WriteInt16(objectIndex)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteImperialArmour_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteImperialArmour", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2701,11 +5569,23 @@ End Sub
 ' @param    objectIndex The index of the new object to be set as the chaos armour.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChaosArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    Call Writer.WriteInt(ClientPacketID.ChaosArmour)
-    Call Writer.WriteInt8(armourIndex)
-    Call Writer.WriteInt16(objectIndex)
+        '<EhHeader>
+        On Error GoTo WriteChaosArmour_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChaosArmour)
+102     Call Writer.WriteInt8(armourIndex)
+104     Call Writer.WriteInt16(objectIndex)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChaosArmour_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChaosArmour", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2713,18 +5593,42 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteNavigateToggle()
-    Call Writer.WriteInt(ClientPacketID.NavigateToggle)
+        '<EhHeader>
+        On Error GoTo WriteNavigateToggle_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.NavigateToggle)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteNavigateToggle_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteNavigateToggle", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ' Writes the "ServerOpenToUsersToggle" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteServerOpenToUsersToggle()
-    Call Writer.WriteInt(ClientPacketID.ServerOpenToUsersToggle)
+        '<EhHeader>
+        On Error GoTo WriteServerOpenToUsersToggle_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ServerOpenToUsersToggle)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteServerOpenToUsersToggle_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteServerOpenToUsersToggle", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2732,9 +5636,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteParticipar()
-    Call Writer.WriteInt(ClientPacketID.Participar)
+        '<EhHeader>
+        On Error GoTo WriteParticipar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Participar)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteParticipar_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteParticipar", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2743,10 +5659,22 @@ End Sub
 ' @param    username The name of the user to turn into criminal.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteTurnCriminal(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.TurnCriminal)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteTurnCriminal_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.TurnCriminal)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTurnCriminal_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTurnCriminal", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2755,10 +5683,22 @@ End Sub
 ' @param    username The name of the user who will be removed from any faction.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteResetFactions(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.ResetFactions)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteResetFactions_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ResetFactions)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteResetFactions_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetFactions", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2767,10 +5707,22 @@ End Sub
 ' @param    username The name of the user who will be removed from any guild.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRemoveCharFromGuild(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.RemoveCharFromGuild)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteRemoveCharFromGuild_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RemoveCharFromGuild)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRemoveCharFromGuild_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRemoveCharFromGuild", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2779,10 +5731,22 @@ End Sub
 ' @param    username The name of the user whose mail is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRequestCharMail(ByVal UserName As String)
-    Call Writer.WriteInt(ClientPacketID.RequestCharMail)
-    Call Writer.WriteString8(UserName)
+        '<EhHeader>
+        On Error GoTo WriteRequestCharMail_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RequestCharMail)
+102     Call Writer.WriteString8(UserName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRequestCharMail_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestCharMail", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2792,11 +5756,23 @@ End Sub
 ' @param    copyFrom The name of the user from which to copy the password.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAlterPassword(ByVal UserName As String, ByVal CopyFrom As String)
-    Call Writer.WriteInt(ClientPacketID.AlterPassword)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(CopyFrom)
+        '<EhHeader>
+        On Error GoTo WriteAlterPassword_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AlterPassword)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(CopyFrom)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAlterPassword_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAlterPassword", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2806,11 +5782,23 @@ End Sub
 ' @param    newMail The new email of the player.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAlterMail(ByVal UserName As String, ByVal newMail As String)
-    Call Writer.WriteInt(ClientPacketID.AlterMail)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(newMail)
+        '<EhHeader>
+        On Error GoTo WriteAlterMail_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AlterMail)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(newMail)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAlterMail_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAlterMail", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2820,11 +5808,23 @@ End Sub
 ' @param    newName The new user name.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteAlterName(ByVal UserName As String, ByVal newName As String)
-    Call Writer.WriteInt(ClientPacketID.AlterName)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteString8(newName)
+        '<EhHeader>
+        On Error GoTo WriteAlterName_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AlterName)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteString8(newName)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAlterName_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAlterName", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2832,9 +5832,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDoBackup()
-    Call Writer.WriteInt(ClientPacketID.DoBackUp)
+        '<EhHeader>
+        On Error GoTo WriteDoBackup_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.DoBackUp)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDoBackup_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDoBackup", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2843,10 +5855,22 @@ End Sub
 ' @param    guild The guild to listen to.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteShowGuildMessages(ByVal guild As String)
-    Call Writer.WriteInt(ClientPacketID.ShowGuildMessages)
-    Call Writer.WriteString8(guild)
+        '<EhHeader>
+        On Error GoTo WriteShowGuildMessages_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ShowGuildMessages)
+102     Call Writer.WriteString8(guild)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteShowGuildMessages_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteShowGuildMessages", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2854,9 +5878,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSaveMap()
-    Call Writer.WriteInt(ClientPacketID.SaveMap)
+        '<EhHeader>
+        On Error GoTo WriteSaveMap_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SaveMap)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSaveMap_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSaveMap", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2865,10 +5901,22 @@ End Sub
 ' @param    isPK True if the map is PK, False otherwise.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMapInfoPK(ByVal isPK As Boolean)
-    Call Writer.WriteInt(ClientPacketID.ChangeMapInfoPK)
-    Call Writer.WriteBool(isPK)
+        '<EhHeader>
+        On Error GoTo WriteChangeMapInfoPK_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoPK)
+102     Call Writer.WriteBool(isPK)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMapInfoPK_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMapInfoPK", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2877,10 +5925,22 @@ End Sub
 ' @param    backup True if the map is to be backuped, False otherwise.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMapInfoBackup(ByVal backup As Boolean)
-    Call Writer.WriteInt(ClientPacketID.ChangeMapInfoBackup)
-    Call Writer.WriteBool(backup)
+        '<EhHeader>
+        On Error GoTo WriteChangeMapInfoBackup_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoBackup)
+102     Call Writer.WriteBool(backup)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMapInfoBackup_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMapInfoBackup", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2889,10 +5949,22 @@ End Sub
 ' @param    restrict NEWBIES (only newbies), NO (everyone), ARMADA (just Armadas), CAOS (just caos) or FACCION (Armadas & caos only)
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMapInfoRestricted(ByVal restrict As String)
-    Call Writer.WriteInt(ClientPacketID.ChangeMapInfoRestricted)
-    Call Writer.WriteString8(restrict)
+        '<EhHeader>
+        On Error GoTo WriteChangeMapInfoRestricted_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoRestricted)
+102     Call Writer.WriteString8(restrict)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMapInfoRestricted_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMapInfoRestricted", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2901,10 +5973,22 @@ End Sub
 ' @param    nomagic TRUE if no magic is to be allowed in the map.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMapInfoNoMagic(ByVal nomagic As Boolean)
-    Call Writer.WriteInt(ClientPacketID.ChangeMapInfoNoMagic)
-    Call Writer.WriteBool(nomagic)
+        '<EhHeader>
+        On Error GoTo WriteChangeMapInfoNoMagic_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoNoMagic)
+102     Call Writer.WriteBool(nomagic)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMapInfoNoMagic_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMapInfoNoMagic", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2913,10 +5997,22 @@ End Sub
 ' @param    noinvi TRUE if invisibility is not to be allowed in the map.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMapInfoNoInvi(ByVal noinvi As Boolean)
-    Call Writer.WriteInt(ClientPacketID.ChangeMapInfoNoInvi)
-    Call Writer.WriteBool(noinvi)
+        '<EhHeader>
+        On Error GoTo WriteChangeMapInfoNoInvi_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoNoInvi)
+102     Call Writer.WriteBool(noinvi)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMapInfoNoInvi_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMapInfoNoInvi", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
                             
 ''
@@ -2925,10 +6021,22 @@ End Sub
 ' @param    noresu TRUE if resurection is not to be allowed in the map.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMapInfoNoResu(ByVal noresu As Boolean)
-    Call Writer.WriteInt(ClientPacketID.ChangeMapInfoNoResu)
-    Call Writer.WriteBool(noresu)
+        '<EhHeader>
+        On Error GoTo WriteChangeMapInfoNoResu_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoNoResu)
+102     Call Writer.WriteBool(noresu)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMapInfoNoResu_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMapInfoNoResu", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
                         
 ''
@@ -2937,10 +6045,22 @@ End Sub
 ' @param    land options: "BOSQUE", "NIEVE", "DESIERTO", "CIUDAD", "CAMPO", "DUNGEON".
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMapInfoLand(ByVal lAnd As String)
-    Call Writer.WriteInt(ClientPacketID.ChangeMapInfoLand)
-    Call Writer.WriteString8(lAnd)
+        '<EhHeader>
+        On Error GoTo WriteChangeMapInfoLand_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoLand)
+102     Call Writer.WriteString8(lAnd)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMapInfoLand_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMapInfoLand", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
                         
 ''
@@ -2949,10 +6069,22 @@ End Sub
 ' @param    zone options: "BOSQUE", "NIEVE", "DESIERTO", "CIUDAD", "CAMPO", "DUNGEON".
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChangeMapInfoZone(ByVal zone As String)
-    Call Writer.WriteInt(ClientPacketID.ChangeMapInfoZone)
-    Call Writer.WriteString8(zone)
+        '<EhHeader>
+        On Error GoTo WriteChangeMapInfoZone_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChangeMapInfoZone)
+102     Call Writer.WriteString8(zone)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMapInfoZone_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMapInfoZone", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2960,9 +6092,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSaveChars()
-    Call Writer.WriteInt(ClientPacketID.SaveChars)
+        '<EhHeader>
+        On Error GoTo WriteSaveChars_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SaveChars)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSaveChars_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSaveChars", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2970,9 +6114,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCleanSOS()
-    Call Writer.WriteInt(ClientPacketID.CleanSOS)
+        '<EhHeader>
+        On Error GoTo WriteCleanSOS_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CleanSOS)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCleanSOS_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCleanSOS", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2980,9 +6136,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteShowServerForm()
-    Call Writer.WriteInt(ClientPacketID.ShowServerForm)
+        '<EhHeader>
+        On Error GoTo WriteShowServerForm_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ShowServerForm)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteShowServerForm_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteShowServerForm", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -2990,22 +6158,58 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteNight()
-    Call Writer.WriteInt(ClientPacketID.night)
+        '<EhHeader>
+        On Error GoTo WriteNight_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.night)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteNight_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteNight", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteDay()
-    Call Writer.WriteInt(ClientPacketID.Day)
+        '<EhHeader>
+        On Error GoTo WriteDay_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Day)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDay_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDay", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteSetTime(ByVal Time As Long)
-    Call Writer.WriteInt(ClientPacketID.SetTime)
-    Call Writer.WriteInt32(Time)
+        '<EhHeader>
+        On Error GoTo WriteSetTime_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SetTime)
+102     Call Writer.WriteInt32(Time)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteSetTime_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSetTime", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3013,9 +6217,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteKickAllChars()
-    Call Writer.WriteInt(ClientPacketID.KickAllChars)
+        '<EhHeader>
+        On Error GoTo WriteKickAllChars_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.KickAllChars)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteKickAllChars_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteKickAllChars", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3023,9 +6239,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReloadNPCs()
-    Call Writer.WriteInt(ClientPacketID.ReloadNPCs)
+        '<EhHeader>
+        On Error GoTo WriteReloadNPCs_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ReloadNPCs)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteReloadNPCs_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReloadNPCs", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3033,9 +6261,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReloadServerIni()
-    Call Writer.WriteInt(ClientPacketID.ReloadServerIni)
+        '<EhHeader>
+        On Error GoTo WriteReloadServerIni_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ReloadServerIni)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteReloadServerIni_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReloadServerIni", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3043,9 +6283,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReloadSpells()
-    Call Writer.WriteInt(ClientPacketID.ReloadSpells)
+        '<EhHeader>
+        On Error GoTo WriteReloadSpells_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ReloadSpells)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteReloadSpells_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReloadSpells", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3053,9 +6305,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteReloadObjects()
-    Call Writer.WriteInt(ClientPacketID.ReloadObjects)
+        '<EhHeader>
+        On Error GoTo WriteReloadObjects_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ReloadObjects)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteReloadObjects_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReloadObjects", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3063,9 +6327,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteRestart()
-    Call Writer.WriteInt(ClientPacketID.Restart)
+        '<EhHeader>
+        On Error GoTo WriteRestart_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Restart)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRestart_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRestart", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3076,12 +6352,24 @@ End Sub
 ' @param    b The blue component of the new chat color.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteChatColor(ByVal r As Byte, ByVal G As Byte, ByVal B As Byte)
-    Call Writer.WriteInt(ClientPacketID.ChatColor)
-    Call Writer.WriteInt8(r)
-    Call Writer.WriteInt8(G)
-    Call Writer.WriteInt8(B)
+        '<EhHeader>
+        On Error GoTo WriteChatColor_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ChatColor)
+102     Call Writer.WriteInt8(r)
+104     Call Writer.WriteInt8(G)
+106     Call Writer.WriteInt8(B)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChatColor_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChatColor", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3089,9 +6377,21 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteIgnored()
-    Call Writer.WriteInt(ClientPacketID.Ignored)
+        '<EhHeader>
+        On Error GoTo WriteIgnored_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Ignored)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteIgnored_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteIgnored", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3101,11 +6401,23 @@ End Sub
 ' @param    slot        The slot to be checked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteCheckSlot(ByVal UserName As String, ByVal Slot As Byte)
-    Call Writer.WriteInt(ClientPacketID.CheckSlot)
-    Call Writer.WriteString8(UserName)
-    Call Writer.WriteInt8(Slot)
+        '<EhHeader>
+        On Error GoTo WriteCheckSlot_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CheckSlot)
+102     Call Writer.WriteString8(UserName)
+104     Call Writer.WriteInt8(Slot)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCheckSlot_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCheckSlot", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3113,147 +6425,382 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WritePing()
-    Call Writer.WriteInt(ClientPacketID.Ping)
-    pingTime = GetTickCount()
-    Call Writer.WriteInt32(pingTime)
+        '<EhHeader>
+        On Error GoTo WritePing_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Ping)
+102     pingTime = GetTickCount()
+104     Call Writer.WriteInt32(pingTime)
     
-    ' Avoid computing errors due to frame rate
+        ' Avoid computing errors due to frame rate
     
-    Call modNetwork.Send(Writer)
-    Call modNetwork.Poll
+106     Call modNetwork.Send(Writer)
+108     Call modNetwork.Poll
+        '<EhFooter>
+        Exit Sub
+
+WritePing_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePing", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteLlamadadeClan()
-    Call Writer.WriteInt(ClientPacketID.llamadadeclan)
+        '<EhHeader>
+        On Error GoTo WriteLlamadadeClan_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.llamadadeclan)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLlamadadeClan_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLlamadadeClan", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteQuestionGM(ByVal Consulta As String, ByVal TipoDeConsulta As String)
-    Call Writer.WriteInt(ClientPacketID.QuestionGM)
-    Call Writer.WriteString8(Consulta)
-    Call Writer.WriteString8(TipoDeConsulta)
+        '<EhHeader>
+        On Error GoTo WriteQuestionGM_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.QuestionGM)
+102     Call Writer.WriteString8(Consulta)
+104     Call Writer.WriteString8(TipoDeConsulta)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteQuestionGM_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuestionGM", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteOfertaInicial(ByVal Oferta As Long)
-    Call Writer.WriteInt(ClientPacketID.OfertaInicial)
-    Call Writer.WriteInt32(Oferta)
+        '<EhHeader>
+        On Error GoTo WriteOfertaInicial_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.OfertaInicial)
+102     Call Writer.WriteInt32(Oferta)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteOfertaInicial_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteOfertaInicial", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteOferta(ByVal OfertaDeSubasta As Long)
-    Call Writer.WriteInt(ClientPacketID.OfertaDeSubasta)
-    Call Writer.WriteInt32(OfertaDeSubasta)
+        '<EhHeader>
+        On Error GoTo WriteOferta_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.OfertaDeSubasta)
+102     Call Writer.WriteInt32(OfertaDeSubasta)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteOferta_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteOferta", Erl)
+        Resume Next
+        '</EhFooter>
+End Sub
+
+Public Sub WriteSetSpeed(ByVal Speed As Single)
+        '<EhHeader>
+        On Error GoTo WriteGlobalMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.SetSpeed)
+102     Call Writer.WriteReal32(Speed)
+    
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGlobalMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSetSpeed", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteGlobalMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.GlobalMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteGlobalMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GlobalMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGlobalMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGlobalMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteGlobalOnOff()
-    Call Writer.WriteInt(ClientPacketID.GlobalOnOff)
+        '<EhHeader>
+        On Error GoTo WriteGlobalOnOff_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GlobalOnOff)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGlobalOnOff_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGlobalOnOff", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteBorrandoPJ()
-    'TODO_WOLF: Pure
-    Call Writer.WriteInt(ClientPacketID.BorrarPJ)
-    Call Writer.WriteString8(DeleteUser)
-    Call Writer.WriteString8(CuentaEmail)
-    Call Writer.WriteString8(SEncriptar(CuentaPassword))
-    Call Writer.WriteInt8(App.Major)
-    Call Writer.WriteInt8(App.Minor)
-    Call Writer.WriteInt8(App.Revision)
-    Call Writer.WriteString8(MacAdress)  'Seguridad
-    Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
-    Call Writer.WriteString8(CheckMD5)
+        'TODO_WOLF: Pure
+        '<EhHeader>
+        On Error GoTo WriteBorrandoPJ_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BorrarPJ)
+102     Call Writer.WriteString8(DeleteUser)
+104     Call Writer.WriteString8(CuentaEmail)
+106     Call Writer.WriteString8(SEncriptar(CuentaPassword))
+108     Call Writer.WriteInt8(App.Major)
+110     Call Writer.WriteInt8(App.Minor)
+112     Call Writer.WriteInt8(App.Revision)
+114     Call Writer.WriteString8(MacAdress)  'Seguridad
+116     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
+118     Call Writer.WriteString8(CheckMD5)
     
-    Call modNetwork.Send(Writer)
+120     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBorrandoPJ_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBorrandoPJ", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteIngresandoConCuenta()
-    'TODO_WOLF: Pure
-    Call Writer.WriteInt(ClientPacketID.IngresarConCuenta)
-    Call Writer.WriteString8(CuentaEmail)
-    Call Writer.WriteString8(SEncriptar(CuentaPassword))
-    Call Writer.WriteInt8(App.Major)
-    Call Writer.WriteInt8(App.Minor)
-    Call Writer.WriteInt8(App.Revision)
-    Call Writer.WriteString8(MacAdress)  'Seguridad
-    Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
-    Call Writer.WriteString8(CheckMD5)
+        'TODO_WOLF: Pure
+        '<EhHeader>
+        On Error GoTo WriteIngresandoConCuenta_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.IngresarConCuenta)
+102     Call Writer.WriteString8(CuentaEmail)
+104     Call Writer.WriteString8(SEncriptar(CuentaPassword))
+106     Call Writer.WriteInt8(App.Major)
+108     Call Writer.WriteInt8(App.Minor)
+110     Call Writer.WriteInt8(App.Revision)
+112     Call Writer.WriteString8(MacAdress)  'Seguridad
+114     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
+116     Call Writer.WriteString8(CheckMD5)
     
-    Call modNetwork.Send(Writer)
+118     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteIngresandoConCuenta_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteIngresandoConCuenta", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteNieblaToggle()
-    Call Writer.WriteInt(ClientPacketID.NieblaToggle)
+        '<EhHeader>
+        On Error GoTo WriteNieblaToggle_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.NieblaToggle)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteNieblaToggle_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteNieblaToggle", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteGenio()
-    Call Writer.WriteInt(ClientPacketID.Genio)
+        '<EhHeader>
+        On Error GoTo WriteGenio_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Genio)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGenio_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGenio", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteQuest()
-    Call Writer.WriteInt(ClientPacketID.Quest)
+        '<EhHeader>
+        On Error GoTo WriteQuest_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Quest)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteQuest_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuest", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
  
 Public Sub WriteQuestDetailsRequest(ByVal QuestSlot As Byte)
-    Call Writer.WriteInt(ClientPacketID.QuestDetailsRequest)
-    Call Writer.WriteInt8(QuestSlot)
+        '<EhHeader>
+        On Error GoTo WriteQuestDetailsRequest_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.QuestDetailsRequest)
+102     Call Writer.WriteInt8(QuestSlot)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteQuestDetailsRequest_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuestDetailsRequest", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
  
 Public Sub WriteQuestAccept(ByVal ListInd As Byte)
-    Call Writer.WriteInt(ClientPacketID.QuestAccept)
-    Call Writer.WriteInt8(ListInd)
+        '<EhHeader>
+        On Error GoTo WriteQuestAccept_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.QuestAccept)
+102     Call Writer.WriteInt8(ListInd)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteQuestAccept_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuestAccept", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteQuestListRequest()
-    Call Writer.WriteInt(ClientPacketID.QuestListRequest)
+        '<EhHeader>
+        On Error GoTo WriteQuestListRequest_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.QuestListRequest)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteQuestListRequest_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuestListRequest", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
  
 Public Sub WriteQuestAbandon(ByVal QuestSlot As Byte)
-    Call Writer.WriteInt(ClientPacketID.QuestAbandon)
-    'Escribe el Slot de Quest.
-    Call Writer.WriteInt8(QuestSlot)
+        '<EhHeader>
+        On Error GoTo WriteQuestAbandon_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.QuestAbandon)
+        'Escribe el Slot de Quest.
+102     Call Writer.WriteInt8(QuestSlot)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteQuestAbandon_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuestAbandon", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteResponderPregunta(ByVal Respuesta As Boolean)
-    Call Writer.WriteInt(ClientPacketID.ResponderPregunta)
-    Call Writer.WriteBool(Respuesta)
+        '<EhHeader>
+        On Error GoTo WriteResponderPregunta_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ResponderPregunta)
+102     Call Writer.WriteBool(Respuesta)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteResponderPregunta_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResponderPregunta", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCompletarViaje(ByVal destino As Byte, ByVal costo As Long)
-    Call Writer.WriteInt(ClientPacketID.CompletarViaje)
-    Call Writer.WriteInt8(destino)
-    Call Writer.WriteInt32(costo)
+        '<EhHeader>
+        On Error GoTo WriteCompletarViaje_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CompletarViaje)
+102     Call Writer.WriteInt8(destino)
+104     Call Writer.WriteInt32(costo)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCompletarViaje_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCompletarViaje", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, _
@@ -3277,58 +6824,118 @@ Public Sub WriteCreaerTorneo(ByVal nivelminimo As Byte, _
                              ByVal y As Byte, _
                              ByVal Name As String, _
                              ByVal reglas As String)
-    Call Writer.WriteInt(ClientPacketID.CrearTorneo)
-    Call Writer.WriteInt8(nivelminimo)
-    Call Writer.WriteInt8(nivelmaximo)
-    Call Writer.WriteInt8(cupos)
-    Call Writer.WriteInt32(costo)
-    Call Writer.WriteInt8(mago)
-    Call Writer.WriteInt8(clerico)
-    Call Writer.WriteInt8(guerrero)
-    Call Writer.WriteInt8(asesino)
-    Call Writer.WriteInt8(bardo)
-    Call Writer.WriteInt8(druido)
-    Call Writer.WriteInt8(paladin)
-    Call Writer.WriteInt8(cazador)
-    Call Writer.WriteInt8(Trabajador)
-    Call Writer.WriteInt8(Pirata)
-    Call Writer.WriteInt8(Ladron)
-    Call Writer.WriteInt8(Bandido)
-    Call Writer.WriteInt16(map)
-    Call Writer.WriteInt8(x)
-    Call Writer.WriteInt8(y)
-    Call Writer.WriteString8(Name)
-    Call Writer.WriteString8(reglas)
+        '<EhHeader>
+        On Error GoTo WriteCreaerTorneo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CrearTorneo)
+102     Call Writer.WriteInt8(nivelminimo)
+104     Call Writer.WriteInt8(nivelmaximo)
+106     Call Writer.WriteInt8(cupos)
+108     Call Writer.WriteInt32(costo)
+110     Call Writer.WriteInt8(mago)
+112     Call Writer.WriteInt8(clerico)
+114     Call Writer.WriteInt8(guerrero)
+116     Call Writer.WriteInt8(asesino)
+118     Call Writer.WriteInt8(bardo)
+120     Call Writer.WriteInt8(druido)
+122     Call Writer.WriteInt8(paladin)
+124     Call Writer.WriteInt8(cazador)
+126     Call Writer.WriteInt8(Trabajador)
+128     Call Writer.WriteInt8(Pirata)
+130     Call Writer.WriteInt8(Ladron)
+132     Call Writer.WriteInt8(Bandido)
+134     Call Writer.WriteInt16(map)
+136     Call Writer.WriteInt8(x)
+138     Call Writer.WriteInt8(y)
+140     Call Writer.WriteString8(Name)
+142     Call Writer.WriteString8(reglas)
     
-    Call modNetwork.Send(Writer)
+144     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCreaerTorneo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreaerTorneo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteComenzarTorneo()
-    Call Writer.WriteInt(ClientPacketID.ComenzarTorneo)
+        '<EhHeader>
+        On Error GoTo WriteComenzarTorneo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ComenzarTorneo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteComenzarTorneo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteComenzarTorneo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCancelarTorneo()
-    Call Writer.WriteInt(ClientPacketID.CancelarTorneo)
+        '<EhHeader>
+        On Error GoTo WriteCancelarTorneo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CancelarTorneo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCancelarTorneo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCancelarTorneo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteBusquedaTesoro(ByVal TIPO As Byte)
-    Call Writer.WriteInt(ClientPacketID.BusquedaTesoro)
-    Call Writer.WriteInt8(TIPO)
+        '<EhHeader>
+        On Error GoTo WriteBusquedaTesoro_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.BusquedaTesoro)
+102     Call Writer.WriteInt8(TIPO)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteBusquedaTesoro_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBusquedaTesoro", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
 ' Writes the "Home" message to the outgoing data buffer.
 '
 Public Sub WriteHome()
-    Call Writer.WriteInt(ClientPacketID.Home)
+        '<EhHeader>
+        On Error GoTo WriteHome_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Home)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteHome_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteHome", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 ''
@@ -3336,177 +6943,465 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteConsulta(Optional ByVal Nick As String = vbNullString)
-    Call Writer.WriteInt(ClientPacketID.Consulta)
-    Call Writer.WriteString8(Nick)
+        '<EhHeader>
+        On Error GoTo WriteConsulta_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Consulta)
+102     Call Writer.WriteString8(Nick)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteConsulta_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteConsulta", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCuentaExtractItem(ByVal Slot As Byte, _
                                   ByVal Amount As Integer, _
                                   ByVal slotdestino As Byte)
-    Call Writer.WriteInt(ClientPacketID.CuentaExtractItem)
-    Call Writer.WriteInt8(Slot)
-    Call Writer.WriteInt16(Amount)
-    Call Writer.WriteInt8(slotdestino)
+        '<EhHeader>
+        On Error GoTo WriteCuentaExtractItem_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CuentaExtractItem)
+102     Call Writer.WriteInt8(Slot)
+104     Call Writer.WriteInt16(Amount)
+106     Call Writer.WriteInt8(slotdestino)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCuentaExtractItem_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCuentaExtractItem", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCuentaDeposit(ByVal Slot As Byte, _
                               ByVal Amount As Integer, _
                               ByVal slotdestino As Byte)
-    Call Writer.WriteInt(ClientPacketID.CuentaDeposit)
-    Call Writer.WriteInt8(Slot)
-    Call Writer.WriteInt16(Amount)
-    Call Writer.WriteInt8(slotdestino)
+        '<EhHeader>
+        On Error GoTo WriteCuentaDeposit_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CuentaDeposit)
+102     Call Writer.WriteInt8(Slot)
+104     Call Writer.WriteInt16(Amount)
+106     Call Writer.WriteInt8(slotdestino)
     
-    Call modNetwork.Send(Writer)
+108     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCuentaDeposit_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCuentaDeposit", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteDuel(Players As String, _
                      ByVal Apuesta As Long, _
                      Optional ByVal PocionesRojas As Long = -1, _
                      Optional ByVal CaenItems As Boolean = False)
-    Call Writer.WriteInt(ClientPacketID.Duel)
-    Call Writer.WriteString8(Players)
-    Call Writer.WriteInt32(Apuesta)
-    Call Writer.WriteInt16(PocionesRojas)
-    Call Writer.WriteBool(CaenItems)
+        '<EhHeader>
+        On Error GoTo WriteDuel_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Duel)
+102     Call Writer.WriteString8(Players)
+104     Call Writer.WriteInt32(Apuesta)
+106     Call Writer.WriteInt16(PocionesRojas)
+108     Call Writer.WriteBool(CaenItems)
     
-    Call modNetwork.Send(Writer)
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteDuel_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDuel", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteAcceptDuel(Offerer As String)
-    Call Writer.WriteInt(ClientPacketID.AcceptDuel)
-    Call Writer.WriteString8(Offerer)
+        '<EhHeader>
+        On Error GoTo WriteAcceptDuel_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AcceptDuel)
+102     Call Writer.WriteString8(Offerer)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAcceptDuel_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAcceptDuel", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCancelDuel()
-    Call Writer.WriteInt(ClientPacketID.CancelDuel)
+        '<EhHeader>
+        On Error GoTo WriteCancelDuel_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CancelDuel)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCancelDuel_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCancelDuel", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteQuitDuel()
-    Call Writer.WriteInt(ClientPacketID.QuitDuel)
+        '<EhHeader>
+        On Error GoTo WriteQuitDuel_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.QuitDuel)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteQuitDuel_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuitDuel", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCreateEvent(EventName As String)
-    Call Writer.WriteInt(ClientPacketID.CreateEvent)
-    Call Writer.WriteString8(EventName)
+        '<EhHeader>
+        On Error GoTo WriteCreateEvent_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CreateEvent)
+102     Call Writer.WriteString8(EventName)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCreateEvent_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreateEvent", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCommerceSendChatMessage(ByVal Message As String)
-    Call Writer.WriteInt(ClientPacketID.CommerceSendChatMessage)
-    Call Writer.WriteString8(Message)
+        '<EhHeader>
+        On Error GoTo WriteCommerceSendChatMessage_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CommerceSendChatMessage)
+102     Call Writer.WriteString8(Message)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCommerceSendChatMessage_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCommerceSendChatMessage", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteLogMacroClickHechizo()
-    Call Writer.WriteInt(ClientPacketID.LogMacroClickHechizo)
+        '<EhHeader>
+        On Error GoTo WriteLogMacroClickHechizo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.LogMacroClickHechizo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLogMacroClickHechizo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLogMacroClickHechizo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteNieveToggle()
-    Call Writer.WriteInt(ClientPacketID.NieveToggle)
+        '<EhHeader>
+        On Error GoTo WriteNieveToggle_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.NieveToggle)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteNieveToggle_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteNieveToggle", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCompletarAccion(ByVal Accion As Byte)
-    Call Writer.WriteInt(ClientPacketID.CompletarAccion)
-    Call Writer.WriteInt8(Accion)
+        '<EhHeader>
+        On Error GoTo WriteCompletarAccion_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CompletarAccion)
+102     Call Writer.WriteInt8(Accion)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCompletarAccion_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCompletarAccion", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteTolerancia0(Nick As String)
-    Call Writer.WriteInt(ClientPacketID.Tolerancia0)
-    Call Writer.WriteString8(Nick)
+        '<EhHeader>
+        On Error GoTo WriteTolerancia0_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.Tolerancia0)
+102     Call Writer.WriteString8(Nick)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteTolerancia0_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTolerancia0", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteGetMapInfo()
-    Call Writer.WriteInt(ClientPacketID.GetMapInfo)
+        '<EhHeader>
+        On Error GoTo WriteGetMapInfo_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GetMapInfo)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGetMapInfo_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGetMapInfo", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteAddItemCrafting(ByVal SlotInv As Byte, ByVal SlotCraft As Byte)
-    Call Writer.WriteInt(ClientPacketID.AddItemCrafting)
-    Call Writer.WriteInt8(SlotInv)
-    Call Writer.WriteInt8(SlotCraft)
+        '<EhHeader>
+        On Error GoTo WriteAddItemCrafting_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AddItemCrafting)
+102     Call Writer.WriteInt8(SlotInv)
+104     Call Writer.WriteInt8(SlotCraft)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAddItemCrafting_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAddItemCrafting", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
     
 Public Sub WriteRemoveItemCrafting(ByVal SlotCraft As Byte, ByVal SlotInv As Byte)
-    Call Writer.WriteInt(ClientPacketID.RemoveItemCrafting)
-    Call Writer.WriteInt8(SlotCraft)
-    Call Writer.WriteInt8(SlotInv)
+        '<EhHeader>
+        On Error GoTo WriteRemoveItemCrafting_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RemoveItemCrafting)
+102     Call Writer.WriteInt8(SlotCraft)
+104     Call Writer.WriteInt8(SlotInv)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRemoveItemCrafting_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRemoveItemCrafting", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteAddCatalyst(ByVal SlotInv As Byte)
-    Call Writer.WriteInt(ClientPacketID.AddCatalyst)
-    Call Writer.WriteInt8(SlotInv)
+        '<EhHeader>
+        On Error GoTo WriteAddCatalyst_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.AddCatalyst)
+102     Call Writer.WriteInt8(SlotInv)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteAddCatalyst_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAddCatalyst", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteRemoveCatalyst(ByVal SlotInv As Byte)
-    Call Writer.WriteInt(ClientPacketID.RemoveCatalyst)
-    Call Writer.WriteInt8(SlotInv)
+        '<EhHeader>
+        On Error GoTo WriteRemoveCatalyst_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RemoveCatalyst)
+102     Call Writer.WriteInt8(SlotInv)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRemoveCatalyst_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRemoveCatalyst", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCraftItem()
-    Call Writer.WriteInt(ClientPacketID.CraftItem)
+        '<EhHeader>
+        On Error GoTo WriteCraftItem_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CraftItem)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCraftItem_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCraftItem", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteMoveCraftItem(ByVal Drag As Byte, ByVal Drop As Byte)
-    Call Writer.WriteInt(ClientPacketID.MoveCraftItem)
-    Call Writer.WriteInt8(Drag)
-    Call Writer.WriteInt8(Drop)
+        '<EhHeader>
+        On Error GoTo WriteMoveCraftItem_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.MoveCraftItem)
+102     Call Writer.WriteInt8(Drag)
+104     Call Writer.WriteInt8(Drop)
     
-    Call modNetwork.Send(Writer)
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteMoveCraftItem_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMoveCraftItem", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteCloseCrafting()
-    Call Writer.WriteInt(ClientPacketID.CloseCrafting)
+        '<EhHeader>
+        On Error GoTo WriteCloseCrafting_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.CloseCrafting)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCloseCrafting_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCloseCrafting", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WritePetLeaveAll()
-    Call Writer.WriteInt(ClientPacketID.PetLeaveAll)
+        '<EhHeader>
+        On Error GoTo WritePetLeaveAll_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.PetLeaveAll)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WritePetLeaveAll_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePetLeaveAll", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteGuardNoticeResponse(ByVal Codigo As String)
-    Call Writer.WriteInt(ClientPacketID.GuardNoticeResponse)
-    Call Writer.WriteString8(Codigo)
+        '<EhHeader>
+        On Error GoTo WriteGuardNoticeResponse_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuardNoticeResponse)
+102     Call Writer.WriteString8(Codigo)
     
-    Call modNetwork.Send(Writer)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteGuardNoticeResponse_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuardNoticeResponse", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub
 
 Public Sub WriteResendVerificationCode(ByVal Codigo As String)
-    Call Writer.WriteInt(ClientPacketID.GuardResendVerificationCode)
+        '<EhHeader>
+        On Error GoTo WriteResendVerificationCode_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.GuardResendVerificationCode)
     
-    Call modNetwork.Send(Writer)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteResendVerificationCode_Err:
+        Call Writer.Clear
+
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResendVerificationCode", Erl)
+        Resume Next
+        '</EhFooter>
 End Sub

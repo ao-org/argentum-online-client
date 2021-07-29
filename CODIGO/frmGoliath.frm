@@ -509,3 +509,29 @@ tmrNumber_Timer_Err:
     
 End Sub
 
+Private Sub txtname_KeyPress(KeyAscii As Integer)
+    Dim ValidKeyAscii As Boolean
+    
+    If (KeyAscii >= Asc("A")) And (KeyAscii <= Asc("Z")) Then
+        ValidKeyAscii = True
+    End If
+    If (KeyAscii >= Asc("a")) And (KeyAscii <= Asc("z")) Then
+        ValidKeyAscii = True
+    End If
+    
+   If Not ValidKeyAscii Then
+      KeyAscii = 0
+   End If
+End Sub
+
+Private Sub txtDatos_KeyPress(KeyAscii As Integer)
+    Dim ValidKeyAscii As Boolean
+    
+    If (KeyAscii >= Asc("0")) And (KeyAscii <= Asc("9")) Then
+        ValidKeyAscii = True
+    End If
+
+   If Not ValidKeyAscii Then
+      KeyAscii = 0
+   End If
+End Sub
