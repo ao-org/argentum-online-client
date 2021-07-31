@@ -68,12 +68,12 @@ End Sub
 Private Sub OnClientSend(ByVal Message As Network.Reader)
 On Error GoTo OnClientSend_Err:
 
+#If AntiExternos = 1 Then
     Dim BytesRef() As Byte
     Call Message.GetData(BytesRef) ' Is only a view of the buffer as a SafeArrayPtr ;-)
 
-    #If AntiExternos = 1 Then
-        Call Security.XorData(BytesRef, UBound(BytesRef) - 1, XorIndexOut)
-    #End If
+    Call Security.XorData(BytesRef, UBound(BytesRef) - 1, XorIndexOut)
+#End If
     
     Exit Sub
     
@@ -84,12 +84,12 @@ End Sub
 Private Sub OnClientRecv(ByVal Message As Network.Reader)
 On Error GoTo OnClientRecv_Err:
 
+#If AntiExternos = 1 Then
     Dim BytesRef() As Byte
     Call Message.GetData(BytesRef) ' Is only a view of the buffer as a SafeArrayPtr ;-)
 
-    #If AntiExternos = 1 Then
-        Call Security.XorData(BytesRef, UBound(BytesRef) - 1, XorIndexIn)
-    #End If
+    Call Security.XorData(BytesRef, UBound(BytesRef) - 1, XorIndexIn)
+#End If
 
     Call Protocol.HandleIncomingData(Message)
 
