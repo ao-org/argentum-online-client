@@ -1922,19 +1922,9 @@ Public Sub CheckResources()
 End Sub
 
 Function ValidarNombre(nombre As String, Error As String) As Boolean
-    
-    If Len(nombre) < 1 Then
-        Error = "Ingrese algún nombre."
-        Exit Function
-    End If
-    
-    If Len(nombre) > 18 Then
-        Error = "Nombre demasiado largo."
-        Exit Function
-    End If
-    
-    If Len(nombre) < 3 Then
-        Error = "Nombre demaciado corto."
+
+    If Len(nombre) < 3 Or Len(nombre) > 18 Then
+        Error = "Debes ingresar un nombre entre 3 y 18 caracteres"
         Exit Function
     End If
     
