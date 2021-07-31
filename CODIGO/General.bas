@@ -1933,6 +1933,11 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         Exit Function
     End If
     
+    If Len(nombre) < 3 Then
+        Error = "Nombre demaciado corto."
+        Exit Function
+    End If
+    
     Dim temp As String
     temp = UCase$(nombre)
     
