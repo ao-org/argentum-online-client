@@ -1103,7 +1103,7 @@ Sub Main()
     IPServers(1) = "45.235.98.165:7667:InetG"
     
     #If DEBUGGING = 1 Then
-        IPServers(2) = "190.245.155.7:7667:Horacio"
+        IPServers(2) = "190.245.148.17:7667:Horacio"
         IPServers(3) = "127.0.0.1:7667:Localhost"
         IPServers(4) = "66.60.29.133:7667:Martin"
     #End If
