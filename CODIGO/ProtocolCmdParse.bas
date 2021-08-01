@@ -1512,10 +1512,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /noestupido NICKNAME.")
 
                 End If
-                
-            Case "/DUMPSECURITY"
-                Call WriteDumpIPTables
-                
+
             Case "/KICKCONSE"
 
                 If notNullArguments Then

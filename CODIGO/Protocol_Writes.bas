@@ -4511,26 +4511,6 @@ WriteMakeDumbNoMore_Err:
 End Sub
 
 ''
-' Writes the "DumpIPTables" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteDumpIPTables()
-        '<EhHeader>
-        On Error GoTo WriteDumpIPTables_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.DumpIPTables)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteDumpIPTables_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDumpIPTables", Erl)
-        '</EhFooter>
-End Sub
-
-''
 ' Writes the "CouncilKick" message to the outgoing data buffer.
 '
 ' @param    username The name of the user to be kicked from the council.
