@@ -384,6 +384,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -415,7 +416,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   9120
-      Left            =   150
+      Left            =   120
       ScaleHeight     =   608
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   736
@@ -916,6 +917,13 @@ Begin VB.Form frmMain
          Visible         =   0   'False
          Width           =   510
       End
+   End
+   Begin VB.Label lblPeces 
+      Height          =   495
+      Left            =   13920
+      TabIndex        =   42
+      Top             =   7560
+      Width           =   1575
    End
    Begin VB.Label btnInvisible 
       Alignment       =   2  'Center

@@ -3553,6 +3553,7 @@ Private Sub HandleCharacterCreate()
         .simbolo = Reader.ReadInt8()
         .Idle = Reader.ReadBool()
         .Navegando = Reader.ReadBool()
+        .tipoUsuario = Reader.ReadInt16()
         
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
             If MapData(.Pos.x, .Pos.y).charindex = charindex Then
