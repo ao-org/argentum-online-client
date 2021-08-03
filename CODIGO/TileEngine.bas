@@ -162,6 +162,15 @@ Public Type DialogEffect
     offset As Position
 End Type
 
+Public Enum eTipoUsuario
+    User = 0
+    cafecito
+    heroe
+    aventurero
+    Legend
+End Enum
+
+
 'Apariencia del personaje
 Public Type Char
     Navegando As Boolean
@@ -265,6 +274,7 @@ Public Type Char
     
     clan_index As Integer
     clan_nivel As Byte
+    tipoUsuario As eTipoUsuario
 
 End Type
 
