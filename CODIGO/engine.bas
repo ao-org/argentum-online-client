@@ -1813,17 +1813,17 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             
             Select Case .tipoUsuario
                 Case 1
-                    'cafecito, marrón caca
+                    'cafecito
                     Call RGBAList(Color, 185, 122, 87, IIf(.Invisible, 160, 255))
                 Case 2
-                    'Heroe, celeste
-                    Call RGBAList(Color, 26, 230, 247, IIf(.Invisible, 160, 255))
+                    'Héroe
+                    Call RGBAList(Color, 240, 135, 101, IIf(.Invisible, 160, 255))
                 Case 3
-                    'Heroe, Aventurero
-                    Call RGBAList(Color, 248, 121, 24, IIf(.Invisible, 120, 255))
+                    ' Aventurero
+                    Call RGBAList(Color, 240, 212, 175, IIf(.Invisible, 120, 255))
                 Case 4
-                    'Heroe, Leyenda
-                    Call RGBAList(Color, 227, 210, 157, IIf(.Invisible, 120, 255))
+                    'Leyenda
+                    Call RGBAList(Color, 222, 177, 45, IIf(.Invisible, 120, 255))
             End Select
             
             Call Draw_Grh(StarGrh, PixelOffsetX + 1 + .Body.BodyOffset.x + (Engine_Text_Width(.nombre, True) / 2) + 8, PixelOffsetY + 20 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
