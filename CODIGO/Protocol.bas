@@ -533,7 +533,6 @@ Public Enum ClientPacketID
     CreatePretorianClan     '/CREARPRETORIANOS
     Home                    '/HOGAR
     Consulta                '/CONSULTA
-    Tolerancia0             '/T0
     GetMapInfo              '/MAPINFO
     FinEvento
     SeguroResu

@@ -2123,11 +2123,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteConsulta(ArgumentosRaw)
                 End If
 
-            Case "/TOLERANCIA0", "/T0"
-                If EsGM Then
-                    Call WriteTolerancia0(ArgumentosRaw)
-                End If
-                
             Case "/RETAR", "/RETO"
                 frmRetos.Show , frmMain
 
@@ -2378,13 +2373,13 @@ Private Function AEMAILSplit(ByRef Text As String) As String()
     '***************************************************
     Dim tmpArr(0 To 1) As String
 
-    Dim pos            As Byte
+    Dim Pos            As Byte
     
-    pos = InStr(1, Text, "-")
+    Pos = InStr(1, Text, "-")
     
-    If pos <> 0 Then
-        tmpArr(0) = mid$(Text, 1, pos - 1)
-        tmpArr(1) = mid$(Text, pos + 1)
+    If Pos <> 0 Then
+        tmpArr(0) = mid$(Text, 1, Pos - 1)
+        tmpArr(1) = mid$(Text, Pos + 1)
     Else
         tmpArr(0) = vbNullString
 

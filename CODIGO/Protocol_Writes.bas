@@ -6407,23 +6407,6 @@ WriteCompletarAccion_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteTolerancia0(Nick As String)
-        '<EhHeader>
-        On Error GoTo WriteTolerancia0_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.Tolerancia0)
-102     Call Writer.WriteString8(Nick)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteTolerancia0_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTolerancia0", Erl)
-        '</EhFooter>
-End Sub
-
 Public Sub WriteGetMapInfo()
         '<EhHeader>
         On Error GoTo WriteGetMapInfo_Err
