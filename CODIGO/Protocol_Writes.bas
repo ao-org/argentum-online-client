@@ -27,8 +27,6 @@ Public Sub WriteLoginExistingChar()
 108     Call Writer.WriteInt8(App.Minor)
 110     Call Writer.WriteInt8(App.Revision)
 112     Call Writer.WriteString8(UserName)
-114     Call Writer.WriteString8(MacAdress)  'Seguridad
-116     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
 118     Call Writer.WriteString8(CheckMD5)
     
 120     Call modNetwork.Send(Writer)
@@ -61,8 +59,6 @@ Public Sub WriteLoginNewChar()
 118     Call Writer.WriteInt8(UserClase)
 120     Call Writer.WriteInt16(MiCabeza)
 122     Call Writer.WriteInt8(UserHogar)
-124     Call Writer.WriteString8(MacAdress)  'Seguridad
-126     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
 128     Call Writer.WriteString8(CheckMD5)
     
 130     Call modNetwork.Send(Writer)
@@ -3168,23 +3164,6 @@ WriteGoToChar_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteDesbuggear(ByVal Params As String)
-        '<EhHeader>
-        On Error GoTo WriteDesbuggear_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.Desbuggear)
-102     Call Writer.WriteString8(Params)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteDesbuggear_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDesbuggear", Erl)
-        '</EhFooter>
-End Sub
-
 Public Sub WriteDarLlaveAUsuario(ByVal User As String, ByVal Llave As Integer)
         '<EhHeader>
         On Error GoTo WriteDarLlaveAUsuario_Err
@@ -3808,40 +3787,6 @@ Public Sub WriteUnBanCuenta(ByVal UserName As String)
 WriteUnBanCuenta_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUnBanCuenta", Erl)
-        '</EhFooter>
-End Sub
-
-Public Sub WriteBanSerial(ByVal UserName As String)
-        '<EhHeader>
-        On Error GoTo WriteBanSerial_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.BanSerial)
-102     Call Writer.WriteString8(UserName)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteBanSerial_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBanSerial", Erl)
-        '</EhFooter>
-End Sub
-
-Public Sub WriteUnBanSerial(ByVal UserName As String, ByVal reason As String)
-        '<EhHeader>
-        On Error GoTo WriteUnBanSerial_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.unBanSerial)
-102     Call Writer.WriteString8(UserName)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteUnBanSerial_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUnBanSerial", Erl)
         '</EhFooter>
 End Sub
 
@@ -5933,8 +5878,6 @@ Public Sub WriteBorrandoPJ()
 108     Call Writer.WriteInt8(App.Major)
 110     Call Writer.WriteInt8(App.Minor)
 112     Call Writer.WriteInt8(App.Revision)
-114     Call Writer.WriteString8(MacAdress)  'Seguridad
-116     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
 118     Call Writer.WriteString8(CheckMD5)
     
 120     Call modNetwork.Send(Writer)
@@ -5958,8 +5901,6 @@ Public Sub WriteIngresandoConCuenta()
 106     Call Writer.WriteInt8(App.Major)
 108     Call Writer.WriteInt8(App.Minor)
 110     Call Writer.WriteInt8(App.Revision)
-112     Call Writer.WriteString8(MacAdress)  'Seguridad
-114     Call Writer.WriteInt32(HDserial)  'SeguridadHDserial
 116     Call Writer.WriteString8(CheckMD5)
     
 118     Call modNetwork.Send(Writer)

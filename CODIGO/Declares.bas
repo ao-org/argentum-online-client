@@ -224,8 +224,6 @@ Public PantallaCompleta            As Boolean
 
 Public Sonido                      As Byte
 
-Public OcultarMacrosAlCastear      As Byte
-
 Public MostrarIconosMeteorologicos As Byte
 
 Public OpcionMenu                  As Byte

@@ -778,12 +778,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /luzmapa R G B.")
                 End If
-                
-            Case "/DESBUGGEAR"
-                If EsGM Then
-                    Call WriteDesbuggear(ArgumentosRaw)
-                End If
-                
+
             Case "/DARLLAVE"
                 If EsGM Then
                     If notNullArguments Or CantidadArgumentos < 2 Then

@@ -1308,21 +1308,6 @@ BanCuenta_Click_Err:
     
 End Sub
 
-Private Sub banMacYHD_Click()
-    
-    On Error GoTo banMacYHD_Click_Err
-    
-    Call WriteBanSerial(cboListaUsus.Text)
-
-    
-    Exit Sub
-
-banMacYHD_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.banMacYHD_Click", Erl)
-    Resume Next
-    
-End Sub
-
 Private Sub BorrarPersonaje_Click()
     
     On Error GoTo BorrarPersonaje_Click_Err

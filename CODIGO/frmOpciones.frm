@@ -3,10 +3,10 @@ Begin VB.Form frmOpciones
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
    BorderStyle     =   0  'None
-   ClientHeight    =   7575
+   ClientHeight    =   7365
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   8025
+   ClientWidth     =   7980
    ControlBox      =   0   'False
    FillColor       =   &H00C0C0C0&
    BeginProperty Font 
@@ -22,8 +22,8 @@ Begin VB.Form frmOpciones
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7575
-   ScaleWidth      =   8025
+   ScaleHeight     =   7365
+   ScaleWidth      =   7980
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.HScrollBar Alpha 
@@ -639,32 +639,6 @@ Private Sub cbBloqueoHechizos_Click()
 
     ModoHechizos = cbBloqueoHechizos.ListIndex
 
-End Sub
-
-Private Sub Check1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo Check1_MouseUp_Err
-    
-
-    If OcultarMacrosAlCastear = 1 Then
-        OcultarMacrosAlCastear = 0
-    Else
-        OcultarMacrosAlCastear = 1
-    End If
-        
-    If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
-    Else
-        check1.Picture = LoadInterface("check-amarillo.bmp")
-    End If
-        
-    
-    Exit Sub
-
-Check1_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check1_MouseUp", Erl)
-    Resume Next
-    
 End Sub
 
 Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -1390,14 +1364,7 @@ Public Sub Init()
         Check6.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
-    
-    If OcultarMacrosAlCastear = 0 Then
-        check1.Picture = Nothing
-    Else
-        check1.Picture = LoadInterface("check-amarillo.bmp")
 
-    End If
-    
     If VSyncActivado Then
         VSync.Picture = LoadInterface("check-amarillo.bmp")
     Else

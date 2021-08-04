@@ -1063,8 +1063,6 @@ Sub Main()
     'Cursores******
 
     ' Security
-    MacAdress = GetMacAddress
-    HDserial = GetDriveSerialNumber
     CheckMD5 = GetMd5
     
     ' Leer contraseña de recursos

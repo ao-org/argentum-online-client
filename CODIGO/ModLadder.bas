@@ -8,7 +8,6 @@ Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
 
 'Nueva seguridad
 Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (destination As Any, source As Any, ByVal Length As Long)
-Private Declare Function GetAdaptersInfo Lib "iphlpapi" (lpAdapterInfo As Any, lpSize As Long) As Long
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 'get mac adress
 
@@ -21,8 +20,6 @@ End Type
 Public ListaClanes      As Boolean
 Public ClanesList()     As Tclan
 
-Public MacAdress        As String
-Public HDserial         As Long
 Public CheckMD5         As String
 
 Public intro            As Byte
@@ -71,14 +68,7 @@ Public Enum FXSound
     MP_SOUND = 150
 End Enum
 
-Public LastIndex2                        As Integer
-
-Public ItemLista(1 To 10)                As Obj
-Public ItemCount                         As Byte
-
 Public TieneFamiliar As Long
-
-Public PetPercExp    As Long
 
 Public HayLayer4     As Boolean
 
@@ -86,10 +76,7 @@ Public CantPartLLuvia     As Integer
 Public MeteoIndex         As Integer
 
 'Dropeo
-Public CantdPaquetes      As Long
 Public PingRender         As Integer
-Public InBytes            As Long
-Public OutBytes           As Long
 
 Public NumOBJs            As Integer
 Public NumNpcs            As Integer
@@ -176,14 +163,6 @@ Public WorldActual As Byte
 Public HechizoData()      As HechizoDatas
 
 Public NameMaps(1 To 1000) As NameMapas
-
-Public ShowMacros         As Byte
-
-Public OcultarMacro       As Boolean
-
-Public ModoCaminata       As Boolean
-
-Public MacrosBloqeados    As Boolean
 
 Public Type ObjDatas
 
@@ -1375,7 +1354,6 @@ Sub CargarOpciones()
     MostrarRespiracion = IIf(LenB(Value) > 0, Val(Value), True)
 
     FxNavega = ConfigFile.GetValue("OPCIONES", "FxNavega")
-    OcultarMacrosAlCastear = ConfigFile.GetValue("OPCIONES", "OcultarMacrosAlCastear")
     MostrarIconosMeteorologicos = ConfigFile.GetValue("OPCIONES", "MostrarIconosMeteorologicos")
     CopiarDialogoAConsola = ConfigFile.GetValue("OPCIONES", "CopiarDialogoAConsola")
     PermitirMoverse = ConfigFile.GetValue("OPCIONES", "PermitirMoverse")
@@ -1446,8 +1424,6 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "VIDEO", "Aceleracion", ModoAceleracion)
     Call WriteVar(Arch, "VIDEO", "Vsync", IIf(VSyncActivado, 1, 0))
 
-    Call WriteVar(Arch, "OPCIONES", "OcultarMacrosAlCastear", OcultarMacrosAlCastear)
-    
     Call WriteVar(Arch, "OPCIONES", "SensibilidadMouse", SensibilidadMouse)
     Call WriteVar(Arch, "OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
 
@@ -2265,96 +2241,6 @@ PreloadGraphics_Err:
     Resume Next
     
 End Sub
-
-Public Function GetDriveSerialNumber(Optional ByVal DriveLetter As String) As Long
-    
-    On Error GoTo GetDriveSerialNumber_Err
-    
-
-    '***************************************************
-    'Author: Nahuel Casas (Zagen)
-    'Last Modify Date: 07/12/2009
-    ' 07/12/2009: Zagen - Convertì las funciones, en formulas mas fàciles de modificar.
-    '***************************************************
-    
-
-    Dim fso As Object, Drv As Object, DriveSerial As Long
-         
-    'Creamos el objeto FileSystemObject.
-    Set fso = CreateObject("Scripting.FileSystemObject")
-         
-    'Asignamos el driver principal.
-    If DriveLetter <> "" Then
-        Set Drv = fso.GetDrive(DriveLetter)
-    Else
-        Set Drv = fso.GetDrive(fso.GetDriveName(App.Path))
-
-    End If
-     
-    With Drv
-
-        If .IsReady Then
-            DriveSerial = Abs(.SerialNumber)
-        Else    '"Si el driver no està como para empezar ..."
-            DriveSerial = -1
-
-        End If
-
-    End With
-         
-    'Borramos y limpiamos.
-    Set Drv = Nothing
-    Set fso = Nothing
-    'Seteamos :)
-    GetDriveSerialNumber = DriveSerial
-         
-    
-    Exit Function
-
-GetDriveSerialNumber_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GetDriveSerialNumber", Erl)
-    Resume Next
-    
-End Function
-
-Public Function GetMacAddress() As String
-    
-    On Error GoTo GetMacAddress_Err
-    
-
-    Const OFFSET_LENGTH As Long = 400
-
-    Dim lSize           As Long
-
-    Dim baBuffer()      As Byte
-
-    Dim lIdx            As Long
-
-    Dim sRetVal         As String
-    
-    Call GetAdaptersInfo(ByVal 0, lSize)
-
-    If lSize <> 0 Then
-        ReDim baBuffer(0 To lSize - 1) As Byte
-        Call GetAdaptersInfo(baBuffer(0), lSize)
-        Call CopyMemory(lSize, baBuffer(OFFSET_LENGTH), 4)
-
-        For lIdx = OFFSET_LENGTH + 4 To OFFSET_LENGTH + 4 + lSize - 1
-            sRetVal = IIf(LenB(sRetVal) <> 0, sRetVal & ":", vbNullString) & Right$("0" & hex$(baBuffer(lIdx)), 2)
-        Next
-
-    End If
-
-    GetMacAddress = sRetVal
-
-    
-    Exit Function
-
-GetMacAddress_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GetMacAddress", Erl)
-    Resume Next
-    
-End Function
 
 Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal Mapa As Integer) As Integer
     

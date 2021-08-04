@@ -468,7 +468,6 @@ Public Enum ClientPacketID
     GlobalOnOff
     IngresarConCuenta
     BorrarPJ
-    Desbuggear
     DarLlaveAUsuario
     SacarLlave
     VerLlaves
@@ -510,8 +509,6 @@ Public Enum ClientPacketID
     SubastaInfo
     BanCuenta
     UnbanCuenta
-    BanSerial
-    unBanSerial
     CerrarCliente
     EventoInfo
     CrearEvento
@@ -4580,14 +4577,6 @@ Private Sub HandleWorkRequestTarget()
     UsingSkill = UsingSkillREcibido
     frmMain.MousePointer = 2
 
-    If ShowMacros = 1 Then
-        If OcultarMacrosAlCastear Then
-            OcultarMacro = True
-
-        End If
-
-    End If
-    
     Select Case UsingSkill
 
         Case magia

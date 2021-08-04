@@ -320,16 +320,6 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         
             Call ScreenCapture
     
-        Case BindKeys(12).KeyCode
-            'If ShowMacros = 0 Then
-            '  ShowMacros = 1
-            ' frmMain.picmacroOn.Visible = True
-            'frmMain.picmacroOff.Visible = False
-            'Else
-            '   frmMain.picmacroOn.Visible = False
-            '  frmMain.picmacroOff.Visible = True
-            ' ShowMacros = 0
-            'End If
         Case BindKeys(19).KeyCode
             'FPSFLAG = Not FPSFLAG
             
