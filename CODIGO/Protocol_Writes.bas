@@ -6591,3 +6591,18 @@ WriteResendVerificationCode_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResendVerificationCode", Erl)
         '</EhFooter>
 End Sub
+
+Public Sub WriteResetChar(ByVal Nick As String)
+    On Error GoTo WriteResetChar_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ResetChar)
+        Call Writer.WriteString8(Nick)
+    
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteResetChar_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetChar", Erl)
+End Sub

@@ -2157,6 +2157,15 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If EsGM Then
                     Call WriteCreateEvent(ArgumentosRaw)
                 End If
+                
+            Case "/RESET"
+                If EsGM Then
+                    If notNullArguments Then
+                        Call WriteResetChar(ArgumentosRaw)
+                    Else
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /reset nick.")
+                    End If
+                End If
 
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")

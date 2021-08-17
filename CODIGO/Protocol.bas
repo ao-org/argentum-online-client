@@ -551,6 +551,7 @@ Public Enum ClientPacketID
     PetLeaveAll
     GuardNoticeResponse
     GuardResendVerificationCode
+    ResetChar              '/RESET NICK
     
     [PacketCount]
 End Enum
