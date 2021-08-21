@@ -32,7 +32,7 @@ Public Function PuedoQuitarFoco() As Boolean
     Exit Function
 
 PuedoQuitarFoco_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_TCP.PuedoQuitarFoco", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_TCP.PuedoQuitarFoco", Erl)
     Resume Next
     
 End Function
@@ -52,10 +52,7 @@ Sub Login()
     On Error GoTo Login_Err
     
     Select Case EstadoLogin
-    
-        Case E_MODO.Normal
-            Call WriteLoginExistingChar
-        
+
         Case E_MODO.CrearNuevoPj
             Call WriteLoginNewChar
             
@@ -93,7 +90,7 @@ Sub Login()
     Exit Sub
 
 Login_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_TCP.Login", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_TCP.Login", Erl)
     Resume Next
     
 End Sub

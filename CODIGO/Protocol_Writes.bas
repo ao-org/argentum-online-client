@@ -21,13 +21,7 @@ Public Sub WriteLoginExistingChar()
         On Error GoTo WriteLoginExistingChar_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.LoginExistingChar)
-102     Call Writer.WriteString8(CuentaEmail)
-104     Call Writer.WriteString8(SEncriptar(CuentaPassword))
-106     Call Writer.WriteInt8(App.Major)
-108     Call Writer.WriteInt8(App.Minor)
-110     Call Writer.WriteInt8(App.Revision)
 112     Call Writer.WriteString8(UserName)
-118     Call Writer.WriteString8(CheckMD5)
     
 120     Call modNetwork.Send(Writer)
         '<EhFooter>

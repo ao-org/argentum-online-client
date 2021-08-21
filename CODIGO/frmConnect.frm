@@ -792,9 +792,11 @@ Private Sub LogearPersonaje(ByVal Nick As String)
 
     If Connected Then
         frmMain.ShowFPS.Enabled = True
+        Call WriteLoginExistingChar
+    Else
+        Call General_Set_Connect
+        Call TextoAlAsistente("Se ha perdido la conexión con el servidor, ingresa nuevamente.")
     End If
-
-    Call LoginOrConnect(E_MODO.Normal)
     
     Exit Sub
 
