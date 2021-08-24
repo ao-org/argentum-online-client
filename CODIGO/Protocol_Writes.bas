@@ -42,19 +42,13 @@ Public Sub WriteLoginNewChar()
         On Error GoTo WriteLoginNewChar_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.LoginNewChar)
-102     Call Writer.WriteString8(CuentaEmail)
-104     Call Writer.WriteString8(SEncriptar(CuentaPassword))
-106     Call Writer.WriteInt8(App.Major)
-108     Call Writer.WriteInt8(App.Minor)
-110     Call Writer.WriteInt8(App.Revision)
 112     Call Writer.WriteString8(UserName)
 114     Call Writer.WriteInt8(UserRaza)
 116     Call Writer.WriteInt8(UserSexo)
 118     Call Writer.WriteInt8(UserClase)
 120     Call Writer.WriteInt16(MiCabeza)
 122     Call Writer.WriteInt8(UserHogar)
-128     Call Writer.WriteString8(CheckMD5)
-    
+
 130     Call modNetwork.Send(Writer)
         '<EhFooter>
         Exit Sub

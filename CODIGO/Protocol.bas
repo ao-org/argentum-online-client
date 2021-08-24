@@ -4889,7 +4889,7 @@ Private Sub HandleAtributes()
     Next i
     
     'Show them in character creation
-    If EstadoLogin = E_MODO.Dados Then
+    If QueRender = 3 Then
 
         With frmCrearPersonaje
 
