@@ -1229,10 +1229,11 @@ cmdcerrar_Click_Err:
 End Sub
 
 Private Sub cmdChangePassword_Click()
-    
+            
+        
     On Error GoTo cmdChangePassword_Click_Err
     
-    Call frmNewPassword.Show(vbModeless, Me)
+    ShellExecute Me.hwnd, "open", "https://www.ao20.com.ar/recuperar", "", "", 0
 
     
     Exit Sub

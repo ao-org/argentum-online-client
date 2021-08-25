@@ -102,6 +102,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/SALIR"
                 Call WriteQuit
+
                 
             Case "/SALIRCLAN"
                 Call WriteGuildLeave
@@ -452,10 +453,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/PENAS"
                 Call WritePunishments(ArgumentosRaw)
 
-                
-            Case "/CONTRASEÑA"
-                Call frmNewPassword.Show(vbModal, frmMain)
-            
             Case "/APOSTAR"
                 If UserEstado = 1 Then 'Muerto
 

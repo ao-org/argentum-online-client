@@ -2418,29 +2418,6 @@ WritePunishments_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "ChangePassword" message to the outgoing data buffer.
-'
-' @param    oldPass Previous password.
-' @param    newPass New password.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteChangePassword(ByRef oldPass As String, ByRef newPass As String)
-        '<EhHeader>
-        On Error GoTo WriteChangePassword_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.ChangePassword)
-102     Call Writer.WriteString8(SEncriptar(oldPass))
-104     Call Writer.WriteString8(SEncriptar(newPass))
-    
-106     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteChangePassword_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangePassword", Erl)
-        '</EhFooter>
-End Sub
 
 ''
 ' Writes the "Gamble" message to the outgoing data buffer.
