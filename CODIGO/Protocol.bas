@@ -552,6 +552,7 @@ Public Enum ClientPacketID
     GuardNoticeResponse
     GuardResendVerificationCode
     ResetChar              '/RESET NICK
+    DeleteItem
     
     [PacketCount]
 End Enum
@@ -997,6 +998,7 @@ Private Sub HandleLogged()
     frmMain.Fuerzalbl.Visible = True
     frmMain.AgilidadLbl.Visible = True
     frmMain.oxigenolbl.Visible = True
+    frmMain.imgDeleteItem.Visible = True
     QueRender = 0
     
     frmMain.ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")

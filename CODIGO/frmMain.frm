@@ -115,6 +115,29 @@ Begin VB.Form frmMain
       TabIndex        =   17
       Top             =   2400
       Width           =   3705
+      Begin VB.PictureBox picInv 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000000&
+         BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   3840
+         Left            =   240
+         ScaleHeight     =   256
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   210
+         TabIndex        =   19
+         Top             =   720
+         Width           =   3150
+      End
       Begin VB.ListBox hlst 
          Appearance      =   0  'Flat
          BackColor       =   &H00000000&
@@ -135,29 +158,6 @@ Begin VB.Form frmMain
          Top             =   690
          Visible         =   0   'False
          Width           =   3195
-      End
-      Begin VB.PictureBox picInv 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000000&
-         BorderStyle     =   0  'None
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   3840
-         Left            =   280
-         ScaleHeight     =   256
-         ScaleMode       =   3  'Pixel
-         ScaleWidth      =   210
-         TabIndex        =   19
-         Top             =   740
-         Width           =   3150
       End
       Begin VB.Image imgSpellInfo 
          Height          =   345
@@ -384,6 +384,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -917,11 +918,19 @@ Begin VB.Form frmMain
          Width           =   510
       End
    End
+   Begin VB.Image imgDeleteItem 
+      Height          =   330
+      Left            =   15000
+      Picture         =   "frmMain.frx":FBE6
+      Top             =   7335
+      Width           =   285
+   End
    Begin VB.Label lblPeces 
       Height          =   495
       Left            =   13920
       TabIndex        =   42
       Top             =   7560
+      Visible         =   0   'False
       Width           =   1575
    End
    Begin VB.Label btnInvisible 
@@ -1199,14 +1208,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":FBE6
+      Picture         =   "frmMain.frx":10152
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":1016A
+      Picture         =   "frmMain.frx":106D6
       Top             =   2008
       Width           =   555
    End
@@ -1284,7 +1293,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":106EE
+      Picture         =   "frmMain.frx":10C5A
       Top             =   480
       Visible         =   0   'False
       Width           =   525
@@ -1354,7 +1363,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":1136E
+      Picture         =   "frmMain.frx":118DA
       Top             =   1545
       Width           =   3540
    End
@@ -1807,6 +1816,8 @@ CombateIcon_Click_Err:
     
 End Sub
 
+
+
 Private Sub Contadores_Timer()
     
     On Error GoTo Contadores_Timer_Err
@@ -2016,6 +2027,16 @@ Form_Activate_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Activate", Erl)
     Resume Next
     
+End Sub
+
+Private Sub imgDeleteItem_Click()
+     If Not frmMain.Inventario.IsItemSelected Then
+        Call AddtoRichTextBox(frmMain.RecTxt, "No tienes seleccionado ningún item", 255, 255, 255, False, False, False)
+    Else
+        If MsgBox("Seguro que desea eliminar el item?", vbYesNo, "Eliminar objeto") = vbYes Then
+            Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
+        End If
+    End If
 End Sub
 
 Private Sub Second_Timer()
@@ -2497,7 +2518,7 @@ Private Sub imgHechizos_Click()
     frmMain.imgInvLock(0).Visible = False
     frmMain.imgInvLock(1).Visible = False
     frmMain.imgInvLock(2).Visible = False
-
+    imgDeleteItem.Visible = False
     
     Exit Sub
 
@@ -2579,6 +2600,7 @@ Private Sub imgInventario_Click()
     frmMain.imgInvLock(0).Visible = True
     frmMain.imgInvLock(1).Visible = True
     frmMain.imgInvLock(2).Visible = True
+    imgDeleteItem.Visible = True
 
     
     Exit Sub
@@ -4470,7 +4492,6 @@ Private Sub Form_Load()
     
     MenuNivel = 1
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
-
     
     Exit Sub
 
