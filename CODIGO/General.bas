@@ -32,7 +32,7 @@ Private Type grh
 
     GrhIndex As Long
     framecounter As Single
-    speed As Single
+    Speed As Single
     Started As Long
     alpha_blend As Boolean
     Angle As Single
@@ -50,7 +50,7 @@ Private Type GrhData
     TileHeight As Single
     NumFrames As Integer
     Frames() As Integer
-    speed As Integer
+    Speed As Integer
     mini_map_color As Long
 
 End Type
@@ -653,7 +653,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
@@ -1044,6 +1044,9 @@ Sub Main()
     ' End If
     
     Call CargarOpciones
+    
+    ' Detecta el idioma del sistema y carga las traducciones
+    Call SetLanguageApplication
     
     If FileExist(App.Path & "\..\..\Launcher\LauncherAO20.ex_", vbNormal) Then
         Call Sleep(2000)
@@ -1712,15 +1715,15 @@ max_Err:
     
 End Function
 
-Public Function min(ByVal A As Double, ByVal B As Double) As Variant
+Public Function Min(ByVal A As Double, ByVal B As Double) As Variant
     
     On Error GoTo min_Err
     
 
     If A < B Then
-        min = A
+        Min = A
     Else
-        min = B
+        Min = B
 
     End If
 
@@ -1733,13 +1736,13 @@ min_Err:
     
 End Function
 
-Public Function Clamp(ByVal A As Variant, ByVal min As Variant, ByVal max As Variant) As Variant
+Public Function Clamp(ByVal A As Variant, ByVal Min As Variant, ByVal max As Variant) As Variant
     
     On Error GoTo min_Err
     
 
-    If A < min Then
-        Clamp = min
+    If A < Min Then
+        Clamp = Min
     
     ElseIf A > max Then
         Clamp = max
@@ -1853,7 +1856,7 @@ Function GetTimeFromString(str As String) As Long
     Dim Splitted() As String
     Splitted = Split(str, ":")
     
-    Dim Hour As Long, min As Long
+    Dim Hour As Long, Min As Long
     Hour = Val(Splitted(0))
 
     If Hour < 0 Then Hour = 0
@@ -1862,12 +1865,12 @@ Function GetTimeFromString(str As String) As Long
     GetTimeFromString = Hour * 60
     
     If UBound(Splitted) > 0 Then
-        min = Val(Splitted(1))
+        Min = Val(Splitted(1))
         
-        If min < 0 Then min = 0
-        If min > 59 Then min = 59
+        If Min < 0 Then Min = 0
+        If Min > 59 Then Min = 59
         
-        GetTimeFromString = GetTimeFromString + min
+        GetTimeFromString = GetTimeFromString + Min
     End If
 
     GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)
@@ -1899,21 +1902,21 @@ Public Sub CheckResources()
 
     Dim Data(1 To 200) As Byte
     
-    Dim Handle As Integer
-    Handle = FreeFile
+    Dim handle As Integer
+    handle = FreeFile
 
-    Open App.Path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #Handle
+    Open App.Path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #handle
     
-    Get #Handle, , Data
+    Get #handle, , Data
     
-    Close #Handle
+    Close #handle
     
-    Dim Length As Integer
-    Length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
+    Dim length As Integer
+    length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
 
     Dim i As Integer
     
-    For i = 1 To Length
+    For i = 1 To length
         ResourcesPassword = ResourcesPassword & Chr(Data(i * 3 - 1) Xor 37)
     Next
 
@@ -1926,12 +1929,12 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         Exit Function
     End If
     
-    Dim temp As String
-    temp = UCase$(nombre)
+    Dim Temp As String
+    Temp = UCase$(nombre)
     
     Dim i As Long, Char As Integer, LastChar As Integer
-    For i = 1 To Len(temp)
-        Char = Asc(mid$(temp, i, 1))
+    For i = 1 To Len(Temp)
+        Char = Asc(mid$(Temp, i, 1))
         
         If (Char < 65 Or Char > 90) And Char <> 32 Then
             Error = "Sólo se permites letras y espacios."
@@ -1945,7 +1948,7 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         LastChar = Char
     Next
 
-    If Asc(mid$(temp, 1, 1)) = 32 Or Asc(mid$(temp, Len(temp), 1)) = 32 Then
+    If Asc(mid$(Temp, 1, 1)) = 32 Or Asc(mid$(Temp, Len(Temp), 1)) = 32 Then
         Error = "No se permiten espacios al inicio o al final."
         Exit Function
     End If
