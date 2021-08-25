@@ -63,9 +63,9 @@ Public Sub SetLanguageApplication()
     ' y escribimos el archivo de configuracion con el idioma seleccionado
     If LenB(Language) = 0 Then
         If MsgBox("Iniciar con idioma Castellano? // Start with Spanish, if you want the game in English press No", vbYesNo, "Argentum 20") = vbYes Then
-            Language = "Spanish"
+            Language = "spanish-"
         Else
-            Language = "English"
+            Language = "english-"
         End If
 
         Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Language", Language)
