@@ -6833,7 +6833,7 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.cmdcrearevento.Enabled = False
         frmPanelgm.cmdcrearevento.Visible = False
         frmPanelgm.txtMod.Width = 4580
-        frmPanelgm.Height = 7580
+        frmPanelgm.Height = 9180
         
         Case 3
         frmPanelgm.mnuChar.Visible = False
@@ -6842,15 +6842,17 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.Admin(0).Visible = False
         frmPanelgm.cmdcrearevento.Enabled = False
         frmPanelgm.cmdcrearevento.Visible = False
+        frmPanelgm.Height = 9180
         
         Case 4
         frmPanelgm.mnuChar.Visible = True
         frmPanelgm.mnuChar.Visible = True
         frmPanelgm.cmdHerramientas.Visible = True
         frmPanelgm.Admin(0).Visible = False
+        frmPanelgm.Height = 9180
         
         Case 5
-        
+        frmPanelgm.Height = 9180
     
     End Select
     
