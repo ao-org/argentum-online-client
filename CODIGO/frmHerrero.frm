@@ -235,6 +235,10 @@ Private cBotonMas As clsGraphicalButton
 Private cBotonMenos As clsGraphicalButton
 
 
+Private Sub cantidad_Change()
+    If Val(cantidad.Text) < 1 Then cantidad.Text = 1
+End Sub
+
 Private Sub cmdCerrar_Click()
     Unload Me
 End Sub

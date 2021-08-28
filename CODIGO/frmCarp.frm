@@ -193,6 +193,10 @@ Private cBotonMenos As clsGraphicalButton
 
 
 
+Private Sub cantidad_Change()
+    If Val(cantidad.Text) < 1 Then cantidad.Text = 1
+End Sub
+
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
