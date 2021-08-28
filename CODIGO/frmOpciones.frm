@@ -1233,7 +1233,9 @@ Private Sub cmdChangePassword_Click()
         
     On Error GoTo cmdChangePassword_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://www.ao20.com.ar/recuperar", "", "", 0
+    If MsgBox("¿Desea abrir el navegador para realizar el cambio de contraseña?", vbYesNo, "Cambiar contraseña") = vbYes Then
+        ShellExecute Me.hwnd, "open", "https://www.ao20.com.ar/recuperar", "", "", 0
+    End If
 
     
     Exit Sub
