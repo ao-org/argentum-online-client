@@ -38,7 +38,6 @@ Begin VB.Form frmCantidad
       Left            =   1410
       MaxLength       =   9999
       TabIndex        =   0
-      Text            =   "1"
       Top             =   1620
       Width           =   1560
    End
@@ -116,6 +115,12 @@ Private cBotonTirar As clsGraphicalButton
 Private cBotonCerrar As clsGraphicalButton
 
 
+Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
+    If (KeyCode = vbKeyReturn) Then
+        Call TirarCantidadSeleccionada
+    End If
+End Sub
+
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
@@ -126,7 +131,7 @@ Private Sub Form_Load()
     Text1.SelStart = 1
     
     Me.Picture = LoadInterface("cantidad.bmp")
-    
+    Text1.Text = ""
     Call LoadButtons
     
     Exit Sub
@@ -285,19 +290,17 @@ errhandler:
     Text1.Text = "1"
 
 End Sub
-
-
-Private Sub cmdTirar_click()
+Private Function TirarCantidadSeleccionada()
     
     On Error GoTo tirar_click_Err
     
     
-    If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
+    If Not MainTimer.Check(TimersIndex.Drop) Then Exit Function
 
     Call Sound.Sound_Play(SND_CLICK)
 
     If LenB(frmCantidad.Text1.Text) > 0 Then
-        If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
+        If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Function  'Should never happen
         
         If frmMain.Inventario.SelectedItem <> FLAGORO Then
         
@@ -326,12 +329,15 @@ Private Sub cmdTirar_click()
     Unload Me
 
     
-    Exit Sub
+    Exit Function
 
 tirar_click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirar_click", Erl)
     Resume Next
-    
+End Function
+
+Private Sub cmdTirar_click()
+    Call TirarCantidadSeleccionada
 End Sub
 
 
