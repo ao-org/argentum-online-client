@@ -5955,12 +5955,13 @@ WriteQuestDetailsRequest_Err:
         '</EhFooter>
 End Sub
  
-Public Sub WriteQuestAccept(ByVal ListInd As Byte)
+Public Sub WriteQuestAccept(ByVal ListInd As Byte, Optional ByVal QuestNpc As Boolean = False)
         '<EhHeader>
         On Error GoTo WriteQuestAccept_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.QuestAccept)
 102     Call Writer.WriteInt8(ListInd)
+        Call Writer.WriteBool(QuestNpc)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>

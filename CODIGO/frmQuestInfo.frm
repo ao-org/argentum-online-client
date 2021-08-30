@@ -368,7 +368,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 
     If (KeyAscii = 27) Then
         Unload Me
-
+        openbyObj = False
     End If
 
     
@@ -425,6 +425,7 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     On Error GoTo Image1_MouseUp_Err
     
     Unload Me
+        openbyObj = False
 
     
     Exit Sub
@@ -462,7 +463,13 @@ Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
 
     If ListViewQuest.SelectedItem.Index > 0 Then
-        Call WriteQuestAccept(ListViewQuest.SelectedItem.Index)
+        If openbyObj Then
+            Call WriteQuestAccept(ListViewQuest.SelectedItem.Index)
+        Else
+            Call WriteQuestAccept(ListViewQuest.SelectedItem.Index, True)
+        End If
+        
+        openbyObj = False
         Unload Me
     End If
     
@@ -479,6 +486,7 @@ Private Sub Image3_Click()
     On Error GoTo Image3_Click_Err
     
 Unload Me
+        openbyObj = False
     
     Exit Sub
 

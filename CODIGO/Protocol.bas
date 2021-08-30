@@ -225,6 +225,7 @@ Private Enum ServerPacketID
     CraftingResult
     ForceUpdate
     GuardNotice
+    ObjQuestListSend
     
     [PacketCount]
 End Enum
@@ -920,6 +921,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleForceUpdate
         Case ServerPacketID.GuardNotice
             Call HandleGuardNotice
+        Case ServerPacketID.ObjQuestListSend
+            Call HandleObjQuestListSend
             
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
@@ -8123,6 +8126,158 @@ Public Sub HandleNpcQuestListSend()
             FrmQuestInfo.ListViewQuest.Refresh
                 
         Next j
+
+    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
+    FrmQuestInfo.Show vbModeless, frmMain
+    FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
+    Call FrmQuestInfo.ShowQuest(1)
+    
+    Exit Sub
+    
+ErrHandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
+    
+    
+End Sub
+
+Public Sub HandleObjQuestListSend()
+
+    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    'Recibe y maneja el paquete QuestListSend del servidor.
+    'Last modified: 29/08/2021 by HarThaoS
+    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    
+    On Error GoTo ErrHandler
+
+    Dim tmpStr         As String
+    Dim tmpByte        As Byte
+    Dim QuestEmpezada  As Boolean
+    Dim i              As Integer
+    Dim cantidadnpc    As Integer
+    Dim NpcIndex       As Integer
+    Dim cantidadobj    As Integer
+    Dim OBJIndex       As Integer
+    Dim QuestIndex     As Integer
+    Dim estado         As Byte
+    Dim LevelRequerido As Byte
+    Dim QuestRequerida As Integer
+    Dim CantidadQuest  As Byte
+    Dim Repetible      As Boolean
+    Dim subelemento    As ListItem
+    
+    FrmQuestInfo.ListView2.ListItems.Clear
+    FrmQuestInfo.ListView1.ListItems.Clear
+            
+        
+    QuestIndex = Reader.ReadInt16
+    
+    FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
+                      
+    QuestList(QuestIndex).RequiredLevel = Reader.ReadInt8
+    QuestList(QuestIndex).RequiredQuest = Reader.ReadInt16
+    
+    
+    tmpByte = Reader.ReadInt8
+
+    If tmpByte Then 'Hay NPCs
+    
+        If tmpByte > 5 Then
+            FrmQuestInfo.ListView1.FlatScrollBar = False
+        Else
+            FrmQuestInfo.ListView1.FlatScrollBar = True
+       
+        End If
+            
+        ReDim QuestList(QuestIndex).RequiredNPC(1 To tmpByte)
+            
+        For i = 1 To tmpByte
+                                        
+            QuestList(QuestIndex).RequiredNPC(i).Amount = Reader.ReadInt16
+            QuestList(QuestIndex).RequiredNPC(i).NpcIndex = Reader.ReadInt16
+
+        Next i
+
+    Else
+        ReDim QuestList(QuestIndex).RequiredNPC(0)
+
+    End If
+       
+    tmpByte = Reader.ReadInt8
+
+    If tmpByte Then 'Hay OBJs
+        ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
+
+        For i = 1 To tmpByte
+           
+            QuestList(QuestIndex).RequiredOBJ(i).Amount = Reader.ReadInt16
+            QuestList(QuestIndex).RequiredOBJ(i).OBJIndex = Reader.ReadInt16
+
+        Next i
+
+    Else
+        ReDim QuestList(QuestIndex).RequiredOBJ(0)
+
+    End If
+       
+    QuestList(QuestIndex).RewardGLD = Reader.ReadInt32
+    QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
+
+    tmpByte = Reader.ReadInt8
+
+    If tmpByte Then
+        
+        ReDim QuestList(QuestIndex).RewardOBJ(1 To tmpByte)
+
+        For i = 1 To tmpByte
+                                      
+            QuestList(QuestIndex).RewardOBJ(i).Amount = Reader.ReadInt16
+            QuestList(QuestIndex).RewardOBJ(i).OBJIndex = Reader.ReadInt16
+       
+        Next i
+
+    Else
+        ReDim QuestList(QuestIndex).RewardOBJ(0)
+
+    End If
+        
+    estado = Reader.ReadInt8
+    Repetible = QuestList(QuestIndex).Repetible = 1
+    
+    Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre & IIf(Repetible, " (R)", ""))
+    subelemento.SubItems(2) = QuestIndex
+
+    Select Case estado
+        
+        Case 0
+            subelemento.SubItems(1) = "Disponible"
+            subelemento.ForeColor = vbWhite
+            subelemento.ListSubItems(1).ForeColor = vbWhite
+
+        Case 1
+            subelemento.SubItems(1) = "En Curso"
+            subelemento.ForeColor = RGB(255, 175, 10)
+            subelemento.ListSubItems(1).ForeColor = RGB(255, 175, 10)
+
+        Case 2
+            If Repetible Then
+                subelemento.SubItems(1) = "Repetible"
+                subelemento.ForeColor = RGB(180, 180, 180)
+                subelemento.ListSubItems(1).ForeColor = RGB(180, 180, 180)
+            Else
+                subelemento.SubItems(1) = "Finalizada"
+                subelemento.ForeColor = RGB(15, 140, 50)
+                subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
+            End If
+
+        Case 3
+            subelemento.SubItems(1) = "No disponible"
+            subelemento.ForeColor = RGB(255, 10, 10)
+            subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
+    End Select
+    
+    FrmQuestInfo.ListViewQuest.Refresh
+    openbyObj = True
 
     'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
     FrmQuestInfo.Show vbModeless, frmMain
