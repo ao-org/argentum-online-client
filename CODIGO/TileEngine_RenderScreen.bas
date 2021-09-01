@@ -638,6 +638,18 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         Call Draw_Grh(preguntaGrh, 392, 233, 1, 0, COLOR_WHITE, False, 0, 0, 0)
 
     End If
+    
+    If pescandoPezEspecial Then
+        Dim barraPezEspecial As grh
+        Call InitGrh(barraPezEspecial, 60666)
+        Call Draw_Grh(barraPezEspecial, 350, 570, 1, 0, COLOR_WHITE, False, 0, 0, 0)
+        Dim cursorPezEspecial As grh
+        Call InitGrh(cursorPezEspecial, 60667)
+        
+        cursorOffsetX = Clamp(cursorOffsetX + pescaDirection * timerElapsedTime * 0.1, -100, 100)
+        
+        Call Draw_Grh(cursorPezEspecial, 360 + cursorOffsetX, 562, 1, 0, COLOR_WHITE, False, 0, 0, 0)
+    End If
 
     If cartel Then
 

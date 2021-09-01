@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
@@ -32,6 +32,23 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.CommandButton cmdCantidadEspeciales 
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   10800
+      TabIndex        =   43
+      Top             =   240
+      Width           =   1215
+   End
    Begin VB.Timer Second 
       Interval        =   1000
       Left            =   7440
@@ -384,7 +401,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4333,13 +4349,13 @@ Public Sub Form_Click()
                         If MainTimer.Check(TimersIndex.CastSpell) Then
                             If UsingSkill = MarcaDeGM Then
 
-                                Dim pos As Integer
+                                Dim Pos As Integer
 
                                 If MapData(tX, tY).charindex <> 0 Then
-                                    pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
+                                    Pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
                                 
-                                    If pos = 0 Then pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
-                                    frmPanelgm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, pos - 2)
+                                    If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
+                                    frmPanelgm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
 
                                 End If
 
@@ -4795,7 +4811,7 @@ Private Sub SendTxt_Change()
         'Make sure only valid chars are inserted (with Shift + Insert they can paste illegal chars)
         Dim i         As Long
 
-        Dim tempstr   As String
+        Dim tempStr   As String
 
         Dim CharAscii As Integer
         
@@ -4803,16 +4819,16 @@ Private Sub SendTxt_Change()
             CharAscii = Asc(mid$(SendTxt.Text, i, 1))
 
             If CharAscii >= vbKeySpace And CharAscii <= 250 Then
-                tempstr = tempstr & Chr$(CharAscii)
+                tempStr = tempStr & Chr$(CharAscii)
 
             End If
 
         Next i
         
-        If tempstr <> SendTxt.Text Then
+        If tempStr <> SendTxt.Text Then
             'We only set it if it's different, otherwise the event will be raised
             'constantly and the client will crush
-            SendTxt.Text = tempstr
+            SendTxt.Text = tempStr
 
         End If
         

@@ -226,7 +226,8 @@ Private Enum ServerPacketID
     ForceUpdate
     GuardNotice
     ObjQuestListSend
-    
+    ObtenerPezEspecial
+    PezEspecialValues
     [PacketCount]
 End Enum
 
@@ -923,6 +924,10 @@ On Error GoTo HandleIncomingData_Err
             Call HandleGuardNotice
         Case ServerPacketID.ObjQuestListSend
             Call HandleObjQuestListSend
+        Case ServerPacketID.ObtenerPezEspecial
+            Call HandleObtenerPezEspecial
+        Case ServerPacketID.PezEspecialValues
+            Call HandlePezEspecialValues
             
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
@@ -2369,12 +2374,12 @@ Private Sub HandleUpdateExp()
     UserExp = Reader.ReadInt32()
 
     If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
         
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -4263,7 +4268,7 @@ Private Sub HandleGuildList()
     On Error GoTo ErrHandler
     
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildAdm.GuildsList.Clear
     
     Dim guildsStr As String
     guildsStr = Reader.ReadString8()
@@ -4287,7 +4292,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -4295,7 +4300,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
 
     Call frmGuildAdm.Show(vbModeless, frmMain)
     
@@ -4482,9 +4487,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
+        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.EXPBAR.Width = 235
+        frmMain.ExpBar.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -6104,10 +6109,10 @@ Private Sub HandleGuildNews()
     List = Split(Reader.ReadString8(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.guildslist.Clear
+    Call frmGuildNews.GuildsList.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -6139,7 +6144,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
 
         If ExpNe > 0 Then
@@ -6376,7 +6381,7 @@ Private Sub HandleGuildLeaderInfo()
     
     With frmGuildLeader
         'Empty the list
-        Call .guildslist.Clear
+        Call .GuildsList.Clear
     
         str = Reader.ReadString8()
     
@@ -6385,7 +6390,7 @@ Private Sub HandleGuildLeaderInfo()
             List = Split(str, SEPARATOR)
 
             For i = 0 To UBound(List())
-                Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
+                Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
             Next i
         End If
         
@@ -6435,10 +6440,10 @@ Private Sub HandleGuildLeaderInfo()
         .expcount.Caption = expacu & "/" & ExpNe
         
         If ExpNe > 0 Then
-            .EXPBAR.Width = expacu / ExpNe * 239
+            .ExpBar.Width = expacu / ExpNe * 239
             .porciento.Caption = Round(expacu / ExpNe * 100#, 0) & "%"
         Else
-            .EXPBAR.Width = 239
+            .ExpBar.Width = 239
             .porciento.Caption = "¡Nivel máximo!"
             .expcount.Caption = "¡Nivel máximo!"
         End If
@@ -8138,6 +8143,27 @@ ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
     
+    
+End Sub
+Public Sub HandleObtenerPezEspecial()
+    On Error GoTo ErrHandler
+    
+    frmMain.cmdCantidadEspeciales.Caption = Val(frmMain.cmdCantidadEspeciales.Caption) + 1
+    pescandoPezEspecial = True
+    Exit Sub
+ErrHandler:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleObtenerPezEspecial", Erl)
+    
+End Sub
+
+Public Sub HandlePezEspecialValues()
+    On Error GoTo ErrHandler
+    
+    pescaDirection = Reader.ReadInt16
+    cursorOffsetX = Reader.ReadInt16
+    Exit Sub
+ErrHandler:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePezEspecialValues", Erl)
     
 End Sub
 

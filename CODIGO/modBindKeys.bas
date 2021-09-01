@@ -362,7 +362,15 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Else
                 Call WriteWork(eSkill.Domar)
             End If
-    
+            
+        Case BindKeys(16).KeyCode
+            If pescandoPezEspecial And cursorOffsetX > -100 Then
+                cursorOffsetX = cursorOffsetX - 5
+            End If
+        Case BindKeys(17).KeyCode
+            If pescandoPezEspecial And cursorOffsetX < 100 Then
+                cursorOffsetX = cursorOffsetX + 5
+            End If
         Case Else
             Accionar = False
             Exit Function

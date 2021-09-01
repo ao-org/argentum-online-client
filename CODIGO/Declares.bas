@@ -1082,6 +1082,10 @@ Public InvasionPorcentajeVida            As Byte
 
 Public InvasionPorcentajeTiempo          As Byte
 
+Public pescandoPezEspecial               As Boolean
+Public cursorOffsetX                     As Single
+Public pescaDirection                    As Integer
+
 Public Enum E_MODO
 
     Normal = 1

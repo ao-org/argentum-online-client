@@ -32,7 +32,7 @@ Private Type grh
 
     GrhIndex As Long
     framecounter As Single
-    Speed As Single
+    speed As Single
     Started As Long
     alpha_blend As Boolean
     Angle As Single
@@ -50,7 +50,7 @@ Private Type GrhData
     TileHeight As Single
     NumFrames As Integer
     Frames() As Integer
-    Speed As Integer
+    speed As Integer
     mini_map_color As Long
 
 End Type
@@ -653,7 +653,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
@@ -720,7 +720,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End Select
 
-    If LegalOk And Not UserParalizado And Not UserInmovilizado And Not UserStopped Then
+    If LegalOk And Not UserParalizado And Not UserInmovilizado And Not UserStopped And Not pescandoPezEspecial Then
         If Not UserDescansar Then
             If UserMacro.Activado Then
                 Call ResetearUserMacro
