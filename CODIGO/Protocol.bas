@@ -572,7 +572,7 @@ On Error GoTo HandleIncomingData_Err
     PacketID = Reader.ReadInt
     
     #If DEBUGGING Then
-        Debug.Print PacketID
+        'Debug.Print PacketID
     #End If
     
     Select Case PacketID
@@ -2374,12 +2374,12 @@ Private Sub HandleUpdateExp()
     UserExp = Reader.ReadInt32()
 
     If UserPasarNivel > 0 Then
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
         
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -2713,7 +2713,7 @@ Private Sub HandleChatOverHead()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim chat       As String
 
@@ -2801,7 +2801,7 @@ Private Sub HandleChatOverHead()
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHead", Erl)
     
@@ -2810,7 +2810,7 @@ End Sub
 
 Private Sub HandleTextOverChar()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim chat      As String
 
@@ -2827,7 +2827,7 @@ Private Sub HandleTextOverChar()
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverChar", Erl)
     
@@ -2836,7 +2836,7 @@ End Sub
 
 Private Sub HandleTextOverTile()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Text  As String
 
@@ -2892,7 +2892,7 @@ Private Sub HandleTextOverTile()
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverTile", Erl)
     
@@ -2901,7 +2901,7 @@ End Sub
 
 Private Sub HandleTextCharDrop()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Text      As String
 
@@ -2969,7 +2969,7 @@ Private Sub HandleTextCharDrop()
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextCharDrop", Erl)
     
@@ -2987,7 +2987,7 @@ Private Sub HandleConsoleMessage()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim chat      As String
     Dim FontIndex As Integer
@@ -3100,7 +3100,7 @@ Private Sub HandleConsoleMessage()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleConsoleMessage", Erl)
     
@@ -3115,7 +3115,7 @@ Private Sub HandleLocaleMsg()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim chat      As String
 
@@ -3189,7 +3189,7 @@ Private Sub HandleLocaleMsg()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLocaleMsg", Erl)
     
@@ -3207,7 +3207,7 @@ Private Sub HandleGuildChat()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim chat As String
 
@@ -3267,7 +3267,7 @@ Private Sub HandleGuildChat()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildChat", Erl)
     
@@ -3285,7 +3285,7 @@ Private Sub HandleShowMessageBox()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim mensaje As String
 
@@ -3314,7 +3314,7 @@ Private Sub HandleShowMessageBox()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMessageBox", Erl)
     
@@ -3329,7 +3329,7 @@ Private Sub HandleMostrarCuenta()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     ' FrmCuenta.Show
     AlphaNiebla = 30
@@ -3388,7 +3388,7 @@ Private Sub HandleMostrarCuenta()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMostrarCuenta", Erl)
     
@@ -3465,7 +3465,7 @@ Private Sub HandleCharacterCreate()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim charindex     As Integer
 
@@ -3613,7 +3613,7 @@ Private Sub HandleCharacterCreate()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterCreate", Erl)
     
@@ -4265,10 +4265,10 @@ Private Sub HandleGuildList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     'Clear guild's list
-    frmGuildAdm.GuildsList.Clear
+    frmGuildAdm.guildslist.Clear
     
     Dim guildsStr As String
     guildsStr = Reader.ReadString8()
@@ -4292,7 +4292,7 @@ Private Sub HandleGuildList()
         
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.GuildsList.AddItem(ClanesList(i).nombre)
+            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             'End If
         Next i
 
@@ -4300,7 +4300,7 @@ Private Sub HandleGuildList()
     
     COLOR_AZUL = RGB(0, 0, 0)
     
-    Call Establecer_Borde(frmGuildAdm.GuildsList, frmGuildAdm, COLOR_AZUL, 0, 0)
+    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
 
     Call frmGuildAdm.Show(vbModeless, frmMain)
     
@@ -4308,7 +4308,7 @@ Private Sub HandleGuildList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildList", Erl)
     
@@ -4487,9 +4487,9 @@ Private Sub HandleUpdateUserStats()
     If UserPasarNivel > 0 Then
         frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
         frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.ExpBar.Width = UserExp / UserPasarNivel * 235
+        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
     Else
-        frmMain.ExpBar.Width = 235
+        frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
 
@@ -4641,7 +4641,7 @@ Private Sub HandleChangeInventorySlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Slot        As Byte
     Dim OBJIndex    As Integer
@@ -4739,7 +4739,7 @@ Private Sub HandleChangeInventorySlot()
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeInventorySlot", Erl)
     
@@ -4785,7 +4785,7 @@ Private Sub HandleChangeBankSlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Slot As Byte
     Dim BankSlot As Inventory
@@ -4812,7 +4812,7 @@ Private Sub HandleChangeBankSlot()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeBankSlot", Erl)
     
@@ -4830,7 +4830,7 @@ Private Sub HandleChangeSpellSlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Slot     As Byte
 
@@ -4867,7 +4867,7 @@ Private Sub HandleChangeSpellSlot()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeSpellSlot", Erl)
     
@@ -4943,7 +4943,7 @@ Private Sub HandleBlacksmithWeapons()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -4975,7 +4975,7 @@ Private Sub HandleBlacksmithWeapons()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithWeapons", Erl)
     
@@ -4993,7 +4993,7 @@ Private Sub HandleBlacksmithArmors()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -5065,7 +5065,7 @@ Private Sub HandleBlacksmithArmors()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithArmors", Erl)
     
@@ -5083,7 +5083,7 @@ Private Sub HandleCarpenterObjects()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -5107,7 +5107,7 @@ Private Sub HandleCarpenterObjects()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCarpenterObjects", Erl)
     
@@ -5120,7 +5120,7 @@ Private Sub HandleSastreObjects()
     'Author: Ladder
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -5178,7 +5178,7 @@ Private Sub HandleSastreObjects()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSastreObjects", Erl)
     
@@ -5194,7 +5194,7 @@ Private Sub HandleAlquimiaObjects()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -5222,7 +5222,7 @@ Private Sub HandleAlquimiaObjects()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlquimiaObjects", Erl)
     
@@ -5263,13 +5263,13 @@ Private Sub HandleErrorMessage()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Call MsgBox(Reader.ReadString8())
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleErrorMessage", Erl)
     
@@ -5337,7 +5337,7 @@ Private Sub HandleShowSignal()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim tmp As String
     Dim grh As Integer
@@ -5349,7 +5349,7 @@ Private Sub HandleShowSignal()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSignal", Erl)
     
@@ -5367,7 +5367,7 @@ Private Sub HandleChangeNPCInventorySlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Slot As Byte
     Slot = Reader.ReadInt8()
@@ -5394,7 +5394,7 @@ Private Sub HandleChangeNPCInventorySlot()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeNPCInventorySlot", Erl)
     
@@ -5774,7 +5774,7 @@ Private Sub HandleAddForumMessage()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim title   As String
 
@@ -5785,7 +5785,7 @@ Private Sub HandleAddForumMessage()
 
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAddForumMessage", Erl)
     
@@ -6054,7 +6054,7 @@ Private Sub HandleTrainerCreatureList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim creatures() As String
 
@@ -6070,7 +6070,7 @@ Private Sub HandleTrainerCreatureList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrainerCreatureList", Erl)
     
@@ -6088,7 +6088,7 @@ Private Sub HandleGuildNews()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     ' Dim guildList() As String
     Dim List()      As String
@@ -6109,10 +6109,10 @@ Private Sub HandleGuildNews()
     List = Split(Reader.ReadString8(), SEPARATOR)
         
     'Empty the list
-    Call frmGuildNews.GuildsList.Clear
+    Call frmGuildNews.guildslist.Clear
         
     For i = 0 To UBound(List())
-        Call frmGuildNews.GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+        Call frmGuildNews.guildslist.AddItem(ReadField(1, List(i), Asc("-")))
     Next i
     
     'Get  guilds list member
@@ -6144,7 +6144,7 @@ Private Sub HandleGuildNews()
         .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
      
         .expcount.Caption = expacu & "/" & ExpNe
-        .ExpBar.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
+        .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
         .nivel = "Nivel: " & ClanNivel
 
         If ExpNe > 0 Then
@@ -6183,7 +6183,7 @@ Private Sub HandleGuildNews()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildNews", Erl)
     
@@ -6201,13 +6201,13 @@ Private Sub HandleOfferDetails()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Call frmUserRequest.recievePeticion(Reader.ReadString8())
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleOfferDetails", Erl)
     
@@ -6225,7 +6225,7 @@ Private Sub HandleAlianceProposalsList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim guildList() As String
 
@@ -6242,7 +6242,7 @@ Private Sub HandleAlianceProposalsList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlianceProposalsList", Erl)
     
@@ -6260,7 +6260,7 @@ Private Sub HandlePeaceProposalsList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim guildList() As String
 
@@ -6277,7 +6277,7 @@ Private Sub HandlePeaceProposalsList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePeaceProposalsList", Erl)
     
@@ -6295,7 +6295,7 @@ Private Sub HandleCharacterInfo()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     With frmCharInfo
 
@@ -6353,7 +6353,7 @@ Private Sub HandleCharacterInfo()
         
     Exit Sub
     
-ErrHandler:
+errhandler:
     
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterInfo", Erl)
     
@@ -6371,7 +6371,7 @@ Private Sub HandleGuildLeaderInfo()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim str As String
     
@@ -6381,7 +6381,7 @@ Private Sub HandleGuildLeaderInfo()
     
     With frmGuildLeader
         'Empty the list
-        Call .GuildsList.Clear
+        Call .guildslist.Clear
     
         str = Reader.ReadString8()
     
@@ -6390,7 +6390,7 @@ Private Sub HandleGuildLeaderInfo()
             List = Split(str, SEPARATOR)
 
             For i = 0 To UBound(List())
-                Call .GuildsList.AddItem(ReadField(1, List(i), Asc("-")))
+                Call .guildslist.AddItem(ReadField(1, List(i), Asc("-")))
             Next i
         End If
         
@@ -6440,10 +6440,10 @@ Private Sub HandleGuildLeaderInfo()
         .expcount.Caption = expacu & "/" & ExpNe
         
         If ExpNe > 0 Then
-            .ExpBar.Width = expacu / ExpNe * 239
+            .EXPBAR.Width = expacu / ExpNe * 239
             .porciento.Caption = Round(expacu / ExpNe * 100#, 0) & "%"
         Else
-            .ExpBar.Width = 239
+            .EXPBAR.Width = 239
             .porciento.Caption = "¡Nivel máximo!"
             .expcount.Caption = "¡Nivel máximo!"
         End If
@@ -6474,7 +6474,7 @@ Private Sub HandleGuildLeaderInfo()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildLeaderInfo", Erl)
     
@@ -6492,7 +6492,7 @@ Private Sub HandleGuildDetails()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     With frmGuildBrief
 
@@ -6517,7 +6517,7 @@ Private Sub HandleGuildDetails()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildDetails", Erl)
     
@@ -6602,14 +6602,14 @@ Private Sub HandleShowUserRequest()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Call frmUserRequest.recievePeticion(Reader.ReadString8())
     Call frmUserRequest.Show(vbModeless, frmMain)
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowUserRequest", Erl)
     
@@ -6627,7 +6627,7 @@ Private Sub HandleChangeUserTradeSlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim miOferta As Boolean
     
@@ -6691,7 +6691,7 @@ Private Sub HandleChangeUserTradeSlot()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeUserTradeSlot", Erl)
     
@@ -6709,7 +6709,7 @@ Private Sub HandleSpawnList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     frmSpawnList.ListaCompleta = Reader.ReadBool
 
@@ -6719,7 +6719,7 @@ Private Sub HandleSpawnList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpawnList", Erl)
     
@@ -6737,7 +6737,7 @@ Private Sub HandleShowSOSForm()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim sosList()      As String
 
@@ -6761,7 +6761,7 @@ Private Sub HandleShowSOSForm()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSOSForm", Erl)
     
@@ -6779,14 +6779,14 @@ Private Sub HandleShowMOTDEditionForm()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     frmCambiaMotd.txtMotd.Text = Reader.ReadString8()
     frmCambiaMotd.Show , frmMain
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMOTDEditionForm", Erl)
     
@@ -6904,7 +6904,7 @@ Private Sub HandleUserNameList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim userList() As String
 
@@ -6925,7 +6925,7 @@ Private Sub HandleUserNameList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserNameList", Erl)
     
@@ -6969,7 +6969,7 @@ Private Sub HandleUpdateTagAndStatus()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim charindex   As Integer
 
@@ -7001,7 +7001,7 @@ Private Sub HandleUpdateTagAndStatus()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateTagAndStatus", Erl)
     
@@ -7010,7 +7010,7 @@ End Sub
 
 Private Sub HandlePersonajesDeCuenta()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     CantidadDePersonajesEnCuenta = Reader.ReadInt8()
 
@@ -7123,7 +7123,7 @@ Private Sub HandlePersonajesDeCuenta()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePersonajesDeCuenta", Erl)
     
@@ -7132,7 +7132,7 @@ End Sub
 
 Private Sub HandleUserOnline()
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim rdata As Integer
     
@@ -7143,7 +7143,7 @@ Private Sub HandleUserOnline()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserOnline", Erl)
     
@@ -7645,7 +7645,7 @@ Private Sub HandleQuestDetails()
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim tmpStr         As String
 
@@ -7932,7 +7932,7 @@ Private Sub HandleQuestDetails()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestDetails", Erl)
     
@@ -7946,7 +7946,7 @@ Public Sub HandleQuestListSend()
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim i       As Integer
     Dim tmpByte As Byte
@@ -7983,7 +7983,7 @@ Public Sub HandleQuestListSend()
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestListSend", Erl)
     
@@ -7997,7 +7997,7 @@ Public Sub HandleNpcQuestListSend()
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim tmpStr         As String
     Dim tmpByte        As Byte
@@ -8139,30 +8139,31 @@ Public Sub HandleNpcQuestListSend()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
     
     
 End Sub
 Public Sub HandleObtenerPezEspecial()
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     frmMain.cmdCantidadEspeciales.Caption = Val(frmMain.cmdCantidadEspeciales.Caption) + 1
     pescandoPezEspecial = True
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleObtenerPezEspecial", Erl)
     
 End Sub
 
 Public Sub HandlePezEspecialValues()
-    On Error GoTo ErrHandler
-    
+    On Error GoTo errhandler
+
     pescaDirection = Reader.ReadInt16
     cursorOffsetX = Reader.ReadInt16
+
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePezEspecialValues", Erl)
     
 End Sub
@@ -8174,7 +8175,7 @@ Public Sub HandleObjQuestListSend()
     'Last modified: 29/08/2021 by HarThaoS
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim tmpStr         As String
     Dim tmpByte        As Byte
@@ -8312,7 +8313,7 @@ Public Sub HandleObjQuestListSend()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
     
@@ -8327,7 +8328,7 @@ Private Sub HandleShowPregunta()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim msg As String
 
@@ -8336,7 +8337,7 @@ Private Sub HandleShowPregunta()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
     

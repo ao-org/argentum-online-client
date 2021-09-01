@@ -646,7 +646,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         Dim cursorPezEspecial As grh
         Call InitGrh(cursorPezEspecial, 60667)
         
-        cursorOffsetX = Clamp(cursorOffsetX + pescaDirection * timerElapsedTime * 0.1, -100, 100)
+        cursorOffsetX = Clamp(cursorOffsetX + pescaDirection * timerElapsedTime * 0.01, -100, 100)
         
         Call Draw_Grh(cursorPezEspecial, 360 + cursorOffsetX, 562, 1, 0, COLOR_WHITE, False, 0, 0, 0)
     End If
