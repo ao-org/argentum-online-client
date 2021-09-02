@@ -6574,7 +6574,6 @@ Public Sub WriteResetChar(ByVal Nick As String)
     On Error GoTo WriteResetChar_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.ResetChar)
-        Call Writer.WriteString8(Nick)
     
 102     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -6599,5 +6598,23 @@ WriteDeleteItem_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDeleteItem", Erl)
 End Sub
+
+
+Public Sub writePezEspecialPos(ByVal dir As Boolean)
+     On Error GoTo writePezEspecialPos_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.PezEspecialPos)
+        Call Writer.WriteBool(dir)
+    
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+writePezEspecialPos_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePezEspecialPos", Erl)
+End Sub
+
+
 
 

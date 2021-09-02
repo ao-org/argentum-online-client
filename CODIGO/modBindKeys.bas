@@ -365,11 +365,15 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             
         Case BindKeys(16).KeyCode
             If pescandoPezEspecial And cursorOffsetX > -100 Then
-                cursorOffsetX = cursorOffsetX - 5
+                cursorOffsetX = cursorOffsetX - 7
+                'Envio dirección al servidor (izquierda)
+                Call writePezEspecialPos(0)
             End If
         Case BindKeys(17).KeyCode
             If pescandoPezEspecial And cursorOffsetX < 100 Then
-                cursorOffsetX = cursorOffsetX + 5
+                cursorOffsetX = cursorOffsetX + 7
+                'Envio dirección al servidor (derecha)
+                Call writePezEspecialPos(1)
             End If
         Case Else
             Accionar = False

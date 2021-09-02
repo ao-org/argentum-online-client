@@ -554,6 +554,7 @@ Public Enum ClientPacketID
     GuardResendVerificationCode
     ResetChar              '/RESET NICK
     DeleteItem
+    PezEspecialPos
     
     [PacketCount]
 End Enum
