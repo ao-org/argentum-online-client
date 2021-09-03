@@ -574,7 +574,7 @@ End Function
 
 Public Sub LogError(desc As String)
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim nfile As Integer
 
@@ -585,7 +585,7 @@ Public Sub LogError(desc As String)
 
     Exit Sub
 
-ErrHandler:
+errhandler:
 
 End Sub
 
@@ -653,7 +653,7 @@ Sub General_Set_Connect()
     frmMain.Picture = LoadInterface("ventanaprincipal.bmp")
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    frmMain.EXPBAR.Picture = LoadInterface("barraexperiencia.bmp")
+    frmMain.ExpBar.Picture = LoadInterface("barraexperiencia.bmp")
     frmMain.COMIDAsp.Picture = LoadInterface("barradehambre.bmp")
     frmMain.AGUAsp.Picture = LoadInterface("barradesed.bmp")
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
@@ -1894,7 +1894,7 @@ Public Sub ResetearUserMacro()
     
     On Error GoTo ResetearUserMacro_Err
     
-    Call WriteFlagTrabajar
+    If LoggedIn Then Call WriteFlagTrabajar
     frmMain.MacroLadder.Enabled = False
     UserMacro.Activado = False
     UserMacro.cantidad = 0

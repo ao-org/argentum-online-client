@@ -489,7 +489,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 
                 Call Graficos_Particulas.Engine_Select_Particle_Set(203)
                 ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
-
             End If
             
             
@@ -675,6 +674,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
 
                 Case 3
+                    modNetwork.Disconnect
+                
                     Call ComprobarEstado
 
                     If Musica Then
