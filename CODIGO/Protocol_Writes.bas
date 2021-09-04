@@ -21,13 +21,7 @@ Public Sub WriteLoginExistingChar()
         On Error GoTo WriteLoginExistingChar_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.LoginExistingChar)
-102     Call Writer.WriteString8(CuentaEmail)
-104     Call Writer.WriteString8(SEncriptar(CuentaPassword))
-106     Call Writer.WriteInt8(App.Major)
-108     Call Writer.WriteInt8(App.Minor)
-110     Call Writer.WriteInt8(App.Revision)
 112     Call Writer.WriteString8(UserName)
-118     Call Writer.WriteString8(CheckMD5)
     
 120     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -48,19 +42,13 @@ Public Sub WriteLoginNewChar()
         On Error GoTo WriteLoginNewChar_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.LoginNewChar)
-102     Call Writer.WriteString8(CuentaEmail)
-104     Call Writer.WriteString8(SEncriptar(CuentaPassword))
-106     Call Writer.WriteInt8(App.Major)
-108     Call Writer.WriteInt8(App.Minor)
-110     Call Writer.WriteInt8(App.Revision)
 112     Call Writer.WriteString8(UserName)
 114     Call Writer.WriteInt8(UserRaza)
 116     Call Writer.WriteInt8(UserSexo)
 118     Call Writer.WriteInt8(UserClase)
 120     Call Writer.WriteInt16(MiCabeza)
 122     Call Writer.WriteInt8(UserHogar)
-128     Call Writer.WriteString8(CheckMD5)
-    
+
 130     Call modNetwork.Send(Writer)
         '<EhFooter>
         Exit Sub
@@ -5850,12 +5838,7 @@ Public Sub WriteBorrandoPJ()
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.BorrarPJ)
 102     Call Writer.WriteString8(DeleteUser)
-104     Call Writer.WriteString8(CuentaEmail)
 106     Call Writer.WriteString8(SEncriptar(CuentaPassword))
-108     Call Writer.WriteInt8(App.Major)
-110     Call Writer.WriteInt8(App.Minor)
-112     Call Writer.WriteInt8(App.Revision)
-118     Call Writer.WriteString8(CheckMD5)
     
 120     Call modNetwork.Send(Writer)
         '<EhFooter>

@@ -94,7 +94,7 @@ Public Type GrhData
     
     NumFrames As Integer
     Frames() As Long 'gs-long
-    speed As Single
+    Speed As Single
     active As Boolean
     
     ' Precalculated
@@ -109,7 +109,7 @@ End Type
 Public Type grh
 
     GrhIndex As Long
-    speed As Single
+    Speed As Single
     Started As Long
     Loops As Integer
     Angle As Single
@@ -184,7 +184,7 @@ Public Type Char
     EsEnano As Boolean
     active As Byte
     Heading As E_Heading
-    pos As Position
+    Pos As Position
     
     NowPosX As Integer
     NowPosY As Integer
@@ -577,10 +577,10 @@ Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Star
         End If
         
         grh.Loops = Loops
-        grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
+        grh.Speed = GrhData(GrhIndex).Speed / GrhData(GrhIndex).NumFrames
     Else
         grh.Started = 0
-        grh.speed = 1
+        grh.Speed = 1
     End If
 
     'Precalculate texture coordinates
@@ -643,7 +643,7 @@ Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
     On Error GoTo EstaPCarea_Err
     
 
-    With charlist(charindex).pos
+    With charlist(charindex).Pos
         EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
 
     End With
@@ -673,7 +673,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
             If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv Then
                 If .Speeding > 1.3 Then
                    
-                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y))
+                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     Exit Sub
 
                 End If
@@ -681,12 +681,12 @@ Sub DoPasosFx(ByVal charindex As Integer)
                 .Pie = Not .Pie
 
                 If .Pie Then
-                    FileNum = GrhData(MapData(.pos.x, .pos.y).Graphic(1).GrhIndex).FileNum
+                    FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
                     TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     'Call Audio.PlayWave(SND_PASOS3, .Pos.X, .Pos.Y)
                 Else
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
 
                 End If
 
@@ -1229,7 +1229,7 @@ Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As 
     
 
     If GrhIndex > 0 Then
-        HayUserAbajo = charlist(UserCharIndex).pos.x >= x - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).pos.x <= x + (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).pos.y >= y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).pos.y <= y
+        HayUserAbajo = charlist(UserCharIndex).Pos.x >= x - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.x <= x + (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.y >= y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).Pos.y <= y
 
     End If
 

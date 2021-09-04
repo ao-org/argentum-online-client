@@ -1,9 +1,5 @@
 VERSION 5.00
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
 Begin VB.Form frmMain 
-   Appearance      =   0  'Flat
-   AutoRedraw      =   -1  'True
-   BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    ClientHeight    =   13920
    ClientLeft      =   345
@@ -477,7 +473,7 @@ Begin VB.Form frmMain
          Height          =   510
          Left            =   1680
          Picture         =   "frmMain.frx":6180
-         ToolTipText     =   "Seguro de resurrección"
+         ToolTipText     =   "Seguro de resurrecciï¿½n"
          Top             =   3060
          Visible         =   0   'False
          Width           =   510
@@ -648,7 +644,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   3075
          TabIndex        =   31
-         ToolTipText     =   "Aumento de daño mágico"
+         ToolTipText     =   "Aumento de daï¿½o mï¿½gico"
          Top             =   3150
          Width           =   570
       End
@@ -669,7 +665,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   1935
          TabIndex        =   30
-         ToolTipText     =   "Resistencia mágica"
+         ToolTipText     =   "Resistencia mï¿½gica"
          Top             =   3150
          Width           =   330
       End
@@ -691,7 +687,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   2385
          TabIndex        =   29
-         ToolTipText     =   "Oxígeno acumulado"
+         ToolTipText     =   "Oxï¿½geno acumulado"
          Top             =   570
          Width           =   225
       End
@@ -775,7 +771,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   600
          TabIndex        =   25
-         ToolTipText     =   "Daño físico arma"
+         ToolTipText     =   "Daï¿½o fï¿½sico arma"
          Top             =   2700
          Width           =   480
       End
@@ -1417,10 +1413,10 @@ Attribute VB_Exposed = False
 'You can contact me at:
 'morgolock@speedy.com.ar
 '
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 nï¿½mero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Cï¿½digo Postal 1900
+'Pablo Ignacio Mï¿½rquez
 'Call ParseUserCommand("/CMSG " & stxtbuffercmsg)
 Option Explicit
 
@@ -2047,7 +2043,7 @@ End Sub
 
 Private Sub imgDeleteItem_Click()
      If Not frmMain.Inventario.IsItemSelected Then
-        Call AddtoRichTextBox(frmMain.RecTxt, "No tienes seleccionado ningún item", 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, "No tienes seleccionado ningï¿½n item", 255, 255, 255, False, False, False)
     Else
         If MsgBox("Seguro que desea eliminar el item?", vbYesNo, "Eliminar objeto") = vbYes Then
             Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
@@ -2147,26 +2143,6 @@ Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
 
 Form_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_MouseUp", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
-    
-    On Error GoTo Form_QueryUnload_Err
-    
-
-    If prgRun = True Then
-        prgRun = False
-        Cancel = 1
-
-    End If
-
-    
-    Exit Sub
-
-Form_QueryUnload_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_QueryUnload", Erl)
     Resume Next
     
 End Sub
@@ -2855,7 +2831,7 @@ End Sub
 Private Sub panelinferior_Click(Index As Integer)
 Select Case Index
     Case 1
-        QuePestañaInferior = 1
+        QuePestaï¿½aInferior = 1
         GldLbl.Visible = False
         'Label6.Visible = False
         stabar.Visible = False
@@ -2925,7 +2901,7 @@ Select Case Index
         
         panelInf.Picture = LoadInterface("ventanaprincipal_info.bmp")
     Case 0
-        QuePestañaInferior = 0
+        QuePestaï¿½aInferior = 0
         panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
         stabar.Visible = True
         HpBar.Visible = True
@@ -2975,7 +2951,7 @@ Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer,
     On Error GoTo Inventario_ItemDropped_Err
     
 
-    ' Si soltó un item en un slot válido
+    ' Si soltï¿½ un item en un slot vï¿½lido
     
     If Drop > 0 Then
         If Drag <> Drop Then
@@ -3236,7 +3212,7 @@ Private Sub manabar_Click()
     If UserEstado = 1 Then
 
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
 
         End With
 
@@ -3560,7 +3536,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
         Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daï¿½o: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
@@ -3789,7 +3765,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     
                     Select Case PreguntaNUM
     
-                        Case 1 '¿Destruir item?
+                        Case 1 'ï¿½Destruir item?
                             Call WriteDrop(DestItemSlot, DestItemCant)
                             Pregunta = False
                             PreguntaLocal = False
@@ -4219,11 +4195,11 @@ Private Sub cmdLanzar_Click()
     
     If pausa Then Exit Sub
 
-    If hlst.List(hlst.ListIndex) <> "(Vacío)" Then
+    If hlst.List(hlst.ListIndex) <> "(Vacï¿½o)" Then
         If UserEstado = 1 Then
 
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                Call ShowConsoleMsg("ï¿½ï¿½Estï¿½s muerto!!", .red, .green, .blue, .bold, .italic)
 
             End With
 
@@ -4310,7 +4286,7 @@ Public Sub Form_Click()
                                 
                                 ElseIf ModoHechizos = SinBloqueo Then
                                     With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                        Call ShowConsoleMsg("No puedes lanzar hechizos tan rápido.", .red, .green, .blue, .bold, .italic)
+                                        Call ShowConsoleMsg("No puedes lanzar hechizos tan rï¿½pido.", .red, .green, .blue, .bold, .italic)
                                     End With
                                 Else
                                     Exit Sub
@@ -4318,7 +4294,7 @@ Public Sub Form_Click()
                                 
                             ElseIf ModoHechizos = SinBloqueo Then
                                 With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                    Call ShowConsoleMsg("No puedes lanzar tan rápido después de un golpe.", .red, .green, .blue, .bold, .italic)
+                                    Call ShowConsoleMsg("No puedes lanzar tan rï¿½pido despuï¿½s de un golpe.", .red, .green, .blue, .bold, .italic)
                                 End With
                             Else
                                 Exit Sub
@@ -4527,7 +4503,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     If PantallaCompleta = 0 And Button = vbLeftButton Then
         If MoverVentana = 1 Then
             If Not UserMoving Then
-                ' Mover form sólo en la parte superior
+                ' Mover form sï¿½lo en la parte superior
                 If y < 30 Then MoverForm
 
                 'Call Auto_Drag(Me.hwnd)
@@ -4715,7 +4691,7 @@ Private Sub picInv_DblClick()
     
     If Not Inventario.IsItemSelected Then Exit Sub
 
-    ' Hacemos acción del doble clic correspondiente
+    ' Hacemos acciï¿½n del doble clic correspondiente
     Dim ObjType As Byte
 
     ObjType = ObjData(Inventario.OBJIndex(Inventario.SelectedItem)).ObjType
@@ -4802,7 +4778,7 @@ Private Sub SendTxt_Change()
     '**************************************************************
     'Author: Unknown
     'Last Modify Date: 3/06/2006
-    '3/06/2006: Maraxus - impedí se inserten caractéres no imprimibles
+    '3/06/2006: Maraxus - impedï¿½ se inserten caractï¿½res no imprimibles
     '**************************************************************
     If Len(SendTxt.Text) > 160 Then
         stxtbuffer = "Soy un cheater, avisenle a un gm"
@@ -4974,7 +4950,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
 
     If (Error = 10061) Then
         If frmConnect.Visible Then
-            Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
+            Call TextoAlAsistente("ï¿½No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
         Else
             Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
         End If
@@ -4990,7 +4966,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
             Dim mForm As Form
             For Each mForm In Forms
                 Select Case mForm.Name
-                    Case frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
+                    Case frmConnect.Name, FrmLogear.Name, frmMensaje.Name
                     Case Else
                         Unload mForm
                 End Select
@@ -4999,13 +4975,16 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
             Call ComprobarEstado
             Call General_Set_Connect
         Else
-            If frmConnect.Visible Then
-                Connected = False
-            Else
+            If Not frmConnect.Visible Then
                 If (Connected) Then
                     Call HandleDisconnect
                 End If
             End If
+
+            Call ComprobarEstado
+            
+            LoggedIn = False
+            Connected = False
         End If
     End If
 

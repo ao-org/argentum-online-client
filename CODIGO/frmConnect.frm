@@ -114,13 +114,12 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Char As Byte
 
 Private Sub Form_Activate()
     
     On Error GoTo Form_Activate_Err
     
-    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    Call Graficos_Particulas.Engine_Select_Particle_Set(PARTICLE_SELECTION)
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
     
@@ -158,7 +157,6 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
 
-    QueRender = 1
     relampago.Enabled = True
     
     EngineRun = False
@@ -361,28 +359,28 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     
 
             If x > 325 And x < 344 And y > 371 And y < 387 Then 'Boton izquierda cabezas
-                If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
-                If frmCrearPersonaje.Cabeza.ListIndex > 0 Then
-                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex - 1
+                If frmCrearPersonaje.cabeza.ListCount = 0 Then Exit Sub
+                If frmCrearPersonaje.cabeza.ListIndex > 0 Then
+                    frmCrearPersonaje.cabeza.ListIndex = frmCrearPersonaje.cabeza.ListIndex - 1
 
                 End If
 
-                If frmCrearPersonaje.Cabeza.ListIndex = 0 Then
-                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListCount - 1
+                If frmCrearPersonaje.cabeza.ListIndex = 0 Then
+                    frmCrearPersonaje.cabeza.ListIndex = frmCrearPersonaje.cabeza.ListCount - 1
 
                 End If
 
             End If
     
             If x > 394 And x < 411 And y > 373 And y < 386 Then 'Boton Derecha cabezas
-                If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
-                If (frmCrearPersonaje.Cabeza.ListIndex + 1) <> frmCrearPersonaje.Cabeza.ListCount Then
-                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex + 1
+                If frmCrearPersonaje.cabeza.ListCount = 0 Then Exit Sub
+                If (frmCrearPersonaje.cabeza.ListIndex + 1) <> frmCrearPersonaje.cabeza.ListCount Then
+                    frmCrearPersonaje.cabeza.ListIndex = frmCrearPersonaje.cabeza.ListIndex + 1
 
                 End If
 
-                If (frmCrearPersonaje.Cabeza.ListIndex + 1) = frmCrearPersonaje.Cabeza.ListCount Then
-                    frmCrearPersonaje.Cabeza.ListIndex = 0
+                If (frmCrearPersonaje.cabeza.ListIndex + 1) = frmCrearPersonaje.cabeza.ListCount Then
+                    frmCrearPersonaje.cabeza.ListIndex = 0
 
                 End If
 
@@ -487,9 +485,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 frmConnect.txtNombre.Visible = False
                 QueRender = 2
                 
-                Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+                Call Graficos_Particulas.Engine_Select_Particle_Set(PARTICLE_SELECTION)
                 ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
-
             End If
             
             
@@ -520,9 +517,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                     If Connected Then
                         frmMain.ShowFPS.Enabled = True
+                        Call WriteLoginNewChar
+                    Else
+                        Call General_Set_Connect
+                        Call TextoAlAsistente("Se ha perdido la conexión con el servidor, ingresa nuevamente.")
                     End If
-                    
-                    Call LoginOrConnect(E_MODO.CrearNuevoPj)
                 End If
 
             End If
@@ -530,7 +529,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             If x >= 652 And x < 677 And y >= 346 And y < 365 Then  'DADO
                 Call Sound.Sound_Play(SND_DICE) ' Este sonido hay que ponerlo en el evento "click" o hacer q suene menos xq rompe oidos sino
 
-                Call LoginOrConnect(E_MODO.Dados)
+                Call WriteThrowDice
             End If
 
             Exit Sub
@@ -625,20 +624,32 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
                     
                     If IntervaloPermiteConectar Then
-                        If Musica Then
-
-                            '  ReproducirMp3 (2)
-                            'Else
-                            ' Call Audio.PlayMIDI("123.mid")
+                        If QueRender <> 3 Then
+                            UserMap = 37
+                            AlphaNiebla = 3
+                            'EntradaY = 90
+                            'EntradaX = 90
+                            CPHeading = 3
+                            CPEquipado = True
+                            Call SwitchMap(UserMap)
+                            ' frmCrearPersonaje.Show
+                            QueRender = 3
+                            
+                            Call IniciarCrearPj
+                            '      Sound.NextMusic = 3
+                            ' Sound.Fading = 350
+                            'FrmCuenta.Visible = False
+                            frmConnect.txtNombre.Visible = True
+                            frmConnect.txtNombre.SetFocus
+                
+                            Call Sound.Sound_Play(SND_DICE)
                         End If
-
-                        Call LoginOrConnect(E_MODO.Dados)
                     End If
 
                 Case 2
 
-                    If Char = 0 Then Exit Sub
-                    DeleteUser = Pjs(Char).nombre
+                    If PJSeleccionado = 0 Then Exit Sub
+                    DeleteUser = Pjs(PJSeleccionado).nombre
 
                     Dim tmp As String
 
@@ -647,8 +658,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         tmp = InputBox("Para confirmar el borrado debe ingresar su contraseña.", App.title)
             
                         If tmp = CuentaPassword Then
-                            Call LoginOrConnect(E_MODO.BorrandoPJ)
-                            
+                            Call WriteBorrandoPJ
+
                             If PJSeleccionado <> 0 Then
                                 LastPJSeleccionado = PJSeleccionado
                                 PJSeleccionado = 0
@@ -661,7 +672,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
 
                 Case 3
-                    Call ComprobarEstado
+                    modNetwork.Disconnect
 
                     If Musica Then
 
@@ -669,7 +680,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
                 
                     UserSaliendo = True
-                    Call modNetwork.Disconnect
 
                     CantidadDePersonajesEnCuenta = 0
 
@@ -700,9 +710,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
 
             End Select
-
-            Char = PJSeleccionado
-            Rem MsgBox X & "   " & Y
  
             If PJSeleccionado = 0 Then Exit Sub
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
@@ -792,9 +799,11 @@ Private Sub LogearPersonaje(ByVal Nick As String)
 
     If Connected Then
         frmMain.ShowFPS.Enabled = True
+        Call WriteLoginExistingChar
+    Else
+        Call General_Set_Connect
+        Call TextoAlAsistente("Se ha perdido la conexión con el servidor, ingresa nuevamente.")
     End If
-
-    Call LoginOrConnect(E_MODO.Normal)
     
     Exit Sub
 

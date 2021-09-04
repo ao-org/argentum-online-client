@@ -9,7 +9,7 @@ Public SeguroParty As Boolean
 Public SeguroClanX As Boolean
 Public SeguroResuX As Boolean
 
-Public QuePestañaInferior As Byte
+Public QuePestaï¿½aInferior As Byte
 
 
 Public ViajarInterface                  As Byte
@@ -163,7 +163,7 @@ Public clicY                 As Long
 
 Public FxLoops               As Long
 
-'¿Estamos haciendo efecto fade?
+'ï¿½Estamos haciendo efecto fade?
 Public mFadingStatus         As Byte
 
 Public mFadingMusicMod       As Long
@@ -300,7 +300,7 @@ Public NamePj(1 To 8) As String
 
 Public ValidacionCode As String
 
-'Objetos públicos
+'Objetos pï¿½blicos
 Public DialogosClanes As clsGuildDlg
 Public CurMp3         As Byte
 
@@ -377,6 +377,8 @@ Public Const SND_RESUCITAR     As Integer = 104
 Public Const SND_CURAR         As Integer = 101
 
 Public Const SND_DOPA          As Byte = 77
+
+Public Const PARTICLE_SELECTION As Integer = 254
 
 Public TargetXMacro            As Byte
 
@@ -460,7 +462,7 @@ Public UserEstupido           As Boolean
 
 Public NoRes                  As Boolean 'no cambiar la resolucion
 
-Public Launcher               As Boolean '¿Habrio desde el Launcher?
+Public Launcher               As Boolean 'ï¿½Habrio desde el Launcher?
 
 Public AmbientalesBufferIndex As Long
 
@@ -609,12 +611,12 @@ Public Const INV_FLAG_LAVA           As Single = 1 / FLAG_LAVA
 Public Enum eClass
 
     Mage = 1    'Mago
-    Cleric      'Clérigo
+    Cleric      'Clï¿½rigo
     Warrior     'Guerrero
     Assasin     'Asesino
     Bard        'Bardo
     Druid       'Druida
-    paladin     'Paladín
+    paladin     'Paladï¿½n
     Hunter      'Cazador
     Trabajador  'Trabajador
     Pirat       'Pirata
@@ -652,7 +654,7 @@ Public Enum eSkill
     Tacticas = 3
     Armas = 4
     Meditar = 5
-    Apuñalar = 6
+    Apuï¿½alar = 6
     Ocultarse = 7
     Supervivencia = 8
     Comerciar = 9
@@ -723,7 +725,7 @@ Public Enum eObjType
     otForos = 10
     otPociones = 11
     otBebidas = 13
-    otLeña = 14
+    otLeï¿½a = 14
     otFogata = 15
     otESCUDO = 16
     otCASCO = 17
@@ -777,7 +779,7 @@ Public Const MENSAJE_SEGURO_ACTIVADO               As String = "Seguro de ataque
 
 Public Const MENSAJE_SEGURO_DESACTIVADO            As String = "Seguro de ataque desactivado."
 
-Public Const MENSAJE_USAR_MEDITANDO                As String = "¡Estás meditando! Debes dejar de meditar para usar objetos."
+Public Const MENSAJE_USAR_MEDITANDO                As String = "ï¿½Estï¿½s meditando! Debes dejar de meditar para usar objetos."
 
 Public Const MENSAJE_SEGURO_PARTY_ON               As String = "Ahora nadie te podra invitar a un grupo."
 
@@ -796,7 +798,7 @@ Public Const MENSAJE_GOLPE_PIERNA_DER              As String = "La criatura te h
 Public Const MENSAJE_GOLPE_TORSO                   As String = "La criatura te ha pegado en el torso por "
 
 ' MENSAJE_[12]: Aparecen antes y despues del valor de los mensajes anteriores (MENSAJE_GOLPE_*)
-Public Const MENSAJE_1                             As String = "¡¡"
+Public Const MENSAJE_1                             As String = "ï¿½ï¿½"
 
 Public Const MENSAJE_2                             As String = "."
 
@@ -836,7 +838,7 @@ Public Const MENSAJE_TRABAJO_PESCA                 As String = "Haz click sobre 
 
 Public Const MENSAJE_TRABAJO_ROBAR                 As String = "Haz click sobre la victima..."
 
-Public Const MENSAJE_TRABAJO_TALAR                 As String = "Haz click sobre el árbol..."
+Public Const MENSAJE_TRABAJO_TALAR                 As String = "Haz click sobre el ï¿½rbol..."
 
 Public Const MENSAJE_TRABAJO_MINERIA               As String = "Haz click sobre el yacimiento..."
 
@@ -1173,6 +1175,8 @@ Public stxtbuffercmsg    As String 'Holds temp raw data from server
 Public SendNewChar       As Boolean 'Used during login
 
 Public Connected         As Boolean 'True when connected to server
+
+Public LoggedIn          As Boolean
 
 Public DownloadingMap    As Boolean 'Currently downloading a map from server
 

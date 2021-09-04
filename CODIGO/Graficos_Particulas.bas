@@ -80,7 +80,7 @@ Public Type Stream
     grh_list() As Long
     colortint(0 To 3) As RGB
     
-    speed As Single
+    Speed As Single
     life_counter As Long
     grh_resize As Boolean
     grh_resizex As Integer
@@ -144,7 +144,7 @@ Public Type particle_group
     
     
     'Added by Juan Martín Sotuyo Dodero
-    speed As Single
+    Speed As Single
     life_counter As Long
     
     'Added by David Justus
@@ -215,7 +215,7 @@ Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Int
     Exit Function
 
 Particle_Group_Create_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Create", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Create", Erl)
     Resume Next
     
 End Function
@@ -246,7 +246,7 @@ Public Function Particle_Group_Remove(ByVal particle_group_index As Long) As Boo
     Exit Function
 
 Particle_Group_Remove_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Remove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Remove", Erl)
     Resume Next
     
 End Function
@@ -281,7 +281,7 @@ Public Function Particle_Group_Remove_All() As Boolean
     Exit Function
 
 Particle_Group_Remove_All_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Remove_All", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Remove_All", Erl)
     Resume Next
     
 End Function
@@ -414,7 +414,7 @@ Public Sub Particle_Group_Destroy(ByVal particle_group_index As Long)
     Exit Sub
 
 Particle_Group_Destroy_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Destroy", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Destroy", Erl)
     Resume Next
     
 End Sub
@@ -541,7 +541,7 @@ Public Sub Particle_Group_Make(ByVal particle_group_index As Long, ByVal map_x A
     Exit Sub
 
 Particle_Group_Make_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Make", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Make", Erl)
     Resume Next
     
 End Sub
@@ -663,7 +663,7 @@ Public Sub Char_Particle_Group_Make(ByVal particle_group_index As Long, ByVal ch
     Exit Sub
 
 Char_Particle_Group_Make_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Make", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Make", Erl)
     Resume Next
     
 End Sub
@@ -689,7 +689,7 @@ Public Sub Particle_Incrementar(ByVal id As Integer)
     Exit Sub
 
 Particle_Incrementar_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Incrementar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Incrementar", Erl)
     Resume Next
     
 End Sub
@@ -828,7 +828,7 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
     Exit Sub
 
 Particle_Group_Render_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Render", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Render", Erl)
     Resume Next
     
 End Sub
@@ -957,7 +957,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     Exit Sub
 
 Particle_Render_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Render", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Render", Erl)
     Resume Next
     
 End Sub
@@ -981,7 +981,7 @@ Public Function Particle_Type_Get(ByVal particle_Index As Long) As Long
     Exit Function
 
 Particle_Type_Get_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Type_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Type_Get", Erl)
     Resume Next
     
 End Function
@@ -1000,7 +1000,7 @@ Public Function Engine_MeteoParticle_Get() As Long
     Exit Function
 
 Engine_MeteoParticle_Get_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Get", Erl)
     Resume Next
     
 End Function
@@ -1026,7 +1026,7 @@ Public Function Map_Particle_Group_Get(ByVal map_x As Integer, ByVal map_y As In
     Exit Function
 
 Map_Particle_Group_Get_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Map_Particle_Group_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Map_Particle_Group_Get", Erl)
     Resume Next
     
 End Function
@@ -1055,7 +1055,7 @@ Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long)
     Exit Sub
 
 Engine_MeteoParticle_Set_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Set", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Set", Erl)
     Resume Next
     
 End Sub
@@ -1082,7 +1082,7 @@ Public Sub Engine_spell_Particle_Set(ByVal spell_part As Long)
     Exit Sub
 
 Engine_spell_Particle_Set_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_spell_Particle_Set", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Engine_spell_Particle_Set", Erl)
     Resume Next
     
 End Sub
@@ -1109,7 +1109,7 @@ Public Sub Engine_Select_Particle_Set(ByVal Select_particle As Long)
     Exit Sub
 
 Engine_Select_Particle_Set_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_Select_Particle_Set", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Engine_Select_Particle_Set", Erl)
     Resume Next
     
 End Sub
@@ -1137,7 +1137,7 @@ Public Function Particle_Group_Check(ByVal particle_group_index As Long) As Bool
     Exit Function
 
 Particle_Group_Check_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Check", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Check", Erl)
     Resume Next
     
 End Function
@@ -1200,12 +1200,12 @@ Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal c
     Dim rgb_list(0 To 3) As RGBA
     
     Call SetRGBA(rgb_list(0), StreamData(ParticulaInd).colortint(0).r, StreamData(ParticulaInd).colortint(0).G, StreamData(ParticulaInd).colortint(0).r)
-    Call SetRGBA(rgb_list(1), StreamData(ParticulaInd).colortint(1).B, StreamData(ParticulaInd).colortint(1).G, StreamData(ParticulaInd).colortint(1).R)
-    Call SetRGBA(rgb_list(2), StreamData(ParticulaInd).colortint(2).B, StreamData(ParticulaInd).colortint(2).G, StreamData(ParticulaInd).colortint(2).R)
-    Call SetRGBA(rgb_list(3), StreamData(ParticulaInd).colortint(3).B, StreamData(ParticulaInd).colortint(3).G, StreamData(ParticulaInd).colortint(3).R)
+    Call SetRGBA(rgb_list(1), StreamData(ParticulaInd).colortint(1).B, StreamData(ParticulaInd).colortint(1).G, StreamData(ParticulaInd).colortint(1).r)
+    Call SetRGBA(rgb_list(2), StreamData(ParticulaInd).colortint(2).B, StreamData(ParticulaInd).colortint(2).G, StreamData(ParticulaInd).colortint(2).r)
+    Call SetRGBA(rgb_list(3), StreamData(ParticulaInd).colortint(3).B, StreamData(ParticulaInd).colortint(3).G, StreamData(ParticulaInd).colortint(3).r)
 
     General_Char_Particle_Create = Char_Particle_Group_Create(char_index, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
-       grh = 0 And StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).Angle, _
+       grh = 0 And StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).Speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).Angle, _
        StreamData(ParticulaInd).vecx1, StreamData(ParticulaInd).vecx2, StreamData(ParticulaInd).vecy1, StreamData(ParticulaInd).vecy2, _
        StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
        StreamData(ParticulaInd).gravity, StreamData(ParticulaInd).grav_strength, StreamData(ParticulaInd).bounce_strength, StreamData(ParticulaInd).x2, _
@@ -1216,7 +1216,7 @@ Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal c
     Exit Function
 
 General_Char_Particle_Create_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.General_Char_Particle_Create", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.General_Char_Particle_Create", Erl)
     Resume Next
     
 End Function
@@ -1230,13 +1230,13 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As I
 
     Dim rgb_list(0 To 3) As RGBA
 
-    Call SetRGBA(rgb_list(0), StreamData(ParticulaInd).colortint(0).B, StreamData(ParticulaInd).colortint(0).G, StreamData(ParticulaInd).colortint(0).R)
-    Call SetRGBA(rgb_list(1), StreamData(ParticulaInd).colortint(1).B, StreamData(ParticulaInd).colortint(1).G, StreamData(ParticulaInd).colortint(1).R)
-    Call SetRGBA(rgb_list(2), StreamData(ParticulaInd).colortint(2).B, StreamData(ParticulaInd).colortint(2).G, StreamData(ParticulaInd).colortint(2).R)
-    Call SetRGBA(rgb_list(3), StreamData(ParticulaInd).colortint(3).B, StreamData(ParticulaInd).colortint(3).G, StreamData(ParticulaInd).colortint(3).R)
+    Call SetRGBA(rgb_list(0), StreamData(ParticulaInd).colortint(0).B, StreamData(ParticulaInd).colortint(0).G, StreamData(ParticulaInd).colortint(0).r)
+    Call SetRGBA(rgb_list(1), StreamData(ParticulaInd).colortint(1).B, StreamData(ParticulaInd).colortint(1).G, StreamData(ParticulaInd).colortint(1).r)
+    Call SetRGBA(rgb_list(2), StreamData(ParticulaInd).colortint(2).B, StreamData(ParticulaInd).colortint(2).G, StreamData(ParticulaInd).colortint(2).r)
+    Call SetRGBA(rgb_list(3), StreamData(ParticulaInd).colortint(3).B, StreamData(ParticulaInd).colortint(3).G, StreamData(ParticulaInd).colortint(3).r)
 
     General_Particle_Create = Graficos_Particulas.Particle_Group_Create(x, y, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
-       StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).Angle, _
+       StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).Speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).Angle, _
        StreamData(ParticulaInd).vecx1, StreamData(ParticulaInd).vecx2, StreamData(ParticulaInd).vecy1, StreamData(ParticulaInd).vecy2, _
        StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
        StreamData(ParticulaInd).gravity, StreamData(ParticulaInd).grav_strength, StreamData(ParticulaInd).bounce_strength, StreamData(ParticulaInd).x2, _
@@ -1247,7 +1247,7 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As I
     Exit Function
 
 General_Particle_Create_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.General_Particle_Create", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.General_Particle_Create", Erl)
     Resume Next
     
 End Function
@@ -1291,7 +1291,7 @@ Public Function Char_Particle_Group_Create(ByVal char_index As Integer, ByRef gr
     Exit Function
 
 Char_Particle_Group_Create_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Create", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Create", Erl)
     Resume Next
     
 End Function
@@ -1354,7 +1354,7 @@ Public Function Char_Particle_Group_Remove_All(ByVal char_index As Integer)
     Exit Function
 
 Char_Particle_Group_Remove_All_Err:
-    Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove_All", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove_All", Erl)
     Resume Next
     
 End Function

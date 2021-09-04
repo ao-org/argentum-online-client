@@ -1971,3 +1971,77 @@ Function BeautifyBigNumber(ByVal Number As Long) As String
     End If
 
 End Function
+
+Public Sub MostrarCuenta()
+
+    '***************************************************
+    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 05/17/06
+    '
+    '***************************************************
+    
+    On Error GoTo errhandler
+    
+    ' FrmCuenta.Show
+    AlphaNiebla = 30
+    frmConnect.Visible = True
+    QueRender = 2
+    
+    'UserMap = 323
+    
+    'Call SwitchMap(UserMap)
+    
+    SugerenciaAMostrar = RandomNumber(1, NumSug)
+        
+    ' LogeoAlgunaVez = True
+    Call Sound.Sound_Play(192)
+    
+    Call Sound.Sound_Stop(SND_LLUVIAIN)
+    '  Sound.NextMusic = 2
+    '  Sound.Fading = 350
+      
+    Call Graficos_Particulas.Particle_Group_Remove_All
+    Call Graficos_Particulas.Engine_Select_Particle_Set(PARTICLE_SELECTION)
+    ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
+    
+    frmConnect.relampago.Enabled = False
+            
+    If FrmLogear.Visible Then
+        Unload FrmLogear
+
+        'Unload frmConnect
+    End If
+    
+    If frmMain.Visible Then
+        '  frmMain.Visible = False
+        
+        UserParalizado = False
+        UserInmovilizado = False
+        UserStopped = False
+        
+        InvasionActual = 0
+        frmMain.Evento.Enabled = False
+     
+        'BUG CLONES
+        Dim i As Integer
+
+        For i = 1 To LastChar
+            Call EraseChar(i)
+        Next i
+        
+        frmMain.personaje(1).Visible = False
+        frmMain.personaje(2).Visible = False
+        frmMain.personaje(3).Visible = False
+        frmMain.personaje(4).Visible = False
+        frmMain.personaje(5).Visible = False
+
+    End If
+    
+    Exit Sub
+
+errhandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "MostrarCuenta", Erl)
+    
+
+End Sub
