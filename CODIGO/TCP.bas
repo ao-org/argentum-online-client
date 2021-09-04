@@ -32,14 +32,12 @@ Public Function PuedoQuitarFoco() As Boolean
     Exit Function
 
 PuedoQuitarFoco_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_TCP.PuedoQuitarFoco", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_TCP.PuedoQuitarFoco", Erl)
     Resume Next
     
 End Function
 
-Sub LoginOrConnect(ByVal Modo As E_MODO)
-    EstadoLogin = Modo
-    
+Sub LoginOrConnect()
     If (Connected) Then
         Call Login
     Else
@@ -51,49 +49,12 @@ Sub Login()
     
     On Error GoTo Login_Err
     
-    Select Case EstadoLogin
-    
-        Case E_MODO.Normal
-            Call WriteLoginExistingChar
-        
-        Case E_MODO.CrearNuevoPj
-            Call WriteLoginNewChar
-            
-        Case E_MODO.Dados
-            Call WriteThrowDice
-            
-            If QueRender <> 3 Then
-                UserMap = 37
-                AlphaNiebla = 3
-                'EntradaY = 90
-                'EntradaX = 90
-                CPHeading = 3
-                CPEquipado = True
-                Call SwitchMap(UserMap)
-                ' frmCrearPersonaje.Show
-                QueRender = 3
-                
-                Call IniciarCrearPj
-                '      Sound.NextMusic = 3
-                ' Sound.Fading = 350
-                'FrmCuenta.Visible = False
-                frmConnect.txtNombre.Visible = True
-                frmConnect.txtNombre.SetFocus
-    
-                Call Sound.Sound_Play(SND_DICE)
-            End If
-        
-        Case E_MODO.IngresandoConCuenta
-            Call WriteIngresandoConCuenta
-            
-        Case E_MODO.BorrandoPJ
-            Call WriteBorrandoPJ
-    End Select
+    Call WriteIngresandoConCuenta
 
     Exit Sub
 
 Login_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_TCP.Login", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_TCP.Login", Erl)
     Resume Next
     
 End Sub

@@ -378,6 +378,8 @@ Public Const SND_CURAR         As Integer = 101
 
 Public Const SND_DOPA          As Byte = 77
 
+Public Const PARTICLE_SELECTION As Integer = 254
+
 Public TargetXMacro            As Byte
 
 Public TargetYMacro            As Byte
@@ -1082,19 +1084,6 @@ Public InvasionPorcentajeVida            As Byte
 
 Public InvasionPorcentajeTiempo          As Byte
 
-Public Enum E_MODO
-
-    Normal = 1
-    CrearNuevoPj = 2
-    Dados = 3
-    CreandoCuenta = 4
-    IngresandoConCuenta = 5
-    BorrandoPJ = 6
-
-End Enum
-
-Public EstadoLogin As E_MODO
-
 Public Enum eClanType
     ct_Neutral = 0
     ct_Real
@@ -1169,6 +1158,8 @@ Public stxtbuffercmsg    As String 'Holds temp raw data from server
 Public SendNewChar       As Boolean 'Used during login
 
 Public Connected         As Boolean 'True when connected to server
+
+Public LoggedIn          As Boolean
 
 Public DownloadingMap    As Boolean 'Currently downloading a map from server
 

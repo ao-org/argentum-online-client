@@ -996,12 +996,15 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             'UserEmail = "noseusa@a.com"
 
             StopCreandoCuenta = True
-                
+            
             If Connected Then
                 frmMain.ShowFPS.Enabled = True
+                Call WriteLoginNewChar
+            Else
+                Call General_Set_Connect
+                Call TextoAlAsistente("Se ha perdido la conexión con el servidor, ingresa nuevamente.")
             End If
             
-            Call LoginOrConnect(E_MODO.CrearNuevoPj)
         End If
 
     End If

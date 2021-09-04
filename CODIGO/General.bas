@@ -653,7 +653,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
@@ -1715,15 +1715,15 @@ max_Err:
     
 End Function
 
-Public Function Min(ByVal A As Double, ByVal B As Double) As Variant
+Public Function min(ByVal A As Double, ByVal B As Double) As Variant
     
     On Error GoTo min_Err
     
 
     If A < B Then
-        Min = A
+        min = A
     Else
-        Min = B
+        min = B
 
     End If
 
@@ -1736,13 +1736,13 @@ min_Err:
     
 End Function
 
-Public Function Clamp(ByVal A As Variant, ByVal Min As Variant, ByVal max As Variant) As Variant
+Public Function Clamp(ByVal A As Variant, ByVal min As Variant, ByVal max As Variant) As Variant
     
     On Error GoTo min_Err
     
 
-    If A < Min Then
-        Clamp = Min
+    If A < min Then
+        Clamp = min
     
     ElseIf A > max Then
         Clamp = max
@@ -1763,7 +1763,7 @@ End Function
 
 Public Function LoadInterface(FileName As String) As IPicture
 
-On Error GoTo ErrHandler
+On Error GoTo errhandler
 
     If FileName <> "" Then
         #If Compresion = 1 Then
@@ -1774,14 +1774,14 @@ On Error GoTo ErrHandler
     End If
 Exit Function
 
-ErrHandler:
+errhandler:
     MsgBox "Error al cargar la interface: " & FileName
 
 End Function
 
 Public Function LoadMinimap(ByVal map As Integer) As IPicture
 
-On Error GoTo ErrHandler
+On Error GoTo errhandler
 
     #If Compresion = 1 Then
         Set LoadMinimap = General_Load_Minimap_From_Resource_Ex("mapa" & map & ".bmp", ResourcesPassword)
@@ -1791,7 +1791,7 @@ On Error GoTo ErrHandler
     
 Exit Function
 
-ErrHandler:
+errhandler:
     MsgBox "Error al cargar minimapa: Mapa" & map & ".bmp"
 
 End Function
@@ -1856,7 +1856,7 @@ Function GetTimeFromString(str As String) As Long
     Dim Splitted() As String
     Splitted = Split(str, ":")
     
-    Dim Hour As Long, Min As Long
+    Dim Hour As Long, min As Long
     Hour = Val(Splitted(0))
 
     If Hour < 0 Then Hour = 0
@@ -1865,12 +1865,12 @@ Function GetTimeFromString(str As String) As Long
     GetTimeFromString = Hour * 60
     
     If UBound(Splitted) > 0 Then
-        Min = Val(Splitted(1))
+        min = Val(Splitted(1))
         
-        If Min < 0 Then Min = 0
-        If Min > 59 Then Min = 59
+        If min < 0 Then min = 0
+        If min > 59 Then min = 59
         
-        GetTimeFromString = GetTimeFromString + Min
+        GetTimeFromString = GetTimeFromString + min
     End If
 
     GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)
@@ -1902,21 +1902,21 @@ Public Sub CheckResources()
 
     Dim Data(1 To 200) As Byte
     
-    Dim handle As Integer
-    handle = FreeFile
+    Dim Handle As Integer
+    Handle = FreeFile
 
-    Open App.Path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #handle
+    Open App.Path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #Handle
     
-    Get #handle, , Data
+    Get #Handle, , Data
     
-    Close #handle
+    Close #Handle
     
-    Dim length As Integer
-    length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
+    Dim Length As Integer
+    Length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
 
     Dim i As Integer
     
-    For i = 1 To length
+    For i = 1 To Length
         ResourcesPassword = ResourcesPassword & Chr(Data(i * 3 - 1) Xor 37)
     Next
 
@@ -1929,12 +1929,12 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         Exit Function
     End If
     
-    Dim Temp As String
-    Temp = UCase$(nombre)
+    Dim temp As String
+    temp = UCase$(nombre)
     
     Dim i As Long, Char As Integer, LastChar As Integer
-    For i = 1 To Len(Temp)
-        Char = Asc(mid$(Temp, i, 1))
+    For i = 1 To Len(temp)
+        Char = Asc(mid$(temp, i, 1))
         
         If (Char < 65 Or Char > 90) And Char <> 32 Then
             Error = "Sólo se permites letras y espacios."
@@ -1948,7 +1948,7 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         LastChar = Char
     Next
 
-    If Asc(mid$(Temp, 1, 1)) = 32 Or Asc(mid$(Temp, Len(Temp), 1)) = 32 Then
+    If Asc(mid$(temp, 1, 1)) = 32 Or Asc(mid$(temp, Len(temp), 1)) = 32 Then
         Error = "No se permiten espacios al inicio o al final."
         Exit Function
     End If
@@ -1970,3 +1970,77 @@ Function BeautifyBigNumber(ByVal Number As Long) As String
     End If
 
 End Function
+
+Public Sub MostrarCuenta()
+
+    '***************************************************
+    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 05/17/06
+    '
+    '***************************************************
+    
+    On Error GoTo errhandler
+    
+    ' FrmCuenta.Show
+    AlphaNiebla = 30
+    frmConnect.Visible = True
+    QueRender = 2
+    
+    'UserMap = 323
+    
+    'Call SwitchMap(UserMap)
+    
+    SugerenciaAMostrar = RandomNumber(1, NumSug)
+        
+    ' LogeoAlgunaVez = True
+    Call Sound.Sound_Play(192)
+    
+    Call Sound.Sound_Stop(SND_LLUVIAIN)
+    '  Sound.NextMusic = 2
+    '  Sound.Fading = 350
+      
+    Call Graficos_Particulas.Particle_Group_Remove_All
+    Call Graficos_Particulas.Engine_Select_Particle_Set(PARTICLE_SELECTION)
+    ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
+    
+    frmConnect.relampago.Enabled = False
+            
+    If FrmLogear.Visible Then
+        Unload FrmLogear
+
+        'Unload frmConnect
+    End If
+    
+    If frmMain.Visible Then
+        '  frmMain.Visible = False
+        
+        UserParalizado = False
+        UserInmovilizado = False
+        UserStopped = False
+        
+        InvasionActual = 0
+        frmMain.Evento.Enabled = False
+     
+        'BUG CLONES
+        Dim i As Integer
+
+        For i = 1 To LastChar
+            Call EraseChar(i)
+        Next i
+        
+        frmMain.personaje(1).Visible = False
+        frmMain.personaje(2).Visible = False
+        frmMain.personaje(3).Visible = False
+        frmMain.personaje(4).Visible = False
+        frmMain.personaje(5).Visible = False
+
+    End If
+    
+    Exit Sub
+
+errhandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "MostrarCuenta", Erl)
+    
+
+End Sub

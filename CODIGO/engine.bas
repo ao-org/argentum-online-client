@@ -115,7 +115,7 @@ Private Const GrhFogata        As Integer = 1521
 
 ' Colores estaticos
 
-Public FLASH(3)        As RGBA
+Public flash(3)        As RGBA
 Public COLOR_EMPTY              As RGBA
 Public COLOR_WHITE(3)           As RGBA
 Public r As Byte
@@ -278,7 +278,7 @@ End Sub
 
 Public Sub Engine_Init()
 
-On Error GoTo ErrHandler:
+On Error GoTo errhandler:
     
     ' Initialize all DirectX objects.
     Set DirectX = New DirectX8
@@ -292,22 +292,22 @@ On Error GoTo ErrHandler:
                 If Not Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) Then
                     If Not Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) Then
                         
-                        GoTo ErrHandler
+                        GoTo errhandler
                         
                     End If
                 End If
             End If
                 
         Case "Hardware"
-            If Init_DirectDevice(D3DCREATE_HARDWARE_VERTEXPROCESSING) = False Then GoTo ErrHandler
+            If Init_DirectDevice(D3DCREATE_HARDWARE_VERTEXPROCESSING) = False Then GoTo errhandler
             Debug.Print "Modo de Renderizado: HARDWARE"
             
         Case "Mixed"
-            If Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) = False Then GoTo ErrHandler
+            If Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) = False Then GoTo errhandler
             Debug.Print "Modo de Renderizado: MIXED"
         
         Case Else
-            If Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) = False Then GoTo ErrHandler
+            If Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) = False Then GoTo errhandler
             Debug.Print "Modo de Renderizado: SOFTWARE"
     
     End Select
@@ -360,7 +360,7 @@ On Error GoTo ErrHandler:
     
     Exit Sub
     
-ErrHandler:
+errhandler:
     
     Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
                 "Asegúrate de tener los drivers gráficos actualizados y la librería DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
@@ -544,7 +544,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     If animate Then
         If grh.Started > 0 Then
             Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.Started) / grh.speed)
+            ElapsedFrames = Fix(0.5 * (FrameTime - grh.Started) / grh.Speed)
 
             If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
                 CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
@@ -610,7 +610,7 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
     If animate Then
         If grh.Started > 0 Then
             Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.Started) / grh.speed)
+            ElapsedFrames = Fix(0.5 * (FrameTime - grh.Started) / grh.Speed)
 
             If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
                 CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
@@ -683,7 +683,7 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
     If animate Then
         If grh.Started > 0 Then
             Dim ElapsedFrames As Long
-            ElapsedFrames = Fix((FrameTime - grh.Started) / grh.speed)
+            ElapsedFrames = Fix((FrameTime - grh.Started) / grh.Speed)
             
             If grh.AnimacionContador > 0 Then
                 grh.AnimacionContador = grh.AnimacionContador - ElapsedFrames
@@ -784,7 +784,7 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
     If animate Then
         If grh.Started > 0 Then
             Dim ElapsedFrames As Long
-            ElapsedFrames = Fix((FrameTime - grh.Started) / grh.speed)
+            ElapsedFrames = Fix((FrameTime - grh.Started) / grh.Speed)
 
             If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
                 CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
@@ -1308,7 +1308,7 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
 
     Dim moved         As Boolean
 
-    Dim pos           As Integer
+    Dim Pos           As Integer
 
     Dim line          As String
 
@@ -1411,7 +1411,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     'Last Modify Date: 12/03/04
     'Draw char's to screen without offcentering them
     '***************************************************
-    Dim pos                 As Integer
+    Dim Pos                 As Integer
 
     Dim line                As String
 
@@ -1588,7 +1588,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
 
                 If .EsNpc Then
-                    If Abs(tX - .pos.x) < 1 And tY - .pos.y < 1 And .pos.y - tY < 2 Then
+                    If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
                         MostrarNombre = True
                         Call RGBAList(NameColor, 210, 105, 30)
                         Call InitGrh(TempGrh, 839)
@@ -1774,14 +1774,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             'Draw name over head
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
                 
-                pos = InStr(.nombre, "<")
+                Pos = InStr(.nombre, "<")
                 
-                If pos = 0 Then pos = InStr(.nombre, "[")
+                If Pos = 0 Then Pos = InStr(.nombre, "[")
 
-                If pos = 0 Then pos = Len(.nombre) + 2
+                If Pos = 0 Then Pos = Len(.nombre) + 2
 
                 'Nick
-                line = Left$(.nombre, pos - 2)
+                line = Left$(.nombre, Pos - 2)
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 
@@ -1967,11 +1967,6 @@ Public Sub Start()
                     End If
 
                 Case 1
-                    If Not frmConnect.Visible Then
-                        frmConnect.Show
-                        FrmLogear.Show , frmConnect
-                    End If
-                    
                     RenderConnect 57, 45, 0, 0
 
                 Case 2
@@ -2164,7 +2159,7 @@ Public Sub DrawInterfaceComerciar()
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
         ' Al vender, calculamos el valor según el min(cantidad_ingresada, cantidad_items)
-        cantidad = Min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
+        cantidad = min(Val(frmComerciar.cantidad.Text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
 
     End If
     
@@ -2620,7 +2615,7 @@ Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal
 
     If grh.Started > 0 Then
         Dim ElapsedFrames As Long
-        ElapsedFrames = Fix((FrameTime - grh.Started) / grh.speed)
+        ElapsedFrames = Fix((FrameTime - grh.Started) / grh.Speed)
 
         If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
             CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
@@ -2682,7 +2677,7 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
 
     If grh.Started > 0 Then
         Dim ElapsedFrames As Long
-        ElapsedFrames = Fix((FrameTime - grh.Started) / grh.speed)
+        ElapsedFrames = Fix((FrameTime - grh.Started) / grh.Speed)
 
         If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
             CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
@@ -3924,7 +3919,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 If (.End_Effect <> 0) And .DestinoChar <> 0 Then
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
-                        Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).pos.x, charlist(.DestinoChar).pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).pos.x, charlist(.DestinoChar).pos.y))
+                        Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y))
                         .Slot_Used = False
                         Exit Sub
 
@@ -3942,7 +3937,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 End If
             
                 If (.FxEnd_Effect > 0) And .DestinoChar <> 0 Then
-                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).pos.x, charlist(.DestinoChar).pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).pos.x, charlist(.DestinoChar).pos.y))
+                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y))
                     Call SetCharacterFx(.DestinoChar, .FxEnd_Effect, .End_Loops)
                     .Slot_Used = False
                     Exit Sub
@@ -4100,7 +4095,7 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
 
     If grh.Started > 0 Then
         Dim ElapsedFrames As Long
-        ElapsedFrames = Fix((FrameTime - grh.Started) / grh.speed)
+        ElapsedFrames = Fix((FrameTime - grh.Started) / grh.Speed)
 
         If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
             CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
