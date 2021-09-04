@@ -5793,12 +5793,12 @@ WriteOferta_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteSetSpeed(ByVal Speed As Single)
+Public Sub WriteSetSpeed(ByVal speed As Single)
         '<EhHeader>
         On Error GoTo WriteSetSpeed_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.SetSpeed)
-102     Call Writer.WriteReal32(Speed)
+102     Call Writer.WriteReal32(speed)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -6599,7 +6599,6 @@ WriteDeleteItem_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDeleteItem", Erl)
 End Sub
 
-
 Public Sub writePezEspecialPos(ByVal dir As Boolean)
      On Error GoTo writePezEspecialPos_Err
         '</EhHeader>
@@ -6614,6 +6613,21 @@ writePezEspecialPos_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePezEspecialPos", Erl)
 End Sub
+
+Public Sub writeResetearPersonaje()
+     On Error GoTo writeResetearPersonaje_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.ResetearPersonaje)
+
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+writeResetearPersonaje_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writeResetearPersonaje_Err", Erl)
+End Sub
+
 
 
 
