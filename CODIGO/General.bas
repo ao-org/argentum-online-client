@@ -653,7 +653,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
@@ -2000,7 +2000,7 @@ Public Sub MostrarCuenta()
     '  Sound.Fading = 350
       
     Call Graficos_Particulas.Particle_Group_Remove_All
-    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    Call Graficos_Particulas.Engine_Select_Particle_Set(PARTICLE_SELECTION)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
     
     frmConnect.relampago.Enabled = False

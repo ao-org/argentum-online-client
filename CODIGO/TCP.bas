@@ -37,9 +37,7 @@ PuedoQuitarFoco_Err:
     
 End Function
 
-Sub LoginOrConnect(ByVal Modo As E_MODO)
-    EstadoLogin = Modo
-    
+Sub LoginOrConnect()
     If (Connected) Then
         Call Login
     Else
@@ -51,14 +49,7 @@ Sub Login()
     
     On Error GoTo Login_Err
     
-    Select Case EstadoLogin
-
-        Case E_MODO.IngresandoConCuenta
-            Call WriteIngresandoConCuenta
-            
-        Case E_MODO.BorrandoPJ
-            Call WriteBorrandoPJ
-    End Select
+    Call WriteIngresandoConCuenta
 
     Exit Sub
 

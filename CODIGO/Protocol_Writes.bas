@@ -5838,12 +5838,7 @@ Public Sub WriteBorrandoPJ()
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.BorrarPJ)
 102     Call Writer.WriteString8(DeleteUser)
-104     Call Writer.WriteString8(CuentaEmail)
 106     Call Writer.WriteString8(SEncriptar(CuentaPassword))
-108     Call Writer.WriteInt8(App.Major)
-110     Call Writer.WriteInt8(App.Minor)
-112     Call Writer.WriteInt8(App.Revision)
-118     Call Writer.WriteString8(CheckMD5)
     
 120     Call modNetwork.Send(Writer)
         '<EhFooter>

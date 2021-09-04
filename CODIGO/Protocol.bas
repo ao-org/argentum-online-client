@@ -1190,7 +1190,7 @@ Public Sub HandleDisconnect()
     '***************************************************
     
     LoggedIn = False
-    
+
     Dim i As Long
 
     Call ResetearUserMacro
@@ -1199,10 +1199,12 @@ Public Sub HandleDisconnect()
     'FrmCuenta.Visible = True
     
     frmConnect.Visible = True
+    frmMain.Visible = False
+    
     QueRender = 2
 
     Call Graficos_Particulas.Particle_Group_Remove_All
-    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    Call Graficos_Particulas.Engine_Select_Particle_Set(PARTICLE_SELECTION)
     
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
@@ -1211,8 +1213,6 @@ Public Sub HandleDisconnect()
     
     frmMain.UpdateLight.Enabled = False
     frmMain.UpdateDaytime.Enabled = False
-    
-    frmMain.Visible = False
     
     OpcionMenu = 0
 
@@ -1388,7 +1388,7 @@ Public Sub HandleDisconnect()
     
     For Each Frm In Forms
 
-        If Frm.Name <> frmMain.Name And Frm.Name <> frmConnect.Name And Frm.Name <> frmMensaje.Name Then
+        If Frm.Name <> frmConnect.Name And Frm.Name <> frmMain.Name And Frm.Name <> frmMensaje.Name Then
             Unload Frm
 
         End If
@@ -1819,7 +1819,7 @@ Private Sub HandleShowSastreForm()
             FrmSastre.lstArmas.AddItem (ObjData(SastreRopas(i).Index).Name)
         Next i
     
-        FrmSastre.Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
+        FrmSastre.command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
         FrmSastre.Show , frmMain
 
     End If

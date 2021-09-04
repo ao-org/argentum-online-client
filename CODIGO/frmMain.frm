@@ -2134,26 +2134,6 @@ Form_MouseUp_Err:
     
 End Sub
 
-Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
-    
-    On Error GoTo Form_QueryUnload_Err
-    
-
-    If prgRun = True Then
-        prgRun = False
-        Cancel = 1
-
-    End If
-
-    
-    Exit Sub
-
-Form_QueryUnload_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_QueryUnload", Erl)
-    Resume Next
-    
-End Sub
-
 Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err
@@ -4973,7 +4953,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
             Dim mForm As Form
             For Each mForm In Forms
                 Select Case mForm.Name
-                    Case frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
+                    Case frmConnect.Name, FrmLogear.Name, frmMensaje.Name
                     Case Else
                         Unload mForm
                 End Select
@@ -4987,6 +4967,10 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                     Call HandleDisconnect
                 End If
             End If
+
+            Call ComprobarEstado
+            
+            LoggedIn = False
             Connected = False
         End If
     End If

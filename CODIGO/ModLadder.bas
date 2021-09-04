@@ -670,7 +670,7 @@ Sub General_Set_Connect()
 
     End If
 
-    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    Call Graficos_Particulas.Engine_Select_Particle_Set(PARTICLE_SELECTION)
     
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
 

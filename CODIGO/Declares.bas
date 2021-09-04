@@ -378,6 +378,8 @@ Public Const SND_CURAR         As Integer = 101
 
 Public Const SND_DOPA          As Byte = 77
 
+Public Const PARTICLE_SELECTION As Integer = 254
+
 Public TargetXMacro            As Byte
 
 Public TargetYMacro            As Byte
@@ -1081,16 +1083,6 @@ Public InvasionActual                    As Byte
 Public InvasionPorcentajeVida            As Byte
 
 Public InvasionPorcentajeTiempo          As Byte
-
-Public Enum E_MODO
-
-    CreandoCuenta = 4
-    IngresandoConCuenta = 5
-    BorrandoPJ = 6
-
-End Enum
-
-Public EstadoLogin As E_MODO
 
 Public Enum eClanType
     ct_Neutral = 0
