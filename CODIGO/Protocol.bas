@@ -225,6 +225,7 @@ Private Enum ServerPacketID
     ForceUpdate
     GuardNotice
     ObjQuestListSend
+    AnswerReset
     
     [PacketCount]
 End Enum
@@ -552,6 +553,7 @@ Public Enum ClientPacketID
     GuardResendVerificationCode
     ResetChar              '/RESET NICK
     DeleteItem
+    ResetearPersonaje
     
     [PacketCount]
 End Enum
@@ -920,6 +922,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleGuardNotice
         Case ServerPacketID.ObjQuestListSend
             Call HandleObjQuestListSend
+        Case ServerPacketID.AnswerReset
+            Call HandleAnswerReset
             
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
@@ -8065,6 +8069,20 @@ errhandler:
     
     
 End Sub
+Public Sub HandleAnswerReset()
+    On Error GoTo ErrHandler
+    
+    If MsgBox("¿Está seguro que desea resetear el personaje? Los items que no sean depositados se perderán.", vbYesNo, "Resetear personaje") = vbYes Then
+        Call WriteResetearPersonaje
+    End If
+    
+    Exit Sub
+    
+ErrHandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAnswerReset", Erl)
+End Sub
+
 
 Public Sub HandleObjQuestListSend()
 

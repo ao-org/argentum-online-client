@@ -6583,4 +6583,17 @@ WriteDeleteItem_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDeleteItem", Erl)
 End Sub
 
+Public Sub WriteResetearPersonaje()
+         On Error GoTo WriteResetearPersonaje_Err
+         
+100     Call Writer.WriteInt(ClientPacketID.ResetearPersonaje)
+        
+102     Call modNetwork.Send(Writer)
+        Exit Sub
+
+WriteResetearPersonaje_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetearPersonaje", Erl)
+End Sub
+
 

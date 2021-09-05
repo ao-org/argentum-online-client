@@ -11,7 +11,6 @@ Public SeguroResuX As Boolean
 
 Public QuePestañaInferior As Byte
 
-
 Public ViajarInterface                  As Byte
 
 Public FormParser                       As clsCursor
