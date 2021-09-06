@@ -1160,6 +1160,8 @@ Public IsConnected       As Boolean 'True when connected to server
 
 Public IsLoggedIn        As Boolean
 
+Public ShowError         As Boolean
+
 Public DownloadingMap    As Boolean 'Currently downloading a map from server
 
 Public UserMap           As Integer

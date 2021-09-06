@@ -3288,6 +3288,8 @@ Private Sub HandleShowMessageBox()
     Dim mensaje As String
 
     mensaje = Reader.ReadString8()
+    
+    ShowError = False
 
     Select Case QueRender
 

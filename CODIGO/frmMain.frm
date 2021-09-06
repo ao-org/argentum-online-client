@@ -4939,13 +4939,13 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
     If IsConnected Then
         
         If Error = 10054 Then
-            If Not frmMensaje.Visible Then
+            If ShowError Then
                 frmMensaje.Show , frmConnect
                 frmMensaje.msg.Caption = "La conexión fue cerrada forzosamente del lado del servidor."
             End If
         Else
 
-            If Not frmMensaje.Visible Then
+            If ShowError Then
                 frmMensaje.Show , frmConnect
                 frmMensaje.msg.Caption = "Se perdió la conexión con el servidor."
             End If
@@ -4954,10 +4954,12 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
         IsLoggedIn = False
         IsConnected = False
         
-        frmMain.Visible = False
+        If QueRender <> 1 Then
+            frmMain.Visible = False
 
-        Call ComprobarEstado
-        Call General_Set_Connect
+            Call ComprobarEstado
+            Call General_Set_Connect
+        End If
     
     Else
     

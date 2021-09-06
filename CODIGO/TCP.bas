@@ -49,6 +49,8 @@ Sub Login()
     
     On Error GoTo Login_Err
     
+    ShowError = True
+    
     Call WriteIngresandoConCuenta
 
     Exit Sub

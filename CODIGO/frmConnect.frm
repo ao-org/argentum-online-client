@@ -643,6 +643,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                             frmConnect.txtNombre.SetFocus
                 
                             Call Sound.Sound_Play(SND_DICE)
+
+                            Call WriteThrowDice
                         End If
                     End If
 
