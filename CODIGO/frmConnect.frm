@@ -515,7 +515,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
 
-                    If Connected Then
+                    If IsConnected Then
                         frmMain.ShowFPS.Enabled = True
                         Call WriteLoginNewChar
                     Else
@@ -672,6 +672,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
 
                 Case 3
+                    IsConnected = False
                     modNetwork.Disconnect
 
                     If Musica Then
@@ -797,12 +798,13 @@ Private Sub LogearPersonaje(ByVal Nick As String)
     
     UserName = Nick
 
-    If Connected Then
+    If IsConnected Then
         frmMain.ShowFPS.Enabled = True
         Call WriteLoginExistingChar
     Else
         Call General_Set_Connect
-        Call TextoAlAsistente("Se ha perdido la conexión con el servidor, ingresa nuevamente.")
+        frmMensaje.msg.Caption = "Se ha perdido la conexión con el servidor, ingresa nuevamente."
+        frmMensaje.Show , frmConnect
     End If
     
     Exit Sub

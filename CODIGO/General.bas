@@ -617,7 +617,7 @@ Sub SetConnected()
     
     On Error GoTo SetConnected_Err
     
-    Connected = True
+    IsConnected = True
     
     'Unload the connect form
     'FrmCuenta.Visible = False
@@ -1984,6 +1984,7 @@ Public Sub MostrarCuenta()
     ' FrmCuenta.Show
     AlphaNiebla = 30
     frmConnect.Visible = True
+    frmMain.Visible = False
     QueRender = 2
     
     'UserMap = 323

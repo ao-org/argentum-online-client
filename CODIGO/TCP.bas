@@ -38,7 +38,7 @@ PuedoQuitarFoco_Err:
 End Function
 
 Sub LoginOrConnect()
-    If (Connected) Then
+    If (IsConnected) Then
         Call Login
     Else
         Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)

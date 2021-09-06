@@ -941,6 +941,8 @@ HandleIncomingData_Err:
 
     If Err.Number <> 0 Then
         Call RegistrarError(Err.Number, Err.Description & ". PacketID: " & PacketID, "Protocol.HandleIncomingData", Erl)
+        
+        IsConnected = False
         Call modNetwork.Disconnect
         
         HandleIncomingData = False
@@ -972,7 +974,7 @@ Private Sub HandleLogged()
     
     On Error GoTo HandleLogged_Err
     
-    LoggedIn = True
+    IsLoggedIn = True
  
     ' Variable initialization
     UserCiego = False
@@ -1193,7 +1195,7 @@ Public Sub HandleDisconnect()
     '
     '***************************************************
     
-    LoggedIn = False
+    IsLoggedIn = False
 
     Dim i As Long
 
@@ -5367,7 +5369,7 @@ Private Sub HandleHora()
     HoraMundo = GetTickCount() - Reader.ReadInt32()
     DuracionDia = Reader.ReadInt32()
     
-    If Not Connected Then
+    If Not IsConnected Then
         Call RevisarHoraMundo(True)
 
     End If

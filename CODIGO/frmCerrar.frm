@@ -11,8 +11,9 @@ Begin VB.Form frmCerrar
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2790
-   ScaleWidth      =   3240
+   ScaleHeight     =   186
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   216
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.Image cmdCancelar 

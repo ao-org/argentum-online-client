@@ -384,6 +384,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2321,7 +2322,7 @@ Private Sub Image4_Click(Index As Integer)
             If frmCerrar.Visible Then Exit Sub
             Dim mForm As Form
             For Each mForm In Forms
-                If mForm.hwnd <> Me.hwnd Then Unload mForm
+                If mForm.hwnd <> Me.hwnd And mForm.hwnd <> frmCerrar.hwnd Then Unload mForm
                 Set mForm = Nothing
             Next
             frmCerrar.Show , Me
@@ -4934,45 +4935,43 @@ End Sub
 
 Public Sub OnClientDisconnect(ByVal Error As Long)
     On Error GoTo OnClientDisconnect_Err
-
-    If (Error = 10061) Then
-        If frmConnect.Visible Then
-            Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
+  
+    If IsConnected Then
+        
+        If Error = 10054 Then
+            If Not frmMensaje.Visible Then
+                frmMensaje.Show , frmConnect
+                frmMensaje.msg.Caption = "La conexión fue cerrada forzosamente del lado del servidor."
+            End If
         Else
-            Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
+
+            If Not frmMensaje.Visible Then
+                frmMensaje.Show , frmConnect
+                frmMensaje.msg.Caption = "Se perdió la conexión con el servidor."
+            End If
         End If
+            
+        IsLoggedIn = False
+        IsConnected = False
+        
+        frmMain.Visible = False
+
+        Call ComprobarEstado
+        Call General_Set_Connect
+    
     Else
     
         frmConnect.MousePointer = 1
         ShowFPS.Enabled = False
         Unload frmAOGuard
 
-        If (Error <> 0 And Error <> 2) Then
-            Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
-                 
-            Dim mForm As Form
-            For Each mForm In Forms
-                Select Case mForm.Name
-                    Case frmConnect.Name, FrmLogear.Name, frmMensaje.Name
-                    Case Else
-                        Unload mForm
-                End Select
-            Next
-            
-            Call ComprobarEstado
-            Call General_Set_Connect
-        Else
-            If Not frmConnect.Visible Then
-                If (Connected) Then
-                    Call HandleDisconnect
-                End If
-            End If
+        If Error = 10061 Then
+            Call TextoAlAsistente("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
 
-            Call ComprobarEstado
-            
-            LoggedIn = False
-            Connected = False
+        ElseIf (Error <> 0 And Error <> 2) Then
+            Call TextoAlAsistente("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado a internet.")
         End If
+    
     End If
 
 

@@ -69,6 +69,7 @@ Private cBotonIngresar As clsGraphicalButton
 
 Private Sub cmdSalir_Click()
     
+    IsConnected = False
     Call modNetwork.Disconnect
 
     Unload Me

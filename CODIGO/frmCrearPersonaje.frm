@@ -997,12 +997,13 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             StopCreandoCuenta = True
             
-            If Connected Then
+            If IsConnected Then
                 frmMain.ShowFPS.Enabled = True
                 Call WriteLoginNewChar
             Else
                 Call General_Set_Connect
-                Call TextoAlAsistente("Se ha perdido la conexión con el servidor, ingresa nuevamente.")
+                frmMensaje.msg.Caption = "Se ha perdido la conexión con el servidor, ingresa nuevamente."
+                frmMensaje.Show , frmConnect
             End If
             
         End If

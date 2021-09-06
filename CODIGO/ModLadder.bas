@@ -1894,7 +1894,7 @@ Public Sub ResetearUserMacro()
     
     On Error GoTo ResetearUserMacro_Err
     
-    If LoggedIn Then Call WriteFlagTrabajar
+    If IsLoggedIn Then Call WriteFlagTrabajar
     frmMain.MacroLadder.Enabled = False
     UserMacro.Activado = False
     UserMacro.cantidad = 0
@@ -2043,6 +2043,7 @@ Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByV
     prgRun = False
 
     '0. Cerramos el socket
+    IsConnected = False
     Call modNetwork.Disconnect
 
     '2. Eliminamos objetos DX

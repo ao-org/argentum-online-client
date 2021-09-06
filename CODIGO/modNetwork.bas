@@ -23,13 +23,13 @@ Public Sub Poll()
     If (Client Is Nothing) Then
         Exit Sub
     End If
-    
+
     Call Client.Flush
     Call Client.Poll
 End Sub
 
 Public Sub Send(ByVal Buffer As Network.Writer)
-    If (Connected) Then
+    If (IsConnected) Then
         Call Client.Send(False, Buffer)
     End If
     
@@ -44,7 +44,7 @@ On Error GoTo OnClientConnect_Err:
     XorIndexOut = 0
 #End If
 
-    Connected = True
+    IsConnected = True
     
     Exit Sub
     
