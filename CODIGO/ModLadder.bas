@@ -76,7 +76,7 @@ Public CantPartLLuvia     As Integer
 Public MeteoIndex         As Integer
 
 'Dropeo
-Public PingRender         As Integer
+Public PingRender         As Long
 
 Public NumOBJs            As Integer
 Public NumNpcs            As Integer

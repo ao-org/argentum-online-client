@@ -699,6 +699,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         Pjs(i).NameMapa = ""
                     Next i
 
+                    ComprobarEstado
                     General_Set_Connect
                     
                     'Unload Me
