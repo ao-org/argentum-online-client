@@ -384,7 +384,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2320,11 +2319,11 @@ Private Sub Image4_Click(Index As Integer)
 
         Case 1
             If frmCerrar.Visible Then Exit Sub
-            Dim mForm As Form
-            For Each mForm In Forms
-                If mForm.hwnd <> Me.hwnd And mForm.hwnd <> frmCerrar.hwnd Then Unload mForm
-                Set mForm = Nothing
-            Next
+            'Dim mForm As Form
+            'For Each mForm In Forms
+            '    If mForm.hwnd <> Me.hwnd And mForm.hwnd <> frmCerrar.hwnd Then Unload mForm
+            '    Set mForm = Nothing
+            'Next
             frmCerrar.Show , Me
 
     End Select
@@ -3524,7 +3523,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
         Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
