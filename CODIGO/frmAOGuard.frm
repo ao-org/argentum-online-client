@@ -42,6 +42,17 @@ Begin VB.Form frmAOGuard
       Top             =   1920
       Width           =   3255
    End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Se ha enviado un mensaje a tu casilla de correo. Ingrese el código recibido en la siguiente casilla:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   735
+      Left            =   1200
+      TabIndex        =   1
+      Top             =   720
+      Width           =   3135
+   End
    Begin VB.Image cmdSalir 
       Height          =   420
       Left            =   600
