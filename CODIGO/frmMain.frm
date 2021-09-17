@@ -32,6 +32,14 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.CommandButton Command1 
+      Caption         =   "mouseFollow"
+      Height          =   375
+      Left            =   11640
+      TabIndex        =   44
+      Top             =   840
+      Width           =   1695
+   End
    Begin VB.Timer Second 
       Interval        =   1000
       Left            =   7440
@@ -420,7 +428,7 @@ Begin VB.Form frmMain
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   736
       TabIndex        =   3
-      Top             =   2250
+      Top             =   2280
       Width           =   11040
    End
    Begin VB.PictureBox panelInf 
@@ -916,6 +924,13 @@ Begin VB.Form frmMain
          Visible         =   0   'False
          Width           =   510
       End
+   End
+   Begin VB.Label lblMouseCoord 
+      Height          =   495
+      Left            =   720
+      TabIndex        =   43
+      Top             =   0
+      Width           =   1935
    End
    Begin VB.Image imgDeleteItem 
       Height          =   330
@@ -1816,6 +1831,18 @@ CombateIcon_Click_Err:
 End Sub
 
 
+    
+
+Private Sub Command1_Click()
+
+    
+      Dim rc As RECT
+    GetWindowRect hwnd, rc
+    Width = rc.Right - rc.Left
+    Height = rc.Bottom - rc.Top
+   ' sendMousePos = Not sendMousePos
+  Call SetCursorPos(frmMain.Left + 50, frmMain.Top + 50)
+End Sub
 
 Private Sub Contadores_Timer()
     
@@ -2490,7 +2517,6 @@ Private Sub imgHechizos_Click()
     cmdlanzar.Visible = True
 
     imgSpellInfo.Visible = True
-
     cmdMoverHechi(0).Visible = True
     cmdMoverHechi(1).Visible = True
 
@@ -2617,7 +2643,6 @@ Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Si
         imgInventario.Tag = "1"
 
     End If
-
     
     Exit Sub
 
@@ -3472,6 +3497,7 @@ Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y 
         imgInventario.Tag = "0"
 
     End If
+    
 
     If imgHechizos.Tag = "1" Then
         imgHechizos.Picture = Nothing
@@ -3919,7 +3945,7 @@ renderer_DblClick_Err:
 End Sub
 
 Private Sub renderer_Click()
-    
+     
     On Error GoTo renderer_Click_Err
     
     Call Form_Click
@@ -4509,6 +4535,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         EstadisticasBoton.Tag = "0"
 
     End If
+        
     
     If cmdlanzar.Tag = "1" Then
         cmdlanzar.Picture = Nothing

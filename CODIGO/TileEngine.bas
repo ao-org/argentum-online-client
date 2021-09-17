@@ -535,6 +535,15 @@ Init_TileEngine_Err:
     
 End Sub
 
+Sub MoveMouse(x As Single, y As Single)
+Dim pt As POINTAPI
+
+    pt.x = x
+    pt.y = y
+    ClientToScreen hwnd, pt
+    SetCursorPos pt.x, pt.y
+End Sub
+
 Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
     '******************************************
     'Converts where the mouse is in the main window to a tile position. MUST be called eveytime the mouse moves.

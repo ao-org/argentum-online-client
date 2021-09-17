@@ -226,6 +226,7 @@ Private Enum ServerPacketID
     GuardNotice
     ObjQuestListSend
     AnswerReset
+    sendMousePos
     
     [PacketCount]
 End Enum
@@ -554,6 +555,7 @@ Public Enum ClientPacketID
     ResetChar              '/RESET NICK
     DeleteItem
     ResetearPersonaje
+    FollowMouse
     
     [PacketCount]
 End Enum
@@ -924,6 +926,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleObjQuestListSend
         Case ServerPacketID.AnswerReset
             Call HandleAnswerReset
+        Case ServerPacketID.sendMousePos
+            Call HandleSendMousePos
             
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
@@ -8082,6 +8086,20 @@ Public Sub HandleAnswerReset()
     
     Exit Sub
     
+ErrHandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAnswerReset", Erl)
+End Sub
+
+Public Sub HandleSendMousePos()
+    On Error GoTo ErrHandler
+    MouseX = Reader.ReadInt16
+    MouseY = Reader.ReadInt16
+    
+    
+
+    
+    frmMain.lblMouseCoord.Caption = " X: " & MouseX & " Y: " & MouseY
 ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAnswerReset", Erl)

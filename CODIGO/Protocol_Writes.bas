@@ -6596,4 +6596,19 @@ WriteResetearPersonaje_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetearPersonaje", Erl)
 End Sub
 
+Public Sub writeSendFollowMouse()
+   On Error GoTo writeSendMousePosition_Err
+         
+100     Call Writer.WriteInt(ClientPacketID.FollowMouse)
+        Call Writer.WriteInt16(MouseX)
+        Call Writer.WriteInt16(MouseY)
+        
+102     Call modNetwork.Send(Writer)
+        Exit Sub
+
+writeSendMousePosition_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writeSendMousePosition", Erl)
+End Sub
+
 

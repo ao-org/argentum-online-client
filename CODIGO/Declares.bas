@@ -234,6 +234,40 @@ Public EntradaX                    As Byte
 Public EntradaY                    As Byte
 
 Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
+Public Declare Function SetCursorPos Lib "user32" (ByVal x As Integer, ByVal y As Integer) As Integer
+Private Declare Function GetWindowRect Lib "user32" (ByVal hwnd As Long, lpRect As RECT) As Long
+ 
+Type RECT
+Left As Long
+Top As Long
+Right As Long
+Bottom As Long
+End Type
+ 
+Const ERROR_INVALID_WINDOW_HANDLE As Long = 1400
+Const ERROR_INVALID_WINDOW_HANDLE_DESCR As String = "Invalid window handle."
+ 
+Sub PrintWindowCoordinates(hwnd As Long)
+' Prints left, right, top, and bottom positions of a window in pixels.
+ 
+Dim rectWindow As RECT
+ 
+' Pass in window handle and empty the data structure.
+' If function returns 0, an error occurred.
+If GetWindowRect(hwnd, rectWindow) = 0 Then
+' Check LastDLLError and display a dialog box if the error
+' occurred because an invalid handle was passed.
+If Err.LastDllError = ERROR_INVALID_WINDOW_HANDLE Then
+MsgBox ERROR_INVALID_WINDOW_HANDLE_DESCR, _
+title:="Error!"
+End If
+Else
+Debug.Print rectWindow.Bottom
+Debug.Print rectWindow.Left
+Debug.Print rectWindow.Right
+Debug.Print rectWindow.Top
+End If
+End Sub
 
 Public MouseX                 As Long
 
@@ -284,6 +318,9 @@ Public Type tServerInfo
     estado As Boolean
 
 End Type
+
+Public sendMousePos As Boolean
+Public LastMouseSend As Long
 
 Public ServersLst()   As tServerInfo
 

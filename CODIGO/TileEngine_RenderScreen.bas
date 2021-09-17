@@ -86,6 +86,11 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         MaxY = MaxY + 1
     End If
     
+    If sendMousePos And (LastMouseSend + 150) < GetTickCount Then
+        Call writeSendFollowMouse
+        LastMouseSend = GetTickCount()
+    End If
+    
     ' Map border checks
     If MinX < XMinMapSize Then
         StartBufferedX = PixelOffsetX - MinX * TilePixelWidth
