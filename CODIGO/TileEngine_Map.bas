@@ -74,10 +74,15 @@ Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
     
 
     With MapData(x, y).Graphic(1)
-        HayAgua = ((.GrhIndex >= 1505 And .GrhIndex <= 1520) Or (.GrhIndex >= 124 And .GrhIndex <= 139) Or (.GrhIndex >= 24223 And .GrhIndex <= 24238) Or _
-            (.GrhIndex >= 24143 And .GrhIndex <= 24158) Or (.GrhIndex >= 468 And .GrhIndex <= 483) Or _
-            (.GrhIndex >= 12628 And .GrhIndex <= 12643) Or (.GrhIndex >= 2948 And .GrhIndex <= 2963) Or _
-            (.GrhIndex >= 44668 And .GrhIndex <= 44939) Or (.GrhIndex >= 24303 And .GrhIndex <= 24318))
+            HayAgua = (.GrhIndex >= 1505 And .GrhIndex <= 1520) Or _
+                        (.GrhIndex >= 124 And .GrhIndex <= 139) Or _
+                        (.GrhIndex >= 24223 And .GrhIndex <= 24238) Or _
+                        (.GrhIndex >= 24303 And .GrhIndex <= 24318) Or _
+                        (.GrhIndex >= 468 And .GrhIndex <= 483) Or _
+                        (.GrhIndex >= 44668 And .GrhIndex <= 44683) Or _
+                        (.GrhIndex >= 24143 And .GrhIndex <= 24158) Or _
+                        (.GrhIndex >= 12628 And .GrhIndex <= 12643) Or _
+                        (.GrhIndex >= 2948 And .GrhIndex <= 2963)
     End With
 
     
@@ -119,7 +124,7 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
               (GrhIndex >= 14982 And GrhIndex <= 14988) Or GrhIndex = 16833 Or GrhIndex = 16834 Or _
               (GrhIndex >= 26075 And GrhIndex <= 26081) Or GrhIndex = 26192 Or (GrhIndex >= 32142 And GrhIndex <= 32162) Or _
               (GrhIndex >= 32343 And GrhIndex <= 32352) Or (GrhIndex >= 55626 And GrhIndex <= 55640) Or GrhIndex = 55642 Or _
-              (GrhIndex >= 50985 And GrhIndex <= 50991)
+              (GrhIndex >= 50985 And GrhIndex <= 50991) Or (GrhIndex >= 2547 And GrhIndex <= 2549) Or (GrhIndex >= 6597 And GrhIndex <= 6598)
     
     Exit Function
 
