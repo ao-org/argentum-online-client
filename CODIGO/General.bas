@@ -1101,7 +1101,7 @@ Sub Main()
 
     End If
 
-    IPServers(1) = "45.235.98.165:7667:InetG"
+    IPServers(1) = "45.235.99.71:7667:Minehost"
     
     #If DEBUGGING = 1 Then
         IPServers(2) = "186.152.148.12:7667:Horacio"
