@@ -511,7 +511,7 @@ Public Sub Init_TileEngine()
     HalfConnectTileWidth = (frmConnect.render.ScaleWidth / 32) \ 2
     
     TileBufferSizeX = 7
-    TileBufferSizeY = 12
+    TileBufferSizeY = 19
     TileBufferPixelOffsetX = -TileBufferSizeX * TilePixelWidth
     TileBufferPixelOffsetY = -TileBufferSizeY * TilePixelHeight
 
