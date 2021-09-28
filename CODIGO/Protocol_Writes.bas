@@ -2062,7 +2062,7 @@ End Sub
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGiveItem(UserName As String, _
-                         ByVal OBJIndex As Integer, _
+                         ByVal ObjIndex As Integer, _
                          ByVal cantidad As Integer, _
                          Motivo As String)
         '<EhHeader>
@@ -2070,7 +2070,7 @@ Public Sub WriteGiveItem(UserName As String, _
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.GiveItem)
 102     Call Writer.WriteString8(UserName)
-104     Call Writer.WriteInt16(OBJIndex)
+104     Call Writer.WriteInt16(ObjIndex)
 106     Call Writer.WriteInt16(cantidad)
 108     Call Writer.WriteString8(Motivo)
     
@@ -5816,12 +5816,12 @@ WriteOferta_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteSetSpeed(ByVal Speed As Single)
+Public Sub WriteSetSpeed(ByVal speed As Single)
         '<EhHeader>
         On Error GoTo WriteSetSpeed_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.SetSpeed)
-102     Call Writer.WriteReal32(Speed)
+102     Call Writer.WriteReal32(speed)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -6605,4 +6605,17 @@ Public Sub WriteResetChar(ByVal Nick As String)
 WriteResetChar_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetChar", Erl)
+End Sub
+
+Public Sub WriteResetearPersonaje()
+         On Error GoTo WriteResetearPersonaje_Err
+
+100     Call Writer.WriteInt(ClientPacketID.ResetearPersonaje)
+
+102     Call modNetwork.Send(Writer)
+        Exit Sub
+
+WriteResetearPersonaje_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetearPersonaje", Erl)
 End Sub
