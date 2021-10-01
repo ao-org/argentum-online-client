@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.OCX"
 Begin VB.Form frmOpciones 
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
@@ -26,6 +27,13 @@ Begin VB.Form frmOpciones
    ScaleWidth      =   7980
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin InetCtlsObjects.Inet Inet1 
+      Left            =   7320
+      Top             =   6600
+      _ExtentX        =   1005
+      _ExtentY        =   1005
+      _Version        =   393216
+   End
    Begin VB.HScrollBar Alpha 
       Height          =   315
       LargeChange     =   60
@@ -1232,8 +1240,7 @@ Private Sub cmdChangePassword_Click()
     
     On Error GoTo cmdChangePassword_Click_Err
     
-    Call frmNewPassword.Show(vbModeless, Me)
-
+    Call ShellExecute(0, "open", "http://ao20.com.ar/recuperar", 0, 0, 1)
     
     Exit Sub
 
