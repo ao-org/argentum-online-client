@@ -384,6 +384,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -917,12 +918,11 @@ Begin VB.Form frmMain
          Width           =   510
       End
    End
-   Begin VB.Label lblPeces 
-      Height          =   495
-      Left            =   13920
-      TabIndex        =   42
-      Top             =   7560
-      Width           =   1575
+   Begin VB.Image imgDeleteItem 
+      Height          =   375
+      Left            =   11400
+      Top             =   7320
+      Width           =   615
    End
    Begin VB.Label btnInvisible 
       Alignment       =   2  'Center
@@ -1463,6 +1463,7 @@ Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hw
 Private Const EM_GETLINE = &HC4
 
 Private Const EM_LINELENGTH = &HC1
+Private cBotonEliminarItem As clsGraphicalButton
 
 Private Sub btnInvisible_Click()
     
@@ -1478,6 +1479,16 @@ btnInvisible_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.btnInvisible_Click", Erl)
     Resume Next
     
+End Sub
+
+
+Private Sub LoadButtons()
+
+    Set cBotonEliminarItem = New clsGraphicalButton
+                                                
+    Call cBotonEliminarItem.Initialize(imgDeleteItem, "boton-borrar-item-default.bmp", _
+                                                "boton-borrar-item-over.bmp", _
+                                                "boton-borrar-item-off.bmp", Me)
 End Sub
 
 Private Sub btnSpawn_Click()
@@ -2497,6 +2508,7 @@ Private Sub imgHechizos_Click()
     frmMain.imgInvLock(0).Visible = False
     frmMain.imgInvLock(1).Visible = False
     frmMain.imgInvLock(2).Visible = False
+    imgDeleteItem.Visible = False
 
     
     Exit Sub
@@ -2579,6 +2591,7 @@ Private Sub imgInventario_Click()
     frmMain.imgInvLock(0).Visible = True
     frmMain.imgInvLock(1).Visible = True
     frmMain.imgInvLock(2).Visible = True
+    imgDeleteItem.Visible = True
 
     
     Exit Sub
@@ -4470,7 +4483,8 @@ Private Sub Form_Load()
     
     MenuNivel = 1
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
-
+    
+    LoadButtons
     
     Exit Sub
 
@@ -4978,4 +4992,14 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
 OnClientDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_LastError", Erl)
     Resume Next
+End Sub
+
+Private Sub imgDeleteItem_Click()
+    If Not frmMain.Inventario.IsItemSelected Then
+        Call AddtoRichTextBox(frmMain.RecTxt, "No tienes seleccionado ningún item", 255, 255, 255, False, False, False)
+    Else
+        If MsgBox("Seguro que desea eliminar el item?", vbYesNo, "Eliminar objeto") = vbYes Then
+            Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
+        End If
+    End If
 End Sub
