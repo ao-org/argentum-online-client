@@ -1918,10 +1918,10 @@ Private Sub cmdMapaSeguro_Click()
 End Sub
 
 Private Sub cmdMapeo_Click()
-    If frmPanelgm.Width = 7300 Then
+    If frmPanelgm.Width = 7365 Then
         frmPanelgm.Width = 4860
     Else
-        frmPanelgm.Width = 7300
+        frmPanelgm.Width = 7365
     End If
 End Sub
 
