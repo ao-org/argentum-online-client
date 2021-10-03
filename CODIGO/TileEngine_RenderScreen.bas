@@ -9,6 +9,7 @@ Public map_letter_grh_next   As Long
 Public map_letter_a          As Single
 Public map_letter_fadestatus As Byte
 
+
 Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
     
     On Error GoTo RenderScreen_Err
@@ -159,7 +160,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             With MapData(x, y)
                 
                 ' Layer 2 *********************************
-                If .Graphic(2).GrhIndex <> 0 Then
+                If .Graphic(2).grhIndex <> 0 Then
                     Call Draw_Grh(.Graphic(2), ScreenX, ScreenY, 1, 1, .light_value, , x, y)
                 End If
                 '******************************************
@@ -183,8 +184,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             With MapData(x, y)
                 
                 ' Objects *********************************
-                If .ObjGrh.GrhIndex <> 0 Then
-                    Select Case ObjData(.OBJInfo.OBJIndex).ObjType
+                If .ObjGrh.grhIndex <> 0 Then
+                    Select Case ObjData(.OBJInfo.ObjIndex).ObjType
                         Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
 
                         Case Else
@@ -274,8 +275,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
             With MapData(x, y)
                 ' Objects *********************************
-                If .ObjGrh.GrhIndex <> 0 Then
-                    Select Case ObjData(.OBJInfo.OBJIndex).ObjType
+                If .ObjGrh.grhIndex <> 0 Then
+                    Select Case ObjData(.OBJInfo.ObjIndex).ObjType
                         
                         Case eObjType.otArboles
                             Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
@@ -284,7 +285,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                             If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 8 And (Abs(UserPos.y) < y) Then
     
                                 If .ArbolAlphaTimer <= 0 Then
-                                    .ArbolAlphaTimer = LastMove
+                                    .ArbolAlphaTimer = lastMove
                                 End If
     
                                 DeltaTime = FrameTime - .ArbolAlphaTimer
@@ -298,7 +299,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
                                 Else
                                     If .ArbolAlphaTimer > 0 Then
-                                        .ArbolAlphaTimer = -LastMove
+                                        .ArbolAlphaTimer = -lastMove
                                     End If
     
                                     DeltaTime = FrameTime + .ArbolAlphaTimer
@@ -323,7 +324,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 '******************************************
     
                 'Layer 3 **********************************
-                If .Graphic(3).GrhIndex <> 0 Then
+                If .Graphic(3).grhIndex <> 0 Then
 
                     If (.Blocked And FLAG_ARBOL) <> 0 Then
 
@@ -333,7 +334,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                         If Abs(UserPos.x - x) <= 3 And (Abs(UserPos.y - y)) < 8 And (Abs(UserPos.y) < y) Then
 
                             If .ArbolAlphaTimer <= 0 Then
-                                .ArbolAlphaTimer = LastMove
+                                .ArbolAlphaTimer = lastMove
                             End If
 
                             DeltaTime = FrameTime - .ArbolAlphaTimer
@@ -347,7 +348,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
                             Else
                                 If .ArbolAlphaTimer > 0 Then
-                                    .ArbolAlphaTimer = -LastMove
+                                    .ArbolAlphaTimer = -lastMove
                                 End If
 
                                 DeltaTime = FrameTime + .ArbolAlphaTimer
@@ -364,7 +365,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                         End If
 
                     Else
-                        If AgregarSombra(.Graphic(3).GrhIndex) Then
+                        If AgregarSombra(.Graphic(3).grhIndex) Then
                             Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
                         End If
 
@@ -384,15 +385,15 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
     If InfoItemsEnRender And tX And tY Then
         With MapData(tX, tY)
-            If .OBJInfo.OBJIndex Then
-                If Not ObjData(.OBJInfo.OBJIndex).Agarrable Then
+            If .OBJInfo.ObjIndex Then
+                If Not ObjData(.OBJInfo.ObjIndex).Agarrable Then
                     Dim Text As String, Amount As String
                     If .OBJInfo.Amount > 1000 Then
                         Amount = Round(.OBJInfo.Amount * 0.001, 1) & "K"
                     Else
                         Amount = .OBJInfo.Amount
                     End If
-                    Text = ObjData(.OBJInfo.OBJIndex).Name & " (" & Amount & ")"
+                    Text = ObjData(.OBJInfo.ObjIndex).Name & " (" & Amount & ")"
                     Call Engine_Text_Render(Text, MouseX + 15, MouseY, COLOR_WHITE, , , , 160)
                 End If
             End If
@@ -458,7 +459,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             
                 With MapData(x, y)
                     ' Layer 4 - roofs *******************************
-                    If .Graphic(4).GrhIndex Then
+                    If .Graphic(4).grhIndex Then
 
                         Trigger = NearRoof(x, y)
 
@@ -653,6 +654,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     End If
 
     Call RenderScreen_NombreMapa
+    
+    Call renderBarFishing
 
     
     Exit Sub
@@ -690,7 +693,7 @@ Private Sub RenderScreen_NombreMapa()
                 map_letter_a = 0
                  
                 If map_letter_grh_next > 0 Then
-                    map_letter_grh.GrhIndex = map_letter_grh_next
+                    map_letter_grh.grhIndex = map_letter_grh_next
                     map_letter_fadestatus = 1
                     map_letter_grh_next = 0
 
@@ -721,7 +724,4 @@ RenderScreen_NombreMapa_Err:
     Resume Next
     
 End Sub
-
-
-
 

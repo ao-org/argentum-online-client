@@ -3,7 +3,6 @@ Attribute VB_Name = "Mod_Declaraciones"
 'Pablo Mercavides
 Option Explicit
 
-
 Public SeguroGame As Boolean
 Public SeguroParty As Boolean
 Public SeguroClanX As Boolean
@@ -849,9 +848,9 @@ Public Const MENSAJE_NENE                          As String = "Cantidad de NPCs
 'Inventario
 Type Inventory
 
-    OBJIndex As Integer
+    ObjIndex As Integer
     Name As String
-    GrhIndex As Long
+    grhIndex As Long
     '[Alejo]: tipo de datos ahora es Long
     Amount As Long
     '[/Alejo]
@@ -867,7 +866,7 @@ End Type
 
 Type MakeObj
 
-    GrhIndex As Long ' Indice del grafico que representa el obj
+    grhIndex As Long ' Indice del grafico que representa el obj
     Name As String
     MinDef As Integer
     MaxDef As Integer
@@ -879,9 +878,9 @@ End Type
 
 Type NpCinV
 
-    OBJIndex As Integer
+    ObjIndex As Integer
     Name As String
-    GrhIndex As Long
+    grhIndex As Long
     Amount As Integer
     Valor As Single
     PuedeUsar As Byte

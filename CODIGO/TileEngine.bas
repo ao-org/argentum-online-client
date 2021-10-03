@@ -108,7 +108,7 @@ End Type
 'apunta a una estructura grhdata y mantiene la animacion
 Public Type grh
 
-    GrhIndex As Long
+    grhIndex As Long
     speed As Single
     Started As Long
     Loops As Integer
@@ -184,7 +184,7 @@ Public Type Char
     EsEnano As Boolean
     active As Byte
     Heading As E_Heading
-    pos As Position
+    Pos As Position
     
     NowPosX As Integer
     NowPosY As Integer
@@ -280,7 +280,7 @@ End Type
 
 'Info de un objeto
 Public Type Obj
-    OBJIndex As Integer
+    ObjIndex As Integer
     Amount As Integer
 End Type
 
@@ -447,7 +447,7 @@ Public bRain                   As Boolean 'está raineando?
 Public bNieve                  As Boolean 'está nevando?
 Public bNiebla                 As Boolean 'Hay niebla?
 Public bTecho                  As Boolean 'hay techo?
-Public LastMove                As Long ' Tiempo de último paso
+Public lastMove                As Long ' Tiempo de último paso
 
 Public brstTick                As Long
 Private iFrameIndex            As Byte  'Frame actual de la LL
@@ -558,18 +558,18 @@ ConvertCPtoTP_Err:
     
 End Sub
 
-Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Started As Long = -1, Optional ByVal Loops As Integer = INFINITE_LOOPS)
+Public Sub InitGrh(ByRef grh As grh, ByVal grhIndex As Long, Optional ByVal Started As Long = -1, Optional ByVal Loops As Integer = INFINITE_LOOPS)
     '*****************************************************************
     'Sets up a grh. MUST be done before rendering
     '*****************************************************************
     
     On Error GoTo InitGrh_Err
 
-    If GrhIndex = 0 Or GrhIndex > MaxGrh Then Exit Sub
+    If grhIndex = 0 Or grhIndex > MaxGrh Then Exit Sub
     
-     grh.GrhIndex = GrhIndex
+     grh.grhIndex = grhIndex
 
-    If GrhData(GrhIndex).NumFrames > 1 Then
+    If GrhData(grhIndex).NumFrames > 1 Then
         If Started >= 0 Then
             grh.Started = Started
         Else
@@ -577,14 +577,14 @@ Public Sub InitGrh(ByRef grh As grh, ByVal GrhIndex As Long, Optional ByVal Star
         End If
         
         grh.Loops = Loops
-        grh.speed = GrhData(GrhIndex).speed / GrhData(GrhIndex).NumFrames
+        grh.speed = GrhData(grhIndex).speed / GrhData(grhIndex).NumFrames
     Else
         grh.Started = 0
         grh.speed = 1
     End If
 
     'Precalculate texture coordinates
-    With GrhData(grh.GrhIndex)
+    With GrhData(grh.grhIndex)
         If .Tx2 = 0 And .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
 
@@ -643,7 +643,7 @@ Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
     On Error GoTo EstaPCarea_Err
     
 
-    With charlist(charindex).pos
+    With charlist(charindex).Pos
         EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
 
     End With
@@ -673,7 +673,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
             If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv Then
                 If .Speeding > 1.3 Then
                    
-                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y))
+                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     Exit Sub
 
                 End If
@@ -681,12 +681,12 @@ Sub DoPasosFx(ByVal charindex As Integer)
                 .Pie = Not .Pie
 
                 If .Pie Then
-                    FileNum = GrhData(MapData(.pos.x, .pos.y).Graphic(1).GrhIndex).FileNum
+                    FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).grhIndex).FileNum
                     TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     'Call Audio.PlayWave(SND_PASOS3, .Pos.X, .Pos.Y)
                 Else
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.pos.x, .pos.y), Sound.Calculate_Pan(.pos.x, .pos.y))
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
 
                 End If
 
@@ -794,7 +794,7 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
         
         bTecho = HayTecho(UserPos.x, UserPos.y)
         
-        LastMove = FrameTime
+        lastMove = FrameTime
 
     End If
 
@@ -863,7 +863,7 @@ Public Function HayFogata(ByRef location As Position) As Boolean
         For k = UserPos.y - 15 To UserPos.y + 15
 
             If InMapBounds(j, k) Then
-                If MapData(j, k).ObjGrh.GrhIndex = GrhFogata Then
+                If MapData(j, k).ObjGrh.grhIndex = GrhFogata Then
                     location.x = j
                     location.y = k
                     
@@ -1103,12 +1103,12 @@ GetBitmapDimensions_Err:
     
 End Function
 
-Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False, Optional ByVal ClearColor As Long = &O0)
+Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal grhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False, Optional ByVal ClearColor As Long = &O0)
     
     On Error GoTo Grh_Render_To_Hdc_Err
     
 
-    If GrhIndex = 0 Then Exit Sub
+    If grhIndex = 0 Then Exit Sub
 
     Static Picture As RECT
 
@@ -1124,7 +1124,7 @@ Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal GrhIndex As Long, By
     Call DirectDevice.BeginScene
     Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
     
-    Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, COLOR_WHITE, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
+    Device_Box_Textured_Render grhIndex, screen_x, screen_y, GrhData(grhIndex).pixelWidth, GrhData(grhIndex).pixelHeight, COLOR_WHITE, GrhData(grhIndex).sX, GrhData(grhIndex).sY, Alpha, 0
 
     Call DirectDevice.EndScene
     Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
@@ -1138,12 +1138,12 @@ Grh_Render_To_Hdc_Err:
     
 End Sub
 
-Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False)
+Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal grhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False)
     
     On Error GoTo Grh_Render_To_HdcSinBorrar_Err
     
 
-    If GrhIndex = 0 Then Exit Sub
+    If grhIndex = 0 Then Exit Sub
 
     Static Picture As RECT
 
@@ -1158,7 +1158,7 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal GrhIndex As
 
     Call DirectDevice.BeginScene
     
-    Device_Box_Textured_Render GrhIndex, screen_x, screen_y, GrhData(GrhIndex).pixelWidth, GrhData(GrhIndex).pixelHeight, COLOR_WHITE, GrhData(GrhIndex).sX, GrhData(GrhIndex).sY, Alpha, 0
+    Device_Box_Textured_Render grhIndex, screen_x, screen_y, GrhData(grhIndex).pixelWidth, GrhData(grhIndex).pixelHeight, COLOR_WHITE, GrhData(grhIndex).sX, GrhData(grhIndex).sY, Alpha, 0
                            
     Call DirectDevice.EndScene
     Call DirectDevice.Present(Picture, ByVal 0, pic.hwnd, ByVal 0)
@@ -1223,13 +1223,13 @@ RenderSounds_Err:
     
 End Function
 
-Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As Long) As Boolean
+Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal grhIndex As Long) As Boolean
     
     On Error GoTo HayUserAbajo_Err
     
 
-    If GrhIndex > 0 Then
-        HayUserAbajo = charlist(UserCharIndex).pos.x >= x - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).pos.x <= x + (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).pos.y >= y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).pos.y <= y
+    If grhIndex > 0 Then
+        HayUserAbajo = charlist(UserCharIndex).Pos.x >= x - (GrhData(grhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.x <= x + (GrhData(grhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.y >= y - (GrhData(grhIndex).TileHeight - 1) And charlist(UserCharIndex).Pos.y <= y
 
     End If
 

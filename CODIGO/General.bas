@@ -15,7 +15,7 @@ End Type
 'Item type
 Private Type tItem
 
-    OBJIndex As Integer
+    ObjIndex As Integer
     Amount As Integer
 
 End Type
@@ -30,9 +30,9 @@ End Type
 
 Private Type grh
 
-    GrhIndex As Long
+    grhIndex As Long
     framecounter As Single
-    Speed As Single
+    speed As Single
     Started As Long
     alpha_blend As Boolean
     Angle As Single
@@ -50,7 +50,7 @@ Private Type GrhData
     TileHeight As Single
     NumFrames As Integer
     Frames() As Integer
-    Speed As Integer
+    speed As Integer
     mini_map_color As Long
 
 End Type
@@ -653,7 +653,7 @@ Sub SetConnected()
     Call Form_RemoveTitleBar(frmMain)
 
     OpcionMenu = 0
-    frmMain.Panel.Picture = LoadInterface("centroinventario.bmp")
+    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
     'Image2(0).Visible = False
     'Image2(1).Visible = True
 
@@ -687,7 +687,7 @@ SetConnected_Err:
     
 End Sub
 
-Sub MoveTo(ByVal Direccion As E_Heading)
+Sub MoveTo(ByVal direccion As E_Heading)
     
     On Error GoTo MoveTo_Err
     
@@ -704,19 +704,19 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     
     If cartel Then cartel = False
     
-    Select Case Direccion
+    Select Case direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, direccion)
 
     End Select
 
@@ -728,9 +728,9 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
             Moviendose = True
             Call MainTimer.Restart(TimersIndex.Walk)
-            Call WriteWalk(Direccion) 'We only walk if we are not meditating or resting
-            Call Char_Move_by_Head(UserCharIndex, Direccion)
-            Call MoveScreen(Direccion)
+            Call WriteWalk(direccion) 'We only walk if we are not meditating or resting
+            Call Char_Move_by_Head(UserCharIndex, direccion)
+            Call MoveScreen(direccion)
         Else
 
             If Not UserAvisado Then
@@ -746,9 +746,9 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     Else
 
-        If charlist(UserCharIndex).Heading <> Direccion Then
+        If charlist(UserCharIndex).Heading <> direccion Then
             If IntervaloPermiteHeading(True) Then
-                Call WriteChangeHeading(Direccion)
+                Call WriteChangeHeading(direccion)
             End If
         End If
 
@@ -850,11 +850,13 @@ Sub Check_Keys()
 
     Static lastMovement As Long
 
-    Dim Direccion As E_Heading
+    Dim direccion As E_Heading
 
-    Direccion = charlist(UserCharIndex).Heading
+    direccion = charlist(UserCharIndex).Heading
 
     If Not Application.IsAppActive() Then Exit Sub
+    
+    If showBarFishing Then Exit Sub
 
     If Not pausa And _
         frmMain.Visible And _
@@ -1009,7 +1011,7 @@ Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As B
     
     On Error GoTo FileExist_Err
     
-    FileExist = (Dir$(File, FileType) <> "")
+    FileExist = (dir$(File, FileType) <> "")
 
     
     Exit Function
@@ -1126,6 +1128,8 @@ Sub Main()
     'Cargamos todos los init
     Call CargarRecursos
     
+    Call setPositionBarFishing
+    
     'Cargar fuentes
     Call LoadFonts
 
@@ -1190,14 +1194,14 @@ Public Function randomMap() As Integer
     End Select
 End Function
 
-Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
+Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
     
     On Error GoTo WriteVar_Err
     
-    writeprivateprofilestring Main, Var, Value, File
+    writeprivateprofilestring Main, Var, value, File
 
     
     Exit Sub
@@ -1715,15 +1719,15 @@ max_Err:
     
 End Function
 
-Public Function Min(ByVal A As Double, ByVal B As Double) As Variant
+Public Function min(ByVal A As Double, ByVal B As Double) As Variant
     
     On Error GoTo min_Err
     
 
     If A < B Then
-        Min = A
+        min = A
     Else
-        Min = B
+        min = B
 
     End If
 
@@ -1736,13 +1740,13 @@ min_Err:
     
 End Function
 
-Public Function Clamp(ByVal A As Variant, ByVal Min As Variant, ByVal max As Variant) As Variant
+Public Function Clamp(ByVal A As Variant, ByVal min As Variant, ByVal max As Variant) As Variant
     
     On Error GoTo min_Err
     
 
-    If A < Min Then
-        Clamp = Min
+    If A < min Then
+        Clamp = min
     
     ElseIf A > max Then
         Clamp = max
@@ -1856,7 +1860,7 @@ Function GetTimeFromString(str As String) As Long
     Dim Splitted() As String
     Splitted = Split(str, ":")
     
-    Dim Hour As Long, Min As Long
+    Dim Hour As Long, min As Long
     Hour = Val(Splitted(0))
 
     If Hour < 0 Then Hour = 0
@@ -1865,12 +1869,12 @@ Function GetTimeFromString(str As String) As Long
     GetTimeFromString = Hour * 60
     
     If UBound(Splitted) > 0 Then
-        Min = Val(Splitted(1))
+        min = Val(Splitted(1))
         
-        If Min < 0 Then Min = 0
-        If Min > 59 Then Min = 59
+        If min < 0 Then min = 0
+        If min > 59 Then min = 59
         
-        GetTimeFromString = GetTimeFromString + Min
+        GetTimeFromString = GetTimeFromString + min
     End If
 
     GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)

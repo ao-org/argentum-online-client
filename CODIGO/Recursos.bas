@@ -99,7 +99,7 @@ Private Type tDatosGrh
 
     x As Integer
     y As Integer
-    GrhIndex As Long
+    grhIndex As Long
 
 End Type
 
@@ -1017,14 +1017,14 @@ Public Sub CargarMapa(ByVal map As Integer)
                 
                 With MapData(x, y)
             
-                    .Graphic(1).GrhIndex = L1(i).GrhIndex
+                    .Graphic(1).grhIndex = L1(i).grhIndex
                     
                     ' Precalculate position
                     .Graphic(1).x = x * TilePixelWidth
                     .Graphic(1).y = y * TilePixelHeight
                     ' *********************
                 
-                    InitGrh .Graphic(1), .Graphic(1).GrhIndex
+                    InitGrh .Graphic(1), .Graphic(1).grhIndex
                     
                     If HayAgua(x, y) Then
                         .Blocked = .Blocked Or FLAG_AGUA
@@ -1048,9 +1048,9 @@ Public Sub CargarMapa(ByVal map As Integer)
                 x = L2(i).x
                 y = L2(i).y
 
-                MapData(x, y).Graphic(2).GrhIndex = L2(i).GrhIndex
+                MapData(x, y).Graphic(2).grhIndex = L2(i).grhIndex
                 
-                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).GrhIndex
+                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).grhIndex
                 
                 MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_COSTA
                 
@@ -1067,11 +1067,11 @@ Public Sub CargarMapa(ByVal map As Integer)
                 x = L3(i).x
                 y = L3(i).y
             
-                MapData(x, y).Graphic(3).GrhIndex = L3(i).GrhIndex
+                MapData(x, y).Graphic(3).grhIndex = L3(i).grhIndex
             
-                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
+                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).grhIndex
 
-                If EsArbol(L3(i).GrhIndex) Then
+                If EsArbol(L3(i).grhIndex) Then
                     MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
                 End If
             Next i
@@ -1084,8 +1084,8 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , L4
 
             For i = 1 To .NumeroLayers(4)
-                MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex = L4(i).GrhIndex
-                InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex
+                MapData(L4(i).x, L4(i).y).Graphic(4).grhIndex = L4(i).grhIndex
+                InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).grhIndex
             Next i
 
         End If
@@ -1161,8 +1161,8 @@ Public Sub CargarMapa(ByVal map As Integer)
             For i = 1 To .NumeroOBJs
                 MapData(Objetos(i).x, Objetos(i).y).OBJInfo.ObjIndex = Objetos(i).ObjIndex
                 MapData(Objetos(i).x, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
-                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).ObjIndex).GrhIndex
-                Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex)
+                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.grhIndex = ObjData(Objetos(i).ObjIndex).grhIndex
+                Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.grhIndex)
 
             Next i
 
@@ -1444,7 +1444,7 @@ Public Sub CargarIndicesOBJ()
 
     For Obj = 1 To NumOBJs
         DoEvents
-        ObjData(Obj).GrhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
+        ObjData(Obj).grhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
         ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
         ObjData(Obj).MinDef = Val(Leer.GetValue("OBJ" & Obj, "MinDef"))
         ObjData(Obj).MaxDef = Val(Leer.GetValue("OBJ" & Obj, "MaxDef"))
@@ -1522,7 +1522,7 @@ Public Sub CargarIndicesOBJ()
     
     For Hechizo = 1 To NumHechizos
         DoEvents
-        HechizoData(Hechizo).Nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
+        HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
         HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "desc")
         HechizoData(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
         HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
@@ -1546,7 +1546,7 @@ Public Sub CargarIndicesOBJ()
     For Hechizo = 1 To NumQuest
         DoEvents
         
-        QuestList(Hechizo).Nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
+        QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
         
         QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
         QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
@@ -2719,17 +2719,17 @@ Sub CargarCrafteo()
     
     Dim i As Byte
     For i = 0 To Reader.NodesCount - 1
-        Dim Nombre As String
-        Nombre = Reader.GetNode(i)
+        Dim nombre As String
+        nombre = Reader.GetNode(i)
         
         Dim id As Byte
-        id = Val(Reader.GetValue(Nombre, "ID"))
+        id = Val(Reader.GetValue(nombre, "ID"))
         
         With TipoCrafteo(id)
-            .Nombre = Nombre
-            .Ventana = Reader.GetValue(Nombre, "Ventana")
-            .Inventario = Val(Reader.GetValue(Nombre, "Inventario"))
-            .Icono = Val(Reader.GetValue(Nombre, "Icono"))
+            .nombre = nombre
+            .Ventana = Reader.GetValue(nombre, "Ventana")
+            .Inventario = Val(Reader.GetValue(nombre, "Inventario"))
+            .Icono = Val(Reader.GetValue(nombre, "Icono"))
         End With
     Next
 
