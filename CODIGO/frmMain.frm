@@ -384,6 +384,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -916,14 +917,6 @@ Begin VB.Form frmMain
          Visible         =   0   'False
          Width           =   510
       End
-   End
-   Begin VB.Label Label4 
-      Caption         =   "Label4"
-      Height          =   255
-      Left            =   12720
-      TabIndex        =   42
-      Top             =   7440
-      Width           =   855
    End
    Begin VB.Image imgDeleteItem 
       Height          =   375
