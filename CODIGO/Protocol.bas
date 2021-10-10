@@ -2343,8 +2343,15 @@ Private Sub HandleUpdateGold()
 
     'Get data and update form
     UserGLD = Reader.ReadInt32()
+    OroPorNivel = Reader.ReadInt32()
     
     frmMain.GldLbl.Caption = PonerPuntos(UserGLD)
+    
+    If UserGLD > UserLvl * OroPorNivel Then
+        frmMain.GldLbl.ForeColor = vbRed
+    Else
+        frmMain.GldLbl.ForeColor = &H80FFFF
+    End If
     
     Exit Sub
 
@@ -4476,6 +4483,7 @@ Private Sub HandleUpdateUserStats()
     UserMaxSTA = Reader.ReadInt16()
     UserMinSTA = Reader.ReadInt16()
     UserGLD = Reader.ReadInt32()
+    OroPorNivel = Reader.ReadInt32()
     UserLvl = Reader.ReadInt8()
     UserPasarNivel = Reader.ReadInt32()
     UserExp = Reader.ReadInt32()
@@ -4533,6 +4541,12 @@ Private Sub HandleUpdateUserStats()
     If QuePestañaInferior = 0 Then
         frmMain.STAShp.Visible = (UserMinSTA > 0)
 
+    End If
+
+    If UserGLD > UserLvl * OroPorNivel Then
+        frmMain.GldLbl.ForeColor = vbRed
+    Else
+        frmMain.GldLbl.ForeColor = &H80FFFF
     End If
 
     frmMain.GldLbl.Caption = PonerPuntos(UserGLD)

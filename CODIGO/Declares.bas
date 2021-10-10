@@ -961,6 +961,8 @@ Public UserGLD                                  As Long
 
 Public UserLvl                                  As Integer
 
+Public OroPorNivel                              As Long
+
 Public UserPort                                 As Integer
 
 Public UserServerIP                             As String
