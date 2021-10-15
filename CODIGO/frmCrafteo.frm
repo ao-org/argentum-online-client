@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form frmCrafteo 
-   BackColor       =   &H00808080&
+   BackColor       =   &H00FFFFFF&
    BorderStyle     =   0  'None
    ClientHeight    =   5070
    ClientLeft      =   0
@@ -16,40 +16,41 @@ Begin VB.Form frmCrafteo
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton BtnAgregarCatalizador 
       Caption         =   "Agregar catalizador"
-      Height          =   495
-      Left            =   7080
+      Height          =   375
+      Left            =   6600
       TabIndex        =   5
       Top             =   4440
       Width           =   1575
    End
    Begin VB.CommandButton BtnQuitarObjeto 
       Caption         =   "Quitar objeto"
-      Height          =   495
-      Left            =   1440
+      Height          =   375
+      Left            =   720
       TabIndex        =   4
       Top             =   4440
       Width           =   1455
    End
    Begin VB.CommandButton BtnAgregarObjeto 
       Caption         =   "Agregar objeto"
-      Height          =   495
-      Left            =   5640
+      Height          =   375
+      Left            =   4920
       TabIndex        =   3
       Top             =   4440
       Width           =   1455
    End
    Begin VB.CommandButton BtnSalir 
       Caption         =   "X"
-      Height          =   495
-      Left            =   8400
+      Height          =   375
+      Left            =   8520
+      Picture         =   "frmCrafteo.frx":0000
       TabIndex        =   2
       Top             =   0
-      Width           =   615
+      Width           =   375
    End
    Begin VB.CommandButton Craftear 
       Caption         =   "Craftear"
-      Height          =   495
-      Left            =   3840
+      Height          =   375
+      Left            =   3240
       TabIndex        =   1
       Top             =   4440
       Width           =   1455
@@ -229,3 +230,5 @@ Private Sub InvCraftUser_ItemDropped(ByVal Drag As Integer, ByVal Drop As Intege
 
     End If
 End Sub
+
+
