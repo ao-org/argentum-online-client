@@ -119,6 +119,9 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
     EsArbol = GrhIndex = 304 Or GrhIndex = 305 Or GrhIndex = 641 Or GrhIndex = 643 Or GrhIndex = 644 Or _
               GrhIndex = 647 Or GrhIndex = 735 Or GrhIndex = 1121 Or GrhIndex = 1126 Or GrhIndex = 2931 Or _
               GrhIndex = 12309 Or GrhIndex = 12310 Or GrhIndex = 16833 Or GrhIndex = 16834 Or _
+              GrhIndex = 7020 Or GrhIndex = 12286 Or GrhIndex = 12287 Or GrhIndex = 12288 Or _
+              GrhIndex = 12289 Or GrhIndex = 11903 Or GrhIndex = 11904 Or _
+              GrhIndex = 11905 Or GrhIndex = 11906 Or GrhIndex = 12160 Or _
               (GrhIndex >= 12581 And GrhIndex <= 12586) Or _
               (GrhIndex >= 1161 And GrhIndex <= 1168) Or _
               (GrhIndex >= 7000 And GrhIndex <= 7002) Or _
