@@ -597,7 +597,7 @@ Public Const FLAG_COSTA              As Integer = &H80
 
 Public Const FLAG_LAVA               As Integer = &H100
 
-Public Const PRIMER_TRIGGER_TECHO    As Byte = 7
+Public Const PRIMER_TRIGGER_TECHO    As Byte = 20
 
 Public Const FOgata                  As Integer = 1521
 
