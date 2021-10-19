@@ -1157,6 +1157,7 @@ Public Enum eTrigger
     CURA = 7
     DETALLEAGUA = 8
     CARCEL = 9
+    VALIDONADO = 11
 
 End Enum
 
