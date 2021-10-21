@@ -252,8 +252,8 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         .MoveOffsetX = -1 * (32 * addx)
         .MoveOffsetY = -1 * (32 * addy)
         
-        'Attached to ladder ;)
-        If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Then
+        
+        If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Or MapData(nX, nY).Trigger = 12 Then
             .Heading = E_Heading.NORTH
         Else
             .Heading = nHeading
