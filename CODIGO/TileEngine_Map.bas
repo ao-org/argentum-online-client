@@ -116,7 +116,7 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
     
     On Error GoTo EsArbol_Err
     
-    EsArbol = GrhIndex = 18027 Or GrhIndex = 304 Or GrhIndex = 305 Or GrhIndex = 641 Or GrhIndex = 643 Or GrhIndex = 644 Or _
+    EsArbol = GrhIndex = 304 Or GrhIndex = 305 Or GrhIndex = 641 Or GrhIndex = 643 Or GrhIndex = 644 Or _
               GrhIndex = 647 Or GrhIndex = 735 Or GrhIndex = 1121 Or GrhIndex = 1126 Or GrhIndex = 2931 Or _
               GrhIndex = 12309 Or GrhIndex = 12310 Or GrhIndex = 16833 Or GrhIndex = 16834 Or _
               GrhIndex = 7020 Or GrhIndex = 12286 Or GrhIndex = 12287 Or GrhIndex = 12288 Or _
