@@ -1019,6 +1019,17 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     
     If UserNavegando And MapData(x, y).Trigger = 8 And Not UserNadando And Not UserEstado = 1 Then
         If Not UserAvisadoBarca Then
+            Call AddtoRichTextBox(frmMain.RecTxt, "¡Atención! El agua es poco profunda, tu barca podria romperse, solo puedes caminar.", 255, 255, 255, True, False, False)
+            UserAvisadoBarca = True
+
+        End If
+
+        Exit Function
+
+    End If
+    
+    If UserNavegando And MapData(x, y).Trigger = 11 And Not UserNadando And Not UserEstado = 1 Then
+        If Not UserAvisadoBarca Then
             Call AddtoRichTextBox(frmMain.RecTxt, "¡Atención! El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 255, 255, 255, True, False, False)
             UserAvisadoBarca = True
 
