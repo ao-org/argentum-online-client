@@ -137,6 +137,8 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
               (GrhIndex >= 2547 And GrhIndex <= 2549) Or _
               (GrhIndex >= 6597 And GrhIndex <= 6598) Or _
               (GrhIndex >= 15108 And GrhIndex <= 15110)
+              GrhIndex = 7220 Or GrhIndex = 50990 Or _
+              GrhIndex = 463 Or GrhIndex = 1880 Or GrhIndex = 1878 Or GrhIndex = 12584
               
     
     Exit Function
