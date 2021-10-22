@@ -1158,6 +1158,7 @@ Public Enum eTrigger
     DETALLEAGUA = 8
     CARCEL = 9
     VALIDONADO = 11
+    NADOCOMBINADO = 13
 
 End Enum
 

@@ -1112,7 +1112,7 @@ Public Sub CargarMapa(ByVal map As Integer)
                     RoofsLight(Triggers(i).Trigger) = 255
                     
                 ' Trigger detalles en agua
-                ElseIf Triggers(i).Trigger = eTrigger.DETALLEAGUA Or Triggers(i).Trigger = eTrigger.VALIDONADO Then
+                ElseIf Triggers(i).Trigger = eTrigger.DETALLEAGUA Or Triggers(i).Trigger = eTrigger.VALIDONADO Or Triggers(i).Trigger = eTrigger.NADOCOMBINADO Then
                     ' Borro flag de costa
                     MapData(Triggers(i).x, Triggers(i).y).Blocked = MapData(Triggers(i).x, Triggers(i).y).Blocked And Not FLAG_COSTA
                 End If
