@@ -227,6 +227,7 @@ Private Enum ServerPacketID
     GuardNotice
     AnswerReset
     ObjQuestListSend
+    UpdateBankGld
     [PacketCount]
 End Enum
 
@@ -926,6 +927,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleAnswerReset
         Case ServerPacketID.ObjQuestListSend
             Call HandleObjQuestListSend
+        Case ServerPacketID.UpdateBankGld
+            Call HandleUpdateBankGld
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
@@ -8491,6 +8494,21 @@ Public Sub HandleAnswerReset()
 ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAnswerReset", Erl)
+End Sub
+Public Sub HandleUpdateBankGld()
+
+    On Error GoTo ErrHandler
+    
+    Dim UserBoveOro As Long
+        
+    UserBoveOro = Reader.ReadInt32
+    
+    Call frmGoliath.UpdateBankGld(UserBoveOro)
+    
+ErrHandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateBankGld", Erl)
+
 End Sub
 Public Sub HandleObjQuestListSend()
 

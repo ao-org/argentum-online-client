@@ -273,6 +273,22 @@ ParseBancoInfo_Err:
     
 End Sub
 
+
+Public Sub UpdateBankGld(ByVal oro As Long)
+    
+    On Error GoTo ParseBancoInfo_Err
+
+    OroDep = oro
+    gold.Caption = OroDep
+    
+    Exit Sub
+
+ParseBancoInfo_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmGoliath.ParseBancoInfo", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
