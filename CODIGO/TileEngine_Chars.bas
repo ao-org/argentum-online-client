@@ -253,7 +253,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         .MoveOffsetY = -1 * (32 * addy)
         
         
-        If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Or MapData(nX, nY).Trigger = 12 Then
+        If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Or MapData(nX, nY).Trigger = ESCALERA Then
             .Heading = E_Heading.NORTH
         Else
             .Heading = nHeading
