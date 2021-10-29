@@ -850,7 +850,7 @@ Type Inventory
 
     ObjIndex As Integer
     Name As String
-    grhIndex As Long
+    GrhIndex As Long
     '[Alejo]: tipo de datos ahora es Long
     Amount As Long
     '[/Alejo]
@@ -866,7 +866,7 @@ End Type
 
 Type MakeObj
 
-    grhIndex As Long ' Indice del grafico que representa el obj
+    GrhIndex As Long ' Indice del grafico que representa el obj
     Name As String
     MinDef As Integer
     MaxDef As Integer
@@ -880,7 +880,7 @@ Type NpCinV
 
     ObjIndex As Integer
     Name As String
-    grhIndex As Long
+    GrhIndex As Long
     Amount As Integer
     Valor As Single
     PuedeUsar As Byte
