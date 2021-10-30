@@ -126,6 +126,7 @@ Form=CODIGO\frmAOGuard.frm
 Module=modNetwork; CODIGO\modNetwork.bas
 Module=ModLenguaje; CODIGO\ModLenguaje.bas
 Module=modBarFishing; CODIGO\modBarFishing.bas
+Reference=*\G{6B263850-900B-11D0-9484-00A0C91110ED}#1.0#0
 ResFile32="AO20.res"
 IconForm="frmMain"
 Startup="Sub Main"

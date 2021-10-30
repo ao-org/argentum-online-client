@@ -1011,8 +1011,8 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
         Exit Function
 
     End If
-   
-    If UserNavegando <> ((MapData(x, y).Blocked And FLAG_AGUA) <> 0 And (MapData(x, y).Blocked And FLAG_COSTA) = 0) Then
+   '0 <>
+    If UserNavegando <> ((MapData(x, y).Blocked And FLAG_AGUA) <> 0 And (MapData(x, y).Blocked And FLAG_COSTA) = 0) And MapData(x, y).Trigger <> eTrigger.VALIDOPUENTE Then
         Exit Function
 
     End If
