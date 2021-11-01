@@ -218,6 +218,7 @@ Public Sub CargarRecursos()
     Call CargarIndicesOBJ
     Call Cargarmapsworlddata
     Call InitFontTypes
+    Call CargarZonas
 
     'Call LoadGrhData
     Call LoadGrhIni
@@ -1172,6 +1173,43 @@ Public Sub CargarMapa(ByVal map As Integer)
 
     Close fh
     
+'Creo un array de zonas provisorio de ese mapa
+    Dim Temp_zone() As MapZone
+    Dim UpperB As Integer
+    ReDim Temp_zone(1 To 1) As MapZone
+    
+    For i = 1 To UBound(Zonas)
+        'Me fijo se la zona pertenece al mapa, de serlo agrego la zona al array
+        If Zonas(i).NumMapa = map Then
+        
+            ReDim Preserve Temp_zone(1 To UBound(Temp_zone) + 1) As MapZone
+            
+            UpperB = UBound(Temp_zone)
+            
+            Temp_zone(UpperB - 1).NumMapa = Zonas(i).NumMapa
+            Temp_zone(UpperB - 1).Musica = Zonas(i).Musica
+            Temp_zone(UpperB - 1).OcultarNombre = Zonas(i).OcultarNombre
+            Temp_zone(UpperB - 1).x1 = Zonas(i).x1
+            Temp_zone(UpperB - 1).x2 = Zonas(i).x2
+            Temp_zone(UpperB - 1).y1 = Zonas(i).y1
+            Temp_zone(UpperB - 1).y2 = Zonas(i).y2
+        End If
+    Next i
+    
+    If UBound(Temp_zone) > 0 Then
+        ReDim Preserve Temp_zone(1 To UBound(Temp_zone) - 1) As MapZone
+    End If
+    
+    For i = 1 To (UBound(Temp_zone))
+        For x = Temp_zone(i).x1 To Temp_zone(i).x2
+            For y = Temp_zone(i).y1 To Temp_zone(i).y2
+                MapData(x, y).zone.OcultarNombre = Temp_zone(i).OcultarNombre
+                MapData(x, y).zone.Musica = Temp_zone(i).Musica
+            Next y
+        Next x
+    Next i
+    
+    
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
     #End If
@@ -1708,6 +1746,30 @@ Sub CargarMoldes()
         Delete_File Windows_Temp_Dir & "moldes.ini"
     #End If
 
+End Sub
+Sub CargarZonas()
+    Dim reader As clsIniManager
+    Dim cantidadZonas As Integer
+    Dim i As Integer
+    Set reader = New clsIniManager
+    
+    Call reader.Initialize(App.Path & "\..\Recursos\Dat\zonas.dat")
+    
+    cantidadZonas = reader.GetValue("Config", "Cantidad")
+    
+    ReDim Zonas(1 To cantidadZonas) As MapZone
+    
+    For i = 1 To cantidadZonas
+        Zonas(i).Musica = Val(reader.GetValue("Zona" & i, "Musica"))
+        Zonas(i).OcultarNombre = Val(reader.GetValue("Zona" & i, "OcultarNombre"))
+        Zonas(i).NumMapa = Val(reader.GetValue("Zona" & i, "Mapa"))
+        Zonas(i).x1 = Val(reader.GetValue("Zona" & i, "X1"))
+        Zonas(i).x2 = Val(reader.GetValue("Zona" & i, "X2"))
+        Zonas(i).y1 = Val(reader.GetValue("Zona" & i, "Y1"))
+        Zonas(i).y2 = Val(reader.GetValue("Zona" & i, "Y2"))
+    Next i
+    
+    Set reader = Nothing
 End Sub
 
 Sub CargarCabezas()

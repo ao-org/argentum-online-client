@@ -615,6 +615,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     End If
     
     Call Effect_Render_All
+  
     
     If InvasionActual Then
         
@@ -654,6 +655,11 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     End If
 
     Call RenderScreen_NombreMapa
+   '   Dim grhTest As grh
+   '   Dim testColor As ARGB
+      
+   ' InitGrh grhTest, 12774
+   '  Call Draw_Grh(grhTest, 370, 600, 1, 1, TempColor, False, x, y)
     
     Call renderBarFishing
 

@@ -348,7 +348,6 @@ Public Property Get MusicActual() As Integer
     On Error GoTo MusicActual_Err
     
     MusicActual = mMusActual
-
     
     Exit Property
 

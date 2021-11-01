@@ -306,6 +306,16 @@ Public Type Fantasma
 
 End Type
 
+Public Type MapZone
+    OcultarNombre As Boolean
+    NumMapa As Integer
+    Musica As Integer
+    x1 As Byte
+    x2 As Byte
+    y1 As Byte
+    y2 As Byte
+End Type
+
 Public Type MapBlock
 
     fX As grh
@@ -334,7 +344,7 @@ Public Type MapBlock
     Trigger As Integer
     CharFantasma As Fantasma
     ArbolAlphaTimer As Long
-
+    zone As MapZone
 End Type
 
 'Info de cada mapa
@@ -441,6 +451,7 @@ Public CascoAnimData()         As HeadData
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Mapa?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 Public MapData()               As MapBlock ' Mapa
 Public MapInfo                 As MapInfo ' Info acerca del mapa en uso
+Public Zonas()                 As MapZone
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
 Public bRain                   As Boolean 'está raineando?
