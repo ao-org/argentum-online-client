@@ -1375,6 +1375,7 @@ Private Sub InicializarNombres()
     ListaRazas(eRaza.ElfoOscuro) = "Elfo Oscuro"
     ListaRazas(eRaza.Gnomo) = "Gnomo"
     ListaRazas(eRaza.Enano) = "Enano"
+    ListaRazas(eRaza.Orco) = "Orco"
         
     ListaCiudades(eCiudad.cUllathorpe) = "Ullathorpe"
     ListaCiudades(eCiudad.cNix) = "Nix"
