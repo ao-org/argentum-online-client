@@ -38,6 +38,7 @@ Public MaxGrh                As Long
 'PescaEspecial VARS
 Public Const MAX_INTENTOS As Byte = 5
 Public intentosPesca(1 To MAX_INTENTOS) As Byte
+Public PuedeIntentar As Boolean
 Public PescandoEspecial As Boolean
 Public Const BarWidth As Long = 199
 Public PosicionBarra As Single

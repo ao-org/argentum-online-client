@@ -681,8 +681,10 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 
         If PosicionBarra <= 0 Then
             DireccionBarra = 1
+            PuedeIntentar = True
         ElseIf PosicionBarra > 199 Then
             DireccionBarra = -1
+            PuedeIntentar = True
         End If
         If PosicionBarra < 0 Then
             PosicionBarra = 0
