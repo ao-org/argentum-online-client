@@ -1975,3 +1975,24 @@ Function BeautifyBigNumber(ByVal Number As Long) As String
     End If
 
 End Function
+
+Public Function IntentarObtenerPezEspecial()
+    Debug.Print "Aciertos: " & ContadorIntentosPescaEspecial_Acertados & "Posicion barra : " & PosicionBarra
+        'El + y -10 es por inputLag (Margen de error)
+    If PosicionBarra >= (90 - 10) And PosicionBarra <= (111 + 10) Then
+        ContadorIntentosPescaEspecial_Acertados = ContadorIntentosPescaEspecial_Acertados + 1
+    Else
+        ContadorIntentosPescaEspecial_Fallados = ContadorIntentosPescaEspecial_Fallados + 1
+    End If
+    
+    If ContadorIntentosPescaEspecial_Fallados >= 1 Then
+        PescandoEspecial = False
+        Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
+    ElseIf ContadorIntentosPescaEspecial_Acertados >= 3 Then
+        PescandoEspecial = False
+        Call WriteFinalizarPescaEspecial
+    End If
+    
+    
+    
+End Function

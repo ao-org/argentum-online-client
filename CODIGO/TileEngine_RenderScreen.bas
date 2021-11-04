@@ -661,8 +661,34 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
    ' InitGrh grhTest, 12774
    '  Call Draw_Grh(grhTest, 370, 600, 1, 1, TempColor, False, x, y)
     
-    Call renderBarFishing
-
+    'HarThaoS y el peroncho(Ford Lers)
+    If PescandoEspecial Then
+        Dim grh As grh
+        grh.GrhIndex = GRH_BARRA_PESCA
+        Call Draw_Grh(grh, 239, 550, 0, 0, TempColor())
+        grh.GrhIndex = GRH_CURSOR_PESCA
+        Call Draw_Grh(grh, 271 + PosicionBarra, 558, 0, 0, TempColor())
+        
+        If PosicionBarra <= 0 Then
+            DireccionBarra = 1
+        ElseIf PosicionBarra > 199 Then
+            DireccionBarra = -1
+        End If
+        If PosicionBarra < 0 Then
+            PosicionBarra = 0
+        ElseIf PosicionBarra > 199 Then
+            PosicionBarra = 199
+        End If
+        '90 - 111 es incluido (saca el pecesito)
+        PosicionBarra = PosicionBarra + (DireccionBarra * VelocidadBarra * Engine_ElapsedTime * 0.2)
+        
+        
+        If (GetTickCount() - startTimePezEspecial) >= 10000 Then
+            PescandoEspecial = False
+            Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
+        End If
+        
+    End If
     
     Exit Sub
 

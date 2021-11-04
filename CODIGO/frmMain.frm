@@ -384,7 +384,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2034,6 +2033,7 @@ showBarFishing = Not showBarFishing
 Call modBarFishing.setPositionBarFishing
 End Sub
 
+
 Private Sub Second_Timer()
     If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
 End Sub
@@ -2042,19 +2042,11 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo Form_KeyUp_Err
     
-    If showBarFishing Then
-       If KeyCode = vbKeyRight Then
-          Call userResistance(1)
-          Exit Sub
-       ElseIf KeyCode = vbKeyLeft Then
-          Call userResistance(-1)
-          Exit Sub
-       End If
-    End If
+
 
     If Not SendTxt.Visible Then
         If Not pausa And frmMain.Visible And Not frmComerciar.Visible And Not frmComerciarUsu.Visible And Not frmBancoObj.Visible And Not frmGoliath.Visible Then
-    
+            
             If Accionar(KeyCode) Then
                 Exit Sub
             ElseIf KeyCode = vbKeyReturn Then
@@ -2075,6 +2067,8 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                 Call WriteCancelarExit
 
                 Rem  Call SendData("CU")
+            ElseIf KeyCode = 80 And PescandoEspecial Then
+                Call IntentarObtenerPezEspecial
             End If
 
         End If

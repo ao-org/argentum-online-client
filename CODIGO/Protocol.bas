@@ -228,6 +228,7 @@ Private Enum ServerPacketID
     AnswerReset
     ObjQuestListSend
     UpdateBankGld
+    PelearConPezEspecial
     [PacketCount]
 End Enum
 
@@ -556,6 +557,7 @@ Public Enum ClientPacketID
     ResetChar              '/RESET NICK
     ResetearPersonaje
     DeleteItem
+    FinalizarPescaEspecial
     [PacketCount]
 End Enum
 
@@ -929,6 +931,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleObjQuestListSend
         Case ServerPacketID.UpdateBankGld
             Call HandleUpdateBankGld
+        Case ServerPacketID.PelearConPezEspecial
+            Call HandlePelearConPezEspecial
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
@@ -8504,11 +8508,27 @@ Public Sub HandleUpdateBankGld()
     UserBoveOro = Reader.ReadInt32
     
     Call frmGoliath.UpdateBankGld(UserBoveOro)
-    
+    Exit Sub
 ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateBankGld", Erl)
 
+End Sub
+
+Public Sub HandlePelearConPezEspecial()
+    On Error GoTo ErrHandler
+    
+    PosicionBarra = 1
+    DireccionBarra = 1
+    PescandoEspecial = True
+    ContadorIntentosPescaEspecial_Fallados = 0
+    ContadorIntentosPescaEspecial_Acertados = 0
+    startTimePezEspecial = GetTickCount()
+    Call Char_Dialog_Set(UserCharIndex, "Oh! Creo que tengo un super pez en mi linea, intentare obtenerlo con la letra P", &H1FFFF, 200, 130)
+    Exit Sub
+ErrHandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePelearConPezEspecial", Erl)
 End Sub
 Public Sub HandleObjQuestListSend()
 

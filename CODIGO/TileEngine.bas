@@ -33,6 +33,25 @@ Public Const INFINITE_LOOPS As Integer = -1
 
 Public MaxGrh                As Long
 
+
+
+'PescaEspecial VARS
+
+Public PescandoEspecial As Boolean
+Public Const BarWidth As Long = 199
+Public PosicionBarra As Single
+Public ContadorIntentosPescaEspecial_Acertados As Long
+Public ContadorIntentosPescaEspecial_Fallados As Long
+Public startTimePezEspecial As Long
+Public LastTimePezEspecial As Long
+Public DireccionBarra As Single
+Public Const VelocidadBarra As Single = 1
+Public Const GRH_BARRA_PESCA As Long = 60666
+Public Const GRH_CURSOR_PESCA As Long = 60667
+
+
+
+
 'Encabezado bmp
 Type BITMAPFILEHEADER
 

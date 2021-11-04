@@ -6635,3 +6635,18 @@ WriteDeleteItem_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDeleteItem", Erl)
 End Sub
+
+
+Public Sub WriteFinalizarPescaEspecial()
+     On Error GoTo WriteFinalizarPescaEspecial_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.FinalizarPescaEspecial)
+
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteFinalizarPescaEspecial_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFinalizarPescaEspecial", Erl)
+End Sub
