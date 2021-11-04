@@ -669,6 +669,16 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         grh.GrhIndex = GRH_CURSOR_PESCA
         Call Draw_Grh(grh, 271 + PosicionBarra, 558, 0, 0, TempColor())
         
+        For i = 1 To MAX_INTENTOS
+            If intentosPesca(i) = 1 Then
+                grh.GrhIndex = GRH_CIRCULO_VERDE
+                Call Draw_Grh(grh, 394 + (i * 10), 573, 0, 0, TempColor())
+            ElseIf intentosPesca(i) = 2 Then
+                grh.GrhIndex = GRH_CIRCULO_ROJO
+                Call Draw_Grh(grh, 394 + (i * 10), 573, 0, 0, TempColor())
+            End If
+        Next i
+                
         If PosicionBarra <= 0 Then
             DireccionBarra = 1
         ElseIf PosicionBarra > 199 Then
@@ -683,7 +693,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         PosicionBarra = PosicionBarra + (DireccionBarra * VelocidadBarra * Engine_ElapsedTime * 0.2)
         
         
-        If (GetTickCount() - startTimePezEspecial) >= 10000 Then
+        If (GetTickCount() - startTimePezEspecial) >= 20000 Then
             PescandoEspecial = False
             Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
         End If

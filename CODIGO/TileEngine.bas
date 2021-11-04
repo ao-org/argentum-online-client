@@ -36,7 +36,8 @@ Public MaxGrh                As Long
 
 
 'PescaEspecial VARS
-
+Public Const MAX_INTENTOS As Byte = 5
+Public intentosPesca(1 To MAX_INTENTOS) As Byte
 Public PescandoEspecial As Boolean
 Public Const BarWidth As Long = 199
 Public PosicionBarra As Single
@@ -48,6 +49,8 @@ Public DireccionBarra As Single
 Public Const VelocidadBarra As Single = 1
 Public Const GRH_BARRA_PESCA As Long = 60666
 Public Const GRH_CURSOR_PESCA As Long = 60667
+Public Const GRH_CIRCULO_VERDE As Long = 38367
+Public Const GRH_CIRCULO_ROJO As Long = 38366
 
 
 

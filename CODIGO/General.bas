@@ -728,6 +728,9 @@ Sub MoveTo(ByVal direccion As E_Heading)
 
             Moviendose = True
             Call MainTimer.Restart(TimersIndex.Walk)
+            If PescandoEspecial Then
+                PescandoEspecial = False
+            End If
             Call WriteWalk(direccion) 'We only walk if we are not meditating or resting
             Call Char_Move_by_Head(UserCharIndex, direccion)
             Call MoveScreen(direccion)
@@ -1977,20 +1980,37 @@ Function BeautifyBigNumber(ByVal Number As Long) As String
 End Function
 
 Public Function IntentarObtenerPezEspecial()
+    
+    Dim acierto As Byte
+    
     Debug.Print "Aciertos: " & ContadorIntentosPescaEspecial_Acertados & "Posicion barra : " & PosicionBarra
         'El + y -10 es por inputLag (Margen de error)
-    If PosicionBarra >= (90 - 10) And PosicionBarra <= (111 + 10) Then
+    If PosicionBarra >= (90 - 15) And PosicionBarra <= (111 + 15) Then
         ContadorIntentosPescaEspecial_Acertados = ContadorIntentosPescaEspecial_Acertados + 1
+        acierto = 1
     Else
         ContadorIntentosPescaEspecial_Fallados = ContadorIntentosPescaEspecial_Fallados + 1
+        acierto = 2
     End If
     
-    If ContadorIntentosPescaEspecial_Fallados >= 1 Then
+    If acierto = 1 Then
+        intentosPesca(ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados) = 1
+    ElseIf acierto = 2 Then
+        intentosPesca(ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados) = 2
+    End If
+    
+    
+    
+    
+    If ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados >= 5 Or ContadorIntentosPescaEspecial_Acertados >= 3 Then
         PescandoEspecial = False
-        Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
+        Call WriteFinalizarPescaEspecial
     ElseIf ContadorIntentosPescaEspecial_Acertados >= 3 Then
         PescandoEspecial = False
         Call WriteFinalizarPescaEspecial
+    ElseIf ContadorIntentosPescaEspecial_Fallados >= 3 Then
+        PescandoEspecial = False
+        Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
     End If
     
     

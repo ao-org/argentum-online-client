@@ -8520,6 +8520,11 @@ Public Sub HandlePelearConPezEspecial()
     
     PosicionBarra = 1
     DireccionBarra = 1
+    Dim i As Integer
+    
+    For i = 1 To MAX_INTENTOS
+        intentosPesca(i) = 0
+    Next i
     PescandoEspecial = True
     ContadorIntentosPescaEspecial_Fallados = 0
     ContadorIntentosPescaEspecial_Acertados = 0
