@@ -730,6 +730,7 @@ Sub MoveTo(ByVal direccion As E_Heading)
             Call MainTimer.Restart(TimersIndex.Walk)
             If PescandoEspecial Then
                 Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
+                Call WriteRomperCania
                 PescandoEspecial = False
             End If
             Call WriteWalk(direccion) 'We only walk if we are not meditating or resting

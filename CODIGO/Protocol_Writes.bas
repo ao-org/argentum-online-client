@@ -6650,3 +6650,18 @@ WriteFinalizarPescaEspecial_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFinalizarPescaEspecial", Erl)
 End Sub
+
+
+Public Sub WriteRomperCania()
+     On Error GoTo WriteRomperCania_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RomperCania)
+
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRomperCania_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRomperCania", Erl)
+End Sub

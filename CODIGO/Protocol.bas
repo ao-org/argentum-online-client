@@ -558,6 +558,7 @@ Public Enum ClientPacketID
     ResetearPersonaje
     DeleteItem
     FinalizarPescaEspecial
+    RomperCania
     [PacketCount]
 End Enum
 
