@@ -2014,6 +2014,7 @@ Public Function IntentarObtenerPezEspecial()
         ElseIf ContadorIntentosPescaEspecial_Fallados >= 3 Then
             PescandoEspecial = False
             Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
+            Call WriteRomperCania
         End If
     End If
     

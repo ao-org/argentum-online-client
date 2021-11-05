@@ -698,6 +698,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         If (GetTickCount() - startTimePezEspecial) >= 20000 Then
             PescandoEspecial = False
             Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
+            Call WriteRomperCania
         End If
         
     End If
