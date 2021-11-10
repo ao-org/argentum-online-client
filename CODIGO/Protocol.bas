@@ -7714,11 +7714,12 @@ Private Sub HandleQuestDetails()
             QuestRequerida = Reader.ReadInt16
            
             If QuestRequerida <> 0 Then
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest
+                FrmQuestInfo.Text1.Text = ""
+               Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest, 128, 128, 128)
             Else
-            
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
-            
+                
+                FrmQuestInfo.Text1.Text = ""
+                Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf, 128, 128, 128)
             End If
            
             tmpByte = Reader.ReadInt8

@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form FrmQuestInfo 
    Appearance      =   0  'Flat
@@ -14,29 +15,20 @@ Begin VB.Form FrmQuestInfo
    ScaleWidth      =   12315
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.TextBox Text1 
-      Alignment       =   2  'Center
-      Appearance      =   0  'Flat
-      BackColor       =   &H000C0C0C&
-      BorderStyle     =   0  'None
-      Enabled         =   0   'False
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
+   Begin RichTextLib.RichTextBox Text1 
       Height          =   2895
       Left            =   3950
-      LinkItem        =   "detalle"
-      MultiLine       =   -1  'True
-      TabIndex        =   7
+      TabIndex        =   10
       Top             =   2400
       Width           =   3130
+      _ExtentX        =   5530
+      _ExtentY        =   5106
+      _Version        =   393217
+      BorderStyle     =   0
+      ReadOnly        =   -1  'True
+      ScrollBars      =   2
+      Appearance      =   0
+      TextRTF         =   $"frmQuestInfo.frx":0000
    End
    Begin VB.ListBox lstQuests 
       Appearance      =   0  'Flat
@@ -121,7 +113,7 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
-      Picture         =   "frmQuestInfo.frx":0000
+      Picture         =   "frmQuestInfo.frx":0082
    End
    Begin MSComctlLib.ListView ListView2 
       Height          =   2280
@@ -174,12 +166,12 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
-      Picture         =   "frmQuestInfo.frx":08D1
+      Picture         =   "frmQuestInfo.frx":0953
    End
    Begin MSComctlLib.ListView ListViewQuest 
       Height          =   2640
       Left            =   600
-      TabIndex        =   8
+      TabIndex        =   7
       Top             =   1920
       Width           =   2835
       _ExtentX        =   5001
@@ -251,7 +243,7 @@ Begin VB.Form FrmQuestInfo
       ForeColor       =   &H00C0C0C0&
       Height          =   255
       Left            =   4800
-      TabIndex        =   10
+      TabIndex        =   9
       Top             =   2040
       Visible         =   0   'False
       Width           =   1455
@@ -271,7 +263,7 @@ Begin VB.Form FrmQuestInfo
       ForeColor       =   &H00FFFFFF&
       Height          =   480
       Left            =   7320
-      TabIndex        =   9
+      TabIndex        =   8
       Top             =   5040
       Width           =   2175
    End
@@ -350,7 +342,6 @@ Private Sub Form_Load()
     Text1.BackColor = RGB(11, 11, 11)
     PlayerView.BackColor = RGB(11, 11, 11)
     picture1.BackColor = RGB(19, 14, 11)
-    
     Call Aplicar_Transparencia(Me.hWnd, 240)
     
     Exit Sub
@@ -579,7 +570,6 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
         
         FrmQuestInfo.Text1.Text = ""
-        
         PlayerView.BackColor = RGB(11, 11, 11)
         picture1.BackColor = RGB(19, 14, 11)
         PlayerView.Refresh
@@ -596,9 +586,11 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
                 
         
                   If QuestList(QuestIndex).RequiredQuest <> 0 Then
-                    FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf & "Quest: " & QuestList(QuestList(QuestIndex).RequiredQuest).nombre
+                    FrmQuestInfo.Text1.Text = ""
+                    Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf & "Quest: " & QuestList(QuestList(QuestIndex).RequiredQuest).nombre, 128, 128, 128)
                 Else
-                    FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf
+                    FrmQuestInfo.Text1.Text = ""
+                    Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
                 
                 End If
                
@@ -611,7 +603,6 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
                         FrmQuestInfo.ListView1.FlatScrollBar = False
                     Else
                         FrmQuestInfo.ListView1.FlatScrollBar = True
-               
                     End If
                     
                     
@@ -703,8 +694,8 @@ FrmQuestInfo.ListView1.ListItems.Clear
             
                 FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
                
-                
-                FrmQuestInfo.Text1.Text = QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf
+                FrmQuestInfo.Text1.Text = ""
+                Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
                 'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
                 'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
                
@@ -788,5 +779,9 @@ lstQuests_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.lstQuests_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub RichTextBox1_Change()
+
 End Sub
 
