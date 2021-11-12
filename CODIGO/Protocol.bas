@@ -5060,7 +5060,7 @@ Private Sub HandleBlacksmithArmors()
         End If
         
         ' Escudos (16), Objetos Magicos (21) y Anillos (35) van en la misma lista
-        If tmpObj.ObjType = 16 Or tmpObj.ObjType = 35 Or tmpObj.ObjType = 21 Then
+        If tmpObj.ObjType = 16 Or tmpObj.ObjType = 35 Or tmpObj.ObjType = 21 Or tmpObj.ObjType = 100 Then
             EscudosHerrero(e).Index = DefensasHerrero(i).Index
             EscudosHerrero(e).LHierro = DefensasHerrero(i).LHierro
             EscudosHerrero(e).LPlata = DefensasHerrero(i).LPlata
@@ -5174,7 +5174,7 @@ Private Sub HandleSastreObjects()
     
     For i = i To UBound(ObjSastre())
     
-        If ObjData(ObjSastre(i).Index).ObjType = 3 Then
+        If ObjData(ObjSastre(i).Index).ObjType = 3 Or ObjData(ObjSastre(i).Index).ObjType = 100 Then
         
             SastreRopas(r).Index = ObjSastre(i).Index
             SastreRopas(r).PielLobo = ObjSastre(i).PielLobo
