@@ -34,7 +34,7 @@ Friend Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Co
     NumLights = NumLights + 1
        
     ReDim Preserve light_list(1 To NumLights) As tLight
-       
+    
     'Le damos color
     light_list(NumLights).RGBcolor = Color
        
@@ -50,9 +50,8 @@ Friend Function Create_Light_To_Map(ByVal map_x As Byte, ByVal map_y As Byte, Co
     'Pos en el mapa
     light_list(NumLights).map_x = map_x
     light_list(NumLights).map_y = map_y
-       
-    'LucesRedondas.LightRenderAll
-
+    
+    UpdateLights = True
     
     Exit Function
 
@@ -112,7 +111,9 @@ Public Function Delete_Light_To_Index(ByVal light_index As Byte, Optional Render
     max_x = light_list(light_index).map_x + light_list(light_index).range
     min_y = light_list(light_index).map_y - light_list(light_index).range
     max_y = light_list(light_index).map_y + light_list(light_index).range
-           
+    
+    UpdateLights = True
+    
     For Ya = min_y To max_y
         For Xa = min_x To max_x
 
@@ -125,12 +126,6 @@ Public Function Delete_Light_To_Index(ByVal light_index As Byte, Optional Render
 
         Next Xa
     Next Ya
-
-    If RenderFinal Then
-        LucesRedondas.LightRenderAll
-
-    End If
-       
     
     Exit Function
 
@@ -221,6 +216,8 @@ Private Sub LightRender(ByVal light_index As Integer)
     min_y = light_list(light_index).map_y - range
     max_y = light_list(light_index).map_y + range
 
+    
+    
     For Ya = min_y To max_y
         For Xa = min_x To max_x
 
@@ -255,7 +252,7 @@ LightRender_Err:
     
 End Sub
 
-Public Sub LightRenderAll()
+Public Sub LightRenderAll(ByVal MinX As Long, ByVal MinY As Long, ByVal MaxX As Long, ByVal MaxY As Long)
     
     On Error GoTo LightRenderAll_Err
     
@@ -263,8 +260,9 @@ Public Sub LightRenderAll()
     Dim i As Long
        
     For i = 1 To NumLights
-        LightRender i
-                
+        If light_list(i).map_x + light_list(i).range > MinX And light_list(i).map_x - light_list(i).range < MaxX And light_list(i).map_y + light_list(i).range > MinY And light_list(i).map_y - light_list(i).range < MaxY Then
+            LightRender i
+        End If
     Next i
 
     
@@ -285,9 +283,7 @@ Public Function Delete_All_LigthRound(Optional RenderFinal As Boolean = True)
        
     For i = 1 To NumLights
         Delete_Light_To_Index i, RenderFinal
-                
     Next i
-
     
     Exit Function
 

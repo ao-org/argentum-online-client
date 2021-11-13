@@ -635,8 +635,8 @@ Sub SetConnected()
         frmMain.Timerping.Enabled = False
     End If
     
-    frmMain.UpdateLight.Enabled = True
-    frmMain.UpdateDaytime.Enabled = True
+   ' frmMain.UpdateLight.Enabled = True
+    'frmMain.UpdateDaytime.Enabled = True
     light_transition = 1#
 
     COLOR_AZUL = RGB(0, 0, 0)
@@ -1149,6 +1149,7 @@ Sub Main()
     AlphaNiebla = 75
     EntradaY = 10
     EntradaX = 10
+    UpdateLights = False
     
     Call SwitchMap(UserMap)
     

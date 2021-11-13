@@ -127,6 +127,12 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         MaxBufferedY = YMaxMapSize
     End If
     
+    If UpdateLights Then
+        Call RestaurarLuz
+        Call MapUpdateGlobalLightRender
+        UpdateLights = False
+    End If
+    
     Call SpriteBatch.BeginPrecalculated(StartX, StartY)
 
     ' *********************************
@@ -139,7 +145,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 ' Layer 1 *********************************
                 Call Draw_Grh_Precalculated(.Graphic(1), .light_value, (.Blocked And FLAG_AGUA) <> 0, (.Blocked And FLAG_LAVA) <> 0, x, y, MinX, MaxX, MinY, MaxY)
                 '******************************************
-          
+                
             End With
 
         Next x
@@ -318,7 +324,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                         
                         Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
                             ' Objetos grandes (menos árboles)
-                            Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, , x, y)
+                            Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
                     
                     End Select
                 End If
@@ -466,13 +472,9 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
                         If Trigger Then
                             Call Copy_RGBAList_WithAlpha(TempColor, .light_value, RoofsLight(Trigger))
-
                             Call Draw_Grh(.Graphic(4), ScreenX, ScreenY, 1, 1, TempColor, , x, y)
-                            
                         Else
-
                             Call Draw_Grh(.Graphic(4), ScreenX, ScreenY, 1, 1, .light_value, , x, y)
-    
                         End If
     
                     End If
@@ -705,6 +707,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         
     End If
     
+   ' Call Draw_GrhIndex(63333, 0, 0)
     Exit Sub
 
 RenderScreen_Err:

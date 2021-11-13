@@ -106,7 +106,8 @@ Friend Function Light_Create(ByVal map_x As Integer, ByVal map_y As Integer, ByR
             Exit Function
 
         End If
-
+        
+        UpdateLights = True
         Light_Create = Light_Next_Open
         Light_Make Light_Create, map_x, map_y, color_value, range, id
 
@@ -299,7 +300,6 @@ Private Sub Light_Make(ByVal light_index As Long, ByVal map_x As Integer, ByVal 
     light_list(light_index).Color = rgb_value
     light_list(light_index).range = range
     light_list(light_index).id = id
-
     
     Exit Sub
 
@@ -337,7 +337,7 @@ Light_Check_Err:
     
 End Function
 
-Public Sub Light_Render_All()
+Public Sub Light_Render_All(ByVal MinX As Long, ByVal MinY As Long, ByVal MaxX As Long, ByVal MaxY As Long)
     
     On Error GoTo Light_Render_All_Err
     
@@ -352,8 +352,9 @@ Public Sub Light_Render_All()
     For loop_counter = 1 To light_count
         
         If light_list(loop_counter).active Then
-            Light_Render loop_counter
-
+            If light_list(loop_counter).map_x + light_list(loop_counter).range > MinX And light_list(loop_counter).map_x - light_list(loop_counter).range < MaxX And light_list(loop_counter).map_y + light_list(loop_counter).range > MinY And light_list(loop_counter).map_y - light_list(loop_counter).range < MaxY Then
+                Light_Render loop_counter
+            End If
         End If
     
     Next loop_counter
@@ -405,35 +406,7 @@ Private Sub Light_Render(ByVal light_index As Long)
     MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(1) = Color
     MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(2) = Color
     MapData(light_list(light_index).map_x, light_list(light_index).map_y).light_value(3) = Color
-                
-    'For ia = 0 To 6.5 Step 0.05
-    '    For i = 1 To light_list(light_index).range / 2
-    '        x = (Sin(ia) * i) + light_list(light_index).map_x
-    '        y = (Cos(ia) * i) + light_list(light_index).map_y
-    '        'Debug.Print x; y
-    '        If InMapBounds(x, y) Then
-    '            If i = (light_list(light_index).range / 2) Then
-    '                If MapData(x - 1, y - 1).light_value(2) <> color Then MapData(x, y).light_value(0) = 0
-    '                If MapData(x + 1, y + 1).light_value(0) <> color Then MapData(x, y).light_value(2) = 0
-    '                If MapData(x + 1, y - 1).light_value(1) <> color Then MapData(x, y).light_value(1) = 0
-    '                If MapData(x - 1, y + 1).light_value(3) <> color Then MapData(x, y).light_value(3) = 0
-    '                If MapData(x - 1, y).light_value(0) = color Then MapData(x, y).light_value(3) = color
-    '                If MapData(x + 1, y).light_value(1) = color And MapData(x + 1, y).light_value(2) = color Then
-    '                    MapData(x, y).light_value(0) = &HFFFF0FFF
-    '                    MapData(x, y).light_value(3) = &HFFFF0FFF
-    '                End If
-    '                If MapData(x, y - 1).light_value(2) = color Then MapData(x, y).light_value(3) = color
-    '                If MapData(x, y + 1).light_value(3) = color Then MapData(x, y).light_value(1) = color''
-
-    '            Else
-    '                MapData(x, y).light_value(0) = &HFFFFFFFF
-    '                MapData(x, y).light_value(1) = &HFFFFFFFF
-    '                MapData(x, y).light_value(2) = &HFFFFFFFF
-    '                MapData(x, y).light_value(3) = &HFFFFFFFF
-    '            End If
-    '        End If
-    '    Next i
-    'Next ia
+    
     'Arrange corners
     'NE
     If InMapBounds(min_x, min_y) Then
@@ -644,6 +617,7 @@ Private Sub Light_Destroy(ByVal light_index As Long)
     Light_Erase light_index
     
     light_list(light_index) = temp
+    UpdateLights = True
     
     'Update array size
     If light_index = light_last Then
@@ -776,6 +750,7 @@ Private Sub Light_Erase(ByVal light_index As Long)
         Next y
     Next x
 
+    UpdateLights = True
     
     Exit Sub
 

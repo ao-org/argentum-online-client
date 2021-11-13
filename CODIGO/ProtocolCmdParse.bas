@@ -755,8 +755,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Else
                         Call LucesRedondas.Create_Light_To_Map(UserPos.x, UserPos.y, COLOR_WHITE(0), 10)
                     End If
-                    LucesRedondas.LightRenderAll
-                    LucesCuadradas.Light_Render_All
                 End If
                 
             Case "/LUZMAPA"
@@ -768,7 +766,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                                 ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Integer) Then
                                 
                                 Call SetGlobalLight(D3DColorXRGB(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2)))
-                                Call MapUpdateGlobalLight
+                                'Call MapUpdateGlobalLight
                                 Exit Sub
 
                             End If

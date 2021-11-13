@@ -442,6 +442,7 @@ Public ScrollPixelsPerFrameY   As Single
 Public timerElapsedTime           As Single
 Public timerTicksPerFrame         As Single
 Public engineBaseSpeed            As Single
+Public UpdateLights               As Boolean
 
 Public NumBodies               As Integer
 Public Numheads                As Integer
@@ -576,7 +577,7 @@ Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef 
     
     On Error GoTo ConvertCPtoTP_Err
     
-    
+  '  Debug.Print "viewportX: " & viewPortX & "- ViewportY: " & viewPortY
     If viewPortX < 0 Or viewPortX > frmMain.renderer.ScaleWidth Then Exit Sub
     If viewPortY < 0 Or viewPortY > frmMain.renderer.ScaleHeight Then Exit Sub
 

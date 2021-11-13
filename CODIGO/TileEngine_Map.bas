@@ -517,14 +517,47 @@ Sub MapUpdateGlobalLight()
         Next x
     Next y
     
-    Call LucesRedondas.LightRenderAll
-    Call LucesCuadradas.Light_Render_All
-    
-    
     Exit Sub
 
 MapUpdateGlobalLight_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.MapUpdateGlobalLight", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.MapUpdateGlobalLight", Erl)
+    Resume Next
+    
+End Sub
+
+Sub MapUpdateGlobalLightRender()
+    
+    On Error GoTo MapUpdateGlobalLight_Err
+    
+
+    Dim x As Integer, y As Integer
+    Dim MinX As Long, MinY As Long, MaxX As Long, MaxY As Long
+    MinX = 1
+    MinY = 1
+    MaxX = 100
+    MaxY = 100
+    
+    ' Reseteamos toda la luz del mapa
+    For y = MinY To MaxY
+        For x = MinX To MaxX
+            With MapData(x, y)
+            
+                .light_value(0) = global_light
+                .light_value(1) = global_light
+                .light_value(2) = global_light
+                .light_value(3) = global_light
+                
+            End With
+        Next x
+    Next y
+    
+    Call LucesRedondas.LightRenderAll(MinX, MinY, MaxX, MaxY) '(MinX, MinY, MaxX, MaxY)
+    Call LucesCuadradas.Light_Render_All(MinX, MinY, MaxX, MaxY)  '(MinX, MinY, MaxX, MaxY)
+        
+    Exit Sub
+
+MapUpdateGlobalLight_Err:
+   ' Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.MapUpdateGlobalLightRender", Erl)
     Resume Next
     
 End Sub

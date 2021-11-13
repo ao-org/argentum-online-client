@@ -3889,12 +3889,8 @@ Private Sub HandleObjectCreate()
         If Rango < 100 Then
             id = x & y
             LucesCuadradas.Light_Create x, y, Color, Rango, id
-            LucesCuadradas.Light_Render_All
         Else
             LucesRedondas.Create_Light_To_Map x, y, Color, Rango - 99
-            LucesRedondas.LightRenderAll
-            LucesCuadradas.Light_Render_All
-
         End If
         
     End If
@@ -3969,7 +3965,7 @@ Private Sub HandleObjectDelete()
         LucesCuadradas.Light_Remove id
         MapData(x, y).luz.Color = COLOR_EMPTY
         MapData(x, y).luz.Rango = 0
-        LucesCuadradas.Light_Render_All
+       ' LucesCuadradas.Light_Render_All
 
     End If
     
@@ -7259,16 +7255,12 @@ Private Sub HandleLightToFloor()
    
         If MapData(x, y).luz.Rango > 100 Then
             LucesRedondas.Delete_Light_To_Map x, y
-   
-            LucesCuadradas.Light_Render_All
-            LucesRedondas.LightRenderAll
             Exit Sub
         Else
             id = LucesCuadradas.Light_Find(x & y)
             LucesCuadradas.Light_Remove id
             MapData(x, y).luz.Color = COLOR_EMPTY
             MapData(x, y).luz.Rango = 0
-            LucesCuadradas.Light_Render_All
             Exit Sub
 
         End If
@@ -7281,14 +7273,9 @@ Private Sub HandleLightToFloor()
     If Rango < 100 Then
         id = x & y
         LucesCuadradas.Light_Create x, y, color_value, Rango, id
-        LucesRedondas.LightRenderAll
-        LucesCuadradas.Light_Render_All
     Else
 
         LucesRedondas.Create_Light_To_Map x, y, color_value, Rango - 99
-        LucesRedondas.LightRenderAll
-        LucesCuadradas.Light_Render_All
-
     End If
     
     Exit Sub

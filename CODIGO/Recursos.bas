@@ -186,7 +186,7 @@ Private Type tMapDat
 
 End Type
 
-Private MapSize As tMapSize
+Public MapSize As tMapSize
 Public MapDat   As tMapDat
 Public iplst    As String
 ' *********************************************************
@@ -948,6 +948,19 @@ Public Sub CargarMapa(ByVal map As Integer)
     #End If
     
     'Limpiamos los efectos remantentes del mapa.
+    For x = 1 To 100
+        For y = 1 To 100
+            With MapData(x, y)
+
+                Call SetRGBA(.light_value(0), 0, 0, 0)
+                Call SetRGBA(.light_value(1), 0, 0, 0)
+                Call SetRGBA(.light_value(2), 0, 0, 0)
+                Call SetRGBA(.light_value(3), 0, 0, 0)
+
+            End With
+        Next y
+    Next x
+    
     Call LucesCuadradas.Light_Remove_All
     Call LucesRedondas.Delete_All_LigthRound(False)
     Call Graficos_Particulas.Particle_Group_Remove_All
@@ -968,13 +981,8 @@ Public Sub CargarMapa(ByVal map As Integer)
     
     ReDim MapData(1 To 100, 1 To 100)
     
-    If MapDat.base_light = 0 Then
-        Call RestaurarLuz
-        
-    Else
-        Call SetGlobalLight(MapDat.base_light)
-    End If
-        
+    UpdateLights = True
+    
     For x = 1 To 100
         For y = 1 To 100
             With MapData(x, y)
@@ -1214,9 +1222,6 @@ Public Sub CargarMapa(ByVal map As Integer)
         Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
     #End If
 
-    Call LucesRedondas.LightRenderAll
-    Call LucesCuadradas.Light_Render_All
-    
     Exit Sub
 
 CargarMapa_Err:

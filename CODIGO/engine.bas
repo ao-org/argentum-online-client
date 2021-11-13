@@ -1744,7 +1744,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         If .Arma.WeaponWalk(.Heading).grhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
     
                 End Select
-
+                     
                 EndComposedTexture
 
                 If Not .Invisible Then
@@ -1800,6 +1800,20 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                 'Nick
                 line = Left$(.nombre, Pos - 2)
+                Dim factor As Double
+                factor = MapData(x, y).light_value(0).r / 255
+                NameColor(0).r = NameColor(0).r * factor
+                NameColor(0).G = NameColor(0).G * factor
+                NameColor(0).B = NameColor(0).B * factor
+                NameColor(1).r = NameColor(1).r * factor
+                NameColor(1).G = NameColor(1).G * factor
+                NameColor(1).B = NameColor(1).B * factor
+                NameColor(2).r = NameColor(2).r * factor
+                NameColor(2).G = NameColor(2).G * factor
+                NameColor(2).B = NameColor(2).B * factor
+                NameColor(3).r = NameColor(3).r * factor
+                NameColor(3).G = NameColor(3).G * factor
+                NameColor(3).B = NameColor(3).B * factor
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 
