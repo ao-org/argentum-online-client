@@ -78,7 +78,8 @@ Public Sub EraseChar(ByVal charindex As Integer)
     
     If charindex = 0 Then Exit Sub
     If charlist(charindex).active = 0 Then Exit Sub
-
+    If charindex = UserCharIndex Then Exit Sub
+    
     charlist(charindex).active = 0
     
     'Update lastchar
@@ -130,24 +131,27 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
         
         .IHead = Head
         .iBody = Body
+        If Not charindex = UserCharIndex Then
+            .Head = HeadData(Head)
+            .Body = BodyData(Body)
+            .Arma = WeaponAnimData(Arma)
         
-        .Head = HeadData(Head)
-        .Body = BodyData(Body)
-        .Arma = WeaponAnimData(Arma)
-        
-        .Escudo = ShieldAnimData(Escudo)
-        .Casco = CascoAnimData(Casco)
+            .Escudo = ShieldAnimData(Escudo)
+            .Casco = CascoAnimData(Casco)
+        End If
         
         .Heading = Heading
         
         'Reset moving stats
-        .Moving = False
-        .MoveOffsetX = 0
-        .MoveOffsetY = 0
+        If Not charindex = UserCharIndex Then
+            .Moving = False
+            .MoveOffsetX = 0
+            .MoveOffsetY = 0
+        End If
         
         'Update position
-        .Pos.x = x
-        .Pos.y = y
+        .Pos.x = x ' - .scrollDirectionX
+        .Pos.y = y ' - .scrollDirectionY
         
         'Make active
         .active = 1

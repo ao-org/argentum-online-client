@@ -236,6 +236,27 @@ LerpRGBA_Err:
     
 End Sub
 
+Sub LerpRGB(Dest As RGBA, A As RGBA, B As RGBA, ByVal Factor As Single)
+    '***************************************************
+    'Author: Martín Trionfetti (HarThaoS)
+    '***************************************************
+    
+    On Error GoTo LerpRGB_Err
+    
+    Dim InvFactor As Single: InvFactor = (1 - Factor)
+
+    Dest.r = A.r * InvFactor + B.r * Factor
+    Dest.G = A.G * InvFactor + B.G * Factor
+    Dest.B = A.B * InvFactor + B.B * Factor
+    
+    Exit Sub
+
+LerpRGB_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Color.LerpRGB", Erl)
+    Resume Next
+    
+End Sub
+
 Sub ModulateRGBA(Dest As RGBA, A As RGBA, B As RGBA)
     '***************************************************
     'Author: Alexis Caraballo (WyroX)

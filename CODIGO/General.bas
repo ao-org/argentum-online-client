@@ -60,9 +60,9 @@ Private Declare Sub InitCommonControls Lib "comctl32" ()
 Public bFogata As Boolean
 
 'Very percise counter 64bit system counter
-Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
+Public Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
 
-Private Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As Currency) As Long
+Public Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As Currency) As Long
 'debemos mostrar la animacion de la lluvia
 
 Private lFrameTimer              As Long
@@ -636,7 +636,7 @@ Sub SetConnected()
     End If
     
    ' frmMain.UpdateLight.Enabled = True
-    'frmMain.UpdateDaytime.Enabled = True
+    frmMain.UpdateDaytime.Enabled = True
     light_transition = 1#
 
     COLOR_AZUL = RGB(0, 0, 0)
@@ -800,11 +800,10 @@ RandomMove_Err:
     
 End Sub
 
-Private Sub AddMovementToKeysMovementPressedQueue()
+Public Sub AddMovementToKeysMovementPressedQueue()
     
     On Error GoTo AddMovementToKeysMovementPressedQueue_Err
     
-
     If BindKeys(14).KeyCode <> 0 And GetKeyState(BindKeys(14).KeyCode) < 0 Then
         If keysMovementPressedQueue.itemExist(BindKeys(14).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(14).KeyCode) ' Agrega la tecla al arraylist
     Else
@@ -896,7 +895,6 @@ Sub Check_Keys()
                     'Move Up
                     Case BindKeys(14).KeyCode
                         Call MoveTo(E_Heading.NORTH)
-                    
                     'Move Right
                     Case BindKeys(17).KeyCode
                         Call MoveTo(E_Heading.EAST)

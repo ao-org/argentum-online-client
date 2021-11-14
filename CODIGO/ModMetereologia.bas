@@ -114,10 +114,8 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
 
     Dim CurrentIndex As Integer
     CurrentIndex = HoraActual \ 2
-    
     If CurrentIndex <> TimeIndex Then
         TimeIndex = CurrentIndex
-
         If MapDat.base_light = 0 Then
             If Instantaneo Then
                 global_light = DayColors(HoraActual)
@@ -136,7 +134,21 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
     End If
     
     Dim Minutos As Integer
+    Dim Factor As Double
+    
     Minutos = (Elapsed - HoraActual) * 60
+    
+    Factor = CDbl(Minutos) / CDbl(60)
+    
+    Dim HoraAnterior As Integer
+    
+    HoraAnterior = HoraActual - 1
+    
+    Call LerpRGB(global_light, DayColors((24 + HoraAnterior) Mod 24), DayColors(HoraActual), Factor)
+    
+    UpdateLights = True
+    
+    
     
     frmMain.lblhora = Right$("00" & HoraActual, 2) & ":" & Right$("00" & Minutos, 2)
     
@@ -175,13 +187,13 @@ Public Sub RestaurarLuz()
         global_light = BlindColor
     
     ElseIf TimeIndex >= 0 Then
-        Dim Elapsed As Single
-            Elapsed = (FrameTime - HoraMundo) / DuracionDia
-            Elapsed = (Elapsed - Fix(Elapsed)) * 24
-        
-            Dim HoraActual As Integer
-            HoraActual = Fix(Elapsed)
-        global_light = DayColors(HoraActual)
+       ' Dim Elapsed As Single
+       '     Elapsed = (FrameTime - HoraMundo) / DuracionDia
+       '     Elapsed = (Elapsed - Fix(Elapsed)) * 24
+       '
+       '     Dim HoraActual As Integer
+       '     HoraActual = Fix(Elapsed)
+       ' global_light = DayColors(HoraActual)
         
     Else
         global_light = COLOR_WHITE(0)

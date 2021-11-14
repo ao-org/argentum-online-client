@@ -576,7 +576,7 @@ On Error GoTo HandleIncomingData_Err
     PacketID = Reader.ReadInt
     
     #If DEBUGGING Then
-        Debug.Print PacketID
+       ' Debug.Print PacketID
     #End If
     
     Select Case PacketID

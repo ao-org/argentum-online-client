@@ -45,7 +45,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Timer UpdateDaytime 
       Enabled         =   0   'False
-      Interval        =   500
+      Interval        =   50
       Left            =   3480
       Top             =   2400
    End
