@@ -283,10 +283,15 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             With MapData(x, y)
                 ' Objects *********************************
                 If .ObjGrh.grhIndex <> 0 Then
+                    If x = 43 And y = 58 Then
+                        Debug.Print "asdadsdsa"
+                    End If
+                    Call Draw_Sombra(.ObjGrh, ScreenX, ScreenY, 1, 1, False, x, y)
                     Select Case ObjData(.OBJInfo.ObjIndex).ObjType
-                        
+                         
                         Case eObjType.otArboles
-                            Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
+                          
+                           
 
                             ' Debajo del arbol
                             If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 8 And (Abs(UserPos.y) < y) Then
@@ -334,8 +339,9 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 If .Graphic(3).grhIndex <> 0 Then
 
                     If (.Blocked And FLAG_ARBOL) <> 0 Then
-
-                        Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
+                        
+                        
+                       ' Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
 
                         ' Debajo del arbol
                         If Abs(UserPos.x - x) <= 3 And (Abs(UserPos.y - y)) < 8 And (Abs(UserPos.y) < y) Then
@@ -707,7 +713,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         
     End If
     
-   ' Call Draw_GrhIndex(63333, 0, 0)
+    'Call Draw_GrhIndex(63333, 0, 0)
     Exit Sub
 
 RenderScreen_Err:
