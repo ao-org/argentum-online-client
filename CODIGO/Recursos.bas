@@ -1181,7 +1181,7 @@ Public Sub CargarMapa(ByVal map As Integer)
 
     Close fh
     
-'Creo un array de zonas provisorio de ese mapa
+    'Creo un array de zonas provisorio de ese mapa
     Dim Temp_zone() As MapZone
     Dim UpperB As Integer
     ReDim Temp_zone(1 To 1) As MapZone

@@ -15,6 +15,7 @@ Public Const TORMENTA      As Byte = 4
 Public DayColors()         As RGBA
 Public DeathColor          As RGBA
 Public BlindColor          As RGBA
+Public DungeonColor          As RGBA
 Public TimeIndex           As Integer
 
 Public NightIndex          As Integer
@@ -89,6 +90,9 @@ Public Sub IniciarMeteorologia()
     
     ' Ciego
     Call SetRGBA(BlindColor, 4, 4, 4)
+    
+    ' Dungeon
+    Call SetRGBA(DungeonColor, 70, 70, 70)
     
     TimeIndex = -1
 
@@ -185,7 +189,10 @@ Public Sub RestaurarLuz()
         
     ElseIf UserCiego Then
         global_light = BlindColor
-    
+        
+    ElseIf MapDat.zone = "DUNGEON" Then
+        global_light = DungeonColor
+        
     ElseIf TimeIndex >= 0 Then
        ' Dim Elapsed As Single
        '     Elapsed = (FrameTime - HoraMundo) / DuracionDia

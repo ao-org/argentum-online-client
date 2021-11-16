@@ -377,14 +377,13 @@ Begin VB.Form frmMain
       TabIndex        =   5
       TabStop         =   0   'False
       ToolTipText     =   "Mensajes del servidor"
-      Top             =   495
+      Top             =   480
       Width           =   9180
       _ExtentX        =   16193
       _ExtentY        =   2249
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2

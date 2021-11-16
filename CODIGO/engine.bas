@@ -4118,10 +4118,89 @@ GetFreeIndex_Err:
     
 End Function
 
+Public Sub Draw_Grh_ItemInWater(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean = False, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single)
+    
+    On Error GoTo Draw_Grh_Err
+
+    If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
+    
+    Dim CurrentFrame As Integer
+    CurrentFrame = 1
+
+    If animate Then
+        If grh.Started > 0 Then
+            Dim ElapsedFrames As Long
+            ElapsedFrames = Fix(0.5 * (FrameTime - grh.Started) / grh.speed)
+
+            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
+                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
+
+            Else
+                grh.Started = 0
+            End If
+
+        End If
+
+    End If
+    
+    Dim CurrentGrhIndex As Long
+    'Figure out what frame to draw (always 1 if not animated)
+    CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
+
+    'Center Grh over X,Y pos
+    If center Then
+        If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
+            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * TilePixelWidth \ 2) + TilePixelWidth \ 2
+        End If
+
+        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
+        End If
+    End If
+
+    With GrhData(CurrentGrhIndex)
+
+        If .FileNum > 0 Then
+            Dim Texture As Direct3DTexture8
+
+            Dim TextureWidth As Long, TextureHeight As Long
+            Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
+            
+        
+            .Tx1 = .sX / TextureWidth
+            .Tx2 = (.sX + .pixelWidth) / TextureWidth
+            .Ty1 = .sY / TextureHeight
+            .Ty2 = (.sY + .pixelHeight) / TextureHeight
+            
+            If Alpha Then
+                DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_ONE
+                DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_ONE
+            End If
+            
+            Call SpriteBatch.SetTexture(Texture)
+            Call SpriteBatch.DrawItemInWater(x, y, .pixelWidth, .pixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, Angle Mod 360) ' Angle
+            
+            If Alpha Then
+                DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
+                DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
+            End If
+        End If
+        
+        'Call Batch_Textured_Box_Pre(x, y, .pixelWidth, .pixelHeight, .Tx1, .Ty1, .Tx2, .Ty2, .FileNum, rgb_list, Alpha, Angle)
+    
+    End With
+    
+    Exit Sub
+
+Draw_Grh_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh", Erl)
+    Resume Next
+    
+End Sub
+
 Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, ByVal EsAgua As Boolean, ByVal EsLava As Boolean, ByVal MapX As Integer, ByVal MapY As Integer, ByVal MinX As Integer, ByVal MaxX As Integer, ByVal MinY As Integer, ByVal MaxY As Integer)
     
     On Error GoTo Draw_Grh_Precalculated_Err
-    
 
     
 
@@ -4182,7 +4261,9 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
             Call SpriteBatch.DrawLava(grh.x, grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, MapX, MapY, Top, Right, Bottom, Left)
         
         Else
-            Call SpriteBatch.Draw(grh.x, grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
+             Call SpriteBatch.Draw(grh.x, grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
+             
+             
         End If
     
     End With

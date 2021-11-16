@@ -748,7 +748,7 @@ DoPasosFx_Err:
     
 End Sub
 
-Private Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
+Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
     
     On Error GoTo GetTerrenoDePaso_Err
     

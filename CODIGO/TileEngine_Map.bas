@@ -12,9 +12,8 @@ Sub SwitchMap(ByVal map As Integer)
     map_light = global_light
 
     Call DibujarMiniMapa
-    
+    map_letter_a = 0
     CurMap = map
-    
     If Musica Then
         
         If MapDat.music_numberLow > 0 Then

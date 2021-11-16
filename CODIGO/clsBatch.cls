@@ -215,8 +215,8 @@ Friend Sub Draw(ByVal x As Long, _
  
     If Angle > 0 And Angle <= 360 Then
    
-        NewX = CenterX + (m_Data(m_Position).x - CenterX) * -CosRad - (m_Data(m_Position).y - CenterY) * -SinRad
-        NewY = CenterY + (m_Data(m_Position).y - CenterY) * -CosRad + (m_Data(m_Position).x - CenterX) * -SinRad
+        NewX = CenterX + (m_Data(m_Position).x - CenterX) * CosRad - (m_Data(m_Position).y - CenterY) * SinRad
+        NewY = CenterY + (m_Data(m_Position).y - CenterY) * CosRad + (m_Data(m_Position).x - CenterX) * SinRad
        
         m_Data(m_Position).x = NewX
         m_Data(m_Position).y = NewY
@@ -234,8 +234,8 @@ Friend Sub Draw(ByVal x As Long, _
    
     If Angle > 0 And Angle <= 360 Then
    
-        NewX = CenterX + (m_Data(m_Position).x - CenterX) * -CosRad - (m_Data(m_Position).y - CenterY) * -SinRad
-        NewY = CenterY + (m_Data(m_Position).y - CenterY) * -CosRad + (m_Data(m_Position).x - CenterX) * -SinRad
+        NewX = CenterX + (m_Data(m_Position).x - CenterX) * CosRad - (m_Data(m_Position).y - CenterY) * SinRad
+        NewY = CenterY + (m_Data(m_Position).y - CenterY) * CosRad + (m_Data(m_Position).x - CenterX) * SinRad
        
         m_Data(m_Position).x = NewX
         m_Data(m_Position).y = NewY
@@ -253,8 +253,8 @@ Friend Sub Draw(ByVal x As Long, _
  
     If Angle > 0 And Angle <= 360 Then
    
-        NewX = CenterX + (m_Data(m_Position).x - CenterX) * -CosRad - (m_Data(m_Position).y - CenterY) * -SinRad
-        NewY = CenterY + (m_Data(m_Position).y - CenterY) * -CosRad + (m_Data(m_Position).x - CenterX) * -SinRad
+        NewX = CenterX + (m_Data(m_Position).x - CenterX) * CosRad - (m_Data(m_Position).y - CenterY) * SinRad
+        NewY = CenterY + (m_Data(m_Position).y - CenterY) * CosRad + (m_Data(m_Position).x - CenterX) * SinRad
        
         m_Data(m_Position).x = NewX
         m_Data(m_Position).y = NewY
@@ -272,8 +272,8 @@ Friend Sub Draw(ByVal x As Long, _
  
     If Angle > 0 And Angle <= 360 Then
    
-        NewX = CenterX + (m_Data(m_Position).x - CenterX) * -CosRad - (m_Data(m_Position).y - CenterY) * -SinRad
-        NewY = CenterY + (m_Data(m_Position).y - CenterY) * -CosRad + (m_Data(m_Position).x - CenterX) * -SinRad
+        NewX = CenterX + (m_Data(m_Position).x - CenterX) * CosRad - (m_Data(m_Position).y - CenterY) * SinRad
+        NewY = CenterY + (m_Data(m_Position).y - CenterY) * CosRad + (m_Data(m_Position).x - CenterX) * SinRad
        
         m_Data(m_Position).x = NewX
         m_Data(m_Position).y = NewY
@@ -577,6 +577,130 @@ Friend Sub DrawWater(ByVal x As Single, _
     m_Data(m_Position).Color = Color(3)
     m_Data(m_Position).tX = Tx2
     m_Data(m_Position).tY = Ty1
+
+    m_Position = m_Position + 1
+   
+    If m_Position >= UBound(m_Data) Then
+        Call Flush
+    End If
+   
+    
+    Exit Sub
+
+DrawWater_Err:
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.DrawWater", Erl)
+    Resume Next
+    
+End Sub
+
+Friend Sub DrawItemInWater(ByVal x As Single, _
+                    ByVal y As Single, _
+                    ByVal Width As Long, _
+                    ByVal Height As Long, _
+                    ByRef Color() As RGBA, _
+                    ByVal Tx1 As Single, _
+                    ByVal Ty1 As Single, _
+                    ByVal Tx2 As Single, _
+                    ByVal Ty2 As Single, _
+                    ByVal Angle As Single)
+    
+    On Error GoTo DrawWater_Err
+    
+    Dim t As Double
+    t = (FrameTime Mod 62831) * 0.001
+    
+    If Angle > 0 And Angle <= 360 Then
+        Dim NewX     As Single
+        Dim NewY     As Single
+        Dim SinRad   As Single
+        Dim CosRad   As Single
+        Dim RadAngle As Single
+        Dim CenterX  As Single
+        Dim CenterY  As Single
+       
+        RadAngle = Angle * 0.017453292519
+   
+        CenterX = x + (Width * 0.5)
+        CenterY = y + (Height * 0.5)
+       
+        SinRad = Sin(RadAngle)
+        CosRad = Cos(RadAngle)
+       
+    End If
+    
+    m_Data(m_Position).x = x + Cos(t + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).y = y + Height + Sin(t + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(0)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty2
+
+    If Angle > 0 And Angle <= 360 Then
+   
+        NewX = CenterX + (m_Data(m_Position).x - CenterX) * CosRad - (m_Data(m_Position).y - CenterY) * SinRad
+        NewY = CenterY + (m_Data(m_Position).y - CenterY) * CosRad + (m_Data(m_Position).x - CenterX) * SinRad
+       
+        m_Data(m_Position).x = NewX
+        m_Data(m_Position).y = NewY
+       
+    End If
+
+    m_Position = m_Position + 1
+    
+    m_Data(m_Position).x = x + Cos(t) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).y = y + Sin(t) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(1)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty1
+   
+    If Angle > 0 And Angle <= 360 Then
+   
+        NewX = CenterX + (m_Data(m_Position).x - CenterX) * CosRad - (m_Data(m_Position).y - CenterY) * SinRad
+        NewY = CenterY + (m_Data(m_Position).y - CenterY) * CosRad + (m_Data(m_Position).x - CenterX) * SinRad
+       
+        m_Data(m_Position).x = NewX
+        m_Data(m_Position).y = NewY
+       
+    End If
+   
+    m_Position = m_Position + 1
+   
+    m_Data(m_Position).x = x + Width + Cos(t + WATER_TILE_FACTOR_X + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).y = y + Height + Sin(t + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(2)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty2
+
+    If Angle > 0 And Angle <= 360 Then
+   
+        NewX = CenterX + (m_Data(m_Position).x - CenterX) * CosRad - (m_Data(m_Position).y - CenterY) * SinRad
+        NewY = CenterY + (m_Data(m_Position).y - CenterY) * CosRad + (m_Data(m_Position).x - CenterX) * SinRad
+       
+        m_Data(m_Position).x = NewX
+        m_Data(m_Position).y = NewY
+       
+    End If
+
+    m_Position = m_Position + 1
+   
+    m_Data(m_Position).x = x + Width + Cos(t + WATER_TILE_FACTOR_X) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).y = y + Sin(t) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).z = 1
+    m_Data(m_Position).Color = Color(3)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty1
+
+    If Angle > 0 And Angle <= 360 Then
+   
+        NewX = CenterX + (m_Data(m_Position).x - CenterX) * CosRad - (m_Data(m_Position).y - CenterY) * SinRad
+        NewY = CenterY + (m_Data(m_Position).y - CenterY) * CosRad + (m_Data(m_Position).x - CenterX) * SinRad
+       
+        m_Data(m_Position).x = NewX
+        m_Data(m_Position).y = NewY
+       
+    End If
 
     m_Position = m_Position + 1
    
