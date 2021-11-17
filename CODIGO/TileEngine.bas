@@ -1015,25 +1015,30 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
         End With
     End If
     
-    'Tile Bloqueado?
-    If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 And (ObjData(MapData(x, y).OBJInfo.ObjIndex).ObjType <> eObjType.otPuertas Or ObjData(MapData(x + 1, y).OBJInfo.ObjIndex).ObjType <> eObjType.otPuertas) And (ObjData(MapData(x + 1, y).OBJInfo.ObjIndex).Llave = 1 Or ObjData(MapData(x, y).OBJInfo.ObjIndex).Llave = 1) Then
-        Exit Function
-    End If
+
     
     
+                Dim puerta As ObjDatas
     
      'Si la suma de los objetos es mayor que 0 quiere decir que hay objeto.
     If (MapData(x, y).OBJInfo.ObjIndex + MapData(x + 1, y).OBJInfo.ObjIndex) > 0 Then
         'Si hay un objeto, me tengo que fijar si estoy a la derecha o a la izquierda.
         If MapData(x, y).OBJInfo.ObjIndex > 0 Then
             If ObjData(MapData(x, y).OBJInfo.ObjIndex).ObjType = eObjType.otPuertas Then
-            
+                puerta = ObjData(MapData(x, y).OBJInfo.ObjIndex)
+                If puerta.Llave = 1 Then
+                    Exit Function
+                End If
             Else
                 If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 Then Exit Function
             End If
         ElseIf MapData(x + 1, y).OBJInfo.ObjIndex > 0 Then
             If ObjData(MapData(x + 1, y).OBJInfo.ObjIndex).ObjType = eObjType.otPuertas Then
                 
+                puerta = ObjData(MapData(x + 1, y).OBJInfo.ObjIndex)
+                If puerta.Llave = 1 Then
+                    Exit Function
+                End If
             Else
                 If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 Then Exit Function
             End If
