@@ -2040,6 +2040,7 @@ Command2_Click_Err:
 End Sub
 
 Private Sub Command3_Click()
+    Call WriteGoNearby(tmpUser)
     Call Destrabar_Click
     Call frmPanelgm.txtMod.SetFocus
 End Sub
