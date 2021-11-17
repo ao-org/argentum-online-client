@@ -103,7 +103,7 @@ Public Type particle_group
     frame_counter As Single
     frame_speed As Single
     
-    stream_type As Byte
+    stream_type As Integer
 
     particle_stream() As Particle
     particle_count As Long

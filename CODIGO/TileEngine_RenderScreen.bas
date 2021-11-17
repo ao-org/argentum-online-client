@@ -199,47 +199,19 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                             ' Objetos en el suelo (items, decorativos, etc)
                             
                              If (.Blocked And FLAG_AGUA <> 0) And .Graphic(2).GrhIndex = 0 Then
-                                 
-                                
+                             
                                 object_angle = (object_angle + (Engine_ElapsedTime * 0.002))
                                 
+                                .light_value(1).A = 85
+                                .light_value(3).A = 85
                                 
-                                Dim Factor As Double
-                                
-                                Dim WaterColor(3) As RGBA
-                                Factor = MapData(x, y).light_value(0).r / 255
-                                Call SetRGBA(WaterColor(0), 0, 150, 255, 0)
-                                Call SetRGBA(WaterColor(1), 0, 150, 255, 255)
-                                Call SetRGBA(WaterColor(2), 0, 150, 255, 0)
-                                Call SetRGBA(WaterColor(3), 0, 150, 255, 255)
-                                
-                                WaterColor(0).r = WaterColor(0).r * Factor
-                                WaterColor(0).G = WaterColor(0).G * Factor
-                                WaterColor(0).B = WaterColor(0).B * Factor
-                                WaterColor(1).r = WaterColor(1).r * Factor
-                                WaterColor(1).G = WaterColor(1).G * Factor
-                                WaterColor(1).B = WaterColor(1).B * Factor
-                                WaterColor(2).r = WaterColor(2).r * Factor
-                                WaterColor(2).G = WaterColor(2).G * Factor
-                                WaterColor(2).B = WaterColor(2).B * Factor
-                                WaterColor(3).r = WaterColor(3).r * Factor
-                                WaterColor(3).G = WaterColor(3).G * Factor
-                                WaterColor(3).B = WaterColor(3).B * Factor
-                                
-                                .light_value(0).A = 255
-                                .light_value(1).A = 0
-                                .light_value(2).A = 255
-                                .light_value(3).A = 0
                                 
                                 Call Draw_Grh_ItemInWater(.ObjGrh, ScreenX, ScreenY, False, False, .light_value, False, , , (object_angle + x * 45 + y * 90))
-                                Call Draw_Grh_ItemInWater(.ObjGrh, ScreenX, ScreenY, False, False, WaterColor, True, , , (object_angle + x * 45 + y * 90))
                                 
-                                .light_value(0).A = 255
                                 .light_value(1).A = 255
-                                .light_value(2).A = 255
                                 .light_value(3).A = 255
-                                
-                               ' Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, WaterColor, True, x, y, object_angle Mod 360)
+                                .light_value(0).A = 255
+                                .light_value(2).A = 255
                             Else
                                 Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, , x, y)
                             End If

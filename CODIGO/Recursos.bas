@@ -1181,42 +1181,42 @@ Public Sub CargarMapa(ByVal map As Integer)
 
     Close fh
     
+    '
     'Creo un array de zonas provisorio de ese mapa
-    Dim Temp_zone() As MapZone
-    Dim UpperB As Integer
     ReDim Temp_zone(1 To 1) As MapZone
-    
+    Dim UpperB As Integer
+    Dim TieneZona As Boolean
     For i = 1 To UBound(Zonas)
         'Me fijo se la zona pertenece al mapa, de serlo agrego la zona al array
         If Zonas(i).NumMapa = map Then
-        
-            ReDim Preserve Temp_zone(1 To UBound(Temp_zone) + 1) As MapZone
+            TieneZona = True
+            ReDim Preserve Temp_zone(1 To i) As MapZone
             
-            UpperB = UBound(Temp_zone)
             
-            Temp_zone(UpperB - 1).NumMapa = Zonas(i).NumMapa
-            Temp_zone(UpperB - 1).Musica = Zonas(i).Musica
-            Temp_zone(UpperB - 1).OcultarNombre = Zonas(i).OcultarNombre
-            Temp_zone(UpperB - 1).x1 = Zonas(i).x1
-            Temp_zone(UpperB - 1).x2 = Zonas(i).x2
-            Temp_zone(UpperB - 1).y1 = Zonas(i).y1
-            Temp_zone(UpperB - 1).y2 = Zonas(i).y2
+            Temp_zone(i).NumMapa = Zonas(i).NumMapa
+            Temp_zone(i).Musica = Zonas(i).Musica
+            Temp_zone(i).OcultarNombre = Zonas(i).OcultarNombre
+            Temp_zone(i).x1 = Zonas(i).x1
+            Temp_zone(i).x2 = Zonas(i).x2
+            Temp_zone(i).y1 = Zonas(i).y1
+            Temp_zone(i).y2 = Zonas(i).y2
         End If
     Next i
     
-    If UBound(Temp_zone) > 0 Then
-        ReDim Preserve Temp_zone(1 To UBound(Temp_zone) - 1) As MapZone
+    'If UBound(Temp_zone) > 0 Then
+    '    ReDim Preserve Temp_zone(1 To UBound(Temp_zone) - 1) As MapZone
+    'End If
+    
+    If TieneZona Then
+        For i = 1 To (UBound(Temp_zone))
+            For x = Temp_zone(i).x1 To Temp_zone(i).x2
+                For y = Temp_zone(i).y1 To Temp_zone(i).y2
+                    MapData(x, y).zone.OcultarNombre = Temp_zone(i).OcultarNombre
+                    MapData(x, y).zone.Musica = Temp_zone(i).Musica
+                Next y
+            Next x
+        Next i
     End If
-    
-    For i = 1 To (UBound(Temp_zone))
-        For x = Temp_zone(i).x1 To Temp_zone(i).x2
-            For y = Temp_zone(i).y1 To Temp_zone(i).y2
-                MapData(x, y).zone.OcultarNombre = Temp_zone(i).OcultarNombre
-                MapData(x, y).zone.Musica = Temp_zone(i).Musica
-            Next y
-        Next x
-    Next i
-    
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "mapa" & map & ".csm"
@@ -1515,6 +1515,7 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).Sksastreria = Val(Leer.GetValue("OBJ" & Obj, "Sksastreria"))
         ObjData(Obj).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
         ObjData(Obj).Agarrable = Val(Leer.GetValue("OBJ" & Obj, "Agarrable"))
+        ObjData(Obj).Llave = Val(Leer.GetValue("OBJ" & Obj, "Llave"))
         
     Next Obj
     
