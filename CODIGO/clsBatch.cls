@@ -40,6 +40,7 @@ Private m_Pre_IBuffer_Full As Direct3DIndexBuffer8
 Private Const WATER_WAVE_SIZE_X = 4
 Private Const WATER_WAVE_SIZE_Y = 4
 Private Const WATER_WAVE_HEIGHT = 3
+Private Const WATER_OBJECT_WAVE_HEIGHT = 3
 Private Const WATER_WAVE_FACTOR_X = (2 * PI) / (WATER_WAVE_SIZE_X * TilePixelWidth)
 Private Const WATER_WAVE_FACTOR_Y = (2 * PI) / (WATER_WAVE_SIZE_Y * TilePixelHeight)
 Private Const WATER_TILE_FACTOR_X = TilePixelWidth * WATER_WAVE_FACTOR_X
@@ -628,8 +629,8 @@ Friend Sub DrawItemInWater(ByVal x As Single, _
        
     End If
     
-    m_Data(m_Position).x = x + Cos(t + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT
-    m_Data(m_Position).y = y + Height + Sin(t + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).x = x + Cos(t + WATER_TILE_FACTOR_Y) * WATER_OBJECT_WAVE_HEIGHT
+    m_Data(m_Position).y = y + Height + Sin(t + WATER_TILE_FACTOR_Y) * WATER_OBJECT_WAVE_HEIGHT
     m_Data(m_Position).z = 1
     m_Data(m_Position).Color = Color(0)
     m_Data(m_Position).tX = Tx1
@@ -647,8 +648,8 @@ Friend Sub DrawItemInWater(ByVal x As Single, _
 
     m_Position = m_Position + 1
     
-    m_Data(m_Position).x = x + Cos(t) * WATER_WAVE_HEIGHT
-    m_Data(m_Position).y = y + Sin(t) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).x = x + Cos(t) * WATER_OBJECT_WAVE_HEIGHT
+    m_Data(m_Position).y = y + Sin(t) * WATER_OBJECT_WAVE_HEIGHT
     m_Data(m_Position).z = 1
     m_Data(m_Position).Color = Color(1)
     m_Data(m_Position).tX = Tx1
@@ -666,8 +667,8 @@ Friend Sub DrawItemInWater(ByVal x As Single, _
    
     m_Position = m_Position + 1
    
-    m_Data(m_Position).x = x + Width + Cos(t + WATER_TILE_FACTOR_X + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT
-    m_Data(m_Position).y = y + Height + Sin(t + WATER_TILE_FACTOR_Y) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).x = x + Width + Cos(t + WATER_TILE_FACTOR_X + WATER_TILE_FACTOR_Y) * WATER_OBJECT_WAVE_HEIGHT
+    m_Data(m_Position).y = y + Height + Sin(t + WATER_TILE_FACTOR_Y) * WATER_OBJECT_WAVE_HEIGHT
     m_Data(m_Position).z = 1
     m_Data(m_Position).Color = Color(2)
     m_Data(m_Position).tX = Tx2
@@ -685,8 +686,8 @@ Friend Sub DrawItemInWater(ByVal x As Single, _
 
     m_Position = m_Position + 1
    
-    m_Data(m_Position).x = x + Width + Cos(t + WATER_TILE_FACTOR_X) * WATER_WAVE_HEIGHT
-    m_Data(m_Position).y = y + Sin(t) * WATER_WAVE_HEIGHT
+    m_Data(m_Position).x = x + Width + Cos(t + WATER_TILE_FACTOR_X) * WATER_OBJECT_WAVE_HEIGHT
+    m_Data(m_Position).y = y + Sin(t) * WATER_OBJECT_WAVE_HEIGHT
     m_Data(m_Position).z = 1
     m_Data(m_Position).Color = Color(3)
     m_Data(m_Position).tX = Tx2
