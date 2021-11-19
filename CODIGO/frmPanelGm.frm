@@ -6,7 +6,7 @@ Begin VB.Form frmPanelgm
    ClientHeight    =   8520
    ClientLeft      =   18150
    ClientTop       =   4710
-   ClientWidth     =   7275
+   ClientWidth     =   7200
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -20,7 +20,7 @@ Begin VB.Form frmPanelgm
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   8520
-   ScaleWidth      =   7275
+   ScaleWidth      =   7200
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton cmdButtonActualizarListaGms 
@@ -565,7 +565,9 @@ Begin VB.Form frmPanelgm
    Begin VB.ListBox List1 
       BackColor       =   &H8000000A&
       Height          =   2010
+      ItemData        =   "frmPanelGm.frx":0000
       Left            =   120
+      List            =   "frmPanelGm.frx":0002
       TabIndex        =   3
       Top             =   110
       Width           =   4560
@@ -759,6 +761,9 @@ Begin VB.Form frmPanelgm
    Begin VB.Menu mnuUsuario 
       Caption         =   "Usuario"
       Visible         =   0   'False
+      Begin VB.Menu mnuDestrabar 
+         Caption         =   "Destrabar"
+      End
       Begin VB.Menu mnuBorrar 
          Caption         =   "Borrar mensaje"
       End
@@ -2040,7 +2045,7 @@ Command2_Click_Err:
 End Sub
 
 Private Sub Command3_Click()
-    Call WriteGoNearby(tmpUser)
+    'Call WriteGoNearby(tmpUser)
     Call Destrabar_Click
     Call frmPanelgm.txtMod.SetFocus
 End Sub
@@ -2132,7 +2137,7 @@ Private Sub Destrabar_Click()
     
     On Error GoTo Destrabar_Click_Err
     
-    Nick = Replace(cboListaUsus.Text, " ", "+")
+    Nick = Replace(List1.Text, " ", "+")
     Call WritePossUser(Nick)
 
     
@@ -2530,6 +2535,20 @@ Private Sub mnuIRa_Click()
 
 mnuIRa_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuIRa_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuDestrabar_Click()
+    On Error GoTo mnuDestrabar_Click_Err
+    Nick = Replace(List1.Text, " ", "+")
+    Call WritePossUser(Nick)
+
+    
+    Exit Sub
+
+mnuDestrabar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuDestrabar_Click", Erl)
     Resume Next
     
 End Sub
