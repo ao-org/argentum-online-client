@@ -154,7 +154,7 @@ Function AgregarSombra(ByVal GrhIndex As Long) As Boolean
     
     On Error GoTo AgregarSombra_Err
     
-    AgregarSombra = GrhIndex = 5624 Or GrhIndex = 5625 Or GrhIndex = 5626 Or GrhIndex = 5627
+    AgregarSombra = GrhIndex = 5624 Or GrhIndex = 5625 Or GrhIndex = 5626 Or GrhIndex = 5627 Or GrhIndex = 51716
 
     
     Exit Function
