@@ -6840,7 +6840,7 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.cmdHerramientas.Visible = False
         frmPanelgm.Admin(0).Visible = False
         
-        Case 2
+        Case 2 'Consejeros
         frmPanelgm.mnuChar.Visible = False
         frmPanelgm.cmdHerramientas.Visible = False
         frmPanelgm.Admin(0).Visible = False
@@ -6857,16 +6857,19 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.cmdcrearevento.Visible = False
         frmPanelgm.txtMod.Width = 4580
         frmPanelgm.Height = 7580
-        
-        Case 3
+        frmPanelgm.mnuTraer.Visible = False
+        frmPanelgm.mnuIra.Visible = False
+                
+        Case 3 ' Semidios
         frmPanelgm.mnuChar.Visible = False
         frmPanelgm.mnuChar.Visible = False
         frmPanelgm.cmdHerramientas.Visible = True
         frmPanelgm.Admin(0).Visible = False
         frmPanelgm.cmdcrearevento.Enabled = False
         frmPanelgm.cmdcrearevento.Visible = False
+        frmPanelgm.mnuHerramientas(23).Visible = False
         
-        Case 4
+        Case 4 ' Dios
         frmPanelgm.mnuChar.Visible = True
         frmPanelgm.mnuChar.Visible = True
         frmPanelgm.cmdHerramientas.Visible = True
