@@ -1030,6 +1030,8 @@ Sub Main()
 
     Call InitCommonControls
     
+    Set CH = New CryptoHelper.CryptoHelper
+    Set CHinterface = CH
  'ReyarB pidió dejar entrar doble cliente (HarThaoS)
  '   #If DEBUGGING = 0 Then
  '

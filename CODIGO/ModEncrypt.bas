@@ -3,20 +3,15 @@ Attribute VB_Name = "ModEncrypt"
 Public Function SEncriptar(ByVal Cadena As String) As String
     
     On Error GoTo SEncriptar_Err
+    Dim encrypted_password() As Byte
+    Dim public_key() As Byte
     
-
-    ' GSZ-AO - Encripta una cadena de texto
-    Dim i As Long, RandomNum As Integer
+    public_key = Str2ByteArr("Pablomarquez123!", public_key())
     
-    RandomNum = 99 * Rnd
-
-    If RandomNum < 10 Then RandomNum = 10
-
-    For i = 1 To Len(Cadena)
-        Mid$(Cadena, i, 1) = Chr$(Asc(mid$(Cadena, i, 1)) + RandomNum)
-    Next i
-
-    SEncriptar = Cadena & Chr$(Asc(Left$(RandomNum, 1)) + 10) & Chr$(Asc(Right$(RandomNum, 1)) + 10)
+    encrypted_password = CHinterface.Encrypt(Cadena, public_key)
+    
+    SEncriptar = ByteArr2String(encrypted_password)
+    
     DoEvents
 
     
