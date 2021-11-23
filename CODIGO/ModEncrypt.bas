@@ -6,7 +6,7 @@ Public Function SEncriptar(ByVal Cadena As String) As String
     Dim encrypted_password() As Byte
     Dim public_key() As Byte
     
-    public_key = Str2ByteArr("Pablomarquez123!", public_key())
+    Call Str2ByteArr("Pablomarquez123!", public_key())
     
     encrypted_password = CHinterface.Encrypt(Cadena, public_key)
     
