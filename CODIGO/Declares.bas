@@ -1242,7 +1242,3 @@ End Type
 ' Load custom font
 Public Declare Function AddFontResourceEx Lib "gdi32.dll" Alias "AddFontResourceExA" (ByVal lpcstr As String, ByVal dword As Long, ByRef DESIGNVECTOR) As Long
 Public Const FR_PRIVATE As Long = &H10
-
-
-Public CH As CryptoHelper.CryptoHelper
-Public CHinterface As CryptoHelper.ICryptoHelper
