@@ -92,7 +92,7 @@ Public Sub IniciarMeteorologia()
     Call SetRGBA(BlindColor, 4, 4, 4)
     
     ' Dungeon
-    Call SetRGBA(DungeonColor, 70, 70, 70)
+    Call SetRGBA(DungeonColor, 130, 130, 130)
     
     TimeIndex = -1
 

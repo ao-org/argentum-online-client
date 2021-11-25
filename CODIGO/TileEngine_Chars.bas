@@ -550,7 +550,7 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
 
         With dialogs(Slot)
             .startTime = FrameTime
-            .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(char_dialog))
+            .lifeTime = MS_PER_CHAR * Len(char_dialog)
             .charindex = char_index
 
         End With
@@ -559,7 +559,7 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
 
         With dialogs(Slot)
             .startTime = FrameTime
-            .lifeTime = (MS_PER_CHAR * Len(char_dialog))
+            .lifeTime = MS_PER_CHAR * Len(char_dialog)
             .charindex = char_index
 
         End With

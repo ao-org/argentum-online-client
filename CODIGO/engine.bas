@@ -25,7 +25,7 @@ Public Const MAX_LENGTH      As Byte = 18
 
 ''
 ' Number of milliseconds to add to the lifetime per dialog character
-Public Const MS_PER_CHAR     As Byte = 100
+Public Const MS_PER_CHAR     As Byte = 60
 
 ''
 ' Number of extra milliseconds to add to the lifetime of a new dialog
