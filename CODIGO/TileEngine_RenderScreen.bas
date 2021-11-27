@@ -200,7 +200,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                             
                              If (.Blocked And FLAG_AGUA <> 0) And .Graphic(2).GrhIndex = 0 Then
                              
-                                object_angle = (object_angle + (Engine_ElapsedTime * 0.002))
+                                object_angle = (object_angle + (timerElapsedTime * 0.002))
                                 
                                 .light_value(1).A = 85
                                 .light_value(3).A = 85
@@ -718,7 +718,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             PosicionBarra = 199
         End If
         '90 - 111 es incluido (saca el pecesito)
-        PosicionBarra = PosicionBarra + (DireccionBarra * VelocidadBarra * Engine_ElapsedTime * 0.2)
+        PosicionBarra = PosicionBarra + (DireccionBarra * VelocidadBarra * timerElapsedTime * 0.2)
         
         
         If (GetTickCount() - startTimePezEspecial) >= 20000 Then
