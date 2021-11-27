@@ -68,7 +68,7 @@ ResetCharInfo_Err:
 End Sub
 
 
-Public Sub EraseChar(ByVal charindex As Integer)
+Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As Boolean = False)
     '*****************************************************************
     'Erases a character from CharList and map
     '*****************************************************************
@@ -78,13 +78,13 @@ Public Sub EraseChar(ByVal charindex As Integer)
     
     If charindex = 0 Then Exit Sub
     If charlist(charindex).active = 0 Then Exit Sub
-    If charindex = UserCharIndex Then Exit Sub
+    If charindex = UserCharIndex And Not notCancelMe Then Exit Sub
     
     charlist(charindex).active = 0
     
     'Update lastchar
     If charindex = LastChar Then
-
+    
         Do Until charlist(LastChar).active = 1
             LastChar = LastChar - 1
 
@@ -131,14 +131,14 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
         
         .IHead = Head
         .iBody = Body
-        If Not charindex = UserCharIndex Then
+     '   If Not charindex = UserCharIndex Then
             .Head = HeadData(Head)
             .Body = BodyData(Body)
             .Arma = WeaponAnimData(Arma)
         
             .Escudo = ShieldAnimData(Escudo)
             .Casco = CascoAnimData(Casco)
-        End If
+       ' End If
         
         .Heading = Heading
         

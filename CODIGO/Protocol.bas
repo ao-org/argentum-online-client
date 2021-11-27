@@ -1291,7 +1291,7 @@ Public Sub HandleDisconnect()
     
     EntradaY = 1
     EntradaX = 1
-
+    Call EraseChar(UserCharIndex, True)
     Call SwitchMap(UserMap)
     
     frmMain.personaje(1).Visible = False
