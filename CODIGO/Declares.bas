@@ -33,8 +33,6 @@ Public SugerenciaAMostrar               As Byte
 
 Public UserInvUnlocked                  As Byte
 
-Public openbyObj                        As Boolean
-
 'Slots de Inventarios Generales
 Public Const GRH_SLOT_INVENTARIO_NEGRO  As Long = 26095
 

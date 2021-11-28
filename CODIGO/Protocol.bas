@@ -8663,7 +8663,6 @@ Public Sub HandleObjQuestListSend()
     End Select
 
     FrmQuestInfo.ListViewQuest.Refresh
-    openbyObj = True
 
     'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
     FrmQuestInfo.Show vbModeless, frmMain

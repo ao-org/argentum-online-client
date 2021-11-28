@@ -25,6 +25,7 @@ Begin VB.Form FrmQuestInfo
       _ExtentY        =   5106
       _Version        =   393217
       BorderStyle     =   0
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -362,7 +363,6 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 
     End If
     
-    openbyObj = False
     
     Exit Sub
 
@@ -418,7 +418,6 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
     Unload Me
 
-    openbyObj = False
     Exit Sub
 
 Image1_MouseUp_Err:
@@ -454,11 +453,7 @@ Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
 
     If ListViewQuest.SelectedItem.Index > 0 Then
-        If openbyObj Then
             Call WriteQuestAccept(ListViewQuest.SelectedItem.Index)
-        Else
-            Call WriteQuestAccept(ListViewQuest.SelectedItem.Index, True)
-        End If
         Unload Me
     End If
     
@@ -473,7 +468,6 @@ End Sub
 Private Sub Image3_Click()
     
     On Error GoTo Image3_Click_Err
-    openbyObj = False
     Unload Me
     
     Exit Sub
