@@ -4,15 +4,8 @@ Public Function SEncriptar(ByVal Cadena As String) As String
     
     On Error GoTo SEncriptar_Err
     
-    ' GSZ-AO - Encripta una cadena de texto
-    Dim i As Long, RandomNum As Integer
+    SEncriptar = AO20CryptoSysWrapper.Encrypt("7061626C6F6D61727175657A41524731", Cadena)
     
-    RandomNum = 99 * Rnd
-    If RandomNum < 10 Then RandomNum = 10
-    For i = 1 To Len(Cadena)
-        Mid$(Cadena, i, 1) = Chr$(Asc(mid$(Cadena, i, 1)) + RandomNum)
-    Next i
-    SEncriptar = Cadena & Chr$(Asc(Left$(RandomNum, 1)) + 10) & Chr$(Asc(Right$(RandomNum, 1)) + 10)
     DoEvents
 
     
