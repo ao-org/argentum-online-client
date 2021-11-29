@@ -1,0 +1,95 @@
+CryptoSys (tm) API for Windows Developer Licence Agreement
+
+This is a legal document. Please read these terms carefully before
+installing the Software as installation or use will indicate your
+acceptance to all of the terms of this licence agreement.
+
+IF YOU DO NOT AGREE TO THE TERMS, DO NOT INSTALL OR USE THE SOFTWARE.
+
+D.I. Management Services Pty Limited ABN 78 083 210 584 ("the Author")
+is willing to license the enclosed 'CryptoSys API' software and
+documentation ("the Software") to you only upon the condition that you
+accept all of the terms contained in this licence agreement.
+
+The Author hereby grants you a single non-exclusive, non-transferable
+licence to use the Software as a developer tool in accordance with
+these terms.
+
+The Software is a development tool that provides a programming
+interface to cryptographic functions. You may NOT use the Software to
+develop another cryptographic programming interface or as a
+component of one.
+
+Provided your application's main purpose is not merely providing a
+programming interface to cryptographic functions, you may include
+the following executable files either as part of your own 
+applications for installation on your client's computers or in your
+own in-house applications:
+
+1. diCryptoSys.dll
+2. diCrSysAPINet.dll
+3. diCryptOCX.dll
+
+Only these executable files may be distributed to others or used as
+part of in-house applications, and they must be distributed as an
+integral part of your own application, not separately. There is no
+limit on the number of end users you may distribute it to in this
+manner. 
+
+This licence permits you to use the Software as a developer tool by
+one (1) developer on one (1) computer only. Use as a developer tool on
+more than one computer or by more than one developer requires the
+purchase of separate licences for each separate computer or developer.
+
+This licence is issued only to the original purchaser of the Software
+and cannot be transferred or assigned.
+
+You are not permitted to copy, sell, rent, lease, sub-licence or lend
+the Software to any third parties except under the terms of this 
+licence. The documentation may not be distributed or shared in any 
+manner.
+
+Your end users and any other third party gain no rights whatsoever 
+to use or distribute the executables except as an integral part of 
+your application.
+
+You must keep your licence ID number confidential and must not divulge
+it to or make it available to any third party.
+
+The copyright in and title to all intellectual property rights in the
+Software and related documentation remain with the Author at all
+times.
+
+Without prejudice to any other rights, the Author may terminate this
+licence if you do not observe its terms and conditions. In such an
+event, you must destroy all copies of the Software.
+
+The Author makes no representations concerning either the
+merchantability of the Software or its suitability for any particular
+purpose. It is provided "AS IS" without express or implied warranty of
+any kind. Because of the various hardware and software environments
+into which software may be put, no warranty of fitness for a
+particular purpose is offered. Good data processing procedure dictates
+that any software be thoroughly tested with non-critical data before
+relying on it.
+
+In no event shall the Author be liable for any damages in connection
+with or arising out of the use of the Software by any person
+whatsoever, including incidental, indirect, special or consequential
+damages, or any damages related to loss of use, revenue or profits,
+even if the Author has been advised of the possibility of such
+damages. By using the Software you EXPRESSLY AGREE to such a waiver.
+
+This licence shall be governed and interpreted by the laws of
+Australia without regard to your choice of legal jurisdiction, and you
+expressly agree that the venue for resolution of disputes, if any,
+arising out of this licence or the performance of the Software, shall
+be in Australia.
+
+D.I. Management Services Pty Limited
+ABN 78 083 210 584
+Bridgetown, WA, Australia
+<www.di-mgt.com.au>
+<www.cryptosys.net>
+Last Updated: 15 September 2013
+++++++++++++++++++++++++++++++++++
