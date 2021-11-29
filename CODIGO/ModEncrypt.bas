@@ -12,6 +12,8 @@ Public Function SEncriptar(ByVal Cadena As String) As String
     Exit Function
 
 SEncriptar_Err:
+
+    Call MsgBox(Err.Description)
     Call RegistrarError(Err.Number, Err.Description, "ModEncrypt.SEncriptar", Erl)
     Resume Next
     
