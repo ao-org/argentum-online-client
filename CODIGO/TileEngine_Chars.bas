@@ -510,7 +510,7 @@ ErrorHandler:
 
 End Function
 
-Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1)
+Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1, Optional ByVal EsSpell As Boolean = False)
     
     On Error GoTo Char_Dialog_Set_Err
     
@@ -546,25 +546,17 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
 
     End If
     
-    If char_dialog_life = 250 Then
-
-        With dialogs(Slot)
-            .startTime = FrameTime
+   
+    With dialogs(Slot)
+        .startTime = FrameTime
+        If EsSpell Then
+             .lifeTime = 3500
+        Else
             .lifeTime = MS_PER_CHAR * Len(char_dialog)
-            .charindex = char_index
+        End If
+        .charindex = char_index
+    End With
 
-        End With
-
-    Else
-
-        With dialogs(Slot)
-            .startTime = FrameTime
-            .lifeTime = MS_PER_CHAR * Len(char_dialog)
-            .charindex = char_index
-
-        End With
-
-    End If
     
     
     Exit Sub

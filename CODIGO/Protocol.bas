@@ -2741,6 +2741,7 @@ Private Sub HandleChatOverHead()
 
     Dim QueEs      As String
 
+    Dim EsSpell    As Boolean
     chat = Reader.ReadString8()
     charindex = Reader.ReadInt16()
     
@@ -2749,6 +2750,7 @@ Private Sub HandleChatOverHead()
     B = Reader.ReadInt8()
     
     colortexto = vbColor_2_Long(Reader.ReadInt32())
+    EsSpell = Reader.ReadBool()
 
     'Optimizacion de protocolo por Ladder
     QueEs = ReadField(1, chat, Asc("*"))
@@ -2797,7 +2799,7 @@ Private Sub HandleChatOverHead()
     'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
     If charlist(charindex).active Then
 
-        Call Char_Dialog_Set(charindex, chat, colortexto, duracion, 30)
+        Call Char_Dialog_Set(charindex, chat, colortexto, duracion, 30, 1, EsSpell)
 
     End If
     
