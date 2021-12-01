@@ -1073,7 +1073,7 @@ Sub Main()
 
     ' Security
     CheckMD5 = GetMd5
-    
+    SessionOpened = False
     ' Leer contraseña de recursos
     Call CheckResources
 

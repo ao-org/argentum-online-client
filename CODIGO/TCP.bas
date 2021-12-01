@@ -43,7 +43,8 @@ Sub LoginOrConnect(ByVal Modo As E_MODO)
     If (Connected) Then
         Call Login
     Else
-        Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+        Call connectToLoginServer
+        'Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
     End If
 End Sub
 

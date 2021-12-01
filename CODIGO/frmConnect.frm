@@ -1,5 +1,6 @@
 VERSION 5.00
 Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmConnect 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -30,6 +31,15 @@ Begin VB.Form frmConnect
    ScaleWidth      =   1024
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin MSWinsockLib.Winsock AuthSocket 
+      Left            =   120
+      Top             =   120
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemoteHost      =   "45.235.99.71"
+      RemotePort      =   4004
+   End
    Begin InetCtlsObjects.Inet Inet1 
       Left            =   12600
       Top             =   5880
@@ -116,6 +126,19 @@ Option Explicit
 
 Private Char As Byte
 
+
+Private Sub AuthSocket_Connect()
+    If Not SessionOpened Then
+        Call OpenSessionRequest
+        Auth_state = e_state.RequestAccountLogin
+    End If
+    
+End Sub
+
+Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
+    ModAuth.AuthSocket_DataArrival bytesTotal
+End Sub
+
 Private Sub Form_Activate()
     
     On Error GoTo Form_Activate_Err
@@ -173,6 +196,8 @@ Private Sub Form_Load()
     Call Form_RemoveTitleBar(Me)
     Me.Width = 1024 * Screen.TwipsPerPixelX
     Me.Height = 768 * Screen.TwipsPerPixelY
+    AuthSocket.RemoteHost = "45.235.99.71"
+    AuthSocket.RemotePort = "4004"
     
     Exit Sub
 
