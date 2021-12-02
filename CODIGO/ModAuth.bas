@@ -239,7 +239,7 @@ Public Sub HandlePCList(ByVal bytesTotal As Long)
     Dim decrypted_list As String
      
     decrypted_list = AO20CryptoSysWrapper.Decrypt(ByteArrayToHex(public_key), cnvStringFromHexStr(cnvToHex(encrypted_list)))
-    
+    Call FillAccountData(decrypted_list)
     Call DebugPrint("Decrypted_list: " & decrypted_list, 255, 255, 255, False)
             
     Auth_state = e_state.Idle
@@ -291,4 +291,190 @@ Function FileToString(strFileName As String) As String
     FileToString = StrConv(InputB(LOF(1), 1), vbUnicode)
   Close #1
 End Function
+
+Private Sub FillAccountData(ByVal data As String)
+  
+    Dim i As Long
+    Dim cantidadPersonajes As Long
+    cantidadPersonajes = 0
+    For i = 1 To Len(data)
+        If mid(data, i, 1) = "(" Then
+            cantidadPersonajes = cantidadPersonajes + 1
+        End If
+    Next i
+
+    Dim ii As Byte
+     'name, head_id, class_id, body_id, pos_map, pos_x, pos_y, level, status, helmet_id, shield_id, weapon_id, guild_index, is_dead, is_sailing
+    For ii = 1 To cantidadPersonajes
+        Pjs(ii).nombre = ""
+        Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
+        Pjs(ii).Clase = 0
+        Pjs(ii).Body = 0
+        Pjs(ii).Mapa = 0
+        Pjs(ii).posX = 0
+        Pjs(ii).posY = 0
+        Pjs(ii).nivel = 0
+        Pjs(ii).Criminal = 0
+        Pjs(ii).Casco = 0
+        Pjs(ii).Escudo = 0
+        Pjs(ii).Arma = 0
+        Pjs(ii).ClanName = ""
+        Pjs(ii).NameMapa = ""
+    Next ii
+
+    For ii = 1 To cantidadPersonajes
+        Dim character As String
+        character = ReadField(ii, data, Asc(")"))
+        character = Replace(character, "(", "")
+        character = Replace(character, "[", "")
+        character = Replace(character, "]", "")
+        character = Replace(character, "'", "")
+        character = Replace(character, ",", "", 1, 1)
+         Pjs(ii).nombre = ReadField(1, character, Asc(","))
+        Pjs(ii).Head = Val(ReadField(2, character, Asc(",")))
+        Pjs(ii).Clase = Val(ReadField(3, character, Asc(",")))
+        Pjs(ii).Body = Val(ReadField(4, character, Asc(",")))
+        Pjs(ii).Mapa = Val(ReadField(5, character, Asc(",")))
+        Pjs(ii).posX = Val(ReadField(6, character, Asc(",")))
+        Pjs(ii).posY = Val(ReadField(7, character, Asc(",")))
+        Pjs(ii).nivel = Val(ReadField(8, character, Asc(",")))
+        Pjs(ii).Criminal = Val(ReadField(9, character, Asc(",")))
+        Pjs(ii).Casco = Val(ReadField(10, character, Asc(",")))
+        Pjs(ii).Escudo = Val(ReadField(11, character, Asc(",")))
+        Pjs(ii).Arma = Val(ReadField(12, character, Asc(",")))
+        Pjs(ii).ClanName = "<" & "pepito" & ">"
+       
+        ' Pjs(ii).NameMapa = Pjs(ii).mapa
+       ' Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).Name
+
+    Next ii
+
+
+    For i = 1 To cantidadPersonajes
+
+        Select Case Pjs(i).Criminal
+
+            Case 0 'Criminal
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                Pjs(i).priv = 0
+
+            Case 1 'Ciudadano
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                Pjs(i).priv = 0
+
+            Case 2 'Caos
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
+                Pjs(i).priv = 0
+
+            Case 3 'Armada
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+                Pjs(i).priv = 0
+
+            Case 4 'EsConsejero
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(1).r, ColoresPJ(1).G, ColoresPJ(1).B)
+                Pjs(i).ClanName = "<Game Master>"
+                Pjs(i).priv = 1
+                EsGM = True
+
+            Case 5 ' EsSemiDios
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(2).r, ColoresPJ(2).G, ColoresPJ(2).B)
+                Pjs(i).ClanName = "<Game Master>"
+                Pjs(i).priv = 2
+                EsGM = True
+
+            Case 6 ' EsDios
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(3).r, ColoresPJ(3).G, ColoresPJ(3).B)
+                Pjs(i).ClanName = "<Game Master>"
+                Pjs(i).priv = 3
+                EsGM = True
+
+            Case 7 ' EsAdmin
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(4).r, ColoresPJ(4).G, ColoresPJ(4).B)
+                Pjs(i).ClanName = "<Game Master>"
+                Pjs(i).priv = 4
+                EsGM = True
+
+            Case Else
+
+        End Select
+
+    Next i
+    
+    AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
+   
+    If cantidadPersonajes > 0 Then
+        PJSeleccionado = 1
+        LastPJSeleccionado = 1
+        
+        If Pjs(1).Mapa <> 0 Then
+            Call SwitchMap(Pjs(1).Mapa)
+            RenderCuenta_PosX = Pjs(1).posX
+            RenderCuenta_PosY = Pjs(1).posY
+        End If
+    End If
+    
+    Call mostrarcuenta
+    
+
+End Sub
+
+Public Sub mostrarcuenta()
+     
+    ' FrmCuenta.Show
+    AlphaNiebla = 30
+    frmConnect.Visible = True
+    QueRender = 2
+    
+    'UserMap = 323
+    
+    'Call SwitchMap(UserMap)
+    
+    SugerenciaAMostrar = RandomNumber(1, NumSug)
+        
+    ' LogeoAlgunaVez = True
+    Call Sound.Sound_Play(192)
+    
+    Call Sound.Sound_Stop(SND_LLUVIAIN)
+    '  Sound.NextMusic = 2
+    '  Sound.Fading = 350
+      
+    Call Graficos_Particulas.Particle_Group_Remove_All
+    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
+    
+    frmConnect.relampago.Enabled = False
+            
+    If FrmLogear.Visible Then
+        Unload FrmLogear
+
+        'Unload frmConnect
+    End If
+    
+    If frmMain.Visible Then
+        '  frmMain.Visible = False
+        
+        UserParalizado = False
+        UserInmovilizado = False
+        UserStopped = False
+        
+        InvasionActual = 0
+        frmMain.Evento.Enabled = False
+     
+        'BUG CLONES
+        Dim i As Integer
+
+        For i = 1 To LastChar
+            Call EraseChar(i)
+        Next i
+        
+        frmMain.personaje(1).Visible = False
+        frmMain.personaje(2).Visible = False
+        frmMain.personaje(3).Visible = False
+        frmMain.personaje(4).Visible = False
+        frmMain.personaje(5).Visible = False
+
+    End If
+End Sub
+
+
 
