@@ -196,8 +196,6 @@ Private Sub Form_Load()
     Call Form_RemoveTitleBar(Me)
     Me.Width = 1024 * Screen.TwipsPerPixelX
     Me.Height = 768 * Screen.TwipsPerPixelY
-    AuthSocket.RemoteHost = "45.235.99.71"
-    AuthSocket.RemotePort = "4004"
     
     Exit Sub
 

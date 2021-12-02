@@ -280,6 +280,8 @@ Public Type tServerInfo
     puerto As Integer
     desc As String
     estado As Boolean
+    IpLogin As String
+    puertoLogin As Integer
 
 End Type
 
@@ -1188,6 +1190,9 @@ Public IPdelServidor     As String
 
 Public PuertoDelServidor As String
 
+Public IPdelServidorLogin     As String
+
+Public PuertoDelServidorLogin As String
 '
 '********** FUNCIONES API ***********
 '
