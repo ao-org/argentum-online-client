@@ -5,6 +5,7 @@ Public Enum e_state
     Idle = 0
     RequestAccountLogin
     AccountLogged
+    RequestCharList
 End Enum
 
 Public SessionOpened As Boolean
@@ -25,6 +26,8 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
     Select Case Auth_state
         Case e_state.RequestAccountLogin
             Call HandleAccountLogin(bytesTotal)
+        Case e_state.RequestCharList
+            Call HandlePCList(bytesTotal)
     End Select
     
 End Sub
@@ -50,8 +53,8 @@ End Sub
 Public Sub SendAccountLoginRequest()
     Dim username As String
     Dim password As String
-    Dim len_encrypted_password As Integer
     Dim len_encrypted_username As Integer
+    Dim len_encrypted_password As Integer
     
     Dim login_request() As Byte
     Dim packet_size As Integer
@@ -114,6 +117,50 @@ Public Sub SendAccountLoginRequest()
     
 End Sub
 
+Public Sub PCListRequest()
+    Dim username As String
+    Dim len_encrypted_username As Integer
+    
+    Dim packet_request() As Byte
+    Dim charList_request() As Byte
+    Dim offset_login_request As Long
+    Dim packet_size As Integer
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("PCListRequest", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    username = CuentaEmail
+    
+    Dim encrypted_username() As Byte
+    Dim encrypted_username_b64 As String
+    
+    
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    
+    Call Str2ByteArr(encrypted_username_b64, encrypted_username)
+    
+    
+    Dim len_username As Integer
+    
+    len_username = Len(encrypted_username_b64)
+    
+    ReDim charList_request(1 To (2 + 2 + len_username))
+    
+    packet_size = UBound(charList_request)
+    
+    charList_request(1) = &H1
+    charList_request(2) = &H2
+    
+    'Siguientes 2 bytes indican tamaño total del paquete
+    charList_request(3) = hiByte(packet_size)
+    charList_request(4) = LoByte(packet_size)
+    
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, charList_request, len_username, 5)
+        
+    Call frmConnect.AuthSocket.SendData(charList_request)
+    
+    Auth_state = e_state.RequestCharList
+    
+End Sub
 Public Sub connectToLoginServer()
 
     frmConnect.AuthSocket.Close
@@ -160,6 +207,43 @@ Public Sub HandleOpenSession(ByVal bytesTotal As Long)
     
 End Sub
 
+Public Sub HandlePCList(ByVal bytesTotal As Long)
+
+    If bytesTotal < 4 Then
+        Call DebugPrint("Paquete incorrecto", 255, 255, 255, True)
+        Exit Sub
+    End If
+    
+    Dim packet_size_byte() As Byte
+    Dim PacketId() As Byte
+    
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandlePCList", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim strData As String
+    frmConnect.AuthSocket.PeekData strData, vbString, bytesTotal
+    Call DebugPrint("Bytes total: " & strData, 255, 255, 255, False)
+    
+    frmConnect.AuthSocket.GetData PacketId, vbByte, 2
+    Call DebugPrint("Id: " & ByteArrayToHex(PacketId), 255, 255, 255, False)
+    
+    frmConnect.AuthSocket.GetData packet_size_byte, vbByte, 2
+    
+    Dim encrypted_list() As Byte
+    Dim packet_size As Integer
+    
+    packet_size = MakeInt(packet_size_byte(1), packet_size_byte(0))
+    frmConnect.AuthSocket.GetData encrypted_list, packet_size - 4
+        
+    'Call Str2ByteArr("pablomarquezARG1", secret_key_byte)
+    Dim decrypted_list As String
+     
+    decrypted_list = AO20CryptoSysWrapper.Decrypt(ByteArrayToHex(public_key), cnvStringFromHexStr(cnvToHex(encrypted_list)))
+    
+    Call DebugPrint("Decrypted_list: " & decrypted_list, 255, 255, 255, False)
+            
+    Auth_state = e_state.Idle
+End Sub
 Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
@@ -174,16 +258,20 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
     If data(0) = &HAF And data(1) = &HA1 Then
         Call DebugPrint("LOGIN-OK", 0, 255, 0, True)
         Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(data), 255, 255, 255)
-        Auth_state = e_state.AccountLogged
+        frmConnect.AuthSocket.GetData data, vbByte, 2
         
+        Auth_state = e_state.AccountLogged
+        Call PCListRequest
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case data(3)
+        Select Case MakeInt(data(3), data(2))
             Case 1
                 Call DebugPrint("Invalid Username", 255, 0, 0)
             Case 4
                 Call DebugPrint("Username is already logged.", 255, 255, 0)
+            Case 5
+                Call DebugPrint("Password is incorrect.", 255, 255, 0)
             Case 6
                 Call DebugPrint("Username has been banned.", 255, 0, 0)
             Case 7
