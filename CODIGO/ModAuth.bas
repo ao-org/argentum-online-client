@@ -6,12 +6,15 @@ Public Enum e_state
     RequestAccountLogin
     AccountLogged
     RequestCharList
+    RequestLogout
 End Enum
 
 Public SessionOpened As Boolean
 
 Public Auth_state As e_state
 Public public_key() As Byte
+Public encrypted_session_token As String
+
 
 Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
 
@@ -28,6 +31,8 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
             Call HandleAccountLogin(bytesTotal)
         Case e_state.RequestCharList
             Call HandlePCList(bytesTotal)
+        Case e_state.RequestLogout
+            Call HandleLogOutRequest(bytesTotal)
     End Select
     
 End Sub
@@ -117,6 +122,61 @@ Public Sub SendAccountLoginRequest()
     
 End Sub
 
+Public Sub LogOutRequest()
+    
+    Dim logout_request() As Byte
+    Dim packet_size As Integer
+    
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("LogOutRequest", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
+    ReDim logout_request(1 To (4 + Len(encrypted_session_token)))
+    
+    packet_size = UBound(logout_request)
+    
+    logout_request(1) = &H1
+    logout_request(2) = &H1
+    
+    'Siguientes 2 bytes indican tamaño total del paquete
+    logout_request(3) = hiByte(packet_size)
+    logout_request(4) = LoByte(packet_size)
+    Dim encrypted_session_token_byte() As Byte
+    Call AO20CryptoSysWrapper.CopyBytes(Str2ByteArr(encrypted_session_token, encrypted_session_token_byte), logout_request, Len(encrypted_session_token), 5)
+    
+    Call frmConnect.AuthSocket.SendData(logout_request)
+    
+    Auth_state = e_state.RequestLogout
+    
+End Sub
+Public Sub HandleLogOutRequest(ByVal bytesTotal As Long)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleLogOutRequest", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
+    Dim data() As Byte
+    
+    frmConnect.AuthSocket.PeekData data, vbByte, bytesTotal
+    
+    frmConnect.AuthSocket.GetData data, vbByte, 2
+    
+    If data(0) = &H20 And data(1) = &H22 Then
+        Call DebugPrint("LOGOUT_OKAY", 0, 255, 0, True)
+        
+        frmConnect.AuthSocket.GetData data, vbByte, 2
+        
+        Auth_state = e_state.Idle
+    Else
+       Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData data, vbByte, 4
+        Select Case MakeInt(data(3), data(2))
+            Case 41
+                Call DebugPrint("Not logged yet.", 255, 255, 0)
+        End Select
+    End If
+    Auth_state = e_state.Idle
+End Sub
+
 Public Sub PCListRequest()
     Dim username As String
     Dim len_encrypted_username As Integer
@@ -161,7 +221,7 @@ Public Sub PCListRequest()
     Auth_state = e_state.RequestCharList
     
 End Sub
-Public Sub connectToLoginServer()
+Public Sub connectToLoginServer(Optional ByVal state As e_state)
 
     frmConnect.AuthSocket.Close
     frmConnect.AuthSocket.RemoteHost = IPdelServidorLogin
@@ -204,7 +264,7 @@ Public Sub HandleOpenSession(ByVal bytesTotal As Long)
     Str2ByteArr decrypted_session_token, public_key, 16
     
     SessionOpened = True
-    
+    encrypted_session_token = cnvStringFromHexStr(cnvToHex(encrypted_token))
 End Sub
 
 Public Sub HandlePCList(ByVal bytesTotal As Long)
@@ -242,7 +302,7 @@ Public Sub HandlePCList(ByVal bytesTotal As Long)
     Call FillAccountData(decrypted_list)
     Call DebugPrint("Decrypted_list: " & decrypted_list, 255, 255, 255, False)
             
-    Auth_state = e_state.Idle
+    Auth_state = e_state.AccountLogged
 End Sub
 Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
 
@@ -270,6 +330,11 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
                 Call DebugPrint("Invalid Username", 255, 0, 0)
             Case 4
                 Call DebugPrint("Username is already logged.", 255, 255, 0)
+                If Not FullLogout Then
+                    Call SendAccountLoginRequest
+                Else
+                    Call LogOutRequest
+                End If
             Case 5
                 Call DebugPrint("Password is incorrect.", 255, 255, 0)
             Case 6
@@ -329,7 +394,10 @@ Private Sub FillAccountData(ByVal data As String)
         character = Replace(character, "[", "")
         character = Replace(character, "]", "")
         character = Replace(character, "'", "")
-        character = Replace(character, ",", "", 1, 1)
+        If mid(character, 1, 1) = "," Then
+            character = mid(character, 2)
+        End If
+        
          Pjs(ii).nombre = ReadField(1, character, Asc(","))
         Pjs(ii).Head = Val(ReadField(2, character, Asc(",")))
         Pjs(ii).Clase = Val(ReadField(3, character, Asc(",")))

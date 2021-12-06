@@ -1201,6 +1201,7 @@ Public Sub HandleDisconnect()
     '***************************************************
     Dim i As Long
     
+    FullLogout = Reader.ReadBool
     Mod_Declaraciones.Connected = False
     
     Call ResetearUserMacro
@@ -1408,7 +1409,13 @@ Public Sub HandleDisconnect()
 
     Next
     
-    Exit Sub
+    If Not FullLogout Then
+        'Si no es un deslogueo completo, envío nuevamente la lista de Pjs.
+        Call connectToLoginServer
+    Else
+        'Si es completo simplemente remuevo el token.
+        Call connectToLoginServer(e_state.RequestLogout)
+    End If
 
 HandleDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDisconnect", Erl)

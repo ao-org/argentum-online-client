@@ -129,6 +129,13 @@ Private Char As Byte
 
 Private Sub AuthSocket_Connect()
     If Not SessionOpened Then
+    
+        Select Case Auth_state
+            Case e_state.RequestLogout
+                Call LogOutRequest
+                Exit Sub
+        End Select
+        
         Call OpenSessionRequest
         Auth_state = e_state.RequestAccountLogin
     End If
@@ -816,7 +823,8 @@ Private Sub LogearPersonaje(ByVal Nick As String)
     If Connected Then
         frmMain.ShowFPS.Enabled = True
     End If
-
+    
+    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
     Call LoginOrConnect(E_MODO.Normal)
     
     Exit Sub

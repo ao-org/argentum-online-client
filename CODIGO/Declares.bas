@@ -1177,6 +1177,7 @@ Public stxtbuffercmsg    As String 'Holds temp raw data from server
 Public SendNewChar       As Boolean 'Used during login
 
 Public Connected         As Boolean 'True when connected to server
+Public FullLogout        As Boolean
 
 Public DownloadingMap    As Boolean 'Currently downloading a map from server
 
