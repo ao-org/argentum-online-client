@@ -552,7 +552,7 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
         If EsSpell Then
              .lifeTime = 3500
         Else
-            .lifeTime = MS_PER_CHAR * Len(char_dialog)
+            .lifeTime = 3000 + MS_PER_CHAR * Len(char_dialog)
         End If
         .charindex = char_index
     End With
