@@ -180,6 +180,22 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         ScreenY = ScreenY + TilePixelHeight
     Next y
     
+ 
+    
+    
+    Dim grhSpellArea As grh
+    grhSpellArea.GrhIndex = 6579
+    
+    ScreenX = (MouseX \ 32) * 32 - ((RadioHechizoArea \ 2) * 32)
+    ScreenY = (MouseY \ 32) * 32 - ((RadioHechizoArea \ 2) * 32)
+    
+    If casteaArea And MouseX > 0 And MouseY > 0 And frmMain.MousePointer = 2 Then
+        For x = 0 To RadioHechizoArea - 1
+            For y = 0 To RadioHechizoArea - 1
+                Call Draw_Grh(grhSpellArea, (x * 32) + ScreenX, y * 32 + ScreenY, 0, 1, MapData(15, 15).light_value)
+            Next y
+        Next x
+    End If
     
      ScreenY = StartBufferedY
 
@@ -523,7 +539,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             
             With MapData(x, y)
 
-                Dim i As Long
 
                 ' Dialogs *******************************
                 If MapData(x, y).charindex <> 0 Then
@@ -538,6 +553,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 '******************************************
 
                 ' Render text value *******************************
+                Dim i As Long
                 If UBound(.DialogEffects) > 0 Then
                     For i = 1 To UBound(.DialogEffects)
                         With .DialogEffects(i)
