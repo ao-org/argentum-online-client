@@ -184,17 +184,19 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
     
     Dim grhSpellArea As grh
-    grhSpellArea.GrhIndex = 6579
+    grhSpellArea.GrhIndex = 20058
     
-    ScreenX = (MouseX \ 32) * 32 - ((RadioHechizoArea \ 2) * 32)
-    ScreenY = (MouseY \ 32) * 32 - ((RadioHechizoArea \ 2) * 32)
+    Dim temp_color(3) As RGBA
     
+    Call SetRGBA(temp_color(0), 255, 20, 25, 255)
+    Call SetRGBA(temp_color(1), 0, 255, 25, 255)
+    Call SetRGBA(temp_color(2), 55, 255, 55, 255)
+    Call SetRGBA(temp_color(3), 145, 70, 70, 255)
+    
+    Call SetRGBA(MapData(15, 15).light_value(0), 255, 20, 20)
+    'size 96x96 - mitad = 48
     If casteaArea And MouseX > 0 And MouseY > 0 And frmMain.MousePointer = 2 Then
-        For x = 0 To RadioHechizoArea - 1
-            For y = 0 To RadioHechizoArea - 1
-                Call Draw_Grh(grhSpellArea, (x * 32) + ScreenX, y * 32 + ScreenY, 0, 1, MapData(15, 15).light_value)
-            Next y
-        Next x
+        Call Draw_Grh(grhSpellArea, MouseX - 48, MouseY - 48, 0, 1, temp_color, True, , , 70)
     End If
     
      ScreenY = StartBufferedY
