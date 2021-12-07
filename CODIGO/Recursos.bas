@@ -1427,7 +1427,7 @@ Public Sub CargarParticulasBinary()
     Exit Sub
 
 CargarParticulasBinary_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarParticulasBinary", Erl)
+    'Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarParticulasBinary", Erl)
     Resume Next
     
 End Sub

@@ -280,6 +280,8 @@ Public Type tServerInfo
     puerto As Integer
     desc As String
     estado As Boolean
+    IpLogin As String
+    puertoLogin As Integer
 
 End Type
 
@@ -1178,6 +1180,7 @@ Public stxtbuffercmsg    As String 'Holds temp raw data from server
 Public SendNewChar       As Boolean 'Used during login
 
 Public Connected         As Boolean 'True when connected to server
+Public FullLogout        As Boolean
 
 Public DownloadingMap    As Boolean 'Currently downloading a map from server
 
@@ -1191,6 +1194,9 @@ Public IPdelServidor     As String
 
 Public PuertoDelServidor As String
 
+Public IPdelServidorLogin     As String
+
+Public PuertoDelServidorLogin As String
 '
 '********** FUNCIONES API ***********
 '

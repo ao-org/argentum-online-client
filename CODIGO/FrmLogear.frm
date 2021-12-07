@@ -385,6 +385,8 @@ Private Sub lstServers_Click()
     
     IPdelServidor = ServersLst(lstServers.ListIndex + 1).IP
     PuertoDelServidor = ServersLst(lstServers.ListIndex + 1).puerto
+    IPdelServidorLogin = ServersLst(lstServers.ListIndex + 1).IpLogin
+    PuertoDelServidorLogin = ServersLst(lstServers.ListIndex + 1).puertoLogin
     
     Exit Sub
 

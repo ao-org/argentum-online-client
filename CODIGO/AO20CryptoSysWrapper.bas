@@ -80,3 +80,33 @@ End Function
 Public Function LoByte(w As Integer) As Byte
  LoByte = w And &HFF
 End Function
+
+Public Function MakeInt(ByVal LoByte As Byte, _
+   ByVal hiByte As Byte) As Integer
+
+MakeInt = ((hiByte * &H100) + LoByte)
+
+End Function
+
+Public Function CopyBytes(ByRef src() As Byte, ByRef dst() As Byte, ByVal size As Long, Optional ByVal offset As Long = 0)
+    Dim i As Long
+    
+    For i = 0 To (size - 1)
+        dst(i + offset) = src(i)
+    Next i
+    
+End Function
+
+Public Function ByteArrayToHex(ByRef ByteArray() As Byte) As String
+    Dim l As Long, strRet As String
+    
+    For l = LBound(ByteArray) To UBound(ByteArray)
+        strRet = strRet & hex$(ByteArray(l)) & " "
+    Next l
+    
+    'Remove last space at end.
+    ByteArrayToHex = Left$(strRet, Len(strRet) - 1)
+End Function
+
+
+
