@@ -496,6 +496,9 @@ Public Const UltimoBodyBarco = 87
 
 Public NumEscudosAnims As Integer
 
+Public casteaArea As Boolean
+Public RadioHechizoArea As Byte
+
 Type tHerreria
 
     LHierro As Integer

@@ -180,6 +180,24 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         ScreenY = ScreenY + TilePixelHeight
     Next y
     
+ 
+    
+    
+    Dim grhSpellArea As grh
+    grhSpellArea.GrhIndex = 20058
+    
+    Dim temp_color(3) As RGBA
+    
+    Call SetRGBA(temp_color(0), 255, 20, 25, 255)
+    Call SetRGBA(temp_color(1), 0, 255, 25, 255)
+    Call SetRGBA(temp_color(2), 55, 255, 55, 255)
+    Call SetRGBA(temp_color(3), 145, 70, 70, 255)
+    
+    Call SetRGBA(MapData(15, 15).light_value(0), 255, 20, 20)
+    'size 96x96 - mitad = 48
+    If casteaArea And MouseX > 0 And MouseY > 0 And frmMain.MousePointer = 2 Then
+        Call Draw_Grh(grhSpellArea, MouseX - 48, MouseY - 48, 0, 1, temp_color, True, , , 70)
+    End If
     
      ScreenY = StartBufferedY
 
@@ -523,7 +541,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             
             With MapData(x, y)
 
-                Dim i As Long
 
                 ' Dialogs *******************************
                 If MapData(x, y).charindex <> 0 Then
@@ -538,6 +555,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 '******************************************
 
                 ' Render text value *******************************
+                Dim i As Long
                 If UBound(.DialogEffects) > 0 Then
                     For i = 1 To UBound(.DialogEffects)
                         With .DialogEffects(i)

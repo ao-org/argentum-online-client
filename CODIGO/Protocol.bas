@@ -3233,7 +3233,7 @@ Private Sub HandleGuildChat()
     Dim chat As String
 
     Dim status As Byte
-
+    
     Dim str  As String
 
     Dim r    As Byte
@@ -3245,6 +3245,7 @@ Private Sub HandleGuildChat()
     Dim tmp  As Integer
 
     Dim Cont As Integer
+    
     status = Reader.ReadInt8()
     chat = Reader.ReadString8()
     
@@ -4594,8 +4595,11 @@ Private Sub HandleWorkRequestTarget()
     '***************************************************
 
     Dim UsingSkillREcibido As Byte
-     
+    
     UsingSkillREcibido = Reader.ReadInt8()
+    casteaArea = Reader.ReadBool()
+    RadioHechizoArea = Reader.ReadInt8()
+    'RadioHechizoArea = RadioHechizoArea / 2
 
     If UsingSkillREcibido = 0 Then
         frmMain.MousePointer = 0
@@ -4609,12 +4613,13 @@ Private Sub HandleWorkRequestTarget()
    
     UsingSkill = UsingSkillREcibido
     frmMain.MousePointer = 2
-
     Select Case UsingSkill
 
         Case magia
             Call FormParser.Parse_Form(frmMain, E_CAST)
+            
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
+            
 
         Case Robar
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_ROBAR, 100, 100, 120, 0, 0)
