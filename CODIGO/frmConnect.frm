@@ -691,6 +691,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
 
                 Case 3
+                    Debug.Print "Vuelvo al login, debería borrar el token"
+                    Auth_state = e_state.Idle
+                    Call ModAuth.LogOutRequest
                     Call ComprobarEstado
 
                     If Musica Then

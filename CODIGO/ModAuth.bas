@@ -142,7 +142,8 @@ Public Sub LogOutRequest()
     logout_request(3) = hiByte(packet_size)
     logout_request(4) = LoByte(packet_size)
     Dim encrypted_session_token_byte() As Byte
-    Call AO20CryptoSysWrapper.CopyBytes(Str2ByteArr(encrypted_session_token, encrypted_session_token_byte), logout_request, Len(encrypted_session_token), 5)
+    Call Str2ByteArr(encrypted_session_token, encrypted_session_token_byte)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_session_token_byte, logout_request, Len(encrypted_session_token), 5)
     
     Call frmConnect.AuthSocket.SendData(logout_request)
     
