@@ -1113,6 +1113,7 @@ Sub Main()
         IPServers(2) = "181.164.224.34:7667:Horacio:181.164.224.34:4000"
         IPServers(3) = "127.0.0.1:7667:Localhost:localhost:4000"
         IPServers(4) = "186.152.115.146:7667:Martin:localhost:4000"
+        IPServers(5) = "45.235.98.29:4350:MinehostTest:localhost:4000"
     #End If
 
     Call ComprobarEstado
