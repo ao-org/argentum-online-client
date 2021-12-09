@@ -1073,7 +1073,7 @@ Sub Main()
 
     ' Security
     CheckMD5 = GetMd5
-    
+    SessionOpened = False
     ' Leer contraseña de recursos
     Call CheckResources
 
@@ -1107,14 +1107,13 @@ Sub Main()
 
     End If
 
-    IPServers(1) = "45.235.99.71:7667:Minehost"
+    IPServers(1) = "45.235.99.71:7667:Minehost:45.235.99.71:4004"
     
     #If DEBUGGING = 1 Then
         IPServers(2) = "45.235.98.29:4350:MinehostStaging:localhost:4000"
         IPServers(3) = "127.0.0.1:7667:Localhost:localhost:4000"
         IPServers(4) = "181.164.224.34:7667:HoracioTest:181.164.224.34:4000"
         IPServers(5) = "186.152.115.146:7667:Martin:localhost:4000"
-
     #End If
 
     Call ComprobarEstado
@@ -1652,6 +1651,8 @@ Public Sub InitServersList()
         ServersLst(i).IP = General_Field_Read(1, IPServers(i), ":")
         ServersLst(i).puerto = Val(General_Field_Read(2, IPServers(i), ":"))
         ServersLst(i).desc = General_Field_Read(3, IPServers(i), ":")
+        ServersLst(i).IpLogin = General_Field_Read(4, IPServers(i), ":")
+        ServersLst(i).puertoLogin = General_Field_Read(5, IPServers(i), ":")
     Next i
 
     CurServer = 1

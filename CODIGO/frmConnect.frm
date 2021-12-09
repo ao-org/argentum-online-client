@@ -1,5 +1,6 @@
 VERSION 5.00
 Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmConnect 
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
@@ -30,6 +31,15 @@ Begin VB.Form frmConnect
    ScaleWidth      =   1024
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin MSWinsockLib.Winsock AuthSocket 
+      Left            =   120
+      Top             =   120
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemoteHost      =   "45.235.99.71"
+      RemotePort      =   4004
+   End
    Begin InetCtlsObjects.Inet Inet1 
       Left            =   12600
       Top             =   5880
@@ -115,6 +125,26 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Char As Byte
+
+
+Private Sub AuthSocket_Connect()
+    If Not SessionOpened Then
+    
+        Select Case Auth_state
+            Case e_state.RequestLogout
+                Call LogOutRequest
+                Exit Sub
+        End Select
+        
+        Call OpenSessionRequest
+        Auth_state = e_state.RequestAccountLogin
+    End If
+    
+End Sub
+
+Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
+    ModAuth.AuthSocket_DataArrival bytesTotal
+End Sub
 
 Private Sub Form_Activate()
     
@@ -661,6 +691,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
 
                 Case 3
+                    Debug.Print "Vuelvo al login, debería borrar el token"
+                    Auth_state = e_state.Idle
+                    Call ModAuth.LogOutRequest
                     Call ComprobarEstado
 
                     If Musica Then
@@ -793,7 +826,8 @@ Private Sub LogearPersonaje(ByVal Nick As String)
     If Connected Then
         frmMain.ShowFPS.Enabled = True
     End If
-
+    
+    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
     Call LoginOrConnect(E_MODO.Normal)
     
     Exit Sub

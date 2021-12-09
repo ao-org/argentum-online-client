@@ -40,11 +40,12 @@ End Function
 Sub LoginOrConnect(ByVal Modo As E_MODO)
     EstadoLogin = Modo
     
-    If (Connected) Then
+    If Auth_state = e_state.AccountLogged Then
         Call Login
     Else
-        Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+        Call connectToLoginServer
     End If
+  
 End Sub
 
 Sub Login()
@@ -82,10 +83,7 @@ Sub Login()
     
                 Call Sound.Sound_Play(SND_DICE)
             End If
-        
-        Case E_MODO.IngresandoConCuenta
-            Call WriteIngresandoConCuenta
-            
+                    
         Case E_MODO.BorrandoPJ
             Call WriteBorrandoPJ
     End Select

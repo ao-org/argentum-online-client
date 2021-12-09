@@ -317,9 +317,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             With MapData(x, y)
                 ' Objects *********************************
                 If .ObjGrh.grhIndex <> 0 Then
-                    If x = 43 And y = 58 Then
-                        Debug.Print "asdadsdsa"
-                    End If
                            
                     Select Case ObjData(.OBJInfo.ObjIndex).ObjType
                          
@@ -361,8 +358,11 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
                             End If
                         
-                        Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
+                       ' Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
                             ' Objetos grandes (menos árboles)
+                       '     Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                            
+                        Case Else
                             Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
                     
                     End Select
