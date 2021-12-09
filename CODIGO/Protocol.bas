@@ -131,7 +131,6 @@ Private Enum ServerPacketID
     AddForumMsg             ' FMSG
     ShowForumForm           ' MFOR
     SetInvisible            ' NOVER 80
-    DiceRoll                ' DADOS
     MeditateToggle          ' MEDOK
     BlindNoMore             ' NSEGUE
     DumbNoMore              ' NESTUP
@@ -233,10 +232,8 @@ Private Enum ServerPacketID
 End Enum
 
 Public Enum ClientPacketID
-
     LoginExistingChar       'OLOGIN
     LoginNewChar            'NLOGIN
-    ThrowDice
     Talk                    ';
     Yell                    '-
     Whisper                 '\
@@ -263,6 +260,7 @@ Public Enum ClientPacketID
     UseSpellMacro           'UMH
     UseItem                 'USA
     CraftBlacksmith         'CNS
+    '--------------------
     CraftCarpenter          'CNC
     WorkLeftClick           'WLC
     CreateNewGuild          'CIG
@@ -742,8 +740,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleShowForumForm
         Case ServerPacketID.SetInvisible
             Call HandleSetInvisible
-        Case ServerPacketID.DiceRoll
-            Call HandleDiceRoll
         Case ServerPacketID.MeditateToggle
             Call HandleMeditateToggle
         Case ServerPacketID.BlindNoMore
@@ -4923,35 +4919,19 @@ Private Sub HandleAtributes()
     Next i
     
     'Show them in character creation
-    If EstadoLogin = E_MODO.Dados Then
 
-        With frmCrearPersonaje
 
-            If .Visible Then
-                .lbFuerza.Caption = UserAtributos(eAtributos.Fuerza)
-                .lbAgilidad.Caption = UserAtributos(eAtributos.Agilidad)
-                .lbInteligencia.Caption = UserAtributos(eAtributos.Inteligencia)
-                .lbConstitucion.Caption = UserAtributos(eAtributos.Constitucion)
-                .lbCarisma = UserAtributos(eAtributos.Carisma)
-
-            End If
-
-        End With
-
+    If LlegaronSkills And LlegaronStats Then
+        Alocados = SkillPoints
+        frmEstadisticas.puntos.Caption = SkillPoints
+        frmEstadisticas.Iniciar_Labels
+        frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
+        frmEstadisticas.Show , frmMain
     Else
-
-        If LlegaronSkills And LlegaronStats Then
-            Alocados = SkillPoints
-            frmEstadisticas.puntos.Caption = SkillPoints
-            frmEstadisticas.Iniciar_Labels
-            frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
-            frmEstadisticas.Show , frmMain
-        Else
-            LlegaronAtrib = True
-
-        End If
+        LlegaronAtrib = True
 
     End If
+
     
     Exit Sub
 
@@ -5892,39 +5872,6 @@ Private Sub HandleSetEscribiendo()
 
 HandleSetEscribiendo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSetEscribiendo", Erl)
-    
-    
-End Sub
-
-''
-' Handles the DiceRoll message.
-
-Private Sub HandleDiceRoll()
-    
-    On Error GoTo HandleDiceRoll_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    UserAtributos(eAtributos.Fuerza) = Reader.ReadInt8()
-    UserAtributos(eAtributos.Agilidad) = Reader.ReadInt8()
-    UserAtributos(eAtributos.Inteligencia) = Reader.ReadInt8()
-    UserAtributos(eAtributos.Constitucion) = Reader.ReadInt8()
-    UserAtributos(eAtributos.Carisma) = Reader.ReadInt8()
-    
-    frmCrearPersonaje.lbFuerza = UserAtributos(eAtributos.Fuerza)
-    frmCrearPersonaje.lbAgilidad = UserAtributos(eAtributos.Agilidad)
-    frmCrearPersonaje.lbInteligencia = UserAtributos(eAtributos.Inteligencia)
-    frmCrearPersonaje.lbConstitucion = UserAtributos(eAtributos.Constitucion)
-    frmCrearPersonaje.lbCarisma = UserAtributos(eAtributos.Carisma)
-    
-    Exit Sub
-
-HandleDiceRoll_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDiceRoll", Erl)
     
     
 End Sub

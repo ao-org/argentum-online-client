@@ -129,13 +129,6 @@ Private Char As Byte
 
 Private Sub AuthSocket_Connect()
     If Not SessionOpened Then
-    
-        Select Case Auth_state
-            Case e_state.RequestLogout
-                Call LogOutRequest
-                Exit Sub
-        End Select
-        
         Call OpenSessionRequest
         Auth_state = e_state.RequestAccountLogin
     End If
@@ -552,15 +545,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         frmMain.ShowFPS.Enabled = True
                     End If
                     
-                    Call LoginOrConnect(E_MODO.CrearNuevoPj)
+                    'Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+                    'TODO: Mostrar ventana de creación de personaje
+                    EstadoLogin = E_MODO.CrearNuevoPj
                 End If
 
-            End If
-            
-            If x >= 652 And x < 677 And y >= 346 And y < 365 Then  'DADO
-                Call Sound.Sound_Play(SND_DICE) ' Este sonido hay que ponerlo en el evento "click" o hacer q suene menos xq rompe oidos sino
-
-                Call LoginOrConnect(E_MODO.Dados)
             End If
 
             Exit Sub
@@ -653,18 +642,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         Exit Sub
 
                     End If
-                    
-                    If IntervaloPermiteConectar Then
-                        If Musica Then
-
-                            '  ReproducirMp3 (2)
-                            'Else
-                            ' Call Audio.PlayMIDI("123.mid")
-                        End If
-
-                        Call LoginOrConnect(E_MODO.Dados)
-                    End If
-
+                    QueRender = 3
                 Case 2
 
                     If Char = 0 Then Exit Sub
@@ -693,7 +671,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case 3
                     Debug.Print "Vuelvo al login, debería borrar el token"
                     Auth_state = e_state.Idle
-                    Call ModAuth.LogOutRequest
+                    'Call ModAuth.LogOutRequest
                     Call ComprobarEstado
 
                     If Musica Then

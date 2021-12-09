@@ -755,21 +755,6 @@ WriteWork_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteThrowDice()
-        '<EhHeader>
-        On Error GoTo WriteThrowDice_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.ThrowDice)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteThrowDice_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteThrowDice", Erl)
-        '</EhFooter>
-End Sub
 
 ''
 ' Writes the "UseSpellMacro" message to the outgoing data buffer.

@@ -1001,6 +1001,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 frmMain.ShowFPS.Enabled = True
             End If
             
+            Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
             Call LoginOrConnect(E_MODO.CrearNuevoPj)
         End If
 
