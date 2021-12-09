@@ -38,12 +38,17 @@ End Sub
 
 Private Sub OnClientConnect()
 On Error GoTo OnClientConnect_Err:
+Debug.Print ("Entró OnClientConnect")
+
+If EstadoLogin = E_MODO.CrearNuevoPj Then
+    Call LoginOrConnect(E_MODO.CrearNuevoPj)
+End If
 
 #If AntiExternos = 1 Then
     XorIndexIn = 0
     XorIndexOut = 0
 #End If
-
+    
     Connected = True
     
     Exit Sub

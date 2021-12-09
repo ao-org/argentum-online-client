@@ -31,8 +31,6 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
             Call HandleAccountLogin(bytesTotal)
         Case e_state.RequestCharList
             Call HandlePCList(bytesTotal)
-        Case e_state.RequestLogout
-            Call HandleLogOutRequest(bytesTotal)
     End Select
     
 End Sub
@@ -333,8 +331,6 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
                 Call DebugPrint("Username is already logged.", 255, 255, 0)
                 If Not FullLogout Then
                     Call SendAccountLoginRequest
-                Else
-                    Call LogOutRequest
                 End If
             Case 5
                 Call DebugPrint("Password is incorrect.", 255, 255, 0)
@@ -361,17 +357,16 @@ End Function
 Private Sub FillAccountData(ByVal data As String)
   
     Dim i As Long
-    Dim cantidadPersonajes As Long
-    cantidadPersonajes = 0
+    CantidadDePersonajesEnCuenta = 0
     For i = 1 To Len(data)
         If mid(data, i, 1) = "(" Then
-            cantidadPersonajes = cantidadPersonajes + 1
+            CantidadDePersonajesEnCuenta = CantidadDePersonajesEnCuenta + 1
         End If
     Next i
 
     Dim ii As Byte
      'name, head_id, class_id, body_id, pos_map, pos_x, pos_y, level, status, helmet_id, shield_id, weapon_id, guild_index, is_dead, is_sailing
-    For ii = 1 To cantidadPersonajes
+    For ii = 1 To CantidadDePersonajesEnCuenta
         Pjs(ii).nombre = ""
         Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
         Pjs(ii).Clase = 0
@@ -388,7 +383,7 @@ Private Sub FillAccountData(ByVal data As String)
         Pjs(ii).NameMapa = ""
     Next ii
 
-    For ii = 1 To cantidadPersonajes
+    For ii = 1 To CantidadDePersonajesEnCuenta
         Dim character As String
         character = ReadField(ii, data, Asc(")"))
         character = Replace(character, "(", "")
@@ -399,7 +394,7 @@ Private Sub FillAccountData(ByVal data As String)
             character = mid(character, 2)
         End If
         
-         Pjs(ii).nombre = ReadField(1, character, Asc(","))
+        Pjs(ii).nombre = Replace(ReadField(1, character, Asc(",")), " ", "", 1, 1)
         Pjs(ii).Head = Val(ReadField(2, character, Asc(",")))
         Pjs(ii).Clase = Val(ReadField(3, character, Asc(",")))
         Pjs(ii).Body = Val(ReadField(4, character, Asc(",")))
@@ -419,7 +414,7 @@ Private Sub FillAccountData(ByVal data As String)
     Next ii
 
 
-    For i = 1 To cantidadPersonajes
+    For i = 1 To CantidadDePersonajesEnCuenta
 
         Select Case Pjs(i).Criminal
 
@@ -471,7 +466,7 @@ Private Sub FillAccountData(ByVal data As String)
     
     AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
    
-    If cantidadPersonajes > 0 Then
+    If CantidadDePersonajesEnCuenta > 0 Then
         PJSeleccionado = 1
         LastPJSeleccionado = 1
         

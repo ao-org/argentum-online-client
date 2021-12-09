@@ -1092,7 +1092,7 @@ Public Enum E_MODO
 
     Normal = 1
     CrearNuevoPj = 2
-    Dados = 3
+    'Dados = 3
     CreandoCuenta = 4
     IngresandoConCuenta = 5
     BorrandoPJ = 6
