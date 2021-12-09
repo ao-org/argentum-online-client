@@ -30,7 +30,7 @@ End Type
 
 Private Type grh
 
-    grhIndex As Long
+    GrhIndex As Long
     framecounter As Single
     speed As Single
     Started As Long
@@ -92,7 +92,7 @@ Private Const SIF_TRACKPOS = &H10
 Private Const SIF_ALL = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
 Private tSI As SCROLLINFO
 
-Public Declare Function GetScrollInfo Lib "user32" (ByVal hwnd As Long, ByVal N As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
+Public Declare Function GetScrollInfo Lib "user32" (ByVal hwnd As Long, ByVal n As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
 
 Public Declare Function GetScrollPos Lib "user32" (ByVal hwnd As Long, ByVal nBar As Long) As Long
 
@@ -622,7 +622,7 @@ Sub SetConnected()
     'Unload the connect form
     'FrmCuenta.Visible = False
 
-    frmMain.NombrePJ.Caption = UserName
+    frmMain.NombrePJ.Caption = username
 
     AlphaNiebla = 0
 
@@ -687,7 +687,7 @@ SetConnected_Err:
     
 End Sub
 
-Sub MoveTo(ByVal direccion As E_Heading)
+Sub MoveTo(ByVal Direccion As E_Heading)
     
     On Error GoTo MoveTo_Err
     
@@ -704,19 +704,19 @@ Sub MoveTo(ByVal direccion As E_Heading)
     
     If cartel Then cartel = False
     
-    Select Case direccion
+    Select Case Direccion
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, direccion)
+            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, direccion)
+            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
 
     End Select
 
@@ -733,9 +733,9 @@ Sub MoveTo(ByVal direccion As E_Heading)
                 Call WriteRomperCania
                 PescandoEspecial = False
             End If
-            Call WriteWalk(direccion) 'We only walk if we are not meditating or resting
-            Call Char_Move_by_Head(UserCharIndex, direccion)
-            Call MoveScreen(direccion)
+            Call WriteWalk(Direccion) 'We only walk if we are not meditating or resting
+            Call Char_Move_by_Head(UserCharIndex, Direccion)
+            Call MoveScreen(Direccion)
         Else
 
             If Not UserAvisado Then
@@ -751,9 +751,9 @@ Sub MoveTo(ByVal direccion As E_Heading)
 
     Else
 
-        If charlist(UserCharIndex).Heading <> direccion Then
+        If charlist(UserCharIndex).Heading <> Direccion Then
             If IntervaloPermiteHeading(True) Then
-                Call WriteChangeHeading(direccion)
+                Call WriteChangeHeading(Direccion)
             End If
         End If
 
@@ -854,9 +854,9 @@ Sub Check_Keys()
 
     Static lastMovement As Long
 
-    Dim direccion As E_Heading
+    Dim Direccion As E_Heading
 
-    direccion = charlist(UserCharIndex).Heading
+    Direccion = charlist(UserCharIndex).Heading
 
     If Not Application.IsAppActive() Then Exit Sub
     
@@ -1110,7 +1110,7 @@ Sub Main()
     IPServers(1) = "45.235.99.71:7667:Minehost:45.235.99.71:4004"
     
     #If DEBUGGING = 1 Then
-        IPServers(2) = "45.235.98.29:4350:MinehostStaging:localhost:4000"
+        IPServers(2) = "45.235.98.29:4350:MinehostStaging:45.235.98.29:4000"
         IPServers(3) = "127.0.0.1:7667:Localhost:localhost:4000"
         IPServers(4) = "181.164.224.34:7667:HoracioTest:181.164.224.34:4000"
         IPServers(5) = "186.152.115.146:7667:Martin:localhost:4000"
@@ -1809,12 +1809,12 @@ ErrHandler:
 
 End Function
 
-Public Function Tilde(ByRef Data As String) As String
+Public Function Tilde(ByRef data As String) As String
     
     On Error GoTo Tilde_Err
     
 
-    Tilde = UCase$(Data)
+    Tilde = UCase$(data)
  
     Tilde = Replace$(Tilde, "Á", "A")
     Tilde = Replace$(Tilde, "É", "E")
@@ -1913,24 +1913,24 @@ End Function
 
 Public Sub CheckResources()
 
-    Dim Data(1 To 200) As Byte
+    Dim data(1 To 200) As Byte
     
     Dim handle As Integer
     handle = FreeFile
 
     Open App.Path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #handle
     
-    Get #handle, , Data
+    Get #handle, , data
     
     Close #handle
     
     Dim length As Integer
-    length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
+    length = data(UBound(data)) + data(UBound(data) - 1) * 256
 
     Dim i As Integer
     
     For i = 1 To length
-        ResourcesPassword = ResourcesPassword & Chr(Data(i * 3 - 1) Xor 37)
+        ResourcesPassword = ResourcesPassword & Chr(data(i * 3 - 1) Xor 37)
     Next
 
 End Sub
