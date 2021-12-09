@@ -1110,9 +1110,10 @@ Sub Main()
     IPServers(1) = "45.235.99.71:7667:Minehost"
     
     #If DEBUGGING = 1 Then
-        IPServers(2) = "181.164.224.34:7667:Horacio"
-        IPServers(3) = "127.0.0.1:7667:Localhost"
-        IPServers(4) = "186.152.115.146:7667:Martin"
+        IPServers(2) = "45.235.98.29:4350:MinehostStaging:localhost:4000"
+        IPServers(3) = "127.0.0.1:7667:Localhost:localhost:4000"
+        IPServers(4) = "186.152.115.146:7667:Martin:localhost:4000"
+        IPServers(5) = "181.164.224.34:7667:HoracioTest:181.164.224.34:4000"
     #End If
 
     Call ComprobarEstado
