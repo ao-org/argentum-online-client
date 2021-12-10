@@ -211,7 +211,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 ' Objects *********************************
                 If .ObjGrh.grhIndex <> 0 Then
                     Select Case ObjData(.OBJInfo.ObjIndex).ObjType
-                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
+                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otFragua, eObjType.OtDecoraciones, eObjType.otYunque
+                            Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value)
 
                         Case Else
                             ' Objetos en el suelo (items, decorativos, etc)
@@ -223,7 +224,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                                 .light_value(1).A = 85
                                 .light_value(3).A = 85
                                 
-                                
                                 Call Draw_Grh_ItemInWater(.ObjGrh, ScreenX, ScreenY, False, False, .light_value, False, , , (object_angle + x * 45 + y * 90))
                                 
                                 .light_value(1).A = 255
@@ -231,7 +231,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                                 .light_value(0).A = 255
                                 .light_value(2).A = 255
                             Else
-                                Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, , x, y)
+                                Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value)
                             End If
                     End Select
                 End If
@@ -362,8 +362,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                             ' Objetos grandes (menos árboles)
                        '     Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
                             
-                        Case Else
-                            Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                       ' Case Else
+                       '     Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
                     
                     End Select
                 End If
