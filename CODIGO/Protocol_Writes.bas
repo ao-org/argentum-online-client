@@ -594,9 +594,18 @@ Public Sub WriteCastSpell(ByVal Slot As Byte)
         '<EhHeader>
         On Error GoTo WriteCastSpell_Err
         '</EhHeader>
+       ' Dim arr() As Byte
+       ' Dim packet_crc As Long
+        
 100     Call Writer.WriteInt(ClientPacketID.CastSpell)
 102     Call Writer.WriteInt8(Slot)
-    
+        Call Writer.WriteInt64(GetTickCount)
+        'Call Writer.GetData(arr)
+        'packet_crc = crcBytes(arr)
+        
+        'Call Writer.WriteInt64(packet_crc)
+        
+        
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
         Exit Sub
