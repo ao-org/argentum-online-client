@@ -396,7 +396,7 @@ Private Sub FillAccountData(ByVal data As String)
         
         Pjs(ii).nombre = Replace(ReadField(1, character, Asc(",")), " ", "", 1, 1)
         Pjs(ii).Body = Val(ReadField(4, character, Asc(",")))
-        Pjs(ii).Head = IIf(Pjs(ii).Body = 829 Or Pjs(ii).Body = 1269, 0, Val(ReadField(2, character, Asc(","))))
+        Pjs(ii).Head = IIf(Pjs(ii).Body = 829 Or Pjs(ii).Body = 1269 Or Pjs(ii).Body = 1267 Or Pjs(ii).Body = 1265, 0, Val(ReadField(2, character, Asc(","))))
         Pjs(ii).Clase = Val(ReadField(3, character, Asc(",")))
         Pjs(ii).Mapa = Val(ReadField(5, character, Asc(",")))
         Pjs(ii).posX = Val(ReadField(6, character, Asc(",")))
