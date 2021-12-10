@@ -52,19 +52,22 @@ Public Sub WriteLoginNewChar()
         '<EhHeader>
         On Error GoTo WriteLoginNewChar_Err
         '</EhHeader>
+        
+        Dim encrypted_username_b64 As String
+        encrypted_username_b64 = AO20CryptoSysWrapper.ENCRYPT(cnvHexStrFromBytes(public_key), username)
+        
 100     Call Writer.WriteInt(ClientPacketID.LoginNewChar)
-102     Call Writer.WriteString8(CuentaEmail)
-104     Call Writer.WriteString8(SEncriptar(CuentaPassword))
+102     Call Writer.WriteString8(encrypted_session_token)
+104     Call Writer.WriteString8(encrypted_username_b64)
 106     Call Writer.WriteInt8(App.Major)
 108     Call Writer.WriteInt8(App.Minor)
 110     Call Writer.WriteInt8(App.Revision)
-112     Call Writer.WriteString8(UserName)
+128     Call Writer.WriteString8(CheckMD5)
 114     Call Writer.WriteInt8(UserRaza)
 116     Call Writer.WriteInt8(UserSexo)
 118     Call Writer.WriteInt8(UserClase)
 120     Call Writer.WriteInt16(MiCabeza)
 122     Call Writer.WriteInt8(UserHogar)
-128     Call Writer.WriteString8(CheckMD5)
     
 130     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -5880,28 +5883,6 @@ WriteBorrandoPJ_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteIngresandoConCuenta()
-        'TODO_WOLF: Pure
-        '<EhHeader>
-        On Error GoTo WriteIngresandoConCuenta_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.IngresarConCuenta)
-102     Call Writer.WriteString8(CuentaEmail)
-104     Call Writer.WriteString8(SEncriptar(CuentaPassword))
-106     Call Writer.WriteInt8(App.Major)
-108     Call Writer.WriteInt8(App.Minor)
-110     Call Writer.WriteInt8(App.Revision)
-116     Call Writer.WriteString8(CheckMD5)
-    
-118     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteIngresandoConCuenta_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteIngresandoConCuenta", Erl)
-        '</EhFooter>
-End Sub
 
 Public Sub WriteNieblaToggle()
         '<EhHeader>
