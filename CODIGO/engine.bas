@@ -118,6 +118,8 @@ Private Const GrhFogata        As Integer = 1521
 Public flash(3)        As RGBA
 Public COLOR_EMPTY              As RGBA
 Public COLOR_WHITE(3)           As RGBA
+Public COLOR_RED(3)             As RGBA
+Public COLOR_GREEN(3)           As RGBA
 Public r As Byte
 Public G As Byte
 Public B As Byte
@@ -264,7 +266,7 @@ Public Sub Engine_InitColors()
 
     ' Colores comunes
     Call Long_2_RGBAList(COLOR_WHITE, -1)
-
+    
     Call RGBAList(textcolorAsistente, 0, 200, 0)
 
     
@@ -3156,75 +3158,32 @@ Public Sub RenderUICrearPJ()
     
     'Atributos
     Engine_Text_Render_LetraChica "Atributos ", 235 + OffX, 385 + Offy, COLOR_WHITE, 6, True
-    Engine_Draw_Box 175 + OffX, 405 + Offy, 185, 150, RGBA_From_Comp(0, 0, 0, 80)
-  '  Engine_Draw_Box 610, 405, 220, 180, D3DColorARGB(120, 100, 100, 100)
     
+    Dim atributeValue As Long
+    
+    atributeValue = Val(frmCrearPersonaje.lbFuerza.Caption) + Val(frmCrearPersonaje.modfuerza.Caption)
     Engine_Text_Render_LetraChica "Fuerza ", 185 + OffX, 410 + Offy, COLOR_WHITE, 1, True
-   ' Engine_Text_Render "<", 260, 410, DefaultColor, 1, True
-   ' Engine_Text_Render ">", 310, 410, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 409 + Offy, 20, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render_LetraChica frmCrearPersonaje.lbFuerza.Caption, 282 + OffX, 413 + Offy, COLOR_WHITE, 1, True ' Atributo fuerza
-    'Engine_Text_Render "+", 335, 410, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 409 + Offy, 25, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render_LetraChica frmCrearPersonaje.modfuerza.Caption, 320 + OffX, 413 + Offy, COLOR_WHITE, 1, True ' Bonificacion fuerza
+    Call renderAttributesColors(atributeValue, 305 + OffX, 413 + Offy) 'Atributo Fuerza
     
-    
+    atributeValue = Val(frmCrearPersonaje.lbAgilidad.Caption) + Val(frmCrearPersonaje.modAgilidad.Caption)
     Engine_Text_Render "Agilidad ", 185 + OffX, 440 + Offy, COLOR_WHITE, 1, True
-   ' Engine_Text_Render "<", 260, 440, DefaultColor, 1, True
-   ' Engine_Text_Render ">", 310, 440, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 440 + Offy, 20, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.lbAgilidad.Caption, 282 + OffX, 443 + Offy, COLOR_WHITE, 1, True ' Atributo Agilidad
-   ' Engine_Text_Render "+", 335, 440, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 440 + Offy, 25, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.modAgilidad.Caption, 320 + OffX, 443 + Offy, COLOR_WHITE, 1, True ' Bonificacion Agilidad
+    Call renderAttributesColors(atributeValue, 305 + OffX, 443 + Offy) ' Atributo Agilidad
     
     
-    
+    atributeValue = Val(frmCrearPersonaje.lbInteligencia.Caption) + Val(frmCrearPersonaje.modInteligencia.Caption)
     Engine_Text_Render "Inteligencia ", 185 + OffX, 470 + Offy, COLOR_WHITE, 1, True
-    'Engine_Text_Render "<", 260, 470, DefaultColor, 1, True
-    'Engine_Text_Render ">", 310, 470, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 470 + Offy, 20, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.lbInteligencia.Caption, 282 + OffX, 473 + Offy, COLOR_WHITE, 1, True ' Atributo Inteligencia
-    'Engine_Text_Render "+", 335, 470, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 470 + Offy, 25, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.modInteligencia.Caption, 320 + OffX, 473 + Offy, COLOR_WHITE, 1, True ' Bonificacion Inteligencia
+    Call renderAttributesColors(atributeValue, 305 + OffX, 473 + Offy) ' Atributo Inteligencia
     
     
+    atributeValue = Val(frmCrearPersonaje.lbConstitucion.Caption) + Val(frmCrearPersonaje.modConstitucion.Caption)
     Engine_Text_Render "Constitución ", 185 + OffX, 500 + Offy, COLOR_WHITE, , True
-    'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
-   ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 500 + Offy, 20, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.lbConstitucion.Caption, 283 + OffX, 503 + Offy, COLOR_WHITE, 1, True ' Atributo Constitución
-    '
-   ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 500 + Offy, 25, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.modConstitucion.Caption, 320 + OffX, 503 + Offy, COLOR_WHITE, 1, True ' Bonificacion Constitución
+    Call renderAttributesColors(atributeValue, 305 + OffX, 503 + Offy) ' Atributo Constitución
     
     
-    
-        Engine_Text_Render "Carisma ", 185 + OffX, 530 + Offy, COLOR_WHITE, , True
-    'Engine_Text_Render "<", 260, 500, DefaultColor, 1, True
-   ' Engine_Text_Render ">", 310, 500, DefaultColor, 1, True
-    Engine_Draw_Box 280 + OffX, 530 + Offy, 20, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.lbCarisma.Caption, 283 + OffX, 533 + Offy, COLOR_WHITE, 1, True ' Atributo Carisma
-    '
-   ' Engine_Text_Render "+", 335, 500, DefaultColor, 1, True
-    Engine_Draw_Box 317 + OffX, 530 + Offy, 25, 20, RGBA_From_Comp(1, 1, 1, 100)
-    Engine_Text_Render frmCrearPersonaje.modCarisma.Caption, 320 + OffX, 533 + Offy, COLOR_WHITE, 1, True ' Bonificacion Carisma
-    
-    
+    atributeValue = Val(frmCrearPersonaje.lbCarisma.Caption) + Val(frmCrearPersonaje.modCarisma.Caption)
+    Engine_Text_Render "Carisma ", 185 + OffX, 530 + Offy, COLOR_WHITE, , True
+    Call renderAttributesColors(atributeValue, 305 + OffX, 533 + Offy) ' Atributo Carisma
       
-    '
-    'Engine_Draw_Box 290, 528, 20, 20, D3DColorARGB(120, 1, 150, 150)
-    'Engine_Text_Render "Puntos disponibles", 175, 530, DefaultColor, 1, True '
-    'Engine_Text_Render frmCrearPersonaje.lbLagaRulzz.Caption, 291, 530, DefaultColor, 1, True '
-    'Cabeza
-    'Engine_Draw_Box 425, 415, 140, 100, D3DColorARGB(120, 100, 100, 100)
-
-   ' Engine_Text_Render "Selecciona el rostro que más te agrade.", 662, 260, DefaultColor, 1, True
-    
-    
-    
     
     
 
@@ -3335,7 +3294,7 @@ Public Sub RenderUICrearPJ()
 
        
     'Engine_Text_Render "DADO", 670, 390, DefaultColor()
-    Draw_GrhIndex 1123, 655, 345
+    'Draw_GrhIndex 1123, 655, 345
 
     
     Exit Sub
@@ -3345,7 +3304,15 @@ RenderUICrearPJ_Err:
     Resume Next
     
 End Sub
-
+Private Function renderAttributesColors(ByVal value As Integer, ByVal x As Integer, ByVal y As Integer)
+        If value > 18 Then
+        Engine_Text_Render_LetraChica str(value), x, y, COLOR_GREEN, 1, True
+    ElseIf value < 18 Then
+        Engine_Text_Render_LetraChica str(value), x, y, COLOR_RED, 1, True
+    Else
+        Engine_Text_Render_LetraChica str(value), x, y, COLOR_WHITE, 1, True
+    End If
+End Function
 Public Sub RenderPjsCuenta()
     
     On Error GoTo RenderPjsCuenta_Err

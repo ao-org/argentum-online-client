@@ -667,8 +667,18 @@ Private Sub Form_Load()
 
     'lstProfesion.ListIndex = 0
     'LstFamiliar.ListIndex = 0
-
     
+    
+    Call SetRGBA(COLOR_RED(0), 255, 0, 0)
+    Call SetRGBA(COLOR_RED(1), 255, 0, 0)
+    Call SetRGBA(COLOR_RED(2), 255, 0, 0)
+    Call SetRGBA(COLOR_RED(3), 255, 0, 0)
+    Call SetRGBA(COLOR_GREEN(0), 0, 255, 0)
+    Call SetRGBA(COLOR_GREEN(1), 0, 255, 0)
+    Call SetRGBA(COLOR_GREEN(2), 0, 255, 0)
+    Call SetRGBA(COLOR_GREEN(3), 0, 255, 0)
+    
+
     Exit Sub
 
 Form_Load_Err:
