@@ -160,7 +160,6 @@ Private Enum ServerPacketID
     ShowMOTDEditionForm     ' ZMOTD
     ShowGMPanelForm         ' ABPANEL
     UserNameList            ' LISTUSU
-    PersonajesDeCuenta
     UserOnline '110
     ParticleFX
     ParticleFXToFloor
@@ -467,7 +466,6 @@ Public Enum ClientPacketID
     SetSpeed                '/SPEED
     GlobalMessage           '/CONSOLA
     GlobalOnOff
-    IngresarConCuenta
     BorrarPJ
     DarLlaveAUsuario
     SacarLlave
@@ -794,8 +792,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleShowGMPanelForm
         Case ServerPacketID.UserNameList
             Call HandleUserNameList
-        Case ServerPacketID.PersonajesDeCuenta
-            Call HandlePersonajesDeCuenta
         Case ServerPacketID.UserOnline
             Call HandleUserOnline
         Case ServerPacketID.ParticleFX
@@ -6981,128 +6977,6 @@ Private Sub HandleUpdateTagAndStatus()
 ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateTagAndStatus", Erl)
-    
-
-End Sub
-
-Private Sub HandlePersonajesDeCuenta()
-
-    On Error GoTo ErrHandler
-    
-    CantidadDePersonajesEnCuenta = Reader.ReadInt8()
-
-    Dim ii As Byte
-     
-    For ii = 1 To 10
-        Pjs(ii).Body = 0
-        Pjs(ii).Head = 0
-        Pjs(ii).Mapa = 0
-        Pjs(ii).PosX = 0
-        Pjs(ii).PosY = 0
-        Pjs(ii).nivel = 0
-        Pjs(ii).nombre = ""
-        Pjs(ii).Criminal = 0
-        Pjs(ii).Clase = 0
-        Pjs(ii).NameMapa = ""
-        Pjs(ii).Casco = 0
-        Pjs(ii).Escudo = 0
-        Pjs(ii).Arma = 0
-        Pjs(ii).ClanName = ""
-    Next ii
-
-    For ii = 1 To CantidadDePersonajesEnCuenta
-        Pjs(ii).nombre = Reader.ReadString8()
-        Pjs(ii).nivel = Reader.ReadInt8()
-        Pjs(ii).Mapa = Reader.ReadInt16()
-        Pjs(ii).PosX = Reader.ReadInt16()
-        Pjs(ii).PosY = Reader.ReadInt16()
-        
-        Pjs(ii).Body = Reader.ReadInt16()
-        
-        Pjs(ii).Head = Reader.ReadInt16()
-        Pjs(ii).Criminal = Reader.ReadInt8()
-        Pjs(ii).Clase = Reader.ReadInt8()
-       
-        Pjs(ii).Casco = Reader.ReadInt16()
-        Pjs(ii).Escudo = Reader.ReadInt16()
-        Pjs(ii).Arma = Reader.ReadInt16()
-        Pjs(ii).ClanName = "<" & Reader.ReadString8() & ">"
-       
-        ' Pjs(ii).NameMapa = Pjs(ii).mapa
-        Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).Name
-
-    Next ii
-
-    Dim i As Integer
-
-    For i = 1 To CantidadDePersonajesEnCuenta
-
-        Select Case Pjs(i).Criminal
-
-            Case 0 'Criminal
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
-                Pjs(i).priv = 0
-
-            Case 1 'Ciudadano
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
-                Pjs(i).priv = 0
-
-            Case 2 'Caos
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
-                Pjs(i).priv = 0
-
-            Case 3 'Armada
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
-                Pjs(i).priv = 0
-
-            Case 4 'EsConsejero
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(1).r, ColoresPJ(1).G, ColoresPJ(1).B)
-                Pjs(i).ClanName = "<Game Master>"
-                Pjs(i).priv = 1
-                EsGM = True
-
-            Case 5 ' EsSemiDios
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(2).r, ColoresPJ(2).G, ColoresPJ(2).B)
-                Pjs(i).ClanName = "<Game Master>"
-                Pjs(i).priv = 2
-                EsGM = True
-
-            Case 6 ' EsDios
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(3).r, ColoresPJ(3).G, ColoresPJ(3).B)
-                Pjs(i).ClanName = "<Game Master>"
-                Pjs(i).priv = 3
-                EsGM = True
-
-            Case 7 ' EsAdmin
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(4).r, ColoresPJ(4).G, ColoresPJ(4).B)
-                Pjs(i).ClanName = "<Game Master>"
-                Pjs(i).priv = 4
-                EsGM = True
-
-            Case Else
-
-        End Select
-
-    Next i
-    
-    AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
-   
-    If CantidadDePersonajesEnCuenta > 0 Then
-        PJSeleccionado = 1
-        LastPJSeleccionado = 1
-        
-        If Pjs(1).Mapa <> 0 Then
-            Call SwitchMap(Pjs(1).Mapa)
-            RenderCuenta_PosX = Pjs(1).PosX
-            RenderCuenta_PosY = Pjs(1).PosY
-        End If
-    End If
-    
-    Exit Sub
-
-ErrHandler:
-
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePersonajesDeCuenta", Erl)
     
 
 End Sub
