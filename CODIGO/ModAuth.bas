@@ -326,22 +326,22 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
         frmConnect.AuthSocket.GetData data, vbByte, 4
         Select Case MakeInt(data(3), data(2))
             Case 1
-                Call DebugPrint("Invalid Username", 255, 0, 0)
+                Call TextoAlAsistente("Invalid Username")
             Case 4
-                Call DebugPrint("Username is already logged.", 255, 255, 0)
+                Call TextoAlAsistente("Username is already logged.")
                 If Not FullLogout Then
                     Call SendAccountLoginRequest
                 End If
             Case 5
-                Call DebugPrint("Password is incorrect.", 255, 255, 0)
+                Call TextoAlAsistente("Invalid Password.")
             Case 6
-                Call DebugPrint("Username has been banned.", 255, 0, 0)
+                Call TextoAlAsistente("Username has been banned.")
             Case 7
-                Call DebugPrint("Ther server has reached the max. number of users.", 255, 0, 0)
+                Call TextoAlAsistente("Ther server has reached the max. number of users.")
             Case 9
-                Call DebugPrint("The account has not been activated.", 255, 255, 0)
+                Call TextoAlAsistente("The account has not been activated.")
             Case Else
-                Call DebugPrint("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(data), 255, 255, 0)
+                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
         End Select
     End If
         

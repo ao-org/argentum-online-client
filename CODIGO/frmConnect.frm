@@ -139,6 +139,10 @@ Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
     ModAuth.AuthSocket_DataArrival bytesTotal
 End Sub
 
+Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    Call TextoAlAsistente("Server offline. Try later.")
+End Sub
+
 Private Sub Form_Activate()
     
     On Error GoTo Form_Activate_Err
