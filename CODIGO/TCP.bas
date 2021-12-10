@@ -64,20 +64,7 @@ Sub Login()
         Case E_MODO.BorrandoPJ
             Call WriteBorrandoPJ
         Case 3
-              If QueRender <> 3 Then
-                UserMap = 37
-                AlphaNiebla = 3
-                CPHeading = 3
-                CPEquipado = True
-                Call SwitchMap(UserMap)
-                QueRender = 3
-                
-                Call IniciarCrearPj
-                frmConnect.txtNombre.Visible = True
-                frmConnect.txtNombre.SetFocus
-    
-                Call Sound.Sound_Play(SND_DICE)
-            End If
+             
         
     End Select
 

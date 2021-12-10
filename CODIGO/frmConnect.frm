@@ -548,7 +548,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     'Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
                     'TODO: Mostrar ventana de creación de personaje
                     EstadoLogin = E_MODO.CrearNuevoPj
+                    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
                 End If
+                
 
             End If
 
@@ -642,7 +644,18 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         Exit Sub
 
                     End If
+                    UserMap = 37
+                    AlphaNiebla = 3
+                    CPHeading = 3
+                    CPEquipado = True
+                    Call SwitchMap(UserMap)
                     QueRender = 3
+                    
+                    Call IniciarCrearPj
+                    frmConnect.txtNombre.Visible = True
+                    frmConnect.txtNombre.SetFocus
+        
+                    Call Sound.Sound_Play(SND_DICE)
                 Case 2
 
                     If Char = 0 Then Exit Sub
