@@ -230,14 +230,15 @@ Public Sub connectToLoginServer(Optional ByVal state As e_state)
     Auth_state = e_state.Idle
 End Sub
 
-
-
 Public Sub HandleOpenSession(ByVal bytesTotal As Long)
+
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleOpenSession", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
     Dim strData As String
     frmConnect.AuthSocket.PeekData strData, vbString, bytesTotal
+    
     Call DebugPrint("Bytes total: " & strData, 255, 255, 255, False)
     
     frmConnect.AuthSocket.GetData strData, vbString, 2
@@ -246,14 +247,13 @@ Public Sub HandleOpenSession(ByVal bytesTotal As Long)
     frmConnect.AuthSocket.GetData strData, vbString, 2
     
     Dim encrypted_token() As Byte
-    Dim secret_key_byte() As Byte
     
     frmConnect.AuthSocket.GetData encrypted_token, 64
             
-    Call Str2ByteArr("pablomarquezARG1", secret_key_byte)
+
     Dim decrypted_session_token As String
      
-    decrypted_session_token = AO20CryptoSysWrapper.Decrypt("7061626C6F6D61727175657A41524731", cnvStringFromHexStr(cnvToHex(encrypted_token)))
+    decrypted_session_token = AO20CryptoSysWrapper.DECRYPT(MapInfoEspeciales, cnvStringFromHexStr(cnvToHex(encrypted_token)))
     Call DebugPrint("Decripted_session_token: " & decrypted_session_token, 255, 255, 255, False)
         
     public_key = mid(decrypted_session_token, 1, 16)
@@ -294,7 +294,6 @@ Public Sub HandlePCList(ByVal bytesTotal As Long)
     packet_size = MakeInt(packet_size_byte(1), packet_size_byte(0))
     frmConnect.AuthSocket.GetData encrypted_list, packet_size - 4
         
-    'Call Str2ByteArr("pablomarquezARG1", secret_key_byte)
     Dim decrypted_list As String
      
     decrypted_list = AO20CryptoSysWrapper.Decrypt(ByteArrayToHex(public_key), cnvStringFromHexStr(cnvToHex(encrypted_list)))
@@ -517,5 +516,36 @@ Public Sub mostrarcuenta()
     End If
 End Sub
 
+Public Function estaInmovilizado(ByRef arr() As Byte) As String
+
+    Dim a As String, b As String
+    
+    a = hashHexFromFile(App.Path & "\Argentum.exe", 3)
+    
+    Dim i As Long
+    
+    For i = 1 To 4
+        b = b + mid(a, arr(i), 1)
+    Next i
+    
+    For i = 8 To 5 Step -1
+        b = b + mid(a, arr(i), 1)
+    Next i
+    
+    For i = 9 To 12
+        b = b + mid(a, arr(i), 1)
+    Next i
+    
+    For i = 16 To 13 Step -1
+        b = b + mid(a, arr(i), 1)
+    Next i
+    
+        
+    #If DEBUGGING = 1 Then
+        Debug.Print "Esta inmovilizado: " & b
+    #End If
+    estaInmovilizado = cnvHexStrFromString(b)
+    
+End Function
 
 

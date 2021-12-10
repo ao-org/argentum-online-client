@@ -23,6 +23,8 @@ Public EsGM                             As Boolean
 
 Public HayLLamadaDeclan                 As Boolean
 
+Public MapInfoEspeciales                As String
+
 Public LLamadaDeclanMapa                As Byte
 
 Public LLamadaDeclanX                   As Byte
