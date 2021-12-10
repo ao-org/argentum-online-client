@@ -329,7 +329,6 @@ Public Enum ClientPacketID
     ChangeDescription       '/DESC
     GuildVote               '/VOTO
     punishments             '/PENAS
-    ChangePassword          '/Contraseña
     Gamble                  '/APOSTAR
     InquiryVote             '/ENCUESTA ( with parameters )
     LeaveFaction            '/RETIRAR ( with no arguments )

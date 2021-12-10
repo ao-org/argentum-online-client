@@ -52,7 +52,6 @@ Class=clsCustomKeys; CODIGO\clsCustomKeys.cls
 Form=CODIGO\frmCustomKeys.frm
 Module=Resolution; CODIGO\Resolution.bas
 Module=Application; CODIGO\Application.bas
-Form=CODIGO\frmNewPassword.frm
 Form=CODIGO\FrmGmAyuda.frm
 Form=CODIGO\frmPanelGm.frm
 Module=ModClient; CODIGO\ModClient.bas
