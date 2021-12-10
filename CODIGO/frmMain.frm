@@ -384,7 +384,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2014,12 +2013,7 @@ Private Sub Form_Activate()
     
     On Error GoTo Form_Activate_Err
     
-    If EsGM Then
-        panelGM.Visible = True
-        createObj.Visible = True
-        btnInvisible.Visible = True
-        btnSpawn.Visible = True
-    End If
+
     
     Exit Sub
 

@@ -227,6 +227,7 @@ Private Enum ServerPacketID
     ObjQuestListSend
     UpdateBankGld
     PelearConPezEspecial
+    Privilegios
     [PacketCount]
 End Enum
 
@@ -926,6 +927,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateBankGld
         Case ServerPacketID.PelearConPezEspecial
             Call HandlePelearConPezEspecial
+        Case ServerPacketID.Privilegios
+            Call HandlePrivilegios
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
@@ -8361,6 +8364,27 @@ Public Sub HandlePelearConPezEspecial()
 ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePelearConPezEspecial", Erl)
+End Sub
+
+Public Sub HandlePrivilegios()
+    On Error GoTo errhandler
+    
+    EsGM = Reader.ReadBool
+    If EsGM Then
+        frmMain.panelGM.Visible = True
+        frmMain.createObj.Visible = True
+        frmMain.btnInvisible.Visible = True
+        frmMain.btnSpawn.Visible = True
+    Else
+        frmMain.panelGM.Visible = False
+        frmMain.createObj.Visible = False
+        frmMain.btnInvisible.Visible = False
+        frmMain.btnSpawn.Visible = False
+    End If
+    Exit Sub
+errhandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePrivilegios", Erl)
 End Sub
 Public Sub HandleObjQuestListSend()
 

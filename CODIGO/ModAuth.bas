@@ -434,30 +434,7 @@ Private Sub FillAccountData(ByVal data As String)
                 Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
                 Pjs(i).priv = 0
 
-            Case 4 'EsConsejero
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(1).r, ColoresPJ(1).G, ColoresPJ(1).B)
-                Pjs(i).ClanName = "<Game Master>"
-                Pjs(i).priv = 1
-                EsGM = True
-
-            Case 5 ' EsSemiDios
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(2).r, ColoresPJ(2).G, ColoresPJ(2).B)
-                Pjs(i).ClanName = "<Game Master>"
-                Pjs(i).priv = 2
-                EsGM = True
-
-            Case 6 ' EsDios
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(3).r, ColoresPJ(3).G, ColoresPJ(3).B)
-                Pjs(i).ClanName = "<Game Master>"
-                Pjs(i).priv = 3
-                EsGM = True
-
-            Case 7 ' EsAdmin
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(4).r, ColoresPJ(4).G, ColoresPJ(4).B)
-                Pjs(i).ClanName = "<Game Master>"
-                Pjs(i).priv = 4
-                EsGM = True
-
+           
             Case Else
 
         End Select
