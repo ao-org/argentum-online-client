@@ -795,11 +795,11 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUseItem(ByVal Slot As Byte)
 
-        If LastUseItemTimeStamp > 0 Then
-            If (GetTickCount - LastUseItemTimeStamp) < 100 Then Exit Sub
-        End If
+        'If LastUseItemTimeStamp > 0 Then
+        '    If (GetTickCount - LastUseItemTimeStamp) < 100 Then Exit Sub
+        'End If
         
-        LastUseItemTimeStamp = GetTickCount
+        'LastUseItemTimeStamp = GetTickCount
         '<EhHeader>
         
         On Error GoTo WriteUseItem_Err
@@ -825,11 +825,11 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUseItemU(ByVal Slot As Byte)
 
-        If LastUseItemTimeStampU > 0 Then
-            If (GetTickCount - LastUseItemTimeStampU) < 100 Then Exit Sub
-        End If
+        'If LastUseItemTimeStampU > 0 Then
+        '    If (GetTickCount - LastUseItemTimeStampU) < 100 Then Exit Sub
+        'End If
         
-        LastUseItemTimeStampU = GetTickCount
+        'LastUseItemTimeStampU = GetTickCount
         '<EhHeader>
         
         On Error GoTo WriteUseItemU_Err

@@ -9,8 +9,8 @@ Public SeguroClanX As Boolean
 Public SeguroResuX As Boolean
 
 Public QuePestañaInferior As Byte
-Public LastUseItemTimeStamp As Long
-Public LastUseItemTimeStampU As Long
+'Public LastUseItemTimeStamp As Long
+'Public LastUseItemTimeStampU As Long
 
 
 Public ViajarInterface                  As Byte
