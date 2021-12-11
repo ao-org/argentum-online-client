@@ -555,6 +555,7 @@ Public Enum ClientPacketID
     DeleteItem
     FinalizarPescaEspecial
     RomperCania
+    UseItemU
     [PacketCount]
 End Enum
 

@@ -710,6 +710,7 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
 100     Call Writer.WriteInt(ClientPacketID.LeftClick)
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
+        Call Writer.WriteInt64(GetTickCount)
     
 106     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -787,18 +788,26 @@ WriteUseSpellMacro_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseSpellMacro", Erl)
         '</EhFooter>
 End Sub
-
 ''
 ' Writes the "UseItem" message to the outgoing data buffer.
 '
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteUseItem(ByVal Slot As Byte)
+
+        If LastUseItemTimeStamp > 0 Then
+            If (GetTickCount - LastUseItemTimeStamp) < 100 Then Exit Sub
+        End If
+        
+        LastUseItemTimeStamp = GetTickCount
         '<EhHeader>
+        
         On Error GoTo WriteUseItem_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.UseItem)
 102     Call Writer.WriteInt8(Slot)
+        
+        Call Writer.WriteInt64(GetTickCount)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -809,7 +818,36 @@ WriteUseItem_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseItem", Erl)
         '</EhFooter>
 End Sub
+''
+' Writes the "UseItem" message to the outgoing data buffer.
+'
+' @param    slot Invetory slot where the item to use is.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+Public Sub WriteUseItemU(ByVal Slot As Byte)
 
+        If LastUseItemTimeStampU > 0 Then
+            If (GetTickCount - LastUseItemTimeStampU) < 100 Then Exit Sub
+        End If
+        
+        LastUseItemTimeStampU = GetTickCount
+        '<EhHeader>
+        
+        On Error GoTo WriteUseItemU_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.UseItemU)
+102     Call Writer.WriteInt8(Slot)
+        
+        Call Writer.WriteInt64(GetTickCount)
+    
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteUseItemU_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseItemU", Erl)
+        '</EhFooter>
+End Sub
 ''
 ' Writes the "CraftBlacksmith" message to the outgoing data buffer.
 '
@@ -903,6 +941,7 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
 106     Call Writer.WriteInt8(Skill)
+        Call Writer.WriteInt64(GetTickCount)
     
 108     Call modNetwork.Send(Writer)
         '<EhFooter>
