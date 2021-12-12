@@ -599,7 +599,7 @@ Public Sub WriteCastSpell(ByVal Slot As Byte)
         
 100     Call Writer.WriteInt(ClientPacketID.CastSpell)
 102     Call Writer.WriteInt8(Slot)
-        Call Writer.WriteInt64(GetTickCount)
+        Call Writer.WriteInt32(GetTickCount)
         'Call Writer.GetData(arr)
         'packet_crc = crcBytes(arr)
         
@@ -710,7 +710,7 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
 100     Call Writer.WriteInt(ClientPacketID.LeftClick)
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
-        Call Writer.WriteInt64(GetTickCount)
+        Call Writer.WriteInt32(GetTickCount)
     
 106     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -807,7 +807,7 @@ Public Sub WriteUseItem(ByVal Slot As Byte)
 100     Call Writer.WriteInt(ClientPacketID.UseItem)
 102     Call Writer.WriteInt8(Slot)
         
-        Call Writer.WriteInt64(GetTickCount)
+        Call Writer.WriteInt32(GetTickCount)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -837,7 +837,7 @@ Public Sub WriteUseItemU(ByVal Slot As Byte)
 100     Call Writer.WriteInt(ClientPacketID.UseItemU)
 102     Call Writer.WriteInt8(Slot)
         
-        Call Writer.WriteInt64(GetTickCount)
+        Call Writer.WriteInt32(GetTickCount)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -941,7 +941,7 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
 106     Call Writer.WriteInt8(Skill)
-        Call Writer.WriteInt64(GetTickCount)
+        Call Writer.WriteInt32(GetTickCount)
     
 108     Call modNetwork.Send(Writer)
         '<EhFooter>
