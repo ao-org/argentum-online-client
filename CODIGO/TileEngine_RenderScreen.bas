@@ -211,7 +211,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 ' Objects *********************************
                 If .ObjGrh.grhIndex <> 0 Then
                     Select Case ObjData(.OBJInfo.ObjIndex).ObjType
-                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otFragua, eObjType.OtDecoraciones, eObjType.otYunque
+                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otFragua, eObjType.OtDecoraciones
                             Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value)
 
                         Case Else
@@ -358,12 +358,12 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
                             End If
                         
-                       ' Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo
+                        Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otYunque, eObjType.otFragua, eObjType.OtDecoraciones
                             ' Objetos grandes (menos árboles)
-                       '     Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                            Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
                             
-                       ' Case Else
-                       '     Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                        'Case Else
+                        '    Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
                     
                     End Select
                 End If
