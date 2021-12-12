@@ -365,7 +365,7 @@ Private Sub FillAccountData(ByVal data As String)
 
     Dim ii As Byte
      'name, head_id, class_id, body_id, pos_map, pos_x, pos_y, level, status, helmet_id, shield_id, weapon_id, guild_index, is_dead, is_sailing
-    For ii = 1 To CantidadDePersonajesEnCuenta
+    For ii = 1 To MAX_PERSONAJES_EN_CUENTA
         Pjs(ii).nombre = ""
         Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
         Pjs(ii).Clase = 0

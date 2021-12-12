@@ -37,6 +37,8 @@ Public SugerenciaAMostrar               As Byte
 
 Public UserInvUnlocked                  As Byte
 
+Public Const MAX_PERSONAJES_EN_CUENTA   As Byte = 10
+
 'Slots de Inventarios Generales
 Public Const GRH_SLOT_INVENTARIO_NEGRO  As Long = 26095
 

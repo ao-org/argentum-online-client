@@ -703,7 +703,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                     Dim i As Integer
 
-                    For i = 1 To 8
+                    For i = 1 To MAX_PERSONAJES_EN_CUENTA
                         Pjs(i).Body = 0
                         Pjs(i).Head = 0
                         Pjs(i).Mapa = 0

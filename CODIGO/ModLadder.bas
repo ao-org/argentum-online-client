@@ -344,7 +344,7 @@ Public Type tIntervalos
 
 End Type
 
-Public Pjs(1 To 10)                 As UserCuentaPJS
+Public Pjs(1 To MAX_PERSONAJES_EN_CUENTA)       As UserCuentaPJS
 
 Public RecordarCuenta               As Boolean
 
