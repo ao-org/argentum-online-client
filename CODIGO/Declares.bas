@@ -104,6 +104,16 @@ Public Type tPaso
 
 End Type
 
+Public Type t_packetCounters
+    TS_CastSpell As Long
+    TS_WorkLeftClick As Long
+    TS_LeftClick As Long
+    TS_UseItem As Long
+    TS_UseItemU As Long
+End Type
+
+Public packetCounters As t_packetCounters
+
 Public Const NUM_PASOS       As Byte = 6
 
 Public Pasos()               As tPaso

@@ -599,7 +599,8 @@ Public Sub WriteCastSpell(ByVal Slot As Byte)
         
 100     Call Writer.WriteInt(ClientPacketID.CastSpell)
 102     Call Writer.WriteInt8(Slot)
-        Call Writer.WriteInt32(GetTickCount)
+        packetCounters.TS_CastSpell = packetCounters.TS_CastSpell + 1
+        Call Writer.WriteInt32(packetCounters.TS_CastSpell)
         'Call Writer.GetData(arr)
         'packet_crc = crcBytes(arr)
         
@@ -710,7 +711,9 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
 100     Call Writer.WriteInt(ClientPacketID.LeftClick)
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
-        Call Writer.WriteInt32(GetTickCount)
+
+        packetCounters.TS_LeftClick = packetCounters.TS_LeftClick + 1
+        Call Writer.WriteInt32(packetCounters.TS_LeftClick)
     
 106     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -807,7 +810,8 @@ Public Sub WriteUseItem(ByVal Slot As Byte)
 100     Call Writer.WriteInt(ClientPacketID.UseItem)
 102     Call Writer.WriteInt8(Slot)
         
-        Call Writer.WriteInt32(GetTickCount)
+        packetCounters.TS_UseItem = packetCounters.TS_UseItem + 1
+        Call Writer.WriteInt32(packetCounters.TS_UseItem)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -837,7 +841,8 @@ Public Sub WriteUseItemU(ByVal Slot As Byte)
 100     Call Writer.WriteInt(ClientPacketID.UseItemU)
 102     Call Writer.WriteInt8(Slot)
         
-        Call Writer.WriteInt32(GetTickCount)
+        packetCounters.TS_UseItemU = packetCounters.TS_UseItemU + 1
+        Call Writer.WriteInt32(packetCounters.TS_UseItemU)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -941,7 +946,9 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
 106     Call Writer.WriteInt8(Skill)
-        Call Writer.WriteInt32(GetTickCount)
+
+        packetCounters.TS_WorkLeftClick = packetCounters.TS_WorkLeftClick + 1
+        Call Writer.WriteInt32(packetCounters.TS_WorkLeftClick)
     
 108     Call modNetwork.Send(Writer)
         '<EhFooter>

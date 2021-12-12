@@ -675,6 +675,9 @@ Sub SetConnected()
     frmMain.Height = 768 * Screen.TwipsPerPixelY
 
     frmMain.Visible = True
+    
+    Call ResetContadores
+    
     frmMain.cerrarcuenta.Enabled = True
 
     engine.FadeInAlpha = 255
@@ -685,6 +688,15 @@ SetConnected_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.SetConnected", Erl)
     Resume Next
     
+End Sub
+Sub ResetContadores()
+
+    packetCounters.TS_CastSpell = 0
+    packetCounters.TS_WorkLeftClick = 0
+    packetCounters.TS_LeftClick = 0
+    packetCounters.TS_UseItem = 0
+    packetCounters.TS_UseItemU = 0
+   
 End Sub
 
 Sub MoveTo(ByVal Direccion As E_Heading)
