@@ -690,12 +690,19 @@ SetConnected_Err:
     
 End Sub
 Sub ResetContadores()
-
     packetCounters.TS_CastSpell = 0
     packetCounters.TS_WorkLeftClick = 0
     packetCounters.TS_LeftClick = 0
     packetCounters.TS_UseItem = 0
     packetCounters.TS_UseItemU = 0
+    packetCounters.TS_Walk = 0
+    packetCounters.TS_Talk = 0
+    packetCounters.TS_Attack = 0
+    packetCounters.TS_Drop = 0
+    packetCounters.TS_Work = 0
+    packetCounters.TS_EquipItem = 0
+    packetCounters.TS_GuildMessage = 0
+    packetCounters.TS_QuestionGM = 0
    
 End Sub
 

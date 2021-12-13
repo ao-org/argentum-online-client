@@ -112,6 +112,14 @@ Public Type t_packetCounters
     TS_LeftClick As Long
     TS_UseItem As Long
     TS_UseItemU As Long
+    TS_Walk As Long
+    TS_Talk As Long
+    TS_Attack As Long
+    TS_Drop As Long
+    TS_Work As Long
+    TS_EquipItem As Long
+    TS_GuildMessage As Long
+    TS_QuestionGM As Long
 End Type
 
 Public packetCounters As t_packetCounters

@@ -715,7 +715,7 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
     Dim no_move          As Boolean
     
     'Set colors
-  
+    Exit Sub
     temp_rgb(0) = particle_group_list(particle_group_index).rgb_list(0)
     temp_rgb(1) = particle_group_list(particle_group_index).rgb_list(1)
     temp_rgb(2) = particle_group_list(particle_group_index).rgb_list(2)

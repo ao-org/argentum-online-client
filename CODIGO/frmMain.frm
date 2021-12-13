@@ -1398,6 +1398,8 @@ Attribute VB_Exposed = False
 'Call ParseUserCommand("/CMSG " & stxtbuffercmsg)
 Option Explicit
 
+Private lastcount As Long
+
 Public WithEvents Inventario As clsGrapchicalInventory
 Attribute Inventario.VB_VarHelpID = -1
 
@@ -1816,6 +1818,7 @@ CombateIcon_Click_Err:
     Resume Next
     
 End Sub
+
 
 Private Sub Contadores_Timer()
     
@@ -3936,7 +3939,7 @@ End Sub
 Private Sub renderer_Click()
     
     On Error GoTo renderer_Click_Err
-    
+    Debug.Print "asd"
     Call Form_Click
     If SendTxt.Visible Then SendTxt.SetFocus
     Exit Sub
@@ -4257,7 +4260,7 @@ End Sub
 Public Sub Form_Click()
     
     On Error GoTo Form_Click_Err
-    
+
     If pausa Then Exit Sub
 
     If MouseBoton = vbLeftButton And ACCION1 = 0 Or MouseBoton = vbRightButton And ACCION2 = 0 Or MouseBoton = 4 And ACCION3 = 0 Then
@@ -4398,7 +4401,7 @@ Public Sub Form_Click()
         End If
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 1 Or MouseBoton = vbRightButton And ACCION2 = 1 Or MouseBoton = 4 And ACCION3 = 1 Then
-        Call WriteDoubleClick(tX, tY)
+        'Call WriteDoubleClick(tX, tY)
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 2 Or MouseBoton = vbRightButton And ACCION2 = 2 Or MouseBoton = 4 And ACCION3 = 2 Then
 
@@ -4724,8 +4727,21 @@ Private Sub picInv_DblClick()
             End If
                 
         Case Else
-            Call WriteUseItem(Inventario.SelectedItem)
-
+                
+            Dim delta As Long
+            Dim actualcount As Long
+            actualcount = GetTickCount()
+            delta = actualcount - lastcount
+            Debug.Print delta
+            lastcount = actualcount
+            
+            If delta < 100 Then
+                End
+            Else
+                Call WriteUseItem(Inventario.SelectedItem)
+            End If
+                
+            'End If
     End Select
 
     

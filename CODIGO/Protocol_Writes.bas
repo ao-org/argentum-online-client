@@ -1,7 +1,6 @@
 Attribute VB_Name = "Protocol_Writes"
 'CSEH: ErrReport
 Option Explicit
-
 Private Writer As Network.Writer
 
 Public Sub Initialize()
@@ -90,6 +89,8 @@ Public Sub WriteTalk(ByVal chat As String)
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.Talk)
 102     Call Writer.WriteString8(chat)
+        packetCounters.TS_Talk = packetCounters.TS_Talk + 1
+        Call Writer.WriteInt32(packetCounters.TS_Talk)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -158,7 +159,9 @@ Public Sub WriteWalk(ByVal Heading As E_Heading)
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.Walk)
 102     Call Writer.WriteInt8(Heading)
-    
+        packetCounters.TS_Walk = packetCounters.TS_Walk + 1
+        Call Writer.WriteInt32(packetCounters.TS_Walk)
+        
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
         Exit Sub
@@ -198,6 +201,8 @@ Public Sub WriteAttack()
         On Error GoTo WriteAttack_Err
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.Attack)
+        packetCounters.TS_Attack = packetCounters.TS_Attack + 1
+        Call Writer.WriteInt32(packetCounters.TS_Attack)
     
 102     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -574,6 +579,8 @@ Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
 100     Call Writer.WriteInt(ClientPacketID.Drop)
 102     Call Writer.WriteInt8(Slot)
 104     Call Writer.WriteInt32(Amount)
+        packetCounters.TS_Drop = packetCounters.TS_Drop + 1
+        Call Writer.WriteInt32(packetCounters.TS_Drop)
     
 106     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -711,8 +718,8 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
 100     Call Writer.WriteInt(ClientPacketID.LeftClick)
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
-
         packetCounters.TS_LeftClick = packetCounters.TS_LeftClick + 1
+        'Debug.Print packetCounters.TS_LeftClick
         Call Writer.WriteInt32(packetCounters.TS_LeftClick)
     
 106     Call modNetwork.Send(Writer)
@@ -735,6 +742,7 @@ Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
         '<EhHeader>
         On Error GoTo WriteDoubleClick_Err
         '</EhHeader>
+        
 100     Call Writer.WriteInt(ClientPacketID.DoubleClick)
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
@@ -760,6 +768,8 @@ Public Sub WriteWork(ByVal Skill As eSkill)
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.Work)
 102     Call Writer.WriteInt8(Skill)
+        packetCounters.TS_Work = packetCounters.TS_Work + 1
+        Call Writer.WriteInt32(packetCounters.TS_Work)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -1022,6 +1032,8 @@ Public Sub WriteEquipItem(ByVal Slot As Byte)
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.EquipItem)
 102     Call Writer.WriteInt8(Slot)
+        packetCounters.TS_EquipItem = packetCounters.TS_EquipItem + 1
+        Call Writer.WriteInt32(packetCounters.TS_EquipItem)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -2303,6 +2315,8 @@ Public Sub WriteGuildMessage(ByVal Message As String)
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.GuildMessage)
 102     Call Writer.WriteString8(Message)
+        packetCounters.TS_GuildMessage = packetCounters.TS_GuildMessage + 1
+        Call Writer.WriteInt32(packetCounters.TS_GuildMessage)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -5796,6 +5810,8 @@ Public Sub WriteQuestionGM(ByVal Consulta As String, ByVal TipoDeConsulta As Str
 100     Call Writer.WriteInt(ClientPacketID.QuestionGM)
 102     Call Writer.WriteString8(Consulta)
 104     Call Writer.WriteString8(TipoDeConsulta)
+        packetCounters.TS_QuestionGM = packetCounters.TS_QuestionGM + 1
+        Call Writer.WriteInt32(packetCounters.TS_QuestionGM)
     
 106     Call modNetwork.Send(Writer)
         '<EhFooter>
