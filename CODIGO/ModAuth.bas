@@ -392,8 +392,13 @@ Private Sub FillAccountData(ByVal data As String)
         If mid(character, 1, 1) = "," Then
             character = mid(character, 2)
         End If
+        Dim name As String
         
-        Pjs(ii).nombre = Replace(ReadField(1, character, Asc(",")), " ", "", 1, 1)
+        name = ReadField(1, character, Asc(","))
+        If mid(name, 1, 1) = " " Then
+            name = Replace(name, " ", "", 1, 1)
+        End If
+        Pjs(ii).nombre = name
         Pjs(ii).Body = Val(ReadField(4, character, Asc(",")))
         Pjs(ii).Head = IIf(Pjs(ii).Body = 829 Or Pjs(ii).Body = 1269 Or Pjs(ii).Body = 1267 Or Pjs(ii).Body = 1265, 0, Val(ReadField(2, character, Asc(","))))
         Pjs(ii).Clase = Val(ReadField(3, character, Asc(",")))
