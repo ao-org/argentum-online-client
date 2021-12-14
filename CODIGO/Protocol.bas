@@ -1185,7 +1185,7 @@ End Sub
 ''
 ' Handles the Disconnect message.
 
-Public Sub HandleDisconnect()
+Public Sub HandleDisconnect(Optional ByVal test As Boolean = False)
     
     On Error GoTo HandleDisconnect_Err
 
@@ -1196,7 +1196,9 @@ Public Sub HandleDisconnect()
     '***************************************************
     Dim i As Long
     
-    FullLogout = Reader.ReadBool
+    If test Then
+        FullLogout = Reader.ReadBool
+    End If
     Mod_Declaraciones.Connected = False
     
     Call ResetearUserMacro
