@@ -5000,7 +5000,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                 Connected = False
             Else
                 If (Connected) Then
-                    Call HandleDisconnect
+                    Call HandleDisconnect(True)
                 End If
             End If
         End If
