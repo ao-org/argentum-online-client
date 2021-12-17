@@ -384,7 +384,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1399,7 +1398,7 @@ Attribute VB_Exposed = False
 'Call ParseUserCommand("/CMSG " & stxtbuffercmsg)
 Option Explicit
 
-Private lastcount As Long
+
 
 Public WithEvents Inventario As clsGrapchicalInventory
 Attribute Inventario.VB_VarHelpID = -1
@@ -4728,21 +4727,9 @@ Private Sub picInv_DblClick()
             End If
                 
         Case Else
-                
-            Dim delta As Long
-            Dim actualcount As Long
-            actualcount = GetTickCount()
-            delta = actualcount - lastcount
-            Debug.Print delta
-            lastcount = actualcount
+            Call CountPacketIterations(packetControl(ClientPacketID.UseItem))
+            Call WriteUseItem(Inventario.SelectedItem)
             
-            If delta < 100 Then
-                End
-            Else
-                Call WriteUseItem(Inventario.SelectedItem)
-            End If
-                
-            'End If
     End Select
 
     
@@ -4753,7 +4740,9 @@ picInv_DblClick_Err:
     Resume Next
     
 End Sub
-
+Private Function countRepts(ByVal packet As Long)
+    
+End Function
 
 Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
@@ -5000,7 +4989,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                 Connected = False
             Else
                 If (Connected) Then
-                    Call HandleDisconnect(True)
+                    Call HandleDisconnect(False)
                 End If
             End If
         End If

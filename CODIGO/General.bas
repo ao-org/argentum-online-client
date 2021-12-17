@@ -1069,6 +1069,7 @@ Sub Main()
     ' End If
     
     Call CargarOpciones
+    Call initPacketControl
     
     ' Detecta el idioma del sistema y carga las traducciones
     Call SetLanguageApplication

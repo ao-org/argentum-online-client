@@ -864,6 +864,25 @@ WriteUseItemU_Err:
         '</EhFooter>
 End Sub
 ''
+' Writes the "UseItem" message to the outgoing data buffer.
+'
+' @param    slot Invetory slot where the item to use is.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+Public Sub WriteRepeatMacro()
+        
+        On Error GoTo WriteRepeatMacro_Err
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.RepeatMacro)
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteRepeatMacro_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRepeatMacro", Erl)
+        '</EhFooter>
+End Sub
+''
 ' Writes the "CraftBlacksmith" message to the outgoing data buffer.
 '
 ' @param    item Index of the item to craft in the list sent by the server.

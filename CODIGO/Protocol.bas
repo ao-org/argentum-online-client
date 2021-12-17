@@ -556,6 +556,7 @@ Public Enum ClientPacketID
     FinalizarPescaEspecial
     RomperCania
     UseItemU
+    RepeatMacro
     [PacketCount]
 End Enum
 
@@ -1272,7 +1273,7 @@ Public Sub HandleDisconnect(Optional ByVal test As Boolean = False)
     frmMain.ImgSegParty.Visible = False
     frmMain.ImgSegClan.Visible = False
     frmMain.ImgSegResu.Visible = False
-    
+    initPacketControl
     'Stop audio
     If Sonido Then
         Sound.Sound_Stop_All

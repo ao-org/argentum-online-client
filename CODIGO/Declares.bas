@@ -124,6 +124,17 @@ End Type
 
 Public packetCounters As t_packetCounters
 
+
+Public Const CANT_PACKETS_CONTROL As Long = 400
+
+Public Type t_packetControl
+    last_count As Long
+    'cant_iterations As Long = 10
+    iterations(1 To 10) As Long
+End Type
+
+Public packetControl(1 To CANT_PACKETS_CONTROL) As t_packetControl
+
 Public Const NUM_PASOS       As Byte = 6
 
 Public Pasos()               As tPaso
