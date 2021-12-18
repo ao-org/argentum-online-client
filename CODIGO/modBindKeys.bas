@@ -291,7 +291,10 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     
             If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
             If Not MainTimer.Check(TimersIndex.AttackUse, False) Then Exit Function
-            If frmMain.Inventario.IsItemSelected Then Call WriteUseItemU(frmMain.Inventario.SelectedItem)
+            If frmMain.Inventario.IsItemSelected Then
+                Call CountPacketIterations(packetControl(ClientPacketID.UseItemU), 100)
+                Call WriteUseItemU(frmMain.Inventario.SelectedItem)
+            End If
         
         Case BindKeys(10).KeyCode
     

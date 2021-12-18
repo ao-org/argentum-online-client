@@ -384,6 +384,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4270,6 +4271,7 @@ Public Sub Form_Click()
 
             If MouseShift = 0 Then
                 If UsingSkill = 0 Or MacroLadder.Enabled Then
+                    Call CountPacketIterations(packetControl(ClientPacketID.LeftClick), 150)
                     Call WriteLeftClick(tX, tY)
                 Else
 
@@ -4727,7 +4729,7 @@ Private Sub picInv_DblClick()
             End If
                 
         Case Else
-            Call CountPacketIterations(packetControl(ClientPacketID.UseItem))
+            Call CountPacketIterations(packetControl(ClientPacketID.UseItem), 180)
             Call WriteUseItem(Inventario.SelectedItem)
             
     End Select

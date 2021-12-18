@@ -28,7 +28,7 @@ Private Sub generarLogMacrero()
     Call WriteLogMacroClickHechizo
 End Sub
 
-Public Sub CountPacketIterations(ByRef packetControl As t_packetControl)
+Public Sub CountPacketIterations(ByRef packetControl As t_packetControl, ByVal expectedAverage As Double)
 
     Dim delta As Long
     Dim actualcount As Long
@@ -43,25 +43,32 @@ Public Sub CountPacketIterations(ByRef packetControl As t_packetControl)
     Call alterIndex(packetControl)
     
     packetControl.iterations(10) = delta
-    
-    If getPercentageDiff(packetControl) < 5 Then
+    Dim percentageDiff As Double, average As Double
+    percentageDiff = getPercentageDiff(packetControl)
+    average = getAverage(packetControl)
+    If percentageDiff < 5 Then
         'Debug.Print "DIFF: " & getPercentageDiff(packetControl)
         'Call AddtoRichTextBox(frmMain.RecTxt, "DIFF: " & getPercentageDiff(packetControl), 255, 200, 0, True)
         Call WriteRepeatMacro
         'Debug.Print "DIFF: " & getPercentageDiff(packetControl)
     End If
     
+    If average > 20 And average < expectedAverage Then
+        Call WriteRepeatMacro
+    End If
+    
 End Sub
 Private Function getPercentageDiff(ByRef packetControl As t_packetControl) As Double
 
-    Dim i As Long, min As Long, max As Long ', Average As Double
+    Dim i As Long, min As Long, max As Long
     
     min = packetControl.iterations(1)
     max = packetControl.iterations(1)
-    'Average = 0
+    
     Dim count As Long
     
     For i = 1 To 10
+    
         If packetControl.iterations(i) < min Then
             min = packetControl.iterations(i)
         End If
@@ -70,13 +77,21 @@ Private Function getPercentageDiff(ByRef packetControl As t_packetControl) As Do
             max = packetControl.iterations(i)
         End If
         
-        'If packetControl.iterations(i) > 0 Then
-        '    count = count + 1
-        '    Average = (Average + packetControl.iterations(i)) / count
-        'End If
     Next i
     
     getPercentageDiff = 100 - ((min * 100) / max)
+    
+End Function
+
+Private Function getAverage(ByRef packetControl As t_packetControl) As Double
+
+    Dim i As Long, suma As Long
+    
+    For i = 1 To UBound(packetControl.iterations)
+        suma = suma + packetControl.iterations(i)
+    Next i
+    
+    getAverage = suma / UBound(packetControl.iterations)
     
 End Function
 
