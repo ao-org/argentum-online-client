@@ -2495,9 +2495,9 @@ Private Sub HandlePosUpdate()
     Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
     
     If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = vbGreen
+        frmMain.Coord.ForeColor = RGB(0, 170, 0)
     Else
-        frmMain.Coord.ForeColor = vbRed
+        frmMain.Coord.ForeColor = RGB(170, 0, 0)
     End If
 
     Call RefreshAllChars
@@ -3468,9 +3468,9 @@ Private Sub HandleUserCharIndexInServer()
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
     
     If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = vbGreen
+        frmMain.Coord.ForeColor = RGB(0, 170, 0)
     Else
-        frmMain.Coord.ForeColor = vbRed
+        frmMain.Coord.ForeColor = RGB(170, 0, 0)
     End If
     
     Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
@@ -3754,9 +3754,9 @@ Private Sub HandleForceCharMove()
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
     
     If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = vbGreen
+        frmMain.Coord.ForeColor = RGB(0, 170, 0)
     Else
-        frmMain.Coord.ForeColor = vbRed
+        frmMain.Coord.ForeColor = RGB(170, 0, 0)
     End If
 
     If frmMapaGrande.Visible Then

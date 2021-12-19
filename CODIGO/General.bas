@@ -783,9 +783,9 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
     
     If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = vbGreen
+        frmMain.Coord.ForeColor = RGB(0, 170, 0)
     Else
-        frmMain.Coord.ForeColor = vbRed
+        frmMain.Coord.ForeColor = RGB(170, 0, 0)
     End If
     
     If frmMapaGrande.Visible Then
