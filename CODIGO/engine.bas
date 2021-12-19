@@ -2916,20 +2916,26 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
             tilex = 49
             tiley = 43
         Case 151 ' Arghal 38-41
-            tilex = 38
-            tiley = 41
+            tilex = 41
+            tiley = 50
         Case 62 ' Lindos 63-40
-            tilex = 63
-            tiley = 40
-        Case 195 ' Arkhein 64-32
             tilex = 64
-            tiley = 32
+            tiley = 44
+        Case 195 ' Arkhein 64-32
+            tilex = 76
+            tiley = 26
         Case 112 ' Esperanza 50-45
-            tilex = 50
-            tiley = 45
+            tilex = 62
+            tiley = 51
         Case 354 ' Polo 78-66
-            tilex = 78
-            tiley = 66
+            tilex = 33
+            tiley = 38
+        Case 559 ' Penthar 33-50
+            tilex = 34
+            tiley = 50
+        Case 188 ' Penthar 48-36
+            tilex = 48
+            tiley = 36
     End Select
     
     

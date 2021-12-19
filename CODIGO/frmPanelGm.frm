@@ -2493,15 +2493,15 @@ Private Sub MnuEnviar_Click(Index As Integer)
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 1 'Nix
-            Coordenadas = "34 50 50"
+            Coordenadas = "34 40 85"
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 2 'Bander
-            Coordenadas = "59 49 46"
+            Coordenadas = "59 45 45"
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 3 'Arghal
-            Coordenadas = "151 34 74"
+            Coordenadas = "151 37 69"
             Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 4 'Otro

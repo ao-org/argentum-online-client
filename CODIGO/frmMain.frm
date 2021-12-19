@@ -384,7 +384,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1134,7 +1133,7 @@ Begin VB.Form frmMain
       Caption         =   "000 X:00 Y: 00"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1142,11 +1141,11 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H0000FFFF&
-      Height          =   210
-      Left            =   9795
+      Height          =   225
+      Left            =   9720
       TabIndex        =   13
       Top             =   210
-      Width           =   1065
+      Width           =   1215
    End
    Begin VB.Label NombrePJ 
       Alignment       =   2  'Center

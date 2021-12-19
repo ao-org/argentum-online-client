@@ -2493,6 +2493,12 @@ Private Sub HandlePosUpdate()
     'Update pos label and minimap
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
     Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
+    
+    If MapDat.Seguro = 1 Then
+        frmMain.Coord.ForeColor = vbGreen
+    Else
+        frmMain.Coord.ForeColor = vbRed
+    End If
 
     Call RefreshAllChars
     
@@ -3460,6 +3466,13 @@ Private Sub HandleUserCharIndexInServer()
     LastMove = FrameTime
     
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    
+    If MapDat.Seguro = 1 Then
+        frmMain.Coord.ForeColor = vbGreen
+    Else
+        frmMain.Coord.ForeColor = vbRed
+    End If
+    
     Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
     
     If frmMapaGrande.Visible Then
@@ -3739,6 +3752,12 @@ Private Sub HandleForceCharMove()
     Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
     
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    
+    If MapDat.Seguro = 1 Then
+        frmMain.Coord.ForeColor = vbGreen
+    Else
+        frmMain.Coord.ForeColor = vbRed
+    End If
 
     If frmMapaGrande.Visible Then
         Call frmMapaGrande.ActualizarPosicionMapa

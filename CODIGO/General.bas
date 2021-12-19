@@ -781,7 +781,13 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
     
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
-
+    
+    If MapDat.Seguro = 1 Then
+        frmMain.Coord.ForeColor = vbGreen
+    Else
+        frmMain.Coord.ForeColor = vbRed
+    End If
+    
     If frmMapaGrande.Visible Then
         Call frmMapaGrande.ActualizarPosicionMapa
     End If
