@@ -1075,6 +1075,9 @@ Public Sub WriteChangeHeading(ByVal Heading As E_Heading)
         '</EhHeader>
 100     Call Writer.WriteInt(ClientPacketID.ChangeHeading)
 102     Call Writer.WriteInt8(Heading)
+        packetCounters.TS_ChangeHeading = packetCounters.TS_ChangeHeading + 1
+        Call Writer.WriteInt32(packetCounters.TS_ChangeHeading)
+    
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>

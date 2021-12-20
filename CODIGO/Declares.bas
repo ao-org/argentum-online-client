@@ -120,6 +120,7 @@ Public Type t_packetCounters
     TS_EquipItem As Long
     TS_GuildMessage As Long
     TS_QuestionGM As Long
+    TS_ChangeHeading As Long
 End Type
 
 Public packetCounters As t_packetCounters

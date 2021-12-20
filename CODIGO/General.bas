@@ -703,6 +703,7 @@ Sub ResetContadores()
     packetCounters.TS_EquipItem = 0
     packetCounters.TS_GuildMessage = 0
     packetCounters.TS_QuestionGM = 0
+    packetCounters.TS_ChangeHeading = 0
    
 End Sub
 

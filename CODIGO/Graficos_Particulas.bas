@@ -828,7 +828,7 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
     Exit Sub
 
 Particle_Group_Render_Err:
-    'Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Render", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Render", Erl)
     Resume Next
     
 End Sub
@@ -1247,7 +1247,7 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As I
     Exit Function
 
 General_Particle_Create_Err:
-    'Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.General_Particle_Create", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.General_Particle_Create", Erl)
     Resume Next
     
 End Function
