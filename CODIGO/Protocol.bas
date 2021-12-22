@@ -1410,9 +1410,6 @@ Public Sub HandleDisconnect(Optional ByVal test As Boolean = False)
     If Not FullLogout Then
         'Si no es un deslogueo completo, envío nuevamente la lista de Pjs.
         Call connectToLoginServer
-    Else
-        'Si es completo simplemente remuevo el token.
-        Call connectToLoginServer(e_state.RequestLogout)
     End If
 
 HandleDisconnect_Err:

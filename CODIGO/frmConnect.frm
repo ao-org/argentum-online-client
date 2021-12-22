@@ -130,7 +130,14 @@ Private Char As Byte
 Private Sub AuthSocket_Connect()
     If Not SessionOpened Then
         Call OpenSessionRequest
-        Auth_state = e_state.RequestAccountLogin
+        Select Case LoginOperation
+            Case e_operation.Authenticate
+                Auth_state = e_state.RequestAccountLogin
+            Case e_operation.SignUp
+                Auth_state = e_state.RequestSignUp
+            Case e_operation.ValidateAccount
+                Auth_state = e_state.RequestValidateAccount
+        End Select
     End If
     
 End Sub
@@ -823,6 +830,7 @@ Private Sub LogearPersonaje(ByVal Nick As String)
     End If
     
     Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+    ModAuth.LoginOperation = e_operation.Authenticate
     Call LoginOrConnect(E_MODO.Normal)
     
     Exit Sub
