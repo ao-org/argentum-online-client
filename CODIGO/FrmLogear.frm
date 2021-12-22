@@ -114,7 +114,7 @@ Begin VB.Form FrmLogear
    End
    Begin VB.Image cmdCuenta 
       Height          =   420
-      Left            =   630
+      Left            =   645
       Tag             =   "0"
       Top             =   3030
       Width           =   1980
@@ -260,7 +260,7 @@ Private Sub cmdCuenta_Click()
     
     On Error GoTo btnCuenta_Click_Err
     
-    Call ShellExecute(0, "Open", "https://ao20.com.ar/", "", App.Path, 1)
+    frmNewAccount.Show
 
     
     Exit Sub
@@ -339,6 +339,7 @@ Private Sub cmdIngresar_Click()
         End If
 
         If CheckUserDataLoged() = True Then
+            ModAuth.LoginOperation = e_operation.Authenticate
             Call LoginOrConnect(E_MODO.IngresandoConCuenta)
         End If
 

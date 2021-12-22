@@ -7,11 +7,21 @@ Public Enum e_state
     AccountLogged
     RequestCharList
     RequestLogout
+    RequestSignUp
+    RequestValidateAccount
 End Enum
+
+Public Enum e_operation
+    Authenticate = 0
+    SignUp
+    ValidateAccount
+End Enum
+
 
 Public SessionOpened As Boolean
 
 Public Auth_state As e_state
+Public LoginOperation As e_operation
 Public public_key() As Byte
 Public encrypted_session_token As String
 
@@ -20,8 +30,15 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
 
     If Not SessionOpened Then
         Call HandleOpenSession(bytesTotal)
-        If SessionOpened And Auth_state = e_state.RequestAccountLogin Then
-            Call SendAccountLoginRequest
+        If SessionOpened Then
+            Select Case Auth_state
+                Case e_state.RequestAccountLogin
+                    Call SendAccountLoginRequest
+                Case e_state.RequestSignUp
+                    Call SendSignUpRequest
+                Case e_state.RequestValidateAccount
+                    Call SendValidateAccount
+            End Select
         End If
         Exit Sub
     End If
@@ -31,6 +48,10 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
             Call HandleAccountLogin(bytesTotal)
         Case e_state.RequestCharList
             Call HandlePCList(bytesTotal)
+        Case e_state.RequestSignUp
+            Call HandleSignUpRequest(BytesTotal)
+        Case e_state.RequestValidateAccount
+            Call HandleValidateAccountRequest(BytesTotal)
     End Select
     
 End Sub
@@ -120,6 +141,70 @@ Public Sub SendAccountLoginRequest()
     
 End Sub
 
+Public Sub SendValidateAccount()
+    Dim username As String
+    Dim validate_code As String
+    Dim len_encrypted_username As Integer
+    Dim len_encrypted_validate_code As Integer
+    
+    Dim login_request() As Byte
+    Dim packet_size As Integer
+    Dim offset_login_request As Long
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendValidateAccount", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    username = frmNewAccount.txtValidateMail.Text
+    validate_code = frmNewAccount.txtCodigo.Text
+    
+    Dim encrypted_username() As Byte
+    Dim encrypted_username_b64 As String
+    
+    Dim encrypted_validate_code() As Byte
+    Dim encrypted_validate_code_b64 As String
+    
+    
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    encrypted_validate_code_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), validate_code)
+        
+    Call Str2ByteArr(encrypted_username_b64, encrypted_username)
+    Call Str2ByteArr(encrypted_validate_code_b64, encrypted_validate_code)
+    
+    
+    Dim len_username As Integer
+    Dim len_validate_code As Integer
+    
+    len_username = Len(encrypted_username_b64)
+    len_validate_code = Len(encrypted_validate_code_b64)
+    
+    ReDim login_request(1 To (2 + 2 + 2 + len_username + 2 + len_validate_code))
+    
+    packet_size = UBound(login_request)
+    
+    login_request(1) = &HBA
+    login_request(2) = &HAD
+    
+    'Siguientes 2 bytes indican tamaño total del paquete
+    login_request(3) = hiByte(packet_size)
+    login_request(4) = LoByte(packet_size)
+    
+    'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
+    login_request(5) = hiByte(len_username)
+    login_request(6) = LoByte(len_username)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
+    
+    offset_login_request = 7 + UBound(encrypted_username)
+        
+    login_request(offset_login_request + 1) = hiByte(len_validate_code)
+    login_request(offset_login_request + 2) = LoByte(len_validate_code)
+    
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_validate_code, login_request, len_validate_code, offset_login_request + 3)
+    
+    Call frmConnect.AuthSocket.SendData(login_request)
+    
+    Auth_state = e_state.RequestValidateAccount
+    
+End Sub
+
 Public Sub LogOutRequest()
     
     Dim logout_request() As Byte
@@ -175,6 +260,119 @@ Public Sub HandleLogOutRequest(ByVal bytesTotal As Long)
     End If
     Auth_state = e_state.Idle
 End Sub
+Public Sub SendSignUpRequest()
+
+    Dim json As String
+    Dim len_encrypted_username As Integer
+    Dim login_request() As Byte
+    Dim packet_size As Integer
+    
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendSignUpRequest", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
+    
+    json = ""
+    
+    json = "{ ""language"": ""english"", ""password"": """ & frmNewAccount.txtPassword & """, "
+    json = json & """passwordrecovery"": [{""secretanswer1"": ""Satanas"","
+    json = json & """secretanswer2"": ""Rojo"", "
+    json = json & """secretquestion1"": ""Cual es el nombre de mi primer mascota?"","
+    json = json & """secretquestion2"": ""Cual es mi color favorito?""}],"
+    
+    json = json & """personal"":[{"
+    json = json & """dob"": ""23-12-1990"","
+    json = json & """email"": """ & frmNewAccount.txtUsername & ""","
+    json = json & """firstname"": """ & frmNewAccount.txtName & ""","
+    json = json & """lastname"": """ & frmNewAccount.txtSurname & ""","
+    json = json & """mobile"": """ & frmNewAccount.txtSurname & ""","
+    json = json & """pob"": """ & frmNewAccount.txtSurname & """}],"
+    json = json & """username"": """ & frmNewAccount.txtUsername & """}"
+    
+    
+    Dim encrypted_json() As Byte
+    Dim encrypted_json_b64 As String
+    
+    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), json)
+        
+    Call Str2ByteArr(encrypted_json_b64, encrypted_json)
+        
+    Dim len_json As Integer
+    len_json = Len(encrypted_json_b64)
+    
+    ReDim login_request(1 To (2 + 2 + len_json))
+    
+    packet_size = UBound(login_request)
+    
+    login_request(1) = &HBE
+    login_request(2) = &HEF
+    
+    'Siguientes 2 bytes indican tamaño total del paquete
+    login_request(3) = hiByte(packet_size)
+    login_request(4) = LoByte(packet_size)
+    
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, login_request, len_json, 5)
+
+    Call frmConnect.AuthSocket.SendData(login_request)
+    
+    Auth_state = e_state.RequestSignUp
+    
+End Sub
+
+Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleSignUpRequest", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
+    Dim Data() As Byte
+    
+    frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
+    
+    frmConnect.AuthSocket.GetData Data, vbByte, 2
+    
+    If Data(0) = &HBF And Data(1) = &HB1 Then
+        Call DebugPrint("SIGNUP_OKAY", 0, 255, 0, True)
+        Call TextoAlAsistente("Cuenta creada correctamente.")
+        frmConnect.AuthSocket.GetData Data, vbByte, 2
+        Call frmNewAccount.AlternarControllers
+        frmNewAccount.txtValidateMail.Text = frmNewAccount.txtUsername
+        Auth_state = e_state.Idle
+    Else
+       Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData Data, vbByte, 4
+        Select Case MakeInt(Data(3), Data(2))
+            Case 0
+                Call TextoAlAsistente("Username already exist.")
+            Case 9
+                Call TextoAlAsistente("The server could not send the activation email.")
+            Case 14
+                Call TextoAlAsistente("Password is too short.")
+            Case 15
+                Call TextoAlAsistente("Password is too long.")
+            Case 16
+                Call TextoAlAsistente("Password contains invalid characters.")
+            Case 18
+                Call TextoAlAsistente("Username is too short.")
+            Case 19
+                Call TextoAlAsistente("Username is too long.")
+            Case 20
+                Call TextoAlAsistente("Username contains invalid characters.")
+            Case 24
+                Call TextoAlAsistente("password must not contain username.")
+            Case 32
+                Call TextoAlAsistente("Username can not start with a number.")
+            Case 33
+                Call TextoAlAsistente("The password has no uppercase letters.")
+            Case 34
+                Call TextoAlAsistente("The password has no lowercase letters.")
+            Case 35
+                Call TextoAlAsistente("The password must contain at least than two numbers.")
+        End Select
+    End If
+    Auth_state = e_state.Idle
+End Sub
+
+
 
 Public Sub PCListRequest()
     Dim username As String
@@ -220,7 +418,7 @@ Public Sub PCListRequest()
     Auth_state = e_state.RequestCharList
     
 End Sub
-Public Sub connectToLoginServer(Optional ByVal state As e_state)
+Public Sub connectToLoginServer()
 
     frmConnect.AuthSocket.Close
     frmConnect.AuthSocket.RemoteHost = IPdelServidorLogin
@@ -345,7 +543,42 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
     End If
         
 End Sub
+Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
 
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleValidateAccountRequest", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim Data() As Byte
+    
+    frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
+    
+    frmConnect.AuthSocket.GetData Data, vbByte, 2
+    
+    If Data(0) = &H77 And Data(1) = &H77 Then
+        Call DebugPrint("VALIDATE-ACCOUNT-OK", 0, 255, 0, True)
+        Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(Data), 255, 255, 255)
+        frmConnect.AuthSocket.GetData Data, vbByte, 2
+        Auth_state = e_state.Idle
+        Call TextoAlAsistente("Cuenta validada exitosamente.")
+        frmNewAccount.Visible = False
+    Else
+       Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData Data, vbByte, 4
+        Select Case MakeInt(Data(3), Data(2))
+            Case 1
+                Call TextoAlAsistente("Invalid Username.")
+                frmNewAccount.Visible = False
+            Case 10
+                Call TextoAlAsistente("Invalid Code.")
+            Case 11
+                Call TextoAlAsistente("Account has already been activated.")
+                frmNewAccount.Visible = False
+            Case Else
+                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+        End Select
+    End If
+        
+End Sub
 
 Function FileToString(strFileName As String) As String
   Open strFileName For Input As #1
@@ -525,8 +758,9 @@ Public Function estaInmovilizado(ByRef arr() As Byte) As String
 
     Dim a As String, b As String
     
+
     a = hashHexFromFile(App.Path & "\Argentum.exe", 3)
-    
+
     Dim i As Long
     
     For i = 1 To 4
