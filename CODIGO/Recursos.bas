@@ -99,7 +99,7 @@ Private Type tDatosGrh
 
     x As Integer
     y As Integer
-    grhIndex As Long
+    GrhIndex As Long
 
 End Type
 
@@ -1026,14 +1026,14 @@ Public Sub CargarMapa(ByVal map As Integer)
                 
                 With MapData(x, y)
             
-                    .Graphic(1).grhIndex = L1(i).grhIndex
+                    .Graphic(1).GrhIndex = L1(i).GrhIndex
                     
                     ' Precalculate position
                     .Graphic(1).x = x * TilePixelWidth
                     .Graphic(1).y = y * TilePixelHeight
                     ' *********************
                 
-                    InitGrh .Graphic(1), .Graphic(1).grhIndex
+                    InitGrh .Graphic(1), .Graphic(1).GrhIndex
                     
                     If HayAgua(x, y) Then
                         .Blocked = .Blocked Or FLAG_AGUA
@@ -1057,9 +1057,9 @@ Public Sub CargarMapa(ByVal map As Integer)
                 x = L2(i).x
                 y = L2(i).y
 
-                MapData(x, y).Graphic(2).grhIndex = L2(i).grhIndex
+                MapData(x, y).Graphic(2).GrhIndex = L2(i).GrhIndex
                 
-                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).grhIndex
+                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).GrhIndex
                 
                 MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_COSTA
                 
@@ -1076,11 +1076,11 @@ Public Sub CargarMapa(ByVal map As Integer)
                 x = L3(i).x
                 y = L3(i).y
             
-                MapData(x, y).Graphic(3).grhIndex = L3(i).grhIndex
+                MapData(x, y).Graphic(3).GrhIndex = L3(i).GrhIndex
             
-                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).grhIndex
+                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
 
-                If EsArbol(L3(i).grhIndex) Then
+                If EsArbol(L3(i).GrhIndex) Then
                     MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
                 End If
             Next i
@@ -1093,8 +1093,8 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , L4
 
             For i = 1 To .NumeroLayers(4)
-                MapData(L4(i).x, L4(i).y).Graphic(4).grhIndex = L4(i).grhIndex
-                InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).grhIndex
+                MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex = L4(i).GrhIndex
+                InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex
             Next i
 
         End If
@@ -1170,8 +1170,8 @@ Public Sub CargarMapa(ByVal map As Integer)
             For i = 1 To .NumeroOBJs
                 MapData(Objetos(i).x, Objetos(i).y).OBJInfo.ObjIndex = Objetos(i).ObjIndex
                 MapData(Objetos(i).x, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
-                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.grhIndex = ObjData(Objetos(i).ObjIndex).grhIndex
-                Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.grhIndex)
+                MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).ObjIndex).GrhIndex
+                Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex)
 
             Next i
 
@@ -1246,7 +1246,7 @@ Public Sub CargarParticulas()
     Dim GrhListing As String
     Dim TempSet    As String
     Dim ColorSet   As Long
-    Dim Temp       As Integer
+    Dim temp       As Integer
 
     #If Compresion = 1 Then
 
@@ -1297,8 +1297,8 @@ Public Sub CargarParticulas()
         StreamData(loopc).move_y2 = General_Var_Get(StreamFile, Val(loopc), "move_y2")
         StreamData(loopc).life_counter = General_Var_Get(StreamFile, Val(loopc), "life_counter")
         StreamData(loopc).speed = Val(General_Var_Get(StreamFile, Val(loopc), "Speed"))
-        Temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((Temp = -1), True, False)
+        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
+        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
         StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
         StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
         
@@ -1350,12 +1350,12 @@ Public Sub CargarParticulasBinary()
     Dim GrhListing As String
     Dim TempSet    As String
     Dim ColorSet   As Long
-    Dim Temp       As Integer
+    Dim temp       As Integer
 
-    Dim handle     As Integer
+    Dim Handle     As Integer
 
     'Open files
-    handle = FreeFile()
+    Handle = FreeFile()
 
     #If Compresion = 1 Then
 
@@ -1370,22 +1370,22 @@ Public Sub CargarParticulasBinary()
         StreamFile = App.Path & "\..\Recursos\init\particles.ind"
     #End If
 
-    Dim N As Integer
+    Dim n As Integer
     
-    N = FreeFile()
+    n = FreeFile()
 
-    Open StreamFile For Binary Access Read As #N
+    Open StreamFile For Binary Access Read As #n
     'num de cabezas
-    Get #N, , ParticulasTotales
+    Get #n, , ParticulasTotales
 
     ReDim StreamData(1 To ParticulasTotales) As Stream
 
     'fill StreamData array with info from Particles.ini
     For loopc = 1 To ParticulasTotales
-        Get #N, , StreamData(loopc)
+        Get #n, , StreamData(loopc)
     Next loopc
     
-    Close #N
+    Close #n
 
     Exit Sub
     ParticulasTotales = Val(General_Var_Get(StreamFile, "INIT", "Total"))
@@ -1395,8 +1395,8 @@ Public Sub CargarParticulasBinary()
     'fill StreamData array with info from Particles.ini
     For loopc = 1 To ParticulasTotales
 
-        Temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((Temp = -1), True, False)
+        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
+        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
         StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
         StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
         
@@ -1487,7 +1487,7 @@ Public Sub CargarIndicesOBJ()
 
     For Obj = 1 To NumOBJs
         DoEvents
-        ObjData(Obj).grhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
+        ObjData(Obj).GrhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
         ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
         ObjData(Obj).MinDef = Val(Leer.GetValue("OBJ" & Obj, "MinDef"))
         ObjData(Obj).MaxDef = Val(Leer.GetValue("OBJ" & Obj, "MaxDef"))
@@ -1754,28 +1754,28 @@ Sub CargarMoldes()
 
 End Sub
 Sub CargarZonas()
-    Dim reader As clsIniManager
+    Dim Reader As clsIniManager
     Dim cantidadZonas As Integer
     Dim i As Integer
-    Set reader = New clsIniManager
+    Set Reader = New clsIniManager
     
-    Call reader.Initialize(App.Path & "\..\Recursos\Dat\zonas.dat")
+    Call Reader.Initialize(App.Path & "\..\Recursos\Dat\zonas.dat")
     
-    cantidadZonas = reader.GetValue("Config", "Cantidad")
+    cantidadZonas = Reader.GetValue("Config", "Cantidad")
     
     ReDim Zonas(1 To cantidadZonas) As MapZone
     
     For i = 1 To cantidadZonas
-        Zonas(i).Musica = Val(reader.GetValue("Zona" & i, "Musica"))
-        Zonas(i).OcultarNombre = Val(reader.GetValue("Zona" & i, "OcultarNombre"))
-        Zonas(i).NumMapa = Val(reader.GetValue("Zona" & i, "Mapa"))
-        Zonas(i).x1 = Val(reader.GetValue("Zona" & i, "X1"))
-        Zonas(i).x2 = Val(reader.GetValue("Zona" & i, "X2"))
-        Zonas(i).y1 = Val(reader.GetValue("Zona" & i, "Y1"))
-        Zonas(i).y2 = Val(reader.GetValue("Zona" & i, "Y2"))
+        Zonas(i).Musica = Val(Reader.GetValue("Zona" & i, "Musica"))
+        Zonas(i).OcultarNombre = Val(Reader.GetValue("Zona" & i, "OcultarNombre"))
+        Zonas(i).NumMapa = Val(Reader.GetValue("Zona" & i, "Mapa"))
+        Zonas(i).x1 = Val(Reader.GetValue("Zona" & i, "X1"))
+        Zonas(i).x2 = Val(Reader.GetValue("Zona" & i, "X2"))
+        Zonas(i).y1 = Val(Reader.GetValue("Zona" & i, "Y1"))
+        Zonas(i).y2 = Val(Reader.GetValue("Zona" & i, "Y2"))
     Next i
     
-    Set reader = Nothing
+    Set Reader = Nothing
 End Sub
 
 Sub CargarCabezas()
@@ -1783,7 +1783,7 @@ Sub CargarCabezas()
     On Error GoTo CargarCabezas_Err
     
 
-    Dim N            As Integer
+    Dim n            As Integer
 
     Dim i            As Long
 
@@ -1791,7 +1791,7 @@ Sub CargarCabezas()
 
     Dim Miscabezas() As tIndiceCabeza
     
-    N = FreeFile()
+    n = FreeFile()
     
     #If Compresion = 1 Then
 
@@ -1801,21 +1801,24 @@ Sub CargarCabezas()
 
         End If
 
-        Open Windows_Temp_Dir & "cabezas.ind" For Binary Access Read As #N
+        Open Windows_Temp_Dir & "cabezas.ind" For Binary Access Read As #n
     #Else
-        Open App.Path & "\..\Recursos\init\cabezas.ind" For Binary Access Read As #N
+        Open App.Path & "\..\Recursos\init\cabezas.ind" For Binary Access Read As #n
     #End If
 
     
+    'cabecera
+    Get #n, , MiCabecera
+    
     'num de cabezas
-    Get #N, , Numheads
+    Get #n, , Numheads
     
     'Resize array
     ReDim HeadData(0 To Numheads) As HeadData
     ReDim Miscabezas(0 To Numheads) As tIndiceCabeza
     
     For i = 1 To Numheads
-        Get #N, , Miscabezas(i)
+        Get #n, , Miscabezas(i)
         
         If Miscabezas(i).Head(1) Then
             Call InitGrh(HeadData(i).Head(1), Miscabezas(i).Head(1), 0)
@@ -1827,7 +1830,7 @@ Sub CargarCabezas()
 
     Next i
     
-    Close #N
+    Close #n
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "cabezas.ind"
@@ -1847,7 +1850,7 @@ Sub CargarCascos()
     On Error GoTo CargarCascos_Err
     
 
-    Dim N            As Integer
+    Dim n            As Integer
 
     Dim i            As Long
 
@@ -1855,7 +1858,7 @@ Sub CargarCascos()
 
     Dim Miscabezas() As tIndiceCabeza
     
-    N = FreeFile()
+    n = FreeFile()
   
     #If Compresion = 1 Then
 
@@ -1865,20 +1868,25 @@ Sub CargarCascos()
 
         End If
 
-        Open Windows_Temp_Dir & "cascos.ind" For Binary Access Read As #N
+        Open Windows_Temp_Dir & "cascos.ind" For Binary Access Read As #n
     #Else
-        Open App.Path & "\..\Recursos\init\cascos.ind" For Binary Access Read As #N
+        Open App.Path & "\..\Recursos\init\cascos.ind" For Binary Access Read As #n
     #End If
         
+       
+    
+    'cabecera
+    Get #n, , MiCabecera
+      
     'num de cabezas
-    Get #N, , NumCascos
+    Get #n, , NumCascos
     
     'Resize array
     ReDim CascoAnimData(0 To NumCascos) As HeadData
     ReDim Miscabezas(0 To NumCascos) As tIndiceCabeza
     
     For i = 1 To NumCascos
-        Get #N, , Miscabezas(i)
+        Get #n, , Miscabezas(i)
         
         If Miscabezas(i).Head(1) Then
             Call InitGrh(CascoAnimData(i).Head(1), Miscabezas(i).Head(1), 0)
@@ -1890,7 +1898,7 @@ Sub CargarCascos()
 
     Next i
     
-    Close #N
+    Close #n
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "cascos.ind"
@@ -1910,7 +1918,7 @@ Sub CargarCuerposViejo()
     On Error GoTo CargarCuerpos_Err
     
 
-    Dim N            As Integer
+    Dim n            As Integer
 
     Dim i            As Long
 
@@ -1918,7 +1926,7 @@ Sub CargarCuerposViejo()
 
     Dim MisCuerpos() As tIndiceCuerpo
     
-    N = FreeFile()
+    n = FreeFile()
     
     #If Compresion = 1 Then
 
@@ -1928,20 +1936,24 @@ Sub CargarCuerposViejo()
 
         End If
 
-        Open Windows_Temp_Dir & "personajes.ind" For Binary Access Read As #N
+        Open Windows_Temp_Dir & "personajes.ind" For Binary Access Read As #n
     #Else
-        Open App.Path & "\..\Recursos\init\personajes.ind" For Binary Access Read As #N
+        Open App.Path & "\..\Recursos\init\personajes.ind" For Binary Access Read As #n
     #End If
+      
+    
+    'cabecera
+    Get #n, , MiCabecera
         
     'num de cabezas
-    Get #N, , NumCuerpos
+    Get #n, , NumCuerpos
     
     'Resize array
     ReDim BodyData(0 To NumCuerpos) As BodyData
     ReDim MisCuerpos(0 To NumCuerpos) As tIndiceCuerpo
     
     For i = 1 To NumCuerpos
-        Get #N, , MisCuerpos(i)
+        Get #n, , MisCuerpos(i)
         
         If MisCuerpos(i).Body(1) Then
             InitGrh BodyData(i).Walk(1), MisCuerpos(i).Body(1), 0
@@ -1956,7 +1968,7 @@ Sub CargarCuerposViejo()
 
     Next i
     
-    Close #N
+    Close #n
 
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "personajes.ind"
@@ -2135,13 +2147,13 @@ Sub CargarFxs()
     On Error GoTo CargarFxs_Err
     
 
-    Dim N      As Integer
+    Dim n      As Integer
 
     Dim i      As Long
 
     Dim NumFxs As Integer
     
-    N = FreeFile()
+    n = FreeFile()
 
     #If Compresion = 1 Then
 
@@ -2151,22 +2163,26 @@ Sub CargarFxs()
 
         End If
 
-        Open Windows_Temp_Dir & "fxs.ind" For Binary Access Read As #N
+        Open Windows_Temp_Dir & "fxs.ind" For Binary Access Read As #n
     #Else
-        Open App.Path & "\..\Recursos\init\fxs.ind" For Binary Access Read As #N
+        Open App.Path & "\..\Recursos\init\fxs.ind" For Binary Access Read As #n
     #End If
-        
+       
+    
+    'cabecera
+    Get #n, , MiCabecera
+       
     'num de cabezas
-    Get #N, , NumFxs
+    Get #n, , NumFxs
     
     'Resize array
     ReDim FxData(1 To NumFxs) As tIndiceFx
     
     For i = 1 To NumFxs
-        Get #N, , FxData(i)
+        Get #n, , FxData(i)
     Next i
     
-    Close #N
+    Close #n
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "fxs.ind"
@@ -2188,11 +2204,11 @@ Public Function LoadGrhData() As Boolean
     Dim grh         As Long
     Dim Frame       As Long
     Dim grhCount    As Long
-    Dim handle      As Integer
+    Dim Handle      As Integer
     Dim fileVersion As Long
     
     'Open files
-    handle = FreeFile()
+    Handle = FreeFile()
     
     #If Compresion = 1 Then
 
@@ -2202,16 +2218,16 @@ Public Function LoadGrhData() As Boolean
 
         End If
     
-        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #handle
+        Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #Handle
     #Else
-        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #handle
+        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #Handle
     #End If
     
     'Get file version
-    Get #handle, , fileVersion
+    Get #Handle, , fileVersion
     
     'Get number of grhs
-    Get #handle, , grhCount
+    Get #Handle, , grhCount
     
     'Resize arrays
     ReDim GrhData(1 To grhCount) As GrhData
@@ -2222,15 +2238,15 @@ Public Function LoadGrhData() As Boolean
 
     Fin = False
 
-    While Not EOF(handle) And Fin = False
+    While Not EOF(Handle) And Fin = False
 
-        Get #handle, , grh
+        Get #Handle, , grh
 
         With GrhData(grh)
         
             GrhData(grh).active = True
             'Get number of frames
-            Get #handle, , .NumFrames
+            Get #Handle, , .NumFrames
 
             If .NumFrames <= 0 Then GoTo ErrorHandler
             
@@ -2240,7 +2256,7 @@ Public Function LoadGrhData() As Boolean
 
                 'Read a animation GRH set
                 For Frame = 1 To .NumFrames
-                    Get #handle, , .Frames(Frame)
+                    Get #Handle, , .Frames(Frame)
 
                     If .Frames(Frame) <= 0 Or .Frames(Frame) > grhCount Then
                         GoTo ErrorHandler
@@ -2249,7 +2265,7 @@ Public Function LoadGrhData() As Boolean
 
                 Next Frame
                 
-                Get #handle, , GrhData(grh).speed
+                Get #Handle, , GrhData(grh).speed
                 
                 If .speed <= 0 Then GoTo ErrorHandler
                 
@@ -2271,23 +2287,23 @@ Public Function LoadGrhData() As Boolean
                 If .TileHeight <= 0 Then GoTo ErrorHandler
             Else
                 'Read in normal GRH data
-                Get #handle, , .FileNum
+                Get #Handle, , .FileNum
 
                 If .FileNum <= 0 Then GoTo ErrorHandler
                                 
-                Get #handle, , GrhData(grh).sX
+                Get #Handle, , GrhData(grh).sX
 
                 If .sX < 0 Then GoTo ErrorHandler
                 
-                Get #handle, , GrhData(grh).sY
+                Get #Handle, , GrhData(grh).sY
 
                 If .sY < 0 Then GoTo ErrorHandler
                 
-                Get #handle, , GrhData(grh).pixelWidth
+                Get #Handle, , GrhData(grh).pixelWidth
 
                 If .pixelWidth <= 0 Then GoTo ErrorHandler
                 
-                Get #handle, , GrhData(grh).pixelHeight
+                Get #Handle, , GrhData(grh).pixelHeight
 
                 If .pixelHeight <= 0 Then GoTo ErrorHandler
                 
@@ -2304,7 +2320,7 @@ Public Function LoadGrhData() As Boolean
         If grh = MaxGrh Then Fin = True
     Wend
 
-    Close #handle
+    Close #Handle
     
     LoadGrhData = True
     
