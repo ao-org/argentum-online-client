@@ -539,7 +539,7 @@ Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
         Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(Data), 255, 255, 255)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
         Auth_state = e_state.Idle
-        Call MsgBox("Personaje borrado con correctamente.", vbOKOnly)
+        Call MsgBox("Personaje borrado correctamente.", vbOKOnly)
         Call EraseCharFromPjList(DeleteUser)
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
