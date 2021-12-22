@@ -4,8 +4,8 @@ Begin VB.Form frmNewAccount
    BorderStyle     =   0  'None
    Caption         =   "Form1"
    ClientHeight    =   2640
-   ClientLeft      =   11970
-   ClientTop       =   10620
+   ClientLeft      =   11250
+   ClientTop       =   10695
    ClientWidth     =   5355
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False

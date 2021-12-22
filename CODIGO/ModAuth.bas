@@ -9,12 +9,16 @@ Public Enum e_state
     RequestLogout
     RequestSignUp
     RequestValidateAccount
+    RequestDeleteChar
+    ConfirmDeleteChar
 End Enum
 
 Public Enum e_operation
     Authenticate = 0
     SignUp
     ValidateAccount
+    deletechar
+    ConfirmDeleteChar
 End Enum
 
 
@@ -24,6 +28,7 @@ Public Auth_state As e_state
 Public LoginOperation As e_operation
 Public public_key() As Byte
 Public encrypted_session_token As String
+Public delete_char_validate_code As String
 
 
 Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
@@ -38,6 +43,10 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
                     Call SendSignUpRequest
                 Case e_state.RequestValidateAccount
                     Call SendValidateAccount
+                Case e_state.RequestDeleteChar
+                    Call SendDeleteCharRequest
+                Case e_state.ConfirmDeleteChar
+                    Call SendConfirmDeleteChar
             End Select
         End If
         Exit Sub
@@ -52,6 +61,10 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
             Call HandleSignUpRequest(BytesTotal)
         Case e_state.RequestValidateAccount
             Call HandleValidateAccountRequest(BytesTotal)
+        Case e_state.RequestDeleteChar
+            Call HandleDeleteCharRequest(BytesTotal)
+        Case e_state.ConfirmDeleteChar
+            Call HandleConfirmDeleteChar(BytesTotal)
     End Select
     
 End Sub
@@ -319,6 +332,7 @@ Public Sub SendSignUpRequest()
     
 End Sub
 
+
 Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleSignUpRequest", 255, 255, 255, True)
@@ -372,7 +386,178 @@ Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
     Auth_state = e_state.Idle
 End Sub
 
+Public Sub SendDeleteCharRequest()
 
+    Dim json As String
+    Dim len_encrypted_username As Integer
+    Dim delete_char_request() As Byte
+    Dim packet_size As Integer
+    
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendDeleteChar", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+        
+    json = "{""username"": """ & CuentaEmail & """, ""pc"":""" & DeleteUser & """}"
+    
+    Dim encrypted_json() As Byte
+    Dim encrypted_json_b64 As String
+    
+    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), json)
+        
+    Call Str2ByteArr(encrypted_json_b64, encrypted_json)
+        
+    Dim len_json As Integer
+    len_json = Len(encrypted_json_b64)
+    
+    ReDim delete_char_request(1 To (2 + 2 + len_json))
+    
+    packet_size = UBound(delete_char_request)
+    
+    delete_char_request(1) = &H1
+    delete_char_request(2) = &H5
+    
+    'Siguientes 2 bytes indican tamaño total del paquete
+    delete_char_request(3) = hiByte(packet_size)
+    delete_char_request(4) = LoByte(packet_size)
+    
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, delete_char_request, len_json, 5)
+
+    Call frmConnect.AuthSocket.SendData(delete_char_request)
+    
+    Auth_state = e_state.RequestDeleteChar
+    
+End Sub
+
+Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleDeleteCharRequest", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
+    Dim Data() As Byte
+    
+    frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
+    
+    frmConnect.AuthSocket.GetData Data, vbByte, 2
+    
+    If Data(0) = &H1 And Data(1) = &H6 Then
+        Call DebugPrint("DELETE_PC_REQUEST_OK", 0, 255, 0, True)
+        MsgBox ("Se ha enviado un código de verificación al mail proporcionado.")
+        frmConnect.AuthSocket.GetData Data, vbByte, 2
+        Auth_state = e_state.Idle
+    Else
+       Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData Data, vbByte, 4
+        Select Case MakeInt(Data(3), Data(2))
+            Case 1
+                Call TextoAlAsistente("Invalid account")
+            Case 3
+                Call TextoAlAsistente("Database error")
+            Case 51
+                Call TextoAlAsistente("You are not the character owner")
+        End Select
+    End If
+    Auth_state = e_state.Idle
+End Sub
+
+Public Sub SendConfirmDeleteChar()
+    Dim username As String
+    Dim validate_code As String
+    Dim len_encrypted_username As Integer
+    Dim len_encrypted_validate_code As Integer
+    
+    Dim login_request() As Byte
+    Dim packet_size As Integer
+    Dim offset_login_request As Long
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendConfirmDeleteChar", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    username = DeleteUser
+    validate_code = delete_char_validate_code
+    
+    Dim encrypted_username() As Byte
+    Dim encrypted_username_b64 As String
+    
+    Dim encrypted_validate_code() As Byte
+    Dim encrypted_validate_code_b64 As String
+    
+    
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    encrypted_validate_code_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), validate_code)
+        
+    Call Str2ByteArr(encrypted_username_b64, encrypted_username)
+    Call Str2ByteArr(encrypted_validate_code_b64, encrypted_validate_code)
+    
+    
+    Dim len_username As Integer
+    Dim len_validate_code As Integer
+    
+    len_username = Len(encrypted_username_b64)
+    len_validate_code = Len(encrypted_validate_code_b64)
+    
+    ReDim login_request(1 To (2 + 2 + 2 + len_username + 2 + len_validate_code))
+    
+    packet_size = UBound(login_request)
+    
+    login_request(1) = &H1
+    login_request(2) = &H8
+    
+    'Siguientes 2 bytes indican tamaño total del paquete
+    login_request(3) = hiByte(packet_size)
+    login_request(4) = LoByte(packet_size)
+    
+    'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
+    login_request(5) = hiByte(len_username)
+    login_request(6) = LoByte(len_username)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
+    
+    offset_login_request = 7 + UBound(encrypted_username)
+        
+    login_request(offset_login_request + 1) = hiByte(len_validate_code)
+    login_request(offset_login_request + 2) = LoByte(len_validate_code)
+    
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_validate_code, login_request, len_validate_code, offset_login_request + 3)
+    
+    Call frmConnect.AuthSocket.SendData(login_request)
+    
+    Auth_state = e_state.ConfirmDeleteChar
+    
+End Sub
+
+Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
+
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleConfirmDeleteChar", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim Data() As Byte
+    
+    frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
+    
+    frmConnect.AuthSocket.GetData Data, vbByte, 2
+    
+    If Data(0) = &H1 And Data(1) = &H9 Then
+        Call DebugPrint("DELETE-CHAR-OK", 0, 255, 0, True)
+        Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(Data), 255, 255, 255)
+        frmConnect.AuthSocket.GetData Data, vbByte, 2
+        Auth_state = e_state.Idle
+        Call MsgBox("Personaje borrado con correctamente.", vbOKOnly)
+        Call EraseCharFromPjList(DeleteUser)
+    Else
+       Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData Data, vbByte, 4
+        Select Case MakeInt(Data(3), Data(2))
+            Case 1
+                Call TextoAlAsistente("Invalid character name.")
+            Case 3
+                Call TextoAlAsistente("Database error.")
+            Case 25
+                Call TextoAlAsistente("Invalid Code.")
+                frmDeleteChar.Show , frmConnect
+            Case Else
+                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+        End Select
+    End If
+        
+End Sub
 
 Public Sub PCListRequest()
     Dim username As String
@@ -585,7 +770,38 @@ Function FileToString(strFileName As String) As String
     FileToString = StrConv(InputB(LOF(1), 1), vbUnicode)
   Close #1
 End Function
-
+Private Sub EraseCharFromPjList(ByVal nick As String)
+    Dim i As Long, j As Long
+    
+    For i = 1 To CantidadDePersonajesEnCuenta
+        If LCase(Pjs(i).nombre) = LCase(nick) Then
+            'Desde esta posicion en adelante tengo que correrlos todos 1 pos para atras
+            For j = i To (CantidadDePersonajesEnCuenta - 1)
+                Pjs(j) = Pjs(j + 1)
+            Next j
+            Exit For
+        End If
+    Next i
+    
+    'Borro el último personaje
+    Pjs(CantidadDePersonajesEnCuenta).nombre = ""
+    Pjs(CantidadDePersonajesEnCuenta).Head = 0
+    Pjs(CantidadDePersonajesEnCuenta).Clase = 0
+    Pjs(CantidadDePersonajesEnCuenta).Body = 0
+    Pjs(CantidadDePersonajesEnCuenta).Mapa = 0
+    Pjs(CantidadDePersonajesEnCuenta).PosX = 0
+    Pjs(CantidadDePersonajesEnCuenta).PosY = 0
+    Pjs(CantidadDePersonajesEnCuenta).nivel = 0
+    Pjs(CantidadDePersonajesEnCuenta).Criminal = 0
+    Pjs(CantidadDePersonajesEnCuenta).Casco = 0
+    Pjs(CantidadDePersonajesEnCuenta).Escudo = 0
+    Pjs(CantidadDePersonajesEnCuenta).Arma = 0
+    Pjs(CantidadDePersonajesEnCuenta).ClanName = ""
+    Pjs(CantidadDePersonajesEnCuenta).NameMapa = ""
+    
+    CantidadDePersonajesEnCuenta = CantidadDePersonajesEnCuenta - 1
+    
+End Sub
 Private Sub FillAccountData(ByVal data As String)
   
     Dim i As Long

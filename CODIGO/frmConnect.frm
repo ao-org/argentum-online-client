@@ -137,6 +137,10 @@ Private Sub AuthSocket_Connect()
                 Auth_state = e_state.RequestSignUp
             Case e_operation.ValidateAccount
                 Auth_state = e_state.RequestValidateAccount
+            Case e_operation.DeleteChar
+                Auth_state = e_state.RequestDeleteChar
+            Case e_operation.ConfirmDeleteChar
+                Auth_state = e_state.ConfirmDeleteChar
         End Select
     End If
     
@@ -675,20 +679,22 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Dim tmp As String
 
                     If MsgBox("¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
-                        Call inputbox_Password(Me, "*")
-                        tmp = InputBox("Para confirmar el borrado debe ingresar su contraseña.", App.title)
-            
-                        If tmp = CuentaPassword Then
-                            Call LoginOrConnect(E_MODO.BorrandoPJ)
-                            
-                            If PJSeleccionado <> 0 Then
-                                LastPJSeleccionado = PJSeleccionado
-                                PJSeleccionado = 0
-                            End If
-                        Else
-                            MsgBox ("Contraseña incorrecta")
+                        
+                        ModAuth.LoginOperation = e_operation.DeleteChar
+                        Call connectToLoginServer
+                        frmDeleteChar.Show , frmConnect
+                        
+                        'If tmp = CuentaPassword Then
+                        '    Call LoginOrConnect(E_MODO.BorrandoPJ)
+                        '
+                        '    If PJSeleccionado <> 0 Then
+                        '        LastPJSeleccionado = PJSeleccionado
+                        '        PJSeleccionado = 0
+                        '    End If
+                        'Else
+                        '    MsgBox ("Contraseña incorrecta")
 
-                        End If
+                        'End If
 
                     End If
 

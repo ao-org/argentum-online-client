@@ -260,7 +260,7 @@ Private Sub cmdCuenta_Click()
     
     On Error GoTo btnCuenta_Click_Err
     
-    frmNewAccount.Show
+    frmNewAccount.Show , frmMain
 
     
     Exit Sub
