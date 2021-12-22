@@ -6600,38 +6600,7 @@ WritePetLeaveAll_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteGuardNoticeResponse(ByVal Codigo As String)
-        '<EhHeader>
-        On Error GoTo WriteGuardNoticeResponse_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.GuardNoticeResponse)
-102     Call Writer.WriteString8(Codigo)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
 
-WriteGuardNoticeResponse_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteGuardNoticeResponse", Erl)
-        '</EhFooter>
-End Sub
-
-Public Sub WriteResendVerificationCode(ByVal Codigo As String)
-        '<EhHeader>
-        On Error GoTo WriteResendVerificationCode_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.GuardResendVerificationCode)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteResendVerificationCode_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResendVerificationCode", Erl)
-        '</EhFooter>
-End Sub
 
 Public Sub WriteResetChar(ByVal Nick As String)
     On Error GoTo WriteResetChar_Err

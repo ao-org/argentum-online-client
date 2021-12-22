@@ -1806,8 +1806,6 @@ Sub CargarCabezas()
         Open App.Path & "\..\Recursos\init\cabezas.ind" For Binary Access Read As #N
     #End If
 
-    'cabecera
-    Get #N, , MiCabecera
     
     'num de cabezas
     Get #N, , Numheads
@@ -1871,10 +1869,7 @@ Sub CargarCascos()
     #Else
         Open App.Path & "\..\Recursos\init\cascos.ind" For Binary Access Read As #N
     #End If
-    
-    'cabecera
-    Get #N, , MiCabecera
-    
+        
     'num de cabezas
     Get #N, , NumCascos
     
@@ -1937,10 +1932,7 @@ Sub CargarCuerposViejo()
     #Else
         Open App.Path & "\..\Recursos\init\personajes.ind" For Binary Access Read As #N
     #End If
-    
-    'cabecera
-    Get #N, , MiCabecera
-    
+        
     'num de cabezas
     Get #N, , NumCuerpos
     
@@ -2163,10 +2155,7 @@ Sub CargarFxs()
     #Else
         Open App.Path & "\..\Recursos\init\fxs.ind" For Binary Access Read As #N
     #End If
-    
-    'cabecera
-    Get #N, , MiCabecera
-    
+        
     'num de cabezas
     Get #N, , NumFxs
     

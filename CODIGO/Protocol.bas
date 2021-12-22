@@ -548,8 +548,6 @@ Public Enum ClientPacketID
     CloseCrafting
     MoveCraftItem
     PetLeaveAll
-    GuardNoticeResponse
-    GuardResendVerificationCode
     ResetChar              '/RESET NICK
     ResetearPersonaje
     DeleteItem
@@ -918,8 +916,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleCraftingResult
         Case ServerPacketID.ForceUpdate
             Call HandleForceUpdate
-        Case ServerPacketID.GuardNotice
-            Call HandleGuardNotice
         Case ServerPacketID.AnswerReset
             Call HandleAnswerReset
         Case ServerPacketID.ObjQuestListSend
@@ -8326,18 +8322,6 @@ HandleCerrarleCliente_Err:
     
 End Sub
 
-Private Sub HandleGuardNotice()
-On Error GoTo HandleGuardNotice_Err
-    
-    frmAOGuard.Show vbModeless, frmConnect
-    
-    Exit Sub
-    
-HandleGuardNotice_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
-    
-    
-End Sub
 Public Sub HandleAnswerReset()
     On Error GoTo ErrHandler
 
