@@ -348,7 +348,7 @@ Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
         Call DebugPrint("SIGNUP_OKAY", 0, 255, 0, True)
         Call TextoAlAsistente("Cuenta creada correctamente.")
         frmConnect.AuthSocket.GetData Data, vbByte, 2
-        Call frmNewAccount.AlternarControllers
+        Call frmNewAccount.showValidateAccountControls
         frmNewAccount.txtValidateMail.Text = frmNewAccount.txtUsername
         Auth_state = e_state.Idle
     Else

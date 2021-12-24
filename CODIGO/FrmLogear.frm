@@ -5,8 +5,8 @@ Begin VB.Form FrmLogear
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    ClientHeight    =   4005
-   ClientLeft      =   6300
-   ClientTop       =   0
+   ClientLeft      =   17505
+   ClientTop       =   2220
    ClientWidth     =   5340
    ClipControls    =   0   'False
    ControlBox      =   0   'False
@@ -15,7 +15,6 @@ Begin VB.Form FrmLogear
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Moveable        =   0   'False
-   Picture         =   "FrmLogear.frx":0000
    ScaleHeight     =   267
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
@@ -81,9 +80,9 @@ Begin VB.Form FrmLogear
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   240
-      ItemData        =   "FrmLogear.frx":451D0
+      ItemData        =   "FrmLogear.frx":0000
       Left            =   720
-      List            =   "FrmLogear.frx":451D2
+      List            =   "FrmLogear.frx":0002
       Style           =   2  'Dropdown List
       TabIndex        =   3
       TabStop         =   0   'False
@@ -260,7 +259,7 @@ Private Sub cmdCuenta_Click()
     
     On Error GoTo btnCuenta_Click_Err
     
-    frmNewAccount.Show , frmMain
+    frmNewAccount.Show , frmConnect
 
     
     Exit Sub

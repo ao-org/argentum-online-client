@@ -384,7 +384,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1027,14 +1026,6 @@ Begin VB.Form frmMain
       Top             =   0
       Visible         =   0   'False
       Width           =   555
-   End
-   Begin VB.Image manualboton 
-      Height          =   390
-      Left            =   16560
-      Tag             =   "0"
-      Top             =   1995
-      Visible         =   0   'False
-      Width           =   1185
    End
    Begin VB.Label lblhora 
       Alignment       =   2  'Center
@@ -2722,40 +2713,7 @@ MANShp_Click_Err:
     
 End Sub
 
-Private Sub manualboton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo manualboton_MouseMove_Err
-    
 
-    If manualboton.Tag = "0" Then
-        manualboton.Picture = LoadInterface("manualover.bmp")
-        manualboton.Tag = "1"
-
-    End If
-
-    
-    Exit Sub
-
-manualboton_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.manualboton_MouseMove", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub manualboton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo manualboton_MouseUp_Err
-    
-    Manual.Show , frmMain
-
-    
-    Exit Sub
-
-manualboton_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.manualboton_MouseUp", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
@@ -2853,7 +2811,6 @@ Select Case Index
         Fuerzalbl.Visible = False
         AgilidadLbl.Visible = False
         oxigenolbl.Visible = False
-        manualboton.Visible = True
         QuestBoton.Visible = True
         ImgHogar.Visible = True
         lblWeapon.Visible = False
@@ -2926,7 +2883,6 @@ Select Case Index
         Fuerzalbl.Visible = True
         AgilidadLbl.Visible = True
         oxigenolbl.Visible = True
-        manualboton.Visible = False
         QuestBoton.Visible = False
         ImgHogar.Visible = False
         lblWeapon.Visible = True

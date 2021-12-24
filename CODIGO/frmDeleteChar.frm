@@ -2,37 +2,20 @@ VERSION 5.00
 Begin VB.Form frmDeleteChar 
    BackColor       =   &H8000000A&
    BorderStyle     =   0  'None
-   Caption         =   "Form1"
-   ClientHeight    =   1275
+   ClientHeight    =   2895
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   2895
+   ClientWidth     =   4665
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1275
-   ScaleWidth      =   2895
+   ScaleHeight     =   2895
+   ScaleWidth      =   4665
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.CommandButton Command2 
-      Caption         =   "Cancelar"
-      Height          =   255
-      Left            =   120
-      TabIndex        =   2
-      Top             =   960
-      Width           =   1215
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "Enviar"
-      Height          =   255
-      Left            =   1560
-      TabIndex        =   1
-      Top             =   960
-      Width           =   1215
-   End
    Begin VB.TextBox txtDeleteCharCode 
       Alignment       =   2  'Center
-      BackColor       =   &H80000007&
+      BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -45,30 +28,28 @@ Begin VB.Form frmDeleteChar
       EndProperty
       ForeColor       =   &H80000006&
       Height          =   300
-      Left            =   360
+      Left            =   1560
       TabIndex        =   0
-      Top             =   480
-      Width           =   2175
+      Top             =   1597
+      Width           =   1550
    End
-   Begin VB.Label Label1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "Código de verificación"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00000080&
+   Begin VB.Image btnCerrar 
       Height          =   375
-      Left            =   0
-      TabIndex        =   3
-      Top             =   120
-      Width           =   2895
+      Left            =   4200
+      Top             =   20
+      Width           =   375
+   End
+   Begin VB.Image btnCancelar 
+      Height          =   375
+      Left            =   290
+      Top             =   2180
+      Width           =   1935
+   End
+   Begin VB.Image btnAceptar 
+      Height          =   375
+      Left            =   2400
+      Top             =   2180
+      Width           =   1935
    End
 End
 Attribute VB_Name = "frmDeleteChar"
@@ -76,14 +57,51 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Private Sub Command1_Click()
+Option Explicit
+
+Private cBotonAceptar As clsGraphicalButton
+Private cBotonCancelar As clsGraphicalButton
+Private cBotonCerrar As clsGraphicalButton
+
+Private Sub btnAceptar_Click()
     ModAuth.LoginOperation = e_operation.ConfirmDeleteChar
     Call connectToLoginServer
     delete_char_validate_code = frmDeleteChar.txtDeleteCharCode.Text
     Unload Me
 End Sub
 
-Private Sub Command2_Click()
+Private Sub btnCerrar_Click()
+    Unload Me
+End Sub
+Private Sub btnCancelar_Click()
     Unload Me
 End Sub
 
+Private Sub Form_Load()
+
+    Me.Picture = LoadInterface("spanish-ventacodigoverificacion.bmp")
+    
+    Call loadButtons
+    
+End Sub
+
+Private Sub loadButtons()
+       
+    Set cBotonAceptar = New clsGraphicalButton
+    Set cBotonCancelar = New clsGraphicalButton
+    Set cBotonCerrar = New clsGraphicalButton
+
+
+    Call cBotonAceptar.Initialize(btnAceptar, "boton-aceptar-es-default.bmp", _
+                                                "boton-aceptar-es-over.bmp", _
+                                                "boton-aceptar-es-off.bmp", Me)
+                                                
+    Call cBotonCancelar.Initialize(btnCancelar, "boton-cancelar-ES-default.bmp", _
+                                                "boton-cancelar-ES-over.bmp", _
+                                                "boton-cancelar-ES-off.bmp", Me)
+                                                
+    Call cBotonCerrar.Initialize(btnCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+    
+End Sub
