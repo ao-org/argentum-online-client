@@ -228,6 +228,7 @@ Private Enum ServerPacketID
     UpdateBankGld
     PelearConPezEspecial
     Privilegios
+    ShopInit
     [PacketCount]
 End Enum
 
@@ -926,6 +927,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandlePelearConPezEspecial
         Case ServerPacketID.Privilegios
             Call HandlePrivilegios
+        Case ServerPacketID.ShopInit
+            Call HandleShopInit
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
@@ -4941,8 +4944,8 @@ Private Sub HandleAtributes()
         frmEstadisticas.Show , frmMain
     Else
         LlegaronAtrib = True
-
     End If
+    
 
     
     Exit Sub
@@ -5750,7 +5753,6 @@ Private Sub HandleMiniStats()
         frmEstadisticas.Show , frmMain
     Else
         LlegaronStats = True
-
     End If
     
     Exit Sub
@@ -8387,6 +8389,12 @@ errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePrivilegios", Erl)
 End Sub
+
+Public Sub HandleShopInit()
+    
+    Form1.Show , frmMain
+End Sub
+
 Public Sub HandleObjQuestListSend()
 
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
