@@ -192,9 +192,13 @@ Private Sub OpcionImg_Click(Index As Integer)
             If frmMain.SendTxt.Visible = False Then
                 Call WriteEscribiendo(False)
             End If
-
-            frmMain.SendTxt.Visible = True
-            frmMain.SendTxt.SetFocus
+            
+            If frmMain.SendTxtCmsg.Visible = False Then
+                frmMain.SendTxt.Visible = True
+                frmMain.SendTxt.SetFocus
+            Else
+               frmMain.SendTxtCmsg.SetFocus
+            End If
             
         Case 3
             frmRetos.Show

@@ -897,6 +897,7 @@ Sub Check_Keys()
         Not frmCantidad.Visible And _
         Not frmGoliath.Visible And _
         Not frmEstadisticas.Visible And _
+        Not frmStatistics.Visible And _
         Not frmAlqui.Visible And _
         Not frmCarp.Visible And _
         Not frmHerrero.Visible And _
@@ -1329,27 +1330,6 @@ CMSValidateChar__Err:
     Resume Next
     
 End Function
-
-Public Sub ShowSendTxt()
-    
-    On Error GoTo ShowSendTxt_Err
-    
-
-    If Not frmCantidad.Visible Then
-
-        '   Call CompletarEnvioMensajes
-        'SendTxt.Visible = True
-        'SendTxt.SetFocus
-    End If
-
-    
-    Exit Sub
-
-ShowSendTxt_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Mod_General.ShowSendTxt", Erl)
-    Resume Next
-    
-End Sub
 
 Public Sub LeerLineaComandos()
     

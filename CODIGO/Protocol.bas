@@ -2435,6 +2435,7 @@ Private Sub HandleChangeMap()
     If frmComerciar.Visible Then Unload frmComerciar
     If frmBancoObj.Visible Then Unload frmBancoObj
     If frmEstadisticas.Visible Then Unload frmEstadisticas
+    If frmStatistics.Visible Then Unload frmStatistics
     If frmHerrero.Visible Then Unload frmHerrero
     If FrmSastre.Visible Then Unload FrmSastre
     If frmAlqui.Visible Then Unload frmAlqui
@@ -4935,13 +4936,11 @@ Private Sub HandleAtributes()
     
     'Show them in character creation
 
-
-    If LlegaronSkills And LlegaronStats Then
-        Alocados = SkillPoints
-        frmEstadisticas.puntos.Caption = SkillPoints
-        frmEstadisticas.Iniciar_Labels
-        frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
-        frmEstadisticas.Show , frmMain
+    
+    If LlegaronStats Then
+        frmStatistics.Iniciar_Labels
+        frmStatistics.Picture = LoadInterface("ventanaestadisticas_personaje.bmp")
+        frmStatistics.Show , frmMain
     Else
         LlegaronAtrib = True
     End If
@@ -5745,12 +5744,10 @@ Private Sub HandleMiniStats()
         .Raza = ListaRazas(.Raza)
     End With
     
-    If LlegaronAtrib And LlegaronSkills Then
-        Alocados = SkillPoints
-        frmEstadisticas.puntos.Caption = SkillPoints
-        frmEstadisticas.Iniciar_Labels
-        frmEstadisticas.Picture = LoadInterface("ventanaestadisticas.bmp")
-        frmEstadisticas.Show , frmMain
+    If LlegaronAtrib Then
+        frmStatistics.Iniciar_Labels
+        frmStatistics.Picture = LoadInterface("ventanaestadisticas_personaje.bmp")
+        frmStatistics.Show , frmMain
     Else
         LlegaronStats = True
     End If
@@ -6014,15 +6011,12 @@ Private Sub HandleSendSkills()
         'frmEstadisticas.skills(i).Caption = SkillsNames(i)
     Next i
 
-    If LlegaronAtrib And LlegaronStats Then
+    If LlegaronSkills Then
         Alocados = SkillPoints
         frmEstadisticas.puntos.Caption = SkillPoints
         frmEstadisticas.Iniciar_Labels
-        frmEstadisticas.Picture = LoadInterface("VentanaEstadisticas.bmp")
+        frmEstadisticas.Picture = LoadInterface("ventanaskills.bmp")
         frmEstadisticas.Show , frmMain
-    Else
-        LlegaronSkills = True
-
     End If
     
     Exit Sub

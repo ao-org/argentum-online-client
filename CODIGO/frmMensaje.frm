@@ -323,7 +323,7 @@ Private Sub mnuGritar_click()
     SendingType = 2
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
-
+    If frmMain.SendTxtCmsg.Visible Then frmMain.SendTxtCmsg.SetFocus
     
     Exit Sub
 
@@ -343,6 +343,7 @@ Private Sub mnuPrivado_click()
         SendingType = 3
 
         If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
+        If frmMain.SendTxtCmsg.Visible Then frmMain.SendTxtCmsg.SetFocus
     Else
         Call MensajeAdvertencia("Debes escribir un usuario válido")
 
@@ -363,6 +364,7 @@ Private Sub mnuClan_click()
     
     SendingType = 4
 
+    If frmMain.SendTxtCmsg.Visible Then frmMain.SendTxtCmsg.SetFocus
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
 
     
@@ -381,7 +383,7 @@ Private Sub mnuGMs_click()
     SendingType = 5
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
-
+    If frmMain.SendTxtCmsg.Visible Then frmMain.SendTxtCmsg.SetFocus
     
     Exit Sub
 
@@ -398,7 +400,7 @@ Private Sub mnuGrupo_click()
     SendingType = 6
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
-
+    If frmMain.SendTxtCmsg.Visible Then frmMain.SendTxtCmsg.SetFocus
     
     Exit Sub
 
@@ -415,7 +417,7 @@ Private Sub mnuGlobal_Click()
     SendingType = 7
 
     If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
-
+    If frmMain.SendTxtCmsg.Visible Then frmMain.SendTxtCmsg.SetFocus
     
     Exit Sub
 

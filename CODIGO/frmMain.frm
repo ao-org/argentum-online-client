@@ -32,6 +32,30 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.TextBox SendTxtCmsg 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000040&
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00808080&
+      Height          =   360
+      Left            =   600
+      MaxLength       =   160
+      MultiLine       =   -1  'True
+      TabIndex        =   42
+      TabStop         =   0   'False
+      ToolTipText     =   "Chat"
+      Top             =   1800
+      Visible         =   0   'False
+      Width           =   8184
+   End
    Begin VB.Timer Second 
       Interval        =   1000
       Left            =   7440
@@ -437,6 +461,15 @@ Begin VB.Form frmMain
       TabIndex        =   7
       Top             =   7815
       Width           =   3990
+      Begin VB.Image ImgEstadisticas 
+         Height          =   495
+         Left            =   2025
+         Tag             =   "0"
+         ToolTipText     =   "Hogar"
+         Top             =   2265
+         Visible         =   0   'False
+         Width           =   540
+      End
       Begin VB.Image Retar 
          Height          =   495
          Left            =   135
@@ -1914,7 +1947,27 @@ Efecto_Timer_Err:
     Resume Next
     
 End Sub
+Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    ImgEstadisticas.Picture = LoadInterface("boton-estadisticas-big-off.bmp")
+    ImgEstadisticas.Tag = "1"
+End Sub
+Private Sub ImgEstadisticas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    If pausa Then Exit Sub
+    
+    LlegaronAtrib = False
+    LlegaronStats = False
+    Call WriteRequestAtributes
+    Call WriteRequestMiniStats
+    
+End Sub
 
+Private Sub ImgEstadisticas_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If ImgEstadisticas.Tag = "0" Then
+        ImgEstadisticas.Picture = LoadInterface("boton-estadisticas-big-over.bmp")
+        ImgEstadisticas.Tag = "1"
+    End If
+End Sub
 Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo EstadisticasBoton_MouseDown_Err
@@ -1956,12 +2009,8 @@ Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As 
     
     If pausa Then Exit Sub
     
-    LlegaronAtrib = False
-    LlegaronSkills = False
-    LlegaronStats = False
-    Call WriteRequestAtributes
+    LlegaronSkills = True
     Call WriteRequestSkills
-    Call WriteRequestMiniStats
     
     Exit Sub
 
@@ -2008,8 +2057,6 @@ Private Sub Form_Activate()
     
     On Error GoTo Form_Activate_Err
     
-
-    
     Exit Sub
 
 Form_Activate_Err:
@@ -2034,7 +2081,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
     
 
 
-    If Not SendTxt.Visible Then
+    If Not SendTxt.Visible And Not SendTxtCmsg.Visible Then
         If Not pausa And frmMain.Visible And Not frmComerciar.Visible And Not frmComerciarUsu.Visible And Not frmBancoObj.Visible And Not frmGoliath.Visible Then
             
             If Accionar(KeyCode) Then
@@ -2042,13 +2089,19 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
             ElseIf KeyCode = vbKeyReturn Then
 
                 If Not frmCantidad.Visible Then
+                    
                     Call CompletarEnvioMensajes
                     SendTxt.Visible = True
                     SendTxt.SetFocus
                     Call WriteEscribiendo(True)
                 
                 End If
-
+                
+            ElseIf KeyCode = vbKeyEnd Then
+                If Not SendTxt.Visible Then
+                    SendTxtCmsg.Visible = True
+                    SendTxtCmsg.SetFocus
+                End If
             ElseIf KeyCode = vbKeyEscape And Not UserSaliendo Then
                 frmCerrar.Show , frmMain
                 ' Call WriteQuit
@@ -2064,8 +2117,15 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
         End If
 
     Else
-        SendTxt.SetFocus
-
+    
+        If SendTxt.Visible Then
+            SendTxt.SetFocus
+        End If
+        
+        If SendTxtCmsg.Visible Then
+            SendTxtCmsg.SetFocus
+        End If
+        
     End If
 
     
@@ -2779,6 +2839,12 @@ Private Sub panelInf_MouseMove(Button As Integer, Shift As Integer, x As Single,
         ImgHogar.Tag = "0"
 
     End If
+        
+    If ImgEstadisticas.Tag = "1" Then
+        ImgEstadisticas.Picture = Nothing
+        ImgEstadisticas.Tag = "0"
+
+    End If
     
     If cmdLlavero.Tag = "1" Then
         cmdLlavero.Picture = Nothing
@@ -2813,6 +2879,7 @@ Select Case Index
         oxigenolbl.Visible = False
         QuestBoton.Visible = True
         ImgHogar.Visible = True
+        ImgEstadisticas.Visible = True
         lblWeapon.Visible = False
         lblShielder.Visible = False
         lblHelm.Visible = False
@@ -2885,6 +2952,7 @@ Select Case Index
         oxigenolbl.Visible = True
         QuestBoton.Visible = False
         ImgHogar.Visible = False
+        ImgEstadisticas.Visible = True
         lblWeapon.Visible = True
         lblShielder.Visible = True
         lblHelm.Visible = True
@@ -3554,9 +3622,6 @@ Private Sub CompletarEnvioMensajes()
         Case 3
             SendTxt.Text = ("\" & sndPrivateTo & " ")
 
-        Case 4
-            SendTxt.Text = "/CMSG "
-
         Case 5
             SendTxt.Text = "/GRUPO "
 
@@ -3613,21 +3678,22 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         destinatario = SuperMid(strBuffer, "[", "]", False)
 
         If destinatario <> "A" Then
-
-            destinatario = Replace(destinatario, " ", "+")
-
-            sndPrivateTo = destinatario
-            SendTxt.Text = ("\" & sndPrivateTo & " ")
-
-            stxtbuffer = SendTxt.Text
-            SendTxt.SelStart = Len(SendTxt.Text)
-
-            If SendTxt.Visible = False Then
-                Call WriteEscribiendo(False)
+            If Not SendTxtCmsg.Visible Then
+                destinatario = Replace(destinatario, " ", "+")
+    
+                sndPrivateTo = destinatario
+                SendTxt.Text = ("\" & sndPrivateTo & " ")
+    
+                stxtbuffer = SendTxt.Text
+                SendTxt.SelStart = Len(SendTxt.Text)
+    
+                If SendTxt.Visible = False Then
+                    Call WriteEscribiendo(False)
+                End If
+                
+                SendTxt.Visible = True
+                SendTxt.SetFocus
             End If
-
-            SendTxt.Visible = True
-            SendTxt.SetFocus
 
         End If
 
@@ -3896,9 +3962,9 @@ End Sub
 Private Sub renderer_Click()
     
     On Error GoTo renderer_Click_Err
-    Debug.Print "asd"
     Call Form_Click
     If SendTxt.Visible Then SendTxt.SetFocus
+    If SendTxtCmsg.Visible Then SendTxtCmsg.SetFocus
     Exit Sub
 
 renderer_Click_Err:
@@ -4020,6 +4086,14 @@ SendTxt_KeyUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.SendTxt_KeyUp", Erl)
     Resume Next
     
+End Sub
+
+Private Sub SendTxtCmsg_KeyUp(KeyCode As Integer, Shift As Integer)
+  If KeyCode = vbKeyReturn Then
+    If SendTxtCmsg.SelStart > 2 Then Call ParseUserCommand("/CMSG " & SendTxtCmsg.Text)
+    SendTxtCmsg.Visible = False
+    SendTxtCmsg.Text = ""
+  End If
 End Sub
 
 Private Sub ShowFPS_Timer()
@@ -4390,11 +4464,11 @@ Public Sub Form_Click()
                         Call WriteEscribiendo(False)
 
                     End If
-
-                    SendTxt.Visible = True
-                    SendTxt.SetFocus
-                    SendTxt.SelStart = Len(SendTxt.Text)
-
+                    If SendTxtCmsg.Visible = False Then
+                        SendTxt.Visible = True
+                        SendTxt.SetFocus
+                        SendTxt.SelStart = Len(SendTxt.Text)
+                    End If
                 End If
 
             End If

@@ -15,19 +15,6 @@ Public Function PuedoQuitarFoco() As Boolean
     On Error GoTo PuedoQuitarFoco_Err
     
     PuedoQuitarFoco = True
-
-    'PuedoQuitarFoco = Not frmEstadisticas.Visible And _
-    '                 Not frmGuildAdm.Visible And _
-    '                 Not frmGuildDetails.Visible And _
-    '                 Not frmGuildBrief.Visible And _
-    '                 Not frmGuildFoundation.Visible And _
-    '                 Not frmGuildLeader.Visible And _
-    '                 Not frmCharInfo.Visible And _
-    '                 Not frmGuildNews.Visible And _
-    '                 Not frmGuildSol.Visible And _
-    '                 Not frmCommet.Visible And _
-    '                 Not frmPeaceProp.Visible
-    '
     
     Exit Function
 

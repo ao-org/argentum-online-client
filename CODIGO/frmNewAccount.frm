@@ -10,37 +10,35 @@ Begin VB.Form frmNewAccount
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   Picture         =   "frmNewAccount.frx":0000
    ScaleHeight     =   342
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox txtSurname 
-      Alignment       =   2  'Center
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
-      ForeColor       =   &H80000006&
-      Height          =   285
-      Left            =   2880
+      ForeColor       =   &H80000005&
+      Height          =   255
+      Left            =   2835
       TabIndex        =   1
       Top             =   1605
       Width           =   1815
    End
    Begin VB.TextBox txtName 
-      Alignment       =   2  'Center
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
-      ForeColor       =   &H80000006&
-      Height          =   285
+      ForeColor       =   &H80000005&
+      Height          =   255
       Left            =   720
       TabIndex        =   0
       Top             =   1605
       Width           =   1815
    End
    Begin VB.TextBox txtPassword 
-      Alignment       =   2  'Center
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
-      ForeColor       =   &H80000006&
+      ForeColor       =   &H80000005&
       Height          =   255
       IMEMode         =   3  'DISABLE
       Left            =   2820
@@ -50,10 +48,9 @@ Begin VB.Form frmNewAccount
       Width           =   1605
    End
    Begin VB.TextBox txtUsername 
-      Alignment       =   1  'Right Justify
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
-      ForeColor       =   &H80000006&
+      ForeColor       =   &H80000005&
       Height          =   255
       Left            =   720
       TabIndex        =   2
@@ -61,19 +58,18 @@ Begin VB.Form frmNewAccount
       Width           =   1815
    End
    Begin VB.TextBox txtCaptcha 
-      Alignment       =   2  'Center
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   9.75
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H80000006&
+      ForeColor       =   &H80000005&
       Height          =   285
       Left            =   2160
       TabIndex        =   4
@@ -81,19 +77,18 @@ Begin VB.Form frmNewAccount
       Width           =   1095
    End
    Begin VB.TextBox txtValidateMail 
-      Alignment       =   2  'Center
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   9.75
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H80000006&
+      ForeColor       =   &H80000005&
       Height          =   255
       Left            =   690
       TabIndex        =   5
@@ -102,19 +97,18 @@ Begin VB.Form frmNewAccount
       Width           =   3975
    End
    Begin VB.TextBox txtCodigo 
-      Alignment       =   2  'Center
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   9.75
          Charset         =   0
-         Weight          =   700
+         Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H80000006&
+      ForeColor       =   &H80000005&
       Height          =   255
       Left            =   2955
       TabIndex        =   6
