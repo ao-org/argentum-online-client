@@ -1972,7 +1972,7 @@ Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x A
     
     On Error GoTo EstadisticasBoton_MouseDown_Err
     
-    EstadisticasBoton.Picture = LoadInterface("boton-estadisticas-off.bmp")
+    EstadisticasBoton.Picture = LoadInterface("boton-skills-off.bmp")
     EstadisticasBoton.Tag = "1"
     
     Exit Sub
@@ -1989,7 +1989,7 @@ Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x A
     
 
     If EstadisticasBoton.Tag = "0" Then
-        EstadisticasBoton.Picture = LoadInterface("boton-estadisticas-over.bmp")
+        EstadisticasBoton.Picture = LoadInterface("boton-skills-over.bmp")
         EstadisticasBoton.Tag = "1"
     End If
 
