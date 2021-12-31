@@ -2976,13 +2976,12 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     'Logo viejo
     Dim TempGrh As grh, cc(3) As RGBA
-    Call InitGrh(TempGrh, 1171)
     
     Call InitGrh(TempGrh, 1172)
 
-    Call RGBAList(cc, 255, 255, 255, 220)
+    Call RGBAList(cc, 255, 255, 255, 255)
 
-    Draw_Grh TempGrh, (frmConnect.ScaleWidth - GrhData(TempGrh.grhIndex).pixelWidth) \ 2 + 6, 20, 0, 1, cc(), False
+    Draw_Grh TempGrh, (frmConnect.ScaleWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 10, 0, 1, cc(), False
 
     'Logo nuevo
     'Marco
@@ -2990,8 +2989,11 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
 
+    Call InitGrh(TempGrh, 16577)
+
+    Draw_Grh TempGrh, 12, 655, 0, 1, cc(), False
     #If DEBUGGING = 1 Then
-        Engine_Text_Render "CLIENTE DEBUG", (frmConnect.ScaleWidth - Engine_Text_Width("CLIENTE DEBUG")) \ 2, 30, COLOR_WHITE
+       ' Engine_Text_Render "CLIENTE DEBUG", (frmConnect.ScaleWidth - Engine_Text_Width("CLIENTE DEBUG")) \ 2, 30, COLOR_WHITE
     #End If
 
     If FadeInAlpha > 0 Then
