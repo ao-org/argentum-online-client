@@ -1846,16 +1846,16 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Call InitGrh(StarGrh, 32472)
             
             Select Case .tipoUsuario
-                Case 1
+                Case eTipoUsuario.cafecito
                     'cafecito
                     Call RGBAList(Color, 185, 122, 87, IIf(.Invisible, 160, 255))
-                Case 2
-                    'Héroe
-                    Call RGBAList(Color, 240, 135, 101, IIf(.Invisible, 160, 255))
-                Case 3
+                Case eTipoUsuario.aventurero
                     ' Aventurero
                     Call RGBAList(Color, 240, 212, 175, IIf(.Invisible, 120, 255))
-                Case 4
+                Case eTipoUsuario.heroe
+                    'Héroe
+                    Call RGBAList(Color, 240, 135, 101, IIf(.Invisible, 160, 255))
+                Case eTipoUsuario.Legend
                     'Leyenda
                     Call RGBAList(Color, 222, 177, 45, IIf(.Invisible, 120, 255))
             End Select
