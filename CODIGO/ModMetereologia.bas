@@ -30,12 +30,12 @@ Public Sub IniciarMeteorologia()
     ReDim DayColors(0 To 24) As RGBA
 
     ' 00:00 - 02:00
-    Call SetRGBA(DayColors(0), 70, 70, 70)
+    Call SetRGBA(DayColors(0), 100, 90, 60)
     NightIndex = 0
     ' 02:00 - 04:00
-    Call SetRGBA(DayColors(1), 60, 60, 60)
+    Call SetRGBA(DayColors(1), 1000, 90, 70)
     ' 04:00 - 06:00
-    Call SetRGBA(DayColors(2), 80, 80, 80)
+    Call SetRGBA(DayColors(2), 100, 90, 80)
     ' 06:00 - 08:00
     'Call SetRGBA(DayColors(3), 20, 20, 20)
     Call SetRGBA(DayColors(3), 100, 100, 100)
