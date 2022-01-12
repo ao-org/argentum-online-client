@@ -990,13 +990,13 @@ Private Function File_Find(ByVal resource_file_path As String, ByVal file_name A
 On Error GoTo ErrHandler
     Dim max As Integer  'Max index
     Dim min As Integer  'Min index
-    Dim mid As Integer  'Middle index
+    Dim mid_ As Integer  'Middle index
     Dim file_handler As Integer
     Dim file_head As FILEHEADER
     Dim info_head As INFOHEADER
     
     file_name = LCase$(file_name)
-    
+    file_name = mid(file_name, 1, 32)
     'Fill file name with spaces for compatibility
     If Len(file_name) < Len(info_head.strFileName) Then _
         file_name = file_name & Space$(Len(info_head.strFileName) - Len(file_name))
@@ -1023,22 +1023,22 @@ On Error GoTo ErrHandler
     max = file_head.intNumFiles
     
     Do While min <= max
-        mid = (min + max) / 2
+        mid_ = (min + max) / 2
         
         'Get the info header of the appropiate compressed file
-        Get file_handler, CLng(Len(file_head) + CLng(Len(info_head)) * CLng((mid - 1)) + 1), info_head
-                
+        Get file_handler, CLng(Len(file_head) + CLng(Len(info_head)) * CLng((mid_ - 1)) + 1), info_head
+
         If file_name < info_head.strFileName Then
-            If max = mid Then
+            If max = mid_ Then
                 max = max - 1
             Else
-                max = mid
+                max = mid_
             End If
         ElseIf file_name > info_head.strFileName Then
-            If min = mid Then
+            If min = mid_ Then
                 min = min + 1
             Else
-                min = mid
+                min = mid_
             End If
         Else
             'Copy info head
