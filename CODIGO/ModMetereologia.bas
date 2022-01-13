@@ -33,7 +33,7 @@ Public Sub IniciarMeteorologia()
     Call SetRGBA(DayColors(0), 100, 90, 60)
     NightIndex = 0
     ' 02:00 - 04:00
-    Call SetRGBA(DayColors(1), 1000, 90, 70)
+    Call SetRGBA(DayColors(1), 100, 90, 70)
     ' 04:00 - 06:00
     Call SetRGBA(DayColors(2), 100, 90, 80)
     ' 06:00 - 08:00
