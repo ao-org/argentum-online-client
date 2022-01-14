@@ -9,7 +9,16 @@ Public SeguroClanX As Boolean
 Public SeguroResuX As Boolean
 
 Public QuePestañaInferior As Byte
+Public TieneAntorcha As Boolean
+Public Enum TipoAntorcha
+    AntorchaBasica = 0
+    AntorchaReforzada
+    AntorchaLaMejor
+End Enum
+Public DeltaAntorcha As Double
+
 Public credits_shopAO20 As Long
+
 'Public LastUseItemTimeStamp As Long
 'Public LastUseItemTimeStampU As Long
 

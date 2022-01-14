@@ -10,7 +10,6 @@ Begin VB.Form frmNewAccount
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmNewAccount.frx":0000
    ScaleHeight     =   342
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
@@ -291,7 +290,7 @@ End Sub
 
 
 Public Sub showValidateAccountControls()
-
+    
     Me.Picture = LoadInterface("spanish-ventanacrearcuentacodigo.bmp")
     Me.btnSendValidarCuenta.Visible = True
     Me.txtValidateMail.Visible = True

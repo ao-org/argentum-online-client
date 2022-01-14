@@ -368,7 +368,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                     End Select
                 End If
                 '******************************************
-    
+                
                 'Layer 3 **********************************
                 If .Graphic(3).grhIndex <> 0 Then
 
@@ -429,7 +429,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
         ScreenY = ScreenY + TilePixelHeight
     Next y
-
+    
     If InfoItemsEnRender And tX And tY Then
         With MapData(tX, tY)
             If .OBJInfo.ObjIndex Then
@@ -528,6 +528,27 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         Next y
         
     End If
+    
+    
+    
+    
+    If TieneAntorcha Then
+    
+        Dim randX As Double, randY As Double
+        
+        If GetTickCount - (10 * Rnd + 50) >= DeltaAntorcha Then
+            randX = RandomNumber(-8, 0)
+            randY = RandomNumber(-8, 0)
+            
+            DeltaAntorcha = GetTickCount
+        End If
+    Call Draw_GrhIndex(63333, randX, randY)
+    
+    End If
+    
+       
+       
+        
     
     
     ' *********************************
@@ -747,7 +768,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         
     End If
     
-    'Call Draw_GrhIndex(63333, 0, 0)
     Exit Sub
 
 RenderScreen_Err:
