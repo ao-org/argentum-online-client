@@ -47,7 +47,7 @@ Public Sub CountPacketIterations(ByRef packetControl As t_packetControl, ByVal e
     Dim percentageDiff As Double, average As Double
     percentageDiff = getPercentageDiff(packetControl)
     average = getAverage(packetControl)
-    Debug.Print "Delta: " & delta & " Average: " & average
+   ' Debug.Print "Delta: " & delta & " Average: " & average
     If percentageDiff < 5 Then
         'Debug.Print "DIFF: " & getPercentageDiff(packetControl)
         'Call AddtoRichTextBox(frmMain.RecTxt, "DIFF: " & getPercentageDiff(packetControl), 255, 200, 0, True)

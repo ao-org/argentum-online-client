@@ -134,6 +134,7 @@ End Type
 Public PosMap()           As Integer
 
 Public ObjData()          As ObjDatas
+Public ObjShop()          As ObjDatas
 Public NpcData()          As NpcDatas
 
 Public Locale_SMG()       As String
@@ -195,7 +196,7 @@ Public Type ObjDatas
     Valor As Long
     Agarrable As Boolean
     Llave As Integer
-
+    ObjNum As Long
 End Type
 
 Public Type NpcDatas

@@ -102,11 +102,6 @@ Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As 
             Select Case eLink.msg
 
                 Case WM_LBUTTONDOWN
-                    
-                    ' Jopi: Preguntamos si realmente quiere abrir ese link.
-                    If MsgBox("Estas a punto de abrir un enlace a un sitio externo." & vbNewLine & _
-                              "¿Estás seguro que quieres continuar?", vbYesNo + vbExclamation, "Enlace externo") = vbYes Then
-                    
                         eText.chrg.cpMin = eLink.chrg.cpMin
                         eText.chrg.cpMax = eLink.chrg.cpMax
                         eText.lpstrText = Space$(1024)
@@ -116,9 +111,6 @@ Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As 
                         sText = Left$(eText.lpstrText, lLen)
                         
                         Call ShellExecute(hWndParent, vbNullString, sText, vbNullString, vbNullString, SW_SHOW)
-                    
-                    End If
-                    
             End Select
 
         End If

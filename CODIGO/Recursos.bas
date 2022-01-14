@@ -1475,7 +1475,7 @@ Public Sub CargarIndicesOBJ()
     ReDim NpcData(0 To NumNpcs) As NpcDatas
     ReDim HechizoData(0 To NumHechizos) As HechizoDatas
     ReDim Locale_SMG(0 To NumLocaleMsg) As String
-    
+    ReDim ObjShop(1 To 1) As ObjDatas
     
     ReDim QuestList(1 To NumQuest)
 
@@ -1516,6 +1516,13 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
         ObjData(Obj).Agarrable = Val(Leer.GetValue("OBJ" & Obj, "Agarrable"))
         ObjData(Obj).Llave = Val(Leer.GetValue("OBJ" & Obj, "Llave"))
+            
+        If Val(Leer.GetValue("OBJ" & Obj, "NFT")) = 1 Then
+            ObjShop(i).Name = Leer.GetValue("OBJ" & Obj, "Name")
+            ObjShop(i).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
+            ObjShop(i).objNum = Obj
+            ReDim Preserve ObjShop(1 To (UBound(ObjShop) + 1)) As ObjDatas
+        End If
         
     Next Obj
     

@@ -229,6 +229,7 @@ Private Enum ServerPacketID
     PelearConPezEspecial
     Privilegios
     ShopInit
+    UpdateShopClienteCredits
     [PacketCount]
 End Enum
 
@@ -556,6 +557,7 @@ Public Enum ClientPacketID
     RomperCania
     UseItemU
     RepeatMacro
+    BuyShopItem
     [PacketCount]
 End Enum
 
@@ -929,6 +931,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandlePrivilegios
         Case ServerPacketID.ShopInit
             Call HandleShopInit
+        Case ServerPacketID.UpdateShopClienteCredits
+            Call HandleUpdateShopClienteCredits
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
@@ -8387,7 +8391,29 @@ End Sub
 
 Public Sub HandleShopInit()
     
-    Form1.Show , frmMain
+    Dim cant_obj_shop As Long, i As Long
+    
+    cant_obj_shop = Reader.ReadInt16
+    
+    credits_shopAO20 = Reader.ReadInt32
+    frmShopAO20.lblCredits.Caption = credits_shopAO20
+    
+    ReDim ObjShop(1 To cant_obj_shop) As ObjDatas
+    
+    For i = 1 To cant_obj_shop
+        ObjShop(i).objNum = Reader.ReadInt32
+        ObjShop(i).Valor = Reader.ReadInt32
+        ObjShop(i).Name = Reader.ReadString8
+         
+        Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")", i - 1)
+    Next i
+    
+    frmShopAO20.Show , frmMain
+End Sub
+
+Public Sub HandleUpdateShopClienteCredits()
+    credits_shopAO20 = Reader.ReadInt32
+    frmShopAO20.lblCredits.Caption = credits_shopAO20
 End Sub
 
 Public Sub HandleObjQuestListSend()

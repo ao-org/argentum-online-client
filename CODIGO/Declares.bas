@@ -9,6 +9,7 @@ Public SeguroClanX As Boolean
 Public SeguroResuX As Boolean
 
 Public QuePestañaInferior As Byte
+Public credits_shopAO20 As Long
 'Public LastUseItemTimeStamp As Long
 'Public LastUseItemTimeStampU As Long
 
