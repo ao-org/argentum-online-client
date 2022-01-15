@@ -146,16 +146,22 @@ Private Sub Image3_Click()
     
     obj_to_buy = ObjShop(Me.lstItemShopFilter.ListIndex + 1)
     
+    Dim obj_name As String
+    
+    obj_name = Split(lstItemShopFilter.Text, " (")(0)
+    
+    
     For i = 1 To UBound(ObjShop)
-        If InStr(1, lstItemShopFilter.Text, ObjShop(i).Name, 1) > 0 Then
+        If obj_name = ObjShop(i).Name Then
             obj_to_buy = ObjData(ObjShop(i).objNum)
             obj_to_buy.objNum = ObjShop(i).objNum
+            obj_to_buy.Valor = ObjShop(i).Valor
             Exit For
         End If
     Next i
     
     
-    If credits_shopAO20 >= 50 Then
+    If credits_shopAO20 >= obj_to_buy.Valor Then
         Call writeBuyShopItem(obj_to_buy.objNum)
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, "No tienes suficientes créditos para comprar ese elemento. Puedes comprar más créditos a través del siguiente link: https://www.patreon.com/nolandstudios", 255, 0, 0, True)
@@ -170,9 +176,12 @@ Private Sub lstItemShopFilter_Click()
     Dim grh As Long
     Dim i As Long
     
+    Dim obj_name As String
+    
+    obj_name = Split(lstItemShopFilter.Text, " (")(0)
     
     For i = 1 To UBound(ObjShop)
-        If InStr(1, lstItemShopFilter.Text, ObjShop(i).Name, 1) > 0 Then
+        If obj_name = ObjShop(i).Name Then
             grh = ObjData(ObjShop(i).objNum).GrhIndex
             Exit For
         End If

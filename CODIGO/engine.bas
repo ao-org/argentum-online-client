@@ -657,7 +657,8 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
             .Ty1 = (.sY + 0.25) / TextureHeight
             .Ty2 = (.sY + .pixelHeight) / TextureHeight
         End If
-
+        'Debug.Print ease
+        'Debug.Print .Ty1
         Call SpriteBatch.DrawBreathing(x, y, .pixelWidth, .pixelHeight, ease, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
 
     End With
@@ -2960,7 +2961,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         Engine_Text_Render "Gulfas Morgolock", 449, 400, ColorGM, 1
         Engine_Text_Render "<Creador del Mundo>", 438, 415, ColorGM, 1
 
-        Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 870, 740, COLOR_WHITE, 4, False
+        Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 40, 20, COLOR_WHITE, 4, False
     End If
 
     LastOffsetX = ParticleOffsetX
@@ -2992,6 +2993,10 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Call InitGrh(TempGrh, 16577)
 
     Draw_Grh TempGrh, 12, 655, 0, 1, cc(), False
+    
+    Call InitGrh(TempGrh, 19337)
+
+    Draw_Grh TempGrh, 790, 690, 0, 1, cc(), False
     #If DEBUGGING = 1 Then
        ' Engine_Text_Render "CLIENTE DEBUG", (frmConnect.ScaleWidth - Engine_Text_Width("CLIENTE DEBUG")) \ 2, 30, COLOR_WHITE
     #End If
