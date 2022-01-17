@@ -684,13 +684,7 @@ Sub General_Set_Connect()
     CurMp3 = 1
 
     QueRender = 1
-    frmConnect.relampago.Enabled = True
-    'Sound.Sound_Play 650, False, 0, 0
-
-    'frmConnect.Timer1.Enabled = True
-
-    frmConnect.relampago.Enabled = True
-    'Sound.Sound_Play 404, False, 0, 0   LADDER REVISAR SAQUE TRUENO
+    
     ClickEnAsistente = 0
 
     If CuentaRecordada.nombre <> "" Then

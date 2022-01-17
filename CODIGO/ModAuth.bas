@@ -935,9 +935,7 @@ Public Sub mostrarcuenta()
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
-    
-    frmConnect.relampago.Enabled = False
-            
+                
     If FrmLogear.Visible Then
         Unload FrmLogear
 

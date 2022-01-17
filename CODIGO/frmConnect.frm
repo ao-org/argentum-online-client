@@ -92,17 +92,6 @@ Begin VB.Form frmConnect
          Visible         =   0   'False
          Width           =   2130
       End
-      Begin VB.Timer RelampagoFin 
-         Enabled         =   0   'False
-         Left            =   13080
-         Top             =   1320
-      End
-      Begin VB.Timer relampago 
-         Enabled         =   0   'False
-         Interval        =   10000
-         Left            =   13080
-         Top             =   480
-      End
    End
    Begin VB.Timer Timer2 
       Enabled         =   0   'False
@@ -197,7 +186,6 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
 
     QueRender = 1
-    relampago.Enabled = True
     
     EngineRun = False
         
@@ -222,86 +210,6 @@ End Sub
 
 
 
-Private Sub relampago_Timer()
-    
-    On Error GoTo relampago_Timer_Err
-    
-
-    Dim trueno         As Byte
-    
-    Dim truenocolor    As Byte
-
-    Dim duraciontrueno As Byte
-    
-    trueno = RandomNumber(1, 255)
-    
-    If trueno > 100 Then
-
-        Dim Color As Long, duracion As Long
-
-        duraciontrueno = RandomNumber(80, 200)
-
-        truenocolor = RandomNumber(1, 4)
-
-        Dim TruenoWav As Integer
-
-        TruenoWav = RandomNumber(400, 403)
-
-        Sound.Sound_Play CStr(TruenoWav), False, 0, 0
-
-        Select Case truenocolor
-
-            Case 1
-                Color = &H8080
-
-            Case 2
-                Color = &HF8F8F8
-
-            Case 3
-                Color = &HEFEECB
-
-            Case 4
-                Color = &HE2B3F7
-
-        End Select
-
-        Dim r, G, B As Byte
-
-        B = (Color And 16711680) / 65536
-        G = (Color And 65280) / 256
-        r = Color And 255
-        Color = D3DColorARGB(255, r, G, B)
-        
-        SetGlobalLight (Color)
-        RelampagoFin.Interval = duraciontrueno
-        RelampagoFin.Enabled = True
-
-    End If
-
-    
-    Exit Sub
-
-relampago_Timer_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmConnect.relampago_Timer", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub RelampagoFin_Timer()
-    
-    On Error GoTo RelampagoFin_Timer_Err
-    
-    Call SetGlobalLight(MapDat.base_light)
-    RelampagoFin.Enabled = False
-
-    
-    Exit Sub
-
-RelampagoFin_Timer_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmConnect.RelampagoFin_Timer", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub render_DblClick()
     
