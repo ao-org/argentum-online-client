@@ -700,12 +700,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
-            Case "/CUENTAREGRESIVA"
+            Case "/CR"
                 If notNullArguments Then
                     Call WriteCuentaRegresiva(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /CUENTAREGRESIVA TIEMPO (En segundos).")
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /CR TIEMPO (En segundos).")
 
                 End If
             
