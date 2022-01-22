@@ -153,6 +153,7 @@ Private Enum ServerPacketID
     FYA
     CerrarleCliente
     Contadores
+    ShowPapiro
     
     'GM messages
     SpawnListt               ' SPL
@@ -785,6 +786,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleCerrarleCliente
         Case ServerPacketID.Contadores
             Call HandleContadores
+        Case ServerPacketID.ShowPapiro
+            Call HandleShowPapiro
         Case ServerPacketID.SpawnListt
             Call HandleSpawnList
         Case ServerPacketID.ShowSOSForm
@@ -5625,6 +5628,18 @@ HandleContadores_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleContadores", Erl)
     
     
+End Sub
+
+Private Sub HandleShowPapiro()
+    On Error GoTo HandleShowPapiro_Err
+    
+    frmMensajePapiro.Show , frmMain
+    
+    'incomingdata papiromessage
+    Exit Sub
+
+HandleShowPapiro_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPapiro", Erl)
 End Sub
 
 Private Sub HandleOxigeno()
