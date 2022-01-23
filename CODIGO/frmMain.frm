@@ -32,6 +32,14 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.CommandButton Command2 
+      Caption         =   "Command2"
+      Height          =   495
+      Left            =   11040
+      TabIndex        =   44
+      Top             =   5520
+      Width           =   1215
+   End
    Begin VB.CommandButton Command1 
       Caption         =   "PRENDER ANTORCHA"
       Height          =   495
@@ -419,7 +427,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1436,7 +1443,6 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-
 Public WithEvents Inventario As clsGrapchicalInventory
 Attribute Inventario.VB_VarHelpID = -1
 
@@ -1859,6 +1865,15 @@ End Sub
 
 Private Sub Command1_Click()
     TieneAntorcha = Not TieneAntorcha
+End Sub
+
+Private Sub Command2_Click()
+    Dim i As Long
+    
+    For i = 1 To 100
+        'Call WriteLoginExistingCharBot
+    Next i
+        Call WriteWalk(RandomNumber(1, 40))
 End Sub
 
 Private Sub Contadores_Timer()

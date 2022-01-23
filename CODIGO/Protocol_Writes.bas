@@ -43,6 +43,29 @@ WriteLoginExistingChar_Err:
         '</EhFooter>
 End Sub
 
+Public Sub WriteLoginExistingCharBot()
+        '<EhHeader>
+        On Error GoTo WriteLoginExistingCharBot_Err
+        
+        '</EhHeader>
+100     Call Writer.WriteInt(ClientPacketID.LoginExistingChar)
+102     Call Writer.WriteString8("BOT-HARTHAOS")
+104     Call Writer.WriteString8("BOT-HARTHAOS")
+106     Call Writer.WriteInt8(2)
+108     Call Writer.WriteInt8(0)
+110     Call Writer.WriteInt8(4)
+118     Call Writer.WriteString8(CheckMD5)
+            
+120     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLoginExistingCharBot_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginExistingCharBot", Erl)
+        '</EhFooter>
+End Sub
+
 ''
 ' Writes the "LoginNewChar" message to the outgoing data buffer.
 '
