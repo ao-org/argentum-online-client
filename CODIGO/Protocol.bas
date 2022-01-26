@@ -4082,20 +4082,25 @@ Private Sub HandlePlayWave()
     '***************************************************
         
     Dim wave As Integer
-
     Dim srcX As Byte
-
     Dim srcY As Byte
+    Dim cancelLastWave As Byte
     
     wave = Reader.ReadInt16()
     srcX = Reader.ReadInt8()
     srcY = Reader.ReadInt8()
+    cancelLastWave = Reader.ReadInt8()
     
     If wave = 400 And MapDat.niebla = 0 Then Exit Sub
     If wave = 401 And MapDat.niebla = 0 Then Exit Sub
     If wave = 402 And MapDat.niebla = 0 Then Exit Sub
     If wave = 403 And MapDat.niebla = 0 Then Exit Sub
     If wave = 404 And MapDat.niebla = 0 Then Exit Sub
+    
+    If cancelLastWave Then
+        Call Sound.Sound_Stop(CStr(wave))
+        If cancelLastWave = 2 Then Exit Sub
+    End If
     
     If srcX = 0 Or srcY = 0 Then
         Call Sound.Sound_Play(CStr(wave), False, 0, 0)
@@ -4104,7 +4109,6 @@ Private Sub HandlePlayWave()
         If Not EstaEnArea(srcX, srcY) Then
         Else
             Call Sound.Sound_Play(CStr(wave), False, Sound.Calculate_Volume(srcX, srcY), Sound.Calculate_Pan(srcX, srcY))
-
         End If
 
     End If
