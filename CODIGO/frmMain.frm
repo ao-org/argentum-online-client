@@ -427,6 +427,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1867,14 +1868,6 @@ Private Sub Command1_Click()
     TieneAntorcha = Not TieneAntorcha
 End Sub
 
-Private Sub Command2_Click()
-    Dim i As Long
-    
-    For i = 1 To 100
-        'Call WriteLoginExistingCharBot
-    Next i
-        Call WriteWalk(RandomNumber(1, 40))
-End Sub
 
 Private Sub Contadores_Timer()
     
@@ -3597,7 +3590,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
         Select Case ObjData(Inventario.ObjIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef
