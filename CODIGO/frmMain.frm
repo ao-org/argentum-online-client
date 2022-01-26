@@ -32,14 +32,6 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin VB.CommandButton Command2 
-      Caption         =   "Command2"
-      Height          =   495
-      Left            =   11040
-      TabIndex        =   44
-      Top             =   5520
-      Width           =   1215
-   End
    Begin VB.CommandButton Command1 
       Caption         =   "PRENDER ANTORCHA"
       Height          =   495
@@ -4749,7 +4741,7 @@ Private Sub picInv_DblClick()
     If pausa Then Exit Sub
     
     If UserMeditar Then Exit Sub
-    If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
+    'If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
     
     If macrotrabajo.Enabled Then DesactivarMacroTrabajo
     
@@ -4785,7 +4777,7 @@ Private Sub picInv_DblClick()
                 
         Case Else
             Call CountPacketIterations(packetControl(ClientPacketID.UseItem), 180)
-                    Debug.Print "doble-click"
+                    Debug.Print "QWEASDqweads"
             Call WriteUseItem(Inventario.SelectedItem)
             
     End Select
