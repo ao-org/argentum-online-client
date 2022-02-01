@@ -283,13 +283,11 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     
             End If
     
-            If MainTimer.Check(TimersIndex.UseItemWithU) Then
                 If frmMain.Inventario.IsItemSelected Then Call WriteEquipItem(frmMain.Inventario.SelectedItem)
-            End If
+      
         
         Case BindKeys(4).KeyCode
     
-            If Not MainTimer.Check(TimersIndex.UseItemWithU) Then Exit Function
             If Not MainTimer.Check(TimersIndex.AttackUse, False) Then Exit Function
             If frmMain.Inventario.IsItemSelected Then
                 Call CountPacketIterations(packetControl(ClientPacketID.UseItemU), 100)
