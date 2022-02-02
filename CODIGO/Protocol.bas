@@ -574,9 +574,8 @@ On Error GoTo HandleIncomingData_Err
     
     Dim PacketID As Long:
     PacketID = Reader.ReadInt
-    
     #If DEBUGGING Then
-       ' Debug.Print PacketID
+        Debug.Print PacketId
     #End If
     
     Select Case PacketID
@@ -6039,6 +6038,7 @@ Private Sub HandleSendSkills()
         frmEstadisticas.Iniciar_Labels
         frmEstadisticas.Picture = LoadInterface("ventanaskills.bmp")
         frmEstadisticas.Show , frmMain
+        LlegaronSkills = False
     End If
     
     Exit Sub
