@@ -803,7 +803,7 @@ Private Sub EraseCharFromPjList(ByVal nick As String)
     
 End Sub
 Private Sub FillAccountData(ByVal data As String)
-  
+    On Error Resume Next
     Dim i As Long
     CantidadDePersonajesEnCuenta = 0
     For i = 1 To Len(data)
