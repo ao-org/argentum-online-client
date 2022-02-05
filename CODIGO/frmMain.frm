@@ -419,6 +419,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -5035,7 +5036,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                 Connected = False
             Else
                 If (Connected) Then
-                    Call HandleDisconnect(False)
+                    Call HandleDisconnect
                 End If
             End If
         End If
