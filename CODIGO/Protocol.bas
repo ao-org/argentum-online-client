@@ -470,9 +470,6 @@ Public Enum ClientPacketID
     GlobalMessage           '/CONSOLA
     GlobalOnOff
     BorrarPJ
-    DarLlaveAUsuario
-    SacarLlave
-    VerLlaves
     UseKey
     Day
     SetTime

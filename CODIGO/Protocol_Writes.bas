@@ -3269,56 +3269,6 @@ WriteGoToChar_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteDarLlaveAUsuario(ByVal User As String, ByVal Llave As Integer)
-        '<EhHeader>
-        On Error GoTo WriteDarLlaveAUsuario_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.DarLlaveAUsuario)
-102     Call Writer.WriteString8(User)
-104     Call Writer.WriteInt16(Llave)
-    
-106     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteDarLlaveAUsuario_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDarLlaveAUsuario", Erl)
-        '</EhFooter>
-End Sub
-
-Public Sub WriteSacarLlave(ByVal Llave As Integer)
-        '<EhHeader>
-        On Error GoTo WriteSacarLlave_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.SacarLlave)
-102     Call Writer.WriteInt16(Llave)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteSacarLlave_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSacarLlave", Erl)
-        '</EhFooter>
-End Sub
-
-Public Sub WriteVerLlaves()
-        '<EhHeader>
-        On Error GoTo WriteVerLlaves_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.VerLlaves)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteVerLlaves_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteVerLlaves", Erl)
-        '</EhFooter>
-End Sub
 
 ''
 ' Writes the "Invisible" message to the outgoing data buffer.
