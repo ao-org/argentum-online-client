@@ -575,7 +575,7 @@ On Error GoTo HandleIncomingData_Err
     Dim PacketID As Long:
     PacketID = Reader.ReadInt
     #If DEBUGGING Then
-        Debug.Print PacketId
+        'Debug.Print PacketId
     #End If
     
     Select Case PacketID
@@ -3669,16 +3669,16 @@ Private Sub HandleCharacterRemove()
     Dim charindex   As Integer
 
     Dim Desvanecido As Boolean
-    
+    Dim fueWarp As Boolean
     charindex = Reader.ReadInt16()
     Desvanecido = Reader.ReadBool()
-    
+    fueWarp = Reader.ReadBool()
     If Desvanecido And charlist(charindex).EsNpc = True Then
         Call CrearFantasma(charindex)
 
     End If
 
-    Call EraseChar(charindex)
+    Call EraseChar(charindex, fueWarp)
     Call RefreshAllChars
     
     Exit Sub
