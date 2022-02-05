@@ -773,37 +773,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /luzmapa R G B.")
                 End If
-
-            Case "/DARLLAVE"
-                If EsGM Then
-                    If notNullArguments Or CantidadArgumentos < 2 Then
-                        If Not ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
-                            Call ShowConsoleMsg("Número de llave inválida. Utilice /darllave NICKNAME LLAVE(ID DE OBJETO)")
-                        Else
-                            Call WriteDarLlaveAUsuario(ArgumentosAll(0), Val(ArgumentosAll(1)))
-                        End If
-                    Else
-                        'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan parámetros. Utilice /darllave NICKNAME LLAVE")
-                    End If
-                End If
-                
-            Case "/SACARLLAVE"
-                If EsGM Then
-                    If notNullArguments Then
-                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
-                            Call WriteSacarLlave(Val(ArgumentosAll(0)))
-                        Else
-                            Call ShowConsoleMsg("Parámetro inválido. Utilice /sacarllave LLAVE(ID DE OBJETO)")
-                        End If
-                    Else
-                        'Avisar que falta el parametro
-                        Call ShowConsoleMsg("Faltan parámetros. Utilice /sacarllave LLAVE")
-                    End If
-                End If
-                
-            Case "/VERLLAVES"
-                Call WriteVerLlaves
         
             Case "/INVISIBLE"
                 Call WriteInvisible
