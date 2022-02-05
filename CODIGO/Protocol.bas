@@ -1188,7 +1188,7 @@ End Sub
 ''
 ' Handles the Disconnect message.
 
-Public Sub HandleDisconnect(Optional ByVal test As Boolean = False)
+Public Sub HandleDisconnect()
     
     On Error GoTo HandleDisconnect_Err
 
@@ -1199,9 +1199,8 @@ Public Sub HandleDisconnect(Optional ByVal test As Boolean = False)
     '***************************************************
     Dim i As Long
     
-    If test Then
-        FullLogout = Reader.ReadBool
-    End If
+    FullLogout = Reader.ReadBool
+
     Mod_Declaraciones.Connected = False
     
     Call ResetearUserMacro
@@ -1411,7 +1410,8 @@ Public Sub HandleDisconnect(Optional ByVal test As Boolean = False)
         'Si no es un deslogueo completo, envío nuevamente la lista de Pjs.
         Call connectToLoginServer
     End If
-
+    
+    Exit Sub
 HandleDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDisconnect", Erl)
     
