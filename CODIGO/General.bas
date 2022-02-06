@@ -1481,9 +1481,13 @@ Public Sub CleanDialogs()
     'frmMain.RecTxt.Text = vbNullString
     
     On Error GoTo CleanDialogs_Err
-    
+    If (Not DialogosClanes Is Nothing) Then
     Call DialogosClanes.RemoveDialogs
+    End If
+    If (Not Dialogos Is Nothing) Then
     Call Dialogos.RemoveAllDialogs
+    End If
+    
     
     Exit Sub
 

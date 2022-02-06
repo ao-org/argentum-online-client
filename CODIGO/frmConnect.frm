@@ -182,8 +182,9 @@ End Sub
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
-    
+    If (Not FormParser Is Nothing) Then
     Call FormParser.Parse_Form(Me)
+    End If
 
     QueRender = 1
     

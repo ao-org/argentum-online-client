@@ -564,8 +564,10 @@ Public Function Sound_Stop_All() As Boolean
     
     On Error GoTo Sound_Stop_All_Err
     
-
-    Buffers.DetenerTodo
+    If (Not Buffers Is Nothing) Then
+        Buffers.DetenerTodo
+    End If
+    
     mAmbienteActual = 0
     Sound_Stop_All = True
 

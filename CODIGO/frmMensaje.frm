@@ -200,8 +200,9 @@ End Sub
 Private Sub Form_Load()
 
     On Error GoTo Form_Load_Err
-       
-    Call FormParser.Parse_Form(Me)
+    If (Not FormParser Is Nothing) Then
+        Call FormParser.Parse_Form(Me)
+    End If
     
     SetWindowPos Me.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE
     Me.Picture = LoadInterface("mensaje.bmp")

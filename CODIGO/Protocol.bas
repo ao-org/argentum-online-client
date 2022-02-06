@@ -1199,7 +1199,9 @@ Public Sub HandleDisconnect()
     '***************************************************
     Dim i As Long
     
+    If (Not Reader Is Nothing) Then
     FullLogout = Reader.ReadBool
+    End If
 
     Mod_Declaraciones.Connected = False
     

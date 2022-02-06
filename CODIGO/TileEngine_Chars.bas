@@ -96,7 +96,9 @@ Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As B
     MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
     
     'Remove char's dialog
+    If (Not Dialogos Is Nothing) Then
     Call Dialogos.RemoveDialog(charindex)
+    End If
     
     Call ResetCharInfo(charindex)
     
