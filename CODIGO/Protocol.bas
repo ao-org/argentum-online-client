@@ -3454,6 +3454,7 @@ Private Sub HandleUserCharIndexInServer()
     '***************************************************
     
     UserCharIndex = Reader.ReadInt16()
+    Debug.Print "UserCharIndex " & UserCharIndex
     UserPos = charlist(UserCharIndex).Pos
     
     'Are we under a roof?
@@ -3525,6 +3526,9 @@ Private Sub HandleCharacterCreate()
     Dim group_index   As Integer
     
     charindex = Reader.ReadInt16()
+    
+    Debug.Print "HandleCharacterCreate " & charindex
+    
     Body = Reader.ReadInt16()
     Head = Reader.ReadInt16()
     Heading = Reader.ReadInt8()
@@ -3664,15 +3668,20 @@ Private Sub HandleCharacterRemove()
     '***************************************************
     
     Dim charindex   As Integer
-
+    Dim dbgid As Integer
+    
     Dim Desvanecido As Boolean
     Dim fueWarp As Boolean
+
+    dbgid = Reader.ReadInt16()
     charindex = Reader.ReadInt16()
+    
+    Debug.Print "HandleCharacterRemove(dbgid=" & dbgid & ") " & charindex
+    
     Desvanecido = Reader.ReadBool()
     fueWarp = Reader.ReadBool()
     If Desvanecido And charlist(charindex).EsNpc = True Then
         Call CrearFantasma(charindex)
-
     End If
 
     Call EraseChar(charindex, fueWarp)
