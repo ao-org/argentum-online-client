@@ -1779,18 +1779,19 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
           '  If Nombres Then
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
             
-            If Sound.MusicActual <> MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica And MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica > 0 Then
-                Sound.Music_Stop
-                Sound.Music_Load MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica, Sound.VolumenActualMusicMax
-                Sound.Fading = 100
-                Sound.Music_Play
-            ElseIf MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica = 0 And Sound.MusicActual <> MapDat.music_numberLow Then
-                Sound.Music_Stop
-                Sound.Music_Load MapDat.music_numberLow, Sound.VolumenActualMusicMax
-                Sound.Fading = 100
-                Sound.Music_Play
+            If UserCharIndex > 0 Then
+                If Sound.MusicActual <> MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica And MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica > 0 Then
+                    Sound.Music_Stop
+                    Sound.Music_Load MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica, Sound.VolumenActualMusicMax
+                    Sound.Fading = 100
+                    Sound.Music_Play
+                ElseIf MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica = 0 And Sound.MusicActual <> MapDat.music_numberLow Then
+                    Sound.Music_Stop
+                    Sound.Music_Load MapDat.music_numberLow, Sound.VolumenActualMusicMax
+                    Sound.Fading = 100
+                    Sound.Music_Play
+                End If
             End If
-        
             
            ' End If
            #If DEBUGGING = 1 Then

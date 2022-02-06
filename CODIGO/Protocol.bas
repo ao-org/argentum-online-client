@@ -3528,9 +3528,7 @@ Private Sub HandleCharacterCreate()
     Dim group_index   As Integer
     
     charindex = Reader.ReadInt16()
-    
-    Debug.Print "HandleCharacterCreate " & charindex
-    
+  
     Body = Reader.ReadInt16()
     Head = Reader.ReadInt16()
     Heading = Reader.ReadInt8()
@@ -3553,7 +3551,10 @@ Private Sub HandleCharacterCreate()
         
         Dim NombreYClan As String
         NombreYClan = Reader.ReadString8()
-        
+     
+    Debug.Print "HandleCharacterCreate " & charindex & " " & NombreYClan & " x:" & x & " y:" & y
+    
+         
         Dim Pos As Integer
         Pos = InStr(NombreYClan, "<")
 
@@ -3678,7 +3679,9 @@ Private Sub HandleCharacterRemove()
     dbgid = Reader.ReadInt16()
     charindex = Reader.ReadInt16()
     
-    Debug.Print "HandleCharacterRemove(dbgid=" & dbgid & ") " & charindex
+    Debug.Print "HandleCharacterRemove(dbgid=" & dbgid & ") " & charindex & " " & charlist(charindex).nombre & " x:" & charlist(charindex).Pos.x & " y:" & charlist(charindex).Pos.y
+    
+    
     
     Desvanecido = Reader.ReadBool()
     fueWarp = Reader.ReadBool()
