@@ -1793,16 +1793,20 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         
             
            ' End If
+           #If DEBUGGING = 1 Then
+           MostrarNombre = True
+           #End If
+           
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
-                
                 Pos = InStr(.nombre, "<")
-                
                 If Pos = 0 Then Pos = InStr(.nombre, "[")
-
                 If Pos = 0 Then Pos = Len(.nombre) + 2
-
                 'Nick
+                #If DEBUGGING = 1 Then
+                line = .nombre & "(" & str(charindex) & ")"
+                #Else
                 line = Left$(.nombre, Pos - 2)
+                #End If
                 Dim factor As Double
                 factor = MapData(x, y).light_value(0).r / 255
                 NameColor(0).r = NameColor(0).r * factor
