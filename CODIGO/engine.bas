@@ -400,7 +400,16 @@ On Error GoTo ErrorHandler:
     Call SpriteBatch.Flush
     
     Call DirectDevice.EndScene
+    If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
         
+        Call Engine_Init
+        
+        prgRun = True
+        pausa = False
+        QueRender = 0
+
+    End If
+    
     Call DirectDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
     
     Exit Sub
