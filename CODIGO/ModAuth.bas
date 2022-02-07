@@ -9,6 +9,8 @@ Public Enum e_state
     RequestLogout
     RequestSignUp
     RequestValidateAccount
+    RequestForgotPassword
+    RequestResetPassword
     RequestDeleteChar
     ConfirmDeleteChar
 End Enum
@@ -17,6 +19,8 @@ Public Enum e_operation
     Authenticate = 0
     SignUp
     ValidateAccount
+    ForgotPassword
+    ResetPassword
     deletechar
     ConfirmDeleteChar
 End Enum
@@ -43,6 +47,10 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
                     Call SendSignUpRequest
                 Case e_state.RequestValidateAccount
                     Call SendValidateAccount
+                Case e_state.RequestForgotPassword
+                    Call SendRequestForgotPassword
+                Case e_state.RequestResetPassword
+                    Call SendRequestResetPassword
                 Case e_state.RequestDeleteChar
                     Call SendDeleteCharRequest
                 Case e_state.ConfirmDeleteChar
@@ -61,6 +69,10 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
             Call HandleSignUpRequest(BytesTotal)
         Case e_state.RequestValidateAccount
             Call HandleValidateAccountRequest(BytesTotal)
+        Case e_state.RequestForgotPassword
+            Call HandleRequestForgotPassword(BytesTotal)
+        Case e_state.RequestResetPassword
+            Call HandleRequestResetPassword(BytesTotal)
         Case e_state.RequestDeleteChar
             Call HandleDeleteCharRequest(BytesTotal)
         Case e_state.ConfirmDeleteChar
@@ -154,6 +166,59 @@ Public Sub SendAccountLoginRequest()
     
 End Sub
 
+
+Public Sub SendRequestForgotPassword()
+    Dim username As String
+    Dim len_encrypted_username As Integer
+    
+    Dim login_request() As Byte
+    Dim packet_size As Integer
+    Dim offset_login_request As Long
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendRequestForgotPassword", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    username = CuentaEmail
+    
+    Dim encrypted_username() As Byte
+    Dim encrypted_username_b64 As String
+    
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    
+    Call Str2ByteArr(encrypted_username_b64, encrypted_username)
+    
+    Dim len_username As Integer
+    
+    len_username = Len(encrypted_username_b64)
+    
+    ReDim login_request(1 To (2 + 2 + 2 + len_username + 2 + len_username))
+    
+    packet_size = UBound(login_request)
+    
+    login_request(1) = &HCB
+    login_request(2) = &HCB
+    
+    'Siguientes 2 bytes indican tamaño total del paquete
+    login_request(3) = hiByte(packet_size)
+    login_request(4) = LoByte(packet_size)
+    
+    'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
+    login_request(5) = hiByte(len_username)
+    login_request(6) = LoByte(len_username)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
+    
+    offset_login_request = 7 + UBound(encrypted_username)
+        
+    login_request(offset_login_request + 1) = hiByte(len_username)
+    login_request(offset_login_request + 2) = LoByte(len_username)
+    
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, offset_login_request + 3)
+    
+    Call frmConnect.AuthSocket.SendData(login_request)
+    
+    Auth_state = e_state.RequestForgotPassword
+    
+End Sub
+
 Public Sub SendValidateAccount()
     Dim username As String
     Dim validate_code As String
@@ -218,6 +283,86 @@ Public Sub SendValidateAccount()
     
 End Sub
 
+Public Sub SendRequestResetPassword()
+    Dim username As String
+    Dim password As String
+    Dim validate_code As String
+    Dim len_encrypted_username As Integer
+    Dim len_encrypted_password As Integer
+    Dim len_encrypted_validate_code As Integer
+    
+    Dim login_request() As Byte
+    Dim packet_size As Integer
+    Dim offset_login_request As Long
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendRequestResetPassword", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    username = frmPasswordReset.txtEmail.Text
+    password = frmPasswordReset.txtPassword.Text
+    validate_code = frmPasswordReset.txtCodigo.Text
+    
+    Dim encrypted_username() As Byte
+    Dim encrypted_username_b64 As String
+    
+    
+    Dim encrypted_password() As Byte
+    Dim encrypted_password_b64 As String
+    
+    Dim encrypted_validate_code() As Byte
+    Dim encrypted_validate_code_b64 As String
+    
+    
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    encrypted_password_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), password)
+    encrypted_validate_code_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), validate_code)
+        
+    Call Str2ByteArr(encrypted_username_b64, encrypted_username)
+    Call Str2ByteArr(encrypted_password_b64, encrypted_password)
+    Call Str2ByteArr(encrypted_validate_code_b64, encrypted_validate_code)
+    
+    Dim len_username As Integer
+    Dim len_password As Integer
+    Dim len_validate_code As Integer
+    
+    len_username = Len(encrypted_username_b64)
+    len_password = Len(encrypted_password_b64)
+    len_validate_code = Len(encrypted_validate_code_b64)
+    
+    ReDim login_request(1 To (2 + 2 + 2 + len_username + 2 + len_validate_code + 2 + len_password))
+    
+    packet_size = UBound(login_request)
+    
+    login_request(1) = &HFB
+    login_request(2) = &HFB
+    
+    'Siguientes 2 bytes indican tamaño total del paquete
+    login_request(3) = hiByte(packet_size)
+    login_request(4) = LoByte(packet_size)
+    
+    'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
+    login_request(5) = hiByte(len_username)
+    login_request(6) = LoByte(len_username)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
+    
+    offset_login_request = 7 + UBound(encrypted_username)
+        
+    login_request(offset_login_request + 1) = hiByte(len_password)
+    login_request(offset_login_request + 2) = LoByte(len_password)
+    
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_password, login_request, len_password, offset_login_request + 3)
+    
+    offset_login_request = offset_login_request + 3 + UBound(encrypted_password)
+    
+    login_request(offset_login_request + 1) = hiByte(len_validate_code)
+    login_request(offset_login_request + 2) = LoByte(len_validate_code)
+    
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_validate_code, login_request, len_validate_code, offset_login_request + 3)
+    
+    Call frmConnect.AuthSocket.SendData(login_request)
+    
+    Auth_state = e_state.RequestResetPassword
+    
+End Sub
 Public Sub LogOutRequest()
     
     Dim logout_request() As Byte
@@ -728,6 +873,104 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
     End If
         
 End Sub
+
+Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
+
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleRequestForgotPassword", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim Data() As Byte
+    
+    frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
+    frmConnect.AuthSocket.GetData Data, vbByte, 2
+    
+    If Data(0) = &H2 And Data(1) = &H14 Then
+        Call DebugPrint("FORGOT-PASSWORD-OK", 0, 255, 0, True)
+        frmConnect.AuthSocket.GetData Data, vbByte, 2
+        Call TextoAlAsistente("Se ha enviado un email a " & CuentaEmail & ".")
+        frmPasswordReset.toggleTextboxs
+    Else
+       Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData Data, vbByte, 4
+        Select Case MakeInt(Data(3), Data(2))
+            Case 1
+                Call TextoAlAsistente("Invalid Username")
+            Case 3
+                Call TextoAlAsistente("Try again later.")
+            Case 9
+                Call TextoAlAsistente("The account has not been activated.")
+            Case 12
+                Call TextoAlAsistente("Invalid Email.")
+            Case 23
+                Call TextoAlAsistente("Calmate.")
+            Case Else
+                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+        End Select
+    End If
+    
+    frmPasswordReset.lblSolicitandoCodigo.Visible = False
+    frmPasswordReset.cmdEnviar.Visible = True
+    
+        
+End Sub
+
+Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
+
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleRequestResetPassword", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim Data() As Byte
+    
+    frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
+    frmConnect.AuthSocket.GetData Data, vbByte, 2
+    
+    If Data(0) = &H20 And Data(1) = &H16 Then
+        Call DebugPrint("RESET-PASSWORD-OK", 0, 255, 0, True)
+        frmConnect.AuthSocket.GetData Data, vbByte, 2
+        Call TextoAlAsistente("Contraseña recuperada con éxito.")
+        Auth_state = e_state.Idle
+    Else
+       Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData Data, vbByte, 4
+        Select Case MakeInt(Data(3), Data(2))
+            Case 1
+                Call TextoAlAsistente("Invalid code")
+            Case 3
+                Call TextoAlAsistente("Try again later")
+            Case 9
+                Call TextoAlAsistente("The account has not been activated.")
+            Case 12
+                Call TextoAlAsistente("Invalid Email.")
+            Case 14
+                Call TextoAlAsistente("The password is too short.")
+            Case 15
+                Call TextoAlAsistente("The password is too long.")
+            Case 16
+                Call TextoAlAsistente("The password contains invalid characters.")
+            Case 21
+                Call TextoAlAsistente("Invalid code")
+            Case 22
+                Call TextoAlAsistente("Invalid password reset host")
+            Case 23
+                Call TextoAlAsistente("Try again later")
+            Case 24
+                Call TextoAlAsistente("The password cant not contain username.")
+            Case 33
+                Call TextoAlAsistente("The password must have at least one upper case letter.")
+            Case 34
+                Call TextoAlAsistente("The password must have at least one lower case letter.")
+            Case 35
+                Call TextoAlAsistente("The password must have at least one number.")
+            Case 36
+                Call TextoAlAsistente("The recovery code is too old.")
+            Case Else
+                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+        End Select
+    End If
+        
+End Sub
+
+
 Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)

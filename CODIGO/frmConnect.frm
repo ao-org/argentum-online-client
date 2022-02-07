@@ -126,6 +126,10 @@ Private Sub AuthSocket_Connect()
                 Auth_state = e_state.RequestSignUp
             Case e_operation.ValidateAccount
                 Auth_state = e_state.RequestValidateAccount
+            Case e_operation.ForgotPassword
+                Auth_state = e_state.RequestForgotPassword
+            Case e_operation.ResetPassword
+                Auth_state = e_state.RequestResetPassword
             Case e_operation.DeleteChar
                 Auth_state = e_state.RequestDeleteChar
             Case e_operation.ConfirmDeleteChar

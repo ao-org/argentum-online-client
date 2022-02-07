@@ -14,6 +14,14 @@ Begin VB.Form frmNewAccount
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
+   Begin VB.CommandButton Command1 
+      Caption         =   "Reset password"
+      Height          =   255
+      Left            =   3960
+      TabIndex        =   9
+      Top             =   4800
+      Width           =   1335
+   End
    Begin VB.TextBox txtSurname 
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
@@ -247,6 +255,11 @@ End Sub
 
 Private Sub btnVerValidarCuenta_Click()
     Me.showValidateAccountControls
+End Sub
+
+Private Sub Command1_Click()
+    Unload Me
+    frmPasswordReset.Show , frmConnect
 End Sub
 
 Private Sub Form_Activate()
