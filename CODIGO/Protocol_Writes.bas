@@ -5923,31 +5923,6 @@ WriteGlobalOnOff_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteBorrandoPJ()
-        'TODO_WOLF: Pure
-        '<EhHeader>
-        On Error GoTo WriteBorrandoPJ_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.BorrarPJ)
-102     Call Writer.WriteString8(DeleteUser)
-104     Call Writer.WriteString8(CuentaEmail)
-106     Call Writer.WriteString8(SEncriptar(CuentaPassword))
-108     Call Writer.WriteInt8(App.Major)
-110     Call Writer.WriteInt8(App.Minor)
-112     Call Writer.WriteInt8(App.Revision)
-118     Call Writer.WriteString8(CheckMD5)
-    
-120     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteBorrandoPJ_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBorrandoPJ", Erl)
-        '</EhFooter>
-End Sub
-
-
 Public Sub WriteNieblaToggle()
         '<EhHeader>
         On Error GoTo WriteNieblaToggle_Err

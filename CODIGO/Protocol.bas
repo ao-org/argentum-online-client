@@ -469,7 +469,6 @@ Public Enum ClientPacketID
     SetSpeed                '/SPEED
     GlobalMessage           '/CONSOLA
     GlobalOnOff
-    BorrarPJ
     UseKey
     Day
     SetTime

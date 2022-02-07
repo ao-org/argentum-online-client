@@ -47,11 +47,7 @@ Sub Login()
         
         Case E_MODO.CrearNuevoPj
             Call WriteLoginNewChar
-                    
-        Case E_MODO.BorrandoPJ
-            Call WriteBorrandoPJ
-        Case 3
-             
+                        
         
     End Select
 
