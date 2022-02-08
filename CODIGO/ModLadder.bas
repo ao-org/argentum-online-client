@@ -684,6 +684,8 @@ Sub General_Set_Connect()
     CurMp3 = 1
 
     QueRender = 1
+    EscribeRetrasadoSensui = False
+    frmMain.timerRetrasadoSensui = False
     
     ClickEnAsistente = 0
 

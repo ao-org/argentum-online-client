@@ -2153,9 +2153,16 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
         Call WriteYell(mid$(RawCommand, 2))
         
     Else
-        ' Hablar
+        ' Hablar como retrasado (sensui)
+        If EscribeRetrasadoSensui Then
+            RawCommand = Replace(RawCommand, "i", "y")
+            RawCommand = Replace(RawCommand, "s", "z")
+            RawCommand = Replace(RawCommand, "h", "")
+        End If
+        
+        
         Call WriteTalk(RawCommand)
-
+        
     End If
 
     

@@ -32,6 +32,12 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.Timer timerRetrasadoSensui 
+      Enabled         =   0   'False
+      Interval        =   60000
+      Left            =   7920
+      Top             =   2400
+   End
    Begin VB.CommandButton Command1 
       Caption         =   "PRENDER ANTORCHA"
       Height          =   495
@@ -419,7 +425,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4142,6 +4147,10 @@ cerrarcuenta_Timer_Err:
     
 End Sub
 
+Private Sub Timer1_Timer()
+    
+End Sub
+
 Private Sub TimerLluvia_Timer()
     
     On Error GoTo TimerLluvia_Timer_Err
@@ -4949,6 +4958,11 @@ imgSpellInfo_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgSpellInfo_Click", Erl)
     Resume Next
     
+End Sub
+
+Public Sub timerRetrasadoSensui_Timer()
+    EscribeRetrasadoSensui = False
+    timerRetrasadoSensui.Enabled = False
 End Sub
 
 Private Sub UpdateDaytime_Timer()

@@ -41,6 +41,8 @@ Public LLamadaDeclanMapa                As Byte
 
 Public LLamadaDeclanX                   As Byte
 
+Public EscribeRetrasadoSensui           As Boolean
+
 Public LLamadaDeclanY                   As Byte
 
 Public SugerenciaAMostrar               As Byte

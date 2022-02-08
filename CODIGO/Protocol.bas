@@ -231,6 +231,7 @@ Private Enum ServerPacketID
     Privilegios
     ShopInit
     UpdateShopClienteCredits
+    SensuiRetrasado
     [PacketCount]
 End Enum
 
@@ -931,6 +932,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleShopInit
         Case ServerPacketID.UpdateShopClienteCredits
             Call HandleUpdateShopClienteCredits
+        Case ServerPacketID.SensuiRetrasado
+            Call HandleSensuiRetrasado
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
@@ -1369,6 +1372,8 @@ Public Sub HandleDisconnect()
     InviCounter = 0
     DrogaCounter = 0
     OxigenoCounter = 0
+    EscribeRetrasadoSensui = False
+    frmMain.timerRetrasadoSensui = False
      
     frmMain.Contadores.Enabled = False
     
@@ -8441,6 +8446,12 @@ End Sub
 Public Sub HandleUpdateShopClienteCredits()
     credits_shopAO20 = Reader.ReadInt32
     frmShopAO20.lblCredits.Caption = credits_shopAO20
+End Sub
+
+Public Sub HandleSensuiRetrasado()
+    EscribeRetrasadoSensui = True
+    frmMain.timerRetrasadoSensui.Enabled = True
+    
 End Sub
 
 Public Sub HandleObjQuestListSend()
