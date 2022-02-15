@@ -3,6 +3,9 @@ Attribute VB_Name = "Protocol_Writes"
 Option Explicit
 Private Writer As Network.Writer
 
+Public Function writer_is_nothing() As Boolean
+writer_is_nothing = Writer Is Nothing
+End Function
 Public Sub Initialize()
 100     Set Writer = New Network.Writer
 End Sub

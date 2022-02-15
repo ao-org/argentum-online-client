@@ -16,7 +16,9 @@ Public Sub Connect(ByVal Address As String, ByVal Service As String)
 End Sub
 
 Public Sub Disconnect()
+If Not Client Is Nothing Then
     Call Client.Close(True)
+End If
 End Sub
 
 Public Sub Poll()

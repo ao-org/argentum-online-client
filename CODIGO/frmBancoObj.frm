@@ -393,7 +393,10 @@ Private Sub Form_Unload(Cancel As Integer)
     On Error GoTo Form_Unload_Err
     
     Call Sound.Sound_Play(SND_CLICK)
-    Call WriteBankEnd
+    
+    If Not Protocol_Writes.writer_is_nothing Then
+        Call WriteBankEnd
+    End If
 
     
     Exit Sub
