@@ -10,7 +10,7 @@ Public MinLimiteY      As Integer
 
 Public MaxLimiteY      As Integer
 
-Private Const AREA_DIM As Byte = 11
+Private Const AREA_DIM As Byte = 12 'ReyarB original = 11
 
 Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
     
