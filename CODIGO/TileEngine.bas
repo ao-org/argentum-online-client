@@ -596,16 +596,13 @@ ConvertCPtoTP_Err:
     
 End Sub
 
-Public Sub InitGrh(ByRef grh As grh, ByVal grhIndex As Long, Optional ByVal Started As Long = -1, Optional ByVal Loops As Integer = INFINITE_LOOPS)
-    '*****************************************************************
-    'Sets up a grh. MUST be done before rendering
-    '*****************************************************************
-    
+Public Sub InitGrh(ByRef grh As grh, ByVal grhindex As Long, _
+Optional ByVal started As Long = -1, Optional ByVal loops As Integer = INFINITE_LOOPS)
     On Error GoTo InitGrh_Err
 
     If grhIndex = 0 Or grhIndex > MaxGrh Then Exit Sub
     
-     grh.grhIndex = grhIndex
+    grh.grhindex = grhindex
 
     If GrhData(grhIndex).NumFrames > 1 Then
         If Started >= 0 Then
@@ -625,10 +622,9 @@ Public Sub InitGrh(ByRef grh As grh, ByVal grhIndex As Long, Optional ByVal Star
     With GrhData(grh.grhIndex)
         If .Tx2 = 0 And .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
-
             Dim TextureWidth As Long, TextureHeight As Long
             Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
-        
+            Debug.Assert TextureWidth > 0 And TextureHeight > 0
             .Tx1 = (.sX + 0.25) / TextureWidth
             .Tx2 = (.sX + .pixelWidth) / TextureWidth
             .Ty1 = (.sY + 0.25) / TextureHeight
