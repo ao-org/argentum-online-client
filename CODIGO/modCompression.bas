@@ -96,59 +96,18 @@ Private Const OUTPUT_PATH As String = "\Output\"
 Private Const MAP_PATH As String = "\Mapas\"
 Private Const MINIMAP_PATH As String = "\MiniMapas\"
 
-Private Declare Function Compress Lib "zlib.dll" Alias "compress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
-Private Declare Function UnCompress Lib "zlib.dll" Alias "uncompress" (Dest As Any, destLen As Any, Src As Any, ByVal srcLen As Long) As Long
-
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal Length As Long)
 
-Private Sub Compress_Data(ByRef Data() As Byte)
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Compresses binary data avoiding data loses
-'*****************************************************************
-    Dim Dimensions As Long
-    Dim DimBuffer As Long
-    Dim BufTemp() As Byte
-    Dim loopc As Long
-    
-    Dimensions = UBound(Data) + 1
-    
-    ' The worst case scenario, compressed info is 1.06 times the original - see zlib's doc for more info.
-    DimBuffer = Dimensions * 1.06
-    
-    ReDim BufTemp(DimBuffer)
-    
-    Call Compress(BufTemp(0), DimBuffer, Data(0), Dimensions)
-    
-    Erase Data
-    
-    ReDim Data(DimBuffer - 1)
-    ReDim Preserve BufTemp(DimBuffer - 1)
-    
-    Data = BufTemp
-    
-    Erase BufTemp
 
-End Sub
 
 Private Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Decompresses binary data
-'*****************************************************************
     Dim BufTemp() As Byte
-    
-    ReDim BufTemp(OrigSize - 1)
-    
-    Call UnCompress(BufTemp(0), OrigSize, Data(0), UBound(Data) + 1)
-    
-    ReDim Data(OrigSize - 1)
-    
+    BufTemp = zlibInflate(Data)
     Data = BufTemp
-    
-    Erase BufTemp
+End Sub
+
+Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
+    Call Decompress_Data(Data, OrigSize)
 End Sub
 
 Public Function Extract_All_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal Passwd As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
@@ -615,210 +574,6 @@ ErrHandler:
 End Function
 
 
-Public Function Compress_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal dest_path As String, ByVal Passwd As String) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
-'Comrpesses all files to a resource file
-'*****************************************************************
-    Dim SourceFilePath As String
-    Dim SourceFileExtension As String
-    Dim OutputFilePath As String
-    Dim SourceFile As Long
-    Dim OutputFile As Long
-    Dim SourceFileName As String
-    Dim SourceData() As Byte
-    Dim FileHead As FILEHEADER
-    Dim InfoHead() As INFOHEADER
-    Dim FileNames() As String
-    Dim lngFileStart As Long
-    Dim loopc As Long
-    
-'Set up the error handler
-On Local Error GoTo ErrHandler
-    
-    Select Case file_type
-        Case Graphics
-            SourceFilePath = resource_path & GRAPHIC_PATH
-            SourceFileExtension = ".png"
-            OutputFilePath = dest_path & "Graficos"
-        
-        Case Midi
-            SourceFilePath = resource_path & MIDI_PATH
-            SourceFileExtension = ".mid"
-            OutputFilePath = dest_path & "MIDI"
-        
-        Case mp3
-            SourceFilePath = resource_path & MP3_PATH
-            SourceFileExtension = ".mp3"
-            OutputFilePath = dest_path & "MP3"
-        
-        Case wav
-            SourceFilePath = resource_path & WAV_PATH
-            SourceFileExtension = ".wav"
-            OutputFilePath = dest_path & "Sounds"
-            
-        Case Scripts
-            SourceFilePath = resource_path & SCRIPT_PATH
-            SourceFileExtension = ".*"
-            OutputFilePath = dest_path & "Init"
-        
-        Case Patch
-            SourceFilePath = resource_path & PATCH_PATH
-            SourceFileExtension = ".*"
-            OutputFilePath = dest_path & "Patch"
-    
-        Case interface
-            SourceFilePath = resource_path & INTERFACE_PATH
-            SourceFileExtension = ".bmp"
-            OutputFilePath = dest_path & "Interface"
-            
-        Case Maps
-            SourceFilePath = resource_path & MAP_PATH
-            SourceFileExtension = ".csm"
-            OutputFilePath = dest_path & "Mapas"
-            
-        Case MiniMaps
-            SourceFilePath = resource_path & MINIMAP_PATH
-            SourceFileExtension = ".bmp"
-            OutputFilePath = dest_path & "MiniMapas"
-    
-    End Select
-    
-    'Get first file in the directoy
-    SourceFileName = Dir$(SourceFilePath & "*" & SourceFileExtension, vbNormal)
-    
-    SourceFile = FreeFile
-    
-    'Get all other files in the directory
-    While SourceFileName <> ""
-        FileHead.intNumFiles = FileHead.intNumFiles + 1
-        
-        ReDim Preserve FileNames(FileHead.intNumFiles - 1)
-        FileNames(FileHead.intNumFiles - 1) = LCase(SourceFileName)
-        
-        'Search new file
-        SourceFileName = Dir$()
-    Wend
-    
-    'If we found none, be can't compress a thing, so we exit
-    If FileHead.intNumFiles = 0 Then
-        MsgBox "There are no files of extension " & SourceFileExtension & " in " & SourceFilePath & ".", , "Error"
-        Exit Function
-    End If
-    
-    'Sort file names alphabetically (this will make patching much easier).
-    General_Quick_Sort FileNames(), 0, UBound(FileNames)
-    
-    'Resize InfoHead array
-    ReDim InfoHead(FileHead.intNumFiles - 1)
-        
-    'Destroy file if it previuosly existed
-    If Dir(OutputFilePath, vbNormal) <> "" Then
-        Kill OutputFilePath
-    End If
-    
-    ' Setup password
-    If LenB(Passwd) = 0 Then Passwd = "Contraseña"
-    
-    'Open a new file
-    OutputFile = FreeFile
-    Open OutputFilePath For Binary Access Read Write As OutputFile
-
-    Dim IHead As Long
-
-    For loopc = 0 To FileHead.intNumFiles - 1
-    
-        'Find a free file number to use and open the file
-        SourceFile = FreeFile
-        Open SourceFilePath & FileNames(loopc) For Binary Access Read Lock Write As SourceFile
-        
-        If LOF(SourceFile) > 0 Then
-            'Store file name
-            InfoHead(IHead).strFileName = FileNames(loopc)
-        
-            'Find out how large the file is and resize the data array appropriately
-            ReDim SourceData(LOF(SourceFile) - 1)
-            
-            'Store the value so we can decompress it later on
-            InfoHead(IHead).lngFileSizeUncompressed = LOF(SourceFile)
-            
-            'Get the data from the file
-            Get SourceFile, , SourceData
-            
-            'Compress it
-            Compress_Data SourceData
-            
-            'Encription
-            DoCrypt_Data SourceData, Passwd
-            
-            'Save it to a temp file
-            Put OutputFile, , SourceData
-            
-            'Set up the file header
-            FileHead.lngFileSize = FileHead.lngFileSize + UBound(SourceData) + 1
-            
-            'Set up the info headers
-            InfoHead(IHead).lngFileSize = UBound(SourceData) + 1
-            
-            Erase SourceData
-            
-            IHead = IHead + 1
-            
-        Else
-            FileHead.intNumFiles = FileHead.intNumFiles - 1
-        End If
-            
-        'Close temp file
-        Close SourceFile
-            
-        DoEvents
-            
-    Next loopc
-    
-    ReDim Preserve InfoHead(FileHead.intNumFiles - 1)
-    
-    'Finish setting the FileHeader data
-    FileHead.lngFileSize = FileHead.lngFileSize + CLng(FileHead.intNumFiles) * Len(InfoHead(0)) + Len(FileHead)
-    
-    'Password hash
-    FileHead.lngPassword = MD5String(Passwd)
-
-    'Set InfoHead data
-    lngFileStart = Len(FileHead) + CLng(FileHead.intNumFiles) * Len(InfoHead(0)) + 1
-    For loopc = 0 To FileHead.intNumFiles - 1
-        InfoHead(loopc).lngFileStart = lngFileStart
-        lngFileStart = lngFileStart + InfoHead(loopc).lngFileSize
-    Next loopc
-        
-    '************ Write Data
-    
-    'Get all data stored so far
-    ReDim SourceData(LOF(OutputFile) - 1)
-    Seek OutputFile, 1
-    Get OutputFile, , SourceData
-    
-    Seek OutputFile, 1
-    
-    'Store the data in the file
-    Put OutputFile, , FileHead
-    Put OutputFile, , InfoHead
-    Put OutputFile, , SourceData
-    
-    'Close the file
-    Close OutputFile
-    
-    Erase InfoHead
-    Erase SourceData
-Exit Function
-
-ErrHandler:
-    Erase SourceData
-    Erase InfoHead
-    'Display an error message if it didn't work
-    MsgBox "Unable to create binary file. Reason: " & Err.Number & " : " & Err.Description, vbOKOnly, "Error"
-End Function
-
 Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByVal OutputFilePath As String, ByVal Passwd As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
@@ -1243,38 +998,7 @@ Public Function Extract_File_To_String(ByVal file_type As resource_file_type, By
     
 End Function
 
-Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
-    
-    On Error GoTo Decompress_Data_B_Err
-    
 
-    '*****************************************************************
-    'Author: Juan Martín Dotuyo Dodero
-    'Last Modify Date: 10/13/2004
-    'Decompresses binary data
-    '*****************************************************************
-    Dim BufTemp() As Byte
-   
-    ReDim BufTemp(OrigSize - 1)
-   
-    'Des-encrypt the first byte of the compressed data
-    
-    Call UnCompress(BufTemp(0), OrigSize, Data(0), UBound(Data) + 1)
-   
-    ReDim Data(OrigSize - 1)
-   
-    Data = BufTemp
-   
-    Erase BufTemp
-    
-    
-    Exit Sub
-
-Decompress_Data_B_Err:
-    Call RegistrarError(Err.Number, Err.Description, "modCompression.Decompress_Data_B", Erl)
-    Resume Next
-    
-End Sub
 
 Public Function GAeneral_Load_Picture_From_Resource(ByVal picture_file_name As String, ByVal Passwd As String) As IPicture
     '**************************************************************
