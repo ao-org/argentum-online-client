@@ -1446,19 +1446,19 @@ Public Sub CargarIndicesOBJ()
     Dim i       As Integer
     
     #If Compresion = 1 Then
-
         If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de localindex.dat!"
             MsgBox Err.Description
 
         End If
-    
         ObjFile = Windows_Temp_Dir & "localindex.dat"
     #Else
         ObjFile = App.Path & "\..\Recursos\init\localindex.dat"
     #End If
+    
             
     Dim Leer As New clsIniManager
+    Debug.Assert FileExist(ObjFile, vbNormal)
     Call Leer.Initialize(ObjFile)
 
     NumOBJs = Val(Leer.GetValue("INIT", "NumObjs"))
@@ -1466,24 +1466,21 @@ Public Sub CargarIndicesOBJ()
     NumHechizos = Val(Leer.GetValue("INIT", "NumeroHechizo"))
     NumHechizos = Val(Leer.GetValue("INIT", "NumeroHechizo"))
     NumLocaleMsg = Val(Leer.GetValue("INIT", "NumLocaleMsg"))
-    
     NumQuest = Val(Leer.GetValue("INIT", "NUMQUESTS"))
-    
     NumSug = Val(Leer.GetValue("INIT", "NUMSUGERENCIAS"))
-    
+
     ReDim ObjData(0 To NumOBJs) As ObjDatas
     ReDim NpcData(0 To NumNpcs) As NpcDatas
     ReDim HechizoData(0 To NumHechizos) As HechizoDatas
     ReDim Locale_SMG(0 To NumLocaleMsg) As String
     ReDim ObjShop(1 To 1) As ObjDatas
     
+    Debug.Assert NumQuest > 0
+    Debug.Assert NumSug > 0
+    
     ReDim QuestList(1 To NumQuest)
-
-    
-    ReDim Sugerencia(1 To NumSug) As String
-
-    
     ReDim PosMap(1 To NumQuest) As Integer
+    ReDim Sugerencia(1 To NumSug) As String
 
     For Obj = 1 To NumOBJs
         DoEvents

@@ -172,65 +172,65 @@ On Local Error GoTo ErrHandler
     Select Case file_type
         Case Graphics
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "Graficos.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Graficos"
             Else
-                SourceFilePath = resource_path & "\Graficos.rao"
+                SourceFilePath = resource_path & "\Graficos"
             End If
             OutputFilePath = resource_path & GRAPHIC_PATH
             
         Case Midi
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "Midi.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Midi"
             Else
-                SourceFilePath = resource_path & "\MIDI.rao"
+                SourceFilePath = resource_path & "\MIDI"
             End If
             OutputFilePath = resource_path & MIDI_PATH
         
         Case mp3
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "MP3.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "MP3"
             Else
-                SourceFilePath = resource_path & "\MP3.rao"
+                SourceFilePath = resource_path & "\MP3"
             End If
             OutputFilePath = resource_path & MP3_PATH
         
         Case wav
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "Sounds.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Sounds"
             Else
-                SourceFilePath = resource_path & "\Sounds.rao"
+                SourceFilePath = resource_path & "\Sounds"
             End If
             OutputFilePath = resource_path & WAV_PATH
         
         Case Scripts
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "init.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "init"
             Else
-                SourceFilePath = resource_path & "\Init.rao"
+                SourceFilePath = resource_path & "\Init"
             End If
             OutputFilePath = resource_path & SCRIPT_PATH
         
         Case interface
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "Interface.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Interface"
             Else
-                SourceFilePath = resource_path & "\Interface.rao"
+                SourceFilePath = resource_path & "\Interface"
             End If
             OutputFilePath = resource_path & INTERFACE_PATH
         
         Case Maps
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "Mapas.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Mapas"
             Else
-                SourceFilePath = resource_path & "\Mapas.rao"
+                SourceFilePath = resource_path & "\Mapas"
             End If
             OutputFilePath = resource_path & MAP_PATH
             
         Case MiniMaps
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "MiniMapas.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "MiniMapas"
             Else
-                SourceFilePath = resource_path & "\MiniMapas.rao"
+                SourceFilePath = resource_path & "\MiniMapas"
             End If
             OutputFilePath = resource_path & MINIMAP_PATH
         
@@ -413,37 +413,37 @@ On Local Error GoTo ErrHandler
             Case Is = "png"
                 If bmp_done Then GoTo EndMainLoop
                 FileExtension = "png"
-                OutputFilePath = resource_path & "\Graficos.rao"
+                OutputFilePath = resource_path & "\Graficos"
                 bmp_done = True
             Case Is = "mid"
                 If mid_done Then GoTo EndMainLoop
                 FileExtension = "mid"
-                OutputFilePath = resource_path & "\MIDI.rao"
+                OutputFilePath = resource_path & "\MIDI"
                 mid_done = True
             Case Is = "mp3"
                 If mp3_done Then GoTo EndMainLoop
                 FileExtension = "mp3"
-                OutputFilePath = resource_path & "\MP3.rao"
+                OutputFilePath = resource_path & "\MP3"
                 mp3_done = True
             Case Is = "wav"
                 If wav_done Then GoTo EndMainLoop
                 FileExtension = "wav"
-                OutputFilePath = resource_path & "\Sounds.rao"
+                OutputFilePath = resource_path & "\Sounds"
                 wav_done = True
             Case Is = "bmp"
                 If gui_done Then GoTo EndMainLoop
                 FileExtension = "bmp"
-                OutputFilePath = resource_path & "\Interface.rao"
+                OutputFilePath = resource_path & "\Interface"
                 gui_done = True
             Case Is = "ind"
                 If ind_done Then GoTo EndMainLoop
                 FileExtension = "ind"
-                OutputFilePath = resource_path & "\Init.rao"
+                OutputFilePath = resource_path & "\Init"
                 ind_done = True
             Case Is = "dat"
                 If dat_done Then GoTo EndMainLoop
                 FileExtension = "dat"
-                OutputFilePath = resource_path & "\Init.rao"
+                OutputFilePath = resource_path & "\Init"
                 dat_done = True
         End Select
         
@@ -641,47 +641,47 @@ On Local Error GoTo ErrHandler
         Case Graphics
             SourceFilePath = resource_path & GRAPHIC_PATH
             SourceFileExtension = ".png"
-            OutputFilePath = dest_path & "Graficos.rao"
+            OutputFilePath = dest_path & "Graficos"
         
         Case Midi
             SourceFilePath = resource_path & MIDI_PATH
             SourceFileExtension = ".mid"
-            OutputFilePath = dest_path & "MIDI.rao"
+            OutputFilePath = dest_path & "MIDI"
         
         Case mp3
             SourceFilePath = resource_path & MP3_PATH
             SourceFileExtension = ".mp3"
-            OutputFilePath = dest_path & "MP3.rao"
+            OutputFilePath = dest_path & "MP3"
         
         Case wav
             SourceFilePath = resource_path & WAV_PATH
             SourceFileExtension = ".wav"
-            OutputFilePath = dest_path & "Sounds.rao"
+            OutputFilePath = dest_path & "Sounds"
             
         Case Scripts
             SourceFilePath = resource_path & SCRIPT_PATH
             SourceFileExtension = ".*"
-            OutputFilePath = dest_path & "Init.rao"
+            OutputFilePath = dest_path & "Init"
         
         Case Patch
             SourceFilePath = resource_path & PATCH_PATH
             SourceFileExtension = ".*"
-            OutputFilePath = dest_path & "Patch.rao"
+            OutputFilePath = dest_path & "Patch"
     
         Case interface
             SourceFilePath = resource_path & INTERFACE_PATH
             SourceFileExtension = ".bmp"
-            OutputFilePath = dest_path & "Interface.rao"
+            OutputFilePath = dest_path & "Interface"
             
         Case Maps
             SourceFilePath = resource_path & MAP_PATH
             SourceFileExtension = ".csm"
-            OutputFilePath = dest_path & "Mapas.rao"
+            OutputFilePath = dest_path & "Mapas"
             
         Case MiniMaps
             SourceFilePath = resource_path & MINIMAP_PATH
             SourceFileExtension = ".bmp"
-            OutputFilePath = dest_path & "MiniMapas.rao"
+            OutputFilePath = dest_path & "MiniMapas"
     
     End Select
     
@@ -837,58 +837,58 @@ On Local Error GoTo ErrHandler
     Select Case file_type
         Case Graphics
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "Graficos.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Graficos"
             Else
-                SourceFilePath = resource_path & "\Graficos.rao"
+                SourceFilePath = resource_path & "\Graficos"
             End If
             
         Case Midi
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "MIDI.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "MIDI"
             Else
-                SourceFilePath = resource_path & "\MIDI.rao"
+                SourceFilePath = resource_path & "\MIDI"
             End If
         
         Case mp3
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "MP3.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "MP3"
             Else
-                SourceFilePath = resource_path & "\MP3.rao"
+                SourceFilePath = resource_path & "\MP3"
             End If
         
         Case wav
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "Sounds.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Sounds"
             Else
-                SourceFilePath = resource_path & "\Sounds.rao"
+                SourceFilePath = resource_path & "\Sounds"
             End If
         
         Case Scripts
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "init.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "init"
             Else
-                SourceFilePath = resource_path & "\init.rao"
+                SourceFilePath = resource_path & "\init"
             End If
         
         Case interface
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "Interface.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Interface"
             Else
-                SourceFilePath = resource_path & "\Interface.rao"
+                SourceFilePath = resource_path & "\Interface"
             End If
             
         Case Maps
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "Mapas.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "Mapas"
             Else
-                SourceFilePath = resource_path & "\Mapas.rao"
+                SourceFilePath = resource_path & "\Mapas"
             End If
             
         Case MiniMaps
             If UseOutputFolder Then
-                SourceFilePath = resource_path & OUTPUT_PATH & "MiniMapas.rao"
+                SourceFilePath = resource_path & OUTPUT_PATH & "MiniMapas"
             Else
-                SourceFilePath = resource_path & "\MiniMapas.rao"
+                SourceFilePath = resource_path & "\MiniMapas"
             End If
         
         Case Else
@@ -1150,28 +1150,28 @@ Public Function Extract_File_To_Memory(ByVal file_type As resource_file_type, By
     Select Case file_type
 
         Case Graphics
-            SourceFilePath = resource_path & "\Graficos.rao"
+            SourceFilePath = resource_path & "\Graficos"
 
         Case Midi
-            SourceFilePath = resource_path & "\MIDI.rao"
+            SourceFilePath = resource_path & "\MIDI"
 
         Case mp3
-            SourceFilePath = resource_path & "\MP3.rao"
+            SourceFilePath = resource_path & "\MP3"
 
         Case wav
-            SourceFilePath = resource_path & "\Sounds.rao"
+            SourceFilePath = resource_path & "\Sounds"
 
         Case Scripts
-            SourceFilePath = resource_path & "\init.rao"
+            SourceFilePath = resource_path & "\init"
 
         Case interface
-            SourceFilePath = resource_path & "\Interface.rao"
+            SourceFilePath = resource_path & "\Interface"
 
         Case Maps
-            SourceFilePath = resource_path & "\Mapas.rao"
+            SourceFilePath = resource_path & "\Mapas"
             
         Case MiniMaps
-            SourceFilePath = resource_path & "\MiniMapas.rao"
+            SourceFilePath = resource_path & "\MiniMapas"
         
         Case Else
             Exit Function
