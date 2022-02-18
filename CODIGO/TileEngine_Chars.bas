@@ -30,6 +30,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .CreandoCant = 0
         .Moving = False
         .Muerto = False
+        Debug.Print "ResetCharInfo " & .nombre
         .nombre = vbNullString
         .Pie = False
         .simbolo = 0
