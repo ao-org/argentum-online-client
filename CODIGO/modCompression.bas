@@ -98,12 +98,14 @@ Private Const MINIMAP_PATH As String = "\MiniMapas\"
 
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal Length As Long)
 
-
-
 Private Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
     Dim BufTemp() As Byte
-    BufTemp = zlibInflate(Data)
-    Data = BufTemp
+    Dim iv() As Byte
+    Dim key() As Byte
+    key = cnvBytesFromHexStr("0123456789ABCDEFF0E1D2C3B4A59687")
+    iv = cnvBytesFromHexStr("FEDCBA9876543210FEDCBA9876543210")
+    BufTemp = cipherDecryptBytes2(Data, key, iv, "Aes128/CFB/nopad")
+    Data = zlibInflate(BufTemp)
 End Sub
 
 Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
