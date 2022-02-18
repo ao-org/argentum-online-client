@@ -9,11 +9,11 @@ Public FrameNum               As Long
 Public Dialogos                 As clsDialogs
 Public LucesRedondas            As clsLucesRedondas
 Public LucesCuadradas           As clsLucesCuadradas
-Private Estrella                As grh
-Private Marco                   As grh
-Private BarraMana               As grh
-Private BarraVida               As grh
-Private BarraGris               As grh
+Public Estrella                As grh
+Public Marco                   As grh
+Public BarraMana               As grh
+Public BarraVida               As grh
+Public BarraGris               As grh
 
 ''
 ' Maximum number of dialogs that can exist.
@@ -212,11 +212,6 @@ Private Sub Engine_InitExtras()
     On Error GoTo Engine_InitExtras_Err
     
 
-    Call InitGrh(Estrella, 35764)
-    Call InitGrh(Marco, 839)
-    Call InitGrh(BarraMana, 840)
-    Call InitGrh(BarraVida, 841)
-    Call InitGrh(BarraGris, 842)
     
     With Render_Connect_Rect
         .Top = 0
