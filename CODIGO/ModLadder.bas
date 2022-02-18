@@ -1668,7 +1668,30 @@ Public Sub DibujarMiniMapa()
     On Error GoTo DibujarMiniMapa_Err
 
     frmMain.MiniMap.Picture = LoadMinimap(UserMap)
-
+    
+    
+    'Pintamos los NPCs en Minimapa:
+    If ListNPCMapData(UserMap, 1).NPCNumber > 0 Then
+        Dim i As Long
+        For i = 1 To MAX_QUESTNPCS_VISIBLE
+            Dim PosX As Integer
+            Dim PosY As Integer
+            PosX = (ListNPCMapData(UserMap, i).Position.X - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - 2
+            PosY = (ListNPCMapData(UserMap, i).Position.y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - 1
+            
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY, vbYellow)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, vbYellow)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY, vbYellow)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, vbYellow)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, vbYellow)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, vbYellow)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY, vbYellow)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, vbYellow)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 2, vbYellow)
+        Next i
+        
+        frmMain.MiniMap.Refresh
+    End If
     Exit Sub
 
 DibujarMiniMapa_Err:

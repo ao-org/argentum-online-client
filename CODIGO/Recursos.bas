@@ -193,6 +193,24 @@ Public iplst    As String
 '   FIN - CARGA DE MAPAS
 ' *********************************************************
 
+''''''''''''''' CARGA DE NPCS DATA MAP QUEST QCYO VIEJA nO ME IMPORTA NADA '''''''''''''''''''''''''''''''
+
+Private Type t_Position
+
+    X As Integer
+    y As Integer
+
+End Type
+
+Public Type t_QuestNPCMapData
+    Position As Position
+    NPCNumber As Integer
+End Type
+
+Public ListNPCMapData() As t_QuestNPCMapData
+Public Const MAX_QUESTNPCS_VISIBLE As Long = 100
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 Private Type tMoldeCuerpo
     x As Long
     y As Long
@@ -241,6 +259,7 @@ Public Sub CargarRecursos()
     Call InitGrh(BarraGris, 842)
     
     
+    Call CargarNPCsMapData
     Exit Sub
 
 CargarRecursos_Err:
@@ -3090,3 +3109,34 @@ Function LoadFont(Name As String) As Boolean
         YaMostreError = True
     End If
 End Function
+
+Public Sub CargarNPCsMapData()
+    Dim fh As Integer
+    fh = FreeFile
+    Open "C:\QuestNPCsMapData.bin" For Binary As fh
+    
+    Dim NumMaps As Integer
+    NumMaps = 600 ' cargar  desde archivo
+    ReDim ListNPCMapData(1 To NumMaps, 1 To MAX_QUESTNPCS_VISIBLE) As t_QuestNPCMapData
+    
+    Do While Not EOF(fh)
+        Dim Map As Integer
+        Get #fh, , Map
+        
+        
+        Dim i As Long
+        For i = 1 To MAX_QUESTNPCS_VISIBLE
+            Dim TempInt As Integer
+            Get #fh, , TempInt
+            ListNPCMapData(Map, i).NPCNumber = TempInt
+            
+            Get #fh, , TempInt
+            ListNPCMapData(Map, i).Position.X = TempInt
+            
+            Get #fh, , TempInt
+            ListNPCMapData(Map, i).Position.y = TempInt
+        Next i
+        DoEvents
+    Loop
+    Close fh
+End Sub
