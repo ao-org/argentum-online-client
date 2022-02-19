@@ -3113,7 +3113,6 @@ End Function
 Public Sub CargarNPCsMapData()
     Dim fh As Integer
     fh = FreeFile
-    Open "C:\QuestNPCsMapData.bin" For Binary As fh
     
     Open App.Path & "\..\Recursos\init\QuestNPCsMapData.bin" For Binary As fh
     
