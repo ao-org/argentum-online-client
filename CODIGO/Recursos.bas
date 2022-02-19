@@ -3115,6 +3115,8 @@ Public Sub CargarNPCsMapData()
     fh = FreeFile
     Open "C:\QuestNPCsMapData.bin" For Binary As fh
     
+    Open App.Path & "\..\Recursos\init\QuestNPCsMapData.bin" For Binary As fh
+    
     Dim NumMaps As Integer
     NumMaps = 600 ' cargar  desde archivo
     ReDim ListNPCMapData(1 To NumMaps, 1 To MAX_QUESTNPCS_VISIBLE) As t_QuestNPCMapData
