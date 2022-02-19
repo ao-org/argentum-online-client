@@ -1691,21 +1691,21 @@ Public Sub DibujarMiniMapa()
             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, RGB(255, 201, 14))
             
             
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY - 1, RGB(127, 127, 127))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, RGB(127, 127, 127))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY + 1, RGB(127, 127, 127))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY - 1, RGB(255, 255, 255))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, RGB(255, 255, 255))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY + 1, RGB(255, 255, 255))
             
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY - 1, RGB(127, 127, 127))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY, RGB(127, 127, 127))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY + 1, RGB(127, 127, 127))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY - 1, RGB(255, 255, 255))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY, RGB(255, 255, 255))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY + 1, RGB(255, 255, 255))
             
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 2, RGB(127, 127, 127))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, RGB(127, 127, 127))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 2, RGB(127, 127, 127))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 2, RGB(255, 255, 255))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, RGB(255, 255, 255))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 2, RGB(255, 255, 255))
             
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY - 2, RGB(127, 127, 127))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 2, RGB(127, 127, 127))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 2, RGB(127, 127, 127))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY - 2, RGB(255, 255, 255))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 2, RGB(255, 255, 255))
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 2, RGB(255, 255, 255))
             
             
             
