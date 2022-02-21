@@ -1880,10 +1880,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
             Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 55 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
             
-            Engine_Draw_Box_Border PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY - 29 + .Body.BodyOffset.y, .BarTime / .MaxBarTime * 24, 3, RGBA_From_Comp(0, 128, 128, 255), RGBA_From_Comp(0, 0, 0, 255)
+            Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY - 28 + .Body.BodyOffset.y, .BarTime / .MaxBarTime * 26, 4, RGBA_From_Comp(3, 214, 166, 120) ', RGBA_From_Comp(0, 0, 0, 255)
 
-            .BarTime = .BarTime + (timerTicksPerFrame * 4)
-                             
+            .BarTime = .BarTime + (timerElapsedTime / 1000)
+            'Debug.Print .BarTime
             If .BarTime >= .MaxBarTime Then
                 charlist(charindex).BarTime = 0
                 charlist(charindex).BarAccion = 99
