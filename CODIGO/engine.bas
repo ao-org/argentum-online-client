@@ -3003,9 +3003,9 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Draw_Grh TempGrh, 810, 655, 0, 1, cc(), False
     
-    'Call InitGrh(TempGrh, 19337)
+    Call InitGrh(TempGrh, 19337)
 
-    'Draw_Grh TempGrh, 790, 690, 0, 1, cc(), False
+    Draw_Grh TempGrh, 33, 690, 0, 1, cc(), False
     #If DEBUGGING = 1 Then
        ' Engine_Text_Render "CLIENTE DEBUG", (frmConnect.ScaleWidth - Engine_Text_Width("CLIENTE DEBUG")) \ 2, 30, COLOR_WHITE
     #End If
