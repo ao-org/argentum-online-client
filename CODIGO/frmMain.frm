@@ -179,8 +179,10 @@ Begin VB.Form frmMain
       End
       Begin VB.PictureBox picInv 
          Appearance      =   0  'Flat
+         AutoRedraw      =   -1  'True
          BackColor       =   &H00000000&
          BorderStyle     =   0  'None
+         ClipControls    =   0   'False
          BeginProperty Font 
             Name            =   "Arial"
             Size            =   8.25
@@ -425,6 +427,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2575,6 +2578,7 @@ Private Sub imgHechizos_Click()
     If hlst.Visible Then Exit Sub
     panel.Picture = LoadInterface("centrohechizo.bmp")
     picInv.Visible = False
+    
     hlst.Visible = True
 
     cmdlanzar.Visible = True
@@ -2663,10 +2667,11 @@ Private Sub imgInventario_Click()
     hlst.Visible = False
     cmdlanzar.Visible = False
     imgSpellInfo.Visible = False
+    
 
     cmdMoverHechi(0).Visible = False
     cmdMoverHechi(1).Visible = False
-    Call Inventario.ReDraw
+   ' Call Inventario.ReDraw
     frmMain.imgInvLock(0).Visible = True
     frmMain.imgInvLock(1).Visible = True
     frmMain.imgInvLock(2).Visible = True
@@ -2688,6 +2693,7 @@ Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Si
     imgInventario.Picture = LoadInterface("boton-inventory-ES-off.bmp")
     imgInventario.Tag = "1"
 
+    'Call Inventario.DrawInventory
     
     Exit Sub
 
@@ -2700,8 +2706,6 @@ End Sub
 Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo imgInventario_MouseMove_Err
-    
-    Call Inventario.ReDraw
 
     If imgInventario.Tag = "0" Then
         imgInventario.Picture = LoadInterface("boton-inventory-ES-over.bmp")
@@ -3586,7 +3590,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
         Select Case ObjData(Inventario.ObjIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef

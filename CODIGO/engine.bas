@@ -2132,7 +2132,7 @@ Public Sub DrawMainInventory()
     
 
     ' Sólo dibujamos cuando es necesario
-    If Not frmMain.Inventario.NeedsRedraw Then Exit Sub
+    'If Not frmMain.Inventario.NeedsRedraw Then Exit Sub
 
     Dim InvRect As RECT
 
