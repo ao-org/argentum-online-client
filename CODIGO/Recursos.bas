@@ -205,6 +205,7 @@ End Type
 Public Type t_QuestNPCMapData
     Position As Position
     NPCNumber As Integer
+    State As Integer
 End Type
 
 Public ListNPCMapData() As t_QuestNPCMapData
@@ -3122,21 +3123,26 @@ Public Sub CargarNPCsMapData()
     
     Do While Not EOF(fh)
         Dim Map As Integer
-        Get #fh, , Map
+        Get fh, , map
         
-        
-        Dim i As Long
-        For i = 1 To MAX_QUESTNPCS_VISIBLE
-            Dim TempInt As Integer
-            Get #fh, , TempInt
-            ListNPCMapData(Map, i).NPCNumber = TempInt
-            
-            Get #fh, , TempInt
-            ListNPCMapData(Map, i).Position.X = TempInt
-            
-            Get #fh, , TempInt
-            ListNPCMapData(Map, i).Position.y = TempInt
-        Next i
+        If map > 0 Then
+            Dim i As Long
+            For i = 1 To MAX_QUESTNPCS_VISIBLE
+                Dim TempInt As Integer
+                Get #fh, , TempInt
+                'Debug.Assert map > 0
+                ListNPCMapData(map, i).NPCNumber = TempInt
+                
+                Get #fh, , TempInt
+                ListNPCMapData(map, i).Position.x = TempInt
+                
+                Get #fh, , TempInt
+                ListNPCMapData(map, i).Position.y = TempInt
+                
+                Get #fh, , TempInt
+                ListNPCMapData(map, i).State = TempInt
+            Next i
+        End If
         DoEvents
     Loop
     Close fh

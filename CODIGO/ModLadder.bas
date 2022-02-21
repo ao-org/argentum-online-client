@@ -1679,44 +1679,57 @@ Public Sub DibujarMiniMapa()
             PosX = (ListNPCMapData(UserMap, i).Position.X - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - 2
             PosY = (ListNPCMapData(UserMap, i).Position.y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - 1
             
-            'Color RGB 255, 201, 14
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY, RGB(255, 201, 14))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, RGB(255, 201, 14))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 1, RGB(255, 201, 14))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 1, RGB(255, 201, 14))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY, RGB(255, 201, 14))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 1, RGB(255, 201, 14))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY - 1, RGB(255, 201, 14))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, RGB(255, 201, 14))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, RGB(255, 201, 14))
+            Dim color As Long
             
-            
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY - 1, RGB(255, 255, 255))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, RGB(255, 255, 255))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY + 1, RGB(255, 255, 255))
-            
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY - 1, RGB(255, 255, 255))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY, RGB(255, 255, 255))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY + 1, RGB(255, 255, 255))
-            
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 2, RGB(255, 255, 255))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, RGB(255, 255, 255))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 2, RGB(255, 255, 255))
-            
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY - 2, RGB(255, 255, 255))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 2, RGB(255, 255, 255))
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 2, RGB(255, 255, 255))
+            Select Case ListNPCMapData(UserMap, i).State
+                Case 1
+                    color = RGB(0, 198, 254)
+                Case 2
+                    color = RGB(255, 201, 14)
+            End Select
             
             
             
-           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, vbYellow)
-           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, vbYellow)
-           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY, vbYellow)
-           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY, vbYellow)
-           ' Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, vbYellow)
-           ' Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, vbYellow)
-           ' Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, vbYellow)
-           ' Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 2, vbYellow)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, color)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, color)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 1, color)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY, color)
+            
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 1, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY + 1, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 2, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 1, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY, &H808080)
+            
+            'Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY, color)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, color)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 1, color)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 1, color)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY, color)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 1, color)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY - 1, color)
+            'Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, color)
+            'Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, color)
+            
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY - 1, &HFFFFFF)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, &HFFFFFF)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY + 1, &HFFFFFF)
+            
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY - 1, &HFFFFFF)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY, &HFFFFFF)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 2, PosY + 1, &HFFFFFF)
+            
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 2, &HFFFFFF)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, &HFFFFFF)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 2, &HFFFFFF)
+            
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY - 2, &HFFFFFF)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 2, &HFFFFFF)
+           ' Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 2, &HFFFFFF)
+            
         Next i
         
         frmMain.MiniMap.Refresh
