@@ -12,6 +12,7 @@ Begin VB.Form frmPasswordReset
    ScaleHeight     =   3015
    ScaleWidth      =   4560
    ShowInTaskbar   =   0   'False
+   StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton Command1 
       Caption         =   "x"
       Height          =   375
