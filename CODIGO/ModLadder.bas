@@ -1686,6 +1686,8 @@ Public Sub DibujarMiniMapa()
                     color = RGB(0, 198, 254)
                 Case 2
                     color = RGB(255, 201, 14)
+                    Case Else
+                    Color = RGB(255, 201, 14)
             End Select
             
             
