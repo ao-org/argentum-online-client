@@ -715,9 +715,11 @@ Sub DoPasosFx(ByVal charindex As Integer)
                 .Pie = Not .Pie
 
                 If .Pie Then
-                    FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).grhIndex).FileNum
-                    TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    If MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
+                        FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
+                        TerrenoDePaso = GetTerrenoDePaso(FileNum)
+                        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    End If
                     'Call Audio.PlayWave(SND_PASOS3, .Pos.X, .Pos.Y)
                 Else
                     Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
