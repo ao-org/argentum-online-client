@@ -9,7 +9,6 @@ Begin VB.Form frmStatistics
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmStatistics.frx":0000
    ScaleHeight     =   551
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   359

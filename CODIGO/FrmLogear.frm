@@ -5,8 +5,8 @@ Begin VB.Form FrmLogear
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    ClientHeight    =   4005
-   ClientLeft      =   17505
-   ClientTop       =   2220
+   ClientLeft      =   11865
+   ClientTop       =   9450
    ClientWidth     =   5340
    ClipControls    =   0   'False
    ControlBox      =   0   'False
@@ -21,7 +21,7 @@ Begin VB.Form FrmLogear
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox PasswordTxt 
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H00031413&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -40,12 +40,13 @@ Begin VB.Form FrmLogear
       PasswordChar    =   "*"
       TabIndex        =   2
       Tag             =   "1"
-      Top             =   1580
+      Top             =   1560
+      Visible         =   0   'False
       Width           =   1840
    End
    Begin VB.TextBox NameTxt 
       Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
+      BackColor       =   &H00031413&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
@@ -289,6 +290,8 @@ Private Sub Form_Load()
     #If DEBUGGING = 1 Then
         lstServers.Visible = True
     #End If
+    
+    Me.PasswordTxt.Visible = True
 
     Call LoadButtons
     

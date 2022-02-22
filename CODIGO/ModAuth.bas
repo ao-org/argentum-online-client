@@ -868,7 +868,8 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
             Case 9
                 Call TextoAlAsistente("The account has not been activated.")
             Case Else
-                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+                'Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
         End Select
     End If
         
@@ -906,6 +907,9 @@ Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
             Case Else
                 Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
         End Select
+        
+        Auth_state = e_state.Idle
+        
     End If
     
     frmPasswordReset.lblSolicitandoCodigo.Visible = False
@@ -929,6 +933,7 @@ Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
         Call TextoAlAsistente("Contraseña recuperada con éxito.")
         Auth_state = e_state.Idle
+        Unload frmPasswordReset
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4

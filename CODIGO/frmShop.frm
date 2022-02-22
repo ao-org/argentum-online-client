@@ -9,7 +9,6 @@ Begin VB.Form frmShopAO20
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmShop.frx":0000
    ScaleHeight     =   475
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   432

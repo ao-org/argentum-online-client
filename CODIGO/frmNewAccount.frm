@@ -14,14 +14,6 @@ Begin VB.Form frmNewAccount
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
-   Begin VB.CommandButton Command1 
-      Caption         =   "Reset password"
-      Height          =   255
-      Left            =   3960
-      TabIndex        =   9
-      Top             =   4800
-      Width           =   1335
-   End
    Begin VB.TextBox txtSurname 
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
@@ -131,7 +123,7 @@ Begin VB.Form frmNewAccount
    End
    Begin VB.Image btnVerValidarCuenta 
       Height          =   300
-      Left            =   2955
+      Left            =   960
       Top             =   4380
       Width           =   1215
    End
@@ -141,11 +133,11 @@ Begin VB.Form frmNewAccount
       Top             =   3630
       Width           =   1920
    End
-   Begin VB.Image btnCreateAccountWeb 
+   Begin VB.Image btnRestorePassword 
       Height          =   300
-      Left            =   1200
+      Left            =   2520
       Top             =   4380
-      Width           =   1335
+      Width           =   1815
    End
    Begin VB.Label lblCaptchaError 
       BackStyle       =   0  'Transparent
@@ -197,7 +189,7 @@ Begin VB.Form frmNewAccount
    Begin VB.Image btnSendValidarCuenta 
       Height          =   375
       Left            =   2760
-      Top             =   4200
+      Top             =   4170
       Visible         =   0   'False
       Width           =   1935
    End
@@ -232,9 +224,7 @@ Private Sub btnCreateAccount_Click()
     End If
 End Sub
 
-Private Sub btnCreateAccountWeb_Click()
-  Call ShellExecute(0, "Open", "https://ao20.com.ar/", "", App.Path, 1)
-End Sub
+
 
 Public Sub AlternarControllers()
     Me.btnSendValidarCuenta.Visible = True
@@ -242,25 +232,31 @@ Public Sub AlternarControllers()
     Me.txtCodigo.Visible = True
     
     btnCreateAccount.Visible = False
-    btnCreateAccountWeb.Visible = False
+    btnRestorePassword.Visible = False
     btnVerValidarCuenta.Visible = False
     
     btnSendValidarCuenta.Visible = True
 End Sub
 
+Private Sub btnRestorePassword_Click()
+    Unload Me
+    frmPasswordReset.Show , frmConnect
+End Sub
+
 Private Sub btnSendValidarCuenta_Click()
-        ModAuth.LoginOperation = e_operation.ValidateAccount
-        Call connectToLoginServer
+        
+        If txtCodigo.Text <> "" And txtValidateMail.Text <> "" Then
+            ModAuth.LoginOperation = e_operation.ValidateAccount
+            Call connectToLoginServer
+        End If
+        
 End Sub
 
 Private Sub btnVerValidarCuenta_Click()
     Me.showValidateAccountControls
 End Sub
 
-Private Sub Command1_Click()
-    Unload Me
-    frmPasswordReset.Show , frmConnect
-End Sub
+
 
 Private Sub Form_Activate()
     Me.Top = frmConnect.Top + frmConnect.Height - Me.Height - 450
@@ -319,7 +315,7 @@ Public Sub showValidateAccountControls()
     Me.lblCaptchaError.Visible = False
     Me.btnVerValidarCuenta.Visible = False
     Me.btnCreateAccount.Visible = False
-    Me.btnCreateAccountWeb.Visible = False
+    Me.btnRestorePassword.Visible = False
 End Sub
 
 Public Sub showCreateAccountControls()
@@ -336,7 +332,7 @@ Public Sub showCreateAccountControls()
     Me.lblCaptchaError.Visible = True
     Me.btnVerValidarCuenta.Visible = True
     Me.btnCreateAccount.Visible = True
-    Me.btnCreateAccountWeb.Visible = True
+    Me.btnRestorePassword.Visible = True
 
 End Sub
 

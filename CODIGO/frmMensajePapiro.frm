@@ -9,7 +9,6 @@ Begin VB.Form frmMensajePapiro
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmMensajePapiro.frx":0000
    ScaleHeight     =   9270
    ScaleWidth      =   11580
    ShowInTaskbar   =   0   'False
