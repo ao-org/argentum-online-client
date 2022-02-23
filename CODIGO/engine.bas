@@ -262,7 +262,7 @@ Public Sub Engine_InitColors()
     ' Colores comunes
     Call Long_2_RGBAList(COLOR_WHITE, -1)
     
-    Call RGBAList(textcolorAsistente, 0, 200, 0)
+    Call RGBAList(textcolorAsistente, 0, 255, 0)
 
     
     Exit Sub
@@ -2962,13 +2962,13 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     intro = 1
 
     If intro = 1 Then
-        Draw_Grh BodyData(773).Walk(3), 470 + 15, 366, 1, 0, COLOR_WHITE
-        Draw_Grh HeadData(118).Head(3), 470 + 15, 327 + 2, 1, 0, COLOR_WHITE
+        Draw_Grh BodyData(773).Walk(3), 490, 333, 1, 0, COLOR_WHITE
+        Draw_Grh HeadData(118).Head(3), 490, 296, 1, 0, COLOR_WHITE
             
-        Draw_Grh CascoAnimData(13).Head(3), 470 + 15, 327, 1, 0, COLOR_WHITE
-        Draw_Grh WeaponAnimData(6).WeaponWalk(3), 470 + 15, 366, 1, 0, COLOR_WHITE
-        Engine_Text_Render "Gulfas Morgolock", 449, 400, ColorGM, 1
-        Engine_Text_Render "<Creador del Mundo>", 438, 415, ColorGM, 1
+        Draw_Grh CascoAnimData(13).Head(3), 490, 294, 1, 0, COLOR_WHITE
+        Draw_Grh WeaponAnimData(6).WeaponWalk(3), 490, 333, 1, 0, COLOR_WHITE
+        Engine_Text_Render "Gulfas Morgolock", 454, 367, ColorGM, 1
+        Engine_Text_Render "<Creador del Mundo>", 443, 382, ColorGM, 1
 
         Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 40, 20, COLOR_WHITE, 4, False
     End If
@@ -2982,7 +2982,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         TextEfectAsistente = 0
     End If
 
-    Engine_Text_Render TextAsistente, 510 - Engine_Text_Width(TextAsistente, True, 1) / 2, 320 - Engine_Text_Height(TextAsistente, True) + TextEfectAsistente, textcolorAsistente, 1, True, , 200
+    Engine_Text_Render TextAsistente, 510 - Engine_Text_Width(TextAsistente, True, 1) / 2, 287 - Engine_Text_Height(TextAsistente, True) + TextEfectAsistente, textcolorAsistente, 1, True, , 200
 
     'Logo viejo
     Dim TempGrh As grh, cc(3) As RGBA
