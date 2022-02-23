@@ -220,6 +220,7 @@ Private Sub btnCreateAccount_Click()
         Call calculateCaptcha
     Else
         Call calculateCaptcha
+        Call TextoAlAsistente("Por favor revise el captcha.")
         lblCaptchaError.Visible = True
     End If
 End Sub
