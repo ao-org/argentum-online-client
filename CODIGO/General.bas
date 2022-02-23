@@ -59,6 +59,10 @@ Private Declare Sub InitCommonControls Lib "comctl32" ()
 
 Public bFogata As Boolean
 
+Public servers_login_connections(1 To 2) As String
+
+Public Const MAX_LOGIN_SERVER As Long = 2
+
 'Very percise counter 64bit system counter
 Public Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
 
@@ -1134,9 +1138,15 @@ Sub Main()
         End If
 
     End If
-
-    IPServers(1) = "45.235.99.71:7667:Minehost:45.235.99.71:4004"
     
+    'Agrego conexiones disponibles
+    servers_login_connections(1) = "45.235.99.71:4004"
+    servers_login_connections(2) = "138.99.6.141:4007"
+    
+    '45.235.99.71:4004
+    IPServers(1) = "45.235.99.71:7667:Minehost:" & get_logging_server()
+    
+    Debug.Print IPServers(1)
     #If DEBUGGING = 1 Then
         IPServers(2) = "45.235.98.31:11813:MinehostStaging:45.235.98.31:11814"
         IPServers(3) = "127.0.0.1:7667:Localhost:localhost:4000"
@@ -1205,6 +1215,18 @@ Main_Err:
     Resume Next
     
 End Sub
+
+Public Function get_logging_server() As String
+    Dim value As Long
+     value = RandomNumber(1, 10)
+    
+    If value <= 5 Then
+        get_logging_server = servers_login_connections(1)
+    Else
+        get_logging_server = servers_login_connections(2)
+    End If
+    
+End Function
 
 Public Function randomMap() As Integer
     Select Case RandomNumber(1, 8)

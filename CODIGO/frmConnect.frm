@@ -144,7 +144,17 @@ Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
 End Sub
 
 Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    Call TextoAlAsistente("Server offline. Try later.")
+    Call TextoAlAsistente("Servidor Offline, intente nuevamente.")
+    Dim i As Long
+    
+    If Split(servers_login_connections(1), ":")(0) = IPdelServidorLogin Then
+        IPdelServidorLogin = Split(servers_login_connections(2), ":")(0)
+        PuertoDelServidorLogin = Split(servers_login_connections(2), ":")(1)
+    Else
+        IPdelServidorLogin = Split(servers_login_connections(1), ":")(0)
+        PuertoDelServidorLogin = Split(servers_login_connections(1), ":")(1)
+    End If
+    
 End Sub
 
 Private Sub Form_Activate()
