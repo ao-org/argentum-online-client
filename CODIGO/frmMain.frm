@@ -427,7 +427,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4341,13 +4340,23 @@ Public Sub Form_Click()
                     If UsingSkill = magia Then
                         
                         If ModoHechizos = BloqueoLanzar Then
-                            SendSkill = True
+                            SendSkill = IIf((MouseX >= renderer.Left And MouseX <= renderer.Width + renderer.Left And MouseY >= renderer.Top And MouseY <= renderer.Top + renderer.Height), True, False)
+                            
+                            If Not SendSkill Then
+                                Exit Sub
+                            End If
+                            
                             Call MainTimer.Restart(TimersIndex.CastAttack)
                             Call MainTimer.Restart(TimersIndex.CastSpell)
                         Else
                             If MainTimer.Check(TimersIndex.AttackSpell, False) Then
                                 If MainTimer.Check(TimersIndex.CastSpell) Then
-                                    SendSkill = True
+                                    SendSkill = IIf((MouseX >= renderer.Left And MouseX <= renderer.Width + renderer.Left And MouseY >= renderer.Top And MouseY <= renderer.Top + renderer.Height), True, False)
+                                    
+                                    If Not SendSkill Then
+                                        Exit Sub
+                                    End If
+                                    
                                     Call MainTimer.Restart(TimersIndex.CastAttack)
                                 
                                 ElseIf ModoHechizos = SinBloqueo Then
