@@ -162,9 +162,9 @@ Public Function toggleTextboxs()
     End If
     
     If Me.txtPassword.Visible Then
-        Me.Picture = LoadInterface("spanish-ventanarecuperarcontrasena2.bmp")
+        Me.Picture = LoadInterface("ventanarecuperarcontrasena2.bmp")
     Else
-        Me.Picture = LoadInterface("spanish-ventanarecuperarcontrasena.bmp")
+        Me.Picture = LoadInterface("ventanarecuperarcontrasena.bmp")
     End If
     
 End Function
@@ -200,7 +200,7 @@ Private Sub cmdEnviar_Click()
             Exit Sub
         End If
         
-        cmdEnviar.Visible = False
+        'cmdEnviar.Visible = False
         lblSolicitandoCodigo.Visible = True
         ModAuth.LoginOperation = e_operation.ForgotPassword
         Call connectToLoginServer
@@ -226,7 +226,7 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Form_Load()
-    Me.Picture = LoadInterface("spanish-ventanarecuperarcontrasena.bmp")
+    Me.Picture = LoadInterface("ventanarecuperarcontrasena.bmp")
     
     Me.Left = (frmConnect.Width / 2) - (Me.Width / 2) + frmConnect.Left
     Me.Top = frmConnect.Height - Me.Height - 400 + frmConnect.Top

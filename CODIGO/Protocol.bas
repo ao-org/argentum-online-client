@@ -3460,7 +3460,7 @@ Private Sub HandleUserCharIndexInServer()
     '***************************************************
     
     UserCharIndex = Reader.ReadInt16()
-    Debug.Print "UserCharIndex " & UserCharIndex
+    'Debug.Print "UserCharIndex " & UserCharIndex
     UserPos = charlist(UserCharIndex).Pos
     
     'Are we under a roof?
@@ -3556,7 +3556,7 @@ Private Sub HandleCharacterCreate()
         Dim NombreYClan As String
         NombreYClan = Reader.ReadString8()
      
-    Debug.Print "HandleCharacterCreate " & charindex & " " & NombreYClan & " x:" & x & " y:" & y
+   ' Debug.Print "HandleCharacterCreate " & charindex & " " & NombreYClan & " x:" & x & " y:" & y
     
          
         Dim Pos As Integer
@@ -3683,7 +3683,7 @@ Private Sub HandleCharacterRemove()
     dbgid = Reader.ReadInt16()
     charindex = Reader.ReadInt16()
     
-    Debug.Print "HandleCharacterRemove(dbgid=" & dbgid & ") " & charindex & " " & charlist(charindex).nombre & " x:" & charlist(charindex).Pos.x & " y:" & charlist(charindex).Pos.y
+    'Debug.Print "HandleCharacterRemove(dbgid=" & dbgid & ") " & charindex & " " & charlist(charindex).nombre & " x:" & charlist(charindex).Pos.x & " y:" & charlist(charindex).Pos.y
     
     
     

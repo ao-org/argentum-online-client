@@ -233,6 +233,7 @@ Public Sub CargarRecursos()
         Call PreloadGraphics
     End If
     
+    Call CargarNPCsMapData
     Call CargarParticulasBinary
     Call CargarIndicesOBJ
     Call Cargarmapsworlddata
@@ -260,7 +261,6 @@ Public Sub CargarRecursos()
     Call InitGrh(BarraGris, 842)
     
     
-    Call CargarNPCsMapData
     Exit Sub
 
 CargarRecursos_Err:
@@ -3115,7 +3115,7 @@ Public Sub CargarNPCsMapData()
     Dim fh As Integer
     fh = FreeFile
     
-    Open App.Path & "\..\Recursos\init\QuestNPCsMapData.bin" For Binary As fh
+    Open App.Path & "\..\Recursos\OUTPUT\QuestNPCsMapData.bin" For Binary As fh
     
     Dim NumMaps As Integer
     NumMaps = 600 ' cargar  desde archivo
