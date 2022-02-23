@@ -371,45 +371,45 @@ End Sub
 Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
     
     On Error GoTo Engine_BeginScene_Err
+  
     
-    
+    If DirectDevice.TestCooperativeLevel <> D3D_OK Then
+        If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
+            Call Engine_Init
+            prgRun = True
+            pausa = False
+            QueRender = 0
+        End If
+    End If
     Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, Color, 1, 0)
-    
     Call DirectDevice.BeginScene
-    
     Call SpriteBatch.Begin
-
-    
     Exit Sub
 
 Engine_BeginScene_Err:
+    
     Call RegistrarError(Err.Number, Err.Description, "engine.Engine_BeginScene", Erl)
-    Resume Next
+
     
 End Sub
 
 Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hwnd As Long = 0)
 
-On Error GoTo ErrorHandler:
-    
+On Error GoTo ErrorHandlerDD:
+    If DirectDevice.TestCooperativeLevel <> D3D_OK Then
+        Exit Sub
+    End If
+  
+  
     Call SpriteBatch.Flush
     
     Call DirectDevice.EndScene
-    If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
-        
-        Call Engine_Init
-        
-        prgRun = True
-        pausa = False
-        QueRender = 0
-
-    End If
-    
+      
     Call DirectDevice.Present(DestRect, ByVal 0, hwnd, ByVal 0)
     
     Exit Sub
     
-ErrorHandler:
+ErrorHandlerDD:
 
     If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
         
@@ -422,6 +422,7 @@ ErrorHandler:
     End If
         
 End Sub
+
 
 Public Sub Engine_Deinit()
     
