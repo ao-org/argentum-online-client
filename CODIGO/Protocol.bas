@@ -6473,19 +6473,27 @@ Private Sub HandleGuildLeaderInfo()
 
             Case 1
                 .beneficios = "Chat de clan + Verse en minimapa."
-                .maxMiembros = "15"
+                .maxMiembros = "5"
 
             Case 2
                 .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G)."
-                .maxMiembros = "20"
+                .maxMiembros = "7"
 
             Case 3
-                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Marca de clan (V)."
-                .maxMiembros = "25"
+                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Verse invisibles."
+                .maxMiembros = "7"
 
-            Case Else
-                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Marca de clan (V) + Ver vidas y maná de tus compañeros."
-                .maxMiembros = "30"
+            Case 4
+                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Verse invisibles + Marca de clan (V)."
+                .maxMiembros = "12"
+                
+            Case 5
+                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Verse invisibles + Marca de clan (V) + Seguro de clan."
+                .maxMiembros = "15"
+                
+            Case 6
+                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Verse invisibles + Marca de clan (V) + Seguro de clan + Ver vidas y maná de tus compañeros."
+                .maxMiembros = "20"
         
         End Select
         
