@@ -1,17 +1,21 @@
 VERSION 5.00
 Begin VB.Form frmPasswordReset 
+   Appearance      =   0  'Flat
+   AutoRedraw      =   -1  'True
+   BackColor       =   &H80000005&
    BorderStyle     =   0  'None
-   Caption         =   "Form1"
    ClientHeight    =   5130
-   ClientLeft      =   11715
-   ClientTop       =   8445
+   ClientLeft      =   0
+   ClientTop       =   0
    ClientWidth     =   5340
+   ClipControls    =   0   'False
+   ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmPasswordReset.frx":0000
-   ScaleHeight     =   5130
-   ScaleWidth      =   5340
+   ScaleHeight     =   342
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox txtPasswordConfirm 
       BackColor       =   &H000D1312&
@@ -223,6 +227,9 @@ End Sub
 
 Private Sub Form_Load()
     Me.Picture = LoadInterface("spanish-ventanarecuperarcontrasena.bmp")
+    
+    Me.Left = (frmConnect.Width / 2) - (Me.Width / 2) + frmConnect.Left
+    Me.Top = frmConnect.Height - Me.Height - 400 + frmConnect.Top
 End Sub
 
 Private Sub Image1_Click()

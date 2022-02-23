@@ -14,6 +14,7 @@ Begin VB.Form frmNewAccount
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
+   StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox txtSurname 
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
