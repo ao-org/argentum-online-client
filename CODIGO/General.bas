@@ -890,7 +890,6 @@ Sub Check_Keys()
 
     If Not Application.IsAppActive() Then Exit Sub
     
-    If showBarFishing Then Exit Sub
 
     If Not pausa And _
         frmMain.Visible And _
@@ -1169,9 +1168,7 @@ Sub Main()
     
     'Cargamos todos los init
     Call CargarRecursos
-    
-    Call setPositionBarFishing
-    
+        
     'Cargar fuentes
     Call LoadFonts
 
@@ -1193,9 +1190,6 @@ Sub Main()
     Dialogos.font = frmMain.font
     DialogosClanes.font = frmMain.font
     
-    ' Load the form for screenshots
-    Call Load(frmScreenshots)
-
     prgRun = True
     pausa = False
 

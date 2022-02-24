@@ -316,11 +316,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             End If
     
             Call WriteWork(eSkill.Ocultarse)
-            
-        Case BindKeys(13).KeyCode
-        
-            Call ScreenCapture
-    
+                
         Case BindKeys(19).KeyCode
             'FPSFLAG = Not FPSFLAG
             
