@@ -66,42 +66,11 @@ Private Const WS_EX_LAYERED = &H80000
 Private Const LWA_COLORKEY = &H1&
 
 Private Sub Form_Load()
-    Dim W As Long
-    Dim H As Long
-    Dim ScanWidth As Long
-    Dim Backdrop() As Byte
-    Dim y As Long
-    Dim x As Long
-    Dim BackImgF As WIA.ImageFile
 
+    Me.Picture = LoadInterface("ventana-papiro.bmp")
+    MakeFormTransparent Me, vbBlack
     'Set the Form "transparent by color."
-    SetWindowLong hwnd, _
-                  GWL_EXSTYLE, _
-                  GetWindowLong(hwnd, GWL_EXSTYLE) Or WS_EX_LAYERED
-    SetLayeredWindowAttributes hwnd, RGB(0, 0, 1), 0, LWA_COLORKEY
 
-    'Render PNG image into the Form with transparency.
-    W = ScaleX(ScaleWidth, ScaleMode, vbPixels)
-    H = ScaleY(ScaleHeight, ScaleMode, vbPixels)
-    ScanWidth = ((3 * W + 3) \ 4) * 4
-    ReDim Backdrop(ScanWidth * H - 1)
-    For y = 0 To H - 1
-        For x = 0 To W - 1
-            Backdrop(ScanWidth * y + 3 * x) = 1 'RGB(0, 0, 1)
-        Next
-    Next
-    With New WIA.Vector
-        .BinaryData = Backdrop
-        Set BackImgF = .ImageFile(W, H)
-    End With
-    With New WIA.ImageProcess
-        .Filters.Add .FilterInfos!Stamp.FilterID
-        With .Filters(1).Properties
-            Set !ImageFile.value = New WIA.ImageFile
-            !ImageFile.value.LoadFile "ventana-papiro.png" 'Background PNG.
-        End With
-        Set Picture = .Apply(BackImgF).fileData.Picture
-    End With
     
     Me.Label1.Caption = "El malvado Gúl Belthor ha vuelto. Sí, el terrible hermanastro menor del rey orco " & _
     "ha escapado de su prisión en las profundidades de la montaña Penthar. Aún no sabemos cómo lo ha hecho o " & _
@@ -124,3 +93,4 @@ End Sub
 Private Sub Image1_Click()
     Unload Me
 End Sub
+
