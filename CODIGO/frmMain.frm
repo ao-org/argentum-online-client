@@ -2088,10 +2088,6 @@ Form_Activate_Err:
     
 End Sub
 
-Private Sub Label4_Click()
-showBarFishing = Not showBarFishing
-Call modBarFishing.setPositionBarFishing
-End Sub
 
 
 Private Sub Second_Timer()
