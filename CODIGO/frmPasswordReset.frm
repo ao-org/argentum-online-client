@@ -13,7 +13,6 @@ Begin VB.Form frmPasswordReset
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   Picture         =   "frmPasswordReset.frx":0000
    ScaleHeight     =   342
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
