@@ -27,62 +27,59 @@ Public Sub IniciarMeteorologia()
     
     On Error GoTo IniciarMeteorologia_Err
     
-    ReDim DayColors(0 To 24) As RGBA
-
-    ' 00:00 - 02:00
-    Call SetRGBA(DayColors(0), 100, 90, 60)
+    ReDim DayColors(0 To 23) As RGBA
+    ' 0hs
+    Call SetRGBA(DayColors(23), 120, 120, 120)
+    ' 1hs
+    Call SetRGBA(DayColors(0), 120, 120, 120)
+    ' 2hs
+    Call SetRGBA(DayColors(1), 120, 120, 120)
     NightIndex = 0
-    ' 02:00 - 04:00
-    Call SetRGBA(DayColors(1), 100, 90, 70)
-    ' 04:00 - 06:00
-    Call SetRGBA(DayColors(2), 100, 90, 80)
-    ' 06:00 - 08:00
-    Call SetRGBA(DayColors(3), 100, 100, 100)
+    ' 3hs
+    Call SetRGBA(DayColors(2), 120, 120, 120)
+    ' 4hs
+    Call SetRGBA(DayColors(3), 120, 120, 120)
+    ' 5hs
+    Call SetRGBA(DayColors(4), 138, 138, 138)
     MorningIndex = 3
-    ' 08:00 - 10:00
-    Call SetRGBA(DayColors(4), 100, 100, 100)
-    ' 10:00 - 12:00
-    Call SetRGBA(DayColors(5), 130, 125, 125)
-    ' 12:00 - 14:00
-    Call SetRGBA(DayColors(6), 150, 150, 150)
-    ' 14:00 - 16:00
-    Call SetRGBA(DayColors(7), 170, 170, 170)
-    ' 16:00 - 18:00
-    Call SetRGBA(DayColors(8), 180, 170, 170)
-    ' 18:00 - 20:00
-    Call SetRGBA(DayColors(9), 190, 180, 190)
-    ' 20:00 - 22:00
-    Call SetRGBA(DayColors(10), 200, 210, 200)
-    ' 22:00 - 00:00
-    Call SetRGBA(DayColors(11), 220, 220, 220)
-    
+    ' 6hs
+    Call SetRGBA(DayColors(5), 156, 156, 145)
+    ' 7hs
+    Call SetRGBA(DayColors(6), 170, 170, 155)
+    ' 8hs
+    Call SetRGBA(DayColors(7), 185, 185, 185)
+    ' 9hs
+    Call SetRGBA(DayColors(8), 200, 200, 200)
+    ' 10hs
+    Call SetRGBA(DayColors(9), 220, 220, 220)
+    ' 11hs
+    Call SetRGBA(DayColors(10), 235, 235, 235)
+    ' 12hs
+    Call SetRGBA(DayColors(11), 245, 245, 245)
+    ' 13hs
     Call SetRGBA(DayColors(12), 255, 255, 255)
     NightIndex = 0
-    ' 02:00 - 04:00
+    ' 14hs
     Call SetRGBA(DayColors(13), 255, 255, 255)
-    ' 04:00 - 06:00
-    Call SetRGBA(DayColors(14), 240, 240, 240)
-    ' 06:00 - 08:00
-    Call SetRGBA(DayColors(15), 240, 235, 240)
+    ' 15hs
+    Call SetRGBA(DayColors(14), 255, 255, 255)
+    ' 16hs
+    Call SetRGBA(DayColors(15), 245, 245, 245)
     MorningIndex = 3
-    ' 08:00 - 10:00
+    ' 17hs
     Call SetRGBA(DayColors(16), 230, 230, 230)
-    ' 10:00 - 12:00
-    Call SetRGBA(DayColors(17), 210, 200, 210)
-    ' 12:00 - 14:00
-    Call SetRGBA(DayColors(18), 220, 190, 200)
-    ' 14:00 - 16:00
-    Call SetRGBA(DayColors(19), 190, 170, 170)
-    ' 16:00 - 18:00
-    Call SetRGBA(DayColors(20), 130, 130, 170)
-    ' 18:00 - 20:00
-    Call SetRGBA(DayColors(21), 130, 130, 170)
-    ' 20:00 - 22:00
+    ' 18hs
+    Call SetRGBA(DayColors(17), 220, 220, 220)
+    ' 19hs
+    Call SetRGBA(DayColors(18), 200, 200, 180)
+    ' 20hs
+    Call SetRGBA(DayColors(19), 180, 160, 160)
+    ' 21hs
+    Call SetRGBA(DayColors(20), 160, 160, 160)
+    ' 21hs
+    Call SetRGBA(DayColors(21), 140, 140, 140)
+    ' 23hs
     Call SetRGBA(DayColors(22), 120, 120, 140)
-    ' 22:00 - 00:00
-    Call SetRGBA(DayColors(23), 110, 110, 110)
-
-    Call SetRGBA(DayColors(24), 90, 90, 90)
         
     ' Muerto
     Call SetRGBA(DeathColor, 120, 120, 120)
