@@ -427,6 +427,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2972,7 +2973,7 @@ Select Case Index
         oxigenolbl.Visible = True
         QuestBoton.Visible = False
         ImgHogar.Visible = False
-        ImgEstadisticas.Visible = True
+        ImgEstadisticas.Visible = False
         lblWeapon.Visible = True
         lblShielder.Visible = True
         lblHelm.Visible = True
@@ -4793,7 +4794,7 @@ Private Sub picInv_DblClick()
                 
         Case Else
             Call CountPacketIterations(packetControl(ClientPacketID.UseItem), 180)
-                    Debug.Print "QWEASDqweads"
+                   ' Debug.Print "QWEASDqweads"
             Call WriteUseItem(Inventario.SelectedItem)
             
     End Select
