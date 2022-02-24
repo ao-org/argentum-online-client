@@ -268,7 +268,7 @@ Public Sub AnalizarCliente()
     Dim Token As String
     
    'obtengo el MD5 del Argentum.exe
-   json = Inet1.OpenURL("https://parches.ao20.com.ar/files/Version.json")
+   json = Inet1.OpenURL("http://parches.ao20.com.ar/files/Version.json")
     If Left(json, 5) <> "<!DOC" Then
         If json <> "" Then
             Token = Left(Split(json, "Argentum.exe"":""")(1), 32)
