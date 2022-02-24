@@ -13,6 +13,7 @@ Begin VB.Form frmPasswordReset
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   Picture         =   "frmPasswordReset.frx":0000
    ScaleHeight     =   342
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
@@ -153,12 +154,12 @@ Public Function toggleTextboxs()
     Me.txtPasswordConfirm.Visible = Not Me.txtPasswordConfirm.Visible
     cmdHaveCode.Visible = Not cmdHaveCode.Visible
     
-    If cmdEnviar.Top = 4200 Then
-        cmdEnviar.Top = 3600
-        Image1.Top = 3600
+    If cmdEnviar.Top = 275 Then
+        cmdEnviar.Top = 240
+        Image1.Top = 240
     Else
-        cmdEnviar.Top = 4200
-        Image1.Top = 4200
+        cmdEnviar.Top = 275
+        Image1.Top = 275
     End If
     
     If Me.txtPassword.Visible Then
