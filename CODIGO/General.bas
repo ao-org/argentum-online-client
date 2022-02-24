@@ -2049,3 +2049,16 @@ Public Function IntentarObtenerPezEspecial()
     
     
 End Function
+
+
+Public Function isValidEmail(email As String) As Boolean
+    Dim At As Integer
+    Dim oneDot As Integer
+    Dim twoDots As Integer
+ 
+    isValidEmail = True
+    At = InStr(1, email, "@", vbTextCompare)
+    oneDot = InStr(At + 2, email, ".", vbTextCompare)
+    twoDots = InStr(At + 2, email, "..", vbTextCompare)
+    If At = 0 Or oneDot = 0 Or Not twoDots = 0 Or Right(email, 1) = "." Then isValidEmail = False
+End Function

@@ -116,6 +116,27 @@ Begin VB.Form frmNewAccount
       Visible         =   0   'False
       Width           =   1650
    End
+   Begin VB.Label lblResendVerificationCode 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Reenviar código de activación"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   195
+      Left            =   600
+      TabIndex        =   9
+      Top             =   3720
+      Visible         =   0   'False
+      Width           =   2610
+   End
    Begin VB.Image Image1 
       Height          =   255
       Left            =   4410
@@ -227,19 +248,6 @@ Private Sub btnCreateAccount_Click()
 End Sub
 
 
-
-Public Sub AlternarControllers()
-    Me.btnSendValidarCuenta.Visible = True
-    Me.txtValidateMail.Visible = True
-    Me.txtCodigo.Visible = True
-    
-    btnCreateAccount.Visible = False
-    btnRestorePassword.Visible = False
-    btnVerValidarCuenta.Visible = False
-    
-    btnSendValidarCuenta.Visible = True
-End Sub
-
 Private Sub btnRestorePassword_Click()
     Unload Me
     frmPasswordReset.Show , frmConnect
@@ -247,6 +255,7 @@ End Sub
 
 Private Sub btnSendValidarCuenta_Click()
         
+        txtCodigo.Text = Trim(txtCodigo.Text)
         If txtCodigo.Text <> "" And txtValidateMail.Text <> "" Then
             ModAuth.LoginOperation = e_operation.ValidateAccount
             Call connectToLoginServer
@@ -318,24 +327,8 @@ Public Sub showValidateAccountControls()
     Me.btnVerValidarCuenta.Visible = False
     Me.btnCreateAccount.Visible = False
     Me.btnRestorePassword.Visible = False
-End Sub
-
-Public Sub showCreateAccountControls()
-    Me.btnSendValidarCuenta.Visible = False
-    Me.txtValidateMail.Visible = False
-    Me.txtCodigo.Visible = False
+    Me.lblResendVerificationCode.Visible = True
     
-    Me.txtUsername.Visible = True
-    Me.txtPassword.Visible = True
-    Me.txtName.Visible = True
-    Me.txtSurname.Visible = True
-    Me.txtCaptcha.Visible = True
-    Me.lblCaptcha.Visible = True
-    Me.lblCaptchaError.Visible = True
-    Me.btnVerValidarCuenta.Visible = True
-    Me.btnCreateAccount.Visible = True
-    Me.btnRestorePassword.Visible = True
-
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -346,4 +339,16 @@ End Sub
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Me.txtPassword.PasswordChar = "*"
 
+End Sub
+
+Private Sub lblResendVerificationCode_Click()
+
+    If isValidEmail(txtValidateMail) Then
+        CuentaEmail = Me.txtValidateMail.Text
+        ModAuth.LoginOperation = e_operation.RequestVerificationCode
+        Call connectToLoginServer
+    Else
+        Call TextoAlAsistente("El email ingresado es inválido.")
+    End If
+    
 End Sub

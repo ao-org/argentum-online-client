@@ -64,10 +64,17 @@ Private cBotonCancelar As clsGraphicalButton
 Private cBotonCerrar As clsGraphicalButton
 
 Private Sub btnAceptar_Click()
-    ModAuth.LoginOperation = e_operation.ConfirmDeleteChar
-    Call connectToLoginServer
-    delete_char_validate_code = frmDeleteChar.txtDeleteCharCode.Text
-    Unload Me
+
+    Me.txtDeleteCharCode.Text = Trim(Me.txtDeleteCharCode.Text)
+
+    If Me.txtDeleteCharCode.Text <> "" Then
+        ModAuth.LoginOperation = e_operation.ConfirmDeleteChar
+        Call connectToLoginServer
+        delete_char_validate_code = frmDeleteChar.txtDeleteCharCode.Text
+        Unload Me
+    Else
+        Call MsgBox("El código ingresado es inválido.")
+    End If
 End Sub
 
 Private Sub btnCerrar_Click()

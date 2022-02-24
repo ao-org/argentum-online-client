@@ -134,6 +134,8 @@ Private Sub AuthSocket_Connect()
                 Auth_state = e_state.RequestDeleteChar
             Case e_operation.ConfirmDeleteChar
                 Auth_state = e_state.ConfirmDeleteChar
+            Case e_operation.RequestVerificationCode
+                Auth_state = e_state.RequestVerificationCode
         End Select
     End If
     

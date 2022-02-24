@@ -173,6 +173,8 @@ Private Sub cmdEnviar_Click()
 
     CuentaEmail = Me.txtEmail.Text
     
+    Me.txtCodigo.Text = Trim(Me.txtCodigo.Text)
+    
     If ModAuth.LoginOperation = e_operation.ForgotPassword And Auth_state <> e_state.Idle Then
     
         If Me.txtPassword.Text = "" Or Me.txtPasswordConfirm.Text = "" Or Me.txtCodigo.Text = "" Then
@@ -236,14 +238,3 @@ Private Sub Image1_Click()
     Unload Me
 End Sub
 
-Public Function isValidEmail(email As String) As Boolean
-Dim At As Integer
-Dim oneDot As Integer
-Dim twoDots As Integer
- 
-    isValidEmail = True
-    At = InStr(1, email, "@", vbTextCompare)
-    oneDot = InStr(At + 2, email, ".", vbTextCompare)
-    twoDots = InStr(At + 2, email, "..", vbTextCompare)
-    If At = 0 Or oneDot = 0 Or Not twoDots = 0 Or Right(email, 1) = "." Then isValidEmail = False
-End Function
