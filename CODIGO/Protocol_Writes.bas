@@ -312,33 +312,6 @@ WriteTraerBoveda_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "CreatePretorianClan" message to the outgoing data buffer.
-'
-' @param    Map         The map in which create the pretorian clan.
-' @param    X           The x pos where the king is settled.
-' @param    Y           The y pos where the king is settled.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteCreatePretorianClan(ByVal map As Integer, _
-                                    ByVal x As Byte, _
-                                    ByVal y As Byte)
-        '<EhHeader>
-        On Error GoTo WriteCreatePretorianClan_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.CreatePretorianClan)
-102     Call Writer.WriteInt16(map)
-104     Call Writer.WriteInt8(x)
-106     Call Writer.WriteInt8(y)
-    
-108     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteCreatePretorianClan_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreatePretorianClan", Erl)
-        '</EhFooter>
-End Sub
 
 ''
 ' Writes the "PartySafeToggle" message to the outgoing data buffer.

@@ -529,7 +529,6 @@ Public Enum ClientPacketID
     QuestDetailsRequest
     QuestAbandon
     SeguroClan
-    CreatePretorianClan     '/CREARPRETORIANOS
     Home                    '/HOGAR
     Consulta                '/CONSULTA
     GetMapInfo              '/MAPINFO

@@ -1895,26 +1895,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /slot NICK@SLOT.")
 
                 End If
-            
-            Case "/CREARPRETORIANOS"
-            
-                If CantidadArgumentos = 3 Then
-                    
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And _
-                       ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Byte) And _
-                       ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Byte) Then
-                       
-                        Call WriteCreatePretorianClan(Val(ArgumentosAll(0)), Val(ArgumentosAll(1)), _
-                                                      Val(ArgumentosAll(2)))
-                    Else
-                        'Faltan o sobran los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato inválido. Es /CrearPretorianos MAPA X Y.")
-                    End If
-                    
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Formato inválido. Es /CrearPretorianos MAPA X Y.")
-                End If
 
             Case "/DOBACKUP"
                 Call WriteDoBackup
