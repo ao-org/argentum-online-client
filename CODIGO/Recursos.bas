@@ -253,12 +253,6 @@ Public Sub CargarRecursos()
     Call CargarColores
     Call CargarCrafteo
     
-    'Dodgy resources manually added.....
-    Call InitGrh(Estrella, 35764)
-    Call InitGrh(Marco, 839)
-    Call InitGrh(BarraMana, 840)
-    Call InitGrh(BarraVida, 841)
-    Call InitGrh(BarraGris, 842)
     
     
     Exit Sub

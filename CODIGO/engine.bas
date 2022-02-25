@@ -9,12 +9,6 @@ Public FrameNum               As Long
 Public Dialogos                 As clsDialogs
 Public LucesRedondas            As clsLucesRedondas
 Public LucesCuadradas           As clsLucesCuadradas
-Public Estrella                As grh
-Public Marco                   As grh
-Public BarraMana               As grh
-Public BarraVida               As grh
-Public BarraGris               As grh
-
 ''
 ' Maximum number of dialogs that can exist.
 Public Const MAX_DIALOGS     As Byte = 100
