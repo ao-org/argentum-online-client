@@ -1218,7 +1218,7 @@ Private Sub FillAccountData(ByVal data As String)
         Pjs(ii).Casco = Val(ReadField(10, character, Asc(",")))
         Pjs(ii).Escudo = Val(ReadField(11, character, Asc(",")))
         Pjs(ii).Arma = Val(ReadField(12, character, Asc(",")))
-        Pjs(ii).ClanName = "<" & "pepito" & ">"
+        Pjs(ii).ClanName = "" ' "<" & "pepito" & ">"
        
         ' Pjs(ii).NameMapa = Pjs(ii).mapa
        ' Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).Name
