@@ -4783,16 +4783,19 @@ Private Sub picInv_DblClick()
 
     Select Case ObjType
 
-        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos, eObjType.otAnillos
-            Call WriteEquipItem(Inventario.SelectedItem)
+        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos, eObjType.otAnillos, eObjType.otManchas
+            If Not Inventario.Equipped(Inventario.SelectedItem) Then
+                Call WriteEquipItem(Inventario.SelectedItem)
+            End If
             
         Case eObjType.otWeapon
 
             If ObjData(Inventario.ObjIndex(Inventario.SelectedItem)).proyectil = 1 And Inventario.Equipped(Inventario.SelectedItem) Then
                 Call WriteUseItem(Inventario.SelectedItem)
             Else
-                Call WriteEquipItem(Inventario.SelectedItem)
-
+                If Not Inventario.Equipped(Inventario.SelectedItem) Then
+                    Call WriteEquipItem(Inventario.SelectedItem)
+                End If
             End If
             
         Case eObjType.OtHerramientas
@@ -4800,8 +4803,9 @@ Private Sub picInv_DblClick()
             If Inventario.Equipped(Inventario.SelectedItem) Then
                 Call WriteUseItem(Inventario.SelectedItem)
             Else
-                Call WriteEquipItem(Inventario.SelectedItem)
-
+                If Not Inventario.Equipped(Inventario.SelectedItem) Then
+                    Call WriteEquipItem(Inventario.SelectedItem)
+                End If
             End If
                 
         Case Else
