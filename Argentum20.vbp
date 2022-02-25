@@ -68,7 +68,6 @@ Form=CODIGO\frmAlqui.frm
 Form=CODIGO\FrmSastre.frm
 Form=CODIGO\FrmLogear.frm
 Module=modLocale; CODIGO\modLocale.bas
-Module=ModWorldMap; CODIGO\ModWorldMap.bas
 Class=CBufferMan; CODIGO\CBufferMan.cls
 Form=CODIGO\FrmGrupo.frm
 Module=modUrlDetection; CODIGO\modUrlDetection.bas

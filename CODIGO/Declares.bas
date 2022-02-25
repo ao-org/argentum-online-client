@@ -23,6 +23,10 @@ Public credits_shopAO20 As Long
 'Public LastUseItemTimeStampU As Long
 
 
+Public CantNpcWorld         As Integer
+
+Public NpcWorlds(1 To 2000) As Byte
+
 Public ViajarInterface                  As Byte
 
 Public FormParser                       As clsCursor
