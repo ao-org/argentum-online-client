@@ -4357,6 +4357,12 @@ Public Sub Form_Click()
                                     Call MainTimer.Restart(TimersIndex.CastAttack)
                                 
                                 ElseIf ModoHechizos = SinBloqueo Then
+                                    SendSkill = IIf((MouseX >= renderer.Left And MouseX <= renderer.Width + renderer.Left And MouseY >= renderer.Top And MouseY <= renderer.Top + renderer.Height), True, False)
+                                    
+                                    If Not SendSkill Then
+                                        Exit Sub
+                                    End If
+                                
                                     With FontTypes(FontTypeNames.FONTTYPE_TALK)
                                         Call ShowConsoleMsg("No puedes lanzar hechizos tan rápido.", .red, .green, .blue, .bold, .italic)
                                     End With
@@ -4365,6 +4371,12 @@ Public Sub Form_Click()
                                 End If
                                 
                             ElseIf ModoHechizos = SinBloqueo Then
+                                SendSkill = IIf((MouseX >= renderer.Left And MouseX <= renderer.Width + renderer.Left And MouseY >= renderer.Top And MouseY <= renderer.Top + renderer.Height), True, False)
+                                    
+                                If Not SendSkill Then
+                                    Exit Sub
+                                End If
+                                
                                 With FontTypes(FontTypeNames.FONTTYPE_TALK)
                                     Call ShowConsoleMsg("No puedes lanzar tan rápido después de un golpe.", .red, .green, .blue, .bold, .italic)
                                 End With
