@@ -441,7 +441,6 @@ Public Enum ClientPacketID
     AlterName               '/ANAME
     DoBackUp                '/DOBACKUP
     ShowGuildMessages       '/SHOWCMSG
-    SaveMap                 '/GUARDAMAPA
     ChangeMapInfoPK         '/MODMAPINFO PK
     ChangeMapInfoBackup     '/MODMAPINFO BACKUP
     ChangeMapInfoRestricted '/MODMAPINFO RESTRINGIR
@@ -459,7 +458,6 @@ Public Enum ClientPacketID
     ReloadServerIni         '/RELOADSINI
     ReloadSpells            '/RELOADHECHIZOS
     ReloadObjects           '/RELOADOBJ
-    Restart                 '/REINICIAR
     ChatColor               '/CHATCOLOR
     Ignored                 '/IGNORADO
     CheckSlot               '/SLOT
