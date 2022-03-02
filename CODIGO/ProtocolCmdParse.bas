@@ -1892,9 +1892,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
-            Case "/GUARDAMAPA"
-                Call WriteSaveMap
-                
             Case "/MODMAPINFO" ' PK, BACKUP
 
                 If CantidadArgumentos > 1 Then
@@ -1978,8 +1975,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/RELOADOBJ"
                 Call WriteReloadObjects
                  
-            Case "/REINICIAR"
-                Call WriteRestart
 
             Case "/CHATCOLOR"
 

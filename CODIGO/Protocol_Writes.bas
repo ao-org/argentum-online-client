@@ -5216,25 +5216,6 @@ WriteShowGuildMessages_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "SaveMap" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteSaveMap()
-        '<EhHeader>
-        On Error GoTo WriteSaveMap_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.SaveMap)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteSaveMap_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSaveMap", Erl)
-        '</EhFooter>
-End Sub
 
 ''
 ' Writes the "ChangeMapInfoPK" message to the outgoing data buffer.
@@ -5622,26 +5603,6 @@ Public Sub WriteReloadObjects()
 WriteReloadObjects_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReloadObjects", Erl)
-        '</EhFooter>
-End Sub
-
-''
-' Writes the "Restart" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteRestart()
-        '<EhHeader>
-        On Error GoTo WriteRestart_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.Restart)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteRestart_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRestart", Erl)
         '</EhFooter>
 End Sub
 
