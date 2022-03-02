@@ -2326,25 +2326,6 @@ WriteUpTime_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "Inquiry" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteInquiry()
-        '<EhHeader>
-        On Error GoTo WriteInquiry_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.Inquiry)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteInquiry_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteInquiry", Erl)
-        '</EhFooter>
-End Sub
 
 ''
 ' Writes the "GuildMessage" message to the outgoing data buffer.
@@ -2545,27 +2526,6 @@ WriteGamble_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "InquiryVote" message to the outgoing data buffer.
-'
-' @param    opt The chosen option to vote for.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteInquiryVote(ByVal opt As Byte)
-        '<EhHeader>
-        On Error GoTo WriteInquiryVote_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.InquiryVote)
-102     Call Writer.WriteInt8(opt)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteInquiryVote_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteInquiryVote", Erl)
-        '</EhFooter>
-End Sub
 
 ''
 ' Writes the "LeaveFaction" message to the outgoing data buffer.

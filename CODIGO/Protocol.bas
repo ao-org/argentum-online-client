@@ -324,7 +324,6 @@ Public Enum ClientPacketID
     Reward                  '/RECOMPENSA
     RequestMOTD             '/MOTD
     UpTime                  '/UPTIME
-    Inquiry                 '/ENCUESTA ( with no params )
     GuildMessage            '/CMSG
     CentinelReport          '/CENTINELA
     GuildOnline             '/ONLINECLAN
@@ -334,7 +333,6 @@ Public Enum ClientPacketID
     GuildVote               '/VOTO
     punishments             '/PENAS
     Gamble                  '/APOSTAR
-    InquiryVote             '/ENCUESTA ( with parameters )
     LeaveFaction            '/RETIRAR ( with no arguments )
     BankExtractGold         '/RETIRAR ( with arguments )
     BankDepositGold         '/DEPOSITAR

@@ -293,23 +293,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/UPTIME"
                 Call WriteUpTime
-                
-            Case "/ENCUESTA"
-                If CantidadArgumentos = 0 Then
-                    ' Version sin argumentos: Inquiry
-                    Call WriteInquiry
-                Else
-
-                    ' Version con argumentos: InquiryVote
-                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Byte) Then
-                        Call WriteInquiryVote(ArgumentosRaw)
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg("Para votar una opcion, escribe /encuesta NUMERODEOPCION, por ejemplo para votar la opcion 1, escribe /encuesta 1.")
-
-                    End If
-
-                End If
         
             Case "/CMSG"
                 'Ojo, no usar notNullArguments porque se usa el string Vacío para borrar cartel.
