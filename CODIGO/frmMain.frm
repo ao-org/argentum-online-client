@@ -2113,8 +2113,6 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                     Call CompletarEnvioMensajes
                     SendTxt.Visible = True
                     SendTxt.SetFocus
-                    Call WriteEscribiendo(True)
-                
                 End If
                 
             ElseIf KeyCode = vbKeyEnd Then
@@ -3706,11 +3704,7 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
                 stxtbuffer = SendTxt.Text
                 SendTxt.SelStart = Len(SendTxt.Text)
-    
-                If SendTxt.Visible = False Then
-                    Call WriteEscribiendo(False)
-                End If
-                
+                    
                 SendTxt.Visible = True
                 SendTxt.SetFocus
             End If
@@ -4024,7 +4018,6 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
 
     'Send text
     If KeyCode = vbKeyReturn Then
-        Call WriteEscribiendo(False)
         
         If LenB(stxtbuffer) <> 0 Then
         
@@ -4506,10 +4499,7 @@ Public Sub Form_Click()
                 If charlist(MapData(tX, tY).charindex).EsNpc = False Then
                     SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
 
-                    If SendTxt.Visible = False Then
-                        Call WriteEscribiendo(False)
-
-                    End If
+                 
                     If SendTxtCmsg.Visible = False Then
                         SendTxt.Visible = True
                         SendTxt.SetFocus
