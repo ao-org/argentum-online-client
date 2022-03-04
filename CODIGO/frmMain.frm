@@ -4330,7 +4330,7 @@ Public Sub Form_Click()
                     If UsingSkill = magia Then
                         
                         If ModoHechizos = BloqueoLanzar Then
-                            SendSkill = IIf((MouseX >= renderer.Left And MouseX <= renderer.Width + renderer.Left And MouseY >= renderer.Top And MouseY <= renderer.Top + renderer.Height), True, False)
+                            SendSkill = IIf((MouseX >= renderer.ScaleLeft And MouseX <= 736 + renderer.ScaleLeft And MouseY >= renderer.ScaleTop And MouseY <= renderer.ScaleTop + 608), True, False)
                             
                             If Not SendSkill Then
                                 Exit Sub
@@ -4341,7 +4341,7 @@ Public Sub Form_Click()
                         Else
                             If MainTimer.Check(TimersIndex.AttackSpell, False) Then
                                 If MainTimer.Check(TimersIndex.CastSpell) Then
-                                    SendSkill = IIf((MouseX >= renderer.Left And MouseX <= renderer.Width + renderer.Left And MouseY >= renderer.Top And MouseY <= renderer.Top + renderer.Height), True, False)
+                                    SendSkill = IIf((MouseX >= renderer.ScaleLeft And MouseX <= 736 + renderer.ScaleLeft And MouseY >= renderer.ScaleTop And MouseY <= renderer.ScaleTop + 608), True, False)
                                     
                                     If Not SendSkill Then
                                         Exit Sub
@@ -4350,7 +4350,7 @@ Public Sub Form_Click()
                                     Call MainTimer.Restart(TimersIndex.CastAttack)
                                 
                                 ElseIf ModoHechizos = SinBloqueo Then
-                                    SendSkill = IIf((MouseX >= renderer.Left And MouseX <= renderer.Width + renderer.Left And MouseY >= renderer.Top And MouseY <= renderer.Top + renderer.Height), True, False)
+                                    SendSkill = IIf((MouseX >= renderer.ScaleLeft And MouseX <= 736 + renderer.ScaleLeft And MouseY >= renderer.ScaleTop And MouseY <= renderer.ScaleTop + 608), True, False)
                                     
                                     If Not SendSkill Then
                                         Exit Sub
@@ -4364,7 +4364,7 @@ Public Sub Form_Click()
                                 End If
                                 
                             ElseIf ModoHechizos = SinBloqueo Then
-                                SendSkill = IIf((MouseX >= renderer.Left And MouseX <= renderer.Width + renderer.Left And MouseY >= renderer.Top And MouseY <= renderer.Top + renderer.Height), True, False)
+                                SendSkill = IIf((MouseX >= renderer.ScaleLeft And MouseX <= 736 + renderer.ScaleLeft And MouseY >= renderer.ScaleTop And MouseY <= renderer.ScaleTop + 608), True, False)
                                     
                                 If Not SendSkill Then
                                     Exit Sub
