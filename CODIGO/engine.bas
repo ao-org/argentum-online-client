@@ -1886,17 +1886,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
 
         End If
-                        
-        If .Escribiendo = True And Not .Invisible Then
-
-            
-            Call InitGrh(TempGrh, 32017)
-            Call RGBAList(Color, 255, 255, 255, 200)
-
-            Call Draw_Grh(TempGrh, PixelOffsetX + 20 + .Body.BodyOffset.x, PixelOffsetY - 45 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
-
-        End If
-
+                   
         ' Meditación
         If .FxIndex <> 0 And .fX.Started <> 0 Then
             Call RGBAList(Color, 255, 255, 255, 180)

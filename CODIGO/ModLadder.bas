@@ -1374,7 +1374,6 @@ Sub CargarOpciones()
     FPSFLAG = ConfigFile.GetValue("OPCIONES", "FPSFLAG")
     AlphaMacro = ConfigFile.GetValue("OPCIONES", "AlphaMacro")
     ModoHechizos = Val(ConfigFile.GetValue("OPCIONES", "ModoHechizos"))
-    MostrarEscribiendo = Val(ConfigFile.GetValue("OPCIONES", "MostrarEscribiendo"))
     DialogosClanes.Activo = Val(ConfigFile.GetValue("OPCIONES", "DialogosClanes"))
     NumerosCompletosInventario = Val(ConfigFile.GetValue("OPCIONES", "NumerosCompletosInventario"))
     
@@ -1428,7 +1427,6 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "OPCIONES", "ModoHechizos", ModoHechizos)
     Call WriteVar(Arch, "OPCIONES", "FxNavega", FxNavega)
     
-    Call WriteVar(Arch, "OPCIONES", "MostrarEscribiendo", MostrarEscribiendo)
     Call WriteVar(Arch, "OPCIONES", "NumerosCompletosInventario", NumerosCompletosInventario)
 
     Call WriteVar(Arch, "VIDEO", "MostrarRespiracion", IIf(MostrarRespiracion, 1, 0))

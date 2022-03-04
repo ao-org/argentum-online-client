@@ -225,7 +225,6 @@ Public Type Char
     fX As grh
     FxIndex As Integer
     BarTime As Single
-    Escribiendo As Boolean
     MaxBarTime As Integer
     BarAccion As Byte
     Particula As Byte

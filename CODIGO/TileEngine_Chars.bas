@@ -10,7 +10,6 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
     
         .active = 0
         .AlphaPJ = 0
-        .Escribiendo = False
         .appear = 0
         .status = 0
         .Invisible = False

@@ -237,12 +237,6 @@ Begin VB.Form frmOpciones
          Top             =   645
          Width           =   255
       End
-      Begin VB.Image ind_lectura 
-         Height          =   255
-         Left            =   270
-         Top             =   1455
-         Width           =   255
-      End
    End
    Begin VB.PictureBox PanelAudio 
       BorderStyle     =   0  'None
@@ -1324,14 +1318,7 @@ Public Sub Init()
 
     End If
     
-    
-    If MostrarEscribiendo = 0 Then
-        ind_lectura.Picture = Nothing
-    Else
-        ind_lectura.Picture = LoadInterface("check-amarillo.bmp")
 
-    End If
-    
     If NumerosCompletosInventario = 0 Then
         num_comp_inv.Picture = Nothing
     Else
@@ -1430,22 +1417,7 @@ HScroll1_Change_Err:
     
 End Sub
 
-Private Sub ind_lectura_Click()
-    If MostrarEscribiendo = 1 Then
-        MostrarEscribiendo = 0
-    Else
-        MostrarEscribiendo = 1
 
-    End If
-
-    If MostrarEscribiendo = 0 Then
-        ind_lectura.Picture = Nothing
-    Else
-        ind_lectura.Picture = LoadInterface("check-amarillo.bmp")
-
-    End If
-
-End Sub
 
 Private Sub instagram_Click()
     

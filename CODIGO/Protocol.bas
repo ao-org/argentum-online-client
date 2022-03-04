@@ -190,7 +190,6 @@ Private Enum ServerPacketID
     ShowFrmMapa
     InmovilizadoOK
     BarFx
-    SetEscribiendo
     LocaleMsg
     ShowPregunta
     DatosGrupo
@@ -494,7 +493,6 @@ Public Enum ClientPacketID
     MensajeUser
     TraerBoveda
     CompletarAccion
-    Escribiendo
     InvitarGrupo
     ResponderPregunta
     RequestGrupo
@@ -847,8 +845,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleInmovilizadoOK
         Case ServerPacketID.BarFx
             Call HandleBarFx
-        Case ServerPacketID.SetEscribiendo
-            Call HandleSetEscribiendo
         Case ServerPacketID.LocaleMsg
             Call HandleLocaleMsg
         Case ServerPacketID.ShowPregunta
@@ -5895,28 +5891,6 @@ HandleSetInvisible_Err:
     
 End Sub
 
-Private Sub HandleSetEscribiendo()
-    
-    On Error GoTo HandleSetEscribiendo_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    Dim charindex As Integer
-    
-    charindex = Reader.ReadInt16()
-    charlist(charindex).Escribiendo = Reader.ReadBool()
-    
-    Exit Sub
-
-HandleSetEscribiendo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSetEscribiendo", Erl)
-    
-    
-End Sub
 
 ''
 ' Handles the MeditateToggle message.

@@ -2803,27 +2803,6 @@ WriteFlagTrabajar_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "GMMessage" message to the outgoing data buffer.
-'
-' @param    message The message to be sent to the other GMs online.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteEscribiendo(ByVal Flag As Boolean)
-        '<EhHeader>
-        On Error GoTo WriteEscribiendo_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.Escribiendo)
-102     Call Writer.WriteBool(Flag)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteEscribiendo_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEscribiendo", Erl)
-        '</EhFooter>
-End Sub
 
 Public Sub WriteGMMessage(ByVal Message As String)
         '<EhHeader>

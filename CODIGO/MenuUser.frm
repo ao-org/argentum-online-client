@@ -188,10 +188,6 @@ Private Sub OpcionImg_Click(Index As Integer)
 
             stxtbuffer = frmMain.SendTxt.Text
             frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.Text)
-
-            If frmMain.SendTxt.Visible = False Then
-                Call WriteEscribiendo(False)
-            End If
             
             If frmMain.SendTxtCmsg.Visible = False Then
                 frmMain.SendTxt.Visible = True
