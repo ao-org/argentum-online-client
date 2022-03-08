@@ -1014,67 +1014,17 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
 
         End With
     End If
+ 
+    If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 Then Exit Function
     
-
-    
-    
-                Dim puerta As ObjDatas
-    
-     'Si la suma de los objetos es mayor que 0 quiere decir que hay objeto.
-    If (MapData(x, y).OBJInfo.ObjIndex + MapData(x + 1, y).OBJInfo.ObjIndex) > 0 Then
-        'Si hay un objeto, me tengo que fijar si estoy a la derecha o a la izquierda.
-        If MapData(x, y).OBJInfo.ObjIndex > 0 Then
-            If ObjData(MapData(x, y).OBJInfo.ObjIndex).ObjType = eObjType.otPuertas Then
-                puerta = ObjData(MapData(x, y).OBJInfo.ObjIndex)
-                If puerta.Llave = 1 Then
-                    Exit Function
-                End If
-            Else
-                If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 Then Exit Function
-            End If
-        ElseIf MapData(x + 1, y).OBJInfo.ObjIndex > 0 Then
-            If ObjData(MapData(x + 1, y).OBJInfo.ObjIndex).ObjType = eObjType.otPuertas Then
-                
-                puerta = ObjData(MapData(x + 1, y).OBJInfo.ObjIndex)
-                If puerta.Llave = 1 Then
-                    Exit Function
-                End If
-            Else
-                If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 Then Exit Function
-            End If
-        End If
-    Else
-        If (MapData(x, y).Blocked And 2 ^ (Heading - 1)) <> 0 Then Exit Function
-    End If
-    
-    
-    
-
-    'If Not UserNadando And MapData(x, y).Trigger = 8 Then
-    ' If Not UserAvisado Then
-    '  Call AddtoRichTextBox(frmMain.RecTxt, "El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 65, 190, 156, False, False, False)
-    ' UserAvisado = True
-    ' End If
-    'Exit Function
-
-    'Else
-    ' If UserNadando And MapData(x, y).Trigger <> 8 Then
-    ' Exit Function
-    ' End If
-    ' LegalPos = True
-    ' Exit Function
-    '  End If
     
     If UserMontado And MapData(x, y).Trigger > 9 Then
         Exit Function
-
     End If
 
-    '
     If UserNadando And MapData(x, y).Trigger = 8 Then
         LegalPos = True
         Exit Function
-
     End If
    '0 <>
     If UserNavegando <> ((MapData(x, y).Blocked And FLAG_AGUA) <> 0 And (MapData(x, y).Blocked And FLAG_COSTA) = 0) And MapData(x, y).Trigger <> eTrigger.VALIDOPUENTE Then
