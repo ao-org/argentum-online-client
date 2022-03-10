@@ -2354,7 +2354,8 @@ Private Sub HandleUpdateGold()
     
     frmMain.GldLbl.Caption = PonerPuntos(UserGLD)
     
-    If UserGLD > UserLvl * OroPorNivel Then
+    'If UserGLD > UserLvl * OroPorNivel Then
+    If UserGLD <= 100000 Then
         frmMain.GldLbl.ForeColor = vbRed
     Else
         frmMain.GldLbl.ForeColor = &H80FFFF
@@ -4583,8 +4584,9 @@ Private Sub HandleUpdateUserStats()
         frmMain.STAShp.Visible = (UserMinSTA > 0)
 
     End If
-
-    If UserGLD > UserLvl * OroPorNivel Then
+    
+    'If UserGLD > UserLvl * OroPorNivel Then
+    If UserGLD <= 100000 Then
         frmMain.GldLbl.ForeColor = vbRed
     Else
         frmMain.GldLbl.ForeColor = &H80FFFF

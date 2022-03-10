@@ -74,7 +74,7 @@ Begin VB.Form frmCantidad
       Height          =   420
       Left            =   435
       Tag             =   "0"
-      Top             =   2175
+      Top             =   2160
       Width           =   1680
    End
    Begin VB.Label Label1 
