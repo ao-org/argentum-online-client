@@ -277,12 +277,12 @@ End Sub
 Private Sub Command1_Click()
     
     On Error GoTo Command1_Click_Err
-    
+    Exit Sub
 
     If solicitudes.ListIndex = -1 Then Exit Sub
     
     frmCharInfo.frmType = CharInfoFrmType.frmMembershipRequests
-    Call WriteGuildMemberInfo(solicitudes.List(solicitudes.ListIndex))
+    'Call WriteGuildMemberInfo(solicitudes.List(solicitudes.ListIndex))
 
     'Unload Me
     
