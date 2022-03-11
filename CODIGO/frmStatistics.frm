@@ -14,6 +14,26 @@ Begin VB.Form frmStatistics
    ScaleWidth      =   359
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.Label lblPuntosPesca 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Left            =   4050
+      TabIndex        =   16
+      Top             =   2385
+      Width           =   165
+   End
    Begin VB.Image ImgPesca 
       Height          =   495
       Left            =   1350
@@ -434,7 +454,7 @@ Public Sub Iniciar_Labels()
         Label6(6).Caption = .Genero
         Label6(7).Caption = .VecesQueMoriste
         Label6(8).Caption = .Raza
-
+        lblPuntosPesca.Caption = .PuntosPesca
         lblpuntosbattle.Caption = .BattlePuntos
     
     End With
@@ -473,6 +493,7 @@ Private Sub showCombateLabels()
     Atri(3).Visible = False
     Atri(4).Visible = False
     Atri(5).Visible = False
+    Me.lblPuntosPesca.Visible = False
 End Sub
 
 Private Sub showStatsLabels()
@@ -495,10 +516,12 @@ Private Sub showStatsLabels()
     Atri(3).Visible = True
     Atri(4).Visible = True
     Atri(5).Visible = True
+    Me.lblPuntosPesca.Visible = False
 End Sub
 
 Private Sub showPescaLabels()
-    
+        
+    Me.lblPuntosPesca.Visible = True
     'Show combate labels
     Me.Label6(0).Visible = False
     Me.Label6(1).Visible = False
@@ -572,3 +595,4 @@ Private Sub ImgPesca_Click()
         showPescaLabels
         Me.Picture = LoadInterface("ventanaestadisticas_pesca.bmp")
 End Sub
+

@@ -960,6 +960,7 @@ Type tEstadisticasUsu
     Genero As String
     Raza As String
     BattlePuntos As Long
+    PuntosPesca As Long
 
 End Type
 

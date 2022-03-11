@@ -5761,6 +5761,7 @@ Private Sub HandleMiniStats()
         .PenaCarcel = Reader.ReadInt32()
         .VecesQueMoriste = Reader.ReadInt32()
         .Genero = Reader.ReadInt8()
+        .PuntosPesca = Reader.ReadInt32()
 
         If .Genero = 1 Then
             .Genero = "Hombre"
