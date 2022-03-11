@@ -127,9 +127,9 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
         'If the char wasn't allready active (we are rewritting it) don't increase char count
         If .active = 0 Then NumChars = NumChars + 1
         
-        If Arma = 0 Then Arma = 2
-        If Escudo = 0 Then Escudo = 2
-        If Casco = 0 Then Casco = 2
+        If Arma = 0 Or Arma > UBound(WeaponAnimData) Then Arma = 2
+        If Escudo = 0 Or Escudo > UBound(ShieldAnimData) Then Escudo = 2
+        If Casco = 0 Or Casco > UBound(CascoAnimData) Then Casco = 2
         
         .IHead = Head
         .iBody = Body

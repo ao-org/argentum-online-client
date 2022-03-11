@@ -3825,15 +3825,27 @@ Private Sub HandleCharacterChange()
         
         tempint = Reader.ReadInt16()
 
-        If tempint <> 0 Then .Arma = WeaponAnimData(tempint)
+        If TempInt <> 0 And TempInt <= UBound(WeaponAnimData) Then
+            .Arma = WeaponAnimData(TempInt)
+        Else
+            .Arma = WeaponAnimData(0)
+        End If
 
         tempint = Reader.ReadInt16()
 
-        If tempint <> 0 Then .Escudo = ShieldAnimData(tempint)
+        If TempInt <> 0 And TempInt <= UBound(ShieldAnimData) Then
+            .Escudo = ShieldAnimData(TempInt)
+        Else
+            .Escudo = ShieldAnimData(0)
+        End If
         
         tempint = Reader.ReadInt16()
 
-        If tempint <> 0 Then .Casco = CascoAnimData(tempint)
+        If TempInt <> 0 And TempInt <= UBound(CascoAnimData) Then
+            .Casco = CascoAnimData(TempInt)
+        Else
+            .Casco = CascoAnimData(0)
+        End If
                 
         If .Body.HeadOffset.y = -26 Then
             .EsEnano = True

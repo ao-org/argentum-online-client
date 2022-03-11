@@ -738,25 +738,25 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
                 End If
                 
-            Case "/LUZMAPA"
-                If EsGM Then
-                    If notNullArguments Then
-                        If CantidadArgumentos = 3 Then
-                            If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And _
-                                ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) And _
-                                ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Integer) Then
+            'Case "/LUZMAPA"
+            '    If EsGM Then
+            '        If notNullArguments Then
+            '            If CantidadArgumentos = 3 Then
+            '                If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And _
+            '                    ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) And _
+            '                    ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Integer) Then
                                 
-                                Call SetGlobalLight(D3DColorXRGB(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2)))
+                                'Call SetGlobalLight(D3DColorXRGB(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2)))
                                 'Call MapUpdateGlobalLight
-                                Exit Sub
+            '                    Exit Sub
 
-                            End If
-                        End If
-                    End If
+            '                End If
+            '            End If
+            '        End If
 
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /luzmapa R G B.")
-                End If
+            '        Call ShowConsoleMsg("Faltan parámetros. Utilice /luzmapa R G B.")
+            '    End If
         
             Case "/INVISIBLE"
                 Call WriteInvisible
