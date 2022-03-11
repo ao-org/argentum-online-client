@@ -57,6 +57,14 @@ Private cBotonConstruir As clsGraphicalButton
 Private cBotonCerrar As clsGraphicalButton
 
 
+Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
+  
+
+    If (KeyCode = vbKeyEscape) Then
+        Unload Me
+    End If
+End Sub
+
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
@@ -100,9 +108,9 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     On Error GoTo Form_KeyPress_Err
     
 
-    If (KeyAscii = 27) Then
-        Unload Me
-    End If
+    'If (KeyAscii = 27) Then
+    '    Unload Me
+    'End If
 
     
     Exit Sub
