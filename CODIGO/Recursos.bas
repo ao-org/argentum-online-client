@@ -1939,75 +1939,6 @@ CargarCascos_Err:
     
 End Sub
 
-Sub CargarCuerposViejo()
-    
-    On Error GoTo CargarCuerpos_Err
-    
-
-    Dim n            As Integer
-
-    Dim i            As Long
-
-    Dim NumCuerpos   As Integer
-
-    Dim MisCuerpos() As tIndiceCuerpo
-    
-    n = FreeFile()
-    
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "personajes.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de personajes.ind!"
-            MsgBox Err.Description
-
-        End If
-
-        Open Windows_Temp_Dir & "personajes.ind" For Binary Access Read As #n
-    #Else
-        Open App.Path & "\..\Recursos\init\personajes.ind" For Binary Access Read As #n
-    #End If
-      
-    
-    'cabecera
-    Get #n, , MiCabecera
-        
-    'num de cabezas
-    Get #n, , NumCuerpos
-    
-    'Resize array
-    ReDim BodyData(0 To NumCuerpos) As BodyData
-    ReDim MisCuerpos(0 To NumCuerpos) As tIndiceCuerpo
-    
-    For i = 1 To NumCuerpos
-        Get #n, , MisCuerpos(i)
-        
-        If MisCuerpos(i).Body(1) Then
-            InitGrh BodyData(i).Walk(1), MisCuerpos(i).Body(1), 0
-            InitGrh BodyData(i).Walk(2), MisCuerpos(i).Body(2), 0
-            InitGrh BodyData(i).Walk(3), MisCuerpos(i).Body(3), 0
-            InitGrh BodyData(i).Walk(4), MisCuerpos(i).Body(4), 0
-            
-            BodyData(i).HeadOffset.x = MisCuerpos(i).HeadOffsetX
-            BodyData(i).HeadOffset.y = MisCuerpos(i).HeadOffsetY
-
-        End If
-
-    Next i
-    
-    Close #n
-
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "personajes.ind"
-    #End If
-
-    
-    Exit Sub
-
-CargarCuerpos_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarCuerpos", Erl)
-    Resume Next
-    
-End Sub
 
 Sub CargarCuerpos()
     
@@ -2534,53 +2465,6 @@ hErr:
 
 End Sub
 
-Sub CargarAnimArmasViejo()
-    
-    On Error GoTo CargarAnimArmasViejo_Err
-    
-
-    
-
-    Dim loopc As Long
-
-    Dim Arch  As String
-    
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de armas.dat!"
-            MsgBox Err.Description
-
-        End If
-
-        Arch = Windows_Temp_Dir & "armas.dat"
-    #Else
-        Arch = App.Path & "\..\Recursos\init\armas.dat"
-    #End If
-    
-    NumWeaponAnims = Val(GetVar(Arch, "INIT", "NumArmas"))
-    
-    ReDim WeaponAnimData(1 To NumWeaponAnims) As WeaponAnimData
-
-    For loopc = 1 To NumWeaponAnims
-        InitGrh WeaponAnimData(loopc).WeaponWalk(1), Val(GetVar(Arch, "ARMA" & loopc, "Dir1")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(2), Val(GetVar(Arch, "ARMA" & loopc, "Dir2")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(3), Val(GetVar(Arch, "ARMA" & loopc, "Dir3")), 0
-        InitGrh WeaponAnimData(loopc).WeaponWalk(4), Val(GetVar(Arch, "ARMA" & loopc, "Dir4")), 0
-    Next loopc
-    
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "armas.dat"
-    #End If
-
-    
-    Exit Sub
-
-CargarAnimArmasViejo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarAnimArmasViejo", Erl)
-    Resume Next
-    
-End Sub
 
 Sub CargarAnimArmas()
     
@@ -2988,52 +2872,6 @@ CargarAnimEscudos_Err:
     
 End Sub
 
-
-Sub CargarAnimEscudosViejo()
-    
-    On Error GoTo CargarAnimEscudos_Err
-    
-
-    Dim loopc As Long
-
-    Dim Arch  As String
-    
-    #If Compresion = 1 Then
-
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de escudos.dat!"
-            MsgBox Err.Description
-
-        End If
-
-        Arch = Windows_Temp_Dir & "escudos.dat"
-    #Else
-        Arch = App.Path & "\..\Recursos\init\escudos.dat"
-    #End If
-    
-    NumEscudosAnims = Val(GetVar(Arch, "INIT", "NumEscudos"))
-    
-    ReDim ShieldAnimData(1 To NumEscudosAnims) As ShieldAnimData
-    
-    For loopc = 1 To NumEscudosAnims
-        InitGrh ShieldAnimData(loopc).ShieldWalk(1), Val(GetVar(Arch, "ESC" & loopc, "Dir1")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(2), Val(GetVar(Arch, "ESC" & loopc, "Dir2")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(3), Val(GetVar(Arch, "ESC" & loopc, "Dir3")), 0
-        InitGrh ShieldAnimData(loopc).ShieldWalk(4), Val(GetVar(Arch, "ESC" & loopc, "Dir4")), 0
-    Next loopc
-    
-    #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "escudos.dat"
-    #End If
-
-    
-    Exit Sub
-
-CargarAnimEscudos_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarAnimEscudos", Erl)
-    Resume Next
-    
-End Sub
 
 Sub LoadFonts()
     If LoadFont("Cardo.ttf") Then

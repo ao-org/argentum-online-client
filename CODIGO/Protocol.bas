@@ -3820,24 +3820,18 @@ Private Sub HandleCharacterChange()
 
         If TempInt <> 0 And TempInt <= UBound(WeaponAnimData) Then
             .Arma = WeaponAnimData(TempInt)
-        Else
-            .Arma = WeaponAnimData(0)
         End If
 
         tempint = Reader.ReadInt16()
 
         If TempInt <> 0 And TempInt <= UBound(ShieldAnimData) Then
             .Escudo = ShieldAnimData(TempInt)
-        Else
-            .Escudo = ShieldAnimData(0)
         End If
         
         tempint = Reader.ReadInt16()
 
         If TempInt <> 0 And TempInt <= UBound(CascoAnimData) Then
             .Casco = CascoAnimData(TempInt)
-        Else
-            .Casco = CascoAnimData(0)
         End If
                 
         If .Body.HeadOffset.y = -26 Then
