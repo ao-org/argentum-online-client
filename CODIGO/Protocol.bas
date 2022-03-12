@@ -3671,14 +3671,7 @@ Private Sub HandleCharacterRemove()
     
     Dim Desvanecido As Boolean
     Dim fueWarp As Boolean
-
-    dbgid = Reader.ReadInt16()
     charindex = Reader.ReadInt16()
-    
-    'Debug.Print "HandleCharacterRemove(dbgid=" & dbgid & ") " & charindex & " " & charlist(charindex).nombre & " x:" & charlist(charindex).Pos.x & " y:" & charlist(charindex).Pos.y
-    
-    
-    
     Desvanecido = Reader.ReadBool()
     fueWarp = Reader.ReadBool()
     If Desvanecido And charlist(charindex).EsNpc = True Then
