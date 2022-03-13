@@ -188,9 +188,9 @@ End Type
 Public Enum eTipoUsuario
     User = 0
     cafecito
-    aventurero = 6057393
-    heroe = 6057394
-    Legend = 6057395
+    aventurero
+    heroe
+    Legend
 End Enum
 
 

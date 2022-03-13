@@ -3589,10 +3589,15 @@ Private Sub HandleCharacterCreate()
         .UserMinMAN = Reader.ReadInt32()
         .UserMaxMAN = Reader.ReadInt32()
         .simbolo = Reader.ReadInt8()
-        .Idle = Reader.ReadBool()
-        .Navegando = Reader.ReadBool()
-        .tipoUsuario = Reader.ReadInt32()
+         Dim flags As Byte
         
+        flags = Reader.ReadInt8()
+        
+                
+        .Idle = flags And &O1
+        
+        .Navegando = flags And &O2
+        .tipoUsuario = Reader.ReadInt8()
         
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
             If MapData(.Pos.x, .Pos.y).charindex = charindex Then
@@ -3851,9 +3856,13 @@ Private Sub HandleCharacterChange()
 
         End If
         
-        .Idle = Reader.ReadBool
+        Dim flags As Byte
         
-        .Navegando = Reader.ReadBool
+        flags = Reader.ReadInt8()
+        
+        .Idle = flags And &O1
+        
+        .Navegando = flags And &O2
         
         If .Idle Or .Navegando Then
             'Start animation
