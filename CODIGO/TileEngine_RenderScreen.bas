@@ -217,7 +217,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                         Case Else
                             ' Objetos en el suelo (items, decorativos, etc)
                             
-                             If (.Blocked And FLAG_AGUA <> 0) And .Graphic(2).GrhIndex = 0 Then
+                             If ((.Blocked And FLAG_AGUA) <> 0) And .Graphic(2).GrhIndex = 0 Then
                              
                                 object_angle = (object_angle + (timerElapsedTime * 0.002))
                                 
