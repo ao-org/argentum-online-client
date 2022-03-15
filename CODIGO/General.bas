@@ -1143,7 +1143,7 @@ Sub Main()
     servers_login_connections(2) = "138.99.6.141:4007"
     
     '45.235.99.71:4004
-    IPServers(1) = "45.235.99.71:7667:Minehost:" & get_logging_server()
+    IPServers(1) = "45.235.98.31:7667:Minehost:" & get_logging_server()
     
     Debug.Print IPServers(1)
     #If DEBUGGING = 1 Then
