@@ -68,8 +68,6 @@ Public Enum FXSound
     MP_SOUND = 150
 End Enum
 
-Public TieneFamiliar As Long
-
 Public HayLayer4     As Boolean
 
 Public CantPartLLuvia     As Integer

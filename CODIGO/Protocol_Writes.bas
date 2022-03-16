@@ -370,21 +370,6 @@ WriteRequestAtributes_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteRequestFamiliar()
-        '<EhHeader>
-        On Error GoTo WriteRequestFamiliar_Err
-        '</EhHeader>
-100     Call Writer.WriteInt(ClientPacketID.RequestFamiliar)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteRequestFamiliar_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRequestFamiliar", Erl)
-        '</EhFooter>
-End Sub
 
 Public Sub WriteRequestGrupo()
         '<EhHeader>

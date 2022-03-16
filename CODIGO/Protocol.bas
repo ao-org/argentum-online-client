@@ -180,7 +180,6 @@ Private Enum ServerPacketID
     FlashScreen
     AlquimistaObj
     ShowAlquimiaForm
-    familiar
     SastreObj
     ShowSastreForm ' 126
     VelocidadToggle
@@ -487,7 +486,6 @@ Public Enum ClientPacketID
     Genio
     Casarse
     CraftAlquimista
-    RequestFamiliar
     FlagTrabajar
     CraftSastre
     MensajeUser
@@ -825,8 +823,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleAlquimiaObjects
         Case ServerPacketID.ShowAlquimiaForm
             Call HandleShowAlquimiaForm
-        Case ServerPacketID.familiar
-            Call HandleFamiliar
         Case ServerPacketID.SastreObj
             Call HandleSastreObjects
         Case ServerPacketID.ShowSastreForm
@@ -7441,17 +7437,6 @@ HandleNieblaToggle_Err:
     
 End Sub
 
-Private Sub HandleFamiliar()
-    
-    On Error GoTo HandleFamiliar_Err
-    
-    Exit Sub
-
-HandleFamiliar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleFamiliar", Erl)
-    
-    
-End Sub
 
 Private Sub HandleBindKeys()
     
