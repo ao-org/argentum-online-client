@@ -1287,11 +1287,6 @@ Public Type tIndiceFx
 
 End Type
 
-#If AntiExternos = 1 Then
-    Public Security As New clsSecurity
-    Public XorIndexIn As Integer
-    Public XorIndexOut As Integer
-#End If
 
 ' Load custom font
 Public Declare Function AddFontResourceEx Lib "gdi32.dll" Alias "AddFontResourceExA" (ByVal lpcstr As String, ByVal dword As Long, ByRef DESIGNVECTOR) As Long

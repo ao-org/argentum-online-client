@@ -46,11 +46,7 @@ If EstadoLogin = E_MODO.CrearNuevoPj Then
     Call LoginOrConnect(E_MODO.CrearNuevoPj)
 End If
 
-#If AntiExternos = 1 Then
-    XorIndexIn = 0
-    XorIndexOut = 0
-#End If
-    
+   
     Connected = True
     
     Exit Sub
@@ -74,14 +70,6 @@ End Sub
 
 Private Sub OnClientSend(ByVal Message As Network.Reader)
 On Error GoTo OnClientSend_Err:
-
-#If AntiExternos = 1 Then
-    Dim BytesRef() As Byte
-    Call Message.GetData(BytesRef) ' Is only a view of the buffer as a SafeArrayPtr ;-)
-
-    Call Security.XorData(BytesRef, UBound(BytesRef) - 1, XorIndexOut)
-#End If
-    
     Exit Sub
     
 OnClientSend_Err:
@@ -90,13 +78,6 @@ End Sub
 
 Private Sub OnClientRecv(ByVal Message As Network.Reader)
 On Error GoTo OnClientRecv_Err:
-
-#If AntiExternos = 1 Then
-    Dim BytesRef() As Byte
-    Call Message.GetData(BytesRef) ' Is only a view of the buffer as a SafeArrayPtr ;-)
-
-    Call Security.XorData(BytesRef, UBound(BytesRef) - 1, XorIndexIn)
-#End If
 
     Call Protocol.HandleIncomingData(Message)
 
