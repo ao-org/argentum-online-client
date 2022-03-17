@@ -60,7 +60,6 @@ Module=ModCabezas; CODIGO\ModCabezas.bas
 Module=modBindKeys; CODIGO\modBindKeys.bas
 Class=clsTexManager; CODIGO\clsTexManager.cls
 Module=modDX8Requires; CODIGO\modDX8Requires.bas
-Class=clsSecurity; CODIGO\clsSecurity.cls
 Form=CODIGO\frmGoliath.frm
 Module=modCompression; CODIGO\modCompression.bas
 Class=clsLucesRedondas; CODIGO\ClsRoundLight.cls
