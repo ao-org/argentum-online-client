@@ -2987,13 +2987,6 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Call InitGrh(TempGrh, 16577)
 
     Draw_Grh TempGrh, 810, 655, 0, 1, cc(), False
-    
-    Call InitGrh(TempGrh, 19337)
-
-    Draw_Grh TempGrh, 33, 690, 0, 1, cc(), False
-    #If DEBUGGING = 1 Then
-       ' Engine_Text_Render "CLIENTE DEBUG", (frmConnect.ScaleWidth - Engine_Text_Width("CLIENTE DEBUG")) \ 2, 30, COLOR_WHITE
-    #End If
 
     If FadeInAlpha > 0 Then
         Call Engine_Draw_Box(0, 0, frmConnect.ScaleWidth, frmConnect.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
