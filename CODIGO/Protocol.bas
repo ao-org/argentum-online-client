@@ -2401,34 +2401,14 @@ HandleUpdateExp_Err:
     
 End Sub
 
-''
-' Handles the ChangeMap message.
-
 Private Sub HandleChangeMap()
-    
     On Error GoTo HandleChangeMap_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-
     UserMap = Reader.ReadInt16()
-    
-    'TODO: Once on-the-fly editor is implemented check for map version before loading....
-    'For now we just drop it
-    Call Reader.ReadInt16
-    
     If bRain Then
-    
         If Not MapDat.LLUVIA Then
             frmMain.IsPlaying = PlayLoop.plNone
-
         End If
-
     End If
-
     If frmComerciar.Visible Then Unload frmComerciar
     If frmBancoObj.Visible Then Unload frmBancoObj
     If frmEstadisticas.Visible Then Unload frmEstadisticas
@@ -2441,9 +2421,7 @@ Private Sub HandleChangeMap()
     If frmGoliath.Visible Then Unload frmGoliath
     If FrmViajes.Visible Then Unload FrmViajes
     If frmCantidad.Visible Then Unload frmCantidad
-
     Call SwitchMap(UserMap)
-    
     Exit Sub
 
 HandleChangeMap_Err:
