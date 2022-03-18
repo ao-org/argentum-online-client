@@ -561,7 +561,7 @@ On Error GoTo HandleIncomingData_Err
     Set Reader = Message
     
     Dim PacketID As Long:
-    PacketId = Reader.ReadInt16
+    PacketID = Reader.ReadInt
     #If DEBUGGING Then
         'Debug.Print PacketId
     #End If
