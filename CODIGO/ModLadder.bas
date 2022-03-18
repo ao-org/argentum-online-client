@@ -25,7 +25,6 @@ Public CheckMD5         As String
 Public intro            As Byte
 
 Public InviCounter      As Integer
-Public OxigenoCounter   As Long
 Public DrogaCounter     As Integer
 
 Type Effect_Type

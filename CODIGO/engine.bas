@@ -862,41 +862,6 @@ Public Sub render()
             posY = posY + 15
             Call Engine_Text_Render("Potenciado: " & CLng(DrogaCounter) & "s", posX, posY, temp_array, 1, True, 0, 160)
         End If
-        
-        If OxigenoCounter > 0 Then
-
-            Dim HR                  As Integer
-            Dim ms                  As Integer
-            Dim SS                  As Integer
-            Dim secs                As Integer
-            Dim TextoOxigenoCounter As String
-        
-            Call RGBAList(temp_array, 50, 100, 255)
-
-            secs = OxigenoCounter
-            HR = secs \ 3600
-            ms = (secs Mod 3600) \ 60
-            SS = (secs Mod 3600) Mod 60
-
-            If SS > 9 Then
-                TextoOxigenoCounter = ms & ":" & SS
-            Else
-                TextoOxigenoCounter = ms & ":0" & SS
-            End If
-            
-            posY = posY + 15
-
-            If ms < 1 Then
-                frmMain.oxigenolbl = SS
-                frmMain.oxigenolbl.ForeColor = vbRed
-            Else
-                frmMain.oxigenolbl = ms
-                frmMain.oxigenolbl.ForeColor = vbWhite
-            End If
-
-            Call Engine_Text_Render("Oxigeno: " & TextoOxigenoCounter, posX, posY, temp_array, 1, True, 0, 128)
-
-        End If
 
     End If
     

@@ -196,7 +196,6 @@ Private Enum ServerPacketID
     ArmaMov
     EscudoMov
     ViajarForm
-    oxigeno
     NadarToggle
     ShowFundarClanForm
     CharUpdateHP
@@ -561,7 +560,7 @@ On Error GoTo HandleIncomingData_Err
     Set Reader = Message
     
     Dim PacketID As Long:
-    PacketId = Reader.ReadInt16
+    PacketId = Reader.ReadInt
     #If DEBUGGING Then
         'Debug.Print PacketId
     #End If
@@ -855,8 +854,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleEscudoMov
         Case ServerPacketID.ViajarForm
             Call HandleViajarForm
-        Case ServerPacketID.oxigeno
-            Call HandleOxigeno
         Case ServerPacketID.NadarToggle
             Call HandleNadarToggle
         Case ServerPacketID.ShowFundarClanForm
@@ -996,7 +993,6 @@ Private Sub HandleLogged()
     ' frmMain.Label6.Visible = True
     frmMain.Fuerzalbl.Visible = True
     frmMain.AgilidadLbl.Visible = True
-    frmMain.oxigenolbl.Visible = True
     frmMain.imgDeleteItem.Visible = True
     QueRender = 0
     
@@ -1242,7 +1238,6 @@ Public Sub HandleDisconnect()
     frmMain.GldLbl.Visible = True
     frmMain.Fuerzalbl.Visible = True
     frmMain.AgilidadLbl.Visible = True
-    frmMain.oxigenolbl.Visible = True
     frmMain.QuestBoton.Visible = False
     frmMain.ImgHogar.Visible = False
     frmMain.lblWeapon.Visible = True
@@ -1358,7 +1353,6 @@ Public Sub HandleDisconnect()
     
     InviCounter = 0
     DrogaCounter = 0
-    OxigenoCounter = 0
     EscribeRetrasadoSensui = False
     frmMain.timerRetrasadoSensui = False
      
@@ -5608,10 +5602,8 @@ Private Sub HandleContadores()
     '***************************************************
     
     InviCounter = Reader.ReadInt16()
-    OxigenoCounter = Reader.ReadInt16()
     DrogaCounter = Reader.ReadInt16()
     
-    OxigenoCounter = OxigenoCounter
 
     frmMain.Contadores.Enabled = True
     
@@ -5635,58 +5627,6 @@ HandleShowPapiro_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPapiro", Erl)
 End Sub
 
-Private Sub HandleOxigeno()
-    
-    On Error GoTo HandleOxigeno_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    Dim oxigeno As Integer
-
-    oxigeno = Reader.ReadInt16()
-    
-    Dim TextoOxigenoCounter As String
-
-    Dim HR                  As Integer
-
-    Dim ms                  As Integer
-
-    Dim SS                  As Integer
-
-    Dim secs                As Integer
-    
-    secs = oxigeno
-    HR = secs \ 3600
-    ms = (secs Mod 3600) \ 60
-    SS = (secs Mod 3600) Mod 60
-
-    If SS > 9 Then
-        TextoOxigenoCounter = ms & ":" & SS
-    Else
-        TextoOxigenoCounter = ms & ":0" & SS
-
-    End If
-
-    If ms < 1 Then
-        frmMain.oxigenolbl = SS
-        frmMain.oxigenolbl.ForeColor = vbRed
-    Else
-        frmMain.oxigenolbl = ms
-        frmMain.oxigenolbl.ForeColor = vbWhite
-
-    End If
-    
-    Exit Sub
-
-HandleOxigeno_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleOxigeno", Erl)
-    
-    
-End Sub
 
 ''
 ' Handles the MiniStats message.
