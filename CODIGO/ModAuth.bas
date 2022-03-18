@@ -263,7 +263,7 @@ Public Sub HandleRequestVerificationCode(ByVal BytesTotal As Long)
             Case 12
                 Call TextoAlAsistente("Account does not exist")
             Case Else
-                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(data))
         End Select
     End If
     
@@ -980,7 +980,7 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
                 Call TextoAlAsistente("The account has not been activated.")
             Case Else
                 'Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
-                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(data))
         End Select
     End If
         
@@ -1190,7 +1190,7 @@ Private Sub FillAccountData(ByVal data As String)
         Pjs(ii).NameMapa = ""
     Next ii
 
-    For ii = 1 To CantidadDePersonajesEnCuenta
+    For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
         Dim character As String
         character = ReadField(ii, data, Asc(")"))
         character = Replace(character, "(", "")
@@ -1226,7 +1226,7 @@ Private Sub FillAccountData(ByVal data As String)
     Next ii
 
 
-    For i = 1 To CantidadDePersonajesEnCuenta
+    For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
 
         Select Case Pjs(i).Criminal
 
