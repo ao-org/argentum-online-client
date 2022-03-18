@@ -1880,10 +1880,6 @@ Private Sub Contadores_Timer()
 
     End If
 
-    If OxigenoCounter > 0 Then
-        OxigenoCounter = OxigenoCounter - 1
-
-    End If
 
     If DrogaCounter > 0 Then
         DrogaCounter = DrogaCounter - 1
@@ -2895,7 +2891,6 @@ Select Case Index
         COMIDAsp.Visible = False
         Fuerzalbl.Visible = False
         AgilidadLbl.Visible = False
-        oxigenolbl.Visible = False
         QuestBoton.Visible = True
         ImgHogar.Visible = True
         ImgEstadisticas.Visible = True
@@ -2968,7 +2963,6 @@ Select Case Index
        ' Label6.Visible = True
         Fuerzalbl.Visible = True
         AgilidadLbl.Visible = True
-        oxigenolbl.Visible = True
         QuestBoton.Visible = False
         ImgHogar.Visible = False
         ImgEstadisticas.Visible = False
