@@ -1905,7 +1905,7 @@ Private Sub Contadores_Timer()
         
     End If
 
-    If InviCounter = 0 And DrogaCounter = 0 And OxigenoCounter = 0 Then
+    If InviCounter = 0 And DrogaCounter = 0 Then
         Contadores.Enabled = False
 
     End If
