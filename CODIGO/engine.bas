@@ -1412,7 +1412,25 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     With charlist(charindex)
 
         If .Heading = 0 Then Exit Sub
-    
+        
+        Dim dibujaMiembroClan As Boolean
+        dibujaMiembroClan = False
+        
+        Dim verVidaClan As Boolean
+        verVidaClan = False
+        
+        If .clan_index > 0 Then
+            If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
+                If .clan_nivel >= 1 Then
+                    dibujaMiembroClan = True
+                End If
+                
+                If .clan_nivel >= 1 Then
+                    verVidaClan = True
+                End If
+            End If
+        End If
+        
         If .Moving Then
 
             'If needed, move left and right
@@ -1539,12 +1557,45 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call LerpRGBA(NameColor(0), NameColor(0), RGBA_From_Comp(0, 0, 0), 0.5)
                     Call RGBA_ToList(NameColor, NameColor(0))
                     Call RGBA_ToList(colorCorazon, NameColor(0))
-                                
+                    
                     MostrarNombre = True
                         
                 Else
+                    'refactorizar bien esto, es un asco sino
                     Call RGBAList(Color, 0, 0, 0, 0)
                     MostrarNombre = False
+                    If dibujaMiembroClan Then
+                        MostrarNombre = True
+                        If .priv = 0 Then
+                        
+                        Select Case .status
+                            ' Criminal
+                            Case 0
+                                Call SetRGBA(NameColor(0), ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                            
+                            ' Ciudadano
+                            Case 1
+                                Call SetRGBA(NameColor(0), ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                            
+                            ' Caos
+                            Case 2
+                                Call SetRGBA(NameColor(0), ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
+    
+                            ' Armada
+                            Case 3
+                                Call SetRGBA(NameColor(0), ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+    
+                        End Select
+                                
+                    Else
+                        Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                    End If
+                    
+                    Call LerpRGBA(NameColor(0), NameColor(0), RGBA_From_Comp(0, 0, 0), 0.5)
+                    Call RGBA_ToList(NameColor, NameColor(0))
+                    Call RGBA_ToList(colorCorazon, NameColor(0))
+                    Call RGBAList(Color, 180, 160, 160, 160)
+                    End If
                 End If
 
             Else
@@ -1616,32 +1667,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                             Call SetRGBA(colorCorazon(3), 0, 255, 255)
                         End If
                     End If
-                        
-                    If .clan_index > 0 Then
-                        If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
-                            If .clan_nivel >= 4 Then
-                                OffsetYname = 8
-                                OffsetYClan = 8
-                                
-                                Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 33 + .Body.BodyOffset.y, 33, 5, RGBA_From_Comp(10, 10, 10)
-
-                                If .UserMaxHp <> 0 Then
-                                    Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 34 + .Body.BodyOffset.y, .UserMinHp / .UserMaxHp * 31, 3, RGBA_From_Comp(255, 0, 0)
-                                Else
-                                    Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 34 + .Body.BodyOffset.y, 31, 4, RGBA_From_Comp(255, 0, 0)
-                                End If
-
-                                If .UserMaxMAN <> 0 Then
-                                    OffsetYname = 12
-                                    OffsetYClan = 12
-
-                                    Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 38 + .Body.BodyOffset.y, 33, 4, RGBA_From_Comp(10, 10, 10)
-                                    Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.y, PixelOffsetY + 38 + .Body.BodyOffset.y, .UserMinMAN / .UserMaxMAN * 31, 3, RGBA_From_Comp(0, 100, 255)
-                                End If
-                            End If
-                        End If
-                    End If
                 End If
+            End If
+            
+            OffsetYname = 8
+            OffsetYClan = 8
+            
+            If verVidaClan Then
+                Call DibujarVidaChar(charindex, PixelOffsetX, PixelOffsetY, OffsetYname, OffsetYClan)
             End If
             
             ' Si tiene cabeza, componemos la textura
@@ -1713,8 +1746,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End Select
                      
                 EndComposedTexture
-
-                If Not .Invisible Then
+               
+                        
+                If Not .Invisible Or dibujaMiembroClan Then
                     ' Reflejo
                     PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, , True
 
@@ -1758,20 +1792,16 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             
            ' End If
-           #If DEBUGGING = 1 Then
-           MostrarNombre = True
-           #End If
+
            
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
                 Pos = InStr(.nombre, "<")
                 If Pos = 0 Then Pos = InStr(.nombre, "[")
                 If Pos = 0 Then Pos = Len(.nombre) + 2
                 'Nick
-                #If DEBUGGING = 1 Then
-                line = .nombre & "(" & str(charindex) & ")"
-                #Else
+
                 line = Left$(.nombre, Pos - 2)
-                #End If
+
                 Dim factor As Double
                 factor = MapData(x, y).light_value(0).r / 255
                 NameColor(0).r = NameColor(0).r * factor
@@ -1788,7 +1818,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 NameColor(3).B = NameColor(3).B * factor
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
-                
                 'Clan
                 If .priv > 1 And .priv < &H40 Then
                     line = "<Game Master>"
@@ -1898,6 +1927,25 @@ Char_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Char_Render", Erl)
     Resume Next
     
+End Sub
+
+Public Sub DibujarVidaChar(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByRef OffsetYname As Byte, ByRef OffsetYClan As Byte)
+    With charlist(charindex)
+        Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 33 + .Body.BodyOffset.y, 33, 5, RGBA_From_Comp(10, 10, 10)
+        If .UserMaxHp <> 0 Then
+            Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 34 + .Body.BodyOffset.y, .UserMinHp / .UserMaxHp * 31, 3, RGBA_From_Comp(255, 0, 0)
+        Else
+            Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 34 + .Body.BodyOffset.y, 31, 4, RGBA_From_Comp(255, 0, 0)
+        End If
+    
+        If .UserMaxMAN <> 0 Then
+            OffsetYname = 12
+            OffsetYClan = 12
+    
+            Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 38 + .Body.BodyOffset.y, 33, 4, RGBA_From_Comp(10, 10, 10)
+            Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.y, PixelOffsetY + 38 + .Body.BodyOffset.y, .UserMinMAN / .UserMaxMAN * 31, 3, RGBA_From_Comp(0, 100, 255)
+        End If
+    End With
 End Sub
 
 Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
