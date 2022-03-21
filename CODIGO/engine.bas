@@ -1421,11 +1421,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         
         If .clan_index > 0 Then
             If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
-                If .clan_nivel >= 1 Then
+                If .clan_nivel >= 3 Then
                     dibujaMiembroClan = True
                 End If
                 
-                If .clan_nivel >= 1 Then
+                If .clan_nivel >= 6 Then
                     verVidaClan = True
                 End If
             End If
