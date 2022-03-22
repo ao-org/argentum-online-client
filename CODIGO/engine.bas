@@ -1670,10 +1670,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             End If
             
-            OffsetYname = 8
-            OffsetYClan = 8
             
             If verVidaClan Then
+                OffsetYname = 8
+                OffsetYClan = 8
                 Call DibujarVidaChar(charindex, PixelOffsetX, PixelOffsetY, OffsetYname, OffsetYClan)
             End If
             
