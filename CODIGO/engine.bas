@@ -1385,6 +1385,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     Dim Color(3)            As RGBA
     
     Dim NameColor(3)        As RGBA
+    Dim NameColorClan(3)    As RGBA
 
     Dim colorCorazon(3)     As RGBA
 
@@ -1549,7 +1550,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 Call SetRGBA(NameColor(0), ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
     
                         End Select
-                                
+                             
                     Else
                         Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
                     End If
@@ -1586,7 +1587,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 Call SetRGBA(NameColor(0), ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
     
                         End Select
-                                
                     Else
                         Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
                     End If
@@ -1824,8 +1824,18 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Else
                     line = .clan
                 End If
-                    
-                Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
+                
+                'Seteo color de nombre del clan solo si es de mi clan
+                Call SetRGBA(NameColorClan(0), 45, 181, 175, 255)
+                Call SetRGBA(NameColorClan(1), 45, 181, 175, 255)
+                Call SetRGBA(NameColorClan(2), 45, 181, 175, 255)
+                Call SetRGBA(NameColorClan(3), 45, 181, 175, 255)
+                
+                If dibujaMiembroClan Or charindex = UserCharIndex Then
+                    Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColorClan, 1, False, 0, IIf(.Invisible, 160, 255)
+                Else
+                    Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
+                End If
             End If
         End If
 

@@ -6077,19 +6077,22 @@ Private Sub HandleGuildNews()
         Select Case ClanNivel
 
             Case 1
-                .beneficios = "No atacarse / Chat de clan." & vbCrLf & "Max miembros: 5"
+                .beneficios = "Max miembros: 5"
 
             Case 2
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G)." & vbCrLf & "Max miembros: 10"
+                .beneficios = "Pedir ayuda (G) / Max miembros: 7"
 
             Case 3
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible." & vbCrLf & "Max miembros: 15"
+                .beneficios = "Pedir ayuda (G) / Verse Invisible." & vbCrLf & "Max miembros: 7"
 
             Case 4
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible / Marca de clan (V)." & vbCrLf & "Max miembros: 20"
+                .beneficios = "Pedir ayuda (G) / Verse Invisible. " & vbCrLf & "Max miembros: 12"
 
             Case 5
-                .beneficios = "No atacarse / Chat de clan / Pedir ayuda (G) / Verse Invisible / Marca de clan (V) / Verse vida." & vbCrLf & " Max miembros: 25"
+                .beneficios = "Pedir ayuda (G) / Verse Invisible  " & vbCrLf & "/ Seguro de clan." & vbCrLf & " Max miembros: 15"
+                
+            Case 6
+                .beneficios = "Pedir ayuda (G) / Verse Invisible / Seguro de clan / Verse vida." & vbCrLf & " Max miembros: 20"
         
         End Select
     
@@ -6366,30 +6369,28 @@ Private Sub HandleGuildLeaderInfo()
 
         Select Case nivel
 
-            Case 1
-                .beneficios = "Chat de clan + Verse en minimapa."
-                .maxMiembros = "5"
-
+               Case 1
+                .beneficios = "Max miembros: 5"
+                .maxMiembros = 5
             Case 2
-                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G)."
-                .maxMiembros = "7"
+                .beneficios = "Pedir ayuda (G) / Max miembros: 7"
+                .maxMiembros = 7
 
             Case 3
-                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Verse invisibles."
-                .maxMiembros = "7"
+                .beneficios = "Pedir ayuda (G) / Verse Invisible." & vbCrLf & "Max miembros: 7"
+                .maxMiembros = 7
 
             Case 4
-                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Verse invisibles + Marca de clan (V)."
-                .maxMiembros = "12"
-                
+                .beneficios = "Pedir ayuda (G) / Verse Invisible. " & vbCrLf & "Max miembros: 12"
+                .maxMiembros = 12
+
             Case 5
-                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Verse invisibles + Marca de clan (V) + Seguro de clan."
-                .maxMiembros = "15"
+                .beneficios = "Pedir ayuda (G) / Verse Invisible  " & vbCrLf & "/ Seguro de clan." & vbCrLf & " Max miembros: 15"
+                .maxMiembros = 15
                 
             Case 6
-                .beneficios = "Chat de clan + Verse en minimapa + Pedir ayuda (G) + Verse invisibles + Marca de clan (V) + Seguro de clan + Ver vidas y maná de tus compañeros."
-                .maxMiembros = "20"
-        
+                .beneficios = "Pedir ayuda (G) / Verse Invisible / Seguro de clan / Verse vida." & vbCrLf & " Max miembros: 20"
+                .maxMiembros = 20
         End Select
         
         .Show , frmMain

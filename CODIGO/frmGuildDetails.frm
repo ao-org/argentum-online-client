@@ -89,7 +89,7 @@ Begin VB.Form frmGuildDetails
          Height          =   315
          ItemData        =   "frmGuildDetails.frx":0000
          Left            =   240
-         List            =   "frmGuildDetails.frx":000D
+         List            =   "frmGuildDetails.frx":0013
          Style           =   2  'Dropdown List
          TabIndex        =   4
          Top             =   840
@@ -120,7 +120,7 @@ Begin VB.Form frmGuildDetails
       Height          =   375
       Index           =   1
       Left            =   120
-      MouseIcon       =   "frmGuildDetails.frx":0050
+      MouseIcon       =   "frmGuildDetails.frx":009D
       MousePointer    =   99  'Custom
       TabIndex        =   2
       Top             =   3480
@@ -193,7 +193,6 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-
 Private Sub Command1_Click(Index As Integer)
     
     On Error GoTo Command1_Click_Err
@@ -262,6 +261,10 @@ Private Sub Command1_Click(Index As Integer)
                     Alineacion = eClanType.ct_Real
                 ElseIf Combo1.ListIndex = eClanType.ct_Caos Then
                     Alineacion = eClanType.ct_Caos
+                ElseIf Combo1.ListIndex = eClanType.ct_Ciudadana Then
+                    Alineacion = eClanType.ct_Ciudadana
+                ElseIf Combo1.ListIndex = eClanType.ct_Criminal Then
+                    Alineacion = eClanType.ct_Criminal
                 End If
         
                 Call WriteCreateNewGuild(fdesc, ClanName, Alineacion)

@@ -1152,6 +1152,8 @@ Public Enum eClanType
     ct_Neutral = 0
     ct_Real
     ct_Caos
+    ct_Ciudadana
+    ct_Criminal
 End Enum
 
 Public Enum eEditOptions

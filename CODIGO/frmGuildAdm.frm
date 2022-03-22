@@ -72,7 +72,7 @@ Begin VB.Form frmGuildAdm
       Height          =   285
       ItemData        =   "frmGuildAdm.frx":0004
       Left            =   2280
-      List            =   "frmGuildAdm.frx":0014
+      List            =   "frmGuildAdm.frx":001A
       Style           =   2  'Dropdown List
       TabIndex        =   0
       Top             =   1600
@@ -131,7 +131,7 @@ Private Sub cmdBuscar_Click()
     If Len(Filtro.Text) <> 0 Then
         For i = 0 To UBound(ClanesList)
 
-            If Combo1.ListIndex < 3 Then
+            If Combo1.ListIndex < 5 Then
                 If ClanesList(i).Alineacion = Combo1.ListIndex Then
                     If InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.Text)) <> 0 Then
                         Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
@@ -146,7 +146,7 @@ Private Sub cmdBuscar_Click()
     Else
         For i = 0 To UBound(ClanesList)
 
-            If Combo1.ListIndex < 3 Then
+            If Combo1.ListIndex < 5 Then
                 If ClanesList(i).Alineacion = Combo1.ListIndex Then
                     Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
     
