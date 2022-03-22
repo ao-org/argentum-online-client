@@ -1826,10 +1826,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 
                 'Seteo color de nombre del clan solo si es de mi clan
-                Call SetRGBA(NameColorClan(0), 45, 181, 175, 255)
-                Call SetRGBA(NameColorClan(1), 45, 181, 175, 255)
-                Call SetRGBA(NameColorClan(2), 45, 181, 175, 255)
-                Call SetRGBA(NameColorClan(3), 45, 181, 175, 255)
+                Call SetRGBA(NameColorClan(0), 255, 255, 0, 255)
+                Call SetRGBA(NameColorClan(1), 255, 255, 0, 255)
+                Call SetRGBA(NameColorClan(2), 255, 255, 0, 255)
+                Call SetRGBA(NameColorClan(3), 255, 255, 0, 255)
                 
                 If dibujaMiembroClan Or charindex = UserCharIndex Then
                     Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColorClan, 1, False, 0, IIf(.Invisible, 160, 255)
