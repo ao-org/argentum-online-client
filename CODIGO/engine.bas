@@ -1418,8 +1418,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         dibujaMiembroClan = False
         
         Dim verVidaClan As Boolean
-        verVidaClan = False
         
+        verVidaClan = False
         If .clan_index > 0 Then
             If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
                 If .clan_nivel >= 3 Then
@@ -1831,7 +1831,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Call SetRGBA(NameColorClan(2), 255, 255, 0, 255)
                 Call SetRGBA(NameColorClan(3), 255, 255, 0, 255)
                 
-                If dibujaMiembroClan Or charindex = UserCharIndex Then
+                If .clan_index = charlist(UserCharIndex).clan_index Then
                     Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColorClan, 1, False, 0, IIf(.Invisible, 160, 255)
                 Else
                     Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
