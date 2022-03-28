@@ -6083,16 +6083,16 @@ Private Sub HandleGuildNews()
                 .beneficios = "Pedir ayuda (G) / Max miembros: 7"
 
             Case 3
-                .beneficios = "Pedir ayuda (G) / Verse Invisible." & vbCrLf & "Max miembros: 7"
+                .beneficios = "Pedir ayuda (G) / Seguro de clan." & vbCrLf & "Max miembros: 7"
 
             Case 4
-                .beneficios = "Pedir ayuda (G) / Verse Invisible. " & vbCrLf & "Max miembros: 12"
+                .beneficios = "Pedir ayuda (G) / Seguro de clan. " & vbCrLf & "Max miembros: 12"
 
             Case 5
-                .beneficios = "Pedir ayuda (G) / Verse Invisible  " & vbCrLf & "/ Seguro de clan." & vbCrLf & " Max miembros: 15"
+                .beneficios = "Pedir ayuda (G) / Seguro de clan /  Ver vida y mana." & vbCrLf & " Max miembros: 15"
                 
             Case 6
-                .beneficios = "Pedir ayuda (G) / Verse Invisible / Seguro de clan / Verse vida." & vbCrLf & " Max miembros: 20"
+                .beneficios = "Pedir ayuda (G) / Seguro de clan / Ver vida y mana/ Verse invisible." & vbCrLf & " Max miembros: 20"
         
         End Select
     
@@ -6377,19 +6377,19 @@ Private Sub HandleGuildLeaderInfo()
                 .maxMiembros = 7
 
             Case 3
-                .beneficios = "Pedir ayuda (G) / Verse Invisible." & vbCrLf & "Max miembros: 7"
+                .beneficios = "Pedir ayuda (G) / Seguro de clan." & vbCrLf & "Max miembros: 7"
                 .maxMiembros = 7
 
             Case 4
-                .beneficios = "Pedir ayuda (G) / Verse Invisible. " & vbCrLf & "Max miembros: 12"
+                .beneficios = "Pedir ayuda (G) / Seguro de clan. " & vbCrLf & "Max miembros: 12"
                 .maxMiembros = 12
 
             Case 5
-                .beneficios = "Pedir ayuda (G) / Verse Invisible  " & vbCrLf & "/ Seguro de clan." & vbCrLf & " Max miembros: 15"
+                .beneficios = "Pedir ayuda (G) / Seguro de clan /  Ver vida y mana." & vbCrLf & " Max miembros: 15"
                 .maxMiembros = 15
                 
             Case 6
-                .beneficios = "Pedir ayuda (G) / Verse Invisible / Seguro de clan / Verse vida." & vbCrLf & " Max miembros: 20"
+                .beneficios = "Pedir ayuda (G) / Seguro de clan / Ver vida y mana/ Verse invisible." & vbCrLf & " Max miembros: 20"
                 .maxMiembros = 20
         End Select
         
