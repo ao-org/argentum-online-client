@@ -1209,14 +1209,15 @@ End Sub
 
 Public Function get_logging_server() As String
     Dim value As Long
-     value = RandomNumber(1, 10)
-    
-    If value <= 5 Then
+    Dim k As Integer
+    For k = 1 To 100
+        Value = RandomNumber(1, 100)
+    Next k
+    If Value <= 50 Then
         get_logging_server = servers_login_connections(1)
     Else
         get_logging_server = servers_login_connections(2)
     End If
-    
 End Function
 
 Public Function randomMap() As Integer
