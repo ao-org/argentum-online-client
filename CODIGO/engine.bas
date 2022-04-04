@@ -1569,32 +1569,32 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         MostrarNombre = True
                         If .priv = 0 Then
                         
-                        Select Case .status
-                            ' Criminal
-                            Case 0
-                                Call SetRGBA(NameColor(0), ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
-                            
-                            ' Ciudadano
-                            Case 1
-                                Call SetRGBA(NameColor(0), ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
-                            
-                            ' Caos
-                            Case 2
-                                Call SetRGBA(NameColor(0), ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
-    
-                            ' Armada
-                            Case 3
-                                Call SetRGBA(NameColor(0), ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
-    
-                        End Select
-                    Else
-                        Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
-                    End If
+                            Select Case .status
+                                ' Criminal
+                                Case 0
+                                    Call SetRGBA(NameColor(0), ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).b)
+                                
+                                ' Ciudadano
+                                Case 1
+                                    Call SetRGBA(NameColor(0), ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).b)
+                                
+                                ' Caos
+                                Case 2
+                                    Call SetRGBA(NameColor(0), ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).b)
+        
+                                ' Armada
+                                Case 3
+                                    Call SetRGBA(NameColor(0), ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
+        
+                            End Select
+                        Else
+                            Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
+                        End If
                     
-                    Call LerpRGBA(NameColor(0), NameColor(0), RGBA_From_Comp(0, 0, 0), 0.5)
-                    Call RGBA_ToList(NameColor, NameColor(0))
-                    Call RGBA_ToList(colorCorazon, NameColor(0))
-                    Call RGBAList(Color, 180, 160, 160, 160)
+                        Call LerpRGBA(NameColor(0), NameColor(0), RGBA_From_Comp(0, 0, 0), 0.5)
+                        Call RGBA_ToList(NameColor, NameColor(0))
+                        Call RGBA_ToList(colorCorazon, NameColor(0))
+                        Call RGBAList(Color, 180, 160, 160, 160)
                     End If
                 End If
 
@@ -1671,7 +1671,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             
             
-            If verVidaClan Then
+            If (verVidaClan And Not .Invisible) Or dibujaMiembroClan Then
                 OffsetYname = 8
                 OffsetYClan = 8
                 Call DibujarVidaChar(charindex, PixelOffsetX, PixelOffsetY, OffsetYname, OffsetYClan)
@@ -1831,7 +1831,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Call SetRGBA(NameColorClan(2), 255, 255, 0, 255)
                 Call SetRGBA(NameColorClan(3), 255, 255, 0, 255)
                 
-                If .clan_index = charlist(UserCharIndex).clan_index Then
+                If (.clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .EsNpc = False) Or (charindex = UserCharIndex And .Invisible) Then
                     Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColorClan, 1, False, 0, IIf(.Invisible, 160, 255)
                 Else
                     Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
