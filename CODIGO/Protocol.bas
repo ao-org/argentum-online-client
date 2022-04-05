@@ -1929,8 +1929,9 @@ Private Sub HandleCharSwing()
         
         Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y)) ' Swing
         
-        If ShowFX And .Invisible = False Then Call SetCharacterFx(charindex, 90, 0)
-
+        ' If ShowFX And .Invisible = False Then Call SetCharacterFx(charindex, 90, 0)
+         
+        
     End With
     
     Exit Sub
