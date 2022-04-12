@@ -2111,7 +2111,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                     SendTxt.SetFocus
                 End If
                 
-            ElseIf KeyCode = vbKeyEnd Then
+            ElseIf KeyCode = vbKeyDelete Then
                 If Not SendTxt.Visible Then
                     SendTxtCmsg.Visible = True
                     SendTxtCmsg.SetFocus
