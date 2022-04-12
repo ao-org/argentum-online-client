@@ -62,9 +62,9 @@ Public Sub LoadImpAoInit()
 
     NUMBINDS = Val(GetVar(File, "INIT", "NUMBINDS"))
 
-    ACCION1 = Val(GetVar(File, "INIT", "ACCION1"))
-    ACCION2 = Val(GetVar(File, "INIT", "ACCION2"))
-    ACCION3 = Val(GetVar(File, "INIT", "ACCION3"))
+    ACCION1 = 0 'Val(GetVar(File, "INIT", "ACCION1"))
+    ACCION2 = 1 'Val(GetVar(File, "INIT", "ACCION2"))
+    ACCION3 = 4 'Val(GetVar(File, "INIT", "ACCION3"))
 
     ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
 

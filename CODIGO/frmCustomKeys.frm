@@ -870,9 +870,9 @@ Private Sub GuardaConfigEnVariables()
         BindKeys(i).KeyCode = TempVars(i - 1)
     Next
 
-    ACCION1 = AccionList1.ListIndex
-    ACCION2 = AccionList2.ListIndex
-    ACCION3 = AccionList3.ListIndex
+    ACCION1 = 0 'AccionList1.ListIndex
+    ACCION2 = 1 'AccionList2.ListIndex
+    ACCION3 = 4 'AccionList3.ListIndex
 
     
     Exit Sub
