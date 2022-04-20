@@ -38,7 +38,6 @@ Begin VB.Form frmCantidad
       Left            =   1410
       MaxLength       =   9999
       TabIndex        =   0
-      Text            =   "1"
       Top             =   1620
       Width           =   1560
    End

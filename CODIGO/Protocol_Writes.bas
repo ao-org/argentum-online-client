@@ -6201,11 +6201,13 @@ WriteCommerceSendChatMessage_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteLogMacroClickHechizo()
+Public Sub WriteLogMacroClickHechizo(ByVal tipo As Byte, Optional ByVal clicks As Long = 1)
         '<EhHeader>
         On Error GoTo WriteLogMacroClickHechizo_Err
         '</EhHeader>
 100     Call Writer.WriteInt16(ClientPacketID.LogMacroClickHechizo)
+101     Call Writer.WriteInt8(tipo)
+103     Call Writer.WriteInt32(clicks)
     
 102     Call modNetwork.Send(Writer)
         '<EhFooter>

@@ -9,6 +9,14 @@ Public SeguroClanX As Boolean
 Public SeguroResuX As Boolean
 
 Public QuePestañaInferior As Byte
+
+
+Public Enum tMacro
+    dobleclick = 1
+    Coordenadas = 2
+    inasistidoPosFija = 3
+End Enum
+
 Public TieneAntorcha As Boolean
 Public Enum TipoAntorcha
     AntorchaBasica = 0

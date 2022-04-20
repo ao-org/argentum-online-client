@@ -20,6 +20,7 @@ Private Type tItem
 
 End Type
 
+
 Private Type tWorldPos
 
     map As Integer
@@ -897,7 +898,6 @@ Sub Check_Keys()
         Not frmBancoObj.Visible And _
         Not frmOpciones.Visible And _
         Not frmComerciar.Visible And _
-        Not frmCantidad.Visible And _
         Not frmGoliath.Visible And _
         Not frmEstadisticas.Visible And _
         Not frmStatistics.Visible And _

@@ -25,7 +25,7 @@ Public Function ComprobarPosibleMacro(ByVal MouseX As Integer, ByVal MouseY As I
 End Function
 
 Private Sub generarLogMacrero()
-    Call WriteLogMacroClickHechizo
+    Call WriteLogMacroClickHechizo(tMacro.inasistidoPosFija)
 End Sub
 
 Public Sub CountPacketIterations(ByRef packetControl As t_packetControl, ByVal expectedAverage As Double)

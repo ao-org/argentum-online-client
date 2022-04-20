@@ -32,6 +32,10 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.Timer dobleclick 
+      Left            =   8520
+      Top             =   2400
+   End
    Begin VB.Timer timerRetrasadoSensui 
       Enabled         =   0   'False
       Interval        =   60000
@@ -1447,7 +1451,7 @@ Public WithEvents Inventario As clsGrapchicalInventory
 Attribute Inventario.VB_VarHelpID = -1
 
 Private Const WS_EX_TRANSPARENT = &H20&
-
+Private totalclicks As Integer
 Private Const GWL_EXSTYLE = (-20)
 
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
@@ -1601,7 +1605,7 @@ Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single
     
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
         Exit Sub
     End If
     iClickTick = TempTick
@@ -1958,6 +1962,23 @@ createObj_Click_Err:
     
 End Sub
 
+Private Sub dobleclick_Timer()
+    Static segundo As Long
+    segundo = segundo + 1
+    If segundo = 2 And totalclicks > 20 Then
+    Call WriteLogMacroClickHechizo(tMacro.dobleclick, totalclicks)
+    totalclicks = 0
+    segundo = 0
+    dobleclick.Interval = 0
+    'Label10.Caption = 0
+    End If
+    If segundo = 2 And totalclicks <= 20 Then
+    totalclicks = 0
+    segundo = 0
+    dobleclick.Interval = 0
+    End If
+End Sub
+
 Private Sub Efecto_Timer()
     
     On Error GoTo Efecto_Timer_Err
@@ -1984,7 +2005,7 @@ Private Sub hlst_Click()
     TempTick = GetTickCount And &H7FFFFFFF
     
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
         Exit Sub
     End If
     iClickTick = TempTick
@@ -2112,6 +2133,13 @@ Form_Activate_Err:
 End Sub
 
 
+Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+   If dobleclick.Interval = 0 Then dobleclick.Interval = 1000
+    If Button = 1 Then
+        dobleclick.Interval = 1000
+        totalclicks = totalclicks + 1
+    End If
+End Sub
 
 Private Sub Second_Timer()
     If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
@@ -2181,6 +2209,8 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseDown_Err
     
+    
+    If SendTxt.Visible Then SendTxt.SetFocus
     MouseBoton = Button
     MouseShift = Shift
     
@@ -2596,7 +2626,7 @@ Private Sub imgHechizos_Click()
     TempTick = GetTickCount And &H7FFFFFFF
     
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
         Exit Sub
     End If
     iClickTick = TempTick
@@ -2634,7 +2664,7 @@ Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Sing
     TempTick = GetTickCount And &H7FFFFFFF
     
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
         Exit Sub
     End If
     iClickTick = TempTick
@@ -2697,7 +2727,7 @@ Private Sub imgInventario_Click()
     TempTick = GetTickCount And &H7FFFFFFF
    
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
         Exit Sub
     End If
     iClickTick = TempTick
@@ -2732,7 +2762,7 @@ Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Si
     TempTick = GetTickCount And &H7FFFFFFF
    
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
         Exit Sub
     End If
     
@@ -3980,7 +4010,7 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     
     On Error GoTo renderer_MouseDown_Err
     
-
+    If SendTxt.Visible Then SendTxt.SetFocus
     MouseBoton = Button
     MouseShift = Shift
 
@@ -4303,7 +4333,7 @@ Private Sub cmdLanzar_Click()
     TempTick = GetTickCount And &H7FFFFFFF
     
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
         Exit Sub
     End If
     iClickTick = TempTick

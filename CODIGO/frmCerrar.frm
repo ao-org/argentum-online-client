@@ -103,22 +103,7 @@ Private Sub LoadButtons()
                                                 "boton-salir-ES-over.bmp", _
                                                 "boton-salir-ES-off.bmp", Me)
 End Sub
-Private Sub Form_KeyPress(KeyAscii As Integer)
-    
-    On Error GoTo Form_KeyPress_Err
-    
 
-    'If (KeyAscii = 27) Then
-    '    Unload Me
-    'End If
-
-    
-    Exit Sub
-
-Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCerrar.Form_KeyPress", Erl)
-    Resume Next
-End Sub
 
 Private Sub cmdCancelar_Click()
     Unload Me
