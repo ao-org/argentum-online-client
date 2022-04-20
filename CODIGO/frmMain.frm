@@ -431,6 +431,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1603,12 +1604,6 @@ Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single
     
     On Error GoTo cmdlanzar_MouseDown_Err
     
-    TempTick = GetTickCount And &H7FFFFFFF
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-        Exit Sub
-    End If
-    iClickTick = TempTick
     
     If ModoHechizos = BloqueoLanzar Then
         If Not MainTimer.Check(TimersIndex.AttackSpell, False) Or Not MainTimer.Check(TimersIndex.CastSpell, False) Then
@@ -2002,13 +1997,16 @@ Efecto_Timer_Err:
 End Sub
 
 Private Sub hlst_Click()
+    
     TempTick = GetTickCount And &H7FFFFFFF
     
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.lista Then
         Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-        Exit Sub
     End If
+    
     iClickTick = TempTick
+    
+    LastMacroButton = tMacroButton.lista
 End Sub
 
 Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2625,11 +2623,13 @@ Private Sub imgHechizos_Click()
     
     TempTick = GetTickCount And &H7FFFFFFF
     
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Hechizos Then
         Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-        Exit Sub
     End If
+    
     iClickTick = TempTick
+    
+    LastMacroButton = tMacroButton.Hechizos
     
     panel.Picture = LoadInterface("centrohechizo.bmp")
     picInv.Visible = False
@@ -2660,15 +2660,7 @@ End Sub
 Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo imgHechizos_MouseDown_Err
-    
-    TempTick = GetTickCount And &H7FFFFFFF
-    
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-        Exit Sub
-    End If
-    iClickTick = TempTick
-    
+       
     imgHechizos.Picture = LoadInterface("boton-hechizos-ES-off.bmp")
     imgHechizos.Tag = "1"
 
@@ -2725,12 +2717,14 @@ Private Sub imgInventario_Click()
     If picInv.Visible Then Exit Sub
 
     TempTick = GetTickCount And &H7FFFFFFF
-   
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+    
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Inventario Then
         Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-        Exit Sub
     End If
+    
     iClickTick = TempTick
+    
+    LastMacroButton = tMacroButton.Inventario
 
     panel.Picture = LoadInterface("centroinventario.bmp")
     'Call Audio.PlayWave(SND_CLICK)
@@ -2759,13 +2753,7 @@ End Sub
 
 Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
-    TempTick = GetTickCount And &H7FFFFFFF
-   
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-        Exit Sub
-    End If
-    
+
     On Error GoTo imgInventario_MouseDown_Err
     
     imgInventario.Picture = LoadInterface("boton-inventory-ES-off.bmp")
@@ -4332,11 +4320,14 @@ Private Sub cmdLanzar_Click()
 
     TempTick = GetTickCount And &H7FFFFFFF
     
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Lanzar Then
+        
         Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-        Exit Sub
     End If
+    
     iClickTick = TempTick
+    
+    LastMacroButton = tMacroButton.Lanzar
 
     If hlst.List(hlst.ListIndex) <> "(Vacío)" Then
         If UserEstado = 1 Then

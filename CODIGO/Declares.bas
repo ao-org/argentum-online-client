@@ -17,6 +17,15 @@ Public Enum tMacro
     inasistidoPosFija = 3
 End Enum
 
+Public Enum tMacroButton
+    Inventario = 1
+    Hechizos = 2
+    lista = 3
+    Lanzar = 4
+End Enum
+
+Public LastMacroButton As Long
+
 Public TieneAntorcha As Boolean
 Public Enum TipoAntorcha
     AntorchaBasica = 0
