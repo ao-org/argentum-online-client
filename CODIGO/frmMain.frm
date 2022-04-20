@@ -427,7 +427,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1487,6 +1486,12 @@ Public dX         As Integer
 
 Public dy         As Integer
 
+Private Const IntervaloEntreClicks As Long = 50
+
+Dim TempTick As Long
+
+Private iClickTick As Long
+
 ' Constantes para SendMessage
 
 Const HWND_TOPMOST = -1
@@ -1593,6 +1598,13 @@ End Sub
 Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdlanzar_MouseDown_Err
+    
+    TempTick = GetTickCount And &H7FFFFFFF
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+        Call WriteLogMacroClickHechizo
+        Exit Sub
+    End If
+    iClickTick = TempTick
     
     If ModoHechizos = BloqueoLanzar Then
         If Not MainTimer.Check(TimersIndex.AttackSpell, False) Or Not MainTimer.Check(TimersIndex.CastSpell, False) Then
@@ -1967,7 +1979,21 @@ Efecto_Timer_Err:
     Resume Next
     
 End Sub
+
+Private Sub hlst_Click()
+    TempTick = GetTickCount And &H7FFFFFFF
+    
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+        Call WriteLogMacroClickHechizo
+        Exit Sub
+    End If
+    iClickTick = TempTick
+End Sub
+
 Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    TempTick = GetTickCount And &H7FFFFFFF
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then Exit Sub
+    iClickTick = TempTick
     ImgEstadisticas.Picture = LoadInterface("boton-estadisticas-big-off.bmp")
     ImgEstadisticas.Tag = "1"
 End Sub
@@ -2566,6 +2592,15 @@ Private Sub imgHechizos_Click()
     
 
     If hlst.Visible Then Exit Sub
+    
+    TempTick = GetTickCount And &H7FFFFFFF
+    
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+        Call WriteLogMacroClickHechizo
+        Exit Sub
+    End If
+    iClickTick = TempTick
+    
     panel.Picture = LoadInterface("centrohechizo.bmp")
     picInv.Visible = False
     
@@ -2595,6 +2630,14 @@ End Sub
 Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo imgHechizos_MouseDown_Err
+    
+    TempTick = GetTickCount And &H7FFFFFFF
+    
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+        Call WriteLogMacroClickHechizo
+        Exit Sub
+    End If
+    iClickTick = TempTick
     
     imgHechizos.Picture = LoadInterface("boton-hechizos-ES-off.bmp")
     imgHechizos.Tag = "1"
@@ -2651,6 +2694,14 @@ Private Sub imgInventario_Click()
 
     If picInv.Visible Then Exit Sub
 
+    TempTick = GetTickCount And &H7FFFFFFF
+   
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+        Call WriteLogMacroClickHechizo
+        Exit Sub
+    End If
+    iClickTick = TempTick
+
     panel.Picture = LoadInterface("centroinventario.bmp")
     'Call Audio.PlayWave(SND_CLICK)
     picInv.Visible = True
@@ -2677,6 +2728,13 @@ imgInventario_Click_Err:
 End Sub
 
 Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    TempTick = GetTickCount And &H7FFFFFFF
+   
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+        Call WriteLogMacroClickHechizo
+        Exit Sub
+    End If
     
     On Error GoTo imgInventario_MouseDown_Err
     
@@ -4241,6 +4299,14 @@ Private Sub cmdLanzar_Click()
     On Error GoTo cmdLanzar_Click_Err
     
     If pausa Then Exit Sub
+
+    TempTick = GetTickCount And &H7FFFFFFF
+    
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then
+        Call WriteLogMacroClickHechizo
+        Exit Sub
+    End If
+    iClickTick = TempTick
 
     If hlst.List(hlst.ListIndex) <> "(Vacío)" Then
         If UserEstado = 1 Then
