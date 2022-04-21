@@ -4007,7 +4007,6 @@ End Sub
 Public Sub WriteTeleportCreate(ByVal map As Integer, _
                                ByVal x As Byte, _
                                ByVal y As Byte, _
-                               ByVal Radio As Byte, _
                                ByVal Motivo As String)
         '<EhHeader>
         On Error GoTo WriteTeleportCreate_Err
@@ -4016,7 +4015,6 @@ Public Sub WriteTeleportCreate(ByVal map As Integer, _
 102     Call Writer.WriteInt16(map)
 104     Call Writer.WriteInt8(x)
 106     Call Writer.WriteInt8(y)
-107     Call Writer.WriteInt8(Radio)
 108     Call Writer.WriteString8(Motivo)
     
 110     Call modNetwork.Send(Writer)

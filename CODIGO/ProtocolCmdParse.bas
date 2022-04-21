@@ -1257,12 +1257,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
                     tempStr = Split(ArgumentosRaw, "@")
                     
-                    If notNullArguments And CantidadArgumentos > 4 And tempStr(1) <> vbNullString Then
-                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Byte) Then
-                            Call WriteTeleportCreate(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3), tempStr(1))
+                    If notNullArguments And CantidadArgumentos > 3 And tempStr(1) <> vbNullString Then
+                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Byte) Then
+                            Call WriteTeleportCreate(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), tempStr(1))
                         Else
                             'No es numerico
-                            Call ShowConsoleMsg("Valor incorrecto. Utilice /ct MAPA X Y RADIO @MOTIVO. Si no requiere radio mande /CT MAPA X Y 0 @MOTIVO")
+                            Call ShowConsoleMsg("Valor incorrecto. Utilice /ct MAPA X Y @MOTIVO.")
     
                         End If
     
