@@ -2132,7 +2132,10 @@ End Sub
 
 
 Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-   If dobleclick.Interval = 0 Then dobleclick.Interval = 1000
+    If Not picInv.Visible Then Exit Sub
+    
+    If dobleclick.Interval = 0 Then dobleclick.Interval = 1000
+    
     If Button = 1 Then
         dobleclick.Interval = 1000
         totalclicks = totalclicks + 1
@@ -4837,6 +4840,8 @@ Private Sub picInv_DblClick()
     On Error GoTo picInv_DblClick_Err
     
 
+    If Not picInv.Visible Then Exit Sub
+    
     If frmCarp.Visible Or frmHerrero.Visible Or frmComerciar.Visible Or frmBancoObj.Visible Then Exit Sub
     If pausa Then Exit Sub
     
