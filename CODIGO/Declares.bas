@@ -15,6 +15,7 @@ Public Enum tMacro
     dobleclick = 1
     Coordenadas = 2
     inasistidoPosFija = 3
+    borrarCartel = 4
 End Enum
 
 Public Enum tMacroButton
@@ -25,6 +26,10 @@ Public Enum tMacroButton
 End Enum
 
 Public LastMacroButton As Long
+
+Public LastOpenChatCounter As Long
+Public LastElapsedTimeChat(1 To 5) As Double
+Public StartOpenChatTime As Double
 
 Public TieneAntorcha As Boolean
 Public Enum TipoAntorcha

@@ -2162,6 +2162,8 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                 If Not frmCantidad.Visible Then
                     
                     Call CompletarEnvioMensajes
+                    'HarThaoS: Al abrir el textBox de escritura tomo el tiempo de inicio para controlar macro de cartel
+                    StartOpenChatTime = GetTickCount
                     SendTxt.Visible = True
                     SendTxt.SetFocus
                 End If
@@ -4158,10 +4160,20 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
             sndPrivateTo = ""
 
         End If
-        
         stxtbuffer = ""
         SendTxt.Text = ""
         KeyCode = 0
+        
+        
+3        Dim tiempoTranscurridoCartel As Double
+        
+        tiempoTranscurridoCartel = GetTickCount - StartOpenChatTime
+        Debug.Print "timerElapsedTime: " & tiempoTranscurridoCartel
+        
+        Call computeLastElapsedTimeChat(tiempoTranscurridoCartel)
+        
+        
+        
         SendTxt.Visible = False
         
     End If
@@ -4171,6 +4183,34 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
 SendTxt_KeyUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.SendTxt_KeyUp", Erl)
     Resume Next
+    
+End Sub
+
+Private Sub computeLastElapsedTimeChat(ByVal tiempoTranscurridoCartel As Double)
+    Dim i As Long
+    
+    For i = 2 To 5
+        LastElapsedTimeChat(i - 1) = LastElapsedTimeChat(i)
+    Next i
+    
+    LastElapsedTimeChat(5) = tiempoTranscurridoCartel
+        
+    'HarThaoS: Calculo el mínimo y máximo de mis carteleos
+    Dim min As Double, max As Double
+    
+    min = LastElapsedTimeChat(5)
+    max = LastElapsedTimeChat(5)
+    
+    For i = 1 To 5
+        If LastElapsedTimeChat(i) > max Then max = LastElapsedTimeChat(i)
+        If LastElapsedTimeChat(i) < min Then min = LastElapsedTimeChat(i)
+    Next i
+    
+    If (max - min) > 0 And (max - min) < 12 Then
+         Call WriteLogMacroClickHechizo(tMacro.borrarCartel)
+    End If
+    
+    
     
 End Sub
 
@@ -4213,9 +4253,6 @@ cerrarcuenta_Timer_Err:
     
 End Sub
 
-Private Sub Timer1_Timer()
-    
-End Sub
 
 Private Sub TimerLluvia_Timer()
     
