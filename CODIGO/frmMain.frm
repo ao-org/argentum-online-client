@@ -431,7 +431,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2130,6 +2129,18 @@ Form_Activate_Err:
     
 End Sub
 
+
+Private Sub picInv_Click()
+    TempTick = GetTickCount And &H7FFFFFFF
+    
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Hechizos Then
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
+    End If
+    
+    iClickTick = TempTick
+    
+    LastMacroButton = tMacroButton.picInv
+End Sub
 
 Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Not picInv.Visible Then Exit Sub
