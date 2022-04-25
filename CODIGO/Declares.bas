@@ -23,7 +23,6 @@ Public Enum tMacroButton
     Hechizos = 2
     lista = 3
     Lanzar = 4
-    picInv = 5
 End Enum
 
 Public LastMacroButton As Long
