@@ -433,8 +433,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                
             Case "/PENAS"
-                Exit Sub
-                'Call WritePunishments(ArgumentosRaw)
+                Call WritePunishments(ArgumentosRaw)
 
             
             Case "/APOSTAR"

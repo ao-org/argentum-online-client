@@ -1563,8 +1563,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         
                 Else
                     'refactorizar bien esto, es un asco sino
-                    Call RGBAList(Color, 0, 0, 0, 0)
-                    MostrarNombre = False
+                    If .Navegando Then
+                        MostrarNombre = True
+                        Call RGBAList(Color, 125, 125, 125, 125)
+                    Else
+                        MostrarNombre = False
+                        Call RGBAList(Color, 0, 0, 0, 0)
+                    End If
+                    
                     If dibujaMiembroClan Then
                         MostrarNombre = True
                         If .priv = 0 Then
@@ -1628,7 +1634,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     MostrarNombre = True
                     
                     If .priv = 0 Then
-                        
                         Select Case .status
                             ' Criminal
                             Case 0
@@ -1748,7 +1753,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 EndComposedTexture
                
                         
-                If Not .Invisible Or dibujaMiembroClan Then
+                If Not .Invisible Or dibujaMiembroClan Or .Navegando Then
                     ' Reflejo
                     PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, , True
 
@@ -1804,18 +1809,53 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                 Dim factor As Double
                 factor = MapData(x, y).light_value(0).r / 255
-                NameColor(0).r = NameColor(0).r * factor
-                NameColor(0).G = NameColor(0).G * factor
-                NameColor(0).B = NameColor(0).B * factor
-                NameColor(1).r = NameColor(1).r * factor
-                NameColor(1).G = NameColor(1).G * factor
-                NameColor(1).B = NameColor(1).B * factor
-                NameColor(2).r = NameColor(2).r * factor
-                NameColor(2).G = NameColor(2).G * factor
-                NameColor(2).B = NameColor(2).B * factor
-                NameColor(3).r = NameColor(3).r * factor
-                NameColor(3).G = NameColor(3).G * factor
-                NameColor(3).B = NameColor(3).B * factor
+                
+                If .Navegando Then
+                    If .priv = 0 Then
+                        Select Case .status
+                            ' Criminal
+                            Case 0
+                                Call RGBAList(NameColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).b)
+                                Call RGBAList(colorCorazon, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).b)
+                            
+                            ' Ciudadano
+                            Case 1
+                                Call RGBAList(NameColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).b)
+                                Call RGBAList(colorCorazon, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).b)
+                            
+                            ' Caos
+                            Case 2
+                                Call RGBAList(NameColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).b)
+                                Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).b)
+    
+                            ' Armada
+                            Case 3
+                                Call RGBAList(NameColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
+                                Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
+    
+                        End Select
+                                
+                    Else
+                        Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
+                        Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
+                        
+                    End If
+                Else
+                    NameColor(0).r = NameColor(0).r * Factor
+                    NameColor(0).G = NameColor(0).G * Factor
+                    NameColor(0).b = NameColor(0).b * Factor
+                    NameColor(1).r = NameColor(1).r * Factor
+                    NameColor(1).G = NameColor(1).G * Factor
+                    NameColor(1).b = NameColor(1).b * Factor
+                    NameColor(2).r = NameColor(2).r * Factor
+                    NameColor(2).G = NameColor(2).G * Factor
+                    NameColor(2).b = NameColor(2).b * Factor
+                    NameColor(3).r = NameColor(3).r * Factor
+                    NameColor(3).G = NameColor(3).G * Factor
+                    NameColor(3).b = NameColor(3).b * Factor
+                
+                End If
+                
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 'Clan

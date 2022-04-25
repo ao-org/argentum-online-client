@@ -4189,19 +4189,19 @@ End Sub
 Private Sub computeLastElapsedTimeChat(ByVal tiempoTranscurridoCartel As Double)
     Dim i As Long
     
-    For i = 2 To 5
+    For i = 2 To 6
         LastElapsedTimeChat(i - 1) = LastElapsedTimeChat(i)
     Next i
     
-    LastElapsedTimeChat(5) = tiempoTranscurridoCartel
+    LastElapsedTimeChat(6) = tiempoTranscurridoCartel
         
     'HarThaoS: Calculo el mínimo y máximo de mis carteleos
     Dim min As Double, max As Double
     
-    min = LastElapsedTimeChat(5)
-    max = LastElapsedTimeChat(5)
+    min = LastElapsedTimeChat(6)
+    max = LastElapsedTimeChat(6)
     
-    For i = 1 To 5
+    For i = 1 To 6
         If LastElapsedTimeChat(i) > max Then max = LastElapsedTimeChat(i)
         If LastElapsedTimeChat(i) < min Then min = LastElapsedTimeChat(i)
     Next i
