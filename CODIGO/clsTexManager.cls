@@ -48,29 +48,16 @@ Private mFreeMemoryBytes             As Long
 Private Sub Class_Terminate()
     
     On Error GoTo Class_Terminate_Err
-    
-
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 5/04/2005
-    '
-    '**************************************************************
     Dim i As Long
-
     Dim j As Long
-    
     'Destroy every surface in memory
     For i = 0 To HASH_TABLE_SIZE - 1
-
         With TexList(i)
-
             For j = 1 To .surfaceCount
                 Set .SurfaceEntry(j).Texture = Nothing
             Next j
-            
             'Destroy the arrays
             Erase .SurfaceEntry
-
         End With
 
     Next i
@@ -155,19 +142,11 @@ End Function
 
 Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, ByRef textheight As Long) As Direct3DTexture8
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'menduz was here
-    '
-    '**************************************************************
     On Error GoTo errhandler
 
     Dim surface_desc As D3DSURFACE_DESC
-
     Dim Index        As Integer
-
     Dim DirArchico   As String
-
     Dim bytArr()     As Byte
     
     Index = Archivo Mod HASH_TABLE_SIZE
@@ -177,16 +156,8 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
         ReDim Preserve .SurfaceEntry(1 To .surfaceCount) As SURFACE_ENTRY_DYN
 
         With .SurfaceEntry(.surfaceCount)
-            'Nombre
             .FileName = Archivo
-            
-            'Ultimo acceso
             .UltimoAcceso = GetTickCount()
-            
-            '  Dim demora As Long
-            '  Dim demoraok As Long
-            ' demora = GetTickCount
-    
             #If Compresion = 1 Then
 
                 If Not Extract_File_To_Memory(Graphics, App.Path & "\..\Recursos\OUTPUT\", LTrim(str(Archivo)) & ".png", bytArr, ResourcesPassword) Then
@@ -194,13 +165,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
                     Exit Function
 
                 End If
-        
-                'demoraok = GetTickCount - demora
-                'Debug.Print "Extract_File_To_Memory Demoro: " & demoraok
-        
-                'DirArchico = Windows_Temp_Dir & LTrim(str(Archivo)) & ".png"
-        
-                Set .Texture = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, ByVal 0, ByVal 0)
+                Set .Texture = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
             #Else
 
                 Dim PathToFile As String
@@ -213,7 +178,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
 
                 End If
 
-                Set .Texture = mD3D.CreateTextureFromFileEx(device, PathToFile, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, &HFF000000, ByVal 0, ByVal 0)
+                Set .Texture = mD3D.CreateTextureFromFileEx(device, PathToFile, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
             #End If
                 
             .Texture.GetLevelDesc 0, surface_desc
@@ -224,8 +189,6 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
             textheight = .texture_height
             
             Set CrearGrafico = TexList(Index).SurfaceEntry(TexList(Index).surfaceCount).Texture
-
-            ' mFreeMemoryBytes = mFreeMemoryBytes - surface_desc.size
         End With
 
     End With
