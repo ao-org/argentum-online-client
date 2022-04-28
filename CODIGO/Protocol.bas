@@ -994,6 +994,7 @@ Private Sub HandleLogged()
     ' frmMain.Label6.Visible = True
     frmMain.Fuerzalbl.Visible = True
     frmMain.AgilidadLbl.Visible = True
+    frmMain.oxigenolbl.Visible = True
     frmMain.imgDeleteItem.Visible = True
     QueRender = 0
     
@@ -1239,6 +1240,7 @@ Public Sub HandleDisconnect()
     frmMain.GldLbl.Visible = True
     frmMain.Fuerzalbl.Visible = True
     frmMain.AgilidadLbl.Visible = True
+    frmMain.oxigenolbl.Visible = True
     frmMain.QuestBoton.Visible = False
     frmMain.ImgHogar.Visible = False
     frmMain.lblWeapon.Visible = True
