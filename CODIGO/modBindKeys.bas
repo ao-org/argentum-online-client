@@ -318,13 +318,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Call WriteWork(eSkill.Ocultarse)
                 
         Case BindKeys(19).KeyCode
-            'FPSFLAG = Not FPSFLAG
-            
-            ' If FPSFLAG Then
-            ' frmMain.Timerping.Enabled = True
-            ' Else
-            '  frmMain.Timerping.Enabled = False
-            'End If
+
             
             Dim Arch As String
     

@@ -633,12 +633,6 @@ Sub SetConnected()
 
     'Vaciamos la cola de movimiento
     Call keysMovementPressedQueue.Clear
-
-    If FPSFLAG Then
-        frmMain.Timerping.Enabled = True
-    Else
-        frmMain.Timerping.Enabled = False
-    End If
     
    ' frmMain.UpdateLight.Enabled = True
     frmMain.UpdateDaytime.Enabled = True

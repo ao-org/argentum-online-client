@@ -104,12 +104,6 @@ Begin VB.Form frmMain
       Left            =   1560
       Top             =   2400
    End
-   Begin VB.Timer Timerping 
-      Enabled         =   0   'False
-      Interval        =   7000
-      Left            =   4440
-      Top             =   2400
-   End
    Begin VB.Timer TimerNiebla 
       Interval        =   100
       Left            =   1080
@@ -431,7 +425,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4350,21 +4343,6 @@ TimerNiebla_Timer_Err:
     
 End Sub
 
-Private Sub Timerping_Timer()
-    
-    On Error GoTo Timerping_Timer_Err
-    
-    If pausa Then Exit Sub
-        
-    Call WritePing
-
-    Exit Sub
-
-Timerping_Timer_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Timerping_Timer", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub cmdLanzar_Click()
     

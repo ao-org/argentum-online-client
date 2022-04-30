@@ -1205,7 +1205,6 @@ Public Sub HandleDisconnect()
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
     frmMain.hlst.Visible = False
-    frmMain.Timerping.Enabled = False
     
     frmMain.UpdateLight.Enabled = False
     frmMain.UpdateDaytime.Enabled = False

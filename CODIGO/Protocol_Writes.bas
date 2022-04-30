@@ -5614,29 +5614,6 @@ WriteCheckSlot_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "Ping" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WritePing()
-        '<EhHeader>
-        On Error GoTo WritePing_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.Ping)
-102     Call Writer.WriteInt32(GetTickCount())
-    
-        ' Avoid computing errors due to frame rate
-    
-104     Call modNetwork.Send(Writer)
-106     Call modNetwork.Poll
-        '<EhFooter>
-        Exit Sub
-
-WritePing_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePing", Erl)
-        '</EhFooter>
-End Sub
 
 Public Sub WriteLlamadadeClan()
         '<EhHeader>

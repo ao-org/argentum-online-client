@@ -29,7 +29,7 @@ End Enum
 Public LastMacroButton As Long
 
 Public LastOpenChatCounter As Long
-Public LastElapsedTimeChat(1 To 5) As Double
+Public LastElapsedTimeChat(1 To 6) As Double
 Public StartOpenChatTime As Double
 
 Public TieneAntorcha As Boolean

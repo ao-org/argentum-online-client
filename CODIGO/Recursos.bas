@@ -2908,22 +2908,22 @@ Sub LoadFonts()
     
     ReDim arr(1 To 16) As Byte
     
-    arr(1) = 1
-    arr(2) = 62
-    arr(3) = 7
-    arr(4) = 2
-    arr(5) = 56
-    arr(6) = 22
-    arr(7) = 9
-    arr(8) = 21
-    arr(9) = 52
-    arr(10) = 23
-    arr(11) = 28
-    arr(12) = 19
-    arr(13) = 38
-    arr(14) = 22
-    arr(15) = 11
-    arr(16) = 64
+    arr(2) = 1
+    arr(1) = 62
+    arr(4) = 7
+    arr(3) = 2
+    arr(6) = 56
+    arr(5) = 22
+    arr(8) = 9
+    arr(7) = 21
+    arr(10) = 52
+    arr(9) = 23
+    arr(12) = 28
+    arr(11) = 19
+    arr(14) = 38
+    arr(13) = 22
+    arr(16) = 11
+    arr(15) = 64
     MapInfoEspeciales = estaInmovilizado(arr)
     
     #If DEBUGGING = 1 Then
