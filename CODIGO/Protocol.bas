@@ -148,7 +148,6 @@ Private Enum ServerPacketID
     ShowUserRequest         ' PETICIO
     ChangeUserTradeSlot     ' COMUSUINV
     'SendNight              ' NOC
-    Pong
     UpdateTagAndStatus
     FYA
     CerrarleCliente
@@ -233,34 +232,6 @@ Private Enum ServerPacketID
 End Enum
 
 Public Enum ClientPacketID
-    LoginExistingChar       'OLOGIN
-    LoginNewChar            'NLOGIN
-    Talk                    ';
-    Yell                    '-
-    Whisper                 '\
-    Walk                    'M
-    RequestPositionUpdate   'RPU
-    Attack                  'AT
-    PickUp                  'AG
-    SafeToggle              '/SEG & SEG  (SEG's behaviour has to be coded in the client)
-    PartySafeToggle
-    RequestGuildLeaderInfo  'GLINFO
-    RequestAtributes        'ATR
-    RequestSkills           'ESKI
-    RequestMiniStats        'FEST
-    CommerceEnd             'FINCOM
-    UserCommerceEnd         'FINCOMUSU
-    BankEnd                 'FINBAN
-    UserCommerceOk          'COMUSUOK
-    UserCommerceReject      'COMUSUNO
-    Drop                    'TI
-    CastSpell               'LH
-    LeftClick               'LC
-    DoubleClick             'RC
-    Work                    'UK
-    UseSpellMacro           'UMH
-    UseItem                 'USA
-    CraftBlacksmith         'CNS
     '--------------------
     CraftCarpenter          'CNC
     WorkLeftClick           'WLC
@@ -334,7 +305,34 @@ Public Enum ClientPacketID
     BankExtractGold         '/RETIRAR ( with arguments )
     BankDepositGold         '/DEPOSITAR
     Denounce                '/DENUNCIAR
-    Ping                    '/PING
+    LoginExistingChar       'OLOGIN
+    LoginNewChar            'NLOGIN
+    Talk                    ';
+    Yell                    '-
+    Whisper                 '\
+    Walk                    'M
+    RequestPositionUpdate   'RPU
+    Attack                  'AT
+    PickUp                  'AG
+    SafeToggle              '/SEG & SEG  (SEG's behaviour has to be coded in the client)
+    PartySafeToggle
+    RequestGuildLeaderInfo  'GLINFO
+    RequestAtributes        'ATR
+    RequestSkills           'ESKI
+    RequestMiniStats        'FEST
+    CommerceEnd             'FINCOM
+    UserCommerceEnd         'FINCOMUSU
+    BankEnd                 'FINBAN
+    UserCommerceOk          'COMUSUOK
+    UserCommerceReject      'COMUSUNO
+    Drop                    'TI
+    CastSpell               'LH
+    LeftClick               'LC
+    DoubleClick             'RC
+    Work                    'UK
+    UseSpellMacro           'UMH
+    UseItem                 'USA
+    CraftBlacksmith         'CNS
     
     'GM messages
     GMMessage               '/GMSG
@@ -763,8 +761,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleChangeUserTradeSlot
         'Case ServerPacketID.SendNight
         '    Call HandleSendNight
-        Case ServerPacketID.Pong
-            Call HandlePong
         Case ServerPacketID.UpdateTagAndStatus
             Call HandleUpdateTagAndStatus
         Case ServerPacketID.FYA
@@ -6859,32 +6855,6 @@ ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserNameList", Erl)
     
 
-End Sub
-
-''
-' Handles the Pong message.
-
-Private Sub HandlePong()
-    
-    On Error GoTo HandlePong_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    Dim Time As Long
-    Time = Reader.ReadInt32()
-
-    PingRender = GetTickCount() - Time
-
-    Exit Sub
-
-HandlePong_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePong", Erl)
-    
-    
 End Sub
 
 ''

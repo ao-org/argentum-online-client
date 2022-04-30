@@ -1997,10 +1997,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             
             Case "/IGNORADO"
                 Call WriteIgnored
-            
-            Case "/PING"
-                Call WritePing
-                
+                            
             Case "/CONSOLA"
             
                 'Ojo, no usar notNullArguments porque se usa el string Vacío para borrar cartel.
