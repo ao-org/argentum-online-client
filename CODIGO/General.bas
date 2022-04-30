@@ -1136,12 +1136,16 @@ Sub Main()
     servers_login_connections(1) = "45.235.99.71:4004"
     servers_login_connections(2) = "138.99.6.141:4007"
     
+    Dim ip As String
+    
+    
+    ip = randomIp()
     '45.235.99.71:4004
-    IPServers(1) = "45.235.99.71:7667:Minehost:" & get_logging_server()
+    IPServers(1) = ip & ":7667:Minehost:" & get_logging_server()
     
     Debug.Print IPServers(1)
     #If DEBUGGING = 1 Then
-        IPServers(2) = "45.235.98.31:11813:MinehostStaging:45.235.98.31:11814"
+        IPServers(2) = "45.235.99.71:11813:MinehostStaging:45.235.98.31:11814"
         IPServers(3) = "127.0.0.1:7667:Localhost:localhost:4000"
         IPServers(4) = "186.152.115.146:7667:Martin:localhost:4000"
     #End If
@@ -1200,6 +1204,23 @@ Main_Err:
     Resume Next
     
 End Sub
+Public Function randomIp() As String
+    Dim id As Long
+    id = RandomNumber(1, 3)
+    Select Case id
+        Case 1
+            randomIp = "45.235.98.33"
+            Exit Function
+        Case 2
+            randomIp = "45.235.98.34"
+            Exit Function
+        
+        Case 3
+            randomIp = "45.235.98.35"
+            Exit Function
+    End Select
+End Function
+
 
 Public Function get_logging_server() As String
     Dim value As Long
