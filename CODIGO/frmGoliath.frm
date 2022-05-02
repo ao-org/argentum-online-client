@@ -38,15 +38,7 @@ Begin VB.Form frmGoliath
          Alignment       =   2  'Center
          BackColor       =   &H00000000&
          BorderStyle     =   0  'None
-         BeginProperty DataFormat 
-            Type            =   0
-            Format          =   "0"
-            HaveTrueFalseNull=   0
-            FirstDayOfWeek  =   0
-            FirstWeekOfYear =   0
-            LCID            =   1033
-            SubFormatType   =   0
-         EndProperty
+         
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -69,15 +61,6 @@ Begin VB.Form frmGoliath
          Alignment       =   2  'Center
          BackColor       =   &H00000000&
          BorderStyle     =   0  'None
-         BeginProperty DataFormat 
-            Type            =   0
-            Format          =   "0"
-            HaveTrueFalseNull=   0
-            FirstDayOfWeek  =   0
-            FirstWeekOfYear =   0
-            LCID            =   1033
-            SubFormatType   =   0
-         EndProperty
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   9

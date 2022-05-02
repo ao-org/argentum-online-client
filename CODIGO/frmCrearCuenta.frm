@@ -21,15 +21,6 @@ Begin VB.Form frmCrearCuenta
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
-      BeginProperty DataFormat 
-         Type            =   1
-         Format          =   "0"
-         HaveTrueFalseNull=   0
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   11274
-         SubFormatType   =   1
-      EndProperty
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   8.25
