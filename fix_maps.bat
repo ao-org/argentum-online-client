@@ -1,1 +1,0 @@
-regsvr32 "C:\Program Files (x86)\Steam\steamapps\common\Argentum 20\Argentum20\Cliente\MSSTDFMT.DLL"
