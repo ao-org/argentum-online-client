@@ -277,7 +277,7 @@ End Sub
 Private Sub Form_Load()
     Call loadButtons
     Call calculateCaptcha
-    Me.Picture = LoadInterface("spanish-ventanacrearcuenta.bmp")
+    Me.Picture = LoadInterface("ventanacrearcuenta.bmp")
 End Sub
 
 Private Sub loadButtons()
@@ -311,7 +311,7 @@ End Sub
 
 Public Sub showValidateAccountControls()
     
-    Me.Picture = LoadInterface("spanish-ventanacrearcuentacodigo.bmp")
+    Me.Picture = LoadInterface("ventanacrearcuentacodigo.bmp")
     Me.btnSendValidarCuenta.Visible = True
     Me.txtValidateMail.Visible = True
     Me.txtCodigo.Visible = True

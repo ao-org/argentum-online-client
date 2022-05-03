@@ -86,7 +86,7 @@ End Sub
 
 Private Sub Form_Load()
 
-    Me.Picture = LoadInterface("spanish-ventacodigoverificacion.bmp")
+    Me.Picture = LoadInterface("ventacodigoverificacion.bmp")
     
     Call loadButtons
     
