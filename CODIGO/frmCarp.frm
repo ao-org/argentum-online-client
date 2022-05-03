@@ -222,9 +222,9 @@ Private Sub LoadButtons()
     Set cBotonMenos = New clsGraphicalButton
 
 
-    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-ES-default.bmp", _
-                                                "boton-aceptar-ES-over.bmp", _
-                                                "boton-aceptar-ES-off.bmp", Me)
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-default.bmp", _
+                                                "boton-aceptar-over.bmp", _
+                                                "boton-aceptar-off.bmp", Me)
     
     Call cBotonConstruir.Initialize(cmdConstruir, "boton-construir-default.bmp", _
                                                 "boton-construir-over.bmp", _

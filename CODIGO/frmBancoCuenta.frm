@@ -369,13 +369,13 @@ Private Sub LoadButtons()
                                                 "boton-sm-menos-over.bmp", _
                                                 "boton-sm-menos-off.bmp", Me)
                                                 
-    Call cBotonRetirar.Initialize(Image1(0), "boton-retirar-ES-default.bmp", _
-                                                "boton-retirar-ES-over.bmp", _
-                                                "boton-retirar-ES-off.bmp", Me)
+    Call cBotonRetirar.Initialize(Image1(0), "boton-retirar-default.bmp", _
+                                                "boton-retirar-over.bmp", _
+                                                "boton-retirar-off.bmp", Me)
     
-    Call cBotonDepositar.Initialize(Image1(1), "boton-depositar-ES-default.bmp", _
-                                                "boton-depositar-ES-over.bmp", _
-                                                "boton-depositar-ES-off.bmp", Me)
+    Call cBotonDepositar.Initialize(Image1(1), "boton-depositar-default.bmp", _
+                                                "boton-depositar-over.bmp", _
+                                                "boton-depositar-off.bmp", Me)
                                                 
     
 End Sub

@@ -91,17 +91,17 @@ Private Sub LoadButtons()
     Set cBotonConstruir = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
 
-    Call cBotonAceptar.Initialize(cmdMenuPrincipal, "boton-mainmenu-ES-default.bmp", _
-                                                "boton-mainmenu-ES-over.bmp", _
-                                                "boton-mainmenu-ES-off.bmp", Me)
+    Call cBotonAceptar.Initialize(cmdMenuPrincipal, "boton-mainmenu-default.bmp", _
+                                                "boton-mainmenu-over.bmp", _
+                                                "boton-mainmenu-off.bmp", Me)
     
-    Call cBotonConstruir.Initialize(cmdCancelar, "boton-cancelar-ES-default.bmp", _
-                                                "boton-cancelar-ES-over.bmp", _
-                                                "boton-cancelar-ES-off.bmp", Me)
+    Call cBotonConstruir.Initialize(cmdCancelar, "boton-cancelar-default.bmp", _
+                                                "boton-cancelar-over.bmp", _
+                                                "boton-cancelar-off.bmp", Me)
                                                 
-    Call cBotonCerrar.Initialize(cmdSalir, "boton-salir-ES-default.bmp", _
-                                                "boton-salir-ES-over.bmp", _
-                                                "boton-salir-ES-off.bmp", Me)
+    Call cBotonCerrar.Initialize(cmdSalir, "boton-salir-default.bmp", _
+                                                "boton-salir-over.bmp", _
+                                                "boton-salir-off.bmp", Me)
 End Sub
 
 

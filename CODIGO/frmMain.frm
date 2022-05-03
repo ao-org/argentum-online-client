@@ -425,6 +425,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1604,7 +1605,7 @@ Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single
         End If
     End If
     
-    cmdlanzar.Picture = LoadInterface("boton-lanzar-ES-off.bmp")
+    cmdlanzar.Picture = LoadInterface("boton-lanzar-off.bmp")
     cmdlanzar.Tag = "1"
 
     
@@ -1626,7 +1627,7 @@ Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, 
         End If
     End If
     
-    cmdlanzar.Picture = LoadInterface("boton-lanzar-ES-over.bmp")
+    cmdlanzar.Picture = LoadInterface("boton-lanzar-over.bmp")
     cmdlanzar.Tag = "1"
     
     Exit Sub
@@ -2671,7 +2672,7 @@ Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Sing
     
     On Error GoTo imgHechizos_MouseDown_Err
        
-    imgHechizos.Picture = LoadInterface("boton-hechizos-ES-off.bmp")
+    imgHechizos.Picture = LoadInterface("boton-hechizos-off.bmp")
     imgHechizos.Tag = "1"
 
     
@@ -2689,7 +2690,7 @@ Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Sing
     
 
     If imgHechizos.Tag = "0" Then
-        imgHechizos.Picture = LoadInterface("boton-hechizos-ES-default.bmp")
+        imgHechizos.Picture = LoadInterface("boton-hechizos-default.bmp")
         imgHechizos.Tag = "1"
 
     End If
@@ -2766,7 +2767,7 @@ Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Si
 
     On Error GoTo imgInventario_MouseDown_Err
     
-    imgInventario.Picture = LoadInterface("boton-inventory-ES-off.bmp")
+    imgInventario.Picture = LoadInterface("boton-inventory-off.bmp")
     imgInventario.Tag = "1"
 
     'Call Inventario.DrawInventory
@@ -2784,7 +2785,7 @@ Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Si
     On Error GoTo imgInventario_MouseMove_Err
 
     If imgInventario.Tag = "0" Then
-        imgInventario.Picture = LoadInterface("boton-inventory-ES-over.bmp")
+        imgInventario.Picture = LoadInterface("boton-inventory-over.bmp")
         imgInventario.Tag = "1"
 
     End If
@@ -4404,7 +4405,7 @@ Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single
     CnTd = 0
 
     If cmdlanzar.Tag = "0" Then
-        cmdlanzar.Picture = LoadInterface("boton-lanzar-ES-over.bmp")
+        cmdlanzar.Picture = LoadInterface("boton-lanzar-over.bmp")
         cmdlanzar.Tag = "1"
 
     End If

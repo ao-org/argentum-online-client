@@ -231,9 +231,9 @@ Private Sub LoadButtons()
                                                     "boton-buscar-over.bmp", _
                                                     "boton-buscar-off.bmp", Me)
                                                     
-    Call cBotonFundarClan.Initialize(cmdFundarClan, "boton-fundar-clan-es-default.bmp", _
-                                                    "boton-fundar-clan-es-over.bmp", _
-                                                    "boton-fundar-clan-es-off.bmp", Me)
+    Call cBotonFundarClan.Initialize(cmdFundarClan, "boton-fundar-clan-default.bmp", _
+                                                    "boton-fundar-clan-over.bmp", _
+                                                    "boton-fundar-clan-off.bmp", Me)
 End Sub
 
 Private Sub Image3_Click()

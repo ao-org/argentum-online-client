@@ -14,8 +14,16 @@ Private Declare Function GetLocaleInfo _
                                         ByVal lpLCData As String, _
                                         ByVal cchData As Long) As Long
 
+Private Declare Function GetThreadLocale Lib "kernel32" () As Long
+
 Public JsonLanguage As Object
-Public Language As String
+
+Public Enum e_language
+    spanish = 1
+    English = 2
+End Enum
+
+Public language As e_language
 
 Public Function FileToString(strFileName As String) As String
     '###################################################################################
@@ -56,22 +64,55 @@ Public Sub SetLanguageApplication()
     '************************************************************************************
 
     Dim LangFile As String
-    
-    Language = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Language")
+    Dim Localization As String
+    Localization = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Localization")
     
     ' Si no se especifica el idioma en el archivo de configuracion, se le pregunta si quiere usar castellano
     ' y escribimos el archivo de configuracion con el idioma seleccionado
-    If LenB(Language) = 0 Then
-        If MsgBox("Iniciar con idioma Castellano? // Start with Spanish, if you want the game in English press No", vbYesNo, "Argentum 20") = vbYes Then
-            Language = "spanish-"
-        Else
-            Language = "english-"
-        End If
-
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Language", Language)
-        'Language = LCase$(ObtainOperativeSystemLanguage(LOCALE_SENGLANGUAGE))
+    If LenB(Localization) = 0 Then
+        
+        Select Case ObtainOperativeSystemLanguage(1)
+            'English US
+            Case "0409"
+                language = e_language.English
+            'Otros english
+            Case "0809"
+                language = e_language.English
+            Case "0C09"
+                language = e_language.English
+            Case "1009"
+                language = e_language.English
+            Case "1409"
+                language = e_language.English
+            Case "1809"
+                language = e_language.English
+            Case "1c09"
+                language = e_language.English
+            Case "2009"
+                language = e_language.English
+            Case "2409"
+                language = e_language.English
+            Case "2809"
+                language = e_language.English
+            Case "2C09"
+                language = e_language.English
+            Case "3009"
+                language = e_language.English
+            Case "3409"
+                language = e_language.English
+            Case "4009"
+                language = e_language.English
+            Case "4409"
+                language = e_language.English
+            Case "4809"
+                language = e_language.English
+            Case Else
+                language = e_language.spanish
+        End Select
+        
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Localization", language)
+    Else
+        language = Localization
     End If
     
-    ' LangFile = FileToString(Game.path(Lenguajes) & Language & ".json")
-    ' Set JsonLanguage = JSON.parse(LangFile)
 End Sub

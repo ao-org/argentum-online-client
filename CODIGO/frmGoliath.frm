@@ -38,7 +38,6 @@ Begin VB.Form frmGoliath
          Alignment       =   2  'Center
          BackColor       =   &H00000000&
          BorderStyle     =   0  'None
-         
          BeginProperty Font 
             Name            =   "Tahoma"
             Size            =   8.25
@@ -302,25 +301,25 @@ Private Sub LoadButtons()
     Set cBotonMas = New clsGraphicalButton
     Set cBotonMenos = New clsGraphicalButton
 
-    Call cBotonBoveda.Initialize(cmdBoveda, "boton-ver-boveda-ES-default.bmp", _
-                                                "boton-ver-boveda-ES-over.bmp", _
-                                                "boton-ver-boveda-ES-off.bmp", Me)
+    Call cBotonBoveda.Initialize(cmdBoveda, "boton-ver-boveda-default.bmp", _
+                                                "boton-ver-boveda-over.bmp", _
+                                                "boton-ver-boveda-off.bmp", Me)
     
-    Call cBotonRetirar.Initialize(cmdRetirar, "boton-retirar-es-default.bmp", _
-                                                "boton-retirar-es-over.bmp", _
-                                                "boton-retirar-es-off.bmp", Me)
+    Call cBotonRetirar.Initialize(cmdRetirar, "boton-retirar-default.bmp", _
+                                                "boton-retirar-over.bmp", _
+                                                "boton-retirar-off.bmp", Me)
                                                 
-    Call cBotonDepositar.Initialize(cmdDepositar, "boton-depositar-ES-default.bmp", _
-                                                "boton-depositar-ES-over.bmp", _
-                                                "boton-depositar-ES-off.bmp", Me)
+    Call cBotonDepositar.Initialize(cmdDepositar, "boton-depositar-default.bmp", _
+                                                "boton-depositar-over.bmp", _
+                                                "boton-depositar-off.bmp", Me)
     
-    Call cBotonTransferir.Initialize(cmdTransferir, "boton-transferir-es-default.bmp", _
-                                                "boton-transferir-es-over.bmp", _
-                                                "boton-transferir-es-off.bmp", Me)
+    Call cBotonTransferir.Initialize(cmdTransferir, "boton-transferir-default.bmp", _
+                                                "boton-transferir-over.bmp", _
+                                                "boton-transferir-off.bmp", Me)
                                                 
-    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-es-default.bmp", _
-                                                "boton-aceptar-es-over.bmp", _
-                                                "boton-aceptar-es-off.bmp", Me)
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-default.bmp", _
+                                                "boton-aceptar-over.bmp", _
+                                                "boton-aceptar-off.bmp", Me)
                                                 
     Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _

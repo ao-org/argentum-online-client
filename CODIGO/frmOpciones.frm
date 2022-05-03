@@ -632,7 +632,7 @@ Private Sub SetSolapa(Index As Integer, ByVal Tag As String)
         Case "2": estado = "default"
     End Select
     
-    BtnSolapa(Index).Picture = LoadInterface("boton-" & Name & "-es-" & estado & ".bmp")
+    BtnSolapa(Index).Picture = LoadInterface("boton-" & name & "-" & estado & ".bmp")
     BtnSolapa(Index).Tag = Tag
 
 End Sub
@@ -1040,9 +1040,9 @@ Private Sub Form_Load()
     PanelVideo.Picture = LoadInterface("configuracion-video.bmp")
     PanelAudio.Picture = LoadInterface("configuracion-audio.bmp")
 
-    BtnSolapa(0).Picture = LoadInterface("boton-jugabilidad-es-default.bmp")
-    BtnSolapa(1).Picture = LoadInterface("boton-video-es-off.bmp")
-    BtnSolapa(2).Picture = LoadInterface("boton-audio-es-off.bmp")
+    BtnSolapa(0).Picture = LoadInterface("boton-jugabilidad-default.bmp")
+    BtnSolapa(1).Picture = LoadInterface("boton-video-off.bmp")
+    BtnSolapa(2).Picture = LoadInterface("boton-audio-off.bmp")
 
     Exit Sub
 

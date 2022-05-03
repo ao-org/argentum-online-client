@@ -298,9 +298,9 @@ Private Sub LoadButtons()
                                                 "boton-enviar-over.bmp", _
                                                 "boton-enviar-off.bmp", Me)
     
-    Call cBotonCancelar.Initialize(cmdCancelar, "boton-cancelar-ES-default.bmp", _
-                                                "boton-cancelar-ES-over.bmp", _
-                                                "boton-cancelar-ES-off.bmp", Me)
+    Call cBotonCancelar.Initialize(cmdCancelar, "boton-cancelar-default.bmp", _
+                                                "boton-cancelar-over.bmp", _
+                                                "boton-cancelar-off.bmp", Me)
                                                 
     Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _

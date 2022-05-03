@@ -447,12 +447,12 @@ Private Sub LoadButtons()
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
                                                 
-    Call cBotonActualizar.Initialize(cmdActualizar, "boton-actualizar-es-default.bmp", _
-                                                "boton-actualizar-es-over.bmp", _
-                                                "boton-actualizar-es-off.bmp", Me)
-    Call cBotonEditarDescripcion.Initialize(cmdEditarDescripcion, "boton-editar-desc-clan-es-default.bmp", _
-                                                "boton-editar-desc-clan-es-over.bmp", _
-                                                "boton-editar-desc-clan-es-off.bmp", Me)
+    Call cBotonActualizar.Initialize(cmdActualizar, "boton-actualizar-default.bmp", _
+                                                "boton-actualizar-over.bmp", _
+                                                "boton-actualizar-off.bmp", Me)
+    Call cBotonEditarDescripcion.Initialize(cmdEditarDescripcion, "boton-editar-desc-clan-default.bmp", _
+                                                "boton-editar-desc-clan-over.bmp", _
+                                                "boton-editar-desc-clan-off.bmp", Me)
     
 End Sub
 

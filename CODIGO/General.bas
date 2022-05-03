@@ -1821,7 +1821,12 @@ On Error GoTo ErrHandler
         #If Compresion = 1 Then
             Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
         #Else
-            Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & LCase$(FileName))
+            Select Case language
+                Case e_language.english
+                    Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/EN/" & LCase$(FileName))
+                Case e_language.spanish
+                    Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/ES/" & LCase$(FileName))
+            End Select
         #End If
     End If
 Exit Function

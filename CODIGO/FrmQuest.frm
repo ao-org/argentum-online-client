@@ -358,7 +358,7 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("boton-abandonar-es-over.bmp")
+        Image1.Picture = LoadInterface("boton-abandonar-over.bmp")
         Image1.Tag = "1"
 
     End If
@@ -393,7 +393,7 @@ Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
 
     If Image2.Tag = "0" Then
-        Image2.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
+        Image2.Picture = LoadInterface("boton-aceptar-over.bmp")
         Image2.Tag = "1"
 
     End If

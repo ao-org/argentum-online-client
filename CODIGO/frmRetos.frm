@@ -617,19 +617,19 @@ Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Si
 End Sub
 
 Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    Retar.Picture = LoadInterface("boton-retar-ES-off.bmp")
+    Retar.Picture = LoadInterface("boton-retar-off.bmp")
     Retar.Tag = "1"
 End Sub
 
 Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Retar.Tag = "0" Then
-        Retar.Picture = LoadInterface("boton-retar-ES-over.bmp")
+        Retar.Picture = LoadInterface("boton-retar-over.bmp")
         Retar.Tag = "1"
     End If
 End Sub
 
 Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    Retar.Picture = LoadInterface("boton-retar-ES-over.bmp")
+    Retar.Picture = LoadInterface("boton-retar-over.bmp")
     Retar.Tag = "1"
 End Sub
 

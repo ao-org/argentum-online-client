@@ -123,17 +123,17 @@ Private Sub loadButtons()
     Set cBotonExpulsar = New clsGraphicalButton
     Set cBotonInvitar = New clsGraphicalButton
     
-    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-ES-default.bmp", _
-                                                "boton-aceptar-ES-over.bmp", _
-                                                "boton-aceptar-ES-off.bmp", Me)
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-default.bmp", _
+                                                "boton-aceptar-over.bmp", _
+                                                "boton-aceptar-off.bmp", Me)
                                                 
     Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
                                                 
-    Call cBotonAbandonar.Initialize(cmdAbandonar, "boton-abandonar-es-default.bmp", _
-                                                "boton-abandonar-es-over.bmp", _
-                                                "boton-abandonar-es-off.bmp", Me)
+    Call cBotonAbandonar.Initialize(cmdAbandonar, "boton-abandonar-default.bmp", _
+                                                "boton-abandonar-over.bmp", _
+                                                "boton-abandonar-off.bmp", Me)
                                                 
     Call cBotonExpulsar.Initialize(cmdExpulsar, "boton-menos-default.bmp", _
                                                 "boton-menos-over.bmp", _

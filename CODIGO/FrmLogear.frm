@@ -309,9 +309,9 @@ Private Sub LoadButtons()
     Set cBotonCuenta = New clsGraphicalButton
     Set cBotonIngresar = New clsGraphicalButton
     
-    Call cBotonSalir.Initialize(cmdSalir, "boton-salir-ES-default.bmp", "boton-salir-ES-over.bmp", "boton-salir-ES-off.bmp", Me)
-    Call cBotonCuenta.Initialize(cmdCuenta, "boton-cuenta-ES-default.bmp", "boton-cuenta-ES-over.bmp", "boton-cuenta-ES-off.bmp", Me)
-    Call cBotonIngresar.Initialize(cmdIngresar, "boton-ingresar-ES-default.bmp", "boton-ingresar-ES-over.bmp", "boton-ingresar-ES-off.bmp", Me)
+    Call cBotonSalir.Initialize(cmdSalir, "boton-salir-default.bmp", "boton-salir-over.bmp", "boton-salir-off.bmp", Me)
+    Call cBotonCuenta.Initialize(cmdCuenta, "boton-cuenta-default.bmp", "boton-cuenta-over.bmp", "boton-cuenta-off.bmp", Me)
+    Call cBotonIngresar.Initialize(cmdIngresar, "boton-ingresar-default.bmp", "boton-ingresar-over.bmp", "boton-ingresar-off.bmp", Me)
 End Sub
 
 Private Sub cmdSalir_Click()

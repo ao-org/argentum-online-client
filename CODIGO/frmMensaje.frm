@@ -226,7 +226,7 @@ Private Sub LoadButtons()
     Set cBotonAceptar = New clsGraphicalButton
     
     Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-Over.bmp", "boton-cerrar-off.bmp", Me)
-    Call cBotonAceptar.Initialize(cmdAceptar, "boton-Aceptar-ES-default.bmp", "boton-Aceptar-ES-Over.bmp", "boton-Aceptar-ES-off.bmp", Me)
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-Aceptar-default.bmp", "boton-Aceptar-Over.bmp", "boton-Aceptar-off.bmp", Me)
 End Sub
 
 Private Sub cmdCerrar_Click()

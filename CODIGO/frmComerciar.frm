@@ -252,13 +252,13 @@ Private Sub LoadButtons()
     Set cBotonMenos = New clsGraphicalButton
 
 
-    Call cBotonComprar.Initialize(cmdComprar, "boton-comprar-ES-default.bmp", _
-                                                "boton-comprar-ES-over.bmp", _
-                                                "boton-comprar-ES-off.bmp", Me)
+    Call cBotonComprar.Initialize(cmdComprar, "boton-comprar-default.bmp", _
+                                                "boton-comprar-over.bmp", _
+                                                "boton-comprar-off.bmp", Me)
     
-    Call cBotonVender.Initialize(cmdVender, "boton-vender-ES-default.bmp", _
-                                                "boton-vender-ES-over.bmp", _
-                                                "boton-vender-ES-off.bmp", Me)
+    Call cBotonVender.Initialize(cmdVender, "boton-vender-default.bmp", _
+                                                "boton-vender-over.bmp", _
+                                                "boton-vender-off.bmp", Me)
                                                 
     Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _

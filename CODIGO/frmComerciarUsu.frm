@@ -153,6 +153,7 @@ Begin VB.Form frmComerciarUsu
       _Version        =   393217
       BackColor       =   459782
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -367,7 +368,7 @@ End Sub
 
 Private Sub cmdAceptar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-     cmdAceptar.Picture = LoadInterface("boton-aceptar-ES-off.bmp")
+     cmdAceptar.Picture = LoadInterface("boton-aceptar-off.bmp")
     cmdAceptar.Tag = "1"
 End Sub
 
@@ -377,7 +378,7 @@ Private Sub cmdAceptar_MouseMove(Button As Integer, Shift As Integer, X As Singl
     
 
     If cmdAceptar.Tag = "0" Then
-        cmdAceptar.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
+        cmdAceptar.Picture = LoadInterface("boton-aceptar-over.bmp")
         cmdAceptar.Tag = "1"
 
     End If
@@ -399,7 +400,7 @@ cmdAceptar_MouseMove_Err:
 End Sub
 
 Private Sub cmdAceptar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-     cmdAceptar.Picture = LoadInterface("boton-aceptar-ES-over.bmp")
+     cmdAceptar.Picture = LoadInterface("boton-aceptar-over.bmp")
     cmdAceptar.Tag = "1"
 End Sub
 
@@ -508,7 +509,7 @@ End Sub
 
 Private Sub cmdRechazar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-     cmdRechazar.Picture = LoadInterface("boton-rechazar-es-off.bmp")
+     cmdRechazar.Picture = LoadInterface("boton-rechazar-off.bmp")
      cmdRechazar.Tag = "1"
 End Sub
 
@@ -518,7 +519,7 @@ Private Sub cmdRechazar_MouseMove(Button As Integer, Shift As Integer, X As Sing
     
 
     If cmdRechazar.Tag = "0" Then
-        cmdRechazar.Picture = LoadInterface("boton-rechazar-es-over.bmp")
+        cmdRechazar.Picture = LoadInterface("boton-rechazar-over.bmp")
         cmdRechazar.Tag = "1"
 
     End If

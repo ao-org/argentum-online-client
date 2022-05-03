@@ -145,13 +145,13 @@ Private Sub LoadButtons()
     Set cBotonMenos = New clsGraphicalButton
 
 
-    Call cBotonTirarTodo.Initialize(cmdTirarTodo, "boton-tirar-todo-ES-default.bmp", _
-                                                "boton-tirar-todo-ES-over.bmp", _
-                                                "boton-tirar-todo-ES-off.bmp", Me)
+    Call cBotonTirarTodo.Initialize(cmdTirarTodo, "boton-tirar-todo-default.bmp", _
+                                                "boton-tirar-todo-over.bmp", _
+                                                "boton-tirar-todo-off.bmp", Me)
     
-    Call cBotonTirar.Initialize(cmdTirar, "boton-tirar-ES-default.bmp", _
-                                                "boton-tirar-ES-over.bmp", _
-                                                "boton-tirar-ES-off.bmp", Me)
+    Call cBotonTirar.Initialize(cmdTirar, "boton-tirar-default.bmp", _
+                                                "boton-tirar-over.bmp", _
+                                                "boton-tirar-off.bmp", Me)
                                                 
     Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _

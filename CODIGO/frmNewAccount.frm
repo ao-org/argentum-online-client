@@ -290,9 +290,9 @@ Private Sub loadButtons()
                                                 "boton-crear-cuenta-rojo-over.bmp", _
                                                 "boton-crear-cuenta-rojo-off.bmp", Me)
                                                 
-    Call cBotonCancelar.Initialize(btnCancel, "boton-cancelar-ES-default.bmp", _
-                                                "boton-cancelar-ES-over.bmp", _
-                                                "boton-cancelar-ES-off.bmp", Me)
+    Call cBotonCancelar.Initialize(btnCancel, "boton-cancelar-default.bmp", _
+                                                "boton-cancelar-over.bmp", _
+                                                "boton-cancelar-off.bmp", Me)
                                                 
     Call cBotonCerrar.Initialize(btnSendValidarCuenta, "boton-enviar-default.bmp", _
                                                 "boton-enviar-over.bmp", _
