@@ -102,8 +102,8 @@ Private Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
     Dim BufTemp() As Byte
     Dim iv() As Byte
     Dim key() As Byte
-    key = cnvBytesFromHexStr("0123456789ABCDEFF0E1D2C3B4A59687")
-    iv = cnvBytesFromHexStr("FEDCBA9876543210FEDCBA9876543210")
+    key = cnvBytesFromHexStr("AB45456789ABCDEFA0E1D2C3B4A59666")
+    iv = cnvBytesFromHexStr("FEDCAA9A76543A10FEDCBA9876543322")
     BufTemp = cipherDecryptBytes2(Data, key, iv, "Aes128/CFB/nopad")
     Data = zlibInflate(BufTemp)
 End Sub
