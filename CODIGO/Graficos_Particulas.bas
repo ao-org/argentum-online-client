@@ -788,7 +788,7 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
 
         End If
 
-        particle_group_list(particle_group_index).frame_counter = particle_group_list(particle_group_index).frame_counter + timerTicksPerFrame
+        particle_group_list(particle_group_index).frame_counter = particle_group_list(particle_group_index).frame_counter + timerElapsedTime
 
         If particle_group_list(particle_group_index).frame_counter > particle_group_list(particle_group_index).frame_speed Then
             particle_group_list(particle_group_index).frame_counter = 0

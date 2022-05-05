@@ -1516,8 +1516,7 @@ Private Sub VSync_Click()
     prgRun = True
     pausa = False
     QueRender = 0
-     lFrameTimer = 0
-     FramesPerSecCounter = 0
+     FramesPerSecCounter = 60
     
     If VSyncActivado Then
         VSync.Picture = LoadInterface("check-amarillo.bmp")
