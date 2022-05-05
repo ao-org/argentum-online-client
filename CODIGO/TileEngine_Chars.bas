@@ -78,7 +78,7 @@ Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As B
     
     If charindex = 0 Then Exit Sub
     If charlist(charindex).active = 0 Then Exit Sub
-    If charindex = UserCharIndex And Not notCancelMe Then Exit Sub
+    If charindex = UserCharIndex Then Exit Sub
     
     charlist(charindex).active = 0
     
