@@ -1,6 +1,16 @@
 Attribute VB_Name = "engine"
 Option Explicit
 
+
+Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hdc As Long, ByVal nIndex As Long) As Long
+
+Public RefreshRate As Integer
+Private Const HORZRES As Long = 8
+Private Const VERTRES As Long = 10
+Private Const BITSPIXEL As Long = 12
+Private Const VREFRESH As Long = 116
+
+
 Private Declare Function timeGetTime Lib "winmm.dll" () As Long
 
 Public FrameNum               As Long
@@ -184,7 +194,7 @@ On Error GoTo ErrorHandler:
         .hDeviceWindow = frmMain.renderer.hwnd
         
     End With
-    
+    RefreshRate = GetDeviceCaps(frmMain.hdc, VREFRESH)
     If Not DirectDevice Is Nothing Then Set DirectDevice = Nothing
     
     Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, D3DWindow.hDeviceWindow, ModoAceleracion, D3DWindow)
@@ -882,7 +892,7 @@ Public Sub render()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
     
     If VSyncActivado And lFrameTimer > 0 Then
-        While (FrameTime - lFrameTimer) * 60 / 1000 <= FramesPerSecCounter
+       While (FrameTime - lFrameTimer) * RefreshRate / 1000 <= FramesPerSecCounter
             Sleep 1
             FrameTime = GetTickCount()
             DoEvents
