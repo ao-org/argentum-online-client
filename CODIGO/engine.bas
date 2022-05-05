@@ -93,7 +93,7 @@ Private Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCo
 
 Public fps                     As Long
 Private FramesPerSecCounter    As Long
-Private lFrameTimer            As Long
+Public lFrameTimer            As Long
 Public FrameTime               As Long
 
 Public FadeInAlpha             As Integer
@@ -373,6 +373,8 @@ Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
             prgRun = True
             pausa = False
             QueRender = 0
+            lFrameTimer = 0
+            FramesPerSecCounter = 0
         End If
     End If
     Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, Color, 1, 0)
@@ -412,6 +414,8 @@ ErrorHandlerDD:
         prgRun = True
         pausa = False
         QueRender = 0
+        lFrameTimer = 0
+        FramesPerSecCounter = 0
 
     End If
         

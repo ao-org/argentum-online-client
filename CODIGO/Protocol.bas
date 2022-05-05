@@ -993,6 +993,8 @@ Private Sub HandleLogged()
     frmMain.oxigenolbl.Visible = True
     frmMain.imgDeleteItem.Visible = True
     QueRender = 0
+     lFrameTimer = 0
+     FramesPerSecCounter = 0
     
     frmMain.ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")
     frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
