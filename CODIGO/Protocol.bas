@@ -2310,6 +2310,7 @@ Private Sub HandleUpdateHP()
     'Is the user alive??
     If UserMinHp = 0 Then
         UserEstado = 1
+        DrogaCounter = 0
     Else
         UserEstado = 0
 
@@ -4572,6 +4573,7 @@ Private Sub HandleUpdateUserStats()
     
     If UserMinHp = 0 Then
         UserEstado = 1
+        DrogaCounter = 0
     Else
         UserEstado = 0
 
