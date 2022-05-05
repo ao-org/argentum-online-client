@@ -226,6 +226,14 @@ Private Sub cmdcerrar_Click()
     Unload Me
 End Sub
 
+Private Sub cmdComprar_DblClick()
+    cmdComprar_Click
+End Sub
+
+Private Sub cmdVender_DblClick()
+     cmdVender_Click
+End Sub
+
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
