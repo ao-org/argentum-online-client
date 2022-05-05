@@ -1183,6 +1183,10 @@ Command2_Click_Err:
     
 End Sub
 
+Private Sub command1_DblClick(Index As Integer)
+    Command1_Click (Index)
+End Sub
+
 Private Sub Command1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Command1_MouseDown_Err
