@@ -989,6 +989,8 @@ Public Sub CargarMapa(ByVal map As Integer)
 
     HayLayer4 = False
     
+    MapData(UserPos.x, UserPos.y).charindex = 0
+    
     For i = 1 To LastChar
         'If charlist(i).active = 1 Then
         Call EraseChar(i)
