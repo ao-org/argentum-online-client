@@ -166,11 +166,11 @@ On Error GoTo ErrorHandler:
     
         .Windowed = True
 
-        If VSyncActivado Then
-            .SwapEffect = D3DSWAPEFFECT_COPY_VSYNC
-        Else
-            .SwapEffect = D3DSWAPEFFECT_DISCARD
-        End If
+        'If VSyncActivado Then
+        '    .SwapEffect = D3DSWAPEFFECT_COPY_VSYNC
+        'Else
+        .SwapEffect = D3DSWAPEFFECT_DISCARD
+        'End If
         
         .BackBufferFormat = DispMode.format
         
@@ -876,6 +876,14 @@ Public Sub render()
     FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
+    
+    If VSyncActivado And lFrameTimer > 0 Then
+        While (FrameTime - lFrameTimer) * 60 / 1000 <= FramesPerSecCounter
+            Sleep 1
+            FrameTime = GetTickCount()
+            DoEvents
+        Wend
+    End If
     
     Engine_ActFPS
 
