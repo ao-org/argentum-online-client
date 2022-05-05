@@ -871,7 +871,7 @@ Public Sub render()
     
     If FadeInAlpha > 0 Then
         Call Engine_Draw_Box(0, 0, frmMain.renderer.ScaleWidth, frmMain.renderer.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
-        FadeInAlpha = FadeInAlpha - 1
+        FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
     
     Call Engine_EndScene(Render_Main_Rect)
