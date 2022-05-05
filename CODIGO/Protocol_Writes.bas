@@ -2004,6 +2004,9 @@ Public Sub WriteMeditate()
         '<EhHeader>
         On Error GoTo WriteMeditate_Err
         '</EhHeader>
+        
+        If UserMoving Then Exit Sub
+        
 100     Call Writer.WriteInt16(ClientPacketID.Meditate)
     
 102     Call modNetwork.Send(Writer)
