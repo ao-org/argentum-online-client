@@ -921,6 +921,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     temp_particle.grh_resizex = grh_resizex
     temp_particle.grh_resizey = grh_resizey
     'Draw it
+    If screen_x = -1000 Then Exit Sub
     
     'Particulas Grises si esta muerto Ladder
     If UserEstado = 1 Then
@@ -1049,6 +1050,11 @@ Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long)
         If MeteoParticle <> 0 Then Call Particle_Group_Remove(MeteoParticle)
         MeteoParticle = General_Particle_Create(meteo_part, -1, -1)
         MeteoIndex = particle_group_last
+
+        Dim i As Integer
+        For i = 1 To 500
+            Call Particle_Group_Render(MeteoIndex, -1000, -1000)
+        Next i
 
     End If
     
