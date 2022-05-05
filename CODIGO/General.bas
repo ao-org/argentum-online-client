@@ -1816,17 +1816,21 @@ End Function
 Public Function LoadInterface(FileName As String) As IPicture
 
 On Error GoTo ErrHandler
-
+    
+    Select Case language
+        Case e_language.English
+            FileName = "en_" & FileName
+        Case e_language.spanish
+            FileName = "es_" & FileName
+        Case Else
+            FileName = "en_" & FileName
+    End Select
+    
     If FileName <> "" Then
         #If Compresion = 1 Then
             Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
         #Else
-            Select Case language
-                Case e_language.english
-                    Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/EN/" & LCase$(FileName))
-                Case e_language.spanish
-                    Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/ES/" & LCase$(FileName))
-            End Select
+            Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & LCase$(FileName))
         #End If
     End If
 Exit Function
