@@ -4390,33 +4390,34 @@ HandlePauseToggle_Err:
     
 End Sub
 
-''
-' Handles the RainToggle message.
-
 Private Sub HandleRainToggle()
-    '***************************************************
+    '**
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
-    '***************************************************
+    '**
     'Remove packet ID
-    
+
     On Error GoTo HandleRainToggle_Err
-    
+
+
+    bRain = Reader.ReadBool
+
     If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
-            
-    If bRain Then
+
+
+    If Not bRain Then
         If MapDat.LLUVIA Then
-            
+
             If bTecho Then
                 Call Sound.Sound_Play(192)
             Else
                 Call Sound.Sound_Play(195)
 
             End If
-            
+
             Call Sound.Ambient_Stop
-            
+
             Call Graficos_Particulas.Engine_MeteoParticle_Set(-1)
 
         End If
@@ -4424,23 +4425,23 @@ Private Sub HandleRainToggle()
     Else
 
         If MapDat.LLUVIA Then
-        
+
             Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Lluvia)
 
         End If
 
         ' Call Audio.StopWave(AmbientalesBufferIndex)
     End If
-    
-    bRain = Not bRain
-    
+
+
     Exit Sub
 
 HandleRainToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRainToggle", Erl)
-    
-    
+
+
 End Sub
+
 
 ''
 ' Handles the CreateFX message.
@@ -7280,26 +7281,34 @@ HandleSpeedToChar_Err:
     
     
 End Sub
-
 Private Sub HandleNieveToggle()
-    '***************************************************
+    '**
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     '
-    '***************************************************
+    '**
     'Remove packet ID
-    
-    On Error GoTo HandleNieveToggle_Err
-    
-    If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
-            
-    If MapDat.NIEVE Then
-        Engine_MeteoParticle_Set (Particula_Nieve)
 
+    On Error GoTo HandleNieveToggle_Err
+
+    bNieve = Reader.ReadBool
+
+    If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
+
+
+
+    If Not bNieve Then
+        If MapDat.NIEVE Then
+            Engine_MeteoParticle_Set (-1)
+        End If
+    Else
+        If MapDat.NIEVE Then
+            Engine_MeteoParticle_Set (Particula_Nieve)
+        End If
     End If
 
-    bNieve = Not bNieve
-    
+
+
     Exit Sub
 
 HandleNieveToggle_Err:
