@@ -5165,18 +5165,16 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
 
         If (Error <> 0 And Error <> 2) Then
             Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
-                 
-            Dim mForm As Form
-            For Each mForm In Forms
-                Select Case mForm.Name
-                    Case frmConnect.Name, frmCrearPersonaje.Name, frmMensaje.Name
-                    Case Else
-                        Unload mForm
-                End Select
-            Next
+
             
-            Call ComprobarEstado
-            Call General_Set_Connect
+            If frmConnect.Visible Then
+                Connected = False
+            Else
+                If (Connected) Then
+                    Call HandleDisconnect
+                End If
+            End If
+          
         Else
             If frmConnect.Visible Then
                 Connected = False
