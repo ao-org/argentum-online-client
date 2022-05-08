@@ -3654,7 +3654,7 @@ Private Sub HandleCharacterRemove()
         Call CrearFantasma(charindex)
     End If
 
-    Call EraseChar(charindex, fueWarp)
+    Call EraseChar(charindex)
     Call RefreshAllChars
     
     Exit Sub
