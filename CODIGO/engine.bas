@@ -106,7 +106,7 @@ Private FramesPerSecCounter    As Long
 Public lFrameTimer            As Long
 Public FrameTime               As Long
 
-Public FadeInAlpha             As Integer
+Public FadeInAlpha             As Single
 
 Private ScrollPixelsPerFrameX  As Single
 Private ScrollPixelsPerFrameY  As Single
@@ -3976,9 +3976,10 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
         target_Angle = Engine_GetAngle(.Now_X, .Now_Y, CInt(.Viaje_X), CInt(.Viaje_Y))
     
         'Actualiza la posición del efecto.
-        .Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed)
-        .Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed)
-
+        '.Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed)
+        '.Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed)
+        .Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
+        .Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
         'Si hay posición dibuja.
         If (.Now_X <> 0) And (.Now_Y <> 0) Then
             ' Call DDrawTransGrhtoSurface(.FX_Grh, .Now_X, .Now_Y, 1, 1)
