@@ -544,6 +544,7 @@ Public Enum ClientPacketID
     UseItemU
     RepeatMacro
     BuyShopItem
+    PerdonFaccion              '/PERDONFACCION NAME
     [PacketCount]
 End Enum
 
