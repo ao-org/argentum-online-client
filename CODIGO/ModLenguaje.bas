@@ -19,7 +19,7 @@ Private Declare Function GetThreadLocale Lib "kernel32" () As Long
 Public JsonLanguage As Object
 
 Public Enum e_language
-    spanish = 1
+    Spanish = 1
     English = 2
 End Enum
 
@@ -104,10 +104,48 @@ Public Sub SetLanguageApplication()
                 language = e_language.English
             Case "4409"
                 language = e_language.English
-            Case "4809"
-                language = e_language.English
+            Case "040A"
+                language = e_language.Spanish
+            Case "080A"
+                language = e_language.Spanish
+            Case "0C0A"
+                language = e_language.Spanish
+            Case "100A"
+                language = e_language.Spanish
+            Case "140A"
+                language = e_language.Spanish
+            Case "180A"
+                language = e_language.Spanish
+            Case "1C0A"
+                language = e_language.Spanish
+            Case "200A"
+                language = e_language.Spanish
+            Case "240A"
+                language = e_language.Spanish
+            Case "280A"
+                language = e_language.Spanish
+            Case "2C0A"
+                language = e_language.Spanish
+            Case "300A"
+                language = e_language.Spanish
+            Case "380A"
+                language = e_language.Spanish
+            Case "3C0A"
+                language = e_language.Spanish
+            Case "400A"
+                language = e_language.Spanish
+            Case "440A"
+                language = e_language.Spanish
+            Case "480A"
+                language = e_language.Spanish
+            Case "4C0A"
+                language = e_language.Spanish
+            Case "500A"
+                language = e_language.Spanish
+            Case "540A"
+                language = e_language.Spanish
             Case Else
-                language = e_language.spanish
+                language = e_language.English
         End Select
         
         Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Localization", language)
