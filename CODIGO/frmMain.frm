@@ -1441,6 +1441,8 @@ Attribute VB_Exposed = False
 'Call ParseUserCommand("/CMSG " & stxtbuffercmsg)
 Option Explicit
 
+Private Declare Sub svb_shutdown_steam Lib "steam_vb.dll" ()
+
 
 Public WithEvents Inventario As clsGrapchicalInventory
 Attribute Inventario.VB_VarHelpID = -1
@@ -2286,7 +2288,7 @@ Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err
     
-
+    Call svb_shutdown_steam
     Call DisableURLDetect
 
     
