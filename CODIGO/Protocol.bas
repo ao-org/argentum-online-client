@@ -1919,10 +1919,14 @@ Private Sub HandleCharSwing()
     Dim ShowText As Boolean
 
     ShowText = Reader.ReadBool
+    
+    Dim NotificoTexto As Boolean
+    
+    NotificoTexto = Reader.ReadBool
         
     With charlist(charindex)
 
-        If ShowText Then
+        If ShowText And NotificoTexto Then
             Call SetCharacterDialogFx(charindex, IIf(charindex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
 
         End If
