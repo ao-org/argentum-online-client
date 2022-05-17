@@ -5,6 +5,11 @@ Attribute VB_Name = "Mod_General"
 
 Option Explicit
 
+Private Declare Function SetDllDirectory Lib "kernel32" Alias "SetDllDirectoryA" (ByVal Path As String) As Long
+Private Declare Function svb_init_steam Lib "steam_vb.dll" (ByVal appid As Long) As Long
+Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
+Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
+
 Private Type Position
 
     x As Integer
@@ -880,7 +885,8 @@ Sub Check_Keys()
     Static lastMovement As Long
 
     Dim Direccion As E_Heading
-
+    Debug.Assert UserCharIndex > 0
+    
     Direccion = charlist(UserCharIndex).Heading
 
     If Not Application.IsAppActive() Then Exit Sub
@@ -1050,8 +1056,12 @@ FileExist_Err:
 End Function
 
 Sub Main()
-    On Error GoTo Main_Err
 
+    On Error GoTo Main_Err
+    SetDllDirectory App.Path
+    Dim d As Long
+    d = svb_init_steam(1956740)
+    Debug.Print "init steam ret = " & d
     Call InitCommonControls
     
  'ReyarB pidió dejar entrar doble cliente (HarThaoS)
@@ -1193,6 +1203,8 @@ Sub Main()
     Call General_Set_Connect
     
     Call engine.GetElapsedTime
+    
+
     
     Call Start
  
