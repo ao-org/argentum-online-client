@@ -1060,7 +1060,7 @@ Sub Main()
     On Error GoTo Main_Err
     SetDllDirectory App.Path
     Dim d As Long
-    d = svb_init_steam(1956740)
+    'd = svb_init_steam(1956740)
     Debug.Print "init steam ret = " & d
     Call InitCommonControls
     
