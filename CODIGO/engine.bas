@@ -371,34 +371,42 @@ ErrHandler:
     End
 
 End Sub
-
 Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
-    
+
+    Static SeRompe As Boolean
+
     On Error GoTo Engine_BeginScene_Err
-  
-    
+
+
     If DirectDevice.TestCooperativeLevel <> D3D_OK Then
         If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
             Call Engine_Init
             prgRun = True
             pausa = False
             QueRender = 0
+            'FIX18
             lFrameTimer = 0
             FramesPerSecCounter = 0
         End If
     End If
-    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, Color, 1, 0)
+    If SeRompe Then
+        Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1, 0)
+    Else
+        Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, Color, 1, 0)
+    End If
+
     Call DirectDevice.BeginScene
     Call SpriteBatch.Begin
     Exit Sub
 
 Engine_BeginScene_Err:
-    
+
+    SeRompe = True
+
     Call RegistrarError(Err.Number, Err.Description, "engine.Engine_BeginScene", Erl)
 
-    
-End Sub
 
+End Sub
 Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hwnd As Long = 0)
 
 On Error GoTo ErrorHandlerDD:
