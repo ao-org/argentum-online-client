@@ -228,6 +228,7 @@ Private Enum ServerPacketID
     ShopInit
     UpdateShopClienteCredits
     SensuiRetrasado
+    UpdateFlag
     [PacketCount]
 End Enum
 
@@ -545,6 +546,9 @@ Public Enum ClientPacketID
     RepeatMacro
     BuyShopItem
     PerdonFaccion              '/PERDONFACCION NAME
+    IniciarCaptura           '/EVENTOCAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO PRECIO
+    ParticiparCaptura        '/PARTICIPARCAPTURA
+    CancelarCaptura          '/CANCELARCAPTURA
     [PacketCount]
 End Enum
 
@@ -650,6 +654,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleMostrarCuenta
         Case ServerPacketID.CharacterCreate
             Call HandleCharacterCreate
+        Case ServerPacketID.UpdateFlag
+            Call HandleUpdateFlag
         Case ServerPacketID.CharacterRemove
             Call HandleCharacterRemove
         Case ServerPacketID.CharacterMove
@@ -3573,6 +3579,8 @@ Private Sub HandleCharacterCreate()
         
         .Navegando = flags And &O2
         .tipoUsuario = Reader.ReadInt8()
+        .teamCaptura = Reader.ReadInt8()
+        .banderaIndex = Reader.ReadInt8()
         
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
             If MapData(.Pos.x, .Pos.y).charindex = charindex Then
@@ -3629,6 +3637,32 @@ Private Sub HandleCharacterCreate()
 ErrHandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterCreate", Erl)
+    
+
+End Sub
+
+
+Private Sub HandleUpdateFlag()
+
+    On Error GoTo ErrHandler
+
+    Dim charindex As Integer
+    Dim flag As Long
+    
+    
+    charindex = Reader.ReadInt16()
+    flag = Reader.ReadInt8()
+    
+    With charlist(charindex)
+        .banderaIndex = flag
+    End With
+    
+
+    Exit Sub
+    
+ErrHandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverChar", Erl)
     
 
 End Sub

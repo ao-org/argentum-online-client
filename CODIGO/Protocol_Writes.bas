@@ -3024,6 +3024,72 @@ WriteWarpChar_Err:
 End Sub
 
 ''
+' HarThaoS: Iniciar captura de bandera.
+
+Public Sub WriteIniciarCaptura(ByVal cantidad_participantes As Long, _
+                         ByVal rondas As Long, _
+                         ByVal nivel_minimo As Long, _
+                         ByVal precio As Long)
+        '<EhHeader>
+        On Error GoTo WriteIniciarCaptura_Err
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.IniciarCaptura)
+102     Call Writer.WriteInt32(cantidad_participantes)
+104     Call Writer.WriteInt32(rondas)
+106     Call Writer.WriteInt32(nivel_minimo)
+107     Call Writer.WriteInt32(precio)
+    
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteIniciarCaptura_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteIniciarCaptura", Erl)
+        '</EhFooter>
+End Sub
+
+
+''
+' HarThaoS: Se inscribe en captura
+
+Public Sub WriteParticiparCaptura()
+        '<EhHeader>
+        On Error GoTo WriteParticiparCaptura_Err
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.ParticiparCaptura)
+    
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteParticiparCaptura_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteParticiparCaptura", Erl)
+        '</EhFooter>
+End Sub
+
+
+''
+' HarThaoS: Se inscribe en captura
+
+Public Sub WriteCancelarCaptura()
+        '<EhHeader>
+        On Error GoTo WriteCancelarCaptura_Err
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.CancelarCaptura)
+    
+110     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCancelarCaptura_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCancelarCaptura", Erl)
+        '</EhFooter>
+End Sub
+
+''
 ' Writes the "Silence" message to the outgoing data buffer.
 '
 ' @param    username The user to silence.

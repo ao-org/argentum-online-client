@@ -1443,7 +1443,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     With charlist(charindex)
 
         If .Heading = 0 Then Exit Sub
-        
         Dim dibujaMiembroClan As Boolean
         dibujaMiembroClan = False
         
@@ -1886,6 +1885,15 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 
                 End If
                 
+                If .teamCaptura > 0 Then
+                    If .teamCaptura = 1 Then
+                         Call RGBAList(NameColor, 153, 217, 234)
+                    ElseIf .teamCaptura = 2 Then
+                         Call RGBAList(NameColor, 234, 133, 133)
+                    End If
+                
+                End If
+                
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 'Clan
@@ -1894,6 +1902,30 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Else
                     line = .clan
                 End If
+                
+                If .teamCaptura > 0 Then
+                    If .teamCaptura = 1 Then
+                        line = "<Equipo 1>"
+                    ElseIf .teamCaptura = 2 Then
+                        line = "<Equipo 2>"
+                    End If
+                End If
+                
+                If .banderaIndex > 0 And .teamCaptura > 0 Then
+                                   
+                    Dim flag As grh
+                    If .banderaIndex = 1 Then
+                        Call InitGrh(flag, 58712)
+                    ElseIf .banderaIndex = 2 Then
+                        Call InitGrh(flag, 60298)
+                    End If
+                    
+                    
+                    
+                    Call Draw_Grh(flag, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 45 + .Body.BodyOffset.y, 1, 0, Color, True, 0, 0, 0)
+                End If
+                
+                
                 
                 'Seteo color de nombre del clan solo si es de mi clan
                 Call SetRGBA(NameColorClan(0), 255, 255, 0, 255)

@@ -1058,15 +1058,15 @@ End Function
 Sub Main()
 
     On Error GoTo Main_Err
-    SetDllDirectory App.Path
-    Dim d As Long
-    d = svb_init_steam(1956740)
-    Debug.Print "init steam ret = " & d
     Call InitCommonControls
     
  'ReyarB pidió dejar entrar doble cliente (HarThaoS)
     #If DEBUGGING = 0 Then
- 
+        
+        SetDllDirectory App.Path
+        Dim d As Long
+        d = svb_init_steam(1956740)
+        Debug.Print "init steam ret = " & d
         If Not RunningInVB Then
  
             If FindPreviousInstance Then
