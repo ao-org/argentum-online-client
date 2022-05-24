@@ -1089,17 +1089,6 @@ Sub Main()
     ' Detecta el idioma del sistema y carga las traducciones
     Call SetLanguageApplication
     
-    If FileExist(App.Path & "\..\..\Launcher\LauncherAO20.ex_", vbNormal) Then
-        Call Sleep(2000)
-        Kill App.Path & "\..\..\Launcher\LauncherAO20.exe"
-        Name App.Path & "\..\..\Launcher\LauncherAO20.ex_" As App.Path & "\..\..\Launcher\LauncherAO20.exe"
-        If FileExist(App.Path & "\..\..\Launcher\LauncherAO20.dl_", vbNormal) Then
-            Kill App.Path & "\..\..\Launcher\LauncherAO20.dll"
-            Name App.Path & "\..\..\Launcher\LauncherAO20.dl_" As App.Path & "\..\..\Launcher\LauncherAO20.dll"
-        End If
-        Shell App.Path & "\..\..\Launcher\LauncherAO20.exe"
-        End
-    End If
     
     'Cursores******
     Set FormParser = New clsCursor
@@ -1122,10 +1111,6 @@ Sub Main()
     End If
     
     Call Frmcarga.Show
- 
-    #If DEBUGGING = 0 Then
-        Call frmConnect.AnalizarCliente
-    #End If
 
     If Sonido Then
     

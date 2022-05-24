@@ -259,39 +259,6 @@ render_DblClick_Err:
     
 End Sub
 
-'Comprobación versión cliente
-Public Sub AnalizarCliente()
-    
-    On Error GoTo Analizar_Err
-    
-    On Error Resume Next
-    Dim json As String
-    Dim jsonSplit() As String
-    Dim Token As String
-    
-   'obtengo el MD5 del Argentum.exe
-   json = Inet1.OpenURL("http://parches.ao20.com.ar/files/Version.json")
-    If Left(json, 5) <> "<!DOC" Then
-        If json <> "" Then
-            Token = Left(Split(json, "Argentum.exe"":""")(1), 32)
-        Else
-            Exit Sub
-        End If
-    End If
-    'Compruebo los MD5 con host
-    If Token <> CheckMD5 Then
-        Shell App.Path & "\..\..\Launcher\LauncherAO20.exe"
-        End
-    End If
-        
-    Exit Sub
-
-Analizar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmConnect.Analizar", Erl)
-    Resume Next
-End Sub
-
-
 Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo render_MouseUp_Err
