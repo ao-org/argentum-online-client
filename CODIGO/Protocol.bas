@@ -1735,11 +1735,11 @@ Private Sub HandleShowCarpenterForm()
     '***************************************************
     On Error GoTo HandleShowCarpenterForm_Err
         
-    If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+   ' If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
     
-        Call WriteCraftCarpenter(MacroBltIndex)
+        'Call WriteCraftCarpenter(MacroBltIndex)
         
-    Else
+   ' Else
          
         COLOR_AZUL = RGB(0, 0, 0)
     
@@ -1749,7 +1749,7 @@ Private Sub HandleShowCarpenterForm()
         Call Establecer_Borde(frmCarp.List2, frmCarp, COLOR_AZUL, 0, 0)
         frmCarp.Show , frmMain
 
-    End If
+   ' End If
     
     Exit Sub
 

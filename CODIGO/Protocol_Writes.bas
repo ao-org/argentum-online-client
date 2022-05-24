@@ -881,17 +881,14 @@ WriteCraftBlacksmith_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "CraftCarpenter" message to the outgoing data buffer.
-'
-' @param    item Index of the item to craft in the list sent by the server.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteCraftCarpenter(ByVal Item As Integer)
+' HarThaoS: Arreglo las cagadas de Ladder. A tu casa, a mimir.
+Public Sub WriteCraftCarpenter(ByVal Item As Integer, ByVal cantidad As Long)
         '<EhHeader>
         On Error GoTo WriteCraftCarpenter_Err
-        '</EhHeader>
+        '</EhHeader><
 100     Call Writer.WriteInt16(ClientPacketID.CraftCarpenter)
 102     Call Writer.WriteInt16(Item)
+103     Call Writer.WriteInt32(cantidad)
     
 104     Call modNetwork.Send(Writer)
         '<EhFooter>

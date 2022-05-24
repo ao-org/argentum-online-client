@@ -3220,10 +3220,6 @@ Private Sub MacroLadder_Timer()
                 Call WriteCraftAlquimista(UserMacro.Index)
                 UserMacro.cantidad = UserMacro.cantidad - 1
 
-            Case 2 'Carpinteria
-                Call WriteCraftCarpenter(UserMacro.Index)
-                UserMacro.cantidad = UserMacro.cantidad - 1
-
             Case 3 'Sasteria
                 Call WriteCraftSastre(UserMacro.Index)
                 UserMacro.cantidad = UserMacro.cantidad - 1
