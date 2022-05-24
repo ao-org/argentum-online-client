@@ -10,9 +10,7 @@ Public map_letter_a          As Single
 Public map_letter_fadestatus As Byte
 
 
-Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, _
-    ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, _
-    ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
+Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
     
     On Error GoTo RenderScreen_Err
     
@@ -58,15 +56,15 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, _
 
     ' Tiles that are in range
     MinX = center_x - HalfTileWidth
-    MaxX = center_x + HalfTileWidth + 2
+    MaxX = center_x + HalfTileWidth
     MinY = center_y - HalfTileHeight
-    MaxY = center_y + HalfTileHeight + 2
+    MaxY = center_y + HalfTileHeight
 
     ' Buffer tiles (for layer 2, chars, big objects, etc.)
     MinBufferedX = MinX - TileBufferSizeX
-    MaxBufferedX = MaxX + TileBufferSizeX + 2
+    MaxBufferedX = MaxX + TileBufferSizeX
     MinBufferedY = MinY - 1
-    MaxBufferedY = MaxY + TileBufferSizeY + 2
+    MaxBufferedY = MaxY + TileBufferSizeY
 
     ' Screen start (with movement offset)
     StartX = PixelOffsetX - MinX * TilePixelWidth
@@ -139,8 +137,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, _
 
     ' *********************************
     ' Layer 1 loop
-    For y = MinY To MaxY + 3
-        For x = MinX To MaxX + 6
+    For y = MinY To MaxY
+        For x = MinX To MaxX
             
             With MapData(x, y)
 
