@@ -78,14 +78,14 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     If PixelOffsetX > 0 Then
         MinX = MinX - 1
     Else
-        MaxX = MaxX + 1
+        MaxX = MaxX + 10
     End If
     
     If PixelOffsetY > 0 Then
         MinY = MinY - 1
     
     Else
-        MaxY = MaxY + 1
+        MaxY = MaxY + 5
     End If
     
     ' Map border checks
@@ -137,6 +137,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
     ' *********************************
     ' Layer 1 loop
+    
     For y = MinY To MaxY
         For x = MinX To MaxX
             
