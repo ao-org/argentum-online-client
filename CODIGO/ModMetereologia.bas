@@ -22,6 +22,20 @@ Public NightIndex          As Integer
 Public MorningIndex        As Integer
 
 Public MeteoParticle        As Integer
+Public Sub CargarLucesGlobales()
+    On Error GoTo CargarLucesGlobales_Err
+    
+    selected_light = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "LuzGlobal")
+    
+    If LenB(selected_light) = 0 Then selected_light = 0
+    
+    Call SetRGBA(day_light, 255, 255, 255)
+    Call SetRGBA(night_light, 120, 120, 120)
+    
+CargarLucesGlobales_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModMetereologia.CargarLucesGlobales", Erl)
+    'Resume Next
+End Sub
 
 Public Sub IniciarMeteorologia()
     
@@ -144,7 +158,15 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
     
     HoraAnterior = HoraActual - 1
     
-    Call LerpRGB(global_light, DayColors((24 + HoraAnterior) Mod 24), DayColors(HoraActual), Factor)
+    
+    Select Case selected_light
+        Case e_selectedlight.hourLight
+            Call LerpRGB(global_light, DayColors((24 + HoraAnterior) Mod 24), DayColors(HoraActual), Factor)
+        Case e_selectedlight.dayLight
+            global_light = day_light
+        Case e_selectedlight.nightLight
+            global_light = night_light
+    End Select
     
     UpdateLights = True
     

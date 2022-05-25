@@ -239,6 +239,7 @@ Private Sub Engine_InitExtras()
     Set Dialogos = New clsDialogs
     
     Call IniciarMeteorologia
+    Call CargarLucesGlobales
     
     ' Fuentes graficas.
     Call Engine_Font_Initialize

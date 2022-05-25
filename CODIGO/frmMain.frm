@@ -88,7 +88,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Timer UpdateDaytime 
       Enabled         =   0   'False
-      Interval        =   50
+      Interval        =   500
       Left            =   3480
       Top             =   2400
    End
@@ -425,7 +425,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2

@@ -327,7 +327,17 @@ Public VSync_FPS              As Boolean
 Public MostrarOnline          As Boolean
 Public usersOnline            As Integer
 
+Public Enum e_selectedlight
+    hourLight = 0
+    dayLight
+    nightLight
+End Enum
+
+Public selected_light As String
+
 Public global_light           As RGBA
+Public night_light            As RGBA
+Public day_light              As RGBA
 Public map_light              As RGBA
 Public last_light             As RGBA
 Public next_light             As RGBA
