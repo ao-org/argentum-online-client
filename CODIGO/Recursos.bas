@@ -1509,14 +1509,27 @@ Public Sub CargarIndicesOBJ()
     For Obj = 1 To NumOBJs
         DoEvents
         ObjData(Obj).GrhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
-        ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
+        If Obj = 403 Then
+            Debug.Print "asd"
+        End If
+        
+        Select Case language
+            Case e_language.English
+                ObjData(Obj).Name = IIf(Leer.GetValue("OBJ" & Obj, "en_Name") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Name"), Leer.GetValue("OBJ" & Obj, "Name"))
+                ObjData(Obj).info = IIf(Leer.GetValue("OBJ" & Obj, "en_Info") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Info"), Leer.GetValue("OBJ" & Obj, "Info"))
+                ObjData(Obj).Texto = IIf(Leer.GetValue("OBJ" & Obj, "en_Texto") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Texto"), Leer.GetValue("OBJ" & Obj, "en_Texto"))
+            Case e_language.Spanish
+                ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
+                ObjData(Obj).info = Leer.GetValue("OBJ" & Obj, "Info")
+                ObjData(Obj).Texto = Leer.GetValue("OBJ" & Obj, "Texto")
+        End Select
+        
         ObjData(Obj).MinDef = Val(Leer.GetValue("OBJ" & Obj, "MinDef"))
         ObjData(Obj).MaxDef = Val(Leer.GetValue("OBJ" & Obj, "MaxDef"))
         ObjData(Obj).MinHit = Val(Leer.GetValue("OBJ" & Obj, "MinHit"))
         ObjData(Obj).MaxHit = Val(Leer.GetValue("OBJ" & Obj, "MaxHit"))
         ObjData(Obj).ObjType = Val(Leer.GetValue("OBJ" & Obj, "ObjType"))
-        ObjData(Obj).info = Leer.GetValue("OBJ" & Obj, "Info")
-        ObjData(Obj).Texto = Leer.GetValue("OBJ" & Obj, "Texto")
+                
         ObjData(Obj).CreaGRH = Leer.GetValue("OBJ" & Obj, "CreaGRH")
         ObjData(Obj).CreaLuz = Leer.GetValue("OBJ" & Obj, "CreaLuz")
         ObjData(Obj).CreaParticulaPiso = Val(Leer.GetValue("OBJ" & Obj, "CreaParticulaPiso"))
@@ -1554,14 +1567,21 @@ Public Sub CargarIndicesOBJ()
     For Npc = 1 To NumNpcs
         DoEvents
         
-        NpcData(Npc).Name = Leer.GetValue("npc" & Npc, "Name")
+        Select Case language
+            Case e_language.English
+                NpcData(Npc).Name = IIf(Leer.GetValue("npc" & Npc, "en_Name") <> vbNullString, Leer.GetValue("npc" & Npc, "en_Name"), Leer.GetValue("npc" & Npc, "Name"))
+                NpcData(Npc).desc = IIf(Leer.GetValue("npc" & Npc, "en_desc") <> vbNullString, Leer.GetValue("npc" & Npc, "en_desc"), Leer.GetValue("npc" & Npc, "desc"))
+            Case e_language.Spanish
+                NpcData(Npc).Name = Leer.GetValue("npc" & Npc, "Name")
+                NpcData(Npc).desc = Leer.GetValue("npc" & Npc, "desc")
+        End Select
+        
 
         If NpcData(Npc).Name = "" Then
             NpcData(Npc).Name = "Vacío"
 
         End If
 
-        NpcData(Npc).desc = Leer.GetValue("npc" & Npc, "desc")
         NpcData(Npc).Body = Val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).exp = Val(Leer.GetValue("npc" & Npc, "exp"))
         NpcData(Npc).Head = Val(Leer.GetValue("npc" & Npc, "Head"))
