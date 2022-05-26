@@ -229,6 +229,7 @@ Private Enum ServerPacketID
     UpdateShopClienteCredits
     SensuiRetrasado
     UpdateFlag
+    CharAtaca
     [PacketCount]
 End Enum
 
@@ -690,6 +691,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleRainToggle
         Case ServerPacketID.CreateFX
             Call HandleCreateFX
+        Case ServerPacketID.CharAtaca
+            Call HandleCharAtaca
         Case ServerPacketID.UpdateUserStats
             Call HandleUpdateUserStats
         Case ServerPacketID.WorkRequestTarget
@@ -3581,6 +3584,9 @@ Private Sub HandleCharacterCreate()
         .tipoUsuario = Reader.ReadInt8()
         .teamCaptura = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
+        .AnimAtaque1 = Reader.ReadInt16()
+        
+        
         
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
             If MapData(.Pos.x, .Pos.y).charindex = charindex Then
@@ -4519,6 +4525,46 @@ Private Sub HandleCreateFX()
 
 HandleCreateFX_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCreateFX", Erl)
+    
+    
+End Sub
+
+''
+' Handles the CharAtaca message.
+
+Private Sub HandleCharAtaca()
+    
+    On Error GoTo HandleCharAtaca_Err
+    
+    Dim NpcIndex As Integer
+    Dim VictimIndex As Integer
+    Dim danio     As Long
+    Dim AnimAttack As Integer
+    
+    NpcIndex = Reader.ReadInt16()
+    VictimIndex = Reader.ReadInt16()
+    danio = Reader.ReadInt32()
+    AnimAttack = Reader.ReadInt16()
+    
+    Dim grh As grh
+            
+    If AnimAttack > 0 Then
+        charlist(NpcIndex).Body = BodyData(AnimAttack)
+        charlist(NpcIndex).Body.Walk(charlist(NpcIndex).Heading).started = FrameTime
+    End If
+    
+    'renderizo sangre si está sin montar ni navegar
+    If danio > 0 And charlist(VictimIndex).Navegando = 0 Then Call SetCharacterFx(VictimIndex, 14, 0)
+        
+
+    Call Sound.Sound_Play(CStr(IIf(danio = -1, 2, 10)), False, Sound.Calculate_Volume(charlist(NpcIndex).Pos.x, charlist(NpcIndex).Pos.y), Sound.Calculate_Pan(charlist(NpcIndex).Pos.x, charlist(NpcIndex).Pos.y))
+    
+        
+    Exit Sub
+    
+
+HandleCharAtaca_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharAtaca", Erl)
     
     
 End Sub

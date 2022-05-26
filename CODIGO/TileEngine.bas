@@ -298,7 +298,8 @@ Public Type Char
     clan_nivel As Byte
     tipoUsuario As eTipoUsuario
     teamCaptura As Byte
-    banderaIndex As Long
+    banderaIndex As Byte
+    AnimAtaque1 As Integer
 
 End Type
 
