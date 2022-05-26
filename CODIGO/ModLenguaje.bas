@@ -71,7 +71,7 @@ Public Sub SetLanguageApplication()
     ' y escribimos el archivo de configuracion con el idioma seleccionado
     If LenB(Localization) = 0 Then
         
-        Select Case ObtainOperativeSystemLanguage(1)
+        Select Case UCase(ObtainOperativeSystemLanguage(1))
             'English US
             Case "0409"
                 language = e_language.English
