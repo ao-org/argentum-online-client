@@ -32,6 +32,8 @@ Public Sub CargarLucesGlobales()
     Call SetRGBA(day_light, 255, 255, 255)
     Call SetRGBA(night_light, 120, 120, 120)
     
+    Exit Sub
+    
 CargarLucesGlobales_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModMetereologia.CargarLucesGlobales", Erl)
     'Resume Next
