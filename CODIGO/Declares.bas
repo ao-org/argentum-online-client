@@ -60,7 +60,7 @@ Public HayLLamadaDeclan                 As Boolean
 
 Public MapInfoEspeciales                As String
 
-Public LLamadaDeclanMapa                As Byte
+Public LLamadaDeclanMapa                As Integer
 
 Public LLamadaDeclanX                   As Byte
 
