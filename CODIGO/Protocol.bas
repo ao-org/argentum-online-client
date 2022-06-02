@@ -941,7 +941,7 @@ HandleIncomingData_Err:
 
     If Err.Number <> 0 Then
         Call RegistrarError(Err.Number, Err.Description & ". PacketID: " & PacketID, "Protocol.HandleIncomingData", Erl)
-        Call modNetwork.Disconnect
+       ' Call modNetwork.Disconnect
         
         HandleIncomingData = False
     End If
