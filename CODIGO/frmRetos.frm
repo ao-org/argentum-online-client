@@ -506,6 +506,7 @@ Private Sub Form_Load()
 
     Jugador(0) = UserName
     PocionesRojas = False
+    CaenItems = False
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
 End Sub
