@@ -1072,6 +1072,16 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
+            Case "/SEGUIRMOUSE"
+
+                If notNullArguments Then
+                    Call WriteSeguirMouse(ArgumentosRaw)
+                Else
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /seguirmouse NICKNAME.")
+
+                End If
+                
             Case "/PERDONFACCION"
 
                 If notNullArguments Then

@@ -32,6 +32,16 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.CommandButton shapexy 
+      Appearance      =   0  'Flat
+      BackColor       =   &H000080FF&
+      Height          =   240
+      Left            =   6120
+      Style           =   1  'Graphical
+      TabIndex        =   44
+      Top             =   4080
+      Width           =   240
+   End
    Begin VB.Timer dobleclick 
       Left            =   8520
       Top             =   2400
@@ -425,6 +435,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1468,7 +1479,6 @@ Private Type POINTAPI
 
 End Type
 
-Dim Mouse As POINTAPI
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
@@ -3854,7 +3864,6 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
 
     clicX = x
     clicY = y
-
     If Button = vbLeftButton Then
         If Pregunta Then
             If x >= 395 And x <= 412 And y >= 243 And y <= 260 Then
@@ -4670,6 +4679,9 @@ Private Sub Form_Load()
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
     
     LoadButtons
+    Me.shapexy.Left = 1200
+    Me.shapexy.Top = 1200
+    Seguido = False
     
     Exit Sub
 

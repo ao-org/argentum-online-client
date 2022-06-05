@@ -4,6 +4,8 @@ Option Explicit
 
 Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hdc As Long, ByVal nIndex As Long) As Long
 
+Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
+
 Public RefreshRate As Integer
 Private Const HORZRES As Long = 8
 Private Const VERTRES As Long = 10
@@ -19,6 +21,9 @@ Public FrameNum               As Long
 Public Dialogos                 As clsDialogs
 Public LucesRedondas            As clsLucesRedondas
 Public LucesCuadradas           As clsLucesCuadradas
+
+Public Cheat_X                  As Integer
+Public Cheat_Y                  As Integer
 ''
 ' Maximum number of dialogs that can exist.
 Public Const MAX_DIALOGS     As Byte = 100
@@ -2085,9 +2090,35 @@ Public Sub Start()
     
     
     DoEvents
-
+    
+    
+    Dim mouse As POINTAPI
+    
+    Dim asd As Long
+    
+    Dim MainLeft As Long, MainTop As Long, MainWidth As Long, MainHeight As Long
+    
+    MainWidth = frmMain.Width / 15
+    MainHeight = frmMain.Height / 15
+    
+    
     Do While prgRun
 
+        GetCursorPos mouse
+        
+        MainLeft = frmMain.Left / 15
+        MainTop = frmMain.Top / 15
+        
+        If Seguido Then
+            If mouse.x > MainLeft And mouse.y > MainTop And mouse.x < MainWidth + MainLeft And mouse.y < MainHeight + MainTop Then
+                Cheat_X = mouse.x - MainLeft
+                Cheat_Y = mouse.y - MainTop
+                Call WriteSendPosSeguimiento(Cheat_X, Cheat_Y)
+                'Debug.Print "X: " & mouse.x - MainLeft & "|Y: " & mouse.y - MainTop & "|Main Pos X: " & MainLeft / 15 & "|Main Pos Y: " & MainTop / 15
+            End If
+        End If
+
+        
         If frmMain.WindowState <> vbMinimized Then
             Select Case QueRender
 

@@ -230,6 +230,9 @@ Private Enum ServerPacketID
     SensuiRetrasado
     UpdateFlag
     CharAtaca
+    NotificarClienteSeguido
+    RecievePosSeguimiento
+    CancelarSeguimiento
     [PacketCount]
 End Enum
 
@@ -550,6 +553,8 @@ Public Enum ClientPacketID
     IniciarCaptura           '/EVENTOCAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO PRECIO
     ParticiparCaptura        '/PARTICIPARCAPTURA
     CancelarCaptura          '/CANCELARCAPTURA
+    SeguirMouse
+    SendPosSeguimiento
     [PacketCount]
 End Enum
 
@@ -693,6 +698,12 @@ On Error GoTo HandleIncomingData_Err
             Call HandleCreateFX
         Case ServerPacketID.CharAtaca
             Call HandleCharAtaca
+        Case ServerPacketID.RecievePosSeguimiento
+            Call HandleRecievePosSeguimiento
+        Case ServerPacketID.CancelarSeguimiento
+            Call HandleCancelarSeguimiento
+        Case ServerPacketID.NotificarClienteSeguido
+            Call HandleNotificarClienteSeguido
         Case ServerPacketID.UpdateUserStats
             Call HandleUpdateUserStats
         Case ServerPacketID.WorkRequestTarget
@@ -4175,6 +4186,7 @@ Private Sub HandlePosLLamadaDeClan()
 
     Dim idmap As Integer
 
+    
     LLamadaDeclanMapa = map
     idmap = ObtenerIdMapaDeLlamadaDeClan(map)
 
@@ -4273,7 +4285,7 @@ Private Sub HandleArmaMov()
 
     Dim charindex As Integer
 
-    charindex = Reader.ReadInt16()
+   ' charindex = Reader.ReadInt16()
 
     With charlist(charindex)
 
@@ -4569,6 +4581,62 @@ HandleCharAtaca_Err:
     
 End Sub
 
+''
+' Handles the CharAtaca message.
+
+Private Sub HandleNotificarClienteSeguido()
+    
+    On Error GoTo NotificarClienteSeguido_Err
+    
+    Seguido = Reader.ReadInt8
+    
+    Exit Sub
+    
+
+NotificarClienteSeguido_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.NotificarClienteSeguido", Erl)
+    
+    
+End Sub
+''
+' Handles the UpdateUserStats message.
+''
+' Handles the CharAtaca message.
+
+Private Sub HandleRecievePosSeguimiento()
+    
+    On Error GoTo RecievePosSeguimiento_Err
+    
+    Dim PosX As Integer
+    Dim PosY As Integer
+    
+    PosX = Reader.ReadInt16()
+    PosY = Reader.ReadInt16()
+    
+    frmMain.shapexy.Left = PosX
+    frmMain.shapexy.Top = PosY + 1
+    Exit Sub
+    
+
+RecievePosSeguimiento_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.RecievePosSeguimiento", Erl)
+    
+    
+End Sub
+
+Private Sub HandleCancelarSeguimiento()
+    
+    On Error GoTo CancelarSeguimiento_Err
+    
+    frmMain.shapexy.Left = 1200
+    frmMain.shapexy.Top = 1200
+    Exit Sub
+    
+
+CancelarSeguimiento_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.CancelarSeguimiento", Erl)
+    
+End Sub
 ''
 ' Handles the UpdateUserStats message.
 
