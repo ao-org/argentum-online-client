@@ -639,6 +639,8 @@ Public Const MAX_SLOTS_CRAFTEO = 5
 
 Public Const LoopAdEternum            As Integer = 999
 
+Public OffsetLimitScreen              As Long
+
 'Direcciones
 Public Enum E_Heading
 

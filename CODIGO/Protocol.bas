@@ -233,6 +233,11 @@ Private Enum ServerPacketID
     NotificarClienteSeguido
     RecievePosSeguimiento
     CancelarSeguimiento
+    GetInventarioHechizos
+    NotificarClienteCasteo
+    SendFollowingCharindex
+    ForceCharMoveSiguiendo
+    PosUpdateCharindex
     [PacketCount]
 End Enum
 
@@ -555,6 +560,7 @@ Public Enum ClientPacketID
     CancelarCaptura          '/CANCELARCAPTURA
     SeguirMouse
     SendPosSeguimiento
+    NotifyInventarioHechizos
     [PacketCount]
 End Enum
 
@@ -638,6 +644,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleChangeMap
         Case ServerPacketID.PosUpdate
             Call HandlePosUpdate
+        Case ServerPacketID.PosUpdateCharindex
+            Call HandlePosUpdateCharindex
         Case ServerPacketID.NPCHitUser
             Call HandleNPCHitUser
         Case ServerPacketID.UserHitNPC
@@ -672,6 +680,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUserCharIndexInServer
         Case ServerPacketID.ForceCharMove
             Call HandleForceCharMove
+        Case ServerPacketID.ForceCharMoveSiguiendo
+            Call HandleForceCharMoveSiguiendo
         Case ServerPacketID.CharacterChange
             Call HandleCharacterChange
         Case ServerPacketID.ObjectCreate
@@ -702,6 +712,12 @@ On Error GoTo HandleIncomingData_Err
             Call HandleRecievePosSeguimiento
         Case ServerPacketID.CancelarSeguimiento
             Call HandleCancelarSeguimiento
+        Case ServerPacketID.GetInventarioHechizos
+            Call HandleGetInventarioHechizos
+        Case ServerPacketID.NotificarClienteCasteo
+            Call HandleNotificarClienteCasteo
+        Case ServerPacketID.SendFollowingCharindex
+            Call HandleSendFollowingCharindex
         Case ServerPacketID.NotificarClienteSeguido
             Call HandleNotificarClienteSeguido
         Case ServerPacketID.UpdateUserStats
@@ -1233,6 +1249,8 @@ Public Sub HandleDisconnect()
     frmMain.UpdateDaytime.Enabled = False
     
     frmMain.Visible = False
+    
+    Seguido = False
     
     OpcionMenu = 0
 
@@ -2502,6 +2520,46 @@ HandlePosUpdate_Err:
 End Sub
 
 ''
+' Handles the PosUpdate message.
+
+Private Sub HandlePosUpdateCharindex()
+    
+    On Error GoTo HandlePosUpdateCharindex_Err
+
+    
+    Dim temp_x As Byte, temp_y As Byte
+    
+    
+    temp_x = UserPos.x
+    temp_y = UserPos.y
+    'Set new pos
+    UserPos.x = Reader.ReadInt8()
+    UserPos.y = Reader.ReadInt8()
+
+    Dim charindex As Integer
+    charindex = Reader.ReadInt16()
+    
+        'Remove char from old position
+    If MapData(temp_x, temp_y).charindex = charindex Then
+        MapData(temp_x, temp_y).charindex = 0
+    End If
+    'Set char
+    MapData(UserPos.x, UserPos.y).charindex = charindex
+    charlist(charindex).Pos = UserPos
+        
+    'Are we under a roof?
+    bTecho = HayTecho(UserPos.x, UserPos.y)
+                
+
+    Call RefreshAllChars
+    
+    Exit Sub
+
+HandlePosUpdateCharindex_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosUpdateCharindex", Erl)
+        
+End Sub
+''
 ' Handles the NPCHitUser message.
 
 Private Sub HandleNPCHitUser()
@@ -3519,6 +3577,7 @@ Private Sub HandleCharacterCreate()
     Dim group_index   As Integer
     
     charindex = Reader.ReadInt16()
+    Debug.Print charlist(charindex).nombre, charindex
   
     Body = Reader.ReadInt16()
     Head = Reader.ReadInt16()
@@ -3543,7 +3602,7 @@ Private Sub HandleCharacterCreate()
         Dim NombreYClan As String
         NombreYClan = Reader.ReadString8()
      
-   ' Debug.Print "HandleCharacterCreate " & charindex & " " & NombreYClan & " x:" & x & " y:" & y
+   '
     
          
         Dim Pos As Integer
@@ -3598,6 +3657,7 @@ Private Sub HandleCharacterCreate()
         .AnimAtaque1 = Reader.ReadInt16()
         
         
+       ' Debug.Print "name: " & charlist(charindex).nombre; "|charindex: " & charindex, x, y
         
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
             If MapData(.Pos.x, .Pos.y).charindex = charindex Then
@@ -3638,7 +3698,7 @@ Private Sub HandleCharacterCreate()
         '.AlphaPJ = 255
     
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
-        
+         Debug.Print "name: " & charlist(charindex).nombre; "|charindex: " & charindex, x, y
         If .Idle Or .Navegando Then
             'Start animation
             .Body.Walk(.Heading).Started = FrameTime
@@ -3736,7 +3796,7 @@ Private Sub HandleCharacterMove()
     Dim charindex As Integer
     Dim x         As Byte
     Dim y         As Byte
-    
+    Dim dir       As Byte
     charindex = Reader.ReadInt16()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
@@ -3801,6 +3861,43 @@ Private Sub HandleForceCharMove()
 
 HandleForceCharMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMove", Erl)
+    
+    
+End Sub
+
+''
+' Handles the ForceCharMove message.
+
+Private Sub HandleForceCharMoveSiguiendo()
+    
+    On Error GoTo HandleForceCharMoveSiguiendo_Err
+    
+    Dim Direccion As Byte
+    Direccion = Reader.ReadInt8()
+    Moviendose = True
+    
+    Call MainTimer.Restart(TimersIndex.Walk)
+    'Capaz hay que eliminar el char_move_by_head
+    
+    UserPos.x = charlist(CharindexSeguido).Pos.x
+    UserPos.y = charlist(CharindexSeguido).Pos.y
+
+    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    
+    If MapDat.Seguro = 1 Then
+        frmMain.Coord.ForeColor = RGB(0, 170, 0)
+    Else
+        frmMain.Coord.ForeColor = RGB(170, 0, 0)
+    End If
+    
+    Call Char_Move_by_Head(CharindexSeguido, Direccion)
+    Call MoveScreen(Direccion)
+    'Call RefreshAllChars
+    
+    Exit Sub
+
+HandleForceCharMoveSiguiendo_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMoveSiguiendo", Erl)
     
     
 End Sub
@@ -4613,8 +4710,8 @@ Private Sub HandleRecievePosSeguimiento()
     PosX = Reader.ReadInt16()
     PosY = Reader.ReadInt16()
     
-    frmMain.shapexy.Left = PosX
-    frmMain.shapexy.Top = PosY + 1
+    frmMain.shapexy.Left = posX - 6
+    frmMain.shapexy.Top = posY - 6
     Exit Sub
     
 
@@ -4630,11 +4727,77 @@ Private Sub HandleCancelarSeguimiento()
     
     frmMain.shapexy.Left = 1200
     frmMain.shapexy.Top = 1200
+    CharindexSeguido = 0
+    OffsetLimitScreen = 32
     Exit Sub
     
 
 CancelarSeguimiento_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.CancelarSeguimiento", Erl)
+    
+End Sub
+
+Private Sub HandleGetInventarioHechizos()
+    
+    On Error GoTo GetInventarioHechizos_Err
+    
+    Dim inventario_o_hechizos As Byte
+    
+    inventario_o_hechizos = Reader.ReadInt8()
+    'Clickeó en inventario
+    If inventario_o_hechizos = 1 Then
+        Call frmMain.inventoryClick
+    'Clickeó en hechizos
+    ElseIf inventario_o_hechizos = 2 Then
+        Call frmMain.hechizosClick
+    End If
+    Exit Sub
+    
+
+GetInventarioHechizos_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.GetInventarioHechizos", Erl)
+    
+End Sub
+
+
+Private Sub HandleNotificarClienteCasteo()
+    
+    On Error GoTo NotificarClienteCasteo_Err
+    
+    Dim value As Byte
+    
+    value = Reader.ReadInt8()
+    'Clickeó en inventario
+    If value = 1 Then
+        frmMain.shapexy.BackColor = RGB(0, 170, 0)
+    'Clickeó en hechizos
+    Else
+        frmMain.shapexy.BackColor = RGB(170, 0, 0)
+    End If
+    Exit Sub
+    
+
+NotificarClienteCasteo_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.NotificarClienteCasteo", Erl)
+    
+End Sub
+
+
+
+Private Sub HandleSendFollowingCharindex()
+    
+    On Error GoTo SendFollowingCharindex_Err
+    
+    Dim charindex As Integer
+    charindex = Reader.ReadInt16()
+    UserCharIndex = charindex
+    CharindexSeguido = charindex
+    OffsetLimitScreen = 31
+    Exit Sub
+    
+
+SendFollowingCharindex_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.SendFollowingCharindex", Erl)
     
 End Sub
 ''
@@ -8421,6 +8584,7 @@ Public Sub HandlePelearConPezEspecial()
         intentosPesca(i) = 0
     Next i
     PescandoEspecial = True
+    Call Sound.Sound_Play(55)
     ContadorIntentosPescaEspecial_Fallados = 0
     ContadorIntentosPescaEspecial_Acertados = 0
     startTimePezEspecial = GetTickCount()

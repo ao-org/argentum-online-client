@@ -989,6 +989,8 @@ Public Sub CargarMapa(ByVal map As Integer)
 
     HayLayer4 = False
     
+    If UserPos.x = 0 Then UserPos.x = 10
+    If UserPos.y = 0 Then UserPos.y = 10
     MapData(UserPos.x, UserPos.y).charindex = 0
     
     For i = 1 To LastChar
@@ -1578,7 +1580,7 @@ Public Sub CargarIndicesOBJ()
         
 
         If NpcData(Npc).Name = "" Then
-            NpcData(Npc).Name = "Vacío"
+            NpcData(Npc).name = "Vacío"
 
         End If
 

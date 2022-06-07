@@ -628,10 +628,14 @@ Sub SetConnected()
     On Error GoTo SetConnected_Err
     
     Connected = True
+    frmMain.shapexy.Left = 1200
+    frmMain.shapexy.Top = 1200
+    frmMain.shapexy.BackColor = RGB(170, 0, 0)
     
-    'Unload the connect form
-    'FrmCuenta.Visible = False
-
+    Seguido = False
+    CharindexSeguido = 0
+    OffsetLimitScreen = 32
+    
     frmMain.NombrePJ.Caption = username
 
     AlphaNiebla = 0
@@ -752,12 +756,17 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
             Moviendose = True
             Call MainTimer.Restart(TimersIndex.Walk)
+            
             If PescandoEspecial Then
                 Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
                 Call WriteRomperCania
                 PescandoEspecial = False
             End If
+           
+            If EstaSiguiendo Then Exit Sub
+            
             Call WriteWalk(Direccion) 'We only walk if we are not meditating or resting
+            
             Call Char_Move_by_Head(UserCharIndex, Direccion)
             Call MoveScreen(Direccion)
         Else
@@ -809,7 +818,13 @@ MoveTo_Err:
     Resume Next
     
 End Sub
-
+Public Function EstaSiguiendo() As Boolean
+      If CharindexSeguido > 0 Then
+            'Call AddtoRichTextBox(frmMain.RecTxt, "No puedes moverte mientras estás revisando a un usuario.", 255, 0, 0, 1)
+            EstaSiguiendo = True
+            Exit Function
+        End If
+End Function
 Sub RandomMove()
     '***************************************************
     'Author: Alejandro Santos (AlejoLp)
@@ -885,7 +900,7 @@ Sub Check_Keys()
     Static lastMovement As Long
 
     Dim Direccion As E_Heading
-    Debug.Assert UserCharIndex > 0
+    'Debug.Assert UserCharIndex > 0
     
     Direccion = charlist(UserCharIndex).Heading
 

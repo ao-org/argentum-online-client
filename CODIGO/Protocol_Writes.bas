@@ -2584,6 +2584,25 @@ WriteItemMove_Err:
         '</EhFooter>
 End Sub
 
+Public Sub WriteNotifyInventarioHechizos(ByVal value As Byte)
+        '<EhHeader>
+        On Error GoTo NotifyInventarioHechizos_Err
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.NotifyInventarioHechizos)
+104     Call Writer.WriteInt8(value)
+    
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+NotifyInventarioHechizos_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.NotifyInventarioHechizos", Erl)
+        '</EhFooter>
+End Sub
+
+
+
 Public Sub WriteBovedaItemMove(ByVal SlotActual As Byte, ByVal SlotNuevo As Byte)
         '<EhHeader>
         On Error GoTo WriteBovedaItemMove_Err
@@ -3001,6 +3020,9 @@ Public Sub WriteWarpChar(ByVal UserName As String, _
                          ByVal map As Integer, _
                          ByVal x As Byte, _
                          ByVal y As Byte)
+           
+        If EstaSiguiendo() Then Exit Sub
+        
         '<EhHeader>
         On Error GoTo WriteWarpChar_Err
         '</EhHeader>
@@ -3191,6 +3213,9 @@ End Sub
 ' @param    username The user to be approached.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGoToChar(ByVal UserName As String)
+
+        
+        If EstaSiguiendo() Then Exit Sub
         '<EhHeader>
         On Error GoTo WriteGoToChar_Err
         '</EhHeader>

@@ -397,6 +397,7 @@ Public CurMap                  As Integer 'Mapa actual
 Public userIndex               As Integer
 
 Public UserMoving              As Boolean
+Public CharindexSeguido        As Integer
 Public UserBody                As Integer
 Public UserHead                As Integer
 Public UserPos                 As Position 'Posicion
@@ -557,8 +558,6 @@ Public Sub Init_TileEngine()
 
     ReDim MapData(XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
     
-    UserPos.x = 50
-    UserPos.y = 50
     
     MinXBorder = XMinMapSize + (frmMain.renderer.ScaleWidth \ 64)
     MaxXBorder = XMaxMapSize - (frmMain.renderer.ScaleWidth \ 64)

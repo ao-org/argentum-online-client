@@ -2,6 +2,8 @@ Attribute VB_Name = "ModTaehcitna"
 Option Explicit
 
 Private Const MAX_COMPROBACIONES As Byte = 4
+
+Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
 Private ContadorMacroClicks(1 To MAX_COMPROBACIONES) As Position
 
 Public Function ComprobarPosibleMacro(ByVal MouseX As Integer, ByVal MouseY As Integer) As Boolean
@@ -106,3 +108,33 @@ Private Sub alterIndex(ByRef packetControl As t_packetControl)
         End If
     Next i
 End Sub
+
+Public Sub efectoSangre()
+    
+
+        
+    If Seguido = 1 Then
+        Dim mouse As POINTAPI
+        Dim MainLeft As Long
+        Dim MainTop As Long
+        Dim MainWidth As Long
+        Dim MainHeight As Long
+        
+        MainWidth = frmMain.Width / 15
+        MainHeight = frmMain.Height / 15
+        
+        
+        GetCursorPos mouse
+        
+        MainLeft = frmMain.Left / 15
+        MainTop = frmMain.Top / 15
+        If mouse.x > MainLeft And mouse.y > MainTop And mouse.x < MainWidth + MainLeft And mouse.y < MainHeight + MainTop Then
+            Cheat_X = mouse.x - MainLeft
+            Cheat_Y = mouse.y - MainTop
+            Call WriteSendPosSeguimiento(Cheat_X, Cheat_Y)
+            'Debug.Print "X: " & mouse.x - MainLeft & "|Y: " & mouse.y - MainTop & "|Main Pos X: " & MainLeft / 15 & "|Main Pos Y: " & MainTop / 15
+        End If
+    End If
+        
+End Sub
+

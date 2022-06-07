@@ -32,16 +32,19 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin VB.CommandButton shapexy 
+   Begin VB.PictureBox shapexy 
       Appearance      =   0  'Flat
+      AutoSize        =   -1  'True
       BackColor       =   &H000080FF&
-      Height          =   240
-      Left            =   6120
-      Style           =   1  'Graphical
+      ForeColor       =   &H80000008&
+      Height          =   180
+      Left            =   16920
+      ScaleHeight     =   150
+      ScaleWidth      =   150
       TabIndex        =   0
       TabStop         =   0   'False
-      Top             =   4080
-      Width           =   240
+      Top             =   7080
+      Width           =   180
    End
    Begin VB.Timer dobleclick 
       Left            =   8520
@@ -178,7 +181,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   3270
          ItemData        =   "frmMain.frx":57E2
-         Left            =   255
+         Left            =   240
          List            =   "frmMain.frx":57E4
          TabIndex        =   19
          TabStop         =   0   'False
@@ -436,6 +439,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -451,29 +455,6 @@ Begin VB.Form frmMain
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-   End
-   Begin VB.PictureBox renderer 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000008&
-      Height          =   9120
-      Left            =   120
-      ScaleHeight     =   608
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   736
-      TabIndex        =   4
-      Top             =   2250
-      Width           =   11040
    End
    Begin VB.PictureBox panelInf 
       Appearance      =   0  'Flat
@@ -977,6 +958,29 @@ Begin VB.Form frmMain
          Visible         =   0   'False
          Width           =   510
       End
+   End
+   Begin VB.PictureBox renderer 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000008&
+      Height          =   9120
+      Left            =   120
+      ScaleHeight     =   608
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   736
+      TabIndex        =   4
+      Top             =   2280
+      Width           =   11040
    End
    Begin VB.Image imgDeleteItem 
       Height          =   375
@@ -2014,6 +2018,10 @@ Private Sub hlst_Click()
     LastMacroButton = tMacroButton.lista
 End Sub
 
+Private Sub Image1_Click()
+
+End Sub
+
 Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then Exit Sub
@@ -2135,18 +2143,6 @@ Form_Activate_Err:
     
 End Sub
 
-
-Private Sub picInv_Click()
-    TempTick = GetTickCount And &H7FFFFFFF
-    
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Hechizos Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-    End If
-    
-    iClickTick = TempTick
-    
-    LastMacroButton = tMacroButton.picInv
-End Sub
 
 Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Not picInv.Visible Then Exit Sub
@@ -2637,8 +2633,12 @@ imgBugReport_Click_Err:
 End Sub
 
 Private Sub imgHechizos_Click()
-    
-    On Error GoTo imgHechizos_Click_Err
+  Call hechizosClick
+End Sub
+
+Public Sub hechizosClick()
+  
+    On Error GoTo hechizosClick_Err
     
 
     If hlst.Visible Then Exit Sub
@@ -2654,6 +2654,12 @@ Private Sub imgHechizos_Click()
     LastMacroButton = tMacroButton.Hechizos
     
     panel.Picture = LoadInterface("centrohechizo.bmp")
+    
+    
+    If Seguido = 1 Then
+        Call WriteNotifyInventarioHechizos(2)
+    End If
+    
     picInv.Visible = False
     
     hlst.Visible = True
@@ -2669,14 +2675,12 @@ Private Sub imgHechizos_Click()
     frmMain.imgInvLock(1).Visible = False
     frmMain.imgInvLock(2).Visible = False
     imgDeleteItem.Visible = False
-
     
     Exit Sub
 
-imgHechizos_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgHechizos_Click", Erl)
+hechizosClick_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.hechizosClick", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2732,8 +2736,11 @@ Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub imgInventario_Click()
-    
-    On Error GoTo imgInventario_Click_Err
+    Call inventoryClick
+End Sub
+
+Public Sub inventoryClick()
+    On Error GoTo inventoryClick_Err
     
 
     If picInv.Visible Then Exit Sub
@@ -2754,7 +2761,9 @@ Private Sub imgInventario_Click()
     hlst.Visible = False
     cmdlanzar.Visible = False
     imgSpellInfo.Visible = False
-    
+    If Seguido = 1 Then
+        Call WriteNotifyInventarioHechizos(1)
+    End If
 
     cmdMoverHechi(0).Visible = False
     cmdMoverHechi(1).Visible = False
@@ -2767,10 +2776,9 @@ Private Sub imgInventario_Click()
     
     Exit Sub
 
-imgInventario_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgInventario_Click", Erl)
+inventoryClick_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.inventoryClick", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -4267,7 +4275,6 @@ cerrarcuenta_Timer_Err:
     
 End Sub
 
-
 Private Sub TimerLluvia_Timer()
     
     On Error GoTo TimerLluvia_Timer_Err
@@ -4679,9 +4686,6 @@ Private Sub Form_Load()
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
     
     LoadButtons
-    Me.shapexy.Left = 1200
-    Me.shapexy.Top = 1200
-    Seguido = False
     
     Exit Sub
 

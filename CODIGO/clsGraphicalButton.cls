@@ -41,8 +41,6 @@ Private RollOverButtonImage As Picture  'img holder
 Private NormalButtonImage As Picture    'img holder
 Private ClickButtonImage As Picture  'img holder
 
-Private SoundClick As Boolean
-
 Private Form_Movement As clsFormMovementManager
 
 Private OverButton As Boolean    'Indicates wether the mouse is over the button or not

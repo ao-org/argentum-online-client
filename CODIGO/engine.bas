@@ -11,7 +11,9 @@ Private Const HORZRES As Long = 8
 Private Const VERTRES As Long = 10
 Private Const BITSPIXEL As Long = 12
 Private Const VREFRESH As Long = 116
-
+Private Const TIME_MS_MOUSE As Byte = 10
+Private MouseLastUpdate As Long
+Private MouseTimeAcumulated As Long
 
 Private Declare Function timeGetTime Lib "winmm.dll" () As Long
 
@@ -352,7 +354,7 @@ On Error GoTo ErrHandler:
 
     ' Configuracion del motor
     engineBaseSpeed = 0.018
-    
+    OffsetLimitScreen = 32
     'Set FPS value to 60 for startup
     fps = 60
     FramesPerSecCounter = 60
@@ -905,6 +907,14 @@ Public Sub render()
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
     
+    'TIME_MS_MOUSE
+    
+    MouseTimeAcumulated = MouseTimeAcumulated + timerElapsedTime
+    If MouseLastUpdate + TIME_MS_MOUSE <= MouseTimeAcumulated Then
+        Call efectoSangre
+        MouseLastUpdate = MouseTimeAcumulated
+    End If
+    
     If VSyncActivado And lFrameTimer > 0 Then
        While (FrameTime - lFrameTimer) * RefreshRate / 1000 <= FramesPerSecCounter
             Sleep 1
@@ -932,14 +942,14 @@ Sub ShowNextFrame()
     Static OffsetCounterX As Single
 
     Static OffsetCounterY As Single
-     
+    
     If UserMoving Then
 
         '****** Move screen Left and Right if needed ******
         If AddtoUserPos.x <> 0 Then
             OffsetCounterX = OffsetCounterX - ScrollPixelsPerFrameX * AddtoUserPos.x * timerTicksPerFrame * charlist(UserCharIndex).Speeding
 
-            If Abs(OffsetCounterX) >= Abs(32 * AddtoUserPos.x) Then
+            If Abs(OffsetCounterX) >= Abs(OffsetLimitScreen * AddtoUserPos.x) Then
                 OffsetCounterX = 0
                 AddtoUserPos.x = 0
                 UserMoving = False
@@ -952,7 +962,7 @@ Sub ShowNextFrame()
         If AddtoUserPos.y <> 0 Then
             OffsetCounterY = OffsetCounterY - ScrollPixelsPerFrameY * AddtoUserPos.y * timerTicksPerFrame * charlist(UserCharIndex).Speeding
 
-            If Abs(OffsetCounterY) >= Abs(32 * AddtoUserPos.y) Then
+            If Abs(OffsetCounterY) >= Abs(OffsetLimitScreen * AddtoUserPos.y) Then
                 OffsetCounterY = 0
                 AddtoUserPos.y = 0
                 UserMoving = False
@@ -2091,32 +2101,10 @@ Public Sub Start()
     
     DoEvents
     
-    
-    Dim mouse As POINTAPI
-    
-    Dim asd As Long
-    
-    Dim MainLeft As Long, MainTop As Long, MainWidth As Long, MainHeight As Long
-    
-    MainWidth = frmMain.Width / 15
-    MainHeight = frmMain.Height / 15
-    
+        
     
     Do While prgRun
 
-        GetCursorPos mouse
-        
-        MainLeft = frmMain.Left / 15
-        MainTop = frmMain.Top / 15
-        
-        If Seguido Then
-            If mouse.x > MainLeft And mouse.y > MainTop And mouse.x < MainWidth + MainLeft And mouse.y < MainHeight + MainTop Then
-                Cheat_X = mouse.x - MainLeft
-                Cheat_Y = mouse.y - MainTop
-                Call WriteSendPosSeguimiento(Cheat_X, Cheat_Y)
-                'Debug.Print "X: " & mouse.x - MainLeft & "|Y: " & mouse.y - MainTop & "|Main Pos X: " & MainLeft / 15 & "|Main Pos Y: " & MainTop / 15
-            End If
-        End If
 
         
         If frmMain.WindowState <> vbMinimized Then
