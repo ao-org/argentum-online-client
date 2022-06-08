@@ -4382,7 +4382,7 @@ Private Sub HandleArmaMov()
 
     Dim charindex As Integer
 
-   ' charindex = Reader.ReadInt16()
+   charindex = Reader.ReadInt16()
 
     With charlist(charindex)
 
