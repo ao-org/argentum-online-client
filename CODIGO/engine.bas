@@ -1595,6 +1595,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 Call SetRGBA(NameColor(0), ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
     
                         End Select
+                    
+                    ElseIf .priv = 7 Then
+                        Call SetRGBA(NameColor(0), 2, 242, 255)
+                    ElseIf .priv = 6 Then
+                        Call SetRGBA(NameColor(0), 255, 78, 40)
                              
                     Else
                         Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
@@ -1638,6 +1643,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                     Call SetRGBA(NameColor(0), ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
         
                             End Select
+                        ElseIf .priv = 7 Then
+                            Call SetRGBA(NameColor(0), 2, 242, 255)
+                        ElseIf .priv = 6 Then
+                            Call SetRGBA(NameColor(0), 255, 78, 40)
                         Else
                             Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                         End If
@@ -1702,7 +1711,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     
                         End Select
                                 
+                    ElseIf .priv = 7 Then
+                        Call RGBAList(NameColor, 2, 242, 255)
+                        Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+                    ElseIf .priv = 6 Then
+                        Call RGBAList(NameColor, 255, 78, 40)
+                        Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
                     Else
+                    
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
                         Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
                         
@@ -1879,6 +1895,12 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
     
                         End Select
+                    ElseIf .priv = 7 Then
+                        Call RGBAList(NameColor, 2, 242, 255)
+                        Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+                    ElseIf .priv = 6 Then
+                        Call RGBAList(NameColor, 255, 78, 40)
+                        Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
                                 
                     Else
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
@@ -1913,8 +1935,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 'Clan
-                If .priv > 1 And .priv < &H40 Then
+                
+                If .priv = 2 Or .priv = 3 Or .priv = 4 Then
                     line = "<Game Master>"
+                ElseIf .priv = 5 Then
+                    line = "<Administrador>"
                 Else
                     line = .clan
                 End If

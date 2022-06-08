@@ -356,9 +356,9 @@ Public Sub InitFontTypes()
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_CONSEJOCAOS)
-        .red = 179
-        .green = 0
-        .blue = 4
+        .red = 255
+        .green = 78
+        .blue = 40
         .bold = 1
 
     End With
