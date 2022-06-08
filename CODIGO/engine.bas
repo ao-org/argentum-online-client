@@ -2106,6 +2106,11 @@ Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
             Exit Function
         End If
         
+        If charlist(UserCharIndex).priv = 6 Or charlist(UserCharIndex).priv = 7 Then
+            IsCharVisible = False
+            Exit Function
+        End If
+        
         If charlist(UserCharIndex).priv > 0 And charlist(charindex).priv <= charlist(UserCharIndex).priv Then
             IsCharVisible = True
             Exit Function
