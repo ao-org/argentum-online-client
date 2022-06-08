@@ -1595,12 +1595,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 Call SetRGBA(NameColor(0), ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
     
                         End Select
-                    
-                    ElseIf .priv = 7 Then
-                        Call SetRGBA(NameColor(0), 2, 242, 255)
-                    ElseIf .priv = 6 Then
-                        Call SetRGBA(NameColor(0), 255, 78, 40)
-                             
                     Else
                         Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
                     End If
@@ -1643,10 +1637,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                     Call SetRGBA(NameColor(0), ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
         
                             End Select
-                        ElseIf .priv = 7 Then
-                            Call SetRGBA(NameColor(0), 2, 242, 255)
-                        ElseIf .priv = 6 Then
-                            Call SetRGBA(NameColor(0), 255, 78, 40)
                         Else
                             Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                         End If
@@ -1710,13 +1700,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
     
                         End Select
-                                
-                    ElseIf .priv = 7 Then
-                        Call RGBAList(NameColor, 2, 242, 255)
-                        Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
-                    ElseIf .priv = 6 Then
-                        Call RGBAList(NameColor, 255, 78, 40)
-                        Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
                     Else
                     
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
@@ -1895,13 +1878,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                                 Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
     
                         End Select
-                    ElseIf .priv = 7 Then
-                        Call RGBAList(NameColor, 2, 242, 255)
-                        Call RGBAList(colorCorazon, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
-                    ElseIf .priv = 6 Then
-                        Call RGBAList(NameColor, 255, 78, 40)
-                        Call RGBAList(colorCorazon, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
-                                
                     Else
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                         Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)

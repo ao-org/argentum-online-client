@@ -1485,7 +1485,7 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
 
                 End If
 
-            ' Consejeros, SemiDioses, Dioses y Admin (GM)
+            ' Consejeros, SemiDioses, Dioses y Admin (GM), Concilios y consejos
             Case Else
                 NameRed = ColoresPJ(.priv).r
                 NameGreen = ColoresPJ(.priv).G
