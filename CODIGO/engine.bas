@@ -1720,7 +1720,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             
             
-            If (verVidaClan And Not .Invisible) Or dibujaMiembroClan Or charlist(UserCharIndex).priv = 5 Or charlist(UserCharIndex).priv = 6 Then
+            If (verVidaClan And Not .Invisible) Or dibujaMiembroClan Or charlist(UserCharIndex).priv = 5 Then
                 OffsetYname = 8
                 OffsetYClan = 8
                 Call DibujarVidaChar(charindex, PixelOffsetX, PixelOffsetY, OffsetYname, OffsetYClan)
@@ -1813,6 +1813,27 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
 
                 ' Char
+                If CharindexSeguido > 0 And .Invisible And CharindexSeguido <> charindex Then
+                    Call SetRGBA(Color(0), 180, 180, 180, 255)
+                    Call SetRGBA(Color(1), 180, 180, 180, 255)
+                    Call SetRGBA(Color(2), 180, 180, 180, 255)
+                    Call SetRGBA(Color(3), 180, 180, 180, 255)
+                    Call SetRGBA(NameColor(0), 180, 180, 180, 255)
+                    Call SetRGBA(NameColor(1), 180, 180, 180, 255)
+                    Call SetRGBA(NameColor(2), 180, 180, 180, 255)
+                    Call SetRGBA(NameColor(3), 180, 180, 180, 255)
+                    line = .nombre
+                    Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, 255
+                End If
+                
+                If charlist(UserCharIndex).priv = 6 Or charlist(UserCharIndex).priv = 7 And UserCharIndex <> charindex Then
+                    If charlist(charindex).Invisible And Not dibujaMiembroClan Then
+                        Call SetRGBA(Color(0), 180, 180, 180, 0)
+                        Call SetRGBA(Color(1), 180, 180, 180, 0)
+                        Call SetRGBA(Color(2), 180, 180, 180, 0)
+                        Call SetRGBA(Color(3), 180, 180, 180, 0)
+                    End If
+                End If
                 PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, False
                 
             ' Si no, solo dibujamos body
@@ -2079,19 +2100,17 @@ End Sub
 
 Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
 
-    With charlist(charindex)
     
         If charindex = UserCharIndex Then
             IsCharVisible = True
             Exit Function
         End If
         
-        If charlist(UserCharIndex).priv > 0 And .priv <= charlist(UserCharIndex).priv Then
+        If charlist(UserCharIndex).priv > 0 And charlist(charindex).priv <= charlist(UserCharIndex).priv Then
             IsCharVisible = True
             Exit Function
         End If
 
-    End With
 
 End Function
 
