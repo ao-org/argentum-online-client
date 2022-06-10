@@ -1238,7 +1238,7 @@ Public Function Calculate_Volume(ByVal map_x As Integer, ByVal map_y As Integer)
     If (total_distance = 0) Then
         Calculate_Volume = mEffectsVolumeMax
             
-    ElseIf total_distance < 19 Then
+    ElseIf total_distance <= 19 Then
         Calculate_Volume = mEffectsVolumeMax - (total_distance * 120)
     Else
         Calculate_Volume = mEffectsVolumeMax - 450
