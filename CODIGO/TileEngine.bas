@@ -705,7 +705,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
 
         With charlist(charindex)
 
-            If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv Then
+            If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
                 If .Speeding > 1.3 Then
                    
                     Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
@@ -733,7 +733,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
 
     Else
 
-        If FxNavega Then
+        If FxNavega And charlist(UserCharIndex).Muerto = False Then
             Call Sound.Sound_Play(SND_NAVEGANDO)
 
             '  Call Audio.PlayWave(SND_NAVEGANDO, charlist(charindex).Pos.x, charlist(charindex).Pos.y)
