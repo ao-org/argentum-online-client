@@ -2829,6 +2829,7 @@ Private Sub HandleChatOverHead()
 
         Case "PMAG"
             chat = HechizoData(ReadField(2, chat, Asc("*"))).PalabrasMagicas
+            If charlist(UserCharIndex).Muerto = True Then chat = ""
             copiar = False
             duracion = 20
             
@@ -3667,24 +3668,6 @@ Private Sub HandleCharacterCreate()
         End If
 
         If privs <> 0 Then
-
-            'If the player belongs to a council AND is an admin, only whos as an admin
-            If (privs And PlayerType.ChaosCouncil) <> 0 And (privs And PlayerType.User) = 0 Then
-                privs = privs Xor PlayerType.ChaosCouncil
-
-            End If
-            
-            If (privs And PlayerType.RoyalCouncil) <> 0 And (privs And PlayerType.User) = 0 Then
-                privs = privs Xor PlayerType.RoyalCouncil
-
-            End If
-            
-            'If the player is a RM, ignore other flags
-            If privs And PlayerType.RoleMaster Then
-                privs = PlayerType.RoleMaster
-
-            End If
-            
             'Log2 of the bit flags sent by the server gives our numbers ^^
             .priv = Log(privs) / Log(2)
         Else

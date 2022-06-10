@@ -1236,26 +1236,33 @@ Private Sub FillAccountData(ByVal data As String)
         Select Case Pjs(i).Criminal
 
             Case 0 'Criminal
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
-                Pjs(i).priv = 0
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).B)
+                
 
             Case 1 'Ciudadano
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
-                Pjs(i).priv = 0
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).B)
+                
 
             Case 2 'Caos
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
-                Pjs(i).priv = 0
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).B)
+                
 
             Case 3 'Armada
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
-                Pjs(i).priv = 0
-
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).B)
+                
+            
+            Case 4 'Concilio
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).B)
+                
+                
+            Case 5 'Consejo
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).B)
+                
            
             Case Else
 
         End Select
-
+        Pjs(i).priv = 0
     Next i
     
     AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA

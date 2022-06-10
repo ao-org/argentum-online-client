@@ -787,9 +787,6 @@ Public Enum PlayerType
     SemiDios = &H8
     Dios = &H10
     Admin = &H20
-    ChaosCouncil = &H40
-    RoyalCouncil = &H80
-
 End Enum
 
 Public Enum eObjType

@@ -1465,24 +1465,30 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
         Select Case .priv
             ' Usuario normal
             Case 0
-
                 If .status = 0 Then ' Criminal
-                    NameRed = ColoresPJ(50).r
-                    NameGreen = ColoresPJ(50).G
-                    NameBlue = ColoresPJ(50).B
+                    NameRed = ColoresPJ(23).r
+                    NameGreen = ColoresPJ(23).G
+                    NameBlue = ColoresPJ(23).B
                 ElseIf .status = 1 Then ' Ciudadano
-                    NameRed = ColoresPJ(49).r
-                    NameGreen = ColoresPJ(49).G
-                    NameBlue = ColoresPJ(49).B
+                    NameRed = ColoresPJ(20).r
+                    NameGreen = ColoresPJ(20).G
+                    NameBlue = ColoresPJ(20).B
                 ElseIf .status = 2 Then ' Caos
-                    NameRed = ColoresPJ(6).r
-                    NameGreen = ColoresPJ(6).G
-                    NameBlue = ColoresPJ(6).B
+                    NameRed = ColoresPJ(24).r
+                    NameGreen = ColoresPJ(24).G
+                    NameBlue = ColoresPJ(24).B
                 ElseIf .status = 3 Then ' Armada
-                    NameRed = ColoresPJ(8).r
-                    NameGreen = ColoresPJ(8).G
-                    NameBlue = ColoresPJ(8).B
-
+                    NameRed = ColoresPJ(21).r
+                    NameGreen = ColoresPJ(21).G
+                    NameBlue = ColoresPJ(21).B
+                ElseIf .status = 4 Then ' Conciclio
+                    NameRed = ColoresPJ(25).r
+                    NameGreen = ColoresPJ(25).G
+                    NameBlue = ColoresPJ(25).B
+                ElseIf .status = 5 Then ' Consejo
+                    NameRed = ColoresPJ(22).r
+                    NameGreen = ColoresPJ(22).G
+                    NameBlue = ColoresPJ(22).B
                 End If
 
             ' Consejeros, SemiDioses, Dioses y Admin (GM), Concilios y consejos
