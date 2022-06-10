@@ -4346,50 +4346,6 @@ WriteChaosLegionMessage_Err:
 End Sub
 
 ''
-' Writes the "CitizenMessage" message to the outgoing data buffer.
-'
-' @param    message The message to send to citizens.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteCitizenMessage(ByVal Message As String)
-        '<EhHeader>
-        On Error GoTo WriteCitizenMessage_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.CitizenMessage)
-102     Call Writer.WriteString8(Message)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteCitizenMessage_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCitizenMessage", Erl)
-        '</EhFooter>
-End Sub
-
-''
-' Writes the "CriminalMessage" message to the outgoing data buffer.
-'
-' @param    message The message to send to criminals.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteCriminalMessage(ByVal Message As String)
-        '<EhHeader>
-        On Error GoTo WriteCriminalMessage_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.CriminalMessage)
-102     Call Writer.WriteString8(Message)
-    
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteCriminalMessage_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCriminalMessage", Erl)
-        '</EhFooter>
-End Sub
-
-''
 ' Writes the "TalkAsNPC" message to the outgoing data buffer.
 '
 ' @param    message The message to send to the royal army members.

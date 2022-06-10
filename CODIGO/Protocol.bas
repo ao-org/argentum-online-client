@@ -401,8 +401,6 @@ Public Enum ClientPacketID
     ForceWAVEToMap          '/FORCEWAVMAP
     RoyalArmyMessage        '/REALMSG
     ChaosLegionMessage      '/CAOSMSG
-    CitizenMessage          '/CIUMSG
-    CriminalMessage         '/CRIMSG
     TalkAsNPC               '/TALKAS
     DestroyAllItemsInArea   '/MASSDEST
     AcceptRoyalCouncilMember '/ACEPTCONSE

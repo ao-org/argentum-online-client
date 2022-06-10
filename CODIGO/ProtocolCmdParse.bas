@@ -1422,27 +1422,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg("Escriba un mensaje.")
 
                 End If
-                
-            Case "/CIUMSG"
-
-                If notNullArguments Then
-                    Call WriteCitizenMessage(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
-
-                End If
-            
-            Case "/CRIMSG"
-
-                If notNullArguments Then
-                    Call WriteCriminalMessage(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
-
-                End If
-            
+           
             Case "/TALKAS"
 
                 If notNullArguments Then
