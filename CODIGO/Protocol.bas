@@ -238,6 +238,7 @@ Private Enum ServerPacketID
     SendFollowingCharindex
     ForceCharMoveSiguiendo
     PosUpdateCharindex
+    ShopPjsInit
     [PacketCount]
 End Enum
 
@@ -559,6 +560,7 @@ Public Enum ClientPacketID
     SeguirMouse
     SendPosSeguimiento
     NotifyInventarioHechizos
+    PublicarPersonajeMAO
     [PacketCount]
 End Enum
 
@@ -946,6 +948,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandlePrivilegios
         Case ServerPacketID.ShopInit
             Call HandleShopInit
+        Case ServerPacketID.ShopPjsInit
+            Call HandleShopPjsInit
         Case ServerPacketID.UpdateShopClienteCredits
             Call HandleUpdateShopClienteCredits
         Case ServerPacketID.SensuiRetrasado
@@ -8598,6 +8602,9 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePrivilegios", Erl)
 End Sub
 
+Public Sub HandleShopPjsInit()
+    frmShopPjsAO20.Show , frmMain
+End Sub
 Public Sub HandleShopInit()
     
     Dim cant_obj_shop As Long, i As Long

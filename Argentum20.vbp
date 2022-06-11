@@ -119,6 +119,7 @@ Form=CODIGO\frmShop.frm
 Form=CODIGO\frmStatistics.frm
 Form=CODIGO\frmMensajePapiro.frm
 Form=CODIGO\frmPasswordReset.frm
+Form=CODIGO\frmShopPjsAO20.frm
 ResFile32="AO20.res"
 IconForm="frmMain"
 Startup="Sub Main"

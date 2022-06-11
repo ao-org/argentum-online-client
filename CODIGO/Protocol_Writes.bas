@@ -6568,3 +6568,18 @@ WriteRomperCania_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRomperCania", Erl)
 End Sub
+
+
+Public Sub writePublicarPersonajeMAO(ByVal valor As Long)
+     On Error GoTo writePublicarPersonajeMAO_Err
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.PublicarPersonajeMAO)
+        Call Writer.WriteInt32(valor)
+102     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+writePublicarPersonajeMAO_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePublicarPersonajeMAO", Erl)
+End Sub
