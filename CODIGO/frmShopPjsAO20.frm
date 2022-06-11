@@ -1,16 +1,16 @@
 VERSION 5.00
 Begin VB.Form frmShopPjsAO20 
-   BackColor       =   &H00004080&
+   BackColor       =   &H00404040&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   2115
+   ClientHeight    =   2325
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   4770
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2115
+   ScaleHeight     =   2325
    ScaleWidth      =   4770
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -34,6 +34,27 @@ Begin VB.Form frmShopPjsAO20
       Text            =   "0"
       Top             =   960
       Width           =   3015
+   End
+   Begin VB.Label Label3 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Costo por publicar: 100.000 monedas de oro"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H0000FFFF&
+      Height          =   240
+      Left            =   80
+      TabIndex        =   4
+      Top             =   2040
+      Width           =   4605
    End
    Begin VB.Label Label2 
       Alignment       =   2  'Center
@@ -68,6 +89,7 @@ Begin VB.Form frmShopPjsAO20
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H8000000B&
       Height          =   495
       Left            =   840
       TabIndex        =   2
@@ -87,6 +109,7 @@ Begin VB.Form frmShopPjsAO20
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H8000000B&
       Height          =   1215
       Left            =   0
       TabIndex        =   1
@@ -109,7 +132,7 @@ Private Sub lblPublicar_Click()
         Exit Sub
     End If
     
-    If MsgBox("Estás publicando a " & username & " a un valor de " & txtValor.Text & " al confirmar se desconectará tu personaje y quedará bloqueado el ingreso del mismo. Para poder desbloquearlo deberás hacerlo desde la página web.", vbYesNo + vbQuestion, "Publicar personaje") = vbYes Then
+    If MsgBox("Estás publicando a " & username & " a un valor de " & txtValor.Text & " al confirmar se desconectará tu personaje, se descontarán las 100.000 monedas de oro y quedará bloqueado el ingreso del mismo. Para poder desbloquearlo deberás hacerlo desde la página web.", vbYesNo + vbQuestion, "Publicar personaje") = vbYes Then
         Call writePublicarPersonajeMAO(Val(txtValor.Text))
         Call cerrarFormulario
     End If
