@@ -91,7 +91,7 @@ Public Sub toggleTutorialActivo(ByVal NumeroTutorial As Byte)
             .Activo = 0
         End If
         
-        file = App.Path & "\..\Recursos\Dat\tutoriales.dat"
+        file = App.Path & "\..\Recursos\OUTPUT\Configuracion.ini"
         Call WriteVar(file, "TUTORIAL" & NumeroTutorial, "Activo", .Activo)
     End With
 End Sub
@@ -102,14 +102,13 @@ Public Sub cargarTutoriales()
     Dim CantidadTutoriales As Long
     Dim file As clsIniManager
     Dim i As Long, j As Long
-    
-    FileName = App.Path & "\..\Recursos\Dat\tutoriales.dat"
+    FileName = App.Path & "\..\Recursos\OUTPUT\Configuracion.ini"
     Set file = New clsIniManager
     Call file.Initialize(FileName)
     
     
-    CantidadTutoriales = file.GetValue("INIT", "Cantidad")
-    MostrarTutorial = file.GetValue("INIT", "MostrarTutorial")
+    CantidadTutoriales = file.GetValue("INITTUTORIAL", "Cantidad")
+    MostrarTutorial = file.GetValue("INITTUTORIAL", "MostrarTutorial")
     If CantidadTutoriales <= 0 Then Exit Sub
     
     ReDim tutorial(1 To CantidadTutoriales)
