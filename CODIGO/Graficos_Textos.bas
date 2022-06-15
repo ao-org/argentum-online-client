@@ -958,7 +958,7 @@ Public Sub Engine_Text_Render(Texto As String, ByVal x As Integer, ByVal y As In
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
 
             If B = 32 Or B = 13 Then
-                If e >= 35 Then 'reemplazar por lo que os plazca
+                If e >= 32 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0

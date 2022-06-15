@@ -439,7 +439,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4437,7 +4436,18 @@ Public Sub Form_Click()
     On Error GoTo Form_Click_Err
 
     If pausa Then Exit Sub
-
+    
+    If cartel_visible Then
+        If MouseX > 50 And MouseY > 478 And MouseX < 671 And MouseY < 585 Then
+            If MostrandoTutorial > 0 Then
+                tutorial_texto_actual = tutorial_texto_actual + 1
+            Else
+                cartel_duration = 0
+            End If
+            
+            
+        End If
+    End If
     If MouseBoton = vbLeftButton And ACCION1 = 0 Or MouseBoton = vbRightButton And ACCION2 = 0 Or MouseBoton = 4 And ACCION3 = 0 Then
         If Not Comerciando Then
             ' Fix: game area esta mal

@@ -10,6 +10,8 @@ Public map_letter_a          As Single
 Public map_letter_fadestatus As Byte
 
 
+
+
 Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
     
     On Error GoTo RenderScreen_Err
@@ -720,13 +722,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     End If
 
     Call RenderScreen_NombreMapa
-   '   Dim grhTest As grh
-   '   Dim testColor As ARGB
-      
-   ' InitGrh grhTest, 12774
-   '  Call Draw_Grh(grhTest, 370, 600, 1, 1, TempColor, False, x, y)
-    
-    'HarThaoS y el peroncho(Ford Lers)
     If PescandoEspecial Then
         Call RGBAList(ColorBarraPesca, 255, 255, 255)
         Dim grh As grh
@@ -768,7 +763,19 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         End If
         
     End If
+   
     
+    If MostrarTutorial Then
+        Call RenderizarTutoriales
+    End If
+    
+    If npcs_en_render = 1 And MostrandoTutorial = 0 And Len(cartel_text) > 0 Then
+        Dim ColorTextoCartel(3) As RGBA
+        Call RGBAList(ColorTextoCartel(), 255, 255, 255, 255)
+        Dim ColorTitulo(3) As RGBA
+        Call RGBAList(ColorTitulo(), 168, 91, 39, 255)
+        Call RenderScreen_Cartel(cartel_text, ColorTextoCartel(), cartel_icon, TempColor(), ColorTitulo(), cartel_title)
+    End If
     Exit Sub
 
 RenderScreen_Err:

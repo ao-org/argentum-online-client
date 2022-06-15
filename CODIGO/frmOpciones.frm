@@ -130,69 +130,6 @@ Begin VB.Form frmOpciones
       Top             =   10440
       Width           =   1335
    End
-   Begin VB.PictureBox PanelVideo 
-      BorderStyle     =   0  'None
-      Height          =   4965
-      Left            =   240
-      ScaleHeight     =   331
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   504
-      TabIndex        =   14
-      Top             =   1800
-      Visible         =   0   'False
-      Width           =   7560
-      Begin VB.ComboBox cboLuces 
-         Height          =   315
-         ItemData        =   "frmOpciones.frx":0152
-         Left            =   240
-         List            =   "frmOpciones.frx":015F
-         TabIndex        =   22
-         Top             =   3720
-         Width           =   2175
-      End
-      Begin VB.Image num_comp_inv 
-         Height          =   255
-         Left            =   270
-         Top             =   3090
-         Width           =   255
-      End
-      Begin VB.Image chkItemsEnRender 
-         Height          =   255
-         Left            =   270
-         Top             =   2715
-         Width           =   255
-      End
-      Begin VB.Image Fullscreen 
-         Height          =   255
-         Left            =   270
-         Top             =   2310
-         Width           =   255
-      End
-      Begin VB.Image Respiracion 
-         Height          =   255
-         Left            =   270
-         Top             =   1905
-         Width           =   255
-      End
-      Begin VB.Image VSync 
-         Height          =   255
-         Left            =   270
-         Top             =   1500
-         Width           =   255
-      End
-      Begin VB.Image Check5 
-         Height          =   255
-         Left            =   270
-         Top             =   1095
-         Width           =   255
-      End
-      Begin VB.Image Check6 
-         Height          =   255
-         Left            =   270
-         Top             =   690
-         Width           =   255
-      End
-   End
    Begin VB.PictureBox PanelJugabilidad 
       BorderStyle     =   0  'None
       Height          =   4845
@@ -203,15 +140,25 @@ Begin VB.Form frmOpciones
       TabIndex        =   12
       Top             =   1800
       Width           =   7560
+      Begin VB.ComboBox cbRenderNpcs 
+         Height          =   315
+         ItemData        =   "frmOpciones.frx":0152
+         Left            =   1200
+         List            =   "frmOpciones.frx":015C
+         Style           =   2  'Dropdown List
+         TabIndex        =   23
+         Top             =   4290
+         Width           =   1695
+      End
       Begin VB.ComboBox cbLenguaje 
          Height          =   315
-         ItemData        =   "frmOpciones.frx":017C
-         Left            =   930
-         List            =   "frmOpciones.frx":0186
+         ItemData        =   "frmOpciones.frx":0174
+         Left            =   1200
+         List            =   "frmOpciones.frx":017E
          Style           =   2  'Dropdown List
          TabIndex        =   21
-         Top             =   3915
-         Width           =   1215
+         Top             =   3930
+         Width           =   1695
       End
       Begin VB.HScrollBar scrSens 
          Height          =   315
@@ -231,6 +178,16 @@ Begin VB.Form frmOpciones
          TabIndex        =   13
          Top             =   1080
          Width           =   3375
+      End
+      Begin VB.Label Label3 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Texto NPCs"
+         ForeColor       =   &H8000000B&
+         Height          =   375
+         Left            =   240
+         TabIndex        =   24
+         Top             =   4320
+         Width           =   1095
       End
       Begin VB.Label lblIdioma 
          AutoSize        =   -1  'True
@@ -344,6 +301,69 @@ Begin VB.Form frmOpciones
          Index           =   1
          Left            =   255
          Top             =   1095
+         Width           =   255
+      End
+   End
+   Begin VB.PictureBox PanelVideo 
+      BorderStyle     =   0  'None
+      Height          =   4965
+      Left            =   240
+      ScaleHeight     =   331
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   504
+      TabIndex        =   14
+      Top             =   1800
+      Visible         =   0   'False
+      Width           =   7560
+      Begin VB.ComboBox cboLuces 
+         Height          =   315
+         ItemData        =   "frmOpciones.frx":0194
+         Left            =   240
+         List            =   "frmOpciones.frx":01A1
+         TabIndex        =   22
+         Top             =   3720
+         Width           =   2175
+      End
+      Begin VB.Image num_comp_inv 
+         Height          =   255
+         Left            =   270
+         Top             =   3090
+         Width           =   255
+      End
+      Begin VB.Image chkItemsEnRender 
+         Height          =   255
+         Left            =   270
+         Top             =   2715
+         Width           =   255
+      End
+      Begin VB.Image Fullscreen 
+         Height          =   255
+         Left            =   270
+         Top             =   2310
+         Width           =   255
+      End
+      Begin VB.Image Respiracion 
+         Height          =   255
+         Left            =   270
+         Top             =   1905
+         Width           =   255
+      End
+      Begin VB.Image VSync 
+         Height          =   255
+         Left            =   270
+         Top             =   1500
+         Width           =   255
+      End
+      Begin VB.Image Check5 
+         Height          =   255
+         Left            =   270
+         Top             =   1095
+         Width           =   255
+      End
+      Begin VB.Image Check6 
+         Height          =   255
+         Left            =   270
+         Top             =   690
          Width           =   255
       End
    End
@@ -710,6 +730,15 @@ Private Sub cboLuces_Click()
 
     Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "LuzGlobal", cboLuces.ListIndex)
     selected_light = cboLuces.ListIndex
+End Sub
+
+
+Private Sub cbRenderNpcs_Click()
+           
+    If cbRenderNpcs.ListIndex <> npcs_en_render Then
+        npcs_en_render = cbRenderNpcs.ListIndex
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "NpcsEnRender", cbRenderNpcs.ListIndex)
+    End If
 End Sub
 
 Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)

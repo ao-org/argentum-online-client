@@ -343,6 +343,8 @@ Public last_light             As RGBA
 Public next_light             As RGBA
 Public light_transition       As Single
 
+Public npcs_en_render As Byte
+
 Public Const Particula_Lluvia As Long = 58
 Public Const Particula_Nieve  As Long = 57
 Public VolMusicFadding        As Integer
@@ -1328,3 +1330,13 @@ Public Declare Function AddFontResourceEx Lib "gdi32.dll" Alias "AddFontResource
 Public Const FR_PRIVATE As Long = &H10
 
 Public Seguido As Byte
+
+Public Type t_tutorial
+    grh As Long
+    activo As Byte
+    titulo As String
+    textos() As String
+    Mostrando As Boolean
+End Type
+
+Public tutorial() As t_tutorial

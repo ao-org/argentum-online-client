@@ -1236,7 +1236,7 @@ Public Sub HandleDisconnect()
     
     'Hide main form
     'FrmCuenta.Visible = True
-    
+    Call ResetearCartel
     frmConnect.Visible = True
     QueRender = 2
 
@@ -2357,6 +2357,15 @@ Private Sub HandleUpdateHP()
     'Is the user alive??
     If UserMinHp = 0 Then
         UserEstado = 1
+        If MostrarTutorial Then
+            If tutorial(1).activo = 1 Then
+                tutorial(1).Mostrando = True
+                cartel_fadestatus = 1
+                cartel_fade = 1
+                tutorial_texto_actual = 1
+                cartel_duration = 10 * Len(tutorial(1).textos(1))
+            End If
+        End If
         DrogaCounter = 0
     Else
         UserEstado = 0
@@ -2825,12 +2834,28 @@ Private Sub HandleChatOverHead()
 
     duracion = 250
     
+    Dim text As String
+    text = ReadField(2, chat, Asc("*"))
+    
     Select Case QueEs
 
         Case "NPCDESC"
-            chat = NpcData(ReadField(2, chat, Asc("*"))).desc
+            
+            chat = NpcData(text).desc
             copiar = False
-
+                        
+            If npcs_en_render Then
+                cartel_icon = HeadData(NpcData(text).head).head(3).GrhIndex
+                If cartel_icon = 0 Then
+                    cartel_icon = BodyData(NpcData(text).Body).Walk(3).GrhIndex
+                End If
+                cartel_fadestatus = 1
+                cartel_text = chat
+                cartel_fade = 1
+                cartel_title = Split(NpcData(text).name, " <")(0)
+                cartel_duration = 10 * Len(chat)
+            End If
+            
         Case "PMAG"
             chat = HechizoData(ReadField(2, chat, Asc("*"))).PalabrasMagicas
             If charlist(UserCharIndex).Muerto = True Then chat = ""
@@ -2858,16 +2883,15 @@ Private Sub HandleChatOverHead()
             duracion = 20
         
     End Select
-            
-    'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
-    If charlist(charindex).active Then
-
-        Call Char_Dialog_Set(charindex, chat, colortexto, duracion, 30, 1, EsSpell)
-
+   'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
+    If charlist(charindex).active = 1 Then
+        If charlist(charindex).EsNpc And npcs_en_render = 0 Then
+            Call Char_Dialog_Set(charindex, chat, ColorTexto, duracion, 30, 1, EsSpell)
+        End If
     End If
     
     If charlist(charindex).EsNpc = False Then
-         
+        Call Char_Dialog_Set(charindex, chat, ColorTexto, duracion, 30, 1, EsSpell)
         If CopiarDialogoAConsola = 1 And copiar Then
     
             Call WriteChatOverHeadInConsole(charindex, chat, r, G, B)
