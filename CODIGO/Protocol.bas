@@ -578,9 +578,9 @@ On Error GoTo HandleIncomingData_Err
     PacketId = Reader.ReadInt16
     
     #If DEBUGGING Then
-        'Debug.Print PacketId
+        
     #End If
-    
+    Debug.Print PacketId
     Select Case PacketID
         Case ServerPacketID.Connected
             Call HandleConnected
@@ -2838,7 +2838,6 @@ Private Sub HandleChatOverHead()
     text = ReadField(2, chat, Asc("*"))
     
     Select Case QueEs
-
         Case "NPCDESC"
             
             chat = NpcData(text).desc
@@ -2885,13 +2884,10 @@ Private Sub HandleChatOverHead()
     End Select
    'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
     If charlist(charindex).active = 1 Then
-        If charlist(charindex).EsNpc And npcs_en_render = 0 Then
-            Call Char_Dialog_Set(charindex, chat, ColorTexto, duracion, 30, 1, EsSpell)
-        End If
+        Call Char_Dialog_Set(charindex, chat, ColorTexto, duracion, 30, 1, EsSpell)
     End If
     
     If charlist(charindex).EsNpc = False Then
-        Call Char_Dialog_Set(charindex, chat, ColorTexto, duracion, 30, 1, EsSpell)
         If CopiarDialogoAConsola = 1 And copiar Then
     
             Call WriteChatOverHeadInConsole(charindex, chat, r, G, B)

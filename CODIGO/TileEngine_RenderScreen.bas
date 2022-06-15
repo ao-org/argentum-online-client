@@ -774,7 +774,9 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         Call RGBAList(ColorTextoCartel(), 255, 255, 255, 255)
         Dim ColorTitulo(3) As RGBA
         Call RGBAList(ColorTitulo(), 168, 91, 39, 255)
-        Call RenderScreen_Cartel(cartel_text, ColorTextoCartel(), cartel_icon, TempColor(), ColorTitulo(), cartel_title)
+        Dim ColorCartel(3) As RGBA
+        Call RGBAList(ColorCartel(), 255, 255, 255, 255)
+        Call RenderScreen_Cartel(cartel_text, ColorTextoCartel(), cartel_icon, ColorCartel(), ColorTitulo(), cartel_title)
     End If
     Exit Sub
 
