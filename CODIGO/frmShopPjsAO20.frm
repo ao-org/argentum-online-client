@@ -133,8 +133,8 @@ Private Sub lblPublicar_Click()
     End If
     
     If MsgBox("Estás publicando a " & username & " a un valor de " & txtValor.Text & " al confirmar se desconectará tu personaje, se descontarán las 100.000 monedas de oro y quedará bloqueado el ingreso del mismo. Para poder desbloquearlo deberás hacerlo desde la página web.", vbYesNo + vbQuestion, "Publicar personaje") = vbYes Then
-        Call writePublicarPersonajeMAO(Val(txtValor.Text))
-        Call cerrarFormulario
+        'Call writePublicarPersonajeMAO(Val(txtValor.Text))
+        'Call cerrarFormulario
     End If
     
 End Sub
@@ -151,3 +151,4 @@ Private Sub txtValor_Change()
       txtValor.Text = CStr(numval)
     End If
 End Sub
+

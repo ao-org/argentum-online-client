@@ -238,7 +238,7 @@ Private Enum ServerPacketID
     SendFollowingCharindex
     ForceCharMoveSiguiendo
     PosUpdateCharindex
-    ShopPjsInit
+    'ShopPjsInit
     [PacketCount]
 End Enum
 
@@ -560,7 +560,7 @@ Public Enum ClientPacketID
     SeguirMouse
     SendPosSeguimiento
     NotifyInventarioHechizos
-    PublicarPersonajeMAO
+    'PublicarPersonajeMAO
     [PacketCount]
 End Enum
 
@@ -948,8 +948,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandlePrivilegios
         Case ServerPacketID.ShopInit
             Call HandleShopInit
-        Case ServerPacketID.ShopPjsInit
-            Call HandleShopPjsInit
+        'Case ServerPacketID.ShopPjsInit
+           ' Call HandleShopPjsInit
         Case ServerPacketID.UpdateShopClienteCredits
             Call HandleUpdateShopClienteCredits
         Case ServerPacketID.SensuiRetrasado
@@ -8623,7 +8623,7 @@ errhandler:
 End Sub
 
 Public Sub HandleShopPjsInit()
-    frmShopPjsAO20.Show , frmMain
+   ' frmShopPjsAO20.Show , frmMain
 End Sub
 Public Sub HandleShopInit()
     
