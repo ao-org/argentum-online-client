@@ -91,8 +91,8 @@ Public Sub toggleTutorialActivo(ByVal NumeroTutorial As Byte)
             .Activo = 0
         End If
         
-        file = App.Path & "\..\Recursos\Dat\tutoriales.ini"
-            Call WriteVar(file, "TUTORIAL" & NumeroTutorial, "Activo", .Activo)
+        file = App.Path & "\..\Recursos\Dat\tutoriales.dat"
+        Call WriteVar(file, "TUTORIAL" & NumeroTutorial, "Activo", .Activo)
     End With
 End Sub
 Public Sub cargarTutoriales()
@@ -103,7 +103,7 @@ Public Sub cargarTutoriales()
     Dim file As clsIniManager
     Dim i As Long, j As Long
     
-    FileName = App.Path & "\..\Recursos\Dat\tutoriales.ini"
+    FileName = App.Path & "\..\Recursos\Dat\tutoriales.dat"
     Set file = New clsIniManager
     Call file.Initialize(FileName)
     
