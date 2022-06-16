@@ -689,6 +689,40 @@ Sub SetConnected()
     frmMain.cerrarcuenta.Enabled = True
 
     engine.FadeInAlpha = 255
+    isLogged = True
+    
+    If MapDat.Seguro = 0 Then
+        If MostrarTutorial And MostrandoTutorial <= 0 And isLogged Then
+            If tutorial(2).Activo = 1 Then
+                tutorial(2).Mostrando = True
+                cartel_fadestatus = 1
+                cartel_fade = 1
+                tutorial_texto_actual = 1
+                grh_width = 64
+                grh_height = 64
+                cartel_grh_pos_x = 640
+                cartel_grh_pos_y = 530
+                'TUTORIAL MAPA INSEGURO
+                Call mostrarCartel(tutorial(2).titulo, tutorial(2).textos(1), tutorial(2).grh, -1, &H164B8A, , , False, 100, 479, 100, 535)
+            End If
+        End If
+    End If
+    
+    If newUser Then
+         If MostrarTutorial And MostrandoTutorial <= 0 Then
+            If tutorial(3).Activo = 1 Then
+                tutorial(3).Mostrando = True
+                cartel_fadestatus = 1
+                cartel_fade = 1
+                tutorial_texto_actual = 1
+                grh_width = 50
+                grh_height = 100
+                cartel_grh_pos_x = 640
+                cartel_grh_pos_y = 490
+                Call mostrarCartel(tutorial(3).titulo, tutorial(3).textos(1), tutorial(3).grh, -1, &H164B8A, , , False, 100, 479, 100, 535)
+            End If
+        End If
+    End If
     
     Exit Sub
 
@@ -796,11 +830,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
     
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
     
-    If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = RGB(0, 170, 0)
-    Else
-        frmMain.Coord.ForeColor = RGB(170, 0, 0)
-    End If
+
     
     If frmMapaGrande.Visible Then
         Call frmMapaGrande.ActualizarPosicionMapa
@@ -1145,6 +1175,7 @@ Sub Main()
     End If
     
     'Agrego conexiones disponibles
+
     servers_login_connections(1) = "45.235.99.71:4004"
     servers_login_connections(2) = "138.99.6.141:4007"
     

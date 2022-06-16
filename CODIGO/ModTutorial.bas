@@ -1,26 +1,112 @@
 Attribute VB_Name = "ModTutorial"
 Option Explicit
 
+Public cartel_title As String
+Public cartel_message As String
+Public cartel_icon As Long
+Public cartel_duration As Long
+
 Public cartel_fade As Single
 Public cartel_fadestatus As Byte
-Public cartel_icon As Long
-Public cartel_text As String
-Public cartel_title As String
-Public cartel_duration As Long
 Public cartel_visible As Boolean
+
+Private cartel_title_color(3) As RGBA
+Private cartel_message_color(3) As RGBA
+Private cartel_background_color(3) As RGBA
+Private cartel_icono_color(3) As RGBA
+Private cartel_continue_color(3) As RGBA
+
+Private cartel_background_grh As grh
+Private cartel_icon_grh As grh
 
 Public tutorial_texto_actual As Byte
 
+
+'TAMAÑOS Y POSICIONES
+
+Private cartel_title_pos_x As Long
+Private cartel_title_pos_y As Long
+Private cartel_message_pos_x As Long
+Private cartel_message_pos_y As Long
+Private cartel_npc As Boolean
+
+Public grh_width  As Long
+Public grh_height  As Long
+Public cartel_grh_pos_x  As Long
+Public cartel_grh_pos_y As Long
+
+
 Public Const GRH_CARTEL_FONDO As Long = 22728
 
-Public Sub RenderScreen_Cartel(ByVal Text As String, ColorTexto() As RGBA, ByVal icon_index As Long, ColorFondo() As RGBA, ColorTitulo() As RGBA, Optional ByVal title As String = "Argentum 20", Optional ByVal infinito As Boolean = False)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSrc As Any, ByVal ByteLen As Long)
+
+Private Function RGBA2Lng(r As Byte, G As Byte, B As Byte, A As Byte) As Long
+    RGBA2Lng = r + G * 256 + B * 65536 + A * 16777216
+End Function
+Private Function Lng2RGBA(MyLong As Long) As Byte()
+    Dim MyBytes(3) As Byte
+    CopyMemory MyBytes(0), MyLong, 4
+    Lng2RGBA = MyBytes
+End Function
+
+'Duration = 0 calcula solo con largo de texto, Duration = -1 infinito
+Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optional ByVal icon As Long = 0, Optional ByVal duration As Long = 0, Optional ByVal titleColor As Long = -1, Optional ByVal messageColor As Long = -1, Optional ByVal backgroundColor As Long = -1, Optional ByVal esNpc As Boolean = False, Optional ByVal CartelTitlePosX = 0, Optional ByVal CartelTitlePosY As Long = 0, Optional ByVal CartelMessagePosX As Long = 0, Optional ByVal CartelMessagePosY As Long = 0)
+    
+    Dim titleColor_byte() As Byte
+    Dim messageColor_byte() As Byte
+    Dim backgroundColor_byte() As Byte
+    
+    If titleColor > -1 Then
+        titleColor_byte = Lng2RGBA(titleColor)
+        Call RGBAList(cartel_title_color(), titleColor_byte(0), titleColor_byte(1), titleColor_byte(2))
+    Else
+        Call RGBAList(cartel_title_color(), 255, 255, 255)
+    End If
+    
+    If messageColor > -1 Then
+        messageColor_byte = Lng2RGBA(messageColor)
+        Call RGBAList(cartel_message_color(), messageColor_byte(0), messageColor_byte(1), messageColor_byte(2))
+    Else
+        Call RGBAList(cartel_message_color(), 255, 255, 255)
+    End If
+    
+    If backgroundColor > -1 Then
+        messageColor_byte = Lng2RGBA(backgroundColor)
+        Call RGBAList(cartel_background_color(), backgroundColor_byte(0), backgroundColor_byte(1), backgroundColor_byte(2))
+    Else
+        Call RGBAList(cartel_background_color(), 255, 255, 255)
+    End If
+    
+    'Inicializo GRH de fondo
+    Call InitGrh(cartel_background_grh, GRH_CARTEL_FONDO)
+    
+    'Inicializo GRG de ícono
+    Call InitGrh(cartel_icon_grh, icon)
+    
+    cartel_title = title
+    cartel_message = message
+    cartel_icon = icon
+    cartel_duration = duration
+    cartel_fadestatus = 1
+    cartel_fade = 1
+    cartel_visible = True
+    
+    cartel_title_pos_x = CartelTitlePosX
+    cartel_title_pos_y = CartelTitlePosY
+    cartel_message_pos_x = CartelMessagePosX
+    cartel_message_pos_y = CartelMessagePosY
+    
+    cartel_npc = esNpc
+End Sub
+Public Sub RenderScreen_Cartel()
  On Error GoTo RenderScreen_Cartel_Err
     
     
     If cartel_fadestatus > 0 Then
         
         If cartel_fadestatus = 2 And cartel_duration > 0 Then
-            cartel_duration = cartel_duration - IIf(infinito, 0, 1)
+            Debug.Print cartel_duration
+            cartel_duration = cartel_duration - IIf(cartel_duration = -1, 0, 1)
         End If
         If cartel_fadestatus = 1 Then
         
@@ -38,7 +124,8 @@ Public Sub RenderScreen_Cartel(ByVal Text As String, ColorTexto() As RGBA, ByVal
             If cartel_fade <= 0 Then
                 cartel_fadestatus = 0
                 cartel_fade = 0
-                cartel_text = ""
+                cartel_message = ""
+                
             End If
 
         End If
@@ -47,41 +134,49 @@ Public Sub RenderScreen_Cartel(ByVal Text As String, ColorTexto() As RGBA, ByVal
     
     cartel_visible = (cartel_fade > 0)
     
+    If cartel_visible = False Then Exit Sub
+        
     'Renderizo cartel
-    Dim background_grh As grh
-    Call InitGrh(background_grh, GRH_CARTEL_FONDO)
-    Call Grh_Render(background_grh, 350, 560, ColorFondo())
+    Call RGBAList(cartel_background_color(), cartel_background_color(0).r, cartel_background_color(0).G, cartel_background_color(0).B, cartel_fade)
+    'Call Grh_Render(cartel_background_grh, 350, 556, cartel_background_color())
+    If Not cartel_npc Then
+        Call Grh_Render_Advance(cartel_background_grh, 350, 615, 70, 644, cartel_background_color())
+    End If
     
     If UserCharIndex > 0 Then
         'Renderizo titulo
-        Call Engine_Text_Render_Cartel(title, 155, 444, ColorTitulo(), 5, False, , cartel_fade)
+        Call Engine_Text_Render_Cartel(cartel_title, cartel_title_pos_x, cartel_title_pos_y, cartel_title_color(), 5, False, , cartel_fade)
         'Renderizo texto
-        Call Engine_Text_Render_Cartel(Text, 160, 500, ColorTexto(), 1, False, , cartel_fade)
-        
-        
+        Call Engine_Text_Render_Cartel(cartel_message, cartel_message_pos_x, cartel_message_pos_y, cartel_message_color(), 1, False, , cartel_fade)
+                
         'Renderizo texto
-        If infinito Then
+        If cartel_duration = -1 Then
+            Call RGBAList(cartel_continue_color(), 203, 156, 156, 255)
             If language = e_language.English Then
-                Call Engine_Text_Render_Cartel("Press left click to continue...", 476, 566, ColorTexto(), 1, False, , cartel_fade)
+                Call Engine_Text_Render_Cartel("Click left to continue...", 516, 572, cartel_continue_color(), 1, False, , cartel_fade)
             Else
-                Call Engine_Text_Render_Cartel("Click para continuar...", 499, 566, ColorTexto(), 1, False, , cartel_fade)
+                Call Engine_Text_Render_Cartel("Click para continuar...", 539, 572, cartel_continue_color(), 1, False, , cartel_fade)
             End If
-            Call Engine_Text_Render_Cartel(Text, 160, 500, ColorTexto(), 1, False, , cartel_fade)
         End If
-        
+                
         'Renderizo ícono
-        Dim grh_icon As grh
-        Dim ColorIcono(3) As RGBA
-        Call RGBAList(ColorIcono(), 255, 255, 255, cartel_fade)
-        Call InitGrh(grh_icon, icon_index)
-        Call Grh_Render_Advance(grh_icon, 30, 430, 150, 150, ColorIcono())
+        Call RGBAList(cartel_icono_color(), 255, 255, 255, cartel_fade)
+        Call Grh_Render_Advance(cartel_icon_grh, cartel_grh_pos_x, cartel_grh_pos_y, grh_height, grh_width, cartel_icono_color())
     End If
+    
     Exit Sub
 
 RenderScreen_Cartel_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen_Cartel", Erl)
     Resume Next
 End Sub
+Private Function changeAlphaColor(Color() As RGBA, ByVal Alpha As Byte)
+    Color(0).A = Alpha
+    Color(1).A = Alpha
+    Color(2).A = Alpha
+    Color(3).A = Alpha
+End Function
+
 Public Sub toggleTutorialActivo(ByVal NumeroTutorial As Byte)
     Dim file As String
     With tutorial(NumeroTutorial)
@@ -142,7 +237,7 @@ Public Sub RenderizarTutoriales()
             Call RGBAList(ColorTitulo(), 191, 0, 0, 255)
             Dim ColorFondo(3) As RGBA
             Call RGBAList(ColorFondo(), 202, 28, 2, 255)
-            Call RenderScreen_Cartel(tutorial(1).textos(tutorial_texto_actual), ColorTextoCartel(), tutorial(1).grh, ColorFondo(), ColorTitulo(), tutorial(1).titulo, True)
+            Call RenderScreen_Cartel
         Else
             tutorial_texto_actual = 0
             tutorial(1).Mostrando = False
@@ -163,12 +258,13 @@ Public Function MostrandoTutorial() As Long
 End Function
 
 Public Sub ResetearCartel()
+    Dim i As Long
+    
+    For i = 1 To UBound(tutorial)
+        tutorial(i).Mostrando = False
+    Next i
+    
     cartel_fade = 0
-    cartel_fadestatus = 0
-    cartel_icon = 0
-    cartel_text = ""
-    cartel_title = ""
-    cartel_duration = 0
 End Sub
 
 Public Sub Engine_Text_Render_Cartel(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)

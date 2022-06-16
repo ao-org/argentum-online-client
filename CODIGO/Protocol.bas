@@ -580,7 +580,7 @@ On Error GoTo HandleIncomingData_Err
     #If DEBUGGING Then
         
     #End If
-    Debug.Print PacketId
+   ' Debug.Print PacketId
     Select Case PacketID
         Case ServerPacketID.Connected
             Call HandleConnected
@@ -1002,6 +1002,8 @@ Private Sub HandleLogged()
     On Error GoTo HandleLogged_Err
  
     ' Variable initialization
+    newUser = Reader.ReadBool
+    
     UserCiego = False
     EngineRun = True
     UserDescansar = False
@@ -1239,7 +1241,7 @@ Public Sub HandleDisconnect()
     Call ResetearCartel
     frmConnect.Visible = True
     QueRender = 2
-
+    isLogged = False
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     
@@ -2357,13 +2359,17 @@ Private Sub HandleUpdateHP()
     'Is the user alive??
     If UserMinHp = 0 Then
         UserEstado = 1
-        If MostrarTutorial Then
+        If MostrarTutorial And MostrandoTutorial <= 0 Then
             If tutorial(1).activo = 1 Then
                 tutorial(1).Mostrando = True
                 cartel_fadestatus = 1
                 cartel_fade = 1
                 tutorial_texto_actual = 1
-                cartel_duration = 10 * Len(tutorial(1).textos(1))
+                grh_width = 50
+                grh_height = 100
+                cartel_grh_pos_x = 640
+                cartel_grh_pos_y = 530
+                Call mostrarCartel(tutorial(1).titulo, tutorial(1).textos(1), tutorial(1).grh, -1, &H164B8A, , , False, 100, 479, 100, 535)
             End If
         End If
         DrogaCounter = 0
@@ -2514,12 +2520,7 @@ Private Sub HandlePosUpdate()
     frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
     Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
     
-    If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = RGB(0, 170, 0)
-    Else
-        frmMain.Coord.ForeColor = RGB(170, 0, 0)
-    End If
-
+    
     Call RefreshAllChars
     
     Exit Sub
@@ -2843,16 +2844,26 @@ Private Sub HandleChatOverHead()
             chat = NpcData(text).desc
             copiar = False
                         
-            If npcs_en_render Then
-                cartel_icon = HeadData(NpcData(text).head).head(3).GrhIndex
-                If cartel_icon = 0 Then
-                    cartel_icon = BodyData(NpcData(text).Body).Walk(3).GrhIndex
+            If npcs_en_render And MostrandoTutorial <= 0 Then
+                Dim icon As Long
+                icon = HeadData(NpcData(Text).Head).Head(3).GrhIndex
+                
+                'Si icon es 0 quiere decir que no tiene cabeza, por ende renderizo body
+                If icon = 0 Then
+                    icon = BodyData(NpcData(Text).Body).Walk(3).GrhIndex
+                    grh_width = 50
+                    grh_height = 80
+                    cartel_grh_pos_x = 20
+                    cartel_grh_pos_y = 500
+                    Call mostrarCartel(Split(NpcData(Text).name, " <")(0), NpcData(Text).desc, icon, 100 + 10 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535)
+                Else
+                    grh_width = 128
+                    grh_height = 128
+                    cartel_grh_pos_x = -20
+                    cartel_grh_pos_y = 439
+                    Call mostrarCartel(Split(NpcData(Text).name, " <")(0), NpcData(Text).desc, icon, 100 + 10 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535)
                 End If
-                cartel_fadestatus = 1
-                cartel_text = chat
-                cartel_fade = 1
-                cartel_title = Split(NpcData(text).name, " <")(0)
-                cartel_duration = 10 * Len(chat)
+                
             End If
             
         Case "PMAG"

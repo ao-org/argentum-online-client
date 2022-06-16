@@ -763,21 +763,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         End If
         
     End If
-   
     
-    If MostrarTutorial Then
-        Call RenderizarTutoriales
-    End If
-    
-    If npcs_en_render = 1 And MostrandoTutorial = 0 And Len(cartel_text) > 0 Then
-        Dim ColorTextoCartel(3) As RGBA
-        Call RGBAList(ColorTextoCartel(), 255, 255, 255, 255)
-        Dim ColorTitulo(3) As RGBA
-        Call RGBAList(ColorTitulo(), 168, 91, 39, 255)
-        Dim ColorCartel(3) As RGBA
-        Call RGBAList(ColorCartel(), 255, 255, 255, 255)
-        Call RenderScreen_Cartel(cartel_text, ColorTextoCartel(), cartel_icon, ColorCartel(), ColorTitulo(), cartel_title)
-    End If
+    Call RenderScreen_Cartel
     Exit Sub
 
 RenderScreen_Err:

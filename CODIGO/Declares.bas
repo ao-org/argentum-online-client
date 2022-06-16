@@ -10,7 +10,7 @@ Public SeguroResuX As Boolean
 
 Public QuePestañaInferior As Byte
 
-
+Public newUser As Boolean
 Public Enum tMacro
     dobleclick = 1
     Coordenadas = 2
@@ -1159,7 +1159,7 @@ Public flags()                           As Integer
 
 Public Oscuridad                         As Integer
 
-Public logged                            As Boolean
+Public isLogged                            As Boolean
 
 Public UsingSkill                        As Integer
 

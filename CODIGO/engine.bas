@@ -1885,9 +1885,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If Pos = 0 Then Pos = InStr(.nombre, "[")
                 If Pos = 0 Then Pos = Len(.nombre) + 2
                 'Nick
-
+                
                 line = Left$(.nombre, Pos - 2)
-
                 Dim factor As Double
                 factor = MapData(x, y).light_value(0).r / 255
                 
@@ -1954,6 +1953,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 
                 End If
                 
+                If line = "lorena" Then
+                    Call RGBAList(NameColor, 255, 128, 255, 255)
+                End If
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 'Clan
@@ -2103,7 +2105,6 @@ Char_Render_Err:
     Resume Next
     
 End Sub
-
 Public Sub DibujarVidaChar(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByRef OffsetYname As Byte, ByRef OffsetYClan As Byte)
     With charlist(charindex)
         Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 33 + .Body.BodyOffset.y, 33, 5, RGBA_From_Comp(10, 10, 10)

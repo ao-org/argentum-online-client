@@ -57,6 +57,26 @@ Sub SwitchMap(ByVal map As Integer)
     End If
 
     Call NameMapa(map)
+    
+    If MapDat.Seguro = 1 Then
+        frmMain.Coord.ForeColor = RGB(0, 170, 0)
+    Else
+         If MostrarTutorial And MostrandoTutorial <= 0 And isLogged Then
+            If tutorial(2).Activo = 1 Then
+                tutorial(2).Mostrando = True
+                cartel_fadestatus = 1
+                cartel_fade = 1
+                tutorial_texto_actual = 1
+                grh_width = 64
+                grh_height = 64
+                cartel_grh_pos_x = 640
+                cartel_grh_pos_y = 530
+                'TUTORIAL MAPA INSEGURO
+                Call mostrarCartel(tutorial(2).titulo, tutorial(2).textos(1), tutorial(2).grh, -1, &H164B8A, , , False, 100, 479, 100, 535)
+            End If
+        End If
+        frmMain.Coord.ForeColor = RGB(170, 0, 0)
+    End If
 
     
     Exit Sub

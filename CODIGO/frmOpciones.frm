@@ -140,11 +140,21 @@ Begin VB.Form frmOpciones
       TabIndex        =   12
       Top             =   1800
       Width           =   7560
-      Begin VB.ComboBox cbRenderNpcs 
+      Begin VB.ComboBox cbTutorial 
          Height          =   315
          ItemData        =   "frmOpciones.frx":0152
-         Left            =   1200
+         Left            =   4800
          List            =   "frmOpciones.frx":015C
+         Style           =   2  'Dropdown List
+         TabIndex        =   25
+         Top             =   3960
+         Width           =   1695
+      End
+      Begin VB.ComboBox cbRenderNpcs 
+         Height          =   315
+         ItemData        =   "frmOpciones.frx":0176
+         Left            =   1200
+         List            =   "frmOpciones.frx":0180
          Style           =   2  'Dropdown List
          TabIndex        =   23
          Top             =   4290
@@ -152,9 +162,9 @@ Begin VB.Form frmOpciones
       End
       Begin VB.ComboBox cbLenguaje 
          Height          =   315
-         ItemData        =   "frmOpciones.frx":0174
+         ItemData        =   "frmOpciones.frx":0198
          Left            =   1200
-         List            =   "frmOpciones.frx":017E
+         List            =   "frmOpciones.frx":01A2
          Style           =   2  'Dropdown List
          TabIndex        =   21
          Top             =   3930
@@ -178,6 +188,14 @@ Begin VB.Form frmOpciones
          TabIndex        =   13
          Top             =   1080
          Width           =   3375
+      End
+      Begin VB.Label Label2 
+         Caption         =   "Tutorial"
+         Height          =   495
+         Left            =   4800
+         TabIndex        =   26
+         Top             =   3720
+         Width           =   1335
       End
       Begin VB.Label Label3 
          BackStyle       =   0  'Transparent
@@ -317,9 +335,9 @@ Begin VB.Form frmOpciones
       Width           =   7560
       Begin VB.ComboBox cboLuces 
          Height          =   315
-         ItemData        =   "frmOpciones.frx":0194
+         ItemData        =   "frmOpciones.frx":01B8
          Left            =   240
-         List            =   "frmOpciones.frx":01A1
+         List            =   "frmOpciones.frx":01C5
          TabIndex        =   22
          Top             =   3720
          Width           =   2175
@@ -709,7 +727,7 @@ Private Sub cbLenguaje_Click()
         Select Case cbLenguaje.ListIndex
         
             Case 0
-                Message = "Para que los cambios surjan efecto deberá volver a abrir el cliente."
+                message = "Para que los cambios surjan efecto deberá volver a abrir el cliente."
                 title = "Cambiar Idioma"
             
             Case 1
@@ -733,6 +751,21 @@ Private Sub cboLuces_Click()
 End Sub
 
 
+
+Private Sub cbTutorial_Click()
+    If cbTutorial.ListIndex <> MostrarTutorial Then
+        MostrarTutorial = cbTutorial.ListIndex
+        If MostrarTutorial Then
+            Dim i As Long
+            
+            For i = 1 To UBound(tutorial)
+                Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "TUTORIAL" & i, "Activo", 1)
+                tutorial(i).Activo = 1
+            Next i
+        End If
+        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "INITTUTORIAL", "MostrarTutorial", cbTutorial.ListIndex)
+    End If
+End Sub
 Private Sub cbRenderNpcs_Click()
            
     If cbRenderNpcs.ListIndex <> npcs_en_render Then
@@ -740,6 +773,7 @@ Private Sub cbRenderNpcs_Click()
         Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "NpcsEnRender", cbRenderNpcs.ListIndex)
     End If
 End Sub
+
 
 Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
