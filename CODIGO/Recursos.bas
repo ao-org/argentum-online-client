@@ -199,7 +199,7 @@ Public iplst    As String
 
 Private Type t_Position
 
-    X As Integer
+    x As Integer
     y As Integer
 
 End Type
@@ -1228,29 +1228,25 @@ Public Sub CargarMapa(ByVal map As Integer)
     'Creo un array de zonas provisorio de ese mapa
     ReDim Temp_zone(1 To 1) As MapZone
     Dim UpperB As Integer
-    Dim TieneZona As Boolean
+    Dim ZonasEnMapa As Integer: ZonasEnMapa = 0
     For i = 1 To UBound(Zonas)
         'Me fijo se la zona pertenece al mapa, de serlo agrego la zona al array
         If Zonas(i).NumMapa = map Then
-            TieneZona = True
-            ReDim Preserve Temp_zone(1 To i) As MapZone
+            ZonasEnMapa = ZonasEnMapa + 1
+            ReDim Preserve Temp_zone(1 To ZonasEnMapa) As MapZone
             
             
-            Temp_zone(i).NumMapa = Zonas(i).NumMapa
-            Temp_zone(i).Musica = Zonas(i).Musica
-            Temp_zone(i).OcultarNombre = Zonas(i).OcultarNombre
-            Temp_zone(i).x1 = Zonas(i).x1
-            Temp_zone(i).x2 = Zonas(i).x2
-            Temp_zone(i).y1 = Zonas(i).y1
-            Temp_zone(i).y2 = Zonas(i).y2
+            Temp_zone(ZonasEnMapa).NumMapa = Zonas(i).NumMapa
+            Temp_zone(ZonasEnMapa).Musica = Zonas(i).Musica
+            Temp_zone(ZonasEnMapa).OcultarNombre = Zonas(i).OcultarNombre
+            Temp_zone(ZonasEnMapa).x1 = Zonas(i).x1
+            Temp_zone(ZonasEnMapa).x2 = Zonas(i).x2
+            Temp_zone(ZonasEnMapa).y1 = Zonas(i).y1
+            Temp_zone(ZonasEnMapa).y2 = Zonas(i).y2
         End If
     Next i
-    
-    'If UBound(Temp_zone) > 0 Then
-    '    ReDim Preserve Temp_zone(1 To UBound(Temp_zone) - 1) As MapZone
-    'End If
-    
-    If TieneZona Then
+        
+    If ZonasEnMapa > 0 Then
         For i = 1 To (UBound(Temp_zone))
             For x = Temp_zone(i).x1 To Temp_zone(i).x2
                 For y = Temp_zone(i).y1 To Temp_zone(i).y2
@@ -1566,13 +1562,13 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).SkHerreria = Val(Leer.GetValue("OBJ" & Obj, "SkHerreria"))
         ObjData(Obj).SkPociones = Val(Leer.GetValue("OBJ" & Obj, "SkPociones"))
         ObjData(Obj).Sksastreria = Val(Leer.GetValue("OBJ" & Obj, "Sksastreria"))
-        ObjData(Obj).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
+        ObjData(Obj).valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
         ObjData(Obj).Agarrable = Val(Leer.GetValue("OBJ" & Obj, "Agarrable"))
         ObjData(Obj).Llave = Val(Leer.GetValue("OBJ" & Obj, "Llave"))
             
         If Val(Leer.GetValue("OBJ" & Obj, "NFT")) = 1 Then
             ObjShop(i).Name = Leer.GetValue("OBJ" & Obj, "Name")
-            ObjShop(i).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
+            ObjShop(i).valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
             ObjShop(i).objNum = Obj
             ReDim Preserve ObjShop(1 To (UBound(ObjShop) + 1)) As ObjDatas
         End If
@@ -1597,7 +1593,7 @@ Public Sub CargarIndicesOBJ()
         
 
         If NpcData(Npc).Name = "" Then
-            NpcData(Npc).name = "Vacío"
+            NpcData(Npc).Name = "Vacío"
 
         End If
 
@@ -2995,7 +2991,7 @@ Public Sub CargarNPCsMapData()
     ReDim ListNPCMapData(1 To NumMaps, 1 To MAX_QUESTNPCS_VISIBLE) As t_QuestNPCMapData
     
     Do While Not EOF(fh)
-        Dim Map As Integer
+        Dim map As Integer
         Get fh, , map
         
         If map > 0 Then
