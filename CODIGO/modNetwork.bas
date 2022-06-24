@@ -2,6 +2,11 @@ Attribute VB_Name = "modNetwork"
 Option Explicit
 
 Private Client As Network.Client
+#If PYMMO = 0 Then
+Public Function IsConnected() As Boolean
+    IsConnected = Connected
+End Function
+#End If
 
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
     If (Address = vbNullString Or Service = vbNullString) Then
@@ -37,7 +42,7 @@ Public Sub Send(ByVal Buffer As Network.Writer)
     
     Call Buffer.Clear
 End Sub
-
+#If PYMMO = 1 Then
 Private Sub OnClientConnect()
 On Error GoTo OnClientConnect_Err:
 Debug.Print ("Entró OnClientConnect")
@@ -54,6 +59,20 @@ End If
 OnClientConnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "modNetwork.OnClientConnect", Erl)
 End Sub
+#ElseIf PYMMO = 0 Then
+    
+Private Sub OnClientConnect()
+On Error GoTo OnClientConnect_Err:
+Debug.Print ("Entró OnClientConnect")
+
+    Connected = True
+    
+    Exit Sub
+    
+OnClientConnect_Err:
+    Call RegistrarError(Err.Number, Err.Description, "modNetwork.OnClientConnect", Erl)
+End Sub
+#End If
 
 Private Sub OnClientClose(ByVal Code As Long)
 On Error GoTo OnClientClose_Err:

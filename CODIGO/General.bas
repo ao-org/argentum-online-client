@@ -1175,7 +1175,7 @@ Sub Main()
     End If
     
     'Agrego conexiones disponibles
-
+#If PYMMO = 1 Then
     servers_login_connections(1) = "45.235.99.71:4004"
     servers_login_connections(2) = "138.99.6.141:4007"
     
@@ -1189,13 +1189,18 @@ Sub Main()
     Debug.Print IPServers(1)
     #If DEBUGGING = 1 Then
         IPServers(2) = "45.235.99.71:11813:MinehostStaging:45.235.98.31:11814"
-        IPServers(3) = "127.0.0.1:7667:Localhost:localhost:4000"
-        IPServers(4) = "186.152.115.146:7667:Martin:localhost:4000"
+        IPServers(3) = "127.0.0.1:7667:Localhost:192.168.0.141:4004"
+        IPServers(4) = "201.212.30.19:7667:Martin:201.212.30.19:4004"
     #End If
 
     Call ComprobarEstado
     Call CargarLst
     
+#ElseIf PYMMO = 0 Then
+    IPdelServidor = "127.0.0.1"
+    PuertoDelServidor = 7667
+#End If
+
     Call InicializarNombres
     
     'Inicializamos el motor grafico.

@@ -319,7 +319,45 @@ Private Sub cmdSalir_Click()
     Call CloseClient
 
 End Sub
+#If PYMMO = 0 Then
 
+Private Sub cmdIngresar_Click()
+    
+    On Error GoTo cmdIngresar_Click_Err
+    
+    Call FormParser.Parse_Form(Me, E_WAIT)
+
+    If IntervaloPermiteConectar Then
+        CuentaEmail = NameTxt.Text
+        CuentaPassword = PasswordTxt.Text
+
+        If chkRecordar.Tag = "1" Then
+            CuentaRecordada.nombre = CuentaEmail
+            CuentaRecordada.Password = CuentaPassword
+            
+            Call GuardarCuenta(CuentaEmail, CuentaPassword)
+        Else
+            ' Reseteamos los datos de cuenta guardados
+            Call GuardarCuenta(vbNullString, vbNullString)
+        End If
+
+        If CheckUserDataLoged() = True Then
+            Call LoginOrConnect(E_MODO.IngresandoConCuenta)
+        End If
+
+        Call SaveRAOInit
+
+    End If
+
+    Exit Sub
+
+cmdIngresar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmLogear.cmdIngresar_Click", Erl)
+    Resume Next
+    
+End Sub
+#End If
+#If PYMMO = 1 Then
 Private Sub cmdIngresar_Click()
     
     On Error GoTo cmdIngresar_Click_Err
@@ -358,6 +396,7 @@ cmdIngresar_Click_Err:
     Resume Next
     
 End Sub
+#End If
 
 Private Sub chkRecordar_Click()
     

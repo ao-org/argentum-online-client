@@ -14,6 +14,9 @@ Public Sub Clear()
 100     Call Writer.Clear
 End Sub
 
+
+
+#If PYMMO = 1 Then
 ''
 ' Writes the "LoginExistingChar" message to the outgoing data buffer.
 '
@@ -80,6 +83,103 @@ WriteLoginNewChar_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginNewChar", Erl)
         '</EhFooter>
 End Sub
+#End If
+
+#If PYMMO = 0 Then
+
+Public Sub WriteCreateAccount()
+        '<EhHeader>
+        On Error GoTo WriteCreateAccount_Err
+        
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.CreateAccount)
+
+104     Call Writer.WriteString8(CuentaEmail)
+        Call Writer.WriteString8(CuentaPassword)
+
+120     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCreateAccount_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCreateAccount", Erl)
+        '</EhFooter>
+End Sub
+
+Public Sub WriteLoginAccount()
+        '<EhHeader>
+        On Error GoTo WriteLoginAccount_Err
+        
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.LoginAccount)
+
+104     Call Writer.WriteString8(CuentaEmail)
+        Call Writer.WriteString8(CuentaPassword)
+
+120     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLoginAccount_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginAccount", Erl)
+        '</EhFooter>
+End Sub
+
+Public Sub WriteDeleteCharacter()
+
+End Sub
+''
+' Writes the "LoginExistingChar" message to the outgoing data buffer.
+'
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+Public Sub WriteLoginExistingChar()
+        '<EhHeader>
+        On Error GoTo WriteLoginExistingChar_Err
+        
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.LoginExistingChar)
+
+104     Call Writer.WriteString8(username)
+            
+120     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLoginExistingChar_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginExistingChar", Erl)
+        '</EhFooter>
+End Sub
+
+''
+' Writes the "LoginNewChar" message to the outgoing data buffer.
+'
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+Public Sub WriteLoginNewChar()
+        '<EhHeader>
+        On Error GoTo WriteLoginNewChar_Err
+        '</EhHeader>
+
+100     Call Writer.WriteInt16(ClientPacketID.LoginNewChar)
+104     Call Writer.WriteString8(username)
+114     Call Writer.WriteInt(UserRaza)
+116     Call Writer.WriteInt(UserSexo)
+118     Call Writer.WriteInt(UserClase)
+120     Call Writer.WriteInt(MiCabeza)
+122     Call Writer.WriteInt(UserHogar)
+    
+130     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLoginNewChar_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginNewChar", Erl)
+        '</EhFooter>
+End Sub
+#End If
 
 ''
 ' Writes the "Talk" message to the outgoing data buffer.

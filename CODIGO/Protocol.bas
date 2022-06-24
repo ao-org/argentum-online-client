@@ -239,6 +239,9 @@ Private Enum ServerPacketID
     ForceCharMoveSiguiendo
     PosUpdateCharindex
     'ShopPjsInit
+#If PYMMO = 0 Then
+    AccountCharacterList
+#End If
     [PacketCount]
 End Enum
 
@@ -561,6 +564,11 @@ Public Enum ClientPacketID
     SendPosSeguimiento
     NotifyInventarioHechizos
     'PublicarPersonajeMAO
+    #If PYMMO = 0 Then
+    CreateAccount
+    LoginAccount
+    DeleteCharacter
+    #End If
     [PacketCount]
 End Enum
 
@@ -954,6 +962,10 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateShopClienteCredits
         Case ServerPacketID.SensuiRetrasado
             Call HandleSensuiRetrasado
+        #If PYMMO = 0 Then
+        Case ServerPacketID.AccountCharacterList
+            Call HandleAccountCharacterList
+        #End If
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
@@ -1240,7 +1252,11 @@ Public Sub HandleDisconnect()
     'FrmCuenta.Visible = True
     Call ResetearCartel
     frmConnect.Visible = True
-    QueRender = 2
+    #If PYMMO = 1 Then
+        QueRender = 2
+    #ElseIf PYMMO = 0 Then
+        QueRender = 1
+    #End If
     isLogged = False
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
@@ -1436,10 +1452,15 @@ Public Sub HandleDisconnect()
 
     Next
     
+    #If PYMMO = 1 Then
     If Not FullLogout Then
         'Si no es un deslogueo completo, envío nuevamente la lista de Pjs.
         Call connectToLoginServer
     End If
+    #ElseIf PYMMO = 0 Then
+    frmConnect.Show
+    FrmLogear.Show , frmConnect
+    #End If
     
     Exit Sub
 HandleDisconnect_Err:
@@ -2359,17 +2380,11 @@ Private Sub HandleUpdateHP()
     'Is the user alive??
     If UserMinHp = 0 Then
         UserEstado = 1
-        If MostrarTutorial And MostrandoTutorial <= 0 Then
-            If tutorial(1).activo = 1 Then
-                tutorial(1).Mostrando = True
-                cartel_fadestatus = 1
-                cartel_fade = 1
-                tutorial_texto_actual = 1
-                grh_width = 50
-                grh_height = 100
-                cartel_grh_pos_x = 640
-                cartel_grh_pos_y = 530
-                Call mostrarCartel(tutorial(1).titulo, tutorial(1).textos(1), tutorial(1).grh, -1, &H164B8A, , , False, 100, 479, 100, 535)
+        charlist(UserCharIndex).Invisible = False
+        If MostrarTutorial And tutorial_index <= 0 Then
+            If tutorial(e_tutorialIndex.TUTORIAL_Muerto).Activo = 1 Then
+                tutorial_index = e_tutorialIndex.TUTORIAL_Muerto
+                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 50, 100)
             End If
         End If
         DrogaCounter = 0
@@ -8819,3 +8834,137 @@ ErrHandler:
 
 
 End Sub
+
+#If PYMMO = 0 Then
+    
+Public Sub HandleAccountCharacterList()
+
+    CantidadDePersonajesEnCuenta = Reader.ReadInt
+
+    Dim ii As Byte
+     'name, head_id, class_id, body_id, pos_map, pos_x, pos_y, level, status, helmet_id, shield_id, weapon_id, guild_index, is_dead, is_sailing
+    For ii = 1 To MAX_PERSONAJES_EN_CUENTA
+        Pjs(ii).nombre = ""
+        Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
+        Pjs(ii).Clase = 0
+        Pjs(ii).Body = 0
+        Pjs(ii).Mapa = 0
+        Pjs(ii).posX = 0
+        Pjs(ii).posY = 0
+        Pjs(ii).nivel = 0
+        Pjs(ii).Criminal = 0
+        Pjs(ii).Casco = 0
+        Pjs(ii).Escudo = 0
+        Pjs(ii).Arma = 0
+        Pjs(ii).ClanName = ""
+        Pjs(ii).NameMapa = ""
+    Next ii
+    
+    For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+        Pjs(ii).nombre = Reader.ReadString8
+        Pjs(ii).Body = Reader.ReadInt
+        Pjs(ii).Head = Reader.ReadInt
+        Pjs(ii).Clase = Reader.ReadInt
+        Pjs(ii).Mapa = Reader.ReadInt
+        Pjs(ii).posX = Reader.ReadInt
+        Pjs(ii).posY = Reader.ReadInt
+        Pjs(ii).nivel = Reader.ReadInt
+        Pjs(ii).Criminal = Reader.ReadInt
+        Pjs(ii).Casco = Reader.ReadInt
+        Pjs(ii).Escudo = Reader.ReadInt
+        Pjs(ii).Arma = Reader.ReadInt
+        Pjs(ii).ClanName = "" ' "<" & "pepito" & ">"
+
+    Next ii
+    
+    Dim i As Long
+    For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+        Select Case Pjs(i).Criminal
+            Case 0 'Criminal
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                Pjs(i).priv = 0
+            Case 1 'Ciudadano
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                Pjs(i).priv = 0
+            Case 2 'Caos
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
+                Pjs(i).priv = 0
+            Case 3 'Armada
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+                Pjs(i).priv = 0
+            Case Else
+        End Select
+    Next i
+    
+    
+    AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
+   
+    If CantidadDePersonajesEnCuenta > 0 Then
+        PJSeleccionado = 1
+        LastPJSeleccionado = 1
+        
+        If Pjs(1).Mapa <> 0 Then
+            Call SwitchMap(Pjs(1).Mapa)
+            RenderCuenta_PosX = Pjs(1).posX
+            RenderCuenta_PosY = Pjs(1).posY
+        End If
+    End If
+     
+    ' FrmCuenta.Show
+    AlphaNiebla = 30
+
+    frmConnect.visible = True
+    QueRender = 2
+    
+    'UserMap = 323
+    
+    'Call SwitchMap(UserMap)
+    
+    SugerenciaAMostrar = RandomNumber(1, NumSug)
+        
+    ' LogeoAlgunaVez = True
+    Call Sound.Sound_Play(192)
+    
+    Call Sound.Sound_Stop(SND_LLUVIAIN)
+    '  Sound.NextMusic = 2
+    '  Sound.Fading = 350
+      
+    Call Graficos_Particulas.Particle_Group_Remove_All
+    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
+                
+    If frmNewAccount.visible Then
+        Unload frmNewAccount
+    End If
+    
+    If FrmLogear.visible Then
+        Unload FrmLogear
+
+        'Unload frmConnect
+    End If
+    
+    If frmMain.visible Then
+        '  frmMain.Visible = False
+        
+        UserParalizado = False
+        UserInmovilizado = False
+        UserStopped = False
+        
+        InvasionActual = 0
+        frmMain.Evento.enabled = False
+     
+        'BUG CLONES
+
+        For i = 1 To LastChar
+            Call EraseChar(i)
+        Next i
+        
+        frmMain.personaje(1).visible = False
+        frmMain.personaje(2).visible = False
+        frmMain.personaje(3).visible = False
+        frmMain.personaje(4).visible = False
+        frmMain.personaje(5).visible = False
+
+    End If
+End Sub
+#End If

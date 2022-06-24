@@ -23,7 +23,7 @@ PuedoQuitarFoco_Err:
     Resume Next
     
 End Function
-
+#If PYMMO = 1 Then
 Sub LoginOrConnect(ByVal Modo As E_MODO)
     EstadoLogin = Modo
     
@@ -35,6 +35,19 @@ Sub LoginOrConnect(ByVal Modo As E_MODO)
     End If
   
 End Sub
+#ElseIf PYMMO = 0 Then
+Sub LoginOrConnect(ByVal Modo As E_MODO)
+    
+    EstadoLogin = Modo
+    
+    If (Not modNetwork.IsConnected) Then
+        Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+    Else
+        Call Login
+    End If
+
+End Sub
+#End If
 
 Sub Login()
     
@@ -47,8 +60,13 @@ Sub Login()
         
         Case E_MODO.CrearNuevoPj
             Call WriteLoginNewChar
-                        
+#If PYMMO = 0 Then
+        Case E_MODO.IngresandoConCuenta
+            Call WriteLoginAccount
         
+        Case E_MODO.CreandoCuenta
+            Call WriteCreateAccount
+#End If
     End Select
 
     Exit Sub

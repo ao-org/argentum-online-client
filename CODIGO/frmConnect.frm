@@ -258,7 +258,7 @@ render_DblClick_Err:
     Resume Next
     
 End Sub
-
+#If PYMMO = 1 Then
 Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo render_MouseUp_Err
@@ -685,6 +685,426 @@ render_MouseUp_Err:
     
 End Sub
 
+#ElseIf PYMMO = 0 Then
+
+Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo render_MouseUp_Err
+    
+
+    Select Case QueRender
+
+        Case 3
+        
+            'Debug.Print "x: " & x & " y:" & y
+        
+        
+            If x > 282 And x < 322 And y > 428 And y < 468 Then 'Boton heading
+                If CPHeading + 1 >= 5 Then
+                CPHeading = 1
+                Else
+                    CPHeading = CPHeading + 1
+                End If
+            End If
+            
+            
+            
+            If x > 412 And x < 446 And y > 427 And y < 470 Then 'Boton Equipar
+                If CPHeading - 1 <= 0 Then
+                CPHeading = 4
+            Else
+                CPHeading = CPHeading - 1
+                End If
+            End If
+                    
+
+            If x > 325 And x < 344 And y > 371 And y < 387 Then 'Boton izquierda cabezas
+                If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
+                If frmCrearPersonaje.Cabeza.ListIndex > 0 Then
+                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex - 1
+
+                End If
+
+                If frmCrearPersonaje.Cabeza.ListIndex = 0 Then
+                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListCount - 1
+
+                End If
+
+            End If
+    
+            If x > 394 And x < 411 And y > 373 And y < 386 Then 'Boton Derecha cabezas
+                If frmCrearPersonaje.Cabeza.ListCount = 0 Then Exit Sub
+                If (frmCrearPersonaje.Cabeza.ListIndex + 1) <> frmCrearPersonaje.Cabeza.ListCount Then
+                    frmCrearPersonaje.Cabeza.ListIndex = frmCrearPersonaje.Cabeza.ListIndex + 1
+
+                End If
+
+                If (frmCrearPersonaje.Cabeza.ListIndex + 1) = frmCrearPersonaje.Cabeza.ListCount Then
+                    frmCrearPersonaje.Cabeza.ListIndex = 0
+
+                End If
+
+            End If
+                        
+                
+                
+            If x > 540 And x < 554 And y > 278 And y < 291 Then 'Boton izquierda clase
+                If frmCrearPersonaje.lstProfesion.ListIndex < frmCrearPersonaje.lstProfesion.ListCount - 1 Then
+                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex + 1
+                Else
+                    frmCrearPersonaje.lstProfesion.ListIndex = 0
+
+                End If
+
+            End If
+            
+            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha cabezas
+                If frmCrearPersonaje.lstProfesion.ListIndex - 1 < 0 Then
+                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListCount - 1
+                Else
+                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex - 1
+
+                End If
+
+            End If
+                
+            If x > 539 And x < 553 And y > 322 And y < 335 Then 'OK
+                If frmCrearPersonaje.lstRaza.ListIndex < frmCrearPersonaje.lstRaza.ListCount - 1 Then
+                    frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListIndex + 1
+                Else
+                    frmCrearPersonaje.lstRaza.ListIndex = 0
+
+                End If
+
+            End If
+            
+            If x > 657 And x < 672 And y > 321 And y < 338 Then 'OK
+                If frmCrearPersonaje.lstRaza.ListIndex - 1 < 0 Then
+                    frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListCount - 1
+                Else
+                    frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListIndex - 1
+
+                End If
+
+            End If
+            
+            If x > 298 And x < 314 And y > 276 And y < 291 Then 'ok
+    
+                If frmCrearPersonaje.lstGenero.ListIndex < frmCrearPersonaje.lstGenero.ListCount - 1 Then
+                    frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListIndex + 1
+                Else
+                    frmCrearPersonaje.lstGenero.ListIndex = 0
+
+                End If
+
+            End If
+            
+            If x > 415 And x < 431 And y > 277 And y < 295 Then 'ok
+                If frmCrearPersonaje.lstGenero.ListIndex - 1 < 0 Then
+                    frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListCount - 1
+                Else
+                    frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListIndex - 1
+
+                End If
+
+            End If
+        
+        
+        
+        'ciudad
+        
+            If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
+    
+                If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
+                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
+                Else
+                    frmCrearPersonaje.lstHogar.ListIndex = 0
+
+                End If
+
+            End If
+            
+            If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
+                If frmCrearPersonaje.lstHogar.ListIndex - 1 < 0 Then
+                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
+                Else
+                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
+
+                End If
+
+            End If
+        'ciudad
+            If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
+                Call Sound.Sound_Play(SND_CLICK)
+                'UserMap = 323
+                AlphaNiebla = 25
+                EntradaY = 1
+                EntradaX = 1
+                
+                'Call SwitchMap(UserMap)
+                frmConnect.txtNombre.visible = False
+                QueRender = 2
+                
+                Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+                ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
+
+            End If
+            
+            
+            If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
+                Call Sound.Sound_Play(SND_CLICK)
+
+                Dim k As Object
+
+                
+                username = frmConnect.txtNombre.Text
+                
+                Dim Error As String
+                If Not ValidarNombre(username, Error) Then
+                    frmMensaje.msg.Caption = Error
+                    frmMensaje.Show , Me
+                    Exit Sub
+                End If
+
+                UserRaza = frmCrearPersonaje.lstRaza.ListIndex + 1
+                UserSexo = frmCrearPersonaje.lstGenero.ListIndex + 1
+                UserClase = frmCrearPersonaje.lstProfesion.ListIndex + 1
+                
+                UserHogar = frmCrearPersonaje.lstHogar.ListIndex + 1
+               
+                If frmCrearPersonaje.CheckData() Then
+                    UserPassword = CuentaPassword
+                    StopCreandoCuenta = True
+
+                    If Connected Then
+                        frmMain.ShowFPS.enabled = True
+                    End If
+          
+                    Call Protocol_Writes.WriteLoginNewChar
+                End If
+                
+
+            End If
+
+            Exit Sub
+
+        Case 2
+            OpcionSeleccionada = 0
+
+            If (x > 256 And x < 414) And (y > 710 And y < 747) Then 'Boton crear pj
+                OpcionSeleccionada = 1
+
+            End If
+            
+            If (x > 14 And x < 112) And (y > 675 And y < 708) Then ' Boton Borrar pj
+                OpcionSeleccionada = 2
+
+            End If
+            
+            If (x > 19 And x < 48) And (y > 21 And y < 45) Then ' Boton deslogear
+                OpcionSeleccionada = 3
+
+            End If
+            
+            If (x > 604 And x < 759) And (y > 711 And y < 745) Then ' Boton logear
+                OpcionSeleccionada = 4
+
+            End If
+            
+            If (x > 971 And x < 1001) And (y > 21 And y < 45) Then ' Boton Cerrar
+                OpcionSeleccionada = 5
+
+            End If
+            
+            If OpcionSeleccionada = 0 Then
+                Dim NuevoSeleccionado As Byte
+                NuevoSeleccionado = 0
+
+                Dim DivX As Integer, DivY As Integer
+
+                Dim ModX As Integer, ModY As Integer
+
+                'Ladder: Cambie valores de posicion porque se ajusto interface (Los valores de los comentarios son los reales)
+                
+                ' Division entera
+                DivX = Int((x - 207) / 131) ' 217 = primer pj x, 131 = offset x entre cada pj
+                DivY = Int((y - 246) / 158) ' 233 = primer pj y, 158 = offset y entre cada pj
+                ' Resto
+                ModX = (x - 207) Mod 131 ' 217 = primer pj x, 131 = offset x entre cada pj
+                ModY = (y - 246) Mod 158 ' 233 = primer pj y, 158 = offset y entre cada pj
+                
+                ' La division no puede ser negativa (cliqueo muy a la izquierda)
+                ' ni ser mayor o igual a 5 (max. pjs por linea)
+                If DivX >= 0 And DivX < 5 Then
+
+                    ' no puede ser mayor o igual a 2 (max. lineas)
+                    If DivY >= 0 And DivY < 2 Then
+
+                        ' El resto tiene que ser menor que las dimensiones del "rectangulo" del pj
+                        If ModX < 79 Then ' 64 = ancho del "rectangulo" del pj
+                            If ModY < 93 Then ' 64 = alto del "rectangulo" del pj
+
+                                ' Si todo se cumple, entonces cliqueo en un pj (dado por las divisiones)
+                                NuevoSeleccionado = 1 + DivX + DivY * 5 ' 5 = cantidad de pjs por linea (+1 porque los pjs van de 1 a MAX)
+
+                                If Pjs(NuevoSeleccionado).Mapa = 0 Then NuevoSeleccionado = 0
+                                
+                            End If
+
+                        End If
+
+                    End If
+
+                End If
+                
+                If PJSeleccionado <> NuevoSeleccionado Then
+                    LastPJSeleccionado = PJSeleccionado
+                    PJSeleccionado = NuevoSeleccionado
+                End If
+
+            End If
+                
+            Select Case OpcionSeleccionada
+
+                Case 5
+                    CloseClient
+
+                Case 1
+
+                    If CantidadDePersonajesEnCuenta >= 10 Then
+                        Call MensajeAdvertencia("Has alcanzado el limite de personajes creados por cuenta.")
+                        Exit Sub
+
+                    End If
+                    UserMap = 37
+                    AlphaNiebla = 3
+                    CPHeading = 3
+                    CPEquipado = True
+                    Call SwitchMap(UserMap)
+                    QueRender = 3
+                    
+                    Call IniciarCrearPj
+                    frmConnect.txtNombre.visible = True
+                    frmConnect.txtNombre.SetFocus
+        
+                    Call Sound.Sound_Play(SND_DICE)
+                Case 2
+
+                    If Char = 0 Then Exit Sub
+                    DeleteUser = Pjs(Char).nombre
+
+                    Dim tmp As String
+
+                    If MsgBox("¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
+                        frmDeleteChar.Show , frmConnect
+                        
+                        'If tmp = CuentaPassword Then
+                        '    Call LoginOrConnect(E_MODO.BorrandoPJ)
+                        '
+                        '    If PJSeleccionado <> 0 Then
+                        '        LastPJSeleccionado = PJSeleccionado
+                        '        PJSeleccionado = 0
+                        '    End If
+                        'Else
+                        '    MsgBox ("Contraseña incorrecta")
+
+                        'End If
+
+                    End If
+
+                Case 3
+                    'Call ModAuth.LogOutRequest
+
+                    If Musica Then
+
+                        'ReproducirMp3 (4)
+                    End If
+                
+                    UserSaliendo = True
+                    Call modNetwork.Disconnect
+
+                    CantidadDePersonajesEnCuenta = 0
+
+                    Dim i As Integer
+
+                    For i = 1 To MAX_PERSONAJES_EN_CUENTA
+                        Pjs(i).Body = 0
+                        Pjs(i).Head = 0
+                        Pjs(i).Mapa = 0
+                        Pjs(i).nivel = 0
+                        Pjs(i).nombre = ""
+                        Pjs(i).Clase = 0
+                        Pjs(i).Criminal = 0
+                        Pjs(i).NameMapa = ""
+                    Next i
+
+                    General_Set_Connect
+                    
+                    'Unload Me
+                Case 4
+
+                    If PJSeleccionado < 1 Then Exit Sub
+
+                    If IntervaloPermiteConectar Then
+                        Call Sound.Sound_Play(SND_CLICK)
+                        Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
+
+                    End If
+
+            End Select
+
+            Char = PJSeleccionado
+            Rem MsgBox X & "   " & Y
+ 
+            If PJSeleccionado = 0 Then Exit Sub
+            If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
+        
+        Case 1
+            
+            While LastClickAsistente = ClickEnAsistenteRandom
+                ClickEnAsistenteRandom = RandomNumber(1, 4)
+            Wend
+            
+            LastClickAsistente = ClickEnAsistenteRandom
+            
+            
+             If (x > 490 And x < 522) And (y > 297 And y < 357) Then
+             
+                If ClickEnAsistenteRandom = 1 Then
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/")
+
+                End If
+
+                If ClickEnAsistenteRandom = 2 Then
+                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!")
+
+                End If
+
+                If ClickEnAsistenteRandom = 3 Then
+                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta")
+                    
+                End If
+
+                If ClickEnAsistenteRandom = 4 Then
+                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?")
+                End If
+
+            End If
+
+    End Select
+
+    'ClickEnAsistente
+
+    
+    Exit Sub
+
+render_MouseUp_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.render_MouseUp", Erl)
+    Resume Next
+    
+End Sub
+#End If
+
 
 
 Private Sub txtNombre_Change()
@@ -716,7 +1136,29 @@ txtNombre_KeyPress_Err:
     Resume Next
     
 End Sub
+#If PYMMO = 0 Then
 
+Private Sub LogearPersonaje(ByVal Nick As String)
+    
+    On Error GoTo LogearPersonaje_Err
+    
+    username = Nick
+
+    If Connected Then
+        frmMain.ShowFPS.enabled = True
+    End If
+    
+    Call Protocol_Writes.WriteLoginExistingChar
+    
+    Exit Sub
+
+LogearPersonaje_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.LogearPersonaje", Erl)
+    Resume Next
+    
+End Sub
+#End If
+#If PYMMO = 1 Then
 Private Sub LogearPersonaje(ByVal Nick As String)
     
     On Error GoTo LogearPersonaje_Err
@@ -738,3 +1180,4 @@ LogearPersonaje_Err:
     Resume Next
     
 End Sub
+#End If
