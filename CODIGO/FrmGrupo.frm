@@ -146,7 +146,7 @@ End Sub
 Private Sub cmdAbandonar_Click()
     
     On Error GoTo cmdAbandonar_Click_Err
-    
+    Exit Sub
     Call WriteAbandonarGrupo
     Unload Me
     
