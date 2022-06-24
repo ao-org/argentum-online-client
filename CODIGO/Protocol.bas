@@ -237,8 +237,9 @@ Private Enum ServerPacketID
     NotificarClienteCasteo
     SendFollowingCharindex
     ForceCharMoveSiguiendo
-    PosUpdateCharindex
-    'ShopPjsInit
+    PosUpdateUserChar
+    PosUpdateChar
+    PlayWaveStep
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -652,8 +653,10 @@ On Error GoTo HandleIncomingData_Err
             Call HandleChangeMap
         Case ServerPacketID.PosUpdate
             Call HandlePosUpdate
-        Case ServerPacketID.PosUpdateCharindex
-            Call HandlePosUpdateCharindex
+        Case ServerPacketID.PosUpdateUserChar
+            Call HandlePosUpdateUserChar
+        Case ServerPacketID.PosUpdateChar
+            Call HandlePosUpdateChar
         Case ServerPacketID.NPCHitUser
             Call HandleNPCHitUser
         Case ServerPacketID.UserHitNPC
@@ -704,6 +707,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandlePlayMIDI
         Case ServerPacketID.PlayWave
             Call HandlePlayWave
+        Case ServerPacketID.PlayWaveStep
+            Call HandlePlayWaveStep
         Case ServerPacketID.guildList
             Call HandleGuildList
         Case ServerPacketID.AreaChanged
@@ -2388,6 +2393,7 @@ Private Sub HandleUpdateHP()
             End If
         End If
         DrogaCounter = 0
+        Call deleteCharIndexs
     Else
         UserEstado = 0
 
@@ -2549,9 +2555,9 @@ End Sub
 ''
 ' Handles the PosUpdate message.
 
-Private Sub HandlePosUpdateCharindex()
+Private Sub HandlePosUpdateUserChar()
     
-    On Error GoTo HandlePosUpdateCharindex_Err
+    On Error GoTo HandlePosUpdateUserChar_Err
 
     
     Dim temp_x As Byte, temp_y As Byte
@@ -2582,8 +2588,40 @@ Private Sub HandlePosUpdateCharindex()
     
     Exit Sub
 
-HandlePosUpdateCharindex_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosUpdateCharindex", Erl)
+HandlePosUpdateUserChar_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosUpdateUserChar", Erl)
+        
+End Sub
+''
+' Handles the NPCHitUser message.
+
+''
+' Handles the PosUpdate message.
+
+Private Sub HandlePosUpdateChar()
+    
+    On Error GoTo HandlePosUpdateChar_Err
+
+    Dim charindex As Integer
+    Dim x As Byte, y As Byte
+    
+    'Set new pos
+    charindex = Reader.ReadInt16()
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    
+    If MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = charindex Then
+        MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+    End If
+    
+    MapData(x, y).charindex = charindex
+    charlist(charindex).Pos.x = x
+    charlist(charindex).Pos.y = y
+    
+    Exit Sub
+
+HandlePosUpdateChar_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosUpdateChar", Erl)
         
 End Sub
 ''
@@ -2829,6 +2867,8 @@ Private Sub HandleChatOverHead()
     Dim QueEs      As String
 
     Dim EsSpell    As Boolean
+    
+    Dim x As Byte, y As Byte
     chat = Reader.ReadString8()
     charindex = Reader.ReadInt16()
     
@@ -2838,7 +2878,21 @@ Private Sub HandleChatOverHead()
     
     colortexto = vbColor_2_Long(Reader.ReadInt32())
     EsSpell = Reader.ReadBool()
-
+    
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    
+    If x + y > 0 Then
+        With charlist(charindex)
+            If .Invisible And charindex <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+                .Pos.x = x
+                .Pos.y = y
+                MapData(x, y).charindex = charindex
+            End If
+        End With
+    End If
+    
     'Optimizacion de protocolo por Ladder
     QueEs = ReadField(1, chat, Asc("*"))
     
@@ -4283,6 +4337,34 @@ HandlePlayWave_Err:
     
 End Sub
 
+''
+' Handles the PlayWave message.
+
+Private Sub HandlePlayWaveStep()
+    
+    On Error GoTo HandlePlayWaveStep_Err
+        
+    Dim wave As Integer
+    Dim distance As Byte
+    Dim balance As Integer
+    Dim step As Boolean
+    
+    wave = Reader.ReadInt16()
+    distance = Reader.ReadInt8()
+    balance = Reader.ReadInt16()
+    step = Reader.ReadBool()
+    
+    Call DoPasosInvi(wave, distance, balance, step)
+    
+    
+    Exit Sub
+
+HandlePlayWaveStep_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayWaveStep", Erl)
+    
+    
+End Sub
+
 Private Sub HandlePosLLamadaDeClan()
     
     On Error GoTo HandlePosLLamadaDeClan_Err
@@ -4641,9 +4723,25 @@ Private Sub HandleCreateFX()
 
     Dim Loops     As Integer
     
+    Dim x As Byte, y As Byte
+        
     charindex = Reader.ReadInt16()
     fX = Reader.ReadInt16()
     Loops = Reader.ReadInt16()
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    
+    If x + y > 0 Then
+        With charlist(charindex)
+            If .Invisible And charindex <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+                .Pos.x = x
+                .Pos.y = y
+                MapData(x, y).charindex = charindex
+            End If
+        End With
+    End If
+    
     
     If fX = 0 Then
         charlist(charindex).fX.AnimacionContador = 29
@@ -4916,6 +5014,7 @@ Private Sub HandleUpdateUserStats()
     
     If UserMinHp = 0 Then
         UserEstado = 1
+        charlist(UserCharIndex).Invisible = False
         DrogaCounter = 0
     Else
         UserEstado = 0
@@ -6147,10 +6246,24 @@ Private Sub HandleSetInvisible()
     '***************************************************
     
     Dim charindex As Integer
-    
+    Dim x As Byte, y As Byte
     charindex = Reader.ReadInt16()
     charlist(charindex).Invisible = Reader.ReadBool()
     charlist(charindex).TimerI = 0
+    
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    
+    If x + y > 0 Then
+        With charlist(charindex)
+            If Not .Invisible And charindex <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+                .Pos.x = x
+                .Pos.y = y
+                MapData(x, y).charindex = charindex
+            End If
+        End With
+    End If
     
     Exit Sub
 
@@ -6172,8 +6285,23 @@ Private Sub HandleMeditateToggle()
     
     Dim charindex As Integer, fX As Integer
     
+    Dim x As Byte, y As Byte
+    
     charindex = Reader.ReadInt16
     fX = Reader.ReadInt16
+    x = Reader.ReadInt8
+    y = Reader.ReadInt8
+    
+    If x + y > 0 Then
+        With charlist(charindex)
+            If .Invisible And charindex <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+                .Pos.x = x
+                .Pos.y = y
+                MapData(x, y).charindex = charindex
+            End If
+        End With
+    End If
     
     If charindex = UserCharIndex Then
         UserMeditar = (fX <> 0)
@@ -7412,13 +7540,28 @@ Private Sub HandleParticleFX()
 
     Dim Remove         As Boolean
     Dim grh            As Long
-     
+    
+    Dim x As Byte, y As Byte
+    
     charindex = Reader.ReadInt16()
     ParticulaIndex = Reader.ReadInt16()
     Time = Reader.ReadInt32()
     Remove = Reader.ReadBool()
     grh = Reader.ReadInt32()
     
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    
+    If x + y > 0 Then
+        With charlist(charindex)
+            If .Invisible And charindex <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+                .Pos.x = x
+                .Pos.y = y
+                MapData(x, y).charindex = charindex
+            End If
+        End With
+    End If
     If Remove Then
         Call Char_Particle_Group_Remove(charindex, ParticulaIndex)
         charlist(charindex).Particula = 0
@@ -7465,7 +7608,8 @@ Private Sub HandleParticleFXWithDestino()
     Dim wav            As Integer
 
     Dim fX             As Integer
-     
+    
+    Dim x As Byte, y As Byte
     Emisor = Reader.ReadInt16()
     receptor = Reader.ReadInt16()
     ParticulaViaje = Reader.ReadInt16()
@@ -7474,6 +7618,19 @@ Private Sub HandleParticleFXWithDestino()
     Time = Reader.ReadInt32()
     wav = Reader.ReadInt16()
     fX = Reader.ReadInt16()
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    
+    If x + y > 0 Then
+        With charlist(receptor)
+           If .Invisible And receptor <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).charindex = receptor Then MapData(.Pos.x, .Pos.y).charindex = 0
+                .Pos.x = x
+                .Pos.y = y
+                MapData(x, y).charindex = receptor
+            End If
+        End With
+    End If
 
     Engine_spell_Particle_Set (ParticulaViaje)
 

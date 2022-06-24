@@ -969,6 +969,7 @@ Sub ShowNextFrame()
              LastOffset2Y = ScrollPixelsPerFrameY * AddtoUserPos.y * timerTicksPerFrame * charlist(UserCharIndex).Speeding
             OffsetCounterY = OffsetCounterY - LastOffset2Y
             If Abs(OffsetCounterY) >= Abs(OffsetLimitScreen * AddtoUserPos.y) Then
+                LastOffset2Y = 0
                 OffsetCounterY = 0
                 AddtoUserPos.y = 0
                 UserMoving = False

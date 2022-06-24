@@ -1240,9 +1240,6 @@ Public Function Calculate_Volume(ByVal map_x As Integer, ByVal map_y As Integer)
             
     ElseIf total_distance <= 19 Then
         Calculate_Volume = mEffectsVolumeMax - (total_distance * 120)
-    Else
-        Calculate_Volume = mEffectsVolumeMax - 450
-
     End If
 
     If total_distance > 19 Then Calculate_Volume = -4000
@@ -1253,6 +1250,59 @@ Public Function Calculate_Volume(ByVal map_x As Integer, ByVal map_y As Integer)
 
 Calculate_Volume_Err:
     Call RegistrarError(Err.number, Err.Description, "clsSoundEngine.Calculate_Volume", Erl)
+    Resume Next
+    
+End Function
+Public Function Calculate_Pan_By_Distance(ByVal total_distance As Integer, position_sgn As Integer) As Long
+    '
+    'Author: Blasto Papá
+    'Last Modify Date: 7/16/2005
+    '
+
+    On Error GoTo Calculate_Pan_By_Distance_Err:
+
+
+    If mInvert_Sound Then
+        position_sgn = position_sgn * -1
+    End If
+
+    If (total_distance = 0) Or (position_sgn = 0) Then
+        Calculate_Pan_By_Distance = 0
+    ElseIf total_distance < 19 Then
+        Calculate_Pan_By_Distance = position_sgn * (total_distance * 500)
+    Else
+        Calculate_Pan_By_Distance = position_sgn * 9000
+
+    End If
+
+
+    Exit Function
+
+Calculate_Pan_By_Distance_Err:
+    Call RegistrarError(Err.Number, Err.Description, "clsSoundEngine.Calculate_Pan_By_Distance", Erl)
+    Resume Next
+
+End Function
+Public Function Calculate_Volume_by_distance(ByVal distance As Byte) As Long
+
+    On Error GoTo Calculate_Volume_by_distance_Err
+    
+    distance = Abs(distance)
+    
+    If (distance = 0) Then
+        Calculate_Volume_by_distance = mEffectsVolumeMax
+            
+    ElseIf distance <= 19 Then
+        Calculate_Volume_by_distance = mEffectsVolumeMax - (distance * 120)
+    End If
+
+    If distance > 19 Then Calculate_Volume_by_distance = -4000
+    If Calculate_Volume_by_distance < -4000 Then Calculate_Volume_by_distance = -4000
+
+    Exit Function
+    
+Calculate_Volume_by_distance_Err:
+    Call RegistrarError(Err.Number, Err.Description, "clsSoundEngine.Calculate_Volume_by_distance", Erl)
     Resume Next
     
 End Function

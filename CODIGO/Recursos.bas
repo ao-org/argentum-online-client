@@ -651,6 +651,11 @@ Public Sub CargarPasos()
     ReDim Pasos(CONST_PISO).wav(1 To Pasos(CONST_PISO).CantPasos) As Integer
     Pasos(CONST_PISO).wav(1) = 23
     Pasos(CONST_PISO).wav(2) = 24
+    
+    Pasos(CONST_AGUA).CantPasos = 2 ' OK
+    ReDim Pasos(CONST_AGUA).wav(1 To 2) As Integer
+    Pasos(CONST_AGUA).wav(1) = SND_NAVEGANDO
+    Pasos(CONST_AGUA).wav(2) = SND_NAVEGANDO
 
     
     Exit Sub

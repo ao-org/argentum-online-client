@@ -130,8 +130,7 @@ Public Enum TipoPaso
     CONST_DUNGEON = 4
     CONST_PISO = 5
     CONST_DESIERTO = 6
-    CONST_PESADO = 7
-
+    CONST_AGUA = 7
 End Enum
 
 Public Type tPaso
@@ -171,7 +170,7 @@ End Type
 
 Public packetControl(1 To CANT_PACKETS_CONTROL) As t_packetControl
 
-Public Const NUM_PASOS       As Byte = 6
+Public Const NUM_PASOS       As Byte = 7
 
 Public Pasos()               As tPaso
 
@@ -1339,3 +1338,5 @@ Public Type t_tutorial
 End Type
 
 Public tutorial() As t_tutorial
+
+Public Const DISTANCIA_ENVIO_DATOS As Byte = 2

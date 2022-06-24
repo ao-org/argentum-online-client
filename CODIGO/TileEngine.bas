@@ -718,6 +718,86 @@ Sub DoPasosFx(ByVal charindex As Integer)
 
     Static FileNum       As Integer
 
+    If Not charlist(charindex).Navegando Then
+
+        With charlist(charindex)
+
+            If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
+                If .Speeding > 1.3 Then
+                   
+                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Exit Sub
+
+                End If
+           
+                .Pie = Not .Pie
+
+                If .Pie Then
+                    If MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
+                        FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
+                        TerrenoDePaso = GetTerrenoDePaso(FileNum)
+                        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    End If
+                Else
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+
+                End If
+
+            End If
+
+        End With
+
+    Else
+
+        If charlist(UserCharIndex).Muerto = False Then
+            Call Sound.Sound_Play(SND_NAVEGANDO)
+
+            '  Call Audio.PlayWave(SND_NAVEGANDO, charlist(charindex).Pos.x, charlist(charindex).Pos.y)
+        End If
+
+    End If
+
+    
+    Exit Sub
+
+DoPasosFx_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.DoPasosFx", Erl)
+    Resume Next
+    
+End Sub
+
+Sub DoPasosInvi(ByVal grh As Integer, ByVal distancia As Byte, ByVal balance As Integer, ByVal step As Boolean)
+    
+    On Error GoTo DoPasosInvi_Err
+    
+
+    Static TerrenoDePaso As TipoPaso
+
+    Dim FileNum As Integer
+
+    If grh > 0 Then
+        FileNum = GrhData(grh).FileNum
+        TerrenoDePaso = GetTerrenoDePaso(FileNum)
+        
+        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), , Sound.Calculate_Volume_by_distance(distancia), Sound.Calculate_Pan_By_Distance(distancia, balance))
+    End If
+    
+    Exit Sub
+
+DoPasosInvi_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.DoPasosInvi", Erl)
+    Resume Next
+    
+End Sub
+Sub DoPasosFxWithoutPos(ByVal charindex As Integer)
+    
+    On Error GoTo DoPasosFx_Err
+    
+
+    Static TerrenoDePaso As TipoPaso
+
+    Static FileNum       As Integer
+
     If Not UserNavegando Then
 
         With charlist(charindex)
@@ -738,7 +818,6 @@ Sub DoPasosFx(ByVal charindex As Integer)
                         TerrenoDePaso = GetTerrenoDePaso(FileNum)
                         Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     End If
-                    'Call Audio.PlayWave(SND_PASOS3, .Pos.X, .Pos.Y)
                 Else
                     Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
 
@@ -783,6 +862,9 @@ Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
         Exit Function
     ElseIf (TerrainFileNum >= 6018 And TerrainFileNum <= 6021) Or (TerrainFileNum = 186 Or TerrainFileNum = 8007) Then
         GetTerrenoDePaso = CONST_DESIERTO
+        Exit Function
+    ElseIf TerrainFileNum = 20 Then
+         GetTerrenoDePaso = CONST_AGUA
         Exit Function
     Else
         GetTerrenoDePaso = CONST_PISO
