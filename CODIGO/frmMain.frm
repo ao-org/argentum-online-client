@@ -2086,20 +2086,13 @@ Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As 
     On Error GoTo EstadisticasBoton_MouseUp_Err
     
     
-    If pausa Or MostrandoTutorial > 0 Then Exit Sub
+    If pausa Or tutorial_index > 0 Then Exit Sub
     
-    If MostrarTutorial And MostrandoTutorial <= 0 Then
+    If MostrarTutorial And tutorial_index <= 0 Then
         If tutorial(4).Activo = 1 Then
-            tutorial(4).Mostrando = True
-            cartel_fadestatus = 1
-            cartel_fade = 1
-            tutorial_texto_actual = 1
-            grh_width = 64
-            grh_height = 64
-            cartel_grh_pos_x = 640
-            cartel_grh_pos_y = 530
+            tutorial_index = e_tutorialIndex.TUTORIAL_SkillPoints
             'TUTORIAL MAPA INSEGURO
-            Call mostrarCartel(tutorial(4).titulo, tutorial(4).textos(1), tutorial(4).grh, -1, &H164B8A, , , False, 100, 479, 100, 535)
+            Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
             Exit Sub
         End If
     End If
@@ -4455,26 +4448,21 @@ Public Sub Form_Click()
 
     If pausa Then Exit Sub
     
+    If mascota.visible Then
+        If Sqr((MouseX - mascota.posX) ^ 2 + (MouseY - mascota.posY) ^ 2) < 30 Then
+            mascota.dialog = ""
+        End If
+
+    End If
+    
     If cartel_visible Then
         If MouseX > 50 And MouseY > 478 And MouseX < 671 And MouseY < 585 Then
             'Debug.Print tutorial_texto_actual
-            If MostrandoTutorial > 0 Then
-                tutorial_texto_actual = tutorial_texto_actual + 1
-                Debug.Print tutorial_texto_actual
-                If tutorial_texto_actual <= UBound(tutorial(MostrandoTutorial).textos()) Then
-                    Call mostrarCartel(tutorial(MostrandoTutorial).titulo, tutorial(MostrandoTutorial).textos(tutorial_texto_actual), tutorial(MostrandoTutorial).grh, -1, &H164B8A, , , False, 100, 479, 100, 535)
-                Else
-                    cartel_fade = 0
-                    Call toggleTutorialActivo(MostrandoTutorial)
-                    tutorial(MostrandoTutorial).Mostrando = False
-                    'Call toggleTutorialActivo(MostrandoTutorial)
-                End If
-                
+            If tutorial_index > 0 Then
+                Call nextCartel
             Else
-                cartel_duration = 0
+                Call cerrarCartel
             End If
-            
-            
         End If
     End If
     If MouseBoton = vbLeftButton And ACCION1 = 0 Or MouseBoton = vbRightButton And ACCION2 = 0 Or MouseBoton = 4 And ACCION3 = 0 Then

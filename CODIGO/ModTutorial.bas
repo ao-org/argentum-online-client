@@ -1,46 +1,73 @@
 Attribute VB_Name = "ModTutorial"
 Option Explicit
 
-Public cartel_title As String
-Public cartel_message As String
-Public cartel_icon As Long
-Public cartel_duration As Long
+Private cartel_title As String
+Private cartel_message As String
+Private cartel_icon As Long
+Private cartel_duration As Long
 
-Public cartel_fade As Single
-Public cartel_fadestatus As Byte
-Public cartel_visible As Boolean
+Private cartel_fade As Single
+Private cartel_fadestatus As Byte
 
+'COLORES
 Private cartel_title_color(3) As RGBA
 Private cartel_message_color(3) As RGBA
 Private cartel_background_color(3) As RGBA
 Private cartel_icono_color(3) As RGBA
 Private cartel_continue_color(3) As RGBA
 
+'Color texto mascota
+Public mascota_text_color(3) As RGBA
+
+'GRHS
 Private cartel_background_grh As grh
 Private cartel_icon_grh As grh
-
-Public tutorial_texto_actual As Byte
-
+Private Const GRH_CARTEL_FONDO As Long = 22728
 
 'TAMAÑOS Y POSICIONES
-
 Private cartel_title_pos_x As Long
 Private cartel_title_pos_y As Long
 Private cartel_message_pos_x As Long
 Private cartel_message_pos_y As Long
+Private cartel_grh_pos_x  As Long
+Private cartel_grh_pos_y As Long
+Private grh_width  As Long
+Private grh_height  As Long
 Private cartel_npc As Boolean
 
-Public grh_width  As Long
-Public grh_height  As Long
-Public cartel_grh_pos_x  As Long
-Public cartel_grh_pos_y As Long
-
+Private text_length As Integer
+Private text_duration As Long
+Private text_duration_total As Long
+Private typing As Boolean
+Private Const TYPING_SOUND = 230
+Private sonido_activado As Boolean
 Public tutorial_index As Integer
+Public cartel_visible As Boolean
+Private cartel_index As Byte
+Private text_message_render As String
+Public Enum e_tutorialIndex
+    TUTORIAL_Muerto = 1
+    TUTORIAL_ZONA_INSEGURA = 2
+    TUTORIAL_NUEVO_USER = 3
+    TUTORIAL_SkillPoints = 4
+End Enum
 
-Public Const GRH_CARTEL_FONDO As Long = 22728
+Private enabled As Boolean
 
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSrc As Any, ByVal ByteLen As Long)
-
+Public Sub initMascotaTutorial()
+    mascota.posX = 50
+    mascota.posY = 50
+    
+    Call InitGrh(mascota.Body(1), 275, 1)
+    Call InitGrh(mascota.Body(2), 275, 1)
+    Call InitGrh(mascota.Body(3), 275, 1)
+    Call InitGrh(mascota.Body(4), 275, 1)
+    Call InitGrh(mascota.Body(5), 275, 1)
+    Call InitGrh(mascota.Body(6), 275, 1)
+    Call InitGrh(mascota.Body(7), 275, 1)
+    Call InitGrh(mascota.Body(8), 275, 1)
+End Sub
 Private Function RGBA2Lng(r As Byte, G As Byte, B As Byte, A As Byte) As Long
     RGBA2Lng = r + G * 256 + B * 65536 + A * 16777216
 End Function
@@ -49,9 +76,38 @@ Private Function Lng2RGBA(MyLong As Long) As Byte()
     CopyMemory MyBytes(0), MyLong, 4
     Lng2RGBA = MyBytes
 End Function
-
+Public Sub nextCartel()
+    If tutorial_index = 0 Then Exit Sub
+    
+    cartel_index = cartel_index + 1
+    If cartel_index < UBound(tutorial(tutorial_index).textos()) Then
+        text_duration = Len(cartel_message) * 20
+        text_duration_total = text_duration
+        If text_duration_total = 0 Then text_duration_total = 1
+        sonido_activado = True
+        Call Sound.Sound_Stop(TYPING_SOUND)
+        Call Sound.Sound_Play(TYPING_SOUND)
+        cartel_message = tutorial(tutorial_index).textos(cartel_index + 1)
+    Else
+        Call toggleTutorialActivo(tutorial_index)
+        Call cerrarCartel
+    End If
+    
+End Sub
+Public Sub cerrarCartel()
+    tutorial_index = 0
+    cartel_index = 0
+    cartel_duration = 0
+    If mascota.visible Then mascota.visible = False
+        Call Sound.Sound_Stop(TYPING_SOUND)
+End Sub
+Public Sub resetearCartel()
+    tutorial_index = 0
+    cartel_index = 0
+    cartel_visible = False
+End Sub
 'Duration = 0 calcula solo con largo de texto, Duration = -1 infinito
-Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optional ByVal icon As Long = 0, Optional ByVal duration As Long = 0, Optional ByVal titleColor As Long = -1, Optional ByVal messageColor As Long = -1, Optional ByVal backgroundColor As Long = -1, Optional ByVal esNpc As Boolean = False, Optional ByVal CartelTitlePosX = 0, Optional ByVal CartelTitlePosY As Long = 0, Optional ByVal CartelMessagePosX As Long = 0, Optional ByVal CartelMessagePosY As Long = 0)
+Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optional ByVal icon As Long = 0, Optional ByVal duration As Long = 0, Optional ByVal titleColor As Long = -1, Optional ByVal messageColor As Long = -1, Optional ByVal backgroundColor As Long = -1, Optional ByVal esNpc As Boolean = False, Optional ByVal CartelTitlePosX = 0, Optional ByVal CartelTitlePosY As Long = 0, Optional ByVal CartelMessagePosX As Long = 0, Optional ByVal CartelMessagePosY As Long = 0, Optional ByVal cartelGrhPosX As Long = 0, Optional ByVal cartelGrhPosY As Long = 0, Optional ByVal grhWidth As Long = 0, Optional ByVal grhHeight As Long = 0)
     
     Dim titleColor_byte() As Byte
     Dim messageColor_byte() As Byte
@@ -97,6 +153,22 @@ Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optiona
     cartel_message_pos_x = CartelMessagePosX
     cartel_message_pos_y = CartelMessagePosY
     
+    cartel_grh_pos_x = cartelGrhPosX
+    cartel_grh_pos_y = cartelGrhPosY
+    grh_width = grhWidth
+    grh_height = grhHeight
+    text_message_render = cartel_message
+    If Not esNpc Then
+        text_length = Len(cartel_message)
+        text_duration = Len(cartel_message) * 16
+        text_duration_total = text_duration
+        Call Sound.Sound_Stop(TYPING_SOUND)
+        Call Sound.Sound_Play(TYPING_SOUND)
+        If text_duration_total = 0 Then text_duration_total = 1
+        sonido_activado = True
+    End If
+    cartel_fadestatus = 1
+    cartel_fade = 1
     cartel_npc = esNpc
 End Sub
 Public Sub RenderScreen_Cartel()
@@ -107,8 +179,10 @@ Public Sub RenderScreen_Cartel()
         
         If cartel_fadestatus = 2 And cartel_duration > 0 Then
             Debug.Print cartel_duration
-            cartel_duration = cartel_duration - IIf(cartel_duration = -1, 0, 1)
+            cartel_duration = cartel_duration - (timerTicksPerFrame * 40)
+            If cartel_duration < 0 Then cartel_duration = 0
         End If
+        
         If cartel_fadestatus = 1 Then
         
             cartel_fade = cartel_fade + (timerTicksPerFrame * 40)
@@ -119,21 +193,29 @@ Public Sub RenderScreen_Cartel()
             End If
 
         ElseIf cartel_fadestatus = 2 And cartel_duration = 0 Then
-        
             cartel_fade = cartel_fade - (timerTicksPerFrame * 40)
 
             If cartel_fade <= 0 Then
                 cartel_fadestatus = 0
                 cartel_fade = 0
                 cartel_message = ""
-                
             End If
-
         End If
-
     End If
     
     cartel_visible = (cartel_fade > 0)
+
+    
+    If Not cartel_npc Then
+        Dim charCount As Integer
+        charCount = (text_duration * text_length) / text_duration_total
+        If charCount = 0 And sonido_activado Then
+            Call Sound.Sound_Stop(TYPING_SOUND)
+            sonido_activado = False
+        End If
+        text_message_render = Left(cartel_message, text_length - charCount)
+        text_duration = text_duration - (timerTicksPerFrame * 40)
+    End If
     
     If cartel_visible = False Then Exit Sub
         
@@ -148,7 +230,7 @@ Public Sub RenderScreen_Cartel()
         'Renderizo titulo
         Call Engine_Text_Render_Cartel(cartel_title, cartel_title_pos_x, cartel_title_pos_y, cartel_title_color(), 5, False, , cartel_fade)
         'Renderizo texto
-        Call Engine_Text_Render_Cartel(cartel_message, cartel_message_pos_x, cartel_message_pos_y, cartel_message_color(), 1, False, , cartel_fade)
+        Call Engine_Text_Render_Cartel(text_message_render, cartel_message_pos_x, cartel_message_pos_y, cartel_message_color(), 1, False, , cartel_fade)
                 
         'Renderizo texto
         If cartel_duration = -1 Then
@@ -178,9 +260,9 @@ Private Function changeAlphaColor(Color() As RGBA, ByVal Alpha As Byte)
     Color(3).A = Alpha
 End Function
 
-Public Sub toggleTutorialActivo(ByVal NumeroTutorial As Byte)
+Public Sub toggleTutorialActivo(ByVal tutorial_index As Byte)
     Dim file As String
-    With tutorial(NumeroTutorial)
+    With tutorial(tutorial_index)
         If .Activo = 0 Then
             .Activo = 1
         Else
@@ -188,7 +270,7 @@ Public Sub toggleTutorialActivo(ByVal NumeroTutorial As Byte)
         End If
         
         file = App.Path & "\..\Recursos\OUTPUT\Configuracion.ini"
-        Call WriteVar(file, "TUTORIAL" & NumeroTutorial, "Activo", .Activo)
+        Call WriteVar(file, "TUTORIAL" & tutorial_index, "Activo", .Activo)
     End With
 End Sub
 Public Sub cargarTutoriales()
@@ -229,44 +311,6 @@ Public Sub cargarTutoriales()
     
 End Sub
 
-Public Sub RenderizarTutoriales()
-    If UserEstado = 1 And tutorial(1).Activo = 1 And tutorial(1).Mostrando Then
-        If tutorial_texto_actual <= UBound(tutorial(1).textos) Then
-            Dim ColorTextoCartel(3) As RGBA
-            Call RGBAList(ColorTextoCartel(), 213, 250, 255, 255)
-            Dim ColorTitulo(3) As RGBA
-            Call RGBAList(ColorTitulo(), 191, 0, 0, 255)
-            Dim ColorFondo(3) As RGBA
-            Call RGBAList(ColorFondo(), 202, 28, 2, 255)
-            Call RenderScreen_Cartel
-        Else
-            tutorial_texto_actual = 0
-            tutorial(1).Mostrando = False
-            Call toggleTutorialActivo(1)
-        End If
-    End If
-End Sub
-
-Public Function MostrandoTutorial() As Long
-    Dim i As Long
-    
-    For i = 1 To UBound(tutorial)
-        If tutorial(i).Mostrando Then
-            MostrandoTutorial = i
-            Exit Function
-        End If
-    Next i
-End Function
-
-Public Sub ResetearCartel()
-    Dim i As Long
-    
-    For i = 1 To UBound(tutorial)
-        tutorial(i).Mostrando = False
-    Next i
-    
-    cartel_fade = 0
-End Sub
 
 Public Sub Engine_Text_Render_Cartel(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
     
@@ -420,4 +464,37 @@ Engine_Text_Render_Cartel_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_Cartel", Erl)
     Resume Next
     
+End Sub
+
+Public Sub checkTutorial()
+    
+    If charlist(UserCharIndex).Pos.x > 10 And charlist(UserCharIndex).Pos.y > 10 And charlist(UserCharIndex).Pos.x < 80 And charlist(UserCharIndex).Pos.y < 80 Then
+        
+        If Not mascota.visible Then
+            Call RGBAList(mascota_text_color, 211, 153, 94, 255)
+            mascota.dialog = "Bienvenido, soy tu guia de entrenamiento en las tierras de Argentum 20, estaré siguiendo todos tus movimientos para que te conviertas en un enorme guerrero."
+            Call InitGrh(mascota.fx, 4841, FrameTime, 0)
+            mascota.fx.speed = mascota.fx.speed / 2
+            Call RGBAList(mascota.color, 255, 255, 255, 0)
+            mascota.visible = True
+        End If
+        'If MostrarTutorial And tutorial_index <= 0 Then
+        '    If tutorial(e_tutorialIndex.TUTORIAL_NUEVO_USER).Activo = 1 Then
+        '        tutorial_index = e_tutorialIndex.TUTORIAL_NUEVO_USER
+        '        mascota.visible = True
+        '        Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), 275, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 490, 64, 64)
+        '    End If
+        'End If
+    Else
+        mascota.visible = False
+        'mascota.dialog = ""
+    End If
+    'If charlist(UserCharIndex).Pos.x >= 27 And charlist(UserCharIndex).Pos.y = 14 And charlist(UserCharIndex).Pos.x <= 30 And charlist(UserCharIndex).Pos.y = 14 And Not enabled Then
+    '    Call RGBAList(mascota_text_color, 211, 153, 94, 255)
+   '     mascota.dialog = "Estás saliendo a una zona insegura, ten en cuenta que podrás ser atacado por otros."
+   '     enabled = True
+   ' Else
+  '      enabled = False
+        'mascota.dialog = ""
+  '  End If
 End Sub

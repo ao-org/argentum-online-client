@@ -19,6 +19,11 @@ Private Declare Function timeGetTime Lib "winmm.dll" () As Long
 
 Public FrameNum               As Long
 
+'Mascotas:
+Public LastOffset2X As Double
+Public LastOffset2Y As Double
+
+
 'Depentientes del motor grafico
 Public Dialogos                 As clsDialogs
 Public LucesRedondas            As clsLucesRedondas
@@ -947,9 +952,10 @@ Sub ShowNextFrame()
 
         '****** Move screen Left and Right if needed ******
         If AddtoUserPos.x <> 0 Then
-            OffsetCounterX = OffsetCounterX - ScrollPixelsPerFrameX * AddtoUserPos.x * timerTicksPerFrame * charlist(UserCharIndex).Speeding
-
+            LastOffset2X = ScrollPixelsPerFrameX * AddtoUserPos.x * timerTicksPerFrame * charlist(UserCharIndex).Speeding
+            OffsetCounterX = OffsetCounterX - LastOffset2X
             If Abs(OffsetCounterX) >= Abs(OffsetLimitScreen * AddtoUserPos.x) Then
+                LastOffset2X = 0
                 OffsetCounterX = 0
                 AddtoUserPos.x = 0
                 UserMoving = False
@@ -960,8 +966,8 @@ Sub ShowNextFrame()
             
         '****** Move screen Up and Down if needed ******
         If AddtoUserPos.y <> 0 Then
-            OffsetCounterY = OffsetCounterY - ScrollPixelsPerFrameY * AddtoUserPos.y * timerTicksPerFrame * charlist(UserCharIndex).Speeding
-
+             LastOffset2Y = ScrollPixelsPerFrameY * AddtoUserPos.y * timerTicksPerFrame * charlist(UserCharIndex).Speeding
+            OffsetCounterY = OffsetCounterY - LastOffset2Y
             If Abs(OffsetCounterY) >= Abs(OffsetLimitScreen * AddtoUserPos.y) Then
                 OffsetCounterY = 0
                 AddtoUserPos.y = 0
@@ -986,6 +992,144 @@ ShowNextFrame_Err:
     Resume Next
     
 End Sub
+Function ArcCos(x As Double) As Double
+    ArcCos = Atn(-x / Sqr(-x * x + 1)) + 2 * Atn(1)
+End Function
+Function distance(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Long
+    distance = Sqr(((y1 - y2) ^ 2 + (x1 - x2) ^ 2))
+End Function
+Public Function compute_vector_director(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Position
+    compute_vector_director.x = x2 - x1
+    compute_vector_director.y = y2 - y1
+End Function
+
+Private Function GetAngle(ByVal x1 As Double, ByVal y1 As Double, ByVal x2 As Double, ByVal y2 As Double) As Double
+    Dim XDiff As Double
+    Dim YDiff As Double
+    Dim TempAngle As Double
+    
+    YDiff = Abs(y2 - y1)
+    
+    If x1 = x2 And y1 = y2 Then Exit Function
+    
+    If YDiff = 0 And x1 < x2 Then
+        GetAngle = 0
+        Exit Function
+    ElseIf YDiff = 0 And x1 > x2 Then
+        GetAngle = 3.14159265358979
+        Exit Function
+    End If
+    
+    XDiff = Abs(x2 - x1)
+    
+    TempAngle = Atn(XDiff / YDiff)
+    
+    If y2 > y1 Then TempAngle = 3.14159265358979 - TempAngle
+    If x2 < x1 Then TempAngle = -TempAngle
+    TempAngle = 1.5707963267949 - TempAngle
+    If TempAngle < 0 Then TempAngle = 6.28318530717959 + TempAngle
+    
+    GetAngle = TempAngle
+End Function
+
+Public Function calcular_direccion(ByRef dir_vector As Position) As Long
+    Dim theta As Double
+    Dim norma_a As Double
+    Dim norma_b As Double
+    
+    theta = GetAngle(dir_vector.x, dir_vector.y, 1, 0) * 180 / PI
+    
+    ''''''''''''''''''''''''''''''''''''''''''''''
+    ''''''''''''''''''''''''''''''''''''''''''''''
+    ''''''''''''''''''''''''''''''''''''''''''''''
+    
+    Select Case Round(theta)
+        Case 337 To 360, 0 To 22
+            calcular_direccion = 1
+        Case 23 To 67
+            calcular_direccion = 2
+        Case 68 To 112
+            calcular_direccion = 3
+        Case 113 To 157
+            calcular_direccion = 4
+        Case 158 To 202
+            calcular_direccion = 5
+        Case 203 To 247
+            calcular_direccion = 6
+        Case 248 To 292
+            calcular_direccion = 7
+        Case 293 To 336
+            calcular_direccion = 8
+    End Select
+End Function
+Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
+    
+    'calculo el pixel en el que está cada usuario y
+    Dim target_x As Long
+    Dim target_y As Long
+    
+    'target_charindex in pixels on render:
+    target_x = (frmMain.renderer.ScaleWidth / 2) - ((UserPos.x - AddtoUserPos.x) - charlist(charindex).Pos.x) * 32 + charlist(charindex).MoveOffsetX
+    target_y = (frmMain.renderer.ScaleHeight / 2) - ((UserPos.y - AddtoUserPos.y) - charlist(charindex).Pos.y) * 32 + charlist(charindex).MoveOffsetY
+    
+    Dim dir_vector As Position
+    Dim dist As Long
+    Dim dist_x As Long
+    Dim dist_y As Long
+    
+    'Calculamos el vector director entre la mascota y el charindex (sin normalizar):
+    dir_vector = compute_vector_director(mascota.posX, mascota.posY, target_x, target_y)
+    dist_x = Abs(dir_vector.x)
+    dist_y = Abs(dir_vector.y)
+    dist = Sqr(dist_x ^ 2 + dist_y ^ 2)
+    
+    Dim isAnimated As Byte
+    isAnimated = 1
+    Static direccion As Boolean
+    Static Angle As Single
+    'If (RandomNumber(1, 70) = 1) Then direccion = Not direccion
+
+    Angle = Angle + RandomNumber(2, 10) * IIf(direccion, 1, -1) / 1500 * timerElapsedTime
+    
+    If dist_x > 40 Then
+        mascota.posX = mascota.posX + (dir_vector.x / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
+        isAnimated = 1
+    End If
+
+    mascota.posX = mascota.posX - LastOffset2X
+    If dist_y > 40 Then
+        mascota.posY = mascota.posY + (dir_vector.y / (frmMain.renderer.ScaleHeight / 2)) * timerElapsedTime / 1000 * dist * 3
+        isAnimated = 1
+    End If
+    
+    mascota.posY = mascota.posY - LastOffset2Y
+
+    If GetTickCount() - mascota.last_time >= 200 Then
+        mascota.Heading = calcular_direccion(dir_vector)
+        mascota.last_time = GetTickCount()
+    End If
+    
+    If mascota.Color(0).A < 255 Then
+        Dim temp_alpha As Single
+
+        temp_alpha = mascota.Color(0).A + 1 * timerElapsedTime / 5
+        If temp_alpha > 255 Then temp_alpha = 255
+        
+        mascota.Color(0).A = temp_alpha
+        mascota.Color(1).A = temp_alpha
+        mascota.Color(2).A = temp_alpha
+        mascota.Color(3).A = temp_alpha
+    End If
+    
+    
+    Call Draw_Grh(mascota.Body(mascota.Heading), mascota.posX + Cos(Angle / 2) * 5 + 150, mascota.posY + Sin(Angle) * 5 + 150, 0, isAnimated, mascota.Color)
+    If mascota.fX.started > 0 Then
+        Dim colorfx(3) As RGBA
+        Call RGBAList(colorfx(), 211, 153, 93, 255)
+        Call Draw_Grh(mascota.fX, mascota.posX + Cos(Angle / 2) * 5 - 7 + 150, mascota.posY + Sin(Angle) * 5 - 27 + 150, 0, isAnimated, colorfx)
+    End If
+End Sub
+
 
 Private Sub Device_Box_Textured_Render_Advance(ByVal grhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef rgb_list() As RGBA, ByVal src_x As Integer, ByVal src_y As Integer, ByVal dest_width As Integer, Optional ByVal dest_height As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal Angle As Single)
     

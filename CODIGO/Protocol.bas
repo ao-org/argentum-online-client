@@ -2859,24 +2859,16 @@ Private Sub HandleChatOverHead()
             chat = NpcData(text).desc
             copiar = False
                         
-            If npcs_en_render And MostrandoTutorial <= 0 Then
+            If npcs_en_render And tutorial_index <= 0 Then
                 Dim icon As Long
                 icon = HeadData(NpcData(Text).Head).Head(3).GrhIndex
                 
                 'Si icon es 0 quiere decir que no tiene cabeza, por ende renderizo body
                 If icon = 0 Then
-                    icon = BodyData(NpcData(Text).Body).Walk(3).GrhIndex
-                    grh_width = 50
-                    grh_height = 80
-                    cartel_grh_pos_x = 20
-                    cartel_grh_pos_y = 500
-                    Call mostrarCartel(Split(NpcData(Text).name, " <")(0), NpcData(Text).desc, icon, 100 + 10 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535)
+                    icon = GrhData(BodyData(NpcData(Text).Body).Walk(3).GrhIndex).Frames(1)
+                    Call mostrarCartel(Split(NpcData(Text).name, " <")(0), NpcData(Text).desc, icon, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, 50, 80)
                 Else
-                    grh_width = 128
-                    grh_height = 128
-                    cartel_grh_pos_x = -20
-                    cartel_grh_pos_y = 439
-                    Call mostrarCartel(Split(NpcData(Text).name, " <")(0), NpcData(Text).desc, icon, 100 + 10 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535)
+                    Call mostrarCartel(Split(NpcData(Text).name, " <")(0), NpcData(Text).desc, icon, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, -20, 439, 128, 128)
                 End If
                 
             End If

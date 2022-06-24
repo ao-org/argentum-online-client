@@ -195,6 +195,22 @@ Public Enum eTipoUsuario
 End Enum
 
 
+Public Type tMascota
+    posX As Double
+    posY As Double
+    delta As Double
+    Body(1 To 8) As grh
+    Heading As Long
+    last_time As Double
+    dialog As String
+    dialog_life As Single
+    fX As grh
+    Color(3) As RGBA
+    visible As Boolean
+End Type
+
+Public mascota As tMascota
+
 'Apariencia del personaje
 Public Type Char
     Navegando As Boolean

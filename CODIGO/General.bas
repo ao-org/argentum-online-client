@@ -691,35 +691,12 @@ Sub SetConnected()
     engine.FadeInAlpha = 255
     isLogged = True
     
-    If MapDat.Seguro = 0 Then
-        If MostrarTutorial And MostrandoTutorial <= 0 And isLogged Then
-            If tutorial(2).Activo = 1 Then
-                tutorial(2).Mostrando = True
-                cartel_fadestatus = 1
-                cartel_fade = 1
-                tutorial_texto_actual = 1
-                grh_width = 64
-                grh_height = 64
-                cartel_grh_pos_x = 640
-                cartel_grh_pos_y = 530
-                'TUTORIAL MAPA INSEGURO
-                Call mostrarCartel(tutorial(2).titulo, tutorial(2).textos(1), tutorial(2).grh, -1, &H164B8A, , , False, 100, 479, 100, 535)
-            End If
-        End If
-    End If
-    
+  
     If newUser Then
-         If MostrarTutorial And MostrandoTutorial <= 0 Then
-            If tutorial(3).Activo = 1 Then
-                tutorial(3).Mostrando = True
-                cartel_fadestatus = 1
-                cartel_fade = 1
-                tutorial_texto_actual = 1
-                grh_width = 50
-                grh_height = 100
-                cartel_grh_pos_x = 640
-                cartel_grh_pos_y = 490
-                Call mostrarCartel(tutorial(3).titulo, tutorial(3).textos(1), tutorial(3).grh, -1, &H164B8A, , , False, 100, 479, 100, 535)
+         If MostrarTutorial And tutorial_index <= 0 Then
+            If tutorial(e_tutorialIndex.TUTORIAL_NUEVO_USER).Activo = 1 Then
+                tutorial_index = e_tutorialIndex.TUTORIAL_NUEVO_USER
+                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 490, 50, 100)
             End If
         End If
     End If
@@ -1217,7 +1194,9 @@ Sub Main()
         
     'Cargar fuentes
     Call LoadFonts
-
+    
+    'Carga mascota de tutorial
+    Call initMascotaTutorial
     
     FrameTime = GetTickCount()
     
@@ -1226,6 +1205,9 @@ Sub Main()
     EntradaY = 10
     EntradaX = 10
     UpdateLights = False
+    'Mascotas
+    LastOffset2X = 0
+    LastOffset2Y = 0
     
     Call SwitchMap(UserMap)
     

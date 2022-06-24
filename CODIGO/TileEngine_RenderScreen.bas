@@ -302,6 +302,9 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 
                 If .charindex <> 0 Then
                     If charlist(.charindex).active = 1 Then
+                        If mascota.visible And .charindex = UserCharIndex Then
+                          '  Call Mascota_Render(.charindex, PixelOffsetX, PixelOffsetY)
+                        End If
                         Call Char_Render(.charindex, ScreenX, ScreenY, x, y)
                     End If
                 End If
@@ -550,7 +553,9 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     End If
     
        
-       
+    If mascota.dialog <> "" And mascota.visible Then
+        Call Engine_Text_Render(mascota.dialog, mascota.posX + 14 - CInt(Engine_Text_Width(mascota.dialog, True) / 2) + 150, mascota.posY - Engine_Text_Height(mascota.dialog, True) - 25 + 150, mascota_text_color(), 1, True, , mascota.Color(0).A)
+    End If
         
     
     
@@ -764,7 +769,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         
     End If
     
-    Call RenderScreen_Cartel
+    If cartel_visible Then Call RenderScreen_Cartel
     Exit Sub
 
 RenderScreen_Err:

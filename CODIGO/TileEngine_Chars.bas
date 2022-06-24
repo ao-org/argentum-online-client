@@ -181,7 +181,7 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
         ReDim .DialogEffects(0)
         
         .TimeCreated = FrameTime - RandomNumber(1, 10000)
-      
+        mascota.last_time = 0
     End With
     
     'Plot on map

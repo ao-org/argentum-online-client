@@ -1336,7 +1336,6 @@ Public Type t_tutorial
     activo As Byte
     titulo As String
     textos() As String
-    Mostrando As Boolean
 End Type
 
 Public tutorial() As t_tutorial
