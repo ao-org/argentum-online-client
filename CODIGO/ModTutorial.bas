@@ -35,6 +35,7 @@ Public grh_height  As Long
 Public cartel_grh_pos_x  As Long
 Public cartel_grh_pos_y As Long
 
+Public tutorial_index As Integer
 
 Public Const GRH_CARTEL_FONDO As Long = 22728
 
