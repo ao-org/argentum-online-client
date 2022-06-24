@@ -240,6 +240,7 @@ Private Enum ServerPacketID
     PosUpdateUserChar
     PosUpdateChar
     PlayWaveStep
+    ShopPjsInit
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -564,7 +565,8 @@ Public Enum ClientPacketID
     SeguirMouse
     SendPosSeguimiento
     NotifyInventarioHechizos
-    'PublicarPersonajeMAO
+    PublicarPersonajeMAO
+    
     #If PYMMO = 0 Then
     CreateAccount
     LoginAccount
@@ -961,8 +963,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandlePrivilegios
         Case ServerPacketID.ShopInit
             Call HandleShopInit
-        'Case ServerPacketID.ShopPjsInit
-           ' Call HandleShopPjsInit
+        Case ServerPacketID.ShopPjsInit
+            Call HandleShopPjsInit
         Case ServerPacketID.UpdateShopClienteCredits
             Call HandleUpdateShopClienteCredits
         Case ServerPacketID.SensuiRetrasado

@@ -6673,11 +6673,11 @@ End Sub
 
 Public Sub writePublicarPersonajeMAO(ByVal valor As Long)
      On Error GoTo writePublicarPersonajeMAO_Err
-        '</EhHeader>
-100     'Call Writer.WriteInt16(ClientPacketID.PublicarPersonajeMAO)
-        'Call Writer.WriteInt32(valor)
-102     'Call modNetwork.Send(Writer)
-        '<EhFooter>
+        
+100     Call Writer.WriteInt16(ClientPacketID.PublicarPersonajeMAO)
+        Call Writer.WriteInt32(valor)
+102     Call modNetwork.Send(Writer)
+        
         Exit Sub
 
 writePublicarPersonajeMAO_Err:
