@@ -1161,33 +1161,13 @@ Sub Main()
         End If
 
     End If
-    
-    'Agrego conexiones disponibles
-#If PYMMO = 1 Then
-    servers_login_connections(1) = "45.235.99.71:4004"
-    servers_login_connections(2) = "138.99.6.141:4007"
-    
-    Dim ip As String
-    
-    
-    ip = randomIp()
-    '45.235.99.71:4004
-    IPServers(1) = ip & ":7667:Minehost:" & get_logging_server()
-    
-    Debug.Print IPServers(1)
-    #If DEBUGGING = 1 Then
-        IPServers(2) = "45.235.99.71:11813:MinehostStaging:45.235.98.31:11814"
-        IPServers(3) = "127.0.0.1:7667:Localhost:192.168.0.141:4004"
-        IPServers(4) = "201.212.30.19:7667:Martin:201.212.30.19:4004"
+    #If PYMMO = 1 Then
+        servers_login_connections(1) = "45.235.99.71:4004"
+        servers_login_connections(2) = "138.99.6.141:4007"
     #End If
-
     Call ComprobarEstado
     Call CargarLst
-    
-#ElseIf PYMMO = 0 Then
-    IPdelServidor = "127.0.0.1"
-    PuertoDelServidor = 7667
-#End If
+
 
     Call InicializarNombres
     
@@ -1722,31 +1702,6 @@ General_Field_Count_Err:
     
 End Function
 
-Public Sub InitServersList()
-    
-    On Error GoTo InitServersList_Err
-    
-    ReDim ServersLst(1 To UBound(IPServers)) As tServerInfo
-
-    Dim i As Integer
-    For i = 1 To UBound(IPServers)
-        ServersLst(i).IP = General_Field_Read(1, IPServers(i), ":")
-        ServersLst(i).puerto = Val(General_Field_Read(2, IPServers(i), ":"))
-        ServersLst(i).desc = General_Field_Read(3, IPServers(i), ":")
-        ServersLst(i).IpLogin = General_Field_Read(4, IPServers(i), ":")
-        ServersLst(i).puertoLogin = General_Field_Read(5, IPServers(i), ":")
-    Next i
-
-    CurServer = 1
-
-    
-    Exit Sub
-
-InitServersList_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Mod_General.InitServersList", Erl)
-    Resume Next
-    
-End Sub
 
 Public Function General_Get_Elapsed_Time() As Single
     

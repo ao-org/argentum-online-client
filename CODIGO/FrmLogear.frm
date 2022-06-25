@@ -19,6 +19,30 @@ Begin VB.Form FrmLogear
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
+   Begin VB.TextBox txtPort 
+      BackColor       =   &H80000001&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H80000004&
+      Height          =   285
+      Left            =   3600
+      TabIndex        =   4
+      Text            =   "7667"
+      Top             =   2640
+      Visible         =   0   'False
+      Width           =   1455
+   End
+   Begin VB.TextBox txtIp 
+      BackColor       =   &H80000001&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H80000004&
+      Height          =   285
+      Left            =   1320
+      TabIndex        =   3
+      Text            =   "127.0.0.1"
+      Top             =   2640
+      Visible         =   0   'False
+      Width           =   1455
+   End
    Begin VB.TextBox PasswordTxt 
       Appearance      =   0  'Flat
       BackColor       =   &H00031413&
@@ -67,29 +91,29 @@ Begin VB.Form FrmLogear
       Top             =   1580
       Width           =   1840
    End
-   Begin VB.ComboBox lstServers 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   5.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   240
-      ItemData        =   "FrmLogear.frx":0000
-      Left            =   720
-      List            =   "FrmLogear.frx":0002
-      Style           =   2  'Dropdown List
-      TabIndex        =   3
-      TabStop         =   0   'False
-      Top             =   2520
+   Begin VB.Label lblPort 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Puerto"
+      ForeColor       =   &H8000000B&
+      Height          =   195
+      Left            =   2880
+      TabIndex        =   6
+      Top             =   2640
       Visible         =   0   'False
-      Width           =   1380
+      Width           =   465
+   End
+   Begin VB.Label lblIp 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Servidor:"
+      ForeColor       =   &H8000000B&
+      Height          =   195
+      Left            =   600
+      TabIndex        =   5
+      Top             =   2640
+      Visible         =   0   'False
+      Width           =   630
    End
    Begin VB.Label refuerzolbl 
       BackStyle       =   0  'Transparent
@@ -288,11 +312,14 @@ Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanaconectar.bmp")
     
     #If DEBUGGING = 1 Then
-        lstServers.Visible = True
+        txtPort.visible = True
+        txtIp.visible = True
+        lblPort.visible = True
+        lblIp.visible = True
     #End If
     
     Me.PasswordTxt.Visible = True
-
+    Call CargarLst
     Call LoadButtons
     
     Exit Sub
@@ -319,8 +346,6 @@ Private Sub cmdSalir_Click()
     Call CloseClient
 
 End Sub
-#If PYMMO = 0 Then
-
 Private Sub cmdIngresar_Click()
     
     On Error GoTo cmdIngresar_Click_Err
@@ -340,50 +365,31 @@ Private Sub cmdIngresar_Click()
             ' Reseteamos los datos de cuenta guardados
             Call GuardarCuenta(vbNullString, vbNullString)
         End If
-
-        If CheckUserDataLoged() = True Then
-            Call LoginOrConnect(E_MODO.IngresandoConCuenta)
-        End If
-
-        Call SaveRAOInit
-
-    End If
-
-    Exit Sub
-
-cmdIngresar_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "FrmLogear.cmdIngresar_Click", Erl)
-    Resume Next
-    
-End Sub
-#End If
-#If PYMMO = 1 Then
-Private Sub cmdIngresar_Click()
-    
-    On Error GoTo cmdIngresar_Click_Err
-    
-    Call FormParser.Parse_Form(Me, E_WAIT)
-
-    If IntervaloPermiteConectar Then
-        CuentaEmail = NameTxt.Text
-        CuentaPassword = PasswordTxt.Text
-
-        If chkRecordar.Tag = "1" Then
-            CuentaRecordada.nombre = CuentaEmail
-            CuentaRecordada.Password = CuentaPassword
-            
-            Call GuardarCuenta(CuentaEmail, CuentaPassword)
-        Else
-            ' Reseteamos los datos de cuenta guardados
-            Call GuardarCuenta(vbNullString, vbNullString)
-        End If
+        
+        ServerIndex = txtIp.Text & ":" & txtPort.Text
+        IPdelServidor = txtIp.Text
+        PuertoDelServidor = txtPort.Text
+        
+        Dim Arch As String: Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+        Call WriteVar(Arch, "INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
+        
+        #If PYMMO = 1 Then
+            #If DEBUGGING = 0 Then
+                Dim serverLogin() As String
+                serverLogin = Split(get_logging_server, ":")
+                IPdelServidorLogin = server(0)
+                PuertoDelServidorLogin = server(1)
+            #Else
+                IPdelServidorLogin = txtIp.Text
+                PuertoDelServidorLogin = "4004"
+            #End If
+        #End If
 
         If CheckUserDataLoged() = True Then
             ModAuth.LoginOperation = e_operation.Authenticate
             Call LoginOrConnect(E_MODO.IngresandoConCuenta)
         End If
 
-        ServerIndex = lstServers.ListIndex
         
         Call SaveRAOInit
 
@@ -396,7 +402,6 @@ cmdIngresar_Click_Err:
     Resume Next
     
 End Sub
-#End If
 
 Private Sub chkRecordar_Click()
     
@@ -421,22 +426,6 @@ chkRecordar_Click_Err:
     
 End Sub
 
-Private Sub lstServers_Click()
-    
-    On Error GoTo lstServers_Click_Err
-    
-    IPdelServidor = ServersLst(lstServers.ListIndex + 1).IP
-    PuertoDelServidor = ServersLst(lstServers.ListIndex + 1).puerto
-    IPdelServidorLogin = ServersLst(lstServers.ListIndex + 1).IpLogin
-    PuertoDelServidorLogin = ServersLst(lstServers.ListIndex + 1).puertoLogin
-    
-    Exit Sub
-
-lstServers_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmLogear.lstServers_Click", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
     

@@ -30,7 +30,7 @@ Type tBindedKey
 
 End Type
 
-Public ServerIndex      As Integer
+Public ServerIndex      As String
 
 Public NUMBINDS         As Integer
 

@@ -47,6 +47,18 @@ Begin VB.Form frmConnect
       _ExtentY        =   1005
       _Version        =   393216
    End
+   Begin VB.Timer Timer2 
+      Enabled         =   0   'False
+      Interval        =   10
+      Left            =   0
+      Top             =   0
+   End
+   Begin VB.Timer Timer1 
+      Enabled         =   0   'False
+      Interval        =   1
+      Left            =   14640
+      Top             =   240
+   End
    Begin VB.PictureBox render 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -93,18 +105,6 @@ Begin VB.Form frmConnect
          Width           =   2130
       End
    End
-   Begin VB.Timer Timer2 
-      Enabled         =   0   'False
-      Interval        =   10
-      Left            =   0
-      Top             =   0
-   End
-   Begin VB.Timer Timer1 
-      Enabled         =   0   'False
-      Interval        =   1
-      Left            =   14640
-      Top             =   240
-   End
 End
 Attribute VB_Name = "frmConnect"
 Attribute VB_GlobalNameSpace = False
@@ -148,6 +148,7 @@ End Sub
 Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     Call TextoAlAsistente("Servidor Offline, intente nuevamente.")
     Dim i As Long
+    
     
     If Split(servers_login_connections(1), ":")(0) = IPdelServidorLogin Then
         IPdelServidorLogin = Split(servers_login_connections(2), ":")(0)

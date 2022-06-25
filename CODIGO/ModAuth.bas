@@ -859,12 +859,7 @@ Public Sub PCListRequest()
     
 End Sub
 Public Sub connectToLoginServer()
- #If DEBUGGING = 0 Then
-    Dim s As String
-    s = get_logging_server()
-    IPdelServidorLogin = Split(s, ":")(0)
-    PuertoDelServidorLogin = Split(s, ":")(1)
- #End If
+
     frmConnect.AuthSocket.Close
     frmConnect.AuthSocket.RemoteHost = IPdelServidorLogin
     frmConnect.AuthSocket.RemotePort = PuertoDelServidorLogin

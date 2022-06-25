@@ -1375,7 +1375,7 @@ Sub CargarOpciones()
     NumerosCompletosInventario = Val(ConfigFile.GetValue("OPCIONES", "NumerosCompletosInventario"))
     
     'Init
-    ServerIndex = Val(ConfigFile.GetValue("INIT", "ServerIndex"))
+    ServerIndex = ConfigFile.GetValue("INIT", "ServerIndex")
 
     SensibilidadMouse = ConfigFile.GetValue("OPCIONES", "SensibilidadMouse")
     
@@ -1407,7 +1407,7 @@ Sub GuardarOpciones()
 
     Dim Arch As String: Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
     
-    Call WriteVar(Arch, "INIT", "ServerIndex", Int(ServerIndex))
+    Call WriteVar(Arch, "INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
     
     Call WriteVar(Arch, "AUDIO", "Musica", Musica)
     Call WriteVar(Arch, "AUDIO", "Fx", fX)
@@ -1980,22 +1980,22 @@ Public Sub CargarLst()
     
     On Error GoTo CargarLst_Err
     
-
-    Dim i As Integer
-
-    FrmLogear.lstServers.Clear
-
-    For i = 1 To UBound(ServersLst)
-        FrmLogear.lstServers.AddItem ServersLst(i).desc
-    Next i
+    Dim server() As String
     
-#If DEBUGGING = 1 Then
-    FrmLogear.lstServers.ListIndex = Val(ServerIndex)
-#Else
-    FrmLogear.lstServers.ListIndex = 0
-#End If
-
-    
+    server = Split(ServerIndex, ":")
+        
+    If UBound(server) <> 1 Then
+        #If DEBUGGING Then
+            FrmLogear.txtIp.Text = "127.0.0.1"
+        #Else
+            FrmLogear.txtIp.Text = randomIp()
+        #End If
+        FrmLogear.txtPort.Text = "7667"
+    Else
+        FrmLogear.txtIp.Text = server(0)
+        FrmLogear.txtPort.Text = server(1)
+    End If
+        
     Exit Sub
 
 CargarLst_Err:
@@ -2054,8 +2054,6 @@ Public Sub ComprobarEstado()
     
     On Error GoTo ComprobarEstado_Err
     
-
-    Call InitServersList
 
     Call CargarLst
 
