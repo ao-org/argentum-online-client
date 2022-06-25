@@ -8800,7 +8800,7 @@ errhandler:
 End Sub
 
 Public Sub HandleShopPjsInit()
-   ' frmShopPjsAO20.Show , frmMain
+    frmShopPjsAO20.Show , frmMain
 End Sub
 Public Sub HandleShopInit()
     
