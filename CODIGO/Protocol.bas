@@ -1270,7 +1270,7 @@ Public Sub HandleDisconnect()
     
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
-    frmMain.hlst.Visible = False
+    frmMain.picHechiz.Visible = False
     
     frmMain.UpdateLight.Enabled = False
     frmMain.UpdateDaytime.Enabled = False
@@ -1282,7 +1282,7 @@ Public Sub HandleDisconnect()
     OpcionMenu = 0
 
     frmMain.picInv.Visible = True
-    frmMain.hlst.Visible = False
+    frmMain.picHechiz.Visible = False
 
     frmMain.cmdlanzar.Visible = False
     'frmMain.lblrefuerzolanzar.Visible = False
@@ -4866,14 +4866,21 @@ Private Sub HandleGetInventarioHechizos()
     On Error GoTo GetInventarioHechizos_Err
     
     Dim inventario_o_hechizos As Byte
+    Dim hechiSel As Byte
+    Dim scrollSel As Byte
     
     inventario_o_hechizos = Reader.ReadInt8()
+    hechiSel = Reader.ReadInt8()
+    scrollSel = Reader.ReadInt8()
     'Clickeó en inventario
     If inventario_o_hechizos = 1 Then
         Call frmMain.inventoryClick
     'Clickeó en hechizos
     ElseIf inventario_o_hechizos = 2 Then
         Call frmMain.hechizosClick
+        hlst.Scroll = scrollSel
+        hlst.ListIndex = hechiSel
+        
     End If
     Exit Sub
     
@@ -5050,7 +5057,8 @@ Private Sub HandleWorkRequestTarget()
     casteaArea = Reader.ReadBool()
     RadioHechizoArea = Reader.ReadInt8()
     'RadioHechizoArea = RadioHechizoArea / 2
-
+    
+    If EstaSiguiendo Then Exit Sub
     If UsingSkillREcibido = 0 Then
         frmMain.MousePointer = 0
         Call FormParser.Parse_Form(frmMain, E_NORMAL)
@@ -5324,19 +5332,19 @@ Private Sub HandleChangeSpellSlot()
 
     If Index < 254 Then
     
-        If Slot <= frmMain.hlst.ListCount Then
-            frmMain.hlst.List(Slot - 1) = HechizoData(Index).nombre
+        If Slot <= hlst.ListCount Then
+            hlst.List(Slot - 1) = HechizoData(Index).nombre
         Else
-            Call frmMain.hlst.AddItem(HechizoData(Index).nombre)
+            Call hlst.AddItem(HechizoData(Index).nombre)
 
         End If
 
     Else
     
-        If Slot <= frmMain.hlst.ListCount Then
-            frmMain.hlst.List(Slot - 1) = "(Vacio)"
+        If Slot <= hlst.ListCount Then
+            hlst.List(Slot - 1) = "(Vacio)"
         Else
-            Call frmMain.hlst.AddItem("(Vacio)")
+            Call hlst.AddItem("(Vacio)")
 
         End If
     
@@ -6958,7 +6966,7 @@ Private Sub HandleParalizeOK()
     'Remove packet ID
     
     On Error GoTo HandleParalizeOK_Err
-    
+    If EstaSiguiendo Then Exit Sub
     UserParalizado = Not UserParalizado
     
     Exit Sub
@@ -6976,9 +6984,8 @@ Private Sub HandleInmovilizadoOK()
     '
     '***************************************************
     'Remove packet ID
-    
     On Error GoTo HandleInmovilizadoOK_Err
-    
+    If EstaSiguiendo Then Exit Sub
     UserInmovilizado = Not UserInmovilizado
     
     Exit Sub

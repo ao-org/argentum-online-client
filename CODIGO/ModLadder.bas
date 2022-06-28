@@ -1367,6 +1367,8 @@ Sub CargarOpciones()
     MostrarIconosMeteorologicos = ConfigFile.GetValue("OPCIONES", "MostrarIconosMeteorologicos")
     CopiarDialogoAConsola = ConfigFile.GetValue("OPCIONES", "CopiarDialogoAConsola")
     PermitirMoverse = ConfigFile.GetValue("OPCIONES", "PermitirMoverse")
+    ScrollArrastrar = Val(ConfigFile.GetValue("OPCIONES", "ScrollArrastrar"))
+    
     MoverVentana = ConfigFile.GetValue("OPCIONES", "MoverVentana")
     FPSFLAG = ConfigFile.GetValue("OPCIONES", "FPSFLAG")
     AlphaMacro = ConfigFile.GetValue("OPCIONES", "AlphaMacro")
@@ -1418,6 +1420,8 @@ Sub GuardarOpciones()
     
     Call WriteVar(Arch, "OPCIONES", "MoverVentana", MoverVentana)
     Call WriteVar(Arch, "OPCIONES", "PermitirMoverse", PermitirMoverse)
+    Call WriteVar(Arch, "OPCIONES", "ScrollArrastrar", ScrollArrastrar)
+    
     Call WriteVar(Arch, "OPCIONES", "CopiarDialogoAConsola", CopiarDialogoAConsola)
     Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
     Call WriteVar(Arch, "OPCIONES", "AlphaMacro", AlphaMacro)

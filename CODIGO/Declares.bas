@@ -265,6 +265,8 @@ Public SensibilidadMouseOriginal   As Byte
 
 Public CopiarDialogoAConsola       As Byte
 
+Public ScrollArrastrar             As Byte
+
 Public InfoItemsEnRender           As Boolean
 
 Public Musica                      As Byte

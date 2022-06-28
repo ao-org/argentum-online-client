@@ -1598,7 +1598,7 @@ Public Sub CargarIndicesOBJ()
         
 
         If NpcData(Npc).Name = "" Then
-            NpcData(Npc).Name = "Vacío"
+            NpcData(Npc).name = "Vacío"
 
         End If
 
@@ -2945,28 +2945,29 @@ Sub LoadFonts()
 
         Call SelLineSpacing(frmMain.RecTxt, 5, 22)
     End If
-    
-    Dim arr() As Byte
-    
-    ReDim arr(1 To 16) As Byte
-    
-    arr(2) = 1
-    arr(1) = 62
-    arr(4) = 7
-    arr(3) = 2
-    arr(6) = 56
-    arr(5) = 22
-    arr(8) = 9
-    arr(7) = 21
-    arr(10) = 52
-    arr(9) = 23
-    arr(12) = 28
-    arr(11) = 19
-    arr(14) = 38
-    arr(13) = 22
-    arr(16) = 11
-    arr(15) = 64
-    MapInfoEspeciales = estaInmovilizado(arr)
+    '#If PYMMO = 1 Then
+        Dim arr() As Byte
+        
+        ReDim arr(1 To 16) As Byte
+        
+        arr(2) = 1
+        arr(1) = 62
+        arr(4) = 7
+        arr(3) = 2
+        arr(6) = 56
+        arr(5) = 22
+        arr(8) = 9
+        arr(7) = 21
+        arr(10) = 52
+        arr(9) = 23
+        arr(12) = 28
+        arr(11) = 19
+        arr(14) = 38
+        arr(13) = 22
+        arr(16) = 11
+        arr(15) = 64
+        MapInfoEspeciales = estaInmovilizado(arr)
+    '#End If
     
     #If DEBUGGING = 1 Then
         Debug.Print MapInfoEspeciales

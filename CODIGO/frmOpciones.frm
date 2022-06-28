@@ -141,34 +141,41 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Width           =   7560
       Begin VB.ComboBox cbTutorial 
+         BackColor       =   &H80000007&
+         ForeColor       =   &H8000000B&
          Height          =   315
          ItemData        =   "frmOpciones.frx":0152
-         Left            =   4800
+         Left            =   1980
          List            =   "frmOpciones.frx":015C
          Style           =   2  'Dropdown List
-         TabIndex        =   25
-         Top             =   3960
+         TabIndex        =   23
+         Top             =   4440
          Width           =   1695
       End
       Begin VB.ComboBox cbRenderNpcs 
+         BackColor       =   &H80000007&
+         ForeColor       =   &H8000000B&
          Height          =   315
          ItemData        =   "frmOpciones.frx":0176
-         Left            =   1200
+         Left            =   1980
          List            =   "frmOpciones.frx":0180
          Style           =   2  'Dropdown List
-         TabIndex        =   23
-         Top             =   4290
+         TabIndex        =   22
+         Top             =   4080
          Width           =   1695
       End
       Begin VB.ComboBox cbLenguaje 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000007&
+         ForeColor       =   &H80000005&
          Height          =   315
          ItemData        =   "frmOpciones.frx":0198
-         Left            =   1200
+         Left            =   3960
          List            =   "frmOpciones.frx":01A2
          Style           =   2  'Dropdown List
-         TabIndex        =   21
-         Top             =   3930
-         Width           =   1695
+         TabIndex        =   20
+         Top             =   2880
+         Width           =   3255
       End
       Begin VB.HScrollBar scrSens 
          Height          =   315
@@ -182,6 +189,8 @@ Begin VB.Form frmOpciones
          Width           =   3375
       End
       Begin VB.ComboBox cbBloqueoHechizos 
+         BackColor       =   &H80000007&
+         ForeColor       =   &H80000005&
          Height          =   315
          Left            =   3960
          Style           =   2  'Dropdown List
@@ -189,34 +198,11 @@ Begin VB.Form frmOpciones
          Top             =   1080
          Width           =   3375
       End
-      Begin VB.Label Label2 
-         Caption         =   "Tutorial"
-         Height          =   495
-         Left            =   4800
-         TabIndex        =   26
-         Top             =   3720
-         Width           =   1335
-      End
-      Begin VB.Label Label3 
-         BackStyle       =   0  'Transparent
-         Caption         =   "Texto NPCs"
-         ForeColor       =   &H8000000B&
-         Height          =   375
-         Left            =   240
-         TabIndex        =   24
-         Top             =   4320
-         Width           =   1095
-      End
-      Begin VB.Label lblIdioma 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Idioma"
-         ForeColor       =   &H8000000B&
-         Height          =   195
-         Left            =   300
-         TabIndex        =   20
-         Top             =   3960
-         Width           =   480
+      Begin VB.Image Check8 
+         Height          =   255
+         Left            =   270
+         Top             =   1455
+         Width           =   255
       End
       Begin VB.Image Check2 
          Height          =   255
@@ -338,7 +324,7 @@ Begin VB.Form frmOpciones
          ItemData        =   "frmOpciones.frx":01B8
          Left            =   240
          List            =   "frmOpciones.frx":01C5
-         TabIndex        =   22
+         TabIndex        =   21
          Top             =   3720
          Width           =   2175
       End
@@ -851,6 +837,25 @@ Check2_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check2_MouseUp", Erl)
     Resume Next
     
+End Sub
+
+Private Sub Check8_Click()
+    On Error GoTo Check8_MouseUp_Err
+    
+    If ScrollArrastrar = 1 Then
+        ScrollArrastrar = 0
+        Check8.Picture = Nothing
+    Else
+        ScrollArrastrar = 1
+        Check8.Picture = LoadInterface("check-amarillo.bmp")
+    End If
+
+    
+    Exit Sub
+
+Check8_MouseUp_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check8_MouseUp", Erl)
+    Resume Next
 End Sub
 
 Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -1443,6 +1448,15 @@ Public Sub Init()
 
     End If
     
+    If ScrollArrastrar = 0 Then
+        Check8.Picture = Nothing
+    Else
+        Check8.Picture = LoadInterface("check-amarillo.bmp")
+
+    End If
+    
+    
+    
     If Musica = 0 Then
         chko(0).Picture = Nothing
     Else
@@ -1573,6 +1587,14 @@ instagram_Click_Err:
     
 End Sub
 
+
+Private Sub Label3_Click()
+
+End Sub
+
+Private Sub lblIdioma_Click()
+
+End Sub
 
 Private Sub num_comp_inv_Click()
     If NumerosCompletosInventario = 0 Then

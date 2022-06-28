@@ -147,6 +147,8 @@ Public Const EM_LINEINDEX = &HBB
 Public Const EM_SETPARAFORMAT = &H447
 Public Const PFM_LINESPACING = &H100&
 
+Public hlst As clsGraphicalList
+
 
 Public Function DirGraficos() As String
     
@@ -650,7 +652,7 @@ Sub SetConnected()
     COLOR_AZUL = RGB(0, 0, 0)
     
     ' establece el borde al listbox
-    Call Establecer_Borde(frmMain.hlst, frmMain, COLOR_AZUL, 0, 0)
+    'Call Establecer_Borde(hlst, frmMain, COLOR_AZUL, 0, 0)
 
     Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
    
@@ -667,7 +669,7 @@ Sub SetConnected()
 
     frmMain.picInv.Visible = True
      
-    frmMain.hlst.Visible = False
+    frmMain.picHechiz.Visible = False
 
     frmMain.cmdlanzar.Visible = False
     frmMain.imgSpellInfo.Visible = False

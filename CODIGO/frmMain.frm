@@ -60,7 +60,7 @@ Begin VB.Form frmMain
       Caption         =   "PRENDER ANTORCHA"
       Height          =   495
       Left            =   11160
-      TabIndex        =   44
+      TabIndex        =   43
       Top             =   1680
       Visible         =   0   'False
       Width           =   1215
@@ -82,7 +82,7 @@ Begin VB.Form frmMain
       Left            =   600
       MaxLength       =   160
       MultiLine       =   -1  'True
-      TabIndex        =   43
+      TabIndex        =   42
       TabStop         =   0   'False
       ToolTipText     =   "Chat"
       Top             =   1800
@@ -161,17 +161,24 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   4875
       Left            =   11520
-      ScaleHeight     =   4875
-      ScaleWidth      =   3705
+      ScaleHeight     =   325
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   247
       TabIndex        =   18
       Top             =   2400
       Width           =   3705
-      Begin VB.ListBox hlst 
+      Begin VB.PictureBox picHechiz 
          Appearance      =   0  'Flat
+         AutoRedraw      =   -1  'True
+         AutoSize        =   -1  'True
          BackColor       =   &H00000000&
+         BorderStyle     =   0  'None
+         CausesValidation=   0   'False
+         ClipControls    =   0   'False
+         DrawStyle       =   3  'Dash-Dot
          BeginProperty Font 
-            Name            =   "Calibri"
-            Size            =   11.25
+            Name            =   "Tahoma"
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -179,15 +186,16 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00FFFFFF&
-         Height          =   3270
-         ItemData        =   "frmMain.frx":57E2
-         Left            =   240
-         List            =   "frmMain.frx":57E4
-         TabIndex        =   19
-         TabStop         =   0   'False
-         Top             =   690
+         Height          =   3405
+         Left            =   225
+         MousePointer    =   99  'Custom
+         ScaleHeight     =   227
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   216
+         TabIndex        =   44
+         Top             =   600
          Visible         =   0   'False
-         Width           =   3195
+         Width           =   3240
       End
       Begin VB.PictureBox picInv 
          Appearance      =   0  'Flat
@@ -210,7 +218,7 @@ Begin VB.Form frmMain
          ScaleHeight     =   256
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   210
-         TabIndex        =   20
+         TabIndex        =   19
          Top             =   740
          Width           =   3150
       End
@@ -260,7 +268,7 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   0
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":57E6
+         MouseIcon       =   "frmMain.frx":57E2
          MousePointer    =   99  'Custom
          Tag             =   "0"
          Top             =   4550
@@ -271,9 +279,9 @@ Begin VB.Form frmMain
          Height          =   285
          Index           =   1
          Left            =   3370
-         MouseIcon       =   "frmMain.frx":5938
+         MouseIcon       =   "frmMain.frx":5934
          MousePointer    =   99  'Custom
-         Picture         =   "frmMain.frx":5A8A
+         Picture         =   "frmMain.frx":5A86
          Tag             =   "0"
          Top             =   4260
          Visible         =   0   'False
@@ -444,7 +452,7 @@ Begin VB.Form frmMain
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmMain.frx":6108
+      TextRTF         =   $"frmMain.frx":6104
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Calibri"
          Size            =   9.75
@@ -500,7 +508,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1680
-         Picture         =   "frmMain.frx":6184
+         Picture         =   "frmMain.frx":6180
          ToolTipText     =   "Seguro de resurrección"
          Top             =   3060
          Visible         =   0   'False
@@ -591,7 +599,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   795
-         TabIndex        =   36
+         TabIndex        =   35
          Top             =   2055
          Width           =   765
       End
@@ -611,7 +619,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   3390
-         TabIndex        =   35
+         TabIndex        =   34
          Top             =   2055
          Width           =   255
       End
@@ -631,7 +639,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   2445
-         TabIndex        =   34
+         TabIndex        =   33
          Top             =   2055
          Width           =   255
       End
@@ -651,7 +659,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   240
          Left            =   1635
-         TabIndex        =   33
+         TabIndex        =   32
          Top             =   1215
          Width           =   945
       End
@@ -671,7 +679,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   3075
-         TabIndex        =   32
+         TabIndex        =   31
          ToolTipText     =   "Aumento de daño mágico"
          Top             =   3150
          Width           =   570
@@ -692,7 +700,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   1935
-         TabIndex        =   31
+         TabIndex        =   30
          ToolTipText     =   "Resistencia mágica"
          Top             =   3150
          Width           =   330
@@ -714,7 +722,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   270
          Left            =   2385
-         TabIndex        =   30
+         TabIndex        =   29
          ToolTipText     =   "Oxígeno acumulado"
          Top             =   570
          Width           =   225
@@ -735,7 +743,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H0080FFFF&
          Height          =   270
          Left            =   480
-         TabIndex        =   29
+         TabIndex        =   28
          ToolTipText     =   "Monedas de oro"
          Top             =   585
          Width           =   690
@@ -756,7 +764,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   270
          Left            =   3585
-         TabIndex        =   28
+         TabIndex        =   27
          ToolTipText     =   "Fuerza"
          Top             =   570
          Width           =   210
@@ -777,7 +785,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   270
          Left            =   2985
-         TabIndex        =   27
+         TabIndex        =   26
          ToolTipText     =   "Agilidad"
          Top             =   570
          Width           =   210
@@ -798,7 +806,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   600
-         TabIndex        =   26
+         TabIndex        =   25
          ToolTipText     =   "Daño físico arma"
          Top             =   2700
          Width           =   480
@@ -819,7 +827,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   1860
-         TabIndex        =   25
+         TabIndex        =   24
          ToolTipText     =   "Defensa escudo"
          Top             =   2700
          Width           =   480
@@ -840,7 +848,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   3120
-         TabIndex        =   24
+         TabIndex        =   23
          ToolTipText     =   "Defensa casco"
          Top             =   2700
          Width           =   480
@@ -861,7 +869,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   600
-         TabIndex        =   23
+         TabIndex        =   22
          ToolTipText     =   "Defensa armadura"
          Top             =   3150
          Width           =   480
@@ -883,7 +891,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   240
          Left            =   1635
-         TabIndex        =   22
+         TabIndex        =   21
          Top             =   1635
          Width           =   945
       End
@@ -896,35 +904,35 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":6F96
+         Picture         =   "frmMain.frx":6F92
          Top             =   1215
          Width           =   3240
       End
       Begin VB.Image MANShp 
          Height          =   240
          Left            =   525
-         Picture         =   "frmMain.frx":985A
+         Picture         =   "frmMain.frx":9856
          Top             =   1635
          Width           =   3240
       End
       Begin VB.Image STAShp 
          Height          =   135
          Left            =   510
-         Picture         =   "frmMain.frx":C11E
+         Picture         =   "frmMain.frx":C11A
          Top             =   2085
          Width           =   1335
       End
       Begin VB.Image AGUAsp 
          Height          =   135
          Left            =   2340
-         Picture         =   "frmMain.frx":CACC
+         Picture         =   "frmMain.frx":CAC8
          Top             =   2085
          Width           =   480
       End
       Begin VB.Image COMIDAsp 
          Height          =   120
          Left            =   3285
-         Picture         =   "frmMain.frx":CE70
+         Picture         =   "frmMain.frx":CE6C
          Top             =   2100
          Width           =   480
       End
@@ -932,7 +940,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   630
-         Picture         =   "frmMain.frx":D1B4
+         Picture         =   "frmMain.frx":D1B0
          ToolTipText     =   "Seguro de clan"
          Top             =   3060
          Visible         =   0   'False
@@ -941,7 +949,7 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   510
          Left            =   105
-         Picture         =   "frmMain.frx":DFC6
+         Picture         =   "frmMain.frx":DFC2
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -951,7 +959,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   510
          Left            =   1155
-         Picture         =   "frmMain.frx":EDD8
+         Picture         =   "frmMain.frx":EDD4
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -1003,7 +1011,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000018&
       Height          =   375
       Left            =   6840
-      TabIndex        =   42
+      TabIndex        =   41
       Top             =   75
       Visible         =   0   'False
       Width           =   1335
@@ -1024,7 +1032,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000018&
       Height          =   375
       Left            =   5400
-      TabIndex        =   41
+      TabIndex        =   40
       Top             =   75
       Visible         =   0   'False
       Width           =   1335
@@ -1045,7 +1053,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000018&
       Height          =   375
       Left            =   3960
-      TabIndex        =   40
+      TabIndex        =   39
       Top             =   75
       Visible         =   0   'False
       Width           =   1335
@@ -1066,7 +1074,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000018&
       Height          =   375
       Left            =   2640
-      TabIndex        =   39
+      TabIndex        =   38
       Top             =   75
       Visible         =   0   'False
       Width           =   1215
@@ -1075,7 +1083,7 @@ Begin VB.Form frmMain
       Caption         =   "Label3"
       Height          =   495
       Left            =   9360
-      TabIndex        =   38
+      TabIndex        =   37
       Top             =   6720
       Width           =   1215
    End
@@ -1086,7 +1094,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   240
       Left            =   11880
-      TabIndex        =   37
+      TabIndex        =   36
       Top             =   0
       Visible         =   0   'False
       Width           =   555
@@ -1107,7 +1115,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   13170
-      TabIndex        =   21
+      TabIndex        =   20
       Top             =   2010
       Width           =   495
    End
@@ -1254,14 +1262,14 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":FBEA
+      Picture         =   "frmMain.frx":FBE6
       Top             =   1812
       Width           =   555
    End
    Begin VB.Image globalIcon 
       Height          =   180
       Left            =   8828
-      Picture         =   "frmMain.frx":1016E
+      Picture         =   "frmMain.frx":1016A
       Top             =   2008
       Width           =   555
    End
@@ -1339,7 +1347,7 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   435
       Left            =   11520
-      Picture         =   "frmMain.frx":106F2
+      Picture         =   "frmMain.frx":106EE
       Top             =   480
       Visible         =   0   'False
       Width           =   525
@@ -1409,7 +1417,7 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   240
       Left            =   11580
-      Picture         =   "frmMain.frx":11372
+      Picture         =   "frmMain.frx":1136E
       Top             =   1545
       Width           =   3540
    End
@@ -2006,15 +2014,7 @@ End Sub
 
 Private Sub hlst_Click()
     
-    TempTick = GetTickCount And &H7FFFFFFF
-    
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.lista Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-    End If
-    
-    iClickTick = TempTick
-    
-    LastMacroButton = tMacroButton.lista
+
 End Sub
 
 Private Sub Image1_Click()
@@ -2153,6 +2153,41 @@ Form_Activate_Err:
     
 End Sub
 
+
+Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+If y < 0 Then y = 0
+If y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
+If x < picHechiz.ScaleWidth - 10 Then
+    hlst.ListIndex = Int(y / hlst.Pixel_Alto) + hlst.Scroll
+    hlst.DownBarrita = 0
+    If Seguido = 1 Then
+        Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
+    End If
+Else
+    hlst.DownBarrita = y - hlst.Scroll * (picHechiz.ScaleHeight - 60) / (hlst.ListCount - hlst.VisibleCount)
+End If
+End Sub
+
+Private Sub picHechiz_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+If Button = 1 Then
+    Dim yy As Integer
+    yy = y
+    If yy < 0 Then yy = 0
+    If yy > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then yy = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
+    If hlst.DownBarrita > 0 Then
+        hlst.Scroll = (y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - 60)
+    Else
+        hlst.ListIndex = Int(yy / hlst.Pixel_Alto) + hlst.Scroll
+        If Seguido = 1 Then
+            Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
+        End If
+        If ScrollArrastrar = 0 Then
+            If (y < yy) Then hlst.Scroll = hlst.Scroll - 1
+            If (y > yy) Then hlst.Scroll = hlst.Scroll + 1
+        End If
+    End If
+End If
+End Sub
 
 Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Not picInv.Visible Then Exit Sub
@@ -2356,38 +2391,6 @@ Private Sub GlobalIcon_Click()
 
 GlobalIcon_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.GlobalIcon_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub hlst_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo hlst_MouseMove_Err
-    
-
-    If cmdlanzar.Tag = "1" Then
-        cmdlanzar.Picture = Nothing
-        cmdlanzar.Tag = "0"
-
-    End If
-
-    If cmdMoverHechi(1).Tag = "1" Then
-        cmdMoverHechi(1).Picture = Nothing
-        cmdMoverHechi(1).Tag = "0"
-
-    End If
-        
-    If cmdMoverHechi(0).Tag = "1" Then
-        cmdMoverHechi(0).Picture = Nothing
-        cmdMoverHechi(0).Tag = "0"
-
-    End If
-
-    
-    Exit Sub
-
-hlst_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.hlst_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -2651,7 +2654,7 @@ Public Sub hechizosClick()
     On Error GoTo hechizosClick_Err
     
 
-    If hlst.Visible Then Exit Sub
+    If picHechiz.Visible Then Exit Sub
     
     TempTick = GetTickCount And &H7FFFFFFF
     
@@ -2667,12 +2670,12 @@ Public Sub hechizosClick()
     
     
     If Seguido = 1 Then
-        Call WriteNotifyInventarioHechizos(2)
+        Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
     End If
     
     picInv.Visible = False
     
-    hlst.Visible = True
+    picHechiz.Visible = True
 
     cmdlanzar.Visible = True
 
@@ -2768,11 +2771,11 @@ Public Sub inventoryClick()
     panel.Picture = LoadInterface("centroinventario.bmp")
     'Call Audio.PlayWave(SND_CLICK)
     picInv.Visible = True
-    hlst.Visible = False
+    picHechiz.Visible = False
     cmdlanzar.Visible = False
     imgSpellInfo.Visible = False
     If Seguido = 1 Then
-        Call WriteNotifyInventarioHechizos(1)
+        Call WriteNotifyInventarioHechizos(1, hlst.ListIndex, hlst.Scroll)
     End If
 
     cmdMoverHechi(0).Visible = False
@@ -4712,6 +4715,9 @@ Private Sub Form_Load()
     MenuNivel = 1
     Me.Caption = "Argentum20" 'hay que poner 20 aniversario
     
+    Set hlst = New clsGraphicalList
+    Call hlst.Initialize(Me.picHechiz, RGB(200, 190, 190))
+    
     LoadButtons
     
     Exit Sub
@@ -4860,50 +4866,8 @@ Form_MouseMove_Err:
     
 End Sub
 
-Private Sub hlst_KeyDown(KeyCode As Integer, Shift As Integer)
-    
-    On Error GoTo hlst_KeyDown_Err
-    
-    KeyCode = 0
 
-    
-    Exit Sub
 
-hlst_KeyDown_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.hlst_KeyDown", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub hlst_KeyPress(KeyAscii As Integer)
-    
-    On Error GoTo hlst_KeyPress_Err
-    
-    KeyAscii = 0
-
-    
-    Exit Sub
-
-hlst_KeyPress_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.hlst_KeyPress", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub hlst_KeyUp(KeyCode As Integer, Shift As Integer)
-    
-    On Error GoTo hlst_KeyUp_Err
-    
-    KeyCode = 0
-
-    
-    Exit Sub
-
-hlst_KeyUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.hlst_KeyUp", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub picInv_DblClick()
     

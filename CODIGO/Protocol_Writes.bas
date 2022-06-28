@@ -2685,12 +2685,14 @@ WriteItemMove_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WriteNotifyInventarioHechizos(ByVal value As Byte)
+Public Sub WriteNotifyInventarioHechizos(ByVal value As Byte, ByVal hechiSel As Byte, ByVal scrollSel As Byte)
         '<EhHeader>
         On Error GoTo NotifyInventarioHechizos_Err
         '</EhHeader>
 100     Call Writer.WriteInt16(ClientPacketID.NotifyInventarioHechizos)
 104     Call Writer.WriteInt8(value)
+        Call Writer.WriteInt8(hechiSel)
+        Call Writer.WriteInt8(scrollSel)
     
 106     Call modNetwork.Send(Writer)
         '<EhFooter>
