@@ -1094,7 +1094,7 @@ Sub Main()
 
     On Error GoTo Main_Err
     Call InitCommonControls
-    
+
  'ReyarB pidió dejar entrar doble cliente (HarThaoS)
     #If DEBUGGING = 0 Then
         
@@ -1225,10 +1225,30 @@ Sub Main()
     Exit Sub
 
 Main_Err:
+    If Err.Number = 339 Then
+        RegisterCom
+    End If
+    
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.Main", Erl)
     Resume Next
     
 End Sub
+
+Public Sub RegisterCom()
+    On Error GoTo Com_Err:
+    If MsgBox("No se encontraron los componenetes com necesarios para iniciar el juego, desea instalarlos?", vbYesNo) = vbYes Then
+            If System.ShellExecuteEx("regcom.bat", App.path) Then
+                Call MsgBox("com files registered")
+            Else
+                Call MsgBox("Failed to register com files")
+            End If
+        End If
+        End
+Com_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.RegisterCom", Erl)
+    Resume Next
+End Sub
+
 Public Function randomIp() As String
     Dim id As Long
     id = RandomNumber(1, 3)

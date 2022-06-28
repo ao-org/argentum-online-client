@@ -122,6 +122,7 @@ Form=CODIGO\frmPasswordReset.frm
 Form=CODIGO\frmShopPjsAO20.frm
 Module=ModTutorial; CODIGO\ModTutorial.bas
 Class=clsGraphicalList; CODIGO\clsGraphicalList.cls
+Module=System; CODIGO\System.bas
 ResFile32="AO20.res"
 IconForm="frmMain"
 Startup="Sub Main"
