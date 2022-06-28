@@ -1163,7 +1163,8 @@ Sub Main()
         End If
 
     End If
-    #If PYMMO = 1 Then
+    #If PYMMO = 1 And DEBUGGING = 0 Then
+        
         servers_login_connections(1) = "45.235.99.71:4004"
         servers_login_connections(2) = "138.99.6.141:4007"
     #End If
