@@ -376,7 +376,7 @@ Private Sub cmdIngresar_Click()
         #If PYMMO = 1 Then
             #If DEBUGGING = 0 Then
                 Dim serverLogin() As String
-                serverLogin = Split(get_logging_server, ":")
+                serverLogin = Split(get_logging_server(), ":")
                 IPdelServidorLogin = server(0)
                 PuertoDelServidorLogin = server(1)
             #Else
