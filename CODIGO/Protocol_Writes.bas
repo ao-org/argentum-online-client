@@ -876,6 +876,7 @@ Public Sub WriteUseItem(ByVal Slot As Byte)
         '</EhHeader>
 100     Call Writer.WriteInt16(ClientPacketID.UseItem)
 102     Call Writer.WriteInt8(Slot)
+        Call Writer.WriteInt8(frmMain.picInv.Visible)
         
         packetCounters.TS_UseItem = packetCounters.TS_UseItem + 1
         Call Writer.WriteInt32(packetCounters.TS_UseItem)
