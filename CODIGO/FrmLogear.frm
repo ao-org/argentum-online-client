@@ -377,8 +377,8 @@ Private Sub cmdIngresar_Click()
             #If DEBUGGING = 0 Then
                 Dim serverLogin() As String
                 serverLogin = Split(get_logging_server(), ":")
-                IPdelServidorLogin = server(0)
-                PuertoDelServidorLogin = server(1)
+                IPdelServidorLogin = serverLogin(0)
+                PuertoDelServidorLogin = serverLogin(1)
             #Else
                 IPdelServidorLogin = txtIp.Text
                 PuertoDelServidorLogin = "4004"
