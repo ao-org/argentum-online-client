@@ -145,11 +145,11 @@ Begin VB.Form frmOpciones
          ForeColor       =   &H8000000B&
          Height          =   315
          ItemData        =   "frmOpciones.frx":0152
-         Left            =   1980
+         Left            =   4800
          List            =   "frmOpciones.frx":015C
          Style           =   2  'Dropdown List
          TabIndex        =   23
-         Top             =   4440
+         Top             =   4290
          Width           =   1695
       End
       Begin VB.ComboBox cbRenderNpcs 
@@ -157,11 +157,11 @@ Begin VB.Form frmOpciones
          ForeColor       =   &H8000000B&
          Height          =   315
          ItemData        =   "frmOpciones.frx":0176
-         Left            =   1980
+         Left            =   1440
          List            =   "frmOpciones.frx":0180
          Style           =   2  'Dropdown List
          TabIndex        =   22
-         Top             =   4080
+         Top             =   4290
          Width           =   1695
       End
       Begin VB.ComboBox cbLenguaje 
@@ -200,7 +200,7 @@ Begin VB.Form frmOpciones
       End
       Begin VB.Image Check8 
          Height          =   255
-         Left            =   270
+         Left            =   4005
          Top             =   1455
          Width           =   255
       End
@@ -1170,7 +1170,7 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call Aplicar_Transparencia(Me.hwnd, 240)
-    Call FormParser.Parse_Form(Me)
+'    Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("configuracion-vacio.bmp")
     
     PanelJugabilidad.Picture = LoadInterface("configuracion-jugabilidad.bmp")
@@ -1419,7 +1419,6 @@ Public Sub Init()
         Check5.Picture = Nothing
     Else
         Check5.Picture = LoadInterface("check-amarillo.bmp")
-
     End If
     
     If InfoItemsEnRender Then
@@ -1432,7 +1431,6 @@ Public Sub Init()
         Check2.Picture = Nothing
     Else
         Check2.Picture = LoadInterface("check-amarillo.bmp")
-
     End If
     
     If PantallaCompleta Then
@@ -1455,8 +1453,6 @@ Public Sub Init()
 
     End If
     
-    
-    
     If Musica = 0 Then
         chko(0).Picture = Nothing
     Else
@@ -1468,7 +1464,6 @@ Public Sub Init()
         chko(2).Picture = Nothing
     Else
         chko(2).Picture = LoadInterface("check-amarillo.bmp")
-
     End If
     
 
@@ -1488,21 +1483,18 @@ Public Sub Init()
         chko(3).Picture = Nothing
     Else
         chko(3).Picture = LoadInterface("check-amarillo.bmp")
-
     End If
-    
+
     If fX = 0 Then
         chko(1).Picture = Nothing
     Else
         chko(1).Picture = LoadInterface("check-amarillo.bmp")
-
     End If
     
     If InvertirSonido = 0 Then
         chkInvertir.Picture = Nothing
     Else
         chkInvertir.Picture = LoadInterface("check-amarillo.bmp")
-
     End If
     
     If FPSFLAG = 0 Then

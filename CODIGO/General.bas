@@ -783,13 +783,14 @@ Sub MoveTo(ByVal Direccion As E_Heading)
             Dim i As Integer
             For i = 1 To LastChar
                 If charlist(i).Invisible Then
-                    If (charlist(UserCharIndex).clan_nivel < 6 Or charlist(i).clan_index = 0 Or charlist(i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
+                    If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < 6 Or charlist(i).clan_index = 0 Or charlist(i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
                         If distance(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist(i).FxCount = 0 And charlist(i).particle_count = 0 Then
                             MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
                         End If
                     End If
                 End If
             Next i
+
             Call Char_Move_by_Head(UserCharIndex, Direccion)
             Call MoveScreen(Direccion)
             Call checkTutorial
