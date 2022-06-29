@@ -1341,4 +1341,4 @@ End Type
 
 Public tutorial() As t_tutorial
 
-Public Const DISTANCIA_ENVIO_DATOS As Byte = 2
+Public Const DISTANCIA_ENVIO_DATOS As Byte = 3
