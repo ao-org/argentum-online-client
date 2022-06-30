@@ -3676,8 +3676,7 @@ Private Sub HandleCharacterCreate()
     Dim group_index   As Integer
     
     charindex = Reader.ReadInt16()
-    Debug.Print charlist(charindex).nombre, charindex
-  
+
     Body = Reader.ReadInt16()
     Head = Reader.ReadInt16()
     Heading = Reader.ReadInt8()

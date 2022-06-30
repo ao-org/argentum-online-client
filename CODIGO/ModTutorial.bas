@@ -178,7 +178,6 @@ Public Sub RenderScreen_Cartel()
     If cartel_fadestatus > 0 Then
         
         If cartel_fadestatus = 2 And cartel_duration > 0 Then
-            Debug.Print cartel_duration
             cartel_duration = cartel_duration - (timerTicksPerFrame * 40)
             If cartel_duration < 0 Then cartel_duration = 0
         End If

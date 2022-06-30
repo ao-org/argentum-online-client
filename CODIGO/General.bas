@@ -1103,7 +1103,6 @@ Sub Main()
         SetDllDirectory App.Path
         Dim d As Long
         d = svb_init_steam(1956740)
-        Debug.Print "init steam ret = " & d
         If Not RunningInVB Then
  
             If FindPreviousInstance Then
@@ -2132,8 +2131,6 @@ Public Sub deleteCharIndexs()
     Dim i As Long
     For i = 1 To LastChar
         If charlist(i).esNpc = False And i <> UserCharIndex Then
-            If Len(charlist(i).nombre) > 0 Then Debug.Print "BORRO:", charlist(i).nombre
-            
             Call EraseChar(i)
         End If
     Next i
