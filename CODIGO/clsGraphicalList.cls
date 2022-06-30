@@ -24,7 +24,11 @@ Private p_Pixel_Alto As Integer
 Private p_Scroll As Integer
 Private p_OldY As Integer
 Private p_DownBarrita As Integer
+Private p_ShowBarrita As Boolean
 Public VisibleCount As Integer
+Public BarraHeight As Integer
+Public BarraWidth As Integer
+
 
 Private Sub Class_Initialize()
 p_Visible = True
@@ -36,6 +40,8 @@ Public Sub Initialize(ByRef LPic As PictureBox, ByVal ForeColor As Long)
     
     p_ForeColor = ForeColor
     Pixel_Alto = 15
+    BarraHeight = 60
+    BarraWidth = 10
     
     ListPic.ForeColor = ForeColor
     ListPic.Cls
@@ -80,6 +86,7 @@ Public Property Get DownBarrita() As Integer
 End Property
 Public Property Let DownBarrita(ByVal Valor As Integer)
     p_DownBarrita = Valor
+    Dibujar
 End Property
 
 Public Property Get Pixel_Alto() As Integer
@@ -93,9 +100,19 @@ End Property
 Public Property Get Scroll() As Integer
     Scroll = p_Scroll
 End Property
+
+Public Property Get ShowBarrita() As Boolean
+    ShowBarrita = p_ShowBarrita
+End Property
+Public Property Let ShowBarrita(ByVal Valor As Boolean)
+    If p_ShowBarrita <> Valor Then
+        p_ShowBarrita = Valor
+        Dibujar
+    End If
+End Property
 Public Property Let Scroll(ByVal Valor As Integer)
-    If Valor < 0 Then Valor = 0
     If Valor > p_ListCount - ListPic.ScaleHeight / p_Pixel_Alto Then Valor = p_ListCount - VisibleCount
+    If Valor < 0 Then Valor = 0
     p_Scroll = Valor
     Dibujar
 End Property
@@ -127,8 +144,8 @@ For i = p_Scroll To p_Scroll + VisibleCount
         PosY = (i - p_Scroll) * p_Pixel_Alto
 
         If i = p_ListIndex Then
-            ListPic.Line (1, PosY)-(ListPic.ScaleWidth - 12, PosY + p_Pixel_Alto + 1), &H202020, BF
-            ListPic.Line (1, PosY)-(ListPic.ScaleWidth - 12, PosY + p_Pixel_Alto + 1), &H404040, B
+            ListPic.Line (1, posY)-(ListPic.ScaleWidth - 1, posY + p_Pixel_Alto + 1), &H202020, BF
+            ListPic.Line (1, posY)-(ListPic.ScaleWidth - 1, posY + p_Pixel_Alto + 1), &H404040, B
             ListPic.ForeColor = &H828282
         Else
             ListPic.ForeColor = p_ForeColor
@@ -141,8 +158,16 @@ For i = p_Scroll To p_Scroll + VisibleCount
 Next i
 ListPic.DrawStyle = 0
 PosY = 0
-If VisibleCount < ListCount Then PosY = p_Scroll * (ListPic.ScaleHeight - 60) / (p_ListCount - VisibleCount)
-ListPic.Line (ListPic.ScaleWidth - 10, PosY)-(ListPic.ScaleWidth - 1, PosY + 60), &H404040, BF
-ListPic.Line (ListPic.ScaleWidth - 10, PosY)-(ListPic.ScaleWidth - 1, PosY + 60), &H505050, B
+If ShowBarrita Then
+    If VisibleCount < ListCount Then posY = p_Scroll * (ListPic.ScaleHeight - BarraHeight) / (p_ListCount - VisibleCount)
+    Dim barritaColor As Long
+    If DownBarrita Then
+        barritaColor = &H505050
+    Else
+        barritaColor = &H404040
+    End If
+    ListPic.Line (ListPic.ScaleWidth - BarraWidth, posY + 1)-(ListPic.ScaleWidth - 1, posY + BarraHeight - 2), barritaColor, BF
+    ListPic.Line (ListPic.ScaleWidth - BarraWidth, posY + 1)-(ListPic.ScaleWidth - 1, posY + BarraHeight - 2), &H505050, B
+End If
 End Sub
 

@@ -267,6 +267,8 @@ Public CopiarDialogoAConsola       As Byte
 
 Public ScrollArrastrar             As Byte
 
+Public LastScroll                  As Byte
+
 Public InfoItemsEnRender           As Boolean
 
 Public Musica                      As Byte

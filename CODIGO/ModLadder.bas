@@ -1368,6 +1368,7 @@ Sub CargarOpciones()
     CopiarDialogoAConsola = ConfigFile.GetValue("OPCIONES", "CopiarDialogoAConsola")
     PermitirMoverse = ConfigFile.GetValue("OPCIONES", "PermitirMoverse")
     ScrollArrastrar = Val(ConfigFile.GetValue("OPCIONES", "ScrollArrastrar"))
+    LastScroll = Val(ConfigFile.GetValue("OPCIONES", "LastScroll"))
     
     MoverVentana = ConfigFile.GetValue("OPCIONES", "MoverVentana")
     FPSFLAG = ConfigFile.GetValue("OPCIONES", "FPSFLAG")

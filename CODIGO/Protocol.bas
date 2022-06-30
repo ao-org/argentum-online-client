@@ -1248,6 +1248,8 @@ Public Sub HandleDisconnect()
     FullLogout = Reader.ReadBool
     End If
 
+    Call WriteVar(App.path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "OPCIONES", "LastScroll", hlst.Scroll)
+
     Mod_Declaraciones.Connected = False
     
     Call ResetearUserMacro
@@ -5336,7 +5338,7 @@ Private Sub HandleChangeSpellSlot()
             hlst.List(Slot - 1) = HechizoData(Index).nombre
         Else
             Call hlst.AddItem(HechizoData(Index).nombre)
-
+            hlst.Scroll = LastScroll
         End If
 
     Else
@@ -5345,7 +5347,7 @@ Private Sub HandleChangeSpellSlot()
             hlst.List(Slot - 1) = "(Vacio)"
         Else
             Call hlst.AddItem("(Vacio)")
-
+            hlst.Scroll = LastScroll
         End If
     
     End If

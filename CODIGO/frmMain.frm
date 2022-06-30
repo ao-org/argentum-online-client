@@ -252,16 +252,16 @@ Begin VB.Form frmMain
       End
       Begin VB.Image imgInventario 
          Height          =   420
-         Left            =   10
+         Left            =   15
          Tag             =   "0"
-         Top             =   10
+         Top             =   15
          Width           =   1830
       End
       Begin VB.Image imgHechizos 
          Height          =   420
-         Left            =   1880
+         Left            =   1875
          Tag             =   "0"
-         Top             =   20
+         Top             =   15
          Width           =   1830
       End
       Begin VB.Image cmdMoverHechi 
@@ -447,6 +447,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2154,6 +2155,35 @@ Form_Activate_Err:
 End Sub
 
 
+Private Sub imgHechizos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error GoTo imgHechizos_MouseMove_Err
+    
+    imgHechizos.Picture = LoadInterface("boton-hechizos-default.bmp")
+    imgHechizos.Tag = "1"
+
+    
+    Exit Sub
+
+imgHechizos_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgHechizos_MouseMove", Erl)
+    Resume Next
+End Sub
+
+Private Sub imgInventario_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error GoTo imgInventario_MouseMove_Err
+
+    imgInventario.Picture = LoadInterface("boton-inventory-over.bmp")
+    imgInventario.Tag = "1"
+
+    
+    Exit Sub
+
+imgInventario_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgInventario_MouseMove", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 If y < 0 Then y = 0
 If y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
@@ -2164,7 +2194,7 @@ If x < picHechiz.ScaleWidth - 10 Then
         Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
     End If
 Else
-    hlst.DownBarrita = y - hlst.Scroll * (picHechiz.ScaleHeight - 60) / (hlst.ListCount - hlst.VisibleCount)
+    hlst.DownBarrita = Y - hlst.Scroll * (picHechiz.ScaleHeight - hlst.BarraHeight) / (hlst.ListCount - hlst.VisibleCount)
 End If
 End Sub
 
@@ -2175,7 +2205,7 @@ If Button = 1 Then
     If yy < 0 Then yy = 0
     If yy > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then yy = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
     If hlst.DownBarrita > 0 Then
-        hlst.Scroll = (y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - 60)
+        hlst.Scroll = (Y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - hlst.BarraHeight)
     Else
         hlst.ListIndex = Int(yy / hlst.Pixel_Alto) + hlst.Scroll
         If Seguido = 1 Then
@@ -2186,7 +2216,13 @@ If Button = 1 Then
             If (y > yy) Then hlst.Scroll = hlst.Scroll + 1
         End If
     End If
+ElseIf Button = 0 Then
+    hlst.ShowBarrita = X > picHechiz.ScaleWidth - hlst.BarraWidth * 2
 End If
+End Sub
+
+Private Sub picHechiz_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+hlst.DownBarrita = 0
 End Sub
 
 Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2701,7 +2737,7 @@ Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Sing
     On Error GoTo imgHechizos_MouseDown_Err
        
     imgHechizos.Picture = LoadInterface("boton-hechizos-off.bmp")
-    imgHechizos.Tag = "1"
+    imgHechizos.Tag = "2"
 
     
     Exit Sub
@@ -2716,11 +2752,12 @@ Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Sing
     
     On Error GoTo imgHechizos_MouseMove_Err
     
-
-    If imgHechizos.Tag = "0" Then
+    
+    If imgHechizos.Tag <> "1" And Button = 0 Then
         imgHechizos.Picture = LoadInterface("boton-hechizos-default.bmp")
         imgHechizos.Tag = "1"
-
+        imgInventario.Picture = Nothing
+        imgInventario.Tag = "0"
     End If
 
     
@@ -2800,7 +2837,7 @@ Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Si
     On Error GoTo imgInventario_MouseDown_Err
     
     imgInventario.Picture = LoadInterface("boton-inventory-off.bmp")
-    imgInventario.Tag = "1"
+    imgInventario.Tag = "2"
 
     'Call Inventario.DrawInventory
     
@@ -2816,10 +2853,11 @@ Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Si
     
     On Error GoTo imgInventario_MouseMove_Err
 
-    If imgInventario.Tag = "0" Then
+    If imgInventario.Tag <> "1" And Button = 0 Then
         imgInventario.Picture = LoadInterface("boton-inventory-over.bmp")
         imgInventario.Tag = "1"
-
+        imgHechizos.Picture = Nothing
+        imgHechizos.Tag = "0"
     End If
 
     
@@ -3639,13 +3677,13 @@ Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y 
 
     End If
     
-    If imgInventario.Tag = "1" Then
+    If imgInventario.Tag <> "0" Then
         imgInventario.Picture = Nothing
         imgInventario.Tag = "0"
 
     End If
 
-    If imgHechizos.Tag = "1" Then
+    If imgHechizos.Tag <> "0" Then
         imgHechizos.Picture = Nothing
         imgHechizos.Tag = "0"
 
@@ -4203,8 +4241,7 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
 3        Dim tiempoTranscurridoCartel As Double
         
         tiempoTranscurridoCartel = GetTickCount - StartOpenChatTime
-        Debug.Print "timerElapsedTime: " & tiempoTranscurridoCartel
-        
+
         Call computeLastElapsedTimeChat(tiempoTranscurridoCartel)
         
         
@@ -4717,7 +4754,7 @@ Private Sub Form_Load()
     
     Set hlst = New clsGraphicalList
     Call hlst.Initialize(Me.picHechiz, RGB(200, 190, 190))
-    
+
     LoadButtons
     
     Exit Sub
@@ -5180,6 +5217,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
             End If
           
         Else
+            Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
             If frmConnect.Visible Then
                 Connected = False
             Else
