@@ -6279,8 +6279,10 @@ Private Sub HandleSetInvisible()
                 .Pos.x = x
                 .Pos.y = y
                 MapData(x, y).charindex = charindex
-                .MoveOffsetX = 0
-                .MoveOffsetY = 0
+                If Abs(.MoveOffsetX) > 32 Or Abs(.MoveOffsetY) > 32 Or (.MoveOffsetX <> 0 And .MoveOffsetY <> 0) Then
+                    .MoveOffsetX = 0
+                    .MoveOffsetY = 0
+                End If
             End If
         End With
     End If
