@@ -447,8 +447,17 @@ ErrorHandlerDD:
         QueRender = 0
         lFrameTimer = 0
         FramesPerSecCounter = 0
+    'If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
+    '
+    '    Call Engine_Init
+    '
+    '    prgRun = True
+    '    pausa = False
+    '    QueRender = 0
+    '    lFrameTimer = 0
+    '    FramesPerSecCounter = 0'
 
-    End If
+    'End If
         
 End Sub
 
