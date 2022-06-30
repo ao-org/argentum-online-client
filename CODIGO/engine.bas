@@ -438,15 +438,6 @@ On Error GoTo ErrorHandlerDD:
     
 ErrorHandlerDD:
 
-    If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
-        
-        Call Engine_Init
-        
-        prgRun = True
-        pausa = False
-        QueRender = 0
-        lFrameTimer = 0
-        FramesPerSecCounter = 0
     'If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
     '
     '    Call Engine_Init
