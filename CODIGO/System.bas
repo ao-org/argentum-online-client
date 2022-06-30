@@ -36,7 +36,7 @@ Private Type SHELLEXECUTEINFO
     hwnd As Long
     lpVerb As String
     lpFile As String
-    lpParamentes As String
+    lpParameters As String
     lpDirectory As Long
     nShow As Long
     hInstApp As Long
@@ -148,7 +148,7 @@ Public Function ShellExecuteEx(path As String, param As String) As Long
     tProcInfo.fMask = 256 '0x00000100 SEE_MASK_FLAG_DDEWAIT
     tProcInfo.lpVerb = "runas" ' ask to run as admin
     tProcInfo.lpFile = path
-    tProcInfo.lpParamentes = param
+    tProcInfo.lpParameters = param
     tProcInfo.nShow = 5 'SW_SHOW
     ShellExecuteEx = ShellExecuteExA(tProcInfo)
 End Function
