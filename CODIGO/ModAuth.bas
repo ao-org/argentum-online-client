@@ -38,7 +38,11 @@ Public delete_char_validate_code As String
 
 
 Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
-
+    
+    If Connected Then
+        Exit Sub
+    End If
+    
     If Not SessionOpened Then
         Call HandleOpenSession(bytesTotal)
         If SessionOpened Then

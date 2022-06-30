@@ -2614,13 +2614,19 @@ Private Sub HandlePosUpdateChar()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
-    If MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = charindex Then
-        MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
-    End If
+    If charindex = 0 Then Exit Sub
     
-    MapData(x, y).charindex = charindex
-    charlist(charindex).Pos.x = x
-    charlist(charindex).Pos.y = y
+    If charlist(charindex).Pos.x > 0 And charlist(charindex).Pos.y > 0 Then
+    
+        If MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = charindex Then
+            MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+        End If
+        
+        MapData(x, y).charindex = charindex
+        charlist(charindex).Pos.x = x
+        charlist(charindex).Pos.y = y
+    
+    End If
     
     Exit Sub
 
@@ -3724,6 +3730,7 @@ Private Sub HandleCharacterCreate()
         .Otra_Aura = Reader.ReadString8()
         .Escudo_Aura = Reader.ReadString8()
         .Speeding = Reader.ReadReal32()
+        .Invisible = False
         
         Dim FlagNpc As Byte
         FlagNpc = Reader.ReadInt8()
@@ -4347,17 +4354,17 @@ Private Sub HandlePlayWaveStep()
     
     On Error GoTo HandlePlayWaveStep_Err
         
-    Dim wave As Integer
+    Dim grh As Long
     Dim distance As Byte
     Dim balance As Integer
     Dim step As Boolean
     
-    wave = Reader.ReadInt16()
+    grh = Reader.ReadInt32()
     distance = Reader.ReadInt8()
     balance = Reader.ReadInt16()
     step = Reader.ReadBool()
     
-    Call DoPasosInvi(wave, distance, balance, step)
+    Call DoPasosInvi(grh, distance, balance, step)
     
     
     Exit Sub
@@ -6272,6 +6279,8 @@ Private Sub HandleSetInvisible()
                 .Pos.x = x
                 .Pos.y = y
                 MapData(x, y).charindex = charindex
+                .MoveOffsetX = 0
+                .MoveOffsetY = 0
             End If
         End With
     End If
