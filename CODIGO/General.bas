@@ -630,6 +630,7 @@ Sub SetConnected()
     On Error GoTo SetConnected_Err
     
     Connected = True
+    Call frmConnect.AuthSocket.Close
     frmMain.shapexy.Left = 1200
     frmMain.shapexy.Top = 1200
     frmMain.shapexy.BackColor = RGB(170, 0, 0)
