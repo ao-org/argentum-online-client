@@ -8254,7 +8254,7 @@ Public Sub HandleQuestListSend()
         
         'Agregamos los items
         For i = 1 To tmpByte
-            FrmQuests.lstQuests.AddItem ReadField(i, tmpStr, 45)
+            FrmQuests.lstQuests.AddItem ReadField(i, tmpStr, 59)
         Next i
 
     End If
