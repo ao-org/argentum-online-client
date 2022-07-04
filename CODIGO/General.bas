@@ -1118,7 +1118,6 @@ Sub Main()
     '  Call MsgBox("¡El Juego debe ser abierto desde el Launcher! El Cliente ahora se cerrara.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
     ' End
     ' End If
-    
     Call CargarOpciones
     Call initPacketControl
     
@@ -1169,6 +1168,7 @@ Sub Main()
         servers_login_connections(1) = "45.235.99.71:4004"
         servers_login_connections(2) = "138.99.6.141:4007"
     #End If
+    Call SetDefaultServer
     Call ComprobarEstado
     Call CargarLst
 
@@ -1280,6 +1280,17 @@ Public Function get_logging_server() As String
     Else
         get_logging_server = servers_login_connections(2)
     End If
+End Function
+
+Public Function SetDefaultServer()
+On Error GoTo SetDefaultServer_Err
+    Dim serverLogin() As String
+    serverLogin = Split(get_logging_server(), ":")
+    IPdelServidorLogin = serverLogin(0)
+    PuertoDelServidorLogin = serverLogin(1)
+    Exit Function
+SetDefaultServer_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.WriteVar", Erl)
 End Function
 
 Public Function randomMap() As Integer
