@@ -1379,7 +1379,10 @@ Sub CargarOpciones()
     
     'Init
     ServerIndex = ConfigFile.GetValue("INIT", "ServerIndex")
-
+    If ServerIndex = ":" Then
+        ServerIndex = ""
+    End If
+    
     SensibilidadMouse = ConfigFile.GetValue("OPCIONES", "SensibilidadMouse")
     
     Set ConfigFile = Nothing
