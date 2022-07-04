@@ -447,7 +447,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4122,7 +4121,7 @@ renderer_DblClick_Err:
 End Sub
 
 Private Sub renderer_Click()
-    
+    'Call addCooldown(713, 15000)
     On Error GoTo renderer_Click_Err
     Call Form_Click
     If SendTxt.Visible Then SendTxt.SetFocus
@@ -4541,6 +4540,9 @@ Public Sub Form_Click()
                                         Exit Sub
                                     End If
                                     
+                                '    Set cooldown_hechizo = New clsCooldown
+                                '    Call cooldown_hechizo.Cooldown_Initialize(IntervaloMagia, 26018)
+                                '    Call addCooldown(cooldown_hechizo)
                                     Call MainTimer.Restart(TimersIndex.CastAttack)
                                 
                                 ElseIf ModoHechizos = SinBloqueo Then

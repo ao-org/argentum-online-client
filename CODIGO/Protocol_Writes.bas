@@ -2178,6 +2178,20 @@ WriteHelp_Err:
         '</EhFooter>
 End Sub
 
+
+Public Sub WriteEventoFaccionario()
+        On Error GoTo WriteEventoFaccionario_Err
+100     Call Writer.WriteInt16(ClientPacketID.EventoFaccionario)
+    
+102     Call modNetwork.Send(Writer)
+        Exit Sub
+
+WriteEventoFaccionario_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEventoFaccionario", Erl)
+        '</EhFooter>
+End Sub
+
 ''
 ' Writes the "RequestStats" message to the outgoing data buffer.
 '

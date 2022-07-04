@@ -1093,7 +1093,7 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
     Angle = Angle + RandomNumber(2, 10) * IIf(direccion, 1, -1) / 1500 * timerElapsedTime
     
     If dist_x > 40 Then
-        mascota.posX = mascota.posX + (dir_vector.x / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
+        mascota.PosX = mascota.PosX + (dir_vector.X / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
         isAnimated = 1
     End If
 
@@ -3715,7 +3715,7 @@ Public Sub RenderPjsCuenta()
     'Dibujamos frente 3839
     Draw_GrhIndex 3839, 0, 0
       
-    For i = 1 To 10
+    For i = 1 To MAX_PERSONAJES_EN_CUENTA
             
         If (i > 5) Then
             x = ((i * 132) - (5 * 132))
@@ -3733,23 +3733,31 @@ Public Sub RenderPjsCuenta()
         temp_array(2) = Pjs(i).LetraColor
         temp_array(3) = Pjs(i).LetraColor
         
+        Dim body As Integer
+        Dim enBarca As Boolean
+        body = Pjs(i).body
+        
         'Si tiene cuerpo dibuja
-        If (Pjs(i).Body <> 0) Then
+        If (body <> 0) Then
         
             If PJSeleccionado = i Then
                 Call Particle_Group_Render(Select_part, x + 32, y + 5)
 
             End If
 
-            If (Pjs(i).Body <> 0) Then
+            If (body <> 0) Then
                   
                 'Else
                 'Engine_Draw_Box X - 40, Y - 40, 145, 150, D3DColorARGB(20, 28, 18, 9)
-                Draw_Grh BodyData(Pjs(i).Body).Walk(3), x + 15, y + 10, 1, 1, COLOR_WHITE
+                Draw_Grh BodyData(body).Walk(3), X + 15, Y + 10, 1, 1, COLOR_WHITE
 
             End If
 
-            If (Pjs(i).Head <> 0) Then
+            'Bodies de los barcos para que no dibuje la cabeza
+            enBarca = body = 84 Or body = 85 Or body = 86 Or body = 87 Or body = 1263 Or body = 1264 Or body = 1265 Or body = 1266 Or body = 1267 Or body = 1268 Or body = 1269 Or body = 1270 Or body = 1271 Or body = 1272 Or body = 1273 Or body = 1274
+          
+            
+            If (Pjs(i).Head <> 0) And Not enBarca Then
                 'If Not nohead Then
                 Draw_Grh HeadData(Pjs(i).Head).Head(3), x + 15, y - notY + BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
 
@@ -4594,6 +4602,29 @@ Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width A
 
 Engine_Draw_Box_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Engine_Draw_Box", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub Engine_Draw_Load(ByVal X As Integer, ByVal Y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As RGBA, Angle As Single)
+    
+    On Error GoTo Engine_Draw_Load_Err
+    
+
+    Call RGBAList(temp_rgb, Color.r, Color.G, Color.B, Color.A)
+
+
+    If Angle >= 360 Then Angle = 0
+
+    Call SpriteBatch.SetTexture(Nothing)
+    Call SpriteBatch.SetAlpha(False)
+    Call SpriteBatch.DrawLoad(X, Y, Width, Height, temp_rgb(), Angle)
+
+    
+    Exit Sub
+
+Engine_Draw_Load_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_Draw_Load", Erl)
     Resume Next
     
 End Sub

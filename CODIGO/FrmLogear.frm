@@ -370,8 +370,10 @@ Private Sub cmdIngresar_Click()
         IPdelServidor = txtIp.Text
         PuertoDelServidor = txtPort.Text
         
-        Dim Arch As String: Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-        Call WriteVar(Arch, "INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
+        #If PYMMO = 0 Or DEBUGGING = 1 Then
+            Dim Arch As String: Arch = App.path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+            Call WriteVar(Arch, "INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
+        #End If
         
         #If PYMMO = 1 Then
             #If DEBUGGING = 0 Then

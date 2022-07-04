@@ -296,6 +296,99 @@ Draw_Err:
     
 End Sub
 
+Friend Sub DrawTriangle(ByVal x1 As Long, _
+                        ByVal y1 As Long, _
+                        ByVal x2 As Long, _
+                        ByVal y2 As Long, _
+                        ByVal x3 As Long, _
+                        ByVal y3 As Long, _
+                        ByRef Color() As RGBA)
+
+    m_Data(m_Position).x = x1
+    m_Data(m_Position).y = y1
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).Color = Color(0)
+    m_Data(m_Position).tX = 0
+    m_Data(m_Position).tY = 0
+
+    m_Position = m_Position + 1
+   
+    m_Data(m_Position).x = x2
+    m_Data(m_Position).y = y2
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).Color = Color(1)
+    m_Data(m_Position).tX = 0
+    m_Data(m_Position).tY = 0
+  
+    m_Position = m_Position + 1
+  
+    m_Data(m_Position).x = x3
+    m_Data(m_Position).y = y3
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).Color = Color(2)
+    m_Data(m_Position).tX = 0
+    m_Data(m_Position).tY = 0
+
+    m_Position = m_Position + 1
+  
+    m_Data(m_Position).x = x3
+    m_Data(m_Position).y = y3
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).Color = Color(3)
+    m_Data(m_Position).tX = 0
+    m_Data(m_Position).tY = 0
+
+    m_Position = m_Position + 1
+End Sub
+
+Friend Sub DrawLoad(ByVal x As Long, _
+                ByVal y As Long, _
+                ByVal Width As Long, _
+                ByVal Height As Long, _
+                ByRef Color() As RGBA, _
+                ByVal Angle As Single, _
+                Optional ByVal Tx1 As Single = 0, _
+                Optional ByVal Ty1 As Single = 0, _
+                Optional ByVal Tx2 As Single = 1, _
+                Optional ByVal Ty2 As Single = 1)
+    
+    On Error GoTo Draw_Err
+    
+    Dim AngleR As Double
+    
+    
+    AngleR = (Angle - Int(Angle / 45) * 45) '* PI / 180
+    
+    Dim W As Long
+    Dim H As Long
+    
+    W = Width / 2
+    H = Height / 2
+    
+    
+    If Angle < 45 Then Call DrawTriangle(x, y, x + AngleR * W / 45, y - H, x + W, y - H, Color)
+    If Angle < 90 Then Call DrawTriangle(x, y, x + W, y - H + IIf(Angle >= 45, AngleR * H / 45, 0), x + W, y, Color)
+    If Angle < 135 Then Call DrawTriangle(x, y, x + W, y + IIf(Angle >= 90, AngleR * H / 45, 0), x + W, y + H, Color)
+    If Angle < 180 Then Call DrawTriangle(x, y, x + W - IIf(Angle >= 135, AngleR * W / 45, 0), y + H, x, y + H, Color)
+    If Angle < 225 Then Call DrawTriangle(x, y, x - IIf(Angle >= 180, AngleR * W / 45, 0), y + H, x - W, y + H, Color)
+    If Angle < 270 Then Call DrawTriangle(x, y, x - W, y + H - IIf(Angle >= 225, AngleR * H / 45, 0), x - W, y, Color)
+    If Angle < 315 Then Call DrawTriangle(x, y, x - W, y - IIf(Angle >= 270, AngleR * H / 45, 0), x - W, y - H, Color)
+    If Angle < 360 Then Call DrawTriangle(x, y, x - W + IIf(Angle >= 315, AngleR * H / 45, 0), y - H, x, y - H, Color)
+   
+    If m_Position >= UBound(m_Data) Then
+        Call Flush
+    End If
+   
+    
+    Exit Sub
+
+Draw_Err:
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.Draw", Erl)
+    Resume Next
+    
+End Sub
+
+
 Friend Sub DrawShadow(ByVal x As Long, _
                     ByVal y As Long, _
                     ByVal Width As Long, _

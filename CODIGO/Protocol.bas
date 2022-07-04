@@ -566,6 +566,7 @@ Public Enum ClientPacketID
     SendPosSeguimiento
     NotifyInventarioHechizos
     PublicarPersonajeMAO
+    EventoFaccionario
     
     #If PYMMO = 0 Then
     CreateAccount

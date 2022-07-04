@@ -1344,3 +1344,6 @@ End Type
 Public tutorial() As t_tutorial
 
 Public Const DISTANCIA_ENVIO_DATOS As Byte = 3
+
+Public cooldown_ataque As New clsCooldown
+Public cooldown_hechizo As New clsCooldown

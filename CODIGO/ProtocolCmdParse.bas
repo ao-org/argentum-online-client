@@ -235,7 +235,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             
             Case "/AYUDA"
                 Call WriteHelp
-
+            
+            Case "/EVENTOFACCIONARIO"
+                Call WriteEventoFaccionario
             Case "/SUBASTA"
                 Call WriteSubastaInfo
                 
@@ -1073,8 +1075,8 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/SM"
-                    Call WriteSeguirMouse(ArgumentosRaw)
-                    
+                Call WriteSeguirMouse(ArgumentosRaw)
+                
             Case "/PERDONFACCION"
 
                 If notNullArguments Then
