@@ -418,8 +418,13 @@ Public Sub RefreshAllChars()
     For loopc = 1 To LastChar
     
         If charlist(loopc).active = 1 Then
-            MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
-
+           If charlist(loopc).Invisible Then
+                If Not ((charlist(UserCharIndex).clan_nivel < 6 Or charlist(loopc).clan_index = 0 Or charlist(loopc).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(loopc).Navegando) And Not (distance(charlist(loopc).Pos.x, charlist(loopc).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(loopc).dialog_life = 0 And charlist(loopc).FxCount = 0 And charlist(loopc).particle_count = 0) Then
+                    MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
+                End If
+            Else
+                MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
+            End If
         End If
 
     Next loopc
@@ -1163,11 +1168,10 @@ Sub Main()
         End If
 
     End If
-    #If PYMMO = 1 And DEBUGGING = 0 Then
         
-        servers_login_connections(1) = "45.235.99.71:4004"
-        servers_login_connections(2) = "138.99.6.141:4007"
-    #End If
+    servers_login_connections(1) = "45.235.99.71:4004"
+    servers_login_connections(2) = "138.99.6.141:4007"
+
     Call SetDefaultServer
     Call ComprobarEstado
     Call CargarLst

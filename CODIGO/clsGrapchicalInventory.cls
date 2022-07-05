@@ -759,6 +759,7 @@ Public Sub DrawInventory()
 
             Else
                 Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, COLOR_WHITE())
+               
             End If
             
             If ShowQuantities Then
@@ -778,11 +779,19 @@ Public Sub DrawInventory()
                     Call RGBAList(Color, 255, 0, 0)
                     tmpString = EQUIPPED_CHARACTER
                     Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, Color, 1
+                    
+                    'Renderizo cooldown del arma
+                    If UserInventory(i).ObjType = 2 Or UserInventory(i).ObjType = 46 Then
+                        Call renderCooldownsInventory(x, y)
+                    End If
+                    
                 End If
             End If
         End If
 
     Next i
+             
+             
 
     
     Exit Sub

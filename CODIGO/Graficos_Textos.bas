@@ -1082,6 +1082,12 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
         Case 3 'armada real
             Call RGBAList(color1, 0, 175, 255, A)
             Call RGBAList(color2, 255, 255, 255, A)
+        Case 4 'Legión
+            Call RGBAList(color1, 155, 0, 0, A)
+            Call RGBAList(color2, 255, 255, 255, A)
+        Case 5 'Consejo
+            Call RGBAList(color1, 22, 239, 253, A)
+            Call RGBAList(color2, 255, 255, 255, A)
         Case 7 'aviso solicitud
             Call RGBAList(color2, 255, 255, 0, A)
         Case 8 'aviso desconectado
@@ -1145,7 +1151,7 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
                         Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + 10, Sombra())
                     End If
                     
-                    If status >= 0 And status <= 3 Or status = 10 Then
+                    If status >= 0 And status <= 5 Or status = 10 Then
                         If separador Then
                             Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color1)
                         Else

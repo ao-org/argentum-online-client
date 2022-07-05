@@ -3,7 +3,6 @@ Attribute VB_Name = "modCooldowns"
 Private Cooldowns As New Collection
 
 
-
 Private colorCooldown As RGBA
 
 
@@ -43,6 +42,36 @@ Do While i <= Cooldowns.count
         i = i + 1
     End If
 Loop
+
+End Sub
+
+
+
+Public Sub renderCooldownsInventory(ByVal x As Integer, ByVal y As Integer)
+
+
+
+    Call SetRGBA(colorCooldown, 50, 25, 15, 170)
+    
+    x = x + 16
+    y = y + 16
+    
+    Dim currTime As Long
+    Dim colores() As RGBA
+    ReDim colores(3)
+    Call SetRGBA(colores(0), 255, 255, 255, 125)
+    Call SetRGBA(colores(1), 255, 255, 255, 125)
+    Call SetRGBA(colores(2), 255, 255, 255, 125)
+    Call SetRGBA(colores(3), 255, 255, 255, 125)
+    
+    currTime = GetTickCount() - cooldown_ataque.initialTime
+    If currTime >= cooldown_ataque.totalTime Then
+       Set cooldown_ataque = Nothing
+    Else
+        Call Engine_Draw_Load(x, y, 32, 32, colorCooldown, currTime * 360 / cooldown_ataque.totalTime)
+        x = x - 36
+        i = i + 1
+    End If
 
 End Sub
 

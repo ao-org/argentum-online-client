@@ -704,15 +704,15 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
     If Pregunta Then
         
-        Call Engine_Draw_Box(283, 170, 170, 100, RGBA_From_Comp(150, 20, 3, 200))
-        Call Engine_Draw_Box(288, 175, 160, 90, RGBA_From_Comp(25, 25, 23, 200))
+        Call Engine_Draw_Box(283, 170, 190, 100, RGBA_From_Comp(150, 20, 3, 200))
+        Call Engine_Draw_Box(288, 175, 180, 90, RGBA_From_Comp(25, 25, 23, 200))
 
         Dim preguntaGrh As grh
         Call InitGrh(preguntaGrh, 32120)
         
         Call Engine_Text_Render(PreguntaScreen, 290, 180, COLOR_WHITE, 1, True)
         
-        Call Draw_Grh(preguntaGrh, 392, 233, 1, 0, COLOR_WHITE, False, 0, 0, 0)
+        Call Draw_Grh(preguntaGrh, 416, 233, 1, 0, COLOR_WHITE, False, 0, 0, 0)
 
     End If
 
