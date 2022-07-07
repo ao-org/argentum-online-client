@@ -1516,4 +1516,45 @@ Convert_Tile_To_View_Y_Err:
     
 End Function
 
+Public Function GetTerrainHeight(x As Byte, y As Byte) As Integer
+
+    With MapData(x, y)
+        Select Case .Graphic(2).GrhIndex
+            Case 12682
+                GetTerrainHeight = 5
+            Case 12683
+                GetTerrainHeight = 10
+            Case 12684
+                GetTerrainHeight = 14
+            Case 12685
+                GetTerrainHeight = 14
+            Case 12686
+                GetTerrainHeight = 14
+            Case 12687
+                GetTerrainHeight = 14
+            Case 12688
+                GetTerrainHeight = 10
+            Case 12689
+                GetTerrainHeight = 5
+            Case 12692
+                GetTerrainHeight = 5
+            Case 12693
+                GetTerrainHeight = 10
+            Case 12694
+                GetTerrainHeight = 14
+            Case 12695
+                GetTerrainHeight = 14
+            Case 12696
+                GetTerrainHeight = 14
+            Case 12697
+                GetTerrainHeight = 14
+            Case 12698
+                GetTerrainHeight = 10
+            Case 12699
+                GetTerrainHeight = 5
+            Case Else
+                GetTerrainHeight = 0
+        End Select
+    End With
+End Function
 
