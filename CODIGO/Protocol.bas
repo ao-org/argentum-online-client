@@ -241,6 +241,7 @@ Private Enum ServerPacketID
     PosUpdateChar
     PlayWaveStep
     ShopPjsInit
+    DebugDataResponse
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -567,6 +568,7 @@ Public Enum ClientPacketID
     NotifyInventarioHechizos
     PublicarPersonajeMAO
     EventoFaccionario
+    RequestDebug '/RequestDebug consulta info debug al server, para gms
     
     #If PYMMO = 0 Then
     CreateAccount
@@ -970,6 +972,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateShopClienteCredits
         Case ServerPacketID.SensuiRetrasado
             Call HandleSensuiRetrasado
+        Case ServerPacketID.DebugDataResponse
+            Call HandleDebugDataResponse
         #If PYMMO = 0 Then
         Case ServerPacketID.AccountCharacterList
             Call HandleAccountCharacterList
@@ -9004,6 +9008,29 @@ ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
 
 
+End Sub
+
+Public Sub HandleDebugDataResponse()
+    On Error GoTo HandleDebugResponse_Err
+    
+    Dim cantidadDeMensajes As Integer
+    Dim mensaje As String
+    Dim i As Integer
+
+    cantidadDeMensajes = Reader.ReadInt16
+    Dim file As Integer: file = FreeFile
+    Open App.path & "\logs\RemoteError.log" For Append As #file
+    For i = 1 To cantidadDeMensajes
+        mensaje = Reader.ReadString8
+        If LenB(mensaje) <> 0 Then
+           Print #file, mensaje
+           Print #file, vbNullString
+        End If
+    Next i
+    Close #file
+    Exit Sub
+HandleDebugResponse_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
 End Sub
 
 #If PYMMO = 0 Then

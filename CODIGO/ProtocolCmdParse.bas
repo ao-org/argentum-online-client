@@ -2104,6 +2104,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /reset nick.")
                     End If
                 End If
+            Case "/REQDEBUG"
+                If EsGM Then
+                    Call WriteRequestDebug
+                End If
 
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")
