@@ -1033,6 +1033,13 @@ Private Function GetAngle(ByVal x1 As Double, ByVal y1 As Double, ByVal x2 As Do
     GetAngle = TempAngle
 End Function
 
+Public Function IntLerp(A As Integer, B As Integer, factor As Single)
+    Dim invFactor As Single
+    invFactor = 1 - factor
+    IntLerp = A * invFactor + B * factor
+End Function
+
+
 Public Function calcular_direccion(ByRef dir_vector As Position) As Long
     Dim theta As Double
     Dim norma_a As Double
@@ -1598,8 +1605,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     
     Dim MostrarNombre       As Boolean
     
-    
     Dim TempGrh As grh
+    
+    Dim terrainHeight As Integer
     
     With charlist(charindex)
 
@@ -1699,9 +1707,21 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             End If
         End If
-
+        
+        
+        terrainHeight = TileEngine.GetTerrainHeight(x, y)
+        If (.Moving) Then
+            Dim prevTerrainHeight As Integer
+            If (.MoveOffsetX < 0) Then
+                prevTerrainHeight = TileEngine.GetTerrainHeight(x - 1, y)
+            ElseIf (.MoveOffsetX > 0) Then
+                prevTerrainHeight = TileEngine.GetTerrainHeight(x + 1, y)
+            End If
+            terrainHeight = IntLerp(terrainHeight, prevTerrainHeight, Abs(.MoveOffsetX / 32))
+        End If
+        
         PixelOffsetX = PixelOffsetX + .MoveOffsetX
-        PixelOffsetY = PixelOffsetY + .MoveOffsetY
+        PixelOffsetY = PixelOffsetY + .MoveOffsetY - terrainHeight
         
         Dim ease As Single
         If MostrarRespiracion Then
