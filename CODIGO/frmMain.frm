@@ -3924,7 +3924,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     clicY = y
     If Button = vbLeftButton Then
         If Pregunta Then
-            If x >= 395 And x <= 412 And y >= 243 And y <= 260 Then
+            If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
                 If PreguntaLocal Then
     
                     Select Case PreguntaNUM
@@ -3949,7 +3949,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                 
                 Exit Sub
     
-            ElseIf x >= 420 And x <= 436 And y >= 243 And y <= 260 Then
+            ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
                 If PreguntaLocal Then
     
                     Select Case PreguntaNUM
