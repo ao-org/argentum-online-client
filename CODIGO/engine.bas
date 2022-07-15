@@ -5,6 +5,7 @@ Option Explicit
 Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hdc As Long, ByVal nIndex As Long) As Long
 
 Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
+Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 
 Public RefreshRate As Integer
 Private Const HORZRES As Long = 8
@@ -1100,7 +1101,7 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
     Angle = Angle + RandomNumber(2, 10) * IIf(direccion, 1, -1) / 1500 * timerElapsedTime
     
     If dist_x > 40 Then
-        mascota.PosX = mascota.PosX + (dir_vector.X / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
+        mascota.posX = mascota.posX + (dir_vector.x / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
         isAnimated = 1
     End If
 
@@ -2376,6 +2377,7 @@ Public Sub Start()
         DoEvents
 
         Call modNetwork.Poll
+        Call svb_run_callbacks
     Loop
 
     EngineRun = False
