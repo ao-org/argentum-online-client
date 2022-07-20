@@ -376,14 +376,16 @@ Private Sub cmdIngresar_Click()
         #End If
         
         #If PYMMO = 1 Then
+            Dim serverLogin() As String
+            serverLogin = Split(get_logging_server(), ":")
+                
             #If DEBUGGING = 0 Then
-                Dim serverLogin() As String
-                serverLogin = Split(get_logging_server(), ":")
+              
                 IPdelServidorLogin = serverLogin(0)
                 PuertoDelServidorLogin = serverLogin(1)
             #Else
-                IPdelServidorLogin = txtIp.Text
-                PuertoDelServidorLogin = "4004"
+                IPdelServidorLogin = "127.0.0.1"
+                PuertoDelServidorLogin = 4000
             #End If
         #End If
 

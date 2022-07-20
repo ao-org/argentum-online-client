@@ -1598,7 +1598,7 @@ Public Sub CargarIndicesOBJ()
         
 
         If NpcData(Npc).Name = "" Then
-            NpcData(Npc).name = "Vacío"
+            NpcData(Npc).Name = "Vacío"
 
         End If
 
@@ -2950,22 +2950,22 @@ Sub LoadFonts()
         
         ReDim arr(1 To 16) As Byte
         
-        arr(2) = 1
-        arr(1) = 62
-        arr(4) = 7
-        arr(3) = 2
-        arr(6) = 56
-        arr(5) = 22
-        arr(8) = 9
-        arr(7) = 21
-        arr(10) = 52
-        arr(9) = 23
-        arr(12) = 28
-        arr(11) = 19
-        arr(14) = 38
-        arr(13) = 22
-        arr(16) = 11
-        arr(15) = 64
+    arr(15) = 1
+    arr(16) = 62
+    arr(4) = 7
+    arr(3) = 2
+    arr(13) = 56
+    arr(5) = 22
+    arr(14) = 9
+    arr(7) = 21
+    arr(10) = 52
+    arr(9) = 23
+    arr(12) = 28
+    arr(11) = 19
+    arr(8) = 38
+    arr(6) = 22
+    arr(1) = 11
+    arr(2) = 64
         MapInfoEspeciales = estaInmovilizado(arr)
     '#End If
     
