@@ -487,6 +487,7 @@ Public GrhData()               As GrhData 'Guarda todos los grh
 Public BodyData()              As BodyData
 Public HeadData()              As HeadData
 Public FxData()                As tIndiceFx
+Public ComposedFxData()        As tComposedAnimation
 Public WeaponAnimData()        As WeaponAnimData
 Public ShieldAnimData()        As ShieldAnimData
 Public CascoAnimData()         As HeadData
