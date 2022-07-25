@@ -1169,8 +1169,8 @@ Sub Main()
 
     End If
         
-    servers_login_connections(1) = "45.235.98.20:6500"
-    servers_login_connections(2) = "45.235.98.20:6500"
+    servers_login_connections(1) = "45.235.98.29:6500"
+    servers_login_connections(2) = "45.235.98.29:6500"
     
     Call SetDefaultServer
     Call ComprobarEstado
