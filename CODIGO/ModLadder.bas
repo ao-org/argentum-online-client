@@ -1995,7 +1995,7 @@ Public Sub CargarLst()
         FrmLogear.txtIp.Text = server(0)
         FrmLogear.txtPort.Text = server(1)
     #Else
-        FrmLogear.txtIp.Text = randomIp()
+        FrmLogear.txtIp.Text = "45.235.98.29"
         FrmLogear.txtPort.Text = "7667"
     #End If
         

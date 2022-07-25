@@ -1169,9 +1169,9 @@ Sub Main()
 
     End If
         
-    servers_login_connections(1) = "45.235.99.71:4004"
-    servers_login_connections(2) = "138.99.6.141:4007"
-
+    servers_login_connections(1) = "45.235.98.20:6500"
+    servers_login_connections(2) = "45.235.98.20:6500"
+    
     Call SetDefaultServer
     Call ComprobarEstado
     Call CargarLst
@@ -1254,24 +1254,6 @@ Com_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.RegisterCom", Erl)
     Resume Next
 End Sub
-
-Public Function randomIp() As String
-    Dim id As Long
-    id = RandomNumber(1, 3)
-    Select Case id
-        Case 1
-            randomIp = "45.235.98.33"
-            Exit Function
-        Case 2
-            randomIp = "45.235.98.34"
-            Exit Function
-        
-        Case 3
-            randomIp = "45.235.98.35"
-            Exit Function
-    End Select
-End Function
-
 
 Public Function get_logging_server() As String
     Dim value As Long
