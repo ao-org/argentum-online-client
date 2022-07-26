@@ -218,8 +218,8 @@ On Local Error GoTo ErrHandler
     If LenB(Passwd) = 0 Then Passwd = "Contraseña"
     
     Dim PasswordHash As String * 32
-    PasswordHash = MD5String(Passwd)
-    
+    PasswordHash = hashHexFromString(Passwd, API_HASH_MD5)
+   
     If PasswordHash <> FileHead.lngPassword Then
         MsgBox "Invalid password to decrypt the file.", , "Error"
         Close SourceFile
@@ -343,7 +343,7 @@ On Local Error GoTo ErrHandler
     If LenB(Passwd) = 0 Then Passwd = "Contraseña"
 
     Dim PasswordHash As String * 32
-    PasswordHash = MD5String(Passwd)
+    PasswordHash = hashHexFromString(Passwd, API_HASH_MD5)
 
     If PasswordHash <> FileHead.lngPassword Then
         Close SourceFile
@@ -769,7 +769,8 @@ On Error GoTo ErrHandler
     If LenB(Passwd) = 0 Then Passwd = "Contraseña"
     
     Dim PasswordHash As String * 32
-    PasswordHash = MD5String(Passwd)
+    PasswordHash = hashHexFromString(PasswordHash, API_HASH_MD5)
+    
     
     If PasswordHash <> file_head.lngPassword Then
         Close file_handler
