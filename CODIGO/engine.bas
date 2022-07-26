@@ -646,6 +646,45 @@ Draw_Grh_Breathing_Err:
     
 End Sub
 
+Sub Draw_Animation(ByRef animationState As tAnimationPlaybackState, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByRef rgb_list() As RGBA)
+    With FxData(ComposedFxData(animationState.ComposedAnimation).Clips(animationState.ActiveClip).Fx)
+        x = x + .OffsetX
+        y = y + .OffsetY
+    End With
+    'Center Grh over X,Y pos
+    If center Then
+        If GrhData(animationState.CurrentGrh).TileWidth <> 1 Then
+            x = x - Int(GrhData(animationState.CurrentGrh).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
+        End If
+
+        If GrhData(animationState.CurrentGrh).TileHeight <> 1 Then
+            y = y - Int(GrhData(animationState.CurrentGrh).TileHeight * TilePixelHeight) + TilePixelHeight
+        End If
+    End If
+    
+    With GrhData(animationState.CurrentGrh)
+
+        Dim Texture As Direct3DTexture8
+
+        Dim TextureWidth As Long, TextureHeight As Long
+        Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
+
+        Call SpriteBatch.SetTexture(Texture)
+
+        Call SpriteBatch.SetAlpha(animationState.Alpha)
+        
+        If .Tx2 = 0 And .FileNum > 0 Then
+            .Tx1 = .sX / TextureWidth
+            .Tx2 = (.sX + .pixelWidth) / TextureWidth
+            .Ty1 = .sY / TextureHeight
+            .Ty2 = (.sY + .pixelHeight) / TextureHeight
+        End If
+
+        Call SpriteBatch.Draw(x, y, .pixelWidth, .pixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, 0)
+
+    End With
+End Sub
+
 Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single, Optional ByVal charindex As Integer)
     
     On Error GoTo Draw_GrhFX_Err
@@ -2165,6 +2204,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
                    
         ' Meditación
+        If .ActiveAnimation.PlaybackState <> Complete Then
+            Call UpdateAnimation(.ActiveAnimation)
+            Call Draw_Animation(.ActiveAnimation, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 4 + .Body.BodyOffset.y, 1, Color)
+        End If
         If .FxIndex <> 0 And .fX.Started <> 0 Then
             Call RGBAList(Color, 255, 255, 255, 180)
 

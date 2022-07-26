@@ -239,6 +239,7 @@ Public Type Char
     MovArmaEscudo As Boolean
     AnimatingBody As Integer
 
+    ActiveAnimation As tAnimationPlaybackState
     fX As grh
     FxIndex As Integer
     BarTime As Single
