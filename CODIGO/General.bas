@@ -1967,10 +1967,8 @@ End Function
 Public Function GetMd5() As String
 
 On Error GoTo Handler
-    Dim full_path_to_exe As String
-    full_path_to_exe = App.Path & "\Argentum.exe"
-    Debug.Assert FileExist(full_path_to_exe, vbNormal)
-    GetMd5 = hashHexFromFile(full_path_to_exe, API_HASH_MD5)
+
+    GetMd5 = MD5File(App.Path & "\Argentum.exe")
     
     Exit Function
     
