@@ -179,50 +179,7 @@ GetElapsedTime_Err:
     
 End Function
 
-Private Function Init_DirectDevice(ByVal ModoAceleracion As CONST_D3DCREATEFLAGS) As Boolean
-On Error GoTo ErrorHandler:
-    
-    ' Retrieve the information about your current display adapter.
-    Call DirectD3D.GetAdapterDisplayMode(D3DADAPTER_DEFAULT, DispMode)
-    
-    With D3DWindow
-    
-        .Windowed = True
 
-        'If VSyncActivado Then
-        '    .SwapEffect = D3DSWAPEFFECT_COPY_VSYNC
-        'Else
-        .SwapEffect = D3DSWAPEFFECT_DISCARD
-        'End If
-        
-        .BackBufferFormat = DispMode.format
-        
-        'set color depth
-        .BackBufferWidth = 1024
-        .BackBufferHeight = 768
-        
-        .EnableAutoDepthStencil = 1
-        .AutoDepthStencilFormat = D3DFMT_D24S8
-        
-        .hDeviceWindow = frmMain.renderer.hwnd
-        
-    End With
-    RefreshRate = GetDeviceCaps(frmMain.hdc, VREFRESH)
-    If Not DirectDevice Is Nothing Then Set DirectDevice = Nothing
-    
-    Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, D3DWindow.hDeviceWindow, ModoAceleracion, D3DWindow)
-    
-    Init_DirectDevice = True
-    
-    Exit Function
-    
-ErrorHandler:
-    
-    Set DirectDevice = Nothing
-    
-    Init_DirectDevice = False
-
-End Function
 
 Private Sub Engine_InitExtras()
     
@@ -291,44 +248,25 @@ Engine_InitColors_Err:
     
 End Sub
 
-Public Sub Engine_Init()
 
-On Error GoTo ErrHandler:
+
+
+Public Sub engine_init()
+On Error Resume Next
+    Err.Clear
+    If init_dx_objects() <> 0 Then
+        Call MsgBox("DirectX is not working", vbCritical, App.title)
+        End
+    End If
     
-    ' Initialize all DirectX objects.
-    Set DirectX = New DirectX8
-    Set DirectD3D = DirectX.Direct3DCreate()
-    Set DirectD3D8 = New D3DX8
 #If DEBUGGING = 1 Then
     Call list_modes(DirectD3D)
 #End If
-    Select Case ModoAceleracion
-    
-        Case "Auto"
-            If Not Init_DirectDevice(D3DCREATE_HARDWARE_VERTEXPROCESSING) Then
-                If Not Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) Then
-                    If Not Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) Then
-                        
-                        GoTo ErrHandler
-                        
-                    End If
-                End If
-            End If
-                
-        Case "Hardware"
-            If Init_DirectDevice(D3DCREATE_HARDWARE_VERTEXPROCESSING) = False Then GoTo ErrHandler
-            Debug.Print "Modo de Renderizado: HARDWARE"
-            
-        Case "Mixed"
-            If Init_DirectDevice(D3DCREATE_MIXED_VERTEXPROCESSING) = False Then GoTo ErrHandler
-            Debug.Print "Modo de Renderizado: MIXED"
+    If init_dx_device() <> 0 Then
+        Call MsgBox("Faied to init DX device", vbCritical, App.title)
+        End
+    End If
         
-        Case Else
-            If Init_DirectDevice(D3DCREATE_SOFTWARE_VERTEXPROCESSING) = False Then GoTo ErrHandler
-            Debug.Print "Modo de Renderizado: SOFTWARE"
-    
-    End Select
-    
     'Seteamos la matriz de proyeccion.
     Call D3DXMatrixOrthoOffCenterLH(Projection, 0, 1024, 768, 0, -1#, 1#)
     Call D3DXMatrixIdentity(IdentityMatrix)

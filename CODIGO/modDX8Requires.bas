@@ -58,9 +58,6 @@ Public DirectD3D As Direct3D8
 ' use the same object no matter what it is
 Public DirectDevice As Direct3DDevice8
 
-' The D3DDISPLAYMODE type structure that holds
-' the information about your current display adapter.
-Public DispMode  As D3DDISPLAYMODE
     
 ' The D3DPRESENT_PARAMETERS type holds a description of the way
 ' in which DirectX will display it's rendering.
