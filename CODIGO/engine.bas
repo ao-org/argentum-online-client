@@ -299,7 +299,9 @@ On Error GoTo ErrHandler:
     Set DirectX = New DirectX8
     Set DirectD3D = DirectX.Direct3DCreate()
     Set DirectD3D8 = New D3DX8
-
+#If DEBUGGING = 1 Then
+    Call list_modes(DirectD3D)
+#End If
     Select Case ModoAceleracion
     
         Case "Auto"
