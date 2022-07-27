@@ -198,10 +198,10 @@ Public iplst    As String
 '   BEGIN - COMPOSED ANIMATIONS
 ' *********************************************************
 Public Enum ePlaybackType
+    Stopped
     Forward
     Pause
     Backward
-    Complete
 End Enum
 Public Type tAnimationClip
     Fx As Long 'Fx number
@@ -271,6 +271,7 @@ Public Sub CargarRecursos()
     Call CargarCascos
     Call CargarCuerpos
     Call CargarFxs
+    Call LoadComposedFx
     Call CargarPasos
     Call CargarAnimArmas
     Call CargarAnimEscudos
@@ -2219,183 +2220,79 @@ CargarFxs_Err:
 End Sub
 
 Public Sub CalculateCliptime(ByRef clip As tAnimationClip)
-    Dim frameCount As Integer
-    Dim animationSpeed As Single
-    frameCount = GrhData(FxData(clip.Fx).Animacion).NumFrames
-    animationSpeed = GrhData(FxData(clip.Fx).Animacion).speed
-    ' TODO THIS MATH
-    clip.ClipTime = frameCount * animationSpeed
+    clip.ClipTime = GrhData(FxData(clip.fX).Animacion).speed
 End Sub
+
+Public Sub CalculateClipsTime(ByRef animData As tComposedAnimation)
+    Dim i As Integer
+    For i = 1 To UBound(animData.Clips())
+        Call CalculateCliptime(animData.Clips(i))
+    Next i
+End Sub
+
+Public Sub AddComposedMetitation(ByVal index As Long, ByVal startFx As Long, ByVal loopFx As Long)
+    ReDim ComposedFxData(index).Clips(3)
+    ComposedFxData(index).Clips(1).fX = startFx
+    ComposedFxData(index).Clips(1).LoopCount = 0
+    ComposedFxData(index).Clips(2).fX = loopFx
+    ComposedFxData(index).Clips(2).LoopCount = -1
+    ComposedFxData(index).Clips(3).fX = startFx
+    ComposedFxData(index).Clips(3).LoopCount = 0
+    ComposedFxData(index).Clips(3).Playback = Backward
+    Call CalculateClipsTime(ComposedFxData(index))
+    ComposedFxData(index).Clips(3).ClipTime = ComposedFxData(index).Clips(3).ClipTime / 2
+End Sub
+
+
 Public Sub LoadComposedFx()
-    ReDim ComposedFxData(1 To 11) As tComposedAnimation
+    ReDim ComposedFxData(1 To 21) As tComposedAnimation
     
     ReDim ComposedFxData(1).Clips(1)
     ComposedFxData(1).Clips(1).Fx = 115
     ComposedFxData(1).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(1).Clips(1))
     
     ReDim ComposedFxData(2).Clips(1)
-    ComposedFxData(1).Clips(1).Fx = 116
-    ComposedFxData(1).Clips(1).LoopCount = -1
+    ComposedFxData(2).Clips(1).fX = 116
+    ComposedFxData(2).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(2).Clips(1))
     
     ReDim ComposedFxData(3).Clips(1)
     ComposedFxData(3).Clips(1).Fx = 117
     ComposedFxData(3).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(3).Clips(1))
     
     ReDim ComposedFxData(4).Clips(1)
     ComposedFxData(4).Clips(1).Fx = 118
     ComposedFxData(4).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(4).Clips(1))
     
     ReDim ComposedFxData(5).Clips(1)
     ComposedFxData(5).Clips(1).Fx = 119
     ComposedFxData(5).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(5).Clips(1))
     
     ReDim ComposedFxData(6).Clips(1)
     ComposedFxData(6).Clips(1).Fx = 120
     ComposedFxData(6).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(6).Clips(1))
     
-    ReDim ComposedFxData(7).Clips(3)
-    ComposedFxData(7).Clips(1).Fx = 122
-    ComposedFxData(7).Clips(1).LoopCount = 0
-    ComposedFxData(7).Clips(2).Fx = 126
-    ComposedFxData(7).Clips(2).LoopCount = -1
-    ComposedFxData(7).Clips(3).Fx = 122
-    ComposedFxData(7).Clips(3).LoopCount = 0
-    ComposedFxData(7).Clips(3).Playback = Backward
+    Call AddComposedMetitation(7, 122, 126)
+    Call AddComposedMetitation(8, 123, 130)
+    Call AddComposedMetitation(9, 124, 134)
+    Call AddComposedMetitation(10, 127, 126)
+    Call AddComposedMetitation(11, 128, 126)
+    Call AddComposedMetitation(12, 129, 126)
+    Call AddComposedMetitation(13, 131, 130)
+    Call AddComposedMetitation(14, 132, 130)
+    Call AddComposedMetitation(15, 133, 130)
+    Call AddComposedMetitation(16, 135, 134)
+    Call AddComposedMetitation(17, 136, 134)
+    Call AddComposedMetitation(18, 137, 134)
+    Call AddComposedMetitation(19, 139, 138)
+    Call AddComposedMetitation(20, 140, 138)
+    Call AddComposedMetitation(21, 141, 138)
     
-    ReDim ComposedFxData(8).Clips(3)
-    ComposedFxData(8).Clips(1).Fx = 123
-    ComposedFxData(8).Clips(1).LoopCount = 0
-    ComposedFxData(8).Clips(2).Fx = 126
-    ComposedFxData(8).Clips(2).LoopCount = -1
-    ComposedFxData(8).Clips(3).Fx = 130
-    ComposedFxData(8).Clips(3).LoopCount = 0
-    ComposedFxData(8).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(9).Clips(3)
-    ComposedFxData(9).Clips(1).Fx = 125
-    ComposedFxData(9).Clips(1).LoopCount = 0
-    ComposedFxData(9).Clips(2).Fx = 134
-    ComposedFxData(9).Clips(2).LoopCount = -1
-    ComposedFxData(9).Clips(3).Fx = 125
-    ComposedFxData(9).Clips(3).LoopCount = 0
-    ComposedFxData(9).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(10).Clips(3)
-    ComposedFxData(10).Clips(1).Fx = 127
-    ComposedFxData(10).Clips(1).LoopCount = 0
-    ComposedFxData(10).Clips(2).Fx = 126
-    ComposedFxData(10).Clips(2).LoopCount = -1
-    ComposedFxData(10).Clips(3).Fx = 127
-    ComposedFxData(10).Clips(3).LoopCount = 0
-    ComposedFxData(10).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(10).Clips(3)
-    ComposedFxData(11).Clips(1).Fx = 127
-    ComposedFxData(11).Clips(1).LoopCount = 0
-    ComposedFxData(11).Clips(2).Fx = 126
-    ComposedFxData(11).Clips(2).LoopCount = -1
-    ComposedFxData(11).Clips(3).Fx = 127
-    ComposedFxData(11).Clips(3).LoopCount = 0
-    ComposedFxData(11).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(12).Clips(3)
-    ComposedFxData(12).Clips(1).Fx = 128
-    ComposedFxData(12).Clips(1).LoopCount = 0
-    ComposedFxData(12).Clips(2).Fx = 126
-    ComposedFxData(12).Clips(2).LoopCount = -1
-    ComposedFxData(12).Clips(3).Fx = 128
-    ComposedFxData(12).Clips(3).LoopCount = 0
-    ComposedFxData(12).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(13).Clips(3)
-    ComposedFxData(13).Clips(1).Fx = 129
-    ComposedFxData(13).Clips(1).LoopCount = 0
-    ComposedFxData(13).Clips(2).Fx = 126
-    ComposedFxData(13).Clips(2).LoopCount = -1
-    ComposedFxData(13).Clips(3).Fx = 129
-    ComposedFxData(13).Clips(3).LoopCount = 0
-    ComposedFxData(13).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(14).Clips(3)
-    ComposedFxData(14).Clips(1).Fx = 131
-    ComposedFxData(14).Clips(1).LoopCount = 0
-    ComposedFxData(14).Clips(2).Fx = 130
-    ComposedFxData(14).Clips(2).LoopCount = -1
-    ComposedFxData(14).Clips(3).Fx = 131
-    ComposedFxData(14).Clips(3).LoopCount = 0
-    ComposedFxData(14).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(15).Clips(3)
-    ComposedFxData(15).Clips(1).Fx = 132
-    ComposedFxData(15).Clips(1).LoopCount = 0
-    ComposedFxData(15).Clips(2).Fx = 130
-    ComposedFxData(15).Clips(2).LoopCount = -1
-    ComposedFxData(15).Clips(3).Fx = 132
-    ComposedFxData(15).Clips(3).LoopCount = 0
-    ComposedFxData(15).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(16).Clips(3)
-    ComposedFxData(16).Clips(1).Fx = 133
-    ComposedFxData(16).Clips(1).LoopCount = 0
-    ComposedFxData(16).Clips(2).Fx = 130
-    ComposedFxData(16).Clips(2).LoopCount = -1
-    ComposedFxData(16).Clips(3).Fx = 133
-    ComposedFxData(16).Clips(3).LoopCount = 0
-    ComposedFxData(16).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(17).Clips(3)
-    ComposedFxData(17).Clips(1).Fx = 135
-    ComposedFxData(17).Clips(1).LoopCount = 0
-    ComposedFxData(17).Clips(2).Fx = 134
-    ComposedFxData(17).Clips(2).LoopCount = -1
-    ComposedFxData(17).Clips(3).Fx = 135
-    ComposedFxData(17).Clips(3).LoopCount = 0
-    ComposedFxData(17).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(18).Clips(3)
-    ComposedFxData(18).Clips(1).Fx = 136
-    ComposedFxData(18).Clips(1).LoopCount = 0
-    ComposedFxData(18).Clips(2).Fx = 134
-    ComposedFxData(18).Clips(2).LoopCount = -1
-    ComposedFxData(18).Clips(3).Fx = 136
-    ComposedFxData(18).Clips(3).LoopCount = 0
-    ComposedFxData(18).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(19).Clips(3)
-    ComposedFxData(19).Clips(1).Fx = 137
-    ComposedFxData(19).Clips(1).LoopCount = 0
-    ComposedFxData(19).Clips(2).Fx = 134
-    ComposedFxData(19).Clips(2).LoopCount = -1
-    ComposedFxData(19).Clips(3).Fx = 137
-    ComposedFxData(19).Clips(3).LoopCount = 0
-    ComposedFxData(19).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(20).Clips(3)
-    ComposedFxData(20).Clips(1).Fx = 139
-    ComposedFxData(20).Clips(1).LoopCount = 0
-    ComposedFxData(20).Clips(2).Fx = 138
-    ComposedFxData(20).Clips(2).LoopCount = -1
-    ComposedFxData(20).Clips(3).Fx = 139
-    ComposedFxData(20).Clips(3).LoopCount = 0
-    ComposedFxData(20).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(21).Clips(3)
-    ComposedFxData(21).Clips(1).Fx = 140
-    ComposedFxData(21).Clips(1).LoopCount = 0
-    ComposedFxData(21).Clips(2).Fx = 138
-    ComposedFxData(21).Clips(2).LoopCount = -1
-    ComposedFxData(21).Clips(3).Fx = 140
-    ComposedFxData(21).Clips(3).LoopCount = 0
-    ComposedFxData(21).Clips(3).Playback = Backward
-    
-    ReDim ComposedFxData(21).Clips(3)
-    ComposedFxData(21).Clips(1).Fx = 141
-    ComposedFxData(21).Clips(1).LoopCount = 0
-    ComposedFxData(21).Clips(2).Fx = 138
-    ComposedFxData(21).Clips(2).LoopCount = -1
-    ComposedFxData(21).Clips(3).Fx = 141
-    ComposedFxData(21).Clips(3).LoopCount = 0
-    ComposedFxData(21).Clips(3).Playback = Backward
 End Sub
 
 Public Function LoadGrhData() As Boolean

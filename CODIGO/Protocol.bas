@@ -6354,13 +6354,15 @@ Private Sub HandleMeditateToggle()
     With charlist(charindex)
 
         If fX <> 0 Then
-            Call InitGrh(.fX, FxData(fX).Animacion)
-
+            Call StartAnimation(.ActiveAnimation, 19)
+            'Call InitGrh(.fX, FxData(fX).Animacion)
+        Else
+            Call ChangeToClip(.ActiveAnimation, 3)
         End If
         
-        .FxIndex = fX
-        .fX.Loops = -1
-        .fX.AnimacionContador = 0
+        '.FxIndex = fX
+        '.fX.Loops = -1
+        '.fX.AnimacionContador = 0
 
     End With
     
