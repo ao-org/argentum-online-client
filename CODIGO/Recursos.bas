@@ -194,6 +194,28 @@ Public iplst    As String
 ' *********************************************************
 '   FIN - CARGA DE MAPAS
 ' *********************************************************
+' *********************************************************
+'   BEGIN - COMPOSED ANIMATIONS
+' *********************************************************
+Public Enum ePlaybackType
+    Stopped
+    Forward
+    Pause
+    Backward
+End Enum
+Public Type tAnimationClip
+    Fx As Long 'Fx number
+    LoopCount As Long 'number of loops for the animation, -1 for infintite
+    Playback As ePlaybackType ' direction of the playback
+    ClipTime As Long 'Calculated time for this clip
+End Type
+
+Public Type tComposedAnimation
+    Clips() As tAnimationClip
+End Type
+' *********************************************************
+'   END - COMPOSED ANIMATIONS
+' *********************************************************
 
 ''''''''''''''' CARGA DE NPCS DATA MAP QUEST QCYO VIEJA nO ME IMPORTA NADA '''''''''''''''''''''''''''''''
 
@@ -205,7 +227,7 @@ Private Type t_Position
 End Type
 
 Public Type t_QuestNPCMapData
-    Position As Position
+    Position As t_Position
     NPCNumber As Integer
     State As Integer
 End Type
@@ -249,6 +271,7 @@ Public Sub CargarRecursos()
     Call CargarCascos
     Call CargarCuerpos
     Call CargarFxs
+    Call LoadComposedFx
     Call CargarPasos
     Call CargarAnimArmas
     Call CargarAnimEscudos
@@ -708,14 +731,14 @@ Sub CargarDatosMapa(ByVal map As Integer)
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Maps, App.path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
             Debug.Print "Error al cargar datos del mapa " & map
             Exit Sub
         End If
 
         MapRoute = Windows_Temp_Dir & "mapa" & map & ".csm"
     #Else
-        MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
+        MapRoute = App.path & "\..\Recursos\Mapas\mapa" & map & ".csm"
     #End If
 
     fh = FreeFile
@@ -889,7 +912,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
                             Dim subelemento As ListItem
 
-                            Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).Name)
+                            Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).name)
 
                             subelemento.SubItems(1) = NpcWorlds(c)
                             subelemento.SubItems(2) = c
@@ -977,7 +1000,7 @@ Public Sub CargarMapa(ByVal map As Integer)
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Maps, App.Path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Maps, App.path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "No se pudo cargar el mapa " & map & ", el juego se cerrará. Si su personaje se encuentra en un mapa inválido, por favor, avise a un GM."
             Call MsgBox(Err.Description)
             End
@@ -987,7 +1010,7 @@ Public Sub CargarMapa(ByVal map As Integer)
         MapRoute = Windows_Temp_Dir & "mapa" & map & ".csm"
     #Else
     
-        MapRoute = App.Path & "\..\Recursos\Mapas\mapa" & map & ".csm"
+        MapRoute = App.path & "\..\Recursos\Mapas\mapa" & map & ".csm"
         
     #End If
     
@@ -1294,7 +1317,7 @@ Public Sub CargarParticulas()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "particles.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de particles.ini!"
             MsgBox Err.Description
 
@@ -1302,7 +1325,7 @@ Public Sub CargarParticulas()
 
         StreamFile = Windows_Temp_Dir & "particles.ini"
     #Else
-        StreamFile = App.Path & "\..\Recursos\init\particles.ini"
+        StreamFile = App.path & "\..\Recursos\init\particles.ini"
     #End If
 
     ParticulasTotales = Val(General_Var_Get(StreamFile, "INIT", "Total"))
@@ -1312,7 +1335,7 @@ Public Sub CargarParticulas()
     
     'fill StreamData array with info from Particles.ini
     For loopc = 1 To ParticulasTotales
-        StreamData(loopc).Name = General_Var_Get(StreamFile, Val(loopc), "Name")
+        StreamData(loopc).name = General_Var_Get(StreamFile, Val(loopc), "Name")
         StreamData(loopc).NumOfParticles = General_Var_Get(StreamFile, Val(loopc), "NumOfParticles")
         StreamData(loopc).x1 = General_Var_Get(StreamFile, Val(loopc), "X1")
         StreamData(loopc).y1 = General_Var_Get(StreamFile, Val(loopc), "Y1")
@@ -1403,7 +1426,7 @@ Public Sub CargarParticulasBinary()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "particles.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "particles.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de particles.ind!"
             MsgBox Err.Description
 
@@ -1411,7 +1434,7 @@ Public Sub CargarParticulasBinary()
 
         StreamFile = Windows_Temp_Dir & "particles.ind"
     #Else
-        StreamFile = App.Path & "\..\Recursos\init\particles.ind"
+        StreamFile = App.path & "\..\Recursos\init\particles.ind"
     #End If
 
     Dim n As Integer
@@ -1490,14 +1513,14 @@ Public Sub CargarIndicesOBJ()
     Dim i       As Integer
     
     #If Compresion = 1 Then
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "localindex.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "localindex.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de localindex.dat!"
             MsgBox Err.Description
 
         End If
         ObjFile = Windows_Temp_Dir & "localindex.dat"
     #Else
-        ObjFile = App.Path & "\..\Recursos\init\localindex.dat"
+        ObjFile = App.path & "\..\Recursos\init\localindex.dat"
     #End If
     
             
@@ -1535,11 +1558,11 @@ Public Sub CargarIndicesOBJ()
         
         Select Case language
             Case e_language.English
-                ObjData(Obj).Name = IIf(Leer.GetValue("OBJ" & Obj, "en_Name") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Name"), Leer.GetValue("OBJ" & Obj, "Name"))
+                ObjData(Obj).name = IIf(Leer.GetValue("OBJ" & Obj, "en_Name") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Name"), Leer.GetValue("OBJ" & Obj, "Name"))
                 ObjData(Obj).info = IIf(Leer.GetValue("OBJ" & Obj, "en_Info") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Info"), Leer.GetValue("OBJ" & Obj, "Info"))
                 ObjData(Obj).Texto = IIf(Leer.GetValue("OBJ" & Obj, "en_Texto") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Texto"), Leer.GetValue("OBJ" & Obj, "Texto"))
             Case e_language.Spanish
-                ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
+                ObjData(Obj).name = Leer.GetValue("OBJ" & Obj, "Name")
                 ObjData(Obj).info = Leer.GetValue("OBJ" & Obj, "Info")
                 ObjData(Obj).Texto = Leer.GetValue("OBJ" & Obj, "Texto")
         End Select
@@ -1567,13 +1590,13 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).SkHerreria = Val(Leer.GetValue("OBJ" & Obj, "SkHerreria"))
         ObjData(Obj).SkPociones = Val(Leer.GetValue("OBJ" & Obj, "SkPociones"))
         ObjData(Obj).Sksastreria = Val(Leer.GetValue("OBJ" & Obj, "Sksastreria"))
-        ObjData(Obj).valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
+        ObjData(Obj).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
         ObjData(Obj).Agarrable = Val(Leer.GetValue("OBJ" & Obj, "Agarrable"))
         ObjData(Obj).Llave = Val(Leer.GetValue("OBJ" & Obj, "Llave"))
             
         If Val(Leer.GetValue("OBJ" & Obj, "NFT")) = 1 Then
-            ObjShop(i).Name = Leer.GetValue("OBJ" & Obj, "Name")
-            ObjShop(i).valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
+            ObjShop(i).name = Leer.GetValue("OBJ" & Obj, "Name")
+            ObjShop(i).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
             ObjShop(i).objNum = Obj
             ReDim Preserve ObjShop(1 To (UBound(ObjShop) + 1)) As ObjDatas
         End If
@@ -1589,16 +1612,16 @@ Public Sub CargarIndicesOBJ()
         
         Select Case language
             Case e_language.English
-                NpcData(Npc).Name = IIf(Leer.GetValue("npc" & Npc, "en_Name") <> vbNullString, Leer.GetValue("npc" & Npc, "en_Name"), Leer.GetValue("npc" & Npc, "Name"))
+                NpcData(Npc).name = IIf(Leer.GetValue("npc" & Npc, "en_Name") <> vbNullString, Leer.GetValue("npc" & Npc, "en_Name"), Leer.GetValue("npc" & Npc, "Name"))
                 NpcData(Npc).desc = IIf(Leer.GetValue("npc" & Npc, "en_desc") <> vbNullString, Leer.GetValue("npc" & Npc, "en_desc"), Leer.GetValue("npc" & Npc, "desc"))
             Case e_language.Spanish
-                NpcData(Npc).Name = Leer.GetValue("npc" & Npc, "Name")
+                NpcData(Npc).name = Leer.GetValue("npc" & Npc, "Name")
                 NpcData(Npc).desc = Leer.GetValue("npc" & Npc, "desc")
         End Select
         
 
-        If NpcData(Npc).Name = "" Then
-            NpcData(Npc).Name = "Vacío"
+        If NpcData(Npc).name = "" Then
+            NpcData(Npc).name = "Vacío"
 
         End If
 
@@ -1651,7 +1674,7 @@ Public Sub CargarIndicesOBJ()
     
     For Hechizo = 1 To 350
         DoEvents
-        NameMaps(Hechizo).Name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
+        NameMaps(Hechizo).name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
         NameMaps(Hechizo).desc = Leer.GetValue("NameMapa", "Mapa" & Hechizo & "Desc")
     Next Hechizo
     
@@ -1722,7 +1745,7 @@ Public Sub Cargarmapsworlddata()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "mapsworlddata.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "mapsworlddata.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de mapsworlddata.dat!"
             MsgBox Err.Description
 
@@ -1730,7 +1753,7 @@ Public Sub Cargarmapsworlddata()
     
         MapFile = Windows_Temp_Dir & "mapsworlddata.dat"
     #Else
-        MapFile = App.Path & "\..\Recursos\init\mapsworlddata.dat"
+        MapFile = App.path & "\..\Recursos\init\mapsworlddata.dat"
     #End If
 
     Dim Leer As New clsIniManager
@@ -1780,7 +1803,7 @@ Sub CargarMoldes()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "moldes.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "moldes.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de moldes.ini!"
             MsgBox Err.Description
 
@@ -1788,7 +1811,7 @@ Sub CargarMoldes()
 
         Call Loader.Initialize(Windows_Temp_Dir & "moldes.ini")
     #Else
-        Call Loader.Initialize(App.Path & "\..\Recursos\init\moldes.ini")
+        Call Loader.Initialize(App.path & "\..\Recursos\init\moldes.ini")
     #End If
     
     Dim NumMoldes As Integer
@@ -1827,7 +1850,7 @@ Sub CargarZonas()
     Dim i As Integer
     Set Reader = New clsIniManager
     
-    Call Reader.Initialize(App.Path & "\..\Recursos\Dat\zonas.dat")
+    Call Reader.Initialize(App.path & "\..\Recursos\Dat\zonas.dat")
     
     cantidadZonas = Reader.GetValue("Config", "Cantidad")
     
@@ -1863,7 +1886,7 @@ Sub CargarCabezas()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cabezas.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "cabezas.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
 
@@ -1871,7 +1894,7 @@ Sub CargarCabezas()
 
         Open Windows_Temp_Dir & "cabezas.ind" For Binary Access Read As #n
     #Else
-        Open App.Path & "\..\Recursos\init\cabezas.ind" For Binary Access Read As #n
+        Open App.path & "\..\Recursos\init\cabezas.ind" For Binary Access Read As #n
     #End If
 
     
@@ -1930,7 +1953,7 @@ Sub CargarCascos()
   
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cascos.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "cascos.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
 
@@ -1938,7 +1961,7 @@ Sub CargarCascos()
 
         Open Windows_Temp_Dir & "cascos.ind" For Binary Access Read As #n
     #Else
-        Open App.Path & "\..\Recursos\init\cascos.ind" For Binary Access Read As #n
+        Open App.path & "\..\Recursos\init\cascos.ind" For Binary Access Read As #n
     #End If
         
        
@@ -2018,7 +2041,7 @@ Sub CargarCuerpos()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "cuerpos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "cuerpos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de cuerpos.dat!"
             MsgBox Err.Description
 
@@ -2026,7 +2049,7 @@ Sub CargarCuerpos()
 
         Call Loader.Initialize(Windows_Temp_Dir & "cuerpos.dat")
     #Else
-        Call Loader.Initialize(App.Path & "\..\Recursos\init\cuerpos.dat")
+        Call Loader.Initialize(App.path & "\..\Recursos\init\cuerpos.dat")
     #End If
     
     NumCuerpos = Val(Loader.GetValue("INIT", "NumBodies"))
@@ -2156,7 +2179,7 @@ Sub CargarFxs()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "fxs.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "fxs.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de fxs.ind!"
             MsgBox Err.Description
 
@@ -2164,7 +2187,7 @@ Sub CargarFxs()
 
         Open Windows_Temp_Dir & "fxs.ind" For Binary Access Read As #n
     #Else
-        Open App.Path & "\..\Recursos\init\fxs.ind" For Binary Access Read As #n
+        Open App.path & "\..\Recursos\init\fxs.ind" For Binary Access Read As #n
     #End If
        
     
@@ -2176,6 +2199,7 @@ Sub CargarFxs()
     
     'Resize array
     ReDim FxData(1 To NumFxs) As tIndiceFx
+    ReDim FxToAnimationMap(1 To NumFxs)
     
     For i = 1 To NumFxs
         Get #n, , FxData(i)
@@ -2196,6 +2220,83 @@ CargarFxs_Err:
     
 End Sub
 
+Public Sub CalculateCliptime(ByRef clip As tAnimationClip)
+    clip.ClipTime = GrhData(FxData(clip.fX).Animacion).speed
+End Sub
+
+Public Sub CalculateClipsTime(ByRef animData As tComposedAnimation)
+    Dim i As Integer
+    For i = 1 To UBound(animData.Clips())
+        Call CalculateCliptime(animData.Clips(i))
+    Next i
+End Sub
+
+Public Sub AddComposedMetitation(ByVal index As Long, ByVal startFx As Long, ByVal loopFx As Long)
+    ReDim ComposedFxData(index).Clips(3)
+    ComposedFxData(index).Clips(1).fX = startFx
+    ComposedFxData(index).Clips(1).LoopCount = 0
+    ComposedFxData(index).Clips(2).fX = loopFx
+    ComposedFxData(index).Clips(2).LoopCount = -1
+    ComposedFxData(index).Clips(3).fX = startFx
+    ComposedFxData(index).Clips(3).LoopCount = 0
+    ComposedFxData(index).Clips(3).Playback = Backward
+    Call CalculateClipsTime(ComposedFxData(index))
+    ComposedFxData(index).Clips(3).ClipTime = ComposedFxData(index).Clips(3).ClipTime / 2
+    FxToAnimationMap(StartFx) = Index
+End Sub
+
+
+Public Sub LoadComposedFx()
+    ReDim ComposedFxData(1 To 21) As tComposedAnimation
+    
+    ReDim ComposedFxData(1).Clips(1)
+    ComposedFxData(1).Clips(1).Fx = 115
+    ComposedFxData(1).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(1).Clips(1))
+    
+    ReDim ComposedFxData(2).Clips(1)
+    ComposedFxData(2).Clips(1).fX = 116
+    ComposedFxData(2).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(2).Clips(1))
+    
+    ReDim ComposedFxData(3).Clips(1)
+    ComposedFxData(3).Clips(1).Fx = 117
+    ComposedFxData(3).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(3).Clips(1))
+    
+    ReDim ComposedFxData(4).Clips(1)
+    ComposedFxData(4).Clips(1).Fx = 118
+    ComposedFxData(4).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(4).Clips(1))
+    
+    ReDim ComposedFxData(5).Clips(1)
+    ComposedFxData(5).Clips(1).Fx = 119
+    ComposedFxData(5).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(5).Clips(1))
+    
+    ReDim ComposedFxData(6).Clips(1)
+    ComposedFxData(6).Clips(1).Fx = 120
+    ComposedFxData(6).Clips(1).LoopCount = -1
+    Call CalculateCliptime(ComposedFxData(6).Clips(1))
+    
+    Call AddComposedMetitation(7, 122, 126)
+    Call AddComposedMetitation(8, 123, 130)
+    Call AddComposedMetitation(9, 124, 134)
+    Call AddComposedMetitation(10, 127, 126)
+    Call AddComposedMetitation(11, 128, 126)
+    Call AddComposedMetitation(12, 129, 126)
+    Call AddComposedMetitation(13, 131, 130)
+    Call AddComposedMetitation(14, 132, 130)
+    Call AddComposedMetitation(15, 133, 130)
+    Call AddComposedMetitation(16, 135, 134)
+    Call AddComposedMetitation(17, 136, 134)
+    Call AddComposedMetitation(18, 137, 134)
+    Call AddComposedMetitation(19, 139, 138)
+    Call AddComposedMetitation(20, 140, 138)
+    Call AddComposedMetitation(21, 141, 138)
+    
+End Sub
+
 Public Function LoadGrhData() As Boolean
 
     On Error GoTo ErrorHandler
@@ -2211,7 +2312,7 @@ Public Function LoadGrhData() As Boolean
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "graficos.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "graficos.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de recurso!"
             GoTo ErrorHandler
 
@@ -2219,7 +2320,7 @@ Public Function LoadGrhData() As Boolean
     
         Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #Handle
     #Else
-        Open App.Path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #Handle
+        Open App.path & "\..\Recursos\init\graficos.ind" For Binary Access Read As #Handle
     #End If
     
     'Get file version
@@ -2356,14 +2457,14 @@ Public Sub LoadGrhIni()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "Graficos.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "Graficos.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de recurso!"
             GoTo hErr
         End If
     
         Open Windows_Temp_Dir & "Graficos.ini" For Input As #FileHandle
     #Else
-        Open App.Path & "\..\Recursos\init\Graficos.ini" For Input As #FileHandle
+        Open App.path & "\..\Recursos\init\Graficos.ini" For Input As #FileHandle
     #End If
 
     ' Leemos el total de Grhs
@@ -2548,7 +2649,7 @@ Sub CargarAnimArmas()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de armas.dat!"
             MsgBox Err.Description
 
@@ -2556,7 +2657,7 @@ Sub CargarAnimArmas()
         
         Call Loader.Initialize(Windows_Temp_Dir & "armas.dat")
     #Else
-        Call Loader.Initialize(App.Path & "\..\Recursos\init\armas.dat")
+        Call Loader.Initialize(App.path & "\..\Recursos\init\armas.dat")
     #End If
     
     NumWeaponAnims = Val(Loader.GetValue("INIT", "NumArmas"))
@@ -2670,7 +2771,7 @@ Sub CargarColores()
 
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "colores.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "colores.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de colores.dat!"
             MsgBox Err.Description
 
@@ -2678,7 +2779,7 @@ Sub CargarColores()
 
         archivoC = Windows_Temp_Dir & "colores.dat"
     #Else
-        archivoC = App.Path & "\..\Recursos\init\colores.dat"
+        archivoC = App.path & "\..\Recursos\init\colores.dat"
     #End If
     
     If Not FileExist(archivoC, vbArchive) Then
@@ -2725,14 +2826,14 @@ Sub CargarCrafteo()
     Dim FileName As String
 
     #If Compresion = 1 Then
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "crafteo.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "crafteo.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "No se puede cargar el archivo de crafteo.ini"
             MsgBox Err.Description
         End If
         
         FileName = Windows_Temp_Dir & "crafteo.ini"
     #Else
-        FileName = App.Path & "\..\Recursos\init\crafteo.ini"
+        FileName = App.path & "\..\Recursos\init\crafteo.ini"
     #End If
     
     Dim Reader As clsIniManager
@@ -2805,7 +2906,7 @@ Sub CargarAnimEscudos()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de escudos.dat!"
             MsgBox Err.Description
 
@@ -2813,7 +2914,7 @@ Sub CargarAnimEscudos()
 
         Call Loader.Initialize(Windows_Temp_Dir & "escudos.dat")
     #Else
-        Call Loader.Initialize(App.Path & "\..\Recursos\init\escudos.dat")
+        Call Loader.Initialize(App.path & "\..\Recursos\init\escudos.dat")
     #End If
     
     
@@ -2917,7 +3018,7 @@ End Sub
 
 Sub LoadFonts()
     If LoadFont("Cardo.ttf") Then
-        frmMain.NombrePJ.font.Name = "Cardo"
+        frmMain.NombrePJ.font.name = "Cardo"
     End If
 
     If LoadFont("Alegreya Sans AO.ttf") Then
@@ -2925,10 +3026,10 @@ Sub LoadFonts()
         Dim Middle As Integer
     
         For Each CurControl In frmMain.Controls
-            If CurControl.Name <> "NombrePJ" Then
+            If CurControl.name <> "NombrePJ" Then
                 Select Case TypeName(CurControl)
                     Case "Label"
-                        CurControl.font.Name = "Alegreya Sans AO"
+                        CurControl.font.name = "Alegreya Sans AO"
 
                         ' Centrar texto verticalmente
                         If Not CurControl.AutoSize Then
@@ -2938,7 +3039,7 @@ Sub LoadFonts()
                         End If
                         
                     Case "RichTextBox", "ListBox"
-                        CurControl.font.Name = "Alegreya Sans AO"
+                        CurControl.font.name = "Alegreya Sans AO"
                 End Select
             End If
         Next
@@ -2976,9 +3077,9 @@ Sub LoadFonts()
     #End If
 End Sub
 
-Function LoadFont(Name As String) As Boolean
+Function LoadFont(name As String) As Boolean
     Static YaMostreError As Boolean
-    LoadFont = AddFontResourceEx(App.Path & "\..\Recursos\OUTPUT\" & Name, FR_PRIVATE, 0&) <> 0
+    LoadFont = AddFontResourceEx(App.path & "\..\Recursos\OUTPUT\" & name, FR_PRIVATE, 0&) <> 0
 
     If Not YaMostreError And Not LoadFont Then
         Call MsgBox("No se pudieron cargar algunas fuentes, reinstale el juego para repararlas.", vbOKOnly, "Error al cargar - Argentum20")
@@ -2990,7 +3091,7 @@ Public Sub CargarNPCsMapData()
     Dim fh As Integer
     fh = FreeFile
     
-    Open App.Path & "\..\Recursos\OUTPUT\QuestNPCsMapData.bin" For Binary As fh
+    Open App.path & "\..\Recursos\OUTPUT\QuestNPCsMapData.bin" For Binary As fh
     
     Dim NumMaps As Integer
     NumMaps = 600 ' cargar  desde archivo

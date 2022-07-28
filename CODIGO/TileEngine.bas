@@ -239,8 +239,8 @@ Public Type Char
     MovArmaEscudo As Boolean
     AnimatingBody As Integer
 
-    fX As grh
-    FxIndex As Integer
+    ActiveAnimation As tAnimationPlaybackState
+
     BarTime As Single
     MaxBarTime As Integer
     BarAccion As Byte
@@ -487,6 +487,8 @@ Public GrhData()               As GrhData 'Guarda todos los grh
 Public BodyData()              As BodyData
 Public HeadData()              As HeadData
 Public FxData()                As tIndiceFx
+Public FxToAnimationMap()      As Integer
+Public ComposedFxData()        As tComposedAnimation
 Public WeaponAnimData()        As WeaponAnimData
 Public ShieldAnimData()        As ShieldAnimData
 Public CascoAnimData()         As HeadData

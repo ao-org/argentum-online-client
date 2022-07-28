@@ -53,8 +53,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .MaxBarTime = 0
         .UserMaxHp = 0
         .UserMinHp = 0
-        
-        .FxIndex = 0
+        .ActiveAnimation.PlaybackState = Stopped
         
     End With
     
