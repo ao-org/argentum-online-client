@@ -2199,6 +2199,7 @@ Sub CargarFxs()
     
     'Resize array
     ReDim FxData(1 To NumFxs) As tIndiceFx
+    ReDim FxToAnimationMap(1 To NumFxs)
     
     For i = 1 To NumFxs
         Get #n, , FxData(i)
@@ -2241,6 +2242,7 @@ Public Sub AddComposedMetitation(ByVal index As Long, ByVal startFx As Long, ByV
     ComposedFxData(index).Clips(3).Playback = Backward
     Call CalculateClipsTime(ComposedFxData(index))
     ComposedFxData(index).Clips(3).ClipTime = ComposedFxData(index).Clips(3).ClipTime / 2
+    FxToAnimationMap(StartFx) = Index
 End Sub
 
 

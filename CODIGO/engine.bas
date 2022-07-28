@@ -648,7 +648,10 @@ End Sub
 
 Sub Draw_Animation(ByRef animationState As tAnimationPlaybackState, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByRef rgb_list() As RGBA)
 On Error GoTo Draw_Animation_Err
-    With FxData(ComposedFxData(animationState.ComposedAnimation).Clips(animationState.ActiveClip).Fx)
+    If animationState.PlaybackState = Stopped Then
+        Exit Sub
+    End If
+    With FxData(GetFx(animationState))
         x = x + .OffsetX
         y = y + .OffsetY
     End With
@@ -663,7 +666,12 @@ On Error GoTo Draw_Animation_Err
         End If
     End If
     
+    
     With GrhData(animationState.CurrentGrh)
+        If animationState.Fx > 0 Or animationState.ActiveClip = 1 Then
+            
+        End If
+        Call RGBAList(rgb_list, 255, 255, 255, animationState.Alpha)
         With GrhData(.Frames(animationState.CurrentFrame))
             Dim Texture As Direct3DTexture8
     
@@ -730,12 +738,6 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
         grh.Alpha = grh.Alpha - 1
 
         Call RGBAList(rgb_list, 255, 255, 255, grh.Alpha)
-
-        If grh.Alpha = 0 And charindex > 0 Then
-            charlist(charindex).fX.Started = 0
-            Exit Sub
-
-        End If
 
     End If
     
@@ -2211,12 +2213,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         If .ActiveAnimation.PlaybackState <> Stopped Then
             Call UpdateAnimation(.ActiveAnimation)
             Call Draw_Animation(.ActiveAnimation, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 4 + .Body.BodyOffset.y, 1, Color)
-        End If
-        If .FxIndex <> 0 And .fX.Started <> 0 Then
-            Call RGBAList(Color, 255, 255, 255, 180)
-
-            Call Draw_GrhFX(.fX, PixelOffsetX + FxData(.FxIndex).OffsetX + .Body.BodyOffset.x, PixelOffsetY + FxData(.FxIndex).OffsetY + 4 + .Body.BodyOffset.y, 1, 1, Color, False, , , , charindex)
-       
         End If
 
         If .FxCount > 0 Then

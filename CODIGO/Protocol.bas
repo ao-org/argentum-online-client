@@ -3698,15 +3698,9 @@ Private Sub HandleCharacterCreate()
     helmet = Reader.ReadInt16()
     
     With charlist(charindex)
-        'Call SetCharacterFx(charindex, Reader.ReadInt16(), Reader.ReadInt16())
-        .FxIndex = Reader.ReadInt16
         
+        Call StartFx(.ActiveAnimation, Reader.ReadInt16)
         Reader.ReadInt16 'Ignore loops
-        
-        If .FxIndex > 0 Then
-            Call InitGrh(.fX, FxData(.FxIndex).Animacion)
-
-        End If
         
         Dim NombreYClan As String
         NombreYClan = Reader.ReadString8()
@@ -4061,15 +4055,9 @@ Private Sub HandleCharacterChange()
 
         End If
         
-        'Call SetCharacterFx(charindex, Reader.ReadInt16(), Reader.ReadInt16())
-        .FxIndex = Reader.ReadInt16
+        Call StartFx(.ActiveAnimation, Reader.ReadInt16)
         
         Reader.ReadInt16 'Ignore loops
-        
-        If .FxIndex > 0 Then
-            Call InitGrh(.fX, FxData(.FxIndex).Animacion)
-
-        End If
         
         Dim flags As Byte
         
@@ -4755,13 +4743,6 @@ Private Sub HandleCreateFX()
                 MapData(x, y).charindex = charindex
             End If
         End With
-    End If
-    
-    
-    If fX = 0 Then
-        charlist(charindex).fX.AnimacionContador = 29
-        Exit Sub
-
     End If
     
     Call SetCharacterFx(charindex, fX, Loops)
@@ -6354,15 +6335,10 @@ Private Sub HandleMeditateToggle()
     With charlist(charindex)
 
         If fX <> 0 Then
-            Call StartAnimation(.ActiveAnimation, 19)
-            'Call InitGrh(.fX, FxData(fX).Animacion)
+            Call StartFx(.ActiveAnimation, Fx, -1)
         Else
             Call ChangeToClip(.ActiveAnimation, 3)
         End If
-        
-        '.FxIndex = fX
-        '.fX.Loops = -1
-        '.fX.AnimacionContador = 0
 
     End With
     
