@@ -3366,8 +3366,16 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     
     'Marco
     Call InitGrh(TempGrh, 1169)
+    
+    'Creditos a RevolucionAO By Ladder
+    Call InitGrh(TempGrh, 19337)
+    Draw_Grh TempGrh, 30, 680, 0, 1, cc(), False
+    'Creditos a RevolucionAO By Ladder
 
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
+    
+    
+    
 
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
 
