@@ -320,8 +320,6 @@ End Property
 
 ' Toggle visibility of guild dialogs when user opens guild chatbox
 Public Sub toggle_dialogs_visibility(ByVal visible As Boolean)
-    ' Author: Alexis Caraballo (WyroX)
-    ' Last Modify Date: 30/07/2022
 
     force_visible = visible
     ' Reset the alpha to make the chat visible
