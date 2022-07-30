@@ -13,5 +13,11 @@ Always use lowercase letters and underscore.
 
 `Sub compute_something_nice(byval arg1, byval arg2)`
 
+## Do not include your name in the code
 
+Please do not include comments with your name and date among the code as shown below because this information can easily be found using git.
+```
+   ' Author: Your Name 
+   ' Last Modify Date: XX/ZZ/YYYY
+```
 
