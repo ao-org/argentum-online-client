@@ -3659,31 +3659,18 @@ Private Sub HandleCharacterCreate()
     On Error GoTo ErrHandler
     
     Dim charindex     As Integer
-
     Dim Body          As Integer
-
     Dim Head          As Integer
-
     Dim Heading       As E_Heading
-
     Dim x             As Byte
-
     Dim y             As Byte
-
     Dim weapon        As Integer
-
     Dim shield        As Integer
-
     Dim helmet        As Integer
-
     Dim privs         As Integer
-
     Dim AuraParticula As Byte
-
     Dim ParticulaFx   As Byte
-
     Dim appear        As Byte
-
     Dim group_index   As Integer
     
     charindex = Reader.ReadInt16()
@@ -3698,14 +3685,13 @@ Private Sub HandleCharacterCreate()
     helmet = Reader.ReadInt16()
     
     With charlist(charindex)
-        
-        Call StartFx(.ActiveAnimation, Reader.ReadInt16)
-        Reader.ReadInt16 'Ignore loops
+        Dim loopC, Fx As Integer
+        Fx = Reader.ReadInt16
+        loopC = Reader.ReadInt16
+        Call StartFx(.ActiveAnimation, Fx, loopC)
         
         Dim NombreYClan As String
-        NombreYClan = Reader.ReadString8()
-     
-   '
+        NombreYClan = Reader.ReadString8()   '
     
          
         Dim Pos As Integer
