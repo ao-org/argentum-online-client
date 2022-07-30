@@ -447,7 +447,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2266,6 +2265,7 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
                 If Not SendTxt.Visible Then
                     SendTxtCmsg.Visible = True
                     SendTxtCmsg.SetFocus
+                    Call DialogosClanes.toggle_dialogs_visibility(True)
                 End If
             ElseIf KeyCode = vbKeyEscape And Not UserSaliendo Then
                 frmCerrar.Show , frmMain
@@ -4291,6 +4291,7 @@ Private Sub SendTxtCmsg_KeyUp(KeyCode As Integer, Shift As Integer)
     If SendTxtCmsg.SelStart > 2 Then Call ParseUserCommand("/CMSG " & SendTxtCmsg.Text)
     SendTxtCmsg.Visible = False
     SendTxtCmsg.Text = ""
+    Call DialogosClanes.toggle_dialogs_visibility(False)
   End If
 End Sub
 

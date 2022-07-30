@@ -29,6 +29,7 @@ Private offset       As Single
 Private p_Activo     As Boolean
 Private usedFont     As StdFont
 Private Alpha        As Single
+Private force_visible As Boolean
 Private Const DIALOG_HEIGHT As Integer = 14
 
 
@@ -164,7 +165,7 @@ Public Sub Draw()
 
     Next i
     
-    If Segundos <= 0 Then
+    If Not force_visible And Segundos <= 0 Then
         If Alpha > 0 Then
             Alpha = Alpha - timerTicksPerFrame * 20
             If Alpha < 0 Then Alpha = 0
@@ -316,4 +317,13 @@ font_Err:
     Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.font", Erl)
     Resume Next
 End Property
+
+' Toggle visibility of guild dialogs when user opens guild chatbox
+Public Sub toggle_dialogs_visibility(ByVal visible As Boolean)
+
+    force_visible = visible
+    ' Reset the alpha to make the chat visible
+    Alpha = 255
+
+End Sub
 
