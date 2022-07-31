@@ -1,0 +1,8 @@
+---
+languages:
+  visualbasic:
+    extensions:
+      - ".bas"
+      - ".cls"
+      - ".vbp"
+      - ".vb"
