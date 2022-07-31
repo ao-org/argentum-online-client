@@ -1,4 +1,14 @@
 ---
+
+---
+engines:
+  sonarvb:
+    exclude_paths:
+      - "Logs"
+    config:
+      languages:
+        - "visualbasic"
+        
 languages:
   visualbasic:
     extensions:
