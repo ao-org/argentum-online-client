@@ -1,6 +1,4 @@
 ---
-
----
 engines:
   sonarvb:
     exclude_paths:
