@@ -1,16 +1,9 @@
 ---
-engines:
-  sonarvb:
-    exclude_paths:
-      - "Logs"
-    config:
-      languages:
-        - "visualbasic"
-        
+exclude_paths:
+  - 'Logs/*'
+
 languages:
   visualbasic:
     extensions:
       - ".bas"
-      - ".cls"
-      - ".vbp"
-      - ".vb"
+
