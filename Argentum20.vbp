@@ -147,7 +147,7 @@ VersionComments="www.ao20.com.ar"
 VersionCompanyName="Argentum20"
 VersionLegalCopyright="Argentum20 Staff"
 VersionProductName="Argentum20 by Noland Studios"
-CondComp="AntiExternos = 0 : Compresion = 0 : DEBUGGING = 1 : PYMMO = 0"
+CondComp="Compresion = 0 : DEBUGGING = 1 : PYMMO = 0"
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0
