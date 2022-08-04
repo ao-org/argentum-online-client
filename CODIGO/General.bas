@@ -9,6 +9,7 @@ Private Declare Function SetDllDirectory Lib "kernel32" Alias "SetDllDirectoryA"
 Private Declare Function svb_init_steam Lib "steam_vb.dll" (ByVal appid As Long) As Long
 Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
+Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal name As String) As Long
 
 Private Type Position
 
