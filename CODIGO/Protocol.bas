@@ -2393,6 +2393,7 @@ Private Sub HandleUpdateHP()
     
     'Is the user alive??
     If UserMinHp = 0 Then
+        Call svb_unlock_achivement("Memento Mori")
         UserEstado = 1
         charlist(UserCharIndex).Invisible = False
         If MostrarTutorial And tutorial_index <= 0 Then
