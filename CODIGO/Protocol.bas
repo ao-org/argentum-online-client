@@ -6160,6 +6160,7 @@ Private Sub HandleLevelUp()
     '***************************************************
     
     SkillPoints = Reader.ReadInt16()
+    Call svb_unlock_achivement("Newbie's fate")
     
     Exit Sub
 
