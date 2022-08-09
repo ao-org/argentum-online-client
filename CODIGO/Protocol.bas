@@ -242,7 +242,7 @@ Private Enum ServerPacketID
     PlayWaveStep
     ShopPjsInit
     DebugDataResponse
-    RequestResponse
+    RequestPing
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -570,7 +570,7 @@ Public Enum ClientPacketID
     PublicarPersonajeMAO
     EventoFaccionario
     RequestDebug '/RequestDebug consulta info debug al server, para gms
-    ReplyRequestResponse
+    ReplyPingRequest
     #If PYMMO = 0 Then
     CreateAccount
     LoginAccount
@@ -975,8 +975,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleSensuiRetrasado
         Case ServerPacketID.DebugDataResponse
             Call HandleDebugDataResponse
-        Case ServerPacketID.RequestResponse
-            Call HandleRequestResponse
+        Case ServerPacketID.RequestPing
+            Call HandleRequestPing
         #If PYMMO = 0 Then
         Case ServerPacketID.AccountCharacterList
             Call HandleAccountCharacterList
@@ -8828,8 +8828,8 @@ Public Sub HandleSensuiRetrasado()
     
 End Sub
 
-Public Sub HandleRequestResponse()
-    Call WriteReplyRequestResponse
+Public Sub HandleRequestPing()
+    Call WriteReplyPingRequest
 End Sub
 
 Public Sub HandleObjQuestListSend()
