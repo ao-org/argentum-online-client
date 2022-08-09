@@ -6702,6 +6702,16 @@ writePublicarPersonajeMAO_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePublicarPersonajeMAO", Erl)
 End Sub
 
+Public Sub WriteReplyRequestResponse()
+On Error GoTo WriteReplyRequestResponse_Err
+    Call Writer.WriteInt16(ClientPacketID.ReplyRequestResponse)
+    Call modNetwork.Send(Writer)
+    Exit Sub
+WriteReplyRequestResponse_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePublicarPersonajeMAO", Erl)
+End Sub
+
 Public Sub WriteRequestDebug()
     On Error GoTo WriteRequestDebug_Err
         
