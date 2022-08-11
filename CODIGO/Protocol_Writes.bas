@@ -3165,7 +3165,8 @@ End Sub
 
 Public Sub WriteIniciarCaptura(ByVal cantidad_participantes As Long, _
                          ByVal rondas As Long, _
-                         ByVal nivel_minimo As Long, _
+                         ByVal nivel_minimo As Byte, _
+                         ByVal nivel_maximo, _
                          ByVal precio As Long)
         '<EhHeader>
         On Error GoTo WriteIniciarCaptura_Err
@@ -3173,8 +3174,9 @@ Public Sub WriteIniciarCaptura(ByVal cantidad_participantes As Long, _
 100     Call Writer.WriteInt16(ClientPacketID.IniciarCaptura)
 102     Call Writer.WriteInt32(cantidad_participantes)
 104     Call Writer.WriteInt32(rondas)
-106     Call Writer.WriteInt32(nivel_minimo)
-107     Call Writer.WriteInt32(precio)
+106     Call Writer.WriteInt8(nivel_minimo)
+107     Call Writer.WriteInt8(nivel_maximo)
+108     Call Writer.WriteInt32(Precio)
     
 110     Call modNetwork.Send(Writer)
         '<EhFooter>

@@ -670,18 +670,18 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             
             Case "/EVENTOCAPTURA"
                 If notNullArguments Then
-                    If CantidadArgumentos >= 4 Then
-                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Long) Then
-                            Call WriteIniciarCaptura(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3))
+                    If CantidadArgumentos >= 5 Then
+                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(4), eNumber_Types.ent_Long) Then
+                            Call WriteIniciarCaptura(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3), ArgumentosAll(4))
                         Else
                             'No es numerico
-                            Call ShowConsoleMsg("Valor incorrecto. Utilice /EVENTOCAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO PRECIO.")
+                            Call ShowConsoleMsg("Valor incorrecto. Utilice /EVENTOCAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO NIVEL_MAXIMO PRECIO.")
                         End If
 
                     End If
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /EVENTOCAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO PRECIO.")
+                    Call ShowConsoleMsg("Faltan parámetros. Utilice /EVENTOCAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO NIVEL_MAXIMO PRECIO.")
                 End If
                 
             
