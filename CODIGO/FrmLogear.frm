@@ -384,8 +384,8 @@ Private Sub cmdIngresar_Click()
                 IPdelServidorLogin = serverLogin(0)
                 PuertoDelServidorLogin = serverLogin(1)
             #Else
-                IPdelServidorLogin = "127.0.0.1"
-                PuertoDelServidorLogin = 4000
+                IPdelServidorLogin = "45.235.98.31"
+                PuertoDelServidorLogin = 11814
             #End If
         #End If
 
