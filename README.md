@@ -1,7 +1,7 @@
 # AO20 CLIENTE
 Código fuente del cliente de Argentum20
 
-## Por favor considera apoyarnos en https://www.patreon.com/nolandstudios
+## Por favor considera apoyarnos en https://www.patreon.com/nolandstudios 
 
 # Pull Requests
 
