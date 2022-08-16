@@ -668,7 +668,7 @@ On Error GoTo Draw_Animation_Err
     
     
     With GrhData(animationState.CurrentGrh)
-        Call RGBAList(rgb_list, 255, 255, 255, animationState.Alpha)
+        Call RGBAList(rgb_list, 255, 255, 255, animationState.AlphaValue)
         With GrhData(.Frames(animationState.CurrentFrame))
             Dim Texture As Direct3DTexture8
     

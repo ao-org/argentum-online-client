@@ -79,7 +79,8 @@ Sub Initialize(ByRef animationState As tAnimationPlaybackState)
     animationState.CurrentClipLoops = 0
     animationState.ElapsedTime = 0
     animationState.PlaybackState = Forward
-    animationState.Alpha = 180
+    animationState.Alpha = False
+    animationState.AlphaValue = 180
     animationState.LastFrameTime = GetTickCount()
 End Sub
 
