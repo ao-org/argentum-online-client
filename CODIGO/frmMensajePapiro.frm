@@ -13,6 +13,184 @@ Begin VB.Form frmMensajePapiro
    ScaleWidth      =   11580
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.Label Stream2 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "GabrielDMente"
+      BeginProperty Font 
+         Name            =   "Palatino Linotype"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
+      Height          =   255
+      Left            =   6720
+      TabIndex        =   9
+      Top             =   3960
+      Width           =   1575
+   End
+   Begin VB.Label Stream1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "StarkAo20"
+      BeginProperty Font 
+         Name            =   "Palatino Linotype"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
+      Height          =   255
+      Left            =   6720
+      TabIndex        =   8
+      Top             =   3600
+      Width           =   1575
+   End
+   Begin VB.Label CafecitoLink 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Ayudar con Cafecito"
+      BeginProperty Font 
+         Name            =   "Palatino Linotype"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
+      Height          =   495
+      Index           =   2
+      Left            =   4560
+      TabIndex        =   7
+      Top             =   6225
+      Width           =   1095
+   End
+   Begin VB.Label PatreonLink 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Ayudar con Patreon"
+      BeginProperty Font 
+         Name            =   "Palatino Linotype"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
+      Height          =   495
+      Index           =   1
+      Left            =   3285
+      TabIndex        =   6
+      Top             =   6225
+      Width           =   1020
+   End
+   Begin VB.Label GameRulesLink 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Próximamente"
+      BeginProperty Font 
+         Name            =   "Palatino Linotype"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00000000&
+      Height          =   255
+      Index           =   0
+      Left            =   3285
+      TabIndex        =   5
+      Top             =   5625
+      Width           =   1455
+   End
+   Begin VB.Label HelpGuideLink 
+      BackStyle       =   0  'Transparent
+      Caption         =   $"frmMensajePapiro.frx":0000
+      BeginProperty Font 
+         Name            =   "Palatino Linotype"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
+      Height          =   255
+      Left            =   3285
+      TabIndex        =   4
+      Top             =   5025
+      Width           =   1335
+   End
+   Begin VB.Label BasicInfoLink 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Ir al manual"
+      BeginProperty Font 
+         Name            =   "Palatino Linotype"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
+      Height          =   255
+      Left            =   3285
+      TabIndex        =   3
+      Top             =   4420
+      Width           =   5535
+   End
+   Begin VB.Label eventNews 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Ver próximos eventos"
+      BeginProperty Font 
+         Name            =   "Palatino Linotype"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
+      Height          =   255
+      Left            =   3285
+      TabIndex        =   2
+      Top             =   3825
+      Width           =   1815
+   End
+   Begin VB.Label newsLink 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Ir a novedades"
+      BeginProperty Font 
+         Name            =   "Palatino Linotype"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C00000&
+      Height          =   255
+      Left            =   3285
+      TabIndex        =   1
+      Top             =   3225
+      Width           =   1215
+   End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
       BeginProperty Font 
@@ -65,24 +243,22 @@ Private Const GWL_EXSTYLE = -20
 Private Const WS_EX_LAYERED = &H80000
 Private Const LWA_COLORKEY = &H1&
 
+Private Sub BasicInfoLink_Click()
+    Call OpenLink("https://mercado.ao20.com.ar/wiki")
+End Sub
+
+Private Sub CafecitoLink_Click(Index As Integer)
+    Call OpenLink("https://cafecito.app/nolandstudios")
+End Sub
+
+Private Sub eventNews_Click()
+    Call OpenLink("https://discord.com/channels/761213868352471040/843170070275686420")
+End Sub
+
 Private Sub Form_Load()
 
-    Me.Picture = LoadInterface("ventana-papiro.bmp")
-    MakeFormTransparent Me, vbBlack
-    'Set the Form "transparent by color."
-
-    
-    Me.Label1.Caption = "El malvado Gúl Belthor ha vuelto. Sí, el terrible hermanastro menor del rey orco " & _
-    "ha escapado de su prisión en las profundidades de la montaña Penthar. Aún no sabemos cómo lo ha hecho o " & _
-    "quién ha ayudado al terrible hechicero a escapar, pero eso no es lo importante ahora. Gúl una vez libre, no " & _
-    "perdió el tiempo en conjurar su oscura magia. Usando sus poderes logró arrebatar el poder de casi todos los seres " & _
-    "de las tierras de Argentum, sólo unos pocos héroes quedan en pie, el resto han visto sus fuerzas ser arrebatadas por " & _
-    "una misteriosa magia a lo largo de estos días. Pero eso no es lo peor, lo terrible es lo que el desalmado ha hecho con ese " & _
-    " nuevo poder. El nigromante logró escabullirse invisible entre los cementerios de todas las ciudades, reviviendo allí a los " & _
-    " anteriores reyes de todas las razas. " & vbNewLine & vbNewLine & " Con este comunicado convoco a los reyes de todas las razas y los representantes de ambas " & _
-    " facciones a una reunión de emergencia en el Mesón Hostigado. Es momento de dejar de lado las " & _
-    " diferencias para defender nuestro mundo de la oscuridad. Los espero allí." & vbNewLine & "                              Rey Luther "
-
+    Me.Picture = LoadInterface("board.bmp")
+    MakeFormTransparent Me, vbBlack    'Set the Form "transparent by color."
 
 End Sub
 
@@ -90,7 +266,34 @@ Private Sub Form_LostFocus()
     Unload Me
 End Sub
 
+Private Sub HelpGuideLink_Click()
+    Call OpenLink("https://www.ao20helper.com.ar/")
+End Sub
+
 Private Sub Image1_Click()
     Unload Me
 End Sub
 
+
+Private Sub newsLink_Click()
+    Call OpenLink("https://discord.com/channels/761213868352471040/761286044229959701/1006324594736631818")
+End Sub
+
+Private Sub OpenLink(link As String)
+    ShellExecute ByVal 0&, "open", _
+        link, _
+        vbNullString, vbNullString, _
+        vbMaximizedFocus
+End Sub
+
+Private Sub PatreonLink_Click(Index As Integer)
+    Call OpenLink("https://www.patreon.com/nolandstudios")
+End Sub
+
+Private Sub Stream1_Click()
+    Call OpenLink("https://www.twitch.tv/starkao20")
+End Sub
+
+Private Sub Stream2_Click()
+    Call OpenLink("https://www.twitch.tv/gabrieldmente")
+End Sub
