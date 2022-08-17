@@ -117,7 +117,7 @@ Begin VB.Form frmMensajePapiro
    End
    Begin VB.Label HelpGuideLink 
       BackStyle       =   0  'Transparent
-      Caption         =   $"frmMensajePapiro.frx":0000
+      Caption         =   "Ir a Guía"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
