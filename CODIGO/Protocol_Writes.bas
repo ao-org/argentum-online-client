@@ -3160,72 +3160,65 @@ WriteWarpChar_Err:
         '</EhFooter>
 End Sub
 
-''
-' HarThaoS: Iniciar captura de bandera.
-
-Public Sub WriteIniciarCaptura(ByVal cantidad_participantes As Long, _
-                         ByVal rondas As Long, _
-                         ByVal nivel_minimo As Byte, _
-                         ByVal nivel_maximo, _
-                         ByVal precio As Long)
-        '<EhHeader>
-        On Error GoTo WriteIniciarCaptura_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.IniciarCaptura)
-102     Call Writer.WriteInt32(cantidad_participantes)
-104     Call Writer.WriteInt32(rondas)
-106     Call Writer.WriteInt8(nivel_minimo)
-107     Call Writer.WriteInt8(nivel_maximo)
-108     Call Writer.WriteInt32(Precio)
-    
+Public Sub WrtieStartCapture(ByVal players As Integer, _
+                             ByVal rounds As Byte, _
+                             ByVal minLevel As Byte, _
+                             ByVal maxLevel As Byte, _
+                             ByVal price As Long)
+On Error GoTo WrtieStartCapture_Err
+100     Call Writer.WriteInt16(ClientPacketID.StartEvent)
+102     Call Writer.WriteInt8(1)
+103     Call Writer.WriteInt16(players)
+104     Call Writer.WriteInt8(rounds)
+106     Call Writer.WriteInt8(minLevel)
+107     Call Writer.WriteInt8(maxLevel)
+108     Call Writer.WriteInt32(price)
 110     Call modNetwork.Send(Writer)
-        '<EhFooter>
+        Exit Sub
+WrtieStartCapture_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WrtieStartCapture", Erl)
+End Sub
+
+Public Sub WriteStartLobby(ByVal players As Integer, _
+                             ByVal minLevel As Byte, _
+                             ByVal maxLevel As Byte)
+On Error GoTo WriteStartLobby_Err
+100     Call Writer.WriteInt16(ClientPacketID.StartEvent)
+102     Call Writer.WriteInt8(0)
+103     Call Writer.WriteInt16(players)
+106     Call Writer.WriteInt8(minLevel)
+107     Call Writer.WriteInt8(maxLevel)
+110     Call modNetwork.Send(Writer)
+        Exit Sub
+WriteStartLobby_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteStartLobby", Erl)
+    
+End Sub
+
+Public Sub WriteStartEvent(ByVal eventType As Byte)
+On Error GoTo WriteIniciarCaptura_Err
+100     Call Writer.WriteInt16(ClientPacketID.StartEvent)
+102     Call Writer.WriteInt8(eventType)
+'110     Call modNetwork.Send(Writer)
         Exit Sub
 
 WriteIniciarCaptura_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteIniciarCaptura", Erl)
-        '</EhFooter>
 End Sub
 
-
-''
-' HarThaoS: Se inscribe en captura
-
-Public Sub WriteParticiparCaptura()
-        '<EhHeader>
-        On Error GoTo WriteParticiparCaptura_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.ParticiparCaptura)
-    
+Public Sub WriteCancelarEvento()
+On Error GoTo WriteCancelarCaptura_Err
+   
+100     Call Writer.WriteInt16(ClientPacketID.CancelarEvento)
 110     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteParticiparCaptura_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteParticiparCaptura", Erl)
-        '</EhFooter>
-End Sub
-
-
-''
-' HarThaoS: Se inscribe en captura
-
-Public Sub WriteCancelarCaptura()
-        '<EhHeader>
-        On Error GoTo WriteCancelarCaptura_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.CancelarCaptura)
-    
-110     Call modNetwork.Send(Writer)
-        '<EhFooter>
         Exit Sub
 
 WriteCancelarCaptura_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCancelarCaptura", Erl)
-        '</EhFooter>
 End Sub
 
 ''
@@ -6715,4 +6708,20 @@ Public Sub WriteRequestDebug()
 WriteRequestDebug_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePublicarPersonajeMAO", Erl)
+End Sub
+
+Public Sub WriteLobbyCommand(ByVal command As Byte, Optional ByVal param As Long = -1)
+    On Error GoTo WriteLobbyCommand_Err
+        
+100     Call Writer.WriteInt16(ClientPacketID.LobbyCommand)
+        Call Writer.WriteInt8(command)
+        If param >= 0 Then
+            Call Writer.WriteInt32(param)
+        End If
+102     Call modNetwork.Send(Writer)
+        Exit Sub
+
+WriteLobbyCommand_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLobbyCommand", Erl)
 End Sub
