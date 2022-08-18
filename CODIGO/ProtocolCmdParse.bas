@@ -2153,7 +2153,7 @@ ParseUserCommand_Err:
     
 End Sub
 
-Private Sub StartCaptureTheFlag(arguments() As String, argCount As Integer)
+Private Sub StartCaptureTheFlag(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 6 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) And ValidNumber(arguments(4), eNumber_Types.ent_Long) And ValidNumber(arguments(5), eNumber_Types.ent_Long) Then
             Call WrtieStartCapture(arguments(1), arguments(2), arguments(3), arguments(4), arguments(5))
@@ -2166,7 +2166,7 @@ Private Sub StartCaptureTheFlag(arguments() As String, argCount As Integer)
     End If
 End Sub
 
-Private Sub StartLobby(arguments() As String, ByVal argCount As Integer)
+Private Sub StartLobby(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
             Call WriteStartLobby(arguments(1), arguments(2), arguments(3))
@@ -2179,7 +2179,7 @@ Private Sub StartLobby(arguments() As String, ByVal argCount As Integer)
     End If
 End Sub
 
-Private Sub CreateEventCmd(arguments() As String, ByVal argCount As Integer)
+Private Sub CreateEventCmd(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount > 0 Then
         Dim eType As String
         eType = Trim$(UCase$(arguments(0)))
@@ -2195,7 +2195,7 @@ Private Sub CreateEventCmd(arguments() As String, ByVal argCount As Integer)
     End If
 End Sub
 
-Private Sub ConfigLobbyClass(arguments() As String, ByVal argCount As Integer)
+Private Sub ConfigLobbyClass(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount > 1 Then
         Dim eType As String
         eType = Trim$(UCase$(arguments(1)))
@@ -2229,43 +2229,59 @@ Private Sub ConfigLobbyClass(arguments() As String, ByVal argCount As Integer)
     End If
 End Sub
 
-Private Sub ConfigLobbyMaxLevel(arguments() As String, ByVal argCount As Integer)
-    If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+Private Sub ConfigLobbyMaxLevel(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eSetMaxLevel, arguments(1))
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY MAXLVL LVL")
         End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY MAXLVL LVL")
+    End If
 End Sub
 
-Private Sub ConfigLobbyMinLevel(arguments() As String, ByVal argCount As Integer)
-    If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+Private Sub ConfigLobbyMinLevel(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eSetMinLevel, arguments(1))
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY MINLVL LVL")
         End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY MINLVL LVL")
+    End If
 End Sub
 
-Private Sub ConfigLobbySummonPlayer(arguments() As String, ByVal argCount As Integer)
-    If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+Private Sub ConfigLobbySummonPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eSummonSinglePlayer, arguments(1))
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SUMPLAYER LOBBY_INDEX")
         End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SUMPLAYER LOBBY_INDEX")
+    End If
 End Sub
 
-Private Sub ConfigLobbyReturnPlayer(arguments() As String, ByVal argCount As Integer)
-    If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+Private Sub ConfigLobbyReturnPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eReturnSinglePlayer, arguments(1))
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY RETPL LOBBY_INDEX")
         End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY RETPL LOBBY_INDEX")
+    End If
 End Sub
 
-Private Sub ConfigLobby(arguments() As String, ByVal argCount As Integer)
+Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount > 0 Then
         Dim eType As String
         eType = Trim$(UCase$(arguments(0)))
