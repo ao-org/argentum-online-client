@@ -13,12 +13,27 @@ Public Enum eNumber_Types
 
 End Enum
 
+Public Enum e_LobbyCommandId
+    eSetSpawnPos
+    eSetMaxLevel
+    eSetMinLevel
+    eSetClassLimit
+    eRegisterPlayer
+    eSummonSinglePlayer
+    eSummonAll
+    eReturnSinglePlayer
+    eReturnAllSummoned
+    eStartEvent
+    eEndEvent
+    eCancelEvent
+    eListPlayers
+End Enum
+
 ''
 ' Interpreta, valida y ejecuta el comando ingresado .
 '
 ' @param    RawCommand El comando en version String
 ' @remarks  None Known.
-
 Public Sub ParseUserCommand(ByVal RawCommand As String)
     
     On Error GoTo ParseUserCommand_Err
@@ -668,28 +683,14 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             
-            Case "/EVENTOCAPTURA"
-                If notNullArguments Then
-                    If CantidadArgumentos >= 5 Then
-                        If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Long) And ValidNumber(ArgumentosAll(4), eNumber_Types.ent_Long) Then
-                            Call WriteIniciarCaptura(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3), ArgumentosAll(4))
-                        Else
-                            'No es numerico
-                            Call ShowConsoleMsg("Valor incorrecto. Utilice /EVENTOCAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO NIVEL_MAXIMO PRECIO.")
-                        End If
-
-                    End If
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /EVENTOCAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO NIVEL_MAXIMO PRECIO.")
-                End If
-                
+            Case "/CREAREVENTO"
+                Call CreateEventCmd(ArgumentosAll, CantidadArgumentos)
             
-             Case "/PARTICIPARCAPTURA"
-                Call WriteParticiparCaptura
+            Case "/CONFIGLOBBY"
+                Call ConfigLobby(ArgumentosAll, CantidadArgumentos)
             
-             Case "/CANCELARCAPTURA"
-                Call WriteCancelarCaptura
+            Case "/CANCELAREVENTO"
+                Call WriteCancelarEvento
                 
             
             Case "/SILENCIAR"
@@ -2152,6 +2153,166 @@ ParseUserCommand_Err:
     
 End Sub
 
+Private Sub StartCaptureTheFlag(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 6 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) And ValidNumber(arguments(4), eNumber_Types.ent_Long) And ValidNumber(arguments(5), eNumber_Types.ent_Long) Then
+            Call WrtieStartCapture(arguments(1), arguments(2), arguments(3), arguments(4), arguments(5))
+        Else
+            'No es numerico
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO CAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO NIVEL_MAXIMO PRECIO.")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO CAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO NIVEL_MAXIMO PRECIO.")
+    End If
+End Sub
+
+Private Sub StartLobby(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 3 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
+            Call WriteStartLobby(arguments(1), arguments(2), arguments(3))
+        Else
+            'No es numerico
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO LOBBY PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO LOBBY PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+    End If
+End Sub
+
+Private Sub CreateEventCmd(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount > 0 Then
+        Dim eType As String
+        eType = Trim$(UCase$(arguments(0)))
+        If eType = "CAPTURA" Then
+            Call StartCaptureTheFlag(arguments, argCount)
+        ElseIf eType = "LOBBY" Then
+            Call StartLobby(arguments, argCount)
+        End If
+        
+    Else
+        'Avisar que falta el parametro
+        Call ShowConsoleMsg("Faltan parámetros. Utilice /CREAREVENTO CAPTURA/LOBBY.")
+    End If
+End Sub
+
+Private Sub ConfigLobbyClass(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount > 1 Then
+        Dim eType As String
+        eType = Trim$(UCase$(arguments(1)))
+        If eType = "MAGE" Or eType = "MAGO" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 1)
+        ElseIf eType = "CLERIC" Or eType = "CLERIGO" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 2)
+        ElseIf eType = "WARRIOR" Or eType = "GUERRERO" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 3)
+        ElseIf eType = "ASSASIN" Or eType = "ASESINO" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 4)
+        ElseIf eType = "BARD" Or eType = "BARDO" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 5)
+        ElseIf eType = "DRUID" Or eType = "DRUIDA" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 6)
+        ElseIf eType = "PALADIN" Or eType = "PALADIN" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 7)
+        ElseIf eType = "HUNTER" Or eType = "CAZADOR" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 8)
+        ElseIf eType = "WORKER" Or eType = "TRABAJADOR" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 9)
+        ElseIf eType = "PIRATE" Or eType = "PIRATA" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 10)
+        ElseIf eType = "THIEF" Or eType = "LADRON" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 11)
+        ElseIf eType = "BANDIT" Or eType = "BANDIDO" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 12)
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY CLASS MAGE/CLERIC/WARRIOR/ASSASIN/BARD/DRUID/PALADIN/HUNTER/WORKER/PIRATE/THIEF/BANDIT")
+    End If
+End Sub
+
+Private Sub ConfigLobbyMaxLevel(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetMaxLevel, arguments(1))
+        Else
+            'No es numerico
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY MAXLVL LVL")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY MAXLVL LVL")
+    End If
+End Sub
+
+Private Sub ConfigLobbyMinLevel(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetMinLevel, arguments(1))
+        Else
+            'No es numerico
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY MINLVL LVL")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY MINLVL LVL")
+    End If
+End Sub
+
+Private Sub ConfigLobbySummonPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSummonSinglePlayer, arguments(1))
+        Else
+            'No es numerico
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SUMPLAYER LOBBY_INDEX")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SUMPLAYER LOBBY_INDEX")
+    End If
+End Sub
+
+Private Sub ConfigLobbyReturnPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eReturnSinglePlayer, arguments(1))
+        Else
+            'No es numerico
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY RETPL LOBBY_INDEX")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY RETPL LOBBY_INDEX")
+    End If
+End Sub
+
+Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount > 0 Then
+        Dim eType As String
+        eType = Trim$(UCase$(arguments(0)))
+        If eType = "SPAWN" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetSpawnPos)
+        ElseIf eType = "MAXLVL" Then
+            Call ConfigLobbyMaxLevel(arguments, argCount)
+        ElseIf eType = "MINLVL" Then
+            Call ConfigLobbyMinLevel(arguments, argCount)
+        ElseIf eType = "SUMPLAYER" Then
+            Call ConfigLobbySummonPlayer(arguments, argCount)
+        ElseIf eType = "SUMALL" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSummonAll)
+        ElseIf eType = "RETURNPLAYER" Then
+            Call ConfigLobbyReturnPlayer(arguments, argCount)
+        ElseIf eType = "RETALL" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eReturnAllSummoned)
+        ElseIf eType = "START" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eStartEvent)
+        ElseIf eType = "END" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eEndEvent)
+        ElseIf eType = "LIST" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eListPlayers)
+         ElseIf eType = "CLASS" Then
+            Call ConfigLobbyClass(arguments(), argCount)
+        End If
+    Else
+        'Avisar que falta el parametro
+        Call ShowConsoleMsg("Faltan parámetros. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/START/END/LIST")
+    End If
+End Sub
 ''
 ' Show a console message.
 '

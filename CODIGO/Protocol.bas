@@ -444,7 +444,7 @@ Public Enum ClientPacketID
     ChaosArmour             '/AC1 - 4
     NavigateToggle          '/NAVE
     ServerOpenToUsersToggle '/HABILITAR
-    Participar              '/APAGAR
+    Participar              '/PARTICIPAR
     TurnCriminal            '/CONDEN
     ResetFactions           '/RAJAR
     RemoveCharFromGuild     '/RAJARCLAN
@@ -560,15 +560,15 @@ Public Enum ClientPacketID
     RepeatMacro
     BuyShopItem
     PerdonFaccion              '/PERDONFACCION NAME
-    IniciarCaptura           '/EVENTOCAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO PRECIO
-    ParticiparCaptura        '/PARTICIPARCAPTURA
-    CancelarCaptura          '/CANCELARCAPTURA
+    StartEvent           '/EVENTO CAPTURA/LOBBY
+    CancelarEvento          '/CANCELAREVENTO
     SeguirMouse
     SendPosSeguimiento
     NotifyInventarioHechizos
     PublicarPersonajeMAO
     EventoFaccionario
     RequestDebug '/RequestDebug consulta info debug al server, para gms
+    LobbyCommand
     
     #If PYMMO = 0 Then
     CreateAccount
