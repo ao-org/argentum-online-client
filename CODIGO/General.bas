@@ -1127,30 +1127,20 @@ On Error GoTo Main_Err
 
 
     Call initPacketControl
-    
-    ' Detecta el idioma del sistema y carga las traducciones
     Call SetLanguageApplication
     
-    ' Define si lee los npcs de consola
     Call SetNpcsRenderText
     Call cargarTutoriales
-    'Cursores******
     Set FormParser = New clsCursor
     Call FormParser.Init
-    'Cursores******
 
-    ' Security
     CheckMD5 = GetMd5
     SessionOpened = False
-    ' Leer contraseña de recursos
     Call CheckResources
 
     Call Load(frmConnect)
     Call Load(FrmLogear)
         
-    'If MsgBox("¿Desea jugar en pantalla completa?", vbYesNo, "¡Atención!") = vbYes Then
-
-    
     Call Frmcarga.Show
 
     If Sonido Then
@@ -1174,39 +1164,23 @@ On Error GoTo Main_Err
     Call SetDefaultServer
     Call ComprobarEstado
     Call CargarLst
-
-
     Call InicializarNombres
-    
-
     Call InitializeInventory
-    
-    'Iniciamos el motor de tiles
     Call Init_TileEngine
-    
-    'Cargamos todos los init
     Call CargarRecursos
-        
-    'Cargar fuentes
     Call LoadFonts
-    
-    'Carga mascota de tutorial
     Call initMascotaTutorial
     
     FrameTime = GetTickCount()
-    
     UserMap = 1
     AlphaNiebla = 75
     EntradaY = 10
     EntradaX = 10
     UpdateLights = False
-    'Mascotas
     LastOffset2X = 0
     LastOffset2Y = 0
-    
     Call SwitchMap(UserMap)
     
-    'Set the dialog's font
     Dialogos.font = frmMain.font
     DialogosClanes.font = frmMain.font
     
@@ -1214,13 +1188,8 @@ On Error GoTo Main_Err
     pausa = False
 
     Call Unload(Frmcarga)
-    
     Call General_Set_Connect
-    
     Call engine.GetElapsedTime
-    
-
-    
     Call Start
  
     
