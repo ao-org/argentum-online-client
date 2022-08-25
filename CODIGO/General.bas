@@ -688,8 +688,8 @@ Sub SetConnected()
     
     frmMain.Left = 0
     frmMain.Top = 0
-    frmMain.Width = 1024 * Screen.TwipsPerPixelX
-    frmMain.Height = 768 * Screen.TwipsPerPixelY
+    frmMain.Width = D3DWindow.BackBufferWidth * Screen.TwipsPerPixelX
+    frmMain.Height = D3DWindow.BackBufferHeight * Screen.TwipsPerPixelY
 
     frmMain.Visible = True
     
@@ -1100,17 +1100,16 @@ End Function
 
 Sub Main()
 
-    On Error GoTo Main_Err
+On Error GoTo Main_Err
+    Call engine_init 'initializes DX
+    
     Call InitCommonControls
 
- 'ReyarB pidió dejar entrar doble cliente (HarThaoS)
     #If DEBUGGING = 0 Then
-        
         SetDllDirectory App.Path
         Dim d As Long
         d = svb_init_steam(1956740)
         If Not RunningInVB Then
- 
             If FindPreviousInstance Then
                 Call MsgBox("¡Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga clic en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
                 End
@@ -1180,10 +1179,7 @@ Sub Main()
 
     Call InicializarNombres
     
-    'Inicializamos el motor grafico.
-    Call Engine_Init
-    
-    'Inicializamos el inventario
+
     Call InitializeInventory
     
     'Iniciamos el motor de tiles
@@ -1586,26 +1582,15 @@ Public Sub CloseClient()
     Call GuardarOpciones
     
     Call PrevInstance.ReleaseInstance
-    'StopURLDetect
-
     Call Client_UnInitialize_DirectX_Objects
-    Sound.Music_Stop
     
+    Sound.Music_Stop
     Sound.Engine_DeInitialize
     EngineRun = False
     
     Call General_Set_Mouse_Speed(SensibilidadMouseOriginal)
-    
-    Rem frmCargando.Show
-    
     Call Resolution.ResetResolution
-    'Stop tile engine
-    'Engine_Deinit
-    'Stop tile engine
-    'Call DeinitTileEngine
-    'Engine_Deinit
     
-    'Destruimos los objetos públicos creados
     Set CustomKeys = Nothing
     Set SurfaceDB = Nothing
     Set Dialogos = Nothing

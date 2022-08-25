@@ -207,8 +207,10 @@ Private Sub Form_Load()
     
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(Me)
-    Me.Width = 1024 * Screen.TwipsPerPixelX
-    Me.Height = 768 * Screen.TwipsPerPixelY
+    Debug.Assert D3DWindow.BackBufferWidth <> 0
+    Debug.Assert D3DWindow.BackBufferHeight <> 0
+    Me.Width = D3DWindow.BackBufferWidth * Screen.TwipsPerPixelX
+    Me.Height = D3DWindow.BackBufferHeight * Screen.TwipsPerPixelY
     
     Exit Sub
 

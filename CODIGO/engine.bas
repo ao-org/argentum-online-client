@@ -268,7 +268,7 @@ On Error Resume Next
     End If
         
     'Seteamos la matriz de proyeccion.
-    Call D3DXMatrixOrthoOffCenterLH(Projection, 0, 1024, 768, 0, -1#, 1#)
+    Call D3DXMatrixOrthoOffCenterLH(Projection, 0, D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, 0, -1#, 1#)
     Call D3DXMatrixIdentity(IdentityMatrix)
     Call DirectDevice.SetTransform(D3DTS_PROJECTION, Projection)
     Call DirectDevice.SetTransform(D3DTS_VIEW, IdentityMatrix)
@@ -276,9 +276,7 @@ On Error Resume Next
     'Set the render states
     With DirectDevice
         Call .SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE)
-        
         Call .SetVertexShader(D3DFVF_XYZ Or D3DFVF_DIFFUSE Or D3DFVF_TEX1)
-        
         Call .SetRenderState(D3DRS_LIGHTING, False)
         Call .SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA)
         Call .SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA)
@@ -298,17 +296,14 @@ On Error Resume Next
     Set SpriteBatch = New clsBatch
     Call SpriteBatch.Initialize(2000)
 
-    ' Configuracion del motor
     engineBaseSpeed = 0.018
     OffsetLimitScreen = 32
-    'Set FPS value to 60 for startup
     fps = 60
     FramesPerSecCounter = 60
     scroll_dialog_pixels_per_frame = 4
-    
     ScrollPixelsPerFrameX = 8.5
     ScrollPixelsPerFrameY = 8.5
-    
+
     Call Engine_InitExtras
 
     bRunning = True
