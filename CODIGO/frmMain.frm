@@ -4751,6 +4751,8 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
 
+    Debug.Assert Not FormParser Is Nothing
+    
     Call FormParser.Parse_Form(frmMain)
     
     MenuNivel = 1

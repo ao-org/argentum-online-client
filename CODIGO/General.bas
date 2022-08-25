@@ -1101,6 +1101,9 @@ End Function
 Sub Main()
 
 On Error GoTo Main_Err
+    Set FormParser = New clsCursor
+    Call FormParser.Init
+    
     Call load_game_settings
     
     If PantallaCompleta Then
@@ -1131,8 +1134,7 @@ On Error GoTo Main_Err
     
     Call SetNpcsRenderText
     Call cargarTutoriales
-    Set FormParser = New clsCursor
-    Call FormParser.Init
+
 
     CheckMD5 = GetMd5
     SessionOpened = False
