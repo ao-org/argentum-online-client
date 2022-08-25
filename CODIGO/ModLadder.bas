@@ -1322,7 +1322,7 @@ Sub initPacketControl()
     Next i
     
 End Sub
-Sub CargarOpciones()
+Sub load_game_settings()
 
     On Error GoTo ErrorHandler
     Set DialogosClanes = New clsGuildDlg

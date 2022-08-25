@@ -1101,6 +1101,12 @@ End Function
 Sub Main()
 
 On Error GoTo Main_Err
+    Call load_game_settings
+    
+    If PantallaCompleta Then
+        Call Resolution.SetResolution
+    End If
+    
     Call engine_init 'initializes DX
     
     Call InitCommonControls
@@ -1119,11 +1125,7 @@ On Error GoTo Main_Err
  
     #End If
 
-    'If Not Launcher Then
-    '  Call MsgBox("¡El Juego debe ser abierto desde el Launcher! El Cliente ahora se cerrara.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
-    ' End
-    ' End If
-    Call CargarOpciones
+
     Call initPacketControl
     
     ' Detecta el idioma del sistema y carga las traducciones
@@ -1147,10 +1149,7 @@ On Error GoTo Main_Err
     Call Load(FrmLogear)
         
     'If MsgBox("¿Desea jugar en pantalla completa?", vbYesNo, "¡Atención!") = vbYes Then
-    
-    If PantallaCompleta Then
-        Call Resolution.SetResolution
-    End If
+
     
     Call Frmcarga.Show
 
