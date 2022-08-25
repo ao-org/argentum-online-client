@@ -379,14 +379,22 @@ Private Sub cmdIngresar_Click()
             Dim serverLogin() As String
             serverLogin = Split(get_logging_server(), ":")
                 
-            #If DEBUGGING = 0 Then
-              
-                IPdelServidorLogin = serverLogin(0)
-                PuertoDelServidorLogin = serverLogin(1)
+            #If DEVELOPER = 1 Then
+                IPdelServidorLogin = "127.0.0.1"
+                PuertoDelServidorLogin = 4000
+                IPdelServidor = IPdelServidorLogin
+                PuertoDelServidor = 7667
             #Else
-                IPdelServidorLogin = "45.235.98.31"
-                PuertoDelServidorLogin = 11814
+                'Production and staging use this path
+                #If DEBUGGING = 0 Then
+                    IPdelServidorLogin = serverLogin(0)
+                    PuertoDelServidorLogin = serverLogin(1)
+                #Else
+                    IPdelServidorLogin = "45.235.98.31"
+                    PuertoDelServidorLogin = 11814
+                #End If
             #End If
+            
         #End If
 
         If CheckUserDataLoged() = True Then
