@@ -29,6 +29,11 @@ Public Enum e_LobbyCommandId
     eListPlayers
 End Enum
 
+Public Enum e_DebugCommands
+    eBase
+    eConnectionState
+End Enum
+
 ''
 ' Interpreta, valida y ejecuta el comando ingresado .
 '
@@ -2106,10 +2111,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
                 End If
             Case "/REQDEBUG"
-                If EsGM Then
-                    Call WriteRequestDebug
-                End If
-
+                Call HandleReqDebugCmd(ArgumentosAll, CantidadArgumentos)
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")
 
@@ -2151,6 +2153,31 @@ ParseUserCommand_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.ParseUserCommand", Erl)
     Resume Next
     
+End Sub
+
+Private Sub HandleReqDebugCmd(ByRef arguments() As String, ByVal argCount As Integer)
+    If EsGM Then
+        If argCount = 0 Then
+            Call WriteRequestDebug(e_DebugCommands.eBase, arguments(), 0)
+        Else
+            Dim eType As String
+            eType = Trim$(UCase$(arguments(0)))
+            If eType = "CONNECTION" Then
+                Dim username As String
+                Dim i As Integer
+                For i = 1 To argCount - 1
+                    username = username & arguments(i)
+                    If i < argCount - 1 Then
+                        username = username & " "
+                    End If
+                Next i
+                arguments(0) = username
+                Call WriteRequestDebug(e_DebugCommands.eConnectionState, arguments, 1)
+            Else
+                Call ShowConsoleMsg("Parametros incorrectos.")
+            End If
+        End If
+    End If
 End Sub
 
 Private Sub StartCaptureTheFlag(ByRef arguments() As String, ByVal argCount As Integer)
