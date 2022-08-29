@@ -30,7 +30,7 @@ Public Enum e_LobbyCommandId
 End Enum
 
 Public Enum e_DebugCommands
-    eBase
+    eGetLastLogs
     eConnectionState
 End Enum
 
@@ -2158,7 +2158,7 @@ End Sub
 Private Sub HandleReqDebugCmd(ByRef arguments() As String, ByVal argCount As Integer)
     If EsGM Then
         If argCount = 0 Then
-            Call WriteRequestDebug(e_DebugCommands.eBase, arguments(), 0)
+            Call WriteRequestDebug(e_DebugCommands.eGetLastLogs, arguments(), 0)
         Else
             Dim eType As String
             eType = Trim$(UCase$(arguments(0)))
