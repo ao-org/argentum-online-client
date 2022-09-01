@@ -6731,7 +6731,7 @@ WriteLobbyCommand_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLobbyCommand", Erl)
 End Sub
 
-Public Sub WriteFeatureEnable(name As String, ByVal value As Byte)
+Public Sub WriteFeatureEnable(ByVal name As String, ByVal Value As Byte)
     On Error GoTo WriteFeatureEnable_Err
         
 100     Call Writer.WriteInt16(ClientPacketID.FeatureToggle)
