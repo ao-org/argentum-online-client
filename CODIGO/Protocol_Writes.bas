@@ -6730,3 +6730,17 @@ WriteLobbyCommand_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLobbyCommand", Erl)
 End Sub
+
+Public Sub WriteFeatureEnable(ByVal name As String, ByVal Value As Byte)
+    On Error GoTo WriteFeatureEnable_Err
+        
+100     Call Writer.WriteInt16(ClientPacketID.FeatureToggle)
+        Call Writer.WriteInt8(value)
+        Call Writer.WriteString8(name)
+102     Call modNetwork.Send(Writer)
+        Exit Sub
+
+WriteFeatureEnable_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFeatureEnable", Erl)
+End Sub

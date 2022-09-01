@@ -2112,6 +2112,8 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
             Case "/REQDEBUG"
                 Call HandleReqDebugCmd(ArgumentosAll, CantidadArgumentos)
+            Case "/FEATURETOGGLE"
+                Call HandleFeatureToggle(ArgumentosAll, CantidadArgumentos)
             Case Else
                 Call ShowConsoleMsg("El comando es invalido.")
 
@@ -2153,6 +2155,24 @@ ParseUserCommand_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.ParseUserCommand", Erl)
     Resume Next
     
+End Sub
+
+Private Sub HandleFeatureToggle(ByRef arguments() As String, ByVal argCount As Integer)
+    If EsGM Then
+        If argCount < 2 Then
+            Call ShowConsoleMsg("Parametros incorrectos.")
+            Exit Sub
+        End If
+        Dim varName As String
+            Dim value As Byte
+            varName = arguments(0)
+            If Not ValidNumber(arguments(1), eNumber_Types.ent_Byte) Then
+                Call ShowConsoleMsg("Parametros incorrectos.")
+                Exit Sub
+            End If
+            value = arguments(1)
+            Call WriteFeatureEnable(varName, value)
+    End If
 End Sub
 
 Private Sub HandleReqDebugCmd(ByRef arguments() As String, ByVal argCount As Integer)

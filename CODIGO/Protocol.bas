@@ -569,6 +569,7 @@ Public Enum ClientPacketID
     EventoFaccionario
     RequestDebug '/RequestDebug consulta info debug al server, para gms
     LobbyCommand
+    FeatureToggle
     
     #If PYMMO = 0 Then
     CreateAccount
