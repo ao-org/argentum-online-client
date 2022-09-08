@@ -3180,13 +3180,13 @@ WrtieStartCapture_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WrtieStartCapture", Erl)
 End Sub
 
-Public Sub WriteStartLobby(ByVal players As Integer, _
+Public Sub WriteStartLobby(ByVal lobbyType As Byte, ByVal numPlayers As Integer, _
                              ByVal minLevel As Byte, _
                              ByVal maxLevel As Byte)
 On Error GoTo WriteStartLobby_Err
 100     Call Writer.WriteInt16(ClientPacketID.StartEvent)
-102     Call Writer.WriteInt8(0)
-103     Call Writer.WriteInt16(players)
+102     Call Writer.WriteInt8(lobbyType)
+103     Call Writer.WriteInt16(numPlayers)
 106     Call Writer.WriteInt8(minLevel)
 107     Call Writer.WriteInt8(maxLevel)
 110     Call modNetwork.Send(Writer)

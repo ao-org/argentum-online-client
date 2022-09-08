@@ -23,10 +23,12 @@ Public Enum e_LobbyCommandId
     eSummonAll
     eReturnSinglePlayer
     eReturnAllSummoned
+    eOpenLobby
     eStartEvent
     eEndEvent
     eCancelEvent
     eListPlayers
+    eKickPlayer
 End Enum
 
 Public Enum e_DebugCommands
@@ -2216,13 +2218,26 @@ End Sub
 Private Sub StartLobby(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
-            Call WriteStartLobby(arguments(1), arguments(2), arguments(3))
+            Call WriteStartLobby(0, arguments(1), arguments(2), arguments(3))
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO LOBBY PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
         End If
     Else
         Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO LOBBY PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+    End If
+End Sub
+
+Private Sub StartCustomMap(ByVal mapType As Byte, ByVal name As String, ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 3 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
+            Call WriteStartLobby(mapType, arguments(1), arguments(2), arguments(3))
+        Else
+            'No es numerico
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
     End If
 End Sub
 
@@ -2234,11 +2249,15 @@ Private Sub CreateEventCmd(ByRef arguments() As String, ByVal argCount As Intege
             Call StartCaptureTheFlag(arguments, argCount)
         ElseIf eType = "LOBBY" Then
             Call StartLobby(arguments, argCount)
+        ElseIf eType = "CACERIA" Then
+            Call StartCustomMap(2, eType, arguments, argCount)
+        Else
+            Call ShowConsoleMsg("Invalid event type.")
         End If
         
     Else
         'Avisar que falta el parametro
-        Call ShowConsoleMsg("Faltan parámetros. Utilice /CREAREVENTO CAPTURA/LOBBY.")
+        Call ShowConsoleMsg("Faltan parámetros. Utilice /CREAREVENTO CAPTURA/LOBBY/CACERIA.")
     End If
 End Sub
 
@@ -2328,6 +2347,19 @@ Private Sub ConfigLobbyReturnPlayer(ByRef arguments() As String, ByVal argCount 
     End If
 End Sub
 
+Private Sub ConfigLobbyKickPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eKickPlayer, arguments(1))
+        Else
+            'No es numerico
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY KICK LOBBY_INDEX")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY KICK LOBBY_INDEX")
+    End If
+End Sub
+
 Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount > 0 Then
         Dim eType As String
@@ -2346,18 +2378,24 @@ Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
             Call ConfigLobbyReturnPlayer(arguments, argCount)
         ElseIf eType = "RETALL" Then
             Call WriteLobbyCommand(e_LobbyCommandId.eReturnAllSummoned)
+        ElseIf eType = "OPEN" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eOpenLobby)
         ElseIf eType = "START" Then
             Call WriteLobbyCommand(e_LobbyCommandId.eStartEvent)
         ElseIf eType = "END" Then
             Call WriteLobbyCommand(e_LobbyCommandId.eEndEvent)
         ElseIf eType = "LIST" Then
             Call WriteLobbyCommand(e_LobbyCommandId.eListPlayers)
-         ElseIf eType = "CLASS" Then
+        ElseIf eType = "CLASS" Then
             Call ConfigLobbyClass(arguments(), argCount)
+        ElseIf eType = "KICK" Then
+            Call ConfigLobbyKickPlayer(arguments(), argCount)
+        Else
+            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK")
         End If
     Else
         'Avisar que falta el parametro
-        Call ShowConsoleMsg("Faltan parámetros. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/START/END/LIST")
+        Call ShowConsoleMsg("Faltan parámetros. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK")
     End If
 End Sub
 ''
