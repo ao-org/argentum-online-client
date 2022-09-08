@@ -2251,6 +2251,8 @@ Private Sub CreateEventCmd(ByRef arguments() As String, ByVal argCount As Intege
             Call StartLobby(arguments, argCount)
         ElseIf eType = "CACERIA" Then
             Call StartCustomMap(2, eType, arguments, argCount)
+        Else
+            Call ShowConsoleMsg("Invalid event type.")
         End If
         
     Else
@@ -2388,6 +2390,8 @@ Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
             Call ConfigLobbyClass(arguments(), argCount)
         ElseIf eType = "KICK" Then
             Call ConfigLobbyKickPlayer(arguments(), argCount)
+        Else
+            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK")
         End If
     Else
         'Avisar que falta el parametro
