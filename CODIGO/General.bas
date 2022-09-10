@@ -768,7 +768,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     End Select
 
-    If LegalOk And Not UserParalizado And Not UserInmovilizado And Not UserStopped Then
+    If LegalOk And CanMove() Then
         If Not UserDescansar Then
             If UserMacro.Activado Then
                 Call ResetearUserMacro
@@ -1172,6 +1172,8 @@ On Error GoTo Main_Err
     Call CargarRecursos
     Call LoadFonts
     Call initMascotaTutorial
+    Call LoadProjectiles
+    Call InitilializeProjectiles
     
     FrameTime = GetTickCount()
     UserMap = 1

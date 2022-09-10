@@ -47,7 +47,7 @@ End Sub
 
 
 
-Public Sub renderCooldownsInventory(ByVal x As Integer, ByVal y As Integer)
+Public Sub renderCooldownsInventory(ByVal x As Integer, ByVal y As Integer, ByVal cdProgress As Single)
 
 
 
@@ -58,17 +58,17 @@ Public Sub renderCooldownsInventory(ByVal x As Integer, ByVal y As Integer)
     
     Dim currTime As Long
     Dim colores() As RGBA
+    Dim progress As Single
     ReDim colores(3)
     Call SetRGBA(colores(0), 255, 255, 255, 125)
     Call SetRGBA(colores(1), 255, 255, 255, 125)
     Call SetRGBA(colores(2), 255, 255, 255, 125)
     Call SetRGBA(colores(3), 255, 255, 255, 125)
     
-    currTime = GetTickCount() - cooldown_ataque.initialTime
-    If currTime >= cooldown_ataque.totalTime Then
+    If cdProgress >= 1 Then
        Set cooldown_ataque = Nothing
     Else
-        Call Engine_Draw_Load(x, y, 32, 32, colorCooldown, currTime * 360 / cooldown_ataque.totalTime)
+        Call Engine_Draw_Load(x, y, 32, 32, colorCooldown, 360 * cdProgress)
         x = x - 36
         i = i + 1
     End If

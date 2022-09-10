@@ -779,21 +779,16 @@ Public Sub DrawInventory()
                     Call RGBAList(Color, 255, 0, 0)
                     tmpString = EQUIPPED_CHARACTER
                     Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, Color, 1
-                    
-                    'Renderizo cooldown del arma
-                    If UserInventory(i).ObjType = 2 Or UserInventory(i).ObjType = 46 Then
-                        Call renderCooldownsInventory(x, y)
-                    End If
+                End If
+                Dim cdTime As Single: cdTime = GetLongerCdPercent(i)
+                If cdTime > 0 And cdTime < 1 Then
+                    Call renderCooldownsInventory(x, y, cdTime)
                     
                 End If
             End If
         End If
 
     Next i
-             
-             
-
-    
     Exit Sub
 
 DrawInventory_Err:
@@ -993,3 +988,69 @@ MostrarCantidades_Err:
     Resume Next
     
 End Property
+
+Public Sub UpdateSelectedItemLastUse()
+    UserInventory(SelectedItem()).LastUseTime = GetTickCount()
+End Sub
+
+Public Function IsItemOnCd(Slot As Integer) As Boolean
+    If Slot < 0 Or Slot > UBound(UserInventory) Then
+        IsItemOnCd = False
+        Exit Function
+    End If
+    Dim ElapsedTime As Long
+    ElapsedTime = GetTickCount() - UserInventory(Slot).LastUseTime
+    IsItemOnCd = ElapsedTime < ObjData(UserInventory(Slot).OBJIndex).Cooldown
+End Function
+
+Public Function GetActiveWeaponSlot() As Integer
+    Dim Slot As Integer
+    For Slot = 1 To UBound(UserInventory)
+        If UserInventory(Slot).Equipped And UserInventory(Slot).ObjType = 2 Then
+            GetActiveWeaponSlot = Slot
+            Exit Function
+        End If
+    Next Slot
+    GetActiveWeaponSlot = -1
+End Function
+
+Public Function CanUse(ByVal Slot As Integer) As Boolean
+    CanUse = UserInventory(Slot).ObjType = eObjType.otWeapon Or UserInventory(Slot).ObjType = eObjType.otPociones Or UserInventory(Slot).ObjType = eObjType.OtHerramientas Or UserInventory(Slot).ObjType = eObjType.otInstrumentos Or UserInventory(Slot).ObjType = eObjType.otNudillos Or UserInventory(Slot).ObjType = eObjType.OtCofre
+
+End Function
+
+Public Function GetLongerCdPercent(ByVal Slot As Integer) As Single
+    GetLongerCdPercent = 0
+    If Not CanUse(Slot) Then
+        Exit Function
+    End If
+    Dim pendingTime, tempPending As Long
+    Dim currTime As Long
+    GetLongerCdPercent = 0
+    'test stung
+    currTime = GetTickCount()
+    pendingTime = StunEndTime - currTime
+    If pendingTime > 0 Then
+        GetLongerCdPercent = 1 - pendingTime / TotalStunTime
+    End If
+    ' test item cd
+    Dim itemCd As Long: itemCd = ObjData(UserInventory(Slot).OBJIndex).Cooldown
+    If itemCd > 0 Then
+        tempPending = currTime - UserInventory(Slot).LastUseTime
+        If tempPending > pendingTime And tempPending < itemCd Then
+            GetLongerCdPercent = tempPending / itemCd
+            pendingTime = tempPending
+        End If
+    End If
+    'test global wp cd
+    If UserInventory(Slot).ObjType = 2 Or UserInventory(Slot).ObjType = 46 Then
+        If cooldown_ataque.totalTime > 0 Then
+            tempPending = currTime - cooldown_ataque.initialTime
+            If tempPending > pendingTime And tempPending < cooldown_ataque.totalTime Then
+                pendingTime = tempPending
+                GetLongerCdPercent = pendingTime / cooldown_ataque.totalTime
+            End If
+        End If
+    End If
+End Function
+
