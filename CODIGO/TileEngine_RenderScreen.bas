@@ -475,7 +475,23 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
         ScreenY = ScreenY + TilePixelHeight
     Next y
- 
+    
+    'draw projectiles
+    Dim transform As Vector2
+    Dim complete As Boolean
+    Dim Index As Integer
+    Index = 1
+    Do While Index <= ActiveProjectile.CurrentIndex
+        complete = UpdateProjectile(AllProjectile(ActiveProjectile.IndexInfo(Index)))
+        Call WorldToScreen(AllProjectile(ActiveProjectile.IndexInfo(Index)).CurrentPos, transform, StartBufferedX, StartBufferedY, MinBufferedX, MinBufferedY)
+        Call RenderProjectile(AllProjectile(ActiveProjectile.IndexInfo(Index)), transform, temp_color)
+        If complete Then
+            ReleaseProjectile (Index)
+        Else
+            Index = Index + 1
+        End If
+    Loop
+    
     ' *********************************
     ' Layer 4 loop
     If HayLayer4 Then
@@ -779,6 +795,70 @@ RenderScreen_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen", Erl)
     Resume Next
     
+End Sub
+
+Private Sub WorldToScreen(ByRef world As Vector2, ByRef screen As Vector2, ByVal screenX As Integer, ByVal screenY As Integer, ByVal tilesOffsetX As Integer, ByVal tilesOffsetY As Integer)
+    screen.y = world.y - tilesOffsetY * TilePixelHeight + screenY
+    screen.x = world.x - tilesOffsetX * TilePixelWidth + screenX
+End Sub
+
+Private Sub RenderProjectile(ByRef projetileInstance As Projectile, ByRef screenPos As Vector2, ByRef rgba_list() As RGBA)
+On Error GoTo RenderProjectile_Err
+    Call RGBAList(rgba_list, 255, 255, 255, 255)
+    Call DrawSingleGrh(projetileInstance.GrhIndex, screenPos, 1, projetileInstance.Rotation, rgba_list)
+    Exit Sub
+RenderProjectile_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderProjectile_Err", Erl)
+End Sub
+
+Function UpdateProjectile(ByRef Projectile As Projectile) As Boolean
+On Error GoTo UpdateProjectile_Err
+    Dim direction As Vector2
+    direction = VSubs(Projectile.TargetPos, Projectile.CurrentPos)
+    If VecLength(direction) < Projectile.speed * timerElapsedTime Then
+        UpdateProjectile = True
+        Exit Function
+    End If
+    Call Normalize(direction)
+    direction = VMul(direction, Projectile.speed * timerElapsedTime)
+    Projectile.CurrentPos = VAdd(Projectile.CurrentPos, direction)
+    Projectile.Rotation = FixAngle(Projectile.Rotation + Projectile.RotationSpeed * timerElapsedTime)
+    UpdateProjectile = False
+    Exit Function
+UpdateProjectile_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.UpdateProjectile_Err", Erl)
+End Function
+
+Public Sub InitializeProjectile(ByRef Projectile As Projectile, ByVal startX As Byte, ByVal startY As Byte, ByVal endX As Byte, ByVal endY As Byte, ByVal projectileType As Integer)
+On Error GoTo InitializeProjectile_Err
+    With ProjectileData(projectileType)
+        Dim Index As Integer
+        If AvailableProjectile.CurrentIndex > 0 Then
+            Index = AvailableProjectile.IndexInfo(AvailableProjectile.CurrentIndex)
+            AvailableProjectile.CurrentIndex = AvailableProjectile.CurrentIndex - 1
+        Else
+            'increase projectile active/ inactive/ instance arrays size
+        End If
+        AllProjectile(Index).CurrentPos.x = startX * TilePixelWidth
+        AllProjectile(Index).CurrentPos.y = startY * TilePixelHeight
+        AllProjectile(Index).TargetPos.x = endX * TilePixelWidth
+        AllProjectile(Index).TargetPos.y = endY * TilePixelHeight
+        AllProjectile(Index).speed = .speed
+        AllProjectile(Index).RotationSpeed = .RotationSpeed
+        AllProjectile(Index).GrhIndex = .grh
+        If endX > startX And .RigthGrh > 0 Then
+            AllProjectile(Index).GrhIndex = .RigthGrh
+            AllProjectile(Index).RotationSpeed = .RotationSpeed * -1
+        End If
+
+        AllProjectile(Index).Rotation = RadToDeg(GetAngle(startX, endY, endX, startY))
+        AllProjectile(Index).Rotation = FixAngle(AllProjectile(Index).Rotation + .OffsetRotation)
+        ActiveProjectile.CurrentIndex = ActiveProjectile.CurrentIndex + 1
+        ActiveProjectile.IndexInfo(ActiveProjectile.CurrentIndex) = Index
+    End With
+    Exit Sub
+InitializeProjectile_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.InitializeProjectile_Err", Erl)
 End Sub
 
 Private Sub RenderScreen_NombreMapa()

@@ -218,6 +218,13 @@ End Type
 ' *********************************************************
 
 ''''''''''''''' CARGA DE NPCS DATA MAP QUEST QCYO VIEJA nO ME IMPORTA NADA '''''''''''''''''''''''''''''''
+Public Type t_Projectile
+    speed As Single
+    OffsetRotation As Integer
+    RotationSpeed As Single
+    grh As Long
+    RigthGrh As Long
+End Type
 
 Private Type t_Position
 
@@ -1499,6 +1506,35 @@ CargarParticulasBinary_Err:
     
 End Sub
 
+Public Sub LoadProjectiles()
+    Dim ProjectN As Integer
+    #If Compresion = 1 Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "ProjectileDef.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+            Err.Description = "¡No se puede cargar el archivo de ProjectileDef.dat!"
+            MsgBox Err.Description
+
+        End If
+        ObjFile = Windows_Temp_Dir & "ProjectileDef.dat"
+    #Else
+        ObjFile = App.path & "\..\Recursos\init\ProjectileDef.dat"
+    #End If
+    Dim IniReader As New clsIniManager
+    Debug.Assert FileExist(ObjFile, vbNormal)
+    Call IniReader.Initialize(ObjFile)
+
+    ProjectN = Val(IniReader.GetValue("INIT", "NumProjectile"))
+    ReDim ProjectileData(1 To ProjectN) As t_Projectile
+    Dim Prj As Integer
+    For Prj = 1 To ProjectN
+        ProjectileData(Prj).grh = Val(IniReader.GetValue("PROJECTILE" & Prj, "GRH"))
+        ProjectileData(Prj).RigthGrh = Val(IniReader.GetValue("PROJECTILE" & Prj, "GRHRigth"))
+        ProjectileData(Prj).speed = Val(IniReader.GetValue("PROJECTILE" & Prj, "SPEED")) / 1000
+        ProjectileData(Prj).OffsetRotation = Val(IniReader.GetValue("PROJECTILE" & Prj, "OFFSETROTATION"))
+        ProjectileData(Prj).RotationSpeed = Val(IniReader.GetValue("PROJECTILE" & Prj, "ROTATIONSPEED"))
+    Next Prj
+
+End Sub
+
 Public Sub CargarIndicesOBJ()
     
     On Error GoTo CargarIndicesOBJ_Err
@@ -1572,6 +1608,7 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).MinHit = Val(Leer.GetValue("OBJ" & Obj, "MinHit"))
         ObjData(Obj).MaxHit = Val(Leer.GetValue("OBJ" & Obj, "MaxHit"))
         ObjData(Obj).ObjType = Val(Leer.GetValue("OBJ" & Obj, "ObjType"))
+        ObjData(Obj).Cooldown = Val(Leer.GetValue("OBJ" & Obj, "CD"))
                 
         ObjData(Obj).CreaGRH = Leer.GetValue("OBJ" & Obj, "CreaGRH")
         ObjData(Obj).CreaLuz = Leer.GetValue("OBJ" & Obj, "CreaLuz")

@@ -133,6 +133,8 @@ Public PosMap()           As Integer
 Public ObjData()          As ObjDatas
 Public ObjShop()          As ObjDatas
 Public NpcData()          As NpcDatas
+Public ProjectileData() As t_Projectile
+Public GProjectile As Projectile
 
 Public Locale_SMG()       As String
 
@@ -194,6 +196,7 @@ Public Type ObjDatas
     Agarrable As Boolean
     Llave As Integer
     ObjNum As Long
+    Cooldown As Long
 End Type
 
 Public Type NpcDatas
@@ -414,7 +417,28 @@ Private Type BITMAP
     bmBits As Long
 
 End Type
- 
+
+Public Type Projectile
+    GrhIndex As Long
+    CurrentPos As Vector2
+    speed As Single
+    RotationSpeed As Single
+    TargetPos As Vector2
+    Rotation As Single
+End Type
+
+Public Type t_IndexHeap
+    CurrentIndex As Integer
+    IndexInfo() As Integer
+End Type
+
+
+
+Public Const InitialProjectileSize As Integer = 45
+Public AllProjectile(InitialProjectileSize) As Projectile
+Public AvailableProjectile As t_IndexHeap
+Public ActiveProjectile As t_IndexHeap
+
 Const HTCAPTION = 2
 
 Const WM_NCLBUTTONDOWN = &HA1
@@ -468,6 +492,24 @@ Public Declare Function DrawIconEx Lib "user32.dll" (ByVal hdc As Long, ByVal xL
 Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Long) As Long
                            
 Private m_ASC As Long
+
+Public Sub InitilializeProjectiles()
+    Dim i As Integer
+    ReDim AvailableProjectile.IndexInfo(InitialProjectileSize)
+    ReDim ActiveProjectile.IndexInfo(InitialProjectileSize)
+    ActiveProjectile.CurrentIndex = 0
+    For i = 1 To InitialProjectileSize
+        AvailableProjectile.IndexInfo(i) = InitialProjectileSize - i + 1
+    Next i
+    AvailableProjectile.CurrentIndex = InitialProjectileSize
+End Sub
+
+Public Sub ReleaseProjectile(Index As Integer)
+    AvailableProjectile.CurrentIndex = AvailableProjectile.CurrentIndex + 1
+    AvailableProjectile.IndexInfo(AvailableProjectile.CurrentIndex) = ActiveProjectile.IndexInfo(Index)
+    ActiveProjectile.IndexInfo(Index) = ActiveProjectile.IndexInfo(ActiveProjectile.CurrentIndex - 1)
+    ActiveProjectile.CurrentIndex = ActiveProjectile.CurrentIndex - 1
+End Sub
 
 Sub inputbox_Password(El_Form As Form, Caracter As String)
     

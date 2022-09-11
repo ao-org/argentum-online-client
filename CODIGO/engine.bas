@@ -570,6 +570,32 @@ Draw_Grh_Err:
     
 End Sub
 
+Public Sub DrawSingleGrh(ByVal GrhIndex As Long, screenPos As Vector2, Alpha As Single, angle As Single, ByRef rgb_list() As RGBA)
+On Error GoTo DrawSingleGrh_Err
+    With GrhData(GrhIndex)
+
+        If .Tx2 = 0 And .FileNum > 0 Then
+            Dim Texture As Direct3DTexture8
+
+            Dim TextureWidth As Long, TextureHeight As Long
+            Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
+
+            .Tx1 = .sX / TextureWidth
+            .Tx2 = (.sX + .pixelWidth) / TextureWidth
+            .Ty1 = .sY / TextureHeight
+            .Ty2 = (.sY + .pixelHeight) / TextureHeight
+        End If
+
+        Call Batch_Textured_Box_Pre(screenPos.x, screenPos.y, .pixelWidth, .pixelHeight, .Tx1, .Ty1, .Tx2, .Ty2, .FileNum, rgb_list, Alpha, angle)
+
+    End With
+
+    Exit Sub
+DrawSingleGrh_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh", Erl)
+    Resume Next
+End Sub
+
 Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, ByVal ease As Single, Optional ByVal Alpha As Boolean = False)
     
     On Error GoTo Draw_Grh_Breathing_Err
@@ -980,35 +1006,6 @@ End Function
 Public Function compute_vector_director(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Position
     compute_vector_director.x = x2 - x1
     compute_vector_director.y = y2 - y1
-End Function
-
-Private Function GetAngle(ByVal x1 As Double, ByVal y1 As Double, ByVal x2 As Double, ByVal y2 As Double) As Double
-    Dim XDiff As Double
-    Dim YDiff As Double
-    Dim TempAngle As Double
-    
-    YDiff = Abs(y2 - y1)
-    
-    If x1 = x2 And y1 = y2 Then Exit Function
-    
-    If YDiff = 0 And x1 < x2 Then
-        GetAngle = 0
-        Exit Function
-    ElseIf YDiff = 0 And x1 > x2 Then
-        GetAngle = 3.14159265358979
-        Exit Function
-    End If
-    
-    XDiff = Abs(x2 - x1)
-    
-    TempAngle = Atn(XDiff / YDiff)
-    
-    If y2 > y1 Then TempAngle = 3.14159265358979 - TempAngle
-    If x2 < x1 Then TempAngle = -TempAngle
-    TempAngle = 1.5707963267949 - TempAngle
-    If TempAngle < 0 Then TempAngle = 6.28318530717959 + TempAngle
-    
-    GetAngle = TempAngle
 End Function
 
 Public Function IntLerp(A As Integer, B As Integer, Factor As Single)

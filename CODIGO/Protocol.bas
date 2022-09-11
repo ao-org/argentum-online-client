@@ -145,6 +145,7 @@ Private Enum ServerPacketID
     GuildDetails            ' CLANDET
     ShowGuildFundationForm  ' SHOWFUN
     ParalizeOK              ' PARADOK
+    StunStart               ' Stun start time
     ShowUserRequest         ' PETICIO
     ChangeUserTradeSlot     ' COMUSUINV
     'SendNight              ' NOC
@@ -242,6 +243,7 @@ Private Enum ServerPacketID
     PlayWaveStep
     ShopPjsInit
     DebugDataResponse
+    CreateProjectile
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -811,6 +813,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleShowGuildFundationForm
         Case ServerPacketID.ParalizeOK
             Call HandleParalizeOK
+        Case ServerPacketID.StunStart
+            Call HandleStunStart
         Case ServerPacketID.ShowUserRequest
             Call HandleShowUserRequest
         Case ServerPacketID.ChangeUserTradeSlot
@@ -975,6 +979,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleSensuiRetrasado
         Case ServerPacketID.DebugDataResponse
             Call HandleDebugDataResponse
+        Case ServerPacketID.CreateProjectile
+            Call HandleCreateProjectile
         #If PYMMO = 0 Then
         Case ServerPacketID.AccountCharacterList
             Call HandleAccountCharacterList
@@ -4477,8 +4483,9 @@ Private Sub HandleArmaMov()
     '***************************************************
 
     Dim charindex As Integer
-
-   charindex = Reader.ReadInt16()
+    Dim isRanged As Byte
+    charindex = Reader.ReadInt16()
+    isRanged = Reader.ReadInt8()
 
     With charlist(charindex)
 
@@ -4486,17 +4493,46 @@ Private Sub HandleArmaMov()
             .MovArmaEscudo = True
             .Arma.WeaponWalk(.Heading).Started = FrameTime
             .Arma.WeaponWalk(.Heading).Loops = 0
-
         End If
-
+        If charindex = UserCharIndex And isRanged > 0 Then
+            Call frmMain.Inventario.UpdateSelectedItemLastUse
+        End If
     End With
-    
     Exit Sub
 
 HandleArmaMov_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleArmaMov", Erl)
-    
-    
+End Sub
+
+Private Sub HandleCreateProjectile()
+    On Error GoTo HandleCreateProjectile_Err
+
+    '***************************************************
+    Dim x, y, endX, endY, projectileType As Byte
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    endX = Reader.ReadInt8()
+    endY = Reader.ReadInt8()
+    projectileType = Reader.ReadInt8()
+    Call InitializeProjectile(GProjectile, x, y, endX, endY, projectileType)
+
+    Exit Sub
+
+HandleCreateProjectile_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCreateProjectile", Erl)
+End Sub
+
+Private Sub HandleStunStart()
+On Error GoTo HandleStunStart_Err
+    If EstaSiguiendo Then Exit Sub
+    Dim duration As Integer
+    duration = Reader.ReadInt16()
+    StunEndTime = GetTickCount() + duration
+    TotalStunTime = duration
+    Exit Sub
+
+HandleStunStart_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleStunStart", Erl)
 End Sub
 
 Private Sub HandleEscudoMov()
