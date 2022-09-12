@@ -2251,13 +2251,15 @@ Private Sub CreateEventCmd(ByRef arguments() As String, ByVal argCount As Intege
             Call StartLobby(arguments, argCount)
         ElseIf eType = "CACERIA" Then
             Call StartCustomMap(2, eType, arguments, argCount)
+        ElseIf eType = "DEATHMATCH" Then
+            Call StartCustomMap(3, eType, arguments, argCount)
         Else
             Call ShowConsoleMsg("Invalid event type.")
         End If
         
     Else
         'Avisar que falta el parametro
-        Call ShowConsoleMsg("Faltan parámetros. Utilice /CREAREVENTO CAPTURA/LOBBY/CACERIA.")
+        Call ShowConsoleMsg("Faltan parámetros. Utilice /CREAREVENTO CAPTURA/LOBBY/CACERIA/DEATHMATCH.")
     End If
 End Sub
 
