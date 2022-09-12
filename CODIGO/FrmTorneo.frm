@@ -959,7 +959,7 @@ Call ParseUserCommand("/crearevento caceria " & txtPlayer & " " & txtNivelMinino
 End Sub
 
 Private Sub cmdCrearEldeath_Click()
-Call ParseUserCommand("/crearevento lobby " & txtPlayerDeath & " " & txtMinlvldeath & " " & txtMaxlvldeath)
+Call ParseUserCommand("/crearevento deathmatch " & txtPlayerDeath & " " & txtMinlvldeath & " " & txtMaxlvldeath)
 End Sub
 
 Private Sub cmdIniciarEl_Click()
