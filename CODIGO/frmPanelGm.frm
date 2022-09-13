@@ -1010,7 +1010,7 @@ Begin VB.Form frmPanelgm
    Begin VB.Menu cmdHerramientas 
       Caption         =   "Herramientas"
       Begin VB.Menu torneos 
-         Caption         =   "Torneos"
+         Caption         =   "Torneos y Eventos"
          Begin VB.Menu creartoneo 
             Caption         =   "Crear Nuevo"
          End
@@ -3037,7 +3037,7 @@ Private Sub torneo_cancelar_Click()
     On Error GoTo torneo_cancelar_Click_Err
     
     Call WriteCancelarTorneo
-
+    Call ParseUserCommand("/confinglobby end")
     
     Exit Sub
 
