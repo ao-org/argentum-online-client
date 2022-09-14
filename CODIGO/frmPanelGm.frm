@@ -3037,7 +3037,7 @@ Private Sub torneo_cancelar_Click()
     On Error GoTo torneo_cancelar_Click_Err
     
     Call WriteCancelarTorneo
-    Call ParseUserCommand("/confinglobby end")
+    Call ParseUserCommand("/configlobby end")
     
     Exit Sub
 

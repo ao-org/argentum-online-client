@@ -44,7 +44,6 @@ Begin VB.Form FrmTorneo
          Left            =   240
          TabIndex        =   84
          Top             =   2880
-         Visible         =   0   'False
          Width           =   3735
       End
       Begin VB.OptionButton OptBusquedaDe 
@@ -53,7 +52,6 @@ Begin VB.Form FrmTorneo
          Left            =   240
          TabIndex        =   83
          Top             =   2520
-         Visible         =   0   'False
          Width           =   3615
       End
       Begin VB.OptionButton OptBufones 
@@ -62,7 +60,6 @@ Begin VB.Form FrmTorneo
          Left            =   240
          TabIndex        =   82
          Top             =   2160
-         Visible         =   0   'False
          Width           =   3135
       End
       Begin VB.CommandButton cmdCancelarTodos 
@@ -1012,7 +1009,7 @@ Private Sub cmdCancelarDeach_Click()
 End Sub
 
 Private Sub cmdCancelarTodos_Click()
-    Call ParseUserCommand("/confinglobby end")
+    Call ParseUserCommand("/configlobby end")
 End Sub
 
 Private Sub cmdCancelarTorneo_Click()
