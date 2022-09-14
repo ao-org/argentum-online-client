@@ -1255,7 +1255,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim nick       As String
+Dim Nick       As String
 
 Dim tmp        As String
 
@@ -1271,13 +1271,13 @@ Private MisMSG(0 To MAX_GM_MSG) As String
 
 Private Apunt(0 To MAX_GM_MSG)  As Integer
 
-Public Sub CrearGMmSg(nick As String, msg As String)
+Public Sub CrearGMmSg(Nick As String, msg As String)
     
     On Error GoTo CrearGMmSg_Err
     
 
     If List1.ListCount < MAX_GM_MSG Then
-        List1.AddItem nick & "-" & List1.ListCount
+        List1.AddItem Nick & "-" & List1.ListCount
         MisMSG(List1.ListCount - 1) = msg
         Apunt(List1.ListCount - 1) = List1.ListCount - 1
 
@@ -1297,10 +1297,10 @@ Private Sub BanCuenta_Click()
     On Error GoTo BanCuenta_Click_Err
     
     tmp = InputBox("¿Motivo?", "Ingrese el motivo")
-    nick = cboListaUsus.Text
+    Nick = cboListaUsus.Text
 
-    If MsgBox("¿Estás seguro que desea banear la cuenta de """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
-        Call WriteBanCuenta(nick, tmp)
+    If MsgBox("¿Estás seguro que desea banear la cuenta de """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+        Call WriteBanCuenta(Nick, tmp)
 
     End If
 
@@ -1481,28 +1481,28 @@ Private Sub cmdAccion_Click(Index As Integer)
     
     On Error GoTo 0
     
-    nick = Replace(cboListaUsus.Text, " ", "+")
+    Nick = Replace(cboListaUsus.Text, " ", "+")
 
     Select Case Index
 
         Case 0 '/ECHAR NICK 0.12.1
-            Call WriteKick(nick)
+            Call WriteKick(Nick)
 
         Case 1 '/BAN NICK MOTIVO 0.12.1
             tmp = InputBox("¿Motivo?", "Ingrese el motivo")
 
             If MsgBox("¿Estás seguro que desea banear al personaje """ & cboListaUsus.Text & """?", vbYesNo + vbQuestion) = vbYes Then
-                Call WriteBanChar(nick, tmp)
+                Call WriteBanChar(Nick, tmp)
 
             End If
 
         Case 2 '/SUM NICK 0.12.1
 
-            If LenB(nick) <> 0 Then Call WriteSummonChar(nick)
+            If LenB(Nick) <> 0 Then Call WriteSummonChar(Nick)
 
         Case 3 '/ira NICK 0.12.1
 
-            If LenB(nick) <> 0 Then Call WriteGoToChar(nick)
+            If LenB(Nick) <> 0 Then Call WriteGoToChar(Nick)
 
         Case 4 '/REM 0.12.1
             tmp = InputBox("¿Comentario?", "Ingrese comentario")
@@ -1513,26 +1513,26 @@ Private Sub cmdAccion_Click(Index As Integer)
 
         Case 6 '/DONDE NICK 0.12.1
 
-            If LenB(nick) <> 0 Then Call WriteWhere(nick)
+            If LenB(Nick) <> 0 Then Call WriteWhere(Nick)
 
         Case 7 '/NENE 0.12.1
             tmp = InputBox("¿En qué mapa?", "")
             Call ParseUserCommand("/NENE " & tmp)
 
         Case 8 '/info nick
-            Call ParseUserCommand("/INFO " & nick)
+            Call ParseUserCommand("/INFO " & Nick)
    
         Case 9 '/inv nick
-            Call ParseUserCommand("/INV " & nick)
+            Call ParseUserCommand("/INV " & Nick)
    
         Case 10 '/skills nick
-            Call ParseUserCommand("/SKILLS " & nick)
+            Call ParseUserCommand("/SKILLS " & Nick)
    
         Case 11 '/CARCEL NICK @ MOTIVO  0.12.1
             tmp = InputBox("¿Minutos a encarcelar? (hasta 60)", "")
 
             If tmp > 1 Then
-                Call ParseUserCommand("/CARCEL " & nick & "@encarcelado via panelgm@" & tmp)
+                Call ParseUserCommand("/CARCEL " & Nick & "@encarcelado via panelgm@" & tmp)
            
             Else
                 MsgBox ("Ingreso un tiempo invalido.")
@@ -1540,14 +1540,14 @@ Private Sub cmdAccion_Click(Index As Integer)
             End If
 
         Case 13 '/nick2ip NICK 0.12.1
-            Call WriteNickToIP(nick)
+            Call WriteNickToIP(Nick)
 
         Case 14 '/Lastip NICK 0.12.1
-            Call WriteLastIP(nick)
+            Call WriteLastIP(Nick)
 
         Case 15 '/IrCerca NICK 0.12.1
 
-            If LenB(nick) <> 0 Then Call WriteGoNearby(nick)
+            If LenB(Nick) <> 0 Then Call WriteGoNearby(Nick)
 
         Case 17 '/BANIP IP 0.12.1
             tmp = InputBox("Escriba la dirección IP a banear.", "")
@@ -1562,24 +1562,24 @@ Private Sub cmdAccion_Click(Index As Integer)
 
         Case 19 '/BANED IP AND PERSONAJE 0.12.1   REVISAR
     
-            If MsgBox("¿Estás seguro que deseas banear la IP y el personaje """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox("¿Estás seguro que deseas banear la IP y el personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
         
-                Call ParseUserCommand("/banip " & nick & " panelgm")
+                Call ParseUserCommand("/banip " & Nick & " panelgm")
 
                 'Call WriteBanIP(False, str2ipv4l("0.0.0.0"), ArgumentosAll(0), Right$(ArgumentosRaw, Len(ArgumentosRaw) - Len(ArgumentosAll(0)) - 1))
             End If
 
         Case 20 '/PENAS NICK 0.12.1
-            Call WritePunishments(nick)
+            Call WritePunishments(Nick)
 
         Case 21 '/REVIVIR NICK 0.12.1
-            Call WriteReviveChar(nick)
+            Call WriteReviveChar(Nick)
 
         Case 22 'ADVERTENCIA 0.12.1
-            tmp = InputBox("Escriba el motivo de la advertencia.", "Advertir a " & nick)
+            tmp = InputBox("Escriba el motivo de la advertencia.", "Advertir a " & Nick)
 
             If LenB(tmp) <> 0 Then
-                Call ParseUserCommand("/ADVERTENCIA " & nick & "@" & tmp)
+                Call ParseUserCommand("/ADVERTENCIA " & Nick & "@" & tmp)
 
             End If
 
@@ -1635,7 +1635,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
             tmp = InputBox("¿Minutos a silenciar? (hasta 255)", "")
 
-            If MsgBox("¿Estás seguro que desea silenciar al personaje """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox("¿Estás seguro que desea silenciar al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
                 If tmp > 255 Then Exit Sub
                 Call ParseUserCommand("/SILENCIAR " & cboListaUsus.Text & "@" & tmp)
 
@@ -1643,7 +1643,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
     End Select
 
-    nick = ""
+    Nick = ""
     
     Exit Sub
 
@@ -1719,7 +1719,7 @@ Private Sub cmdcerrar_Click()
     On Error GoTo cmdcerrar_Click_Err
     
 
-    Me.visible = False
+    Me.Visible = False
     List1.Clear
     List2.Clear
     txtMsg.Text = ""
@@ -2016,8 +2016,8 @@ Private Sub Command1_Click()
     
     On Error GoTo Command1_Click_Err
     
-    List1.visible = True
-    List2.visible = False
+    List1.Visible = True
+    List2.Visible = False
 
     
     Exit Sub
@@ -2032,8 +2032,8 @@ Private Sub Command2_Click()
     
     On Error GoTo Command2_Click_Err
     
-    List1.visible = False
-    List2.visible = True
+    List1.Visible = False
+    List2.Visible = True
 
     
     Exit Sub
@@ -2137,8 +2137,8 @@ Private Sub Destrabar_Click()
     
     On Error GoTo Destrabar_Click_Err
     
-    nick = Replace(List1.Text, " ", "+")
-    Call WritePossUser(nick)
+    Nick = Replace(List1.Text, " ", "+")
+    Call WritePossUser(Nick)
 
     
     Exit Sub
@@ -2168,8 +2168,8 @@ Private Sub Ejecutar_Click()
     
     On Error GoTo Ejecutar_Click_Err
     
-    nick = cboListaUsus.Text
-    Call WriteExecute(nick) '/EJECUTAR NICK 0.12.1
+    Nick = cboListaUsus.Text
+    Call WriteExecute(Nick) '/EJECUTAR NICK 0.12.1
 
     
     Exit Sub
@@ -2448,7 +2448,7 @@ Private Sub mnuBorrar_Click()
 
     Dim elitem          As String
     Dim ProximamentTipo As String
-    Dim tipo            As String
+    Dim TIPO            As String
 
     elitem = List1.ListIndex
 
@@ -2458,9 +2458,9 @@ Private Sub mnuBorrar_Click()
     
     ProximamentTipo = General_Field_Read(2, List1.List(List1.ListIndex), "(")
     
-    tipo = General_Field_Read(1, ProximamentTipo, ")")
+    TIPO = General_Field_Read(1, ProximamentTipo, ")")
     
-    Call WriteSOSRemove(nick & "Ø" & txtMsg & "Ø" & tipo)
+    Call WriteSOSRemove(Nick & "Ø" & txtMsg & "Ø" & TIPO)
     
     Call List1.RemoveItem(List1.ListIndex)
     Call List2.RemoveItem(elitem)
@@ -2483,33 +2483,33 @@ Private Sub MnuEnviar_Click(Index As Integer)
 
     Dim Coordenadas As String
 
-    nick = Replace(cboListaUsus.Text, " ", "+")
+    Nick = Replace(cboListaUsus.Text, " ", "+")
 
     Select Case Index
             'ReyarB modifico cordenadas
 
          Case 0 'Ulla
             Coordenadas = "1 55 45"
-            Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
+            Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 1 'Nix
             Coordenadas = "34 40 85"
-            Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
+            Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 2 'Bander
             Coordenadas = "59 45 45"
-            Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
+            Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 3 'Arghal
             Coordenadas = "151 37 69"
-            Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
+            Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
         Case 4 'Otro
 
-            If LenB(nick) <> 0 Then
-                Coordenadas = InputBox("Indique la posición (MAPA X Y).", "Transportar a " & nick)
+            If LenB(Nick) <> 0 Then
+                Coordenadas = InputBox("Indique la posición (MAPA X Y).", "Transportar a " & Nick)
 
-                If LenB(Coordenadas) <> 0 Then Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
+                If LenB(Coordenadas) <> 0 Then Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
             End If
 
@@ -2541,8 +2541,8 @@ End Sub
 
 Private Sub mnuDestrabar_Click()
     On Error GoTo mnuDestrabar_Click_Err
-    nick = Replace(List1.Text, " ", "+")
-    Call WritePossUser(nick)
+    Nick = Replace(List1.Text, " ", "+")
+    Call WritePossUser(Nick)
 
     
     Exit Sub
@@ -2572,12 +2572,12 @@ Private Sub mnuInvalida_Click()
     
     On Error GoTo mnuInvalida_Click_Err
     
-    nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
+    Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
     
-    Call ParseUserCommand("/MENSAJEINFORMACION " & nick & "@" & "Su consulta fue rechazada debido a que esta fue catalogada como invalida.")
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta fue catalogada como invalida.")
 
     ' Lo advertimos
-    Call WriteWarnUser(nick, "Consulta a GM's inválida.")
+    Call WriteWarnUser(Nick, "Consulta a GM's inválida.")
     
     ' Borramos el mensaje de la lista.
     Call mnuBorrar_Click
@@ -2594,9 +2594,9 @@ Private Sub mnuResponder_Click()
     
     On Error GoTo mnuResponder_Click_Err
     
-    nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
+    Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
     tmp = InputBox("Ingrese la respuesta:", "Responder consulta")
-    Call ParseUserCommand("/MENSAJEINFORMACION " & nick & "@" & tmp)
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & tmp)
 
     
     Exit Sub
@@ -2611,8 +2611,8 @@ Private Sub mnuManual_Click()
     
     On Error GoTo mnuManual_Click_Err
     
-    nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-    Call ParseUserCommand("/MENSAJEINFORMACION " & nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
+    Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
+    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
 
     
     Exit Sub
@@ -2627,27 +2627,27 @@ Private Sub mnuAccion_Click(Index As Integer)
     
     On Error GoTo mnuAccion_Click_Err
     
-    nick = cboListaUsus.Text
+    Nick = cboListaUsus.Text
 
-    If LenB(nick) <> 0 Then
+    If LenB(Nick) <> 0 Then
 
         Select Case Index
 
             Case 0 ' Informacion General
-                Call WriteRequestCharStats(nick)
+                Call WriteRequestCharStats(Nick)
 
             Case 1 ' Inventario
-                Call WriteRequestCharInventory(nick)
+                Call WriteRequestCharInventory(Nick)
 
             Case 2 'Skill
-                Call WriteRequestCharSkills(nick)
+                Call WriteRequestCharSkills(Nick)
 
             Case 3 'Atributos
-                Call WriteRequestCharInfo(nick)
+                Call WriteRequestCharInfo(Nick)
 
             Case 4 'Boveda
-                Call WriteRequestCharBank(nick)
-                Call WriteRequestCharGold(nick)
+                Call WriteRequestCharBank(Nick)
+                Call WriteRequestCharGold(Nick)
 
         End Select
 
@@ -2718,9 +2718,9 @@ Private Sub mnuCarcel_Click(Index As Integer)
 
     End If
 
-    nick = cboListaUsus.Text
+    Nick = cboListaUsus.Text
 
-    Call ParseUserCommand("/CARCEL " & nick & "@encarcelado via panelgm@" & Index)
+    Call ParseUserCommand("/CARCEL " & Nick & "@encarcelado via panelgm@" & Index)
 
     
     Exit Sub
@@ -3025,11 +3025,11 @@ Temporal_Click_Err:
 End Sub
 
 Private Sub cmdButtonActualizarListaGms_Click()
-    cmdButtonActualizarListaGms.enabled = False
+    cmdButtonActualizarListaGms.Enabled = False
     List1.Clear
     List2.Clear
     Call WriteSOSShowList
-    cmdButtonActualizarListaGms.enabled = True
+    cmdButtonActualizarListaGms.Enabled = True
 End Sub
 
 Private Sub torneo_cancelar_Click()
@@ -3037,7 +3037,7 @@ Private Sub torneo_cancelar_Click()
     On Error GoTo torneo_cancelar_Click_Err
     
     Call WriteCancelarTorneo
-    Call ParseUserCommand("/configlobby end")
+    Call ParseUserCommand("/confinglobby end")
     
     Exit Sub
 
@@ -3132,10 +3132,10 @@ Private Sub UnbanPersonaje_Click()
     
     On Error GoTo UnbanPersonaje_Click_Err
     
-    nick = cboListaUsus.Text
+    Nick = cboListaUsus.Text
 
-    If MsgBox("¿Estás seguro que deseas removerle el ban al personaje """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
-        Call WriteUnbanChar(nick)
+    If MsgBox("¿Estás seguro que deseas removerle el ban al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+        Call WriteUnbanChar(Nick)
 
     End If
 
@@ -3174,16 +3174,16 @@ Private Sub ReadNick()
     On Error GoTo ReadNick_Err
     
 
-    If List1.visible Then
-        nick = General_Field_Read(1, List1.List(List1.ListIndex), "(")
+    If List1.Visible Then
+        Nick = General_Field_Read(1, List1.List(List1.ListIndex), "(")
 
-        If nick = "" Then Exit Sub
-        nick = Left$(nick, Len(nick))
+        If Nick = "" Then Exit Sub
+        Nick = Left$(Nick, Len(Nick))
     Else
-        nick = General_Field_Read(1, List2.List(List2.ListIndex), "(")
+        Nick = General_Field_Read(1, List2.List(List2.ListIndex), "(")
 
-        If nick = "" Then Exit Sub
-        nick = Left$(nick, Len(nick))
+        If Nick = "" Then Exit Sub
+        Nick = Left$(Nick, Len(Nick))
 
     End If
 
@@ -3225,12 +3225,12 @@ End Sub
 
 Private Sub mnuConsulta_Click()
     
-    Dim nick As String
-        nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
+    Dim Nick As String
+        Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
     
-    If Len(nick) <> 0 Then
+    If Len(Nick) <> 0 Then
         
-        Call WriteConsulta(nick)
+        Call WriteConsulta(Nick)
         
     End If
 
