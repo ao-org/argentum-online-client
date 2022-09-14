@@ -22,6 +22,619 @@ Begin VB.Form FrmTorneo
    ScaleWidth      =   4425
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Frame FraTorneosY 
+      Caption         =   "Torneos y Eventos"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   6015
+      Left            =   120
+      TabIndex        =   34
+      Top             =   120
+      Width           =   4215
+      Begin VB.OptionButton OptAbordaje 
+         Caption         =   "Abordaje"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   84
+         Top             =   2880
+         Visible         =   0   'False
+         Width           =   3735
+      End
+      Begin VB.OptionButton OptBusquedaDe 
+         Caption         =   "Busqueda de tesoro"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   83
+         Top             =   2520
+         Visible         =   0   'False
+         Width           =   3615
+      End
+      Begin VB.OptionButton OptBufones 
+         Caption         =   "Bufones"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   82
+         Top             =   2160
+         Visible         =   0   'False
+         Width           =   3135
+      End
+      Begin VB.CommandButton cmdCancelarTodos 
+         Caption         =   "Cancelar todos los eventos con Lobby"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   81
+         Top             =   5400
+         Width           =   3495
+      End
+      Begin VB.OptionButton OptTorneo 
+         Caption         =   "Torneo"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   78
+         Top             =   1800
+         Width           =   1935
+      End
+      Begin VB.OptionButton OptCapturaDe 
+         Caption         =   "Captura de bandera"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   38
+         Top             =   720
+         Width           =   3615
+      End
+      Begin VB.OptionButton OptMatarCon 
+         Caption         =   "Dia del Garrote"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   37
+         Top             =   1080
+         Width           =   3735
+      End
+      Begin VB.OptionButton OptElDe 
+         Caption         =   "DeathMach"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   36
+         Top             =   1440
+         Width           =   3855
+      End
+      Begin VB.CommandButton cmdConfigurarE 
+         Caption         =   "Configurar e Iniciar"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   720
+         Left            =   360
+         TabIndex        =   35
+         Top             =   4440
+         Width           =   3495
+      End
+      Begin VB.Label lblSeleccionarEl 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Seleccionar el evento a realizar"
+         Height          =   195
+         Left            =   240
+         TabIndex        =   39
+         Top             =   360
+         Width           =   2235
+      End
+   End
+   Begin VB.Frame FraDeathMach 
+      Caption         =   "DeathMach"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   6015
+      Left            =   120
+      TabIndex        =   51
+      Top             =   120
+      Visible         =   0   'False
+      Width           =   4215
+      Begin VB.CommandButton cmdVerAnotados 
+         Caption         =   "Ver Anotados"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   79
+         Top             =   5280
+         Width           =   1335
+      End
+      Begin VB.CommandButton cmdAnunciarEldeath 
+         Caption         =   "Anunciar el evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   58
+         Top             =   4320
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdIniciarEldeath 
+         Caption         =   "Iniciar el Evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   57
+         Top             =   4680
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdCrearEldeath 
+         Caption         =   "Crear el evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   56
+         Top             =   3960
+         Width           =   3495
+      End
+      Begin VB.TextBox txtMinlvldeath 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   55
+         Text            =   "1"
+         Top             =   600
+         Width           =   975
+      End
+      Begin VB.TextBox txtMaxlvldeath 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   54
+         Text            =   "47"
+         Top             =   960
+         Width           =   975
+      End
+      Begin VB.TextBox txtPlayerDeath 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   53
+         Text            =   "1"
+         Top             =   1680
+         Width           =   975
+      End
+      Begin VB.CommandButton cmdCancelarDeach 
+         Caption         =   "Cancelar"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   2880
+         TabIndex        =   52
+         Top             =   5280
+         Width           =   990
+      End
+      Begin VB.Label lblNivelMinimodeath 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel Minimo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   61
+         Top             =   600
+         Width           =   870
+      End
+      Begin VB.Label lblNivelMaximodeath 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel Maximo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   60
+         Top             =   960
+         Width           =   930
+      End
+      Begin VB.Label lblCantidadDedeath 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cantidad de participantes"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   59
+         Top             =   1440
+         Width           =   1845
+      End
+   End
+   Begin VB.Frame FraCapturaDe 
+      Caption         =   "Captura de Bandera"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   6015
+      Left            =   120
+      TabIndex        =   62
+      Top             =   120
+      Visible         =   0   'False
+      Width           =   4215
+      Begin VB.CommandButton Command5 
+         Caption         =   "Cancelar"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   2880
+         TabIndex        =   76
+         Top             =   5520
+         Width           =   990
+      End
+      Begin VB.CommandButton Command4 
+         Caption         =   "Crear el evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   75
+         Top             =   4200
+         Visible         =   0   'False
+         Width           =   3495
+      End
+      Begin VB.CommandButton Command3 
+         Caption         =   "Iniciar el Evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   74
+         Top             =   4920
+         Width           =   3495
+      End
+      Begin VB.CommandButton Command2 
+         Caption         =   "Anunciar el evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   73
+         Top             =   4560
+         Visible         =   0   'False
+         Width           =   3495
+      End
+      Begin VB.TextBox txtPrecio 
+         Height          =   285
+         Left            =   2040
+         TabIndex        =   72
+         Text            =   "1"
+         Top             =   2040
+         Width           =   975
+      End
+      Begin VB.TextBox txtNivelmax 
+         Height          =   285
+         Left            =   2040
+         TabIndex        =   69
+         Text            =   "47"
+         Top             =   1680
+         Width           =   975
+      End
+      Begin VB.TextBox txtNivelMinimo 
+         Height          =   285
+         Left            =   2040
+         TabIndex        =   68
+         Text            =   "1"
+         Top             =   1320
+         Width           =   975
+      End
+      Begin VB.TextBox txtRondas 
+         Height          =   285
+         Left            =   2040
+         TabIndex        =   66
+         Text            =   "2"
+         Top             =   960
+         Width           =   975
+      End
+      Begin VB.TextBox txtParticipantes 
+         Height          =   285
+         Left            =   2040
+         TabIndex        =   63
+         Text            =   "2"
+         Top             =   600
+         Width           =   975
+      End
+      Begin VB.Label lblPrecio 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Precio"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   71
+         Top             =   2040
+         Width           =   435
+      End
+      Begin VB.Label lblMaximo 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "nivel maximo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   70
+         Top             =   1680
+         Width           =   915
+      End
+      Begin VB.Label lblNivelMinimocapt 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel Minimo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   67
+         Top             =   1320
+         Width           =   1455
+      End
+      Begin VB.Label lblCantDeRonda 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cantidad de rondas"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   65
+         Top             =   960
+         Width           =   1410
+      End
+      Begin VB.Label lblCanPert 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cantidad de participantes"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   64
+         Top             =   600
+         Width           =   1845
+      End
+   End
+   Begin VB.Frame Frame2 
+      Caption         =   "Dia del Garrote"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   6015
+      Left            =   120
+      TabIndex        =   40
+      Top             =   120
+      Visible         =   0   'False
+      Width           =   4215
+      Begin VB.CommandButton cmdVerAnotadosGarrote 
+         Caption         =   "Ver Anotados"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   80
+         Top             =   5280
+         Width           =   1455
+      End
+      Begin VB.CommandButton cmdCancelar 
+         Caption         =   "Cancelar"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   2880
+         TabIndex        =   50
+         Top             =   5280
+         Width           =   990
+      End
+      Begin VB.TextBox txtPlayer 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   49
+         Text            =   "1"
+         Top             =   1680
+         Width           =   975
+      End
+      Begin VB.TextBox txtNivelmaximo 
+         Height          =   285
+         Index           =   0
+         Left            =   1200
+         TabIndex        =   45
+         Text            =   "47"
+         Top             =   960
+         Width           =   975
+      End
+      Begin VB.TextBox txtNivelMinino 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   44
+         Text            =   "1"
+         Top             =   600
+         Width           =   975
+      End
+      Begin VB.CommandButton cmdCrearEl 
+         Caption         =   "Crear el evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   43
+         Top             =   3960
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdIniciarEl 
+         Caption         =   "Iniciar el Evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   42
+         Top             =   4680
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdAnunciarEl 
+         Caption         =   "Anunciar el evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   41
+         Top             =   4320
+         Width           =   3495
+      End
+      Begin VB.Label lblCantidadDe 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cantidad de participantes"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   48
+         Top             =   1440
+         Width           =   1845
+      End
+      Begin VB.Label lblNivelMaximo 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel Maximo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   47
+         Top             =   960
+         Width           =   930
+      End
+      Begin VB.Label lblNivelMinimo 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel Minimo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   46
+         Top             =   600
+         Width           =   870
+      End
+   End
    Begin VB.Frame Frame1 
       Caption         =   "Torneos"
       BeginProperty Font 
@@ -373,541 +986,6 @@ Begin VB.Form FrmTorneo
          Width           =   1215
       End
    End
-   Begin VB.Frame FraTorneosY 
-      Caption         =   "Torneos y Eventos"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   6015
-      Left            =   120
-      TabIndex        =   34
-      Top             =   120
-      Width           =   4215
-      Begin VB.OptionButton OptTorneo 
-         Caption         =   "Torneo"
-         Height          =   255
-         Left            =   240
-         TabIndex        =   78
-         Top             =   1800
-         Width           =   1935
-      End
-      Begin VB.OptionButton OptCapturaDe 
-         Caption         =   "Captura de bandera"
-         Height          =   255
-         Left            =   240
-         TabIndex        =   38
-         Top             =   720
-         Width           =   3615
-      End
-      Begin VB.OptionButton OptMatarCon 
-         Caption         =   "Dia del Garrote"
-         Height          =   255
-         Left            =   240
-         TabIndex        =   37
-         Top             =   1080
-         Width           =   3735
-      End
-      Begin VB.OptionButton OptElDe 
-         Caption         =   "DeathMach"
-         Height          =   255
-         Left            =   240
-         TabIndex        =   36
-         Top             =   1440
-         Width           =   3855
-      End
-      Begin VB.CommandButton cmdConfigurarE 
-         Caption         =   "Configurar e Iniciar"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   720
-         Left            =   360
-         TabIndex        =   35
-         Top             =   4920
-         Width           =   3495
-      End
-      Begin VB.Label lblSeleccionarEl 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Seleccionar el evento a realizar"
-         Height          =   195
-         Left            =   240
-         TabIndex        =   39
-         Top             =   360
-         Width           =   2235
-      End
-   End
-   Begin VB.Frame FraDeathMach 
-      Caption         =   "DeathMach"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   6015
-      Left            =   120
-      TabIndex        =   51
-      Top             =   120
-      Visible         =   0   'False
-      Width           =   4215
-      Begin VB.CommandButton cmdAnunciarEldeath 
-         Caption         =   "Anunciar el evento"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   360
-         TabIndex        =   58
-         Top             =   4320
-         Width           =   3495
-      End
-      Begin VB.CommandButton cmdIniciarEldeath 
-         Caption         =   "Iniciar el Evento"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   360
-         TabIndex        =   57
-         Top             =   4680
-         Width           =   3495
-      End
-      Begin VB.CommandButton cmdCrearEldeath 
-         Caption         =   "Crear el evento"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   360
-         TabIndex        =   56
-         Top             =   3960
-         Width           =   3495
-      End
-      Begin VB.TextBox txtMinlvldeath 
-         Height          =   285
-         Left            =   1200
-         TabIndex        =   55
-         Text            =   "1"
-         Top             =   600
-         Width           =   975
-      End
-      Begin VB.TextBox txtMaxlvldeath 
-         Height          =   285
-         Left            =   1200
-         TabIndex        =   54
-         Text            =   "47"
-         Top             =   960
-         Width           =   975
-      End
-      Begin VB.TextBox txtPlayerDeath 
-         Height          =   285
-         Left            =   1200
-         TabIndex        =   53
-         Text            =   "1"
-         Top             =   1680
-         Width           =   975
-      End
-      Begin VB.CommandButton cmdCancelarDeach 
-         Caption         =   "Cancelar"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   2880
-         TabIndex        =   52
-         Top             =   5280
-         Width           =   990
-      End
-      Begin VB.Label lblNivelMinimodeath 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nivel Minimo"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   61
-         Top             =   600
-         Width           =   870
-      End
-      Begin VB.Label lblNivelMaximodeath 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nivel Maximo"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   60
-         Top             =   960
-         Width           =   930
-      End
-      Begin VB.Label lblCantidadDedeath 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Cantidad de participantes"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   59
-         Top             =   1440
-         Width           =   1845
-      End
-   End
-   Begin VB.Frame FraCapturaDe 
-      Caption         =   "Captura de Bandera"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   6015
-      Left            =   120
-      TabIndex        =   62
-      Top             =   120
-      Visible         =   0   'False
-      Width           =   4215
-      Begin VB.CommandButton Command5 
-         Caption         =   "Cancelar"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   2880
-         TabIndex        =   76
-         Top             =   5520
-         Width           =   990
-      End
-      Begin VB.CommandButton Command4 
-         Caption         =   "Crear el evento"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   360
-         TabIndex        =   75
-         Top             =   4200
-         Visible         =   0   'False
-         Width           =   3495
-      End
-      Begin VB.CommandButton Command3 
-         Caption         =   "Iniciar el Evento"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   360
-         TabIndex        =   74
-         Top             =   4920
-         Width           =   3495
-      End
-      Begin VB.CommandButton Command2 
-         Caption         =   "Anunciar el evento"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   360
-         TabIndex        =   73
-         Top             =   4560
-         Visible         =   0   'False
-         Width           =   3495
-      End
-      Begin VB.TextBox txtPrecio 
-         Height          =   285
-         Left            =   2040
-         TabIndex        =   72
-         Text            =   "1"
-         Top             =   2040
-         Width           =   975
-      End
-      Begin VB.TextBox txtNivelmax 
-         Height          =   285
-         Left            =   2040
-         TabIndex        =   69
-         Text            =   "47"
-         Top             =   1680
-         Width           =   975
-      End
-      Begin VB.TextBox txtNivelMinimo 
-         Height          =   285
-         Left            =   2040
-         TabIndex        =   68
-         Text            =   "1"
-         Top             =   1320
-         Width           =   975
-      End
-      Begin VB.TextBox txtRondas 
-         Height          =   285
-         Left            =   2040
-         TabIndex        =   66
-         Text            =   "2"
-         Top             =   960
-         Width           =   975
-      End
-      Begin VB.TextBox txtParticipantes 
-         Height          =   285
-         Left            =   2040
-         TabIndex        =   63
-         Text            =   "2"
-         Top             =   600
-         Width           =   975
-      End
-      Begin VB.Label lblPrecio 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Precio"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   71
-         Top             =   2040
-         Width           =   435
-      End
-      Begin VB.Label lblMaximo 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "nivel maximo"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   70
-         Top             =   1680
-         Width           =   915
-      End
-      Begin VB.Label lblNivelMinimocapt 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nivel Minimo"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   67
-         Top             =   1320
-         Width           =   1455
-      End
-      Begin VB.Label lblCantDeRonda 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Cantidad de rondas"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   65
-         Top             =   960
-         Width           =   1410
-      End
-      Begin VB.Label lblCanPert 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Cantidad de participantes"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   64
-         Top             =   600
-         Width           =   1845
-      End
-   End
-   Begin VB.Frame Frame2 
-      Caption         =   "Dia del Garrote"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   6015
-      Left            =   120
-      TabIndex        =   40
-      Top             =   120
-      Visible         =   0   'False
-      Width           =   4215
-      Begin VB.CommandButton cmdCancelar 
-         Caption         =   "Cancelar"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   2880
-         TabIndex        =   50
-         Top             =   5280
-         Width           =   990
-      End
-      Begin VB.TextBox txtPlayer 
-         Height          =   285
-         Left            =   1200
-         TabIndex        =   49
-         Text            =   "1"
-         Top             =   1680
-         Width           =   975
-      End
-      Begin VB.TextBox txtNivelmaximo 
-         Height          =   285
-         Index           =   0
-         Left            =   1200
-         TabIndex        =   45
-         Text            =   "47"
-         Top             =   960
-         Width           =   975
-      End
-      Begin VB.TextBox txtNivelMinino 
-         Height          =   285
-         Left            =   1200
-         TabIndex        =   44
-         Text            =   "1"
-         Top             =   600
-         Width           =   975
-      End
-      Begin VB.CommandButton cmdCrearEl 
-         Caption         =   "Crear el evento"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   360
-         TabIndex        =   43
-         Top             =   3960
-         Width           =   3495
-      End
-      Begin VB.CommandButton cmdIniciarEl 
-         Caption         =   "Iniciar el Evento"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   360
-         TabIndex        =   42
-         Top             =   4680
-         Width           =   3495
-      End
-      Begin VB.CommandButton cmdAnunciarEl 
-         Caption         =   "Anunciar el evento"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   360
-         TabIndex        =   41
-         Top             =   4320
-         Width           =   3495
-      End
-      Begin VB.Label lblCantidadDe 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Cantidad de participantes"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   48
-         Top             =   1440
-         Width           =   1845
-      End
-      Begin VB.Label lblNivelMaximo 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nivel Maximo"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   47
-         Top             =   960
-         Width           =   930
-      End
-      Begin VB.Label lblNivelMinimo 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nivel Minimo"
-         Height          =   195
-         Left            =   120
-         TabIndex        =   46
-         Top             =   600
-         Width           =   870
-      End
-   End
 End
 Attribute VB_Name = "FrmTorneo"
 Attribute VB_GlobalNameSpace = False
@@ -931,6 +1009,10 @@ End Sub
 Private Sub cmdCancelarDeach_Click()
     FrmTorneo.FraTorneosY.visible = True
     FrmTorneo.FraDeathMach.visible = False
+End Sub
+
+Private Sub cmdCancelarTodos_Click()
+    Call ParseUserCommand("/confinglobby end")
 End Sub
 
 Private Sub cmdCancelarTorneo_Click()
@@ -968,6 +1050,14 @@ End Sub
 
 Private Sub cmdIniciarEldeath_Click()
 Call ParseUserCommand("/configlobby start")
+End Sub
+
+Private Sub cmdVerAnotados_Click()
+    Call ParseUserCommand("/configlobby list")
+End Sub
+
+Private Sub cmdVerAnotadosGarrote_Click()
+    Call ParseUserCommand("/configlobby list")
 End Sub
 
 Private Sub Command1_Click()
