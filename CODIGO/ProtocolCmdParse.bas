@@ -29,6 +29,7 @@ Public Enum e_LobbyCommandId
     eCancelEvent
     eListPlayers
     eKickPlayer
+    eForceReset
 End Enum
 
 Public Enum e_DebugCommands
@@ -2392,8 +2393,10 @@ Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
             Call ConfigLobbyClass(arguments(), argCount)
         ElseIf eType = "KICK" Then
             Call ConfigLobbyKickPlayer(arguments(), argCount)
+        ElseIf eType = "FORCERESET" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eForceReset)
         Else
-            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK")
+            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET")
         End If
     Else
         'Avisar que falta el parametro
