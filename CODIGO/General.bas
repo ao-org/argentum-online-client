@@ -1160,8 +1160,8 @@ On Error GoTo Main_Err
 
     End If
         
-    servers_login_connections(1) = "45.235.98.29:6500"
-    servers_login_connections(2) = "45.235.98.29:6502"
+    servers_login_connections(1) = "45.235.99.71:6500"
+    servers_login_connections(2) = "45.235.99.71:6502"
     
     Call SetDefaultServer
     Call ComprobarEstado
