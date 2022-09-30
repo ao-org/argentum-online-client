@@ -1134,7 +1134,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
         Exit Function
     End If
     
-    If UserNadando And Not (MapData(x, y).Trigger = eTrigger.DETALLEAGUA Or MapData(x, y).Trigger = eTrigger.NADOCOMBINADO Or MapData(x, y).Trigger = eTrigger.VALIDONADO) Or MapData(x, y).Trigger = eTrigger.NADOBAJOTECHO Then
+    If UserNadando And Not (MapData(x, y).Trigger = eTrigger.DETALLEAGUA Or MapData(x, y).Trigger = eTrigger.NADOCOMBINADO Or MapData(x, y).Trigger = eTrigger.VALIDONADO Or MapData(x, y).Trigger = eTrigger.NADOBAJOTECHO) Then
         LegalPos = False
         Exit Function
     End If
