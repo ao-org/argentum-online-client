@@ -1125,7 +1125,12 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
         Exit Function
     End If
 
-    If UserNadando And MapData(x, y).Trigger = 8 Then
+    If UserNadando And MapData(x, y).Trigger = DETALLEAGUA Then
+        LegalPos = True
+        Exit Function
+    End If
+    
+    If UserNadando And MapData(x, y).Trigger = NADOBAJOTECHO Then
         LegalPos = True
         Exit Function
     End If
