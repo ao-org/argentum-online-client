@@ -977,7 +977,7 @@ Public Function HayTecho(ByVal x As Integer, ByVal y As Integer) As Boolean
     On Error GoTo HayTecho_Err
 
     With MapData(x, y)
-        HayTecho = .Trigger >= PRIMER_TRIGGER_TECHO Or .Trigger = eTrigger.BAJOTECHO Or .Trigger = eTrigger.ZONASEGURA
+        HayTecho = .Trigger >= PRIMER_TRIGGER_TECHO Or .Trigger = eTrigger.BAJOTECHO Or .Trigger = eTrigger.ZONASEGURA Or .Trigger = eTrigger.NADOBAJOTECHO
     End With
 
     Exit Function
@@ -1125,7 +1125,12 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
         Exit Function
     End If
 
-    If UserNadando And MapData(x, y).Trigger = 8 Then
+    If UserNadando And MapData(x, y).Trigger = DETALLEAGUA Then
+        LegalPos = True
+        Exit Function
+    End If
+    
+    If UserNadando And MapData(x, y).Trigger = NADOBAJOTECHO Then
         LegalPos = True
         Exit Function
     End If
@@ -1134,7 +1139,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
         Exit Function
     End If
     
-    If UserNadando And Not (MapData(x, y).Trigger = eTrigger.DETALLEAGUA Or MapData(x, y).Trigger = eTrigger.NADOCOMBINADO Or MapData(x, y).Trigger = eTrigger.VALIDONADO) Then
+    If UserNadando And Not (MapData(x, y).Trigger = eTrigger.DETALLEAGUA Or MapData(x, y).Trigger = eTrigger.NADOCOMBINADO Or MapData(x, y).Trigger = eTrigger.VALIDONADO Or MapData(x, y).Trigger = eTrigger.NADOBAJOTECHO) Then
         LegalPos = False
         Exit Function
     End If
