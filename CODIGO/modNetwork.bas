@@ -9,6 +9,8 @@ End Function
 #End If
 
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
+    Debug.Print "Connecting to World Server : " & Address; ":" & Service
+
     If (Address = vbNullString Or Service = vbNullString) Then
         Exit Sub
     End If
