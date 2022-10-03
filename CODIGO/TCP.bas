@@ -28,7 +28,6 @@ Sub LoginOrConnect(ByVal Modo As E_MODO)
     EstadoLogin = Modo
     
     If Auth_state = e_state.AccountLogged Then
-        'Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
         Call Login
     Else
         Call connectToLoginServer

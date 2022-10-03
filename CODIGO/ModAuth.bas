@@ -867,6 +867,7 @@ Public Sub connectToLoginServer()
     frmConnect.AuthSocket.Close
     frmConnect.AuthSocket.RemoteHost = IPdelServidorLogin
     frmConnect.AuthSocket.RemotePort = PuertoDelServidorLogin
+    Debug.Print "Servidor de Login " & IPdelServidorLogin; ":" & PuertoDelServidorLogin
     frmConnect.AuthSocket.Connect
     Call TextoAlAsistente("Conectando al servidor. Aguarde un momento.")
     SessionOpened = False

@@ -66,9 +66,9 @@ Private Declare Sub InitCommonControls Lib "comctl32" ()
 
 Public bFogata As Boolean
 
-Public servers_login_connections(1 To 2) As String
+Public servers_login_connections(1 To 6) As String
+Public servers_world_connections(1 To 6) As String
 
-Public Const MAX_LOGIN_SERVER As Long = 2
 
 'Very percise counter 64bit system counter
 Public Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
@@ -400,7 +400,7 @@ Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, O
     Dim Ret As Long
     Ret = SendMessage(rtbTarget.hwnd, EM_SETPARAFORMAT, 0&, Para)
     
-    If Ret = 0 Then Debug.Print "Error al setear el espaciado entre líneas del RichTextBox."
+    If ret = 0 Then Debug.Print "Error al setear el espaciado entre líneas del RichTextBox."
 End Sub
 
 'TODO : Never was sure this is really necessary....
@@ -1162,6 +1162,17 @@ On Error GoTo Main_Err
         
     servers_login_connections(1) = "45.235.99.71:6500"
     servers_login_connections(2) = "45.235.99.71:6502"
+    servers_login_connections(3) = "45.235.98.31:6500"
+    servers_login_connections(4) = "45.235.98.31:6502"
+    servers_login_connections(5) = "45.235.98.33:6500"
+    servers_login_connections(6) = "45.235.98.33:6502"
+    
+    servers_world_connections(1) = "45.235.98.31:6501"
+    servers_world_connections(2) = "45.235.98.33:6501"
+    servers_world_connections(3) = "45.235.98.34:6501"
+    servers_world_connections(4) = "45.235.98.35:6501"
+    servers_world_connections(5) = "138.99.6.141:6501"
+    servers_world_connections(6) = "45.235.98.35:6501"
     
     Call SetDefaultServer
     Call ComprobarEstado
@@ -1228,13 +1239,18 @@ Public Function get_logging_server() As String
     Dim value As Long
     Dim k As Integer
     For k = 1 To 100
-        Value = RandomNumber(1, 100)
+        Value = RandomNumber(1, UBound(servers_login_connections))
     Next k
-    If Value <= 50 Then
-        get_logging_server = servers_login_connections(1)
-    Else
-        get_logging_server = servers_login_connections(2)
-    End If
+    get_logging_server = servers_login_connections(Value)
+End Function
+
+Public Function get_world_server() As String
+    Dim Value As Long
+    Dim k As Integer
+    For k = 1 To 100
+        Value = RandomNumber(1, UBound(servers_world_connections))
+    Next k
+    get_world_server = servers_world_connections(Value)
 End Function
 
 Public Function SetDefaultServer()
@@ -1243,6 +1259,12 @@ On Error GoTo SetDefaultServer_Err
     serverLogin = Split(get_logging_server(), ":")
     IPdelServidorLogin = serverLogin(0)
     PuertoDelServidorLogin = serverLogin(1)
+    
+    Dim serverWorld() As String
+    serverWorld = Split(get_world_server(), ":")
+    IPdelServidor = serverWorld(0)
+    PuertoDelServidor = serverWorld(1)
+    
     Exit Function
 SetDefaultServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.WriteVar", Erl)
