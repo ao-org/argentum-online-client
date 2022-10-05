@@ -1164,15 +1164,15 @@ On Error GoTo Main_Err
     servers_login_connections(2) = "45.235.99.71:6502"
     servers_login_connections(3) = "45.235.98.31:6500"
     servers_login_connections(4) = "45.235.98.31:6502"
-    servers_login_connections(5) = "45.235.98.33:6500"
-    servers_login_connections(6) = "45.235.98.33:6502"
+    servers_login_connections(5) = "45.235.98.184:6500"
+    servers_login_connections(6) = "45.235.98.184:6502"
     
     servers_world_connections(1) = "45.235.98.31:6501"
-    servers_world_connections(2) = "45.235.98.33:6501"
+    servers_world_connections(2) = "45.235.98.184:6501"
     servers_world_connections(3) = "45.235.98.34:6501"
-    servers_world_connections(4) = "45.235.98.35:6501"
+    servers_world_connections(4) = "45.235.98.186:6501"
     servers_world_connections(5) = "138.99.6.141:6501"
-    servers_world_connections(6) = "45.235.98.35:6501"
+    servers_world_connections(6) = "45.235.98.185:6501"
     
     Call SetDefaultServer
     Call ComprobarEstado
