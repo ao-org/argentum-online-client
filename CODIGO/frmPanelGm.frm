@@ -1192,12 +1192,6 @@ Begin VB.Form frmPanelgm
             Caption         =   "Cerrar Actual"
          End
       End
-      Begin VB.Menu centinela 
-         Caption         =   "Centinela"
-         Begin VB.Menu CentinelaEstado 
-            Caption         =   "Habilitar/Desabilitar"
-         End
-      End
       Begin VB.Menu Global 
          Caption         =   "Global"
          Begin VB.Menu GlobalEstado 
@@ -1374,11 +1368,6 @@ Cabeza_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Cabeza_Click", Erl)
     Resume Next
     
-End Sub
-
-Private Sub CentinelaEstado_Click()
-
-    Call ParseUserCommand("/CENTINELAACTIVADO") ' ver ReyarB
 End Sub
 
 Private Sub CerrarleCliente_Click()
