@@ -2425,6 +2425,28 @@ WriteGuildMessage_Err:
 End Sub
 
 ''
+' Writes the "CentinelReport" message to the outgoing data buffer.
+'
+' @param    number The number to report to the centinel.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+Public Sub WriteCentinelReport(ByVal Number As Integer)
+        '<EhHeader>
+        On Error GoTo WriteCentinelReport_Err
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.CentinelReport)
+102     Call Writer.WriteInt16(Number)
+    
+104     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteCentinelReport_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteCentinelReport", Erl)
+        '</EhFooter>
+End Sub
+
+''
 ' Writes the "GuildOnline" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.

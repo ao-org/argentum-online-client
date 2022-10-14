@@ -312,6 +312,7 @@ Public Enum ClientPacketID
     RequestMOTD             '/MOTD
     UpTime                  '/UPTIME
     GuildMessage            '/CMSG
+    CentinelReport          '/CENTINELA
     GuildOnline             '/ONLINECLAN
     CouncilMessage          '/BMSG
     RoleMasterRequest       '/ROL
