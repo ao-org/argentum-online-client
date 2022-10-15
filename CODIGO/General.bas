@@ -1109,7 +1109,7 @@ On Error GoTo Main_Err
     If PantallaCompleta Then
         Call Resolution.SetResolution
     End If
-    
+    Call CheckResources
     Call engine_init 'initializes DX
     
     Call InitCommonControls
@@ -1138,7 +1138,7 @@ On Error GoTo Main_Err
 
     CheckMD5 = GetMd5
     SessionOpened = False
-    Call CheckResources
+    
 
     Call Load(frmConnect)
     Call Load(FrmLogear)
