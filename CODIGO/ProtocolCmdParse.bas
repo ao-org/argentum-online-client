@@ -338,22 +338,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg("Escriba un mensaje.")
 
                 End If
-            
-            Case "/CENTINELA"
-                If notNullArguments Then
-                    If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then
-                        Call WriteCentinelReport(CInt(ArgumentosRaw))
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg("El código de verificación debe ser numerico. Utilice /centinela X, siendo X el código de verificación.")
-
-                    End If
-
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /centinela X, siendo X el código de verificación.")
-
-                End If
         
             Case "/ONLINECLAN"
                 Call WriteGuildOnline
