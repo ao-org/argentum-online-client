@@ -3675,6 +3675,7 @@ Private Sub HandleCharacterCreate()
     Dim shield        As Integer
     Dim helmet        As Integer
     Dim privs         As Integer
+    Dim Cart          As Integer
     Dim AuraParticula As Byte
     Dim ParticulaFx   As Byte
     Dim appear        As Byte
@@ -3690,6 +3691,7 @@ Private Sub HandleCharacterCreate()
     weapon = Reader.ReadInt16()
     shield = Reader.ReadInt16()
     helmet = Reader.ReadInt16()
+    Cart = Reader.ReadInt16()
     
     With charlist(charindex)
         Dim loopC, Fx As Integer
@@ -3776,7 +3778,7 @@ Private Sub HandleCharacterCreate()
         .Muerto = (Body = CASPER_BODY_IDLE)
         '.AlphaPJ = 255
     
-        Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, ParticulaFx, appear)
+        Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, Cart, ParticulaFx, appear)
          Debug.Print "name: " & charlist(charindex).nombre; "|charindex: " & charindex, x, y
         If .Idle Or .Navegando Then
             'Start animation
@@ -4039,6 +4041,15 @@ Private Sub HandleCharacterChange()
 
         If TempInt <> 0 And TempInt <= UBound(CascoAnimData) Then
             .Casco = CascoAnimData(TempInt)
+        End If
+        
+        TempInt = Reader.ReadInt16()
+        
+        If TempInt <= 2 Or TempInt > UBound(BodyData()) Then
+            .HasCart = False
+        Else
+            .Cart = BodyData(TempInt)
+            .HasCart = True
         End If
                 
         If .Body.HeadOffset.y = -26 Then
