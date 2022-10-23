@@ -314,7 +314,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             
             ScreenX = ScreenX + TilePixelWidth
         Next x
-        
         ' Recorremos de nuevo esta fila para dibujar objetos grandes y capa 3 encima de chars
         ScreenX = StartBufferedX
 
@@ -432,7 +431,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             
             ScreenX = ScreenX + TilePixelWidth
         Next x
-
         ScreenY = ScreenY + TilePixelHeight
     Next y
     

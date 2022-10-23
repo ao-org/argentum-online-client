@@ -113,7 +113,7 @@ EraseChar_Err:
     
 End Sub
 
-Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal CartIndex As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
     
     On Error GoTo MakeChar_Err
 
@@ -125,10 +125,11 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
 
         'If the char wasn't allready active (we are rewritting it) don't increase char count
         If .active = 0 Then NumChars = NumChars + 1
-        
+        .HasCart = True
         If Arma = 0 Or Arma > UBound(WeaponAnimData) Then Arma = 2
         If Escudo = 0 Or Escudo > UBound(ShieldAnimData) Then Escudo = 2
         If Casco = 0 Or Casco > UBound(CascoAnimData) Then Casco = 2
+        If CartIndex <= 2 Or CartIndex > UBound(BodyData) Then .HasCart = False
         
         .IHead = Head
         .iBody = Body
@@ -136,9 +137,9 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
             .Head = HeadData(Head)
             .Body = BodyData(Body)
             .Arma = WeaponAnimData(Arma)
-        
             .Escudo = ShieldAnimData(Escudo)
             .Casco = CascoAnimData(Casco)
+            .Cart = BodyData(CartIndex)
        ' End If
         
         .Heading = Heading

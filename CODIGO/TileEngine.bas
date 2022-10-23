@@ -234,9 +234,11 @@ Public Type Char
     Body As BodyData
     Head As HeadData
     Casco As HeadData
+    Cart As BodyData
     Arma As WeaponAnimData
     Escudo As ShieldAnimData
     MovArmaEscudo As Boolean
+    HasCart As Boolean
     AnimatingBody As Integer
 
     ActiveAnimation As tAnimationPlaybackState
