@@ -587,6 +587,8 @@ Public Enum eObjType
     OtCorreo = 47
     OtCofre = 48
     OtDonador = 50
+    OtQuest = 51
+    otFishingPool = 52
     otCualquiera = 1000
 End Enum
 

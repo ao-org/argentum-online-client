@@ -214,7 +214,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 ' Objects *********************************
                 If .ObjGrh.grhIndex <> 0 Then
                     Select Case ObjData(.OBJInfo.ObjIndex).ObjType
-                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otFragua, eObjType.OtDecoraciones
+                        Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otFragua, eObjType.OtDecoraciones, eObjType.otFishingPool
                             Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value)
 
                         Case Else
