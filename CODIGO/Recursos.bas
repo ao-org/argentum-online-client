@@ -1609,6 +1609,7 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).MaxHit = Val(Leer.GetValue("OBJ" & Obj, "MaxHit"))
         ObjData(Obj).ObjType = Val(Leer.GetValue("OBJ" & Obj, "ObjType"))
         ObjData(Obj).Cooldown = Val(Leer.GetValue("OBJ" & Obj, "CD"))
+        ObjData(Obj).cdType = Val(Leer.GetValue("OBJ" & Obj, "CDType"))
                 
         ObjData(Obj).CreaGRH = Leer.GetValue("OBJ" & Obj, "CreaGRH")
         ObjData(Obj).CreaLuz = Leer.GetValue("OBJ" & Obj, "CreaLuz")
