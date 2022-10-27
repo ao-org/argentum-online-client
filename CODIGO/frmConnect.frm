@@ -459,34 +459,36 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Exit Sub
 
         Case 2
-            OpcionSeleccionada = 0
-
-            If (x > 256 And x < 414) And (y > 710 And y < 747) Then 'Boton crear pj
-                OpcionSeleccionada = 1
+            character_screen_action = const_action_nothing_to_do
+            
+            If (x > 256 And x < 414) And (y > 710 And y < 747) Then
+                character_screen_action = const_action_create_character
+            End If
+            
+            If (x > 14 And x < 112) And (y > 675 And y < 708) Then
+                If (Shift > 0) Then
+                   character_screen_action = const_action_transfer_charcter
+                Else
+                    character_screen_action = const_action_delete_character
+                End If
+            End If
+            
+            If (x > 19 And x < 48) And (y > 21 And y < 45) Then
+                character_screen_action = const_action_logout_account
 
             End If
             
-            If (x > 14 And x < 112) And (y > 675 And y < 708) Then ' Boton Borrar pj
-                OpcionSeleccionada = 2
+            If (x > 604 And x < 759) And (y > 711 And y < 745) Then
+                character_screen_action = const_action_login_character
 
             End If
             
-            If (x > 19 And x < 48) And (y > 21 And y < 45) Then ' Boton deslogear
-                OpcionSeleccionada = 3
+            If (x > 971 And x < 1001) And (y > 21 And y < 45) Then
+                character_screen_action = const_action_close_game
 
             End If
             
-            If (x > 604 And x < 759) And (y > 711 And y < 745) Then ' Boton logear
-                OpcionSeleccionada = 4
-
-            End If
-            
-            If (x > 971 And x < 1001) And (y > 21 And y < 45) Then ' Boton Cerrar
-                OpcionSeleccionada = 5
-
-            End If
-            
-            If OpcionSeleccionada = 0 Then
+            If character_screen_action = 0 Then
                 Dim NuevoSeleccionado As Byte
                 NuevoSeleccionado = 0
 
@@ -533,13 +535,15 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             End If
+            
+            
                 
-            Select Case OpcionSeleccionada
+            Select Case character_screen_action
 
-                Case 5
+                Case const_action_close_game
                     CloseClient
 
-                Case 1
+                Case const_action_create_character
 
                     If CantidadDePersonajesEnCuenta >= 10 Then
                         Call MensajeAdvertencia("Has alcanzado el limite de personajes creados por cuenta.")
@@ -558,7 +562,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     frmConnect.txtNombre.SetFocus
         
                     Call Sound.Sound_Play(SND_DICE)
-                Case 2
+                Case const_action_delete_character
 
                     If Char = 0 Then Exit Sub
                     DeleteUser = Pjs(Char).nombre
@@ -566,36 +570,16 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Dim tmp As String
 
                     If MsgBox("¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
-                        
                         ModAuth.LoginOperation = e_operation.DeleteChar
                         Call connectToLoginServer
                         frmDeleteChar.Show , frmConnect
-                        
-                        'If tmp = CuentaPassword Then
-                        '    Call LoginOrConnect(E_MODO.BorrandoPJ)
-                        '
-                        '    If PJSeleccionado <> 0 Then
-                        '        LastPJSeleccionado = PJSeleccionado
-                        '        PJSeleccionado = 0
-                        '    End If
-                        'Else
-                        '    MsgBox ("Contraseña incorrecta")
-
-                        'End If
-
                     End If
 
-                Case 3
+                Case const_action_logout_account
                     Debug.Print "Vuelvo al login, debería borrar el token"
                     Auth_state = e_state.Idle
-                    'Call ModAuth.LogOutRequest
                     Call ComprobarEstado
-
-                    If Musica Then
-
-                        'ReproducirMp3 (4)
-                    End If
-                
+            
                     UserSaliendo = True
                     Call modNetwork.Disconnect
 
@@ -615,9 +599,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Next i
 
                     General_Set_Connect
-                    
-                    'Unload Me
-                Case 4
+                Case const_action_login_character
 
                     If PJSeleccionado < 1 Then Exit Sub
 
@@ -630,8 +612,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             End Select
 
             Char = PJSeleccionado
-            Rem MsgBox X & "   " & Y
- 
             If PJSeleccionado = 0 Then Exit Sub
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
         
@@ -668,9 +648,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             End If
 
     End Select
-
-    'ClickEnAsistente
-
     
     Exit Sub
 
@@ -884,34 +861,34 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             Exit Sub
 
         Case 2
-            OpcionSeleccionada = 0
+            character_screen_action = 0
 
             If (x > 256 And x < 414) And (y > 710 And y < 747) Then 'Boton crear pj
-                OpcionSeleccionada = 1
+                character_screen_action = 1
 
             End If
             
             If (x > 14 And x < 112) And (y > 675 And y < 708) Then ' Boton Borrar pj
-                OpcionSeleccionada = 2
+                character_screen_action = 2
 
             End If
             
             If (x > 19 And x < 48) And (y > 21 And y < 45) Then ' Boton deslogear
-                OpcionSeleccionada = 3
+                character_screen_action = 3
 
             End If
             
             If (x > 604 And x < 759) And (y > 711 And y < 745) Then ' Boton logear
-                OpcionSeleccionada = 4
+                character_screen_action = 4
 
             End If
             
             If (x > 971 And x < 1001) And (y > 21 And y < 45) Then ' Boton Cerrar
-                OpcionSeleccionada = 5
+                character_screen_action = 5
 
             End If
             
-            If OpcionSeleccionada = 0 Then
+            If character_screen_action = 0 Then
                 Dim NuevoSeleccionado As Byte
                 NuevoSeleccionado = 0
 
@@ -959,7 +936,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
                 
-            Select Case OpcionSeleccionada
+            Select Case character_screen_action
 
                 Case 5
                     CloseClient

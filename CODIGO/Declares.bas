@@ -164,7 +164,18 @@ Public DireccionDeCaminata   As String
 Public CaminandoMacro        As Boolean
 Public CaminarX              As Integer
 Public CaminarY              As Integer
-Public OpcionSeleccionada    As Byte
+
+Public character_screen_action    As e_connect_user_action
+Public Enum e_connect_user_action
+    const_action_nothing_to_do = 0
+    const_action_create_character = 1
+    const_action_delete_character = 2
+    const_action_logout_account = 3
+    const_action_login_character = 4
+    const_action_close_game = 5
+    const_action_transfer_charcter = 6
+End Enum
+
 Public clicX                 As Long
 Public clicY                 As Long
 Public FxLoops               As Long
