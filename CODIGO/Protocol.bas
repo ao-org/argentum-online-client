@@ -1021,22 +1021,11 @@ Private Sub HandleConnected()
     
 End Sub
 
-''
-' Handles the Logged message.
-
 Private Sub HandleLogged()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    'Remove packet ID
-    
-    On Error GoTo HandleLogged_Err
+On Error GoTo HandleLogged_Err
  
-    ' Variable initialization
     newUser = Reader.ReadBool
-    
+   
     UserCiego = False
     EngineRun = True
     UserDescansar = False
@@ -1061,12 +1050,11 @@ Private Sub HandleLogged()
     frmMain.AGUAsp.Visible = (UserMinAGU > 0)
     frmMain.COMIDAsp.Visible = (UserMinHAM > 0)
     frmMain.GldLbl.Visible = True
-    ' frmMain.Label6.Visible = True
     frmMain.Fuerzalbl.Visible = True
     frmMain.AgilidadLbl.Visible = True
     frmMain.oxigenolbl.Visible = True
     frmMain.imgDeleteItem.Visible = True
-    QueRender = 0
+
      lFrameTimer = 0
      FramesPerSecCounter = 0
     
@@ -1077,11 +1065,9 @@ Private Sub HandleLogged()
     SeguroClanX = True
     SeguroResuX = True
     
-    'Set connected state
     
     Call SetConnected
-    
-    'Show tip
+    g_game_state.state = e_state_gameplay_screen
     
     Exit Sub
 
@@ -1276,9 +1262,9 @@ Public Sub HandleDisconnect()
     Call ResetearCartel
     frmConnect.Visible = True
     #If PYMMO = 1 Then
-        QueRender = 2
+       g_game_state.state = e_state_account_screen
     #ElseIf PYMMO = 0 Then
-        QueRender = 1
+       g_game_state.state = e_state_connect_screen
     #End If
     isLogged = False
     Call Graficos_Particulas.Particle_Group_Remove_All
@@ -3469,42 +3455,27 @@ ErrHandler:
 
 End Sub
 
-''
-' Handles the ShowMessageBox message.
-
 Private Sub HandleShowMessageBox()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    On Error GoTo ErrHandler
+On Error GoTo ErrHandler
     
     Dim mensaje As String
 
     mensaje = Reader.ReadString8()
 
-    Select Case QueRender
-
-        Case 0
+    Select Case g_game_state.state()
+        Case e_state_gameplay_screen
             frmMensaje.msg.Caption = mensaje
             frmMensaje.Show , frmMain
-
-        Case 1
+        Case e_state_connect_screen
             Call Sound.Sound_Play(SND_EXCLAMACION)
             Call TextoAlAsistente(mensaje)
             Call Long_2_RGBAList(textcolorAsistente, -1)
-
-        Case 2
+        Case e_state_account_screen
             frmMensaje.Show
             frmMensaje.msg.Caption = mensaje
-        
-        Case 3
+        Case e_state_createchar_screen
             frmMensaje.Show , frmConnect
             frmMensaje.msg.Caption = mensaje
-
     End Select
     
     Exit Sub
@@ -3517,32 +3488,19 @@ ErrHandler:
 End Sub
 
 Private Sub HandleMostrarCuenta()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+On Error GoTo ErrHandler
     
-    On Error GoTo ErrHandler
-    
-    ' FrmCuenta.Show
     AlphaNiebla = 30
     frmConnect.Visible = True
-    QueRender = 2
-    
-    'UserMap = 323
-    
-    'Call SwitchMap(UserMap)
+     
+    g_game_state.state = e_state_account_screen
+
     
     SugerenciaAMostrar = RandomNumber(1, NumSug)
         
-    ' LogeoAlgunaVez = True
     Call Sound.Sound_Play(192)
     
     Call Sound.Sound_Stop(SND_LLUVIAIN)
-    '  Sound.NextMusic = 2
-    '  Sound.Fading = 350
       
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)

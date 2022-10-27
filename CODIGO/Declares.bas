@@ -223,7 +223,11 @@ Public MouseY                 As Long
 Public tX                     As Byte
 Public tY                     As Byte
 Public UltimaTextura          As Long
-Public QueRender              As Byte
+
+
+Public g_game_state As New clsGameState
+
+
 Public ParticleLluviaDorada   As Long
 'Compresion
 Public Windows_Temp_Dir       As String

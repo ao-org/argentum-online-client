@@ -641,18 +641,7 @@ RandomNumber_Err:
 End Function
 
 Private Sub Form_Activate()
-    
-    On Error GoTo Form_Activate_Err
-    
-    QueRender = 3
-
-    
-    Exit Sub
-
-Form_Activate_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.Form_Activate", Erl)
-    Resume Next
-    
+    g_game_state.state = e_state_createchar_screen
 End Sub
 
 Private Sub Form_Load()
@@ -957,10 +946,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
         Call SwitchMap(UserMap)
        
-        'FrmCuenta.Visible = True
         frmConnect.Visible = True
-        QueRender = 2
-            
+        g_game_state.state = e_state_account_screen
         Unload Me
 
     End If

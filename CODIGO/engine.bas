@@ -332,7 +332,7 @@ Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
             Call engine_init
             prgRun = True
             pausa = False
-            QueRender = 0
+            g_game_state.state = e_state_gameplay_screen
             'FIX18
             lFrameTimer = 0
             FramesPerSecCounter = 0
@@ -2270,22 +2270,12 @@ Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
 End Function
 
 Public Sub Start()
-    
-    On Error GoTo Start_Err
-    
-    
+On Error GoTo Start_Err
     DoEvents
-    
-        
-    
     Do While prgRun
-
-
-        
         If frmMain.WindowState <> vbMinimized Then
-            Select Case QueRender
-
-                Case 0
+            Select Case g_game_state.state()
+                Case e_state_gameplay_screen
                     render
                 
                     Check_Keys
@@ -2315,7 +2305,7 @@ Public Sub Start()
                         DrawInventoryOtherComercio
                     End If
 
-                Case 1
+                Case e_state_connect_screen
                     If Not frmConnect.visible Then
                         frmConnect.Show
                         FrmLogear.Show , frmConnect
@@ -2323,10 +2313,10 @@ Public Sub Start()
                     
                     RenderConnect 57, 45, 0, 0
 
-                Case 2
+                Case e_state_account_screen
                     rendercuenta 42, 43, 0, 0
 
-                Case 3
+                Case e_state_createchar_screen
                     RenderCrearPJ 76, 82, 0, 0
 
             End Select

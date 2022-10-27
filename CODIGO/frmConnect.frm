@@ -195,7 +195,8 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     End If
 
-    QueRender = 1
+    g_game_state.state = e_state_connect_screen
+
     
     EngineRun = False
         
@@ -224,13 +225,10 @@ End Sub
 
 
 Private Sub render_DblClick()
-    
-    On Error GoTo render_DblClick_Err
-    
+On Error GoTo render_DblClick_Err
+    Select Case g_game_state.state()
 
-    Select Case QueRender
-
-        Case 2
+        Case e_state_account_screen
             
             If PJSeleccionado < 1 Then Exit Sub
 
@@ -241,7 +239,7 @@ Private Sub render_DblClick()
 
             End If
 
-        Case 3
+        Case e_state_createchar_screen
         
     End Select
 
@@ -258,14 +256,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo render_MouseUp_Err
     
+    Select Case g_game_state.state()
 
-    Select Case QueRender
-
-        Case 3
-        
-            'Debug.Print "x: " & x & " y:" & y
-        
-        
+        Case e_state_createchar_screen
             If x > 282 And x < 322 And y > 428 And y < 468 Then 'Boton heading
                 If CPHeading + 1 >= 5 Then
                 CPHeading = 1
@@ -400,18 +393,13 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             End If
-        'ciudad
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
                 Call Sound.Sound_Play(SND_CLICK)
-                'UserMap = 323
                 AlphaNiebla = 25
                 EntradaY = 1
                 EntradaX = 1
-                
-                'Call SwitchMap(UserMap)
                 frmConnect.txtNombre.Visible = False
-                QueRender = 2
-                
+                g_game_state.state = e_state_account_screen
                 Call Graficos_Particulas.Engine_Select_Particle_Set(203)
                 ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
@@ -458,7 +446,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             Exit Sub
 
-        Case 2
+        Case e_state_account_screen
             character_screen_action = e_action_nothing_to_do
             
             If (x > 256 And x < 414) And (y > 710 And y < 747) Then
@@ -555,7 +543,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     CPHeading = 3
                     CPEquipado = True
                     Call SwitchMap(UserMap)
-                    QueRender = 3
+                    g_game_state.state = e_state_createchar_screen
+
                     
                     Call IniciarCrearPj
                     frmConnect.txtNombre.Visible = True
@@ -615,7 +604,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             If PJSeleccionado = 0 Then Exit Sub
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
         
-        Case 1
+        Case e_state_connect_screen
             
             While LastClickAsistente = ClickEnAsistenteRandom
                 ClickEnAsistenteRandom = RandomNumber(1, 4)

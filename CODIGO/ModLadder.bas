@@ -686,7 +686,7 @@ Sub General_Set_Connect()
     UserMap = randomMap()
     Call SwitchMap(UserMap)
 
-    If QueRender <> 1 Then
+    If g_game_state.state() <> e_state_connect_screen Then
         frmConnect.Show
         FrmLogear.Show , frmConnect
     End If
@@ -718,12 +718,12 @@ Sub General_Set_Connect()
 
     Sound.Music_Load 1, Sound.VolumenActualMusicMax
     Sound.Music_Play
-    'Sound.Fading = 600
-
     mFadingMusicMod = 0
     CurMp3 = 1
-
-    QueRender = 1
+    
+     g_game_state.state = e_state_connect_screen
+    
+    
     EscribeRetrasadoSensui = False
     frmMain.timerRetrasadoSensui = False
     
