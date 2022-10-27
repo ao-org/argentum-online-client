@@ -9083,26 +9083,17 @@ Public Sub HandleAccountCharacterList()
             RenderCuenta_PosY = Pjs(1).posY
         End If
     End If
-     
-    ' FrmCuenta.Show
+
     AlphaNiebla = 30
 
     frmConnect.visible = True
-    QueRender = 2
-    
-    'UserMap = 323
-    
-    'Call SwitchMap(UserMap)
+
+    g_game_state.state = e_state_account_screen
     
     SugerenciaAMostrar = RandomNumber(1, NumSug)
         
-    ' LogeoAlgunaVez = True
     Call Sound.Sound_Play(192)
-    
     Call Sound.Sound_Stop(SND_LLUVIAIN)
-    '  Sound.NextMusic = 2
-    '  Sound.Fading = 350
-      
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
@@ -9113,12 +9104,10 @@ Public Sub HandleAccountCharacterList()
     
     If FrmLogear.visible Then
         Unload FrmLogear
-
-        'Unload frmConnect
     End If
     
     If frmMain.visible Then
-        '  frmMain.Visible = False
+
         
         UserParalizado = False
         UserInmovilizado = False
@@ -9127,8 +9116,6 @@ Public Sub HandleAccountCharacterList()
         InvasionActual = 0
         frmMain.Evento.enabled = False
      
-        'BUG CLONES
-
         For i = 1 To LastChar
             Call EraseChar(i)
         Next i

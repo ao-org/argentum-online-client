@@ -653,9 +653,10 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     On Error GoTo render_MouseUp_Err
     
 
-    Select Case QueRender
+    Select Case g_game_state.state()
 
-        Case 3
+
+        Case e_state_createchar_screen
        
             If x > 282 And x < 322 And y > 428 And y < 468 Then 'Boton heading
                 If CPHeading + 1 >= 5 Then
@@ -796,7 +797,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 
                 'Call SwitchMap(UserMap)
                 frmConnect.txtNombre.visible = False
-                QueRender = 2
+                g_game_state.state = e_state_account_screen
                 
                 Call Graficos_Particulas.Engine_Select_Particle_Set(203)
                 ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
@@ -841,7 +842,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             Exit Sub
 
-        Case 2
+        Case e_state_connect_screen
             character_screen_action = e_action_nothing_to_do
             
             If (x > 256 And x < 414) And (y > 710 And y < 747) Then 'Boton crear pj
@@ -921,8 +922,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     CPHeading = 3
                     CPEquipado = True
                     Call SwitchMap(UserMap)
-                    QueRender = 3
-                    
+                    g_game_state.state = e_state_createchar_screen
+ 
+
                     Call IniciarCrearPj
                     frmConnect.txtNombre.visible = True
                     frmConnect.txtNombre.SetFocus
@@ -938,17 +940,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     If MsgBox("¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
                         frmDeleteChar.Show , frmConnect
                         
-                        'If tmp = CuentaPassword Then
-                        '    Call LoginOrConnect(E_MODO.BorrandoPJ)
-                        '
-                        '    If PJSeleccionado <> 0 Then
-                        '        LastPJSeleccionado = PJSeleccionado
-                        '        PJSeleccionado = 0
-                        '    End If
-                        'Else
-                        '    MsgBox ("Contraseña incorrecta")
-
-                        'End If
+            
 
                     End If
 
@@ -992,12 +984,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             End Select
 
             Char = PJSeleccionado
-            Rem MsgBox X & "   " & Y
  
             If PJSeleccionado = 0 Then Exit Sub
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
-        
-        Case 1
+ 
+        Case e_state_connect_screen
             
             While LastClickAsistente = ClickEnAsistenteRandom
                 ClickEnAsistenteRandom = RandomNumber(1, 4)
