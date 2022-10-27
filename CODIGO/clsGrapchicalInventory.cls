@@ -990,16 +990,16 @@ MostrarCantidades_Err:
 End Property
 
 Public Sub UpdateSelectedItemLastUse()
-    UserInventory(SelectedItem()).LastUseTime = GetTickCount()
+    CdTimes(ObjData(UserInventory(SelectedItem()).ObjIndex).cdType) = GetTickCount()
 End Sub
 
-Public Function IsItemOnCd(Slot As Integer) As Boolean
+Public Function IsItemOnCd(ByVal Slot As Integer) As Boolean
     If Slot < 0 Or Slot > UBound(UserInventory) Then
         IsItemOnCd = False
         Exit Function
     End If
     Dim ElapsedTime As Long
-    ElapsedTime = GetTickCount() - UserInventory(Slot).LastUseTime
+    ElapsedTime = GetTickCount() - CdTimes(ObjData(UserInventory(Slot).ObjIndex).cdType)
     IsItemOnCd = ElapsedTime < ObjData(UserInventory(Slot).OBJIndex).Cooldown
 End Function
 
@@ -1036,7 +1036,7 @@ Public Function GetLongerCdPercent(ByVal Slot As Integer) As Single
     ' test item cd
     Dim itemCd As Long: itemCd = ObjData(UserInventory(Slot).OBJIndex).Cooldown
     If itemCd > 0 Then
-        tempPending = currTime - UserInventory(Slot).LastUseTime
+        tempPending = currTime - CdTimes(ObjData(UserInventory(Slot).ObjIndex).cdType)
         If tempPending > pendingTime And tempPending < itemCd Then
             GetLongerCdPercent = tempPending / itemCd
             pendingTime = tempPending

@@ -125,6 +125,15 @@ Public Type t_packetControl
     iterations(1 To 10) As Long
 End Type
 
+Public Enum e_CdTypes
+    e_magic = 1
+    e_Melee = 2
+    e_potions = 3
+    e_Ranged = 4
+    e_Throwing = 5
+    [CDCount]
+End Enum
+
 Public packetControl(1 To CANT_PACKETS_CONTROL) As t_packetControl
 Public Const NUM_PASOS       As Byte = 7
 Public Pasos()               As tPaso
@@ -163,6 +172,7 @@ Public FxLoops               As Long
 Public mFadingStatus         As Byte
 Public mFadingMusicMod       As Long
 Public NextMP3               As Byte
+Public CdTimes(e_CdTypes.CDCount) As Long
 Public Enum E_SISTEMA_MUSICA
     CONST_DESHABILITADA = 0
     CONST_MIDI = 1
@@ -587,6 +597,8 @@ Public Enum eObjType
     OtCorreo = 47
     OtCofre = 48
     OtDonador = 50
+    OtQuest = 51
+    otFishingPool = 52
     otCualquiera = 1000
 End Enum
 
@@ -656,7 +668,6 @@ Type Inventory
     MaxHit As Integer
     MinHit As Integer
     PuedeUsar As Byte
-    LastUseTime As Long
 End Type
 
 Type MakeObj
@@ -872,6 +883,7 @@ Public Enum eTrigger
     
     VALIDONADO = 11
     ESCALERA = 12
+    WORKERONLY = 13
     NADOBAJOTECHO = 16
     VALIDOPUENTE = 17
     NADOCOMBINADO = 18

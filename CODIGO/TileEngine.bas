@@ -1126,6 +1126,10 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     If UserMontado And MapData(x, y).Trigger > 9 Then
         Exit Function
     End If
+    
+    If MapData(x, y).Trigger = WORKERONLY Then
+        If Not UserClase = Trabajador Then Exit Function
+    End If
 
     If UserNadando And MapData(x, y).Trigger = DETALLEAGUA Then
         LegalPos = True

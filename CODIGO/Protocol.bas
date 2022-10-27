@@ -154,6 +154,7 @@ Private Enum ServerPacketID
     CerrarleCliente
     Contadores
     ShowPapiro
+    UpdateCooldownType
     
     'GM messages
     SpawnListt               ' SPL
@@ -830,6 +831,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleContadores
         Case ServerPacketID.ShowPapiro
             Call HandleShowPapiro
+        Case ServerPacketID.UpdateCooldownType
+            Call HandleUpdateCooldownType
         Case ServerPacketID.SpawnListt
             Call HandleSpawnList
         Case ServerPacketID.ShowSOSForm
@@ -6108,6 +6111,17 @@ HandleShowPapiro_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPapiro", Erl)
 End Sub
 
+Private Sub HandleUpdateCooldownType()
+    On Error GoTo HandleUpdateCooldownType_Err
+    
+    Dim cdType As Byte
+    cdType = Reader.ReadInt8()
+    CdTimes(cdType) = GetTickCount()
+    Exit Sub
+
+HandleUpdateCooldownType_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateCooldownType", Erl)
+End Sub
 
 ''
 ' Handles the MiniStats message.

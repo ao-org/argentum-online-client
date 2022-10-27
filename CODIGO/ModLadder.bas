@@ -197,6 +197,7 @@ Public Type ObjDatas
     Llave As Integer
     ObjNum As Long
     Cooldown As Long
+    CDType As Integer
 End Type
 
 Public Type NpcDatas
