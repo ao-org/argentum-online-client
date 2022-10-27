@@ -3455,43 +3455,27 @@ ErrHandler:
 
 End Sub
 
-''
-' Handles the ShowMessageBox message.
-
 Private Sub HandleShowMessageBox()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
-    On Error GoTo ErrHandler
+On Error GoTo ErrHandler
     
     Dim mensaje As String
 
     mensaje = Reader.ReadString8()
 
     Select Case g_game_state.state()
-    
-
-        Case 0
+        Case e_state_gameplay_screen
             frmMensaje.msg.Caption = mensaje
             frmMensaje.Show , frmMain
-
-        Case 1
+        Case e_state_connect_screen
             Call Sound.Sound_Play(SND_EXCLAMACION)
             Call TextoAlAsistente(mensaje)
             Call Long_2_RGBAList(textcolorAsistente, -1)
-
-        Case 2
+        Case e_state_account_screen
             frmMensaje.Show
             frmMensaje.msg.Caption = mensaje
-        
-        Case 3
+        Case e_state_createchar_screen
             frmMensaje.Show , frmConnect
             frmMensaje.msg.Caption = mensaje
-
     End Select
     
     Exit Sub
