@@ -1284,24 +1284,18 @@ Private Sub FillAccountData(ByVal data As String)
 End Sub
 
 Public Sub mostrarcuenta()
-     
-    ' FrmCuenta.Show
     AlphaNiebla = 30
     frmConnect.Visible = True
-    QueRender = 2
-    
-    'UserMap = 323
-    
-    'Call SwitchMap(UserMap)
+
+    g_game_state.state = e_state_account_screen
+
     
     SugerenciaAMostrar = RandomNumber(1, NumSug)
         
-    ' LogeoAlgunaVez = True
+
     Call Sound.Sound_Play(192)
     
     Call Sound.Sound_Stop(SND_LLUVIAIN)
-    '  Sound.NextMusic = 2
-    '  Sound.Fading = 350
       
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
