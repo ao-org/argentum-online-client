@@ -883,6 +883,7 @@ Public Enum eTrigger
     
     VALIDONADO = 11
     ESCALERA = 12
+    WORKERONLY = 13
     NADOBAJOTECHO = 16
     VALIDOPUENTE = 17
     NADOCOMBINADO = 18

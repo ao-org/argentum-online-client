@@ -993,7 +993,7 @@ Public Sub UpdateSelectedItemLastUse()
     CdTimes(ObjData(UserInventory(SelectedItem()).ObjIndex).cdType) = GetTickCount()
 End Sub
 
-Public Function IsItemOnCd(Slot As Integer) As Boolean
+Public Function IsItemOnCd(ByVal Slot As Integer) As Boolean
     If Slot < 0 Or Slot > UBound(UserInventory) Then
         IsItemOnCd = False
         Exit Function
