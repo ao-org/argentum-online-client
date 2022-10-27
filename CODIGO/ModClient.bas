@@ -1,7 +1,4 @@
 Attribute VB_Name = "ModClient"
-
-'RevolucionAo 1.0
-'Pablo Mercavides
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 Private Const GWL_EXSTYLE As Long = (-20)

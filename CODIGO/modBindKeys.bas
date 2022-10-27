@@ -1,17 +1,4 @@
 Attribute VB_Name = "modBindKeys"
-'*****************************************************************
-'modBindKeys - ImperiumAO - v1.3.0
-'
-'User input functions.
-'
-'*****************************************************************
-'RevolucionAo 1.0
-'Pablo Mercavides
-'*****************************************************************
-'Augusto José Rando (barrin@imperiumao.com.ar)
-'   - First Relase
-'*****************************************************************
-
 Option Explicit
 
 Type tBoton

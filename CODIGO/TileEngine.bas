@@ -1,8 +1,4 @@
 Attribute VB_Name = "TileEngine"
-'MENDUZ DX8 VERSION www.noicoder.com
-'RevolucionAo 1.0
-'Pablo Mercavides
-
 Option Explicit
 
 Public PreguntaScreen        As String

@@ -1,7 +1,4 @@
 Attribute VB_Name = "Mod_TCP"
-'RevolucionAo 1.0
-'Pablo Mercavides
-
 Option Explicit
 
 Public Warping        As Boolean

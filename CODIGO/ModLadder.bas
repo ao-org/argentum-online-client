@@ -1889,16 +1889,7 @@ Input_Key_Get_Err:
 End Function
 
 Public Function Input_Click_Get(ByVal Botton As Byte) As Boolean
-    '**************************************************************
-    'Author: Pablo Mercavides
-    'Modified by Augusto José Rando
-    'Now we use DirectInput Keyboard
-    'Last Modify Date: 10/07/2002
-    '
-    '**************************************************************
-    'Input_Key_Get = (key_state.Key(key_code) > 0)
-    
-    On Error GoTo Input_Click_Get_Err
+ On Error GoTo Input_Click_Get_Err
     
     Input_Click_Get = (GetAsyncKeyState(Botton) < 0)
 

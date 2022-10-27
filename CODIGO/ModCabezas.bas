@@ -1,6 +1,4 @@
 Attribute VB_Name = "ModCabezas"
-'RevolucionAo 1.0
-'Pablo Mercavides
 Option Explicit
 
 Public MiCabeza As Integer

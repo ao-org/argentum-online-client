@@ -1,8 +1,4 @@
 Attribute VB_Name = "Application"
-'RevolucionAo 1.0
-'Pablo Mercavides
-'**************************************************************************
-
 Option Explicit
 
 Private Declare Function GetActiveWindow Lib "user32" () As Long

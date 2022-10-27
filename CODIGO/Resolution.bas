@@ -1,7 +1,4 @@
 Attribute VB_Name = "Resolution"
-'RevolucionAo 1.0
-'Pablo Mercavides
-
 Option Explicit
 
 Private Const CCDEVICENAME          As Long = 32

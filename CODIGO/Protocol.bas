@@ -7897,11 +7897,6 @@ Private Sub HandleBindKeys()
     
     On Error GoTo HandleBindKeys_Err
 
-    '***************************************************
-    'Macros
-    'Pablo Mercavides
-    '***************************************************
-    
     ChatCombate = Reader.ReadInt8()
     ChatGlobal = Reader.ReadInt8()
 
@@ -7931,10 +7926,6 @@ Private Sub HandleBarFx()
     
     On Error GoTo HandleBarFx_Err
 
-    '***************************************************
-    'Author: Pablo Mercavides
-    '***************************************************
-    
     Dim charindex As Integer
 
     Dim BarTime   As Integer

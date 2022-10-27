@@ -1,7 +1,4 @@
 Attribute VB_Name = "PrevInstance"
-'RevolucionAo 1.0
-'Pablo Mercavides
-
 Option Explicit
 
 'Declaration of the Win32 API function for creating /destroying a Mutex, and some types and constants.

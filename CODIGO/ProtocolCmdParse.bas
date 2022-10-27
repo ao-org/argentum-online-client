@@ -1,7 +1,4 @@
 Attribute VB_Name = "ProtocolCmdParse"
-'RevolucionAo 1.0
-'Pablo Mercavides
-
 Option Explicit
 
 Public Enum eNumber_Types

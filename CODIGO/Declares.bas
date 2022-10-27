@@ -1,6 +1,4 @@
 Attribute VB_Name = "Mod_Declaraciones"
-'RevolucionAo 1.0
-'Pablo Mercavides
 Option Explicit
 
 Public SeguroGame As Boolean

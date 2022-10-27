@@ -1,6 +1,4 @@
 Attribute VB_Name = "modDX8Requires"
-'RevolucionAo 1.0
-'Pablo Mercavides
 Option Explicit
 
 '*******************************************************

@@ -1,7 +1,4 @@
 Attribute VB_Name = "Carteles"
-'RevolucionAo 1.0
-'Pablo Mercavides
-
 Option Explicit
 
 'Carteles

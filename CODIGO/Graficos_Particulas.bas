@@ -318,12 +318,6 @@ ErrorHandler:
 End Function
 
 Public Function Particle_Group_Edit(ByVal id As Long) As Long
-
-    '*****************************************************************
-    'Author: Pablo Mercavides
-    'Last Modify Date: 1/04/2003
-    'Find the index related to the handle
-    '*****************************************************************
     On Error GoTo ErrorHandler:
 
     particle_group_list(id).particle_count = CantPartLLuvia

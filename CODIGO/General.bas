@@ -1,8 +1,5 @@
 Attribute VB_Name = "Mod_General"
 
-'RevolucionAo 1.0
-'Pablo Mercavides
-
 Option Explicit
 
 Private Declare Function SetDllDirectory Lib "kernel32" Alias "SetDllDirectoryA" (ByVal Path As String) As Long
