@@ -592,20 +592,19 @@ Init_TileEngine_Err:
 End Sub
 
 Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
-    '******************************************
-    'Converts where the mouse is in the main window to a tile position. MUST be called eveytime the mouse moves.
-    '******************************************
+
+On Error GoTo ConvertCPtoTP_Err
     
-    On Error GoTo ConvertCPtoTP_Err
+    Dim ltx As Long: Dim lty As Long
     
-  '  Debug.Print "viewportX: " & viewPortX & "- ViewportY: " & viewPortY
     If viewPortX < 0 Or viewPortX > frmMain.renderer.ScaleWidth Then Exit Sub
     If viewPortY < 0 Or viewPortY > frmMain.renderer.ScaleHeight Then Exit Sub
 
-    tX = UserPos.x + viewPortX \ 32 - frmMain.renderer.ScaleWidth \ 64
-    tY = UserPos.y + viewPortY \ 32 - frmMain.renderer.ScaleHeight \ 64
+    ltx = UserPos.x + viewPortX \ 32 - frmMain.renderer.ScaleWidth \ 64
+    lty = UserPos.y + viewPortY \ 32 - frmMain.renderer.ScaleHeight \ 64
 
-    
+    tX = max(0, ltx)
+    tY = max(0, lty)
     Exit Sub
 
 ConvertCPtoTP_Err:
