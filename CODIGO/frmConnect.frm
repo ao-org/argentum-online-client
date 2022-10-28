@@ -841,8 +841,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             End If
 
             Exit Sub
-
-        Case e_state_connect_screen
+        Case e_state_account_screen
             character_screen_action = e_action_nothing_to_do
             
             If (x > 256 And x < 414) And (y > 710 And y < 747) Then 'Boton crear pj
@@ -906,16 +905,14 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             End If
                 
             Select Case character_screen_action
-
-                Case 5
+                Case e_action_close_game
                     CloseClient
 
-                Case 1
+                Case e_action_create_character
 
                     If CantidadDePersonajesEnCuenta >= 10 Then
                         Call MensajeAdvertencia("Has alcanzado el limite de personajes creados por cuenta.")
                         Exit Sub
-
                     End If
                     UserMap = 37
                     AlphaNiebla = 3
@@ -930,7 +927,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     frmConnect.txtNombre.SetFocus
         
                     Call Sound.Sound_Play(SND_DICE)
-                Case 2
+                Case e_action_delete_character
 
                     If Char = 0 Then Exit Sub
                     DeleteUser = Pjs(Char).nombre
@@ -944,11 +941,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                     End If
 
-                Case 3
-                    If Musica Then
-
-                        'ReproducirMp3 (4)
-                    End If
+                Case e_action_logout_account
                 
                     UserSaliendo = True
                     Call modNetwork.Disconnect
@@ -969,9 +962,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Next i
 
                     General_Set_Connect
-                    
-                    'Unload Me
-                Case 4
+   
+                Case e_action_logout_account
 
                     If PJSeleccionado < 1 Then Exit Sub
 
