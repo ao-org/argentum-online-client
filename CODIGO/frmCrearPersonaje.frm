@@ -649,11 +649,6 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    'Call SwitchMap(281)
-
-    'lstProfesion.ListIndex = 0
-    'LstFamiliar.ListIndex = 0
-    
     
     Call SetRGBA(COLOR_RED(0), 255, 0, 0)
     Call SetRGBA(COLOR_RED(1), 255, 0, 0)
