@@ -128,7 +128,8 @@ Private TileBufferPixelOffsetX As Integer
 Private TileBufferPixelOffsetY As Integer
 Private TimeLast As Long
 
-Private Const GrhFogata        As Integer = 1521
+Private Const GrhFogata        As Long = 1521
+Private Const GrhCharactersScreenUI As Long = 3839
 
 ' Colores estaticos
 
@@ -141,6 +142,8 @@ Public r As Byte
 Public G As Byte
 Public B As Byte
 Public textcolorAsistente(3)    As RGBA
+
+
 
 'Sets a Grh animation to loop indefinitely.
 
@@ -3349,7 +3352,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
 
-    'RenderPjsCuenta
+    'RenderAccountCharacters
 
     
     Exit Sub
@@ -3372,14 +3375,9 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
 
-    RenderPjsCuenta
+    RenderAccountCharacters
     
-    'Call Particle_Group_Render(ParticleLluviaDorada, 400, 0)
-
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
-    
-    Exit Sub
-
     
     Exit Sub
 
@@ -3624,41 +3622,19 @@ Private Function renderAttributesColors(ByVal value As Integer, ByVal x As Integ
         Engine_Text_Render_LetraChica str(value), x, y, COLOR_WHITE, 1, True
     End If
 End Function
-Public Sub RenderPjsCuenta()
-    
-    On Error GoTo RenderPjsCuenta_Err
-    
-
-    ' Renderiza el menu para seleccionar las clases
-        
-    Dim i               As Long
-
-    Dim x               As Integer
-
-    Dim y               As Integer
-
+Public Sub RenderAccountCharacters()
+On Error GoTo RenderAccountCharacters_Err
+    Dim i               As Long: Dim sumax As Long
+    Dim x               As Integer: Dim y As Integer
     Dim notY            As Integer
-
     Dim Color           As RGBA
-
     Dim Texto           As String
-
-    Texto = CuentaEmail
-
-    'Render fondo
-    
-   
-   
-   'Draw_GrhIndex 1170, 0, 0
-    
     Dim temp_array(3) As RGBA
-
-    Dim sumax As Long
-
-    sumax = 84
-    
     Dim TempColor(3) As RGBA
     Dim grh As grh
+    
+    Texto = CuentaEmail
+    sumax = 84
     
     'Dibujo la escena debajo del mapa
     Call RenderScreen(RenderCuenta_PosX, RenderCuenta_PosY, 0, 0, HalfConnectTileWidth, HalfConnectTileHeight)
@@ -3668,7 +3644,6 @@ Public Sub RenderPjsCuenta()
             AlphaRenderCuenta = min(AlphaRenderCuenta + timerTicksPerFrame * 10, MAX_ALPHA_RENDER_CUENTA)
         Else
             LastPJSeleccionado = PJSeleccionado
-
             If PJSeleccionado <> 0 Then
                 Call SwitchMap(Pjs(PJSeleccionado).Mapa)
                 RenderCuenta_PosX = Pjs(PJSeleccionado).posX
@@ -3681,14 +3656,12 @@ Public Sub RenderPjsCuenta()
         End If
     End If
 
-    Call RGBAList(TempColor, 255, 255, 255, 170 + AlphaRenderCuenta)
+    Call RGBAList(TempColor, 255, 255, 255, 100 + AlphaRenderCuenta)
     
     Call InitGrh(grh, 4531)
-                        
     Call Draw_Grh(grh, 0, 0, 0, 0, TempColor, False, 0, 0, 0)
-
-    'Dibujamos frente 3839
-    Draw_GrhIndex 3839, 0, 0
+    
+    Call Draw_GrhIndex(GrhCharactersScreenUI, 0, 0)
       
     For i = 1 To MAX_PERSONAJES_EN_CUENTA
             
@@ -3712,94 +3685,61 @@ Public Sub RenderPjsCuenta()
         Dim enBarca As Boolean
         Body = Pjs(i).Body
         
-        'Si tiene cuerpo dibuja
         If (Body <> 0) Then
-        
             If PJSeleccionado = i Then
                 Call Particle_Group_Render(Select_part, x + 32, y + 5)
-
             End If
 
             If (Body <> 0) Then
-                  
-                'Else
-                'Engine_Draw_Box X - 40, Y - 40, 145, 150, D3DColorARGB(20, 28, 18, 9)
                 Draw_Grh BodyData(Body).Walk(3), x + 15, y + 10, 1, 1, COLOR_WHITE
-
             End If
-
-            'Bodies de los barcos para que no dibuje la cabeza
             enBarca = Body = 84 Or Body = 85 Or Body = 86 Or Body = 87 Or Body = 1263 Or Body = 1264 Or Body = 1265 Or Body = 1266 Or Body = 1267 Or Body = 1268 Or Body = 1269 Or Body = 1270 Or Body = 1271 Or Body = 1272 Or Body = 1273 Or Body = 1274
-          
             
             If (Pjs(i).Head <> 0) And Not enBarca Then
-                'If Not nohead Then
                 Draw_Grh HeadData(Pjs(i).Head).Head(3), x + 15, y - notY + BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
-
-                ' End If
             End If
             
             If (Pjs(i).Casco <> 0) Then
-                'If Not nohead Then
                 If Pjs(i).Casco <= UBound(CascoAnimData) And Pjs(i).Casco >= LBound(CascoAnimData) Then
                     Draw_Grh CascoAnimData(Pjs(i).Casco).Head(3), x + 15, y - notY + BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
                 End If
-                ' End If
             End If
             
             If (Pjs(i).Escudo <> 0) Then
-                'If Not nohead Then
                 If Pjs(i).Escudo <= UBound(ShieldAnimData) And Pjs(i).Escudo >= LBound(ShieldAnimData) Then
                     Draw_Grh ShieldAnimData(Pjs(i).Escudo).ShieldWalk(3), x + 14, y - notY + 10, 1, 0, COLOR_WHITE
                 End If
-                ' End If
             End If
                         
             If (Pjs(i).Arma <> 0) Then
-                'If Not nohead Then
                 If Pjs(i).Arma <= UBound(WeaponAnimData) And Pjs(i).Arma >= LBound(WeaponAnimData) Then
                     Draw_Grh WeaponAnimData(Pjs(i).Arma).WeaponWalk(3), x + 14, y - notY + 10, 1, 0, COLOR_WHITE
                 End If
-
-                ' End If
             End If
 
             Engine_Text_Render Pjs(i).nombre, x + 30 - Engine_Text_Width(Pjs(i).nombre, True) / 2, y + 56 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True
             
             If PJSeleccionado = i Then
-                
-              
-                
                 Dim Offy As Byte
-
                 Offy = 0
-            
                 Engine_Text_Render Pjs(i).nombre, 511 - Engine_Text_Width(Pjs(i).nombre, True) / 2, 565 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True
-                
                 If Pjs(i).ClanName <> "<>" Then
                     Engine_Text_Render Pjs(i).ClanName, 511 - Engine_Text_Width(Pjs(i).ClanName, True) / 2, 565 + 15 - Engine_Text_Height(Pjs(i).ClanName, True), temp_array(), 1, True
                     Offy = 15
                 Else
-                
                     Offy = 0
-
                 End If
-
                 Engine_Text_Render "Clase: " & ListaClases(Pjs(i).Clase), 511 - Engine_Text_Width("Clase:" & ListaClases(Pjs(i).Clase), True) / 2, Offy + 570 - Engine_Text_Height("Clase:" & ListaClases(Pjs(i).Clase), True), COLOR_WHITE, 1, True
-                
                 Engine_Text_Render "Nivel: " & Pjs(i).nivel, 511 - Engine_Text_Width("Nivel:" & Pjs(i).nivel, True) / 2, Offy + 585 - Engine_Text_Height("Nivel:" & Pjs(i).nivel, True), COLOR_WHITE, 1, True
                 Engine_Text_Render CStr(Pjs(i).NameMapa), 511 - Engine_Text_Width(CStr(Pjs(i).NameMapa), True) / 2, Offy + 615 - Engine_Text_Height(CStr(Pjs(i).NameMapa), True), COLOR_WHITE, 1, True
-
             End If
-            
         End If
-
     Next i
 
     Exit Sub
 
-RenderPjsCuenta_Err:
-    Call RegistrarError(Err.Number, Err.Description, "engine.RenderPjsCuenta", Erl)
+RenderAccountCharacters_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderAccountCharacters", Erl)
     Resume Next
     
 End Sub
