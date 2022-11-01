@@ -2,15 +2,15 @@ VERSION 5.00
 Begin VB.Form frmSpawnList 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Invocar NPC"
-   ClientHeight    =   4185
-   ClientLeft      =   45
-   ClientTop       =   210
-   ClientWidth     =   2775
+   ClientHeight    =   4176
+   ClientLeft      =   48
+   ClientTop       =   216
+   ClientWidth     =   2772
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4185
-   ScaleWidth      =   2775
+   ScaleHeight     =   4176
+   ScaleWidth      =   2772
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox Filter 
@@ -24,7 +24,7 @@ Begin VB.Form frmSpawnList
       Caption         =   "Spawn"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -42,14 +42,14 @@ Begin VB.Form frmSpawnList
    Begin VB.ListBox lstCriaturas 
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2985
+      Height          =   2904
       Left            =   120
       TabIndex        =   1
       Top             =   480
@@ -60,7 +60,7 @@ Begin VB.Form frmSpawnList
       Caption         =   "Filtrar:"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -79,6 +79,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 'Argentum Online 0.11.6
 '
 'Copyright (C) 2002 Márquez Pablo Ignacio
@@ -169,7 +185,7 @@ Public Sub FillList()
     Dim i As Long
 
     For i = 1 To UBound(NpcData())
-        If NpcData(i).Name <> "Vacío" Then
+        If NpcData(i).name <> "Vacío" Then
             If NpcData(i).PuedeInvocar = 1 Or ListaCompleta Then
                 If InStr(1, Tilde(NpcData(i).Name), Tilde(Filter.Text)) Then
                     Call lstCriaturas.AddItem(i & " - " & NpcData(i).Name)

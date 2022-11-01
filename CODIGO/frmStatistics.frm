@@ -2,16 +2,16 @@ VERSION 5.00
 Begin VB.Form frmStatistics 
    BorderStyle     =   0  'None
    Caption         =   "Form2"
-   ClientHeight    =   8265
+   ClientHeight    =   8268
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   5385
+   ClientWidth     =   5388
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   551
+   ScaleHeight     =   689
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   359
+   ScaleWidth      =   449
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.Label lblPuntosPesca 
@@ -20,7 +20,7 @@ Begin VB.Form frmStatistics
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -63,7 +63,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Elfo"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -84,7 +84,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Elfo"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -105,7 +105,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Neutral"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -133,7 +133,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -154,7 +154,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -175,7 +175,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -196,7 +196,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -216,7 +216,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Paladin"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -236,7 +236,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Elfo"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -256,7 +256,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Hombre"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -276,7 +276,7 @@ Begin VB.Form frmStatistics
       Caption         =   "10 min"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -296,7 +296,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Neutral"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -318,7 +318,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -338,7 +338,7 @@ Begin VB.Form frmStatistics
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -359,7 +359,7 @@ Begin VB.Form frmStatistics
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -380,7 +380,7 @@ Begin VB.Form frmStatistics
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -402,6 +402,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Private cBotonAceptar As clsGraphicalButton

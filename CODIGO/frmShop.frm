@@ -2,23 +2,23 @@ VERSION 5.00
 Begin VB.Form frmShopAO20 
    BorderStyle     =   0  'None
    Caption         =   "Tienda AO20"
-   ClientHeight    =   7125
+   ClientHeight    =   7128
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   6480
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   475
+   ScaleHeight     =   594
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   432
+   ScaleWidth      =   540
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox lstItemShopFilter 
       Appearance      =   0  'Flat
       BackColor       =   &H80000001&
       ForeColor       =   &H80000000&
-      Height          =   3345
+      Height          =   3288
       Left            =   360
       TabIndex        =   5
       Top             =   2400
@@ -28,7 +28,7 @@ Begin VB.Form frmShopAO20
       Appearance      =   0  'Flat
       BackColor       =   &H80000001&
       ForeColor       =   &H80000000&
-      Height          =   3345
+      Height          =   3288
       Left            =   360
       TabIndex        =   3
       Top             =   2400
@@ -41,9 +41,9 @@ Begin VB.Form frmShopAO20
       ForeColor       =   &H80000008&
       Height          =   495
       Left            =   4770
-      ScaleHeight     =   31
+      ScaleHeight     =   39
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   31
+      ScaleWidth      =   39
       TabIndex        =   2
       Top             =   2880
       Width           =   495
@@ -53,7 +53,7 @@ Begin VB.Form frmShopAO20
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -109,7 +109,7 @@ Begin VB.Form frmShopAO20
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -129,6 +129,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
 End Sub

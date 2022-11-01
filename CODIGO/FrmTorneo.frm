@@ -3,12 +3,12 @@ Begin VB.Form FrmTorneo
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Organizacion de evento"
    ClientHeight    =   6180
-   ClientLeft      =   45
-   ClientTop       =   390
-   ClientWidth     =   4425
+   ClientLeft      =   48
+   ClientTop       =   396
+   ClientWidth     =   4428
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.25
+      Size            =   8.4
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,14 +19,14 @@ Begin VB.Form FrmTorneo
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   6180
-   ScaleWidth      =   4425
+   ScaleWidth      =   4428
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame FraTorneosY 
       Caption         =   "Torneos y Eventos"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -66,7 +66,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Cancelar todos los eventos con Lobby"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -115,7 +115,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Configurar e Iniciar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -143,7 +143,7 @@ Begin VB.Form FrmTorneo
       Caption         =   "DeathMach"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -160,7 +160,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Ver Anotados"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -177,7 +177,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Anunciar el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -194,7 +194,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Iniciar el Evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -211,7 +211,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Crear el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -252,7 +252,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Cancelar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -300,7 +300,7 @@ Begin VB.Form FrmTorneo
       Caption         =   "Captura de Bandera"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -317,7 +317,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Cancelar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -334,7 +334,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Crear el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -352,7 +352,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Iniciar el Evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -369,7 +369,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Anunciar el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -478,7 +478,7 @@ Begin VB.Form FrmTorneo
       Caption         =   "Dia del Garrote"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -495,7 +495,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Ver Anotados"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -512,7 +512,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Cancelar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -554,7 +554,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Crear el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -571,7 +571,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Iniciar el Evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -588,7 +588,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Anunciar el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -636,7 +636,7 @@ Begin VB.Form FrmTorneo
       Caption         =   "Torneos"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -653,7 +653,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Cancelar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -751,7 +751,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Crear evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -869,7 +869,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Reglas"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -887,7 +887,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Nombre del evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -937,7 +937,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Clases"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   400
             Underline       =   -1  'True
@@ -989,7 +989,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Private Sub cmdAnunciarEl_Click()
 Call ParseUserCommand("/configlobby open ")
 End Sub
@@ -1080,3 +1095,4 @@ Private Sub Command5_Click()
     FrmTorneo.FraCapturaDe.visible = False
     FrmTorneo.FraTorneosY.visible = True
 End Sub
+

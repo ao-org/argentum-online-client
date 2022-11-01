@@ -2,13 +2,13 @@ VERSION 5.00
 Begin VB.Form frmBancoCuenta 
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   7155
+   ClientHeight    =   7152
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   8145
+   ClientWidth     =   8148
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.25
+      Size            =   8.4
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -16,9 +16,9 @@ Begin VB.Form frmBancoCuenta
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   477
+   ScaleHeight     =   596
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   543
+   ScaleWidth      =   679
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox interface 
@@ -30,7 +30,7 @@ Begin VB.Form frmBancoCuenta
       ClipControls    =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   8.25
+         Size            =   7.8
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -41,9 +41,9 @@ Begin VB.Form frmBancoCuenta
       Height          =   3660
       Left            =   620
       MousePointer    =   99  'Custom
-      ScaleHeight     =   244
+      ScaleHeight     =   305
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   459
+      ScaleWidth      =   574
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   1605
@@ -121,7 +121,7 @@ Begin VB.Form frmBancoCuenta
       Caption         =   "(Vacio)"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   6.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -141,7 +141,7 @@ Begin VB.Form frmBancoCuenta
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -183,6 +183,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Const WM_SYSCOMMAND As Long = &H112&

@@ -4,15 +4,15 @@ Begin VB.Form frmAlqui
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar con alquimista"
-   ClientHeight    =   5610
+   ClientHeight    =   5604
    ClientLeft      =   0
-   ClientTop       =   -75
-   ClientWidth     =   6510
+   ClientTop       =   -72
+   ClientWidth     =   6516
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5610
-   ScaleWidth      =   6510
+   ScaleHeight     =   5604
+   ScaleWidth      =   6516
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.PictureBox picture1 
@@ -58,7 +58,7 @@ Begin VB.Form frmAlqui
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -66,7 +66,7 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1200
+      Height          =   1044
       ItemData        =   "frmAlqui.frx":0000
       Left            =   5520
       List            =   "frmAlqui.frx":0007
@@ -79,7 +79,7 @@ Begin VB.Form frmAlqui
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -87,7 +87,7 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1200
+      Height          =   1044
       Left            =   3840
       TabIndex        =   1
       Top             =   2960
@@ -98,7 +98,7 @@ Begin VB.Form frmAlqui
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -106,7 +106,7 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   3540
+      Height          =   3492
       Left            =   705
       TabIndex        =   0
       Top             =   1480
@@ -117,7 +117,7 @@ Begin VB.Form frmAlqui
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   6.6
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -151,7 +151,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Private Sub Command1_Click()
 
 End Sub

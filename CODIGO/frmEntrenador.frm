@@ -2,14 +2,14 @@ VERSION 5.00
 Begin VB.Form frmEntrenador 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Seleccione la criatura"
-   ClientHeight    =   3705
-   ClientLeft      =   45
+   ClientHeight    =   3708
+   ClientLeft      =   48
    ClientTop       =   300
-   ClientWidth     =   3750
+   ClientWidth     =   3744
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.25
+      Size            =   8.4
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,8 +19,8 @@ Begin VB.Form frmEntrenador
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3705
-   ScaleWidth      =   3750
+   ScaleHeight     =   3708
+   ScaleWidth      =   3744
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command2 
@@ -37,7 +37,7 @@ Begin VB.Form frmEntrenador
       Caption         =   "Luchar"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -55,14 +55,14 @@ Begin VB.Form frmEntrenador
    Begin VB.ListBox lstCriaturas 
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2400
+      Height          =   2292
       Left            =   240
       TabIndex        =   0
       Top             =   480
@@ -75,7 +75,7 @@ Begin VB.Form frmEntrenador
       Caption         =   "¿Con qué criatura deseas combatir?"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -94,6 +94,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 'Argentum Online 0.11.6
 '
 'Copyright (C) 2002 Márquez Pablo Ignacio

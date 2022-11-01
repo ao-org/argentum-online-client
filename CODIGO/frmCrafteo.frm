@@ -2,16 +2,16 @@ VERSION 5.00
 Begin VB.Form frmCrafteo 
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   0  'None
-   ClientHeight    =   5070
+   ClientHeight    =   5076
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   9000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   338
+   ScaleHeight     =   423
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   600
+   ScaleWidth      =   750
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton BtnAgregarCatalizador 
@@ -60,9 +60,9 @@ Begin VB.Form frmCrafteo
       BorderStyle     =   0  'None
       Height          =   3675
       Left            =   360
-      ScaleHeight     =   245
+      ScaleHeight     =   306
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   552
+      ScaleWidth      =   690
       TabIndex        =   0
       Top             =   600
       Width           =   8280
@@ -73,6 +73,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Public WithEvents InvCraftUser As clsGrapchicalInventory

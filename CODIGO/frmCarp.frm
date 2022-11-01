@@ -4,13 +4,13 @@ Begin VB.Form frmCarp
    BackColor       =   &H80000001&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar de carpintero"
-   ClientHeight    =   6525
+   ClientHeight    =   6528
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   7065
+   ClientWidth     =   7068
    BeginProperty Font 
       Name            =   "Verdana"
-      Size            =   8.25
+      Size            =   8.4
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -20,9 +20,9 @@ Begin VB.Form frmCarp
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   435
+   ScaleHeight     =   544
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   471
+   ScaleWidth      =   589
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.ListBox lstArmas 
@@ -30,7 +30,7 @@ Begin VB.Form frmCarp
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -38,7 +38,7 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   3735
+      Height          =   3696
       Left            =   525
       TabIndex        =   4
       Top             =   1440
@@ -49,7 +49,7 @@ Begin VB.Form frmCarp
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -57,7 +57,7 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1395
+      Height          =   1248
       Left            =   3840
       TabIndex        =   3
       Top             =   2520
@@ -69,7 +69,7 @@ Begin VB.Form frmCarp
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -77,7 +77,7 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1395
+      Height          =   1248
       ItemData        =   "frmCarp.frx":0000
       Left            =   5760
       List            =   "frmCarp.frx":0007
@@ -148,7 +148,7 @@ Begin VB.Form frmCarp
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   6.6
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -182,6 +182,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 

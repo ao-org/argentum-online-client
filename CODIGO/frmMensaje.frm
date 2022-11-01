@@ -3,10 +3,10 @@ Begin VB.Form frmMensaje
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   ClientHeight    =   3195
-   ClientLeft      =   15
-   ClientTop       =   15
-   ClientWidth     =   4365
+   ClientHeight    =   3204
+   ClientLeft      =   12
+   ClientTop       =   12
+   ClientWidth     =   4368
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    DrawMode        =   1  'Blackness
@@ -16,9 +16,9 @@ Begin VB.Form frmMensaje
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   213
+   ScaleHeight     =   267
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   291
+   ScaleWidth      =   364
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.Image cmdCerrar 
@@ -41,7 +41,7 @@ Begin VB.Form frmMensaje
       Caption         =   "Mensaje"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.75
+         Size            =   6.6
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -84,6 +84,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Public bmoving      As Boolean

@@ -3,13 +3,13 @@ Begin VB.Form frmPanelgm
    BackColor       =   &H00000000&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
-   ClientHeight    =   8610
-   ClientLeft      =   18150
-   ClientTop       =   4710
+   ClientHeight    =   8604
+   ClientLeft      =   18156
+   ClientTop       =   4716
    ClientWidth     =   7200
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.25
+      Size            =   8.4
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,7 +19,7 @@ Begin VB.Form frmPanelgm
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8610
+   ScaleHeight     =   8604
    ScaleWidth      =   7200
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -482,7 +482,7 @@ Begin VB.Form frmPanelgm
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   11.25
+         Size            =   11.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -510,7 +510,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "Lista 2 (Consultas)"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -527,7 +527,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "Lista 1 (Principal)"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -564,7 +564,7 @@ Begin VB.Form frmPanelgm
    End
    Begin VB.ListBox List1 
       BackColor       =   &H8000000A&
-      Height          =   2010
+      Height          =   1884
       ItemData        =   "frmPanelGm.frx":0000
       Left            =   120
       List            =   "frmPanelGm.frx":0002
@@ -599,7 +599,7 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   8.25
+         Size            =   7.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -614,7 +614,7 @@ Begin VB.Form frmPanelgm
       Width           =   3675
    End
    Begin VB.ListBox List2 
-      Height          =   1425
+      Height          =   1272
       Left            =   120
       TabIndex        =   7
       Top             =   600
@@ -1247,6 +1247,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Dim Nick       As String
@@ -1293,7 +1309,7 @@ Private Sub BanCuenta_Click()
     tmp = InputBox("¿Motivo?", "Ingrese el motivo")
     Nick = cboListaUsus.Text
 
-    If MsgBox("¿Estás seguro que desea banear la cuenta de """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox("¿Estás seguro que desea banear la cuenta de """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
         Call WriteBanCuenta(Nick, tmp)
 
     End If
@@ -1551,7 +1567,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
         Case 19 '/BANED IP AND PERSONAJE 0.12.1   REVISAR
     
-            If MsgBox("¿Estás seguro que deseas banear la IP y el personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox("¿Estás seguro que deseas banear la IP y el personaje """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
         
                 Call ParseUserCommand("/banip " & Nick & " panelgm")
 
@@ -1624,7 +1640,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
             tmp = InputBox("¿Minutos a silenciar? (hasta 255)", "")
 
-            If MsgBox("¿Estás seguro que desea silenciar al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox("¿Estás seguro que desea silenciar al personaje """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
                 If tmp > 255 Then Exit Sub
                 Call ParseUserCommand("/SILENCIAR " & cboListaUsus.Text & "@" & tmp)
 
@@ -2449,7 +2465,7 @@ Private Sub mnuBorrar_Click()
     
     TIPO = General_Field_Read(1, ProximamentTipo, ")")
     
-    Call WriteSOSRemove(Nick & "Ø" & txtMsg & "Ø" & TIPO)
+    Call WriteSOSRemove(nick & "Ø" & txtMsg & "Ø" & tipo)
     
     Call List1.RemoveItem(List1.ListIndex)
     Call List2.RemoveItem(elitem)
@@ -2496,7 +2512,7 @@ Private Sub MnuEnviar_Click(Index As Integer)
         Case 4 'Otro
 
             If LenB(Nick) <> 0 Then
-                Coordenadas = InputBox("Indique la posición (MAPA X Y).", "Transportar a " & Nick)
+                Coordenadas = InputBox("Indique la posición (MAPA X Y).", "Transportar a " & nick)
 
                 If LenB(Coordenadas) <> 0 Then Call ParseUserCommand("/TELEP " & Nick & " " & Coordenadas)
 
@@ -2566,7 +2582,7 @@ Private Sub mnuInvalida_Click()
     Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que esta fue catalogada como invalida.")
 
     ' Lo advertimos
-    Call WriteWarnUser(Nick, "Consulta a GM's inválida.")
+    Call WriteWarnUser(nick, "Consulta a GM's inválida.")
     
     ' Borramos el mensaje de la lista.
     Call mnuBorrar_Click
@@ -2601,7 +2617,7 @@ Private Sub mnuManual_Click()
     On Error GoTo mnuManual_Click_Err
     
     Nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-    Call ParseUserCommand("/MENSAJEINFORMACION " & Nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
+    Call ParseUserCommand("/MENSAJEINFORMACION " & nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
 
     
     Exit Sub
@@ -3123,7 +3139,7 @@ Private Sub UnbanPersonaje_Click()
     
     Nick = cboListaUsus.Text
 
-    If MsgBox("¿Estás seguro que deseas removerle el ban al personaje """ & Nick & """?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox("¿Estás seguro que deseas removerle el ban al personaje """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
         Call WriteUnbanChar(Nick)
 
     End If

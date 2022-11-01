@@ -3,15 +3,15 @@ Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form FrmObjetos 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Crear objeto"
-   ClientHeight    =   5775
-   ClientLeft      =   45
-   ClientTop       =   390
-   ClientWidth     =   4515
+   ClientHeight    =   5772
+   ClientLeft      =   48
+   ClientTop       =   396
+   ClientWidth     =   4512
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5775
-   ScaleWidth      =   4515
+   ScaleHeight     =   5772
+   ScaleWidth      =   4512
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.PictureBox picture1 
@@ -31,7 +31,7 @@ Begin VB.Form FrmObjetos
    Begin VB.TextBox Text2 
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -48,7 +48,7 @@ Begin VB.Form FrmObjetos
    Begin VB.TextBox Text1 
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -64,14 +64,14 @@ Begin VB.Form FrmObjetos
    Begin VB.ListBox List1 
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   6.6
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1710
+      Height          =   1608
       Left            =   5760
       TabIndex        =   5
       Top             =   1080
@@ -81,7 +81,7 @@ Begin VB.Form FrmObjetos
       Caption         =   "Salir"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -100,7 +100,7 @@ Begin VB.Form FrmObjetos
       Caption         =   "Crear"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -121,7 +121,7 @@ Begin VB.Form FrmObjetos
       TabIndex        =   1
       Top             =   720
       Width           =   4215
-      _ExtentX        =   7435
+      _ExtentX        =   7430
       _ExtentY        =   6244
       View            =   3
       LabelEdit       =   1
@@ -135,7 +135,7 @@ Begin VB.Form FrmObjetos
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -157,7 +157,7 @@ Begin VB.Form FrmObjetos
       Caption         =   "Filtrar"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -174,7 +174,7 @@ Begin VB.Form FrmObjetos
       Caption         =   "Cantidad:"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -193,6 +193,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
   
 'UDT necesarias para usar con SendMessage

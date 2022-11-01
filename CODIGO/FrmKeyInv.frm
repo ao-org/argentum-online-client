@@ -8,7 +8,7 @@ Begin VB.Form FrmKeyInv
    ClientWidth     =   3600
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.25
+      Size            =   8.4
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -16,9 +16,9 @@ Begin VB.Form FrmKeyInv
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   188
+   ScaleHeight     =   235
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   240
+   ScaleWidth      =   300
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox interface 
@@ -29,7 +29,7 @@ Begin VB.Form FrmKeyInv
       ClipControls    =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   8.25
+         Size            =   7.8
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -40,9 +40,9 @@ Begin VB.Form FrmKeyInv
       Height          =   1050
       Left            =   495
       MousePointer    =   99  'Custom
-      ScaleHeight     =   70
+      ScaleHeight     =   88
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   175
+      ScaleWidth      =   219
       TabIndex        =   0
       TabStop         =   0   'False
       Top             =   1245
@@ -53,7 +53,7 @@ Begin VB.Form FrmKeyInv
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -80,6 +80,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Const WM_SYSCOMMAND As Long = &H112&

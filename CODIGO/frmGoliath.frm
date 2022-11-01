@@ -3,13 +3,13 @@ Begin VB.Form frmGoliath
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Operación bancaria"
-   ClientHeight    =   7215
+   ClientHeight    =   7212
    ClientLeft      =   0
-   ClientTop       =   -75
-   ClientWidth     =   8175
+   ClientTop       =   -72
+   ClientWidth     =   8172
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.25
+      Size            =   8.4
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -20,9 +20,9 @@ Begin VB.Form frmGoliath
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   481
+   ScaleHeight     =   601
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   545
+   ScaleWidth      =   681
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame frameRetirar 
@@ -40,7 +40,7 @@ Begin VB.Form frmGoliath
          BorderStyle     =   0  'None
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   8.4
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -90,7 +90,7 @@ Begin VB.Form frmGoliath
          BackStyle       =   0  'Transparent
          BeginProperty Font 
             Name            =   "Arial"
-            Size            =   6.75
+            Size            =   6.6
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -168,7 +168,7 @@ Begin VB.Form frmGoliath
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -188,6 +188,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 '*****************************************************************
 'frmGoliath - ImperiumAO - v1.3.0
 '*****************************************************************

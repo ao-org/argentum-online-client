@@ -3,15 +3,15 @@ Begin VB.Form frmShopPjsAO20
    BackColor       =   &H00404040&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   2325
+   ClientHeight    =   2328
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   4770
+   ClientWidth     =   4776
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2325
-   ScaleWidth      =   4770
+   ScaleHeight     =   2328
+   ScaleWidth      =   4776
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox txtValor 
@@ -42,7 +42,7 @@ Begin VB.Form frmShopPjsAO20
       Caption         =   "Costo por publicar: 100.000 monedas de oro"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -82,7 +82,7 @@ Begin VB.Form frmShopPjsAO20
       Caption         =   "Publicar personaje"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   13.5
+         Size            =   13.8
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -122,6 +122,26 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
+Private Sub Form_Load()
+
+End Sub
+
 Private Sub Label2_Click()
     Call cerrarFormulario
 End Sub

@@ -4,19 +4,19 @@ Begin VB.Form frmMapaGrande
    Appearance      =   0  'Flat
    BackColor       =   &H80000006&
    BorderStyle     =   0  'None
-   ClientHeight    =   10785
+   ClientHeight    =   10788
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   11565
+   ClientWidth     =   11568
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   719
+   ScaleHeight     =   899
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   771
+   ScaleWidth      =   964
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox PlayerView 
@@ -54,7 +54,7 @@ Begin VB.Form frmMapaGrande
       TabIndex        =   3
       Top             =   3900
       Width           =   2595
-      _ExtentX        =   4577
+      _ExtentX        =   4572
       _ExtentY        =   1693
       View            =   3
       LabelEdit       =   1
@@ -141,9 +141,9 @@ Begin VB.Form frmMapaGrande
       ForeColor       =   &H80000008&
       Height          =   8910
       Left            =   480
-      ScaleHeight     =   594
+      ScaleHeight     =   743
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   512
+      ScaleWidth      =   640
       TabIndex        =   0
       Top             =   1410
       Width           =   7680
@@ -242,7 +242,7 @@ Begin VB.Form frmMapaGrande
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -280,7 +280,7 @@ Begin VB.Form frmMapaGrande
       Caption         =   "La informacion del mapa esta aquí."
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -419,6 +419,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Public bmoving      As Boolean

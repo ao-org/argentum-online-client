@@ -6,13 +6,13 @@ Begin VB.Form FrmQuestInfo
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   6555
+   ClientHeight    =   6552
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   12315
+   ClientWidth     =   12312
    LinkTopic       =   "Form1"
-   ScaleHeight     =   6555
-   ScaleWidth      =   12315
+   ScaleHeight     =   6552
+   ScaleWidth      =   12312
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin RichTextLib.RichTextBox Text1 
@@ -21,10 +21,11 @@ Begin VB.Form FrmQuestInfo
       TabIndex        =   10
       Top             =   2400
       Width           =   3130
-      _ExtentX        =   5530
-      _ExtentY        =   5106
+      _ExtentX        =   5525
+      _ExtentY        =   5101
       _Version        =   393217
       BorderStyle     =   0
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -35,7 +36,7 @@ Begin VB.Form FrmQuestInfo
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -43,7 +44,7 @@ Begin VB.Form FrmQuestInfo
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   2760
+      Height          =   2676
       Left            =   10560
       TabIndex        =   6
       Top             =   8040
@@ -69,7 +70,7 @@ Begin VB.Form FrmQuestInfo
       TabIndex        =   1
       Top             =   1680
       Width           =   2230
-      _ExtentX        =   3942
+      _ExtentX        =   3937
       _ExtentY        =   2752
       View            =   3
       LabelEdit       =   1
@@ -83,7 +84,7 @@ Begin VB.Form FrmQuestInfo
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -121,7 +122,7 @@ Begin VB.Form FrmQuestInfo
       TabIndex        =   3
       Top             =   3000
       Width           =   1965
-      _ExtentX        =   3466
+      _ExtentX        =   3471
       _ExtentY        =   4022
       View            =   3
       LabelEdit       =   1
@@ -136,7 +137,7 @@ Begin VB.Form FrmQuestInfo
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -174,7 +175,7 @@ Begin VB.Form FrmQuestInfo
       TabIndex        =   7
       Top             =   1920
       Width           =   2835
-      _ExtentX        =   5001
+      _ExtentX        =   4995
       _ExtentY        =   4657
       View            =   3
       LabelEdit       =   1
@@ -187,7 +188,7 @@ Begin VB.Form FrmQuestInfo
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -233,7 +234,7 @@ Begin VB.Form FrmQuestInfo
       Caption         =   "Misión repetible"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   -1  'True
@@ -253,7 +254,7 @@ Begin VB.Form FrmQuestInfo
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -278,7 +279,7 @@ Begin VB.Form FrmQuestInfo
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -332,7 +333,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err

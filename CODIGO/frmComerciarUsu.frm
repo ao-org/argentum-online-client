@@ -3,18 +3,18 @@ Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form frmComerciarUsu 
    BackColor       =   &H00808080&
    BorderStyle     =   0  'None
-   ClientHeight    =   8745
+   ClientHeight    =   8748
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   8625
+   ClientWidth     =   8628
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   583
+   ScaleHeight     =   729
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   575
+   ScaleWidth      =   719
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox Text1 
@@ -34,7 +34,7 @@ Begin VB.Form frmComerciarUsu
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -55,7 +55,7 @@ Begin VB.Form frmComerciarUsu
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -65,9 +65,9 @@ Begin VB.Form frmComerciarUsu
       ForeColor       =   &H80000008&
       Height          =   510
       Left            =   4770
-      ScaleHeight     =   34
+      ScaleHeight     =   43
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   210
+      ScaleWidth      =   263
       TabIndex        =   6
       Top             =   3675
       Width           =   3150
@@ -78,7 +78,7 @@ Begin VB.Form frmComerciarUsu
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -88,9 +88,9 @@ Begin VB.Form frmComerciarUsu
       ForeColor       =   &H80000008&
       Height          =   510
       Left            =   4770
-      ScaleHeight     =   34
+      ScaleHeight     =   43
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   210
+      ScaleWidth      =   263
       TabIndex        =   5
       Top             =   2160
       Width           =   3150
@@ -101,7 +101,7 @@ Begin VB.Form frmComerciarUsu
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -125,7 +125,7 @@ Begin VB.Form frmComerciarUsu
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -148,12 +148,11 @@ Begin VB.Form frmComerciarUsu
       ToolTipText     =   "Mensajes del servidor"
       Top             =   5235
       Width           =   3075
-      _ExtentX        =   5424
-      _ExtentY        =   2937
+      _ExtentX        =   5419
+      _ExtentY        =   2942
       _Version        =   393217
       BackColor       =   459782
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -235,7 +234,7 @@ Begin VB.Form frmComerciarUsu
       Caption         =   "Esperando respuesta..."
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -309,6 +308,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 '**************************************************************
 ' frmComerciarUsu.frm
 '

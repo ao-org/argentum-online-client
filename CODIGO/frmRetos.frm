@@ -3,17 +3,17 @@ Begin VB.Form frmRetos
    BackColor       =   &H8000000D&
    BorderStyle     =   0  'None
    Caption         =   "Retos"
-   ClientHeight    =   7305
+   ClientHeight    =   7308
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   4365
+   ClientWidth     =   4368
    Icon            =   "frmRetos.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   487
+   ScaleHeight     =   609
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   291
+   ScaleWidth      =   364
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox txtPociones 
       Alignment       =   2  'Center
@@ -43,7 +43,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -65,7 +65,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -87,7 +87,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -109,7 +109,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -131,7 +131,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -153,7 +153,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -175,7 +175,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -197,7 +197,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -219,7 +219,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -240,7 +240,7 @@ Begin VB.Form frmRetos
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   9.75
+         Size            =   9.6
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -283,7 +283,7 @@ Begin VB.Form frmRetos
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -300,12 +300,12 @@ Begin VB.Form frmRetos
       Width           =   1575
    End
    Begin VB.Image CAMPO_CORTO 
-      Height          =   405
+      Height          =   324
       Left            =   2760
       Picture         =   "frmRetos.frx":57E2
-      Top             =   4605
+      Top             =   4608
       Visible         =   0   'False
-      Width           =   1035
+      Width           =   828
    End
    Begin VB.Image Image2 
       Height          =   255
@@ -320,92 +320,92 @@ Begin VB.Form frmRetos
       Width           =   255
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   9
-      Left            =   2265
+      Left            =   2268
       Picture         =   "frmRetos.frx":6E16
-      Top             =   4110
+      Top             =   4116
       Visible         =   0   'False
-      Width           =   1680
+      Width           =   1344
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   8
-      Left            =   435
+      Left            =   432
       Picture         =   "frmRetos.frx":91CA
-      Top             =   4110
+      Top             =   4116
       Visible         =   0   'False
-      Width           =   1680
+      Width           =   1344
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   7
-      Left            =   2265
+      Left            =   2268
       Picture         =   "frmRetos.frx":B57E
-      Top             =   3630
+      Top             =   3636
       Visible         =   0   'False
-      Width           =   1680
+      Width           =   1344
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   6
-      Left            =   435
+      Left            =   432
       Picture         =   "frmRetos.frx":D932
-      Top             =   3630
+      Top             =   3636
       Visible         =   0   'False
-      Width           =   1680
+      Width           =   1344
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   5
-      Left            =   2265
+      Left            =   2268
       Picture         =   "frmRetos.frx":FCE6
-      Top             =   3150
+      Top             =   3156
       Visible         =   0   'False
-      Width           =   1680
+      Width           =   1344
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   4
-      Left            =   435
+      Left            =   432
       Picture         =   "frmRetos.frx":1209A
-      Top             =   3150
+      Top             =   3156
       Visible         =   0   'False
-      Width           =   1680
+      Width           =   1344
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   3
-      Left            =   2265
+      Left            =   2268
       Picture         =   "frmRetos.frx":1444E
-      Top             =   2670
+      Top             =   2676
       Visible         =   0   'False
-      Width           =   1680
+      Width           =   1344
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   2
-      Left            =   435
+      Left            =   432
       Picture         =   "frmRetos.frx":16802
-      Top             =   2670
+      Top             =   2676
       Visible         =   0   'False
-      Width           =   1680
+      Width           =   1344
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   1
-      Left            =   2265
+      Left            =   2268
       Picture         =   "frmRetos.frx":18BB6
-      Top             =   2190
-      Width           =   1680
+      Top             =   2196
+      Width           =   1344
    End
    Begin VB.Image Campo 
-      Height          =   405
+      Height          =   324
       Index           =   0
-      Left            =   435
+      Left            =   432
       Picture         =   "frmRetos.frx":1AF6A
-      Top             =   2190
-      Width           =   1680
+      Top             =   2196
+      Width           =   1344
    End
    Begin VB.Image Cerrar 
       Height          =   420
@@ -440,7 +440,7 @@ Begin VB.Form frmRetos
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -460,6 +460,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Private PocionesRojas As Boolean

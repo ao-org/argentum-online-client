@@ -3,16 +3,16 @@ Begin VB.Form frmHerrero
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar con Herreria"
-   ClientHeight    =   6525
+   ClientHeight    =   6528
    ClientLeft      =   0
-   ClientTop       =   -90
-   ClientWidth     =   7050
+   ClientTop       =   -96
+   ClientWidth     =   7056
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   435
+   ScaleHeight     =   544
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   470
+   ScaleWidth      =   588
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox List2 
@@ -20,7 +20,7 @@ Begin VB.Form frmHerrero
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -28,7 +28,7 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1395
+      Height          =   1248
       Left            =   5760
       TabIndex        =   5
       Top             =   2520
@@ -39,7 +39,7 @@ Begin VB.Form frmHerrero
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -47,7 +47,7 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   2955
+      Height          =   2880
       Left            =   480
       TabIndex        =   4
       Top             =   2325
@@ -58,7 +58,7 @@ Begin VB.Form frmHerrero
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -66,7 +66,7 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1395
+      Height          =   1248
       Left            =   3840
       TabIndex        =   3
       Top             =   2520
@@ -134,7 +134,7 @@ Begin VB.Form frmHerrero
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -193,7 +193,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 'Argentum Online 0.11.6
 '
 'Copyright (C) 2002 Márquez Pablo Ignacio

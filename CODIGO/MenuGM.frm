@@ -3,16 +3,16 @@ Begin VB.Form MenuGM
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   2535
+   ClientHeight    =   2532
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   1950
+   ClientWidth     =   1956
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   169
+   ScaleHeight     =   211
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   130
+   ScaleWidth      =   163
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Image OpcionImg 
@@ -28,7 +28,7 @@ Begin VB.Form MenuGM
       Caption         =   "VER PANTALLA"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -56,7 +56,7 @@ Begin VB.Form MenuGM
       Caption         =   "VER PROCESOS"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -84,7 +84,7 @@ Begin VB.Form MenuGM
       Caption         =   "REVIVIR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -105,7 +105,7 @@ Begin VB.Form MenuGM
       Caption         =   "PENAS"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -133,7 +133,7 @@ Begin VB.Form MenuGM
       Caption         =   "BANEAR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -161,7 +161,7 @@ Begin VB.Form MenuGM
       Caption         =   "CARCEL 5 min"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -189,7 +189,7 @@ Begin VB.Form MenuGM
       Caption         =   "CONSULTA"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -217,7 +217,7 @@ Begin VB.Form MenuGM
       Caption         =   "REVIVIR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -252,7 +252,7 @@ Begin VB.Form MenuGM
       Caption         =   "INVENTARIO"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -280,7 +280,7 @@ Begin VB.Form MenuGM
       Caption         =   "INFO"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -308,7 +308,7 @@ Begin VB.Form MenuGM
       Caption         =   "NICK2IP"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -336,7 +336,7 @@ Begin VB.Form MenuGM
       Caption         =   "SILENCIAR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -364,7 +364,7 @@ Begin VB.Form MenuGM
       Caption         =   "SUM"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -385,6 +385,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Private Over As Integer

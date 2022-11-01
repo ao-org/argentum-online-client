@@ -3,13 +3,13 @@ Begin VB.Form frmGuildAdm
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Lista de clanes registrados"
-   ClientHeight    =   5865
+   ClientHeight    =   5868
    ClientLeft      =   0
    ClientTop       =   -180
-   ClientWidth     =   6225
+   ClientWidth     =   6228
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.25
+      Size            =   8.4
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -20,9 +20,9 @@ Begin VB.Form frmGuildAdm
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   391
+   ScaleHeight     =   489
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   415
+   ScaleWidth      =   519
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox Filtro 
@@ -30,7 +30,7 @@ Begin VB.Form frmGuildAdm
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -48,7 +48,7 @@ Begin VB.Form frmGuildAdm
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       ForeColor       =   &H00FFFFFF&
-      Height          =   2565
+      Height          =   2472
       ItemData        =   "frmGuildAdm.frx":0000
       Left            =   495
       List            =   "frmGuildAdm.frx":0002
@@ -61,7 +61,7 @@ Begin VB.Form frmGuildAdm
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.75
+         Size            =   6.6
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -111,6 +111,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Private cBotonFundarClan As clsGraphicalButton

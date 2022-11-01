@@ -2,14 +2,14 @@ VERSION 5.00
 Begin VB.Form frmUserRequest 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Peticion"
-   ClientHeight    =   2430
-   ClientLeft      =   45
-   ClientTop       =   210
-   ClientWidth     =   4650
+   ClientHeight    =   2424
+   ClientLeft      =   48
+   ClientTop       =   216
+   ClientWidth     =   4644
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.25
+      Size            =   8.4
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,15 +19,15 @@ Begin VB.Form frmUserRequest
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2430
-   ScaleWidth      =   4650
+   ScaleHeight     =   2424
+   ScaleWidth      =   4644
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton Command1 
       Caption         =   "Cerrar"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.25
+         Size            =   8.4
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -54,6 +54,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 'Argentum Online 0.11.6
 '
 'Copyright (C) 2002 Márquez Pablo Ignacio
@@ -108,7 +124,7 @@ Public Sub recievePeticion(ByVal p As String)
     On Error GoTo recievePeticion_Err
     
 
-    Text1 = Replace$(p, "º", vbCrLf)
+    Text1 = Replace$(P, "º", vbCrLf)
     Me.Show vbModeless, frmMain
 
     
