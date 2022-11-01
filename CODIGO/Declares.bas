@@ -329,7 +329,6 @@ Public StreamFile As String
 Public NumAuras   As Byte
 Public InvOroComUsu(2)         As New clsGrapchicalInventory ' Inventarios de oro (ambos usuarios)
 Public InvOfferComUsu(1)       As New clsGrapchicalInventory ' Inventarios de ofertas (ambos usuarios)
-Public CustomKeys              As New clsCustomKeys
 Public Sound                   As New clsSoundEngine
 Public Audio_MP3_Load          As Boolean
 Public Audio_MP3_Play          As Boolean

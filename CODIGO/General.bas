@@ -1596,8 +1596,7 @@ Public Sub CloseClient()
     
     Call General_Set_Mouse_Speed(SensibilidadMouseOriginal)
     Call Resolution.ResetResolution
-    
-    Set CustomKeys = Nothing
+
     Set SurfaceDB = Nothing
     Set Dialogos = Nothing
     Set DialogosClanes = Nothing
