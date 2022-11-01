@@ -1,4 +1,20 @@
 Attribute VB_Name = "Graficos_Textos"
+'    Argentum 20 - Game Client Program
+'    Copyright (C) 2022 - Noland Studios
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'
 Option Explicit
 
 Public Type Fuente
@@ -138,11 +154,11 @@ Public Sub Engine_Font_Initialize()
     Fuentes(3).Caracteres(57) = 20437 '9
 
     For A = 0 To 25
-        Fuentes(3).Caracteres(A + 97) = 20477 + A 'Desde la a hasta la z (sin ñ)
+        Fuentes(3).Caracteres(a + 97) = 20477 + a 'Desde la a hasta la z (sin ñ)
     Next A
 
     For A = 0 To 25
-        Fuentes(3).Caracteres(A + 65) = 20445 + A 'Desde la A hasta la Z (sin Ñ)
+        Fuentes(3).Caracteres(a + 65) = 20445 + a 'Desde la A hasta la Z (sin Ñ)
 
     Next A
 
