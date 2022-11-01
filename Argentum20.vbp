@@ -46,7 +46,6 @@ Module=ProtocolCmdParse; CODIGO\ProtocolCmdParse.bas
 Module=PrevInstance; CODIGO\PrevInstance.bas
 Class=cDIBSection; CODIGO\cDIBSection.cls
 Class=clsDialogs; CODIGO\clsDialogs.cls
-Class=clsCustomKeys; CODIGO\clsCustomKeys.cls
 Form=CODIGO\frmCustomKeys.frm
 Module=Resolution; CODIGO\Resolution.bas
 Module=Application; CODIGO\Application.bas
