@@ -29,6 +29,7 @@ Form=CODIGO\frmGuildLeader.frm
 Form=CODIGO\frmCharInfo.frm
 Form=CODIGO\frmSolicitud.frm
 Form=CODIGO\frmUserRequest.frm
+Form=CODIGO\frmPatchNotes.frm
 Form=CODIGO\frmGuildNews.frm
 Form=CODIGO\frmPeaceProp.frm
 Form=CODIGO\frmCommet.frm

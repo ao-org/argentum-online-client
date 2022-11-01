@@ -1551,6 +1551,47 @@ Public Sub LoadProjectiles()
 
 End Sub
 
+Public Function GetPatchNotes() As String
+On Error GoTo GetPatchNotes_Err
+    Dim PatchDate As Long
+    Dim LastDisplayPatch As Long
+    Dim PatchFile As String
+    #If Compresion = 1 Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "PatchNotes.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+            GetPatchNotes = ""
+            Exit Function
+        End If
+        PatchFile = Windows_Temp_Dir & "PatchNotes.dat"
+    #Else
+        PatchFile = App.path & "\..\Recursos\init\PatchNotes.dat"
+    #End If
+    Dim IniReader As New clsIniManager
+    If Not FileExist(PatchFile, vbNormal) Then
+        GetPatchNotes = ""
+        Exit Function
+    End If
+
+    Call IniReader.Initialize(PatchFile)
+    
+    PatchDate = Val(IniReader.GetValue("INIT", "Date"))
+    If PatchDate = 0 Then
+        GetPatchNotes = ""
+        Exit Function
+    End If
+    LastDisplayPatch = Val(GetVar(App.path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "LastPatch"))
+    
+    If PatchDate > LastDisplayPatch Then
+        GetPatchNotes = IniReader.GetValue("INIT", "FileName")
+        Call WriteVar(App.path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "LastPatch", PatchDate)
+    Else
+        GetPatchNotes = ""
+    End If
+    Exit Function
+GetPatchNotes_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Recursos.GetPatchNotes", Erl)
+    GetPatchNotes = ""
+End Function
+
 Public Sub CargarIndicesOBJ()
     
     On Error GoTo CargarIndicesOBJ_Err

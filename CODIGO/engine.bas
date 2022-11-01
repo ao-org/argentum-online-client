@@ -2327,7 +2327,14 @@ On Error GoTo Start_Err
                 Case e_state_connect_screen
                     If Not frmConnect.visible Then
                         frmConnect.Show
-                        FrmLogear.Show , frmConnect
+                        Dim patchNotes As String
+                        patchNotes = GetPatchNotes()
+                        If Not patchNotes = "" Then
+                            frmPatchNotes.SetNotes (patchNotes)
+                            frmPatchNotes.Show , frmConnect
+                        Else
+                            FrmLogear.Show , frmConnect
+                        End If
                     End If
                     
                     RenderConnect 57, 45, 0, 0

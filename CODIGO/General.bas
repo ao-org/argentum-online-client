@@ -1823,19 +1823,20 @@ min_Err:
 End Function
 
 
-Public Function LoadInterface(FileName As String) As IPicture
+Public Function LoadInterface(FileName As String, Optional localize As Boolean = True) As IPicture
 
 On Error GoTo ErrHandler
     
-    Select Case language
-        Case e_language.English
-            FileName = "en_" & FileName
-        Case e_language.spanish
-            FileName = "es_" & FileName
-        Case Else
-            FileName = "en_" & FileName
-    End Select
-    
+    If localize Then
+        Select Case language
+            Case e_language.English
+                FileName = "en_" & FileName
+            Case e_language.Spanish
+                FileName = "es_" & FileName
+            Case Else
+                FileName = "en_" & FileName
+        End Select
+    End If
     If FileName <> "" Then
         #If Compresion = 1 Then
             Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
