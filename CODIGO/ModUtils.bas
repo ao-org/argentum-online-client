@@ -1,4 +1,4 @@
-Attribute VB_Name = "ModLadder"
+Attribute VB_Name = "ModUtils"
 '    Argentum 20 - Game Client Program
 '    Copyright (C) 2022 - Noland Studios
 '
@@ -375,8 +375,8 @@ Type UserCuentaPJS
     nombre As String
     nivel As Byte
     Mapa As Integer
-    PosX As Integer
-    PosY As Integer
+    posX As Integer
+    posY As Integer
     Body As Integer
     Head As Integer
     Criminal As Byte
@@ -541,7 +541,7 @@ Sub inputbox_Password(El_Form As Form, Caracter As String)
     Exit Sub
 
 inputbox_Password_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.inputbox_Password", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.inputbox_Password", Erl)
     Resume Next
     
 End Sub
@@ -565,7 +565,7 @@ Private Sub TimerProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idEvent As L
     Exit Sub
 
 TimerProc_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.TimerProc", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.TimerProc", Erl)
     Resume Next
     
 End Sub
@@ -603,7 +603,7 @@ Public Function LoadPNGtoICO(pngData() As Byte) As IPicture
     Exit Function
 
 LoadPNGtoICO_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.LoadPNGtoICO", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.LoadPNGtoICO", Erl)
     Resume Next
     
 End Function
@@ -625,7 +625,7 @@ Public Function SetTopMostWindow(hwnd As Long, Topmost As Boolean) As Long
     Exit Function
 
 SetTopMostWindow_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.SetTopMostWindow", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.SetTopMostWindow", Erl)
     Resume Next
     
 End Function
@@ -637,7 +637,7 @@ Public Sub LogError(desc As String)
     Dim nfile As Integer
 
     nfile = FreeFile ' obtenemos un canal
-    Open App.Path & "\errores.log" For Append Shared As #nfile
+    Open App.path & "\errores.log" For Append Shared As #nfile
     Print #nfile, Date & "-" & Time & ":" & desc
     Close #nfile
 
@@ -667,12 +667,13 @@ Sub IniciarCrearPj()
     For i = LBound(ListaRazas()) To UBound(ListaRazas())
         frmCrearPersonaje.lstRaza.AddItem ListaRazas(i)
     Next i
-    
+     frmCrearPersonaje.lstRaza.ListIndex = 0
     
     frmCrearPersonaje.lstHogar.Clear
     For i = LBound(ListaCiudades()) To UBound(ListaCiudades())
         frmCrearPersonaje.lstHogar.AddItem (ListaCiudades(i))
     Next i
+     frmCrearPersonaje.lstHogar.ListIndex = 0
 
     frmCrearPersonaje.lstProfesion.Clear
 
@@ -680,12 +681,18 @@ Sub IniciarCrearPj()
         frmCrearPersonaje.lstProfesion.AddItem ListaClases(i)
     
     Next i
-
+    frmCrearPersonaje.lstProfesion.ListIndex = 1
+    
+    
+        
+    MiCabeza = Val(frmCrearPersonaje.Cabeza.List(1))
+    Call DibujarCPJ(MiCabeza, 3)
+    CPHead = MiCabeza
     
     Exit Sub
 
 IniciarCrearPj_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IniciarCrearPj", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.IniciarCrearPj", Erl)
     Resume Next
     
 End Sub
@@ -757,7 +764,7 @@ Sub General_Set_Connect()
     Exit Sub
 
 General_Set_Connect_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Set_Connect", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Set_Connect", Erl)
     Resume Next
     
 End Sub
@@ -767,13 +774,13 @@ Public Sub InitializeSurfaceCapture(Frm As Form)
     On Error GoTo InitializeSurfaceCapture_Err
     
     lRegion = CreateRectRgn(0, 0, 0, 0)
-    Frm.Visible = False
+    Frm.visible = False
 
     
     Exit Sub
 
 InitializeSurfaceCapture_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.InitializeSurfaceCapture", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.InitializeSurfaceCapture", Erl)
     Resume Next
     
 End Sub
@@ -783,14 +790,14 @@ Public Sub ReleaseSurfaceCapture(Frm As Form)
     On Error GoTo ReleaseSurfaceCapture_Err
     
     ApplySurfaceTo Frm
-    Frm.Visible = True
+    Frm.visible = True
     Call DeleteObject(lRegion)
 
     
     Exit Sub
 
 ReleaseSurfaceCapture_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ReleaseSurfaceCapture", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ReleaseSurfaceCapture", Erl)
     Resume Next
     
 End Sub
@@ -805,7 +812,7 @@ Public Sub ApplySurfaceTo(Frm As Form)
     Exit Sub
 
 ApplySurfaceTo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ApplySurfaceTo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ApplySurfaceTo", Erl)
     Resume Next
     
 End Sub
@@ -845,7 +852,7 @@ Public Sub CreateSurfacefromPoints(ParamArray XY())
     Exit Sub
 
 CreateSurfacefromPoints_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromPoints", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromPoints", Erl)
     Resume Next
     
 End Sub
@@ -866,7 +873,7 @@ Public Sub CreateSurfacefromEllipse(x1 As Integer, y1 As Integer, x2 As Integer,
     Exit Sub
 
 CreateSurfacefromEllipse_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromEllipse", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromEllipse", Erl)
     Resume Next
     
 End Sub
@@ -887,7 +894,7 @@ Public Sub CreateSurfacefromRect(x1 As Integer, y1 As Integer, x2 As Integer, y2
     Exit Sub
 
 CreateSurfacefromRect_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromRect", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromRect", Erl)
     Resume Next
     
 End Sub
@@ -1021,7 +1028,7 @@ Public Sub CreateSurfacefromMask(Obj As Object, Optional lBackColor As Long)
     Exit Sub
 
 CreateSurfacefromMask_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromMask", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromMask", Erl)
     Resume Next
     
 End Sub
@@ -1052,8 +1059,8 @@ Public Sub CreateSurfacefromMask_GetPixel(Obj As Object, Optional lBackColor As 
     lSkinRgn = CreateRectRgn(0, 0, 0, 0)
 
     With Obj
-        glHeight = .Height / Screen.TwipsPerPixelY
-        glWidth = .Width / Screen.TwipsPerPixelX
+        glHeight = .Height / screen.TwipsPerPixelY
+        glWidth = .Width / screen.TwipsPerPixelX
 
         If lBackColor < 1 Then lBackColor = GetPixel(.hdc, 0, 0)
 
@@ -1090,7 +1097,7 @@ Public Sub CreateSurfacefromMask_GetPixel(Obj As Object, Optional lBackColor As 
     Exit Sub
 
 CreateSurfacefromMask_GetPixel_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CreateSurfacefromMask_GetPixel", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromMask_GetPixel", Erl)
     Resume Next
     
 End Sub
@@ -1110,7 +1117,7 @@ Public Sub General_Var_Write(ByVal File As String, ByVal Main As String, ByVal V
     Exit Sub
 
 General_Var_Write_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Var_Write", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Var_Write", Erl)
     Resume Next
     
 End Sub
@@ -1125,7 +1132,7 @@ Public Sub MensajeAdvertencia(ByVal mensaje As String)
     Exit Sub
 
 MensajeAdvertencia_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.MensajeAdvertencia", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.MensajeAdvertencia", Erl)
     Resume Next
     
 End Sub
@@ -1149,7 +1156,7 @@ Public Sub ReproducirMp3(ByVal mp3 As Byte)
     Exit Sub
 
 ReproducirMp3_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ReproducirMp3", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ReproducirMp3", Erl)
     Resume Next
     
 End Sub
@@ -1168,7 +1175,7 @@ Public Sub ForzarMp3(ByVal mp3 As Byte)
     Exit Sub
 
 ForzarMp3_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ForzarMp3", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ForzarMp3", Erl)
     Resume Next
     
 End Sub
@@ -1176,7 +1183,7 @@ End Sub
 Public Sub CargarCuentasGuardadas()
 
     Dim Arch As String
-        Arch = App.Path & "\..\Recursos\OUTPUT\Cuenta.ini"
+        Arch = App.path & "\..\Recursos\OUTPUT\Cuenta.ini"
     
     CuentaRecordada.nombre = GetVar(Arch, "CUENTA", "Nombre")
     CuentaRecordada.Password = UnEncryptStr(GetVar(Arch, "CUENTA", "Password"), 9256)
@@ -1197,7 +1204,7 @@ End Sub
 Public Sub GuardarCuenta(ByVal Name As String, ByVal Password As String)
 
     Dim Archivo As String
-        Archivo = App.Path & "\..\Recursos\OUTPUT\Cuenta.ini"
+        Archivo = App.path & "\..\Recursos\OUTPUT\Cuenta.ini"
     
     ' Si el parametro Password no es vbNullString, encriptamos el string
     If LenB(Password) Then Password = EncryptStr(Password, 9256)
@@ -1260,7 +1267,7 @@ Public Function IntervaloPermiteClick(Optional ByVal Actualizar As Boolean = Tru
     Exit Function
 
 IntervaloPermiteClick_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteClick", Erl)
     Resume Next
     
 End Function
@@ -1288,7 +1295,7 @@ Public Function IntervaloPermiteHeading(Optional ByVal Actualizar As Boolean = T
     Exit Function
 
 IntervaloPermiteHeading_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteHeading", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteHeading", Erl)
     Resume Next
     
 End Function
@@ -1313,7 +1320,7 @@ Public Function IntervaloPermiteLLamadaClan() As Boolean
     Exit Function
 
 IntervaloPermiteLLamadaClan_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteLLamadaClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteLLamadaClan", Erl)
     Resume Next
     
 End Function
@@ -1337,7 +1344,7 @@ Public Function IntervaloPermiteAnim() As Boolean
     Exit Function
 
 IntervaloPermiteAnim_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteAnim", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteAnim", Erl)
     Resume Next
     
 End Function
@@ -1361,7 +1368,7 @@ Public Function IntervaloPermiteConectar() As Boolean
     Exit Function
 
 IntervaloPermiteConectar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.IntervaloPermiteConectar", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteConectar", Erl)
     Resume Next
     
 End Function
@@ -1386,7 +1393,7 @@ Sub load_game_settings()
     On Error GoTo ErrorHandler
     Set DialogosClanes = New clsGuildDlg
     
-    If FileExist(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", vbArchive) Then
+    If FileExist(App.path & "\..\Recursos\OUTPUT\Configuracion.ini", vbArchive) Then
         Call LoadImpAoInit
     Else
         Call MsgBox("¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
@@ -1395,12 +1402,12 @@ Sub load_game_settings()
     
     Dim ConfigFile As clsIniManager
     Set ConfigFile = New clsIniManager
-    Call ConfigFile.Initialize(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini")
+    Call ConfigFile.Initialize(App.path & "\..\Recursos\OUTPUT\Configuracion.ini")
     
     'Musica y Sonido
     Musica = ConfigFile.GetValue("AUDIO", "Musica")
     Sonido = ConfigFile.GetValue("AUDIO", "Sonido")
-    fX = ConfigFile.GetValue("AUDIO", "Fx")
+    Fx = ConfigFile.GetValue("AUDIO", "Fx")
     AmbientalActivated = ConfigFile.GetValue("AUDIO", "AmbientalActivated")
     InvertirSonido = ConfigFile.GetValue("AUDIO", "InvertirSonido")
     
@@ -1469,13 +1476,13 @@ Sub GuardarOpciones()
     On Error GoTo GuardarOpciones_Err
     
 
-    Dim Arch As String: Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
+    Dim Arch As String: Arch = App.path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
     
     #If PYMMO = 0 Or DEBUGGING = 1 Then
     Call WriteVar(Arch, "INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
     #End If
     Call WriteVar(Arch, "AUDIO", "Musica", Musica)
-    Call WriteVar(Arch, "AUDIO", "Fx", fX)
+    Call WriteVar(Arch, "AUDIO", "Fx", Fx)
     Call WriteVar(Arch, "AUDIO", "VolMusic", VolMusic)
     Call WriteVar(Arch, "AUDIO", "Volfx", VolFX)
     Call WriteVar(Arch, "AUDIO", "VolAmbient", VolAmbient)
@@ -1506,7 +1513,7 @@ Sub GuardarOpciones()
     Exit Sub
 
 GuardarOpciones_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GuardarOpciones", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.GuardarOpciones", Erl)
     Resume Next
     
 End Sub
@@ -1535,34 +1542,34 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
                 If .status = 0 Then ' Criminal
                     NameRed = ColoresPJ(23).r
                     NameGreen = ColoresPJ(23).G
-                    NameBlue = ColoresPJ(23).B
+                    NameBlue = ColoresPJ(23).b
                 ElseIf .status = 1 Then ' Ciudadano
                     NameRed = ColoresPJ(20).r
                     NameGreen = ColoresPJ(20).G
-                    NameBlue = ColoresPJ(20).B
+                    NameBlue = ColoresPJ(20).b
                 ElseIf .status = 2 Then ' Caos
                     NameRed = ColoresPJ(24).r
                     NameGreen = ColoresPJ(24).G
-                    NameBlue = ColoresPJ(24).B
+                    NameBlue = ColoresPJ(24).b
                 ElseIf .status = 3 Then ' Armada
                     NameRed = ColoresPJ(21).r
                     NameGreen = ColoresPJ(21).G
-                    NameBlue = ColoresPJ(21).B
+                    NameBlue = ColoresPJ(21).b
                 ElseIf .status = 4 Then ' Conciclio
                     NameRed = ColoresPJ(25).r
                     NameGreen = ColoresPJ(25).G
-                    NameBlue = ColoresPJ(25).B
+                    NameBlue = ColoresPJ(25).b
                 ElseIf .status = 5 Then ' Consejo
                     NameRed = ColoresPJ(22).r
                     NameGreen = ColoresPJ(22).G
-                    NameBlue = ColoresPJ(22).B
+                    NameBlue = ColoresPJ(22).b
                 End If
 
             ' Consejeros, SemiDioses, Dioses y Admin (GM), Concilios y consejos
             Case Else
                 NameRed = ColoresPJ(.priv).r
                 NameGreen = ColoresPJ(.priv).G
-                NameBlue = ColoresPJ(.priv).B
+                NameBlue = ColoresPJ(.priv).b
             
         End Select
 
@@ -1591,7 +1598,7 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
     Exit Sub
 
 WriteChatOverHeadInConsole_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.WriteChatOverHeadInConsole", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.WriteChatOverHeadInConsole", Erl)
     Resume Next
     
 End Sub
@@ -1636,7 +1643,7 @@ Public Function PonerPuntos(Numero As Long) As String
     Exit Function
 
 PonerPuntos_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.PonerPuntos", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.PonerPuntos", Erl)
     Resume Next
     
 End Function
@@ -1690,7 +1697,7 @@ Sub AmbientarAudio(ByVal UserMap As Long)
     Exit Sub
 
 AmbientarAudio_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.AmbientarAudio", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.AmbientarAudio", Erl)
     Resume Next
     
 End Sub
@@ -1726,7 +1733,7 @@ Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVa
     Exit Function
 
 General_Var_Get_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Var_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Var_Get", Erl)
     Resume Next
     
 End Function
@@ -1743,36 +1750,36 @@ Public Sub DibujarMiniMapa()
             Dim posX As Long
             Dim posY As Long
             
-            PosX = (ListNPCMapData(UserMap, i).Position.X - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - 2
-            PosY = (ListNPCMapData(UserMap, i).Position.y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - 1
+            posX = (ListNPCMapData(UserMap, i).Position.x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - 2
+            posY = (ListNPCMapData(UserMap, i).Position.y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - 1
             
             
             Dim color As Long
             
-            Select Case ListNPCMapData(UserMap, i).State
+            Select Case ListNPCMapData(UserMap, i).state
                 Case 1
                     color = RGB(0, 198, 254)
                 Case 2
                     color = RGB(255, 201, 14)
                     Case Else
-                    Color = RGB(255, 201, 14)
+                    color = RGB(255, 201, 14)
             End Select
             
             
             
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, color)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, color)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 1, color)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY, color)
+            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY, color)
+            Call SetPixel(frmMain.MiniMap.hdc, posX, posY + 1, color)
+            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY + 1, color)
+            Call SetPixel(frmMain.MiniMap.hdc, posX, posY, color)
             
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY + 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 2, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, posX, posY - 1, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY - 1, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, posX + 2, posY, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, posX + 2, posY + 1, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY + 2, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, posX, posY + 2, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, posX - 1, posY + 1, &H808080)
+            Call SetPixel(frmMain.MiniMap.hdc, posX - 1, posY, &H808080)
 
         Next i
         
@@ -1781,7 +1788,7 @@ Public Sub DibujarMiniMapa()
     Exit Sub
 
 DibujarMiniMapa_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.DibujarMiniMapa", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.DibujarMiniMapa", Erl)
     
 End Sub
 
@@ -1828,7 +1835,7 @@ Function EncryptStr(ByVal s As String, ByVal P As String) As String
     Exit Function
 
 EncryptStr_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.EncryptStr", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.EncryptStr", Erl)
     Resume Next
     
 End Function
@@ -1876,7 +1883,7 @@ Function UnEncryptStr(ByVal s As String, ByVal P As String) As String
     Exit Function
 
 UnEncryptStr_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.UnEncryptStr", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.UnEncryptStr", Erl)
     Resume Next
     
 End Function
@@ -1899,7 +1906,7 @@ Public Function Input_Key_Get(ByVal key_code As Byte) As Boolean
     Exit Function
 
 Input_Key_Get_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.Input_Key_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.Input_Key_Get", Erl)
     Resume Next
     
 End Function
@@ -1913,7 +1920,7 @@ Public Function Input_Click_Get(ByVal Botton As Byte) As Boolean
     Exit Function
 
 Input_Click_Get_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.Input_Click_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.Input_Click_Get", Erl)
     Resume Next
     
 End Function
@@ -1950,7 +1957,7 @@ Public Function General_Get_Temp_Dir() As String
     Exit Function
 
 General_Get_Temp_Dir_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Get_Temp_Dir", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Get_Temp_Dir", Erl)
     Resume Next
     
 End Function
@@ -1971,7 +1978,7 @@ Public Function General_Get_Mouse_Speed() As Long
     Exit Function
 
 General_Get_Mouse_Speed_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Get_Mouse_Speed", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Get_Mouse_Speed", Erl)
     Resume Next
     
 End Function
@@ -1992,7 +1999,7 @@ Public Sub General_Set_Mouse_Speed(ByVal lngSpeed As Long)
     Exit Sub
 
 General_Set_Mouse_Speed_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Set_Mouse_Speed", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Set_Mouse_Speed", Erl)
     Resume Next
     
 End Sub
@@ -2007,7 +2014,7 @@ Public Sub ResetearUserMacro()
     On Error GoTo ResetearUserMacro_Err
     
     Call WriteFlagTrabajar
-    frmMain.MacroLadder.Enabled = False
+    frmMain.MacroLadder.enabled = False
     UserMacro.Activado = False
     UserMacro.cantidad = 0
     UserMacro.Index = 0
@@ -2029,7 +2036,7 @@ Public Sub ResetearUserMacro()
     Exit Sub
 
 ResetearUserMacro_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ResetearUserMacro", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ResetearUserMacro", Erl)
     Resume Next
     
 End Sub
@@ -2052,7 +2059,7 @@ Public Sub CargarLst()
     Exit Sub
 
 CargarLst_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CargarLst", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CargarLst", Erl)
     Resume Next
     
 End Sub
@@ -2080,7 +2087,7 @@ Public Sub CrearFantasma(ByVal charindex As Integer)
     Exit Sub
 
 CrearFantasma_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CrearFantasma", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CrearFantasma", Erl)
     Resume Next
     
 End Sub
@@ -2098,7 +2105,7 @@ Public Sub CompletarAccionBarra(ByVal BarAccion As Byte)
     Exit Sub
 
 CompletarAccionBarra_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CompletarAccionBarra", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CompletarAccionBarra", Erl)
     Resume Next
     
 End Sub
@@ -2114,7 +2121,7 @@ Public Sub ComprobarEstado()
     Exit Sub
 
 ComprobarEstado_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ComprobarEstado", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ComprobarEstado", Erl)
     Resume Next
     
 End Sub
@@ -2129,7 +2136,7 @@ Public Function General_Distance_Get(ByVal x1 As Integer, ByVal y1 As Integer, B
     Exit Function
 
 General_Distance_Get_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.General_Distance_Get", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Distance_Get", Erl)
     Resume Next
     
 End Function
@@ -2164,7 +2171,7 @@ Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByV
     Exit Sub
 
 EndGame_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.EndGame", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.EndGame", Erl)
     Resume Next
     
 End Sub
@@ -2186,7 +2193,7 @@ Public Sub Client_UnInitialize_DirectX_Objects()
     Exit Sub
 
 Client_UnInitialize_DirectX_Objects_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.Client_UnInitialize_DirectX_Objects", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.Client_UnInitialize_DirectX_Objects", Erl)
     Resume Next
     
 End Sub
@@ -2202,7 +2209,7 @@ Public Sub TextoAlAsistente(ByVal Texto As String)
     Exit Sub
 
 TextoAlAsistente_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.TextoAlAsistente", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.TextoAlAsistente", Erl)
     Resume Next
     
 End Sub
@@ -2245,7 +2252,7 @@ Public Function GetTimeFormated(Mins As Integer) As String
     Exit Function
 
 GetTimeFormated_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GetTimeFormated", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.GetTimeFormated", Erl)
     Resume Next
     
 End Function
@@ -2265,7 +2272,7 @@ Public Function GetHora(Mins As Integer) As String
     Exit Function
 
 GetHora_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.GetHora", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.GetHora", Erl)
     Resume Next
     
 End Function
@@ -2295,7 +2302,7 @@ Public Sub PreloadGraphics()
     
     #If Compresion = 1 Then
 
-        If Not Extract_File(Scripts, App.Path & "\..\Recursos\OUTPUT\", "preload.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "preload.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "No se ha logrado extraer el archivo de recurso."
             GoTo ErrorHandler
 
@@ -2303,7 +2310,7 @@ Public Sub PreloadGraphics()
     
         PreloadFile = Windows_Temp_Dir & "Preload.ind"
     #Else
-        PreloadFile = App.Path & "\..\Recursos\init\Preload.ind"
+        PreloadFile = App.path & "\..\Recursos\init\Preload.ind"
     #End If
     
     TotalPreloads = Val(General_Var_Get(PreloadFile, "GRAPHICS", "TotalPreloads"))
@@ -2342,7 +2349,7 @@ ErrorHandler:
     Exit Sub
 
 PreloadGraphics_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.PreloadGraphics", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.PreloadGraphics", Erl)
     Resume Next
     
 End Sub
@@ -2375,7 +2382,7 @@ Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal Mapa As Integer) As Integer
     Exit Function
 
 ObtenerIdMapaDeLlamadaDeClan_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.ObtenerIdMapaDeLlamadaDeClan", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ObtenerIdMapaDeLlamadaDeClan", Erl)
     Resume Next
     
 End Function
@@ -2391,7 +2398,7 @@ Public Sub Auto_Drag(ByVal hwnd As Long)
     Exit Sub
 
 Auto_Drag_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.Auto_Drag", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.Auto_Drag", Erl)
     Resume Next
     
 End Sub

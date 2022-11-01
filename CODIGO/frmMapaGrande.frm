@@ -938,7 +938,7 @@ Public Sub CalcularPosicionMAPA()
     Exit Sub
 
 CalcularPosicionMAPA_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.CalcularPosicionMAPA", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CalcularPosicionMAPA", Erl)
     Resume Next
     
 End Sub

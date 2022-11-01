@@ -83,7 +83,7 @@ Public Sub LoadImpAoInit()
     Exit Sub
 
 LoadImpAoInit_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.LoadImpAoInit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.LoadImpAoInit", Erl)
     Resume Next
     
 End Sub
@@ -113,7 +113,7 @@ Public Sub SaveRAOInit()
     Exit Sub
 
 SaveRAOInit_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModLadder.SaveRAOInit", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.SaveRAOInit", Erl)
     Resume Next
     
 End Sub
