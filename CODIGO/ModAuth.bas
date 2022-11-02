@@ -653,8 +653,8 @@ Public Sub SendSignUpRequest()
     
     packet_size = UBound(login_request)
     
-    login_request(1) = &H20
-    login_request(2) = &H25
+    login_request(1) = &HBE
+    login_request(2) = &HEF
     
     'Siguientes 2 bytes indican tamaño total del paquete
     login_request(3) = hiByte(packet_size)
