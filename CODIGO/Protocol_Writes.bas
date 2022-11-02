@@ -5549,6 +5549,24 @@ WriteChangeMapInfoZone_Err:
         '</EhFooter>
 End Sub
 
+Public Sub WriteChangeMapSetting(ByVal setting As Byte, ByVal value As Byte)
+        '<EhHeader>
+        On Error GoTo WriteChangeMapSetting_Err
+        '</EhHeader>
+100     Call Writer.WriteInt16(ClientPacketID.ChangeMapSetting)
+102     Call Writer.WriteInt8(setting)
+104     Call Writer.WriteInt8(value)
+
+106     Call modNetwork.Send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteChangeMapSetting_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChangeMapSetting", Erl)
+        '</EhFooter>
+End Sub
+
 ''
 ' Writes the "SaveChars" message to the outgoing data buffer.
 '

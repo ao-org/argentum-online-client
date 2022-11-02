@@ -1946,13 +1946,16 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         
                         Case "ZONA" '/MODMAPINFO ZONA
                             Call WriteChangeMapInfoZone(ArgumentosAll(1))
-
                     End Select
 
                 Else
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parametros. Opciones: SEGURO, BACKUP, RESTRINGIR, MAGIASINEFECTO, INVISINEFECTO, RESUSINEFECTO, TERRENO, ZONA")
 
+                End If
+            Case "/MAPSETTING"
+                If EsGM Then
+                    Call HandleMapSetting(ArgumentosAll, CantidadArgumentos)
                 End If
                 
             Case "/MAPINFO"
@@ -2155,6 +2158,28 @@ ParseUserCommand_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.ParseUserCommand", Erl)
     Resume Next
     
+End Sub
+
+Private Sub HandleMapSetting(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount < 2 Then
+        Call ShowConsoleMsg("Parametros incorrectos.")
+        Exit Sub
+    End If
+    If Not ValidNumber(arguments(1), eNumber_Types.ent_Byte) Then
+        Call ShowConsoleMsg("Parametros incorrectos.")
+        Exit Sub
+    End If
+    Dim settingType As Byte
+    Select Case Trim$(UCase$(arguments(0)))
+        Case "DROPITEMS"
+            settingType = 0
+        Case "SAFEPVP"
+            settingType = 1
+        Case Else
+            Call ShowConsoleMsg("Parametros incorrectos.")
+            Exit Sub
+    End Select
+    Call WriteChangeMapSetting(settingType, arguments(1))
 End Sub
 
 Private Sub HandleFeatureToggle(ByRef arguments() As String, ByVal argCount As Integer)
