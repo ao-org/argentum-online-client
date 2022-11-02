@@ -477,6 +477,7 @@ Public Enum ClientPacketID
     ChangeMapInfoNoResu     '/MODMAPINFO RESUSINEFECTO
     ChangeMapInfoLand       '/MODMAPINFO TERRENO
     ChangeMapInfoZone       '/MODMAPINFO ZONA
+    ChangeMapSetting        '/MODSETTING setting value
     SaveChars               '/GRABAR
     CleanSOS                '/BORRAR SOS
     ShowServerForm          '/SHOW INT
