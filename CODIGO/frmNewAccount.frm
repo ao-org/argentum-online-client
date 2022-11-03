@@ -274,6 +274,8 @@ End Sub
 
 Private Sub btnRestorePassword_Click()
     Unload Me
+    ModAuth.LoginOperation = e_operation.ForgotPassword
+    Auth_state = e_state.RequestForgotPassword
     frmPasswordReset.Show , frmConnect
 End Sub
 

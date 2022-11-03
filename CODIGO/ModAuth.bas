@@ -554,7 +554,7 @@ End Sub
 Public Sub SendRequestTransferCharacter()
     Dim json As String
     Dim len_encrypted_username As Integer
-    Dim login_request() As Byte
+    Dim transfer_request() As Byte
     Dim packet_size As Integer
     
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
@@ -590,20 +590,20 @@ Public Sub SendRequestTransferCharacter()
     Dim len_json As Integer
     len_json = Len(encrypted_json_b64)
     
-    ReDim login_request(1 To (2 + 2 + len_json))
+    ReDim transfer_request(1 To (2 + 2 + len_json))
     
-    packet_size = UBound(login_request)
+    packet_size = UBound(transfer_request)
     
-    login_request(1) = &H20
-    login_request(2) = &H25
+    transfer_request(1) = &H20
+    transfer_request(2) = &H25
     
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    transfer_request(3) = hiByte(packet_size)
+    transfer_request(4) = LoByte(packet_size)
     
-    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, login_request, len_json, 5)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
 
-    Call frmConnect.AuthSocket.SendData(login_request)
+    Call frmConnect.AuthSocket.SendData(transfer_request)
     
     Auth_state = e_state.RequestTransferCharacter
     
@@ -1139,6 +1139,11 @@ Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
         Call TextoAlAsistente("Se ha enviado un email a " & CuentaEmail & ".")
         frmPasswordReset.toggleTextboxs
+        
+        ModAuth.LoginOperation = e_operation.ResetPassword
+        Auth_state = e_state.RequestResetPassword
+    
+        
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
@@ -1217,6 +1222,8 @@ Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
                 Call TextoAlAsistente("The password must have at least one number.")
             Case 36
                 Call TextoAlAsistente("The recovery code is too old.")
+            Case &H40
+                Call TextoAlAsistente("The code has expired, codes are valid for 10 mins, please request a new one.")
             Case Else
                 Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
         End Select

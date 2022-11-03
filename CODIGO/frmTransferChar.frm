@@ -75,5 +75,4 @@ Private Sub transferButton_Click()
 ModAuth.LoginOperation = e_operation.transfercharacter
 Call connectToLoginServer
 Unload Me
-
 End Sub
