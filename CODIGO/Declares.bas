@@ -187,7 +187,7 @@ Public Enum e_connect_user_action
     e_action_logout_account = 3
     e_action_login_character = 4
     e_action_close_game = 5
-    e_action_transfer_charcter = 6
+    e_action_transfer_character = 6
 End Enum
 
 Public clicX                 As Long
@@ -297,6 +297,7 @@ End Type
 Public ServersLst()   As tServerInfo
 Public EngineStats    As Boolean
 Public DeleteUser     As String
+Public TransferCharname As String
 Public CuentaPassword As String
 Public CuentaEmail    As String
 Public NamePj(1 To 8) As String

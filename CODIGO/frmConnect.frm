@@ -152,6 +152,9 @@ Private Sub AuthSocket_Connect()
                 Auth_state = e_state.ConfirmDeleteChar
             Case e_operation.RequestVerificationCode
                 Auth_state = e_state.RequestVerificationCode
+            Case e_operation.transfercharacter
+                Auth_state = e_state.RequestTransferCharacter
+                
         End Select
     End If
     
@@ -473,7 +476,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             If (x > 14 And x < 112) And (y > 675 And y < 708) Then
                 If (Shift > 0) Then
-                   character_screen_action = e_action_transfer_charcter
+                   character_screen_action = e_action_transfer_character
                 Else
                     character_screen_action = e_action_delete_character
                 End If
@@ -545,16 +548,12 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
                 
             Select Case character_screen_action
-
                 Case e_action_close_game
                     CloseClient
-
                 Case e_action_create_character
-
                     If CantidadDePersonajesEnCuenta >= 10 Then
                         Call MensajeAdvertencia("Has alcanzado el limite de personajes creados por cuenta.")
                         Exit Sub
-
                     End If
                     UserMap = 37
                     AlphaNiebla = 3
@@ -562,20 +561,19 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     CPEquipado = True
                     Call SwitchMap(UserMap)
                     g_game_state.state = e_state_createchar_screen
-
-                    
                     Call IniciarCrearPj
                     frmConnect.txtNombre.Visible = True
                     frmConnect.txtNombre.SetFocus
-        
                     Call Sound.Sound_Play(SND_DICE)
+               Case e_action_transfer_character
+                    If Char = 0 Then Exit Sub
+                    TransferCharname = Pjs(Char).nombre
+                    If MsgBox("¿Esta seguro que desea transferir el personaje " & TransferCharname & " a otra cuenta?", vbYesNo + vbQuestion, "Transfer Character") = vbYes Then
+                        frmTransferChar.Show , frmConnect
+                    End If
                 Case e_action_delete_character
-
                     If Char = 0 Then Exit Sub
                     DeleteUser = Pjs(Char).nombre
-
-                    Dim tmp As String
-
                     If MsgBox("¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
                         ModAuth.LoginOperation = e_operation.DeleteChar
                         Call connectToLoginServer

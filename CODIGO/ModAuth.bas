@@ -30,6 +30,7 @@ Public Enum e_state
     RequestDeleteChar
     ConfirmDeleteChar
     RequestVerificationCode
+    RequestTransferCharacter
 End Enum
 
 Public Enum e_operation
@@ -41,6 +42,7 @@ Public Enum e_operation
     deletechar
     ConfirmDeleteChar
     RequestVerificationCode
+    transfercharacter
 End Enum
 
 
@@ -79,6 +81,8 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
                     Call SendConfirmDeleteChar
                 Case e_state.RequestVerificationCode
                     Call SendRequestVerificationCode
+                Case e_state.RequestTransferCharacter
+                    Call SendRequestTransferCharacter
             End Select
         End If
         Exit Sub
@@ -103,6 +107,9 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
             Call HandleConfirmDeleteChar(BytesTotal)
         Case e_state.RequestVerificationCode
             Call HandleRequestVerificationCode(BytesTotal)
+        Case e_state.RequestTransferCharacter
+            Call HandleTransferCharRequest(BytesTotal)
+
     End Select
     
 End Sub
@@ -544,6 +551,64 @@ Public Sub HandleLogOutRequest(ByVal bytesTotal As Long)
     End If
     Auth_state = e_state.Idle
 End Sub
+Public Sub SendRequestTransferCharacter()
+    Dim json As String
+    Dim len_encrypted_username As Integer
+    Dim transfer_request() As Byte
+    Dim packet_size As Integer
+    
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendRequestTransferCharacter", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
+    
+    json = ""
+    
+    json = "{ ""language"": ""english"", ""password"": """ & frmNewAccount.txtPassword & """, "
+    json = json & """passwordrecovery"": [{""secretanswer1"": ""Satanas"","
+    json = json & """secretanswer2"": ""Rojo"", "
+    json = json & """secretquestion1"": ""Cual es el nombre de mi primer mascota?"","
+    json = json & """secretquestion2"": ""Cual es mi color favorito?""}],"
+    
+    json = json & """personal"":[{"
+    json = json & """dob"": ""23-12-1990"","
+    json = json & """email"": """ & frmNewAccount.txtUsername & ""","
+    json = json & """firstname"": """ & frmNewAccount.txtName & ""","
+    json = json & """lastname"": """ & frmNewAccount.txtSurname & ""","
+    json = json & """mobile"": """ & frmNewAccount.txtSurname & ""","
+    json = json & """pob"": """ & frmNewAccount.txtSurname & """}],"
+    json = json & """username"": """ & frmNewAccount.txtUsername & """}"
+    
+    
+    Dim encrypted_json() As Byte
+    Dim encrypted_json_b64 As String
+    
+    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), json)
+        
+    Call Str2ByteArr(encrypted_json_b64, encrypted_json)
+        
+    Dim len_json As Integer
+    len_json = Len(encrypted_json_b64)
+    
+    ReDim transfer_request(1 To (2 + 2 + len_json))
+    
+    packet_size = UBound(transfer_request)
+    
+    transfer_request(1) = &H20
+    transfer_request(2) = &H25
+    
+    'Siguientes 2 bytes indican tamaño total del paquete
+    transfer_request(3) = hiByte(packet_size)
+    transfer_request(4) = LoByte(packet_size)
+    
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
+
+    Call frmConnect.AuthSocket.SendData(transfer_request)
+    
+    Auth_state = e_state.RequestTransferCharacter
+    
+
+End Sub
 Public Sub SendSignUpRequest()
 
     Dim json As String
@@ -603,6 +668,58 @@ Public Sub SendSignUpRequest()
     
 End Sub
 
+
+Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
+
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleTransferCharRequest", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
+    Dim data() As Byte
+    
+    frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
+    
+    frmConnect.AuthSocket.GetData data, vbByte, 2
+    
+    'We return to the LOGIN screen so that TextoAlAsistente works
+    g_game_state.state = e_state_connect_screen
+    FrmLogear.Show , frmConnect
+
+    If data(0) = &H1 And data(1) = &H6 Then
+        Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
+        Call TextoAlAsistente("Cuenta creada correctamente.")
+        frmConnect.AuthSocket.GetData data, vbByte, 2
+        'Call frmNewAccount.showValidateAccountControls
+        'frmNewAccount.txtValidateMail.Text = frmNewAccount.txtUsername
+        
+        Auth_state = e_state.Idle
+    Else
+        Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData data, vbByte, 4
+        Select Case MakeInt(data(3), data(2))
+            Case 1
+                Call TextoAlAsistente("Invalid account")
+            Case 3
+                Call TextoAlAsistente("Database error.")
+            Case 12
+                Call TextoAlAsistente("Email is not valid.")
+            Case 51
+                Call TextoAlAsistente("You are not the owner of the character.")
+            Case 52
+                Call TextoAlAsistente("Invalid request")
+            Case 54
+                Call TextoAlAsistente("Newowner does not exist")
+            Case 55
+                Call TextoAlAsistente("Not a patron, sorry")
+            Case 57
+                Call TextoAlAsistente("You do not have enough credits")
+            Case Else
+                Call TextoAlAsistente("Unknown error.")
+        End Select
+    End If
+    Auth_state = e_state.Idle
+
+End Sub
 
 Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
@@ -1022,6 +1139,11 @@ Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
         Call TextoAlAsistente("Se ha enviado un email a " & CuentaEmail & ".")
         frmPasswordReset.toggleTextboxs
+        
+        ModAuth.LoginOperation = e_operation.ResetPassword
+        Auth_state = e_state.RequestResetPassword
+    
+        
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
@@ -1100,6 +1222,8 @@ Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
                 Call TextoAlAsistente("The password must have at least one number.")
             Case 36
                 Call TextoAlAsistente("The recovery code is too old.")
+            Case &H40
+                Call TextoAlAsistente("The code has expired, codes are valid for 10 mins, please request a new one.")
             Case Else
                 Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
         End Select

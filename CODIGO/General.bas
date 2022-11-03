@@ -1267,6 +1267,13 @@ End Function
 
 Public Function SetDefaultServer()
 On Error GoTo SetDefaultServer_Err
+
+#If PYMMO = 1 And DEVELOPER = 1 Then
+    IPdelServidorLogin = "127.0.0.1"
+    PuertoDelServidorLogin = 4000
+    IPdelServidor = IPdelServidorLogin
+    PuertoDelServidor = 7667
+#Else
     Dim serverLogin() As String
     serverLogin = Split(get_logging_server(), ":")
     IPdelServidorLogin = serverLogin(0)
@@ -1276,7 +1283,7 @@ On Error GoTo SetDefaultServer_Err
     serverWorld = Split(get_world_server(), ":")
     IPdelServidor = serverWorld(0)
     PuertoDelServidor = serverWorld(1)
-    
+#End If
     Exit Function
 SetDefaultServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.WriteVar", Erl)

@@ -111,11 +111,11 @@ Begin VB.Form frmPasswordReset
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H000A93D4&
-      Height          =   315
-      Left            =   1320
+      Height          =   192
+      Left            =   2532
       TabIndex        =   5
-      Top             =   4400
-      Width           =   2715
+      Top             =   4404
+      Width           =   1500
    End
    Begin VB.Image cmdEnviar 
       Height          =   450
@@ -191,50 +191,59 @@ Private Sub cmdEnviar_Click()
     
     Me.txtCodigo.Text = Trim(Me.txtCodigo.Text)
     
-    If ModAuth.LoginOperation = e_operation.ForgotPassword And Auth_state <> e_state.Idle Then
+'   If ModAuth.LoginOperation = e_operation.ForgotPassword And Auth_state <> e_state.Idle Then
+    Select Case ModAuth.LoginOperation
     
-        If Me.txtPassword.Text = "" Or Me.txtPasswordConfirm.Text = "" Or Me.txtCodigo.Text = "" Then
-            Call TextoAlAsistente("Falta completar campos.")
-            Exit Sub
-        End If
+        Case e_operation.ResetPassword
+            
+            If Me.txtPassword.Text = "" Or Me.txtPasswordConfirm.Text = "" Or Me.txtCodigo.Text = "" Then
+                Call TextoAlAsistente("Falta completar campos.")
+                Exit Sub
+            End If
+            
+            If Not isValidEmail(Me.txtEmail.Text) Then
+                Call TextoAlAsistente("El email ingresado es inválido.")
+                Exit Sub
+            End If
+            
+            If Me.txtPassword.Text <> Me.txtPasswordConfirm.Text Then
+                Call TextoAlAsistente("Las contraseï¿½as ingresadas no coinciden.")
+                Exit Sub
+            End If
+            
+            ModAuth.LoginOperation = e_operation.ResetPassword
+            Call connectToLoginServer
+            
+        Case e_operation.ForgotPassword
         
-        If Not isValidEmail(Me.txtEmail.Text) Then
-            Call TextoAlAsistente("El email ingresado es inválido.")
-            Exit Sub
-        End If
-        
-        If Me.txtPassword.Text <> Me.txtPasswordConfirm.Text Then
-            Call TextoAlAsistente("Las contraseï¿½as ingresadas no coinciden.")
-            Exit Sub
-        End If
-        
-        ModAuth.LoginOperation = e_operation.ResetPassword
-        Call connectToLoginServer
-        
-    Else
+
+            If Not isValidEmail(Me.txtEmail.Text) Then
+                Call TextoAlAsistente("El email ingresado es inválido.")
+                Exit Sub
+            End If
     
-        If Not isValidEmail(Me.txtEmail.Text) Then
-            Call TextoAlAsistente("El email ingresado es inválido.")
-            Exit Sub
-        End If
-        
-        'cmdEnviar.Visible = False
-        lblSolicitandoCodigo.Visible = True
-        ModAuth.LoginOperation = e_operation.ForgotPassword
-        Call connectToLoginServer
-    End If
+            'cmdEnviar.Visible = False
+            lblSolicitandoCodigo.visible = True
+            Call connectToLoginServer
+        Case other
+            Debug.Assert False
+    End Select
     
 End Sub
 
 Private Sub cmdHaveCode_Click()
+   
+    
     If Not isValidEmail(Me.txtEmail.Text) Then
         MsgBox "El email ingresado es inválido."
         Exit Sub
     End If
     
     Call toggleTextboxs
-    ModAuth.LoginOperation = e_operation.ForgotPassword
-    Auth_state = e_state.RequestForgotPassword
+    ModAuth.LoginOperation = e_operation.ResetPassword
+    Auth_state = e_state.RequestResetPassword
+    
+   
     
 End Sub
 
@@ -248,6 +257,11 @@ Private Sub Form_Load()
     
     Me.Left = (frmConnect.Width / 2) - (Me.Width / 2) + frmConnect.Left
     Me.Top = frmConnect.Height - Me.Height - 400 + frmConnect.Top
+    
+     #If DEBUGGING = 1 Then
+        cmdHaveCode.Caption = "HAVE CODE"
+        cmdHaveCode.ForeColor = 1000
+    #End If
 End Sub
 
 Private Sub Image1_Click()
