@@ -52,6 +52,8 @@ Public Auth_state As e_state
 Public LoginOperation As e_operation
 Public public_key() As Byte
 Public encrypted_session_token As String
+Public decrypted_session_token As String
+Public authenticated_decrypted_session_token As String
 Public delete_char_validate_code As String
 
 
@@ -560,26 +562,22 @@ Public Sub SendRequestTransferCharacter()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("SendRequestTransferCharacter", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim old_owner_str As String
+    old_owner_str = CuentaEmail
+    
+    
+    
     
     
     json = ""
+    json = "{ "
+    json = json & "  ""currentOwner"": """ & old_owner_str & """ , "
+    json = json & "  ""pc"": """ & TransferCharname & """ , "
+    json = json & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
+    json = json & "  ""newOwner"": """ & TransferCharNewOwner & """"
+    json = json & " }"
     
-    json = "{ ""language"": ""english"", ""password"": """ & frmNewAccount.txtPassword & """, "
-    json = json & """passwordrecovery"": [{""secretanswer1"": ""Satanas"","
-    json = json & """secretanswer2"": ""Rojo"", "
-    json = json & """secretquestion1"": ""Cual es el nombre de mi primer mascota?"","
-    json = json & """secretquestion2"": ""Cual es mi color favorito?""}],"
-    
-    json = json & """personal"":[{"
-    json = json & """dob"": ""23-12-1990"","
-    json = json & """email"": """ & frmNewAccount.txtUsername & ""","
-    json = json & """firstname"": """ & frmNewAccount.txtName & ""","
-    json = json & """lastname"": """ & frmNewAccount.txtSurname & ""","
-    json = json & """mobile"": """ & frmNewAccount.txtSurname & ""","
-    json = json & """pob"": """ & frmNewAccount.txtSurname & """}],"
-    json = json & """username"": """ & frmNewAccount.txtUsername & """}"
-    
-    
+    Debug.Print json
     Dim encrypted_json() As Byte
     Dim encrypted_json_b64 As String
     
@@ -678,20 +676,16 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
     Dim data() As Byte
     
     frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
-    
     frmConnect.AuthSocket.GetData data, vbByte, 2
     
     'We return to the LOGIN screen so that TextoAlAsistente works
     g_game_state.state = e_state_connect_screen
     FrmLogear.Show , frmConnect
 
-    If data(0) = &H1 And data(1) = &H6 Then
+    If data(0) = &H20 And data(1) = &H26 Then
         Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
-        Call TextoAlAsistente("Cuenta creada correctamente.")
+        Call TextoAlAsistente("TRANSFER_CHARACTER_OKAY")
         frmConnect.AuthSocket.GetData data, vbByte, 2
-        'Call frmNewAccount.showValidateAccountControls
-        'frmNewAccount.txtValidateMail.Text = frmNewAccount.txtUsername
-        
         Auth_state = e_state.Idle
     Else
         Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
@@ -1027,9 +1021,6 @@ Public Sub HandleOpenSession(ByVal bytesTotal As Long)
     
     frmConnect.AuthSocket.GetData encrypted_token, 64
             
-
-    Dim decrypted_session_token As String
-     
     decrypted_session_token = AO20CryptoSysWrapper.DECRYPT(MapInfoEspeciales, cnvStringFromHexStr(cnvToHex(encrypted_token)))
     Call DebugPrint("Decripted_session_token: " & decrypted_session_token, 255, 255, 255, False)
         
@@ -1092,6 +1083,8 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
     
     If data(0) = &HAF And data(1) = &HA1 Then
         Call DebugPrint("LOGIN-OK", 0, 255, 0, True)
+        'Save the token which was used to authenticate
+        authenticated_decrypted_session_token = decrypted_session_token
         Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(data), 255, 255, 255)
         frmConnect.AuthSocket.GetData data, vbByte, 2
         
