@@ -565,10 +565,6 @@ Public Sub SendRequestTransferCharacter()
     Dim old_owner_str As String
     old_owner_str = CuentaEmail
     
-    
-    
-    
-    
     json = ""
     json = "{ "
     json = json & "  ""currentOwner"": """ & old_owner_str & """ , "
@@ -576,8 +572,7 @@ Public Sub SendRequestTransferCharacter()
     json = json & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
     json = json & "  ""newOwner"": """ & TransferCharNewOwner & """"
     json = json & " }"
-    
-    Debug.Print json
+
     Dim encrypted_json() As Byte
     Dim encrypted_json_b64 As String
     
