@@ -298,6 +298,7 @@ Public ServersLst()   As tServerInfo
 Public EngineStats    As Boolean
 Public DeleteUser     As String
 Public TransferCharname As String
+Public TransferCharNewOwner As String
 Public CuentaPassword As String
 Public CuentaEmail    As String
 Public NamePj(1 To 8) As String

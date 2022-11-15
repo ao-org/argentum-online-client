@@ -3,27 +3,27 @@ Begin VB.Form frmTransferChar
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Character Transfer"
    ClientHeight    =   2340
-   ClientLeft      =   36
-   ClientTop       =   384
-   ClientWidth     =   5088
+   ClientLeft      =   40
+   ClientTop       =   380
+   ClientWidth     =   5080
    ControlBox      =   0   'False
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   2340
-   ScaleWidth      =   5088
+   ScaleWidth      =   5080
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton cancelButton 
       Caption         =   "Cancel"
       Height          =   492
       Left            =   360
-      TabIndex        =   3
+      TabIndex        =   1
       Top             =   1320
       Width           =   972
    End
    Begin VB.TextBox textboxTransferEmail 
       Height          =   372
       Left            =   360
-      TabIndex        =   1
+      TabIndex        =   0
       Top             =   600
       Width           =   4212
    End
@@ -31,7 +31,7 @@ Begin VB.Form frmTransferChar
       Caption         =   "Transfer!"
       Height          =   492
       Left            =   3360
-      TabIndex        =   0
+      TabIndex        =   2
       Top             =   1320
       Width           =   972
    End
@@ -39,7 +39,7 @@ Begin VB.Form frmTransferChar
       Caption         =   "Email account you wish to transfer the character"
       Height          =   372
       Left            =   360
-      TabIndex        =   2
+      TabIndex        =   3
       Top             =   240
       Width           =   3972
    End
@@ -72,6 +72,7 @@ Unload Me
 End Sub
 
 Private Sub transferButton_Click()
+TransferCharNewOwner = Me.textboxTransferEmail.Text
 ModAuth.LoginOperation = e_operation.transfercharacter
 Call connectToLoginServer
 Unload Me
