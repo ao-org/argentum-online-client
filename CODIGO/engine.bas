@@ -79,7 +79,6 @@ Dim TeamColors(10) As RGBA
 ' @param    renderable  Set to True if the chat should be rendered this frame, False otherwise
 '                           (used to skip dialogs from people outside render area).
 Private Type dialog
-
     textLine()  As String
     x           As Integer
     y           As Integer
@@ -90,8 +89,19 @@ Private Type dialog
     renderable  As Boolean
     MinChatTime As Integer
     Sube As Byte
-
 End Type
+
+Public Type t_UITexture
+    Texture As Direct3DTexture8
+    ImageBuffer() As Byte
+    Width As Long
+    Height As Long
+    TextureWidth As Long
+    TextureHeight As Long
+    pixelSize As Long
+End Type
+
+Public UITexture As t_UITexture
 
 Public scroll_dialog_pixels_per_frame As Single
 
@@ -253,7 +263,7 @@ Private Sub Engine_InitExtras()
         
     ' Inicializar textura compuesta
     Call InitComposedTexture
-    
+    Call InitializeUI(Render_Main_Rect.Right, Render_Main_Rect.Bottom, 4)
     
     Exit Sub
 
@@ -337,9 +347,7 @@ On Error Resume Next
     scroll_dialog_pixels_per_frame = 4
     ScrollPixelsPerFrameX = 8.5
     ScrollPixelsPerFrameY = 8.5
-
     Call Engine_InitExtras
-
     bRunning = True
     
     Exit Sub
@@ -353,6 +361,18 @@ ErrHandler:
 
     End
 
+End Sub
+
+Public Sub InitializeUI(ByVal Width As Long, ByVal Height As Long, ByVal pixelSize As Long)
+    Dim initSuccess As Boolean
+    UITexture.Height = Height
+    UITexture.Width = Width
+    initSuccess = InitializeBabel(UITexture.Width, UITexture.Height)
+    UITexture.TextureHeight = NextPowerOf2(Height)
+    UITexture.TextureWidth = NextPowerOf2(Width)
+    ReDim UITexture.ImageBuffer(UITexture.Height * UITexture.Width * pixelSize)
+    UITexture.pixelSize = pixelSize
+    Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
 End Sub
 Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
 
@@ -1023,6 +1043,19 @@ Sub ShowNextFrame()
     Call RenderScreen(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY, HalfWindowTileWidth, HalfWindowTileHeight)
     Call DialogosClanes.Draw
     Call Group.RenderGroup
+    Dim updateGui As Boolean
+    updateGui = GetBebelImageBuffer(UITexture.ImageBuffer(LBound(UITexture.ImageBuffer)), UBound(UITexture.ImageBuffer))
+    If updateGui Then
+        If Not UITexture.Texture Is Nothing Then
+        Call SurfaceDB.SetTextureData(UITexture.Texture, UITexture.ImageBuffer, UBound(UITexture.ImageBuffer), UITexture.TextureWidth)
+        With SpriteBatch
+            Call .SetTexture(UITexture.Texture)
+            Call .SetAlpha(False)
+            Call .Draw(0, 0, UITexture.Width, UITexture.Height, COLOR_WHITE, , , UITexture.Width / UITexture.TextureWidth, UITexture.Height / UITexture.TextureHeight, 0)
+        End With
+        End If
+    End If
+    
     Exit Sub
 
 ShowNextFrame_Err:

@@ -501,12 +501,13 @@ Begin VB.Form frmMain
       End
       Begin VB.Image ImgSegResu 
          Appearance      =   0  'Flat
-         Height          =   408
+         Height          =   510
          Left            =   1680
+         Picture         =   "frmMain.frx":6181
          ToolTipText     =   "Seguro de resurrección"
          Top             =   3060
          Visible         =   0   'False
-         Width           =   408
+         Width           =   510
       End
       Begin VB.Image imgBugReport 
          Height          =   495
@@ -896,10 +897,11 @@ Begin VB.Form frmMain
          Width           =   375
       End
       Begin VB.Image Hpshp 
-         Height          =   192
-         Left            =   528
-         Top             =   1212
-         Width           =   2592
+         Height          =   240
+         Left            =   525
+         Picture         =   "frmMain.frx":6F93
+         Top             =   1215
+         Width           =   3240
       End
       Begin VB.Image shieldBar 
          Height          =   192
@@ -908,54 +910,61 @@ Begin VB.Form frmMain
          Width           =   2592
       End
       Begin VB.Image MANShp 
-         Height          =   192
-         Left            =   528
-         Top             =   1632
-         Width           =   2592
+         Height          =   240
+         Left            =   525
+         Picture         =   "frmMain.frx":9857
+         Top             =   1635
+         Width           =   3240
       End
       Begin VB.Image STAShp 
-         Height          =   108
-         Left            =   516
-         Top             =   2088
-         Width           =   1068
+         Height          =   135
+         Left            =   510
+         Picture         =   "frmMain.frx":C11B
+         Top             =   2085
+         Width           =   1335
       End
       Begin VB.Image AGUAsp 
-         Height          =   108
+         Height          =   135
          Left            =   2340
-         Top             =   2088
-         Width           =   384
+         Picture         =   "frmMain.frx":CAC9
+         Top             =   2085
+         Width           =   480
       End
       Begin VB.Image COMIDAsp 
-         Height          =   96
-         Left            =   3288
+         Height          =   120
+         Left            =   3285
+         Picture         =   "frmMain.frx":CE6D
          Top             =   2100
-         Width           =   384
+         Width           =   480
       End
       Begin VB.Image ImgSegClan 
          Appearance      =   0  'Flat
-         Height          =   408
-         Left            =   636
+         Height          =   510
+         Left            =   630
+         Picture         =   "frmMain.frx":D1B1
          ToolTipText     =   "Seguro de clan"
          Top             =   3060
          Visible         =   0   'False
-         Width           =   408
+         Width           =   510
       End
       Begin VB.Image ImgSegParty 
-         Height          =   408
-         Left            =   108
+         Height          =   510
+         Left            =   105
+         Picture         =   "frmMain.frx":DFC3
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
-         Width           =   408
+         Width           =   510
       End
       Begin VB.Image ImgSeg 
          Appearance      =   0  'Flat
-         Height          =   408
-         Left            =   1152
+         Height          =   510
+         Left            =   1155
+         Picture         =   "frmMain.frx":EDD5
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
-         Width           =   408
+         Width           =   510
       End
    End
    Begin VB.PictureBox renderer 
@@ -1252,16 +1261,18 @@ Begin VB.Form frmMain
       Width           =   315
    End
    Begin VB.Image CombateIcon 
-      Height          =   144
-      Left            =   8832
-      Top             =   1812
-      Width           =   444
+      Height          =   180
+      Left            =   8835
+      Picture         =   "frmMain.frx":FBE7
+      Top             =   1815
+      Width           =   555
    End
    Begin VB.Image globalIcon 
-      Height          =   144
-      Left            =   8832
-      Top             =   2004
-      Width           =   444
+      Height          =   180
+      Left            =   8835
+      Picture         =   "frmMain.frx":1016B
+      Top             =   2010
+      Width           =   555
    End
    Begin VB.Label Label5 
       BackStyle       =   0  'Transparent
@@ -1335,11 +1346,12 @@ Begin VB.Form frmMain
       Width           =   450
    End
    Begin VB.Image PicCorreo 
-      Height          =   348
+      Height          =   435
       Left            =   11520
+      Picture         =   "frmMain.frx":106EF
       Top             =   480
       Visible         =   0   'False
-      Width           =   420
+      Width           =   525
    End
    Begin VB.Label NameMapa 
       Alignment       =   2  'Center
@@ -1404,10 +1416,11 @@ Begin VB.Form frmMain
       Width           =   3540
    End
    Begin VB.Image ExpBar 
-      Height          =   192
+      Height          =   240
       Left            =   11580
-      Top             =   1548
-      Width           =   2832
+      Picture         =   "frmMain.frx":1136F
+      Top             =   1545
+      Width           =   3540
    End
    Begin VB.Menu mnuObj 
       Caption         =   "Objeto"
@@ -3929,6 +3942,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     clicX = x
     clicY = y
     If Button = vbLeftButton Then
+        Call BabelSendMouseEvent(x, y, kType_MouseUp, kButton_Left)
         If HandleMouseInput(x, y) Then
         ElseIf Pregunta Then
             If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
@@ -3986,7 +4000,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
         End If
     
     ElseIf Button = vbRightButton Then
-        
+        Call BabelSendMouseEvent(x, y, kType_MouseUp, kButton_Right)
         Dim charindex As Integer
         charindex = MapData(tX, tY).charindex
         
@@ -4030,7 +4044,8 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                 Set Frm = Nothing
             End If
         End If
-
+    ElseIf Button = vbMiddleButton Then
+        Call BabelSendMouseEvent(x, y, kType_MouseUp, kButton_Middle)
     End If
     
     
@@ -4046,30 +4061,9 @@ Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
     On Error GoTo renderer_MouseMove_Err
 
-    DisableURLDetect
-
-    Call Form_MouseMove(Button, Shift, renderer.Left + x, renderer.Top + y)
-
-    'If DropItem Then
-
-    ' frmMain.UsandoDrag = False
-    ' Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
-    'Call WriteDropItem(DropIndex, tX, tY, CantidadDrop)
-    ' DropItem = False
-    ' DropIndex = 0
-    ' TimeDrop = 0
-    ' DropActivo = False
-    ' CantidadDrop = 0
-    ' Call FormParser.Parse_Form(frmMain)
-    
-    ' End If
-    
-    'LucesCuadradas.Light_Remove (10)
-    
-    'LucesCuadradas.Light_Create tX, tY, &HFFFFFFF, 1, 10
-    'LucesCuadradas.Light_Render_All
-    
-    
+100    DisableURLDetect
+102    Call Form_MouseMove(Button, Shift, renderer.Left + x, renderer.Top + y)
+104    Call BabelSendMouseEvent(x, y, kType_MouseMoved, 0)
     Exit Sub
 
 renderer_MouseMove_Err:
@@ -4085,6 +4079,18 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     If SendTxt.Visible Then SendTxt.SetFocus
     MouseBoton = Button
     MouseShift = Shift
+    Dim btnConvert As MouseButton
+    Select Case Button
+        Case vbLeftButton
+            btnConvert = kButton_Left
+        Case vbRightButton
+            btnConvert = kButton_Right
+        Case vbMiddleButton
+        btnConvert = kButton_Middle
+        Case Else
+        btnConvert = kButton_None
+    End Select
+    Call BabelSendMouseEvent(x, y, kType_MouseDown, kButton_Left)
 
     If frmComerciar.Visible Then Unload frmComerciar
     If frmBancoObj.Visible Then Unload frmBancoObj

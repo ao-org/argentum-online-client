@@ -216,6 +216,47 @@ errhandler:
 
 End Function
 
+Public Function CreateTexture(ByVal Width As Long, ByVal Height As Long)
+On Error GoTo ErrHandler
+    Dim Texture As Direct3DTexture8
+    Set Texture = mD3D.CreateTexture(device, Width, Height, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED)
+    Set CreateTexture = Texture
+    Exit Function
+ErrHandler:
+    Debug.Print "Failed to generate texture, " & Err.Description
+End Function
+
+Public Sub SetTextureData(ByRef Texture As Direct3DTexture8, ByRef Bytes() As Byte, ByVal Size As Long, ByVal TextureWidth As Long)
+On Error GoTo ErrHandler
+    Dim lr As D3DLOCKED_RECT
+    Call Texture.LockRect(0, lr, ByVal Render_Main_Rect, 0)
+    Dim BufferPos As Long
+    Dim row As Long
+    Dim destPtr As Long
+    destPtr = lr.pBits
+    For row = 0 To Render_Main_Rect.Bottom
+        Call DXCopyMemory(ByVal destPtr, Bytes(BufferPos), Render_Main_Rect.Right * 4)
+        BufferPos = BufferPos + Render_Main_Rect.Right * 4
+        destPtr = destPtr + lr.Pitch
+    Next row
+    'Call DXCopyMemory(ByVal lr.pBits, Bytes(0), Size)
+    Call Texture.UnlockRect(0)
+   Exit Sub
+ErrHandler:
+    Debug.Print "Failed to generate texture, " & Err.Description
+End Sub
+
+Public Function CreateTextureFromData(ByRef Bytes() As Byte, ByVal Size As Long, ByVal Width As Long, ByVal Height As Long) As Direct3DTexture8
+On Error GoTo ErrHandler
+    Dim Texture As Direct3DTexture8
+    Set Texture = mD3D.CreateTextureFromFileInMemoryEx(device, Bytes(0), UBound(Bytes) + 1, Width, Height, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
+    Set CreateTextureFromData = Texture
+    Exit Function
+ErrHandler:
+    Debug.Print "Failed to generate texture from memory, " & Err.Description
+End Function
+
+
 Private Function RemoveLRU() As Boolean
     
     On Error GoTo RemoveLRU_Err
