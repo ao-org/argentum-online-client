@@ -18,11 +18,41 @@ Attribute VB_Name = "modNetwork"
 Option Explicit
 
 Private Client As Network.Client
+
+Private Type t_FailedIp
+    IP As String
+    Port As String
+End Type
+
+Dim FailedIpList(10) As t_FailedIp
+Public FaiedListSize As Integer
+
 #If PYMMO = 0 Then
 Public Function IsConnected() As Boolean
     IsConnected = Connected
 End Function
 #End If
+
+Public Function IsFailedString(ByVal IP As String, ByVal Port As String)
+    Dim i As Integer
+    For i = 0 To UBound(FailedIpList) - 1
+        If FailedIpList(i).IP = IP And FailedIpList(i).Port = Port Then
+            IsFailedString = True
+            Exit Function
+        End If
+    Next i
+End Function
+
+Public Function AddFailedIp(ByVal IP As String, ByVal Port As String) As Boolean
+    FailedIpList(FaiedListSize).IP = IP
+    FailedIpList(FaiedListSize).Port = Port
+    FaiedListSize = FaiedListSize + 1
+    AddFailedIp = True
+    If FaiedListSize = UBound(servers_login_connections) Then
+        AddFailedIp = False
+    End If
+    
+End Function
 
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
     Debug.Print "Connecting to World Server : " & Address; ":" & Service
@@ -30,7 +60,6 @@ Public Sub Connect(ByVal Address As String, ByVal Service As String)
     If (Address = vbNullString Or Service = vbNullString) Then
         Exit Sub
     End If
-    
     Call Protocol_Writes.Initialize
     
     Set Client = New Network.Client
@@ -41,6 +70,7 @@ End Sub
 Public Sub Disconnect()
 If Not Client Is Nothing Then
     Call Client.Close(True)
+    Unload frmConnecting
 End If
 End Sub
 
@@ -60,6 +90,21 @@ Public Sub Send(ByVal Buffer As Network.Writer)
     
     Call Buffer.Clear
 End Sub
+
+Public Sub RetryWithAnotherIp()
+    Call Disconnect
+    If Not AddFailedIp(IPdelServidor, PuertoDelServidor) Then
+        Unload frmConnecting
+        Exit Sub
+    Else
+        Do While IsFailedString(IPdelServidor, PuertoDelServidor)
+        Call SetDefaultServer
+        Loop
+    End If
+    
+    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+End Sub
+
 #If PYMMO = 1 Then
 Private Sub OnClientConnect()
 On Error GoTo OnClientConnect_Err:
@@ -69,9 +114,8 @@ If EstadoLogin = E_MODO.CrearNuevoPj Then
     Call LoginOrConnect(E_MODO.CrearNuevoPj)
 End If
 
-   
+    Unload frmConnecting
     Connected = True
-    
     Exit Sub
     
 OnClientConnect_Err:
@@ -84,7 +128,7 @@ On Error GoTo OnClientConnect_Err:
 Debug.Print ("Entró OnClientConnect")
 
     Connected = True
-    
+    Unload frmConnecting
     Exit Sub
     
 OnClientConnect_Err:

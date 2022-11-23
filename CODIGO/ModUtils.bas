@@ -1423,7 +1423,7 @@ Sub load_game_settings()
     UtilizarPreCarga = ConfigFile.GetValue("VIDEO", "UtilizarPreCarga")
     InfoItemsEnRender = Val(ConfigFile.GetValue("VIDEO", "InfoItemsEnRender"))
     ModoAceleracion = ConfigFile.GetValue("VIDEO", "Aceleracion")
-    VSyncActivado = Val(ConfigFile.GetValue("VIDEO", "Vsync"))
+    VSyncActivado = False 'Val(ConfigFile.GetValue("VIDEO", "Vsync"))
     
     Dim Value As String
     Value = ConfigFile.GetValue("VIDEO", "MostrarRespiracion")

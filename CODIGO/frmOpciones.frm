@@ -4,7 +4,7 @@ Begin VB.Form frmOpciones
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
    BorderStyle     =   0  'None
-   ClientHeight    =   7368
+   ClientHeight    =   7365
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   7980
@@ -12,7 +12,7 @@ Begin VB.Form frmOpciones
    FillColor       =   &H00C0C0C0&
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -23,15 +23,15 @@ Begin VB.Form frmOpciones
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7368
+   ScaleHeight     =   7365
    ScaleWidth      =   7980
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin InetCtlsObjects.Inet Inet1 
       Left            =   7320
       Top             =   6600
-      _ExtentX        =   995
-      _ExtentY        =   995
+      _ExtentX        =   1005
+      _ExtentY        =   1005
       _Version        =   393216
    End
    Begin VB.HScrollBar Alpha 
@@ -134,9 +134,9 @@ Begin VB.Form frmOpciones
       BorderStyle     =   0  'None
       Height          =   4845
       Left            =   240
-      ScaleHeight     =   404
+      ScaleHeight     =   323
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   630
+      ScaleWidth      =   504
       TabIndex        =   12
       Top             =   1800
       Width           =   7560
@@ -233,9 +233,9 @@ Begin VB.Form frmOpciones
       BorderStyle     =   0  'None
       Height          =   4845
       Left            =   240
-      ScaleHeight     =   404
+      ScaleHeight     =   323
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   630
+      ScaleWidth      =   504
       TabIndex        =   15
       Top             =   1800
       Visible         =   0   'False
@@ -312,9 +312,9 @@ Begin VB.Form frmOpciones
       BorderStyle     =   0  'None
       Height          =   4965
       Left            =   240
-      ScaleHeight     =   414
+      ScaleHeight     =   331
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   630
+      ScaleWidth      =   504
       TabIndex        =   14
       Top             =   1800
       Visible         =   0   'False
@@ -463,7 +463,7 @@ Begin VB.Form frmOpciones
       Caption         =   "10"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1680,7 +1680,7 @@ scrVolume_Change_Err:
 End Sub
 
 Private Sub VSync_Click()
-    VSyncActivado = Not VSyncActivado
+    VSyncActivado = False 'Not VSyncActivado force disabled since it's bug now and will hang the game
     Call engine.Engine_Init
     prgRun = True
     pausa = False

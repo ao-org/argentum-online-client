@@ -273,25 +273,19 @@ Public Sub InitComposedTexture()
     On Error GoTo InitComposedTexture_Err
     
 
-    ComposedTextureWidth = 256
-    ComposedTextureHeight = 256
+100 ComposedTextureWidth = 256
+102 ComposedTextureHeight = 256
 
-    ComposedTextureCenterX = ComposedTextureWidth \ 2
+104 ComposedTextureCenterX = ComposedTextureWidth \ 2
+106 Set ComposedTexture = DirectD3D8.CreateTexture(DirectDevice, ComposedTextureWidth, ComposedTextureHeight, 0, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT)
+108 Set ComposedTextureSurface = ComposedTexture.GetSurfaceLevel(0)
+110 Dim ComposedZBuffer As Direct3DTexture8
+112 Set ComposedZBuffer = DirectD3D8.CreateTexture(DirectDevice, ComposedTextureWidth, ComposedTextureHeight, 0, D3DUSAGE_DEPTHSTENCIL, D3DFMT_D24S8, D3DPOOL_DEFAULT)
+114 Set ComposedZBufferSurface = ComposedZBuffer.GetSurfaceLevel(0)
+116 Set pBackbuffer = DirectDevice.GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO)
+118 Set pZbuffer = DirectDevice.GetDepthStencilSurface()
+120 Call D3DXMatrixOrthoOffCenterLH(ProjectionComposedTexture, 0, ComposedTextureWidth, ComposedTextureHeight, 0, -1#, 1#)
 
-    Set ComposedTexture = DirectD3D8.CreateTexture(DirectDevice, ComposedTextureWidth, ComposedTextureHeight, 0, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT)
-    Set ComposedTextureSurface = ComposedTexture.GetSurfaceLevel(0)
-    
-    Dim ComposedZBuffer As Direct3DTexture8
-    Set ComposedZBuffer = DirectD3D8.CreateTexture(DirectDevice, ComposedTextureWidth, ComposedTextureHeight, 0, D3DUSAGE_DEPTHSTENCIL, D3DFMT_D24S8, D3DPOOL_DEFAULT)
-    
-    Set ComposedZBufferSurface = ComposedZBuffer.GetSurfaceLevel(0)
-
-    Set pBackbuffer = DirectDevice.GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO)
-    Set pZbuffer = DirectDevice.GetDepthStencilSurface()
-
-    Call D3DXMatrixOrthoOffCenterLH(ProjectionComposedTexture, 0, ComposedTextureWidth, ComposedTextureHeight, 0, -1#, 1#)
-
-    
     Exit Sub
 
 InitComposedTexture_Err:

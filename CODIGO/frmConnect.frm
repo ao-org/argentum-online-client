@@ -7,13 +7,13 @@ Begin VB.Form frmConnect
    BorderStyle     =   0  'None
    Caption         =   "Argentum20"
    ClientHeight    =   11520
-   ClientLeft      =   12
-   ClientTop       =   108
+   ClientLeft      =   15
+   ClientTop       =   105
    ClientWidth     =   15360
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -26,16 +26,16 @@ Begin VB.Form frmConnect
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Moveable        =   0   'False
-   ScaleHeight     =   960
+   ScaleHeight     =   768
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1280
+   ScaleWidth      =   1024
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin MSWinsockLib.Winsock AuthSocket 
       Left            =   120
       Top             =   120
-      _ExtentX        =   593
-      _ExtentY        =   593
+      _ExtentX        =   741
+      _ExtentY        =   741
       _Version        =   393216
       RemoteHost      =   "45.235.99.71"
       RemotePort      =   4004
@@ -43,8 +43,8 @@ Begin VB.Form frmConnect
    Begin InetCtlsObjects.Inet Inet1 
       Left            =   12600
       Top             =   5880
-      _ExtentX        =   995
-      _ExtentY        =   995
+      _ExtentX        =   1005
+      _ExtentY        =   1005
       _Version        =   393216
    End
    Begin VB.Timer Timer2 
@@ -65,7 +65,7 @@ Begin VB.Form frmConnect
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -75,9 +75,9 @@ Begin VB.Form frmConnect
       ForeColor       =   &H80000008&
       Height          =   11520
       Left            =   0
-      ScaleHeight     =   960
+      ScaleHeight     =   768
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   1280
+      ScaleWidth      =   1024
       TabIndex        =   0
       Top             =   0
       Width           =   15360
@@ -88,7 +88,7 @@ Begin VB.Form frmConnect
          BorderStyle     =   0  'None
          BeginProperty Font 
             Name            =   "Verdana"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -459,6 +459,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     'Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
                     'TODO: Mostrar ventana de creación de personaje
                     EstadoLogin = E_MODO.CrearNuevoPj
+                    frmConnecting.Show
                     Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
                 End If
                 
@@ -1103,7 +1104,7 @@ Private Sub LogearPersonaje(ByVal Nick As String)
     If Connected Then
         frmMain.ShowFPS.Enabled = True
     End If
-    
+    frmConnecting.Show
     Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
     ModAuth.LoginOperation = e_operation.Authenticate
     Call LoginOrConnect(E_MODO.Normal)

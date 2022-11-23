@@ -3,22 +3,22 @@ Begin VB.Form frmCrearPersonaje
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Argentum20"
-   ClientHeight    =   11568
+   ClientHeight    =   11565
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   16728
+   ClientWidth     =   16725
    Icon            =   "frmCrearPersonaje.frx":0000
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   964
+   ScaleHeight     =   771
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1394
+   ScaleWidth      =   1115
    StartUpPosition =   2  'CenterScreen
    Begin VB.ComboBox lstHogar 
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -48,7 +48,7 @@ Begin VB.Form frmCrearPersonaje
       BackColor       =   &H00646401&
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -70,7 +70,7 @@ Begin VB.Form frmCrearPersonaje
       BackColor       =   &H00646401&
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -92,7 +92,7 @@ Begin VB.Form frmCrearPersonaje
       BackColor       =   &H00646401&
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -133,7 +133,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -152,7 +152,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   15.6
+         Size            =   15.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -172,7 +172,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -192,7 +192,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -212,7 +212,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -232,7 +232,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -252,7 +252,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -272,7 +272,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "40"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -290,7 +290,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -307,7 +307,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -324,7 +324,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -341,7 +341,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -358,7 +358,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -375,7 +375,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -392,7 +392,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -409,7 +409,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -426,7 +426,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -443,7 +443,7 @@ Begin VB.Form frmCrearPersonaje
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -462,7 +462,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -482,7 +482,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -502,7 +502,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -522,7 +522,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -542,7 +542,7 @@ Begin VB.Form frmCrearPersonaje
       Caption         =   "+ 0"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1005,7 +1005,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             If Connected Then
                 frmMain.ShowFPS.Enabled = True
             End If
-            
+            frmConnecting.Show
             Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
             Call LoginOrConnect(E_MODO.CrearNuevoPj)
         End If
