@@ -3,13 +3,13 @@ Begin VB.Form FrmGrupo
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Grupo"
-   ClientHeight    =   6528
+   ClientHeight    =   6525
    ClientLeft      =   0
-   ClientTop       =   -72
-   ClientWidth     =   6516
+   ClientTop       =   -75
+   ClientWidth     =   6510
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,9 +19,9 @@ Begin VB.Form FrmGrupo
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   544
+   ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   543
+   ScaleWidth      =   434
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox lstGrupo 
@@ -29,7 +29,7 @@ Begin VB.Form FrmGrupo
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -37,7 +37,7 @@ Begin VB.Form FrmGrupo
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   2328
+      Height          =   2130
       Left            =   3600
       TabIndex        =   0
       Top             =   2040
@@ -162,7 +162,6 @@ End Sub
 Private Sub cmdAbandonar_Click()
     
     On Error GoTo cmdAbandonar_Click_Err
-    Exit Sub
     Call WriteAbandonarGrupo
     Unload Me
     

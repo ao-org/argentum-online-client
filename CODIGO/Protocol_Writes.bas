@@ -764,7 +764,6 @@ Public Sub WriteEcharDeGrupo(ByVal indice As Byte)
         '<EhHeader>
         On Error GoTo WriteEcharDeGrupo_Err
         '</EhHeader>
-        Exit Sub
 100     Call Writer.WriteInt16(ClientPacketID.HecharDeGrupo)
 102     Call Writer.WriteInt8(indice)
     

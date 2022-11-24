@@ -100,14 +100,30 @@ Sub Initialize(ByRef animationState As tAnimationPlaybackState)
     animationState.LastFrameTime = GetTickCount()
 End Sub
 
+Public Function IsLoopActive(ByRef animationState As tAnimationPlaybackState) As Boolean
+    If animationState.PlaybackState = Stopped Or animationState.PlaybackState = Pause Then
+        IsLoopActive = False
+        Exit Function
+    End If
+    With ComposedFxData(animationState.ComposedAnimation).Clips(animationState.ActiveClip)
+        IsLoopActive = .LoopCount < 0
+    End With
+End Function
+
 Public Sub StartFx(ByRef animationState As tAnimationPlaybackState, ByVal Fx As Long, Optional ByVal loopC As Integer = 0)
 On Error GoTo StartFx_Err
     If Fx = 0 Then
         animationState.PlaybackState = Stopped
         Exit Sub
     End If
-    animationState.ComposedAnimation = FxToAnimationMap(Fx)
-    If animationState.ComposedAnimation > 0 Then
+    Dim AnimationId As Integer
+    AnimationId = FxToAnimationMap(Fx)
+    If AnimationId > 0 Then
+        'dont restart a looping animation
+        If AnimationId = animationState.ComposedAnimation And IsLoopActive(animationState) Then
+            Exit Sub
+        End If
+        animationState.ComposedAnimation = AnimationId
         Call StartAnimation(animationState, animationState.ComposedAnimation)
         Exit Sub
     End If
