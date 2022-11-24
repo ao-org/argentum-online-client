@@ -82,7 +82,6 @@ Public SpriteBatch As New clsBatch
 Public Projection As D3DMATRIX
 Public IdentityMatrix As D3DMATRIX
 
-Public VSyncActivado As Boolean
 Public ModoAceleracion As String
 
 Public Type TYPE_VERTEX

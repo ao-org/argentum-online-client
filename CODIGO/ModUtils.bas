@@ -1423,7 +1423,6 @@ Sub load_game_settings()
     UtilizarPreCarga = ConfigFile.GetValue("VIDEO", "UtilizarPreCarga")
     InfoItemsEnRender = Val(ConfigFile.GetValue("VIDEO", "InfoItemsEnRender"))
     ModoAceleracion = ConfigFile.GetValue("VIDEO", "Aceleracion")
-    VSyncActivado = False 'Val(ConfigFile.GetValue("VIDEO", "Vsync"))
     
     Dim Value As String
     Value = ConfigFile.GetValue("VIDEO", "MostrarRespiracion")
@@ -1504,7 +1503,6 @@ Sub GuardarOpciones()
     Call WriteVar(Arch, "VIDEO", "PantallaCompleta", IIf(PantallaCompleta, 1, 0))
     Call WriteVar(Arch, "VIDEO", "InfoItemsEnRender", IIf(InfoItemsEnRender, 1, 0))
     Call WriteVar(Arch, "VIDEO", "Aceleracion", ModoAceleracion)
-    Call WriteVar(Arch, "VIDEO", "Vsync", IIf(VSyncActivado, 1, 0))
 
     Call WriteVar(Arch, "OPCIONES", "SensibilidadMouse", SensibilidadMouse)
     Call WriteVar(Arch, "OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))

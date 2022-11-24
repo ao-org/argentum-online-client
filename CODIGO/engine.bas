@@ -954,14 +954,6 @@ Public Sub render()
         MouseLastUpdate = MouseTimeAcumulated
     End If
     
-    If VSyncActivado And lFrameTimer > 0 Then
-       While (FrameTime - lFrameTimer) * RefreshRate / 1000 <= FramesPerSecCounter
-            Sleep 1
-            FrameTime = GetTickCount()
-            DoEvents
-        Wend
-    End If
-    
     Engine_ActFPS
 
     Exit Sub

@@ -1519,12 +1519,6 @@ Public Sub Init()
         Check6.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
-
-    If VSyncActivado Then
-        VSync.Picture = LoadInterface("check-amarillo.bmp")
-    Else
-        VSync.Picture = Nothing
-    End If
     
     scrVolume.Value = VolFX
     HScroll1.Value = VolAmbient
@@ -1677,21 +1671,4 @@ scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
     Resume Next
     
-End Sub
-
-Private Sub VSync_Click()
-    VSyncActivado = False 'Not VSyncActivado force disabled since it's bug now and will hang the game
-    Call engine.Engine_Init
-    prgRun = True
-    pausa = False
-    
-    g_game_state.state = e_state_gameplay_screen
-
-     FramesPerSecCounter = 60
-    
-    If VSyncActivado Then
-        VSync.Picture = LoadInterface("check-amarillo.bmp")
-    Else
-        VSync.Picture = Nothing
-    End If
 End Sub

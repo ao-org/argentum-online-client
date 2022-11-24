@@ -25,7 +25,7 @@ Private Type t_FailedIp
 End Type
 
 Dim FailedIpList(10) As t_FailedIp
-Public FaiedListSize As Integer
+Public FailedListSize As Integer
 
 #If PYMMO = 0 Then
 Public Function IsConnected() As Boolean
@@ -35,7 +35,7 @@ End Function
 
 Public Function IsFailedString(ByVal IP As String, ByVal Port As String)
     Dim i As Integer
-    For i = 0 To UBound(FailedIpList) - 1
+    For i = 0 To FailedListSize - 1
         If FailedIpList(i).IP = IP And FailedIpList(i).Port = Port Then
             IsFailedString = True
             Exit Function
@@ -43,16 +43,11 @@ Public Function IsFailedString(ByVal IP As String, ByVal Port As String)
     Next i
 End Function
 
-Public Function AddFailedIp(ByVal IP As String, ByVal Port As String) As Boolean
-    FailedIpList(FaiedListSize).IP = IP
-    FailedIpList(FaiedListSize).Port = Port
-    FaiedListSize = FaiedListSize + 1
-    AddFailedIp = True
-    If FaiedListSize = UBound(servers_login_connections) Then
-        AddFailedIp = False
-    End If
-    
-End Function
+Public Sub AddFailedIp(ByVal IP As String, ByVal Port As String)
+    FailedIpList(FailedListSize).IP = IP
+    FailedIpList(FailedListSize).Port = Port
+    FailedListSize = FailedListSize + 1
+End Sub
 
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
     Debug.Print "Connecting to World Server : " & Address; ":" & Service
@@ -93,12 +88,13 @@ End Sub
 
 Public Sub RetryWithAnotherIp()
     Call Disconnect
-    If Not AddFailedIp(IPdelServidor, PuertoDelServidor) Then
+    Call AddFailedIp(IPdelServidor, PuertoDelServidor)
+    If FailedListSize = UBound(servers_login_connections) Then
         Unload frmConnecting
         Exit Sub
     Else
         Do While IsFailedString(IPdelServidor, PuertoDelServidor)
-        Call SetDefaultServer
+            Call SetDefaultServer
         Loop
     End If
     
