@@ -17,6 +17,7 @@ Module=Mod_TCP; CODIGO\TCP.bas
 Module=TileEngine; CODIGO\TileEngine.bas
 Form=CODIGO\FrmEstadisticas.frm
 Form=CODIGO\frmMensaje.frm
+Form=CODIGO\frmConnecting.frm
 Form=CODIGO\frmCrearPersonaje.frm
 Form=CODIGO\frmEntrenador.frm
 Form=CODIGO\frmSpawnList.frm

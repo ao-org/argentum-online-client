@@ -252,7 +252,6 @@ Public Windows_Temp_Dir       As String
 Public spell_particle         As Long
 Public Select_part            As Long
 Public EfectoEnproceso        As Boolean
-Public VSync_FPS              As Boolean
 Public MostrarOnline          As Boolean
 Public usersOnline            As Integer
 
@@ -783,7 +782,6 @@ Public UserEstadisticas                         As tEstadisticasUsu
 Public UserDescansar                            As Boolean
 Public Moviendose                               As Boolean
 Public FPSFLAG                                  As Byte
-Public VSync                                    As Byte
 Public AlphaMacro                               As Byte
 Public ModoHechizos                             As eModoHechizos
 Public pausa                                    As Boolean

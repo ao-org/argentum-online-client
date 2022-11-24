@@ -909,7 +909,11 @@ Public Sub render()
     Call ShowNextFrame
 
     frmMain.ms.Caption = PingRender & "ms"
-       
+    FrameTime = GetTickCount()
+    FramesPerSecCounter = FramesPerSecCounter + 1
+    timerElapsedTime = GetElapsedTime()
+    timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
+    
     If frmMain.Contadores.enabled Then
 
         Dim PosY As Integer: PosY = -10
@@ -917,6 +921,16 @@ Public Sub render()
 
         If DrogaCounter > 0 Then
             Call RGBAList(temp_array, 0, 153, 0)
+            If DrogaCounter > 15 Then
+                Call RGBAList(temp_array, 0, 153, 0)
+            ElseIf DrogaCounter > 10 Then
+                Call RGBAList(temp_array, 255, 255, 0)
+            Else
+                Dim state As Long
+                state = (FrameTime / 1000) Mod 2
+                Dim Alpha As Byte
+                Call RGBAList(temp_array, 230, 0, 0)
+            End If
             PosY = PosY + 15
             Call Engine_Text_Render("Potenciado: " & CLng(DrogaCounter) & "s", posX, PosY, temp_array, 1, True, 0, 160)
         End If
@@ -930,10 +944,7 @@ Public Sub render()
     
     Call Engine_EndScene(Render_Main_Rect)
     
-    FrameTime = GetTickCount()
-    FramesPerSecCounter = FramesPerSecCounter + 1
-    timerElapsedTime = GetElapsedTime()
-    timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
+    
     
     'TIME_MS_MOUSE
     
@@ -941,14 +952,6 @@ Public Sub render()
     If MouseLastUpdate + TIME_MS_MOUSE <= MouseTimeAcumulated Then
         Call efectoSangre
         MouseLastUpdate = MouseTimeAcumulated
-    End If
-    
-    If VSyncActivado And lFrameTimer > 0 Then
-       While (FrameTime - lFrameTimer) * RefreshRate / 1000 <= FramesPerSecCounter
-            Sleep 1
-            FrameTime = GetTickCount()
-            DoEvents
-        Wend
     End If
     
     Engine_ActFPS
