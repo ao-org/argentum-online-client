@@ -917,7 +917,7 @@ Public Sub render()
     If frmMain.Contadores.enabled Then
 
         Dim PosY As Integer: PosY = -10
-        Dim posX As Integer: posX = 5
+        Dim PosX As Integer: PosX = 640
 
         If DrogaCounter > 0 Then
             Call RGBAList(temp_array, 0, 153, 0)

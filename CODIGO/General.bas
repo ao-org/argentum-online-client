@@ -1118,10 +1118,10 @@ On Error GoTo Main_Err
     
     Call load_game_settings
     
+    Call CheckResources
     If PantallaCompleta Then
         Call Resolution.SetResolution
     End If
-    Call CheckResources
     Call engine_init 'initializes DX
     
     Call InitCommonControls
