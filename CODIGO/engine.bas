@@ -3403,12 +3403,6 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
 
     RenderAccountCharacters
     
-    Dim temp_array(3) As RGBA
-    
-    Call RGBAList(temp_array, 255, 255, 100, 50)
-    Call RenderText("Connecting to World Server : " & IPdelServidor, 10, 10, temp_array, 5)
-    
-    
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
     
     Exit Sub
