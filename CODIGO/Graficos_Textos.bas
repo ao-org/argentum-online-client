@@ -743,23 +743,18 @@ Engine_Text_Render_LetraGrande_Err:
     
 End Sub
 
-Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+Public Sub RenderText(ByVal Texto As String, _
+ ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, _
+ Optional ByVal font_index As Integer = 1, _
+ Optional multi_line As Boolean = False, _
+ Optional charindex As Integer = 0, _
+ Optional ByVal Alpha As Byte = 255)
+On Error GoTo RenderText_Err
     
-    On Error GoTo Engine_Text_Render_LetraChica_Err
+    If (Len(Texto) = 0) Then Exit Sub
     
-
-    
-
     Dim A, B, c, d, e, f As Integer
-
     Dim graf          As grh
-
-    Dim temp_array(3) As RGBA 'Si le queres dar color a la letra pasa este parametro dsp xD
-
-    temp_array(0) = text_color(0)
-    temp_array(1) = text_color(1)
-    temp_array(2) = text_color(2)
-    temp_array(3) = text_color(3)
 
     If charindex = 0 Then
         A = 255
@@ -770,139 +765,78 @@ Public Sub Engine_Text_Render_LetraChica(Texto As String, x As Integer, y As Int
     If Alpha <> 255 Then
         A = Alpha
     End If
-
     Dim i              As Long
-
     Dim removedDialogs As Long
-
     For i = 0 To dialogCount - 1
-
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-
             If FrameTime - .startTime >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
-                             
                 If A <= 0 Then
                     removedDialogs = removedDialogs + 1
-
                 End If
-
-            Else
-            
             End If
-
         End With
-
     Next i
 
-    Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, Alpha)
-
-    If (Len(Texto) = 0) Then Exit Sub
-
     d = 0
-
     If multi_line = False Then
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 30 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 2
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
-                    If font_index <> 3 Then
-
-                        'Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, Sombra())
-                    End If
-
-                    'Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
-                
-                    'Call InitGrh(graf, graf.GrhIndex)
-                    'Call Draw_Grh(graf, (x + d) + 1, y + 1 + f * 14, 0, 0, Sombra(), True, 0, 0, 0)
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
+                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, text_color())
                     d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     Else
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 33 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 2
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-                    ' Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
-                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-                    'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
+                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, text_color())
                     If font_index = 4 Then
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 1
                     Else
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                     End If
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     End If
-
     
     Exit Sub
 
-Engine_Text_Render_LetraChica_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_LetraChica", Erl)
+RenderText_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.RenderText", Erl)
     Resume Next
     
 End Sub

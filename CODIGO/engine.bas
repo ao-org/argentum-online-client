@@ -3295,7 +3295,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         Engine_Text_Render "Gulfas Morgolock", 454, 367, ColorGM, 1
         Engine_Text_Render "<Creador del Mundo>", 443, 382, ColorGM, 1
 
-        Engine_Text_Render_LetraChica "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 40, 20, COLOR_WHITE, 4, False
+        RenderText "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 40, 20, COLOR_WHITE, 4, False
     End If
 
     LastOffsetX = ParticleOffsetX
@@ -3432,11 +3432,11 @@ Public Sub RenderUICrearPJ()
     Dim OffsetX As Integer
     Dim OffsetY As Integer
 
-    Engine_Text_Render_LetraChica "Nombre ", 460, 205, COLOR_WHITE, 6, False
+    RenderText "Nombre ", 460, 205, COLOR_WHITE, 6, False
 
     OffsetX = 240
     OffsetY = 15
-    Engine_Text_Render_LetraChica "Clase ", 345 + OffsetX, 240 + OffsetY, COLOR_WHITE, 6, False
+    RenderText "Clase ", 345 + OffsetX, 240 + OffsetY, COLOR_WHITE, 6, False
 
     Engine_Draw_Box 317 + OffsetX, 260 + OffsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
     Engine_Text_Render "<", 300 + OffsetX, 260 + OffsetY, COLOR_WHITE, 1, False
@@ -3445,7 +3445,7 @@ Public Sub RenderUICrearPJ()
 
     Engine_Text_Render frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), 365 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), True, 1) / 2, 262 + OffsetY, ColorGray, 1, True
 
-    Engine_Text_Render_LetraChica "Raza ", 347 + OffsetX, 290 + OffsetY, COLOR_WHITE, 6, False
+    RenderText "Raza ", 347 + OffsetX, 290 + OffsetY, COLOR_WHITE, 6, False
     Engine_Draw_Box 317 + OffsetX, 305 + OffsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
 
     'Engine_Text_Render "Humano", 470 - Engine_Text_Height("Humano", False), 304, DefaultColor, 1, False
@@ -3459,7 +3459,7 @@ Public Sub RenderUICrearPJ()
     OffsetX = 5
     OffsetY = 5
 
-    Engine_Text_Render_LetraChica "Genero ", 340 + OffsetX, 255, COLOR_WHITE, 6, False
+    RenderText "Genero ", 340 + OffsetX, 255, COLOR_WHITE, 6, False
     
     
     Engine_Draw_Box 317 + OffsetX, 275, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
@@ -3474,7 +3474,7 @@ Public Sub RenderUICrearPJ()
     
 
     OffsetY = 30
-    Engine_Text_Render_LetraChica "Hogar ", 340 + OffsetX, 305, ColorGray, 6, False
+    RenderText "Hogar ", 340 + OffsetX, 305, ColorGray, 6, False
     Engine_Draw_Box 317 + OffsetX, 320, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
     
     Engine_Text_Render frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), 360 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), True, 1) / 2, 322, ColorGray, 1, True
@@ -3492,12 +3492,12 @@ Public Sub RenderUICrearPJ()
      OffX = 340
     
     'Atributos
-    Engine_Text_Render_LetraChica "Atributos ", 235 + OffX, 385 + Offy, COLOR_WHITE, 6, True
+    RenderText "Atributos ", 235 + OffX, 385 + Offy, COLOR_WHITE, 6, True
     
     Dim atributeValue As Long
     
     atributeValue = Val(frmCrearPersonaje.lbFuerza.Caption) + Val(frmCrearPersonaje.modfuerza.Caption)
-    Engine_Text_Render_LetraChica "Fuerza ", 185 + OffX, 410 + Offy, COLOR_WHITE, 1, True
+    RenderText "Fuerza ", 185 + OffX, 410 + Offy, COLOR_WHITE, 1, True
     Call renderAttributesColors(atributeValue, 305 + OffX, 413 + Offy) 'Atributo Fuerza
     
     atributeValue = Val(frmCrearPersonaje.lbAgilidad.Caption) + Val(frmCrearPersonaje.modAgilidad.Caption)
@@ -3540,14 +3540,14 @@ Public Sub RenderUICrearPJ()
      Engine_Draw_Box 280 + OffAspectoX, 407 + OffAspectoY, 185, 148, RGBA_From_Comp(0, 0, 0, 80)
      
      
-     Engine_Text_Render_LetraChica "Aspecto", 345 + OffAspectoX, 385 + OffAspectoY, COLOR_WHITE, 6, False
+     RenderText "Aspecto", 345 + OffAspectoX, 385 + OffAspectoY, COLOR_WHITE, 6, False
      
      
      
     
    ' Engine_Draw_Box 345, 502, 12, 12, D3DColorARGB(120, 100, 0, 0)
     
-    'Engine_Text_Render_LetraChica "Equipado", 360, 502, DefaultColor, 4, False
+    'RenderText "Equipado", 360, 502, DefaultColor, 4, False
     
     
 
@@ -3560,7 +3560,7 @@ Public Sub RenderUICrearPJ()
     If CPHead <> 0 And CPArma <> 0 Then
     
          
-    Engine_Text_Render_LetraChica "Cabeza", 350 + OffAspectoX, 410 + OffAspectoY, COLOR_WHITE, 1, False
+    RenderText "Cabeza", 350 + OffAspectoX, 410 + OffAspectoY, COLOR_WHITE, 1, False
     Engine_Text_Render "<", 335 + OffAspectoX, 412 + OffAspectoY, COLOR_WHITE, 1, True
     Engine_Text_Render ">", 403 + OffAspectoX, 412 + OffAspectoY, COLOR_WHITE, 1, True
         
@@ -3641,11 +3641,11 @@ RenderUICrearPJ_Err:
 End Sub
 Private Function renderAttributesColors(ByVal value As Integer, ByVal x As Integer, ByVal y As Integer)
         If value > 18 Then
-        Engine_Text_Render_LetraChica str(value), x, y, COLOR_GREEN, 1, True
+        RenderText str(Value), x, y, COLOR_GREEN, 1, True
     ElseIf value < 18 Then
-        Engine_Text_Render_LetraChica str(value), x, y, COLOR_RED, 1, True
+        RenderText str(Value), x, y, COLOR_RED, 1, True
     Else
-        Engine_Text_Render_LetraChica str(value), x, y, COLOR_WHITE, 1, True
+        RenderText str(Value), x, y, COLOR_WHITE, 1, True
     End If
 End Function
 Public Sub RenderAccountCharacters()
