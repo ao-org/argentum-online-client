@@ -43,6 +43,8 @@ Public Enum e_LobbyCommandId
     eListPlayers
     eKickPlayer
     eForceReset
+    eSetTeamCount
+    eAddPlayer
 End Enum
 
 Public Enum e_DebugCommands
@@ -2320,6 +2322,19 @@ Private Sub ConfigLobbyClass(ByRef arguments() As String, ByVal argCount As Inte
     End If
 End Sub
 
+Private Sub ConfigLobbyTeamCount(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount > 1 Then
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
+            
+        Else
+            'No es numerico
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SETTEAMCOUNT NUMBER")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SETTEAMCOUNT NUMBER")
+    End If
+End Sub
+
 Private Sub ConfigLobbyMaxLevel(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 2 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
@@ -2417,6 +2432,10 @@ Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
             Call ConfigLobbyKickPlayer(arguments(), argCount)
         ElseIf eType = "FORCERESET" Then
             Call WriteLobbyCommand(e_LobbyCommandId.eForceReset)
+        ElseIf eType = "SETTEAMCOUNT" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetTeamCount)
+        ElseIf eType = "ADDPLAYER" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eAddPlayer)
         Else
             Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET")
         End If
