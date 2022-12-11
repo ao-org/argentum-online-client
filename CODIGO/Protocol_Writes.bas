@@ -6726,14 +6726,12 @@ WriteRequestDebug_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePublicarPersonajeMAO", Erl)
 End Sub
 
-Public Sub WriteLobbyCommand(ByVal command As Byte, Optional ByVal param As Long = -1)
+Public Sub WriteLobbyCommand(ByVal command As Byte, Optional ByVal Params As String = "")
     On Error GoTo WriteLobbyCommand_Err
         
 100     Call Writer.WriteInt16(ClientPacketID.LobbyCommand)
         Call Writer.WriteInt8(command)
-        If param >= 0 Then
-            Call Writer.WriteInt32(param)
-        End If
+        Call Writer.WriteString8(Params)
 102     Call modNetwork.Send(Writer)
         Exit Sub
 

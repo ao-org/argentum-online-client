@@ -63,6 +63,9 @@ Public Const MS_PER_CHAR     As Byte = 60
 ''
 ' Number of extra milliseconds to add to the lifetime of a new dialog
 Public Const MS_ADD_EXTRA    As Integer = 5000
+
+'Team Colors
+Dim TeamColors(10) As RGBA
 ''
 ' The dialog structure
 '
@@ -159,7 +162,18 @@ Public G As Byte
 Public B As Byte
 Public textcolorAsistente(3)    As RGBA
 
-
+Public Sub InitializeTeamColors()
+    Call SetRGBA(TeamColors(1), 153, 217, 234)
+    Call SetRGBA(TeamColors(2), 234, 133, 133)
+    Call SetRGBA(TeamColors(3), 235, 87, 70)
+    Call SetRGBA(TeamColors(4), 191, 173, 10)
+    Call SetRGBA(TeamColors(5), 82, 173, 2)
+    Call SetRGBA(TeamColors(6), 100, 45, 145)
+    Call SetRGBA(TeamColors(7), 156, 33, 127)
+    Call SetRGBA(TeamColors(8), 140, 27, 42)
+    Call SetRGBA(TeamColors(9), 27, 136, 140)
+    Call SetRGBA(TeamColors(10), 145, 75, 35)
+End Sub
 
 'Sets a Grh animation to loop indefinitely.
 
@@ -2101,13 +2115,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 
                 End If
                 
-                If .teamCaptura > 0 Then
-                    If .teamCaptura = 1 Then
-                         Call RGBAList(NameColor, 153, 217, 234)
-                    ElseIf .teamCaptura = 2 Then
-                         Call RGBAList(NameColor, 234, 133, 133)
-                    End If
-                
+                If .Team > 0 Then
+                    Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).A)
                 End If
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
@@ -2121,37 +2130,26 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     line = .clan
                 End If
                 
-                If .teamCaptura > 0 Then
-                    If .teamCaptura = 1 Then
-                        line = "<Equipo 1>"
-                    ElseIf .teamCaptura = 2 Then
-                        line = "<Equipo 2>"
-                    End If
+                If .Team > 0 Then
+                    line = "<Equipo " & .Team & ">"
                 End If
                 
-                If .banderaIndex > 0 And .teamCaptura > 0 Then
-                                   
+                If .banderaIndex > 0 And .Team > 0 Then
                     Dim flag As grh
                     If .banderaIndex = 1 Then
                         Call InitGrh(flag, 58712)
                     ElseIf .banderaIndex = 2 Then
                         Call InitGrh(flag, 60298)
                     End If
-                    
-                    
-                    
                     Call Draw_Grh(flag, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 45 + .Body.BodyOffset.y, 1, 0, Color, True, 0, 0, 0)
                 End If
                 
-                
-                
-                'Seteo color de nombre del clan solo si es de mi clan
-                Call SetRGBA(NameColorClan(0), 255, 255, 0, 255)
-                Call SetRGBA(NameColorClan(1), 255, 255, 0, 255)
-                Call SetRGBA(NameColorClan(2), 255, 255, 0, 255)
-                Call SetRGBA(NameColorClan(3), 255, 255, 0, 255)
-                
-                If (.clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .esNpc = False) Or (charindex = UserCharIndex And .Invisible) Then
+                If (.clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .esNpc = False And .Team <= 0) Or (charindex = UserCharIndex And .Invisible) Then
+                    'Seteo color de nombre del clan solo si es de mi clan
+                    Call SetRGBA(NameColorClan(0), 255, 255, 0, 255)
+                    Call SetRGBA(NameColorClan(1), 255, 255, 0, 255)
+                    Call SetRGBA(NameColorClan(2), 255, 255, 0, 255)
+                    Call SetRGBA(NameColorClan(3), 255, 255, 0, 255)
                     Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColorClan, 1, False, 0, IIf(.Invisible, 160, 255)
                 Else
                     Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)

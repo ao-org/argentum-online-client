@@ -3729,7 +3729,7 @@ Private Sub HandleCharacterCreate()
         
         .Navegando = flags And &O2
         .tipoUsuario = Reader.ReadInt8()
-        .teamCaptura = Reader.ReadInt8()
+        .Team = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
         .AnimAtaque1 = Reader.ReadInt16()
         
