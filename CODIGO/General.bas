@@ -1197,6 +1197,7 @@ On Error GoTo Main_Err
     Call initMascotaTutorial
     Call LoadProjectiles
     Call InitilializeProjectiles
+    Call InitializeTeamColors
     
     FrameTime = GetTickCount()
     UserMap = 1

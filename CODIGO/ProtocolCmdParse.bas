@@ -43,7 +43,7 @@ Public Enum e_LobbyCommandId
     eListPlayers
     eKickPlayer
     eForceReset
-    eSetTeamCount
+    eSetTeamSize
     eAddPlayer
 End Enum
 
@@ -2387,12 +2387,56 @@ Private Sub ConfigLobbyReturnPlayer(ByRef arguments() As String, ByVal argCount 
     End If
 End Sub
 
+Private Sub ConfigLobbyOpenLobby(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        If Trim$(UCase$(arguments(1))) = "PRIVATE" Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eOpenLobby, "0")
+        Else
+            Call WriteLobbyCommand(e_LobbyCommandId.eOpenLobby, "1")
+        End If
+    Else
+        Call WriteLobbyCommand(e_LobbyCommandId.eOpenLobby, "1")
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY OPEN [PRIVATE/PUBLIC(DEFAULT)]")
+    End If
+End Sub
+
+Private Sub ConfigLobbyAddPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        Dim PlayerName As String
+        Dim i As Integer
+        For i = 1 To argCount - 1
+            PlayerName = PlayerName & arguments(i)
+        Next i
+        Call WriteLobbyCommand(e_LobbyCommandId.eAddPlayer, PlayerName)
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY ADDPLAYER player name")
+    End If
+End Sub
+
+Private Sub ConfigLobbySetTeamSize(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        Dim premade As Byte
+        premade = 1
+        If argCount >= 3 Then
+            If Trim$(UCase$(arguments(2))) = "PREMADE" Then
+              premade = 0
+            End If
+        End If
+        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetTeamSize, arguments(1) & " " & premade)
+        Else
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SETTEAMSIZE NUMBER_OF_TEAMS [RANDOM/PREMADE(DEFAULT RANDOM)]")
+        End If
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SETTEAMSIZE NUMBER_OF_TEAMS [RANDOM/PREMADE(DEFAULT RANDOM)]")
+    End If
+End Sub
+
 Private Sub ConfigLobbyKickPlayer(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 2 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eKickPlayer, arguments(1))
         Else
-            'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY KICK LOBBY_INDEX")
         End If
     Else
@@ -2419,7 +2463,7 @@ Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
         ElseIf eType = "RETALL" Then
             Call WriteLobbyCommand(e_LobbyCommandId.eReturnAllSummoned)
         ElseIf eType = "OPEN" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eOpenLobby)
+            Call ConfigLobbyOpenLobby(arguments, argCount)
         ElseIf eType = "START" Then
             Call WriteLobbyCommand(e_LobbyCommandId.eStartEvent)
         ElseIf eType = "END" Then
@@ -2432,12 +2476,12 @@ Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
             Call ConfigLobbyKickPlayer(arguments(), argCount)
         ElseIf eType = "FORCERESET" Then
             Call WriteLobbyCommand(e_LobbyCommandId.eForceReset)
-        ElseIf eType = "SETTEAMCOUNT" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetTeamCount)
+        ElseIf eType = "SETTEAMSIZE" Then
+            Call ConfigLobbySetTeamSize(arguments(), argCount)
         ElseIf eType = "ADDPLAYER" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eAddPlayer)
+            Call ConfigLobbyAddPlayer(arguments(), argCount)
         Else
-            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET")
+            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET/SETTEAMSIZE/ADDPLAYER")
         End If
     Else
         'Avisar que falta el parametro

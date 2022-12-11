@@ -328,7 +328,7 @@ Public Type Char
     clan_index As Integer
     clan_nivel As Byte
     tipoUsuario As eTipoUsuario
-    teamCaptura As Byte
+    Team As Byte
     banderaIndex As Byte
     AnimAtaque1 As Integer
 
