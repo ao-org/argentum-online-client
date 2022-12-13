@@ -1172,12 +1172,12 @@ On Error GoTo Main_Err
 
     End If
         
-    servers_login_connections(1) = "45.235.99.71:6500"
-    servers_login_connections(2) = "45.235.99.71:6502"
-    servers_login_connections(3) = "45.235.98.31:6500"
-    servers_login_connections(4) = "45.235.98.31:6502"
-    servers_login_connections(5) = "45.235.98.184:6500"
-    servers_login_connections(6) = "45.235.98.184:6502"
+    servers_login_connections(1) = "45.235.98.187:6500"
+    servers_login_connections(2) = "45.235.98.187:6502"
+    servers_login_connections(3) = "45.235.98.185:6500"
+    servers_login_connections(4) = "45.235.98.185:6502"
+    servers_login_connections(5) = "45.235.98.186:6500"
+    servers_login_connections(6) = "45.235.98.186:6502"
     
     servers_world_connections(1) = "45.235.98.31:6501"
     servers_world_connections(2) = "45.235.98.184:6501"
