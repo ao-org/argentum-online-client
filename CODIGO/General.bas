@@ -2111,13 +2111,13 @@ Public Sub SetNpcsRenderText()
     ' Carga el JSON con las traducciones en un objeto para su uso a lo largo del proyecto
     '************************************************************************************
     Dim render_text As String
-    render_text = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "NpcsEnRender")
+    render_text = GetSetting("OPCIONES", "NpcsEnRender")
     
     ' Si no se especifica el idioma en el archivo de configuracion, se le pregunta si quiere usar castellano
     ' y escribimos el archivo de configuracion con el idioma seleccionado
     If LenB(render_text) = 0 Then
         npcs_en_render = 1
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "NpcsEnRender", npcs_en_render)
+        Call SaveSetting("OPCIONES", "NpcsEnRender", npcs_en_render)
     Else
        npcs_en_render = Val(render_text)
     End If

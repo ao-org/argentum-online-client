@@ -4,9 +4,9 @@ Begin VB.Form FrmLogear
    AutoRedraw      =   -1  'True
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   ClientHeight    =   3996
-   ClientLeft      =   11868
-   ClientTop       =   9456
+   ClientHeight    =   4005
+   ClientLeft      =   11865
+   ClientTop       =   9450
    ClientWidth     =   5340
    ClipControls    =   0   'False
    ControlBox      =   0   'False
@@ -15,9 +15,9 @@ Begin VB.Form FrmLogear
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Moveable        =   0   'False
-   ScaleHeight     =   333
+   ScaleHeight     =   267
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   445
+   ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox txtPort 
       BackColor       =   &H80000001&
@@ -49,7 +49,7 @@ Begin VB.Form FrmLogear
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -74,7 +74,7 @@ Begin VB.Form FrmLogear
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -388,8 +388,7 @@ Private Sub cmdIngresar_Click()
         
       
         #If PYMMO = 0 Or DEBUGGING = 1 Then
-            Dim Arch As String: Arch = App.path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-            Call WriteVar(Arch, "INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
+            Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
         #End If
         
         #If PYMMO = 1 Then

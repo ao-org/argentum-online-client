@@ -41,7 +41,7 @@ Public MeteoParticle        As Integer
 Public Sub CargarLucesGlobales()
     On Error GoTo CargarLucesGlobales_Err
     
-    selected_light = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "LuzGlobal")
+    selected_light = GetSetting("VIDEO", "LuzGlobal")
     
     If LenB(selected_light) = 0 Then selected_light = 0
     

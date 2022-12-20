@@ -81,7 +81,7 @@ Public Sub SetLanguageApplication()
 
     Dim LangFile As String
     Dim Localization As String
-    Localization = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Localization")
+    Localization = GetSetting("OPCIONES", "Localization")
     
     ' Si no se especifica el idioma en el archivo de configuracion, se le pregunta si quiere usar castellano
     ' y escribimos el archivo de configuracion con el idioma seleccionado
@@ -164,7 +164,7 @@ Public Sub SetLanguageApplication()
                 language = e_language.English
         End Select
         
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Localization", language)
+        Call SaveSetting("OPCIONES", "Localization", language)
     Else
         language = Localization
     End If

@@ -112,6 +112,7 @@ Module=ModLenguaje; CODIGO\ModLenguaje.bas
 Module=basCryptoSys; CODIGO\basCryptoSys.bas
 Module=AO20CryptoSysWrapper; CODIGO\AO20CryptoSysWrapper.bas
 Module=ModAuth; CODIGO\ModAuth.bas
+Module=ModSettings; CODIGO\ModSettings.bas
 Form=CODIGO\frmNewAccount.frm
 Module=GameIni; CODIGO\GameIni.bas
 Form=CODIGO\frmDeleteChar.frm

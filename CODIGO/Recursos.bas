@@ -1578,11 +1578,11 @@ On Error GoTo GetPatchNotes_Err
         GetPatchNotes = ""
         Exit Function
     End If
-    LastDisplayPatch = Val(GetVar(App.path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "LastPatch"))
+    LastDisplayPatch = Val(GetSetting("OPCIONES", "LastPatch"))
     
     If PatchDate > LastDisplayPatch Then
         GetPatchNotes = IniReader.GetValue("INIT", "FileName")
-        Call WriteVar(App.path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "LastPatch", PatchDate)
+        Call SaveSetting("OPCIONES", "LastPatch", PatchDate)
     Else
         GetPatchNotes = ""
     End If
