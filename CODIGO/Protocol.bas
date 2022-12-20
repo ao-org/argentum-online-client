@@ -1265,7 +1265,7 @@ Public Sub HandleDisconnect()
     FullLogout = Reader.ReadBool
     End If
 
-    Call WriteVar(App.path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "OPCIONES", "LastScroll", hlst.Scroll)
+    Call SaveSetting("OPCIONES", "LastScroll", hlst.Scroll)
 
     Mod_Declaraciones.Connected = False
     

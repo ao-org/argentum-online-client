@@ -283,47 +283,34 @@ Public Sub toggleTutorialActivo(ByVal tutorial_index As Byte)
         Else
             .Activo = 0
         End If
-        
-        file = App.Path & "\..\Recursos\OUTPUT\Configuracion.ini"
-        Call WriteVar(file, "TUTORIAL" & tutorial_index, "Activo", .Activo)
+        Call SaveSetting("TUTORIAL" & tutorial_index, "Activo", .Activo)
     End With
 End Sub
 Public Sub cargarTutoriales()
-    
-    
-    Dim FileName As String
     Dim CantidadTutoriales As Long
-    Dim file As clsIniManager
     Dim i As Long, j As Long
-    FileName = App.Path & "\..\Recursos\OUTPUT\Configuracion.ini"
-    Set file = New clsIniManager
-    Call file.Initialize(FileName)
     
-    
-    CantidadTutoriales = file.GetValue("INITTUTORIAL", "Cantidad")
-    MostrarTutorial = file.GetValue("INITTUTORIAL", "MostrarTutorial")
+    CantidadTutoriales = GetSetting("INITTUTORIAL", "Cantidad")
+    MostrarTutorial = GetSetting("INITTUTORIAL", "MostrarTutorial")
     If CantidadTutoriales <= 0 Then Exit Sub
     
     ReDim tutorial(1 To CantidadTutoriales)
     
     For i = 1 To CantidadTutoriales
         
-        tutorial(i).grh = Val(file.GetValue("TUTORIAL" & i, "Grh"))
-        tutorial(i).Activo = Val(file.GetValue("TUTORIAL" & i, "Activo"))
-        tutorial(i).titulo = file.GetValue("TUTORIAL" & i, IIf(language = e_language.English, "en_titulo", "titulo"))
+        tutorial(i).grh = Val(GetSetting("TUTORIAL" & i, "Grh"))
+        tutorial(i).Activo = Val(GetSetting("TUTORIAL" & i, "Activo"))
+        tutorial(i).titulo = GetSetting("TUTORIAL" & i, IIf(language = e_language.English, "en_titulo", "titulo"))
         Dim CantidadTextos As Long
-        CantidadTextos = Val(file.GetValue("TUTORIAL" & i, "Cantidad"))
+        CantidadTextos = Val(GetSetting("TUTORIAL" & i, "Cantidad"))
         ReDim tutorial(i).textos(1 To CantidadTextos)
         
         If CantidadTextos > 0 Then
             For j = 1 To CantidadTextos
-                tutorial(i).textos(j) = file.GetValue("TUTORIAL" & i, IIf(language = e_language.English, "en_texto" & j, "texto" & j))
+                tutorial(i).textos(j) = GetSetting("TUTORIAL" & i, IIf(language = e_language.English, "en_texto" & j, "texto" & j))
             Next j
         End If
     Next i
-    
-    Set file = Nothing
-    
 End Sub
 
 

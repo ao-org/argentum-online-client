@@ -740,7 +740,7 @@ Private Sub cbLenguaje_Click()
         End Select
         
         If MsgBox(message, vbYesNo, title) = vbYes Then
-            Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "Localization", cbLenguaje.ListIndex + 1)
+            Call SaveSetting("OPCIONES", "Localization", cbLenguaje.ListIndex + 1)
         End If
     End If
     
@@ -748,7 +748,7 @@ End Sub
 
 Private Sub cboLuces_Click()
 
-    Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "LuzGlobal", cboLuces.ListIndex)
+    Call SaveSetting("VIDEO", "LuzGlobal", cboLuces.ListIndex)
     selected_light = cboLuces.ListIndex
 End Sub
 
@@ -761,18 +761,18 @@ Private Sub cbTutorial_Click()
             Dim i As Long
             
             For i = 1 To UBound(tutorial)
-                Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "TUTORIAL" & i, "Activo", 1)
+                Call SaveSetting("TUTORIAL" & i, "Activo", 1)
                 tutorial(i).Activo = 1
             Next i
         End If
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "INITTUTORIAL", "MostrarTutorial", cbTutorial.ListIndex)
+        Call SaveSetting("INITTUTORIAL", "MostrarTutorial", cbTutorial.ListIndex)
     End If
 End Sub
 Private Sub cbRenderNpcs_Click()
            
     If cbRenderNpcs.ListIndex <> npcs_en_render Then
         npcs_en_render = cbRenderNpcs.ListIndex
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "OPCIONES", "NpcsEnRender", cbRenderNpcs.ListIndex)
+        Call SaveSetting("OPCIONES", "NpcsEnRender", cbRenderNpcs.ListIndex)
     End If
 End Sub
 
@@ -839,10 +839,10 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
     If CursoresGraficos Then
         Check2.Picture = LoadInterface("check-amarillo.bmp")
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "VIDEO", "CursoresGraficos", 1)
+        Call SaveSetting("VIDEO", "CursoresGraficos", 1)
     Else
         Check2.Picture = Nothing
-        Call WriteVar(App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini", "VIDEO", "CursoresGraficos", 0)
+        Call SaveSetting("VIDEO", "CursoresGraficos", 0)
     End If
     
     MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
@@ -1194,7 +1194,7 @@ Private Sub Form_Load()
     PanelAudio.Picture = LoadInterface("configuracion-audio.bmp")
     
     
-    selected_light = GetVar(App.Path & "\..\Recursos\OUTPUT\Configuracion.ini", "VIDEO", "LuzGlobal")
+    selected_light = GetSetting("VIDEO", "LuzGlobal")
     
     If LenB(selected_light) = 0 Then selected_light = 0
     

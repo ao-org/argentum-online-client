@@ -325,28 +325,16 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Call WriteWork(eSkill.Ocultarse)
                 
         Case BindKeys(19).KeyCode
-
-            
-            Dim Arch As String
-    
-            Arch = App.Path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-            Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
+            Call SaveSetting("OPCIONES", "FPSFLAG", FPSFLAG)
             
         Case BindKeys(21).KeyCode
-    
             If UserMinMAN = UserMaxMAN Then Exit Function
-                
             If UserEstado = 1 Then
-    
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-    
                 End With
-    
                 Exit Function
-    
             End If
-            
             Call WriteMeditate
             
         Case BindKeys(22).KeyCode

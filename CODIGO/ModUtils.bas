@@ -1393,119 +1393,100 @@ Sub load_game_settings()
     On Error GoTo ErrorHandler
     Set DialogosClanes = New clsGuildDlg
     
-    If FileExist(App.path & "\..\Recursos\OUTPUT\Configuracion.ini", vbArchive) Then
+    If InitializeSettings() Then
         Call LoadImpAoInit
     Else
         Call MsgBox("¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
         End
     End If
-    
-    Dim ConfigFile As clsIniManager
-    Set ConfigFile = New clsIniManager
-    Call ConfigFile.Initialize(App.path & "\..\Recursos\OUTPUT\Configuracion.ini")
-    
     'Musica y Sonido
-    Musica = ConfigFile.GetValue("AUDIO", "Musica")
-    Sonido = ConfigFile.GetValue("AUDIO", "Sonido")
-    Fx = ConfigFile.GetValue("AUDIO", "Fx")
-    AmbientalActivated = ConfigFile.GetValue("AUDIO", "AmbientalActivated")
-    InvertirSonido = ConfigFile.GetValue("AUDIO", "InvertirSonido")
+    Musica = GetSetting("AUDIO", "Musica")
+    Sonido = GetSetting("AUDIO", "Sonido")
+    Fx = GetSetting("AUDIO", "Fx")
+    AmbientalActivated = GetSetting("AUDIO", "AmbientalActivated")
+    InvertirSonido = GetSetting("AUDIO", "InvertirSonido")
     
     'Musica y Sonido - Volumen
     VolMusicFadding = VolMusic
-    VolMusic = Val(ConfigFile.GetValue("AUDIO", "VolMusic"))
-    VolFX = Val(ConfigFile.GetValue("AUDIO", "VolFX"))
-    VolAmbient = Val(ConfigFile.GetValue("AUDIO", "VolAmbient"))
+    VolMusic = Val(GetSetting("AUDIO", "VolMusic"))
+    VolFX = Val(GetSetting("AUDIO", "VolFX"))
+    VolAmbient = Val(GetSetting("AUDIO", "VolAmbient"))
     
     'Video
-    PantallaCompleta = ConfigFile.GetValue("VIDEO", "PantallaCompleta")
-    CursoresGraficos = IIf(RunningInVB, 0, ConfigFile.GetValue("VIDEO", "CursoresGraficos"))
-    UtilizarPreCarga = ConfigFile.GetValue("VIDEO", "UtilizarPreCarga")
-    InfoItemsEnRender = Val(ConfigFile.GetValue("VIDEO", "InfoItemsEnRender"))
-    ModoAceleracion = ConfigFile.GetValue("VIDEO", "Aceleracion")
+    PantallaCompleta = GetSetting("VIDEO", "PantallaCompleta")
+    CursoresGraficos = IIf(RunningInVB, 0, GetSetting("VIDEO", "CursoresGraficos"))
+    UtilizarPreCarga = GetSetting("VIDEO", "UtilizarPreCarga")
+    InfoItemsEnRender = Val(GetSetting("VIDEO", "InfoItemsEnRender"))
+    ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
     
     Dim Value As String
-    Value = ConfigFile.GetValue("VIDEO", "MostrarRespiracion")
+    Value = GetSetting("VIDEO", "MostrarRespiracion")
     MostrarRespiracion = IIf(LenB(Value) > 0, Val(Value), True)
 
-    FxNavega = ConfigFile.GetValue("OPCIONES", "FxNavega")
-    MostrarIconosMeteorologicos = ConfigFile.GetValue("OPCIONES", "MostrarIconosMeteorologicos")
-    CopiarDialogoAConsola = ConfigFile.GetValue("OPCIONES", "CopiarDialogoAConsola")
-    PermitirMoverse = ConfigFile.GetValue("OPCIONES", "PermitirMoverse")
-    ScrollArrastrar = Val(ConfigFile.GetValue("OPCIONES", "ScrollArrastrar"))
-    LastScroll = Val(ConfigFile.GetValue("OPCIONES", "LastScroll"))
+    FxNavega = GetSetting("OPCIONES", "FxNavega")
+    MostrarIconosMeteorologicos = GetSetting("OPCIONES", "MostrarIconosMeteorologicos")
+    CopiarDialogoAConsola = GetSetting("OPCIONES", "CopiarDialogoAConsola")
+    PermitirMoverse = GetSetting("OPCIONES", "PermitirMoverse")
+    ScrollArrastrar = Val(GetSetting("OPCIONES", "ScrollArrastrar"))
+    LastScroll = Val(GetSetting("OPCIONES", "LastScroll"))
     
-    MoverVentana = ConfigFile.GetValue("OPCIONES", "MoverVentana")
-    FPSFLAG = ConfigFile.GetValue("OPCIONES", "FPSFLAG")
-    AlphaMacro = ConfigFile.GetValue("OPCIONES", "AlphaMacro")
-    ModoHechizos = Val(ConfigFile.GetValue("OPCIONES", "ModoHechizos"))
-    DialogosClanes.Activo = Val(ConfigFile.GetValue("OPCIONES", "DialogosClanes"))
-    NumerosCompletosInventario = Val(ConfigFile.GetValue("OPCIONES", "NumerosCompletosInventario"))
+    MoverVentana = GetSetting("OPCIONES", "MoverVentana")
+    FPSFLAG = GetSetting("OPCIONES", "FPSFLAG")
+    AlphaMacro = GetSetting("OPCIONES", "AlphaMacro")
+    ModoHechizos = Val(GetSetting("OPCIONES", "ModoHechizos"))
+    DialogosClanes.Activo = Val(GetSetting("OPCIONES", "DialogosClanes"))
+    NumerosCompletosInventario = Val(GetSetting("OPCIONES", "NumerosCompletosInventario"))
     
     'Init
     #If PYMMO = 0 Or DEBUGGING = 1 Then
-        ServerIndex = ConfigFile.GetValue("INIT", "ServerIndex")
+        ServerIndex = GetSetting("INIT", "ServerIndex")
     #End If
 
-    SensibilidadMouse = ConfigFile.GetValue("OPCIONES", "SensibilidadMouse")
-    
-    Set ConfigFile = Nothing
-    
+    SensibilidadMouse = GetSetting("OPCIONES", "SensibilidadMouse")
     If SensibilidadMouse = 0 Then: SensibilidadMouse = 10
-
     SensibilidadMouseOriginal = General_Get_Mouse_Speed
-    
     Call General_Set_Mouse_Speed(SensibilidadMouse)
     
     'Dialogos clanes
     Exit Sub
     
 ErrorHandler:
-    
-    Set ConfigFile = Nothing
-    
     Call MsgBox("Ha ocurrido un error al cargar la configuración del juego.", vbCritical, "Configuración del Juego")
-    
     End
-    
 End Sub
 
 Sub GuardarOpciones()
-    
     On Error GoTo GuardarOpciones_Err
     
-
-    Dim Arch As String: Arch = App.path & "\..\Recursos\OUTPUT\" & "Configuracion.ini"
-    
     #If PYMMO = 0 Or DEBUGGING = 1 Then
-    Call WriteVar(Arch, "INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
+    Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
     #End If
-    Call WriteVar(Arch, "AUDIO", "Musica", Musica)
-    Call WriteVar(Arch, "AUDIO", "Fx", Fx)
-    Call WriteVar(Arch, "AUDIO", "VolMusic", VolMusic)
-    Call WriteVar(Arch, "AUDIO", "Volfx", VolFX)
-    Call WriteVar(Arch, "AUDIO", "VolAmbient", VolAmbient)
-    Call WriteVar(Arch, "AUDIO", "AmbientalActivated", AmbientalActivated)
+    Call SaveSetting("AUDIO", "Musica", Musica)
+    Call SaveSetting("AUDIO", "Fx", Fx)
+    Call SaveSetting("AUDIO", "VolMusic", VolMusic)
+    Call SaveSetting("AUDIO", "Volfx", VolFX)
+    Call SaveSetting("AUDIO", "VolAmbient", VolAmbient)
+    Call SaveSetting("AUDIO", "AmbientalActivated", AmbientalActivated)
     
-    Call WriteVar(Arch, "OPCIONES", "MoverVentana", MoverVentana)
-    Call WriteVar(Arch, "OPCIONES", "PermitirMoverse", PermitirMoverse)
-    Call WriteVar(Arch, "OPCIONES", "ScrollArrastrar", ScrollArrastrar)
+    Call SaveSetting("OPCIONES", "MoverVentana", MoverVentana)
+    Call SaveSetting("OPCIONES", "PermitirMoverse", PermitirMoverse)
+    Call SaveSetting("OPCIONES", "ScrollArrastrar", ScrollArrastrar)
     
-    Call WriteVar(Arch, "OPCIONES", "CopiarDialogoAConsola", CopiarDialogoAConsola)
-    Call WriteVar(Arch, "OPCIONES", "FPSFLAG", FPSFLAG)
-    Call WriteVar(Arch, "OPCIONES", "AlphaMacro", AlphaMacro)
-    Call WriteVar(Arch, "OPCIONES", "ModoHechizos", ModoHechizos)
-    Call WriteVar(Arch, "OPCIONES", "FxNavega", FxNavega)
+    Call SaveSetting("OPCIONES", "CopiarDialogoAConsola", CopiarDialogoAConsola)
+    Call SaveSetting("OPCIONES", "FPSFLAG", FPSFLAG)
+    Call SaveSetting("OPCIONES", "AlphaMacro", AlphaMacro)
+    Call SaveSetting("OPCIONES", "ModoHechizos", ModoHechizos)
+    Call SaveSetting("OPCIONES", "FxNavega", FxNavega)
     
-    Call WriteVar(Arch, "OPCIONES", "NumerosCompletosInventario", NumerosCompletosInventario)
+    Call SaveSetting("OPCIONES", "NumerosCompletosInventario", NumerosCompletosInventario)
 
-    Call WriteVar(Arch, "VIDEO", "MostrarRespiracion", IIf(MostrarRespiracion, 1, 0))
-    Call WriteVar(Arch, "VIDEO", "PantallaCompleta", IIf(PantallaCompleta, 1, 0))
-    Call WriteVar(Arch, "VIDEO", "InfoItemsEnRender", IIf(InfoItemsEnRender, 1, 0))
-    Call WriteVar(Arch, "VIDEO", "Aceleracion", ModoAceleracion)
+    Call SaveSetting("VIDEO", "MostrarRespiracion", IIf(MostrarRespiracion, 1, 0))
+    Call SaveSetting("VIDEO", "PantallaCompleta", IIf(PantallaCompleta, 1, 0))
+    Call SaveSetting("VIDEO", "InfoItemsEnRender", IIf(InfoItemsEnRender, 1, 0))
+    Call SaveSetting("VIDEO", "Aceleracion", ModoAceleracion)
 
-    Call WriteVar(Arch, "OPCIONES", "SensibilidadMouse", SensibilidadMouse)
-    Call WriteVar(Arch, "OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
+    Call SaveSetting("OPCIONES", "SensibilidadMouse", SensibilidadMouse)
+    Call SaveSetting("OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
 
     
     Exit Sub
