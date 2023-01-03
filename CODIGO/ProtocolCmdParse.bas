@@ -2278,6 +2278,8 @@ Private Sub CreateEventCmd(ByRef arguments() As String, ByVal argCount As Intege
             Call StartCustomMap(2, eType, arguments, argCount)
         ElseIf eType = "DEATHMATCH" Then
             Call StartCustomMap(3, eType, arguments, argCount)
+        ElseIf eType = "NAVALCONQUEST" Then
+            Call StartCustomMap(4, eType, arguments, argCount)
         Else
             Call ShowConsoleMsg("Invalid event type.")
         End If
@@ -2434,8 +2436,8 @@ End Sub
 
 Private Sub ConfigLobbyKickPlayer(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 2 Then
-        If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eKickPlayer, arguments(1))
+        If ValidNumber(arguments(2), eNumber_Types.ent_Long) Then
+            Call WriteLobbyCommand(e_LobbyCommandId.eKickPlayer, arguments(2))
         Else
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY KICK LOBBY_INDEX")
         End If
