@@ -3036,57 +3036,48 @@ Private Sub HandleTextOverTile()
     On Error GoTo ErrHandler
     
     Dim Text  As String
-
-    Dim x     As Integer, y As Integer
-
+    Dim x As Integer
+    Dim y As Integer
     Dim Color As Long
-    
+    Dim Duration As Integer
+    Dim OffsetY As Integer
+    Dim Animated As Boolean
     Text = Reader.ReadString8()
     x = Reader.ReadInt16()
     y = Reader.ReadInt16()
     Color = Reader.ReadInt32()
-    
+    Duration = Reader.ReadInt16()
+    OffsetY = Reader.ReadInt16()
+    Animated = Reader.ReadBool()
+    Debug.Print "render text:" & Text & " at (" & x & ", " & y & ")"
     If InMapBounds(x, y) Then
-    
         With MapData(x, y)
             Dim Index As Integer
-            
             If UBound(.DialogEffects) = 0 Then
                 ReDim .DialogEffects(1 To 1)
-                
                 Index = 1
             Else
-
                 For Index = 1 To UBound(.DialogEffects)
-
                     If .DialogEffects(Index).Text = vbNullString Then
                         Exit For
-
                     End If
-
                 Next
-                
                 If Index > UBound(.DialogEffects) Then
-                    ReDim .DialogEffects(1 To UBound(.DialogEffects) + 1)
-
+                    ReDim Preserve .DialogEffects(1 To UBound(.DialogEffects) + 1)
                 End If
-
             End If
-            
             With .DialogEffects(Index)
-            
                 .Color = RGBA_From_vbColor(Color)
                 .Start = FrameTime
                 .Text = Text
                 .offset.x = 0
                 .offset.y = 0
-            
+                .Duration = Duration
+                .Animated = Animated
+                .offset.y = OffsetY
             End With
-
         End With
-        
     End If
-
     Exit Sub
     
 ErrHandler:

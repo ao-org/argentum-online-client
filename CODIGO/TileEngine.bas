@@ -196,6 +196,8 @@ Public Type DialogEffect
     Start As Long
     Color As RGBA
     offset As Position
+    Duration As Integer
+    Animated As Boolean
 End Type
 
 Public Enum eTipoUsuario

@@ -622,7 +622,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                                 Dim DialogTime As Long
                                 DialogTime = FrameTime - .Start
             
-                                If DialogTime > 1300 Then
+                                If DialogTime > .Duration Then
                                     .Text = vbNullString
                                 Else
                                     If DialogTime > 900 Then
@@ -630,9 +630,11 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                                     Else
                                         Call RGBAList(TempColor, .Color.r, .Color.G, .Color.B, .Color.A)
                                     End If
-                            
-                                    Engine_Text_Render_Efect 0, .Text, ScreenX + 16 - Int(Engine_Text_Width(.Text, False) * 0.5) + .offset.x, ScreenY - Engine_Text_Height(.Text, False) + .offset.y - DialogTime * 0.025, TempColor, 1, False
-                    
+                                    If .Animated Then
+                                        Engine_Text_Render_Efect 0, .Text, screenX + 16 - Int(Engine_Text_Width(.Text, False) * 0.5) + .offset.x, screenY - Engine_Text_Height(.Text, False) + .offset.y - DialogTime * 0.025, TempColor, 1, False
+                                    Else
+                                        Engine_Text_Render_Efect 0, .Text, screenX + 16 - Int(Engine_Text_Width(.Text, False) * 0.5) + .offset.x, screenY - Engine_Text_Height(.Text, False) + .offset.y, TempColor, 1, False
+                                    End If
                                 End If
                             End If
                         End With
