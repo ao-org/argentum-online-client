@@ -179,7 +179,7 @@ Private Sub Image3_Click()
     If credits_shopAO20 >= obj_to_buy.Valor Then
         Call writeBuyShopItem(obj_to_buy.objNum)
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, "No tienes suficientes créditos para comprar ese elemento. Puedes comprar más créditos a través del siguiente link: https://www.patreon.com/nolandstudios", 255, 0, 0, True)
+        Call AddtoRichTextBox(frmMain.RecTxt, "No tienes suficientes créditos para comprar ese elemento. Puedes mejorar tu subscripción en el siguiente link: https://www.patreon.com/nolandstudios/membership", 255, 0, 0, True)
     End If
 End Sub
 
