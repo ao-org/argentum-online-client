@@ -164,21 +164,17 @@ Public Sub SetTexture(ByRef Texture As Direct3DTexture8)
     
     On Error GoTo SetTexture_Err
     
- 
-    If ObjPtr(m_Texture) <> ObjPtr(Texture) Then 'te cabe vb6
-        
+100 If ObjPtr(m_Texture) <> ObjPtr(Texture) Then 'te cabe vb6
         '
         ' Flush the batch since we're using a diferent texture
         '
-        Call Flush
-       
-        Set m_Texture = Texture
-       
+102     Call Flush
+104     Set m_Texture = Texture
         '
         ' Update the new texture of the batch
         '
-        Call DirectDevice.SetTexture(0, Texture)
- 
+106     Call DirectDevice.SetTexture(0, Texture)
+
     End If
  
     

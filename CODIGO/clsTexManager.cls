@@ -226,24 +226,31 @@ ErrHandler:
     Debug.Print "Failed to generate texture, " & Err.Description
 End Function
 
-Public Sub SetTextureData(ByRef Texture As Direct3DTexture8, ByRef Bytes() As Byte, ByVal Size As Long, ByVal TextureWidth As Long)
+Public Sub SetTextureData(ByRef Texture As Direct3DTexture8, ByRef Bytes() As Byte, ByVal size As Long, _
+                          ByVal TextureWidth As Long, ByVal DrawWidth As Integer, _
+                          ByVal startY As Integer, ByVal endY As Integer)
 On Error GoTo ErrHandler
     Dim lr As D3DLOCKED_RECT
-    Call Texture.LockRect(0, lr, ByVal Render_Main_Rect, 0)
+    Dim RenderArea As RECT
+    RenderArea.Left = 0
+    RenderArea.Top = startY
+    RenderArea.Bottom = endY
+    RenderArea.Right = DrawWidth
+    Call Texture.LockRect(0, lr, ByVal RenderArea, 0)
     Dim BufferPos As Long
     Dim row As Long
     Dim destPtr As Long
     destPtr = lr.pBits
-    For row = 0 To Render_Main_Rect.Bottom
-        Call DXCopyMemory(ByVal destPtr, Bytes(BufferPos), Render_Main_Rect.Right * 4)
-        BufferPos = BufferPos + Render_Main_Rect.Right * 4
+    For row = 0 To endY
+        Call DXCopyMemory(ByVal destPtr, Bytes(BufferPos), DrawWidth * 4)
+        BufferPos = BufferPos + DrawWidth * 4
         destPtr = destPtr + lr.Pitch
     Next row
     'Call DXCopyMemory(ByVal lr.pBits, Bytes(0), Size)
     Call Texture.UnlockRect(0)
    Exit Sub
 ErrHandler:
-    Debug.Print "Failed to generate texture, " & Err.Description
+    Call RegistrarError(Err.Number, Err.Description, "clsTexManager.SetTextureData", Erl)
 End Sub
 
 Public Function CreateTextureFromData(ByRef Bytes() As Byte, ByVal Size As Long, ByVal Width As Long, ByVal Height As Long) As Direct3DTexture8

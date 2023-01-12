@@ -91,18 +91,6 @@ Private Type dialog
     Sube As Byte
 End Type
 
-Public Type t_UITexture
-    Texture As Direct3DTexture8
-    ImageBuffer() As Byte
-    Width As Long
-    Height As Long
-    TextureWidth As Long
-    TextureHeight As Long
-    pixelSize As Long
-End Type
-
-Public UITexture As t_UITexture
-
 Public scroll_dialog_pixels_per_frame As Single
 
 ''
@@ -363,17 +351,6 @@ ErrHandler:
 
 End Sub
 
-Public Sub InitializeUI(ByVal Width As Long, ByVal Height As Long, ByVal pixelSize As Long)
-    Dim initSuccess As Boolean
-    UITexture.Height = Height
-    UITexture.Width = Width
-    initSuccess = InitializeBabel(UITexture.Width, UITexture.Height)
-    UITexture.TextureHeight = NextPowerOf2(Height)
-    UITexture.TextureWidth = NextPowerOf2(Width)
-    ReDim UITexture.ImageBuffer(UITexture.Height * UITexture.Width * pixelSize)
-    UITexture.pixelSize = pixelSize
-    Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
-End Sub
 Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
 
     Static SeRompe As Boolean
@@ -455,6 +432,7 @@ Public Sub Engine_Deinit()
     Set DirectD3D = Nothing
     Set DirectX = Nothing
     Set SpriteBatch = Nothing
+    Call RegistrarError(0, "debug log ", "clear sprite batch", 100)
 
     
     Exit Sub
@@ -1042,20 +1020,8 @@ Sub ShowNextFrame()
     Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
     Call RenderScreen(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY, HalfWindowTileWidth, HalfWindowTileHeight)
     Call DialogosClanes.Draw
+    Call DrawUITexture(UITexture)
     Call Group.RenderGroup
-    Dim updateGui As Boolean
-    updateGui = GetBebelImageBuffer(UITexture.ImageBuffer(LBound(UITexture.ImageBuffer)), UBound(UITexture.ImageBuffer))
-    If updateGui Then
-        If Not UITexture.Texture Is Nothing Then
-        Call SurfaceDB.SetTextureData(UITexture.Texture, UITexture.ImageBuffer, UBound(UITexture.ImageBuffer), UITexture.TextureWidth)
-        With SpriteBatch
-            Call .SetTexture(UITexture.Texture)
-            Call .SetAlpha(False)
-            Call .Draw(0, 0, UITexture.Width, UITexture.Height, COLOR_WHITE, , , UITexture.Width / UITexture.TextureWidth, UITexture.Height / UITexture.TextureHeight, 0)
-        End With
-        End If
-    End If
-    
     Exit Sub
 
 ShowNextFrame_Err:
@@ -2329,6 +2295,7 @@ On Error GoTo Start_Err
                 
                     Check_Keys
                     Moviendose = False
+                    Call UpdateUI
                     DrawMainInventory
 
                     If frmComerciar.visible Then
@@ -2357,6 +2324,7 @@ On Error GoTo Start_Err
                 Case e_state_connect_screen
                     If Not frmConnect.visible Then
                         frmConnect.Show
+                        frmDebugUI.Show
                         Dim patchNotes As String
                         patchNotes = GetPatchNotes()
                         If Not patchNotes = "" Then
@@ -2376,7 +2344,10 @@ On Error GoTo Start_Err
                     RenderCrearPJ 76, 82, 0, 0
 
             End Select
-
+            If frmDebugUI.visible Then
+                Call UpdateInspectorUI
+                Call engine.RenderDebugUI
+            End If
             Sound.Sound_Render
         Else
             Sleep 60&
@@ -3375,6 +3346,22 @@ RenderConnect_Err:
     Resume Next
     
 End Sub
+
+Public Sub RenderDebugUI()
+    On Error GoTo RenderDebugUI_Err
+    
+
+    Call Engine_BeginScene
+    Call DrawUITexture(DebugUITexture)
+    Call Engine_EndScene(Render_Connect_Rect, frmDebugUI.RenderArea.hwnd)
+
+    Exit Sub
+
+RenderDebugUI_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderConnect", Erl)
+    Resume Next
+End Sub
+
 
 Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
     
