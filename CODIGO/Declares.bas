@@ -145,6 +145,7 @@ Public Enum e_CdTypes
     e_potions = 3
     e_Ranged = 4
     e_Throwing = 5
+    e_Resurrection = 6
     [CDCount]
 End Enum
 
@@ -556,6 +557,7 @@ Public Enum eSkill
     Sastreria = 23
     Domar = 24
     
+    TargetableItem = 25
     Grupo = 90
     MarcaDeClan = 91
     MarcaDeGM = 92

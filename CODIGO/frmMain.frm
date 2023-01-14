@@ -4635,7 +4635,8 @@ Public Sub Form_Click()
 
                     End If
                     
-                    If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or UsingSkill = FundirMetal) Then
+                    If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or _
+                        UsingSkill = FundirMetal Or UsingSkill = eSkill.TargetableItem) Then
                         
                         If MainTimer.Check(TimersIndex.CastSpell) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
@@ -4643,13 +4644,8 @@ Public Sub Form_Click()
 
                             If CursoresGraficos = 0 Then
                                 frmMain.MousePointer = vbDefault
-
                             End If
-
-                            Exit Sub
-
                         End If
-
                     End If
                    
                     If SendSkill Then
@@ -4669,21 +4665,15 @@ Public Sub Form_Click()
 
                     If CursoresGraficos = 0 Then
                         frmMain.MousePointer = vbDefault
-
                     End If
                     
                     UsaLanzar = False
                     UsingSkill = 0
-
                 End If
-
             Else
                 Call WriteWarpChar("YO", UserMap, tX, tY)
-
             End If
-            
             If cartel Then cartel = False
-            
         End If
     
     ElseIf MouseBoton = vbLeftButton And ACCION1 = 1 Or MouseBoton = vbRightButton And ACCION2 = 1 Or MouseBoton = 4 And ACCION3 = 1 Then

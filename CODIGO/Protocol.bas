@@ -5070,7 +5070,7 @@ Private Sub HandleWorkRequestTarget()
     frmMain.MousePointer = 2
     Select Case UsingSkill
 
-        Case magia
+        Case magia, eSkill.TargetableItem
             Call FormParser.Parse_Form(frmMain, E_CAST)
             
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
