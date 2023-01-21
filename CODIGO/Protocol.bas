@@ -3071,10 +3071,9 @@ Private Sub HandleTextOverTile()
                 .Start = FrameTime
                 .Text = Text
                 .offset.x = 0
-                .offset.y = 0
+                .offset.y = OffsetY
                 .Duration = Duration
                 .Animated = Animated
-                .offset.y = OffsetY
             End With
         End With
     End If
@@ -3092,15 +3091,16 @@ Private Sub HandleTextCharDrop()
     On Error GoTo ErrHandler
     
     Dim Text      As String
-
     Dim charindex As Integer
-
     Dim Color     As Long
+    Dim duration As Integer
+    Dim Animated As Boolean
     
     Text = Reader.ReadString8()
     charindex = Reader.ReadInt16()
     Color = Reader.ReadInt32()
-    
+    duration = Reader.ReadInt16()
+    Animated = Reader.ReadBool()
     If charindex = 0 Then Exit Sub
 
     Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
@@ -3148,7 +3148,8 @@ Private Sub HandleTextCharDrop()
                 .Text = Text
                 .offset.x = OffsetX
                 .offset.y = OffsetY
-            
+                .duration = duration
+                .Animated = Animated
             End With
 
         End With
