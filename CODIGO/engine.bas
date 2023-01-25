@@ -251,7 +251,6 @@ Private Sub Engine_InitExtras()
         
     ' Inicializar textura compuesta
     Call InitComposedTexture
-    Call InitializeUI(Render_Main_Rect.Right, Render_Main_Rect.Bottom, 4)
     
     Exit Sub
 
@@ -1020,7 +1019,6 @@ Sub ShowNextFrame()
     Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
     Call RenderScreen(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY, HalfWindowTileWidth, HalfWindowTileHeight)
     Call DialogosClanes.Draw
-    Call DrawUITexture(UITexture)
     Call Group.RenderGroup
     Exit Sub
 
@@ -2295,7 +2293,6 @@ On Error GoTo Start_Err
                 
                     Check_Keys
                     Moviendose = False
-                    Call UpdateUI
                     DrawMainInventory
 
                     If frmComerciar.visible Then
@@ -2324,7 +2321,7 @@ On Error GoTo Start_Err
                 Case e_state_connect_screen
                     If Not frmConnect.visible Then
                         frmConnect.Show
-                        frmDebugUI.Show
+                        frmBabelLogin.Show
                         Dim patchNotes As String
                         patchNotes = GetPatchNotes()
                         If Not patchNotes = "" Then
@@ -2344,9 +2341,15 @@ On Error GoTo Start_Err
                     RenderCrearPJ 76, 82, 0, 0
 
             End Select
-            If frmDebugUI.visible Then
-                Call UpdateInspectorUI
-                Call engine.RenderDebugUI
+            If frmBabelLogin.visible Then
+                Call UpdateUI
+                Call engine.RenderLoginUI(57, 45, 0, 0)
+                If DebugInitialized Then
+                    If frmDebugUI.visible Then
+                        Call UpdateInspectorUI
+                        Call engine.RenderDebugUI
+                    End If
+                End If
             End If
             Sound.Sound_Render
         Else
@@ -3354,6 +3357,117 @@ Public Sub RenderDebugUI()
     Call Engine_BeginScene
     Call DrawUITexture(DebugUITexture)
     Call Engine_EndScene(Render_Connect_Rect, frmDebugUI.RenderArea.hwnd)
+
+    Exit Sub
+
+RenderDebugUI_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderConnect", Erl)
+    Resume Next
+End Sub
+
+Public Sub RenderLoginUI(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
+    On Error GoTo RenderDebugUI_Err
+    
+    Call Engine_BeginScene
+    Select Case UserMap
+        Case 1 ' ulla 45-43
+            tilex = 45
+            tiley = 43
+        Case 34 ' nix 22-75
+            tilex = 22
+            tiley = 75
+        Case 59 ' bander 49-43
+            tilex = 49
+            tiley = 43
+        Case 151 ' Arghal 38-41
+            tilex = 41
+            tiley = 50
+        Case 62 ' Lindos 63-40
+            tilex = 64
+            tiley = 44
+        Case 195 ' Arkhein 64-32
+            tilex = 76
+            tiley = 26
+        Case 112 ' Esperanza 50-45
+            tilex = 62
+            tiley = 51
+        Case 354 ' Polo 78-66
+            tilex = 33
+            tiley = 38
+        Case 559 ' Penthar 33-50
+            tilex = 34
+            tiley = 50
+        Case 188 ' Penthar 48-36
+            tilex = 48
+            tiley = 36
+    End Select
+    
+    
+    Call RenderScreen(tilex, tiley, PixelOffsetX, PixelOffsetY, HalfConnectTileWidth, HalfConnectTileHeight)
+        
+    Dim DefaultColor(3) As Long
+
+    Dim Color           As Long
+    Dim ColorGM(3) As RGBA
+    ColorGM(0) = RGBA_From_Comp(248, 107, 3)
+    ColorGM(1) = ColorGM(0)
+    ColorGM(2) = ColorGM(0)
+    ColorGM(3) = ColorGM(0)
+    intro = 1
+
+    If intro = 1 Then
+        Draw_Grh BodyData(773).Walk(3), 490, 333, 1, 0, COLOR_WHITE
+        Draw_Grh HeadData(118).Head(3), 490, 296, 1, 0, COLOR_WHITE
+            
+        Draw_Grh CascoAnimData(13).Head(3), 490, 294, 1, 0, COLOR_WHITE
+        Draw_Grh WeaponAnimData(6).WeaponWalk(3), 490, 333, 1, 0, COLOR_WHITE
+        Engine_Text_Render "Gulfas Morgolock", 454, 367, ColorGM, 1
+        Engine_Text_Render "<Creador del Mundo>", 443, 382, ColorGM, 1
+
+        RenderText "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 40, 20, COLOR_WHITE, 4, False
+    End If
+
+    LastOffsetX = ParticleOffsetX
+    LastOffsetY = ParticleOffsetY
+    
+    TextEfectAsistente = TextEfectAsistente + (15 * timerTicksPerFrame * Sgn(-1))
+
+    If TextEfectAsistente <= 1 Then
+        TextEfectAsistente = 0
+    End If
+
+    Engine_Text_Render TextAsistente, 510 - Engine_Text_Width(TextAsistente, True, 1) / 2, 287 - Engine_Text_Height(TextAsistente, True) + TextEfectAsistente, textcolorAsistente, 1, True, , 200
+
+    'Logo viejo
+    Dim TempGrh As grh, cc(3) As RGBA
+    
+    Call InitGrh(TempGrh, 1172)
+
+    Call RGBAList(cc, 255, 255, 255, 255)
+
+    Draw_Grh TempGrh, (frmConnect.ScaleWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 10, 0, 1, cc(), False
+
+    'Logo nuevo
+    'Marco
+    Call InitGrh(TempGrh, 1169)
+
+    Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
+
+    Call InitGrh(TempGrh, 16577)
+
+    Draw_Grh TempGrh, 810, 655, 0, 1, cc(), False
+
+    If FadeInAlpha > 0 Then
+        Call Engine_Draw_Box(0, 0, frmConnect.ScaleWidth, frmConnect.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
+        FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
+    End If
+    
+    FrameTime = GetTickCount()
+    'FramesPerSecCounter = FramesPerSecCounter + 1
+    timerElapsedTime = GetElapsedTime()
+    timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
+    Call DrawUITexture(UITexture)
+    Call Engine_EndScene(Render_Connect_Rect, frmBabelLogin.UIRenderArea.hwnd)
 
     Exit Sub
 

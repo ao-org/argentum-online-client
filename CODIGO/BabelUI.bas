@@ -1,35 +1,44 @@
 Attribute VB_Name = "BabelUI"
 Option Explicit
 
+
+Private Type LOGINDATA
+    user As Long
+    userLen As Long
+    password As Long
+    passwordLen As Long
+End Type
+
 Public Declare Function InitializeBabel Lib "BabelUI.dll" Alias "_InitializeBabel@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
 Public Declare Function GetBebelImageBuffer Lib "BabelUI.dll" Alias "_GetImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
 Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "_SendMouseEvent@16" (ByVal posX As Long, ByVal posY As Long, ByVal EvtType As Long, ByVal Button As Long)
 Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "_SendKeyEvent@20" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
 Public Declare Function NextPowerOf2 Lib "BabelUI.dll" Alias "_NextPowerOf2@4" (ByVal original As Long) As Long
-
+Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@8" (ByVal LoginCallback As Long, ByVal Closeclient As Long)
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" Alias "_CreateDebugWindow@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
 Public Declare Function GetDebugImageBuffer Lib "BabelUI.dll" Alias "_GetDebugImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
 Public Declare Sub SendDebugMouseEvent Lib "BabelUI.dll" Alias "_SendDebugMouseEvent@16" (ByVal posX As Long, ByVal posY As Long, ByVal EvtType As Long, ByVal Button As Long)
 
+
 Public Enum MouseEvent
-    kType_MouseMoved
-    kType_MouseDown
-    kType_MouseUp
+    kType_MouseMoved = 0
+    kType_MouseDown = 1
+    kType_MouseUp = 2
 End Enum
 
 Public Enum MouseButton
     kButton_None = 0
-    kButton_Left
-    kButton_Middle
-    kButton_Right
+    kButton_Left = 1
+    kButton_Middle = 2
+    kButton_Right = 3
 End Enum
 
 Public Enum KeyEventType
-    kType_KeyDown
-    kType_KeyUp
-    kType_RawKeyDown
-    kType_Char
+    kType_KeyDown = 0
+    kType_KeyUp = 1
+    kType_RawKeyDown = 2
+    kType_Char = 3
 End Enum
 
 Public Type t_UITexture
@@ -44,6 +53,21 @@ End Type
 
 Public UITexture As t_UITexture
 Public DebugUITexture As t_UITexture
+Public BabelInitialized As Boolean
+Public DebugInitialized As Boolean
+
+Public Function ConvertMouseButton(ByVal button As Integer) As MouseButton
+    Select Case button
+        Case vbLeftButton
+            ConvertMouseButton = kButton_Left
+        Case vbRightButton
+            ConvertMouseButton = kButton_Right
+        Case vbMiddleButton
+            ConvertMouseButton = kButton_Middle
+        Case Else
+            ConvertMouseButton = kButton_None
+    End Select
+End Function
 
 Public Sub InitializeUI(ByVal Width As Long, ByVal Height As Long, ByVal pixelSize As Long)
 On Error GoTo InitializeUI_Err
@@ -56,6 +80,8 @@ On Error GoTo InitializeUI_Err
 112 ReDim UITexture.ImageBuffer(UITexture.Height * UITexture.Width * pixelSize)
 114 UITexture.pixelSize = pixelSize
 116 Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
+118 BabelInitialized = True
+    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB)
     Exit Sub
 InitializeUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.InitializeUI", Erl)
@@ -76,6 +102,7 @@ On Error GoTo InitializeInspectorUI_Err
 118    Call RegistrarError(102, "texture undefined ", "BabelUI.InitializeInspectorUI", 102)
        Exit Sub
     End If
+    DebugInitialized = True
     Exit Sub
 InitializeInspectorUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.InitializeInspectorUI", Erl)
@@ -134,4 +161,23 @@ On Error GoTo UpdateInspectorUI_Err
 UpdateInspectorUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.UpdateInspectorUI", Erl)
 End Sub
+
+Private Function GetStringFromPtr(ByVal Ptr As Long, ByVal size As Long) As String
+    Dim Buffer() As Byte
+    ReDim Buffer(0 To (size - 1)) As Byte
+    CopyMemory Buffer(0), ByVal Ptr, size
+    GetStringFromPtr = StrConv(Buffer, vbUnicode)
+End Function
+
+Public Sub LoginCB(ByRef LoginValue As LOGINDATA)
+    Dim user, password As String
+    user = GetStringFromPtr(LoginValue.user, LoginValue.userLen)
+    password = GetStringFromPtr(LoginValue.password, LoginValue.passwordLen)
+    Call DoLogin(user, password, False)
+End Sub
+
+Public Sub CloseClientCB()
+    Call Closeclient
+End Sub
+
 
