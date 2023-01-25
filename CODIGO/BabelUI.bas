@@ -15,6 +15,7 @@ Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "_SendMouseEvent@
 Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "_SendKeyEvent@20" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
 Public Declare Function NextPowerOf2 Lib "BabelUI.dll" Alias "_NextPowerOf2@4" (ByVal original As Long) As Long
 Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@8" (ByVal LoginCallback As Long, ByVal Closeclient As Long)
+Public Declare Sub SendErrorMessage Lib "BabelUI.dll" Alias "_SendErrorMessage@12" (ByVal Message As String, ByVal MessageType As Long, ByVal Action As Long)
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" Alias "_CreateDebugWindow@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
 Public Declare Function GetDebugImageBuffer Lib "BabelUI.dll" Alias "_GetDebugImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
@@ -171,9 +172,14 @@ End Function
 
 Public Sub LoginCB(ByRef LoginValue As LOGINDATA)
     Dim user, password As String
-    user = GetStringFromPtr(LoginValue.user, LoginValue.userLen)
-    password = GetStringFromPtr(LoginValue.password, LoginValue.passwordLen)
-    Call DoLogin(user, password, False)
+    If LoginValue.userLen > 0 Then
+        user = GetStringFromPtr(LoginValue.user, LoginValue.userLen)
+    End If
+    If LoginValue.passwordLen > 0 Then
+        password = GetStringFromPtr(LoginValue.password, LoginValue.passwordLen)
+    End If
+    'Call DoLogin(user, password, False)
+    Call SendErrorMessage("test", 57, 509)
 End Sub
 
 Public Sub CloseClientCB()
