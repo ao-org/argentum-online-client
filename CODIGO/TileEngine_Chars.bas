@@ -528,11 +528,25 @@ ErrorHandler:
 
 End Function
 
-Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1, Optional ByVal EsSpell As Boolean = False)
+Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1, Optional ByVal IsSpell As Boolean = False)
     
     On Error GoTo Char_Dialog_Set_Err
     
-    
+    Dim Slot As Integer
+    Dim i    As Long
+    Slot = BinarySearch(char_index)
+    If Slot < 0 Then
+        If dialogCount = MAX_DIALOGS Then Exit Sub  'Out of space! Should never happen....
+        'We need to add it. Get insertion index and move list    backwards.
+        Slot = Not Slot
+        For i = dialogCount To Slot + 1 Step -1
+            dialogs(i) = dialogs(i - 1)
+        Next i
+        dialogCount = dialogCount + 1
+    End If
+    If dialogs(Slot).forceCompleteTime And Not IsSpell Then
+        Exit Sub
+    End If
     If Char_Check(char_index) Then
         charlist(char_index).dialog = char_dialog
         charlist(char_index).dialog_color = char_dialog_color
@@ -541,42 +555,23 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
         charlist(char_index).dialog_scroll = True
         charlist(char_index).dialog_offset_counter_y = -(IIf(BodyData(charlist(char_index).iBody).HeadOffset.y = 0, -32, BodyData(charlist(char_index).iBody).HeadOffset.y) / 2)
         charlist(char_index).AlphaText = 255
-
     End If
 
-    Dim Slot As Integer
-
-    Dim i    As Long
-    
-    Slot = BinarySearch(char_index)
-    
-    If Slot < 0 Then
-        If dialogCount = MAX_DIALOGS Then Exit Sub  'Out of space! Should never happen....
-        
-        'We need to add it. Get insertion index and move list backwards.
-        Slot = Not Slot
-        
-        For i = dialogCount To Slot + 1 Step -1
-            dialogs(i) = dialogs(i - 1)
-        Next i
-        
-        dialogCount = dialogCount + 1
-
-    End If
-    
-   
     With dialogs(Slot)
         .startTime = FrameTime
-        If EsSpell Then
-             .lifeTime = 3500
+        .forceCompleteTime = False
+        If IsSpell Then
+             If charlist(char_index).Invisible Then
+                .lifeTime = 500
+                .forceCompleteTime = True
+             Else
+                .lifeTime = 3500
+             End If
         Else
             .lifeTime = 3000 + MS_PER_CHAR * Len(char_dialog)
         End If
         .charindex = char_index
     End With
-
-    
-    
     Exit Sub
 
 Char_Dialog_Set_Err:

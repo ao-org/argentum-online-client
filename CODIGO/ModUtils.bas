@@ -1497,89 +1497,72 @@ GuardarOpciones_Err:
     
 End Sub
 
+Public Sub WriteConsoleUserChat(ByVal Text As String, ByVal userName As String, ByVal red As Byte, ByVal green As Byte, ByVal blue As Byte, ByVal userStatus As Integer, ByVal Privileges As Integer)
+    Dim NameRed   As Byte
+    Dim NameGreen As Byte
+    Dim NameBlue  As Byte
+    If Privileges > 0 Then
+        NameRed = ColoresPJ(Privileges).r
+        NameGreen = ColoresPJ(Privileges).G
+        NameBlue = ColoresPJ(Privileges).b
+    Else
+        Select Case userStatus
+            Case 0: ' Criminal
+                NameRed = ColoresPJ(23).r
+                NameGreen = ColoresPJ(23).G
+                NameBlue = ColoresPJ(23).b
+            Case 1: ' Ciudadano
+                NameRed = ColoresPJ(20).r
+                NameGreen = ColoresPJ(20).G
+                NameBlue = ColoresPJ(20).b
+            Case 2: ' Caos
+                NameRed = ColoresPJ(24).r
+                NameGreen = ColoresPJ(24).G
+                NameBlue = ColoresPJ(24).b
+            Case 3: ' Armada
+                NameRed = ColoresPJ(21).r
+                NameGreen = ColoresPJ(21).G
+                NameBlue = ColoresPJ(21).b
+            Case 4: ' Conciclio
+                NameRed = ColoresPJ(25).r
+                NameGreen = ColoresPJ(25).G
+                NameBlue = ColoresPJ(25).b
+            Case 5: ' Consejo
+                NameRed = ColoresPJ(22).r
+                NameGreen = ColoresPJ(22).G
+                NameBlue = ColoresPJ(22).b
+        End Select
+    End If
+    Dim Pos As Integer
+    Pos = InStr(userName, "<")
+    If Pos = 0 Then Pos = LenB(userName) + 2
+    Dim name As String
+    name = Left$(userName, Pos - 2)
+
+    Text = Trim$(Text)
+    If LenB(userName) <> 0 And LenB(Text) > 0 Then
+        Call AddtoRichTextBox2(frmMain.RecTxt, "[" & name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
+        Call AddtoRichTextBox2(frmMain.RecTxt, Text, red, green, blue, False, False, False, rtfLeft)
+    End If
+    Exit Sub
+End Sub
 Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText As String, ByVal red As Byte, ByVal green As Byte, ByVal blue As Byte)
     
     On Error GoTo WriteChatOverHeadInConsole_Err
     
-
     Dim NameRed   As Byte
-
     Dim NameGreen As Byte
-
     Dim NameBlue  As Byte
-    
     If red = 20 And green = 226 And blue = 157 Then
         Exit Sub
-
     End If
-    
     With charlist(charindex)
-
-        Select Case .priv
-            ' Usuario normal
-            Case 0
-                If .status = 0 Then ' Criminal
-                    NameRed = ColoresPJ(23).r
-                    NameGreen = ColoresPJ(23).G
-                    NameBlue = ColoresPJ(23).b
-                ElseIf .status = 1 Then ' Ciudadano
-                    NameRed = ColoresPJ(20).r
-                    NameGreen = ColoresPJ(20).G
-                    NameBlue = ColoresPJ(20).b
-                ElseIf .status = 2 Then ' Caos
-                    NameRed = ColoresPJ(24).r
-                    NameGreen = ColoresPJ(24).G
-                    NameBlue = ColoresPJ(24).b
-                ElseIf .status = 3 Then ' Armada
-                    NameRed = ColoresPJ(21).r
-                    NameGreen = ColoresPJ(21).G
-                    NameBlue = ColoresPJ(21).b
-                ElseIf .status = 4 Then ' Conciclio
-                    NameRed = ColoresPJ(25).r
-                    NameGreen = ColoresPJ(25).G
-                    NameBlue = ColoresPJ(25).b
-                ElseIf .status = 5 Then ' Consejo
-                    NameRed = ColoresPJ(22).r
-                    NameGreen = ColoresPJ(22).G
-                    NameBlue = ColoresPJ(22).b
-                End If
-
-            ' Consejeros, SemiDioses, Dioses y Admin (GM), Concilios y consejos
-            Case Else
-                NameRed = ColoresPJ(.priv).r
-                NameGreen = ColoresPJ(.priv).G
-                NameBlue = ColoresPJ(.priv).b
-            
-        End Select
-
-        Dim Pos As Integer
-
-        Pos = InStr(.nombre, "<")
-            
-        If Pos = 0 Then Pos = LenB(.nombre) + 2
-        
-        Dim Name As String
-
-        Name = Left$(.nombre, Pos - 2)
-       
-        'Si el npc tiene nombre lo escribimos en la consola
-        ChatText = Trim$(ChatText)
-
-        If LenB(.nombre) <> 0 And LenB(ChatText) > 0 Then
-            Call AddtoRichTextBox2(frmMain.RecTxt, "[" & Name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
-            Call AddtoRichTextBox2(frmMain.RecTxt, ChatText, red, green, blue, False, False, False, rtfLeft)
-        End If
-
-
+        Call WriteConsoleUserChat(ChatText, .nombre, red, green, blue, .status, .priv)
     End With
-    
-    
     Exit Sub
-
 WriteChatOverHeadInConsole_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.WriteChatOverHeadInConsole", Erl)
     Resume Next
-    
 End Sub
 
 

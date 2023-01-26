@@ -194,6 +194,7 @@ Private Enum ServerPacketID
     TextOverChar
     TextOverTile
     TextCharDrop
+    ConsoleCharText
     FlashScreen
     AlquimistaObj
     ShowAlquimiaForm
@@ -892,6 +893,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleTextOverTile
         Case ServerPacketID.TextCharDrop
             Call HandleTextCharDrop
+        Case ServerPacketID.ConsoleCharText
+            Call HandleConsoleCharText
         Case ServerPacketID.FlashScreen
             Call HandleFlashScreen
         Case ServerPacketID.AlquimistaObj
@@ -3102,43 +3105,31 @@ Private Sub HandleTextCharDrop()
     duration = Reader.ReadInt16()
     Animated = Reader.ReadBool()
     If charindex = 0 Then Exit Sub
-
     Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
     
     With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
-        
         OffsetX = .MoveOffsetX + .Body.HeadOffset.x
         OffsetY = .MoveOffsetY + .Body.HeadOffset.y
-
     End With
     
     If InMapBounds(x, y) Then
-    
         With MapData(x, y)
             Dim Index As Integer
-            
             If UBound(.DialogEffects) = 0 Then
                 ReDim .DialogEffects(1 To 1)
-                
                 Index = 1
             Else
-
                 For Index = 1 To UBound(.DialogEffects)
-
                     If .DialogEffects(Index).Text = vbNullString Then
                         Exit For
-
                     End If
-
                 Next
-                
                 If Index > UBound(.DialogEffects) Then
                     ReDim .DialogEffects(1 To UBound(.DialogEffects) + 1)
 
                 End If
-
             End If
             
             With .DialogEffects(Index)
@@ -3151,20 +3142,33 @@ Private Sub HandleTextCharDrop()
                 .duration = duration
                 .Animated = Animated
             End With
-
         End With
-        
     End If
-
     Exit Sub
     
 ErrHandler:
-
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextCharDrop", Erl)
-    
-
 End Sub
 
+Private Sub HandleConsoleCharText()
+    Dim Text      As String
+    Dim Color     As Long
+    Dim SourceName As String
+    Dim SourceStatus As Integer
+    Dim Privileges As Integer
+    Text = Reader.ReadString8()
+    Color = Reader.ReadInt32()
+    SourceName = Reader.ReadString8()
+    SourceStatus = Reader.ReadInt16()
+    Privileges = Reader.ReadInt16()
+    If Privileges > 0 Then
+        Privileges = Log(Privileges) / Log(2)
+    End If
+    Dim TextColor As RGBA
+    TextColor = RGBA_From_vbColor(Color)
+    
+    Call WriteConsoleUserChat(Text, SourceName, TextColor.r, TextColor.G, TextColor.b, SourceStatus, Privileges)
+End Sub
 ''
 ' Handles the ConsoleMessage message.
 
