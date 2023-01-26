@@ -399,8 +399,14 @@ Private Sub cmdIngresar_Click()
                 IPdelServidor = IPdelServidorLogin
                 PuertoDelServidor = 7667
             #Else
-                'When not in DEVELOPER mode we read the ip and port from the list
-                Call SetDefaultServer
+                #If DEBUGGING = 0 Then
+                    'When not in DEVELOPER mode we read the ip and port from the list
+                    Call SetDefaultServer
+                #Else
+                    'Staging, set the ip and port for pymmo
+                    IPdelServidorLogin = "45.235.98.31"
+                    PuertoDelServidorLogin = 11814
+                #End If
             #End If
         #End If
 
