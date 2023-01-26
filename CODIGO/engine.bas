@@ -88,6 +88,7 @@ Private Type dialog
     charindex   As Integer
     Color       As Long
     renderable  As Boolean
+    forceCompleteTime  As Boolean
     Sube As Byte
 
 End Type
