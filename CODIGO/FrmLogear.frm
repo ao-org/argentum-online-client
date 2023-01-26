@@ -392,21 +392,22 @@ Private Sub cmdIngresar_Click()
         #End If
         
         #If PYMMO = 1 Then
+            'DEVELOPER mode is used to connect to localhost
             #If DEVELOPER = 1 Then
                 IPdelServidorLogin = "127.0.0.1"
                 PuertoDelServidorLogin = 4000
                 IPdelServidor = IPdelServidorLogin
                 PuertoDelServidor = 7667
             #Else
-                'Production and staging use this path
                 #If DEBUGGING = 0 Then
+                    'When not in DEVELOPER mode we read the ip and port from the list
                     Call SetDefaultServer
                 #Else
+                    'Staging, set the ip and port for pymmo
                     IPdelServidorLogin = "45.235.98.31"
                     PuertoDelServidorLogin = 11814
                 #End If
             #End If
-            
         #End If
 
         If CheckUserDataLoged() = True Then

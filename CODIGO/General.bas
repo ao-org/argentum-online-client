@@ -1172,19 +1172,19 @@ On Error GoTo Main_Err
 
     End If
         
-    servers_login_connections(1) = "45.235.98.187:6500"
-    servers_login_connections(2) = "45.235.98.187:6502"
-    servers_login_connections(3) = "45.235.98.185:6500"
-    servers_login_connections(4) = "45.235.98.185:6502"
-    servers_login_connections(5) = "45.235.98.186:6500"
-    servers_login_connections(6) = "45.235.98.186:6502"
+    servers_login_connections(1) = "20.195.162.204:6500"
+    servers_login_connections(2) = "20.195.162.204:6502"
+    servers_login_connections(3) = "20.195.162.204:6500"
+    servers_login_connections(4) = "20.195.162.204:6502"
+    servers_login_connections(5) = "20.195.162.204:6500"
+    servers_login_connections(6) = "20.195.162.204:6502"
     
-    servers_world_connections(1) = "45.235.98.31:6501"
-    servers_world_connections(2) = "45.235.98.184:6501"
-    servers_world_connections(3) = "45.235.98.34:6501"
-    servers_world_connections(4) = "45.235.98.186:6501"
-    servers_world_connections(5) = "138.99.6.141:6501"
-    servers_world_connections(6) = "45.235.98.185:6501"
+    servers_world_connections(1) = "20.195.162.204:6501"
+    servers_world_connections(2) = "20.195.162.204:6501"
+    servers_world_connections(3) = "20.195.162.204:6501"
+    servers_world_connections(4) = "20.195.162.204:6501"
+    servers_world_connections(5) = "20.195.162.204:6501"
+    servers_world_connections(6) = "20.195.162.204:6501"
     
     Call SetDefaultServer
     Call ComprobarEstado
