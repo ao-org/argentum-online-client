@@ -88,7 +88,7 @@ Private Type dialog
     charindex   As Integer
     Color       As Long
     renderable  As Boolean
-    forceCompleteTime  As Boolean
+    MinChatTime As Integer
     Sube As Byte
 
 End Type
