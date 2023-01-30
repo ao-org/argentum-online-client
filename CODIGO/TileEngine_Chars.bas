@@ -528,7 +528,9 @@ ErrorHandler:
 
 End Function
 
-Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1, Optional ByVal IsSpell As Boolean = False)
+Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, _
+                           ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1, _
+                           Optional ByVal IsSpell As Boolean = False, Optional ByVal MinChatTime As Integer = 0, Optional ByVal MaxChatTime As Integer = 0)
     
     On Error GoTo Char_Dialog_Set_Err
     
@@ -544,26 +546,29 @@ Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As Str
         Next i
         dialogCount = dialogCount + 1
     End If
-    If dialogs(Slot).forceCompleteTime And Not IsSpell Then
-        Exit Sub
-    End If
-    If Char_Check(char_index) Then
-        charlist(char_index).dialog = char_dialog
-        charlist(char_index).dialog_color = char_dialog_color
-        charlist(char_index).dialog_life = char_dialog_life
-        charlist(char_index).dialog_font_index = font_index
-        charlist(char_index).dialog_scroll = True
-        charlist(char_index).dialog_offset_counter_y = -(IIf(BodyData(charlist(char_index).iBody).HeadOffset.y = 0, -32, BodyData(charlist(char_index).iBody).HeadOffset.y) / 2)
-        charlist(char_index).AlphaText = 255
-    End If
-
     With dialogs(Slot)
+        If Not IsSpell Then
+            Dim ElapsedTime As Long
+            ElapsedTime = FrameTime - .startTime
+            If .MinChatTime > ElapsedTime Then
+                Exit Sub
+            End If
+        End If
+        If Char_Check(char_index) Then
+            charlist(char_index).dialog = char_dialog
+            charlist(char_index).dialog_color = char_dialog_color
+            charlist(char_index).dialog_life = char_dialog_life
+            charlist(char_index).dialog_font_index = font_index
+            charlist(char_index).dialog_scroll = True
+            charlist(char_index).dialog_offset_counter_y = -(IIf(BodyData(charlist(char_index).iBody).HeadOffset.y = 0, -32, BodyData(charlist(char_index).iBody).HeadOffset.y) / 2)
+            charlist(char_index).AlphaText = 255
+        End If
+    
         .startTime = FrameTime
-        .forceCompleteTime = False
+        .MinChatTime = MinChatTime
         If IsSpell Then
-             If charlist(char_index).Invisible Then
-                .lifeTime = 500
-                .forceCompleteTime = True
+             If MaxChatTime > 0 Then
+                .lifeTime = MaxChatTime
              Else
                 .lifeTime = 3500
              End If

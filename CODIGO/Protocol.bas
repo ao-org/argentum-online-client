@@ -2884,35 +2884,27 @@ Private Sub HandleChatOverHead()
     On Error GoTo ErrHandler
 
     Dim chat       As String
-
     Dim charindex  As Integer
-
     Dim r          As Byte
-
     Dim G          As Byte
-
     Dim B          As Byte
-
     Dim colortexto As Long
-
     Dim QueEs      As String
-
     Dim EsSpell    As Boolean
-    
     Dim x As Byte, y As Byte
+    Dim MinChatTime As Integer
+    Dim MaxChatTime As Integer
     chat = Reader.ReadString8()
     charindex = Reader.ReadInt16()
-    
     r = Reader.ReadInt8()
     G = Reader.ReadInt8()
     B = Reader.ReadInt8()
-    
     colortexto = vbColor_2_Long(Reader.ReadInt32())
     EsSpell = Reader.ReadBool()
-    
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
-    
+    MinChatTime = Reader.ReadInt16()
+    MaxChatTime = Reader.ReadInt16()
     If x + y > 0 Then
         With charlist(charindex)
             If .Invisible And charindex <> UserCharIndex Then
@@ -2940,14 +2932,11 @@ Private Sub HandleChatOverHead()
     
     Select Case QueEs
         Case "NPCDESC"
-            
             chat = NpcData(text).desc
             copiar = False
-                        
             If npcs_en_render And tutorial_index <= 0 Then
                 Dim icon As Long
                 icon = HeadData(NpcData(Text).Head).Head(3).GrhIndex
-                
                 'Si icon es 0 quiere decir que no tiene cabeza, por ende renderizo body
                 If icon = 0 Then
                     icon = GrhData(BodyData(NpcData(Text).Body).Walk(3).GrhIndex).Frames(1)
@@ -2955,57 +2944,41 @@ Private Sub HandleChatOverHead()
                 Else
                     Call mostrarCartel(Split(NpcData(Text).name, " <")(0), NpcData(Text).desc, icon, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, -20, 439, 128, 128)
                 End If
-                
             End If
-            
         Case "PMAG"
             chat = HechizoData(ReadField(2, chat, Asc("*"))).PalabrasMagicas
             If charlist(UserCharIndex).Muerto = True Then chat = ""
             copiar = False
             duracion = 20
-            
         Case "QUESTFIN"
             chat = QuestList(ReadField(2, chat, Asc("*"))).DescFinal
             copiar = False
             duracion = 20
-            
         Case "QUESTNEXT"
             chat = QuestList(ReadField(2, chat, Asc("*"))).NextQuest
             copiar = False
             duracion = 20
-            
             If LenB(chat) = 0 Then
                 chat = "Ya has completado esa misión para mí."
-
             End If
-            
         Case "NOCONSOLA" ' El chat no sale en la consola
             chat = ReadField(2, chat, Asc("*"))
             copiar = False
             duracion = 20
-        
     End Select
    'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
     If charlist(charindex).active = 1 Then
-        Call Char_Dialog_Set(charindex, chat, ColorTexto, duracion, 30, 1, EsSpell)
+        Call Char_Dialog_Set(charindex, chat, colortexto, duracion, 30, 1, EsSpell, MinChatTime, MaxChatTime)
     End If
     
     If charlist(charindex).EsNpc = False Then
         If CopiarDialogoAConsola = 1 And copiar Then
-    
             Call WriteChatOverHeadInConsole(charindex, chat, r, G, B)
-
         End If
-
     End If
-
     Exit Sub
-    
 ErrHandler:
-
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHead", Erl)
-    
-
 End Sub
 
 Private Sub HandleTextOverChar()
