@@ -183,7 +183,7 @@ Public NameMaps(1 To 1000) As NameMapas
 Public Type ObjDatas
 
     GrhIndex As Long ' Indice del grafico que representa el obj
-    Name As String
+    name As String
     MinDef As Integer
     MaxDef As Integer
     MinHit As Integer
@@ -218,7 +218,7 @@ End Type
 
 Public Type NpcDatas
 
-    Name As String
+    name As String
     desc As String
     Body As Integer
     Hp As Long
@@ -251,7 +251,7 @@ End Type
 
 Public Type NameMapas
 
-    Name As String ' Indice del grafico que representa el obj
+    name As String ' Indice del grafico que representa el obj
     desc As String
 
 End Type
@@ -1201,7 +1201,7 @@ Public Sub CargarCuentasGuardadas()
 
 End Sub
 
-Public Sub GuardarCuenta(ByVal Name As String, ByVal Password As String)
+Public Sub GuardarCuenta(ByVal name As String, ByVal Password As String)
 
     Dim Archivo As String
         Archivo = App.path & "\..\Recursos\OUTPUT\Cuenta.ini"
@@ -1209,7 +1209,7 @@ Public Sub GuardarCuenta(ByVal Name As String, ByVal Password As String)
     ' Si el parametro Password no es vbNullString, encriptamos el string
     If LenB(Password) Then Password = EncryptStr(Password, 9256)
     
-    Call WriteVar(Archivo, "CUENTA", "Nombre", Name)
+    Call WriteVar(Archivo, "CUENTA", "Nombre", name)
     Call WriteVar(Archivo, "CUENTA", "Password", Password)
     
     Call CargarCuentasGuardadas
