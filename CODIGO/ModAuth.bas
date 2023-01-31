@@ -813,11 +813,8 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleDeleteCharRequest", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    
     Dim Data() As Byte
-    
     frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
-    
     frmConnect.AuthSocket.GetData Data, vbByte, 2
     
     If Data(0) = &H1 And Data(1) = &H6 Then
@@ -826,15 +823,20 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
         Auth_state = e_state.Idle
     Else
-       Call DebugPrint("ERROR", 255, 0, 0, True)
+        Call DebugPrint("DELETE_PC_REQUEST_ERROR", 255, 0, 0, True)
+        frmDeleteChar.Hide
         frmConnect.AuthSocket.GetData Data, vbByte, 4
         Select Case MakeInt(Data(3), Data(2))
             Case 1
-                Call TextoAlAsistente("Invalid account")
+                Call MsgBox("Invalid account.", vbOKOnly)
             Case 3
-                Call TextoAlAsistente("Database error")
+                Call MsgBox("Database error.", vbOKOnly)
             Case 51
-                Call TextoAlAsistente("You are not the character owner")
+                Call MsgBox("You are not the character owner.", vbOKOnly)
+            Case 65
+                Call MsgBox("Cannot delete character listed in MAO.", vbOKOnly)
+            Case Else
+                Call MsgBox("Unknown error", vbOKOnly)
         End Select
     End If
     Auth_state = e_state.Idle
