@@ -45,9 +45,15 @@ Public Enum e_operation
     transfercharacter
 End Enum
 
+Public Type t_CreateAccountInfo
+    Email As String
+    Password As String
+    Name As String
+    Surname As String
+End Type
 
+Public NewAccountData As t_CreateAccountInfo
 Public SessionOpened As Boolean
-
 Public Auth_state As e_state
 Public LoginOperation As e_operation
 Public public_key() As Byte
@@ -616,7 +622,7 @@ Public Sub SendSignUpRequest()
     
     json = ""
     
-    json = "{ ""language"": ""english"", ""password"": """ & frmNewAccount.txtPassword & """, "
+    json = "{ ""language"": ""english"", ""password"": """ & NewAccountData.Password & """, "
     json = json & """passwordrecovery"": [{""secretanswer1"": ""Satanas"","
     json = json & """secretanswer2"": ""Rojo"", "
     json = json & """secretquestion1"": ""Cual es el nombre de mi primer mascota?"","
@@ -624,12 +630,12 @@ Public Sub SendSignUpRequest()
     
     json = json & """personal"":[{"
     json = json & """dob"": ""23-12-1990"","
-    json = json & """email"": """ & frmNewAccount.txtUsername & ""","
-    json = json & """firstname"": """ & frmNewAccount.txtName & ""","
-    json = json & """lastname"": """ & frmNewAccount.txtSurname & ""","
-    json = json & """mobile"": """ & frmNewAccount.txtSurname & ""","
-    json = json & """pob"": """ & frmNewAccount.txtSurname & """}],"
-    json = json & """username"": """ & frmNewAccount.txtUsername & """}"
+    json = json & """email"": """ & NewAccountData.Email & ""","
+    json = json & """firstname"": """ & NewAccountData.Name & ""","
+    json = json & """lastname"": """ & NewAccountData.Surname & ""","
+    json = json & """mobile"": """ & NewAccountData.Surname & ""","
+    json = json & """pob"": """ & NewAccountData.Surname & """}],"
+    json = json & """username"": """ & NewAccountData.Name & """}"
     
     
     Dim encrypted_json() As Byte

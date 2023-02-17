@@ -60,3 +60,17 @@ Public Sub SetActiveServer(ByVal ip As String, ByVal port As String)
     #End If
 End Sub
 
+Public Sub CreateAccount(ByVal Name As String, ByVal Surname As String, ByVal Email As String, ByVal Password As String)
+    NewAccountData.Name = Name
+    NewAccountData.Surname = Surname
+    NewAccountData.Email = Email
+    NewAccountData.Password = Password
+#If PYMMO = 1 Then
+    ModAuth.LoginOperation = e_operation.SignUp
+    Call connectToLoginServer
+#Else
+    CuentaEmail = Email
+    CuentaPassword = Password
+    Call LoginOrConnect(CreandoCuenta)
+#End If
+End Sub

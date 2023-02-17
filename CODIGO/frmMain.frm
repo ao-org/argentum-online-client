@@ -5196,9 +5196,9 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
 
     If (Error = 10061) Then
         If frmConnect.Visible Then
-            Call MsgBox("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.")
+            Call DisplayError("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.", "connection-failure")
         Else
-            Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
+            Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
         End If
     Else
     
@@ -5206,8 +5206,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
         ShowFPS.Enabled = False
 
         If (Error <> 0 And Error <> 2) Then
-            Call MsgBox("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", vbApplicationModal + vbInformation + vbOKOnly + vbDefaultButton1, "Error al conectar")
-
+            Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
             
             If frmConnect.Visible Then
                 Connected = False

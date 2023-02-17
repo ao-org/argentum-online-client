@@ -7,6 +7,7 @@ Private Type LOGINDATA
     userLen As Long
     password As Long
     passwordLen As Long
+    storeCredentials As Long
 End Type
 
 Public Declare Function InitializeBabel Lib "BabelUI.dll" Alias "_InitializeBabel@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -15,7 +16,8 @@ Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "_SendMouseEvent@
 Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "_SendKeyEvent@20" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
 Public Declare Function NextPowerOf2 Lib "BabelUI.dll" Alias "_NextPowerOf2@4" (ByVal original As Long) As Long
 Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@8" (ByVal LoginCallback As Long, ByVal Closeclient As Long)
-Public Declare Sub SendErrorMessage Lib "BabelUI.dll" Alias "_SendErrorMessage@12" (ByVal Message As String, ByVal MessageType As Long, ByVal Action As Long)
+Public Declare Sub SendErrorMessage Lib "BabelUI.dll" Alias "_SendErrorMessage@12" (ByVal Message As String, ByVal Localize As Long, ByVal Action As Long)
+Public Declare Sub SetActiveScreen Lib "BabelUI.dll" Alias "_SetActiveScreen@4" (ByVal screenName As String)
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" Alias "_CreateDebugWindow@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
 Public Declare Function GetDebugImageBuffer Lib "BabelUI.dll" Alias "_GetDebugImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
@@ -178,12 +180,17 @@ Public Sub LoginCB(ByRef LoginValue As LOGINDATA)
     If LoginValue.passwordLen > 0 Then
         password = GetStringFromPtr(LoginValue.password, LoginValue.passwordLen)
     End If
-    'Call DoLogin(user, password, False)
-    Call SendErrorMessage("test", 57, 509)
+    Call DoLogin(user, Password, LoginValue.storeCredentials > 0)
 End Sub
 
 Public Sub CloseClientCB()
     Call Closeclient
 End Sub
 
-
+Public Sub DisplayError(ByVal Message As String, ByVal LocalizationStr As String)
+    If BabelInitialized Then
+        Call SendErrorMessage(LocalizationStr, 1, 0)
+    Else
+        Call MsgBox(Message)
+    End If
+End Sub

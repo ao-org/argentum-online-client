@@ -250,11 +250,11 @@ Private cBotonCerrar As clsGraphicalButton
 Private Sub btnCancel_Click()
     Unload Me
 End Sub
-#If PYMMO = 1 Then
+
+
 Private Sub btnCreateAccount_Click()
     If Val(txtCaptcha.Text) = equals Then
-        ModAuth.LoginOperation = e_operation.SignUp
-        Call connectToLoginServer
+        Call ModLogin.CreateAccount(frmNewAccount.txtName, frmNewAccount.txtSurname, frmNewAccount.txtUsername, frmNewAccount.txtPassword)
         Call calculateCaptcha
     Else
         Call calculateCaptcha
@@ -262,15 +262,6 @@ Private Sub btnCreateAccount_Click()
         lblCaptchaError.Visible = True
     End If
 End Sub
-#End If
-#If PYMMO = 0 Then
-Private Sub btnCreateAccount_Click()
-    CuentaEmail = txtUsername.Text
-    CuentaPassword = txtPassword.Text
-    
-    Call LoginOrConnect(CreandoCuenta)
-End Sub
-#End If
 
 Private Sub btnRestorePassword_Click()
     Unload Me

@@ -3453,17 +3453,12 @@ Public Sub RenderLoginUI(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
 
-    Call InitGrh(TempGrh, 16577)
-
-    Draw_Grh TempGrh, 810, 655, 0, 1, cc(), False
-
     If FadeInAlpha > 0 Then
         Call Engine_Draw_Box(0, 0, frmConnect.ScaleWidth, frmConnect.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
     
     FrameTime = GetTickCount()
-    'FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
     Call DrawUITexture(UITexture)
