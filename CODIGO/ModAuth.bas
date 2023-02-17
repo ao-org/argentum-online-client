@@ -635,7 +635,7 @@ Public Sub SendSignUpRequest()
     json = json & """lastname"": """ & NewAccountData.Surname & ""","
     json = json & """mobile"": """ & NewAccountData.Surname & ""","
     json = json & """pob"": """ & NewAccountData.Surname & """}],"
-    json = json & """username"": """ & NewAccountData.Name & """}"
+    json = json & """username"": """ & NewAccountData.Email & """}"
     
     
     Dim encrypted_json() As Byte
