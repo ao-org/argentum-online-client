@@ -987,22 +987,22 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
              
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/")
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/", False, True)
 
                 End If
 
                 If ClickEnAsistenteRandom = 2 Then
-                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!")
+                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!", False, True)
 
                 End If
 
                 If ClickEnAsistenteRandom = 3 Then
-                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta")
+                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta", False, True)
                     
                 End If
 
                 If ClickEnAsistenteRandom = 4 Then
-                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?")
+                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?", False, True)
                 End If
 
             End If
