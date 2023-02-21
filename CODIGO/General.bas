@@ -515,7 +515,7 @@ Function CheckUserDataLoged() As Boolean
     
     
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
-        Call TextoAlAsistente("El email es inválido.")
+        Call TextoAlAsistente("El email es inválido.", False, False)
         Exit Function
 
     End If
@@ -535,7 +535,7 @@ Function CheckUserDataLoged() As Boolean
     ' Next loopc
     
     If CuentaPassword = "" Then
-        Call TextoAlAsistente("Ingrese la contraseña de la cuenta.")
+        Call TextoAlAsistente("Ingrese la contraseña de la cuenta.", False, False)
         'frmMensaje.msg.Caption = "Ingrese un password."
         ' frmMensaje.Show vbModal
         Exit Function
@@ -564,7 +564,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     Dim CharAscii As Integer
     
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
-        Call TextoAlAsistente("El email es inválido.")
+        Call TextoAlAsistente("El email es inválido.", False, False)
         Exit Function
 
     End If

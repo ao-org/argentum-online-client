@@ -197,17 +197,17 @@ Private Sub cmdEnviar_Click()
         Case e_operation.ResetPassword
             
             If Me.txtPassword.Text = "" Or Me.txtPasswordConfirm.Text = "" Or Me.txtCodigo.Text = "" Then
-                Call TextoAlAsistente("Falta completar campos.")
+                Call TextoAlAsistente("Falta completar campos.", False, True)
                 Exit Sub
             End If
             
             If Not isValidEmail(Me.txtEmail.Text) Then
-                Call TextoAlAsistente("El email ingresado es inválido.")
+                Call TextoAlAsistente("El email ingresado es inválido.", False, True)
                 Exit Sub
             End If
             
             If Me.txtPassword.Text <> Me.txtPasswordConfirm.Text Then
-                Call TextoAlAsistente("Las contraseï¿½as ingresadas no coinciden.")
+                Call TextoAlAsistente("Las contraseñas ingresadas no coinciden.", False, False)
                 Exit Sub
             End If
             
@@ -218,7 +218,7 @@ Private Sub cmdEnviar_Click()
         
 
             If Not isValidEmail(Me.txtEmail.Text) Then
-                Call TextoAlAsistente("El email ingresado es inválido.")
+                Call TextoAlAsistente("El email ingresado es inválido.", False, False)
                 Exit Sub
             End If
     
@@ -240,16 +240,7 @@ Private Sub cmdHaveCode_Click()
     End If
     
     Call toggleTextboxs
-    ModAuth.LoginOperation = e_operation.ResetPassword
-    Auth_state = e_state.RequestResetPassword
-    
-   
-    
-End Sub
-
-
-Private Sub Command1_Click()
-
+    Call ModLogin.RequestNewPassword(frmPasswordReset.txtEmail.Text, frmPasswordReset.txtPassword.Text, Trim(frmPasswordReset.txtCodigo.Text))
 End Sub
 
 Private Sub Form_Load()

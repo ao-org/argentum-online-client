@@ -1297,7 +1297,7 @@ Public Sub HandleDisconnect()
     #If PYMMO = 1 Then
        g_game_state.state = e_state_account_screen
     #ElseIf PYMMO = 0 Then
-       g_game_state.state = e_state_connect_screen
+       Call GoToLogIn
     #End If
     isLogged = False
     Call Graficos_Particulas.Particle_Group_Remove_All
@@ -3463,7 +3463,7 @@ On Error GoTo ErrHandler
             frmMensaje.Show , frmMain
         Case e_state_connect_screen
             Call Sound.Sound_Play(SND_EXCLAMACION)
-            Call TextoAlAsistente(mensaje)
+            Call TextoAlAsistente(mensaje, False, False)
             Call Long_2_RGBAList(textcolorAsistente, -1)
         Case e_state_account_screen
             frmMensaje.Show
@@ -5744,28 +5744,13 @@ HandleRestOK_Err:
     
 End Sub
 
-''
-' Handles the ErrorMessage message.
-
 Private Sub HandleErrorMessage()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo ErrHandler
-    
-    Call MsgBox(Reader.ReadString8())
-    
+    GetRemoteError = True
+    Call BabelUI.DisplayError(Reader.ReadString8(), "")
     Exit Sub
-
 ErrHandler:
-
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleErrorMessage", Erl)
-    
-
 End Sub
 
 ''
@@ -9116,48 +9101,6 @@ Public Sub HandleAccountCharacterList()
         End If
     End If
 
-    AlphaNiebla = 30
-
-    frmConnect.visible = True
-
-    g_game_state.state = e_state_account_screen
-    
-    SugerenciaAMostrar = RandomNumber(1, NumSug)
-        
-    Call Sound.Sound_Play(192)
-    Call Sound.Sound_Stop(SND_LLUVIAIN)
-    Call Graficos_Particulas.Particle_Group_Remove_All
-    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
-    ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
-                
-    If frmNewAccount.visible Then
-        Unload frmNewAccount
-    End If
-    
-    If FrmLogear.visible Then
-        Unload FrmLogear
-    End If
-    
-    If frmMain.visible Then
-
-        
-        UserParalizado = False
-        UserInmovilizado = False
-        UserStopped = False
-        
-        InvasionActual = 0
-        frmMain.Evento.enabled = False
-     
-        For i = 1 To LastChar
-            Call EraseChar(i)
-        Next i
-        
-        frmMain.personaje(1).visible = False
-        frmMain.personaje(2).visible = False
-        frmMain.personaje(3).visible = False
-        frmMain.personaje(4).visible = False
-        frmMain.personaje(5).visible = False
-
-    End If
+    Call LoadCharacterSelectionScreen
 End Sub
 #End If

@@ -5215,8 +5215,10 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                     Call HandleDisconnect
                 End If
             End If
-          
         Else
+            If Not GetRemoteError And Error > 0 Then
+                Call DisplayError("El servidor cerro la conexion.", "connection-closed")
+            End If
             Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
             If frmConnect.Visible Then
                 Connected = False

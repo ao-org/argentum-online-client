@@ -337,7 +337,7 @@ Private Sub Form_Load()
     Me.PasswordTxt.Visible = True
     Call CargarLst
     Call LoadButtons
-    
+    Call SetActiveServer(txtIp.Text, txtPort.Text)
     Exit Sub
 
 Form_Load_Err:
@@ -363,14 +363,10 @@ Private Sub cmdSalir_Click()
 
 End Sub
 Private Sub cmdIngresar_Click()
-    
-    On Error GoTo cmdIngresar_Click_Err
-    
-    Call FormParser.Parse_Form(Me, E_WAIT)
-
+On Error GoTo cmdIngresar_Click_Err
     Call SetActiveServer(txtIp.Text, txtPort.Text)
+    Call FormParser.Parse_Form(Me, E_WAIT)
     Call DoLogin(NameTxt.Text, PasswordTxt.Text, chkRecordar.Tag = "1")
-
     Exit Sub
 
 cmdIngresar_Click_Err:
@@ -385,12 +381,12 @@ Private Sub chkRecordar_Click()
 
     If chkRecordar.Tag = "0" Then
         chkRecordar.Picture = LoadInterface("check-amarillo.bmp")
-        Call TextoAlAsistente("¡Recordare la cuenta para la proxima!")
+        Call TextoAlAsistente("¡Recordare la cuenta para la proxima!", False, True)
         chkRecordar.Tag = "1"
     Else
         chkRecordar.Picture = Nothing
         chkRecordar.Tag = "0"
-        Call TextoAlAsistente("¡No recordare nada!")
+        Call TextoAlAsistente("¡No recordare nada!", False, True)
     End If
 
     

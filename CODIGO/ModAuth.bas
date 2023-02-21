@@ -209,9 +209,7 @@ End Sub
 
 Public Sub SendRequestVerificationCode()
     Dim username As String
-    Dim password As String
     Dim len_encrypted_username As Integer
-    Dim len_encrypted_password As Integer
     
     Dim login_request() As Byte
     Dim packet_size As Integer
@@ -220,29 +218,17 @@ Public Sub SendRequestVerificationCode()
     Call DebugPrint("SendRequestVerificationCode", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     username = CuentaEmail
-    password = CuentaEmail
     
     Dim encrypted_username() As Byte
     Dim encrypted_username_b64 As String
-    
-    Dim encrypted_password() As Byte
-    Dim encrypted_password_b64 As String
-    
-    Debug.Assert Len(username) > 0 And Len(password) > 0
-    
+    Debug.Assert Len(userName) > 0
     encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
-    encrypted_password_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), password)
-    
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
-    Call Str2ByteArr(encrypted_password_b64, encrypted_password)
     
     Dim len_username As Integer
-    Dim len_password As Integer
-    
     len_username = Len(encrypted_username_b64)
-    len_password = Len(encrypted_password_b64)
     
-    ReDim login_request(1 To (2 + 2 + 2 + len_username + 2 + len_password))
+    ReDim login_request(1 To (2 + 2 + 2 + len_username + 2 + len_username))
     
     packet_size = UBound(login_request)
     
@@ -260,10 +246,10 @@ Public Sub SendRequestVerificationCode()
     
     offset_login_request = 7 + UBound(encrypted_username)
         
-    login_request(offset_login_request + 1) = hiByte(len_password)
-    login_request(offset_login_request + 2) = LoByte(len_password)
+    login_request(offset_login_request + 1) = hiByte(len_username)
+    login_request(offset_login_request + 2) = LoByte(len_username)
     
-    Call AO20CryptoSysWrapper.CopyBytes(encrypted_password, login_request, len_password, offset_login_request + 3)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, offset_login_request + 3)
     
     Call frmConnect.AuthSocket.SendData(login_request)
     
@@ -285,20 +271,20 @@ Public Sub HandleRequestVerificationCode(ByVal BytesTotal As Long)
     If Data(0) = &H11 And Data(1) = &H11 Then
         Call DebugPrint("REQUEST-VERIFICATION-CODE-OK", 0, 255, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
-        Call TextoAlAsistente("Código enviado correctamente a " & CuentaEmail & ".")
+        Call TextoAlAsistente("Código enviado correctamente a " & CuentaEmail & ".", False, False)
         
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
         Select Case MakeInt(Data(3), Data(2))
             Case 1
-                Call TextoAlAsistente("Account does not exist")
+                Call TextoAlAsistente("Account does not exist", False, False)
             Case 11
-                Call TextoAlAsistente("Account has already been activated.")
+                Call TextoAlAsistente("Account has already been activated.", False, False)
             Case 12
-                Call TextoAlAsistente("Account does not exist")
+                Call TextoAlAsistente("Account does not exist", False, False)
             Case Else
-                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(data))
+                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
         End Select
     End If
     
@@ -346,12 +332,10 @@ Public Sub SendRequestForgotPassword()
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     
     offset_login_request = 7 + UBound(encrypted_username)
-        
     login_request(offset_login_request + 1) = hiByte(len_username)
     login_request(offset_login_request + 2) = LoByte(len_username)
     
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, offset_login_request + 3)
-    
     Call frmConnect.AuthSocket.SendData(login_request)
     
     Auth_state = e_state.RequestForgotPassword
@@ -370,8 +354,8 @@ Public Sub SendValidateAccount()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("SendValidateAccount", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    username = frmNewAccount.txtValidateMail.Text
-    validate_code = frmNewAccount.txtCodigo.Text
+    userName = CuentaEmail
+    validate_code = ValidationCode
     
     Dim encrypted_username() As Byte
     Dim encrypted_username_b64 As String
@@ -436,10 +420,9 @@ Public Sub SendRequestResetPassword()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("SendRequestResetPassword", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    username = frmPasswordReset.txtEmail.Text
-    password = frmPasswordReset.txtPassword.Text
-    validate_code = Trim(frmPasswordReset.txtCodigo.Text)
-    
+    userName = CuentaEmail
+    Password = CuentaPassword
+    validate_code = ValidationCode
     Debug.Assert Len(validate_code) > 0 And Len(username) > 0 And Len(password) > 0
     
     Dim encrypted_username() As Byte
@@ -680,12 +663,12 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
     frmConnect.AuthSocket.GetData data, vbByte, 2
     
     'We return to the LOGIN screen so that TextoAlAsistente works
-    g_game_state.state = e_state_connect_screen
+    Call GoToLogIn
     FrmLogear.Show , frmConnect
 
     If data(0) = &H20 And data(1) = &H26 Then
         Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
-        Call TextoAlAsistente("TRANSFER_CHARACTER_OKAY")
+        Call TextoAlAsistente("TRANSFER_CHARACTER_OKAY", False, False)
         frmConnect.AuthSocket.GetData data, vbByte, 2
         Auth_state = e_state.Idle
     Else
@@ -693,27 +676,36 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
         frmConnect.AuthSocket.GetData data, vbByte, 4
         Select Case MakeInt(data(3), data(2))
             Case 1
-                Call TextoAlAsistente("Invalid account")
+                Call TextoAlAsistente("Invalid account", False, False)
             Case 3
-                Call TextoAlAsistente("Database error.")
+                Call TextoAlAsistente("Database error.", False, False)
             Case 12
-                Call TextoAlAsistente("Email is not valid.")
+                Call TextoAlAsistente("Email is not valid.", False, False)
             Case 51
-                Call TextoAlAsistente("You are not the owner of the character.")
+                Call TextoAlAsistente("You are not the owner of the character.", False, False)
             Case 52
-                Call TextoAlAsistente("Invalid request")
+                Call TextoAlAsistente("Invalid request", False, False)
             Case 54
-                Call TextoAlAsistente("Newowner does not exist")
+                Call TextoAlAsistente("Newowner does not exist", False, False)
             Case 55
-                Call TextoAlAsistente("Not a patron, sorry")
+                Call TextoAlAsistente("Not a patron, sorry", False, False)
             Case 57
-                Call TextoAlAsistente("You do not have enough credits")
+                Call TextoAlAsistente("You do not have enough credits", False, False)
             Case Else
-                Call TextoAlAsistente("Unknown error.")
+                Call TextoAlAsistente("Unknown error.", False, False)
         End Select
     End If
     Auth_state = e_state.Idle
 
+End Sub
+
+Public Sub showValidateAccountControls()
+    If BabelInitialized Then
+        Call BabelUI.SetActiveScreen("validate-account")
+    Else
+        Call frmNewAccount.showValidateAccountControls
+        frmNewAccount.txtValidateMail.Text = frmNewAccount.txtUsername
+    End If
 End Sub
 
 Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
@@ -729,45 +721,44 @@ Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
     
     If Data(0) = &HBF And Data(1) = &HB1 Then
         Call DebugPrint("SIGNUP_OKAY", 0, 255, 0, True)
-        Call TextoAlAsistente("Cuenta creada correctamente.")
+        Call TextoAlAsistente("Cuenta creada correctamente.", False, False)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
-        Call frmNewAccount.showValidateAccountControls
-        frmNewAccount.txtValidateMail.Text = frmNewAccount.txtUsername
+        Call showValidateAccountControls
         Auth_state = e_state.Idle
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
         Select Case MakeInt(Data(3), Data(2))
             Case 0
-                Call TextoAlAsistente("Username already exist.")
+                Call TextoAlAsistente("Username already exist.", False, False)
             Case 9
-                Call TextoAlAsistente("The server could not send the activation email.")
+                Call TextoAlAsistente("The server could not send the activation email.", False, False)
             Case 12
-                Call TextoAlAsistente("Email is not valid.")
+                Call TextoAlAsistente("Email is not valid.", False, False)
             Case 14
-                Call TextoAlAsistente("Password is too short.")
+                Call TextoAlAsistente("Password is too short.", False, False)
             Case 15
-                Call TextoAlAsistente("Password is too long.")
+                Call TextoAlAsistente("Password is too long.", False, False)
             Case 16
-                Call TextoAlAsistente("Password contains invalid characters.")
+                Call TextoAlAsistente("Password contains invalid characters.", False, False)
             Case 18
-                Call TextoAlAsistente("Username is too short.")
+                Call TextoAlAsistente("Username is too short.", False, False)
             Case 19
-                Call TextoAlAsistente("Username is too long.")
+                Call TextoAlAsistente("Username is too long.", False, False)
             Case 20
-                Call TextoAlAsistente("Username contains invalid characters.")
+                Call TextoAlAsistente("Username contains invalid characters.", False, False)
             Case 24
-                Call TextoAlAsistente("password must not contain username.")
+                Call TextoAlAsistente("password must not contain username.", False, False)
             Case 32
-                Call TextoAlAsistente("Username can not start with a number.")
+                Call TextoAlAsistente("Username can not start with a number.", False, False)
             Case 33
-                Call TextoAlAsistente("The password has no uppercase letters.")
+                Call TextoAlAsistente("The password has no uppercase letters.", False, False)
             Case 34
-                Call TextoAlAsistente("The password has no lowercase letters.")
+                Call TextoAlAsistente("The password has no lowercase letters.", False, False)
             Case 35
-                Call TextoAlAsistente("The password must contain at least than two numbers.")
+                Call TextoAlAsistente("The password must contain at least than two numbers.", False, False)
             Case Else
-                Call TextoAlAsistente("Unknown error.")
+                Call TextoAlAsistente("Unknown error.", False, False)
         End Select
     End If
     Auth_state = e_state.Idle
@@ -999,7 +990,7 @@ Public Sub connectToLoginServer()
     frmConnect.AuthSocket.RemotePort = PuertoDelServidorLogin
     Debug.Print "Servidor de Login " & IPdelServidorLogin; ":" & PuertoDelServidorLogin
     frmConnect.AuthSocket.Connect
-    Call TextoAlAsistente("Conectando al servidor. Aguarde un momento.")
+    Call TextoAlAsistente("Conectando al servidor. Aguarde un momento.", True, False)
     SessionOpened = False
     Auth_state = e_state.Idle
 End Sub
@@ -1073,6 +1064,7 @@ Public Sub HandlePCList(ByVal bytesTotal As Long)
             
     Auth_state = e_state.AccountLogged
 End Sub
+
 Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
@@ -1090,7 +1082,6 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
         authenticated_decrypted_session_token = decrypted_session_token
         Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(data), 255, 255, 255)
         frmConnect.AuthSocket.GetData data, vbByte, 2
-        
         Auth_state = e_state.AccountLogged
         Call PCListRequest
     Else
@@ -1098,26 +1089,33 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
         frmConnect.AuthSocket.GetData data, vbByte, 4
         Select Case MakeInt(data(3), data(2))
             Case 1
-                Call TextoAlAsistente("Invalid Username")
+                Call TextoAlAsistente("Invalid Username", False, False)
             Case 4
-                Call TextoAlAsistente("Username is already logged.")
+                Call TextoAlAsistente("Username is already logged.", False, False)
                 If Not FullLogout Then
                     Call SendAccountLoginRequest
                 End If
             Case 5
-                Call TextoAlAsistente("Invalid Password.")
+                Call TextoAlAsistente("Invalid Password.", False, False)
             Case 6
-                Call TextoAlAsistente("Username has been banned.")
+                Call TextoAlAsistente("Username has been banned.", False, False)
             Case 7
-                Call TextoAlAsistente("Ther server has reached the max. number of users.")
+                Call TextoAlAsistente("Ther server has reached the max. number of users.", False, False)
             Case 9
-                Call TextoAlAsistente("The account has not been activated.")
+                Call TextoAlAsistente("The account has not been activated.", False, False)
             Case Else
                 'Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
-                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(data))
+                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
         End Select
     End If
-        
+End Sub
+
+Public Sub GotoPasswordReset()
+    If BabelUI.BabelInitialized Then
+        Call BabelUI.SetActiveScreen("set-new-password")
+    Else
+        frmPasswordReset.toggleTextboxs
+    End If
 End Sub
 
 Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
@@ -1133,29 +1131,26 @@ Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
     If Data(0) = &H2 And Data(1) = &H14 Then
         Call DebugPrint("FORGOT-PASSWORD-OK", 0, 255, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
-        Call TextoAlAsistente("Se ha enviado un email a " & CuentaEmail & ".")
-        frmPasswordReset.toggleTextboxs
-        
+        Call TextoAlAsistente("Se ha enviado un email a " & CuentaEmail & ".", False, False)
+        Call GotoPasswordReset
         ModAuth.LoginOperation = e_operation.ResetPassword
         Auth_state = e_state.RequestResetPassword
-    
-        
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
         Select Case MakeInt(Data(3), Data(2))
             Case 1
-                Call TextoAlAsistente("Invalid Username")
+                Call TextoAlAsistente("Invalid Username", False, False)
             Case 3
-                Call TextoAlAsistente("Try again later.")
+                Call TextoAlAsistente("Try again later.", False, False)
             Case 9
-                Call TextoAlAsistente("The account has not been activated.")
+                Call TextoAlAsistente("The account has not been activated.", False, False)
             Case 12
-                Call TextoAlAsistente("Invalid Email.")
+                Call TextoAlAsistente("Invalid Email.", False, False)
             Case 23
-                Call TextoAlAsistente("Calmate.")
+                Call TextoAlAsistente("Calmate.", False, False)
             Case Else
-                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
         End Select
         
         Auth_state = e_state.Idle
@@ -1181,7 +1176,7 @@ Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
     If Data(0) = &H20 And Data(1) = &H16 Then
         Call DebugPrint("RESET-PASSWORD-OK", 0, 255, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
-        Call TextoAlAsistente("Contraseña recuperada con éxito.")
+        Call TextoAlAsistente("Contraseña recuperada con éxito.", False, False)
         Auth_state = e_state.Idle
         Unload frmPasswordReset
     Else
@@ -1189,44 +1184,52 @@ Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
         Select Case MakeInt(Data(3), Data(2))
             Case 1
-                Call TextoAlAsistente("Invalid code")
+                Call TextoAlAsistente("Invalid code", False, False)
             Case 3
-                Call TextoAlAsistente("Try again later")
+                Call TextoAlAsistente("Try again later", False, False)
             Case 9
-                Call TextoAlAsistente("The account has not been activated.")
+                Call TextoAlAsistente("The account has not been activated.", False, False)
             Case 12
-                Call TextoAlAsistente("Invalid Email.")
+                Call TextoAlAsistente("Invalid Email.", False, False)
             Case 14
-                Call TextoAlAsistente("The password is too short.")
+                Call TextoAlAsistente("The password is too short.", False, False)
             Case 15
-                Call TextoAlAsistente("The password is too long.")
+                Call TextoAlAsistente("The password is too long.", False, False)
             Case 16
-                Call TextoAlAsistente("The password contains invalid characters.")
+                Call TextoAlAsistente("The password contains invalid characters.", False, False)
             Case 21
-                Call TextoAlAsistente("Invalid code")
+                Call TextoAlAsistente("Invalid code", False, False)
             Case 22
-                Call TextoAlAsistente("Invalid password reset host")
+                Call TextoAlAsistente("Invalid password reset host", False, False)
             Case 23
-                Call TextoAlAsistente("Try again later")
+                Call TextoAlAsistente("Try again later", False, False)
             Case 24
-                Call TextoAlAsistente("The password cant not contain username.")
+                Call TextoAlAsistente("The password cant not contain username.", False, False)
             Case 33
-                Call TextoAlAsistente("The password must have at least one upper case letter.")
+                Call TextoAlAsistente("The password must have at least one upper case letter.", False, False)
             Case 34
-                Call TextoAlAsistente("The password must have at least one lower case letter.")
+                Call TextoAlAsistente("The password must have at least one lower case letter.", False, False)
             Case 35
-                Call TextoAlAsistente("The password must have at least one number.")
+                Call TextoAlAsistente("The password must have at least one number.", False, False)
             Case 36
-                Call TextoAlAsistente("The recovery code is too old.")
+                Call TextoAlAsistente("The recovery code is too old.", False, False)
             Case &H40
-                Call TextoAlAsistente("The code has expired, codes are valid for 10 mins, please request a new one.")
+                Call TextoAlAsistente("The code has expired, codes are valid for 10 mins, please request a new one.", False, False)
             Case Else
-                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
         End Select
     End If
         
 End Sub
 
+Public Sub AccountValidated()
+    Auth_state = e_state.Idle
+    Call TextoAlAsistente("Cuenta validada exitosamente.", False, False)
+    frmNewAccount.visible = False
+    If BabelUI.BabelInitialized Then
+        Call BabelUI.SetActiveScreen("login")
+    End If
+End Sub
 
 Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
 
@@ -1243,23 +1246,21 @@ Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
         Call DebugPrint("VALIDATE-ACCOUNT-OK", 0, 255, 0, True)
         Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(Data), 255, 255, 255)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
-        Auth_state = e_state.Idle
-        Call TextoAlAsistente("Cuenta validada exitosamente.")
-        frmNewAccount.Visible = False
+        Call AccountValidated
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
         Select Case MakeInt(Data(3), Data(2))
             Case 1
-                Call TextoAlAsistente("Invalid Username.")
+                Call TextoAlAsistente("Invalid Username.", False, False)
                 frmNewAccount.Visible = False
             Case 10
-                Call TextoAlAsistente("Invalid Code.")
+                Call TextoAlAsistente("Invalid Code.", False, False)
             Case 11
-                Call TextoAlAsistente("Account has already been activated.")
+                Call TextoAlAsistente("Account has already been activated.", False, False)
                 frmNewAccount.Visible = False
             Case Else
-                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+                Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
         End Select
     End If
         

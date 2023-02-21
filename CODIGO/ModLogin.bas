@@ -1,6 +1,8 @@
 Attribute VB_Name = "ModLogin"
 Option Explicit
 
+Dim ServerSettings As clsIniManager
+    
 Public Sub DoLogin(ByVal account As String, ByVal password As String, ByVal storeCredentials As Boolean)
     On Error GoTo DoLogin_Err
     
@@ -33,7 +35,7 @@ DoLogin_Err:
     Resume Next
 End Sub
 
-Public Sub SetActiveServer(ByVal ip As String, ByVal port As String)
+Public Sub SetActiveServer(ByVal IP As String, ByVal port As String, Optional IgnoreHardcode As Boolean = False)
     ServerIndex = ip & ":" & port
     IPdelServidor = ip
     PuertoDelServidor = port
@@ -41,23 +43,51 @@ Public Sub SetActiveServer(ByVal ip As String, ByVal port As String)
     #If PYMMO = 0 Or DEBUGGING = 1 Then
             Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
     #End If
-    
-    #If PYMMO = 1 Then
-        #If DEVELOPER = 1 Then
-            IPdelServidorLogin = "127.0.0.1"
-            PuertoDelServidorLogin = 4000
-            IPdelServidor = IPdelServidorLogin
-            PuertoDelServidor = 7667
-        #Else
-            'Production and staging use this path
-            #If DEBUGGING = 0 Then
-                Call SetDefaultServer
+    If Not IgnoreHardcode Then
+        #If PYMMO = 1 Then
+            'DEVELOPER mode is used to connect to localhost
+            #If Developer = 1 Then
+                IPdelServidorLogin = "127.0.0.1"
+                PuertoDelServidorLogin = 4000
+                IPdelServidor = IPdelServidorLogin
+                PuertoDelServidor = 7667
             #Else
-                IPdelServidorLogin = "45.235.98.31"
-                PuertoDelServidorLogin = 11814
+                #If DEBUGGING = 0 Then
+                    'When not in DEVELOPER mode we read the ip and port from the list
+                    Call SetDefaultServer
+                #Else
+                    'Staging, set the ip and port for pymmo
+                    IPdelServidorLogin = "45.235.98.31"
+                    PuertoDelServidorLogin = 11814
+                #End If
             #End If
         #End If
-    #End If
+    End If
+End Sub
+
+Public Sub SetActiveEnvironment(ByVal environment As String)
+    If ServerSettings Is Nothing Then
+        Dim RemotesPath As String
+        Set ServerSettings = New clsIniManager
+        RemotesPath = App.path & "\..\Recursos\init\Remotes.ini"
+        Debug.Assert FileExist(RemotesPath, vbNormal)
+        Call ServerSettings.Initialize(RemotesPath)
+    End If
+    Dim loginServers As Integer
+    Dim serverCount As Integer
+    loginServers = Val(ServerSettings.GetValue(environment, "LoginCount"))
+    serverCount = Val(ServerSettings.GetValue(environment, "ServerCount"))
+    Dim loginOpt, serverOpt, k As Integer
+    For k = 1 To 100
+        serverOpt = RandomNumber(1, serverCount)
+    Next k
+    For k = 1 To 100
+        loginOpt = RandomNumber(1, loginServers)
+    Next k
+    IPdelServidor = ServerSettings.GetValue(environment, "ServerIp" & serverOpt)
+    PuertoDelServidor = ServerSettings.GetValue(environment, "PortPort" & serverOpt)
+    IPdelServidorLogin = ServerSettings.GetValue(environment, "LoginIp" & serverOpt)
+    PuertoDelServidorLogin = ServerSettings.GetValue(environment, "LoginPort" & serverOpt)
 End Sub
 
 Public Sub CreateAccount(ByVal Name As String, ByVal Surname As String, ByVal Email As String, ByVal Password As String)
@@ -73,4 +103,75 @@ Public Sub CreateAccount(ByVal Name As String, ByVal Surname As String, ByVal Em
     CuentaPassword = Password
     Call LoginOrConnect(CreandoCuenta)
 #End If
+End Sub
+
+Public Sub LoadCharacterSelectionScreen()
+    AlphaNiebla = 30
+    frmConnect.visible = True
+    g_game_state.state = e_state_account_screen
+    If BabelUI.BabelInitialized Then
+        Call BabelUI.SetActiveScreen("character-selection")
+    End If
+    SugerenciaAMostrar = RandomNumber(1, NumSug)
+    Call Sound.Sound_Play(192)
+    Call Sound.Sound_Stop(SND_LLUVIAIN)
+    Call Graficos_Particulas.Particle_Group_Remove_All
+    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
+    ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
+    If FrmLogear.visible Then
+        Unload FrmLogear
+    End If
+    
+    If frmMain.visible Then
+        UserParalizado = False
+        UserInmovilizado = False
+        UserStopped = False
+        InvasionActual = 0
+        frmMain.Evento.enabled = False
+        'BUG CLONES
+        Dim i As Integer
+        For i = 1 To LastChar
+            Call EraseChar(i)
+        Next i
+        frmMain.personaje(1).visible = False
+        frmMain.personaje(2).visible = False
+        frmMain.personaje(3).visible = False
+        frmMain.personaje(4).visible = False
+        frmMain.personaje(5).visible = False
+    End If
+End Sub
+
+Public Sub GoToLogIn()
+    g_game_state.state = e_state_connect_screen
+    If BabelUI.BabelInitialized Then
+        Call BabelUI.SetActiveScreen("login")
+    End If
+End Sub
+
+Public Sub ResendValidationCode(ByVal email As String)
+    CuentaEmail = email
+    ModAuth.LoginOperation = e_operation.RequestVerificationCode
+    Call connectToLoginServer
+End Sub
+
+Public Sub ValidateCode(ByVal email As String, ByVal code As String)
+    CuentaEmail = email
+    validationCode = code
+    ModAuth.LoginOperation = e_operation.ValidateAccount
+    Call connectToLoginServer
+End Sub
+
+Public Sub RequestPasswordReset(ByVal email As String)
+    CuentaEmail = email
+    ModAuth.LoginOperation = e_operation.ForgotPassword
+    Call connectToLoginServer
+End Sub
+
+Public Sub RequestNewPassword(ByVal email As String, ByVal newPassword As String, ByVal code As String)
+    CuentaEmail = email
+    validationCode = code
+    CuentaPassword = newPassword
+    ModAuth.LoginOperation = e_operation.ResetPassword
+    Auth_state = e_state.RequestResetPassword
+    Call connectToLoginServer
 End Sub

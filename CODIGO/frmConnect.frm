@@ -165,7 +165,7 @@ Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
 End Sub
 
 Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    Call TextoAlAsistente("Servidor Offline, intente nuevamente.")
+    Call TextoAlAsistente("Servidor Offline, intente nuevamente.", False, False)
 
 
     
@@ -214,8 +214,7 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     End If
 
-    g_game_state.state = e_state_connect_screen
-
+    Call GoToLogIn
     
     EngineRun = False
         
@@ -585,14 +584,10 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Debug.Print "Vuelvo al login, debería borrar el token"
                     Auth_state = e_state.Idle
                     Call ComprobarEstado
-            
                     UserSaliendo = True
                     Call modNetwork.Disconnect
-
                     CantidadDePersonajesEnCuenta = 0
-
                     Dim i As Integer
-
                     For i = 1 To MAX_PERSONAJES_EN_CUENTA
                         Pjs(i).Body = 0
                         Pjs(i).Head = 0
@@ -603,60 +598,39 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         Pjs(i).Criminal = 0
                         Pjs(i).NameMapa = ""
                     Next i
-
                     General_Set_Connect
                 Case e_action_login_character
-
                     If PJSeleccionado < 1 Then Exit Sub
-
                     If IntervaloPermiteConectar Then
                         Call Sound.Sound_Play(SND_CLICK)
                         Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
-
                     End If
-
             End Select
-
             Char = PJSeleccionado
             If PJSeleccionado = 0 Then Exit Sub
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
         
         Case e_state_connect_screen
-            
             While LastClickAsistente = ClickEnAsistenteRandom
                 ClickEnAsistenteRandom = RandomNumber(1, 4)
             Wend
-            
             LastClickAsistente = ClickEnAsistenteRandom
-            
-            
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
-             
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/")
-
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/", False, False)
                 End If
-
                 If ClickEnAsistenteRandom = 2 Then
-                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!")
-
+                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!", False, False)
                 End If
-
                 If ClickEnAsistenteRandom = 3 Then
-                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta")
-                    
+                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta", False, False)
                 End If
-
                 If ClickEnAsistenteRandom = 4 Then
-                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?")
+                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?", False, False)
                 End If
-
             End If
-
     End Select
-    
     Exit Sub
-
 render_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.render_MouseUp", Erl)
     Resume Next

@@ -258,7 +258,7 @@ Private Sub btnCreateAccount_Click()
         Call calculateCaptcha
     Else
         Call calculateCaptcha
-        Call TextoAlAsistente("Por favor revise el captcha.")
+        Call TextoAlAsistente("Por favor revise el captcha.", False, False)
         lblCaptchaError.Visible = True
     End If
 End Sub
@@ -274,8 +274,7 @@ Private Sub btnSendValidarCuenta_Click()
         
         txtCodigo.Text = Trim(txtCodigo.Text)
         If txtCodigo.Text <> "" And txtValidateMail.Text <> "" Then
-            ModAuth.LoginOperation = e_operation.ValidateAccount
-            Call connectToLoginServer
+            Call ValidateCode(txtCodigo.Text, txtValidateMail.Text)
         End If
         
 End Sub
@@ -345,27 +344,20 @@ Public Sub showValidateAccountControls()
     Me.btnCreateAccount.Visible = False
     Me.btnRestorePassword.Visible = False
     Me.lblResendVerificationCode.Visible = True
-    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Me.txtPassword.PasswordChar = ""
-
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Me.txtPassword.PasswordChar = "*"
-
 End Sub
 
 Private Sub lblResendVerificationCode_Click()
-
     If isValidEmail(txtValidateMail) Then
-        CuentaEmail = Me.txtValidateMail.Text
-        ModAuth.LoginOperation = e_operation.RequestVerificationCode
-        Call connectToLoginServer
+        Call ResendValidationCode(Me.txtValidateMail.Text)
     Else
-        Call TextoAlAsistente("El email ingresado es inválido.")
+        Call TextoAlAsistente("El email ingresado es inválido.", False, False)
     End If
-    
 End Sub

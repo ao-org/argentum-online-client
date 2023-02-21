@@ -1,7 +1,6 @@
 Attribute VB_Name = "BabelUI"
 Option Explicit
 
-
 Private Type LOGINDATA
     user As Long
     userLen As Long
@@ -10,14 +9,49 @@ Private Type LOGINDATA
     storeCredentials As Long
 End Type
 
+Private Type NewAccountData
+    User As Long
+    UserLen As Long
+    Password As Long
+    PasswordLen As Long
+    name As Long
+    NameLen As Long
+    Surname As Long
+    SurnameLen As Long
+End Type
+
+Private Type SINGLESTRINGPARAM
+    Ptr As Long
+    Len As Long
+End Type
+
+Private Type DOUBLESTRINGPARAM
+    FirstPtr As Long
+    FirstLen As Long
+    SecondPtr As Long
+    SecondLen As Long
+End Type
+
+Private Type TRIPLESTRINGPARAM
+    FirstPtr As Long
+    FirstLen As Long
+    SecondPtr As Long
+    SecondLen As Long
+    ThirdPtr As Long
+    ThirdLen As Long
+End Type
+
+Private ServerEnvironment As String
+
 Public Declare Function InitializeBabel Lib "BabelUI.dll" Alias "_InitializeBabel@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
 Public Declare Function GetBebelImageBuffer Lib "BabelUI.dll" Alias "_GetImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
 Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "_SendMouseEvent@16" (ByVal posX As Long, ByVal posY As Long, ByVal EvtType As Long, ByVal Button As Long)
 Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "_SendKeyEvent@20" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
 Public Declare Function NextPowerOf2 Lib "BabelUI.dll" Alias "_NextPowerOf2@4" (ByVal original As Long) As Long
-Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@8" (ByVal LoginCallback As Long, ByVal Closeclient As Long)
+Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@32" (ByVal Login As Long, ByVal CloseClient As Long, ByVal CreateAccount As Long, ByVal SetHost As Long, ByVal ValidateAccountr As Long, ByVal ResendCode As Long, ByVal RequestPasswordReset As Long, ByVal RequestNewPassord As Long)
 Public Declare Sub SendErrorMessage Lib "BabelUI.dll" Alias "_SendErrorMessage@12" (ByVal Message As String, ByVal Localize As Long, ByVal Action As Long)
 Public Declare Sub SetActiveScreen Lib "BabelUI.dll" Alias "_SetActiveScreen@4" (ByVal screenName As String)
+Public Declare Sub SetLoadingMessage Lib "BabelUI.dll" Alias "_SetLoadingMessage@8" (ByVal message As String, ByVal localize As Long)
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" Alias "_CreateDebugWindow@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
 Public Declare Function GetDebugImageBuffer Lib "BabelUI.dll" Alias "_GetDebugImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
@@ -58,6 +92,7 @@ Public UITexture As t_UITexture
 Public DebugUITexture As t_UITexture
 Public BabelInitialized As Boolean
 Public DebugInitialized As Boolean
+Public GetRemoteError As Boolean
 
 Public Function ConvertMouseButton(ByVal button As Integer) As MouseButton
     Select Case button
@@ -84,7 +119,7 @@ On Error GoTo InitializeUI_Err
 114 UITexture.pixelSize = pixelSize
 116 Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
 118 BabelInitialized = True
-    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB)
+    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB)
     Exit Sub
 InitializeUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.InitializeUI", Erl)
@@ -180,16 +215,86 @@ Public Sub LoginCB(ByRef LoginValue As LOGINDATA)
     If LoginValue.passwordLen > 0 Then
         password = GetStringFromPtr(LoginValue.password, LoginValue.passwordLen)
     End If
+    Call SetActiveEnvironment(ServerEnvironment)
     Call DoLogin(user, Password, LoginValue.storeCredentials > 0)
+End Sub
+
+Public Sub CreateAccount(ByRef NewAccount As NewAccountData)
+    Dim User, Password, name, Surname As String
+    If NewAccount.UserLen > 0 Then
+        User = GetStringFromPtr(NewAccount.User, NewAccount.UserLen)
+    End If
+    If NewAccount.PasswordLen > 0 Then
+        Password = GetStringFromPtr(NewAccount.Password, NewAccount.PasswordLen)
+    End If
+    If NewAccount.NameLen > 0 Then
+        name = GetStringFromPtr(NewAccount.name, NewAccount.NameLen)
+    End If
+    If NewAccount.SurnameLen > 0 Then
+        Surname = GetStringFromPtr(NewAccount.Surname, NewAccount.SurnameLen)
+    End If
+    Call SetActiveEnvironment(ServerEnvironment)
+    Call ModLogin.CreateAccount(name, Surname, User, Password)
 End Sub
 
 Public Sub CloseClientCB()
     Call Closeclient
 End Sub
 
+Public Sub ResendValidationCodeCB(ByRef code As SINGLESTRINGPARAM)
+    If code.Len > 0 Then
+        CuentaEmail = GetStringFromPtr(code.Ptr, code.Len)
+    End If
+    Call SetActiveEnvironment(ServerEnvironment)
+    Call ResendValidationCode(CuentaEmail)
+End Sub
+
+Public Sub ValidateCodeCB(ByRef Params As DOUBLESTRINGPARAM)
+    If Params.FirstLen > 0 Then
+        CuentaEmail = GetStringFromPtr(Params.FirstPtr, Params.FirstLen)
+    End If
+    If Params.SecondLen > 0 Then
+        ValidationCode = GetStringFromPtr(Params.SecondPtr, Params.SecondLen)
+    End If
+    Call SetActiveEnvironment(ServerEnvironment)
+    Call ValidateCode(CuentaEmail, ValidationCode)
+End Sub
+
+Public Sub SetHostCB(ByRef Params As SINGLESTRINGPARAM)
+    If Params.Len > 0 Then
+        ServerEnvironment = GetStringFromPtr(Params.Ptr, Params.Len)
+    End If
+End Sub
+
+Public Sub RequestPasswordResetCB(ByRef Params As SINGLESTRINGPARAM)
+    If Params.Len > 0 Then
+        CuentaEmail = GetStringFromPtr(Params.Ptr, Params.Len)
+    End If
+    Call SetActiveEnvironment(ServerEnvironment)
+    Call RequestPasswordReset(CuentaEmail)
+End Sub
+
+Public Sub RequestNewPasswordCB(ByRef Params As TRIPLESTRINGPARAM)
+    If Params.FirstLen > 0 Then
+        CuentaEmail = GetStringFromPtr(Params.FirstPtr, Params.FirstLen)
+    End If
+    If Params.SecondLen > 0 Then
+        ValidationCode = GetStringFromPtr(Params.SecondPtr, Params.SecondLen)
+    End If
+    If Params.ThirdLen > 0 Then
+        CuentaPassword = GetStringFromPtr(Params.ThirdPtr, Params.ThirdLen)
+    End If
+    Call SetActiveEnvironment(ServerEnvironment)
+    Call RequestNewPassword(CuentaEmail, CuentaPassword, ValidationCode)
+End Sub
+
 Public Sub DisplayError(ByVal Message As String, ByVal LocalizationStr As String)
     If BabelInitialized Then
-        Call SendErrorMessage(LocalizationStr, 1, 0)
+        If LocalizationStr = "" Then
+            Call SendErrorMessage(message, 0, 0)
+        Else
+            Call SendErrorMessage(LocalizationStr, 1, 0)
+        End If
     Else
         Call MsgBox(Message)
     End If
