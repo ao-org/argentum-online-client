@@ -483,6 +483,31 @@ AsciiValidos_Err:
     
 End Function
 
+Function ValidDescriptionCharacters(ByVal cad As String) As Boolean
+
+    On Error GoTo ValidDescriptionCharacters_Err
+
+    Dim car As Byte
+    Dim i   As Integer
+
+    For i = 1 To Len(cad)
+        car = Asc(mid$(cad, i, 1))
+        ' If character is not printable
+        If (car < 32 Or car >= 127) And (car < 160) Then
+            Exit Function
+        End If
+    Next i
+
+    ValidDescriptionCharacters = True
+
+    Exit Function
+
+ValidDescriptionCharacters_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.ValidDescriptionCharacters", Erl)
+    Resume Next
+
+End Function
+
 Function CheckUserDataLoged() As Boolean
     'Validamos los datos del user
     
