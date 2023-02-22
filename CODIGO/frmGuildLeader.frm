@@ -352,7 +352,7 @@ Private Sub cmdEditarDescripcion_Click()
 
     fdesc = Replace(fdesc, vbCrLf, "º", , , vbBinaryCompare)
     
-    If Not AsciiValidos(fdesc) Then
+    If Not ValidDescriptionCharacters(fdesc) Then
         MsgBox "La descripcion contiene caracteres invalidos"
         Exit Sub
     Else
