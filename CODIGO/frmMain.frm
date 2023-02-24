@@ -50,12 +50,6 @@ Begin VB.Form frmMain
       Left            =   8520
       Top             =   2400
    End
-   Begin VB.Timer timerRetrasadoSensui 
-      Enabled         =   0   'False
-      Interval        =   60000
-      Left            =   7920
-      Top             =   2400
-   End
    Begin VB.CommandButton Command1 
       Caption         =   "PRENDER ANTORCHA"
       Height          =   495
@@ -4138,7 +4132,6 @@ renderer_DblClick_Err:
 End Sub
 
 Private Sub renderer_Click()
-    'Call addCooldown(713, 15000)
     On Error GoTo renderer_Click_Err
     Call Form_Click
     If SendTxt.Visible Then SendTxt.SetFocus
@@ -4557,10 +4550,6 @@ Public Sub Form_Click()
                                     If Not SendSkill Then
                                         Exit Sub
                                     End If
-                                    
-                                '    Set cooldown_hechizo = New clsCooldown
-                                '    Call cooldown_hechizo.Cooldown_Initialize(IntervaloMagia, 26018)
-                                '    Call addCooldown(cooldown_hechizo)
                                     Call MainTimer.Restart(TimersIndex.CastAttack)
                                 
                                 ElseIf ModoHechizos = SinBloqueo Then
@@ -5146,11 +5135,6 @@ imgSpellInfo_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgSpellInfo_Click", Erl)
     Resume Next
     
-End Sub
-
-Public Sub timerRetrasadoSensui_Timer()
-    EscribeRetrasadoSensui = False
-    timerRetrasadoSensui.Enabled = False
 End Sub
 
 Private Sub UpdateDaytime_Timer()

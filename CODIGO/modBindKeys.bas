@@ -196,7 +196,6 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
                     Call MainTimer.Restart(TimersIndex.AttackUse)
                     Set cooldown_ataque = New clsCooldown
                     Call cooldown_ataque.Cooldown_Initialize(IntervaloGolpe, 36602)
-                    'Call addCooldown(cooldown_ataque)
                     Call WriteAttack
                 End If
     

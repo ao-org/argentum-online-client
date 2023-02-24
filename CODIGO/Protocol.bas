@@ -246,7 +246,7 @@ Private Enum ServerPacketID
     Privilegios
     ShopInit
     UpdateShopClienteCredits
-    SensuiRetrasado
+    SendSkillCdUpdate
     UpdateFlag
     CharAtaca
     NotificarClienteSeguido
@@ -997,8 +997,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleShopPjsInit
         Case ServerPacketID.UpdateShopClienteCredits
             Call HandleUpdateShopClienteCredits
-        Case ServerPacketID.SensuiRetrasado
-            Call HandleSensuiRetrasado
+        Case ServerPacketID.SendSkillCdUpdate
+            Call HandleSendSkillCdUpdate
         Case ServerPacketID.DebugDataResponse
             Call HandleDebugDataResponse
         Case ServerPacketID.CreateProjectile
@@ -1441,9 +1441,6 @@ Public Sub HandleDisconnect()
     
     InviCounter = 0
     DrogaCounter = 0
-    EscribeRetrasadoSensui = False
-    frmMain.timerRetrasadoSensui = False
-     
     frmMain.Contadores.Enabled = False
     
     InvasionActual = 0
@@ -8815,10 +8812,23 @@ Public Sub HandleUpdateShopClienteCredits()
     frmShopAO20.lblCredits.Caption = credits_shopAO20
 End Sub
 
-Public Sub HandleSensuiRetrasado()
-    EscribeRetrasadoSensui = True
-    frmMain.timerRetrasadoSensui.Enabled = True
-    
+Public Sub HandleSendSkillCdUpdate()
+    Dim Effect As e_ActiveEffect
+    Effect.TypeId = Reader.ReadInt16
+    Effect.Id = Reader.ReadInt32
+    Effect.Duration = Reader.ReadInt32
+    Effect.EffectType = Reader.ReadInt8
+    Effect.Grh = EffectResources(Effect.TypeId).GrhId
+    Effect.StartTime = GetTickCount()
+    If Effect.EffectType = eBuff Then
+        Call AddOrUpdateEffect(BuffList, Effect)
+    End If
+    If Effect.EffectType = eDebuff Then
+        Call AddOrUpdateEffect(DeBuffList, Effect)
+    End If
+    If Effect.EffectType = eCD Then
+        Call AddOrUpdateEffect(CDList, Effect)
+    End If
 End Sub
 
 Public Sub HandleObjQuestListSend()

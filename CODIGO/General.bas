@@ -1221,6 +1221,7 @@ On Error GoTo Main_Err
     Call LoadFonts
     Call initMascotaTutorial
     Call LoadProjectiles
+    Call LoadBuffResources
     Call InitilializeProjectiles
     Call InitializeTeamColors
     

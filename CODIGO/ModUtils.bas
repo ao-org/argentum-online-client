@@ -745,13 +745,7 @@ Sub General_Set_Connect()
     CurMp3 = 1
     
      g_game_state.state = e_state_connect_screen
-    
-    
-    EscribeRetrasadoSensui = False
-    frmMain.timerRetrasadoSensui = False
-    
     ClickEnAsistente = 0
-
     If CuentaRecordada.nombre <> "" Then
         Call TextoAlAsistente("¡Bienvenido de nuevo! ¡Disfruta tu viaje por Argentum20!") ' hay que poner 20 aniversario
     Else
@@ -2364,3 +2358,10 @@ Auto_Drag_Err:
     Resume Next
     
 End Sub
+
+Public Function IsArrayInitialized(ByRef arr() As e_ActiveEffect) As Boolean
+  Dim rv As Long
+  On Error Resume Next
+  rv = UBound(arr)
+  IsArrayInitialized = (Err.Number = 0) And rv >= 0
+End Function
