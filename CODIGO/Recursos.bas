@@ -1548,7 +1548,30 @@ Public Sub LoadProjectiles()
         ProjectileData(Prj).OffsetRotation = Val(IniReader.GetValue("PROJECTILE" & Prj, "OFFSETROTATION"))
         ProjectileData(Prj).RotationSpeed = Val(IniReader.GetValue("PROJECTILE" & Prj, "ROTATIONSPEED"))
     Next Prj
+End Sub
 
+Public Sub LoadBuffResources()
+    Dim EffectCount As Integer
+    #If Compresion = 1 Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "Effects.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
+            Err.Description = "¡No se puede cargar el archivo de ProjectileDef.dat!"
+            MsgBox Err.Description
+
+        End If
+        ObjFile = Windows_Temp_Dir & "Effects.ini"
+    #Else
+        ObjFile = App.path & "\..\Recursos\init\Effects.ini"
+    #End If
+    Dim IniReader As New clsIniManager
+    Debug.Assert FileExist(ObjFile, vbNormal)
+    Call IniReader.Initialize(ObjFile)
+
+    EffectCount = Val(IniReader.GetValue("INIT", "EffectCount"))
+    ReDim EffectResources(1 To EffectCount) As e_effectResource
+    Dim Prj As Integer
+    For Prj = 1 To EffectCount
+        EffectResources(Prj).GrhId = Val(IniReader.GetValue("Effect" & Prj, "GRH"))
+    Next Prj
 End Sub
 
 Public Function GetPatchNotes() As String

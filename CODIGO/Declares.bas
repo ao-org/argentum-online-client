@@ -63,7 +63,6 @@ Public HayLLamadaDeclan                 As Boolean
 Public MapInfoEspeciales                As String
 Public LLamadaDeclanMapa                As Integer
 Public LLamadaDeclanX                   As Byte
-Public EscribeRetrasadoSensui           As Boolean
 Public LLamadaDeclanY                   As Byte
 Public SugerenciaAMostrar               As Byte
 Public UserInvUnlocked                  As Byte
@@ -113,6 +112,38 @@ Public Type tPaso
     CantPasos As Byte
     wav() As Integer
 End Type
+
+Public Enum e_EffectType
+    eBuff = 1
+    eDebuff
+    eCD
+    eAny
+End Enum
+
+Public Type e_ActiveEffect
+    EffectType As e_EffectType
+    Duration As Long
+    StartTime As Long
+    Grh As Long
+    Id As Long
+    TypeId As Integer
+End Type
+
+Public Const ACTIVE_EFFECT_LIST_SIZE As Integer = 10
+Public Type t_ActiveEffectList
+    EffectList() As e_ActiveEffect
+    EffectCount As Integer
+End Type
+
+Public BuffList As t_ActiveEffectList
+Public DeBuffList As t_ActiveEffectList
+Public CDList As t_ActiveEffectList
+
+Public Type e_effectResource
+    GrhId As Long
+End Type
+
+Public EffectResources() As e_effectResource
 
 Public Type t_packetCounters
     TS_CastSpell As Long
@@ -284,14 +315,12 @@ Public VolMusicFadding        As Integer
 #End If
 
 Public Type tServerInfo
-
     IP As String
     puerto As Integer
     desc As String
     estado As Boolean
     IpLogin As String
     puertoLogin As Integer
-
 End Type
 
 Public ServersLst()   As tServerInfo

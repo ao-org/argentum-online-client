@@ -719,10 +719,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     End If
     
     Call Effect_Render_All
-    
-    
-    'Call Engine_Draw_Load(300, 350, 250, 250, RGBA_From_Comp(200, 200, 200, 255))
-    Call renderCooldowns(710, 582)
+    Call RenderCooldowns(710, 25)
     
     If InvasionActual Then
         
