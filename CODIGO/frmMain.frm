@@ -6,13 +6,13 @@ Begin VB.Form frmMain
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    ClientHeight    =   13920
-   ClientLeft      =   348
+   ClientLeft      =   345
    ClientTop       =   240
    ClientWidth     =   19980
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   9.6
+      Size            =   9.75
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -27,9 +27,9 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    Moveable        =   0   'False
    NegotiateMenus  =   0   'False
-   ScaleHeight     =   1160
+   ScaleHeight     =   928
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1665
+   ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin VB.PictureBox shapexy 
@@ -39,8 +39,8 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   180
       Left            =   16920
-      ScaleHeight     =   156
-      ScaleWidth      =   156
+      ScaleHeight     =   150
+      ScaleWidth      =   150
       TabIndex        =   0
       TabStop         =   0   'False
       Top             =   7080
@@ -64,7 +64,7 @@ Begin VB.Form frmMain
       BackColor       =   &H00000040&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -155,9 +155,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   4875
       Left            =   11520
-      ScaleHeight     =   406
+      ScaleHeight     =   325
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   309
+      ScaleWidth      =   247
       TabIndex        =   18
       Top             =   2400
       Width           =   3705
@@ -172,7 +172,7 @@ Begin VB.Form frmMain
          DrawStyle       =   3  'Dash-Dot
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -183,9 +183,9 @@ Begin VB.Form frmMain
          Height          =   3405
          Left            =   225
          MousePointer    =   99  'Custom
-         ScaleHeight     =   284
+         ScaleHeight     =   227
          ScaleMode       =   3  'Pixel
-         ScaleWidth      =   270
+         ScaleWidth      =   216
          TabIndex        =   44
          Top             =   600
          Visible         =   0   'False
@@ -199,7 +199,7 @@ Begin VB.Form frmMain
          ClipControls    =   0   'False
          BeginProperty Font 
             Name            =   "Arial"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -209,9 +209,9 @@ Begin VB.Form frmMain
          ForeColor       =   &H80000008&
          Height          =   3840
          Left            =   280
-         ScaleHeight     =   320
+         ScaleHeight     =   256
          ScaleMode       =   3  'Pixel
-         ScaleWidth      =   263
+         ScaleWidth      =   210
          TabIndex        =   19
          Top             =   740
          Width           =   3150
@@ -270,16 +270,16 @@ Begin VB.Form frmMain
          Width           =   315
       End
       Begin VB.Image cmdMoverHechi 
-         Height          =   228
+         Height          =   285
          Index           =   1
-         Left            =   3372
+         Left            =   3375
          MouseIcon       =   "frmMain.frx":5934
          MousePointer    =   99  'Custom
          Picture         =   "frmMain.frx":5A86
          Tag             =   "0"
          Top             =   4260
          Visible         =   0   'False
-         Width           =   252
+         Width           =   315
       End
       Begin VB.Image cmdlanzar 
          Height          =   585
@@ -295,7 +295,7 @@ Begin VB.Form frmMain
       BackColor       =   &H00202020&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -322,7 +322,7 @@ Begin VB.Form frmMain
       FillStyle       =   0  'Solid
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -332,9 +332,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H00000000&
       Height          =   1500
       Left            =   9576
-      ScaleHeight     =   125
+      ScaleHeight     =   100
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   125
+      ScaleWidth      =   100
       TabIndex        =   2
       ToolTipText     =   "Tu posicion en el mapa, click para mas info."
       Top             =   600
@@ -437,11 +437,10 @@ Begin VB.Form frmMain
       Top             =   480
       Width           =   9180
       _ExtentX        =   16193
-      _ExtentY        =   2244
+      _ExtentY        =   2249
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -450,7 +449,7 @@ Begin VB.Form frmMain
       TextRTF         =   $"frmMain.frx":6104
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -466,9 +465,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   3675
       Left            =   11340
-      ScaleHeight     =   306
+      ScaleHeight     =   245
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   333
+      ScaleWidth      =   266
       TabIndex        =   8
       Top             =   7815
       Width           =   3990
@@ -503,7 +502,6 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   408
          Left            =   1680
-         Picture         =   "frmMain.frx":6180
          ToolTipText     =   "Seguro de resurrección"
          Top             =   3060
          Visible         =   0   'False
@@ -584,7 +582,7 @@ Begin VB.Form frmMain
          Caption         =   "999/999"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -604,7 +602,7 @@ Begin VB.Form frmMain
          Caption         =   "100"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -624,7 +622,7 @@ Begin VB.Form frmMain
          Caption         =   "100"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -644,7 +642,7 @@ Begin VB.Form frmMain
          Caption         =   "999/999"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -664,7 +662,7 @@ Begin VB.Form frmMain
          Caption         =   "+0%"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -685,7 +683,7 @@ Begin VB.Form frmMain
          Caption         =   "+0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -707,7 +705,7 @@ Begin VB.Form frmMain
          Caption         =   "15"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -728,7 +726,7 @@ Begin VB.Form frmMain
          Caption         =   "100.000"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -749,7 +747,7 @@ Begin VB.Form frmMain
          Caption         =   "40"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -770,7 +768,7 @@ Begin VB.Form frmMain
          Caption         =   "40"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -791,7 +789,7 @@ Begin VB.Form frmMain
          Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -812,7 +810,7 @@ Begin VB.Form frmMain
          Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -833,7 +831,7 @@ Begin VB.Form frmMain
          Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -854,7 +852,7 @@ Begin VB.Form frmMain
          Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -876,7 +874,7 @@ Begin VB.Form frmMain
          Caption         =   "999/999"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -899,35 +897,30 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   192
          Left            =   528
-         Picture         =   "frmMain.frx":6F92
          Top             =   1212
          Width           =   2592
       End
       Begin VB.Image MANShp 
          Height          =   192
          Left            =   528
-         Picture         =   "frmMain.frx":9856
          Top             =   1632
          Width           =   2592
       End
       Begin VB.Image STAShp 
          Height          =   108
          Left            =   516
-         Picture         =   "frmMain.frx":C11A
          Top             =   2088
          Width           =   1068
       End
       Begin VB.Image AGUAsp 
          Height          =   108
          Left            =   2340
-         Picture         =   "frmMain.frx":CAC8
          Top             =   2088
          Width           =   384
       End
       Begin VB.Image COMIDAsp 
          Height          =   96
          Left            =   3288
-         Picture         =   "frmMain.frx":CE6C
          Top             =   2100
          Width           =   384
       End
@@ -935,7 +928,6 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   408
          Left            =   636
-         Picture         =   "frmMain.frx":D1B0
          ToolTipText     =   "Seguro de clan"
          Top             =   3060
          Visible         =   0   'False
@@ -944,7 +936,6 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   408
          Left            =   108
-         Picture         =   "frmMain.frx":DFC2
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -954,7 +945,6 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   408
          Left            =   1152
-         Picture         =   "frmMain.frx":EDD4
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -967,7 +957,7 @@ Begin VB.Form frmMain
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -977,9 +967,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   9120
       Left            =   120
-      ScaleHeight     =   760
+      ScaleHeight     =   608
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   920
+      ScaleWidth      =   736
       TabIndex        =   4
       Top             =   2280
       Width           =   11040
@@ -996,7 +986,7 @@ Begin VB.Form frmMain
       Caption         =   "Invisible"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1017,7 +1007,7 @@ Begin VB.Form frmMain
       Caption         =   "Spawn NPC"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1038,7 +1028,7 @@ Begin VB.Form frmMain
       Caption         =   "Crear Obj"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1059,7 +1049,7 @@ Begin VB.Form frmMain
       Caption         =   "PanelGM"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1100,7 +1090,7 @@ Begin VB.Form frmMain
       Caption         =   "00:00"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1120,7 +1110,7 @@ Begin VB.Form frmMain
       Caption         =   "ItemData"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1192,7 +1182,7 @@ Begin VB.Form frmMain
       Caption         =   "000 X:00 Y: 00"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1232,7 +1222,7 @@ Begin VB.Form frmMain
       Caption         =   "33.33%"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1257,14 +1247,12 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   144
       Left            =   8832
-      Picture         =   "frmMain.frx":FBE6
       Top             =   1812
       Width           =   444
    End
    Begin VB.Image globalIcon 
       Height          =   144
       Left            =   8832
-      Picture         =   "frmMain.frx":1016A
       Top             =   2004
       Width           =   444
    End
@@ -1307,7 +1295,7 @@ Begin VB.Form frmMain
       Caption         =   "Online: 1"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1326,7 +1314,7 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1342,7 +1330,6 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   348
       Left            =   11520
-      Picture         =   "frmMain.frx":106EE
       Top             =   480
       Visible         =   0   'False
       Width           =   420
@@ -1354,7 +1341,7 @@ Begin VB.Form frmMain
       Caption         =   "Mapa Desconocido"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1375,7 +1362,7 @@ Begin VB.Form frmMain
       Caption         =   "Guerrero - Nivel 50"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1395,7 +1382,7 @@ Begin VB.Form frmMain
       Caption         =   "99999/99999"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1412,7 +1399,6 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   192
       Left            =   11580
-      Picture         =   "frmMain.frx":1136E
       Top             =   1548
       Width           =   2832
    End
