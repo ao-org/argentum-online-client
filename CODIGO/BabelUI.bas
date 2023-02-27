@@ -52,6 +52,10 @@ Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks
 Public Declare Sub SendErrorMessage Lib "BabelUI.dll" Alias "_SendErrorMessage@12" (ByVal Message As String, ByVal Localize As Long, ByVal Action As Long)
 Public Declare Sub SetActiveScreen Lib "BabelUI.dll" Alias "_SetActiveScreen@4" (ByVal screenName As String)
 Public Declare Sub SetLoadingMessage Lib "BabelUI.dll" Alias "_SetLoadingMessage@8" (ByVal message As String, ByVal localize As Long)
+Public Declare Sub LoginCharacterListPrepare Lib "BabelUI.dll" Alias "_LoginCharacterListPrepare@4" (ByVal CharacterCount As Long)
+Public Declare Sub LoginAddCharacter Lib "BabelUI.dll" Alias "_LoginAddCharacter@36" (ByVal name As String, ByVal Head As Long, ByVal Body As Long, ByVal helm As Long, ByVal shield As Long, ByVal weapon As Long, ByVal level As Long, ByVal status As Long, ByVal Index As Long)
+Public Declare Sub LoginSendCharacters Lib "BabelUI.dll" Alias "_LoginSendCharacters@0" ()
+
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" Alias "_CreateDebugWindow@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
 Public Declare Function GetDebugImageBuffer Lib "BabelUI.dll" Alias "_GetDebugImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
@@ -109,6 +113,7 @@ End Function
 
 Public Sub InitializeUI(ByVal Width As Long, ByVal Height As Long, ByVal pixelSize As Long)
 On Error GoTo InitializeUI_Err
+    If BabelInitialized Then Exit Sub
 100 Dim initSuccess As Boolean
 102 UITexture.Height = Height
 104 UITexture.Width = Width
@@ -298,4 +303,13 @@ Public Sub DisplayError(ByVal Message As String, ByVal LocalizationStr As String
     Else
         Call MsgBox(Message)
     End If
+End Sub
+
+Public Sub SendLoginCharacters(ByRef charlist() As UserCuentaPJS, ByVal charCount As Long)
+    Call LoginCharacterListPrepare(charCount)
+    Dim i As Integer
+    For i = LBound(charlist) To charCount
+        Call LoginAddCharacter(charlist(i).nombre, charlist(i).Head, charlist(i).Body, charlist(i).Casco, charlist(i).Escudo, charlist(i).Arma, charlist(i).nivel, charlist(i).Criminal, i - 1)
+    Next i
+    Call LoginSendCharacters
 End Sub

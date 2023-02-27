@@ -4326,6 +4326,7 @@ Private Sub cerrarcuenta_Timer()
     
     Unload frmConnect
     Unload frmCrearPersonaje
+    Unload frmBabelLogin
     cerrarcuenta.Enabled = False
 
     

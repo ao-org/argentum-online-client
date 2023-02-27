@@ -1367,7 +1367,6 @@ Private Sub FillAccountData(ByVal data As String)
 
     Next ii
 
-
     For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
 
         Select Case Pjs(i).Criminal

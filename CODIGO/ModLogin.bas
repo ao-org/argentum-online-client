@@ -110,6 +110,7 @@ Public Sub LoadCharacterSelectionScreen()
     frmConnect.visible = True
     g_game_state.state = e_state_account_screen
     If BabelUI.BabelInitialized Then
+        Call SendLoginCharacters(Pjs, CantidadDePersonajesEnCuenta)
         Call BabelUI.SetActiveScreen("character-selection")
     End If
     SugerenciaAMostrar = RandomNumber(1, NumSug)
