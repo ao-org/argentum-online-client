@@ -20,9 +20,15 @@ Private colorCooldown As RGBA
 
 Private Sub DrawEffectCd(ByVal x As Integer, ByVal y As Integer, ByRef Effect As e_ActiveEffect, ByVal CurrTime As Long, ByRef colors() As RGBA)
     Dim Grh As Grh
+    Dim angle As Single
     Call InitGrh(Grh, Effect.Grh)
     Call Grh_Render_Advance(Grh, x - 16, y - 16, 32, 32, colors)
-    Call Engine_Draw_Load(x, y, 32, 32, colorCooldown, (CurrTime - Effect.StartTime) * 360 / Effect.Duration)
+    If Effect.duration > -1 Then
+        angle = (currTime - Effect.startTime) * 360 / Effect.duration
+    Else
+        angle = 0
+    End If
+    Call Engine_Draw_Load(x, y, 32, 32, colorCooldown, angle)
 End Sub
 
 Public Sub renderCooldowns(ByVal x As Integer, ByVal y As Integer)
@@ -150,5 +156,11 @@ Public Sub UpdateEffectTime(ByRef EffectList As t_ActiveEffectList, ByVal CurrTi
             i = i + 1
         End If
     Wend
+End Sub
+
+Public Sub ResetAllCd()
+    BuffList.EffectCount = 0
+    DeBuffList.EffectCount = 0
+    CDList.EffectCount = 0
 End Sub
 
