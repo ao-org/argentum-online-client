@@ -1084,7 +1084,7 @@ On Error GoTo HandleLogged_Err
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
-    
+    Call ResetAllCd
     
     Call SetConnected
     g_game_state.state = e_state_gameplay_screen
