@@ -1,6 +1,9 @@
 Attribute VB_Name = "BabelUI"
 Option Explicit
 
+Const CreateCharMap = 782
+Const CreateCharMapX = 25
+Const CreateCharMapY = 35
 Private Type LOGINDATA
     user As Long
     userLen As Long
@@ -48,7 +51,7 @@ Public Declare Function GetBebelImageBuffer Lib "BabelUI.dll" Alias "_GetImageBu
 Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "_SendMouseEvent@16" (ByVal posX As Long, ByVal posY As Long, ByVal EvtType As Long, ByVal Button As Long)
 Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "_SendKeyEvent@20" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
 Public Declare Function NextPowerOf2 Lib "BabelUI.dll" Alias "_NextPowerOf2@4" (ByVal original As Long) As Long
-Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@32" (ByVal Login As Long, ByVal CloseClient As Long, ByVal CreateAccount As Long, ByVal SetHost As Long, ByVal ValidateAccountr As Long, ByVal ResendCode As Long, ByVal RequestPasswordReset As Long, ByVal RequestNewPassord As Long)
+Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@40" (ByVal Login As Long, ByVal CloseClient As Long, ByVal CreateAccount As Long, ByVal SetHost As Long, ByVal ValidateAccountr As Long, ByVal ResendCode As Long, ByVal RequestPasswordReset As Long, ByVal RequestNewPassord As Long, ByVal SelectCharacter As Long, ByVal LoginCharacter As Long)
 Public Declare Sub SendErrorMessage Lib "BabelUI.dll" Alias "_SendErrorMessage@12" (ByVal Message As String, ByVal Localize As Long, ByVal Action As Long)
 Public Declare Sub SetActiveScreen Lib "BabelUI.dll" Alias "_SetActiveScreen@4" (ByVal screenName As String)
 Public Declare Sub SetLoadingMessage Lib "BabelUI.dll" Alias "_SetLoadingMessage@8" (ByVal message As String, ByVal localize As Long)
@@ -124,7 +127,7 @@ On Error GoTo InitializeUI_Err
 114 UITexture.pixelSize = pixelSize
 116 Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
 118 BabelInitialized = True
-    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB)
+    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB, AddressOf SelectCharacterPreviewCB, AddressOf LoginCharacterCB)
     Exit Sub
 InitializeUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.InitializeUI", Erl)
@@ -291,6 +294,22 @@ Public Sub RequestNewPasswordCB(ByRef Params As TRIPLESTRINGPARAM)
     End If
     Call SetActiveEnvironment(ServerEnvironment)
     Call RequestNewPassword(CuentaEmail, CuentaPassword, ValidationCode)
+End Sub
+
+Public Sub SelectCharacterPreviewCB(ByVal charindex As Long)
+    If charindex > LBound(Pjs) And charindex < UBound(Pjs) Then
+        Call SwitchMap(Pjs(charindex).Mapa)
+        RenderCuenta_PosX = Pjs(charindex).posX
+        RenderCuenta_PosY = Pjs(charindex).posY
+    Else
+        Call SwitchMap(CreateCharMap)
+        RenderCuenta_PosX = CreateCharMapX
+        RenderCuenta_PosY = CreateCharMapY
+    End If
+End Sub
+
+Public Sub LoginCharacterCB(ByVal charindex As Long)
+
 End Sub
 
 Public Sub DisplayError(ByVal Message As String, ByVal LocalizationStr As String)

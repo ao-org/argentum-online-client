@@ -2287,6 +2287,16 @@ On Error GoTo Start_Err
     DoEvents
     Do While prgRun
         If frmMain.WindowState <> vbMinimized Then
+            If frmBabelLogin.visible Then
+                Call UpdateUI
+                
+                If DebugInitialized Then
+                    If frmDebugUI.visible Then
+                        Call UpdateInspectorUI
+                        Call engine.RenderDebugUI
+                    End If
+                End If
+            End If
             Select Case g_game_state.state()
                 Case e_state_gameplay_screen
                     render
@@ -2319,6 +2329,7 @@ On Error GoTo Start_Err
                     End If
 
                 Case e_state_connect_screen
+                    If frmBabelLogin.visible Then Call engine.RenderLoginUI(57, 45, 0, 0)
                     If Not frmConnect.visible Then
                         frmConnect.Show
                         frmBabelLogin.Show
@@ -2335,22 +2346,15 @@ On Error GoTo Start_Err
                     RenderConnect 57, 45, 0, 0
 
                 Case e_state_account_screen
+                    If frmBabelLogin.visible Then Call engine.RenderBabelCharacterSelection
                     rendercuenta 42, 43, 0, 0
 
                 Case e_state_createchar_screen
+                    If frmBabelLogin.visible Then Call engine.RenderBabelCharacterSelection
                     RenderCrearPJ 76, 82, 0, 0
 
             End Select
-            If frmBabelLogin.visible Then
-                Call UpdateUI
-                Call engine.RenderLoginUI(57, 45, 0, 0)
-                If DebugInitialized Then
-                    If frmDebugUI.visible Then
-                        Call UpdateInspectorUI
-                        Call engine.RenderDebugUI
-                    End If
-                End If
-            End If
+            
             Sound.Sound_Render
         Else
             Sleep 60&
@@ -3771,6 +3775,24 @@ Private Function renderAttributesColors(ByVal value As Integer, ByVal x As Integ
         RenderText str(Value), x, y, COLOR_WHITE, 1, True
     End If
 End Function
+
+Public Sub RenderBabelCharacterSelection()
+On Error GoTo RenderBabelCharacterSelection_Err
+    Call Engine_BeginScene
+    
+    Call RenderScreen(RenderCuenta_PosX, RenderCuenta_PosY, 0, 0, HalfConnectTileWidth, HalfConnectTileHeight)
+    
+    FrameTime = GetTickCount()
+    timerElapsedTime = GetElapsedTime()
+    timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
+    Call DrawUITexture(UITexture)
+    Call Engine_EndScene(Render_Connect_Rect, frmBabelLogin.UIRenderArea.hwnd)
+    Exit Sub
+RenderBabelCharacterSelection_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderBabelCharacterSelection", Erl)
+    Resume Next
+End Sub
+
 Public Sub RenderAccountCharacters()
 On Error GoTo RenderAccountCharacters_Err
     Dim i               As Long: Dim sumax As Long
