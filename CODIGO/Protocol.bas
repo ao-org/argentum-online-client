@@ -2699,27 +2699,13 @@ HandleNPCHitUser_Err:
     
     
 End Sub
-
-''
-' Handles the UserHitNPC message.
-
 Private Sub HandleUserHitNPC()
-    
-    On Error GoTo HandleUserHitNPC_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+On Error GoTo HandleUserHitNPC_Err
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & PonerPuntos(Reader.ReadInt32()) & MENSAJE_2, 255, 0, 0, True, False, False)
-    
+    Call svb_unlock_achivement("Small victory")
     Exit Sub
-
 HandleUserHitNPC_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHitNPC", Erl)
-    
-    
 End Sub
 
 ''
@@ -4903,19 +4889,10 @@ SendFollowingCharindex_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.SendFollowingCharindex", Erl)
     
 End Sub
-''
-' Handles the UpdateUserStats message.
+
 
 Private Sub HandleUpdateUserStats()
-    
-    On Error GoTo HandleUpdateUserStats_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+On Error GoTo HandleUpdateUserStats_Err
     UserMaxHp = Reader.ReadInt16()
     UserMinHp = Reader.ReadInt16()
     UserMaxMAN = Reader.ReadInt16()
@@ -4925,6 +4902,20 @@ Private Sub HandleUpdateUserStats()
     UserGLD = Reader.ReadInt32()
     OroPorNivel = Reader.ReadInt32()
     UserLvl = Reader.ReadInt8()
+     
+    Select Case UserLvl:
+        Case 10
+            Call svb_unlock_achivement("Adveturer")
+        Case 20
+            Call svb_unlock_achivement("Seasoned adventurer")
+        Case 30
+            Call svb_unlock_achivement("Big shot!")
+        Case 40
+            Call svb_unlock_achivement("Oh! You mean business!")
+        Case Else
+            'Nothing
+    End Select
+
     UserPasarNivel = Reader.ReadInt32()
     UserExp = Reader.ReadInt32()
     UserClase = Reader.ReadInt8()
