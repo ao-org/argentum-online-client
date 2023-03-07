@@ -4905,7 +4905,7 @@ On Error GoTo HandleUpdateUserStats_Err
      
     Select Case UserLvl:
         Case 10
-            Call svb_unlock_achivement("Adveturer")
+            Call svb_unlock_achivement("Adventurer")
         Case 20
             Call svb_unlock_achivement("Seasoned adventurer")
         Case 30
