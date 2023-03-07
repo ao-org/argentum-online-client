@@ -1050,48 +1050,7 @@ txtNombre_KeyPress_Err:
     Resume Next
     
 End Sub
-#If PYMMO = 0 Then
 
-Private Sub LogearPersonaje(ByVal Nick As String)
-    
-    On Error GoTo LogearPersonaje_Err
-    
-    username = Nick
-
-    If Connected Then
-        frmMain.ShowFPS.enabled = True
-    End If
-    
-    Call Protocol_Writes.WriteLoginExistingChar
-    
-    Exit Sub
-
-LogearPersonaje_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmConnect.LogearPersonaje", Erl)
-    Resume Next
-    
+Private Sub LogearPersonaje(ByVal nick As String)
+    Call ModLogin.LoginCharacter(nick)
 End Sub
-#End If
-#If PYMMO = 1 Then
-Private Sub LogearPersonaje(ByVal Nick As String)
-    
-    On Error GoTo LogearPersonaje_Err
-    
-    UserName = Nick
-
-    If Connected Then
-        frmMain.ShowFPS.Enabled = True
-    End If
-    frmConnecting.Show
-    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
-    ModAuth.LoginOperation = e_operation.Authenticate
-    Call LoginOrConnect(E_MODO.Normal)
-    
-    Exit Sub
-
-LogearPersonaje_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmConnect.LogearPersonaje", Erl)
-    Resume Next
-    
-End Sub
-#End If

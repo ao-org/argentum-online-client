@@ -31,6 +31,9 @@ Private Const VREFRESH As Long = 116
 Private Const TIME_MS_MOUSE As Byte = 10
 Private MouseLastUpdate As Long
 Private MouseTimeAcumulated As Long
+Private Const MainWindowWidth = 1024
+Private Const MainWindowHeight = 1024
+
 
 Private Declare Function timeGetTime Lib "winmm.dll" () As Long
 
@@ -222,8 +225,8 @@ Private Sub Engine_InitExtras()
     With Render_Connect_Rect
         .Top = 0
         .Left = 0
-        .Right = frmConnect.render.ScaleWidth
-        .Bottom = frmConnect.render.ScaleHeight
+        .Right = D3DWindow.BackBufferWidth
+        .Bottom = D3DWindow.BackBufferHeight
     End With
     
     With Render_Main_Rect
@@ -2329,26 +2332,23 @@ On Error GoTo Start_Err
                     End If
 
                 Case e_state_connect_screen
-                    If frmBabelLogin.visible Then Call engine.RenderLoginUI(57, 45, 0, 0)
-                    If Not frmConnect.visible Then
-                        frmConnect.Show
-                        frmBabelLogin.Show
-                        Dim patchNotes As String
-                        patchNotes = GetPatchNotes()
-                        If Not patchNotes = "" Then
-                            frmPatchNotes.SetNotes (patchNotes)
-                            frmPatchNotes.Show , frmConnect
-                        Else
-                            FrmLogear.Show , frmConnect
+                    If UseBabelUI Then
+                        Call engine.RenderLoginUI(57, 45, 0, 0)
+                        If Not frmBabelLogin.visible Then
+                            Call ShowLogin
                         End If
+                    Else
+                        If Not frmConnect.visible Then
+                            Call ShowLogin
+                        End If
+                        RenderConnect 57, 45, 0, 0
                     End If
-                    
-                    RenderConnect 57, 45, 0, 0
-
                 Case e_state_account_screen
-                    If frmBabelLogin.visible Then Call engine.RenderBabelCharacterSelection
-                    rendercuenta 42, 43, 0, 0
-
+                    If UseBabelUI Then
+                        Call engine.RenderBabelCharacterSelection
+                    Else
+                        rendercuenta 42, 43, 0, 0
+                    End If
                 Case e_state_createchar_screen
                     If frmBabelLogin.visible Then Call engine.RenderBabelCharacterSelection
                     RenderCrearPJ 76, 82, 0, 0
@@ -3321,7 +3321,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Call RGBAList(cc, 255, 255, 255, 255)
 
-    Draw_Grh TempGrh, (frmConnect.ScaleWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 10, 0, 1, cc(), False
+    Draw_Grh TempGrh, (D3DWindow.BackBufferWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 10, 0, 1, cc(), False
 
     'Logo nuevo
     'Marco
@@ -3334,7 +3334,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Draw_Grh TempGrh, 810, 655, 0, 1, cc(), False
 
     If FadeInAlpha > 0 Then
-        Call Engine_Draw_Box(0, 0, frmConnect.ScaleWidth, frmConnect.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
+        Call Engine_Draw_Box(0, 0, D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
 
@@ -3449,7 +3449,7 @@ Public Sub RenderLoginUI(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Call RGBAList(cc, 255, 255, 255, 255)
 
-    Draw_Grh TempGrh, (frmConnect.ScaleWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 10, 0, 1, cc(), False
+    Draw_Grh TempGrh, (D3DWindow.BackBufferWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 10, 0, 1, cc(), False
 
     'Logo nuevo
     'Marco
@@ -3458,7 +3458,7 @@ Public Sub RenderLoginUI(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
 
     If FadeInAlpha > 0 Then
-        Call Engine_Draw_Box(0, 0, frmConnect.ScaleWidth, frmConnect.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
+        Call Engine_Draw_Box(0, 0, D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
     

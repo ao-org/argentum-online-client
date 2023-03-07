@@ -1133,25 +1133,22 @@ On Error GoTo Main_Err
     CheckMD5 = GetMd5
     SessionOpened = False
     
-
-    Call Load(frmConnect)
-    Call Load(FrmLogear)
-        
+    If CheckAndSetBabelUIUsage Then
+        Call InitializeUI(D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, 4)
+    Else
+        Call Load(frmConnect)
+        Call Load(FrmLogear)
+    End If
     Call Frmcarga.Show
 
     If Sonido Then
     
         If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
             Call Sound.Ambient_Volume_Set(VolAmbient)
-        
         Else
-
             Call MsgBox("¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde ao20.com.ar", vbCritical, "Saliendo")
-            
             Call CloseClient
-
         End If
-
     End If
         
     servers_login_connections(1) = "20.195.162.204:6500"

@@ -1421,7 +1421,9 @@ End Sub
 
 Public Sub mostrarcuenta()
     AlphaNiebla = 30
-    frmConnect.Visible = True
+    If Not UseBabelUI Then
+        frmConnect.visible = True
+    End If
 
     g_game_state.state = e_state_account_screen
 

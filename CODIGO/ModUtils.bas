@@ -712,8 +712,7 @@ Sub General_Set_Connect()
     Call SwitchMap(UserMap)
 
     If g_game_state.state() <> e_state_connect_screen Then
-        frmConnect.Show
-        FrmLogear.Show , frmConnect
+        Call ShowLogin
     End If
             
     intro = 1

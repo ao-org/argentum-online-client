@@ -107,11 +107,12 @@ End Sub
 
 Public Sub LoadCharacterSelectionScreen()
     AlphaNiebla = 30
-    frmConnect.visible = True
     g_game_state.state = e_state_account_screen
     If BabelUI.BabelInitialized Then
         Call SendLoginCharacters(Pjs, CantidadDePersonajesEnCuenta)
         Call BabelUI.SetActiveScreen("character-selection")
+    Else
+        frmConnect.visible = True
     End If
     SugerenciaAMostrar = RandomNumber(1, NumSug)
     Call Sound.Sound_Play(192)
@@ -175,4 +176,49 @@ Public Sub RequestNewPassword(ByVal email As String, ByVal newPassword As String
     ModAuth.LoginOperation = e_operation.ResetPassword
     Auth_state = e_state.RequestResetPassword
     Call connectToLoginServer
+End Sub
+
+Public Sub LoginCharacter(ByVal Name As String)
+On Error GoTo LogearPersonaje_Err
+    username = Name
+    If Connected Then
+        frmMain.ShowFPS.enabled = True
+    End If
+#If PYMMO = 0 Then
+    Call Protocol_Writes.WriteLoginExistingChar
+#End If
+#If PYMMO = 1 Then
+    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+    ModAuth.LoginOperation = e_operation.Authenticate
+    Call LoginOrConnect(E_MODO.Normal)
+#End If
+LogearPersonaje_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModLogin.LogearPersonaje", Erl)
+    Resume Next
+End Sub
+
+Public Sub ShowLogin()
+    If UseBabelUI Then
+        frmBabelLogin.Show
+        BabelUI.SetActiveScreen ("login")
+    Else
+        frmConnect.Show
+        Dim patchNotes As String
+        patchNotes = GetPatchNotes()
+        If Not patchNotes = "" Then
+            frmPatchNotes.SetNotes (patchNotes)
+            frmPatchNotes.Show , frmConnect
+        Else
+            FrmLogear.Show , frmConnect
+        End If
+    End If
+End Sub
+
+Public Sub ShowScharSelection()
+    If UseBabelUI Then
+        frmBabelLogin.Show
+        BabelUI.SetActiveScreen ("charcter-selection")
+    Else
+        Call connectToLoginServer
+    End If
 End Sub

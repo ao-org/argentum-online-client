@@ -1291,9 +1291,10 @@ Public Sub HandleDisconnect()
     Call modNetwork.Disconnect
     
     'Hide main form
-    'FrmCuenta.Visible = True
-    Call ResetearCartel
-    frmConnect.Visible = True
+    Call resetearCartel
+    If Not UseBabelUI Then
+        frmConnect.visible = True
+    End If
     #If PYMMO = 1 Then
        g_game_state.state = e_state_account_screen
     #ElseIf PYMMO = 0 Then
@@ -1499,8 +1500,7 @@ Public Sub HandleDisconnect()
         Call connectToLoginServer
     End If
     #ElseIf PYMMO = 0 Then
-    frmConnect.Show
-    FrmLogear.Show , frmConnect
+    Call ShowLogin
     #End If
     
     Exit Sub
@@ -3486,7 +3486,9 @@ Private Sub HandleMostrarCuenta()
 On Error GoTo ErrHandler
     
     AlphaNiebla = 30
-    frmConnect.Visible = True
+    If Not UseBabelUI Then
+		frmConnect.visible = True
+    End If
      
     g_game_state.state = e_state_account_screen
 
