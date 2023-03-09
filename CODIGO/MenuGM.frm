@@ -3,14 +3,14 @@ Begin VB.Form MenuGM
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   2535
+   ClientHeight    =   4740
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   1950
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   169
+   ScaleHeight     =   316
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   130
    ShowInTaskbar   =   0   'False
@@ -25,7 +25,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "VER PANTALLA"
+      Caption         =   "SEGUIRMOUSE"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -53,7 +53,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "VER PROCESOS"
+      Caption         =   "USO DE MACROS"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -81,7 +81,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "REVIVIR"
+      Caption         =   "ADVERTENCIA"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -305,7 +305,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "NICK2IP"
+      Caption         =   "INFO DE IP"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -475,8 +475,6 @@ Private Sub OpcionImg_Click(Index As Integer)
     End Select
 
     Unload Me
-    
-End Sub
     
 End Sub
 
