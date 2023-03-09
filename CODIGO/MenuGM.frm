@@ -3,16 +3,16 @@ Begin VB.Form MenuGM
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   2532
+   ClientHeight    =   4740
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   1956
+   ClientWidth     =   1950
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   211
+   ScaleHeight     =   316
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   163
+   ScaleWidth      =   130
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Image OpcionImg 
@@ -25,10 +25,10 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "VER PANTALLA"
+      Caption         =   "SEGUIRMOUSE"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -53,10 +53,10 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "VER PROCESOS"
+      Caption         =   "USO DE MACROS"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -81,10 +81,10 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "REVIVIR"
+      Caption         =   "ADVERTENCIA"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -105,7 +105,7 @@ Begin VB.Form MenuGM
       Caption         =   "PENAS"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -133,7 +133,7 @@ Begin VB.Form MenuGM
       Caption         =   "BANEAR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -161,7 +161,7 @@ Begin VB.Form MenuGM
       Caption         =   "CARCEL 5 min"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -189,7 +189,7 @@ Begin VB.Form MenuGM
       Caption         =   "CONSULTA"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -217,7 +217,7 @@ Begin VB.Form MenuGM
       Caption         =   "REVIVIR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -252,7 +252,7 @@ Begin VB.Form MenuGM
       Caption         =   "INVENTARIO"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -280,7 +280,7 @@ Begin VB.Form MenuGM
       Caption         =   "INFO"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -305,10 +305,10 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "NICK2IP"
+      Caption         =   "INFO DE IP"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -336,7 +336,7 @@ Begin VB.Form MenuGM
       Caption         =   "SILENCIAR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -364,7 +364,7 @@ Begin VB.Form MenuGM
       Caption         =   "SUM"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -412,36 +412,66 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub OpcionImg_Click(Index As Integer)
-    
+
+    Dim tmp As String
+
     Select Case Index
+
         Case 0
             Call ParseUserCommand("/SUM")
+
         Case 1
             Call ParseUserCommand("/SILENCIAR " & TargetName & "@" & "15")
+
         Case 2
             Call ParseUserCommand("/NICK2IP " & TargetName)
+            Call WriteLastIP(TargetName)
+
         Case 3
             Call ParseUserCommand("/INFO " & TargetName)
+
         Case 4
             Call ParseUserCommand("/INV " & TargetName)
+
         Case 5
             Call ParseUserCommand("/REVIVIR " & TargetName)
+
         Case 6
             Call ParseUserCommand("/CONSULTA " & TargetName)
+
         Case 7
-            'Call ParseUserCommand("/CARCEL")' ver ReyarB
-            Call WriteJail(TargetName, "Prevencion u ofensa", "5")
+            Call ParseUserCommand("/CARCEL") ' ver ReyarB
+            tmp = InputBox("Escriba el motivo de Carcel de 60 min.", "Carcel a " & TargetName)
+
+            If tmp = "" Then
+                InputBox ("No se puede mandar a carcel 60 min si dar motivos a " & TargetName)
+            Else
+                Call WriteJail(TargetName, tmp, "60")
+            End If
+
         Case 8
-            'Call ParseUserCommand("/BAN")' ver ReyarB
-            Call WriteBanChar(TargetName, "Incumplimiento de reglas")
+            Call ParseUserCommand("/BAN") ' ver ReyarB
+            tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & TargetName)
+
+            If tmp = "" Then
+                InputBox ("No se puede bannear si dar motivos a " & TargetName)
+            Else
+                Call WriteBanChar(TargetName, tmp)
+            End If
+
         Case 9
             Call ParseUserCommand("/PENAS " & TargetName)
+
         Case 10
-            Call ParseUserCommand("/REVIVIR " & TargetName)
+            tmp = InputBox("Escriba el motivo de la advertencia.", "Advertir a " & TargetName)
+            Call ParseUserCommand("/ADVERTENCIA " & TargetName & "@" & tmp)
+
         Case 11
-            Call ParseUserCommand("/PROC")
+            Call WriteWhisper(TargetName, " El uso de macros o programas de tercero para automatizar estan prohibidos estos puede ocasionar sanciones que puede ir hasta Ban de IP.")
+
+            'Call WriteWhisper(TargetName, " El Servidor comprobo que el cliente no es el Oficial por favor descargar de Steam Gracias.")
         Case 12
-            Call ParseUserCommand("/SS")
+            Call ParseUserCommand("/SM " & TargetName)
     End Select
 
     Unload Me

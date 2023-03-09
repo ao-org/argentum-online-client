@@ -3,13 +3,13 @@ Begin VB.Form frmPanelgm
    BackColor       =   &H00000000&
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
-   ClientHeight    =   8604
-   ClientLeft      =   18156
-   ClientTop       =   4716
+   ClientHeight    =   8610
+   ClientLeft      =   18150
+   ClientTop       =   4710
    ClientWidth     =   7200
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,7 +19,7 @@ Begin VB.Form frmPanelgm
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8604
+   ScaleHeight     =   8610
    ScaleWidth      =   7200
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -144,7 +144,7 @@ Begin VB.Form frmPanelgm
    End
    Begin VB.CommandButton SendGlobal 
       BackColor       =   &H8000000A&
-      Caption         =   "Global"
+      Caption         =   "A GMs"
       Height          =   300
       Left            =   3900
       Style           =   1  'Graphical
@@ -478,11 +478,11 @@ Begin VB.Form frmPanelgm
       Width           =   1695
    End
    Begin VB.TextBox txtMod 
-      BackColor       =   &H0080FF80&
+      BackColor       =   &H00FFFFFF&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -510,7 +510,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "Lista 2 (Consultas)"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -527,7 +527,7 @@ Begin VB.Form frmPanelgm
       Caption         =   "Lista 1 (Principal)"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -564,7 +564,7 @@ Begin VB.Form frmPanelgm
    End
    Begin VB.ListBox List1 
       BackColor       =   &H8000000A&
-      Height          =   1884
+      Height          =   2010
       ItemData        =   "frmPanelGm.frx":0000
       Left            =   120
       List            =   "frmPanelGm.frx":0002
@@ -599,7 +599,7 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -614,7 +614,7 @@ Begin VB.Form frmPanelgm
       Width           =   3675
    End
    Begin VB.ListBox List2 
-      Height          =   1272
+      Height          =   1425
       Left            =   120
       TabIndex        =   7
       Top             =   600
@@ -2951,7 +2951,9 @@ Private Sub SeguroInseguro_Click()
 End Sub
 
 Private Sub SendGlobal_Click()
-    If LenB(txtMod.Text) Then Call WriteServerMessage(txtMod.Text)
+    If LenB(txtMod.Text) Then Call ParseUserCommand("/GMSG " & txtMod.Text)
+    txtMod.Text = ""
+    txtMod.SetFocus
 End Sub
 
 Private Sub SkillLibres_Click()
@@ -3110,7 +3112,7 @@ End Sub
 
 
 Private Sub txtMod_KeyPress(KeyAscii As Integer)
-    If Not IsNumeric(txtMod.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    'If Not IsNumeric(txtMod.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
     
     If KeyAscii = vbKeyReturn Then
         Call ParseUserCommand(txtMod.Text)
