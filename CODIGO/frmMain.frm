@@ -1,18 +1,18 @@
 VERSION 5.00
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Begin VB.Form frmMain 
    Appearance      =   0  'Flat
    AutoRedraw      =   -1  'True
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    ClientHeight    =   13920
-   ClientLeft      =   348
+   ClientLeft      =   345
    ClientTop       =   240
    ClientWidth     =   19980
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   9.6
+      Size            =   9.75
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -27,9 +27,9 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    Moveable        =   0   'False
    NegotiateMenus  =   0   'False
-   ScaleHeight     =   1160
+   ScaleHeight     =   928
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1665
+   ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
    Begin VB.PictureBox shapexy 
@@ -39,8 +39,8 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   180
       Left            =   16920
-      ScaleHeight     =   156
-      ScaleWidth      =   156
+      ScaleHeight     =   150
+      ScaleWidth      =   150
       TabIndex        =   0
       TabStop         =   0   'False
       Top             =   7080
@@ -64,7 +64,7 @@ Begin VB.Form frmMain
       BackColor       =   &H00000040&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -155,9 +155,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   4875
       Left            =   11520
-      ScaleHeight     =   406
+      ScaleHeight     =   325
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   309
+      ScaleWidth      =   247
       TabIndex        =   18
       Top             =   2400
       Width           =   3705
@@ -172,7 +172,7 @@ Begin VB.Form frmMain
          DrawStyle       =   3  'Dash-Dot
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -183,9 +183,9 @@ Begin VB.Form frmMain
          Height          =   3405
          Left            =   225
          MousePointer    =   99  'Custom
-         ScaleHeight     =   284
+         ScaleHeight     =   227
          ScaleMode       =   3  'Pixel
-         ScaleWidth      =   270
+         ScaleWidth      =   216
          TabIndex        =   44
          Top             =   600
          Visible         =   0   'False
@@ -199,7 +199,7 @@ Begin VB.Form frmMain
          ClipControls    =   0   'False
          BeginProperty Font 
             Name            =   "Arial"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -209,9 +209,9 @@ Begin VB.Form frmMain
          ForeColor       =   &H80000008&
          Height          =   3840
          Left            =   280
-         ScaleHeight     =   320
+         ScaleHeight     =   256
          ScaleMode       =   3  'Pixel
-         ScaleWidth      =   263
+         ScaleWidth      =   210
          TabIndex        =   19
          Top             =   740
          Width           =   3150
@@ -270,16 +270,16 @@ Begin VB.Form frmMain
          Width           =   315
       End
       Begin VB.Image cmdMoverHechi 
-         Height          =   228
+         Height          =   285
          Index           =   1
-         Left            =   3372
+         Left            =   3375
          MouseIcon       =   "frmMain.frx":5934
          MousePointer    =   99  'Custom
          Picture         =   "frmMain.frx":5A86
          Tag             =   "0"
          Top             =   4260
          Visible         =   0   'False
-         Width           =   252
+         Width           =   315
       End
       Begin VB.Image cmdlanzar 
          Height          =   585
@@ -295,7 +295,7 @@ Begin VB.Form frmMain
       BackColor       =   &H00202020&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -322,7 +322,7 @@ Begin VB.Form frmMain
       FillStyle       =   0  'Solid
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -332,9 +332,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H00000000&
       Height          =   1500
       Left            =   9576
-      ScaleHeight     =   125
+      ScaleHeight     =   100
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   125
+      ScaleWidth      =   100
       TabIndex        =   2
       ToolTipText     =   "Tu posicion en el mapa, click para mas info."
       Top             =   600
@@ -437,7 +437,7 @@ Begin VB.Form frmMain
       Top             =   480
       Width           =   9180
       _ExtentX        =   16193
-      _ExtentY        =   2244
+      _ExtentY        =   2249
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
@@ -450,7 +450,7 @@ Begin VB.Form frmMain
       TextRTF         =   $"frmMain.frx":6104
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -466,9 +466,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   3675
       Left            =   11340
-      ScaleHeight     =   306
+      ScaleHeight     =   245
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   333
+      ScaleWidth      =   266
       TabIndex        =   8
       Top             =   7815
       Width           =   3990
@@ -503,7 +503,6 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   408
          Left            =   1680
-         Picture         =   "frmMain.frx":6180
          ToolTipText     =   "Seguro de resurrección"
          Top             =   3060
          Visible         =   0   'False
@@ -584,7 +583,7 @@ Begin VB.Form frmMain
          Caption         =   "999/999"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -604,7 +603,7 @@ Begin VB.Form frmMain
          Caption         =   "100"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -624,7 +623,7 @@ Begin VB.Form frmMain
          Caption         =   "100"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -644,7 +643,7 @@ Begin VB.Form frmMain
          Caption         =   "999/999"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -664,7 +663,7 @@ Begin VB.Form frmMain
          Caption         =   "+0%"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -685,7 +684,7 @@ Begin VB.Form frmMain
          Caption         =   "+0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -707,7 +706,7 @@ Begin VB.Form frmMain
          Caption         =   "15"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -728,7 +727,7 @@ Begin VB.Form frmMain
          Caption         =   "100.000"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -749,7 +748,7 @@ Begin VB.Form frmMain
          Caption         =   "40"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -770,7 +769,7 @@ Begin VB.Form frmMain
          Caption         =   "40"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -791,7 +790,7 @@ Begin VB.Form frmMain
          Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -812,7 +811,7 @@ Begin VB.Form frmMain
          Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -833,7 +832,7 @@ Begin VB.Form frmMain
          Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -854,7 +853,7 @@ Begin VB.Form frmMain
          Caption         =   "0/0"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -876,7 +875,7 @@ Begin VB.Form frmMain
          Caption         =   "999/999"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -899,7 +898,6 @@ Begin VB.Form frmMain
       Begin VB.Image Hpshp 
          Height          =   192
          Left            =   528
-         Picture         =   "frmMain.frx":6F92
          Top             =   1212
          Width           =   2592
       End
@@ -912,28 +910,24 @@ Begin VB.Form frmMain
       Begin VB.Image MANShp 
          Height          =   192
          Left            =   528
-         Picture         =   "frmMain.frx":9856
          Top             =   1632
          Width           =   2592
       End
       Begin VB.Image STAShp 
          Height          =   108
          Left            =   516
-         Picture         =   "frmMain.frx":C11A
          Top             =   2088
          Width           =   1068
       End
       Begin VB.Image AGUAsp 
          Height          =   108
          Left            =   2340
-         Picture         =   "frmMain.frx":CAC8
          Top             =   2088
          Width           =   384
       End
       Begin VB.Image COMIDAsp 
          Height          =   96
          Left            =   3288
-         Picture         =   "frmMain.frx":CE6C
          Top             =   2100
          Width           =   384
       End
@@ -941,7 +935,6 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   408
          Left            =   636
-         Picture         =   "frmMain.frx":D1B0
          ToolTipText     =   "Seguro de clan"
          Top             =   3060
          Visible         =   0   'False
@@ -950,7 +943,6 @@ Begin VB.Form frmMain
       Begin VB.Image ImgSegParty 
          Height          =   408
          Left            =   108
-         Picture         =   "frmMain.frx":DFC2
          ToolTipText     =   "Seguro de grupo"
          Top             =   3060
          Visible         =   0   'False
@@ -960,7 +952,6 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   408
          Left            =   1152
-         Picture         =   "frmMain.frx":EDD4
          ToolTipText     =   "Seguro de ataque"
          Top             =   3060
          Visible         =   0   'False
@@ -973,7 +964,7 @@ Begin VB.Form frmMain
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -983,9 +974,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000008&
       Height          =   9120
       Left            =   120
-      ScaleHeight     =   760
+      ScaleHeight     =   608
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   920
+      ScaleWidth      =   736
       TabIndex        =   4
       Top             =   2280
       Width           =   11040
@@ -1002,7 +993,7 @@ Begin VB.Form frmMain
       Caption         =   "Invisible"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1023,7 +1014,7 @@ Begin VB.Form frmMain
       Caption         =   "Spawn NPC"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1044,7 +1035,7 @@ Begin VB.Form frmMain
       Caption         =   "Crear Obj"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1065,7 +1056,7 @@ Begin VB.Form frmMain
       Caption         =   "PanelGM"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1106,7 +1097,7 @@ Begin VB.Form frmMain
       Caption         =   "00:00"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1126,7 +1117,7 @@ Begin VB.Form frmMain
       Caption         =   "ItemData"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1198,7 +1189,7 @@ Begin VB.Form frmMain
       Caption         =   "000 X:00 Y: 00"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1238,7 +1229,7 @@ Begin VB.Form frmMain
       Caption         =   "33.33%"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1263,14 +1254,12 @@ Begin VB.Form frmMain
    Begin VB.Image CombateIcon 
       Height          =   144
       Left            =   8832
-      Picture         =   "frmMain.frx":FBE6
       Top             =   1812
       Width           =   444
    End
    Begin VB.Image globalIcon 
       Height          =   144
       Left            =   8832
-      Picture         =   "frmMain.frx":1016A
       Top             =   2004
       Width           =   444
    End
@@ -1313,7 +1302,7 @@ Begin VB.Form frmMain
       Caption         =   "Online: 1"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1332,7 +1321,7 @@ Begin VB.Form frmMain
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1348,7 +1337,6 @@ Begin VB.Form frmMain
    Begin VB.Image PicCorreo 
       Height          =   348
       Left            =   11520
-      Picture         =   "frmMain.frx":106EE
       Top             =   480
       Visible         =   0   'False
       Width           =   420
@@ -1360,7 +1348,7 @@ Begin VB.Form frmMain
       Caption         =   "Mapa Desconocido"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1381,7 +1369,7 @@ Begin VB.Form frmMain
       Caption         =   "Guerrero - Nivel 50"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1401,7 +1389,7 @@ Begin VB.Form frmMain
       Caption         =   "99999/99999"
       BeginProperty Font 
          Name            =   "Calibri"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -1418,7 +1406,6 @@ Begin VB.Form frmMain
    Begin VB.Image ExpBar 
       Height          =   192
       Left            =   11580
-      Picture         =   "frmMain.frx":1136E
       Top             =   1548
       Width           =   2832
    End
@@ -1569,7 +1556,7 @@ btnInvisible_Click_Err:
 End Sub
 
 
-Private Sub LoadButtons()
+Private Sub loadButtons()
 
     Set cBotonEliminarItem = New clsGraphicalButton
                                                 
@@ -1594,7 +1581,7 @@ btnSpawn_Click_Err:
     
 End Sub
 
-Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo clanimg_MouseMove_Err
     
@@ -1614,13 +1601,13 @@ clanimg_MouseMove_Err:
     
 End Sub
 
-Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo clanimg_MouseUp_Err
     
     If pausa Then Exit Sub
 
-    If frmGuildLeader.Visible Then Unload frmGuildLeader
+    If frmGuildLeader.visible Then Unload frmGuildLeader
     Call WriteRequestGuildLeaderInfo
 
     
@@ -1632,7 +1619,7 @@ clanimg_MouseUp_Err:
     
 End Sub
 
-Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdlanzar_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdlanzar_MouseDown_Err
     
@@ -1655,7 +1642,7 @@ cmdlanzar_MouseDown_Err:
     
 End Sub
 
-Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdlanzar_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdlanzar_MouseUp_Err
     
@@ -1680,12 +1667,12 @@ Private Sub cmdLlavero_Click()
     
     On Error GoTo cmdLlavero_Click_Err
     
-    If FrmKeyInv.Visible Then
+    If FrmKeyInv.visible Then
         CerrarLlavero
     Else
         FrmKeyInv.Show , Me
-        FrmKeyInv.Left = Me.Left + 890 * Screen.TwipsPerPixelX - FrmKeyInv.Width \ 2
-        FrmKeyInv.Top = Me.Top + 555 * Screen.TwipsPerPixelY - FrmKeyInv.Height
+        FrmKeyInv.Left = Me.Left + 890 * screen.TwipsPerPixelX - FrmKeyInv.Width \ 2
+        FrmKeyInv.Top = Me.Top + 555 * screen.TwipsPerPixelY - FrmKeyInv.Height
         cmdLlavero.Tag = "2"
     End If
     
@@ -1701,7 +1688,7 @@ Public Sub CerrarLlavero()
     
     On Error GoTo CerrarLlavero_Err
     
-    FrmKeyInv.Visible = False
+    FrmKeyInv.visible = False
     cmdLlavero.Picture = LoadInterface("boton-llavero-over.bmp")
     cmdLlavero.Tag = "1"
     
@@ -1713,7 +1700,7 @@ CerrarLlavero_Err:
     
 End Sub
 
-Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdLlavero_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdLlavero_MouseDown_Err
     
@@ -1728,7 +1715,7 @@ cmdLlavero_MouseDown_Err:
     
 End Sub
 
-Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdLlavero_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdLlavero_MouseMove_Err
     
@@ -1847,7 +1834,7 @@ DesDibujarSeguro_Err:
     
 End Sub
 
-Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdMoverHechi_MouseMove(Index As Integer, button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo cmdMoverHechi_MouseMove_Err
     
@@ -1945,7 +1932,7 @@ Private Sub Contadores_Timer()
     End If
 
     If InviCounter = 0 And DrogaCounter = 0 Then
-        Contadores.Enabled = False
+        Contadores.enabled = False
 
     End If
 
@@ -2016,7 +2003,7 @@ Private Sub Efecto_Timer()
         Call RestaurarLuz
     End If
 
-    Efecto.Enabled = False
+    Efecto.enabled = False
     EfectoEnproceso = False
 
     
@@ -2037,14 +2024,14 @@ Private Sub Image1_Click()
 
 End Sub
 
-Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgEstadisticas_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then Exit Sub
     iClickTick = TempTick
     ImgEstadisticas.Picture = LoadInterface("boton-estadisticas-big-off.bmp")
     ImgEstadisticas.Tag = "1"
 End Sub
-Private Sub ImgEstadisticas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgEstadisticas_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     If pausa Then Exit Sub
     
@@ -2055,13 +2042,13 @@ Private Sub ImgEstadisticas_MouseUp(Button As Integer, Shift As Integer, x As Si
     
 End Sub
 
-Private Sub ImgEstadisticas_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgEstadisticas_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     If ImgEstadisticas.Tag = "0" Then
         ImgEstadisticas.Picture = LoadInterface("boton-estadisticas-big-over.bmp")
         ImgEstadisticas.Tag = "1"
     End If
 End Sub
-Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo EstadisticasBoton_MouseDown_Err
     
@@ -2078,7 +2065,7 @@ EstadisticasBoton_MouseDown_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo EstadisticasBoton_MouseMove_Err
     
@@ -2097,7 +2084,7 @@ EstadisticasBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo EstadisticasBoton_MouseUp_Err
     
@@ -2128,7 +2115,7 @@ Private Sub Evento_Timer()
 
     InvasionActual = 0
     
-    Evento.Enabled = False
+    Evento.enabled = False
 
 End Sub
 
@@ -2148,11 +2135,11 @@ exp_Click_Err:
     
 End Sub
 
-Private Sub exp_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub exp_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
 
     If Not ShowPercentage Then
-        lblPorcLvl.Visible = True
-        exp.Visible = False
+        lblPorcLvl.visible = True
+        exp.visible = False
     End If
     
 End Sub
@@ -2170,7 +2157,7 @@ Form_Activate_Err:
 End Sub
 
 
-Private Sub imgHechizos_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgHechizos_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo imgHechizos_MouseMove_Err
     
     imgHechizos.Picture = LoadInterface("boton-hechizos-default.bmp")
@@ -2184,7 +2171,7 @@ imgHechizos_MouseMove_Err:
     Resume Next
 End Sub
 
-Private Sub imgInventario_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgInventario_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo imgInventario_MouseMove_Err
 
     imgInventario.Picture = LoadInterface("boton-inventory-over.bmp")
@@ -2199,7 +2186,7 @@ imgInventario_MouseMove_Err:
     
 End Sub
 
-Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picHechiz_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
 If y < 0 Then y = 0
 If y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
 If x < picHechiz.ScaleWidth - 10 Then
@@ -2209,18 +2196,18 @@ If x < picHechiz.ScaleWidth - 10 Then
         Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
     End If
 Else
-    hlst.DownBarrita = Y - hlst.Scroll * (picHechiz.ScaleHeight - hlst.BarraHeight) / (hlst.ListCount - hlst.VisibleCount)
+    hlst.DownBarrita = y - hlst.Scroll * (picHechiz.ScaleHeight - hlst.BarraHeight) / (hlst.ListCount - hlst.VisibleCount)
 End If
 End Sub
 
-Private Sub picHechiz_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Button = 1 Then
+Private Sub picHechiz_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
+If button = 1 Then
     Dim yy As Integer
     yy = y
     If yy < 0 Then yy = 0
     If yy > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then yy = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
     If hlst.DownBarrita > 0 Then
-        hlst.Scroll = (Y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - hlst.BarraHeight)
+        hlst.Scroll = (y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - hlst.BarraHeight)
     Else
         hlst.ListIndex = Int(yy / hlst.Pixel_Alto) + hlst.Scroll
         If Seguido = 1 Then
@@ -2231,21 +2218,21 @@ If Button = 1 Then
             If (y > yy) Then hlst.Scroll = hlst.Scroll + 1
         End If
     End If
-ElseIf Button = 0 Then
-    hlst.ShowBarrita = X > picHechiz.ScaleWidth - hlst.BarraWidth * 2
+ElseIf button = 0 Then
+    hlst.ShowBarrita = x > picHechiz.ScaleWidth - hlst.BarraWidth * 2
 End If
 End Sub
 
-Private Sub picHechiz_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub picHechiz_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
 hlst.DownBarrita = 0
 End Sub
 
-Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Not picInv.Visible Then Exit Sub
+Private Sub picInv_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
+    If Not picInv.visible Then Exit Sub
     
     If dobleclick.Interval = 0 Then dobleclick.Interval = 1000
     
-    If Button = 1 Then
+    If button = 1 Then
         dobleclick.Interval = 1000
         totalclicks = totalclicks + 1
     End If
@@ -2261,25 +2248,25 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
     
 
 
-    If Not SendTxt.Visible And Not SendTxtCmsg.Visible Then
-        If Not pausa And frmMain.Visible And Not frmComerciar.Visible And Not frmComerciarUsu.Visible And Not frmBancoObj.Visible And Not frmGoliath.Visible Then
+    If Not SendTxt.visible And Not SendTxtCmsg.visible Then
+        If Not pausa And frmMain.visible And Not frmComerciar.visible And Not frmComerciarUsu.visible And Not frmBancoObj.visible And Not frmGoliath.visible Then
             
             If Accionar(KeyCode) Then
                 Exit Sub
             ElseIf KeyCode = vbKeyReturn Then
 
-                If Not frmCantidad.Visible Then
+                If Not frmCantidad.visible Then
                     
                     Call CompletarEnvioMensajes
                     'HarThaoS: Al abrir el textBox de escritura tomo el tiempo de inicio para controlar macro de cartel
                     StartOpenChatTime = GetTickCount
-                    SendTxt.Visible = True
+                    SendTxt.visible = True
                     SendTxt.SetFocus
                 End If
                 
             ElseIf KeyCode = vbKeyDelete Then
-                If Not SendTxt.Visible Then
-                    SendTxtCmsg.Visible = True
+                If Not SendTxt.visible Then
+                    SendTxtCmsg.visible = True
                     SendTxtCmsg.SetFocus
                     Call DialogosClanes.toggle_dialogs_visibility(True)
                 End If
@@ -2299,11 +2286,11 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
 
     Else
     
-        If SendTxt.Visible Then
+        If SendTxt.visible Then
             SendTxt.SetFocus
         End If
         
-        If SendTxtCmsg.Visible Then
+        If SendTxtCmsg.visible Then
             SendTxtCmsg.SetFocus
         End If
         
@@ -2318,26 +2305,26 @@ Form_KeyUp_Err:
     
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Form_MouseDown_Err
     
     
-    If SendTxt.Visible Then SendTxt.SetFocus
-    MouseBoton = Button
+    If SendTxt.visible Then SendTxt.SetFocus
+    MouseBoton = button
     MouseShift = Shift
     
-    If frmComerciar.Visible Then
+    If frmComerciar.visible Then
         Unload frmComerciar
 
     End If
     
-    If frmBancoObj.Visible Then
+    If frmBancoObj.visible Then
         Unload frmBancoObj
 
     End If
     
-    If FrmQuestInfo.Visible Then
+    If FrmQuestInfo.visible Then
         Unload FrmQuestInfo
     End If
 
@@ -2350,7 +2337,7 @@ Form_MouseDown_Err:
     
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Form_MouseUp_Err
     
@@ -2447,7 +2434,7 @@ GlobalIcon_Click_Err:
     
 End Sub
 
-Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image2_MouseDown(Index As Integer, button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Image2_MouseDown_Err
     
@@ -2491,7 +2478,7 @@ Private Sub Hpshp_Click()
     HpBar_Click
 End Sub
 
-Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     '    Image3.Picture = LoadInterface("elegirchatapretado.bmp")
     
     On Error GoTo Image3_MouseDown_Err
@@ -2507,7 +2494,7 @@ Image3_MouseDown_Err:
     
 End Sub
 
-Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Image3_MouseMove_Err
     
@@ -2538,7 +2525,7 @@ Private Sub Image4_Click(Index As Integer)
             Me.WindowState = vbMinimized
 
         Case 1
-            If frmCerrar.Visible Then Exit Sub
+            If frmCerrar.visible Then Exit Sub
             Dim mForm As Form
             For Each mForm In Forms
                 If mForm.hwnd <> Me.hwnd Then Unload mForm
@@ -2557,7 +2544,7 @@ Image4_Click_Err:
     
 End Sub
 
-Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseDown(Index As Integer, button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Image4_MouseDown_Err
     
@@ -2581,7 +2568,7 @@ Image4_MouseDown_Err:
     
 End Sub
 
-Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseMove(Index As Integer, button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Image4_MouseMove_Err
     
@@ -2633,7 +2620,7 @@ Private Sub Image5_Click()
     On Error GoTo Image5_Click_Err
     
 
-    If FrmGrupo.Visible = False Then
+    If FrmGrupo.visible = False Then
         Call WriteRequestGrupo
 
     End If
@@ -2647,7 +2634,7 @@ Image5_Click_Err:
     
 End Sub
 
-Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image5_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Image5_MouseMove_Err
     
@@ -2706,7 +2693,7 @@ Public Sub hechizosClick()
     On Error GoTo hechizosClick_Err
     
 
-    If picHechiz.Visible Then Exit Sub
+    If picHechiz.visible Then Exit Sub
     
     TempTick = GetTickCount And &H7FFFFFFF
     
@@ -2725,21 +2712,21 @@ Public Sub hechizosClick()
         Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
     End If
     
-    picInv.Visible = False
+    picInv.visible = False
     
-    picHechiz.Visible = True
+    picHechiz.visible = True
 
-    cmdlanzar.Visible = True
+    cmdlanzar.visible = True
 
-    imgSpellInfo.Visible = True
+    imgSpellInfo.visible = True
 
-    cmdMoverHechi(0).Visible = True
-    cmdMoverHechi(1).Visible = True
+    cmdMoverHechi(0).visible = True
+    cmdMoverHechi(1).visible = True
 
-    frmMain.imgInvLock(0).Visible = False
-    frmMain.imgInvLock(1).Visible = False
-    frmMain.imgInvLock(2).Visible = False
-    imgDeleteItem.Visible = False
+    frmMain.imgInvLock(0).visible = False
+    frmMain.imgInvLock(1).visible = False
+    frmMain.imgInvLock(2).visible = False
+    imgDeleteItem.visible = False
     
     Exit Sub
 
@@ -2748,7 +2735,7 @@ hechizosClick_Err:
     Resume Next
 End Sub
 
-Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo imgHechizos_MouseDown_Err
        
@@ -2764,12 +2751,12 @@ imgHechizos_MouseDown_Err:
     
 End Sub
 
-Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo imgHechizos_MouseMove_Err
     
     
-    If imgHechizos.Tag <> "1" And Button = 0 Then
+    If imgHechizos.Tag <> "1" And button = 0 Then
         imgHechizos.Picture = LoadInterface("boton-hechizos-default.bmp")
         imgHechizos.Tag = "1"
         imgInventario.Picture = Nothing
@@ -2789,12 +2776,12 @@ Private Sub ImgHogar_Click()
     Call ParseUserCommand("/HOGAR")
 End Sub
 
-Private Sub ImgHogar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgHogar_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     ImgHogar.Picture = LoadInterface("boton-home-off.bmp")
     ImgHogar.Tag = "1"
 End Sub
 
-Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgHogar_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     If ImgHogar.Tag = "0" Then
         ImgHogar.Picture = LoadInterface("boton-home-over.bmp")
         ImgHogar.Tag = "1"
@@ -2809,7 +2796,7 @@ Public Sub inventoryClick()
     On Error GoTo inventoryClick_Err
     
 
-    If picInv.Visible Then Exit Sub
+    If picInv.visible Then Exit Sub
 
     TempTick = GetTickCount And &H7FFFFFFF
     
@@ -2823,21 +2810,21 @@ Public Sub inventoryClick()
 
     panel.Picture = LoadInterface("centroinventario.bmp")
     'Call Audio.PlayWave(SND_CLICK)
-    picInv.Visible = True
-    picHechiz.Visible = False
-    cmdlanzar.Visible = False
-    imgSpellInfo.Visible = False
+    picInv.visible = True
+    picHechiz.visible = False
+    cmdlanzar.visible = False
+    imgSpellInfo.visible = False
     If Seguido = 1 Then
         Call WriteNotifyInventarioHechizos(1, hlst.ListIndex, hlst.Scroll)
     End If
 
-    cmdMoverHechi(0).Visible = False
-    cmdMoverHechi(1).Visible = False
+    cmdMoverHechi(0).visible = False
+    cmdMoverHechi(1).visible = False
    ' Call Inventario.ReDraw
-    frmMain.imgInvLock(0).Visible = True
-    frmMain.imgInvLock(1).Visible = True
-    frmMain.imgInvLock(2).Visible = True
-    imgDeleteItem.Visible = True
+    frmMain.imgInvLock(0).visible = True
+    frmMain.imgInvLock(1).visible = True
+    frmMain.imgInvLock(2).visible = True
+    imgDeleteItem.visible = True
 
     
     Exit Sub
@@ -2847,7 +2834,7 @@ inventoryClick_Err:
     Resume Next
 End Sub
 
-Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     
 
     On Error GoTo imgInventario_MouseDown_Err
@@ -2865,11 +2852,11 @@ imgInventario_MouseDown_Err:
     
 End Sub
 
-Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo imgInventario_MouseMove_Err
 
-    If imgInventario.Tag <> "1" And Button = 0 Then
+    If imgInventario.Tag <> "1" And button = 0 Then
         imgInventario.Picture = LoadInterface("boton-inventory-over.bmp")
         imgInventario.Tag = "1"
         imgHechizos.Picture = Nothing
@@ -2921,11 +2908,11 @@ Private Sub Label1_Click()
     frmBancoCuenta.Show , frmMain
 End Sub
 
-Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub lblPorcLvl_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
 
     If ShowPercentage Then
-        lblPorcLvl.Visible = False
-        exp.Visible = True
+        lblPorcLvl.visible = False
+        exp.visible = True
     End If
 
 End Sub
@@ -2934,9 +2921,9 @@ Private Sub LlamaDeclan_Timer()
     
     On Error GoTo LlamaDeclan_Timer_Err
     
-    frmMapaGrande.llamadadeclan.Visible = False
-    frmMapaGrande.Shape2.Visible = False
-    LlamaDeclan.Enabled = False
+    frmMapaGrande.llamadadeclan.visible = False
+    frmMapaGrande.Shape2.visible = False
+    LlamaDeclan.enabled = False
 
     
     Exit Sub
@@ -2963,7 +2950,7 @@ End Sub
 
 
 
-Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo OpcionesBoton_MouseDown_Err
     
@@ -2997,7 +2984,7 @@ panelGM_Click_Err:
     
 End Sub
 
-Private Sub panelInf_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub panelInf_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     If Image5.Tag = "1" Then
         Image5.Picture = Nothing
         Image5.Tag = "0"
@@ -3050,7 +3037,7 @@ Private Sub panelinferior_Click(Index As Integer)
 Select Case Index
     Case 1
         QuePestañaInferior = 1
-        GldLbl.Visible = False
+        GldLbl.visible = False
         'Label6.Visible = False
         stabar.Visible = False
         HpBar.Visible = False
@@ -3078,12 +3065,12 @@ Select Case Index
         imgBugReport.Visible = True
         panelinferior(0).Picture = Nothing
         panelinferior(1).Picture = Nothing
-        mapMundo.Visible = True
-        Image5.Visible = True
-        clanimg.Visible = True
-        Retar.Visible = True
-        cmdLlavero.Visible = True
-        QuestBoton.Visible = True
+        mapMundo.visible = True
+        Image5.visible = True
+        clanimg.visible = True
+        Retar.visible = True
+        cmdLlavero.visible = True
+        QuestBoton.visible = True
         
         
         
@@ -3112,57 +3099,56 @@ Select Case Index
             ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
         End If
         
-        ImgSeg.Visible = True
-        ImgSegParty.Visible = True
-        ImgSegClan.Visible = True
-        ImgSegResu.Visible = True
+        ImgSeg.visible = True
+        ImgSegParty.visible = True
+        ImgSegClan.visible = True
+        ImgSegResu.visible = True
         
         
         panelInf.Picture = LoadInterface("ventanaprincipal_info.bmp")
     Case 0
         QuePestañaInferior = 0
         panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
-        stabar.Visible = True
-        HpBar.Visible = True
+        stabar.visible = True
+        HpBar.visible = True
         If UserMaxMAN <> 0 Then
-        manabar.Visible = True
+        manabar.visible = True
         End If
-        hambar.Visible = True
-        AGUbar.Visible = True
-        Hpshp.Visible = True
-        shieldBar.visible = True
-        MANShp.Visible = True
-        STAShp.Visible = True
-        AGUAsp.Visible = True
-        COMIDAsp.Visible = True
-        GldLbl.Visible = True
+        hambar.visible = True
+        AGUbar.visible = True
+        Hpshp.visible = True
+        MANShp.visible = True
+        STAShp.visible = True
+        AGUAsp.visible = True
+        COMIDAsp.visible = True
+        GldLbl.visible = True
        ' Label6.Visible = True
-        Fuerzalbl.Visible = True
-        AgilidadLbl.Visible = True
-        oxigenolbl.Visible = True
-        QuestBoton.Visible = False
-        ImgHogar.Visible = False
-        ImgEstadisticas.Visible = False
-        lblWeapon.Visible = True
-        lblShielder.Visible = True
-        lblHelm.Visible = True
-        lblArmor.Visible = True
-        lblResis.Visible = True
-        lbldm.Visible = True
-        imgBugReport.Visible = False
+        Fuerzalbl.visible = True
+        AgilidadLbl.visible = True
+        oxigenolbl.visible = True
+        QuestBoton.visible = False
+        ImgHogar.visible = False
+        ImgEstadisticas.visible = False
+        lblWeapon.visible = True
+        lblShielder.visible = True
+        lblHelm.visible = True
+        lblArmor.visible = True
+        lblResis.visible = True
+        lbldm.visible = True
+        imgBugReport.visible = False
         panelinferior(0).Picture = Nothing
         panelinferior(1).Picture = Nothing
-        mapMundo.Visible = False
-        Image5.Visible = False
-        clanimg.Visible = False
-        Retar.Visible = False
-        cmdLlavero.Visible = False
-        QuestBoton.Visible = False
+        mapMundo.visible = False
+        Image5.visible = False
+        clanimg.visible = False
+        Retar.visible = False
+        cmdLlavero.visible = False
+        QuestBoton.visible = False
         
-        ImgSeg.Visible = False
-        ImgSegParty.Visible = False
-        ImgSegClan.Visible = False
-        ImgSegResu.Visible = False
+        ImgSeg.visible = False
+        ImgSegParty.visible = False
+        ImgSegClan.visible = False
+        ImgSegResu.visible = False
 End Select
 End Sub
 
@@ -3202,7 +3188,7 @@ picInv_Paint_Err:
     Resume Next
     
 End Sub
-Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo QuestBoton_MouseMove_Err
     
@@ -3222,7 +3208,7 @@ QuestBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo QuestBoton_MouseUp_Err
     
@@ -3300,7 +3286,7 @@ Private Sub MacroLadder_Timer()
     
     If UserMacro.cantidad > 0 And UserMacro.Activado And UserMinSTA > 0 Then
     
-        Select Case UserMacro.TIPO
+        Select Case UserMacro.tipo
 
             Case 1 'Alquimia
                 Call WriteCraftAlquimista(UserMacro.Index)
@@ -3354,14 +3340,14 @@ Private Sub macrotrabajo_Timer()
 
     End If
     
-    If UsingSkill = FundirMetal Or (UsingSkill = eSkill.Herreria And Not frmHerrero.Visible) Then
+    If UsingSkill = FundirMetal Or (UsingSkill = eSkill.Herreria And Not frmHerrero.visible) Then
         Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
         UsingSkill = 0
 
     End If
     
     'If Inventario.OBJType(Inventario.SelectedItem) = eObjType.otWeapon Then
-    If Not (frmCarp.Visible = True) Then
+    If Not (frmCarp.visible = True) Then
         If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
     End If
 
@@ -3381,7 +3367,7 @@ Public Sub ActivarMacroTrabajo()
     TargetXMacro = tX
     TargetYMacro = tY
     macrotrabajo.Interval = IntervaloTrabajoConstruir
-    macrotrabajo.Enabled = True
+    macrotrabajo.enabled = True
     Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
 
     
@@ -3399,7 +3385,7 @@ Public Sub DesactivarMacroTrabajo()
     
     TargetXMacro = 0
     TargetYMacro = 0
-    macrotrabajo.Enabled = False
+    macrotrabajo.enabled = False
     MacroBltIndex = 0
     UsingSkill = 0
     MousePointer = vbDefault
@@ -3466,7 +3452,7 @@ mapMundo_Click_Err:
     
 End Sub
 
-Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub mapMundo_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo mapMundo_MouseMove_Err
     
@@ -3486,14 +3472,14 @@ mapMundo_MouseMove_Err:
     
 End Sub
 
-Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo MiniMap_MouseDown_Err
     
     Call GetMinimapPosition(x, y)
     
 
-    If Button = vbRightButton Then
+    If button = vbRightButton Then
         Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
         Exit Sub
 
@@ -3514,7 +3500,7 @@ MiniMap_MouseDown_Err:
     
 End Sub
 
-Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo MiniMap_MouseMove_Err
     
@@ -3612,7 +3598,7 @@ mnuUsar_Click_Err:
     
 End Sub
 
-Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub NameMapa_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo NameMapa_MouseMove_Err
     
@@ -3647,7 +3633,7 @@ onlines_Click_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo OpcionesBoton_MouseMove_Err
     
@@ -3667,7 +3653,7 @@ OpcionesBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo OpcionesBoton_MouseUp_Err
     
@@ -3682,12 +3668,12 @@ OpcionesBoton_MouseUp_Err:
     
 End Sub
 
-Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Panel_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Panel_MouseMove_Err
     
 
-    ObjLbl.Visible = False
+    ObjLbl.visible = False
 
     If cmdlanzar.Tag = "1" Then
         cmdlanzar.Picture = Nothing
@@ -3728,7 +3714,7 @@ Panel_MouseMove_Err:
     
 End Sub
 
-Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picInv_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo picInv_MouseMove_Err
     
@@ -3740,13 +3726,13 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     Slot = Inventario.GetSlot(x, y)
     
     If Slot <= 0 Then
-        ObjLbl.Visible = False
+        ObjLbl.visible = False
         Exit Sub
     End If
     
     If Inventario.Amount(Slot) > 0 Then
     
-        ObjLbl.Visible = True
+        ObjLbl.visible = True
         
         Select Case ObjData(Inventario.ObjIndex(Slot)).ObjType
 
@@ -3779,7 +3765,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
         End If
 
     Else
-        ObjLbl.Visible = False
+        ObjLbl.visible = False
 
     End If
 
@@ -3833,14 +3819,14 @@ CompletarEnvioMensajes_Err:
     
 End Sub
 
-Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo RecTxt_MouseUp_Err
     
 
     
 
-    If Button = 1 Then
+    If button = 1 Then
 
         Dim strBuffer      As String
 
@@ -3863,7 +3849,7 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         destinatario = SuperMid(strBuffer, "[", "]", False)
 
         If destinatario <> "A" Then
-            If Not SendTxtCmsg.Visible Then
+            If Not SendTxtCmsg.visible Then
                 destinatario = Replace(destinatario, " ", "+")
     
                 sndPrivateTo = destinatario
@@ -3872,7 +3858,7 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 stxtbuffer = SendTxt.Text
                 SendTxt.SelStart = Len(SendTxt.Text)
                     
-                SendTxt.Visible = True
+                SendTxt.visible = True
                 SendTxt.SetFocus
             End If
 
@@ -3904,7 +3890,7 @@ refuerzolanzar_Click_Err:
     
 End Sub
 
-Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub refuerzolanzar_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo refuerzolanzar_MouseMove_Err
     
@@ -3926,7 +3912,7 @@ refuerzolanzar_MouseMove_Err:
     
 End Sub
 
-Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo renderer_MouseUp_Err
     
@@ -3941,8 +3927,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
 
     clicX = x
     clicY = y
-    If Button = vbLeftButton Then
-        Call BabelSendMouseEvent(x, y, kType_MouseUp, kButton_Left)
+    If button = vbLeftButton Then
         If HandleMouseInput(x, y) Then
         ElseIf Pregunta Then
             If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
@@ -3999,8 +3984,8 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     
         End If
     
-    ElseIf Button = vbRightButton Then
-        Call BabelSendMouseEvent(x, y, kType_MouseUp, kButton_Right)
+    ElseIf button = vbRightButton Then
+        
         Dim charindex As Integer
         charindex = MapData(tX, tY).charindex
         
@@ -4019,7 +4004,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
             If charlist(charindex).EsMascota Then
                 Set Frm = MenuNPC
             
-            ElseIf Not charlist(charindex).EsNpc Then
+            ElseIf Not charlist(charindex).esNpc Then
                 
                 TargetName = charlist(charindex).nombre
                 
@@ -4033,19 +4018,18 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
             If Not Frm Is Nothing Then
                 Call Frm.Show
             
-                Frm.Left = Me.Left + (renderer.Left + x + 1) * Screen.TwipsPerPixelX
+                Frm.Left = Me.Left + (renderer.Left + x + 1) * screen.TwipsPerPixelX
                     
-                If (renderer.Top + y) * Screen.TwipsPerPixelY + Frm.Height > Me.Height Then
-                    Frm.Top = Me.Top + (renderer.Top + y) * Screen.TwipsPerPixelY - Frm.Height
+                If (renderer.Top + y) * screen.TwipsPerPixelY + Frm.Height > Me.Height Then
+                    Frm.Top = Me.Top + (renderer.Top + y) * screen.TwipsPerPixelY - Frm.Height
                 Else
-                    Frm.Top = Me.Top + (renderer.Top + y) * Screen.TwipsPerPixelY
+                    Frm.Top = Me.Top + (renderer.Top + y) * screen.TwipsPerPixelY
                 End If
                 
                 Set Frm = Nothing
             End If
         End If
-    ElseIf Button = vbMiddleButton Then
-        Call BabelSendMouseEvent(x, y, kType_MouseUp, kButton_Middle)
+
     End If
     
     
@@ -4057,13 +4041,34 @@ renderer_MouseUp_Err:
     
 End Sub
 
-Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo renderer_MouseMove_Err
 
-100    DisableURLDetect
-102    Call Form_MouseMove(Button, Shift, renderer.Left + x, renderer.Top + y)
-104    Call BabelSendMouseEvent(x, y, kType_MouseMoved, 0)
+    DisableURLDetect
+
+    Call Form_MouseMove(button, Shift, renderer.Left + x, renderer.Top + y)
+
+    'If DropItem Then
+
+    ' frmMain.UsandoDrag = False
+    ' Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
+    'Call WriteDropItem(DropIndex, tX, tY, CantidadDrop)
+    ' DropItem = False
+    ' DropIndex = 0
+    ' TimeDrop = 0
+    ' DropActivo = False
+    ' CantidadDrop = 0
+    ' Call FormParser.Parse_Form(frmMain)
+    
+    ' End If
+    
+    'LucesCuadradas.Light_Remove (10)
+    
+    'LucesCuadradas.Light_Create tX, tY, &HFFFFFFF, 1, 10
+    'LucesCuadradas.Light_Render_All
+    
+    
     Exit Sub
 
 renderer_MouseMove_Err:
@@ -4072,43 +4077,31 @@ renderer_MouseMove_Err:
     
 End Sub
 
-Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo renderer_MouseDown_Err
     
-    If SendTxt.Visible Then SendTxt.SetFocus
-    MouseBoton = Button
+    If SendTxt.visible Then SendTxt.SetFocus
+    MouseBoton = button
     MouseShift = Shift
-    Dim btnConvert As MouseButton
-    Select Case Button
-        Case vbLeftButton
-            btnConvert = kButton_Left
-        Case vbRightButton
-            btnConvert = kButton_Right
-        Case vbMiddleButton
-        btnConvert = kButton_Middle
-        Case Else
-        btnConvert = kButton_None
-    End Select
-    Call BabelSendMouseEvent(x, y, kType_MouseDown, kButton_Left)
 
-    If frmComerciar.Visible Then Unload frmComerciar
-    If frmBancoObj.Visible Then Unload frmBancoObj
-    If frmEstadisticas.Visible Then Unload frmEstadisticas
-    If frmGoliath.Visible Then Unload frmGoliath
-    If frmMapaGrande.Visible Then frmMapaGrande.Visible = False
-    If FrmViajes.Visible Then Unload FrmViajes
-    If frmCantidad.Visible Then Unload frmCantidad
-    If FrmGrupo.Visible Then Unload FrmGrupo
-    If FrmGmAyuda.Visible Then Unload FrmGmAyuda
-    If frmGuildAdm.Visible Then Unload frmGuildAdm
-    If frmHerrero.Visible Then Unload frmHerrero
-    If FrmSastre.Visible Then Unload FrmSastre
-    If frmAlqui.Visible Then Unload frmAlqui
-    If frmCarp.Visible Then Unload frmCarp
-    If MenuUser.Visible Then Unload MenuUser
-    If MenuGM.Visible Then Unload MenuGM
-    If MenuNPC.Visible Then Unload MenuNPC
+    If frmComerciar.visible Then Unload frmComerciar
+    If frmBancoObj.visible Then Unload frmBancoObj
+    If frmEstadisticas.visible Then Unload frmEstadisticas
+    If frmGoliath.visible Then Unload frmGoliath
+    If frmMapaGrande.visible Then frmMapaGrande.visible = False
+    If FrmViajes.visible Then Unload FrmViajes
+    If frmCantidad.visible Then Unload frmCantidad
+    If FrmGrupo.visible Then Unload FrmGrupo
+    If FrmGmAyuda.visible Then Unload FrmGmAyuda
+    If frmGuildAdm.visible Then Unload frmGuildAdm
+    If frmHerrero.visible Then Unload frmHerrero
+    If FrmSastre.visible Then Unload FrmSastre
+    If frmAlqui.visible Then Unload frmAlqui
+    If frmCarp.visible Then Unload frmCarp
+    If MenuUser.visible Then Unload MenuUser
+    If MenuGM.visible Then Unload MenuGM
+    If MenuNPC.visible Then Unload MenuNPC
     
     Exit Sub
 
@@ -4136,8 +4129,8 @@ End Sub
 Private Sub renderer_Click()
     On Error GoTo renderer_Click_Err
     Call Form_Click
-    If SendTxt.Visible Then SendTxt.SetFocus
-    If SendTxtCmsg.Visible Then SendTxtCmsg.SetFocus
+    If SendTxt.visible Then SendTxt.SetFocus
+    If SendTxtCmsg.visible Then SendTxtCmsg.SetFocus
     Exit Sub
 
 renderer_Click_Err:
@@ -4150,19 +4143,19 @@ Private Sub Retar_Click()
     Call ParseUserCommand("/RETAR")
 End Sub
 
-Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
     Retar.Picture = LoadInterface("boton-retos-off.bmp")
     Retar.Tag = "1"
 End Sub
 
-Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     If Retar.Tag = "0" Then
         Retar.Picture = LoadInterface("boton-retos-over.bmp")
         Retar.Tag = "1"
     End If
 End Sub
 
-Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     Retar.Picture = Nothing
     Retar.Tag = "0"
 End Sub
@@ -4257,7 +4250,7 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
         
         
         
-        SendTxt.Visible = False
+        SendTxt.visible = False
         
     End If
 
@@ -4300,7 +4293,7 @@ End Sub
 Private Sub SendTxtCmsg_KeyUp(KeyCode As Integer, Shift As Integer)
   If KeyCode = vbKeyReturn Then
     If SendTxtCmsg.SelStart > 2 Then Call ParseUserCommand("/CMSG " & SendTxtCmsg.Text)
-    SendTxtCmsg.Visible = False
+    SendTxtCmsg.visible = False
     SendTxtCmsg.Text = ""
     Call DialogosClanes.toggle_dialogs_visibility(False)
   End If
@@ -4327,15 +4320,12 @@ Private Sub cerrarcuenta_Timer()
     Unload frmConnect
     Unload frmCrearPersonaje
     Unload frmBabelLogin
-    cerrarcuenta.Enabled = False
-
-    
+    cerrarcuenta.enabled = False
     Exit Sub
 
 cerrarcuenta_Timer_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cerrarcuenta_Timer", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub TimerLluvia_Timer()
@@ -4351,7 +4341,7 @@ Private Sub TimerLluvia_Timer()
             Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
         Else
             CantPartLLuvia = 250
-            TimerLluvia.Enabled = False
+            TimerLluvia.enabled = False
 
         End If
 
@@ -4364,7 +4354,7 @@ Private Sub TimerLluvia_Timer()
     
             Call Graficos_Particulas.Engine_MeteoParticle_Set(-1)
             CantPartLLuvia = 0
-            TimerLluvia.Enabled = False
+            TimerLluvia.enabled = False
 
         End If
 
@@ -4394,7 +4384,7 @@ Private Sub TimerNiebla_Timer()
             AlphaNiebla = AlphaNiebla + 1
         Else
             AlphaNiebla = MaxAlphaNiebla
-            TimerNiebla.Enabled = False
+            TimerNiebla.enabled = False
 
         End If
 
@@ -4406,7 +4396,7 @@ Private Sub TimerNiebla_Timer()
         Else
             AlphaNiebla = 0
             MaxAlphaNiebla = 0
-            TimerNiebla.Enabled = False
+            TimerNiebla.enabled = False
         End If
 
     End If
@@ -4473,7 +4463,7 @@ cmdLanzar_Click_Err:
     
 End Sub
 
-Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub CmdLanzar_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo CmdLanzar_MouseMove_Err
     
@@ -4502,7 +4492,7 @@ Public Sub Form_Click()
     If pausa Then Exit Sub
     
     If mascota.visible Then
-        If Sqr((MouseX - mascota.posX) ^ 2 + (MouseY - mascota.posY) ^ 2) < 30 Then
+        If Sqr((MouseX - mascota.PosX) ^ 2 + (MouseY - mascota.PosY) ^ 2) < 30 Then
             mascota.dialog = ""
         End If
 
@@ -4524,7 +4514,7 @@ Public Sub Form_Click()
             'If Not InGameArea() Then Exit Sub
 
             If MouseShift = 0 Then
-                If UsingSkill = 0 Or MacroLadder.Enabled Then
+                If UsingSkill = 0 Or MacroLadder.enabled Then
                     Call CountPacketIterations(packetControl(ClientPacketID.LeftClick), 150)
                     'Debug.Print "click"
                     Call WriteLeftClick(tX, tY)
@@ -4692,12 +4682,12 @@ Public Sub Form_Click()
 
         If MapData(tX, tY).charindex <> 0 Then
             If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
-                If charlist(MapData(tX, tY).charindex).EsNpc = False Then
+                If charlist(MapData(tX, tY).charindex).esNpc = False Then
                     SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
 
                  
-                    If SendTxtCmsg.Visible = False Then
-                        SendTxt.Visible = True
+                    If SendTxtCmsg.visible = False Then
+                        SendTxt.visible = True
                         SendTxt.SetFocus
                         SendTxt.SelStart = Len(SendTxt.Text)
                     End If
@@ -4728,7 +4718,7 @@ Private Sub Form_DblClick()
     'Last Modify Date: 12/27/2007
     '12/28/2007: ByVal - Chequea que la ventana de comercio y boveda no este abierta al hacer doble clic a un comerciante, sobrecarga la lista de items.
     '**************************************************************
-    If Not frmComerciar.Visible And Not frmBancoObj.Visible Then
+    If Not frmComerciar.visible And Not frmBancoObj.visible Then
         If MouseBoton = vbLeftButton Then
 
             Call WriteDoubleClick(tX, tY)
@@ -4759,7 +4749,7 @@ Private Sub Form_Load()
     Set hlst = New clsGraphicalList
     Call hlst.Initialize(Me.picHechiz, RGB(200, 190, 190))
 
-    LoadButtons
+    loadButtons
     
     Exit Sub
 
@@ -4769,14 +4759,14 @@ Form_Load_Err:
     
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Form_MouseMove_Err
 
     ' Disable links checking (not over consola)
     StopCheckingLinks
     
-    If PantallaCompleta = 0 And Button = vbLeftButton Then
+    If PantallaCompleta = 0 And button = vbLeftButton Then
         If MoverVentana = 1 Then
             If Not UserMoving Then
                 ' Mover form sólo en la parte superior
@@ -4791,7 +4781,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
 
     MouseX = x - renderer.Left
     MouseY = y - renderer.Top
-    ObjLbl.Visible = False
+    ObjLbl.visible = False
     
     If EstadisticasBoton.Tag = "1" Then
         EstadisticasBoton.Picture = Nothing
@@ -4883,11 +4873,11 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     End If
 
     If ShowPercentage Then
-        lblPorcLvl.Visible = True
-        exp.Visible = False
+        lblPorcLvl.visible = True
+        exp.visible = False
     Else
-        lblPorcLvl.Visible = False
-        exp.Visible = True
+        lblPorcLvl.visible = False
+        exp.visible = True
     End If
     
     If Retar.Tag = "1" Then
@@ -4915,15 +4905,15 @@ Private Sub picInv_DblClick()
     On Error GoTo picInv_DblClick_Err
     
 
-    If Not picInv.Visible Then Exit Sub
+    If Not picInv.visible Then Exit Sub
     
-    If frmCarp.Visible Or frmHerrero.Visible Or frmComerciar.Visible Or frmBancoObj.Visible Then Exit Sub
+    If frmCarp.visible Or frmHerrero.visible Or frmComerciar.visible Or frmBancoObj.visible Then Exit Sub
     If pausa Then Exit Sub
     
     If UserMeditar Then Exit Sub
     'If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
     
-    If macrotrabajo.Enabled Then DesactivarMacroTrabajo
+    If macrotrabajo.enabled Then DesactivarMacroTrabajo
     
     If Not Inventario.IsItemSelected Then Exit Sub
 
@@ -4981,7 +4971,7 @@ Private Function countRepts(ByVal packet As Long)
     
 End Function
 
-Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo RecTxt_MouseMove_Err
     
@@ -5001,7 +4991,7 @@ Private Sub RecTxt_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo RecTxt_KeyDown_Err
     
 
-    If picInv.Visible Then
+    If picInv.visible Then
         picInv.SetFocus
     Else
 
@@ -5194,22 +5184,19 @@ End Sub
 
 Public Sub OnClientDisconnect(ByVal Error As Long)
     On Error GoTo OnClientDisconnect_Err
-
     If (Error = 10061) Then
-        If frmConnect.Visible Then
+        If frmConnect.visible Then
             Call DisplayError("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.", "connection-failure")
         Else
             Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
         End If
     Else
-    
         frmConnect.MousePointer = 1
-        ShowFPS.Enabled = False
-
+        ShowFPS.enabled = False
         If (Error <> 0 And Error <> 2) Then
             Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
             
-            If frmConnect.Visible Then
+            If frmConnect.visible Then
                 Connected = False
             Else
                 If (Connected) Then
@@ -5221,7 +5208,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                 Call DisplayError("El servidor cerro la conexion.", "connection-closed")
             End If
             Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
-            If frmConnect.Visible Then
+            If frmConnect.visible Then
                 Connected = False
             Else
                 If (Connected) Then
@@ -5230,10 +5217,7 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
             End If
         End If
     End If
-
-
     Exit Sub
-
 OnClientDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_LastError", Erl)
     Resume Next
