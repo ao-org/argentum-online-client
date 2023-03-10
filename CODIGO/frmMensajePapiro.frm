@@ -2,21 +2,21 @@ VERSION 5.00
 Begin VB.Form frmMensajePapiro 
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   9276
+   ClientHeight    =   9270
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   11580
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   9276
+   ScaleHeight     =   9270
    ScaleWidth      =   11580
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.Label Stream2 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "GabrielDMente"
+      Caption         =   "Plus De Ulla"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -36,7 +36,7 @@ Begin VB.Form frmMensajePapiro
    Begin VB.Label Stream1 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "StarkAo20"
+      Caption         =   "Ao20 Oficial"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -97,7 +97,7 @@ Begin VB.Form frmMensajePapiro
    End
    Begin VB.Label GameRulesLink 
       BackStyle       =   0  'Transparent
-      Caption         =   "Próximamente"
+      Caption         =   "Ir al reglamento"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -107,7 +107,7 @@ Begin VB.Form frmMensajePapiro
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00000000&
+      ForeColor       =   &H00FF0000&
       Height          =   255
       Index           =   0
       Left            =   3285
@@ -195,7 +195,7 @@ Begin VB.Form frmMensajePapiro
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   14.4
+         Size            =   14.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -260,7 +260,7 @@ Private Const WS_EX_LAYERED = &H80000
 Private Const LWA_COLORKEY = &H1&
 
 Private Sub BasicInfoLink_Click()
-    Call OpenLink("https://mercado.ao20.com.ar/wiki")
+    Call OpenLink("https://ao20.com.ar/wiki")
 End Sub
 
 Private Sub CafecitoLink_Click(Index As Integer)
@@ -282,8 +282,12 @@ Private Sub Form_LostFocus()
     Unload Me
 End Sub
 
+Private Sub GameRulesLink_Click(Index As Integer)
+    Call OpenLink("https://discord.com/channels/761213868352471040/761234240750092329/1083823132546179082")
+End Sub
+
 Private Sub HelpGuideLink_Click()
-    Call OpenLink("https://www.ao20helper.com.ar/")
+    Call OpenLink("https://discord.com/channels/761213868352471040/761234240750092329/1083822929957093417")
 End Sub
 
 Private Sub Image1_Click()
@@ -307,9 +311,9 @@ Private Sub PatreonLink_Click(Index As Integer)
 End Sub
 
 Private Sub Stream1_Click()
-    Call OpenLink("https://www.twitch.tv/starkao20")
+    Call OpenLink("https://www.twitch.tv/ao20oficial")
 End Sub
 
 Private Sub Stream2_Click()
-    Call OpenLink("https://www.twitch.tv/gabrieldmente")
+    Call OpenLink("https://discord.com/channels/761213868352471040/761234240750092329/1083823308698562661")
 End Sub
