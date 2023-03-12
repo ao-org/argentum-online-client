@@ -283,11 +283,11 @@ Private Sub Form_LostFocus()
 End Sub
 
 Private Sub GameRulesLink_Click(Index As Integer)
-    Call OpenLink("https://discord.com/channels/761213868352471040/761234240750092329/1083823132546179082")
+    Call OpenLink("https://ao20.com.ar/reglamento")
 End Sub
 
 Private Sub HelpGuideLink_Click()
-    Call OpenLink("https://discord.com/channels/761213868352471040/761234240750092329/1083822929957093417")
+    Call OpenLink("https://ao20.com.ar/wiki/guia/comenzar")
 End Sub
 
 Private Sub Image1_Click()
@@ -296,7 +296,7 @@ End Sub
 
 
 Private Sub newsLink_Click()
-    Call OpenLink("https://discord.com/channels/761213868352471040/761286044229959701/1006324594736631818")
+    Call OpenLink("https://steamcommunity.com/app/1956740/allnews/")
 End Sub
 
 Private Sub OpenLink(link As String)
@@ -315,5 +315,5 @@ Private Sub Stream1_Click()
 End Sub
 
 Private Sub Stream2_Click()
-    Call OpenLink("https://discord.com/channels/761213868352471040/761234240750092329/1083823308698562661")
+    Call OpenLink("https://www.twitch.tv/PlusAo20")
 End Sub
