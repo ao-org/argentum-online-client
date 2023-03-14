@@ -262,6 +262,7 @@ Private Enum ServerPacketID
     ShopPjsInit
     DebugDataResponse
     CreateProjectile
+    UpdateTrap
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -1003,6 +1004,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleDebugDataResponse
         Case ServerPacketID.CreateProjectile
             Call HandleCreateProjectile
+        Case ServerPacketID.UpdateTrap
+            Call HandleUpdateTrapState
         #If PYMMO = 0 Then
         Case ServerPacketID.AccountCharacterList
             Call HandleAccountCharacterList
@@ -4460,6 +4463,19 @@ Private Sub HandleCreateProjectile()
 
 HandleCreateProjectile_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCreateProjectile", Erl)
+End Sub
+
+Private Sub HandleUpdateTrapState()
+    Dim x, y As Byte
+    Dim state As Byte
+    state = Reader.ReadInt8()
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    If state > 0 Then
+        Call InitGrh(MapData(x, y).Trap, 38370)
+    Else
+        MapData(x, y).Trap.GrhIndex = 0
+    End If
 End Sub
 
 Private Sub HandleStunStart()

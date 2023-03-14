@@ -403,6 +403,7 @@ Public Type MapBlock
     CharFantasma As Fantasma
     ArbolAlphaTimer As Long
     zone As MapZone
+    Trap As Grh
 End Type
 
 'Info de cada mapa

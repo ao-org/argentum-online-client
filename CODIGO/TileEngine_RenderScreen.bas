@@ -226,7 +226,9 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         For x = MinBufferedX To MaxBufferedX
 
             With MapData(x, y)
-                
+                If .Trap.GrhIndex > 0 Then
+                    Call Draw_Grh(.Trap, screenX, screenY, 1, 1, .light_value)
+                End If
                 ' Objects *********************************
                 If .ObjGrh.grhIndex <> 0 Then
                     Select Case ObjData(.OBJInfo.ObjIndex).ObjType
