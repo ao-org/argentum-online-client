@@ -44,9 +44,15 @@ Private Type TRIPLESTRINGPARAM
     ThirdLen As Long
 End Type
 
+Private Type BABELSETTINGS
+    Width As Long
+    Height As Long
+    Compresed As Long
+End Type
+
 Private ServerEnvironment As String
 
-Public Declare Function InitializeBabel Lib "BabelUI.dll" Alias "_InitializeBabel@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
+Public Declare Function InitializeBabel Lib "BabelUI.dll" Alias "_InitializeBabel@4" (ByRef Settings As BABELSETTINGS) As Boolean
 Public Declare Function GetBebelImageBuffer Lib "BabelUI.dll" Alias "_GetImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
 Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "_SendMouseEvent@16" (ByVal PosX As Long, ByVal PosY As Long, ByVal EvtType As Long, ByVal button As Long)
 Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "_SendKeyEvent@20" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
@@ -136,7 +142,13 @@ On Error GoTo InitializeUI_Err
 100 Dim initSuccess As Boolean
 102 UITexture.Height = Height
 104 UITexture.Width = Width
-106 initSuccess = InitializeBabel(UITexture.Width, UITexture.Height)
+    Dim Settings As BABELSETTINGS
+    Settings.Height = Height
+    Settings.Width = Width
+#If Compresion = 1 Then
+    Settings.Compresed = 1
+#End If
+106 initSuccess = InitializeBabel(Settings)
 108 UITexture.TextureHeight = NextPowerOf2(Height)
 110 UITexture.TextureWidth = NextPowerOf2(Width)
 112 ReDim UITexture.ImageBuffer(UITexture.Height * UITexture.Width * pixelSize)

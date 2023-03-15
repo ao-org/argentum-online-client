@@ -11,8 +11,7 @@ Begin VB.Form frmBabelLogin
    LinkTopic       =   "Form1"
    ScaleHeight     =   3015
    ScaleWidth      =   4560
-   ShowInTaskbar   =   0   'False
-   StartUpPosition =   3  'Windows Default
+   StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox UIRenderArea 
       BackColor       =   &H80000007&
       Height          =   3015
@@ -47,7 +46,7 @@ On Error GoTo Form_Load_Err
     UIRenderArea.Width = D3DWindow.BackBufferWidth * screen.TwipsPerPixelX
     UIRenderArea.Height = D3DWindow.BackBufferHeight * screen.TwipsPerPixelY
     Call InitializeUI(D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, 4)
-    UIRenderArea.Top = 20
+    UIRenderArea.Top = 0 '20 * screen.TwipsPerPixelY
     Exit Sub
 
 Form_Load_Err:
