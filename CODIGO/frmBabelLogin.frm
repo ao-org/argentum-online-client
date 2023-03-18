@@ -40,13 +40,13 @@ On Error GoTo Form_Load_Err
     Debug.Assert D3DWindow.BackBufferHeight <> 0
     Me.ScaleMode = vbPixel
     Me.Width = D3DWindow.BackBufferWidth * screen.TwipsPerPixelX
-    Me.Height = (D3DWindow.BackBufferHeight + 20) * screen.TwipsPerPixelY
+    Me.Height = (D3DWindow.BackBufferHeight) * screen.TwipsPerPixelY
     
     UIRenderArea.ScaleMode = vbPixel
     UIRenderArea.Width = D3DWindow.BackBufferWidth * screen.TwipsPerPixelX
     UIRenderArea.Height = D3DWindow.BackBufferHeight * screen.TwipsPerPixelY
     Call InitializeUI(D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, 4)
-    UIRenderArea.Top = 0 '20 * screen.TwipsPerPixelY
+    UIRenderArea.Top = 0 '20 * screen.TwipsPerPixelY 'keep for debug
     Exit Sub
 
 Form_Load_Err:

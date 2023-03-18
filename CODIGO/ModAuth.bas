@@ -1413,62 +1413,7 @@ Private Sub FillAccountData(ByVal data As String)
             RenderCuenta_PosY = Pjs(1).posY
         End If
     End If
-    
-    Call mostrarcuenta
-    
-
-End Sub
-
-Public Sub mostrarcuenta()
-    AlphaNiebla = 30
-    If Not UseBabelUI Then
-        frmConnect.visible = True
-    End If
-
-    g_game_state.state = e_state_account_screen
-
-    
-    SugerenciaAMostrar = RandomNumber(1, NumSug)
-        
-
-    Call Sound.Sound_Play(192)
-    
-    Call Sound.Sound_Stop(SND_LLUVIAIN)
-      
-    Call Graficos_Particulas.Particle_Group_Remove_All
-    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
-    ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
-                
-    If FrmLogear.Visible Then
-        Unload FrmLogear
-
-        'Unload frmConnect
-    End If
-    
-    If frmMain.Visible Then
-        '  frmMain.Visible = False
-        
-        UserParalizado = False
-        UserInmovilizado = False
-        UserStopped = False
-        
-        InvasionActual = 0
-        frmMain.Evento.Enabled = False
-     
-        'BUG CLONES
-        Dim i As Integer
-
-        For i = 1 To LastChar
-            Call EraseChar(i)
-        Next i
-        
-        frmMain.personaje(1).Visible = False
-        frmMain.personaje(2).Visible = False
-        frmMain.personaje(3).Visible = False
-        frmMain.personaje(4).Visible = False
-        frmMain.personaje(5).Visible = False
-
-    End If
+    Call LoadCharacterSelectionScreen
 End Sub
 
 Public Function estaInmovilizado(ByRef arr() As Byte) As String

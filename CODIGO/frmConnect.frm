@@ -213,8 +213,6 @@ Private Sub Form_Load()
     If (Not FormParser Is Nothing) Then
     Call FormParser.Parse_Form(Me)
     End If
-
-    Call GoToLogIn
     
     EngineRun = False
         
@@ -581,24 +579,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
 
                 Case e_action_logout_account
-                    Debug.Print "Vuelvo al login, debería borrar el token"
-                    Auth_state = e_state.Idle
-                    Call ComprobarEstado
-                    UserSaliendo = True
-                    Call modNetwork.Disconnect
-                    CantidadDePersonajesEnCuenta = 0
-                    Dim i As Integer
-                    For i = 1 To MAX_PERSONAJES_EN_CUENTA
-                        Pjs(i).Body = 0
-                        Pjs(i).Head = 0
-                        Pjs(i).Mapa = 0
-                        Pjs(i).nivel = 0
-                        Pjs(i).nombre = ""
-                        Pjs(i).Clase = 0
-                        Pjs(i).Criminal = 0
-                        Pjs(i).NameMapa = ""
-                    Next i
-                    General_Set_Connect
+                    Call LogOut
                 Case e_action_login_character
                     If PJSeleccionado < 1 Then Exit Sub
                     If IntervaloPermiteConectar Then
@@ -825,7 +806,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         frmMain.ShowFPS.enabled = True
                     End If
           
-                    Call Protocol_Writes.WriteLoginNewChar
+                    Call Protocol_Writes.WriteLoginNewChar(userName, UserRaza, UserSexo, UserClase, MiCabeza, UserHogar)
                 End If
                 
 

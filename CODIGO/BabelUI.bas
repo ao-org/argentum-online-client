@@ -23,6 +23,16 @@ Private Type NewAccountData
     SurnameLen As Long
 End Type
 
+Private Type NEWCHARACTERDATA
+    name As Long
+    NameLen As Long
+    Gender As Long
+    Race As Long
+    Class As Long
+    Head As Long
+    City As Long
+End Type
+
 Private Type SINGLESTRINGPARAM
     Ptr As Long
     Len As Long
@@ -48,6 +58,7 @@ Private Type BABELSETTINGS
     Width As Long
     Height As Long
     Compresed As Long
+    EnableDebug As Long
 End Type
 
 Private ServerEnvironment As String
@@ -57,8 +68,8 @@ Public Declare Function GetBebelImageBuffer Lib "BabelUI.dll" Alias "_GetImageBu
 Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "_SendMouseEvent@16" (ByVal PosX As Long, ByVal PosY As Long, ByVal EvtType As Long, ByVal button As Long)
 Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "_SendKeyEvent@20" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
 Public Declare Function NextPowerOf2 Lib "BabelUI.dll" Alias "_NextPowerOf2@4" (ByVal original As Long) As Long
-Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@44" (ByVal Login As Long, ByVal CloseClient As Long, ByVal CreateAccount As Long, ByVal SetHost As Long, ByVal ValidateAccountr As Long, _
-                                                                                      ByVal ResendCode As Long, ByVal RequestPasswordReset As Long, ByVal RequestNewPassord As Long, ByVal SelectCharacter As Long, ByVal LoginCharacter As Long, ByVal ReturnToLogin As Long)
+Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@48" (ByVal Login As Long, ByVal CloseClient As Long, ByVal CreateAccount As Long, ByVal SetHost As Long, ByVal ValidateAccountr As Long, ByVal ResendCode As Long, ByVal RequestPasswordReset As Long, _
+                                                                                      ByVal RequestNewPassord As Long, ByVal SelectCharacter As Long, ByVal LoginCharacter As Long, ByVal ReturnToLogin As Long, ByVal CreateCharacter As Long)
 Public Declare Sub SendErrorMessage Lib "BabelUI.dll" Alias "_SendErrorMessage@12" (ByVal message As String, ByVal localize As Long, ByVal Action As Long)
 Public Declare Sub SetActiveScreen Lib "BabelUI.dll" Alias "_SetActiveScreen@4" (ByVal screenName As String)
 Public Declare Sub SetLoadingMessage Lib "BabelUI.dll" Alias "_SetLoadingMessage@8" (ByVal message As String, ByVal localize As Long)
@@ -148,6 +159,9 @@ On Error GoTo InitializeUI_Err
 #If Compresion = 1 Then
     Settings.Compresed = 1
 #End If
+#If DEBUGGING = 1 Or Developer = 1 Then
+    Settings.EnableDebug = 1
+#End If
 106 initSuccess = InitializeBabel(Settings)
 108 UITexture.TextureHeight = NextPowerOf2(Height)
 110 UITexture.TextureWidth = NextPowerOf2(Width)
@@ -155,7 +169,7 @@ On Error GoTo InitializeUI_Err
 114 UITexture.pixelSize = pixelSize
 116 Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
 118 BabelInitialized = True
-    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB, AddressOf SelectCharacterPreviewCB, AddressOf LoginCharacterCB, AddressOf ReturnToLoginCB)
+    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB, AddressOf SelectCharacterPreviewCB, AddressOf LoginCharacterCB, AddressOf ReturnToLoginCB, AddressOf CreateCharacterCB)
     Exit Sub
 InitializeUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.InitializeUI", Erl)
@@ -330,6 +344,7 @@ Public Sub SelectCharacterPreviewCB(ByVal charindex As Long)
         Call SwitchMap(CreateCharMap)
         RenderCuenta_PosX = CreateCharMapX
         RenderCuenta_PosY = CreateCharMapY
+        g_game_state.state = e_state_createchar_screen
     Else
         Call SwitchMap(Pjs(charindex).Mapa)
         RenderCuenta_PosX = Pjs(charindex).PosX
@@ -340,12 +355,18 @@ End Sub
 Public Sub LoginCharacterCB(ByVal charindex As Long)
     charindex = charindex + 1
     If charindex > 0 Or charindex <= CantidadDePersonajesEnCuenta Then
-        LoginCharacter (Pjs(charindex).nombre)
+        Call LoginCharacter(Pjs(charindex).nombre)
     End If
 End Sub
 
 Public Sub ReturnToLoginCB()
-    Call GoToLogIn
+    Call LogOut
+End Sub
+
+Public Sub CreateCharacterCB(ByRef charinfo As NEWCHARACTERDATA)
+    Dim name As String
+    name = GetStringFromPtr(charinfo.name, charinfo.NameLen)
+    Call ModLogin.CreateCharacter(name, charinfo.Race + 1, charinfo.Gender + 1, charinfo.Class + 1, charinfo.Head, charinfo.City + 1)
 End Sub
 
 Public Sub DisplayError(ByVal message As String, ByVal LocalizationStr As String)

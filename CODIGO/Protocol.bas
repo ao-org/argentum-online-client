@@ -1294,9 +1294,13 @@ Public Sub HandleDisconnect()
     Call resetearCartel
     If Not UseBabelUI Then
         frmConnect.visible = True
+    Else
+        frmBabelLogin.visible = True
     End If
     #If PYMMO = 1 Then
-       g_game_state.state = e_state_account_screen
+        If g_game_state.state <> e_state_createchar_screen Then
+            g_game_state.state = e_state_account_screen
+        End If
     #ElseIf PYMMO = 0 Then
        Call GoToLogIn
     #End If
@@ -1486,12 +1490,9 @@ Public Sub HandleDisconnect()
     Dim Frm As Form
     
     For Each Frm In Forms
-
-        If Frm.Name <> frmMain.Name And Frm.Name <> frmConnect.Name And Frm.Name <> frmMensaje.Name Then
+        If Frm.Name <> frmMain.Name And Frm.Name <> frmConnect.Name And Frm.Name <> frmMensaje.Name And Frm.Name <> frmBabelLogin.Name Then
             Unload Frm
-
         End If
-
     Next
     
     #If PYMMO = 1 Then
@@ -1500,7 +1501,7 @@ Public Sub HandleDisconnect()
         Call connectToLoginServer
     End If
     #ElseIf PYMMO = 0 Then
-    Call ShowLogin
+        Call ShowLogin
     #End If
     
     Exit Sub

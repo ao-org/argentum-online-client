@@ -337,7 +337,9 @@ Private Sub Form_Load()
     Me.PasswordTxt.Visible = True
     Call CargarLst
     Call LoadButtons
-    Call SetActiveServer(txtIp.Text, txtPort.Text)
+    If Not BabelUI.UseBabelUI Then
+        Call SetActiveServer(txtIp.Text, txtPort.Text)
+    End If
     Exit Sub
 
 Form_Load_Err:

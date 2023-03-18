@@ -69,10 +69,23 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     If ServerSettings Is Nothing Then
         Dim RemotesPath As String
         Set ServerSettings = New clsIniManager
+#If Compresion = 1 Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "Remotes.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
+            Err.Description = "¡No se puede cargar el archivo de Remotes.ini!"
+            MsgBox Err.Description
+            Exit Sub
+        End If
+        RemotesPath = Windows_Temp_Dir & "Remotes.ini"
+#Else
         RemotesPath = App.path & "\..\Recursos\init\Remotes.ini"
+#End If
         Debug.Assert FileExist(RemotesPath, vbNormal)
         Call ServerSettings.Initialize(RemotesPath)
+        
     End If
+#If Developer = 0 And DEBUGGING = 0 Then
+    Environment = "Production"
+#End If
     Dim loginServers As Integer
     Dim serverCount As Integer
     loginServers = Val(ServerSettings.GetValue(environment, "LoginCount"))
@@ -107,13 +120,19 @@ End Sub
 
 Public Sub LoadCharacterSelectionScreen()
     AlphaNiebla = 30
-    g_game_state.state = e_state_account_screen
     If BabelUI.BabelInitialized Then
         Call SendLoginCharacters(Pjs, CantidadDePersonajesEnCuenta)
-        Call BabelUI.SetActiveScreen("character-selection")
+        If g_game_state.state <> e_state_createchar_screen Then
+            Call BabelUI.SetActiveScreen("character-selection")
+            g_game_state.state = e_state_account_screen
+        Else
+            Call BabelUI.SetActiveScreen("create-character")
+        End If
     Else
         frmConnect.visible = True
+        g_game_state.state = e_state_account_screen
     End If
+    
     SugerenciaAMostrar = RandomNumber(1, NumSug)
     Call Sound.Sound_Play(192)
     Call Sound.Sound_Stop(SND_LLUVIAIN)
@@ -148,6 +167,27 @@ Public Sub GoToLogIn()
     If BabelUI.BabelInitialized Then
         Call BabelUI.SetActiveScreen("login")
     End If
+End Sub
+
+Public Sub LogOut()
+    Debug.Print "Vuelvo al login, debería borrar el token"
+    Auth_state = e_state.Idle
+    Call ComprobarEstado
+    UserSaliendo = True
+    Call modNetwork.Disconnect
+    CantidadDePersonajesEnCuenta = 0
+    Dim i As Integer
+    For i = 1 To MAX_PERSONAJES_EN_CUENTA
+        Pjs(i).Body = 0
+        Pjs(i).Head = 0
+        Pjs(i).Mapa = 0
+        Pjs(i).nivel = 0
+        Pjs(i).nombre = ""
+        Pjs(i).Clase = 0
+        Pjs(i).Criminal = 0
+        Pjs(i).NameMapa = ""
+    Next i
+    General_Set_Connect
 End Sub
 
 Public Sub ResendValidationCode(ByVal email As String)
@@ -192,6 +232,7 @@ On Error GoTo LogearPersonaje_Err
     ModAuth.LoginOperation = e_operation.Authenticate
     Call LoginOrConnect(E_MODO.Normal)
 #End If
+    Exit Sub
 LogearPersonaje_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.LogearPersonaje", Erl)
     Resume Next
@@ -221,4 +262,20 @@ Public Sub ShowScharSelection()
     Else
         Call connectToLoginServer
     End If
+End Sub
+
+Public Sub CreateCharacter(ByVal name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
+    userName = name
+    UserRaza = Race
+    UserSexo = Gender
+    UserClase = Class
+    MiCabeza = Head
+    UserHogar = HomeCity
+#If PYMMO = 1 Then
+    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+    Call LoginOrConnect(E_MODO.CrearNuevoPj)
+#Else
+    Call Protocol_Writes.WriteLoginNewChar(userName, UserRaza, UserSexo, UserClase, MiCabeza, UserHogar)
+#End If
+    
 End Sub

@@ -441,7 +441,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -5204,9 +5203,6 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                 End If
             End If
         Else
-            If Not GetRemoteError And Error > 0 Then
-                Call DisplayError("El servidor cerro la conexion.", "connection-closed")
-            End If
             Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
             If frmConnect.visible Then
                 Connected = False
@@ -5214,6 +5210,9 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                 If (Connected) Then
                     Call HandleDisconnect
                 End If
+            End If
+            If Not GetRemoteError And Error > 0 Then
+                Call DisplayError("El servidor cerro la conexion.", "connection-closed")
             End If
         End If
     End If
