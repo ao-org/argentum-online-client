@@ -772,36 +772,34 @@ Sub ResetContadores()
    
 End Sub
 
-Sub MoveTo(ByVal Direccion As E_Heading)
-    
+Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
     On Error GoTo MoveTo_Err
-    
-
-    '***************************************************
-    'Author: Alejandro Santos (AlejoLp)
-    'Last Modify Date: 06/28/2008
-    'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
-    ' 06/03/2006: AlejoLp - Elimine las funciones Move[NSWE] y las converti a esta
-    ' 12/08/2007: Tavo    - Si el usuario esta paralizado no se puede mover.
-    ' 06/28/2008: NicoNZ - Saqué lo que impedía que si el usuario estaba paralizado se ejecute el sub.
-    '***************************************************
+    If Dumb Then
+        If RandomNumber(1, 100) < 50 Then
+            Dim newHeading As E_Heading
+            Do
+                newHeading = RandomNumber(E_Heading.NORTH, E_Heading.WEST)
+            Loop Until newHeading <> Heading
+            Heading = newHeading
+        End If
+    End If
     Dim LegalOk As Boolean
     
     If cartel Then cartel = False
     
-    Select Case Direccion
+    Select Case Heading
 
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Heading)
 
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Heading)
 
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Direccion)
+            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Heading)
 
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Direccion)
+            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Heading)
 
     End Select
 
@@ -822,7 +820,7 @@ Sub MoveTo(ByVal Direccion As E_Heading)
            
             If EstaSiguiendo Then Exit Sub
             
-            Call WriteWalk(Direccion) 'We only walk if we are not meditating or resting
+            Call WriteWalk(Heading) 'We only walk if we are not meditating or resting
             
             Dim i As Integer
             For i = 1 To LastChar
@@ -835,8 +833,8 @@ Sub MoveTo(ByVal Direccion As E_Heading)
                 End If
             Next i
 
-            Call Char_Move_by_Head(UserCharIndex, Direccion)
-            Call MoveScreen(Direccion)
+            Call Char_Move_by_Head(UserCharIndex, Heading)
+            Call MoveScreen(Heading)
             Call checkTutorial
         Else
 
@@ -853,9 +851,9 @@ Sub MoveTo(ByVal Direccion As E_Heading)
 
     Else
 
-        If charlist(UserCharIndex).Heading <> Direccion Then
+        If charlist(UserCharIndex).Heading <> Heading Then
             If IntervaloPermiteHeading(True) Then
-                Call WriteChangeHeading(Direccion)
+                Call WriteChangeHeading(Heading)
             End If
         End If
 
@@ -890,25 +888,6 @@ Public Function EstaSiguiendo() As Boolean
             Exit Function
         End If
 End Function
-Sub RandomMove()
-    '***************************************************
-    'Author: Alejandro Santos (AlejoLp)
-    'Last Modify Date: 06/03/2006
-    ' 06/03/2006: AlejoLp - Ahora utiliza la funcion MoveTo
-    '***************************************************
-    
-    On Error GoTo RandomMove_Err
-    
-    Call MoveTo(RandomNumber(E_Heading.NORTH, E_Heading.WEST))
-
-    
-    Exit Sub
-
-RandomMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Mod_General.RandomMove", Erl)
-    Resume Next
-    
-End Sub
 
 Public Sub AddMovementToKeysMovementPressedQueue()
     
@@ -992,47 +971,25 @@ Sub Check_Keys()
         If frmMain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub
  
         If Not UserMoving Then
-            If Not UserEstupido Then
-                'If Not MainTimer.Check(TimersIndex.Walk, False) Then Exit Sub
-
-                Call AddMovementToKeysMovementPressedQueue
-                
-                Select Case keysMovementPressedQueue.GetLastItem()
-                
-                    ' Prevenimos teclas sin asignar... Te deja moviendo para siempre
-                    Case 0: Exit Sub
-                    
-                    'Move Up
-                    Case BindKeys(14).KeyCode
-                        Call MoveTo(E_Heading.NORTH)
-                    'Move Right
-                    Case BindKeys(17).KeyCode
-                        Call MoveTo(E_Heading.EAST)
-                        
-                    'Move down
-                    Case BindKeys(15).KeyCode
-                        Call MoveTo(E_Heading.south)
-                        
-                    'Move left
-                    Case BindKeys(16).KeyCode
-                        Call MoveTo(E_Heading.WEST)
-                        
-                End Select
-
-            Else
-
-                Dim kp As Boolean
-                    kp = (GetKeyState(BindKeys(14).KeyCode) < 0) Or GetKeyState(BindKeys(17).KeyCode) < 0 Or GetKeyState(BindKeys(15).KeyCode) < 0 Or GetKeyState(BindKeys(16).KeyCode) < 0
-            
-                If kp Then Call RandomMove
-
-            End If
-
+            Call AddMovementToKeysMovementPressedQueue
+            Select Case keysMovementPressedQueue.GetLastItem()
+                ' Prevenimos teclas sin asignar... Te deja moviendo para siempre
+                Case 0: Exit Sub
+                'Move Up
+                Case BindKeys(14).KeyCode
+                    Call MoveTo(E_Heading.NORTH, UserEstupido)
+                'Move Right
+                Case BindKeys(17).KeyCode
+                    Call MoveTo(E_Heading.EAST, UserEstupido)
+                'Move down
+                Case BindKeys(15).KeyCode
+                    Call MoveTo(E_Heading.south, UserEstupido)
+                'Move left
+                Case BindKeys(16).KeyCode
+                    Call MoveTo(E_Heading.WEST, UserEstupido)
+            End Select
         End If
-
     End If
-
-    
     Exit Sub
 
 Check_Keys_Err:
