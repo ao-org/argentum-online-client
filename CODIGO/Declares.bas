@@ -120,18 +120,19 @@ Public Enum e_EffectType
     eAny
 End Enum
 
-Public Type e_ActiveEffect
+Public Type t_ActiveEffect
     EffectType As e_EffectType
     Duration As Long
     StartTime As Long
     Grh As Long
     Id As Long
     TypeId As Integer
+    StackCount As Integer
 End Type
 
 Public Const ACTIVE_EFFECT_LIST_SIZE As Integer = 10
 Public Type t_ActiveEffectList
-    EffectList() As e_ActiveEffect
+    EffectList() As t_ActiveEffect
     EffectCount As Integer
 End Type
 

@@ -16,19 +16,24 @@ Attribute VB_Name = "modCooldowns"
 '
 '
 
+Const CdDrawSize As Integer = 32
+Const HalfCDDrawSize As Integer = CdDrawSize / 2
 Private colorCooldown As RGBA
 
-Private Sub DrawEffectCd(ByVal x As Integer, ByVal y As Integer, ByRef Effect As e_ActiveEffect, ByVal CurrTime As Long, ByRef colors() As RGBA)
+Private Sub DrawEffectCd(ByVal x As Integer, ByVal y As Integer, ByRef Effect As t_ActiveEffect, ByVal currTime As Long, ByRef colors() As RGBA)
     Dim Grh As Grh
     Dim angle As Single
     Call InitGrh(Grh, Effect.Grh)
-    Call Grh_Render_Advance(Grh, x - 16, y - 16, 32, 32, colors)
+    Call Grh_Render_Advance(grh, x - HalfCDDrawSize, y - HalfCDDrawSize, CdDrawSize, CdDrawSize, colors)
     If Effect.duration > -1 Then
         angle = (currTime - Effect.startTime) * 360 / Effect.duration
     Else
         angle = 0
     End If
-    Call Engine_Draw_Load(x, y, 32, 32, colorCooldown, angle)
+    Call Engine_Draw_Load(x, y, CdDrawSize, CdDrawSize, colorCooldown, angle)
+    If Effect.StackCount > 1 Then
+        RenderText Effect.StackCount, x - 5, y + HalfCDDrawSize - 12, COLOR_WHITE, 4, False
+    End If
 End Sub
 
 Public Sub renderCooldowns(ByVal x As Integer, ByVal y As Integer)
@@ -52,25 +57,25 @@ Public Sub renderCooldowns(ByVal x As Integer, ByVal y As Integer)
     If BuffList.EffectCount > 0 Then
         For i = 0 To BuffList.EffectCount - 1
             Call DrawEffectCd(CurrentX, y, BuffList.EffectList(i), CurrTime, colors)
-            CurrentX = CurrentX - 32 - Margin
+            CurrentX = CurrentX - CdDrawSize - Margin
         Next i
         CurrentX = x
-        y = y + 32 + Margin
+        y = y + CdDrawSize + Margin
     End If
     
     If DeBuffList.EffectCount > 0 Then
         For i = 0 To DeBuffList.EffectCount - 1
             Call DrawEffectCd(CurrentX, y, DeBuffList.EffectList(i), CurrTime, colors)
-            CurrentX = CurrentX - 32
+            CurrentX = CurrentX - CdDrawSize
         Next i
         CurrentX = x
-        y = y + 32 + Margin
+        y = y + CdDrawSize + Margin
     End If
     If CDList.EffectCount > 0 Then
-        y = Render_Main_Rect.Bottom - 32 - Margin
+        y = Render_Main_Rect.Bottom - CdDrawSize - Margin
         For i = 0 To CDList.EffectCount - 1
             Call DrawEffectCd(CurrentX, y, CDList.EffectList(i), CurrTime, colors)
-            CurrentX = CurrentX - 32 - Margin
+            CurrentX = CurrentX - CdDrawSize - Margin
         Next i
         CurrentX = x
     End If
@@ -99,7 +104,7 @@ Public Sub renderCooldownsInventory(ByVal x As Integer, ByVal y As Integer, ByVa
 
 End Sub
 
-Public Sub AddOrUpdateEffect(ByRef EffectList As t_ActiveEffectList, ByRef Effect As e_ActiveEffect)
+Public Sub AddOrUpdateEffect(ByRef EffectList As t_ActiveEffectList, ByRef Effect As t_ActiveEffect)
 On Error GoTo AddEffect_Err
     Dim Index As Integer
     Index = FindEffectIndex(EffectList, Effect)
@@ -108,9 +113,9 @@ On Error GoTo AddEffect_Err
         Exit Sub
     End If
 100 If Not IsArrayInitialized(EffectList.EffectList) Then
-104     ReDim EffectList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As e_ActiveEffect
+104     ReDim EffectList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
     ElseIf EffectList.EffectCount >= UBound(EffectList.EffectList) Then
-108     ReDim Preserve EffectList.EffectList(EffectList.EffectCount * 1.2) As e_ActiveEffect
+108     ReDim Preserve EffectList.EffectList(EffectList.EffectCount * 1.2) As t_ActiveEffect
     End If
 116 EffectList.EffectList(EffectList.EffectCount) = Effect
 120 EffectList.EffectCount = EffectList.EffectCount + 1
@@ -119,7 +124,7 @@ AddEffect_Err:
       Call RegistrarError(Err.Number, Err.Description, "modCooldowns.AddEffect", Erl)
 End Sub
 
-Public Function FindEffectIndex(ByRef EffectList As t_ActiveEffectList, ByRef Effect As e_ActiveEffect) As Integer
+Public Function FindEffectIndex(ByRef EffectList As t_ActiveEffectList, ByRef Effect As t_ActiveEffect) As Integer
     FindEffectIndex = -1
     Dim i As Integer
 100 For i = 0 To EffectList.EffectCount - 1
@@ -131,7 +136,7 @@ Public Function FindEffectIndex(ByRef EffectList As t_ActiveEffectList, ByRef Ef
     Next i
 End Function
 
-Public Sub RemoveEffect(ByRef EffectList As t_ActiveEffectList, ByRef Effect As e_ActiveEffect)
+Public Sub RemoveEffect(ByRef EffectList As t_ActiveEffectList, ByRef Effect As t_ActiveEffect)
 On Error GoTo RemoveEffect_Err
     Dim Index As Integer
     Index = FindEffectIndex(EffectList, Effect)

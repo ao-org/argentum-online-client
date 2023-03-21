@@ -8820,13 +8820,14 @@ Public Sub HandleUpdateShopClienteCredits()
 End Sub
 
 Public Sub HandleSendSkillCdUpdate()
-    Dim Effect As e_ActiveEffect
+    Dim Effect As t_ActiveEffect
     Effect.TypeId = Reader.ReadInt16
     Effect.Id = Reader.ReadInt32
     Effect.Duration = Reader.ReadInt32
     Effect.EffectType = Reader.ReadInt8
     Effect.Grh = EffectResources(Effect.TypeId).GrhId
     Effect.StartTime = GetTickCount()
+    Effect.StackCount = Reader.ReadInt16()
     If Effect.EffectType = eBuff Then
         Call AddOrUpdateEffect(BuffList, Effect)
     End If

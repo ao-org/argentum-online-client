@@ -2359,7 +2359,7 @@ Auto_Drag_Err:
     
 End Sub
 
-Public Function IsArrayInitialized(ByRef arr() As e_ActiveEffect) As Boolean
+Public Function IsArrayInitialized(ByRef arr() As t_ActiveEffect) As Boolean
   Dim rv As Long
   On Error Resume Next
   rv = UBound(arr)
