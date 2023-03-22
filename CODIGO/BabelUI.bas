@@ -149,6 +149,7 @@ End Function
 
 Public Sub InitializeUI(ByVal Width As Long, ByVal Height As Long, ByVal pixelSize As Long)
 On Error GoTo InitializeUI_Err
+    Debug.Assert Width > 0 And Height > 0 And pixelSize > 0
     If BabelInitialized Then Exit Sub
 100 Dim initSuccess As Boolean
 102 UITexture.Height = Height
@@ -177,6 +178,7 @@ End Sub
 
 Public Sub InitializeInspectorUI(ByVal Width As Long, ByVal Height As Long)
 On Error GoTo InitializeInspectorUI_Err
+    Debug.Assert Width > 0 And Height > 0
 100 Dim initSuccess As Boolean
 102 Call CreateDebugWindow(Width, Height)
 104 DebugUITexture.Height = Height
@@ -200,13 +202,12 @@ Public Sub DrawUITexture(ByRef TextureInfo As t_UITexture)
 On Error GoTo DrawTexture_Err
     With TextureInfo
 100     If Not .Texture Is Nothing Then
-110         If .Texture Is Nothing Then
-112             Call RegistrarError(102, "texture undefined ", "BabelUI.DrawTexture", 202)
-                Exit Sub
-            End If
 116         Call SpriteBatch.SetTexture(.Texture)
 118         Call SpriteBatch.SetAlpha(False)
 120         Call SpriteBatch.Draw(0, 0, .Width, .Height, COLOR_WHITE, , , .Width / .TextureWidth, .Height / .TextureHeight, 0)
+        Else
+            Call RegistrarError(102, "Undefined Texture", "BabelUI.DrawTexture", 202)
+            Exit Sub
         End If
     End With
     Exit Sub
