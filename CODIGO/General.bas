@@ -824,7 +824,7 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             
             Dim i As Integer
             For i = 1 To LastChar
-                If charlist(i).Invisible Then
+                If charlist(i).Invisible And Not EsGM Then
                     If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < 6 Or charlist(i).clan_index = 0 Or charlist(i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
                         If distance(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist(i).FxCount = 0 And charlist(i).particle_count = 0 Then
                             MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0

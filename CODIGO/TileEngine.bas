@@ -333,7 +333,9 @@ Public Type Char
     Team As Byte
     banderaIndex As Byte
     AnimAtaque1 As Integer
-
+    TranslationActive As Boolean
+    TranslationStartTime As Long
+    TranslationTime As Long
 End Type
 
 'Info de un objeto

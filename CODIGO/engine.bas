@@ -982,14 +982,19 @@ End Sub
 Sub ShowNextFrame()
     
     On Error GoTo ShowNextFrame_Err
-    
-
-    'Call RenderSounds
     Static OffsetCounterX As Single
-
     Static OffsetCounterY As Single
     
-    If UserMoving Then
+    If charlist(UserCharIndex).TranslationActive Then
+        With charlist(UserCharIndex)
+            Dim ElapsedTime As Long
+            Dim TranslationPercent As Double
+            ElapsedTime = FrameTime - .TranslationStartTime
+            TranslationPercent = min(CDbl(ElapsedTime) / .TranslationTime, 1)
+            OffsetCounterX = Interpolate(32 * .scrollDirectionX, 0, TranslationPercent)
+            OffsetCounterY = Interpolate(32 * .scrollDirectionY, 0, TranslationPercent)
+        End With
+    ElseIf UserMoving Then
 
         '****** Move screen Left and Right if needed ******
         If AddtoUserPos.x <> 0 Then
@@ -1000,11 +1005,8 @@ Sub ShowNextFrame()
                 OffsetCounterX = 0
                 AddtoUserPos.x = 0
                 UserMoving = False
-
             End If
-
         End If
-            
         '****** Move screen Up and Down if needed ******
         If AddtoUserPos.y <> 0 Then
              LastOffset2Y = ScrollPixelsPerFrameY * AddtoUserPos.y * timerTicksPerFrame * charlist(UserCharIndex).Speeding
@@ -1014,19 +1016,12 @@ Sub ShowNextFrame()
                 OffsetCounterY = 0
                 AddtoUserPos.y = 0
                 UserMoving = False
-
             End If
-
         End If
-
     End If
-
     Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
-    
     Call RenderScreen(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, OffsetCounterX, OffsetCounterY, HalfWindowTileWidth, HalfWindowTileHeight)
-    
     Call DialogosClanes.Draw
-    
     Exit Sub
 
 ShowNextFrame_Err:
@@ -1643,55 +1638,53 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
         
         If .Moving Then
-
             'If needed, move left and right
             If .scrollDirectionX <> 0 Then
                 .MoveOffsetX = .MoveOffsetX + ScrollPixelsPerFrameX * Sgn(.scrollDirectionX) * timerTicksPerFrame * .Speeding
-
                 'Check if we already got there
                 If (Sgn(.scrollDirectionX) = 1 And .MoveOffsetX >= 0) Or (Sgn(.scrollDirectionX) = -1 And .MoveOffsetX <= 0) Then
                     .MoveOffsetX = 0
                     .scrollDirectionX = 0
                 End If
-
             End If
             
             'If needed, move up and down
             If .scrollDirectionY <> 0 Then
                 .MoveOffsetY = .MoveOffsetY + ScrollPixelsPerFrameY * Sgn(.scrollDirectionY) * timerTicksPerFrame * .Speeding
-
                 'Check if we already got there
                 If (Sgn(.scrollDirectionY) = 1 And .MoveOffsetY >= 0) Or (Sgn(.scrollDirectionY) = -1 And .MoveOffsetY <= 0) Then
                     .MoveOffsetY = 0
                     .scrollDirectionY = 0
                 End If
-
             End If
-            
             If .scrollDirectionX = 0 And .scrollDirectionY = 0 Then
                 .Moving = False
             End If
-
+        ElseIf .TranslationActive Then
+            Dim ElapsedTime As Long
+            Dim TranslationPercent As Double
+            ElapsedTime = FrameTime - .TranslationStartTime
+            TranslationPercent = min(CDbl(ElapsedTime) / .TranslationTime, 1)
+            .MoveOffsetX = Interpolate(32 * .scrollDirectionX * -1, 0, TranslationPercent)
+            .MoveOffsetY = Interpolate(32 * .scrollDirectionY * -1, 0, TranslationPercent)
+            If TranslationPercent >= 1 Then
+                .TranslationActive = False
+            End If
         ElseIf .AnimatingBody Then
             If .Body.Walk(.Heading).started = 0 Then
                 .AnimatingBody = 0
-                
                 If .iBody Then
                     .Body = BodyData(.iBody)
                 Else
                     .Body = BodyData(0)
                 End If
-
                 .Body.Walk(.Heading).Loops = -1
-                
                 If .Idle Or .Navegando Then
                     'Start animation
                     .Body.Walk(.Heading).started = FrameTime
                 End If
             End If
-
         ElseIf Not .Idle Then
-
             If .Muerto Then
                 If charindex <> UserCharIndex Then
                     ' Si no somos nosotros, esperamos un intervalo
@@ -1701,13 +1694,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         .Body.Walk(.Heading).started = FrameTime
                         .Idle = True
                     End If
-                    
                 Else
                     .Body = BodyData(CASPER_BODY_IDLE)
                     .Body.Walk(.Heading).started = FrameTime
                     .Idle = True
                 End If
-
             Else
                 'Stop animations
                 If .Navegando = False Or UserNadandoTrajeCaucho = True Then

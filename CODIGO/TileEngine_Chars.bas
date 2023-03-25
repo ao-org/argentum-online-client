@@ -325,6 +325,53 @@ Char_Move_by_Head_Err:
     
 End Sub
 
+Public Sub TranslateCharacterToPos(ByVal charindex As Integer, ByVal NewX As Integer, ByVal NewY As Integer, ByVal TranslationTime As Long)
+On Error GoTo TranslateCharacterToPos_Err
+    Dim TileX, TileY As Integer
+    Dim DiffX, DiffY As Integer
+100 With charlist(charindex)
+102     TileX = .Pos.x
+104     TileY = .Pos.y
+106     If Not InMapBounds(TileX, TileY) Then Exit Sub
+        Debug.Assert MapData(TileX, TileY).charindex = charindex
+        If MapData(TileX, TileY).charindex <> charindex Then
+        Dim ftx, fty As Integer
+        For ftx = 1 To 99
+            For fty = 1 To 99
+                If MapData(ftx, fty).charindex = charindex Then
+                    Debug.Print "found character at: (" & ftx & ", " & fty & ")"
+                End If
+            Next fty
+        Next ftx
+        End If
+108     MapData(TileX, TileY).charindex = 0
+110     DiffX = NewX - TileX
+112     DiffY = NewY - TileY
+        .Pos.x = NewX
+        .Pos.y = NewY
+114     MapData(NewX, NewY).charindex = charindex
+116     .MoveOffsetX = -1 * (TilePixelWidth * DiffX)
+118     .MoveOffsetY = -1 * (TilePixelHeight * DiffY)
+120     .scrollDirectionX = Sgn(DiffX)
+122     .scrollDirectionY = Sgn(DiffY)
+        
+124     If (NewY < MinLimiteY) Or (NewY > MaxLimiteY) Or (NewX < MinLimiteX) Or (NewX > MaxLimiteX) Then
+126         Call EraseChar(charindex)
+        End If
+        .Moving = False
+        .TranslationActive = True
+        .TranslationTime = TranslationTime
+        .TranslationStartTime = FrameTime
+    End With
+    Exit Sub
+TranslateCharacterToPos_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.TranslateCharacterToPos", Erl)
+End Sub
+
+Public Function IsLadderAt(ByVal TileX As Integer, ByVal TileY As Integer) As Boolean
+    IsLadderAt = MapData(TileX, TileY).ObjGrh.GrhIndex = 26940
+End Function
+
 Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
     
     On Error GoTo Char_Move_by_Pos_Err
@@ -380,7 +427,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         .MoveOffsetX = -1 * (TilePixelWidth * addx)
         .MoveOffsetY = -1 * (TilePixelHeight * addy)
 
-        If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Then
+        If IsLadderAt(nX, nY) Then
             .Heading = E_Heading.NORTH
         Else
             .Heading = nHeading
