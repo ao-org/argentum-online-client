@@ -550,7 +550,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     If animate Then
         If grh.started > 0 Then
             Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            ElapsedFrames = Fix((FrameTime - Grh.Started) / Grh.speed)
 
             If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
                 CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
@@ -642,7 +642,7 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
     If animate Then
         If grh.started > 0 Then
             Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            ElapsedFrames = Fix((FrameTime - Grh.Started) / Grh.speed)
 
             If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
                 CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
@@ -4379,7 +4379,7 @@ Public Sub Draw_Grh_ItemInWater(ByRef grh As grh, ByVal x As Integer, ByVal y As
     If animate Then
         If grh.started > 0 Then
             Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            ElapsedFrames = Fix((FrameTime - Grh.Started) / Grh.speed)
 
             If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
                 CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
