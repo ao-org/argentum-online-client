@@ -63,19 +63,19 @@ End Type
 
 Private ServerEnvironment As String
 
-Public Declare Function InitializeBabel Lib "BabelUI.dll" Alias "_InitializeBabel@4" (ByRef Settings As BABELSETTINGS) As Boolean
-Public Declare Function GetBebelImageBuffer Lib "BabelUI.dll" Alias "_GetImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
-Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "_SendMouseEvent@16" (ByVal PosX As Long, ByVal PosY As Long, ByVal EvtType As Long, ByVal button As Long)
-Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "_SendKeyEvent@20" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
-Public Declare Function NextPowerOf2 Lib "BabelUI.dll" Alias "_NextPowerOf2@4" (ByVal original As Long) As Long
-Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" Alias "_RegisterCallbacks@48" (ByVal Login As Long, ByVal CloseClient As Long, ByVal CreateAccount As Long, ByVal SetHost As Long, ByVal ValidateAccountr As Long, ByVal ResendCode As Long, ByVal RequestPasswordReset As Long, _
-                                                                                      ByVal RequestNewPassord As Long, ByVal SelectCharacter As Long, ByVal LoginCharacter As Long, ByVal ReturnToLogin As Long, ByVal CreateCharacter As Long)
-Public Declare Sub SendErrorMessage Lib "BabelUI.dll" Alias "_SendErrorMessage@12" (ByVal message As String, ByVal localize As Long, ByVal Action As Long)
-Public Declare Sub SetActiveScreen Lib "BabelUI.dll" Alias "_SetActiveScreen@4" (ByVal screenName As String)
-Public Declare Sub SetLoadingMessage Lib "BabelUI.dll" Alias "_SetLoadingMessage@8" (ByVal message As String, ByVal localize As Long)
-Public Declare Sub LoginCharacterListPrepare Lib "BabelUI.dll" Alias "_LoginCharacterListPrepare@4" (ByVal CharacterCount As Long)
-Public Declare Sub LoginAddCharacter Lib "BabelUI.dll" Alias "_LoginAddCharacter@36" (ByVal Name As String, ByVal Head As Long, ByVal Body As Long, ByVal helm As Long, ByVal shield As Long, ByVal weapon As Long, ByVal level As Long, ByVal status As Long, ByVal Index As Long)
-Public Declare Sub LoginSendCharacters Lib "BabelUI.dll" Alias "_LoginSendCharacters@0" ()
+Public Declare Function InitializeBabel Lib "BabelUI.dll" (ByRef Settings As BABELSETTINGS) As Boolean
+Public Declare Function GetBebelImageBuffer Lib "BabelUI.dll" Alias "GetImageBuffer" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
+Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "SendMouseEvent" (ByVal PosX As Long, ByVal PosY As Long, ByVal EvtType As Long, ByVal button As Long)
+Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "SendKeyEvent" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
+Public Declare Function NextPowerOf2 Lib "BabelUI.dll" (ByVal original As Long) As Long
+Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" (ByVal Login As Long, ByVal CloseClient As Long, ByVal CreateAccount As Long, ByVal SetHost As Long, ByVal ValidateAccountr As Long, ByVal ResendCode As Long, ByVal RequestPasswordReset As Long, _
+                                                        ByVal RequestNewPassord As Long, ByVal SelectCharacter As Long, ByVal LoginCharacter As Long, ByVal ReturnToLogin As Long, ByVal CreateCharacter As Long)
+Public Declare Sub SendErrorMessage Lib "BabelUI.dll" (ByVal message As String, ByVal localize As Long, ByVal Action As Long)
+Public Declare Sub SetActiveScreen Lib "BabelUI.dll" (ByVal screenName As String)
+Public Declare Sub SetLoadingMessage Lib "BabelUI.dll" (ByVal message As String, ByVal localize As Long)
+Public Declare Sub LoginCharacterListPrepare Lib "BabelUI.dll" (ByVal CharacterCount As Long)
+Public Declare Sub LoginAddCharacter Lib "BabelUI.dll" (ByVal name As String, ByVal Head As Long, ByVal Body As Long, ByVal helm As Long, ByVal shield As Long, ByVal weapon As Long, ByVal level As Long, ByVal status As Long, ByVal Index As Long)
+Public Declare Sub LoginSendCharacters Lib "BabelUI.dll" ()
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" Alias "_CreateDebugWindow@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
