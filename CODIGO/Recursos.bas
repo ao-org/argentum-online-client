@@ -2199,7 +2199,7 @@ Sub CargarCuerpos()
             AnimSpeed = Val(Loader.GetValue(BodyKey, "Speed"))
             
             If AnimSpeed = 0 Then
-                AnimSpeed = 0.5
+                AnimSpeed = 1
             End If
 
             AnimSpeed = 1 / AnimSpeed / 0.018
@@ -2652,7 +2652,7 @@ Public Sub LoadGrhIni()
                     Next
                         
                     ' Tercer lugar: leemos la velocidad de la animacion
-                    .speed = Val(Fields(Frame)) * 2
+                    .speed = Val(Fields(Frame))
                     If .speed <= 0 Then GoTo hErr
                         
                     ' Por ultimo, copiamos las dimensiones del primer frame
