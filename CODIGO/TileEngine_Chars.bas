@@ -334,16 +334,6 @@ On Error GoTo TranslateCharacterToPos_Err
 104     TileY = .Pos.y
 106     If Not InMapBounds(TileX, TileY) Then Exit Sub
         Debug.Assert MapData(TileX, TileY).charindex = charindex
-        If MapData(TileX, TileY).charindex <> charindex Then
-        Dim ftx, fty As Integer
-        For ftx = 1 To 99
-            For fty = 1 To 99
-                If MapData(ftx, fty).charindex = charindex Then
-                    Debug.Print "found character at: (" & ftx & ", " & fty & ")"
-                End If
-            Next fty
-        Next ftx
-        End If
 108     MapData(TileX, TileY).charindex = 0
 110     DiffX = NewX - TileX
 112     DiffY = NewY - TileY
