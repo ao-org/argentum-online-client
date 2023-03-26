@@ -294,7 +294,7 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
     If animate Then
         If grh.Started > 0 Then
             Dim ElapsedFrames As Long
-            ElapsedFrames = Fix((FrameTime - Grh.Started) / Grh.speed)
+            ElapsedFrames = Fix(0.5 * (FrameTime - grh.Started) / grh.speed)
 
             If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
                 CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
