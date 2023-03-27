@@ -1,5 +1,5 @@
 # AO20 CLIENTE
-Código fuente del cliente de Argentum20
+Código fuente del cliente de Argentum20.
 
 ## Por favor considera apoyarnos en https://www.patreon.com/nolandstudios 
 
