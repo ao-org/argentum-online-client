@@ -58,7 +58,7 @@ Public Sub LoadImpAoInit()
     Windows_Temp_Dir = General_Get_Temp_Dir
 
     Dim File As String
-
+    Call InitializeKeyMapping
     File = App.Path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
 
     Dim lC As Integer, tmpStr As String
