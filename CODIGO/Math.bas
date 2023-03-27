@@ -96,3 +96,7 @@ Public Function FixAngle(ByVal angle As Single) As Single
     End If
     FixAngle = angle
 End Function
+
+Public Function Interpolate(ByVal a As Integer, ByVal b As Integer, ByVal t As Double) As Integer
+    Interpolate = a + CInt((b - a) * t)
+End Function

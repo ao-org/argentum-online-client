@@ -110,6 +110,7 @@ Private Enum ServerPacketID
     CharacterCreate         ' CC
     CharacterRemove         ' BP
     CharacterMove           ' MP, +, * and _ '
+    CharacterTranslate
     UserIndexInServer       ' IU
     UserCharIndexInServer   ' IP
     ForceCharMove
@@ -712,6 +713,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleCharacterRemove
         Case ServerPacketID.CharacterMove
             Call HandleCharacterMove
+        Case ServerPacketID.CharacterTranslate
+            Call HandleCharacterTranslate
         Case ServerPacketID.UserIndexInServer
             Call HandleUserIndexInServer
         Case ServerPacketID.UserCharIndexInServer
@@ -3816,27 +3819,36 @@ Private Sub HandleCharacterMove()
     y = Reader.ReadInt8()
     
     With charlist(charindex)
-        
         ' Play steps sounds if the user is not an admin of any kind
         If .priv <> 1 And .priv <> 2 And .priv <> 3 And .priv <> 5 And .priv <> 25 Then
             Call DoPasosFx(charindex)
-
         End If
-
     End With
-    
     Call Char_Move_by_Pos(charindex, x, y)
-    
     Call RefreshAllChars
-    
     Exit Sub
 
 HandleCharacterMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterMove", Erl)
-    
-    
 End Sub
 
+Private Sub HandleCharacterTranslate()
+On Error GoTo HandleCharacterTranslate_Err
+    Dim charindex As Integer
+    Dim TileX     As Byte
+    Dim TileY     As Byte
+    Dim TranslationTime As Long
+    charindex = Reader.ReadInt16()
+    TileX = Reader.ReadInt8()
+    TileY = Reader.ReadInt8()
+    TranslationTime = Reader.ReadInt32()
+    Debug.Print "got character translate id: " & charindex & " Coords: " & TileX & "," & TileY
+    Call TranslateCharacterToPos(charindex, TileX, TileY, TranslationTime)
+    Call RefreshAllChars
+    Exit Sub
+HandleCharacterTranslate_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterTranslate", Erl)
+End Sub
 ''
 ' Handles the ForceCharMove message.
 
