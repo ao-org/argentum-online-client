@@ -524,7 +524,7 @@ End Sub
 Public Sub ReleaseProjectile(Index As Integer)
     AvailableProjectile.CurrentIndex = AvailableProjectile.CurrentIndex + 1
     AvailableProjectile.IndexInfo(AvailableProjectile.CurrentIndex) = ActiveProjectile.IndexInfo(Index)
-    ActiveProjectile.IndexInfo(Index) = ActiveProjectile.IndexInfo(ActiveProjectile.CurrentIndex - 1)
+    ActiveProjectile.IndexInfo(Index) = ActiveProjectile.IndexInfo(ActiveProjectile.CurrentIndex)
     ActiveProjectile.CurrentIndex = ActiveProjectile.CurrentIndex - 1
 End Sub
 
