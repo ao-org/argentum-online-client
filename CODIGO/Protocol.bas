@@ -4449,9 +4449,6 @@ Private Sub HandleArmaMov()
             .Arma.WeaponWalk(.Heading).Started = FrameTime
             .Arma.WeaponWalk(.Heading).Loops = 0
         End If
-        If charindex = UserCharIndex And isRanged > 0 Then
-            Call frmMain.Inventario.UpdateSelectedItemLastUse
-        End If
     End With
     Exit Sub
 
