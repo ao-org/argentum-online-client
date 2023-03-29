@@ -179,6 +179,7 @@ Public Enum e_CdTypes
     e_Throwing = 5
     e_Resurrection = 6
     e_Traps = 7
+    e_WeaponPoison = 8
     [CDCount]
 End Enum
 

@@ -3842,7 +3842,6 @@ On Error GoTo HandleCharacterTranslate_Err
     TileX = Reader.ReadInt8()
     TileY = Reader.ReadInt8()
     TranslationTime = Reader.ReadInt32()
-    Debug.Print "got character translate id: " & charindex & " Coords: " & TileX & "," & TileY
     Call TranslateCharacterToPos(charindex, TileX, TileY, TranslationTime)
     Call RefreshAllChars
     Exit Sub
