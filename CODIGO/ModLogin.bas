@@ -279,3 +279,27 @@ Public Sub CreateCharacter(ByVal name As String, ByVal Race As Integer, ByVal Ge
 #End If
     
 End Sub
+
+Public Sub RequestDeleteCharacter()
+#If PYMMO = 1 Then
+    ModAuth.LoginOperation = e_operation.deletechar
+    Call connectToLoginServer
+#Else
+    Call DisplayError("Unsoported on localhost.", "")
+#End If
+End Sub
+
+Public Sub DeleteCharRequestCode()
+    If UseBabelUI Then
+        Call RequestDeleteCode
+    Else
+        MsgBox ("Se ha enviado un código de verificación al mail proporcionado.")
+    End If
+End Sub
+
+Public Sub TransferChar(ByVal name As String, ByVal DestinationAccunt)
+    TransferCharNewOwner = DestinationAccunt
+    TransferCharname = name
+    ModAuth.LoginOperation = e_operation.TransferCharacter
+    Call connectToLoginServer
+End Sub

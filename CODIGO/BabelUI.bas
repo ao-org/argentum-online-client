@@ -69,18 +69,21 @@ Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "SendMouseEvent" 
 Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "SendKeyEvent" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
 Public Declare Function NextPowerOf2 Lib "BabelUI.dll" (ByVal original As Long) As Long
 Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" (ByVal Login As Long, ByVal CloseClient As Long, ByVal CreateAccount As Long, ByVal SetHost As Long, ByVal ValidateAccountr As Long, ByVal ResendCode As Long, ByVal RequestPasswordReset As Long, _
-                                                        ByVal RequestNewPassord As Long, ByVal SelectCharacter As Long, ByVal LoginCharacter As Long, ByVal ReturnToLogin As Long, ByVal CreateCharacter As Long)
+                                                        ByVal RequestNewPassord As Long, ByVal SelectCharacter As Long, ByVal LoginCharacter As Long, ByVal ReturnToLogin As Long, ByVal CreateCharacter As Long, ByVal RequestCharDelete As Long, _
+                                                        ByVal ConfirmCharDelete As Long, ByVal TransferCharacter As Long)
 Public Declare Sub SendErrorMessage Lib "BabelUI.dll" (ByVal message As String, ByVal localize As Long, ByVal Action As Long)
 Public Declare Sub SetActiveScreen Lib "BabelUI.dll" (ByVal screenName As String)
 Public Declare Sub SetLoadingMessage Lib "BabelUI.dll" (ByVal message As String, ByVal localize As Long)
 Public Declare Sub LoginCharacterListPrepare Lib "BabelUI.dll" (ByVal CharacterCount As Long)
 Public Declare Sub LoginAddCharacter Lib "BabelUI.dll" (ByVal name As String, ByVal Head As Long, ByVal Body As Long, ByVal helm As Long, ByVal shield As Long, ByVal weapon As Long, ByVal level As Long, ByVal status As Long, ByVal Index As Long)
 Public Declare Sub LoginSendCharacters Lib "BabelUI.dll" ()
+Public Declare Sub RequestDeleteCode Lib "BabelUI.dll" ()
+Public Declare Sub RemoveCharacterFromList Lib "BabelUI.dll" (ByVal Index As Long)
 
 'debug info
-Public Declare Function CreateDebugWindow Lib "BabelUI.dll" Alias "_CreateDebugWindow@8" (ByVal Width As Long, ByVal Height As Long) As Boolean
-Public Declare Function GetDebugImageBuffer Lib "BabelUI.dll" Alias "_GetDebugImageBuffer@8" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
-Public Declare Sub SendDebugMouseEvent Lib "BabelUI.dll" Alias "_SendDebugMouseEvent@16" (ByVal PosX As Long, ByVal PosY As Long, ByVal EvtType As Long, ByVal button As Long)
+Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
+Public Declare Function GetDebugImageBuffer Lib "BabelUI.dll" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
+Public Declare Sub SendDebugMouseEvent Lib "BabelUI.dll" (ByVal PosX As Long, ByVal PosY As Long, ByVal EvtType As Long, ByVal button As Long)
 
 
 Public Enum MouseEvent
@@ -170,7 +173,7 @@ On Error GoTo InitializeUI_Err
 114 UITexture.pixelSize = pixelSize
 116 Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
 118 BabelInitialized = True
-    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB, AddressOf SelectCharacterPreviewCB, AddressOf LoginCharacterCB, AddressOf ReturnToLoginCB, AddressOf CreateCharacterCB)
+    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB, AddressOf SelectCharacterPreviewCB, AddressOf LoginCharacterCB, AddressOf ReturnToLoginCB, AddressOf CreateCharacterCB, AddressOf RequestDeleteCharCB, AddressOf ConfirmDeleteCharCB, AddressOf TransferCharacterCB)
     Exit Sub
 InitializeUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.InitializeUI", Erl)
@@ -364,10 +367,28 @@ Public Sub ReturnToLoginCB()
     Call LogOut
 End Sub
 
+Public Sub RequestDeleteCharCB(ByVal CharIndex As Long)
+    DeleteUser = Pjs(CharIndex + 1).nombre
+    Call RequestDeleteCharacter
+End Sub
+
+Public Sub ConfirmDeleteCharCB(ByVal CharIndex As Long, ByRef Code As SINGLESTRINGPARAM)
+    DeleteUser = Pjs(CharIndex + 1).nombre
+    delete_char_validate_code = GetStringFromPtr(Code.Ptr, Code.Len)
+    ModAuth.LoginOperation = e_operation.ConfirmDeleteChar
+    Call connectToLoginServer
+End Sub
+
 Public Sub CreateCharacterCB(ByRef charinfo As NEWCHARACTERDATA)
     Dim name As String
     name = GetStringFromPtr(charinfo.name, charinfo.NameLen)
     Call ModLogin.CreateCharacter(name, charinfo.Race + 1, charinfo.Gender + 1, charinfo.Class + 1, charinfo.Head, charinfo.City + 1)
+End Sub
+
+Public Sub TransferCharacterCB(ByVal CharIndex As Integer, ByRef Email As SINGLESTRINGPARAM)
+    Dim Account As String
+    Account = GetStringFromPtr(Email.Ptr, Email.Len)
+    Call TransferChar(Pjs(CharIndex + 1).nombre, Account)
 End Sub
 
 Public Sub DisplayError(ByVal message As String, ByVal LocalizationStr As String)

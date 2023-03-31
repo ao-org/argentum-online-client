@@ -284,7 +284,7 @@ Public Sub HandleRequestVerificationCode(ByVal BytesTotal As Long)
             Case 12
                 Call TextoAlAsistente("Account does not exist", False, False)
             Case Else
-                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
+                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(data), False, False)
         End Select
     End If
     
@@ -661,14 +661,11 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
     
     frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
     frmConnect.AuthSocket.GetData data, vbByte, 2
-    
-    'We return to the LOGIN screen so that TextoAlAsistente works
-    Call GoToLogIn
-    FrmLogear.Show , frmConnect
 
     If data(0) = &H20 And data(1) = &H26 Then
         Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
-        Call TextoAlAsistente("TRANSFER_CHARACTER_OKAY", False, False)
+        Call DisplayError("Transferencia realizada.", "TRANSFER_CHARACTER_OKAY")
+        Call EraseCharFromPjList(TransferCharname)
         frmConnect.AuthSocket.GetData data, vbByte, 2
         Auth_state = e_state.Idle
     Else
@@ -676,23 +673,23 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
         frmConnect.AuthSocket.GetData data, vbByte, 4
         Select Case MakeInt(data(3), data(2))
             Case 1
-                Call TextoAlAsistente("Invalid account", False, False)
+                Call DisplayError("Invalid account", "invalid-account")
             Case 3
-                Call TextoAlAsistente("Database error.", False, False)
+                Call DisplayError("Database error.", "database-error.")
             Case 12
-                Call TextoAlAsistente("Email is not valid.", False, False)
+                Call DisplayError("Email is not valid.", "invalid-email")
             Case 51
-                Call TextoAlAsistente("You are not the owner of the character.", False, False)
+                Call DisplayError("You are not the owner of the character.", "not-char-owner")
             Case 52
-                Call TextoAlAsistente("Invalid request", False, False)
+                Call DisplayError("Invalid request", "invalid-request")
             Case 54
-                Call TextoAlAsistente("Newowner does not exist", False, False)
+                Call DisplayError("Newowner does not exist", "newowner-not-exist")
             Case 55
-                Call TextoAlAsistente("Not a patron, sorry", False, False)
+                Call DisplayError("Not a patron, sorry", "not-patreon")
             Case 57
-                Call TextoAlAsistente("You do not have enough credits", False, False)
+                Call DisplayError("You do not have enough credits", "not-enough-credits")
             Case Else
-                Call TextoAlAsistente("Unknown error.", False, False)
+                Call DisplayError("Unknown error.", "unknown-error")
         End Select
     End If
     Auth_state = e_state.Idle
@@ -816,7 +813,7 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
     
     If Data(0) = &H1 And Data(1) = &H6 Then
         Call DebugPrint("DELETE_PC_REQUEST_OK", 0, 255, 0, True)
-        MsgBox ("Se ha enviado un código de verificación al mail proporcionado.")
+        Call DeleteCharRequestCode
         frmConnect.AuthSocket.GetData Data, vbByte, 2
         Auth_state = e_state.Idle
     Else
@@ -825,15 +822,15 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
         Select Case MakeInt(Data(3), Data(2))
             Case 1
-                Call MsgBox("Invalid account.", vbOKOnly)
+                Call DisplayError("Invalid account.", "invalid-account")
             Case 3
-                Call MsgBox("Database error.", vbOKOnly)
+                Call DisplayError("Database error.", "database-error")
             Case 51
-                Call MsgBox("You are not the character owner.", vbOKOnly)
+                Call DisplayError("You are not the character owner.", "invalid-character-owner")
             Case 65
-                Call MsgBox("Cannot delete character listed in MAO.", vbOKOnly)
+                Call DisplayError("Cannot delete character listed in MAO.", "locked-in-mao")
             Case Else
-                Call MsgBox("Unknown error", vbOKOnly)
+                Call DisplayError("Unknown error", "unknown-error")
         End Select
     End If
     Auth_state = e_state.Idle
@@ -919,21 +916,21 @@ Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
         Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(Data), 255, 255, 255)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
         Auth_state = e_state.Idle
-        Call MsgBox("Personaje borrado correctamente.", vbOKOnly)
+        Call DisplayError("Personaje borrado correctamente.", "delete-char-success")
         Call EraseCharFromPjList(DeleteUser)
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
         Select Case MakeInt(Data(3), Data(2))
             Case 1
-                Call MsgBox("Invalid character name.")
+                Call DisplayError("Invalid character name.", "invalid-character-name")
             Case 3
-                Call MsgBox("Database error.")
+                Call DisplayError("Database error.", "database-error")
             Case 25
-                Call MsgBox("Invalid Code.")
+                Call DisplayError("Invalid Code.", "invalid-code")
                 frmDeleteChar.Show , frmConnect
             Case Else
-                Call MsgBox("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
+                Call DisplayError("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
         End Select
     End If
         
@@ -1105,7 +1102,7 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
                 Call TextoAlAsistente("The account has not been activated.", False, False)
             Case Else
                 'Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
-                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
+                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(data), False, False)
         End Select
     End If
 End Sub
@@ -1283,7 +1280,9 @@ Private Sub EraseCharFromPjList(ByVal nick As String)
             Exit For
         End If
     Next i
-    
+    If UseBabelUI Then
+        Call RemoveCharacterFromList(i)
+    End If
     'Borro el último personaje
     Pjs(CantidadDePersonajesEnCuenta).nombre = ""
     Pjs(CantidadDePersonajesEnCuenta).Head = 0
