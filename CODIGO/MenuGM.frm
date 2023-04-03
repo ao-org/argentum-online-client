@@ -441,12 +441,12 @@ Private Sub OpcionImg_Click(Index As Integer)
 
         Case 7
             Call ParseUserCommand("/CARCEL") ' ver ReyarB
-            tmp = InputBox("Escriba el motivo de Carcel de 60 min.", "Carcel a " & TargetName)
+            tmp = InputBox("Escriba el motivo de Carcel de 5 min.", "Carcel a " & TargetName)
 
             If tmp = "" Then
-                InputBox ("No se puede mandar a carcel 60 min si dar motivos a " & TargetName)
+                InputBox ("No se puede mandar a carcel 5 min si dar motivos a " & TargetName)
             Else
-                Call WriteJail(TargetName, tmp, "60")
+                Call WriteJail(TargetName, tmp, "5")
             End If
 
         Case 8
