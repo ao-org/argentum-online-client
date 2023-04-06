@@ -180,6 +180,7 @@ Public Enum e_CdTypes
     e_Resurrection = 6
     e_Traps = 7
     e_WeaponPoison = 8
+    e_Arpon = 9
     [CDCount]
 End Enum
 
