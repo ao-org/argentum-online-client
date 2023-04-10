@@ -181,6 +181,7 @@ Public Enum e_CdTypes
     e_Traps = 7
     e_WeaponPoison = 8
     e_Arpon = 9
+    e_HandCannon = 10
     [CDCount]
 End Enum
 
