@@ -256,7 +256,7 @@ Public Type t_QuestNPCMapData
 End Type
 
 Public ListNPCMapData() As t_QuestNPCMapData
-Public Const MAX_QUESTNPCS_VISIBLE As Long = 100
+Public Const MAX_QUESTNPCS_VISIBLE As Long = 181 'Tute este numero hay que leerlo desde Quest.Dat [INIT] NumQuests =
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Private Type tMoldeCuerpo
@@ -3212,7 +3212,7 @@ Public Sub CargarNPCsMapData()
     Open App.path & "\..\Recursos\OUTPUT\QuestNPCsMapData.bin" For Binary As fh
     
     Dim NumMaps As Integer
-    NumMaps = 600 ' cargar  desde archivo
+    NumMaps = 839 ' Tute cargar desde archivo mapas
     ReDim ListNPCMapData(1 To NumMaps, 1 To MAX_QUESTNPCS_VISIBLE) As t_QuestNPCMapData
     
     Do While Not EOF(fh)
