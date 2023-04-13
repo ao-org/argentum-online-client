@@ -3206,7 +3206,9 @@ Function LoadFont(name As String) As Boolean
 End Function
 
 Public Sub CargarNPCsMapData()
-    Dim fh As Integer
+    Dim fh      As Integer
+    Dim NumMaps As Integer
+    
     fh = FreeFile
 
     NumMaps = Val(GetVar(App.path & "\..\Recursos\Dat\zonas.dat", "Mapas", "Cantidad"))

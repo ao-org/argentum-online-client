@@ -17,7 +17,6 @@ Attribute VB_Name = "ModUtils"
 '
 Option Explicit
 
-Public NumMaps              As Integer
 Public StopCreandoCuenta    As Boolean
 
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
