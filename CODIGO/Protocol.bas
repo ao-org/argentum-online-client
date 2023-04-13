@@ -5308,16 +5308,16 @@ Private Sub HandleChangeSpellSlot()
     
     Dim Slot     As Byte
 
-    Dim Index    As Byte
+    Dim Index    As Integer
 
     Dim cooldown As Integer
 
     Slot = Reader.ReadInt8()
     
     UserHechizos(Slot) = Reader.ReadInt16()
-    Index = Reader.ReadInt8()
+    Index = Reader.ReadInt16()
 
-    If Index < 254 Then
+    If Index >= 0 Then
     
         If Slot <= hlst.ListCount Then
             hlst.List(Slot - 1) = HechizoData(Index).nombre
