@@ -256,7 +256,7 @@ Public Type t_QuestNPCMapData
 End Type
 
 Public ListNPCMapData() As t_QuestNPCMapData
-Public Const MAX_QUESTNPCS_VISIBLE As Long = 100
+Public Const MAX_QUESTNPCS_VISIBLE As Long = 100 'leerlo desde Quest.Dat [INIT] NumQuests =
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Private Type tMoldeCuerpo
@@ -3206,13 +3206,15 @@ Function LoadFont(name As String) As Boolean
 End Function
 
 Public Sub CargarNPCsMapData()
-    Dim fh As Integer
-    fh = FreeFile
-    
-    Open App.path & "\..\Recursos\OUTPUT\QuestNPCsMapData.bin" For Binary As fh
-    
+    Dim fh      As Integer
     Dim NumMaps As Integer
-    NumMaps = 600 ' cargar  desde archivo
+    
+    fh = FreeFile
+
+    NumMaps = Val(GetVar(App.path & "\..\Recursos\Dat\zonas.dat", "Mapas", "Cantidad"))
+        
+    Open App.path & "\..\Recursos\OUTPUT\QuestNPCsMapData.bin" For Binary As fh
+       
     ReDim ListNPCMapData(1 To NumMaps, 1 To MAX_QUESTNPCS_VISIBLE) As t_QuestNPCMapData
     
     Do While Not EOF(fh)
