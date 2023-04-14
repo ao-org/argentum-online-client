@@ -821,7 +821,7 @@ End Sub
 Private Sub RenderProjectile(ByRef projetileInstance As Projectile, ByRef screenPos As Vector2, ByRef rgba_list() As RGBA)
 On Error GoTo RenderProjectile_Err
     Call RGBAList(rgba_list, 255, 255, 255, 255)
-    Call DrawSingleGrh(projetileInstance.GrhIndex, screenPos, 1, projetileInstance.Rotation, rgba_list)
+    Call DrawSingleGrh(projetileInstance.GrhIndex, screenPos, 0, projetileInstance.Rotation, rgba_list)
     Exit Sub
 RenderProjectile_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderProjectile_Err", Erl)
