@@ -8376,10 +8376,12 @@ Public Sub HandleNpcQuestListSend()
                 ReDim QuestList(QuestIndex).RewardOBJ(0)
             End If
             QuestList(QuestIndex).RewardSkillCount = Reader.ReadInt8
-            ReDim QuestList(QuestIndex).RewardSkill(1 To QuestList(QuestIndex).RewardSkillCount)
-            For i = 1 To QuestList(QuestIndex).RewardSkillCount
-                QuestList(QuestIndex).RewardSkill(i) = Reader.ReadInt16
-            Next i
+            If QuestList(QuestIndex).RewardSkillCount > 0 Then
+                ReDim QuestList(QuestIndex).RewardSkill(1 To QuestList(QuestIndex).RewardSkillCount)
+                For i = 1 To QuestList(QuestIndex).RewardSkillCount
+                    QuestList(QuestIndex).RewardSkill(i) = Reader.ReadInt16
+                Next i
+            End If
             estado = Reader.ReadInt8
             Repetible = QuestList(QuestIndex).Repetible = 1
             
