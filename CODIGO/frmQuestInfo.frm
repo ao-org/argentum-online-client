@@ -6,13 +6,13 @@ Begin VB.Form FrmQuestInfo
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   6552
+   ClientHeight    =   6555
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   12312
+   ClientWidth     =   12315
    LinkTopic       =   "Form1"
-   ScaleHeight     =   6552
-   ScaleWidth      =   12312
+   ScaleHeight     =   6555
+   ScaleWidth      =   12315
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin RichTextLib.RichTextBox Text1 
@@ -21,11 +21,10 @@ Begin VB.Form FrmQuestInfo
       TabIndex        =   10
       Top             =   2400
       Width           =   3130
-      _ExtentX        =   5525
-      _ExtentY        =   5101
+      _ExtentX        =   5530
+      _ExtentY        =   5106
       _Version        =   393217
       BorderStyle     =   0
-      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -36,7 +35,7 @@ Begin VB.Form FrmQuestInfo
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -44,7 +43,7 @@ Begin VB.Form FrmQuestInfo
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   2676
+      Height          =   2565
       Left            =   10560
       TabIndex        =   6
       Top             =   8040
@@ -70,7 +69,7 @@ Begin VB.Form FrmQuestInfo
       TabIndex        =   1
       Top             =   1680
       Width           =   2230
-      _ExtentX        =   3937
+      _ExtentX        =   3942
       _ExtentY        =   2752
       View            =   3
       LabelEdit       =   1
@@ -84,7 +83,7 @@ Begin VB.Form FrmQuestInfo
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -114,7 +113,7 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
-      Picture         =   "frmQuestInfo.frx":0082
+      Picture         =   "frmQuestInfo.frx":0083
    End
    Begin MSComctlLib.ListView ListView2 
       Height          =   2280
@@ -122,7 +121,7 @@ Begin VB.Form FrmQuestInfo
       TabIndex        =   3
       Top             =   3000
       Width           =   1965
-      _ExtentX        =   3471
+      _ExtentX        =   3466
       _ExtentY        =   4022
       View            =   3
       LabelEdit       =   1
@@ -137,7 +136,7 @@ Begin VB.Form FrmQuestInfo
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -167,7 +166,7 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
-      Picture         =   "frmQuestInfo.frx":0953
+      Picture         =   "frmQuestInfo.frx":0954
    End
    Begin MSComctlLib.ListView ListViewQuest 
       Height          =   2640
@@ -175,7 +174,7 @@ Begin VB.Form FrmQuestInfo
       TabIndex        =   7
       Top             =   1920
       Width           =   2835
-      _ExtentX        =   4995
+      _ExtentX        =   5001
       _ExtentY        =   4657
       View            =   3
       LabelEdit       =   1
@@ -188,7 +187,7 @@ Begin VB.Form FrmQuestInfo
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -234,7 +233,7 @@ Begin VB.Form FrmQuestInfo
       Caption         =   "Misión repetible"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   -1  'True
@@ -254,7 +253,7 @@ Begin VB.Form FrmQuestInfo
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -279,7 +278,7 @@ Begin VB.Form FrmQuestInfo
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -587,103 +586,78 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         objetolbl.Caption = ""
         
         lblRepetible.Visible = QuestList(QuestIndex).Repetible = 1
-                
+        If QuestList(QuestIndex).RequiredQuest <> 0 Then
+            FrmQuestInfo.Text1.Text = ""
+            Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf & "Quest: " & QuestList(QuestList(QuestIndex).RequiredQuest).nombre, 128, 128, 128)
+        Else
+            FrmQuestInfo.Text1.Text = ""
+            Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
         
-                'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
-                'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
+        End If
                 
-                
+        If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
+            If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
+                FrmQuestInfo.ListView1.FlatScrollBar = False
+            Else
+                FrmQuestInfo.ListView1.FlatScrollBar = True
+            End If
+            
+            
+            For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
+                    Dim subelemento As ListItem
+                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
+                    subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
+                    subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
+                    subelemento.SubItems(3) = 0
+            Next i
+        End If
+        If LBound(QuestList(QuestIndex).RequiredOBJ) > 0 Then  'Hay OBJs
+    
+            For i = 1 To UBound(QuestList(QuestIndex).RequiredOBJ)
+                Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).OBJIndex).Name)
+                subelemento.SubItems(1) = QuestList(QuestIndex).RequiredOBJ(i).Amount
+                subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).OBJIndex
+                subelemento.SubItems(3) = 1
+            Next i
+    
+        End If
+    
         
-                  If QuestList(QuestIndex).RequiredQuest <> 0 Then
-                    FrmQuestInfo.Text1.Text = ""
-                    Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf & "Quest: " & QuestList(QuestList(QuestIndex).RequiredQuest).nombre, 128, 128, 128)
-                Else
-                    FrmQuestInfo.Text1.Text = ""
-                    Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
-                
-                End If
-               
-               
-
-                
-                
-                If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
-                    If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
-                        FrmQuestInfo.ListView1.FlatScrollBar = False
-                    Else
-                        FrmQuestInfo.ListView1.FlatScrollBar = True
-                    End If
-                    
-                    
-                    For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
-                                                
-
-                            Dim subelemento As ListItem
-    
-                            Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
-                           
-                            subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
-                            subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
-                            subelemento.SubItems(3) = 0
-
-    
-                    Next i
-    
-                End If
-                    
-    
-                If LBound(QuestList(QuestIndex).RequiredOBJ) > 0 Then  'Hay OBJs
-    
-                    For i = 1 To UBound(QuestList(QuestIndex).RequiredOBJ)
-                        Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).OBJIndex).Name)
-                        subelemento.SubItems(1) = QuestList(QuestIndex).RequiredOBJ(i).Amount
-                        subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).OBJIndex
-                        subelemento.SubItems(3) = 1
-                    Next i
-    
-                End If
+        If QuestList(QuestIndex).RewardGLD <> 0 Then
+             Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
+             subelemento.SubItems(1) = BeautifyBigNumber(QuestList(QuestIndex).RewardGLD)
+             subelemento.SubItems(2) = 12
+             subelemento.SubItems(3) = 0
+        End If
         
-               
-                If QuestList(QuestIndex).RewardGLD <> 0 Then
-                     Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
-                     subelemento.SubItems(1) = BeautifyBigNumber(QuestList(QuestIndex).RewardGLD)
-                     subelemento.SubItems(2) = 12
-                     subelemento.SubItems(3) = 0
-                End If
+        
+        If QuestList(QuestIndex).RewardEXP <> 0 Then
+            Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
+            subelemento.SubItems(1) = BeautifyBigNumber(QuestList(QuestIndex).RewardEXP)
+            subelemento.SubItems(2) = 608
+            subelemento.SubItems(3) = 1
+        End If
+        
+        
+        If UBound(QuestList(QuestIndex).RewardOBJ) > 0 Then
+            For i = 1 To UBound(QuestList(QuestIndex).RewardOBJ)
+                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).OBJIndex).Name)
+                subelemento.SubItems(1) = QuestList(QuestIndex).RewardOBJ(i).Amount
+                subelemento.SubItems(2) = QuestList(QuestIndex).RewardOBJ(i).OBJIndex
+                subelemento.SubItems(3) = 1
+            Next i
+        End If
+        For i = 1 To QuestList(QuestIndex).RewardSkillCount
+            Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , HechizoData(QuestList(QuestIndex).RewardSkill(i)).nombre)
+            subelemento.SubItems(1) = 1
+            subelemento.SubItems(2) = ""
+            subelemento.SubItems(3) = 1
+        Next i
                 
-                
-                If QuestList(QuestIndex).RewardEXP <> 0 Then
-                    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
-                    subelemento.SubItems(1) = BeautifyBigNumber(QuestList(QuestIndex).RewardEXP)
-                    subelemento.SubItems(2) = 608
-                    subelemento.SubItems(3) = 1
-                End If
-               
-
-                If UBound(QuestList(QuestIndex).RewardOBJ) > 0 Then
-                
-                    
-                    For i = 1 To UBound(QuestList(QuestIndex).RewardOBJ)
-
-                                                                   
-                        Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).OBJIndex).Name)
-                           
-                        subelemento.SubItems(1) = QuestList(QuestIndex).RewardOBJ(i).Amount
-                        subelemento.SubItems(2) = QuestList(QuestIndex).RewardOBJ(i).OBJIndex
-                        subelemento.SubItems(3) = 1
-                               
-               
-                    Next i
-    
-                End If
-                
-    Call ListView1_Click
-    Call ListView2_Click
-
+        Call ListView1_Click
+        Call ListView2_Click
     End If
-    
     Exit Sub
-
 ListViewQuest_ItemClick_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.ListViewQuest_ItemClick", Erl)
     Resume Next

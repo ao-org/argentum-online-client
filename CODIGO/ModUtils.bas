@@ -139,6 +139,8 @@ Public Type tQuest
     
     RewardOBJs As Byte
     RewardOBJ() As Obj
+    RewardSkillCount As Byte
+    RewardSkill() As Integer
     Repetible As Byte
 
 End Type

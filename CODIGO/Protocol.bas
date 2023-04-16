@@ -103,6 +103,7 @@ Private Enum ServerPacketID
     UserHittedByUser        ' N4
     UserHittedUser          ' N5
     ChatOverHead            ' ||
+    LocaleChatOverHead
     ConsoleMsg              ' || - Beware!! its the same as above, but it was properly splitted
     GuildChat               ' |+   40
     ShowMessageBox          ' !!
@@ -697,6 +698,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUserHittedUser
         Case ServerPacketID.ChatOverHead
             Call HandleChatOverHead
+        Case ServerPacketID.LocaleChatOverHead
+            Call HandleLocaleChatOverHead
         Case ServerPacketID.ConsoleMsg
             Call HandleConsoleMessage
         Case ServerPacketID.GuildChat
@@ -2860,40 +2863,16 @@ HandleUserHittedUser_Err:
     
 End Sub
 
-''
-' Handles the ChatOverHead message.
-
-Private Sub HandleChatOverHead()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    On Error GoTo ErrHandler
-
-    Dim chat       As String
-    Dim charindex  As Integer
-    Dim r          As Byte
-    Dim G          As Byte
-    Dim B          As Byte
-    Dim colortexto As Long
+Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
+                                    ByVal charindex As Integer, _
+                                    ByVal Color As Long, _
+                                    ByVal EsSpell As Boolean, _
+                                    ByVal x As Byte, _
+                                    ByVal y As Byte, _
+                                    ByVal RequiredMinDisplayTime As Integer, _
+                                    ByVal MaxDisplayTime As Integer)
+On Error GoTo ErrHandler
     Dim QueEs      As String
-    Dim EsSpell    As Boolean
-    Dim x As Byte, y As Byte
-    Dim MinChatTime As Integer
-    Dim MaxChatTime As Integer
-    chat = Reader.ReadString8()
-    charindex = Reader.ReadInt16()
-    r = Reader.ReadInt8()
-    G = Reader.ReadInt8()
-    B = Reader.ReadInt8()
-    colortexto = vbColor_2_Long(Reader.ReadInt32())
-    EsSpell = Reader.ReadBool()
-    x = Reader.ReadInt8()
-    y = Reader.ReadInt8()
-    MinChatTime = Reader.ReadInt16()
-    MaxChatTime = Reader.ReadInt16()
     If x + y > 0 Then
         With charlist(charindex)
             If .Invisible And charindex <> UserCharIndex Then
@@ -2957,7 +2936,7 @@ Private Sub HandleChatOverHead()
     End Select
    'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
     If charlist(charindex).active = 1 Then
-        Call Char_Dialog_Set(charindex, chat, colortexto, duracion, 30, 1, EsSpell, MinChatTime, MaxChatTime)
+        Call Char_Dialog_Set(charindex, chat, Color, duracion, 30, 1, EsSpell, RequiredMinDisplayTime, MaxDisplayTime)
     End If
     
     If charlist(charindex).EsNpc = False Then
@@ -2965,6 +2944,65 @@ Private Sub HandleChatOverHead()
             Call WriteChatOverHeadInConsole(charindex, chat, r, G, B)
         End If
     End If
+    Exit Sub
+ErrHandler:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHeadImpl", Erl)
+End Sub
+
+' Handles the ChatOverHead message.
+Private Sub HandleLocaleChatOverHead()
+    On Error GoTo ErrHandler
+    Dim ChatId       As Integer
+    Dim Params As String
+    Dim charindex  As Integer
+    Dim TextColor As Long
+    Dim IsSpell    As Boolean
+    Dim x As Byte, y As Byte
+    Dim MinChatTime As Integer
+    Dim MaxChatTime As Integer
+    Dim LocalizedText As String
+    ChatId = Reader.ReadInt16
+    Params = Reader.ReadString8
+    charindex = Reader.ReadInt16()
+    TextColor = vbColor_2_Long(Reader.ReadInt32())
+    IsSpell = Reader.ReadBool()
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    MinChatTime = Reader.ReadInt16()
+    MaxChatTime = Reader.ReadInt16()
+    LocalizedText = Locale_Parse_ServerMessage(ChatId, Params)
+    Call HandleChatOverHeadImpl(LocalizedText, charindex, TextColor, IsSpell, x, y, MinChatTime, MaxChatTime)
+    Exit Sub
+ErrHandler:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLocaleChatOverHead", Erl)
+End Sub
+' Handles the ChatOverHead message.
+Private Sub HandleChatOverHead()
+
+    '***************************************************
+    'Author: Juan Martín Sotuyo Dodero (Maraxus)
+    'Last Modification: 05/17/06
+    '
+    '***************************************************
+    On Error GoTo ErrHandler
+
+    Dim chat       As String
+    Dim charindex  As Integer
+    Dim colortexto As Long
+    Dim QueEs      As String
+    Dim EsSpell    As Boolean
+    Dim x As Byte, y As Byte
+    Dim MinChatTime As Integer
+    Dim MaxChatTime As Integer
+    chat = Reader.ReadString8()
+    charindex = Reader.ReadInt16()
+    colortexto = vbColor_2_Long(Reader.ReadInt32())
+    EsSpell = Reader.ReadBool()
+    x = Reader.ReadInt8()
+    y = Reader.ReadInt8()
+    MinChatTime = Reader.ReadInt16()
+    MaxChatTime = Reader.ReadInt16()
+    Call HandleChatOverHeadImpl(chat, charindex, colortexto, EsSpell, x, y, MinChatTime, MaxChatTime)
     Exit Sub
 ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHead", Erl)
@@ -8130,9 +8168,7 @@ Private Sub HandleQuestDetails()
             End If
     
             tmpStr = tmpStr & vbCrLf & "RECOMPENSAS" & vbCrLf
-
             Dim tmplong As Long
-           
             tmplong = Reader.ReadInt32
            
             If tmplong <> 0 Then
@@ -8140,39 +8176,35 @@ Private Sub HandleQuestDetails()
                 subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
                 subelemento.SubItems(2) = 12
                 subelemento.SubItems(3) = 0
-
             End If
             
             tmplong = Reader.ReadInt32
-           
             If tmplong <> 0 Then
                 Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Experiencia")
-                           
                 subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
                 subelemento.SubItems(2) = 608
                 subelemento.SubItems(3) = 1
-
             End If
            
             tmpByte = Reader.ReadInt8
-
             If tmpByte Then
-
                 For i = 1 To tmpByte
                     cantidadobjs = Reader.ReadInt16
                     obindex = Reader.ReadInt16
-                   
                     Set subelemento = FrmQuests.ListView2.ListItems.Add(, , ObjData(obindex).Name)
-                       
                     subelemento.SubItems(1) = cantidadobjs
                     subelemento.SubItems(2) = obindex
                     subelemento.SubItems(3) = 1
-
-           
                 Next i
-
             End If
-        
+            tmpByte = Reader.ReadInt8 'skills
+            For i = 1 To tmpByte
+                obindex = Reader.ReadInt16
+                Set subelemento = FrmQuests.ListView2.ListItems.Add(, , HechizoData(obindex).nombre)
+                subelemento.SubItems(1) = 1
+                subelemento.SubItems(2) = obindex
+                subelemento.SubItems(3) = 1
+            Next i
         End If
 
     'Determinamos que formulario se muestra, segï¿½n si recibimos la informaciï¿½n y la quest estï¿½ empezada o no.
@@ -8182,12 +8214,10 @@ Private Sub HandleQuestDetails()
         Call FrmQuests.ListView2_Click
         Call FrmQuests.lstQuests.SetFocus
     Else
-
         FrmQuestInfo.Show vbModeless, frmMain
         FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
         Call FrmQuestInfo.ListView1_Click
         Call FrmQuestInfo.ListView2_Click
-
     End If
     
     Exit Sub
@@ -8336,23 +8366,20 @@ Public Sub HandleNpcQuestListSend()
             QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
 
             tmpByte = Reader.ReadInt8
-    
             If tmpByte Then
-                
                 ReDim QuestList(QuestIndex).RewardOBJ(1 To tmpByte)
-    
                 For i = 1 To tmpByte
-                                              
                     QuestList(QuestIndex).RewardOBJ(i).Amount = Reader.ReadInt16
                     QuestList(QuestIndex).RewardOBJ(i).ObjIndex = Reader.ReadInt16
-               
                 Next i
-
             Else
                 ReDim QuestList(QuestIndex).RewardOBJ(0)
-    
             End If
-                
+            QuestList(QuestIndex).RewardSkillCount = Reader.ReadInt8
+            ReDim QuestList(QuestIndex).RewardSkill(1 To QuestList(QuestIndex).RewardSkillCount)
+            For i = 1 To QuestList(QuestIndex).RewardSkillCount
+                QuestList(QuestIndex).RewardSkill(i) = Reader.ReadInt16
+            Next i
             estado = Reader.ReadInt8
             Repetible = QuestList(QuestIndex).Repetible = 1
             
