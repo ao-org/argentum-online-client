@@ -441,6 +441,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3920,7 +3921,8 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     clicX = x
     clicY = y
     If Button = vbLeftButton Then
-        If Pregunta Then
+        If HandleMouseInput(x, y) Then
+        ElseIf Pregunta Then
             If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
                 If PreguntaLocal Then
     

@@ -6753,3 +6753,16 @@ WriteFeatureEnable_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFeatureEnable", Erl)
 End Sub
+
+Public Sub WriteActionOnGroupFrame(ByVal GruopIndex As Byte)
+    On Error GoTo WriteFeatureEnable_Err
+        
+100     Call Writer.WriteInt16(ClientPacketID.ActionOnGroupFrame)
+        Call Writer.WriteInt8(GruopIndex)
+102     Call modNetwork.Send(Writer)
+        Exit Sub
+
+WriteFeatureEnable_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFeatureEnable", Erl)
+End Sub
