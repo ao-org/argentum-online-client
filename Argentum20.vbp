@@ -133,6 +133,7 @@ Module=Math; CODIGO\Math.bas
 Class=clsGameState; CODIGO\clsGameState.cls
 Module=ModUtils; CODIGO\ModUtils.bas
 Form=CODIGO\frmTransferChar.frm
+Module=Group; CODIGO\Group.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

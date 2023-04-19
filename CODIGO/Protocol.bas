@@ -265,6 +265,7 @@ Private Enum ServerPacketID
     DebugDataResponse
     CreateProjectile
     UpdateTrap
+    UpdateGroupInfo
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -593,7 +594,7 @@ Public Enum ClientPacketID
     RequestDebug '/RequestDebug consulta info debug al server, para gms
     LobbyCommand
     FeatureToggle
-    
+    ActionOnGroupFrame
     #If PYMMO = 0 Then
     CreateAccount
     LoginAccount
@@ -1012,6 +1013,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleCreateProjectile
         Case ServerPacketID.UpdateTrap
             Call HandleUpdateTrapState
+        Case ServerPacketID.UpdateGroupInfo
+            Call HandleUpdateGroupInfo
         #If PYMMO = 0 Then
         Case ServerPacketID.AccountCharacterList
             Call HandleAccountCharacterList
@@ -1447,7 +1450,7 @@ Public Sub HandleDisconnect()
     bFogata = False
     SkillPoints = 0
     UserEstado = 0
-    
+    Group.Clear
     InviCounter = 0
     DrogaCounter = 0
     frmMain.Contadores.Enabled = False
@@ -4420,27 +4423,29 @@ End Sub
 
 Private Sub HandleCharUpdateHP()
     
-    On Error GoTo HandleCharUpdateHP_Err
-
+On Error GoTo HandleCharUpdateHP_Err
     Dim charindex As Integer
-
     Dim minhp     As Long
-
     Dim maxhp     As Long
     
     charindex = Reader.ReadInt16()
     minhp = Reader.ReadInt32()
     maxhp = Reader.ReadInt32()
-
+    If Group.GroupSize > 0 Then
+        Dim i As Integer
+        For i = 0 To Group.GroupSize - 1
+            If Group.GroupMembers(i).CharIndex = CharIndex Then
+                Group.GroupMembers(i).MinHp = MinHp
+                Group.GroupMembers(i).MaxHp = MaxHp
+            End If
+        Next i
+    End If
     charlist(charindex).UserMinHp = minhp
     charlist(charindex).UserMaxHp = maxhp
-    
     Exit Sub
 
 HandleCharUpdateHP_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharUpdateHP", Erl)
-    
-    
 End Sub
 
 Private Sub HandleCharUpdateMAN()
@@ -4522,6 +4527,28 @@ Private Sub HandleUpdateTrapState()
     Else
         MapData(x, y).Trap.GrhIndex = 0
     End If
+End Sub
+
+Private Sub HandleUpdateGroupInfo()
+    On Error GoTo HandleUpdateGroupInfo_Err
+    Group.GroupSize = Reader.ReadInt8
+    Dim i As Integer
+    If Group.GroupSize > 1 Then
+        ReDim Group.GroupMembers(Group.GroupSize) As t_GroupEntry
+    End If
+    For i = 0 To Group.GroupSize - 1
+        Group.GroupMembers(i).Name = Reader.ReadString8
+        Group.GroupMembers(i).Name = mid$(Group.GroupMembers(i).Name, 1, min(Len(Group.GroupMembers(i).Name), 10))
+        Group.GroupMembers(i).CharIndex = Reader.ReadInt16
+        Group.GroupMembers(i).Head = HeadData(Reader.ReadInt16)
+        Group.GroupMembers(i).GroupId = i + 1
+        Group.GroupMembers(i).MinHp = Reader.ReadInt16
+        Group.GroupMembers(i).MaxHp = Reader.ReadInt16
+    Next i
+    Call UpdateRenderArea
+    Exit Sub
+HandleUpdateGroupInfo_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
 End Sub
 
 Private Sub HandleStunStart()

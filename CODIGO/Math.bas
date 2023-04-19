@@ -100,3 +100,7 @@ End Function
 Public Function Interpolate(ByVal a As Integer, ByVal b As Integer, ByVal t As Double) As Integer
     Interpolate = a + CInt((b - a) * t)
 End Function
+
+Public Function PointIsInsideRect(ByVal x As Integer, ByVal y As Integer, ByRef Rect As Rect) As Boolean
+    PointIsInsideRect = x >= Rect.Left And x <= Rect.Right And y >= Rect.Top And y <= Rect.Bottom
+End Function
