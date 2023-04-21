@@ -2251,7 +2251,10 @@ Public Sub DibujarVidaChar(ByVal charindex As Integer, ByVal PixelOffsetX As Int
     With charlist(charindex)
         Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 33 + .Body.BodyOffset.y, 33, 5, RGBA_From_Comp(10, 10, 10)
         If .UserMaxHp <> 0 Then
-            Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 34 + .Body.BodyOffset.y, .UserMinHp / .UserMaxHp * 31, 3, RGBA_From_Comp(255, 0, 0)
+            Dim FullSize As Long
+            FullSize = .UserMaxHp + .Shield
+            Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 34 + .Body.BodyOffset.y, .UserMinHp / FullSize * 31, 3, RGBA_From_Comp(255, 0, 0)
+            Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x + .UserMinHp / FullSize * 31, PixelOffsetY + 34 + .Body.BodyOffset.y, .Shield / FullSize * 31, 3, RGBA_From_Comp(162, 108, 16)
         Else
             Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 34 + .Body.BodyOffset.y, 31, 4, RGBA_From_Comp(255, 0, 0)
         End If

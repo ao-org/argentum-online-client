@@ -798,6 +798,7 @@ Public UserName                                 As String
 Public UserPassword                             As String
 Public UserMaxHp                                As Integer
 Public UserMinHp                                As Integer
+Public UserHpShield                             As Long
 Public UserMaxMAN                               As Integer
 Public UserMinMAN                               As Integer
 Public UserMaxSTA                               As Integer

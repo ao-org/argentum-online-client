@@ -901,6 +901,12 @@ Begin VB.Form frmMain
          Top             =   1212
          Width           =   2592
       End
+      Begin VB.Image shieldBar 
+         Height          =   192
+         Left            =   528
+         Top             =   1212
+         Width           =   2592
+      End
       Begin VB.Image MANShp 
          Height          =   192
          Left            =   528
@@ -3039,6 +3045,7 @@ Select Case Index
         hambar.Visible = False
         AGUbar.Visible = False
         Hpshp.Visible = False
+        shieldBar.visible = False
         MANShp.Visible = False
         STAShp.Visible = False
         AGUAsp.Visible = False
@@ -3110,6 +3117,7 @@ Select Case Index
         hambar.Visible = True
         AGUbar.Visible = True
         Hpshp.Visible = True
+        shieldBar.visible = True
         MANShp.Visible = True
         STAShp.Visible = True
         AGUAsp.Visible = True
@@ -5231,4 +5239,31 @@ Private Sub imgDeleteItem_Click()
             Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
         End If
     End If
+End Sub
+
+Public Sub UpdateHpBar()
+    Dim CurrentHp As Long
+    If UserMaxHp > 0 Then
+        Dim FullSize As Long
+        CurrentHp = UserMinHp + UserHpShield
+        FullSize = max(UserMinHp + UserHpShield, UserMaxHp)
+        frmMain.Hpshp.Width = UserMinHp / FullSize * 216
+        frmMain.HpBar.Caption = CurrentHp & " / " & UserMaxHp
+        frmMain.shieldBar.Left = frmMain.Hpshp.Left + frmMain.Hpshp.Width
+        frmMain.shieldBar.Width = UserHpShield / FullSize * 216
+    Else
+        frmMain.Hpshp.Width = 0
+        frmMain.shieldBar.Width = 0
+    End If
+    
+    If QuePestañaInferior = 0 Then
+        frmMain.Hpshp.visible = (UserMinHp > 0)
+        frmMain.shieldBar.visible = UserHpShield > 0
+    End If
+    If UserHpShield > 0 Then
+        frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp & " + " & UserHpShield
+    Else
+        frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
+    End If
+    
 End Sub
