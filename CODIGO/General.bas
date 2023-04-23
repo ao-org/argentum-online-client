@@ -1110,8 +1110,9 @@ On Error GoTo Main_Err
 
     #If DEBUGGING = 0 Then
         SetDllDirectory App.Path
-        Dim d As Long
-        d = svb_init_steam(1956740)
+        Dim steam_init_result As Long
+        steam_init_result = svb_init_steam(1956740)
+        Debug.Print "Init Steam " & steam_init_result
         If Not RunningInVB Then
             If FindPreviousInstance Then
                 Call MsgBox("¡Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga clic en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")

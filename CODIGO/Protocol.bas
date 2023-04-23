@@ -2683,6 +2683,8 @@ Private Sub HandleNPCHitUser()
 
     End Select
     
+    Call svb_unlock_achivement("Small victory")
+    
     Exit Sub
 
 HandleNPCHitUser_Err:
@@ -2693,7 +2695,7 @@ End Sub
 Private Sub HandleUserHitNPC()
 On Error GoTo HandleUserHitNPC_Err
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & PonerPuntos(Reader.ReadInt32()) & MENSAJE_2, 255, 0, 0, True, False, False)
-    Call svb_unlock_achivement("Small victory")
+
     Exit Sub
 HandleUserHitNPC_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHitNPC", Erl)
@@ -3711,9 +3713,7 @@ Private Sub HandleCharacterCreate()
         .banderaIndex = Reader.ReadInt8()
         .AnimAtaque1 = Reader.ReadInt16()
         
-        
-       ' Debug.Print "name: " & charlist(charindex).nombre; "|charindex: " & charindex, x, y
-        
+          
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
             If MapData(.Pos.x, .Pos.y).charindex = charindex Then
                 'Erase the old character from map
@@ -3732,10 +3732,8 @@ Private Sub HandleCharacterCreate()
         End If
 
         .Muerto = (Body = CASPER_BODY_IDLE)
-        '.AlphaPJ = 255
-    
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, Cart, ParticulaFx, appear)
-         Debug.Print "name: " & charlist(charindex).nombre; "|charindex: " & charindex, x, y
+
         If .Idle Or .Navegando Then
             'Start animation
             .Body.Walk(.Heading).Started = FrameTime
