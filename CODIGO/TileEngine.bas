@@ -231,6 +231,7 @@ Public Type Char
 
     UserMinHp As Long
     UserMaxHp As Long
+    Shield As Long
     
     UserMinMAN As Long
     UserMaxMAN As Long

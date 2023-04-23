@@ -1077,6 +1077,7 @@ On Error GoTo HandleLogged_Err
     frmMain.hambar.Visible = True
     frmMain.AGUbar.Visible = True
     frmMain.Hpshp.Visible = (UserMinHp > 0)
+    frmMain.shieldBar.visible = (UserHpShield > 0)
     frmMain.MANShp.Visible = (UserMinMAN > 0)
     frmMain.STAShp.Visible = (UserMinSTA > 0)
     frmMain.AGUAsp.Visible = (UserMinAGU > 0)
@@ -1329,7 +1330,9 @@ Public Sub HandleDisconnect()
     frmMain.manabar.Visible = True
     frmMain.hambar.Visible = True
     frmMain.AGUbar.Visible = True
+    frmMain.shieldBar.visible = (UserHpShield > 0)
     frmMain.Hpshp.Visible = True
+    frmMain.shieldBar.visible = True
     frmMain.MANShp.Visible = True
     frmMain.STAShp.Visible = True
     frmMain.AGUAsp.Visible = True
@@ -2381,40 +2384,21 @@ HandleUpdateMana_Err:
     
 End Sub
 
-''
-' Handles the UpdateHP message.
-
 Private Sub HandleUpdateHP()
-    
-    On Error GoTo HandleUpdateHP_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-
+On Error GoTo HandleUpdateHP_Err
     Dim NuevoValor As Long
+    Dim Shield As Long
     NuevoValor = Reader.ReadInt16()
-    
+    Shield = Reader.ReadInt32
     ' Si perdió vida, mostramos los stats en el frmMain
-    If NuevoValor < UserMinHp Then
+    If NuevoValor < UserMinHp Or Shield < UserHpShield Then
         Call frmMain.ShowStats
-
     End If
     
     'Get data and update form
     UserMinHp = NuevoValor
-    frmMain.Hpshp.Width = UserMinHp / UserMaxHp * 216
-    frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
-    
-    If QuePestañaInferior = 0 Then
-        frmMain.Hpshp.Visible = (UserMinHp > 0)
-
-    End If
-    
-    'Velocidad de la musica
-    
+    UserHpShield = Shield
+    Call frmMain.UpdateHpBar
     'Is the user alive??
     If UserMinHp = 0 Then
         Call svb_unlock_achivement("Memento Mori")
@@ -2430,15 +2414,10 @@ Private Sub HandleUpdateHP()
         Call deleteCharIndexs
     Else
         UserEstado = 0
-
     End If
-    
     Exit Sub
-
 HandleUpdateHP_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateHP", Erl)
-    
-    
 End Sub
 
 ''
@@ -4427,21 +4406,24 @@ On Error GoTo HandleCharUpdateHP_Err
     Dim charindex As Integer
     Dim minhp     As Long
     Dim maxhp     As Long
-    
+    Dim Shield As Long
     charindex = Reader.ReadInt16()
     minhp = Reader.ReadInt32()
     maxhp = Reader.ReadInt32()
+    Shield = Reader.ReadInt32()
     If Group.GroupSize > 0 Then
         Dim i As Integer
         For i = 0 To Group.GroupSize - 1
             If Group.GroupMembers(i).CharIndex = CharIndex Then
                 Group.GroupMembers(i).MinHp = MinHp
                 Group.GroupMembers(i).MaxHp = MaxHp
+                Group.GroupMembers(i).Shield = Shield
             End If
         Next i
     End If
     charlist(charindex).UserMinHp = minhp
     charlist(charindex).UserMaxHp = maxhp
+    charlist(CharIndex).Shield = Shield
     Exit Sub
 
 HandleCharUpdateHP_Err:
@@ -4984,6 +4966,7 @@ Private Sub HandleUpdateUserStats()
 On Error GoTo HandleUpdateUserStats_Err
     UserMaxHp = Reader.ReadInt16()
     UserMinHp = Reader.ReadInt16()
+    UserHpShield = Reader.ReadInt32()
     UserMaxMAN = Reader.ReadInt16()
     UserMinMAN = Reader.ReadInt16()
     UserMaxSTA = Reader.ReadInt16()
@@ -5017,21 +5000,9 @@ On Error GoTo HandleUpdateUserStats_Err
         frmMain.EXPBAR.Width = 235
         frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
         frmMain.exp.Caption = "¡Nivel máximo!"
-
     End If
     
-    If UserMaxHp > 0 Then
-        frmMain.Hpshp.Width = UserMinHp / UserMaxHp * 216
-    Else
-        frmMain.Hpshp.Width = 0
-    End If
-
-    frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
-
-    If QuePestañaInferior = 0 Then
-        frmMain.Hpshp.Visible = (UserMinHp > 0)
-
-    End If
+    Call frmMain.UpdateHpBar
 
     If UserMaxMAN > 0 Then
         frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216

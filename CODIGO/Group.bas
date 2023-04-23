@@ -28,6 +28,7 @@ Public Type t_GroupEntry
     GroupId As Integer
     MinHp As Integer
     MaxHp As Integer
+    Shield As Long
     RenderArea As RECT
     Head As HeadData
 End Type
@@ -71,6 +72,7 @@ Public Sub RenderGroup()
     Dim i  As Integer
     Dim temp_array(3) As RGBA
     Dim HpBarSize As Single
+    Dim ShieldBardSize As Single
     Call RGBAList(temp_array, 255, 255, 255, 50)
     If AnimationActive Then
         Dim CurrTime As Long
@@ -94,9 +96,16 @@ Public Sub RenderGroup()
             If .CharIndex <> UserCharIndex Then
                 Call Draw_GrhIndex(GroupBackgroundGrh, .RenderArea.Left - CurrentPivot, .RenderArea.Top)
                 Call Draw_Grh(.Head.Head(E_Heading.south), .RenderArea.Left - HeadOffsetX - CurrentPivot, .RenderArea.Top + HeadOffsetY, 1, 0, COLOR_WHITE, False, 0, 0)
-                HpBarSize = .MinHp / .MaxHp
+                Dim HpPlusShield As Long
+                HpPlusShield = .MaxHp + .Shield
+                HpBarSize = .MinHp / HpPlusShield
                 HpBarSize = HpBarSize * (HpBarEndX - HpBarStartX)
                 Engine_Draw_Box .RenderArea.Left + HpBarStartX - CurrentPivot, .RenderArea.Top + HpBarStartY, HpBarSize, 3, RGBA_From_Comp(178, 0, 0, 160)
+                If .Shield > 0 Then
+                    ShieldBardSize = .Shield / HpPlusShield
+                    ShieldBardSize = ShieldBardSize * (HpBarEndX - HpBarStartX)
+                    Engine_Draw_Box .RenderArea.Left + HpBarStartX - CurrentPivot + HpBarSize, .RenderArea.Top + HpBarStartY, ShieldBardSize, 3, RGBA_From_Comp(162, 108, 16, 160)
+                End If
                 Call Engine_Text_Render(.Name, .RenderArea.Left + TextStartX - CurrentPivot, .RenderArea.Top + TextStartY, temp_array, 1, True, 0, 128)
             End If
         End With

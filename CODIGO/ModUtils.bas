@@ -726,6 +726,7 @@ Sub General_Set_Connect()
     frmMain.MANShp.Picture = LoadInterface("barrademana.bmp")
     frmMain.STAShp.Picture = LoadInterface("barradeenergia.bmp")
     frmMain.Hpshp.Picture = LoadInterface("barradevida.bmp")
+    frmMain.shieldBar.Picture = LoadInterface("shield-bar.bmp", False)
             
     Sound.Sound_Play CStr(SND_LLUVIAIN), True, 0, 0
     AlphaNiebla = 10
