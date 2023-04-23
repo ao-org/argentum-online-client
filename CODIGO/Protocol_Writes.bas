@@ -69,13 +69,13 @@ End Sub
 ' Writes the "LoginNewChar" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLoginNewChar()
+Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
         '<EhHeader>
         On Error GoTo WriteLoginNewChar_Err
         '</EhHeader>
         
         Dim encrypted_username_b64 As String
-        encrypted_username_b64 = AO20CryptoSysWrapper.ENCRYPT(cnvHexStrFromBytes(public_key), username)
+        encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), Name)
         
 100     Call Writer.WriteInt16(ClientPacketID.LoginNewChar)
 102     Call Writer.WriteString8(encrypted_session_token)
@@ -84,11 +84,11 @@ Public Sub WriteLoginNewChar()
 108     Call Writer.WriteInt8(App.Minor)
 110     Call Writer.WriteInt8(App.Revision)
 128     Call Writer.WriteString8(CheckMD5)
-114     Call Writer.WriteInt8(UserRaza)
-116     Call Writer.WriteInt8(UserSexo)
-118     Call Writer.WriteInt8(UserClase)
-120     Call Writer.WriteInt16(MiCabeza)
-122     Call Writer.WriteInt8(UserHogar)
+114     Call Writer.WriteInt8(Race)
+116     Call Writer.WriteInt8(Gender)
+118     Call Writer.WriteInt8(Class)
+120     Call Writer.WriteInt16(Head)
+122     Call Writer.WriteInt8(HomeCity)
     
 130     Call modNetwork.Send(Writer)
         '<EhFooter>
@@ -173,18 +173,18 @@ End Sub
 ' Writes the "LoginNewChar" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLoginNewChar()
+Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
         '<EhHeader>
         On Error GoTo WriteLoginNewChar_Err
         '</EhHeader>
 
 100     Call Writer.WriteInt16(ClientPacketID.LoginNewChar)
-104     Call Writer.WriteString8(username)
-114     Call Writer.WriteInt(UserRaza)
-116     Call Writer.WriteInt(UserSexo)
-118     Call Writer.WriteInt(UserClase)
-120     Call Writer.WriteInt(MiCabeza)
-122     Call Writer.WriteInt(UserHogar)
+104     Call Writer.WriteString8(Name)
+114     Call Writer.WriteInt(Race)
+116     Call Writer.WriteInt(Gender)
+118     Call Writer.WriteInt(Class)
+120     Call Writer.WriteInt(Head)
+122     Call Writer.WriteInt(HomeCity)
     
 130     Call modNetwork.Send(Writer)
         '<EhFooter>

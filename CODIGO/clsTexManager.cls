@@ -216,6 +216,55 @@ errhandler:
 
 End Function
 
+Public Function CreateTexture(ByVal Width As Long, ByVal Height As Long) As Direct3DTexture8
+On Error GoTo ErrHandler
+    Dim Texture As Direct3DTexture8
+    Set Texture = mD3D.CreateTexture(device, Width, Height, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED)
+    Set CreateTexture = Texture
+    Exit Function
+ErrHandler:
+    Debug.Print "Failed to generate texture, " & Err.Description
+End Function
+
+Public Sub SetTextureData(ByRef Texture As Direct3DTexture8, ByRef Bytes() As Byte, ByVal size As Long, _
+                          ByVal TextureWidth As Long, ByVal DrawWidth As Integer, _
+                          ByVal startY As Integer, ByVal endY As Integer)
+On Error GoTo ErrHandler
+    Debug.Assert Not Texture Is Nothing
+    Dim lr As D3DLOCKED_RECT
+    Dim RenderArea As RECT
+    RenderArea.Left = 0
+    RenderArea.Top = startY
+    RenderArea.Bottom = endY
+    RenderArea.Right = DrawWidth
+    Call Texture.LockRect(0, lr, ByVal RenderArea, 0)
+    Dim BufferPos As Long
+    Dim row As Long
+    Dim destPtr As Long
+    destPtr = lr.pBits
+    For row = 0 To endY
+        Call DXCopyMemory(ByVal destPtr, Bytes(BufferPos), DrawWidth * BytesPerPixel)
+        BufferPos = BufferPos + DrawWidth * BytesPerPixel
+        destPtr = destPtr + lr.Pitch
+    Next row
+    Call Texture.UnlockRect(0)
+   Exit Sub
+ErrHandler:
+    Call RegistrarError(Err.Number, Err.Description, "clsTexManager.SetTextureData", Erl)
+End Sub
+
+Public Function CreateTextureFromData(ByRef Bytes() As Byte, ByVal Size As Long, ByVal Width As Long, ByVal Height As Long) As Direct3DTexture8
+On Error GoTo ErrHandler
+    Dim Texture As Direct3DTexture8
+    Set Texture = mD3D.CreateTextureFromFileInMemoryEx(device, Bytes(0), UBound(Bytes) + 1, Width, Height, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
+    Set CreateTextureFromData = Texture
+    Debug.Assert Not Texture Is Nothing
+    Exit Function
+ErrHandler:
+    Debug.Print "Failed to generate texture from memory, " & Err.Description
+End Function
+
+
 Private Function RemoveLRU() As Boolean
     
     On Error GoTo RemoveLRU_Err

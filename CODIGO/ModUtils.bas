@@ -712,8 +712,7 @@ Sub General_Set_Connect()
     Call SwitchMap(UserMap)
 
     If g_game_state.state() <> e_state_connect_screen Then
-        frmConnect.Show
-        FrmLogear.Show , frmConnect
+        Call ShowLogin
     End If
             
     intro = 1
@@ -746,13 +745,12 @@ Sub General_Set_Connect()
     Sound.Music_Play
     mFadingMusicMod = 0
     CurMp3 = 1
-    
-     g_game_state.state = e_state_connect_screen
+    Call GoToLogIn
     ClickEnAsistente = 0
     If CuentaRecordada.nombre <> "" Then
-        Call TextoAlAsistente("¡Bienvenido de nuevo! ¡Disfruta tu viaje por Argentum20!") ' hay que poner 20 aniversario
+        Call TextoAlAsistente("¡Bienvenido de nuevo! ¡Disfruta tu viaje por Argentum20!", False, True)
     Else
-        Call TextoAlAsistente("¡Bienvenido a Argentum20! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.") ' hay que poner 20 aniversario
+        Call TextoAlAsistente("¡Bienvenido a Argentum20! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.", False, True)
 
     End If
     
@@ -2157,13 +2155,19 @@ Client_UnInitialize_DirectX_Objects_Err:
     
 End Sub
 
-Public Sub TextoAlAsistente(ByVal Texto As String)
+Public Sub TextoAlAsistente(ByVal Texto As String, ByVal IsLoading As Boolean, ByVal ForceAssistant As Boolean)
     
     On Error GoTo TextoAlAsistente_Err
     
     TextEfectAsistente = 35
     TextAsistente = Texto
-
+    If BabelUI.BabelInitialized And Not ForceAssistant Then
+        If IsLoading Then
+            Call BabelUI.SetLoadingMessage(Texto, 1)
+        Else
+            Call BabelUI.SendErrorMessage(Texto, 1, 0)
+        End If
+    End If
     
     Exit Sub
 

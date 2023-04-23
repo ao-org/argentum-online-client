@@ -26,11 +26,14 @@ Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Public RefreshRate As Integer
 Private Const HORZRES As Long = 8
 Private Const VERTRES As Long = 10
-Private Const BITSPIXEL As Long = 12
 Private Const VREFRESH As Long = 116
 Private Const TIME_MS_MOUSE As Byte = 10
 Private MouseLastUpdate As Long
 Private MouseTimeAcumulated As Long
+Private Const MainWindowWidth = 1024
+Private Const MainWindowHeight = 1024
+Public Const BytesPerPixel = 4
+
 
 Private Declare Function timeGetTime Lib "winmm.dll" () As Long
 
@@ -79,7 +82,6 @@ Dim TeamColors(10) As RGBA
 ' @param    renderable  Set to True if the chat should be rendered this frame, False otherwise
 '                           (used to skip dialogs from people outside render area).
 Private Type dialog
-
     textLine()  As String
     x           As Integer
     y           As Integer
@@ -90,7 +92,6 @@ Private Type dialog
     renderable  As Boolean
     MinChatTime As Integer
     Sube As Byte
-
 End Type
 
 Public scroll_dialog_pixels_per_frame As Single
@@ -224,8 +225,8 @@ Private Sub Engine_InitExtras()
     With Render_Connect_Rect
         .Top = 0
         .Left = 0
-        .Right = frmConnect.render.ScaleWidth
-        .Bottom = frmConnect.render.ScaleHeight
+        .Right = D3DWindow.BackBufferWidth
+        .Bottom = D3DWindow.BackBufferHeight
     End With
     
     With Render_Main_Rect
@@ -253,7 +254,6 @@ Private Sub Engine_InitExtras()
         
     ' Inicializar textura compuesta
     Call InitComposedTexture
-    
     
     Exit Sub
 
@@ -337,9 +337,7 @@ On Error Resume Next
     scroll_dialog_pixels_per_frame = 4
     ScrollPixelsPerFrameX = 8.5
     ScrollPixelsPerFrameY = 8.5
-
     Call Engine_InitExtras
-
     bRunning = True
     
     Exit Sub
@@ -354,6 +352,7 @@ ErrHandler:
     End
 
 End Sub
+
 Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
 
     Static SeRompe As Boolean
@@ -435,6 +434,7 @@ Public Sub Engine_Deinit()
     Set DirectD3D = Nothing
     Set DirectX = Nothing
     Set SpriteBatch = Nothing
+    Call RegistrarError(0, "debug log ", "clear sprite batch", 100)
 
     
     Exit Sub
@@ -2290,6 +2290,16 @@ On Error GoTo Start_Err
     DoEvents
     Do While prgRun
         If frmMain.WindowState <> vbMinimized Then
+            If frmBabelLogin.visible Then
+                Call UpdateUI
+                
+                If DebugInitialized Then
+                    If frmDebugUI.visible Then
+                        Call UpdateInspectorUI
+                        Call engine.RenderDebugUI
+                    End If
+                End If
+            End If
             Select Case g_game_state.state()
                 Case e_state_gameplay_screen
                     render
@@ -2322,28 +2332,29 @@ On Error GoTo Start_Err
                     End If
 
                 Case e_state_connect_screen
-                    If Not frmConnect.visible Then
-                        frmConnect.Show
-                        Dim patchNotes As String
-                        patchNotes = GetPatchNotes()
-                        If Not patchNotes = "" Then
-                            frmPatchNotes.SetNotes (patchNotes)
-                            frmPatchNotes.Show , frmConnect
-                        Else
-                            FrmLogear.Show , frmConnect
+                    If UseBabelUI Then
+                        Call engine.RenderLoginUI(57, 45, 0, 0)
+                        If Not frmBabelLogin.visible Then
+                            Call ShowLogin
                         End If
+                    Else
+                        If Not frmConnect.visible Then
+                            Call ShowLogin
+                        End If
+                        RenderConnect 57, 45, 0, 0
                     End If
-                    
-                    RenderConnect 57, 45, 0, 0
-
                 Case e_state_account_screen
-                    rendercuenta 42, 43, 0, 0
-
+                    If UseBabelUI Then
+                        Call engine.RenderBabelCharacterSelection
+                    Else
+                        rendercuenta 42, 43, 0, 0
+                    End If
                 Case e_state_createchar_screen
+                    If frmBabelLogin.visible Then Call engine.RenderBabelCharacterSelection
                     RenderCrearPJ 76, 82, 0, 0
 
             End Select
-
+            
             Sound.Sound_Render
         Else
             Sleep 60&
@@ -3310,7 +3321,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Call RGBAList(cc, 255, 255, 255, 255)
 
-    Draw_Grh TempGrh, (frmConnect.ScaleWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 10, 0, 1, cc(), False
+    Draw_Grh TempGrh, (D3DWindow.BackBufferWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 10, 0, 1, cc(), False
 
     'Logo nuevo
     'Marco
@@ -3323,7 +3334,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     Draw_Grh TempGrh, 810, 655, 0, 1, cc(), False
 
     If FadeInAlpha > 0 Then
-        Call Engine_Draw_Box(0, 0, frmConnect.ScaleWidth, frmConnect.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
+        Call Engine_Draw_Box(0, 0, D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
 
@@ -3342,6 +3353,128 @@ RenderConnect_Err:
     Resume Next
     
 End Sub
+
+Public Sub RenderDebugUI()
+    On Error GoTo RenderDebugUI_Err
+    
+
+    Call Engine_BeginScene
+    Call DrawUITexture(DebugUITexture)
+    Call Engine_EndScene(Render_Connect_Rect, frmDebugUI.RenderArea.hwnd)
+
+    Exit Sub
+
+RenderDebugUI_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderConnect", Erl)
+    Resume Next
+End Sub
+
+Public Sub RenderLoginUI(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
+    On Error GoTo RenderDebugUI_Err
+    
+    Call Engine_BeginScene
+    Select Case UserMap
+        Case 1 ' ulla 45-43
+            tilex = 45
+            tiley = 43
+        Case 34 ' nix 22-75
+            tilex = 22
+            tiley = 75
+        Case 59 ' bander 49-43
+            tilex = 49
+            tiley = 43
+        Case 151 ' Arghal 38-41
+            tilex = 41
+            tiley = 50
+        Case 62 ' Lindos 63-40
+            tilex = 64
+            tiley = 44
+        Case 195 ' Arkhein 64-32
+            tilex = 76
+            tiley = 26
+        Case 112 ' Esperanza 50-45
+            tilex = 62
+            tiley = 51
+        Case 354 ' Polo 78-66
+            tilex = 33
+            tiley = 38
+        Case 559 ' Penthar 33-50
+            tilex = 34
+            tiley = 50
+        Case 188 ' Penthar 48-36
+            tilex = 48
+            tiley = 36
+    End Select
+    
+    
+    Call RenderScreen(tilex, tiley, PixelOffsetX, PixelOffsetY, HalfConnectTileWidth, HalfConnectTileHeight)
+        
+    Dim DefaultColor(3) As Long
+
+    Dim Color           As Long
+    Dim ColorGM(3) As RGBA
+    ColorGM(0) = RGBA_From_Comp(248, 107, 3)
+    ColorGM(1) = ColorGM(0)
+    ColorGM(2) = ColorGM(0)
+    ColorGM(3) = ColorGM(0)
+    intro = 1
+
+    If intro = 1 Then
+        Draw_Grh BodyData(773).Walk(3), 490, 333, 1, 0, COLOR_WHITE
+        Draw_Grh HeadData(118).Head(3), 490, 296, 1, 0, COLOR_WHITE
+            
+        Draw_Grh CascoAnimData(13).Head(3), 490, 294, 1, 0, COLOR_WHITE
+        Draw_Grh WeaponAnimData(6).WeaponWalk(3), 490, 333, 1, 0, COLOR_WHITE
+        Engine_Text_Render "Gulfas Morgolock", 454, 367, ColorGM, 1
+        Engine_Text_Render "<Creador del Mundo>", 443, 382, ColorGM, 1
+
+        RenderText "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 40, 20, COLOR_WHITE, 4, False
+    End If
+
+    LastOffsetX = ParticleOffsetX
+    LastOffsetY = ParticleOffsetY
+    
+    TextEfectAsistente = TextEfectAsistente + (15 * timerTicksPerFrame * Sgn(-1))
+
+    If TextEfectAsistente <= 1 Then
+        TextEfectAsistente = 0
+    End If
+
+    Engine_Text_Render TextAsistente, 510 - Engine_Text_Width(TextAsistente, True, 1) / 2, 287 - Engine_Text_Height(TextAsistente, True) + TextEfectAsistente, textcolorAsistente, 1, True, , 200
+
+    'Logo viejo
+    Dim TempGrh As grh, cc(3) As RGBA
+    
+    Call InitGrh(TempGrh, 1172)
+
+    Call RGBAList(cc, 255, 255, 255, 255)
+
+    Draw_Grh TempGrh, (D3DWindow.BackBufferWidth - GrhData(TempGrh.GrhIndex).pixelWidth) \ 2 + 6, 10, 0, 1, cc(), False
+
+    'Logo nuevo
+    'Marco
+    Call InitGrh(TempGrh, 1169)
+
+    Draw_Grh TempGrh, 0, 0, 0, 0, COLOR_WHITE, False
+
+    If FadeInAlpha > 0 Then
+        Call Engine_Draw_Box(0, 0, D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
+        FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
+    End If
+    
+    FrameTime = GetTickCount()
+    timerElapsedTime = GetElapsedTime()
+    timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
+    Call DrawUITexture(UITexture)
+    Call Engine_EndScene(Render_Connect_Rect, frmBabelLogin.UIRenderArea.hwnd)
+
+    Exit Sub
+
+RenderDebugUI_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderConnect", Erl)
+    Resume Next
+End Sub
+
 
 Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
     
@@ -3642,6 +3775,24 @@ Private Function renderAttributesColors(ByVal value As Integer, ByVal x As Integ
         RenderText str(Value), x, y, COLOR_WHITE, 1, True
     End If
 End Function
+
+Public Sub RenderBabelCharacterSelection()
+On Error GoTo RenderBabelCharacterSelection_Err
+    Call Engine_BeginScene
+    
+    Call RenderScreen(RenderCuenta_PosX, RenderCuenta_PosY, 0, 0, HalfConnectTileWidth, HalfConnectTileHeight)
+    
+    FrameTime = GetTickCount()
+    timerElapsedTime = GetElapsedTime()
+    timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
+    Call DrawUITexture(UITexture)
+    Call Engine_EndScene(Render_Connect_Rect, frmBabelLogin.UIRenderArea.hwnd)
+    Exit Sub
+RenderBabelCharacterSelection_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderBabelCharacterSelection", Erl)
+    Resume Next
+End Sub
+
 Public Sub RenderAccountCharacters()
 On Error GoTo RenderAccountCharacters_Err
     Dim i               As Long: Dim sumax As Long

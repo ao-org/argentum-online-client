@@ -250,27 +250,18 @@ Private cBotonCerrar As clsGraphicalButton
 Private Sub btnCancel_Click()
     Unload Me
 End Sub
-#If PYMMO = 1 Then
+
+
 Private Sub btnCreateAccount_Click()
     If Val(txtCaptcha.Text) = equals Then
-        ModAuth.LoginOperation = e_operation.SignUp
-        Call connectToLoginServer
+        Call ModLogin.CreateAccount(frmNewAccount.txtName, frmNewAccount.txtSurname, frmNewAccount.txtUsername, frmNewAccount.txtPassword)
         Call calculateCaptcha
     Else
         Call calculateCaptcha
-        Call TextoAlAsistente("Por favor revise el captcha.")
+        Call TextoAlAsistente("Por favor revise el captcha.", False, False)
         lblCaptchaError.Visible = True
     End If
 End Sub
-#End If
-#If PYMMO = 0 Then
-Private Sub btnCreateAccount_Click()
-    CuentaEmail = txtUsername.Text
-    CuentaPassword = txtPassword.Text
-    
-    Call LoginOrConnect(CreandoCuenta)
-End Sub
-#End If
 
 Private Sub btnRestorePassword_Click()
     Unload Me
@@ -283,8 +274,7 @@ Private Sub btnSendValidarCuenta_Click()
         
         txtCodigo.Text = Trim(txtCodigo.Text)
         If txtCodigo.Text <> "" And txtValidateMail.Text <> "" Then
-            ModAuth.LoginOperation = e_operation.ValidateAccount
-            Call connectToLoginServer
+            Call ValidateCode(txtCodigo.Text, txtValidateMail.Text)
         End If
         
 End Sub
@@ -354,27 +344,20 @@ Public Sub showValidateAccountControls()
     Me.btnCreateAccount.Visible = False
     Me.btnRestorePassword.Visible = False
     Me.lblResendVerificationCode.Visible = True
-    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Me.txtPassword.PasswordChar = ""
-
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Me.txtPassword.PasswordChar = "*"
-
 End Sub
 
 Private Sub lblResendVerificationCode_Click()
-
     If isValidEmail(txtValidateMail) Then
-        CuentaEmail = Me.txtValidateMail.Text
-        ModAuth.LoginOperation = e_operation.RequestVerificationCode
-        Call connectToLoginServer
+        Call ResendValidationCode(Me.txtValidateMail.Text)
     Else
-        Call TextoAlAsistente("El email ingresado es inválido.")
+        Call TextoAlAsistente("El email ingresado es inválido.", False, False)
     End If
-    
 End Sub

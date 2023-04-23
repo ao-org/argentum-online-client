@@ -73,7 +73,7 @@ Public Sub Poll()
     If (Client Is Nothing) Then
         Exit Sub
     End If
-    
+    GetRemoteError = False
     Call Client.Flush
     Call Client.Poll
 End Sub

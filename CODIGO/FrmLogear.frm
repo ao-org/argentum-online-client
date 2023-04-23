@@ -337,7 +337,9 @@ Private Sub Form_Load()
     Me.PasswordTxt.Visible = True
     Call CargarLst
     Call LoadButtons
-    
+    If Not BabelUI.UseBabelUI Then
+        Call SetActiveServer(txtIp.Text, txtPort.Text)
+    End If
     Exit Sub
 
 Form_Load_Err:
@@ -363,63 +365,10 @@ Private Sub cmdSalir_Click()
 
 End Sub
 Private Sub cmdIngresar_Click()
-    
-    On Error GoTo cmdIngresar_Click_Err
-    
+On Error GoTo cmdIngresar_Click_Err
+    Call SetActiveServer(txtIp.Text, txtPort.Text)
     Call FormParser.Parse_Form(Me, E_WAIT)
-
-    If IntervaloPermiteConectar Then
-        CuentaEmail = NameTxt.Text
-        CuentaPassword = PasswordTxt.Text
-
-        If chkRecordar.Tag = "1" Then
-            CuentaRecordada.nombre = CuentaEmail
-            CuentaRecordada.Password = CuentaPassword
-            
-            Call GuardarCuenta(CuentaEmail, CuentaPassword)
-        Else
-            ' Reseteamos los datos de cuenta guardados
-            Call GuardarCuenta(vbNullString, vbNullString)
-        End If
-        
-        ServerIndex = txtIp.Text & ":" & txtPort.Text
-        IPdelServidor = txtIp.Text
-        PuertoDelServidor = txtPort.Text
-        
-      
-        #If PYMMO = 0 Or DEBUGGING = 1 Then
-            Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
-        #End If
-        
-        #If PYMMO = 1 Then
-            'DEVELOPER mode is used to connect to localhost
-            #If DEVELOPER = 1 Then
-                IPdelServidorLogin = "127.0.0.1"
-                PuertoDelServidorLogin = 4000
-                IPdelServidor = IPdelServidorLogin
-                PuertoDelServidor = 7667
-            #Else
-                #If DEBUGGING = 0 Then
-                    'When not in DEVELOPER mode we read the ip and port from the list
-                    Call SetDefaultServer
-                #Else
-                    'Staging, set the ip and port for pymmo
-                    IPdelServidorLogin = "45.235.98.31"
-                    PuertoDelServidorLogin = 11814
-                #End If
-            #End If
-        #End If
-
-        If CheckUserDataLoged() = True Then
-            ModAuth.LoginOperation = e_operation.Authenticate
-            Call LoginOrConnect(E_MODO.IngresandoConCuenta)
-        End If
-
-        
-        Call SaveRAOInit
-
-    End If
-
+    Call DoLogin(NameTxt.Text, PasswordTxt.Text, chkRecordar.Tag = "1")
     Exit Sub
 
 cmdIngresar_Click_Err:
@@ -434,12 +383,12 @@ Private Sub chkRecordar_Click()
 
     If chkRecordar.Tag = "0" Then
         chkRecordar.Picture = LoadInterface("check-amarillo.bmp")
-        Call TextoAlAsistente("¡Recordare la cuenta para la proxima!")
+        Call TextoAlAsistente("¡Recordare la cuenta para la proxima!", False, True)
         chkRecordar.Tag = "1"
     Else
         chkRecordar.Picture = Nothing
         chkRecordar.Tag = "0"
-        Call TextoAlAsistente("¡No recordare nada!")
+        Call TextoAlAsistente("¡No recordare nada!", False, True)
     End If
 
     

@@ -165,7 +165,7 @@ Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
 End Sub
 
 Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    Call TextoAlAsistente("Servidor Offline, intente nuevamente.")
+    Call TextoAlAsistente("Servidor Offline, intente nuevamente.", False, False)
 
 
     
@@ -213,9 +213,6 @@ Private Sub Form_Load()
     If (Not FormParser Is Nothing) Then
     Call FormParser.Parse_Form(Me)
     End If
-
-    g_game_state.state = e_state_connect_screen
-
     
     EngineRun = False
         
@@ -582,81 +579,39 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     End If
 
                 Case e_action_logout_account
-                    Debug.Print "Vuelvo al login, debería borrar el token"
-                    Auth_state = e_state.Idle
-                    Call ComprobarEstado
-            
-                    UserSaliendo = True
-                    Call modNetwork.Disconnect
-
-                    CantidadDePersonajesEnCuenta = 0
-
-                    Dim i As Integer
-
-                    For i = 1 To MAX_PERSONAJES_EN_CUENTA
-                        Pjs(i).Body = 0
-                        Pjs(i).Head = 0
-                        Pjs(i).Mapa = 0
-                        Pjs(i).nivel = 0
-                        Pjs(i).nombre = ""
-                        Pjs(i).Clase = 0
-                        Pjs(i).Criminal = 0
-                        Pjs(i).NameMapa = ""
-                    Next i
-
-                    General_Set_Connect
+                    Call LogOut
                 Case e_action_login_character
-
                     If PJSeleccionado < 1 Then Exit Sub
-
                     If IntervaloPermiteConectar Then
                         Call Sound.Sound_Play(SND_CLICK)
                         Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
-
                     End If
-
             End Select
-
             Char = PJSeleccionado
             If PJSeleccionado = 0 Then Exit Sub
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
         
         Case e_state_connect_screen
-            
             While LastClickAsistente = ClickEnAsistenteRandom
                 ClickEnAsistenteRandom = RandomNumber(1, 4)
             Wend
-            
             LastClickAsistente = ClickEnAsistenteRandom
-            
-            
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
-             
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/")
-
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/", False, False)
                 End If
-
                 If ClickEnAsistenteRandom = 2 Then
-                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!")
-
+                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!", False, False)
                 End If
-
                 If ClickEnAsistenteRandom = 3 Then
-                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta")
-                    
+                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta", False, False)
                 End If
-
                 If ClickEnAsistenteRandom = 4 Then
-                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?")
+                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?", False, False)
                 End If
-
             End If
-
     End Select
-    
     Exit Sub
-
 render_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.render_MouseUp", Erl)
     Resume Next
@@ -851,7 +806,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         frmMain.ShowFPS.enabled = True
                     End If
           
-                    Call Protocol_Writes.WriteLoginNewChar
+                    Call Protocol_Writes.WriteLoginNewChar(userName, UserRaza, UserSexo, UserClase, MiCabeza, UserHogar)
                 End If
                 
 
@@ -1013,22 +968,22 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
              
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/")
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/", False, True)
 
                 End If
 
                 If ClickEnAsistenteRandom = 2 Then
-                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!")
+                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!", False, True)
 
                 End If
 
                 If ClickEnAsistenteRandom = 3 Then
-                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta")
+                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta", False, True)
                     
                 End If
 
                 If ClickEnAsistenteRandom = 4 Then
-                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?")
+                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?", False, True)
                 End If
 
             End If
@@ -1076,48 +1031,7 @@ txtNombre_KeyPress_Err:
     Resume Next
     
 End Sub
-#If PYMMO = 0 Then
 
-Private Sub LogearPersonaje(ByVal Nick As String)
-    
-    On Error GoTo LogearPersonaje_Err
-    
-    username = Nick
-
-    If Connected Then
-        frmMain.ShowFPS.enabled = True
-    End If
-    
-    Call Protocol_Writes.WriteLoginExistingChar
-    
-    Exit Sub
-
-LogearPersonaje_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmConnect.LogearPersonaje", Erl)
-    Resume Next
-    
+Private Sub LogearPersonaje(ByVal nick As String)
+    Call ModLogin.LoginCharacter(nick)
 End Sub
-#End If
-#If PYMMO = 1 Then
-Private Sub LogearPersonaje(ByVal Nick As String)
-    
-    On Error GoTo LogearPersonaje_Err
-    
-    UserName = Nick
-
-    If Connected Then
-        frmMain.ShowFPS.Enabled = True
-    End If
-    frmConnecting.Show
-    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
-    ModAuth.LoginOperation = e_operation.Authenticate
-    Call LoginOrConnect(E_MODO.Normal)
-    
-    Exit Sub
-
-LogearPersonaje_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmConnect.LogearPersonaje", Erl)
-    Resume Next
-    
-End Sub
-#End If

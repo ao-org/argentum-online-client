@@ -956,8 +956,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         EntradaX = 1
     
         Call SwitchMap(UserMap)
-       
-        frmConnect.Visible = True
+        If Not UseBabelUI Then
+            frmConnect.visible = True
+        End If
         g_game_state.state = e_state_account_screen
         Unload Me
 

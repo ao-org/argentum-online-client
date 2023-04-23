@@ -515,7 +515,7 @@ Function CheckUserDataLoged() As Boolean
     
     
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
-        Call TextoAlAsistente("El email es inválido.")
+        Call TextoAlAsistente("El email es inválido.", False, False)
         Exit Function
 
     End If
@@ -535,7 +535,7 @@ Function CheckUserDataLoged() As Boolean
     ' Next loopc
     
     If CuentaPassword = "" Then
-        Call TextoAlAsistente("Ingrese la contraseña de la cuenta.")
+        Call TextoAlAsistente("Ingrese la contraseña de la cuenta.", False, False)
         'frmMensaje.msg.Caption = "Ingrese un password."
         ' frmMensaje.Show vbModal
         Exit Function
@@ -564,7 +564,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     Dim CharAscii As Integer
     
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
-        Call TextoAlAsistente("El email es inválido.")
+        Call TextoAlAsistente("El email es inválido.", False, False)
         Exit Function
 
     End If
@@ -1134,25 +1134,22 @@ On Error GoTo Main_Err
     CheckMD5 = GetMd5
     SessionOpened = False
     
-
-    Call Load(frmConnect)
-    Call Load(FrmLogear)
-        
+    If CheckAndSetBabelUIUsage Then
+        Call InitializeUI(D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, BytesPerPixel)
+    Else
+        Call Load(frmConnect)
+        Call Load(FrmLogear)
+    End If
     Call Frmcarga.Show
 
     If Sonido Then
     
         If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
             Call Sound.Ambient_Volume_Set(VolAmbient)
-        
         Else
-
             Call MsgBox("¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde ao20.com.ar", vbCritical, "Saliendo")
-            
             Call CloseClient
-
         End If
-
     End If
         
     servers_login_connections(1) = "20.195.162.204:6500"
