@@ -28,6 +28,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private LastMouseX As Single
+Private LastMouseY As Single
+
 Private Sub Form_Load()
 On Error GoTo Form_Load_Err
     
@@ -75,6 +78,20 @@ Private Sub Form_MouseUp(button As Integer, Shift As Integer, x As Single, y As 
     Me.Left = nX
     Me.Top = nY
     FrmMove = False
+    Debug.Print "form mouse up"
+End Sub
+
+Private Sub UIRenderArea_DblClick()
+On Error GoTo UIRenderArea_DblClick_Err
+    'nasty hack to solve vb6 events issues, vb6 moyse events goes in this way:
+    'MouseDown, MouseUp, Click, DblClick, and MouseUp
+    'on double click events we miss the second mouse down, because js dont get the full mouse down + up it doesn handle the double click itself
+    Dim btnConvert As MouseButton
+    btnConvert = ConvertMouseButton(button)
+    Call BabelSendMouseEvent(LastMouseX, LastMouseY, kType_MouseDown, kButton_Left)
+    Exit Sub
+UIRenderArea_DblClick_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmBabelLogin.Form_KeyDown", Erl)
 End Sub
 
 Private Sub UIRenderArea_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -108,7 +125,6 @@ On Error GoTo Form_KeyUp_Err
         End If
     End If
     Exit Sub
-
 Form_KeyUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBabelLogin.Form_KeyUp", Erl)
 End Sub
@@ -126,5 +142,7 @@ End Sub
 Private Sub UIRenderArea_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     Dim btnConvert As MouseButton
     btnConvert = ConvertMouseButton(button)
-    Call BabelSendMouseEvent(x / screen.TwipsPerPixelX, y / screen.TwipsPerPixelY, kType_MouseUp, button)
+    LastMouseX = x / screen.TwipsPerPixelX
+    LastMouseY = y / screen.TwipsPerPixelY
+    Call BabelSendMouseEvent(LastMouseX, LastMouseY, kType_MouseUp, button)
 End Sub
