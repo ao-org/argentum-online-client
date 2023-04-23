@@ -1134,7 +1134,7 @@ On Error GoTo Main_Err
     SessionOpened = False
     
     If CheckAndSetBabelUIUsage Then
-        Call InitializeUI(D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, 4)
+        Call InitializeUI(D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, BytesPerPixel)
     Else
         Call Load(frmConnect)
         Call Load(FrmLogear)

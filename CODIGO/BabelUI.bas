@@ -154,7 +154,6 @@ Public Sub InitializeUI(ByVal Width As Long, ByVal Height As Long, ByVal pixelSi
 On Error GoTo InitializeUI_Err
     Debug.Assert Width > 0 And Height > 0 And pixelSize > 0
     If BabelInitialized Then Exit Sub
-100 Dim initSuccess As Boolean
 102 UITexture.Height = Height
 104 UITexture.Width = Width
     Dim Settings As BABELSETTINGS
@@ -166,14 +165,17 @@ On Error GoTo InitializeUI_Err
 #If DEBUGGING = 1 Or Developer = 1 Then
     Settings.EnableDebug = 1
 #End If
-106 initSuccess = InitializeBabel(Settings)
-108 UITexture.TextureHeight = NextPowerOf2(Height)
-110 UITexture.TextureWidth = NextPowerOf2(Width)
-112 ReDim UITexture.ImageBuffer(UITexture.Height * UITexture.Width * pixelSize)
-114 UITexture.pixelSize = pixelSize
-116 Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
-118 BabelInitialized = True
-    Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB, AddressOf SelectCharacterPreviewCB, AddressOf LoginCharacterCB, AddressOf ReturnToLoginCB, AddressOf CreateCharacterCB, AddressOf RequestDeleteCharCB, AddressOf ConfirmDeleteCharCB, AddressOf TransferCharacterCB)
+106  If InitializeBabel(Settings) Then
+108     UITexture.TextureHeight = NextPowerOf2(Height)
+110     UITexture.TextureWidth = NextPowerOf2(Width)
+112     ReDim UITexture.ImageBuffer(UITexture.Height * UITexture.Width * pixelSize)
+114     UITexture.pixelSize = pixelSize
+116     Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
+118     BabelInitialized = True
+        Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB, AddressOf SelectCharacterPreviewCB, AddressOf LoginCharacterCB, AddressOf ReturnToLoginCB, AddressOf CreateCharacterCB, AddressOf RequestDeleteCharCB, AddressOf ConfirmDeleteCharCB, AddressOf TransferCharacterCB)
+    Else
+        Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
+    End If
     Exit Sub
 InitializeUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.InitializeUI", Erl)
@@ -182,7 +184,6 @@ End Sub
 Public Sub InitializeInspectorUI(ByVal Width As Long, ByVal Height As Long)
 On Error GoTo InitializeInspectorUI_Err
     Debug.Assert Width > 0 And Height > 0
-100 Dim initSuccess As Boolean
 102 Call CreateDebugWindow(Width, Height)
 104 DebugUITexture.Height = Height
 106 DebugUITexture.Width = Width

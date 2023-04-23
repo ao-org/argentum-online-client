@@ -26,13 +26,13 @@ Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Public RefreshRate As Integer
 Private Const HORZRES As Long = 8
 Private Const VERTRES As Long = 10
-Private Const BITSPIXEL As Long = 12
 Private Const VREFRESH As Long = 116
 Private Const TIME_MS_MOUSE As Byte = 10
 Private MouseLastUpdate As Long
 Private MouseTimeAcumulated As Long
 Private Const MainWindowWidth = 1024
 Private Const MainWindowHeight = 1024
+Public Const BytesPerPixel = 4
 
 
 Private Declare Function timeGetTime Lib "winmm.dll" () As Long

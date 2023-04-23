@@ -63,6 +63,8 @@ Public Sub SetActiveServer(ByVal IP As String, ByVal port As String, Optional Ig
             #End If
         #End If
     End If
+    Debug.Print "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
+    Debug.Print "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
 End Sub
 
 Public Sub SetActiveEnvironment(ByVal environment As String)
@@ -101,6 +103,8 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     PuertoDelServidor = ServerSettings.GetValue(environment, "PortPort" & serverOpt)
     IPdelServidorLogin = ServerSettings.GetValue(environment, "LoginIp" & serverOpt)
     PuertoDelServidorLogin = ServerSettings.GetValue(environment, "LoginPort" & serverOpt)
+    Debug.Print "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
+    Debug.Print "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
 End Sub
 
 Public Sub CreateAccount(ByVal Name As String, ByVal Surname As String, ByVal Email As String, ByVal Password As String)

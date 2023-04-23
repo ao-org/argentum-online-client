@@ -48,7 +48,7 @@ On Error GoTo Form_Load_Err
     UIRenderArea.ScaleMode = vbPixel
     UIRenderArea.Width = D3DWindow.BackBufferWidth * screen.TwipsPerPixelX
     UIRenderArea.Height = D3DWindow.BackBufferHeight * screen.TwipsPerPixelY
-    Call InitializeUI(D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, 4)
+    Call InitializeUI(D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, BytesPerPixel)
     UIRenderArea.Top = 0 '20 * screen.TwipsPerPixelY 'keep for debug
     Exit Sub
 
