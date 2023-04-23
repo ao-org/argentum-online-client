@@ -301,9 +301,11 @@ Public Sub DeleteCharRequestCode()
     End If
 End Sub
 
-Public Sub TransferChar(ByVal name As String, ByVal DestinationAccunt)
+Public Sub TransferChar(ByVal Name As String, ByVal DestinationAccunt As String)
     TransferCharNewOwner = DestinationAccunt
     TransferCharname = name
+    Debug.Assert Len(TransferCharNewOwner) > 0
+    Debug.Assert Len(Name) > 0
     ModAuth.LoginOperation = e_operation.TransferCharacter
     Call connectToLoginServer
 End Sub

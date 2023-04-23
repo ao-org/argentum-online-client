@@ -5750,7 +5750,11 @@ End Sub
 Private Sub HandleErrorMessage()
     On Error GoTo ErrHandler
     GetRemoteError = True
-    Call BabelUI.DisplayError(Reader.ReadString8(), "")
+    If UseBabelUI Then
+        Call BabelUI.DisplayError(Reader.ReadString8(), "")
+    Else
+        Call MsgBox(Reader.ReadString8())
+    End If
     Exit Sub
 ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleErrorMessage", Erl)
