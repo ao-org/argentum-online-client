@@ -98,8 +98,6 @@ Private Enum ServerPacketID
     ChangeMap               ' CM
     PosUpdate               ' PU
     NPCHitUser              ' N2
-    UserHitNPC              ' U2
-    UserAttackedSwing       ' U3
     UserHittedByUser        ' N4
     UserHittedUser          ' N5
     ChatOverHead            ' ||
@@ -689,10 +687,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandlePosUpdateChar
         Case ServerPacketID.NPCHitUser
             Call HandleNPCHitUser
-        Case ServerPacketID.UserHitNPC
-            Call HandleUserHitNPC
-        Case ServerPacketID.UserAttackedSwing
-            Call HandleUserAttackedSwing
         Case ServerPacketID.UserHittedByUser
             Call HandleUserHittedByUser
         Case ServerPacketID.UserHittedUser
@@ -2690,36 +2684,6 @@ Private Sub HandleNPCHitUser()
 
 HandleNPCHitUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNPCHitUser", Erl)
-    
-    
-End Sub
-Private Sub HandleUserHitNPC()
-On Error GoTo HandleUserHitNPC_Err
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & PonerPuntos(Reader.ReadInt32()) & MENSAJE_2, 255, 0, 0, True, False, False)
-
-    Exit Sub
-HandleUserHitNPC_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHitNPC", Erl)
-End Sub
-
-''
-' Handles the UserAttackedSwing message.
-
-Private Sub HandleUserAttackedSwing()
-    
-    On Error GoTo HandleUserAttackedSwing_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & charlist(Reader.ReadInt16()).nombre & MENSAJE_ATAQUE_FALLO, 255, 0, 0, True, False, False)
-    
-    Exit Sub
-
-HandleUserAttackedSwing_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserAttackedSwing", Erl)
     
     
 End Sub
