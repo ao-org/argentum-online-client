@@ -396,17 +396,17 @@ Public Sub InitFontTypes()
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_CONSEJO)
-        .red = 22
-        .green = 239
-        .blue = 253
+        .red = 66
+        .green = 201
+        .blue = 255
         .bold = 1
 
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_CONSEJOCAOS)
-        .red = 253
-        .green = 143
-        .blue = 63
+        .red = 255
+        .green = 102
+        .blue = 102
         .bold = 1
 
     End With
@@ -479,8 +479,8 @@ Public Sub InitFontTypes()
     
     With FontTypes(FontTypeNames.FONTTYPE_CRIMINAL_CAOS)
         .red = 255
-        .green = 100
-        .blue = 100
+        .green = 51
+        .blue = 51
         .bold = 1
     End With
     

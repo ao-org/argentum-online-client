@@ -787,14 +787,14 @@ DoPasosFx_Err:
     
 End Sub
 
-Sub DoPasosInvi(ByVal grh As Integer, ByVal distancia As Byte, ByVal balance As Integer, ByVal step As Boolean)
+Sub DoPasosInvi(ByVal Grh As Long, ByVal distancia As Byte, ByVal balance As Integer, ByVal step As Boolean)
     
     On Error GoTo DoPasosInvi_Err
     
 
     Static TerrenoDePaso As TipoPaso
 
-    Dim FileNum As Integer
+    Dim FileNum As Long
 
     If grh > 0 Then
         FileNum = GrhData(grh).FileNum

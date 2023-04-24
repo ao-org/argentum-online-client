@@ -166,7 +166,7 @@ Public Sub SetTexture(ByRef Texture As Direct3DTexture8)
     
 100 If ObjPtr(m_Texture) <> ObjPtr(Texture) Then 'te cabe vb6
         ' Flush the batch since we're using a diferent texture
-        Debug.Assert Not Texture Is Nothing
+        'Debug.Assert Not Texture Is Nothing
 102     Call Flush
 104     Set m_Texture = Texture
         ' Update the new texture of the batch

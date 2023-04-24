@@ -2871,7 +2871,8 @@ On Error GoTo ErrHandler
     
     'Optimizacion de protocolo por Ladder
     QueEs = ReadField(1, chat, Asc("*"))
-    
+    Dim TextColor As RGBA
+    TextColor = RGBA_From_Long(Color)
     Dim copiar As Boolean
 
     copiar = True
@@ -2926,7 +2927,7 @@ On Error GoTo ErrHandler
     
     If charlist(charindex).EsNpc = False Then
         If CopiarDialogoAConsola = 1 And copiar Then
-            Call WriteChatOverHeadInConsole(charindex, chat, r, G, B)
+            Call WriteChatOverHeadInConsole(CharIndex, chat, TextColor.R, TextColor.G, TextColor.B)
         End If
     End If
     Exit Sub
@@ -3490,7 +3491,7 @@ On Error GoTo ErrHandler
     
     AlphaNiebla = 30
     If Not UseBabelUI Then
-		frmConnect.visible = True
+                frmConnect.visible = True
     End If
      
     g_game_state.state = e_state_account_screen
@@ -4321,12 +4322,12 @@ Private Sub HandlePlayWaveStep()
     Dim balance As Integer
     Dim step As Boolean
     
-    grh = Reader.ReadInt32()
-    distance = Reader.ReadInt8()
-    balance = Reader.ReadInt16()
-    step = Reader.ReadBool()
+100 Grh = Reader.ReadInt32()
+102 distance = Reader.ReadInt8()
+104 balance = Reader.ReadInt16()
+106 step = Reader.ReadBool()
     
-    Call DoPasosInvi(grh, distance, balance, step)
+108 Call DoPasosInvi(Grh, distance, balance, step)
     
     
     Exit Sub
