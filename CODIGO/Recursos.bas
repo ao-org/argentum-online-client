@@ -2185,6 +2185,7 @@ Sub CargarCuerpos()
             .BodyOffset.y = Val(Loader.GetValue(BodyKey, "BodyOffsetY"))
             .HeadOffset.x = Val(Loader.GetValue(BodyKey, "HeadOffsetX")) + .BodyOffset.x
             .HeadOffset.y = Val(Loader.GetValue(BodyKey, "HeadOffsetY")) + .BodyOffset.y
+            .BodyIndex = i
         End With
 
         If Std = 0 Then
