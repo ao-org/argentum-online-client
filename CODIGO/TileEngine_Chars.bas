@@ -290,6 +290,11 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
 
             If .Muerto Then
                 .Body = BodyData(CASPER_BODY)
+            Else
+                If .Body.BodyIndex <> .iBody Then
+                    .Body = BodyData(.iBody)
+                    .AnimatingBody = 0
+                End If
             End If
 
             'Start animations
@@ -433,8 +438,13 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         
             If .Muerto Then
                 .Body = BodyData(CASPER_BODY)
+            Else
+                If .Body.BodyIndex <> .iBody Then
+                    .Body = BodyData(.iBody)
+                    .AnimatingBody = 0
+                End If
             End If
-        
+            
             'Start animations
             If .Body.Walk(.Heading).Started = 0 Then
                 .Body.Walk(.Heading).Started = FrameTime

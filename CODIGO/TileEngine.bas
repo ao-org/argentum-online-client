@@ -166,7 +166,7 @@ Public Type BodyData
     Walk(E_Heading.NORTH To E_Heading.WEST) As grh
     HeadOffset As Position
     BodyOffset As Position
-
+    BodyIndex As Integer
 End Type
 
 'Lista de cabezas
