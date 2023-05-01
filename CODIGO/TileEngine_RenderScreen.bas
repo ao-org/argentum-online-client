@@ -227,7 +227,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
             With MapData(x, y)
                 If .Trap.GrhIndex > 0 Then
-                    Call RGBAList(temp_color, 255, 255, 255, 60)
+                    Call RGBAList(temp_color, 255, 255, 255, 100)
                     Call Draw_Grh(.Trap, screenX, screenY, 1, 1, temp_color, False)
                 End If
                 ' Objects *********************************

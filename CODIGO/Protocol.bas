@@ -3141,7 +3141,7 @@ Private Sub HandleConsoleMessage()
     Dim QueEs     As String
     Dim NpcName   As String
     Dim objname   As String
-    Dim Hechizo   As Byte
+    Dim Hechizo   As Integer
     Dim UserName  As String
     Dim Valor     As String
 

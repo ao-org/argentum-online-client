@@ -3,11 +3,12 @@ Begin VB.Form frmBabelLogin
    Appearance      =   0  'Flat
    BackColor       =   &H80000005&
    BorderStyle     =   0  'None
-   Caption         =   "Form1"
+   Caption         =   "Argentum20"
    ClientHeight    =   3015
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   4560
+   Icon            =   "frmBabelLogin.frx":0000
    LinkTopic       =   "Form1"
    ScaleHeight     =   3015
    ScaleWidth      =   4560
