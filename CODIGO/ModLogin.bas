@@ -57,7 +57,7 @@ Public Sub SetActiveServer(ByVal IP As String, ByVal port As String, Optional Ig
                     Call SetDefaultServer
                 #Else
                     'Staging, set the ip and port for pymmo
-                    IPdelServidorLogin = "45.235.98.31"
+                    IPdelServidorLogin = "45.235.98.186"
                     PuertoDelServidorLogin = 11814
                 #End If
             #End If
