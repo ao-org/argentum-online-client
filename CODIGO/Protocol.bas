@@ -8594,6 +8594,7 @@ Private Sub HandleDoAnimation()
         'Start animation
         .Body.Walk(.Heading).Started = FrameTime
         .Body.Walk(.Heading).Loops = 0
+        .Idle = False
     End With
     
     Exit Sub
