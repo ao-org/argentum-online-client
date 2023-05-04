@@ -167,6 +167,7 @@ Public Type BodyData
     HeadOffset As Position
     BodyOffset As Position
     BodyIndex As Integer
+    IdleBody As Integer
 End Type
 
 'Lista de cabezas

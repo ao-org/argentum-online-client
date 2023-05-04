@@ -1708,8 +1708,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         .Arma.WeaponWalk(.Heading).started = 0
                         .Escudo.ShieldWalk(.Heading).started = 0
                     End If
+                    If .Body.IdleBody > 0 Then
+                        .Body = BodyData(.Body.IdleBody)
+                        .Body.Walk(.Heading).started = FrameTime
+                        
+                    End If
                 End If
             End If
+            .Idle = True
         End If
         
         
