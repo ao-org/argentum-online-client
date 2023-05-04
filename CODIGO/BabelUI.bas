@@ -137,8 +137,14 @@ Public Function ConvertMouseButton(ByVal button As Integer) As MouseButton
 End Function
 
 Public Function CheckAndSetBabelUIUsage() As Boolean
-    UseBabelUI = Val(GetSetting("OPCIONES", "UseExperimentalUI"))
-    CheckAndSetBabelUIUsage = UseBabelUI
+On Error GoTo CheckAndSetBabelUIUsage_Err
+100    UseBabelUI = Val(GetSetting("OPCIONES", "UseExperimentalUI"))
+102    LogError ("Initilalize UI: " & UseBabelUI)
+104    CheckAndSetBabelUIUsage = UseBabelUI
+    Exit Function
+CheckAndSetBabelUIUsage_Err:
+    CheckAndSetBabelUIUsage = False
+    Call RegistrarError(Err.Number, Err.Description, "BabelUI.CheckAndSetBabelUIUsage", Erl)
 End Function
 
 Public Function GetMainHwdn() As String
@@ -147,7 +153,6 @@ Public Function GetMainHwdn() As String
     Else
         GetMainHwdn = frmConnect.hwnd
     End If
-    
 End Function
 
 Public Sub InitializeUI(ByVal Width As Long, ByVal Height As Long, ByVal pixelSize As Long)

@@ -70,6 +70,10 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .UserMaxHp = 0
         .UserMinHp = 0
         .ActiveAnimation.PlaybackState = Stopped
+        .scrollDirectionX = 0
+        .scrollDirectionY = 0
+        .MoveOffsetX = 0
+        .MoveOffsetY = 0
         
     End With
     
@@ -165,6 +169,9 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
             .Moving = False
             .MoveOffsetX = 0
             .MoveOffsetY = 0
+        Else
+            UserPos.x = x
+            UserPos.y = y
         End If
         
         'Update position

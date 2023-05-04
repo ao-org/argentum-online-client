@@ -106,6 +106,12 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         MaxY = MaxY + 5
     End If
     
+    If MapData(UserPos.x, UserPos.y).CharIndex = 0 And UserCharIndex > 0 Then
+        UserPos.x = charlist(UserCharIndex).Pos.x
+        UserPos.y = charlist(UserCharIndex).Pos.y
+        MapData(UserPos.x, UserPos.y).CharIndex = UserCharIndex
+    End If
+    
     ' Map border checks
     If MinX < XMinMapSize Then
         StartBufferedX = PixelOffsetX - MinX * TilePixelWidth

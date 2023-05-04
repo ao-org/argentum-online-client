@@ -3772,7 +3772,7 @@ Private Sub HandleCharacterRemove()
         Call CrearFantasma(charindex)
     End If
 
-    Call EraseChar(charindex)
+    Call EraseChar(CharIndex, fueWarp)
     Call RefreshAllChars
     
     Exit Sub
@@ -8804,12 +8804,14 @@ End Sub
 
 Public Sub HandleSendSkillCdUpdate()
     Dim Effect As t_ActiveEffect
+    Dim ElapsedTime As Long
     Effect.TypeId = Reader.ReadInt16
     Effect.Id = Reader.ReadInt32
+    ElapsedTime = Reader.ReadInt32
     Effect.Duration = Reader.ReadInt32
     Effect.EffectType = Reader.ReadInt8
     Effect.Grh = EffectResources(Effect.TypeId).GrhId
-    Effect.StartTime = GetTickCount()
+    Effect.startTime = GetTickCount() - (Effect.duration - ElapsedTime)
     Effect.StackCount = Reader.ReadInt16()
     If Effect.EffectType = eBuff Then
         Call AddOrUpdateEffect(BuffList, Effect)
