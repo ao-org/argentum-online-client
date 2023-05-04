@@ -639,7 +639,7 @@ Public Sub LogError(desc As String)
     Dim nfile As Integer
 
     nfile = FreeFile ' obtenemos un canal
-    Open App.path & "\errores.log" For Append Shared As #nfile
+    Open App.path & "\Logs\errores.log" For Append Shared As #nfile
     Print #nfile, Date & "-" & Time & ":" & desc
     Close #nfile
 
