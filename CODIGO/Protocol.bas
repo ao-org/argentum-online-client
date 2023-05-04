@@ -8811,7 +8811,7 @@ Public Sub HandleSendSkillCdUpdate()
     Effect.Duration = Reader.ReadInt32
     Effect.EffectType = Reader.ReadInt8
     Effect.Grh = EffectResources(Effect.TypeId).GrhId
-    Effect.startTime = GetTickCount() - ElapsedTime
+    Effect.startTime = GetTickCount() - (Effect.duration - ElapsedTime)
     Effect.StackCount = Reader.ReadInt16()
     If Effect.EffectType = eBuff Then
         Call AddOrUpdateEffect(BuffList, Effect)
