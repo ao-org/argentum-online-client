@@ -79,6 +79,7 @@ Public Declare Sub LoginAddCharacter Lib "BabelUI.dll" (ByVal name As String, By
 Public Declare Sub LoginSendCharacters Lib "BabelUI.dll" ()
 Public Declare Sub RequestDeleteCode Lib "BabelUI.dll" ()
 Public Declare Sub RemoveCharacterFromList Lib "BabelUI.dll" (ByVal Index As Long)
+Public Declare Function GetTelemetry Lib "BabelUI.dll" (ByRef code As Byte, ByRef DataBuff As Byte, ByVal BuffSize As Long) As Long
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean

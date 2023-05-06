@@ -264,6 +264,7 @@ Private Enum ServerPacketID
     CreateProjectile
     UpdateTrap
     UpdateGroupInfo
+    RequestTelemetry
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -593,6 +594,7 @@ Public Enum ClientPacketID
     LobbyCommand
     FeatureToggle
     ActionOnGroupFrame
+    SendTelemetry
     #If PYMMO = 0 Then
     CreateAccount
     LoginAccount
@@ -1009,6 +1011,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateTrapState
         Case ServerPacketID.UpdateGroupInfo
             Call HandleUpdateGroupInfo
+        Case ServerPacketID.RequestTelemetry
+            Call HandleRequestTelemetry
         #If PYMMO = 0 Then
         Case ServerPacketID.AccountCharacterList
             Call HandleAccountCharacterList
@@ -4494,6 +4498,23 @@ Private Sub HandleUpdateGroupInfo()
         Group.GroupMembers(i).MaxHp = Reader.ReadInt16
     Next i
     Call UpdateRenderArea
+    Exit Sub
+HandleUpdateGroupInfo_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
+End Sub
+
+Private Sub HandleRequestTelemetry()
+    On Error GoTo HandleUpdateGroupInfo_Err
+    Dim Buff(8) As Byte
+    Dim i As Integer
+    For i = 0 To 7
+        Buff(i) = Reader.ReadInt8
+    Next i
+    
+    Dim TelemetryBuff(256) As Byte
+    Dim TelemetrySize As Long
+    TelemetrySize = GetTelemetry(Buff(0), TelemetryBuff(0), 256)
+    Call WriteSendTelemetry(TelemetryBuff, TelemetrySize)
     Exit Sub
 HandleUpdateGroupInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
