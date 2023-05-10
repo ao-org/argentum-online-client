@@ -75,7 +75,7 @@ Public Declare Sub SendErrorMessage Lib "BabelUI.dll" (ByVal message As String, 
 Public Declare Sub SetActiveScreen Lib "BabelUI.dll" (ByVal screenName As String)
 Public Declare Sub SetLoadingMessage Lib "BabelUI.dll" (ByVal message As String, ByVal localize As Long)
 Public Declare Sub LoginCharacterListPrepare Lib "BabelUI.dll" (ByVal CharacterCount As Long)
-Public Declare Sub LoginAddCharacter Lib "BabelUI.dll" (ByVal name As String, ByVal Head As Long, ByVal Body As Long, ByVal helm As Long, ByVal shield As Long, ByVal weapon As Long, ByVal level As Long, ByVal status As Long, ByVal Index As Long)
+Public Declare Sub LoginAddCharacter Lib "BabelUI.dll" (ByVal Name As String, ByVal Head As Long, ByVal Body As Long, ByVal helm As Long, ByVal Shield As Long, ByVal weapon As Long, ByVal level As Long, ByVal status As Long, ByVal Index As Long, ByVal Class As Integer)
 Public Declare Sub LoginSendCharacters Lib "BabelUI.dll" ()
 Public Declare Sub RequestDeleteCode Lib "BabelUI.dll" ()
 Public Declare Sub RemoveCharacterFromList Lib "BabelUI.dll" (ByVal Index As Long)
@@ -414,7 +414,7 @@ Public Sub SendLoginCharacters(ByRef charlist() As UserCuentaPJS, ByVal charCoun
     Call LoginCharacterListPrepare(charCount)
     Dim i As Integer
     For i = LBound(charlist) To charCount
-        Call LoginAddCharacter(charlist(i).nombre, charlist(i).Head, charlist(i).Body, charlist(i).Casco, charlist(i).Escudo, charlist(i).Arma, charlist(i).nivel, charlist(i).Criminal, i - 1)
+        Call LoginAddCharacter(charlist(i).nombre, charlist(i).Head, charlist(i).Body, charlist(i).Casco, charlist(i).Escudo, charlist(i).Arma, charlist(i).nivel, charlist(i).Criminal, i - 1, charlist(i).Clase)
     Next i
     Call LoginSendCharacters
 End Sub
