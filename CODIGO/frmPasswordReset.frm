@@ -211,9 +211,7 @@ Private Sub cmdEnviar_Click()
                 Exit Sub
             End If
             
-            ModAuth.LoginOperation = e_operation.ResetPassword
-            Call connectToLoginServer
-            
+            Call ModLogin.RequestNewPassword(frmPasswordReset.txtEmail.Text, frmPasswordReset.txtPassword.Text, Trim(frmPasswordReset.txtCodigo.Text))
         Case e_operation.ForgotPassword
         
 
@@ -240,7 +238,6 @@ Private Sub cmdHaveCode_Click()
     End If
     
     Call toggleTextboxs
-    Call ModLogin.RequestNewPassword(frmPasswordReset.txtEmail.Text, frmPasswordReset.txtPassword.Text, Trim(frmPasswordReset.txtCodigo.Text))
 End Sub
 
 Private Sub Form_Load()
