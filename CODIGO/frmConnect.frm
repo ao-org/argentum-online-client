@@ -165,7 +165,7 @@ Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
 End Sub
 
 Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    Call TextoAlAsistente("Servidor Offline, intente nuevamente.", False, False)
+    Call TextoAlAsistente("Servidor Offline, intente nuevamente.", False, SessionOpened)
 
 
     

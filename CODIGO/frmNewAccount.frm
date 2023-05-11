@@ -274,7 +274,7 @@ Private Sub btnSendValidarCuenta_Click()
         
         txtCodigo.Text = Trim(txtCodigo.Text)
         If txtCodigo.Text <> "" And txtValidateMail.Text <> "" Then
-            Call ValidateCode(txtCodigo.Text, txtValidateMail.Text)
+            Call ValidateCode(txtValidateMail.Text, txtCodigo.Text)
         End If
         
 End Sub
