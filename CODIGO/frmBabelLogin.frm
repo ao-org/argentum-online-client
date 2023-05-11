@@ -120,11 +120,13 @@ On Error GoTo Form_KeyUp_Err
     Dim CapsState As Boolean
     CapsState = GetKeyState(vbKeyCapital)
     Call BabelSendKeyEvent(KeyCode, Shift, kType_KeyUp, CapsState, False)
+#If DEBUGGING = 1 Or Developer = 1 Then
     If Not DebugInitialized Then
         If Shift And KeyCode = 68 Then 'shift + d
             frmDebugUI.Show
         End If
     End If
+#End If
     Exit Sub
 Form_KeyUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBabelLogin.Form_KeyUp", Erl)
