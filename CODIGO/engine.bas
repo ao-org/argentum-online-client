@@ -2296,7 +2296,7 @@ On Error GoTo Start_Err
     DoEvents
     Do While prgRun
         If frmMain.WindowState <> vbMinimized Then
-            If frmBabelLogin.visible Then
+            If UseBabelUI Then
                 Call UpdateUI
                 
                 If DebugInitialized Then

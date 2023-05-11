@@ -928,7 +928,9 @@ Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
                 Call DisplayError("Database error.", "database-error")
             Case 25
                 Call DisplayError("Invalid Code.", "invalid-code")
-                frmDeleteChar.Show , frmConnect
+                If Not BabelInitialized Then
+                    frmDeleteChar.Show , frmConnect
+                End If
             Case Else
                 Call DisplayError("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
         End Select
