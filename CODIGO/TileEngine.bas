@@ -664,6 +664,7 @@ Optional ByVal started As Long = -1, Optional ByVal loops As Integer = INFINITE_
             Dim Texture As Direct3DTexture8
             Dim TextureWidth As Long, TextureHeight As Long
             Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
+            Debug.Assert Not Texture Is Nothing
             Debug.Assert TextureWidth > 0 And TextureHeight > 0
             .Tx1 = (.sX + 0.25) / TextureWidth
             .Tx2 = (.sX + .pixelWidth) / TextureWidth

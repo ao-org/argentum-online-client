@@ -119,7 +119,7 @@ Public Function GetTexture(ByVal FileName As Integer, ByRef textwidth As Long, B
     End With
 
     'Not in memory, load it!
-    Set GetTexture = CrearGrafico(FileName, textwidth, textheight)
+    Set GetTexture = CreateDirect3dTexture(FileName, textwidth, textheight)
     
     Exit Function
 
@@ -156,55 +156,52 @@ Init_Err:
     
 End Function
 
-Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, ByRef textheight As Long) As Direct3DTexture8
-
-    On Error GoTo errhandler
-
+Private Function CreateDirect3dTexture(ByVal FileNum As Integer, ByRef texture_width As Long, ByRef texture_height As Long) As Direct3DTexture8
+On Error GoTo ErrHandler
     Dim surface_desc As D3DSURFACE_DESC
     Dim Index        As Integer
     Dim DirArchico   As String
     Dim bytArr()     As Byte
     
-    Index = Archivo Mod HASH_TABLE_SIZE
+    Set CreateDirect3dTexture = Nothing
+    texture_width = 0
+    texture_height = 0
+    
+    Index = FileNum Mod HASH_TABLE_SIZE
 
     With TexList(Index)
         .surfaceCount = .surfaceCount + 1
         ReDim Preserve .SurfaceEntry(1 To .surfaceCount) As SURFACE_ENTRY_DYN
 
         With .SurfaceEntry(.surfaceCount)
-            .FileName = Archivo
+            .FileName = FileNum
             .UltimoAcceso = GetTickCount()
             #If Compresion = 1 Then
-
-                If Not Extract_File_To_Memory(Graphics, App.Path & "\..\Recursos\OUTPUT\", LTrim(str(Archivo)) & ".png", bytArr, ResourcesPassword) Then
-                    Debug.Print "¡No se puede cargar el grafico numero " & Archivo & "!"
+                If Not Extract_File_To_Memory(Graphics, App.path & "\..\Recursos\OUTPUT\", LTrim(str(FileNum)) & ".png", bytArr, ResourcesPassword) Then
+                    Debug.Print "¡No se puede cargar el grafico numero " & FileNum & "!"
                     Exit Function
-
                 End If
                 Set .Texture = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
             #Else
-
                 Dim PathToFile As String
-
-                PathToFile = App.Path & "\..\Recursos\Graficos\" & LTrim(str(Archivo)) & ".png"
-        
+                PathToFile = App.path & "\..\Recursos\Graficos\" & LTrim(str(FileNum)) & ".png"
                 If Not FileExist(PathToFile, vbArchive) Then
-                    Debug.Print "¡No se puede cargar el grafico numero " & Archivo & "!"
+                    Debug.Print "¡No se puede cargar el grafico numero " & PathToFile & "!"
                     Exit Function
-
                 End If
 
-                Set .Texture = mD3D.CreateTextureFromFileEx(device, PathToFile, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
+                Set .Texture = mD3D.CreateTextureFromFileEx(device, PathToFile, 0, 0, _
+                     1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
             #End If
                 
             .Texture.GetLevelDesc 0, surface_desc
             .texture_width = surface_desc.Width
             .texture_height = surface_desc.Height
             .size = surface_desc.size
-            texwidth = .texture_width
-            textheight = .texture_height
+            texture_width = .texture_width
+            texture_height = .texture_height
             
-            Set CrearGrafico = TexList(Index).SurfaceEntry(TexList(Index).surfaceCount).Texture
+            Set CreateDirect3dTexture = TexList(Index).SurfaceEntry(TexList(Index).surfaceCount).Texture
         End With
 
     End With
@@ -212,7 +209,7 @@ Private Function CrearGrafico(ByVal Archivo As Integer, ByRef texwidth As Long, 
     Exit Function
 
 errhandler:
-    Debug.Print "ERROR EN GRHLOAD>" & Archivo & ".png"
+    Debug.Print "ERROR EN GRHLOAD>" & FileNum & ".png"
 
 End Function
 
@@ -220,6 +217,7 @@ Public Function CreateTexture(ByVal Width As Long, ByVal Height As Long) As Dire
 On Error GoTo ErrHandler
     Dim Texture As Direct3DTexture8
     Set Texture = mD3D.CreateTexture(device, Width, Height, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED)
+    
     Set CreateTexture = Texture
     Exit Function
 ErrHandler:
@@ -351,33 +349,4 @@ RemoveLRU_Err:
     
 End Function
 
-Public Sub Grh_Load(ByVal file_num As Integer)
-    
-    On Error GoTo Grh_Load_Err
-    
-
-    Static d3dTextures As D3D8Textures
-
-    '**************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 7/16/2005
-    'We don't return nothing
-    '**************************************************************
-
-    ' Static d3dTextures As D3D8Textures
-    '  Static light_value(0 To 3) As Long
-    
-    ' If GrhIndex = 0 Then Exit Sub
-    '  Set d3dTextures.texture = SurfaceDB.GetTexture(GrhData(GrhIndex).FileNum, d3dTextures.texwidth, d3dTextures.texheight)
-
-    Set d3dTextures.Texture = CrearGrafico(file_num, 0, 0)
-    
-    
-    Exit Sub
-
-Grh_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsTexManager.Grh_Load", Erl)
-    Resume Next
-    
-End Sub
 
