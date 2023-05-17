@@ -1,6 +1,18 @@
-Attribute VB_Name = "dx_utils"
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+  Persistable = 0  'NotPersistable
+  DataBindingBehavior = 0  'vbNone
+  DataSourceBehavior  = 0  'vbNone
+  MTSTransactionMode  = 0  'NotAnMTSObject
+END
+Attribute VB_Name = "clsRenderer"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
 '    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+'    Copyright (C) 2023 - Noland Studios
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -13,13 +25,39 @@ Attribute VB_Name = "dx_utils"
 '    GNU Affero General Public License for more details.
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-'
-'
+
+Option Base 0
+
 Option Explicit
 
-Public game_resolution As D3DDISPLAYMODE
 
-Public Sub get_game_resolution(ByRef mode As D3DDISPLAYMODE)
+Private mDirectX As New DirectX8
+Private mDirectD3D8 As D3DX8
+Private mDirectD3D As Direct3D8
+
+Private mDirectDevice As Direct3DDevice8
+
+Private mD3DPP As D3DPRESENT_PARAMETERS
+
+Private mProjection As D3DMATRIX
+Private mIdentityMatrix As D3DMATRIX
+
+Const ScreenWidth  As Integer = 1024
+Const ScreenHeight As Integer = 768
+
+
+Private Type NEW_TYPE_VERTEX
+    x       As Single
+    y       As Single
+    z       As Single
+    color   As RGBA
+    u      As Single
+    v      As Single
+End Type
+
+Private mDisplayMode As D3DDISPLAYMODE
+
+Private Sub get_game_resolution(ByRef mode As D3DDISPLAYMODE)
     'For the time being we hard code it to 1024x768x32
     mode.Width = 1024
     mode.Height = 768
@@ -36,43 +74,57 @@ Public Sub list_modes(ByRef d3d As Direct3D8)
         
     Next i
 End Sub
-
-Public Function init_dx_objects() As Long
+Private Function init_dx8_and_d3d() As Long
 On Error Resume Next
-    
     Err.Clear
-    Set DirectX = New DirectX8
+    Set mDirectX = New DirectX8
     If Err.Number <> 0 Then
                 Call MsgBox("Fatal error creating DirectX8 objetct", vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     
-    Set DirectD3D = DirectX.Direct3DCreate()
+    Set mDirectD3D = DirectX.Direct3DCreate()
     If Err.Number <> 0 Then
                 Call MsgBox("Fatal error creating DirectD3D objetct", vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     
-    Set DirectD3D8 = New D3DX8
+    Set mDirectD3D8 = New D3DX8
     If Err.Number <> 0 Then
                 Call MsgBox("Fatal error creating DirectD3D8 objetct", vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 Exit Function
     End If
-    init_dx_objects = Err.Number
+    init_dx8_and_d3d = Err.Number
+End Function
+
+Public Function init(ByVal window As Long) As Long
+    init = init_dx8_and_d3d()
+    If init <> 0 Then
+        Debug.Print "init_dx8_and_d3d() failed with code " & init
+        Exit Function
+    End If
+    init = init_dx_device(window, mDirectD3D, mDisplayMode)
+    If init <> 0 Then
+        Debug.Print "init_dx_device() failed with code " & init
+        Exit Function
+    End If
     
 End Function
 
-Public Function init_dx_device() As Long
+Private Function init_dx_device(ByVal window_handle As Long, _
+                                ByRef d3d_obj As Direct3D8, _
+                                ByRef disp_mode As D3DDISPLAYMODE) As Long
 On Error Resume Next
+    Debug.Assert Not d3d_obj Is Nothing
     Dim Caps As D3DCAPS8
     Dim DevType As CONST_D3DDEVTYPE
     Dim DevBehaviorFlags As Long
     Dim d3dDispMode  As D3DDISPLAYMODE
     Err.Clear
-    DirectD3D.GetDeviceCaps D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, Caps
+    d3d_obj.GetDeviceCaps D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, Caps
     If Err.Number = D3DERR_NOTAVAILABLE Then
         Debug.Print "HAL Is Not available, using; software; vertex; processing"
         DevType = D3DDEVTYPE_REF
@@ -91,34 +143,45 @@ On Error Resume Next
             DevBehaviorFlags = D3DCREATE_MIXED_VERTEXPROCESSING
         End If
     End If
-    DirectD3D.GetAdapterDisplayMode D3DADAPTER_DEFAULT, d3dDispMode
+    d3d_obj.GetAdapterDisplayMode D3DADAPTER_DEFAULT, d3dDispMode
     
-    'Moving forward we want the backbuffer size and fmt to be configurable
-    Call get_game_resolution(game_resolution)
-
     Debug.Print "Using; Windowed; mode"
-    D3DWindow.Windowed = 1
-    D3DWindow.BackBufferWidth = game_resolution.Width
-    D3DWindow.BackBufferHeight = game_resolution.Height
-    D3DWindow.BackBufferFormat = game_resolution.format
-    D3DWindow.SwapEffect = D3DSWAPEFFECT_DISCARD
-    D3DWindow.BackBufferCount = 1
-    D3DWindow.hDeviceWindow = frmMain.renderer.hwnd
-    D3DWindow.EnableAutoDepthStencil = 1
-    D3DWindow.AutoDepthStencilFormat = D3DFMT_D16
+    Debug.Assert disp_mode.Width > 0
+    Debug.Assert disp_mode.Height > 0
+    mD3DPP.Windowed = 1
+    mD3DPP.BackBufferWidth = disp_mode.Width
+    mD3DPP.BackBufferHeight = disp_mode.Height
+    mD3DPP.BackBufferFormat = disp_mode.format
+    mD3DPP.SwapEffect = D3DSWAPEFFECT_DISCARD
+    mD3DPP.BackBufferCount = 1
+    mD3DPP.hDeviceWindow = window_handle
+    mD3DPP.EnableAutoDepthStencil = 1
+    mD3DPP.AutoDepthStencilFormat = D3DFMT_D16
+    
     Err.Clear
-    Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, DevType, frmMain.renderer.hwnd, DevBehaviorFlags, D3DWindow)
+ 
+    Set mDirectDevice = d3d_obj.CreateDevice(D3DADAPTER_DEFAULT, DevType, window_handle, DevBehaviorFlags, mD3DPP)
     Debug.Print "Create; Direct3D; device: ", Err
     If (Err.Number <> 0) Then
         'if we failed to create the device with D3DFMT_A8R8G8B8 we try to do it with current display fmt
         D3DWindow.BackBufferFormat = d3dDispMode.format
         Err.Clear
-        Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, DevType, frmMain.renderer.hwnd, DevBehaviorFlags, D3DWindow)
+        Set mDirectDevice = d3d_obj.CreateDevice(D3DADAPTER_DEFAULT, DevType, window_handle, DevBehaviorFlags, mD3DPP)
         Debug.Print "Create; Direct3D; device: ", Err
     End If
     init_dx_device = Err.Number
-    
-
 End Function
 
 
+
+
+Private Sub Class_Initialize()
+    Set mDirectX = Nothing
+    Set mDirectD3D8 = Nothing
+    Set mDirectD3D = Nothing
+    Set mDirectDevice = Nothing
+    mDisplayMode.Width = ScreenWidth
+    mDisplayMode.Height = ScreenHeight
+    mDisplayMode.RefreshRate = 60
+    mDisplayMode.format = D3DFMT_A8R8G8B8
+End Sub

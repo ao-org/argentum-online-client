@@ -1092,6 +1092,7 @@ FileExist_Err:
     
 End Function
 
+
 Sub Main()
 
 On Error GoTo Main_Err
@@ -1104,8 +1105,12 @@ On Error GoTo Main_Err
     If PantallaCompleta Then
         Call Resolution.SetResolution
     End If
-    Call engine_init 'initializes DX
     
+#If EXPERIMENTAL_RENDERER Then
+    Call new_engine_init(ao20rendering.renderer)
+#Else
+    Call engine_init 'initializes DX
+#End If
     Call InitCommonControls
 
     #If DEBUGGING = 0 Then

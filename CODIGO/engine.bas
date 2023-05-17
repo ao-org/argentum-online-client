@@ -282,11 +282,26 @@ Engine_InitColors_Err:
     
 End Sub
 
+Public Sub new_engine_init(ByRef renderer As clsRenderer)
+On Error GoTo NewEngineInitErr:
+    Set renderer = New clsRenderer
+    Call renderer.init(frmMain.renderer.hwnd)
+    Debug.Print "Renderer OK"
+    Exit Sub
+    
+NewEngineInitErr:
+  Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
+                "Asegúrate de tener los drivers gráficos actualizados y la librería DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
+    
+    Debug.Print "Error Number Returned: " & Err.Number
 
-
+    End
+  
+End Sub
 
 Public Sub engine_init()
 On Error Resume Next
+
     Err.Clear
     If init_dx_objects() <> 0 Then
         Call MsgBox("DirectX is not working", vbCritical, App.title)
@@ -1108,7 +1123,7 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
     Angle = Angle + RandomNumber(2, 10) * IIf(direccion, 1, -1) / 1500 * timerElapsedTime
     
     If dist_x > 40 Then
-        mascota.posX = mascota.posX + (dir_vector.x / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
+        mascota.PosX = mascota.PosX + (dir_vector.x / (frmMain.Renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
         isAnimated = 1
     End If
 
