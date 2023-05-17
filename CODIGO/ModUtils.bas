@@ -2009,8 +2009,8 @@ Public Sub CargarLst()
         FrmLogear.txtIp.Text = server(0)
         FrmLogear.txtPort.Text = server(1)
     #Else
-        FrmLogear.txtIp.Text = "45.235.99.71"
-        FrmLogear.txtPort.Text = "6501"
+        FrmLogear.txtIp.Text = "45.235.98.188"
+        FrmLogear.txtPort.Text = "6500"
     #End If
         
     Exit Sub
