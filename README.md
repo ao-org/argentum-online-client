@@ -1,9 +1,9 @@
-# AO20 CLIENTE
+# 🗡 AO20 CLIENTE 🔪
 Código fuente del cliente de Argentum20.
 
 ## Por favor considera apoyarnos en https://www.patreon.com/nolandstudios 
 
-# Pull Requests
+# 🗡 Pull Requests 🔪
 
 Before make a `git commit` please run the file git_ignore_case.sh to avoid false changes in the PR.
 
