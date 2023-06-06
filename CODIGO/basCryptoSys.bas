@@ -1,38 +1,22 @@
 Attribute VB_Name = "basCryptoSys"
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
-'
-'    This program is free software: you can redistribute it and/or modify
-'    it under the terms of the GNU Affero General Public License as published by
-'    the Free Software Foundation, either version 3 of the License, or
-'    (at your option) any later version.
-'
-'    This program is distributed in the hope that it will be useful,
-'    but WITHOUT ANY WARRANTY; without even the implied warranty of
-'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'    GNU Affero General Public License for more details.
-'    You should have received a copy of the GNU Affero General Public License
-'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-'
-'
 ' $Id: basCryptoSys.bas $
 
 '/**
 ' The VBA/VB6 interface to CryptoSys API.
 '
 ' @author dai
-' @version 6.20.0
+' @version 6.21.0
 '**/
 
 ' Last updated:
-' * $Date: 2021-09-25 10:01:00 $
+' * $Date: 2023-05-26 10:59:00 $
 
 ' Updated [v6.20.0]
 ' Combined all of basCryptoSys.bas, basCryptoSys64.bas, basCryptoSys64_32.bas and basCryptoSysWrappers.bas
 ' into this one file.
 
 '********************* COPYRIGHT NOTICE*********************
-' Copyright (c) 2001-21 DI Management Services Pty Limited.
+' Copyright (c) 2001-23 DI Management Services Pty Limited.
 ' <www.di-mgt.com.au> <www.cryptosys.net>
 ' All rights reserved.
 ' The latest version of CryptoSys(tm) API and a licence
@@ -57,6 +41,7 @@ Public Const API_SHA512_BYTES   As Long = 64
 Public Const API_MD5_BYTES      As Long = 16
 Public Const API_MD2_BYTES      As Long = 16
 Public Const API_RMD160_BYTES   As Long = 20
+Public Const API_ASCON_HASH_BYTES As Long = 32
 ' Maximum number of hex characters in hash digest
 Public Const API_MAX_HASH_CHARS As Long = (2 * API_MAX_HASH_BYTES)
 Public Const API_SHA1_CHARS     As Long = (2 * API_SHA1_BYTES)
@@ -67,6 +52,7 @@ Public Const API_SHA512_CHARS   As Long = (2 * API_SHA512_BYTES)
 Public Const API_MD5_CHARS      As Long = (2 * API_MD5_BYTES)
 Public Const API_MD2_CHARS      As Long = (2 * API_MD2_BYTES)
 Public Const API_RMD160_CHARS   As Long = (2 * API_RMD160_BYTES)
+Public Const API_ASCON_HASH_CHARS As Long = (2 * API_ASCON_HASH_BYTES)
 ' Maximum lengths of MAC tags
 Public Const API_MAX_MAC_BYTES  As Long = 64
 Public Const API_MAX_HMAC_BYTES As Long = 64
@@ -107,11 +93,13 @@ Public Const API_HASH_SHA384 As Long = 4
 Public Const API_HASH_SHA512 As Long = 5
 Public Const API_HASH_SHA224 As Long = 6
 Public Const API_HASH_RMD160 As Long = 7
-' SHA-3 added back [v5.3]
 Public Const API_HASH_SHA3_224 As Long = &HA&
 Public Const API_HASH_SHA3_256 As Long = &HB&
 Public Const API_HASH_SHA3_384 As Long = &HC&
 Public Const API_HASH_SHA3_512 As Long = &HD&
+' ASCON-HASH added [v6.21]
+Public Const API_HASH_ASCON_HASH  As Long = &HAF&
+Public Const API_HASH_ASCON_HASHA As Long = &HBF&
 
 Public Const API_HASH_MODE_TEXT  As Long = &H10000
 
@@ -126,7 +114,7 @@ Public Const API_HMAC_SHA3_256 As Long = &HB&
 Public Const API_HMAC_SHA3_384 As Long = &HC&
 Public Const API_HMAC_SHA3_512 As Long = &HD&
 
-' Options for MAC functions
+' Options for MAC/PRF/XOF functions
 Public Const API_CMAC_TDEA    As Long = &H100  ' ) synonyms
 Public Const API_CMAC_DESEDE  As Long = &H100  ' ) synonyms
 Public Const API_CMAC_AES128  As Long = &H101
@@ -137,6 +125,12 @@ Public Const API_KMAC_128     As Long = &H201
 Public Const API_KMAC_256     As Long = &H202
 Public Const API_XOF_SHAKE128 As Long = &H203
 Public Const API_XOF_SHAKE256 As Long = &H204
+' New in [v6.21]
+Public Const API_XOF_MGF1_SHA1   As Long = &H210
+Public Const API_XOF_MGF1_SHA256 As Long = &H213
+Public Const API_XOF_MGF1_SHA512 As Long = &H215
+Public Const API_XOF_ASCON_XOF   As Long = &H20A
+Public Const API_XOF_ASCON_XOFA  As Long = &H20B
 
 ' Options for RNG functions
 Public Const API_RNG_STRENGTH_112 As Long = &H0
@@ -178,6 +172,9 @@ Public Const API_SC_CHACHA20 As Long = 3
 Public Const API_AEAD_AES_128_GCM  As Long = 1
 Public Const API_AEAD_AES_256_GCM  As Long = 2
 Public Const API_AEAD_CHACHA20_POLY1305 As Long = 29
+' Ascon aead added [v6.21]
+Public Const API_AEAD_ASCON_128  As Long = &H1A
+Public Const API_AEAD_ASCON_128A As Long = &H1B
 
 ' Wipefile options
 Public Const API_WIPEFILE_DOD7 As Long = &H0    ' Default
@@ -206,6 +203,9 @@ Public Declare PtrSafe Function API_ModuleName Lib "diCryptoSys.dll" (ByVal strM
 Public Declare PtrSafe Function API_ErrorCode Lib "diCryptoSys.dll" () As Long    ' Added [v4.2] (only for certain fns)
 Public Declare PtrSafe Function API_ErrorLookup Lib "diCryptoSys.dll" (ByVal strErrMsg As String, ByVal nMaxChars As Long, ByVal nErrCode As Long) As Long
 Public Declare PtrSafe Function API_PowerUpTests Lib "diCryptoSys.dll" (ByVal nReserved As Long) As Long
+' New in [v6.21]
+Public Declare PtrSafe Function API_Platform Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nOutChars As Long) As Long
+Public Declare PtrSafe Function API_ModuleInfo Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nOutChars As Long, ByVal nOptions As Long) As Long
 
 ' ADVANCED ENCRYPTION STANDARD (AES) BLOCK CIPHER WITH 128-BIT KEY
 Public Declare PtrSafe Function AES128_Bytes Lib "diCryptoSys.dll" (ByRef lpOutput As Byte, ByRef lpData As Byte, ByVal nBytes As Long, ByRef lpKey As Byte, ByVal fEncrypt As Long) As Long
@@ -371,6 +371,7 @@ Public Declare PtrSafe Function HASH_HexFromBytes Lib "diCryptoSys.dll" (ByVal s
 Public Declare PtrSafe Function HASH_HexFromFile Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nMaxChars As Long, ByVal strFileName As String, ByVal nOptions As Long) As Long
 Public Declare PtrSafe Function HASH_HexFromHex Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nMaxChars As Long, ByVal strMsgHex As String, ByVal nOptions As Long) As Long
 Public Declare PtrSafe Function HASH_HexFromBits Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nMaxChars As Long, ByRef lpData As Byte, ByVal nDataBitLen As Long, ByVal nOptions As Long) As Long
+Public Declare PtrSafe Function HASH_Length Lib "diCryptoSys.dll" (ByVal nAlgId As Long) As Long  ' New in [v6.21]
 ' Alias for VB6 strings
 Public Declare PtrSafe Function HASH_HexFromString Lib "diCryptoSys.dll" Alias "HASH_HexFromBytes" (ByVal strOutput As String, ByVal nMaxChars As Long, ByVal strMessage As String, ByVal nStrLen As Long, ByVal nOptions As Long) As Long
 ' Stateful HASH functions added in [v6.0]
@@ -519,6 +520,9 @@ Public Declare Function API_ModuleName Lib "diCryptoSys.dll" (ByVal strModuleNam
 Public Declare Function API_ErrorCode Lib "diCryptoSys.dll" () As Long    ' Added [v4.2] (only for certain fns)
 Public Declare Function API_ErrorLookup Lib "diCryptoSys.dll" (ByVal strErrMsg As String, ByVal nMaxChars As Long, ByVal nErrCode As Long) As Long
 Public Declare Function API_PowerUpTests Lib "diCryptoSys.dll" (ByVal nReserved As Long) As Long
+' New in [v6.21]
+Public Declare Function API_Platform Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nOutChars As Long) As Long
+Public Declare Function API_ModuleInfo Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nOutChars As Long, ByVal nOptions As Long) As Long
 
 ' ADVANCED ENCRYPTION STANDARD (AES) BLOCK CIPHER WITH 128-BIT KEY
 Public Declare Function AES128_Bytes Lib "diCryptoSys.dll" (ByRef lpOutput As Byte, ByRef lpData As Byte, ByVal nBytes As Long, ByRef lpKey As Byte, ByVal fEncrypt As Long) As Long
@@ -683,6 +687,7 @@ Public Declare Function HASH_HexFromBytes Lib "diCryptoSys.dll" (ByVal strOutput
 Public Declare Function HASH_HexFromFile Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nMaxChars As Long, ByVal strFileName As String, ByVal nOptions As Long) As Long
 Public Declare Function HASH_HexFromHex Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nMaxChars As Long, ByVal strMsgHex As String, ByVal nOptions As Long) As Long
 Public Declare Function HASH_HexFromBits Lib "diCryptoSys.dll" (ByVal strOutput As String, ByVal nMaxChars As Long, ByRef lpData As Byte, ByVal nDataBitLen As Long, ByVal nOptions As Long) As Long
+Public Declare Function HASH_Length Lib "diCryptoSys.dll" (ByVal nAlgId As Long) As Long  ' New in [v6.21]
 ' Alias for VB6 strings
 Public Declare Function HASH_HexFromString Lib "diCryptoSys.dll" Alias "HASH_HexFromBytes" (ByVal strOutput As String, ByVal nMaxChars As Long, ByVal strMessage As String, ByVal nStrLen As Long, ByVal nOptions As Long) As Long
 ' Stateful HASH functions added in [v6.0]
@@ -1311,13 +1316,15 @@ End Function
 ' Decrypt data using specified AEAD algorithm in one-off operation. The authentication tag is expected to be appended to the input ciphertext.
 ' @param  lpData Input data to be decrypted.
 ' @param  lpKey Key of exact length for algorithm (16 or 32 bytes).
-' @param  lpNonce Initialization Vector (IV) (aka nonce) exactly 12 bytes long.
+' @param  lpNonce Initialization Vector (IV) (aka nonce) exactly 16 bytes for ASCON else exactly 12 bytes long.
 ' @param  lpAAD Additional authenticated data (optional) - set variable as `vbNullString` to ignore.
 ' @param  nOptions Algorithm to be used. Select one from
 ' {@code
 ' API_AEAD_AES_128_GCM
 ' API_AEAD_AES_256_GCM
 ' API_AEAD_CHACHA20_POLY1305
+' API_AEAD_ASCON_128
+' API_AEAD_ASCON_128A
 ' }
 ' Add `API_IV_PREFIX` to expect the IV to be prepended at the start of the input (use the `Or` operator).
 ' @return Plaintext in a byte array, or empty array on error (an empty array may also be the correct result).
@@ -1355,23 +1362,26 @@ End Function
 ' Encrypt data using specified AEAD algorithm in one-off operation. The authentication tag is appended to the output.
 ' @param  lpData Input data to be encrypted.
 ' @param  lpKey Key of exact length for algorithm (16 or 32 bytes).
-' @param  lpNonce Initialization Vector (IV) (aka nonce) exactly 12 bytes long.
+' @param  lpNonce Initialization Vector (IV) (aka nonce) exactly 16 bytes for ASCON else exactly 12 bytes long.
 ' @param  lpAAD Additional authenticated data (optional) - set variable as `vbNullString` to ignore.
 ' @param  nOptions Algorithm to be used. Select one from
 ' {@code
 ' API_AEAD_AES_128_GCM
 ' API_AEAD_AES_256_GCM
 ' API_AEAD_CHACHA20_POLY1305
+' API_AEAD_ASCON_128
+' API_AEAD_ASCON_128A
 ' }
 ' Add `API_IV_PREFIX` to prepend the IV (nonce) before the ciphertext in the output (use the `Or` operator).
 ' @return Ciphertext with tag appended in a byte array, or empty array on error.
-' @remark The output will either be exactly 16 bytes longer than the input, or exactly 28 bytes longer if `API_IV_PREFIX` is used.
+' @remark The output will either be exactly `taglen` (16) bytes longer than the input,
+' or exactly `taglen + ivlen` (28/32) bytes longer if `API_IV_PREFIX` is used.
 '**/
 Public Function aeadEncryptWithTag(lpData() As Byte, lpKey() As Byte, lpNonce() As Byte, lpAAD() As Byte, nOptions As Long) As Byte()
     aeadEncryptWithTag = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpData)
-    If n1 = 0 Then Exit Function
+    If n1 = 0 Then ReDim lpData(0)
     Dim n2 As Long
     n2 = cnvBytesLen(lpKey)
     If n2 = 0 Then Exit Function
@@ -1392,6 +1402,7 @@ Public Function aeadEncryptWithTag(lpData() As Byte, lpKey() As Byte, lpNonce() 
     ReDim Preserve abMyData(nb - 1)
     aeadEncryptWithTag = abMyData
 CleanUp:
+    If n1 = 0 Then lpData = vbNullString
     If n4 = 0 Then lpAAD = vbNullString
 End Function
 
@@ -1549,6 +1560,33 @@ Public Function apiModuleName(Optional nOptions As Long = 0) As String
     apiModuleName = String(nc, " ")
     nc = API_ModuleName(apiModuleName, nc, nOptions)
     apiModuleName = Left$(apiModuleName, nc)
+End Function
+
+'/**
+' Get platform the core DLL was compiled for.
+' @return `"Win32"` or `"X64"`.
+'**/
+Public Function apiPlatform() As String
+    Dim nc As Long
+    nc = API_Platform(vbNullString, 0)
+    If nc <= 0 Then Exit Function
+    apiPlatform = String(nc, " ")
+    nc = API_Platform(apiPlatform, nc)
+    apiPlatform = Left$(apiPlatform, nc)
+End Function
+
+'/**
+' Get additional information about the core DLL module.
+' @param  nOptions For future use.
+' @return Additional information, e.g. "Licensed Developer Edition".
+'**/
+Public Function apiModuleInfo(Optional nOptions As Long = 0) As String
+    Dim nc As Long
+    nc = API_ModuleInfo(vbNullString, 0, nOptions)
+    If nc <= 0 Then Exit Function
+    apiModuleInfo = String(nc, " ")
+    nc = API_ModuleInfo(apiModuleInfo, nc, nOptions)
+    apiModuleInfo = Left$(apiModuleInfo, nc)
 End Function
 
 '/**
@@ -2132,6 +2170,8 @@ End Function
 ' API_HASH_MD5
 ' API_HASH_MD2
 ' API_HASH_RMD160
+' API_HASH_ASCON_HASH
+' API_HASH_ASCON_HASHA
 ' }
 ' @return Message digest in byte array.
 '**/
@@ -2251,6 +2291,8 @@ End Function
 ' API_HASH_MD5
 ' API_HASH_MD2
 ' API_HASH_RMD160
+' API_HASH_ASCON_HASH
+' API_HASH_ASCON_HASHA
 ' }
 ' @return Message digest in hex-encoded format.
 '**/
@@ -2318,6 +2360,8 @@ End Function
 ' API_HASH_MD5
 ' API_HASH_MD2
 ' API_HASH_RMD160
+' API_HASH_ASCON_HASH
+' API_HASH_ASCON_HASHA
 ' }
 ' @return Message digest in hex-encoded format.
 '**/
@@ -2347,6 +2391,8 @@ End Function
 ' API_HASH_MD5
 ' API_HASH_MD2
 ' API_HASH_RMD160
+' API_HASH_ASCON_HASH
+' API_HASH_ASCON_HASHA
 ' }
 ' @return Message digest in hex-encoded format.
 '**/
@@ -2357,6 +2403,36 @@ Public Function hashHexFromString(szMessage As String, nOptions As Long) As Stri
     nc = HASH_HexFromString(hashHexFromString, nc, szMessage, Len(szMessage), nOptions)
     If nc <= 0 Then Exit Function
     hashHexFromString = Left$(hashHexFromString, nc)
+End Function
+
+'/**
+' Return length of message digest output in bytes.
+' @param  nAlgId  Algorithm Id flag. Select one of `API_HASH_*` or `API_HMAC_*`, for example:
+' {@code
+' API_HASH_SHA1
+' API_HASH_SHA224
+' API_HASH_SHA256
+' API_HASH_SHA384
+' API_HASH_SHA512
+' API_HASH_SHA3_224
+' API_HASH_SHA3_256
+' API_HASH_SHA3_384
+' API_HASH_SHA3_512
+' API_HASH_MD5
+' API_HASH_MD2
+' API_HASH_RMD160
+' API_HASH_ASCON_HASH
+' API_HASH_ASCON_HASHA
+' }
+' @return Length of the hash function output in bytes; else a negative error code.
+' @example
+' {@code
+' Debug.Print hashLength(API_HASH_SHA512)
+' 64
+' }
+'**/
+Public Function hashLength(nAlgId As Long) As Long
+    hashLength = HASH_Length(nAlgId)
 End Function
 
 '/**
@@ -2916,6 +2992,11 @@ End Function
 ' {@code
 ' API_XOF_SHAKE128
 ' API_XOF_SHAKE256
+' API_XOF_MGF1_SHA1
+' API_XOF_MGF1_SHA256
+' API_XOF_MGF1_SHA512
+' API_XOF_ASCON_XOF
+' API_XOF_ASCON_XOFA
 ' }
 ' @return Output data in byte array.
 '**/
