@@ -376,7 +376,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/GM"
-                FrmGmAyuda.Show vbModeless, frmMain
+                FrmGmAyuda.Show vbModeless, GetGameplayForm()
                  
             Case "/OFERTAINICIAL"
                 If notNullArguments Then
@@ -1239,7 +1239,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     Next i
 
-                    FrmObjetos.Show , frmMain
+                    FrmObjetos.Show , GetGameplayForm()
 
                 End If
                 
@@ -2073,7 +2073,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
 
             Case "/RETAR", "/RETO"
-                frmRetos.Show , frmMain
+                frmRetos.Show , GetGameplayForm()
 
                 If notNullArguments Then
                     Dim Names() As String

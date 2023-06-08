@@ -729,7 +729,7 @@ Private Sub cbLenguaje_Click()
         Select Case cbLenguaje.ListIndex
         
             Case 0
-                Message = "Para que los cambios surjan efecto deberá volver a abrir el cliente."
+                message = "Para que los cambios surjan efecto deberá volver a abrir el cliente."
                 title = "Cambiar Idioma"
             
             Case 1
@@ -1379,7 +1379,12 @@ Private Sub cmdcerrar_Click()
     
     Call GuardarOpciones
     Me.Visible = False
-    frmMain.SetFocus
+    
+    If BabelInitialized Then
+        frmBabelUI.SetFocus
+    Else
+        frmMain.SetFocus
+    End If
 
     
     Exit Sub
@@ -1533,7 +1538,7 @@ Public Sub Init()
     cbBloqueoHechizos.ListIndex = ModoHechizos
     scrSens.Value = SensibilidadMouse
     
-    Me.Show vbModeless, frmMain
+    Me.Show vbModeless, GetGameplayForm()
 
     
     Exit Sub

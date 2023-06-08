@@ -1588,7 +1588,7 @@ Private Sub HandleCommerceInit()
     'Set state and show form
     Comerciando = True
     'Call Inventario.Initialize(frmComerciar.PicInvUser)
-    frmComerciar.Show , frmMain
+    frmComerciar.Show , GetGameplayForm()
     frmComerciar.Refresh
     
     Exit Sub
@@ -1627,7 +1627,7 @@ Private Sub HandleBankInit()
     Comerciando = True
 
     frmBancoObj.lblcosto = PonerPuntos(UserStats.GLD)
-    frmBancoObj.Show , frmMain
+    frmBancoObj.Show , GetGameplayForm()
     frmBancoObj.Refresh
     
     Exit Sub
@@ -1692,7 +1692,7 @@ Private Sub HandleShowFrmMapa()
     Call frmMapaGrande.CalcularPosicionMAPA
 
     frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
-    frmMapaGrande.Show , frmMain
+    frmMapaGrande.Show , GetGameplayForm()
     
     Exit Sub
 
@@ -1739,7 +1739,7 @@ Private Sub HandleUserCommerceInit()
     'Set state and show form
     Comerciando = True
     
-    frmComerciarUsu.Show , frmMain
+    frmComerciarUsu.Show , GetGameplayForm()
     
     Exit Sub
 
@@ -1807,7 +1807,7 @@ Private Sub HandleShowBlacksmithForm()
         Call Establecer_Borde(frmHerrero.lstArmas, frmHerrero, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(frmHerrero.List1, frmHerrero, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(frmHerrero.List2, frmHerrero, COLOR_AZUL, 0, 0)
-        frmHerrero.Show , frmMain
+        frmHerrero.Show , GetGameplayForm()
 
     End If
     
@@ -1843,7 +1843,7 @@ Private Sub HandleShowCarpenterForm()
         Call Establecer_Borde(frmCarp.lstArmas, frmCarp, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(frmCarp.List1, frmCarp, COLOR_AZUL, 0, 0)
         Call Establecer_Borde(frmCarp.List2, frmCarp, COLOR_AZUL, 0, 0)
-        frmCarp.Show , frmMain
+        frmCarp.Show , GetGameplayForm()
 
    ' End If
     
@@ -1879,7 +1879,7 @@ Private Sub HandleShowAlquimiaForm()
         Call Establecer_Borde(frmAlqui.List1, frmAlqui, COLOR_AZUL, 1, 1)
         Call Establecer_Borde(frmAlqui.List2, frmAlqui, COLOR_AZUL, 1, 1)
 
-        frmAlqui.Show , frmMain
+        frmAlqui.Show , GetGameplayForm()
 
     End If
     
@@ -1925,7 +1925,7 @@ Private Sub HandleShowSastreForm()
         Next i
     
         FrmSastre.Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
-        FrmSastre.Show , frmMain
+        FrmSastre.Show , GetGameplayForm()
 
     End If
     
@@ -3392,7 +3392,7 @@ On Error GoTo ErrHandler
     Select Case g_game_state.state()
         Case e_state_gameplay_screen
             frmMensaje.msg.Caption = mensaje
-            frmMensaje.Show , frmMain
+            frmMensaje.Show , GetGameplayForm()
         Case e_state_connect_screen
             Call Sound.Sound_Play(SND_EXCLAMACION)
             Call TextoAlAsistente(mensaje, False, False)
@@ -4557,7 +4557,7 @@ Private Sub HandleGuildList()
     
     Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
 
-    Call frmGuildAdm.Show(vbModeless, frmMain)
+    Call frmGuildAdm.Show(vbModeless, GetGameplayForm())
     
     Exit Sub
     
@@ -5252,7 +5252,7 @@ Private Sub HandleAtributes()
     If LlegaronStats Then
         frmStatistics.Iniciar_Labels
         frmStatistics.Picture = LoadInterface("ventanaestadisticas_personaje.bmp")
-        frmStatistics.Show , frmMain
+        frmStatistics.Show , GetGameplayForm()
     Else
         LlegaronAtrib = True
     End If
@@ -5923,7 +5923,7 @@ End Sub
 Private Sub HandleShowPapiro()
     On Error GoTo HandleShowPapiro_Err
     
-    frmMensajePapiro.Show , frmMain
+    frmMensajePapiro.Show , GetGameplayForm()
     
     'incomingdata papiromessage
     Exit Sub
@@ -6015,7 +6015,7 @@ Private Sub HandleMiniStats()
     If LlegaronAtrib Then
         frmStatistics.Iniciar_Labels
         frmStatistics.Picture = LoadInterface("ventanaestadisticas_personaje.bmp")
-        frmStatistics.Show , frmMain
+        frmStatistics.Show , GetGameplayForm()
     Else
         LlegaronStats = True
     End If
@@ -6293,7 +6293,7 @@ Private Sub HandleSendSkills()
         frmEstadisticas.puntos.Caption = SkillPoints
         frmEstadisticas.Iniciar_Labels
         frmEstadisticas.Picture = LoadInterface("ventanaskills.bmp")
-        frmEstadisticas.Show , frmMain
+        frmEstadisticas.Show , GetGameplayForm()
         LlegaronSkills = False
     End If
     
@@ -6328,7 +6328,7 @@ Private Sub HandleTrainerCreatureList()
         Call frmEntrenador.lstCriaturas.AddItem(creatures(i))
     Next i
 
-    frmEntrenador.Show , frmMain
+    frmEntrenador.Show , GetGameplayForm()
     
     Exit Sub
 
@@ -6444,7 +6444,7 @@ Private Sub HandleGuildNews()
     
     End With
     
-    frmGuildNews.Show vbModeless, frmMain
+    frmGuildNews.Show vbModeless, GetGameplayForm()
     
     Exit Sub
 
@@ -6503,7 +6503,7 @@ Private Sub HandleAlianceProposalsList()
     Next i
     
     frmPeaceProp.ProposalType = TIPO_PROPUESTA.ALIANZA
-    Call frmPeaceProp.Show(vbModeless, frmMain)
+    Call frmPeaceProp.Show(vbModeless, GetGameplayForm())
     
     Exit Sub
 
@@ -6538,7 +6538,7 @@ Private Sub HandlePeaceProposalsList()
     Next i
     
     frmPeaceProp.ProposalType = TIPO_PROPUESTA.PAZ
-    Call frmPeaceProp.Show(vbModeless, frmMain)
+    Call frmPeaceProp.Show(vbModeless, GetGameplayForm())
     
     Exit Sub
 
@@ -6612,7 +6612,7 @@ Private Sub HandleCharacterInfo()
         .ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(Reader.ReadInt32())
         .Criminales.Caption = "Criminales asesinados: " & CStr(Reader.ReadInt32())
     
-        Call .Show(vbModeless, frmMain)
+        Call .Show(vbModeless, GetGameplayForm())
     
     End With
         
@@ -6739,7 +6739,7 @@ Private Sub HandleGuildLeaderInfo()
                 .maxMiembros = 20
         End Select
         
-        .Show , frmMain
+        .Show , GetGameplayForm()
 
     End With
     
@@ -6784,7 +6784,7 @@ Private Sub HandleGuildDetails()
 
     End With
     
-    frmGuildBrief.Show vbModeless, frmMain
+    frmGuildBrief.Show vbModeless, GetGameplayForm()
     
     Exit Sub
 
@@ -6809,7 +6809,7 @@ Private Sub HandleShowGuildFundationForm()
     On Error GoTo HandleShowGuildFundationForm_Err
     
     CreandoClan = True
-    frmGuildDetails.Show , frmMain
+    frmGuildDetails.Show , GetGameplayForm()
     
     Exit Sub
 
@@ -6875,7 +6875,7 @@ Private Sub HandleShowUserRequest()
     On Error GoTo ErrHandler
     
     Call frmUserRequest.recievePeticion(Reader.ReadString8())
-    Call frmUserRequest.Show(vbModeless, frmMain)
+    Call frmUserRequest.Show(vbModeless, GetGameplayForm())
     
     Exit Sub
 
@@ -6985,7 +6985,7 @@ Private Sub HandleSpawnList()
 
     Call frmSpawnList.FillList
 
-    frmSpawnList.Show , frmMain
+    frmSpawnList.Show , GetGameplayForm()
     
     Exit Sub
 
@@ -7052,7 +7052,7 @@ Private Sub HandleShowMOTDEditionForm()
     On Error GoTo ErrHandler
     
     frmCambiaMotd.txtMotd.Text = Reader.ReadString8()
-    frmCambiaMotd.Show , frmMain
+    frmCambiaMotd.Show , GetGameplayForm()
     
     Exit Sub
 
@@ -7084,7 +7084,7 @@ Private Sub HandleShowGMPanelForm()
     frmPanelgm.txtCasco = Reader.ReadInt16
     frmPanelgm.txtArma = Reader.ReadInt16
     frmPanelgm.txtEscudo = Reader.ReadInt16
-    frmPanelgm.Show vbModeless, frmMain
+    frmPanelgm.Show vbModeless, GetGameplayForm()
     
     MiCargo = charlist(UserCharIndex).priv
     
@@ -7147,7 +7147,7 @@ Private Sub HandleShowFundarClanForm()
     On Error GoTo HandleShowFundarClanForm_Err
     
     CreandoClan = True
-    frmGuildDetails.Show vbModeless, frmMain
+    frmGuildDetails.Show vbModeless, GetGameplayForm()
     
     Exit Sub
 
@@ -8041,7 +8041,7 @@ Private Sub HandleQuestDetails()
         Call FrmQuests.ListView2_Click
         Call FrmQuests.lstQuests.SetFocus
     Else
-        FrmQuestInfo.Show vbModeless, frmMain
+        FrmQuestInfo.Show vbModeless, GetGameplayForm()
         FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
         Call FrmQuestInfo.ListView1_Click
         Call FrmQuestInfo.ListView2_Click
@@ -8093,7 +8093,7 @@ Public Sub HandleQuestListSend()
     COLOR_AZUL = RGB(0, 0, 0)
     Call Establecer_Borde(FrmQuests.lstQuests, FrmQuests, COLOR_AZUL, 0, 0)
     FrmQuests.Picture = LoadInterface("ventanadetallemision.bmp")
-    FrmQuests.Show vbModeless, frmMain
+    FrmQuests.Show vbModeless, GetGameplayForm()
     
     'Pedimos la informacion de la primer quest (si la hay)
     If tmpByte Then Call WriteQuestDetailsRequest(1)
@@ -8249,7 +8249,7 @@ Public Sub HandleNpcQuestListSend()
         Next j
 
     'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
-    FrmQuestInfo.Show vbModeless, frmMain
+    FrmQuestInfo.Show vbModeless, GetGameplayForm()
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)
     
@@ -8312,7 +8312,7 @@ Private Sub HandleDatosGrupo()
     ' establece el borde al listbox
     Call Establecer_Borde(FrmGrupo.lstGrupo, FrmGrupo, COLOR_AZUL, 0, 0)
 
-    FrmGrupo.Show , frmMain
+    FrmGrupo.Show , GetGameplayForm()
     
     Exit Sub
 
@@ -8403,7 +8403,7 @@ Private Sub HandleViajarForm()
 
     End If
 
-    FrmViajes.Show , frmMain
+    FrmViajes.Show , GetGameplayForm()
     
     Exit Sub
 
@@ -8513,7 +8513,7 @@ Private Sub HandleOpenCrafting()
 
     Comerciando = True
 
-    frmCrafteo.Show , frmMain
+    frmCrafteo.Show , GetGameplayForm()
 
 End Sub
 
@@ -8655,7 +8655,7 @@ errhandler:
 End Sub
 
 Public Sub HandleShopPjsInit()
-    frmShopPjsAO20.Show , frmMain
+    frmShopPjsAO20.Show , GetGameplayForm()
 End Sub
 Public Sub HandleShopInit()
     
@@ -8676,7 +8676,7 @@ Public Sub HandleShopInit()
         Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")", i - 1)
     Next i
     
-    frmShopAO20.Show , frmMain
+    frmShopAO20.Show , GetGameplayForm()
 End Sub
 
 Public Sub HandleUpdateShopClienteCredits()
@@ -8844,7 +8844,7 @@ Public Sub HandleObjQuestListSend()
     FrmQuestInfo.ListViewQuest.Refresh
 
     'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
-    FrmQuestInfo.Show vbModeless, frmMain
+    FrmQuestInfo.Show vbModeless, GetGameplayForm()
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)
 

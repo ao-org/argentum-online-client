@@ -261,7 +261,7 @@ Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
     lblDatos.ForeColor = RGB(235, 164, 14)
     
     txtname.BackColor = RGB(17, 18, 12)
-    Me.Show vbModeless, frmMain
+    Me.Show vbModeless, GetGameplayForm()
     
     Exit Sub
 

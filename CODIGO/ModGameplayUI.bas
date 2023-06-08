@@ -591,3 +591,17 @@ Public Sub UpdateMapPos()
     End If
 End Sub
 
+Public Sub RequestSkills()
+    If pausa Or tutorial_index > 0 Then Exit Sub
+    If MostrarTutorial And tutorial_index <= 0 Then
+        If tutorial(4).Activo = 1 Then
+            tutorial_index = e_tutorialIndex.TUTORIAL_SkillPoints
+            'TUTORIAL MAPA INSEGURO
+            Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
+            Exit Sub
+        End If
+    End If
+    
+    LlegaronSkills = True
+    Call WriteRequestSkills
+End Sub

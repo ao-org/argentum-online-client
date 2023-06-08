@@ -441,6 +441,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -552,7 +553,7 @@ Begin VB.Form frmMain
       End
       Begin VB.Image QuestBoton 
          Height          =   495
-         Left            =   2025
+         Left            =   2040
          Tag             =   "0"
          ToolTipText     =   "Quest"
          Top             =   1125
@@ -2093,24 +2094,8 @@ EstadisticasBoton_MouseMove_Err:
 End Sub
 
 Private Sub EstadisticasBoton_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo EstadisticasBoton_MouseUp_Err
-    
-    
-    If pausa Or tutorial_index > 0 Then Exit Sub
-    
-    If MostrarTutorial And tutorial_index <= 0 Then
-        If tutorial(4).Activo = 1 Then
-            tutorial_index = e_tutorialIndex.TUTORIAL_SkillPoints
-            'TUTORIAL MAPA INSEGURO
-            Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
-            Exit Sub
-        End If
-    End If
-    
-    LlegaronSkills = True
-    Call WriteRequestSkills
-    
+On Error GoTo EstadisticasBoton_MouseUp_Err
+    Call ModGameplayUI.RequestSkills
     Exit Sub
 
 EstadisticasBoton_MouseUp_Err:

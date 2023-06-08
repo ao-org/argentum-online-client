@@ -2,14 +2,14 @@ VERSION 5.00
 Begin VB.Form frmUserRequest 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Peticion"
-   ClientHeight    =   2424
-   ClientLeft      =   48
-   ClientTop       =   216
-   ClientWidth     =   4644
+   ClientHeight    =   2430
+   ClientLeft      =   45
+   ClientTop       =   210
+   ClientWidth     =   4650
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,15 +19,15 @@ Begin VB.Form frmUserRequest
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2424
-   ScaleWidth      =   4644
+   ScaleHeight     =   2430
+   ScaleWidth      =   4650
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton Command1 
       Caption         =   "Cerrar"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -125,7 +125,7 @@ Public Sub recievePeticion(ByVal p As String)
     
 
     Text1 = Replace$(P, "º", vbCrLf)
-    Me.Show vbModeless, frmMain
+    Me.Show vbModeless, GetGameplayForm()
 
     
     Exit Sub

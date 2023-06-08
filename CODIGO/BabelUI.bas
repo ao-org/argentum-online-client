@@ -108,6 +108,7 @@ Public Type t_GamePlayCallbacks
     OpenLink As Long
     ClickGold As Long
     MoveInvSlot As Long
+    RequestAction As Long
 End Type
 
 Public Type t_SpellSlot
@@ -119,6 +120,25 @@ End Type
 Public Enum e_ChatMode
     NormalChat = 0
     ClanChat = 1
+End Enum
+
+Public Enum e_ActionRequest
+    eMinimize = 1
+    eClose = 2
+    eOpenMinimap = 3
+    eOpenClanDialog = 4
+    eOpenChallenge = 5
+    eOpenKeys = 6
+    eOpenActiveQuest = 7
+    eGoHome = 8
+    eShowStats = 9
+    eUpdateGroupLock = 10
+    eUpdateClanSafeLock = 11
+    eUpdateAttackSafeLock = 12
+    eUpdateResurrectionLock = 13
+    eReportBug = 14
+    eRequestSkill = 15
+    eOpenGroupDialog = 16
 End Enum
 
 Private ServerEnvironment As String
@@ -275,6 +295,7 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.OpenLink = FARPROC(AddressOf OpenLinkCB)
         GameplayCallbacks.ClickGold = FARPROC(AddressOf ClickGoldCB)
         GameplayCallbacks.MoveInvSlot = FARPROC(AddressOf MoveInvSlotDB)
+        GameplayCallbacks.RequestAction = FARPROC(AddressOf RequestActionCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
         gameplay_render_offset.x = StartRenderX
         gameplay_render_offset.y = StartRenderY
@@ -577,6 +598,75 @@ Public Sub MoveInvSlotDB(ByVal SourceSlot As Long, ByVal DestSlot As Long)
     If DestSlot > 0 And SourceSlot <> DestSlot Then
         Call WriteItemMove(SourceSlot, DestSlot)
     End If
+End Sub
+
+Public Sub RequestActionCB(ByVal ActionId As Long)
+    Select Case ActionId
+    Case e_ActionRequest.eMinimize
+        frmBabelUI.WindowState = vbMinimized
+
+    Case e_ActionRequest.eClose
+        If frmCerrar.visible Then Exit Sub
+        Dim mForm As Form
+        For Each mForm In Forms
+            If mForm.hwnd <> frmBabelUI.hwnd Then Unload mForm
+            Set mForm = Nothing
+        Next
+        frmCerrar.Show , frmBabelUI
+
+    Case e_ActionRequest.eOpenMinimap
+        ExpMult = 1
+        OroMult = 1
+        Call frmMapaGrande.CalcularPosicionMAPA
+        frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
+        frmMapaGrande.Show , frmBabelUI
+
+    Case e_ActionRequest.eOpenClanDialog
+        If frmGuildLeader.visible Then Unload frmGuildLeader
+        Call WriteRequestGuildLeaderInfo
+
+    Case e_ActionRequest.eOpenChallenge
+        Call ParseUserCommand("/RETAR")
+
+    Case e_ActionRequest.eOpenKeys
+        ' Code for eOpenKeys case
+
+    Case e_ActionRequest.eOpenActiveQuest
+        Call WriteQuestListRequest
+
+    Case e_ActionRequest.eGoHome
+        Call ParseUserCommand("/HOGAR")
+
+    Case e_ActionRequest.eShowStats
+        LlegaronAtrib = False
+        LlegaronStats = False
+        Call WriteRequestAtributes
+        Call WriteRequestMiniStats
+
+    Case e_ActionRequest.eUpdateGroupLock
+        ' Code for eUpdateGroupLock case
+
+    Case e_ActionRequest.eUpdateClanSafeLock
+        ' Code for eUpdateClanSafeLock case
+
+    Case e_ActionRequest.eUpdateAttackSafeLock
+        ' Code for eUpdateAttackSafeLock case
+
+    Case e_ActionRequest.eUpdateResurrectionLock
+        ' Code for eUpdateResurrectionLock case
+
+    Case e_ActionRequest.eReportBug
+        FrmGmAyuda.Show vbModeless, frmBabelUI
+
+    Case e_ActionRequest.eRequestSkill
+        Call ModGameplayUI.RequestSkills
+        
+    Case e_ActionRequest.eOpenGroupDialog
+        If FrmGrupo.visible = False Then
+            Call WriteRequestGrupo
+        End If
+End Select
+
 End Sub
 
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
