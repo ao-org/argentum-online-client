@@ -1147,7 +1147,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     End If
     
     If MapData(x, y).Trigger = WORKERONLY Then
-        If Not UserClase = Trabajador Then Exit Function
+        If Not UserStats.Clase = Trabajador Then Exit Function
     End If
 
     If UserNadando And MapData(x, y).Trigger = DETALLEAGUA Then
@@ -1169,7 +1169,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
         Exit Function
     End If
     
-    If UserNavegando And MapData(x, y).Trigger = 8 And Not UserNadando And Not UserEstado = 1 Then
+    If UserNavegando And MapData(x, y).Trigger = 8 And Not UserNadando And Not UserStats.estado = 1 Then
         If Not UserAvisadoBarca Then
             Call AddtoRichTextBox(frmMain.RecTxt, "¡Atención! El agua es poco profunda, tu barca podria romperse, solo puedes caminar.", 255, 255, 255, True, False, False)
             UserAvisadoBarca = True
@@ -1180,7 +1180,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
 
     End If
     
-    If UserNavegando And MapData(x, y).Trigger = 11 And Not UserNadando And Not UserEstado = 1 Then
+    If UserNavegando And MapData(x, y).Trigger = 11 And Not UserNadando And Not UserStats.estado = 1 Then
         If Not UserAvisadoBarca Then
             Call AddtoRichTextBox(frmMain.RecTxt, "¡Atención! El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 255, 255, 255, True, False, False)
             UserAvisadoBarca = True
@@ -1590,3 +1590,9 @@ Public Function GetTerrainHeight(x As Byte, y As Byte) As Integer
     End With
 End Function
 
+Public Sub ConvertToMinimapPosition(ByRef x As Single, ByRef y As Single, ByVal MarkerWidth As Single, ByVal MarkerHeight As Single)
+    'this hard to understand, minimaps only shows playable area, with the borders cut, so instead of showing every tile on the map we have
+    '100x100 pixels for ~78x82 tiles
+    x = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - MarkerWidth \ 2 - 1
+    y = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - MarkerHeight \ 2 - 1
+End Sub

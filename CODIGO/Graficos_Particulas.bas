@@ -934,7 +934,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     If screen_x = -1000 Then Exit Sub
     
     'Particulas Grises si esta muerto Ladder
-    If UserEstado = 1 Then
+    If UserStats.Estado = 1 Then
         Call RGBAList(rgb_list, 100, 100, 100, 100)
 
     ElseIf UserCiego = True Then

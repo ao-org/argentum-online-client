@@ -729,7 +729,7 @@ Private Sub cbLenguaje_Click()
         Select Case cbLenguaje.ListIndex
         
             Case 0
-                message = "Para que los cambios surjan efecto deberá volver a abrir el cliente."
+                Message = "Para que los cambios surjan efecto deberá volver a abrir el cliente."
                 title = "Cambiar Idioma"
             
             Case 1

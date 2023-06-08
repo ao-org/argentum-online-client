@@ -71,7 +71,7 @@ Sub Login()
             Call WriteLoginExistingChar
         
         Case E_MODO.CrearNuevoPj
-            Call WriteLoginNewChar(userName, UserRaza, UserSexo, UserClase, MiCabeza, UserHogar)
+            Call WriteLoginNewChar(userName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
 #If PYMMO = 0 Then
         Case E_MODO.IngresandoConCuenta
             Call WriteLoginAccount

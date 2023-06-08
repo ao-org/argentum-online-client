@@ -26,8 +26,18 @@ Sub SwitchMap(ByVal map As Integer)
     Call Recursos.CargarMapa(map)
 
     map_light = global_light
-
-    Call DibujarMiniMapa
+    If BabelInitialized Then
+        If ListNPCMapData(map).NpcCount > 0 Then
+            Call UpdateMapInfo(map, MapDat.map_name, ListNPCMapData(map).NpcCount, ListNPCMapData(map).NpcList(1), MapDat.Seguro)
+        Else
+            Dim EmptyNpc As t_QuestNPCMapData
+            Call UpdateMapInfo(map, MapDat.map_name, ListNPCMapData(map).NpcCount, EmptyNpc, MapDat.Seguro)
+        End If
+    Else
+        Call DibujarMiniMapa
+        Call NameMapa(map)
+    End If
+    
     map_letter_a = 0
     CurMap = map
     If Musica Then
@@ -72,8 +82,6 @@ Sub SwitchMap(ByVal map As Integer)
         Call AmbientarAudio(map)
     End If
 
-    Call NameMapa(map)
-    
     If MapDat.Seguro = 1 Then
         frmMain.Coord.ForeColor = RGB(0, 170, 0)
     Else

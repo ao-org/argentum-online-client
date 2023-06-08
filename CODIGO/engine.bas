@@ -469,6 +469,9 @@ Public Sub Engine_ActFPS()
         fps = FramesPerSecCounter
         FramesPerSecCounter = 0
         lFrameTimer = FrameTime
+        If BabelInitialized Then
+            Call BabelUI.UpdateFps(fps)
+        End If
     End If
 
     
@@ -946,8 +949,8 @@ Public Sub render()
     
     If frmMain.Contadores.enabled Then
 
-        Dim PosY As Integer: PosY = -10
-        Dim PosX As Integer: PosX = 640
+        Dim PosY As Integer: PosY = -10 + gameplay_render_offset.y
+        Dim PosX As Integer: PosX = 640 + gameplay_render_offset.x
 
         If DrogaCounter > 0 Then
             Call RGBAList(temp_array, 0, 153, 0)
@@ -972,8 +975,12 @@ Public Sub render()
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
     
-    Call Engine_EndScene(Render_Main_Rect)
-    
+    If BabelInitialized Then
+        Call DrawUITexture(UITexture)
+        Call Engine_EndScene(Render_Connect_Rect, frmBabelUI.UIRenderArea.hwnd)
+    Else
+        Call Engine_EndScene(Render_Main_Rect)
+    End If
     
     
     'TIME_MS_MOUSE
@@ -1123,7 +1130,7 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
     Angle = Angle + RandomNumber(2, 10) * IIf(direccion, 1, -1) / 1500 * timerElapsedTime
     
     If dist_x > 40 Then
-        mascota.PosX = mascota.PosX + (dir_vector.x / (frmMain.Renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
+        mascota.PosX = mascota.PosX + (dir_vector.x / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
         isAnimated = 1
     End If
 
@@ -2324,11 +2331,11 @@ On Error GoTo Start_Err
             Select Case g_game_state.state()
                 Case e_state_gameplay_screen
                     render
-                
                     Check_Keys
                     Moviendose = False
-                    DrawMainInventory
-
+                    If Not BabelInitialized Then
+                        DrawMainInventory
+                    End If
                     If frmComerciar.visible Then
                         DrawInterfaceComerciar
 
@@ -2353,9 +2360,9 @@ On Error GoTo Start_Err
                     End If
 
                 Case e_state_connect_screen
-                    If UseBabelUI Then
+                    If BabelInitialized Then
                         Call engine.RenderLoginUI(57, 45, 0, 0)
-                        If Not frmBabelLogin.visible Then
+                        If Not frmBabelUI.visible Then
                             Call ShowLogin
                         End If
                     Else
@@ -2365,14 +2372,17 @@ On Error GoTo Start_Err
                         RenderConnect 57, 45, 0, 0
                     End If
                 Case e_state_account_screen
-                    If UseBabelUI Then
+                    If BabelInitialized Then
                         Call engine.RenderBabelCharacterSelection
                     Else
                         rendercuenta 42, 43, 0, 0
                     End If
                 Case e_state_createchar_screen
-                    If frmBabelLogin.visible Then Call engine.RenderBabelCharacterSelection
-                    RenderCrearPJ 76, 82, 0, 0
+                    If BabelInitialized Then
+                        Call engine.RenderBabelCharacterSelection
+                    Else
+                        RenderCrearPJ 76, 82, 0, 0
+                    End If
 
             End Select
             
@@ -3487,7 +3497,7 @@ Public Sub RenderLoginUI(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
     Call DrawUITexture(UITexture)
-    Call Engine_EndScene(Render_Connect_Rect, frmBabelLogin.UIRenderArea.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmBabelUI.UIRenderArea.hwnd)
 
     Exit Sub
 
@@ -3807,7 +3817,7 @@ On Error GoTo RenderBabelCharacterSelection_Err
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
     Call DrawUITexture(UITexture)
-    Call Engine_EndScene(Render_Connect_Rect, frmBabelLogin.UIRenderArea.hwnd)
+    Call Engine_EndScene(Render_Connect_Rect, frmBabelUI.UIRenderArea.hwnd)
     Exit Sub
 RenderBabelCharacterSelection_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.RenderBabelCharacterSelection", Erl)

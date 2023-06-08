@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form frmCantidad 
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   ClientHeight    =   2892
-   ClientLeft      =   1632
-   ClientTop       =   4416
-   ClientWidth     =   4368
+   ClientHeight    =   2895
+   ClientLeft      =   1635
+   ClientTop       =   4410
+   ClientWidth     =   4365
    ControlBox      =   0   'False
    FillColor       =   &H00C00000&
    ForeColor       =   &H8000000D&
@@ -13,9 +13,9 @@ Begin VB.Form frmCantidad
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   241
+   ScaleHeight     =   193
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   364
+   ScaleWidth      =   291
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Visible         =   0   'False
@@ -302,53 +302,50 @@ End Sub
 
 
 Private Sub cmdTirar_click()
-    
     On Error GoTo tirar_click_Err
     
-    
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
-
     Call Sound.Sound_Play(SND_CLICK)
-
     If LenB(frmCantidad.Text1.Text) > 0 Then
         If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
-        
-        If frmMain.Inventario.SelectedItem <> FLAGORO Then
-        
-            If ObjData(frmMain.Inventario.OBJIndex(frmMain.Inventario.SelectedItem)).Destruye = 0 Then
-                Call WriteDrop(frmMain.Inventario.SelectedItem, frmCantidad.Text1.Text)
+        If BabelInitialized Then
+            If UserInventory.SelectedSlot <> FLAGORO Then
+                Call ThrowItem(UserInventory.SelectedSlot, UserInventory.Slots(UserInventory.SelectedSlot).ObjIndex, frmCantidad.Text1.Text)
             Else
-                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-                Pregunta = True
-                DestItemSlot = frmMain.Inventario.SelectedItem
-                DestItemCant = frmCantidad.Text1.Text
-                
-                PreguntaLocal = True
-                PreguntaNUM = 1
-
+                Call ThrowItem(UserInventory.SelectedSlot, 0, frmCantidad.Text1.Text)
             End If
-
         Else
-            Call WriteDrop(frmMain.Inventario.SelectedItem, frmCantidad.Text1.Text)
-
+            If UserInventory.SelectedSlot <> FLAGORO Then
+                Call ThrowItem(frmMain.Inventario.SelectedItem, frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem), frmCantidad.Text1.Text)
+            Else
+                Call ThrowItem(frmMain.Inventario.SelectedItem, 0, frmCantidad.Text1.Text)
+            End If
         End If
-        
         frmCantidad.Text1.Text = ""
-
     End If
-
     Unload Me
-
-    
     Exit Sub
-
 tirar_click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirar_click", Erl)
     Resume Next
-    
 End Sub
 
-
+Private Sub ThrowItem(ByVal SlotIndex As Integer, ByVal ObjIndex As Integer, ByVal Amount As Integer)
+    If SlotIndex <> FLAGORO Then
+        If ObjData(ObjIndex).Destruye = 0 Then
+            Call WriteDrop(SlotIndex, Amount)
+        Else
+            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+            Pregunta = True
+            DestItemSlot = SlotIndex
+            DestItemCant = Amount
+            PreguntaLocal = True
+            PreguntaNUM = 1
+        End If
+    Else
+        Call WriteDrop(SlotIndex, Amount)
+    End If
+End Sub
 
 Private Sub cmdTirarTodo_click()
     
@@ -378,11 +375,11 @@ Private Sub cmdTirarTodo_click()
         Unload Me
     Else
 
-        If UserGLD > 100000 Then
+        If UserStats.GLD > 100000 Then
             Call WriteDrop(frmMain.Inventario.SelectedItem, 100000)
             Unload Me
         Else
-            Call WriteDrop(frmMain.Inventario.SelectedItem, UserGLD)
+            Call WriteDrop(frmMain.Inventario.SelectedItem, UserStats.GLD)
             Unload Me
 
         End If

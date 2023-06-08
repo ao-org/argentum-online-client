@@ -324,11 +324,23 @@ AddtoRichTextBox2_Err:
     
 End Sub
 
-Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = False, Optional ByVal FontTypeIndex As Byte = 0)
+Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, _
+                     Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, _
+                     Optional ByVal bCrLf As Boolean = False)
     
     On Error GoTo AddtoRichTextBox_Err
     
-
+    If BabelInitialized Then
+        Dim message As t_ChatMessage
+        message.Text = Text
+        message.TextColor.r = red
+        message.TextColor.G = green
+        message.TextColor.b = blue
+        message.BoldText = bold
+        message.ItalicText = italic
+        Call SendChatMessage(message)
+        Exit Sub
+    End If
     '******************************************
     'Adds text to a Richtext box at the bottom.
     'Automatically scrolls to new text.
@@ -674,69 +686,23 @@ Sub SetConnected()
     
     Connected = True
     Call frmConnect.AuthSocket.Close
-    frmMain.shapexy.Left = 1200
-    frmMain.shapexy.Top = 1200
-    frmMain.shapexy.BackColor = RGB(170, 0, 0)
+    Call ModGameplayUI.SetupGameplayUI
     
     Seguido = False
     CharindexSeguido = 0
     OffsetLimitScreen = 32
-    
-    frmMain.NombrePJ.Caption = username
-
     AlphaNiebla = 0
 
     'Vaciamos la cola de movimiento
     Call keysMovementPressedQueue.Clear
-    
-   ' frmMain.UpdateLight.Enabled = True
     frmMain.UpdateDaytime.Enabled = True
     light_transition = 1#
-
     COLOR_AZUL = RGB(0, 0, 0)
-    
-    ' establece el borde al listbox
-    'Call Establecer_Borde(hlst, frmMain, COLOR_AZUL, 0, 0)
-
-    Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
-   
-    ' Detect links in console
-    Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
-        
-    ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
-    Call Form_RemoveTitleBar(frmMain)
-
     OpcionMenu = 0
-    frmMain.panel.Picture = LoadInterface("centroinventario.bmp")
-    'Image2(0).Visible = False
-    'Image2(1).Visible = True
-
-    frmMain.picInv.Visible = True
-     
-    frmMain.picHechiz.Visible = False
-
-    frmMain.cmdlanzar.Visible = False
-    frmMain.imgSpellInfo.Visible = False
-
-    frmMain.cmdMoverHechi(0).Visible = False
-    frmMain.cmdMoverHechi(1).Visible = False
-    
-    Call frmMain.Inventario.ReDraw
-    
-    frmMain.Left = 0
-    frmMain.Top = 0
-    frmMain.Width = D3DWindow.BackBufferWidth * Screen.TwipsPerPixelX
-    frmMain.Height = D3DWindow.BackBufferHeight * Screen.TwipsPerPixelY
-
-    frmMain.Visible = True
-    
     Call ResetContadores
-    
     frmMain.cerrarcuenta.Enabled = True
-
     engine.FadeInAlpha = 255
     isLogged = True
-    
   
     If newUser Then
          If MostrarTutorial And tutorial_index <= 0 Then
@@ -746,7 +712,6 @@ Sub SetConnected()
             End If
         End If
     End If
-    
     Exit Sub
 
 SetConnected_Err:
@@ -859,15 +824,7 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
 
     End If
     
-    Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
-    
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
-    
-
-    
-    If frmMapaGrande.Visible Then
-        Call frmMapaGrande.ActualizarPosicionMapa
-    End If
+    Call UpdateMapPos
     
     ' Update 3D sounds!
     ' Call Audio.MoveListener(UserPos.x, UserPos.y)
@@ -952,7 +909,7 @@ Sub Check_Keys()
     
 
     If Not pausa And _
-        frmMain.Visible And _
+        g_game_state.state = e_state_gameplay_screen And _
         Not frmComerciarUsu.Visible And _
         Not frmBancoObj.Visible And _
         Not frmOpciones.Visible And _
@@ -968,7 +925,7 @@ Sub Check_Keys()
         Not FrmGmAyuda.Visible And _
         Not frmCrafteo.Visible Then
  
-        If frmMain.SendTxt.Visible And PermitirMoverse = 0 Then Exit Sub
+        If IsInputFocus() And PermitirMoverse = 0 Then Exit Sub
  
         If Not UserMoving Then
             Call AddMovementToKeysMovementPressedQueue

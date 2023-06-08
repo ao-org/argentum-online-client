@@ -320,7 +320,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
 
     End With
     
-    If UserEstado <> 1 Then Call DoPasosFx(charindex)
+    If UserStats.Estado <> 1 Then Call DoPasosFx(CharIndex)
     
     'areas viejos
     If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then

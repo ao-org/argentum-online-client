@@ -3,13 +3,13 @@ Begin VB.Form frmGuildAdm
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Lista de clanes registrados"
-   ClientHeight    =   5868
+   ClientHeight    =   5865
    ClientLeft      =   0
    ClientTop       =   -180
-   ClientWidth     =   6228
+   ClientWidth     =   6225
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -20,9 +20,9 @@ Begin VB.Form frmGuildAdm
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   489
+   ScaleHeight     =   391
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   519
+   ScaleWidth      =   415
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox Filtro 
@@ -30,7 +30,7 @@ Begin VB.Form frmGuildAdm
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -48,7 +48,7 @@ Begin VB.Form frmGuildAdm
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       ForeColor       =   &H00FFFFFF&
-      Height          =   2472
+      Height          =   2370
       ItemData        =   "frmGuildAdm.frx":0000
       Left            =   495
       List            =   "frmGuildAdm.frx":0002
@@ -61,7 +61,7 @@ Begin VB.Form frmGuildAdm
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -192,7 +192,7 @@ End Sub
 Private Sub cmdFundarClan_Click()
     On Error GoTo cmdFundarClan_Click_Err
 
-    If UserEstado = 1 Then 'Muerto
+    If UserStats.Estado = 1 Then 'Muerto
 
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
             Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)

@@ -485,17 +485,15 @@ Private Declare Function VarPtrArray Lib "msvbvm50.dll" Alias "VarPtr" (Ptr() As
 Public lRegion             As Long
 
 Public Render_Connect_Rect As RECT
-
 Public Render_Main_Rect    As RECT
+Public GameplayDrawAreaRect As RECT
 
+Public Const StartRenderX = 10
+Public Const StartRenderY = 152
 Public Const SWP_NOMOVE = 2
-
 Public Const SWP_NOSIZE = 1
-
 Public Const FLAGSz = SWP_NOMOVE Or SWP_NOSIZE
-
 Public Const HWND_TOPMOST = -1
-
 Public Const HWND_NOTOPMOST = -2
 
 Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
@@ -1536,8 +1534,21 @@ Public Sub WriteConsoleUserChat(ByVal Text As String, ByVal userName As String, 
 
     Text = Trim$(Text)
     If LenB(userName) <> 0 And LenB(Text) > 0 Then
-        Call AddtoRichTextBox2(frmMain.RecTxt, "[" & name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
-        Call AddtoRichTextBox2(frmMain.RecTxt, Text, red, green, blue, False, False, False, rtfLeft)
+        If BabelInitialized Then
+            Dim message As t_ChatMessage
+            message.Sender = Name
+            message.SenderColor.r = NameRed
+            message.SenderColor.G = NameGreen
+            message.SenderColor.b = NameBlue
+            message.Text = Text
+            message.TextColor.r = red
+            message.TextColor.G = green
+            message.TextColor.b = blue
+            Call SendChatMessage(message)
+        Else
+            Call AddtoRichTextBox2(frmMain.RecTxt, "[" & Name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
+            Call AddtoRichTextBox2(frmMain.RecTxt, Text, red, green, blue, False, False, False, rtfLeft)
+        End If
     End If
     Exit Sub
 End Sub
@@ -1701,19 +1712,19 @@ Public Sub DibujarMiniMapa()
 
     frmMain.MiniMap.Picture = LoadMinimap(UserMap)
     'Pintamos los NPCs en Minimapa:
-    If ListNPCMapData(UserMap, 1).NPCNumber > 0 Then
+    If ListNPCMapData(UserMap).NpcList(1).NPCNumber > 0 Then
         Dim i As Long
         For i = 1 To MAX_QUESTNPCS_VISIBLE
             Dim posX As Long
             Dim posY As Long
             
-            posX = (ListNPCMapData(UserMap, i).Position.x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - 2
-            posY = (ListNPCMapData(UserMap, i).Position.y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - 1
+            PosX = ListNPCMapData(UserMap).NpcList(i).Position.x
+            PosY = ListNPCMapData(UserMap).NpcList(i).Position.y
             
             
             Dim color As Long
             
-            Select Case ListNPCMapData(UserMap, i).state
+            Select Case ListNPCMapData(UserMap).NpcList(i).state
                 Case 1
                     color = RGB(0, 198, 254)
                 Case 2

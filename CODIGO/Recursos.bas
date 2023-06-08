@@ -242,11 +242,9 @@ Public Type t_Projectile
     RigthGrh As Long
 End Type
 
-Private Type t_Position
-
-    x As Integer
-    y As Integer
-
+Public Type t_Position
+    x As Single
+    y As Single
 End Type
 
 Public Type t_QuestNPCMapData
@@ -255,7 +253,12 @@ Public Type t_QuestNPCMapData
     State As Integer
 End Type
 
-Public ListNPCMapData() As t_QuestNPCMapData
+Public Type t_MapNpc
+    NpcList() As t_QuestNPCMapData
+    NpcCount As Integer
+End Type
+
+Public ListNPCMapData() As t_MapNpc
 Public Const MAX_QUESTNPCS_VISIBLE As Long = 100 'leerlo desde Quest.Dat [INIT] NumQuests =
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -1739,7 +1742,7 @@ Public Sub CargarIndicesOBJ()
         
 
         If NpcData(Npc).name = "" Then
-            NpcData(Npc).name = "Vacío"
+            NpcData(Npc).Name = "Vacío"
 
         End If
 
@@ -3217,28 +3220,35 @@ Public Sub CargarNPCsMapData()
         
     Open App.path & "\..\Recursos\OUTPUT\QuestNPCsMapData.bin" For Binary As fh
        
-    ReDim ListNPCMapData(1 To NumMaps, 1 To MAX_QUESTNPCS_VISIBLE) As t_QuestNPCMapData
-    
+    ReDim ListNPCMapData(1 To NumMaps) As t_MapNpc
+    Dim x As Single
+    Dim y As Single
     Do While Not EOF(fh)
         Dim map As Integer
         Get fh, , map
         
         If map > 0 Then
+            ReDim ListNPCMapData(map).NpcList(1 To MAX_QUESTNPCS_VISIBLE) As t_QuestNPCMapData
             Dim i As Long
             For i = 1 To MAX_QUESTNPCS_VISIBLE
                 Dim TempInt As Integer
                 Get #fh, , TempInt
                 'Debug.Assert map > 0
-                ListNPCMapData(map, i).NPCNumber = TempInt
+                ListNPCMapData(map).NpcList(i).NPCNumber = TempInt
+                If TempInt > 0 Then
+                    ListNPCMapData(map).NpcCount = ListNPCMapData(map).NpcCount + 1
+                End If
+                Get #fh, , TempInt
+                x = TempInt
                 
                 Get #fh, , TempInt
-                ListNPCMapData(map, i).Position.x = TempInt
+                y = TempInt
                 
                 Get #fh, , TempInt
-                ListNPCMapData(map, i).Position.y = TempInt
-                
-                Get #fh, , TempInt
-                ListNPCMapData(map, i).State = TempInt
+                ListNPCMapData(map).NpcList(i).state = TempInt
+                Call ConvertToMinimapPosition(x, y, 2, 0)
+                ListNPCMapData(map).NpcList(i).Position.x = x
+                ListNPCMapData(map).NpcList(i).Position.y = y
             Next i
         End If
         DoEvents

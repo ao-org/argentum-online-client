@@ -589,7 +589,7 @@ Function CheckData() As Boolean
     On Error GoTo CheckData_Err
     
 
-    If UserRaza = 0 Then
+    If UserStats.Raza = 0 Then
         frmMensaje.Show , frmConnect
         frmMensaje.msg.Caption = "Seleccione la raza del personaje."
         Exit Function
@@ -603,7 +603,7 @@ Function CheckData() As Boolean
 
     End If
 
-    If UserSexo = 0 Then
+    If UserStats.Sexo = 0 Then
         frmMensaje.Show , frmConnect
         frmMensaje.msg.Caption = "Seleccione el sexo del personaje."
         Exit Function
@@ -612,7 +612,7 @@ Function CheckData() As Boolean
     
     
     
-    If UserHogar = 0 Then
+    If UserStats.Hogar = 0 Then
         frmMensaje.Show , frmConnect
         frmMensaje.msg.Caption = "Seleccione el hogar del personaje."
         Exit Function
@@ -620,7 +620,7 @@ Function CheckData() As Boolean
     End If
     
 
-    If UserClase = 0 Then
+    If UserStats.Clase = 0 Then
         frmMensaje.Show , frmConnect
         frmMensaje.msg.Caption = "Seleccione la clase del personaje."
         Exit Function
@@ -977,11 +977,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             'MsgBox "Nombre invalido, se han removido los espacios al final del nombre"
         End If
             
-        UserRaza = lstRaza.ListIndex + 1
-        UserSexo = lstGenero.ListIndex + 1
-        UserClase = lstProfesion.ListIndex + 1
+        UserStats.Raza = lstRaza.ListIndex + 1
+        UserStats.Sexo = lstGenero.ListIndex + 1
+        UserStats.Clase = lstProfesion.ListIndex + 1
         
-        UserHogar = lstHogar.ListIndex + 1
+        UserStats.Hogar = lstHogar.ListIndex + 1
             
         UserAtributos(1) = Val(lbFuerza.Caption) + Val(modfuerza.Caption)
         UserAtributos(2) = Val(lbAgilidad.Caption) + Val(modAgilidad.Caption)
@@ -1003,7 +1003,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             StopCreandoCuenta = True
                 
-            If Connected Then
+            If Connected And Not BabelInitialized Then
                 frmMain.ShowFPS.Enabled = True
             End If
             frmConnecting.Show

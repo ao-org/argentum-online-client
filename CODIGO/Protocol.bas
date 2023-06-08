@@ -1045,10 +1045,9 @@ End Function
 
 Private Sub HandleConnected()
 
-    frmMain.ShowFPS.Enabled = True
-
-    Call Login
+    If Not BabelInitialized Then frmMain.ShowFPS.enabled = True
     
+    Call Login
 End Sub
 
 Private Sub HandleLogged()
@@ -1067,19 +1066,19 @@ On Error GoTo HandleLogged_Err
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
     frmMain.HpBar.Visible = True
 
-    If UserMaxMAN <> 0 Then
+    If UserStats.maxman <> 0 Then
         frmMain.manabar.Visible = True
 
     End If
 
     frmMain.hambar.Visible = True
     frmMain.AGUbar.Visible = True
-    frmMain.Hpshp.Visible = (UserMinHp > 0)
-    frmMain.shieldBar.visible = (UserHpShield > 0)
-    frmMain.MANShp.Visible = (UserMinMAN > 0)
-    frmMain.STAShp.Visible = (UserMinSTA > 0)
-    frmMain.AGUAsp.Visible = (UserMinAGU > 0)
-    frmMain.COMIDAsp.Visible = (UserMinHAM > 0)
+    frmMain.Hpshp.visible = (UserStats.MinHp > 0)
+    frmMain.shieldBar.visible = (UserStats.HpShield > 0)
+    frmMain.MANShp.visible = (UserStats.minman > 0)
+    frmMain.STAShp.visible = (UserStats.MinSTA > 0)
+    frmMain.AGUAsp.visible = (UserStats.MinAGU > 0)
+    frmMain.COMIDAsp.visible = (UserStats.MinHAM > 0)
     frmMain.GldLbl.Visible = True
     frmMain.Fuerzalbl.Visible = True
     frmMain.AgilidadLbl.Visible = True
@@ -1293,7 +1292,7 @@ Public Sub HandleDisconnect()
     If Not UseBabelUI Then
         frmConnect.visible = True
     Else
-        frmBabelLogin.visible = True
+        frmBabelUI.visible = True
     End If
     #If PYMMO = 1 Then
         If g_game_state.state <> e_state_createchar_screen Then
@@ -1333,7 +1332,7 @@ Public Sub HandleDisconnect()
     frmMain.manabar.Visible = True
     frmMain.hambar.Visible = True
     frmMain.AGUbar.Visible = True
-    frmMain.shieldBar.visible = (UserHpShield > 0)
+    frmMain.shieldBar.visible = (UserStats.HpShield > 0)
     frmMain.Hpshp.Visible = True
     frmMain.shieldBar.visible = True
     frmMain.MANShp.Visible = True
@@ -1390,11 +1389,11 @@ Public Sub HandleDisconnect()
     frmMain.personaje(4).Visible = False
     frmMain.personaje(5).Visible = False
     
-    UserClase = 0
-    UserSexo = 0
-    UserRaza = 0
+    UserStats.Clase = 0
+    UserStats.Sexo = 0
+    UserStats.Raza = 0
     MiCabeza = 0
-    UserHogar = 0
+    UserStats.Hogar = 0
 
     For i = 1 To NUMSKILLS
         UserSkills(i) = 0
@@ -1455,7 +1454,7 @@ Public Sub HandleDisconnect()
     bNieve = False
     bFogata = False
     SkillPoints = 0
-    UserEstado = 0
+    UserStats.estado = 0
     Group.Clear
     InviCounter = 0
     DrogaCounter = 0
@@ -1488,7 +1487,7 @@ Public Sub HandleDisconnect()
     Dim Frm As Form
     
     For Each Frm In Forms
-        If Frm.Name <> frmMain.Name And Frm.Name <> frmConnect.Name And Frm.Name <> frmMensaje.Name And Frm.Name <> frmBabelLogin.Name Then
+        If Frm.Name <> frmMain.Name And Frm.Name <> frmConnect.Name And Frm.Name <> frmMensaje.Name And Frm.Name <> frmBabelUI.Name Then
             Unload Frm
         End If
     Next
@@ -1627,7 +1626,7 @@ Private Sub HandleBankInit()
     'Set state and show form
     Comerciando = True
 
-    frmBancoObj.lblcosto = PonerPuntos(UserGLD)
+    frmBancoObj.lblcosto = PonerPuntos(UserStats.GLD)
     frmBancoObj.Show , frmMain
     frmBancoObj.Refresh
     
@@ -1728,7 +1727,7 @@ Private Sub HandleUserCommerceInit()
 
     End With
         
-    frmComerciarUsu.lblMyGold.Caption = PonerPuntos(UserGLD)
+    frmComerciarUsu.lblMyGold.Caption = PonerPuntos(UserStats.GLD)
     
     Dim j As Byte
 
@@ -2030,7 +2029,7 @@ Private Sub HandleCharSwing()
     With charlist(charindex)
 
         If ShowText And NotificoTexto Then
-            Call SetCharacterDialogFx(charindex, IIf(charindex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
+            Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
 
         End If
         
@@ -2313,13 +2312,11 @@ Private Sub HandleUpdateSta()
     '***************************************************
 
     'Get data and update form
-    UserMinSTA = Reader.ReadInt16()
-    frmMain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
-    frmMain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
-
-    If QuePestañaInferior = 0 Then
-        frmMain.STAShp.Visible = (UserMinSTA > 0)
-
+    UserStats.MinSTA = Reader.ReadInt16()
+    If BabelInitialized Then
+        Call BabelUI.UpdateStaminaValue(UserStats.MinSTA)
+    Else
+        Call frmMain.UpdateStamina
     End If
     
     Exit Sub
@@ -2344,43 +2341,27 @@ Private Sub HandleUpdateMana()
     '***************************************************
 
     Dim OldMana As Integer
-    OldMana = UserMinMAN
+    OldMana = UserStats.minman
     
     'Get data and update form
-    UserMinMAN = Reader.ReadInt16()
+    UserStats.minman = Reader.ReadInt16()
     
-    If UserMeditar And UserMinMAN - OldMana > 0 Then
+    If UserMeditar And UserStats.minman - OldMana > 0 Then
 
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg("Has ganado " & UserMinMAN - OldMana & " de maná.", .red, .green, .blue, .bold, .italic)
-
+            Call ShowConsoleMsg("Has ganado " & UserStats.minman - OldMana & " de maná.", .red, .green, .blue, .bold, .italic)
         End With
-
     End If
     
-    If UserMaxMAN > 0 Then
-        frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
-        frmMain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
-
-        If QuePestañaInferior = 0 Then
-            frmMain.MANShp.Visible = (UserMinMAN > 0)
-            frmMain.manabar.Visible = True
-
-        End If
-
+    If BabelInitialized Then
+        Call BabelUI.UpdateManaValue(UserStats.minman)
     Else
-        frmMain.MANShp.Width = 0
-        frmMain.manabar.Visible = False
-        frmMain.MANShp.Visible = False
-
+        Call frmMain.UpdateManaBar
     End If
     
     Exit Sub
-
 HandleUpdateMana_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateMana", Erl)
-    
-    
 End Sub
 
 Private Sub HandleUpdateHP()
@@ -2390,18 +2371,22 @@ On Error GoTo HandleUpdateHP_Err
     NuevoValor = Reader.ReadInt16()
     Shield = Reader.ReadInt32
     ' Si perdió vida, mostramos los stats en el frmMain
-    If NuevoValor < UserMinHp Or Shield < UserHpShield Then
+    If NuevoValor < UserStats.MinHp Or Shield < UserStats.HpShield Then
         Call frmMain.ShowStats
     End If
     
     'Get data and update form
-    UserMinHp = NuevoValor
-    UserHpShield = Shield
-    Call frmMain.UpdateHpBar
+    UserStats.MinHp = NuevoValor
+    UserStats.HpShield = Shield
+    If BabelInitialized Then
+        Call BabelUI.UpdateHpValue(UserStats.MinHp, UserStats.HpShield)
+    Else
+        Call frmMain.UpdateHpBar
+    End If
     'Is the user alive??
-    If UserMinHp = 0 Then
+    If UserStats.MinHp = 0 Then
         Call svb_unlock_achivement("Memento Mori")
-        UserEstado = 1
+        UserStats.estado = 1
         charlist(UserCharIndex).Invisible = False
         If MostrarTutorial And tutorial_index <= 0 Then
             If tutorial(e_tutorialIndex.TUTORIAL_Muerto).Activo = 1 Then
@@ -2412,7 +2397,7 @@ On Error GoTo HandleUpdateHP_Err
         DrogaCounter = 0
         Call deleteCharIndexs
     Else
-        UserEstado = 0
+        UserStats.estado = 0
     End If
     Exit Sub
 HandleUpdateHP_Err:
@@ -2434,18 +2419,14 @@ Private Sub HandleUpdateGold()
     '***************************************************
 
     'Get data and update form
-    UserGLD = Reader.ReadInt32()
-    OroPorNivel = Reader.ReadInt32()
+    UserStats.GLD = Reader.ReadInt32()
+    UserStats.OroPorNivel = Reader.ReadInt32()
     
-    frmMain.GldLbl.Caption = PonerPuntos(UserGLD)
-    
-    'If UserGLD > UserLvl * OroPorNivel Then
-    If UserGLD <= 100000 Then
-        frmMain.GldLbl.ForeColor = vbRed
+    If BabelInitialized Then
+        Call BabelUI.UpdateGold(UserStats.GLD)
     Else
-        frmMain.GldLbl.ForeColor = &H80FFFF
+        Call frmMain.UpdateGoldState
     End If
-    
     Exit Sub
 
 HandleUpdateGold_Err:
@@ -2456,38 +2437,18 @@ End Sub
 
 ''
 ' Handles the UpdateExp message.
-
 Private Sub HandleUpdateExp()
-    
     On Error GoTo HandleUpdateExp_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-
     'Get data and update form
-    UserExp = Reader.ReadInt32()
-
-    If UserPasarNivel > 0 Then
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
-        frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
-        frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        
+    UserStats.exp = Reader.ReadInt32()
+    If BabelInitialized Then
+        Call BabelUI.UpdateExp(UserStats.exp, UserStats.PasarNivel)
     Else
-        frmMain.EXPBAR.Width = 235
-        frmMain.lblPorcLvl.Caption = "¡Nivel máximo!"
-        frmMain.exp.Caption = "¡Nivel máximo!"
-
+        Call frmMain.UpdateExpBar
     End If
-    
     Exit Sub
-
 HandleUpdateExp_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateExp", Erl)
-    
-    
 End Sub
 
 Private Sub HandleChangeMap()
@@ -2550,8 +2511,7 @@ Private Sub HandlePosUpdate()
     bTecho = HayTecho(UserPos.x, UserPos.y)
                 
     'Update pos label and minimap
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
-    Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
+    Call UpdateMapPos
     
     
     Call RefreshAllChars
@@ -3560,19 +3520,13 @@ Private Sub HandleUserCharIndexInServer()
     
     LastMove = FrameTime
     
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
-    
     If MapDat.Seguro = 1 Then
         frmMain.Coord.ForeColor = RGB(0, 170, 0)
     Else
         frmMain.Coord.ForeColor = RGB(170, 0, 0)
     End If
     
-    Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
-    
-    If frmMapaGrande.Visible Then
-        Call frmMapaGrande.ActualizarPosicionMapa
-    End If
+    Call UpdateMapPos
     
     Exit Sub
 
@@ -3855,19 +3809,12 @@ Private Sub HandleForceCharMove()
     Call Char_Move_by_Head(UserCharIndex, Direccion)
     Call MoveScreen(Direccion)
     
-    Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
-    
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    Call UpdateMapPos
     
     If MapDat.Seguro = 1 Then
         frmMain.Coord.ForeColor = RGB(0, 170, 0)
     Else
         frmMain.Coord.ForeColor = RGB(170, 0, 0)
-    End If
-
-    If frmMapaGrande.Visible Then
-        Call frmMapaGrande.ActualizarPosicionMapa
-
     End If
     
     Call RefreshAllChars
@@ -3897,7 +3844,7 @@ Private Sub HandleForceCharMoveSiguiendo()
     UserPos.x = charlist(CharindexSeguido).Pos.x
     UserPos.y = charlist(CharindexSeguido).Pos.y
 
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    Call UpdateMapPos
     
     If MapDat.Seguro = 1 Then
         frmMain.Coord.ForeColor = RGB(0, 170, 0)
@@ -4951,18 +4898,18 @@ End Sub
 
 Private Sub HandleUpdateUserStats()
 On Error GoTo HandleUpdateUserStats_Err
-    UserMaxHp = Reader.ReadInt16()
-    UserMinHp = Reader.ReadInt16()
-    UserHpShield = Reader.ReadInt32()
-    UserMaxMAN = Reader.ReadInt16()
-    UserMinMAN = Reader.ReadInt16()
-    UserMaxSTA = Reader.ReadInt16()
-    UserMinSTA = Reader.ReadInt16()
-    UserGLD = Reader.ReadInt32()
-    OroPorNivel = Reader.ReadInt32()
-    UserLvl = Reader.ReadInt8()
+    UserStats.MaxHp = Reader.ReadInt16()
+    UserStats.MinHp = Reader.ReadInt16()
+    UserStats.HpShield = Reader.ReadInt32()
+    UserStats.maxman = Reader.ReadInt16()
+    UserStats.minman = Reader.ReadInt16()
+    UserStats.MaxSTA = Reader.ReadInt16()
+    UserStats.MinSTA = Reader.ReadInt16()
+    UserStats.GLD = Reader.ReadInt32()
+    UserStats.OroPorNivel = Reader.ReadInt32()
+    UserStats.Lvl = Reader.ReadInt8()
      
-    Select Case UserLvl:
+    Select Case UserStats.Lvl:
         Case 10
             Call svb_unlock_achivement("Adventurer")
         Case 20
@@ -4975,71 +4922,21 @@ On Error GoTo HandleUpdateUserStats_Err
             'Nothing
     End Select
 
-    UserPasarNivel = Reader.ReadInt32()
-    UserExp = Reader.ReadInt32()
-    UserClase = Reader.ReadInt8()
-    
-    If UserPasarNivel > 0 Then
-        frmMain.lblPorcLvl.Caption = Round(UserExp * (100 / UserPasarNivel), 2) & "%"
-        frmMain.exp.Caption = PonerPuntos(UserExp) & "/" & PonerPuntos(UserPasarNivel)
-        frmMain.EXPBAR.Width = UserExp / UserPasarNivel * 235
-    Else
-        frmMain.EXPBAR.Width = 235
-        frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
-        frmMain.exp.Caption = "¡Nivel máximo!"
-    End If
-    
-    Call frmMain.UpdateHpBar
-
-    If UserMaxMAN > 0 Then
-        frmMain.MANShp.Width = UserMinMAN / UserMaxMAN * 216
-        frmMain.manabar.Caption = UserMinMAN & " / " & UserMaxMAN
-
-        If QuePestañaInferior = 0 Then
-            frmMain.MANShp.Visible = (UserMinMAN > 0)
-            frmMain.manabar.Visible = True
-
-        End If
-
-    Else
-        frmMain.manabar.Visible = False
-        frmMain.MANShp.Width = 0
-        frmMain.MANShp.Visible = False
-
-    End If
-    
-    If UserMaxSTA > 0 Then
-        frmMain.STAShp.Width = UserMinSTA / UserMaxSTA * 89
-    Else
-        frmMain.STAShp.Width = 0
-    End If
-
-    frmMain.stabar.Caption = UserMinSTA & " / " & UserMaxSTA
-    
-    If QuePestañaInferior = 0 Then
-        frmMain.STAShp.Visible = (UserMinSTA > 0)
-
-    End If
-    
-    'If UserGLD > UserLvl * OroPorNivel Then
-    If UserGLD <= 100000 Then
-        frmMain.GldLbl.ForeColor = vbRed
-    Else
-        frmMain.GldLbl.ForeColor = &H80FFFF
-    End If
-
-    frmMain.GldLbl.Caption = PonerPuntos(UserGLD)
-    frmMain.lblLvl.Caption = ListaClases(UserClase) & " - Nivel " & UserLvl
-    
-    If UserMinHp = 0 Then
-        UserEstado = 1
+    UserStats.PasarNivel = Reader.ReadInt32()
+    UserStats.exp = Reader.ReadInt32()
+    UserStats.Clase = Reader.ReadInt8()
+    If UserStats.MinHp = 0 Then
+        UserStats.estado = 1
         charlist(UserCharIndex).Invisible = False
         DrogaCounter = 0
     Else
-        UserEstado = 0
-
+        UserStats.estado = 0
     End If
-    
+    If BabelInitialized Then
+        Call SetUserStats(UserStats)
+    Else
+        Call frmMain.UpdateStatsLayout
+    End If
     Exit Sub
 
 HandleUpdateUserStats_Err:
@@ -5052,21 +4949,12 @@ End Sub
 ' Handles the WorkRequestTarget message.
 
 Private Sub HandleWorkRequestTarget()
-    
     On Error GoTo HandleWorkRequestTarget_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-
     Dim UsingSkillREcibido As Byte
     
     UsingSkillREcibido = Reader.ReadInt8()
     casteaArea = Reader.ReadBool()
     RadioHechizoArea = Reader.ReadInt8()
-    'RadioHechizoArea = RadioHechizoArea / 2
     
     If EstaSiguiendo Then Exit Sub
     If UsingSkillREcibido = 0 Then
@@ -5074,57 +4962,42 @@ Private Sub HandleWorkRequestTarget()
         Call FormParser.Parse_Form(frmMain, E_NORMAL)
         UsingSkill = UsingSkillREcibido
         Exit Sub
-
     End If
 
     If UsingSkillREcibido = UsingSkill Then Exit Sub
-   
     UsingSkill = UsingSkillREcibido
-    frmMain.MousePointer = 2
+    Dim Frm As Form
+    Set Frm = GetGameplayForm
+    Frm.MousePointer = 2
     Select Case UsingSkill
-
         Case magia, eSkill.TargetableItem
-            Call FormParser.Parse_Form(frmMain, E_CAST)
-            
+            Call FormParser.Parse_Form(Frm, E_CAST)
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
-            
-
         Case Robar
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_ROBAR, 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmMain, E_SHOOT)
-
+            Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case FundirMetal
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_FUNDIRMETAL, 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmMain, E_SHOOT)
-
+            Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case Proyectiles
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_PROYECTILES, 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmMain, E_ARROW)
-
+            Call FormParser.Parse_Form(Frm, E_ARROW)
         Case eSkill.Talar, eSkill.Alquimia, eSkill.Carpinteria, eSkill.Herreria, eSkill.Mineria, eSkill.Pescar
             Call AddtoRichTextBox(frmMain.RecTxt, "Has click donde deseas trabajar...", 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmMain, E_SHOOT)
-
+            Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case Grupo
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmMain, E_SHOOT)
-
+            Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeClan
             Call AddtoRichTextBox(frmMain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmMain, E_SHOOT)
-
+            Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeGM
             Call AddtoRichTextBox(frmMain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
-            Call FormParser.Parse_Form(frmMain, E_SHOOT)
-
+            Call FormParser.Parse_Form(Frm, E_SHOOT)
     End Select
-    
     Exit Sub
-
 HandleWorkRequestTarget_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleWorkRequestTarget", Erl)
-    
-    
 End Sub
 
 ''
@@ -5214,9 +5087,9 @@ Private Sub HandleChangeInventorySlot()
         End Select
 
     End If
-
-    Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
-
+    
+    Call ModGameplayUI.SetInvItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    
     If frmComerciar.Visible Then
         Call frmComerciar.InvComUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
@@ -5241,30 +5114,16 @@ End Sub
 
 ' Handles the InventoryUnlockSlots message.
 Private Sub HandleInventoryUnlockSlots()
-    '***************************************************
-    'Author: Ruthnar
-    'Last Modification: 30/09/20
-    '
-    '***************************************************
-    
-    On Error GoTo HandleInventoryUnlockSlots_Err
-    
-    Dim i As Integer
-    
+On Error GoTo HandleInventoryUnlockSlots_Err
     UserInvUnlocked = Reader.ReadInt8
-    
-    For i = 1 To UserInvUnlocked
-    
-        frmMain.imgInvLock(i - 1).Picture = LoadInterface("inventoryunlocked.bmp")
-    
-    Next i
-
+    If Not BabelInitialized Then
+        Call frmMain.UnlockInvslot(UserInvUnlocked)
+    Else
+        Call BabelUI.SetInventoryLevel(UserInvUnlocked)
+    End If
     Exit Sub
-
 HandleInventoryUnlockSlots_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleInventoryUnlockSlots", Erl)
-    
-    
 End Sub
 
 ''
@@ -5281,7 +5140,7 @@ Private Sub HandleChangeBankSlot()
     On Error GoTo ErrHandler
     
     Dim Slot As Byte
-    Dim BankSlot As Inventory
+    Dim BankSlot As Slot
     
     With BankSlot
         Slot = Reader.ReadInt8()
@@ -5335,36 +5194,37 @@ Private Sub HandleChangeSpellSlot()
     
     UserHechizos(Slot) = Reader.ReadInt16()
     Index = Reader.ReadInt16()
-
-    If Index >= 0 Then
     
-        If Slot <= hlst.ListCount Then
-            hlst.List(Slot - 1) = HechizoData(Index).nombre
+    If BabelInitialized Then
+        Dim SpellInfo As t_SpellSlot
+        SpellInfo.Slot = Slot
+        SpellInfo.SpellIndex = Index
+        If Index >= 0 Then
+            SpellInfo.SpellName = HechizoData(Index).nombre
         Else
-            Call hlst.AddItem(HechizoData(Index).nombre)
-            hlst.Scroll = LastScroll
+            SpellInfo.SpellName = "(Vacio)"
         End If
-
+        Call BabelUI.SetSpellSlot(SpellInfo)
     Else
-    
-        If Slot <= hlst.ListCount Then
-            hlst.List(Slot - 1) = "(Vacio)"
+        If Index >= 0 Then
+            If Slot <= hlst.ListCount Then
+                hlst.List(Slot - 1) = HechizoData(Index).nombre
+            Else
+                Call hlst.AddItem(HechizoData(Index).nombre)
+                hlst.Scroll = LastScroll
+            End If
         Else
-            Call hlst.AddItem("(Vacio)")
-            hlst.Scroll = LastScroll
+            If Slot <= hlst.ListCount Then
+                hlst.List(Slot - 1) = "(Vacio)"
+            Else
+                Call hlst.AddItem("(Vacio)")
+                hlst.Scroll = LastScroll
+            End If
         End If
-    
     End If
-    
     Exit Sub
-    
-    Exit Sub
-
 ErrHandler:
-
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeSpellSlot", Erl)
-    
-
 End Sub
 
 ''
@@ -5878,19 +5738,16 @@ Private Sub HandleUpdateHungerAndThirst()
     '
     '***************************************************
     
-    UserMaxAGU = Reader.ReadInt8()
-    UserMinAGU = Reader.ReadInt8()
-    UserMaxHAM = Reader.ReadInt8()
-    UserMinHAM = Reader.ReadInt8()
-    frmMain.AGUAsp.Width = UserMinAGU / UserMaxAGU * 32
-    frmMain.COMIDAsp.Width = UserMinHAM / UserMaxHAM * 32
-    frmMain.AGUbar.Caption = UserMinAGU '& " / " & UserMaxAGU
-    frmMain.hambar.Caption = UserMinHAM ' & " / " & UserMaxHAM
+    UserStats.MaxAGU = Reader.ReadInt8()
+    UserStats.MinAGU = Reader.ReadInt8()
+    UserStats.MaxHAM = Reader.ReadInt8()
+    UserStats.MinHAM = Reader.ReadInt8()
     
-    If QuePestañaInferior = 0 Then
-        frmMain.AGUAsp.Visible = (UserMinAGU > 0)
-        frmMain.COMIDAsp.Visible = (UserMinHAM > 0)
-
+    If BabelInitialized Then
+        BabelUI.UpdateDrinkValue (UserStats.MinAGU)
+        BabelUI.UpdateFoodValue (UserStats.MaxAGU)
+    Else
+        Call frmMain.UpdateFoodState
     End If
 
     Exit Sub
@@ -5952,34 +5809,34 @@ Private Sub HandleFYA()
     
     UserAtributos(eAtributos.Fuerza) = Reader.ReadInt8()
     UserAtributos(eAtributos.Agilidad) = Reader.ReadInt8()
-    
+    UserStats.Str = UserAtributos(eAtributos.Fuerza)
+    UserStats.Agi = UserAtributos(eAtributos.Agilidad)
     DrogaCounter = Reader.ReadInt16()
+    If UserStats.Str >= 35 Then
+        UserStats.StrState = eHighBuff
+    ElseIf UserStats.Str >= 25 Then
+        UserStats.StrState = eMinBuff
+    Else
+        UserStats.StrState = eNormal
+    End If
+    If UserStats.Agi >= 35 Then
+        UserStats.AgiState = eHighBuff
+    ElseIf UserStats.Agi >= 25 Then
+        UserStats.AgiState = eMinBuff
+    Else
+        UserStats.AgiState = eNormal
+    End If
     
     If DrogaCounter > 0 Then
         frmMain.Contadores.Enabled = True
-
     End If
     
-    If UserAtributos(eAtributos.Fuerza) >= 35 Then
-        frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
-    ElseIf UserAtributos(eAtributos.Fuerza) >= 25 Then
-        frmMain.Fuerzalbl.ForeColor = RGB(204, 100, 100)
+    If BabelInitialized Then
+        Call UpdateBuffState
     Else
-        frmMain.Fuerzalbl.ForeColor = vbWhite
-
+        Call frmMain.UpdateBuff
     End If
     
-    If UserAtributos(eAtributos.Agilidad) >= 35 Then
-        frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
-    ElseIf UserAtributos(eAtributos.Agilidad) >= 25 Then
-        frmMain.AgilidadLbl.ForeColor = RGB(204, 100, 100)
-    Else
-        frmMain.AgilidadLbl.ForeColor = vbWhite
-
-    End If
-
-    frmMain.Fuerzalbl.Caption = UserAtributos(eAtributos.Fuerza)
-    frmMain.AgilidadLbl.Caption = UserAtributos(eAtributos.Agilidad)
     
     Exit Sub
 
@@ -7055,7 +6912,7 @@ Private Sub HandleChangeUserTradeSlot()
         Dim OroAEnviar As Long
         OroAEnviar = Reader.ReadInt32
         frmComerciarUsu.lblOroMiOferta.Caption = PonerPuntos(OroAEnviar)
-        frmComerciarUsu.lblMyGold.Caption = PonerPuntos(UserGLD - OroAEnviar)
+        frmComerciarUsu.lblMyGold.Caption = PonerPuntos(UserStats.GLD - OroAEnviar)
 
         For i = 1 To 6
 
@@ -8479,18 +8336,25 @@ Private Sub HandleUbicacion()
     y = Reader.ReadInt8()
     map = Reader.ReadInt16()
     
-    If x = 0 Then
-        frmMain.personaje(miembro).Visible = False
-    Else
-
-        If UserMap = map Then
-            frmMain.personaje(miembro).Visible = True
-            Call frmMain.SetMinimapPosition(miembro, x, y)
-
+    If BabelInitialized Then
+        Dim Pos As t_Position
+        Pos.x = x
+        Pos.y = y
+        If UserMap <> map Then
+            Pos.x = 0
         End If
-
+        Call ConvertToMinimapPosition(Pos.x, Pos.y, 2, 2)
+        Call BabelUI.UpdateGroupPos(Pos, miembro)
+    Else
+        If x = 0 Then
+            frmMain.personaje(miembro).visible = False
+        Else
+            If UserMap = map Then
+                frmMain.personaje(miembro).visible = True
+                Call frmMain.SetMinimapPosition(miembro, x, y)
+            End If
+        End If
     End If
-    
     Exit Sub
 
 HandleUbicacion_Err:
@@ -8589,7 +8453,7 @@ Private Sub HandleCommerceRecieveChatMessage()
     Dim Message As String
     Message = Reader.ReadString8
         
-    Call AddtoRichTextBox(frmComerciarUsu.RecTxt, Message, 255, 255, 255, 0, False, True, False)
+    Call AddtoRichTextBox(frmComerciarUsu.RecTxt, message, 255, 255, 255, 0, False, True)
     
 End Sub
 

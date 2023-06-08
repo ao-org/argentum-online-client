@@ -24,8 +24,7 @@ Public map_letter_grh        As grh
 Public map_letter_grh_next   As Long
 Public map_letter_a          As Single
 Public map_letter_fadestatus As Byte
-
-
+Public gameplay_render_offset As Vector2
 
 
 Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
@@ -85,12 +84,12 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     MaxBufferedY = MaxY + TileBufferSizeY
 
     ' Screen start (with movement offset)
-    StartX = PixelOffsetX - MinX * TilePixelWidth
-    StartY = PixelOffsetY - MinY * TilePixelHeight
+    StartX = PixelOffsetX - MinX * TilePixelWidth + gameplay_render_offset.x
+    StartY = PixelOffsetY - MinY * TilePixelHeight + gameplay_render_offset.y
 
     ' Screen start with tiles buffered (for layer 2, chars, big objects, etc.)
-    StartBufferedX = TileBufferPixelOffsetX + PixelOffsetX
-    StartBufferedY = PixelOffsetY - TilePixelHeight
+    StartBufferedX = TileBufferPixelOffsetX + PixelOffsetX + gameplay_render_offset.x
+    StartBufferedY = PixelOffsetY - TilePixelHeight + gameplay_render_offset.y
 
     ' Add 1 tile to the left if going left, else add it to the right
     If PixelOffsetX > 0 Then
@@ -470,7 +469,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                         Amount = .OBJInfo.Amount
                     End If
                     Text = ObjData(.OBJInfo.ObjIndex).Name & " (" & Amount & ")"
-                    Call Engine_Text_Render(Text, MouseX + 15, MouseY, COLOR_WHITE, , , , 160)
+                    Call Engine_Text_Render(Text, MouseX + 15 + gameplay_render_offset.x, MouseY + gameplay_render_offset.y, COLOR_WHITE, , , , 160)
                 End If
             End If
         End With

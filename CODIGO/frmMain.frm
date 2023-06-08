@@ -1903,7 +1903,7 @@ Private Sub Contadores_Timer()
     On Error GoTo Contadores_Timer_Err
     
 
-    If UserEstado = 1 Then Exit Sub
+    If UserStats.estado = 1 Then Exit Sub
     If InviCounter > 0 Then
         InviCounter = InviCounter - 1
 
@@ -1914,8 +1914,15 @@ Private Sub Contadores_Timer()
         DrogaCounter = DrogaCounter - 1
 
         If DrogaCounter <= 12 And DrogaCounter > 0 Then
-                Call Sound.Sound_Stop(SND_DOPA)
-                Call Sound.Sound_Play(SND_DOPA)
+            Call Sound.Sound_Stop(SND_DOPA)
+            Call Sound.Sound_Play(SND_DOPA)
+            If UserStats.StrState <> eBlink Then
+                UserStats.StrState = eBlink
+                UserStats.AgiState = eBlink
+                If BabelInitialized Then
+                    Call UpdateBuffState
+                End If
+            End If
             If DrogaCounter Mod 2 = 0 Then
                 frmMain.Fuerzalbl.ForeColor = vbWhite
                 frmMain.AgilidadLbl.ForeColor = vbWhite
@@ -1924,15 +1931,17 @@ Private Sub Contadores_Timer()
                 frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
             End If
         End If
-        
-        If DrogaCounter <= 12 And DrogaCounter > 0 Then
-        End If
-        
     End If
 
     If InviCounter = 0 And DrogaCounter = 0 Then
         Contadores.enabled = False
-
+        If UserStats.AgiState <> eNormal Then
+            UserStats.AgiState = eNormal
+            UserStats.StrState = eNormal
+            If BabelInitialized Then
+                Call UpdateBuffState
+            End If
+        End If
     End If
 
     
@@ -2242,66 +2251,12 @@ Private Sub Second_Timer()
 End Sub
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
-    
     On Error GoTo Form_KeyUp_Err
-    
-
-
-    If Not SendTxt.visible And Not SendTxtCmsg.visible Then
-        If Not pausa And frmMain.visible And Not frmComerciar.visible And Not frmComerciarUsu.visible And Not frmBancoObj.visible And Not frmGoliath.visible Then
-            
-            If Accionar(KeyCode) Then
-                Exit Sub
-            ElseIf KeyCode = vbKeyReturn Then
-
-                If Not frmCantidad.visible Then
-                    
-                    Call CompletarEnvioMensajes
-                    'HarThaoS: Al abrir el textBox de escritura tomo el tiempo de inicio para controlar macro de cartel
-                    StartOpenChatTime = GetTickCount
-                    SendTxt.visible = True
-                    SendTxt.SetFocus
-                End If
-                
-            ElseIf KeyCode = vbKeyDelete Then
-                If Not SendTxt.visible Then
-                    SendTxtCmsg.visible = True
-                    SendTxtCmsg.SetFocus
-                    Call DialogosClanes.toggle_dialogs_visibility(True)
-                End If
-            ElseIf KeyCode = vbKeyEscape And Not UserSaliendo Then
-                frmCerrar.Show , frmMain
-                ' Call WriteQuit
-        
-            ElseIf KeyCode = 27 And UserSaliendo Then
-                Call WriteCancelarExit
-
-                Rem  Call SendData("CU")
-            ElseIf KeyCode = 80 And PescandoEspecial Then
-                Call IntentarObtenerPezEspecial
-            End If
-
-        End If
-
-    Else
-    
-        If SendTxt.visible Then
-            SendTxt.SetFocus
-        End If
-        
-        If SendTxtCmsg.visible Then
-            SendTxtCmsg.SetFocus
-        End If
-        
-    End If
-
-    
+        Call HandleKeyUp(KeyCode, Shift)
     Exit Sub
-
 Form_KeyUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_KeyUp", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2394,7 +2349,7 @@ Private Sub GldLbl_Click()
     
     Inventario.SelectGold
 
-    If UserGLD > 0 Then
+    If UserStats.GLD > 0 Then
         frmCantidad.Show , frmMain
 
     End If
@@ -3110,7 +3065,7 @@ Select Case Index
         panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
         stabar.visible = True
         HpBar.visible = True
-        If UserMaxMAN <> 0 Then
+        If UserStats.maxman <> 0 Then
         manabar.visible = True
         End If
         hambar.visible = True
@@ -3231,7 +3186,7 @@ Private Sub Label6_Click()
     
     Inventario.SelectGold
 
-    If UserGLD > 0 Then
+    If UserStats.GLD > 0 Then
         frmCantidad.Show , frmMain
 
     End If
@@ -3283,7 +3238,7 @@ Private Sub MacroLadder_Timer()
     
     If pausa Then Exit Sub
     
-    If UserMacro.cantidad > 0 And UserMacro.Activado And UserMinSTA > 0 Then
+    If UserMacro.cantidad > 0 And UserMacro.Activado And UserStats.MinSTA > 0 Then
     
         Select Case UserMacro.tipo
 
@@ -3408,9 +3363,9 @@ Private Sub manabar_Click()
     On Error GoTo manabar_Click_Err
     
 
-    If UserMinMAN = UserMaxMAN Then Exit Sub
+    If UserStats.minman = UserStats.maxman Then Exit Sub
             
-    If UserEstado = 1 Then
+    If UserStats.estado = 1 Then
 
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
             Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
@@ -3776,40 +3731,30 @@ picInv_MouseMove_Err:
     Resume Next
     
 End Sub
-Private Sub CompletarEnvioMensajes()
+
+Public Sub CompletarEnvioMensajes()
     
     On Error GoTo CompletarEnvioMensajes_Err
-    
 
     Select Case SendingType
-
         Case 1
             SendTxt.Text = ""
-
         Case 2
             SendTxt.Text = "-"
-
         Case 3
             SendTxt.Text = ("\" & sndPrivateTo & " ")
-
         Case 5
             SendTxt.Text = "/GRUPO "
-
         Case 6
             SendTxt.Text = "/GRMG "
-
         Case 7
             SendTxt.Text = ";"
-
         Case 8
             SendTxt.Text = "/RMSG "
-
     End Select
 
     stxtbuffer = SendTxt.Text
     SendTxt.SelStart = Len(SendTxt.Text)
-
-    
     Exit Sub
 
 CompletarEnvioMensajes_Err:
@@ -3914,15 +3859,6 @@ End Sub
 Private Sub renderer_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo renderer_MouseUp_Err
-    
-
-    'If DropItem Then
-    '    frmMain.UsandoDrag = False
-    '    DropItem = False
-    '    DropIndex = 0
-    '    DropActivo = False
-    '    Call FormParser.Parse_Form(Me)
-    'End If
 
     clicX = x
     clicY = y
@@ -4162,99 +4098,20 @@ End Sub
 Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo SendTxt_KeyUp_Err
-
-    Dim str1 As String
-
-    Dim str2 As String
-
     'Send text
     If KeyCode = vbKeyReturn Then
-        
         If LenB(stxtbuffer) <> 0 Then
-        
-            ' If Right$(stxtbuffer, 1) = " " Or left(stxtbuffer, 1) = " " Then
-            ' stxtbuffer = Trim(stxtbuffer)
-            ' End If
-        
-            If Left$(stxtbuffer, 1) = "/" Then
-                If UCase$(Left$(stxtbuffer, 7)) = "/GRUPO " Then
-                    SendingType = 5
-                ElseIf UCase$(Left$(stxtbuffer, 6)) = "/CMSG " Then
-                    SendingType = 4
-                ElseIf UCase$(Left$(stxtbuffer, 6)) = "/GRMG " Then
-                    SendingType = 6
-                ElseIf UCase$(Left$(stxtbuffer, 6)) = "/RMSG " Then
-                    SendingType = 8
-                Else
-                    SendingType = 1
-                End If
-            
-                If stxtbuffer <> "" Then Call ParseUserCommand(stxtbuffer)
-    
-                'Shout
-            ElseIf Left$(stxtbuffer, 1) = "-" Then
-
-                If Right$(stxtbuffer, Len(stxtbuffer) - 1) <> "" Then Call ParseUserCommand("-" & Right$(stxtbuffer, Len(stxtbuffer) - 1))
-                SendingType = 2
-            
-                'Global
-            ElseIf Left$(stxtbuffer, 1) = ";" Then
-
-                If Right$(stxtbuffer, Len(stxtbuffer) - 1) <> "" Then Call ParseUserCommand("/CONSOLA " & Right$(stxtbuffer, Len(stxtbuffer) - 1))
-                sndPrivateTo = ""
-            
-            ElseIf Left$(stxtbuffer, 1) = "/RMSG" Then
-
-                If Right$(stxtbuffer, Len(stxtbuffer) - 1) <> "" Then Call ParseUserCommand("/RMSG " & Right$(stxtbuffer, Len(stxtbuffer) - 1))
-                SendingType = 8
-                sndPrivateTo = ""
-
-                'Privado
-            ElseIf Left$(stxtbuffer, 1) = "\" Then
-
-                Dim mensaje As String
- 
-                str1 = Right$(stxtbuffer, Len(stxtbuffer) - 1)
-                str2 = ReadField(1, str1, 32)
-                mensaje = Right$(stxtbuffer, Len(str1) - Len(str2) - 1)
-                sndPrivateTo = str2
-                SendingType = 3
-    
-                If str1 <> "" Then Call WriteWhisper(sndPrivateTo, mensaje)
-                    
-                'Say
-            Else
-
-                If stxtbuffer <> "" Then Call ParseUserCommand(stxtbuffer)
-                SendingType = 1
-                sndPrivateTo = ""
-
-            End If
-
-        Else
-            SendingType = 1
-            sndPrivateTo = ""
-
+            Call HandleChatMsg(stxtbuffer)
         End If
         stxtbuffer = ""
         SendTxt.Text = ""
         KeyCode = 0
-        
-        
-3        Dim tiempoTranscurridoCartel As Double
-        
+        Dim tiempoTranscurridoCartel As Double
         tiempoTranscurridoCartel = GetTickCount - StartOpenChatTime
-
         Call computeLastElapsedTimeChat(tiempoTranscurridoCartel)
-        
-        
-        
         SendTxt.visible = False
-        
     End If
-
     Exit Sub
-
 SendTxt_KeyUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.SendTxt_KeyUp", Erl)
     Resume Next
@@ -4318,7 +4175,6 @@ Private Sub cerrarcuenta_Timer()
     
     Unload frmConnect
     Unload frmCrearPersonaje
-    Unload frmBabelLogin
     cerrarcuenta.enabled = False
     Exit Sub
 
@@ -4411,55 +4267,12 @@ End Sub
 
 
 Private Sub cmdLanzar_Click()
-    
-    On Error GoTo cmdLanzar_Click_Err
-    
-    If pausa Then Exit Sub
-
-    TempTick = GetTickCount And &H7FFFFFFF
-    
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Lanzar Then
-        
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-    End If
-    
-    iClickTick = TempTick
-    
-    LastMacroButton = tMacroButton.Lanzar
-
-    If hlst.List(hlst.ListIndex) <> "(Vacío)" Then
-        If UserEstado = 1 Then
-
-            With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
-
-            End With
-
-        Else
-        
-            If ModoHechizos = BloqueoLanzar Then
-                If Not MainTimer.Check(TimersIndex.AttackSpell, False) Or Not MainTimer.Check(TimersIndex.CastSpell, False) Then
-                    Exit Sub
-                End If
-            End If
-
-            
-            Call WriteCastSpell(hlst.ListIndex + 1)
-            'Call WriteWork(eSkill.Magia)
-            UsaMacro = True
-            UsaLanzar = True
-
-        End If
-
-    End If
-
-    
+On Error GoTo cmdLanzar_Click_Err
+    Call UseSpell(hlst.ListIndex + 1, hlst.List(hlst.ListIndex))
     Exit Sub
-
 cmdLanzar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdLanzar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub CmdLanzar_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
@@ -4486,224 +4299,7 @@ End Sub
 
 Public Sub Form_Click()
     
-    On Error GoTo Form_Click_Err
-
-    If pausa Then Exit Sub
-    
-    If mascota.visible Then
-        If Sqr((MouseX - mascota.PosX) ^ 2 + (MouseY - mascota.PosY) ^ 2) < 30 Then
-            mascota.dialog = ""
-        End If
-
-    End If
-    
-    If cartel_visible Then
-        If MouseX > 50 And MouseY > 478 And MouseX < 671 And MouseY < 585 Then
-            'Debug.Print tutorial_texto_actual
-            If tutorial_index > 0 Then
-                Call nextCartel
-            Else
-                Call cerrarCartel
-            End If
-        End If
-    End If
-    If MouseBoton = vbLeftButton And ACCION1 = 0 Or MouseBoton = vbRightButton And ACCION2 = 0 Or MouseBoton = 4 And ACCION3 = 0 Then
-        If Not Comerciando Then
-            ' Fix: game area esta mal
-            'If Not InGameArea() Then Exit Sub
-
-            If MouseShift = 0 Then
-                If UsingSkill = 0 Or MacroLadder.enabled Then
-                    Call CountPacketIterations(packetControl(ClientPacketID.LeftClick), 150)
-                    'Debug.Print "click"
-                    Call WriteLeftClick(tX, tY)
-                Else
-
-                    'If macrotrabajo.Enabled Then DesactivarMacroTrabajo
-                    
-                    Dim SendSkill As Boolean
-                    
-                    If UsingSkill = magia Then
-                        
-                        If ModoHechizos = BloqueoLanzar Then
-                            SendSkill = IIf((MouseX >= renderer.ScaleLeft And MouseX <= 736 + renderer.ScaleLeft And MouseY >= renderer.ScaleTop And MouseY <= renderer.ScaleTop + 608), True, False)
-                            
-                            If Not SendSkill Then
-                                Exit Sub
-                            End If
-                            
-                            Call MainTimer.Restart(TimersIndex.CastAttack)
-                            Call MainTimer.Restart(TimersIndex.CastSpell)
-                        Else
-                            If MainTimer.Check(TimersIndex.AttackSpell, False) Then
-                                If MainTimer.Check(TimersIndex.CastSpell) Then
-                                    SendSkill = IIf((MouseX >= renderer.ScaleLeft And MouseX <= 736 + renderer.ScaleLeft And MouseY >= renderer.ScaleTop And MouseY <= renderer.ScaleTop + 608), True, False)
-                                    
-                                    If Not SendSkill Then
-                                        Exit Sub
-                                    End If
-                                    Call MainTimer.Restart(TimersIndex.CastAttack)
-                                
-                                ElseIf ModoHechizos = SinBloqueo Then
-                                    SendSkill = IIf((MouseX >= renderer.ScaleLeft And MouseX <= 736 + renderer.ScaleLeft And MouseY >= renderer.ScaleTop And MouseY <= renderer.ScaleTop + 608), True, False)
-                                    
-                                    If Not SendSkill Then
-                                        Exit Sub
-                                    End If
-                                
-                                    With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                        Call ShowConsoleMsg("No puedes lanzar hechizos tan rápido.", .red, .green, .blue, .bold, .italic)
-                                    End With
-                                Else
-                                    Exit Sub
-                                End If
-                                
-                            ElseIf ModoHechizos = SinBloqueo Then
-                                SendSkill = IIf((MouseX >= renderer.ScaleLeft And MouseX <= 736 + renderer.ScaleLeft And MouseY >= renderer.ScaleTop And MouseY <= renderer.ScaleTop + 608), True, False)
-                                    
-                                If Not SendSkill Then
-                                    Exit Sub
-                                End If
-                                
-                                With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                    Call ShowConsoleMsg("No puedes lanzar tan rápido después de un golpe.", .red, .green, .blue, .bold, .italic)
-                                End With
-                            Else
-                                Exit Sub
-                            End If
-                        End If
-
-                    End If
-                    
-                    'Splitted because VB isn't lazy!
-                    If UsingSkill = Proyectiles Then
-                        If MainTimer.Check(TimersIndex.AttackSpell, False) Then
-                            If MainTimer.Check(TimersIndex.CastAttack, False) Then
-                                If MainTimer.Check(TimersIndex.Arrows) Then
-                                    SendSkill = True
-                                    Call MainTimer.Restart(TimersIndex.Attack) ' Prevengo flecha-golpe
-                                    Call MainTimer.Restart(TimersIndex.CastSpell) ' flecha-hechizo
-
-                                End If
-
-                            End If
-
-                        End If
-
-                    End If
-                
-                    'Splitted because VB isn't lazy!
-                    If (UsingSkill = Robar Or UsingSkill = Domar Or UsingSkill = Grupo Or UsingSkill = MarcaDeClan Or UsingSkill = MarcaDeGM) Then
-                        If MainTimer.Check(TimersIndex.CastSpell) Then
-                            If UsingSkill = MarcaDeGM Then
-
-                                Dim Pos As Integer
-
-                                If MapData(tX, tY).charindex <> 0 Then
-                                    Pos = InStr(charlist(MapData(tX, tY).charindex).nombre, "<")
-                                
-                                    If Pos = 0 Then Pos = LenB(charlist(MapData(tX, tY).charindex).nombre) + 2
-                                    frmPanelgm.cboListaUsus.Text = Left$(charlist(MapData(tX, tY).charindex).nombre, Pos - 2)
-
-                                End If
-
-                            Else
-                                SendSkill = True
-
-                            End If
-
-                        End If
-
-                    End If
-                    
-                    If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or _
-                        UsingSkill = FundirMetal Or UsingSkill = eSkill.TargetableItem) Then
-                        
-                        If MainTimer.Check(TimersIndex.CastSpell) Then
-                            Call WriteWorkLeftClick(tX, tY, UsingSkill)
-                            Call FormParser.Parse_Form(frmMain)
-
-                            If CursoresGraficos = 0 Then
-                                frmMain.MousePointer = vbDefault
-                            End If
-                        End If
-                    End If
-                   
-                    If SendSkill Then
-                        If UsingSkill = eSkill.magia Then
-                            If ComprobarPosibleMacro(MouseX, MouseY) Then
-                                Call WriteWorkLeftClick(tX + RandomNumber(-2, 2), tY + RandomNumber(-2, 2), UsingSkill)
-                            Else
-                                Call WriteWorkLeftClick(tX, tY, UsingSkill)
-                            End If
-                        Else
-                            Call WriteWorkLeftClick(tX, tY, UsingSkill)
-                        End If
-
-                    End If
-
-                    Call FormParser.Parse_Form(frmMain)
-
-                    If CursoresGraficos = 0 Then
-                        frmMain.MousePointer = vbDefault
-                    End If
-                    
-                    UsaLanzar = False
-                    UsingSkill = 0
-                End If
-            Else
-                Call WriteWarpChar("YO", UserMap, tX, tY)
-            End If
-            If cartel Then cartel = False
-        End If
-    
-    ElseIf MouseBoton = vbLeftButton And ACCION1 = 1 Or MouseBoton = vbRightButton And ACCION2 = 1 Or MouseBoton = 4 And ACCION3 = 1 Then
-        'Call WriteDoubleClick(tX, tY)
-    
-    ElseIf MouseBoton = vbLeftButton And ACCION1 = 2 Or MouseBoton = vbRightButton And ACCION2 = 2 Or MouseBoton = 4 And ACCION3 = 2 Then
-
-        If UserDescansar Or UserMeditar Then Exit Sub
-        If MainTimer.Check(TimersIndex.CastAttack, False) Then
-            If MainTimer.Check(TimersIndex.Attack) Then
-                Call MainTimer.Restart(TimersIndex.AttackSpell)
-                Call WriteAttack
-
-            End If
-
-        End If
-    
-    ElseIf MouseBoton = vbLeftButton And ACCION1 = 3 Or MouseBoton = vbRightButton And ACCION2 = 3 Or MouseBoton = 4 And ACCION3 = 3 Then
-
-            If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
-
-    
-    ElseIf MouseBoton = vbLeftButton And ACCION1 = 4 Or MouseBoton = vbRightButton And ACCION2 = 4 Or MouseBoton = 4 And ACCION3 = 4 Then
-
-        If MapData(tX, tY).charindex <> 0 Then
-            If charlist(MapData(tX, tY).charindex).nombre <> charlist(MapData(UserPos.x, UserPos.y).charindex).nombre Then
-                If charlist(MapData(tX, tY).charindex).esNpc = False Then
-                    SendTxt.Text = "\" & charlist(MapData(tX, tY).charindex).nombre & " "
-
-                 
-                    If SendTxtCmsg.visible = False Then
-                        SendTxt.visible = True
-                        SendTxt.SetFocus
-                        SendTxt.SelStart = Len(SendTxt.Text)
-                    End If
-                End If
-
-            End If
-
-        End If
-
-    End If
-
-    
-    Exit Sub
-
-Form_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Click", Erl)
-    Resume Next
+    Call OnClick(MouseBoton, MouseShift)
     
 End Sub
 
@@ -4900,72 +4496,16 @@ End Sub
 
 
 Private Sub picInv_DblClick()
-    
     On Error GoTo picInv_DblClick_Err
-    
 
     If Not picInv.visible Then Exit Sub
-    
-    If frmCarp.visible Or frmHerrero.visible Or frmComerciar.visible Or frmBancoObj.visible Then Exit Sub
-    If pausa Then Exit Sub
-    
-    If UserMeditar Then Exit Sub
-    'If Not MainTimer.Check(TimersIndex.UseItemWithDblClick) Then Exit Sub
-    
-    If macrotrabajo.enabled Then DesactivarMacroTrabajo
-    
-    If Not Inventario.IsItemSelected Then Exit Sub
-
-    ' Hacemos acción del doble clic correspondiente
-    Dim ObjType As Byte
-
-    ObjType = ObjData(Inventario.ObjIndex(Inventario.SelectedItem)).ObjType
-
-    Select Case ObjType
-
-        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otAnillos, eObjType.otManchas
-            If Not Inventario.Equipped(Inventario.SelectedItem) Then
-                Call WriteEquipItem(Inventario.SelectedItem)
-            End If
-            
-        Case eObjType.otWeapon
-
-            If ObjData(Inventario.ObjIndex(Inventario.SelectedItem)).proyectil = 1 And Inventario.Equipped(Inventario.SelectedItem) Then
-                Call WriteUseItem(Inventario.SelectedItem)
-            Else
-                If Not Inventario.Equipped(Inventario.SelectedItem) Then
-                    Call WriteEquipItem(Inventario.SelectedItem)
-                End If
-            End If
-            
-        Case eObjType.OtHerramientas
-
-            If Inventario.Equipped(Inventario.SelectedItem) Then
-                Call WriteUseItem(Inventario.SelectedItem)
-            Else
-                If Not Inventario.Equipped(Inventario.SelectedItem) Then
-                    Call WriteEquipItem(Inventario.SelectedItem)
-                End If
-            End If
-        Case eObjType.OtDonador
-            If Not Inventario.Equipped(Inventario.SelectedItem) Then
-                Call WriteEquipItem(Inventario.SelectedItem)
-            End If
-        Case Else
-            Call CountPacketIterations(packetControl(ClientPacketID.UseItem), 180)
-                   ' Debug.Print "QWEASDqweads"
-            Call WriteUseItem(Inventario.SelectedItem)
-            
-    End Select
-
-    
+    Call UserItemClick
     Exit Sub
-
 picInv_DblClick_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.picInv_DblClick", Erl)
     Resume Next
-    
 End Sub
+
 Private Function countRepts(ByVal packet As Long)
     
 End Function
@@ -5181,47 +4721,6 @@ Public Sub GetMinimapPosition(ByRef x As Single, ByRef y As Single)
     y = y * (100 - 2 * HalfWindowTileHeight - 4) / 100 + HalfWindowTileHeight + 2
 End Sub
 
-Public Sub OnClientDisconnect(ByVal Error As Long)
-    On Error GoTo OnClientDisconnect_Err
-    If (Error = 10061) Then
-        If frmConnect.visible Then
-            Call DisplayError("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.", "connection-failure")
-        Else
-            Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
-        End If
-    Else
-        frmConnect.MousePointer = 1
-        ShowFPS.enabled = False
-        If (Error <> 0 And Error <> 2) Then
-            Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
-            
-            If frmConnect.visible Then
-                Connected = False
-            Else
-                If (Connected) Then
-                    Call HandleDisconnect
-                End If
-            End If
-        Else
-            Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
-            If frmConnect.visible Then
-                Connected = False
-            Else
-                If (Connected) Then
-                    Call HandleDisconnect
-                End If
-            End If
-            If Not GetRemoteError And Error > 0 Then
-                Call DisplayError("El servidor cerro la conexion.", "connection-closed")
-            End If
-        End If
-    End If
-    Exit Sub
-OnClientDisconnect_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.MainSocket_LastError", Erl)
-    Resume Next
-End Sub
-
 Private Sub imgDeleteItem_Click()
     If Not frmMain.Inventario.IsItemSelected Then
         Call AddtoRichTextBox(frmMain.RecTxt, "No tienes seleccionado ningún item", 255, 255, 255, False, False, False)
@@ -5234,27 +4733,171 @@ End Sub
 
 Public Sub UpdateHpBar()
     Dim CurrentHp As Long
-    If UserMaxHp > 0 Then
+    If UserStats.MaxHp > 0 Then
         Dim FullSize As Long
-        CurrentHp = UserMinHp + UserHpShield
-        FullSize = max(UserMinHp + UserHpShield, UserMaxHp)
-        frmMain.Hpshp.Width = UserMinHp / FullSize * 216
-        frmMain.HpBar.Caption = CurrentHp & " / " & UserMaxHp
+        CurrentHp = UserStats.MinHp + UserStats.HpShield
+        FullSize = max(UserStats.MinHp + UserStats.HpShield, UserStats.MaxHp)
+        frmMain.Hpshp.Width = UserStats.MinHp / FullSize * 216
+        frmMain.HpBar.Caption = CurrentHp & " / " & UserStats.MaxHp
         frmMain.shieldBar.Left = frmMain.Hpshp.Left + frmMain.Hpshp.Width
-        frmMain.shieldBar.Width = UserHpShield / FullSize * 216
+        frmMain.shieldBar.Width = UserStats.HpShield / FullSize * 216
     Else
         frmMain.Hpshp.Width = 0
         frmMain.shieldBar.Width = 0
     End If
     
     If QuePestañaInferior = 0 Then
-        frmMain.Hpshp.visible = (UserMinHp > 0)
-        frmMain.shieldBar.visible = UserHpShield > 0
+        frmMain.Hpshp.visible = (UserStats.MinHp > 0)
+        frmMain.shieldBar.visible = UserStats.HpShield > 0
     End If
-    If UserHpShield > 0 Then
-        frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp & " + " & UserHpShield
+    If UserStats.HpShield > 0 Then
+        frmMain.HpBar.Caption = UserStats.MinHp & " / " & UserStats.MaxHp & " + " & UserStats.HpShield
     Else
-        frmMain.HpBar.Caption = UserMinHp & " / " & UserMaxHp
+        frmMain.HpBar.Caption = UserStats.MinHp & " / " & UserStats.MaxHp
     End If
     
+End Sub
+
+
+Public Sub UpdateStatsLayout()
+    If UserStats.PasarNivel > 0 Then
+        frmMain.lblPorcLvl.Caption = Round(UserStats.exp * (100 / UserStats.PasarNivel), 2) & "%"
+        frmMain.exp.Caption = PonerPuntos(UserStats.exp) & "/" & PonerPuntos(UserStats.PasarNivel)
+        frmMain.EXPBAR.Width = UserStats.exp / UserStats.PasarNivel * 235
+    Else
+        frmMain.EXPBAR.Width = 235
+        frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
+        frmMain.exp.Caption = "¡Nivel máximo!"
+    End If
+    
+    Call frmMain.UpdateHpBar
+
+    If UserStats.maxman > 0 Then
+        frmMain.MANShp.Width = UserStats.minman / UserStats.maxman * 216
+        frmMain.manabar.Caption = UserStats.minman & " / " & UserStats.maxman
+
+        If QuePestañaInferior = 0 Then
+            frmMain.MANShp.visible = (UserStats.minman > 0)
+            frmMain.manabar.visible = True
+
+        End If
+
+    Else
+        frmMain.manabar.visible = False
+        frmMain.MANShp.Width = 0
+        frmMain.MANShp.visible = False
+
+    End If
+    
+    If UserStats.MaxSTA > 0 Then
+        frmMain.STAShp.Width = UserStats.MinSTA / UserStats.MaxSTA * 89
+    Else
+        frmMain.STAShp.Width = 0
+    End If
+
+    frmMain.stabar.Caption = UserStats.MinSTA & " / " & UserStats.MaxSTA
+    
+    If QuePestañaInferior = 0 Then
+        frmMain.STAShp.visible = (UserStats.MinSTA > 0)
+
+    End If
+    
+    If UserStats.GLD <= 100000 Then
+        frmMain.GldLbl.ForeColor = vbRed
+    Else
+        frmMain.GldLbl.ForeColor = &H80FFFF
+    End If
+
+    frmMain.GldLbl.Caption = PonerPuntos(UserStats.GLD)
+    frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - Nivel " & UserStats.Lvl
+    
+    
+End Sub
+
+Public Sub UnlockInvslot(ByVal UserInvLevel As Integer)
+    Dim i As Integer
+    For i = 1 To UserInvLevel
+        imgInvLock(i - 1).Picture = LoadInterface("inventoryunlocked.bmp")
+    Next i
+End Sub
+
+Public Sub UpdateManaBar()
+    If UserStats.maxman > 0 Then
+        frmMain.MANShp.Width = UserStats.minman / UserStats.maxman * 216
+        frmMain.manabar.Caption = UserStats.minman & " / " & UserStats.maxman
+
+        If QuePestañaInferior = 0 Then
+            frmMain.MANShp.visible = (UserStats.minman > 0)
+            frmMain.manabar.visible = True
+        End If
+    Else
+        frmMain.MANShp.Width = 0
+        frmMain.manabar.visible = False
+        frmMain.MANShp.visible = False
+    End If
+End Sub
+
+Public Sub UpdateFoodState()
+    frmMain.AGUAsp.Width = UserStats.MinAGU / UserStats.MaxAGU * 32
+    frmMain.COMIDAsp.Width = UserStats.MinHAM / UserStats.MaxHAM * 32
+    frmMain.AGUbar.Caption = UserStats.MinAGU '& " / " & UserMaxAGU
+    frmMain.hambar.Caption = UserStats.MinHAM ' & " / " & UserMaxHAM
+    
+    If QuePestañaInferior = 0 Then
+        frmMain.AGUAsp.visible = (UserStats.MinAGU > 0)
+        frmMain.COMIDAsp.visible = (UserStats.MinHAM > 0)
+    End If
+End Sub
+
+Public Sub UpdateStamina()
+    frmMain.STAShp.Width = UserStats.MinSTA / UserStats.MaxSTA * 89
+    frmMain.stabar.Caption = UserStats.MinSTA & " / " & UserStats.MaxSTA
+
+    If QuePestañaInferior = 0 Then
+        frmMain.STAShp.visible = (UserStats.MinSTA > 0)
+    End If
+End Sub
+
+Public Sub UpdateGoldState()
+    GldLbl.Caption = PonerPuntos(UserStats.GLD)
+    'If UserGLD > UserLvl * OroPorNivel Then
+    If UserStats.GLD <= 100000 Then
+        GldLbl.ForeColor = vbRed
+    Else
+        GldLbl.ForeColor = &H80FFFF
+    End If
+End Sub
+
+Public Sub UpdateExpBar()
+    If UserStats.PasarNivel > 0 Then
+        EXPBAR.Width = UserStats.exp / UserStats.PasarNivel * 235
+        lblPorcLvl.Caption = Round(UserStats.exp * (100 / UserStats.PasarNivel), 2) & "%"
+        exp.Caption = PonerPuntos(UserStats.exp) & "/" & PonerPuntos(UserStats.PasarNivel)
+    Else
+        EXPBAR.Width = 235
+        lblPorcLvl.Caption = "¡Nivel máximo!"
+        exp.Caption = "¡Nivel máximo!"
+    End If
+End Sub
+
+Public Sub UpdateBuff()
+    If UserStats.StrState = eHighBuff Then
+        frmMain.Fuerzalbl.ForeColor = RGB(204, 0, 0)
+    ElseIf UserStats.StrState = eMinBuff Then
+        frmMain.Fuerzalbl.ForeColor = RGB(204, 100, 100)
+    Else
+        frmMain.Fuerzalbl.ForeColor = vbWhite
+
+    End If
+    
+    If UserStats.AgiState = eHighBuff Then
+        frmMain.AgilidadLbl.ForeColor = RGB(204, 0, 0)
+    ElseIf UserStats.AgiState = eMinBuff Then
+        frmMain.AgilidadLbl.ForeColor = RGB(204, 100, 100)
+    Else
+        frmMain.AgilidadLbl.ForeColor = vbWhite
+    End If
+
+    frmMain.Fuerzalbl.Caption = UserStats.StrState
+    frmMain.AgilidadLbl.Caption = UserStats.AgiState
 End Sub

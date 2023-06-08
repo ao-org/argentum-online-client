@@ -220,7 +220,7 @@ Public Sub RestaurarLuz()
     
     On Error GoTo RestaurarLuz_Err
     
-    If UserEstado = 1 Then
+    If UserStats.Estado = 1 Then
         global_light = DeathColor
         
     ElseIf UserCiego Then

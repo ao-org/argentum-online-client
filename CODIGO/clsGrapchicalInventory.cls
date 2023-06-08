@@ -88,7 +88,7 @@ Dim InvNeedsRedraw             As Boolean
 
 'Dim InvSurface As DirectDrawSurface7            'DD Surface used to render everything
 
-Dim UserInventory()            As Inventory    'User's inventory
+Dim UserInventory()            As Slot    'User's inventory
 
 Dim WithEvents InventoryWindow As PictureBox    'Placeholder where to render the inventory
 Attribute InventoryWindow.VB_VarHelpID = -1
@@ -200,7 +200,7 @@ End Sub
         HEIGHT_MAIN_INVENTORY = IIf(aux <> Int(aux), Int(aux) + 1, aux) * ITEM_OFFSET_Y
     End If
 
-    ReDim UserInventory(1 To MaxSlots) As Inventory
+    ReDim UserInventory(1 To MaxSlots) As Slot
 
 #If ConMenuesConextuales = 1 Then
     Set ItemMenu = PopUpMenu
@@ -380,7 +380,7 @@ Public Property Get Amount(ByVal Slot As Byte) As Long
     'Retrieves the selected item's amount
     '***************************************************
     If Slot = FLAGORO Then
-        Amount = UserGLD
+        Amount = UserStats.GLD
     ElseIf Slot >= LBound(UserInventory) And Slot <= UBound(UserInventory) Then
         Amount = UserInventory(Slot).Amount
 

@@ -137,7 +137,7 @@ On Error GoTo OnClientClose_Err:
     
     Call Protocol_Writes.Clear
 
-    Call frmMain.OnClientDisconnect(Code)
+    Call ModLogin.OnClientDisconnect(Code)
 
     Exit Sub
     
