@@ -4923,7 +4923,7 @@ Private Sub picInv_DblClick()
 
     Select Case ObjType
 
-        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos, eObjType.otAnillos, eObjType.otManchas
+        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otAnillos, eObjType.otManchas
             If Not Inventario.Equipped(Inventario.SelectedItem) Then
                 Call WriteEquipItem(Inventario.SelectedItem)
             End If

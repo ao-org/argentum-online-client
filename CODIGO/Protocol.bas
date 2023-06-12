@@ -5177,10 +5177,6 @@ Private Sub HandleChangeInventorySlot()
                 frmMain.lblWeapon = MinHit & "/" & MaxHit
                 UserWeaponEqpSlot = Slot
 
-            Case eObjType.otNudillos
-                frmMain.lblWeapon = MinHit & "/" & MaxHit
-                UserWeaponEqpSlot = Slot
-
             Case eObjType.otArmadura
                 frmMain.lblArmor = MinDef & "/" & MaxDef
                 UserArmourEqpSlot = Slot
