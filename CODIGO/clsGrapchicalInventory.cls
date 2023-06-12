@@ -1033,7 +1033,7 @@ End Function
 Public Function CanUse(ByVal Slot As Integer) As Boolean
     CanUse = UserInventory(Slot).ObjType = eObjType.otWeapon Or UserInventory(Slot).ObjType = eObjType.otPociones Or _
              UserInventory(Slot).ObjType = eObjType.OtHerramientas Or UserInventory(Slot).ObjType = eObjType.otInstrumentos Or _
-             UserInventory(Slot).ObjType = eObjType.otNudillos Or UserInventory(Slot).ObjType = eObjType.OtCofre Or _
+             UserInventory(Slot).ObjType = eObjType.OtCofre Or _
              (ObjData(UserInventory(Slot).ObjIndex).CDType > 0 And ObjData(UserInventory(Slot).ObjIndex).CDType < e_CdTypes.CDCount)
 
 End Function
