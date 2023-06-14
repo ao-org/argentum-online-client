@@ -30,6 +30,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Const HASH_TABLE_SIZE As Long = 337
+Const E_OUTOFMEMORY = 7
 
 Private Type SURFACE_ENTRY_DYN
 
@@ -52,14 +53,11 @@ End Type
 Private TexList(HASH_TABLE_SIZE - 1) As HashNode
 
 Private mD3D                         As D3DX8
-
 Private device                       As Direct3DDevice8
-
 Private mMaxEntries                  As Integer
-
 Private mCantidadGraficos            As Integer
-
 Private mFreeMemoryBytes             As Long
+
 
 Private Sub Class_Terminate()
     
@@ -156,12 +154,38 @@ Init_Err:
     
 End Function
 
+Private Function LoadTexture(ByVal FileName As String, ByRef Dest As Direct3DTexture8) As Long
+On Error GoTo LoadTexture_ErrHandler
+    Dim bytArr()     As Byte
+    #If Compresion = 1 Then
+        If Not Extract_File_To_Memory(Graphics, App.path & "\..\Recursos\OUTPUT\", LTrim(FileName) & ".png", bytArr, ResourcesPassword) Then
+            Debug.Print "¡No se puede cargar el grafico numero " & FileName & "!"
+            Exit Function
+        End If
+        Set Dest = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, _
+                                                            D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
+    #Else
+        Dim PathToFile As String
+        PathToFile = App.path & "\..\Recursos\Graficos\" & LTrim(FileName) & ".png"
+        If Not FileExist(PathToFile, vbArchive) Then
+            Debug.Print "¡No se puede cargar el grafico numero " & PathToFile & "!"
+            Exit Function
+        End If
+
+        Set Dest = mD3D.CreateTextureFromFileEx(device, PathToFile, 0, 0, _
+             1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
+    #End If
+    Exit Function
+LoadTexture_ErrHandler:
+    LoadTexture = Err.Number
+End Function
+
 Private Function CreateDirect3dTexture(ByVal FileNum As Integer, ByRef texture_width As Long, ByRef texture_height As Long) As Direct3DTexture8
 On Error GoTo ErrHandler
     Dim surface_desc As D3DSURFACE_DESC
     Dim Index        As Integer
     Dim DirArchico   As String
-    Dim bytArr()     As Byte
+    Dim LoadResult As Long
     
     Set CreateDirect3dTexture = Nothing
     texture_width = 0
@@ -176,23 +200,16 @@ On Error GoTo ErrHandler
         With .SurfaceEntry(.surfaceCount)
             .FileName = FileNum
             .UltimoAcceso = GetTickCount()
-            #If Compresion = 1 Then
-                If Not Extract_File_To_Memory(Graphics, App.path & "\..\Recursos\OUTPUT\", LTrim(str(FileNum)) & ".png", bytArr, ResourcesPassword) Then
-                    Debug.Print "¡No se puede cargar el grafico numero " & FileNum & "!"
-                    Exit Function
-                End If
-                Set .Texture = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
-            #Else
-                Dim PathToFile As String
-                PathToFile = App.path & "\..\Recursos\Graficos\" & LTrim(str(FileNum)) & ".png"
-                If Not FileExist(PathToFile, vbArchive) Then
-                    Debug.Print "¡No se puede cargar el grafico numero " & PathToFile & "!"
-                    Exit Function
-                End If
-
-                Set .Texture = mD3D.CreateTextureFromFileEx(device, PathToFile, 0, 0, _
-                     1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
-            #End If
+            LoadResult = LoadTexture(str(FileNum), .Texture)
+            If LoadResult = E_OUTOFMEMORY Then
+                Dim i As Integer
+                For i = 0 To 100
+                    Call RemoveLRU
+                Next i
+                LoadResult = LoadTexture(str(FileNum), .Texture)
+            ElseIf LoadResult <> 0 Then
+                Call RegistrarError(LoadResult, "Unhandled error", "clsTexManager.LoadTexture", 0)
+            End If
                 
             .Texture.GetLevelDesc 0, surface_desc
             .texture_width = surface_desc.Width
@@ -200,8 +217,8 @@ On Error GoTo ErrHandler
             .size = surface_desc.size
             texture_width = .texture_width
             texture_height = .texture_height
-            
-            Set CreateDirect3dTexture = TexList(Index).SurfaceEntry(TexList(Index).surfaceCount).Texture
+            mFreeMemoryBytes = mFreeMemoryBytes - .size
+            Set CreateDirect3dTexture = .Texture
         End With
 
     End With
@@ -265,88 +282,60 @@ End Function
 
 Private Function RemoveLRU() As Boolean
     
-    On Error GoTo RemoveLRU_Err
+        On Error GoTo RemoveLRU_Err
+
+        Dim LRUi         As Long
+        Dim LRUj         As Long
+        Dim LRUtime      As Long
+        Dim i            As Long
+        Dim j            As Long
+
+        Dim surface_desc As D3DSURFACE_DESC
+100     LRUtime = GetTickCount()
     
+        'Check out through the whole list for the least recently used
+102     For i = 0 To HASH_TABLE_SIZE - 1
+104         With TexList(i)
+106             For j = 1 To .surfaceCount
+108                 If LRUtime > .SurfaceEntry(j).UltimoAcceso And .SurfaceEntry(j).size > 0 Then
+110                     LRUi = i
+112                     LRUj = j
+114                     LRUtime = .SurfaceEntry(j).UltimoAcceso
 
-    '**************************************************************
-    'Author: Juan Mart?n Sotuyo Dodero
-    'Last Modify Date: 3/06/2006
-    'Removes the Least Recently Used surface to make some room for new ones
-    '**************************************************************
-    Dim LRUi         As Long
-
-    Dim LRUj         As Long
-
-    Dim LRUtime      As Long
-
-    Dim i            As Long
-
-    Dim j            As Long
-
-    Dim surface_desc As D3DSURFACE_DESC
+                    End If
+116             Next j
+            End With
+118     Next i
     
-    LRUtime = GetTickCount()
+        'Retrieve the surface desc
+120     Call TexList(LRUi).SurfaceEntry(LRUj).Texture.GetLevelDesc(0, surface_desc)
     
-    'Check out through the whole list for the least recently used
-    For i = 0 To HASH_TABLE_SIZE - 1
-
-        With TexList(i)
-
-            For j = 1 To .surfaceCount
-
-                If LRUtime > .SurfaceEntry(j).UltimoAcceso Then
-                    LRUi = i
-                    LRUj = j
-                    LRUtime = .SurfaceEntry(j).UltimoAcceso
-
+        'Remove it
+122     Set TexList(LRUi).SurfaceEntry(LRUj).Texture = Nothing
+124     TexList(LRUi).SurfaceEntry(LRUj).FileName = 0
+    
+        'Move back the list (if necessary)
+126     If LRUj Then
+128         RemoveLRU = True
+130         With TexList(LRUi)
+132             For j = LRUj To .surfaceCount - 1
+134                 .SurfaceEntry(j) = .SurfaceEntry(j + 1)
+136             Next j
+138             .surfaceCount = .surfaceCount - 1
+140             If .surfaceCount Then
+142                 ReDim Preserve .SurfaceEntry(1 To .surfaceCount) As SURFACE_ENTRY_DYN
+                Else
+144                 Erase .SurfaceEntry
                 End If
-
-            Next j
-
-        End With
-
-    Next i
-    
-    'Retrieve the surface desc
-    Call TexList(LRUi).SurfaceEntry(LRUj).Texture.GetLevelDesc(0, surface_desc)
-    
-    'Remove it
-    Set TexList(LRUi).SurfaceEntry(LRUj).Texture = Nothing
-    TexList(LRUi).SurfaceEntry(LRUj).FileName = 0
-    
-    'Move back the list (if necessary)
-    If LRUj Then
-        RemoveLRU = True
-        
-        With TexList(LRUi)
-
-            For j = LRUj To .surfaceCount - 1
-                .SurfaceEntry(j) = .SurfaceEntry(j + 1)
-            Next j
-            
-            .surfaceCount = .surfaceCount - 1
-
-            If .surfaceCount Then
-                ReDim Preserve .SurfaceEntry(1 To .surfaceCount) As SURFACE_ENTRY_DYN
-            Else
-                Erase .SurfaceEntry
-
-            End If
-
-        End With
-
-    End If
-    
-    'Update the used bytes
-    mFreeMemoryBytes = mFreeMemoryBytes + surface_desc.size
-
-    
-    Exit Function
+            End With
+        End If
+        'Update the used bytes
+146     mFreeMemoryBytes = mFreeMemoryBytes + surface_desc.size
+        Exit Function
 
 RemoveLRU_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsTexManager.RemoveLRU", Erl)
-    Resume Next
-    
+     Call RegistrarError(Err.Number, Err.Description, "clsTexManager.RemoveLRU", Erl)
+     Resume Next
 End Function
 
 
