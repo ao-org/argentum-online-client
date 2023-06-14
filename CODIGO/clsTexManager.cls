@@ -30,6 +30,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Const HASH_TABLE_SIZE As Long = 337
+Const E_OUTOFMEMORY = 7
 
 Private Type SURFACE_ENTRY_DYN
 
@@ -52,14 +53,11 @@ End Type
 Private TexList(HASH_TABLE_SIZE - 1) As HashNode
 
 Private mD3D                         As D3DX8
-
 Private device                       As Direct3DDevice8
-
 Private mMaxEntries                  As Integer
-
 Private mCantidadGraficos            As Integer
-
 Private mFreeMemoryBytes             As Long
+
 
 Private Sub Class_Terminate()
     
@@ -161,7 +159,7 @@ On Error GoTo LoadTexture_ErrHandler
     Dim bytArr()     As Byte
     #If Compresion = 1 Then
         If Not Extract_File_To_Memory(Graphics, App.path & "\..\Recursos\OUTPUT\", LTrim(FileName) & ".png", bytArr, ResourcesPassword) Then
-            Debug.Print "¡No se puede cargar el grafico numero " & FileNum & "!"
+            Debug.Print "¡No se puede cargar el grafico numero " & FileName & "!"
             Exit Function
         End If
         Set Dest = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, _
@@ -203,7 +201,7 @@ On Error GoTo ErrHandler
             .FileName = FileNum
             .UltimoAcceso = GetTickCount()
             LoadResult = LoadTexture(str(FileNum), .Texture)
-            If LoadResult = 7 Then
+            If LoadResult = E_OUTOFMEMORY Then
                 Dim i As Integer
                 For i = 0 To 100
                     Call RemoveLRU
@@ -285,13 +283,7 @@ End Function
 Private Function RemoveLRU() As Boolean
     
         On Error GoTo RemoveLRU_Err
-    
 
-        '**************************************************************
-        'Author: Juan Mart?n Sotuyo Dodero
-        'Last Modify Date: 3/06/2006
-        'Removes the Least Recently Used surface to make some room for new ones
-        '**************************************************************
         Dim LRUi         As Long
         Dim LRUj         As Long
         Dim LRUtime      As Long
